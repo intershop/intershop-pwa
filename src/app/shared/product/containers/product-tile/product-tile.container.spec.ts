@@ -3,7 +3,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, combineReducers } from '@ngrx/store';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductTileContainerComponent } from './product-tile.container';
 

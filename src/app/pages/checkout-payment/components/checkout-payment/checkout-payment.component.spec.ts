@@ -5,9 +5,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 

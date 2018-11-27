@@ -6,8 +6,8 @@ import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys'
 import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { MockComponent } from '../../../../utils/dev/mock.component';
-import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryPageComponent } from './category-page.component';
 

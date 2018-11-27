@@ -3,7 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { User } from 'ish-core/models/user/user.model';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountOverviewPageComponent } from './account-overview-page.component';
 

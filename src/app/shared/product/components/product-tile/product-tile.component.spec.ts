@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductTileComponent } from './product-tile.component';
 

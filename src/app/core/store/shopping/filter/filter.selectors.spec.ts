@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';

@@ -5,7 +5,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { QuoteData } from '../../models/quote/quote.interface';
 import { Quote } from '../../models/quote/quote.model';
 import { quotingReducers } from '../quoting-store.module';

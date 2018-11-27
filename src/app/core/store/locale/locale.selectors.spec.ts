@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { Locale } from '../../models/locale/locale.model';
 import { coreReducers } from '../core-store.module';
 

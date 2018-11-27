@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from '../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
 

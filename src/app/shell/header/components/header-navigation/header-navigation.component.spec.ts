@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
 

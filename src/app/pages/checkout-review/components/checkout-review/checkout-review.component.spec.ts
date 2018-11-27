@@ -4,8 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { CheckoutReviewComponent } from './checkout-review.component';
 

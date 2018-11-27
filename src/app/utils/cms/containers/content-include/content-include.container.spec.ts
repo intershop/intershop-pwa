@@ -5,8 +5,8 @@ import { deepEqual, spy, verify } from 'ts-mockito';
 import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { LoadContentInclude, LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
-import { MockComponent } from '../../../dev/mock.component';
-import { ngrxTesting } from '../../../dev/ngrx-testing';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ContentIncludeContainerComponent } from './content-include.container';
 

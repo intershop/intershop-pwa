@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductQuantityComponent } from './product-quantity.component';
 

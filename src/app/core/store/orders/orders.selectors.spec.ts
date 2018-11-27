@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { OrderView } from '../../models/order/order.model';

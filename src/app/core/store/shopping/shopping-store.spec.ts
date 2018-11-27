@@ -9,8 +9,8 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
-import { categoryTree } from '../../../utils/dev/test-data-utils';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,

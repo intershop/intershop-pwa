@@ -8,7 +8,7 @@ import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction } from '../../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';

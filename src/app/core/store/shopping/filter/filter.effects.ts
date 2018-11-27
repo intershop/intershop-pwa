@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { FilterService } from '../../../services/filter/filter.service';
 import { CategoriesActionTypes, getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';

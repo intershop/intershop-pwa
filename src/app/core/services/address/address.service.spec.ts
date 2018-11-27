@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { BasketMockData } from '../../../utils/dev/basket-mock-data';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ApiService } from '../api/api.service';
 
 import { AddressService } from './address.service';

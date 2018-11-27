@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 

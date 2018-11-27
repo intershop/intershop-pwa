@@ -5,8 +5,8 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { LoadFilterForCategorySuccess } from 'ish-core/store/shopping/filter';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { FilterNavigationContainerComponent } from './filter-navigation.container';
 

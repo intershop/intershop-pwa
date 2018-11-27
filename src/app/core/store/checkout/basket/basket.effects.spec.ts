@@ -15,7 +15,7 @@ import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user/user.actions';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';

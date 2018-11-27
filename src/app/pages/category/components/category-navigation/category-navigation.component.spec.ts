@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryNavigationComponent } from './category-navigation.component';
 

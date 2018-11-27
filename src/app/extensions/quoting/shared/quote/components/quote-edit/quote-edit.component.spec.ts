@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
-import { MockComponent } from '../../../../../../utils/dev/mock.component';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
 

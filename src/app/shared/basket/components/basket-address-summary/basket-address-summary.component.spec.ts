@@ -4,8 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { BasketAddressSummaryComponent } from './basket-address-summary.component';
 

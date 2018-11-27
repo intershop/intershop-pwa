@@ -17,7 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { Basket } from '../../../models/basket/basket.model';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';

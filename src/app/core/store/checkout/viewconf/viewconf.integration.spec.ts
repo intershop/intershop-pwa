@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { RouteNavigation } from 'ngrx-router';
 
-import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { checkoutReducers } from '../checkout-store.module';
 
 import { ViewconfEffects } from './viewconf.effects';

@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { SearchBoxContainerComponent } from './search-box.container';
 

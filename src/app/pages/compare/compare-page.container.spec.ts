@@ -7,9 +7,9 @@ import { Product } from 'ish-core/models/product/product.model';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { findAllIshElements } from '../../utils/dev/html-query-utils';
-import { MockComponent } from '../../utils/dev/mock.component';
-import { TestStore, ngrxTesting } from '../../utils/dev/ngrx-testing';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ComparePageContainerComponent } from './compare-page.container';
 

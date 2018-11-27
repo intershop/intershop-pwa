@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { User } from 'ish-core/models/user/user.model';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { CheckoutReceiptComponent } from './checkout-receipt.component';
 

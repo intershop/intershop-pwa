@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { HomePageComponent } from './home-page.component';
 

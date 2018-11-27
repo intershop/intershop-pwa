@@ -5,7 +5,7 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { OrderService } from '../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../shopping/products';

@@ -4,8 +4,8 @@ import { spy, verify } from 'ts-mockito';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { SetEndlessScrollingPageSize, SetPagingInfo } from 'ish-core/store/shopping/viewconf';
-import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductListContainerComponent } from './product-list.container';
 

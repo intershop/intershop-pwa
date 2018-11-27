@@ -8,7 +8,7 @@ import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
 
 import { LineItemListComponent } from './line-item-list.component';

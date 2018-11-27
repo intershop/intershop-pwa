@@ -9,8 +9,8 @@ import { IconModule } from 'ish-core/icon.module';
 import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { MiniBasketComponent } from './mini-basket.component';
 
