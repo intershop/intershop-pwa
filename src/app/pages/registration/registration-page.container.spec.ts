@@ -7,7 +7,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { RegionService } from 'ish-core/services/region/region.service';
-import { MockComponent } from '../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { RegistrationPageContainerComponent } from './registration-page.container';
 

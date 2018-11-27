@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { CMSService } from '../../../services/cms/cms.service';
 
 import * as includesActions from './includes.actions';

@@ -5,7 +5,7 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { Category } from '../../../models/category/category.model';
 import { LoadCategorySuccess, SelectCategory } from '../categories';

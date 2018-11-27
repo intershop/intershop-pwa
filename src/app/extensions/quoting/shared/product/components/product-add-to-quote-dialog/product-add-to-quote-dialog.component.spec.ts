@@ -6,8 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
 
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
-import { MockComponent } from '../../../../../../utils/dev/mock.component';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 
 import { ProductAddToQuoteDialogComponent } from './product-add-to-quote-dialog.component';

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { arraySlices } from '../../../functions';
+import { arraySlices } from 'ish-core/utils/functions';
 
 @Component({
   selector: 'ish-cms-carousel',

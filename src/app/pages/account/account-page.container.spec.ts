@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from '../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountPageContainerComponent } from './account-page.container';
 

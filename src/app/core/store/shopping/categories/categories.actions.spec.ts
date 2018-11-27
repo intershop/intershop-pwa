@@ -1,4 +1,4 @@
-import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { Category } from '../../../models/category/category.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 

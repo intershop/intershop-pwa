@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { User } from 'ish-core/models/user/user.model';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 

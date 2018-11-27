@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { HeaderNavigationContainerComponent } from './header-navigation.container';
 

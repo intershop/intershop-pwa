@@ -1,6 +1,6 @@
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import {
   CreateBasketInvoiceAddress,
   CreateBasketInvoiceAddressSuccess,

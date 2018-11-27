@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from '../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountAddressesPageContainerComponent } from './account-addresses-page.container';
 

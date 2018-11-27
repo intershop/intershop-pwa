@@ -7,8 +7,8 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { AddBasketToQuoteRequest } from '../../extensions/quoting/store/quote-request';
-import { MockComponent } from '../../utils/dev/mock.component';
 
 import { BasketPageContainerComponent } from './basket-page.container';
 

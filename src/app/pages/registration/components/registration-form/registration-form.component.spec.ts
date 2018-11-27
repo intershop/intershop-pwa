@@ -5,10 +5,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { AddressFormFactory } from '../../../../shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
-import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { RegistrationFormComponent } from './registration-form.component';
 

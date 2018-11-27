@@ -4,9 +4,9 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { Category } from 'ish-core/models/category/category.model';
 import { LoadCategory, LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { findAllIshElements } from '../../utils/dev/html-query-utils';
-import { MockComponent } from '../../utils/dev/mock.component';
-import { categoryTree } from '../../utils/dev/test-data-utils';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryPageContainerComponent } from './category-page.container';
 

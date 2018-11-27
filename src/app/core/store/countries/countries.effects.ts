@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { concatMap, concatMapTo, filter, map, take } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { CountryService } from '../../services/country/country.service';
 
 import * as countryActions from './countries.actions';

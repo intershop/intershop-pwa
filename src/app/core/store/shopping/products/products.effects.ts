@@ -15,7 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LocaleActionTypes } from '../../locale';
 import {

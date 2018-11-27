@@ -1,4 +1,4 @@
-import { mergeObjectsMutably } from '../../../utils/merge-objects';
+import { mergeObjectsMutably } from 'ish-core/utils/merge-objects';
 import { Price } from '../price/price.model';
 
 import { VariationProductMaster } from './product-variation-master.model';

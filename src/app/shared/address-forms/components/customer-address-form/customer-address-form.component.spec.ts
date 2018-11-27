@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 import { AddressFormFactory } from '../address-form/address-form.factory';

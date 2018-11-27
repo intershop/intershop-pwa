@@ -3,7 +3,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { LoadQuoteRequests } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting-store.module';
 

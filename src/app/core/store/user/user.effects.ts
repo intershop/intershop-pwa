@@ -6,7 +6,7 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from '../../../utils/operators';
+import { mapErrorToAction } from 'ish-core/utils/operators';
 import { Customer } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../services/registration/registration.service';

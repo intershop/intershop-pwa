@@ -4,7 +4,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import * as fromActions from './basket.actions';
 

@@ -7,9 +7,9 @@ import { spy, verify } from 'ts-mockito';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
 

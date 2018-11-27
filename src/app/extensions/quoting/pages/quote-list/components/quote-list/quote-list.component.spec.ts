@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { MockComponent } from '../../../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { Quote } from '../../../../models/quote/quote.model';
 
 import { QuoteListComponent } from './quote-list.component';

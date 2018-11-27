@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
-import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { Category } from '../../../models/category/category.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';

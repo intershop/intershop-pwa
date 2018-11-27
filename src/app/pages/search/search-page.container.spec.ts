@@ -4,7 +4,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { SearchProductsSuccess } from 'ish-core/store/shopping/search';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { SetPagingInfo } from 'ish-core/store/shopping/viewconf';
-import { MockComponent } from '../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { SearchPageContainerComponent } from './search-page.container';
 

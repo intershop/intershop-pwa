@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ErrorPageComponent } from './error-page.component';
 

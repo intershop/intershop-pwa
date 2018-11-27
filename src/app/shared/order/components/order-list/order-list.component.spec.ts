@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { OrderView } from 'ish-core/models/order/order.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { OrderListComponent } from './order-list.component';
 

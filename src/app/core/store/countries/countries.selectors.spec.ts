@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { Country } from '../../models/country/country.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { coreReducers } from '../core-store.module';

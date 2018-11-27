@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, combineReducers } from '@ngrx/store';
 
-import { MockComponent } from '../../../../../../utils/dev/mock.component';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { quotingReducers } from '../../../../store/quoting-store.module';
 
 import { ProductAddToQuoteDialogContainerComponent } from './product-add-to-quote-dialog.container';
