@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-import { IconModule } from './icon.module';
+import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { ConfigurationModule } from './configuration.module';
+import { IconModule } from './icon.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { StateManagementModule } from './state-management.module';
@@ -19,6 +19,7 @@ export function translateFactory(http: HttpClient) {
   imports: [
     ConfigurationModule,
     HttpClientModule,
+    ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
     TranslateModule.forRoot({
