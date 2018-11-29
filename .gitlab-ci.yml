@@ -164,12 +164,12 @@ cypress_remote:
   script:
     - node --version && npm --version
     - npm ci --prefer-offline --production
-    - npm run build:dynamic
+    - npm run build
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
     - npm ci --prefer-offline
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - nohup bash -c "npm run serve:dynamic &"
+    - nohup bash -c "npm run serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true'

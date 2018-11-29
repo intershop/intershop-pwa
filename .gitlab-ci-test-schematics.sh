@@ -84,9 +84,9 @@ npx tsc --project src/tsconfig.spec.json
 sed -i -e 's/needMock.*/needMock: true,/g' src/environments/environment.prod.ts
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
 
-npm run build:dynamic:prod
+npm run build
 
-nohup bash -c "npm run serve:dynamic &"
+nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
 
 wget -O - -q "http://localhost:4200/warehouses" | grep -q "warehouses-page works"
