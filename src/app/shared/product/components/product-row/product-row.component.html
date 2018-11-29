@@ -19,13 +19,11 @@
         </div>
         <!-- TODO: remove style attribute -->
         <div class="product-tile-actions btn-group" style="position: relative">
-          <!-- TODO: re-enable
-          <ish-product-add-to-quote
-            *ishFeature="'quoting'"
+          <ish-lazy-product-add-to-quote
+            [product]="product"
             displayType="icon"
-            class="btn-link"
-            (productToQuote)="addToQuote()"
-          ></ish-product-add-to-quote> -->
+            cssClass="btn-link"
+          ></ish-lazy-product-add-to-quote>
         </div>
       </div>
       <div class="col-12 col-md-4 text-right text-left-xs">

@@ -8,7 +8,6 @@ import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
-import { AddBasketToQuoteRequest } from '../../extensions/quoting/store/quote-request';
 
 import { BasketPageContainerComponent } from './basket-page.container';
 
@@ -57,12 +56,6 @@ describe('Basket Page Container', () => {
 
   it('should render loading component if there is no basket', () => {
     store$.dispatch(new LoadBasket('BASKET_ID'));
-    fixture.detectChanges();
-    expect(element.querySelector('ish-loading')).toBeTruthy();
-  });
-
-  xit('should render loading component if AddBasketToQuoteRequest', () => {
-    store$.dispatch(new AddBasketToQuoteRequest());
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });

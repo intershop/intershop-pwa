@@ -51,7 +51,7 @@ describe('Product Add To Quote Component', () => {
     expect(element.querySelector('button').disabled).toBeTruthy();
   });
 
-  it('should throw productToQuote event when addToQuote is triggered.', () => {
+  it('should emit productToQuote event when addToQuote is triggered.', () => {
     const emitter = spy(component.productToQuote);
 
     component.addToQuote();

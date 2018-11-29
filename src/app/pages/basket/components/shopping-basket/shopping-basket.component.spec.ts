@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { spy, verify } from 'ts-mockito';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -22,13 +20,13 @@ describe('Shopping Basket Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent({
-          selector: 'ish-basket-add-to-quote',
-          template: 'Baskt add To Quote Component',
-        }),
-        MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
           inputs: ['totals'],
+        }),
+        MockComponent({
+          selector: 'ish-lazy-basket-add-to-quote',
+          template: 'Basket add To Quote Component',
         }),
         MockComponent({
           selector: 'ish-line-item-list',
@@ -38,14 +36,7 @@ describe('Shopping Basket Component', () => {
         MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
         ShoppingBasketComponent,
       ],
-      imports: [
-        FeatureToggleModule.testingFeatures({ quoting: true }),
-        FormsSharedModule,
-        PipesModule,
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -80,14 +71,6 @@ describe('Shopping Basket Component', () => {
     });
 
     component.onUpdateItem(payload);
-  });
-
-  it('should throw addBasketToQuote event when addToQuote is triggered.', () => {
-    const emitter = spy(component.addBasketToQuote);
-
-    component.onAddToQuote();
-
-    verify(emitter.emit()).once();
   });
 
   it('should not render an error if no error occurs', () => {

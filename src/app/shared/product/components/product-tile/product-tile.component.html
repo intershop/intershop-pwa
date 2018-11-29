@@ -12,13 +12,11 @@
   </div>
 
   <div class="product-tile-actions btn-group">
-    <!-- TODO: re-enable
-    <ish-product-add-to-quote
-      *ishFeature="'quoting'"
+    <ish-lazy-product-add-to-quote
+      [product]="product"
       displayType="icon"
-      class="btn-link"
-      (productToQuote)="addToQuote()"
-    ></ish-product-add-to-quote> -->
+      cssClass="btn-link"
+    ></ish-lazy-product-add-to-quote>
     <button
       *ishFeature="'compare'"
       (click)="toggleCompare()"

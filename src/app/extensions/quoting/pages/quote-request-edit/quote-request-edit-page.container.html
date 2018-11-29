@@ -1,6 +1,7 @@
 <ish-quote-edit
   *ngIf="(quote$ | async) as quote"
   [quote]="quote"
+  [user]="user$ | async"
   (deleteItem)="deleteQuoteRequestItem($event)"
   (updateItem)="updateQuoteRequestItem($event)"
   (updateQuoteRequest)="updateQuoteRequest($event)"

@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
-import { SharedModule } from '../../../../shared/shared.module';
-import { QuotingSharedModule } from '../../shared/quoting-shared.module';
+import { QuotingModule } from '../../quoting.module';
 
 import { QuoteListComponent } from './components/quote-list/quote-list.component';
 import { QuoteListPageContainerComponent } from './quote-list-page.container';
@@ -19,6 +18,6 @@ const quoteListPageRoutes: Routes = [
 
 @NgModule({
   declarations: [QuoteListComponent, QuoteListPageContainerComponent],
-  imports: [QuotingSharedModule, RouterModule.forChild(quoteListPageRoutes), SharedModule],
+  imports: [QuotingModule, RouterModule.forChild(quoteListPageRoutes)],
 })
 export class QuoteListPageModule {}

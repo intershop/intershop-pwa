@@ -15,16 +15,10 @@ export class ProductRowComponent {
   category?: Category;
   @Output()
   productToBasket = new EventEmitter<void>();
-  @Output()
-  productToQuote = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 
   addToBasket() {
     this.productToBasket.emit();
-  }
-
-  addToQuote() {
-    this.productToQuote.emit();
   }
 }

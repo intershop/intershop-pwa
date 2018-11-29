@@ -3,13 +3,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 /**
  * The Product Add To Quote Component displays a button which emits productToQuote when triggered.
  * It provides two display types, text and icon.
- *
- * @example
- * <ish-product-add-to-quote
- *   [disabled]="disabled"
- *   (productToQuote)="addToQuote()"
- *   [class]="'btn-block'"
- * ></ish-product-add-to-quote>
  */
 @Component({
   selector: 'ish-product-add-to-quote',
@@ -18,11 +11,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class ProductAddToQuoteComponent {
   @Input()
-  disabled = false;
+  disabled: boolean;
   @Input()
   displayType?: string;
   @Input()
-  class?: string;
+  cssClass?: string;
   @Output()
   productToQuote = new EventEmitter<void>();
 

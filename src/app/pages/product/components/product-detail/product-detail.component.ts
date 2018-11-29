@@ -14,8 +14,6 @@ export class ProductDetailComponent implements OnInit {
   @Output()
   productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output()
-  productToQuote = new EventEmitter<{ sku: string; quantity: number }>();
-  @Output()
   productToCompare = new EventEmitter<string>();
 
   productDetailForm: FormGroup;
@@ -38,10 +36,7 @@ export class ProductDetailComponent implements OnInit {
     this.productToCompare.emit(this.product.sku);
   }
 
-  addToQuote() {
-    this.productToQuote.emit({
-      sku: this.product.sku,
-      quantity: this.productDetailForm.get(this.quantityControlName).value,
-    });
+  get quantity(): number {
+    return this.productDetailForm.get(this.quantityControlName).value;
   }
 }

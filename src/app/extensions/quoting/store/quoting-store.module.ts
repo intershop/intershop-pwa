@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { ActionReducerMap, ReducerManager, Store, combineReducers } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 
 import { QuoteRequestEffects } from './quote-request/quote-request.effects';
 import { quoteRequestReducer } from './quote-request/quote-request.reducer';
@@ -15,7 +16,17 @@ export const quotingReducers: ActionReducerMap<QuotingState> = {
 
 export const quotingEffects = [QuoteEffects, QuoteRequestEffects];
 
+const quotingFeature = 'quoting';
+
 @NgModule({
-  imports: [EffectsModule.forFeature(quotingEffects), StoreModule.forFeature('quoting', quotingReducers)],
+  imports: [EffectsModule.forFeature(quotingEffects)],
 })
-export class QuotingStoreModule {}
+export class QuotingStoreModule {
+  constructor(manager: ReducerManager, store: Store<{}>) {
+    store.pipe(take(1)).subscribe(x => {
+      if (!x[quotingFeature]) {
+        manager.addReducers({ [quotingFeature]: combineReducers(quotingReducers) });
+      }
+    });
+  }
+}

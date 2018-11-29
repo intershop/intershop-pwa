@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
+import { getLoggedInUser } from 'ish-core/store/user';
 import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
 
 @Component({
@@ -13,6 +14,7 @@ import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQ
 export class QuoteEditPageContainerComponent {
   quote$ = this.store.pipe(select(getSelectedQuote));
   quoteLoading$ = this.store.pipe(select(getQuoteLoading));
+  user$ = this.store.pipe(select(getLoggedInUser));
 
   constructor(private store: Store<{}>, private router: Router) {}
 

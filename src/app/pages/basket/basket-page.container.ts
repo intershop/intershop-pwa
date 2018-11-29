@@ -9,7 +9,6 @@ import {
   getBasketLoading,
   getCurrentBasket,
 } from 'ish-core/store/checkout/basket';
-import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../extensions/quoting/store/quote-request';
 
 @Component({
   selector: 'ish-basket-page-container',
@@ -20,7 +19,6 @@ export class BasketPageContainerComponent {
   basket$ = this.store.pipe(select(getCurrentBasket));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
   basketError$ = this.store.pipe(select(getBasketError));
-  quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
 
   constructor(private store: Store<{}>) {}
 
@@ -30,9 +28,5 @@ export class BasketPageContainerComponent {
 
   updateBasketItem(formValue: LineItemQuantity) {
     this.store.dispatch(new UpdateBasketItems([formValue]));
-  }
-
-  addBasketToQuote() {
-    this.store.dispatch(new AddBasketToQuoteRequest());
   }
 }

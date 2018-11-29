@@ -1,9 +1,34 @@
 import { NgModule } from '@angular/core';
 
-import { QuotingRoutingModule } from './pages/quoting-routing.module';
+import { SharedModule } from '../../shared/shared.module';
+
+import { BasketAddToQuoteComponent } from './shared/basket/components/basket-add-to-quote/basket-add-to-quote.component';
+import { BasketAddToQuoteContainerComponent } from './shared/basket/containers/basket-add-to-quote/basket-add-to-quote.container';
+import { ProductAddToQuoteDialogComponent } from './shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
+import { ProductAddToQuoteComponent } from './shared/product/components/product-add-to-quote/product-add-to-quote.component';
+import { ProductAddToQuoteDialogContainerComponent } from './shared/product/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
+import { ProductAddToQuoteContainerComponent } from './shared/product/containers/product-add-to-quote/product-add-to-quote.container';
+import { QuoteEditComponent } from './shared/quote/components/quote-edit/quote-edit.component';
+import { QuoteStateComponent } from './shared/quote/components/quote-state/quote-state.component';
 import { QuotingStoreModule } from './store/quoting-store.module';
 
 @NgModule({
-  imports: [QuotingRoutingModule, QuotingStoreModule],
+  imports: [QuotingStoreModule, SharedModule],
+  declarations: [
+    BasketAddToQuoteComponent,
+    BasketAddToQuoteContainerComponent,
+    ProductAddToQuoteComponent,
+    ProductAddToQuoteContainerComponent,
+    ProductAddToQuoteDialogComponent,
+    ProductAddToQuoteDialogContainerComponent,
+    QuoteEditComponent,
+    QuoteStateComponent,
+  ],
+  exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
+  entryComponents: [
+    ProductAddToQuoteContainerComponent,
+    BasketAddToQuoteContainerComponent,
+    ProductAddToQuoteDialogContainerComponent,
+  ],
 })
 export class QuotingModule {}

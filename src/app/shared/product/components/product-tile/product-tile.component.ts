@@ -19,8 +19,6 @@ export class ProductTileComponent {
   compareToggle = new EventEmitter<void>();
   @Output()
   productToBasket = new EventEmitter<void>();
-  @Output()
-  productToQuote = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 
@@ -30,9 +28,5 @@ export class ProductTileComponent {
 
   addToBasket() {
     this.productToBasket.emit();
-  }
-
-  addToQuote() {
-    this.productToQuote.emit();
   }
 }

@@ -6,7 +6,9 @@ import { QuoteHelper } from '../../models/quote/quote.helper';
 import { Quote } from '../../models/quote/quote.model';
 import { getQuotingState } from '../quoting-store';
 
-const getQuoteState = createSelector(getQuotingState, state => state.quote);
+import { initialState } from './quote.reducer';
+
+const getQuoteState = createSelector(getQuotingState, state => (state ? state.quote : initialState));
 
 export const getSelectedQuoteId = createSelector(getQuoteState, state => state.selected);
 

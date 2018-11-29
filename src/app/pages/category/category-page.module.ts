@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { QuotingSharedModule } from '../../extensions/quoting/shared/quoting-shared.module';
 import { SharedModule } from '../../shared/shared.module';
 
 import { CategoryPageContainerComponent } from './category-page.container';
@@ -22,7 +21,7 @@ const categoryPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [QuotingSharedModule, RouterModule.forChild(categoryPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(categoryPageRoutes), SharedModule],
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,
