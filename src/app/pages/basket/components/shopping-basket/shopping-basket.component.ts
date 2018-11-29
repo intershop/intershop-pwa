@@ -13,14 +13,12 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
  *
  * It uses the {@link LineItemListComponent} for the rendering of line items.
  * It uses the {@link BasketCostSummaryComponent} to render the cost summary.
- * It uses the {@link BasketAddToQuoteComponent} to provide add to quote functionality.
  *
  * @example
  * <ish-shopping-basket
  *   [basket]="basket"
  *   (updateItem)="updateItem($event)"
  *   (deleteItem)="deleteItem($event)"
- *   (addBasketToQuote)="addBasketToQuote()"
  * ></ish-shopping-basket>
  */
 @Component({
@@ -38,8 +36,6 @@ export class ShoppingBasketComponent {
   updateItem = new EventEmitter<LineItemQuantity>();
   @Output()
   deleteItem = new EventEmitter<string>();
-  @Output()
-  addBasketToQuote = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;
@@ -79,12 +75,5 @@ export class ShoppingBasketComponent {
   checkout() {
     // ToDo: routing should be handled in another way, see #ISREST-317
     this.router.navigate(['/checkout/address']);
-  }
-
-  /**
-   * Throws addBasketToQuote event when addToQuote is triggered.
-   */
-  onAddToQuote() {
-    this.addBasketToQuote.emit();
   }
 }

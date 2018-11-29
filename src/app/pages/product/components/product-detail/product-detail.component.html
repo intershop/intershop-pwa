@@ -51,12 +51,12 @@
           [class]="'btn-lg btn-block'"
         ></ish-product-add-to-basket>
 
-        <ish-product-add-to-quote
-          *ishFeature="'quoting'"
+        <ish-lazy-product-add-to-quote
+          [product]="product"
           [disabled]="!productDetailForm.valid"
-          (productToQuote)="addToQuote()"
-          [class]="'btn-block'"
-        ></ish-product-add-to-quote>
+          [quantity]="quantity"
+          cssClass="btn-block"
+        ></ish-lazy-product-add-to-quote>
 
       </form>
 

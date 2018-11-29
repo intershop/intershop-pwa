@@ -24,13 +24,14 @@ describe('Product Tile Component', () => {
       ],
       declarations: [
         MockComponent({
+          selector: 'ish-lazy-product-add-to-quote',
+          template: 'Lazy Product Add To Quote',
+          inputs: ['displayType', 'disabled', 'cssClass', 'product', 'quantity'],
+        }),
+        MockComponent({
           selector: 'ish-product-add-to-basket',
           template: 'Product Add To Basket',
           inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-add-to-quote',
-          template: 'Product Add To Quote',
         }),
         MockComponent({
           selector: 'ish-product-price',

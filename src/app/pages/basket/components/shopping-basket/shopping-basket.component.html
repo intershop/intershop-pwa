@@ -27,10 +27,7 @@
         ></ish-line-item-list>
 
         <div>
-          <ish-basket-add-to-quote
-          *ishFeature="'quoting'"
-          (basketToQuote)="onAddToQuote()"
-          ></ish-basket-add-to-quote>
+          <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
         </div>
         <a routerLink="/home" class="text-nowrap btn btn-link ">{{ 'shopping_cart.detailed.continue_shopping.link' | translate }}</a>
       </div>

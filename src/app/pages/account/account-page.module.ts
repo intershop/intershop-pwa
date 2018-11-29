@@ -44,15 +44,15 @@ const accountPageRoutes: Routes = [
         loadChildren:
           '../account-profile-settings/account-profile-settings-page.module#AccountProfileSettingsPageModule',
       },
-      /*    {
+      {
         path: 'quote-list',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: '../../../quoting/containers/quote-list-page/quote-list-page.module#QuoteListPageModule',
+        loadChildren: 'app/extensions/quoting/pages/quote-list/quote-list-page.module#QuoteListPageModule',
       },
       {
         path: 'quote',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: '../../../quoting/containers/quote-edit-page/quote-edit-page.module#QuoteEditPageModule',
+        loadChildren: 'app/extensions/quoting/pages/quote-edit/quote-edit-page.module#QuoteEditPageModule',
       },
       {
         path: 'quote-request',
@@ -63,8 +63,8 @@ const accountPageRoutes: Routes = [
           ],
         },
         loadChildren:
-          '../../../quoting/containers/quote-request-edit-page/quote-request-edit-page.module#QuoteRequestEditPageModule',
-      },*/
+          'app/extensions/quoting/pages/quote-request-edit/quote-request-edit-page.module#QuoteRequestEditPageModule',
+      },
       {
         path: '',
         pathMatch: 'full',

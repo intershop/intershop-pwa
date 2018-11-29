@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { QuotingSharedModule } from '../../extensions/quoting/shared/quoting-shared.module';
 import { SharedModule } from '../../shared/shared.module';
 
 import { ProductDetailActionsComponent } from './components/product-detail-actions/product-detail-actions.component';
@@ -23,7 +22,7 @@ const productPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [QuotingSharedModule, RouterModule.forChild(productPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(productPageRoutes), SharedModule],
   declarations: [
     ProductDetailActionsComponent,
     ProductDetailComponent,
