@@ -40,7 +40,7 @@ export class BasketService {
     .set('Accept', 'application/vnd.intershop.basket.v1+json');
 
   /**
-   * Get the basket for the given basket id or fallback to '-' as basket id to get the current basket for the current user.
+   * Get the basket for the given basket id or fallback to 'current' as basket id to get the current basket for the current user.
    * @param basketId  The basket id.
    * @param include   The name of related objects which are to be included into the response;
    *                  If the parameter is missing all possible data is included
@@ -77,7 +77,7 @@ export class BasketService {
   }
 
   /**
-   * Updates the basket for the given basket id or fallback to '-' as basket id.
+   * Updates the basket for the given basket id or fallback to 'current' as basket id.
    * @param basketId  The basket id.
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
    * @returns         The basket.
@@ -109,24 +109,24 @@ export class BasketService {
 
   /**
    * Adds a list of items with the given sku and quantity to the given basket.
-   * @param items     The list of product SKU and quantity pairs to be added to the basket.
    * @param basketId  The id of the basket to add the items to.
+   * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
+  addItemsToBasket(basketId: string, items: { sku: string; quantity: number }[]): Observable<void> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
 
-    const body = {
-      elements: items.map(item => ({
-        sku: item.sku,
-        quantity: {
-          value: item.quantity,
-        },
-      })),
-    };
+    const body = items.map(item => ({
+      product: item.sku,
+      quantity: {
+        value: item.quantity,
+      },
+    }));
 
-    return this.apiService.post(`baskets/${basketId}/items`, body);
+    return this.apiService.post(`baskets/${basketId}/items`, body, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**
