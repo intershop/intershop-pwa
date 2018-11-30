@@ -182,7 +182,7 @@ describe('Basket Effects', () => {
   });
 
   describe('updateBasket$', () => {
-    it('should call the basketService for updateBasket', done => {
+    beforeEach(() => {
       when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(undefined));
 
       store$.dispatch(
@@ -191,9 +191,11 @@ describe('Basket Effects', () => {
           lineItems: [],
         } as Basket)
       );
+    });
 
+    it('should call the basketService for updateBasket', done => {
       const basketId = 'BID';
-      const payload = { invoiceToAddress: { id: '7654' } };
+      const payload = { invoiceToAddress: '7654' };
       const action = new basketActions.UpdateBasket(payload);
       actions$ = of(action);
 
@@ -202,66 +204,35 @@ describe('Basket Effects', () => {
         done();
       });
     });
-  });
-
-  describe('updateBasketShippingMethod$', () => {
-    beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of(undefined));
-
-      const basketId = 'BID';
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          id: basketId,
-          lineItems: [],
-        } as Basket)
-      );
-
-      store$.dispatch(
-        new basketActions.LoadBasketItemsSuccess([
-          {
-            id: 'BIID1',
-          } as BasketItem,
-          {
-            id: 'BIID2',
-          } as BasketItem,
-        ])
-      );
-    });
-
-    it('should call the basketService for updateBasketItem', done => {
-      const basketId = 'BID';
-      const payload = 'shippingId';
-      const action = new basketActions.UpdateBasketShippingMethod(payload);
-      actions$ = of(action);
-
-      effects.updateBasketShippingMethod$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem(basketId, anything(), anything())).twice();
-        verify(
-          basketServiceMock.updateBasketItem(basketId, 'BIID1', deepEqual({ shippingMethod: { id: 'shippingId' } }))
-        ).once();
-
-        done();
-      });
-    });
 
     it('should map to action of type UpdateBasketSuccess', () => {
-      const payload = 'shippingId';
-      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const payload = { commonShippingMethod: 'shippingId' };
+      const action = new basketActions.UpdateBasket(payload);
       const completion = new basketActions.UpdateBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
+      expect(effects.updateBasket$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
-      const payload = 'shippingId';
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
+      const payload = { commonShippingMethod: 'shippingId' };
+      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const action = new basketActions.UpdateBasket(payload);
       const completion = new basketActions.UpdateBasketFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketShippingMethod$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const payload = 'shippingId';
+      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const completion = new basketActions.UpdateBasket({ commonShippingMethod: payload });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

@@ -112,7 +112,7 @@ export class BasketEffects {
     map(
       action =>
         new basketActions.UpdateBasket({
-          invoiceToAddress: { id: action.payload },
+          invoiceToAddress: action.payload,
         })
     )
   );
@@ -127,30 +127,23 @@ export class BasketEffects {
     map(
       action =>
         new basketActions.UpdateBasket({
-          commonShipToAddress: { id: action.payload },
+          commonShipToAddress: action.payload,
         })
     )
   );
 
   /**
    * Updates the common shipping method of the basket.
-   * Works currently only if multipleShipment flag is set to true !!
+   * Works currently only if the basket has one bucket
    */
   @Effect()
   updateBasketShippingMethod$ = this.actions$.pipe(
     ofType<basketActions.UpdateBasketShippingMethod>(basketActions.BasketActionTypes.UpdateBasketShippingMethod),
-    map(action => action.payload),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([id, basket]) =>
-      concat(
-        ...basket.lineItems.map(item =>
-          this.basketService.updateBasketItem(basket.id, item.id, { shippingMethod: { id } })
-        )
-      ).pipe(
-        last(),
-        mapTo(new basketActions.UpdateBasketSuccess()),
-        mapErrorToAction(basketActions.UpdateBasketFail)
-      )
+    map(
+      action =>
+        new basketActions.UpdateBasket({
+          commonShippingMethod: action.payload,
+        })
     )
   );
 

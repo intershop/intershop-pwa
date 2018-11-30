@@ -14,7 +14,10 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, resolveLinks, unpackEnvelope } from '../api/api.service';
 
-export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
+export declare type BasketUpdateType =
+  | { invoiceToAddress: string }
+  | { commonShipToAddress: string }
+  | { commonShippingMethod: string };
 export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
 export declare type BasketIncludeType =
   | 'invoiceToAddress'
@@ -79,11 +82,13 @@ export class BasketService {
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
    * @returns         The basket.
    */
-  updateBasket(basketId: string = '-', body: BasketUpdateType): Observable<Basket> {
+  updateBasket(basketId: string = 'current', body: BasketUpdateType): Observable<Basket> {
     if (!body) {
       return throwError('updateBasket() called without body');
     }
-    return this.apiService.put(`baskets/${basketId}`, body);
+    return this.apiService.patch(`baskets/${basketId}`, body, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**

@@ -73,7 +73,7 @@ function catchApiError<T>(handler: ApiServiceErrorHandler) {
  */
 export function constructUrlForPath(
   path: string,
-  method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'DELETE',
+  method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   restEndpoint: string,
   currentLocale?: Locale
 ): string {
@@ -90,6 +90,7 @@ export function constructUrlForPath(
         return `${restEndpoint}${localeAndCurrency}/${path}`;
       case 'POST':
       case 'PUT':
+      case 'PATCH':
       case 'DELETE':
         return `${restEndpoint}/${path}`;
       default:
@@ -145,6 +146,18 @@ export class ApiService {
   put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint), body, { headers: this.defaultHeaders })
+      .pipe(catchApiError(this.apiServiceErrorHandler));
+  }
+
+  /**
+   * http patch request
+   */
+  patch<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
+    return this.httpClient
+      .patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint), body, {
+        headers: this.defaultHeaders,
+        ...options,
+      })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
