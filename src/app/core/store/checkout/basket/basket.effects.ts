@@ -248,7 +248,7 @@ export class BasketEffects {
       // get basket id from AddItemsToBasket action if set, otherwise use current basket id
       const basketId = payload.basketId || basket.id;
 
-      return this.basketService.addItemsToBasket(payload.items, basketId).pipe(
+      return this.basketService.addItemsToBasket(basketId, payload.items).pipe(
         mapTo(new basketActions.AddItemsToBasketSuccess()),
         mapErrorToAction(basketActions.AddItemsToBasketFail)
       );
