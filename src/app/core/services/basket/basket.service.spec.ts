@@ -84,10 +84,11 @@ describe('Basket Service', () => {
   });
 
   it("should update data to basket of a specific basket when 'updateBasket' is called", done => {
-    when(apiService.put(anything(), anything())).thenReturn(of({}));
+    when(apiService.patch(anything(), anything(), anything())).thenReturn(of({}));
+    const payload = { invoiceToAddress: '123456' };
 
-    basketService.updateBasket(basketMockData.id, { invoiceToAddress: { id: '123456' } }).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.id}`, anything())).once();
+    basketService.updateBasket(basketMockData.id, payload).subscribe(() => {
+      verify(apiService.patch(`baskets/${basketMockData.id}`, payload, anything())).once();
       done();
     });
   });
