@@ -150,16 +150,20 @@ export class BasketService {
    * @param body      request body
    */
   updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<void> {
-    return this.apiService.put(`baskets/${basketId}/items/${itemId}`, body);
+    return this.apiService.patch(`baskets/${basketId}/items/${itemId}`, body, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**
    * Remove specific line item from the given basket.
-   * @param itemId    The id of the line item that should be deleted.
    * @param basketId  The id of the basket where the item should be removed.
+   * @param itemId    The id of the line item that should be deleted.
    */
-  deleteBasketItem(itemId: string, basketId: string): Observable<void> {
-    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  deleteBasketItem(basketId: string, itemId: string): Observable<void> {
+    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**

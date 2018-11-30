@@ -307,7 +307,7 @@ export class BasketEffects {
               },
             });
           }
-          return this.basketService.deleteBasketItem(item.itemId, basket.id);
+          return this.basketService.deleteBasketItem(basket.id, item.itemId);
         })
       ).pipe(
         defaultIfEmpty(undefined),
@@ -327,7 +327,7 @@ export class BasketEffects {
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([itemId, basket]) =>
-      this.basketService.deleteBasketItem(itemId, basket.id).pipe(
+      this.basketService.deleteBasketItem(basket.id, itemId).pipe(
         mapTo(new basketActions.DeleteBasketItemSuccess()),
         mapErrorToAction(basketActions.DeleteBasketItemFail)
       )

@@ -176,9 +176,12 @@ export class ApiService {
   /**
    * http delete request
    */
-  delete<T>(path): Observable<T> {
+  delete<T>(path, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint))
+      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint), {
+        headers: this.defaultHeaders,
+        ...options,
+      })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 }
