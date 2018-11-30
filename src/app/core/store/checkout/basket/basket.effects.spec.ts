@@ -711,7 +711,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem(payload[0].itemId, 'BID')).once();
+        verify(basketServiceMock.deleteBasketItem('BID', payload[0].itemId)).once();
         done();
       });
     });
@@ -780,7 +780,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.deleteBasketItem$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BIID', 'BID')).once();
+        verify(basketServiceMock.deleteBasketItem('BID', 'BIID')).once();
         done();
       });
     });

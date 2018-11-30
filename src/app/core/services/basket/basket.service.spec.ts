@@ -111,21 +111,21 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should put updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
-    when(apiService.put(anyString(), anything())).thenReturn(of({}));
+  it("should patch updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
+    when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
 
     const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
     basketService.updateBasketItem(basketMockData.id, lineItemData.id, payload).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, payload)).once();
+      verify(apiService.patch(`baskets/${basketMockData.id}/items/${lineItemData.id}`, payload, anything())).once();
       done();
     });
   });
 
   it("should remove line item from spefic basket when 'deleteBasketItem' is called", done => {
-    when(apiService.delete(anything())).thenReturn(of({}));
+    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
-    basketService.deleteBasketItem(lineItemData.id, basketMockData.id).subscribe(() => {
-      verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+    basketService.deleteBasketItem(basketMockData.id, lineItemData.id).subscribe(() => {
+      verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
       done();
     });
   });
