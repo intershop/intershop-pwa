@@ -8,6 +8,9 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "ish",
+      "cli": {
+        "defaultCollection": "intershop-schematics"
+      },
       "schematics": {
         "@schematics/angular:component": {
           "styleext": "scss"

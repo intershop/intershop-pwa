@@ -1,0 +1,12 @@
+{
+  "name": "intershop-schematics",
+  "version": "0.0.1",
+  "description": "Angular CLI schematics for Intershop PWA",
+  "keywords": ["schematics", "intershop"],
+  "schematics": "./collection.json",
+  "peerDependencies": {
+    "@schematics/angular": "^7.1.0",
+    "@angular-devkit/core": "^7.1.0",
+    "@angular-devkit/schematics": "^7.1.0"
+  }
+}
