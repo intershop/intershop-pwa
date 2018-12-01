@@ -1,0 +1,27 @@
+# Outputs
+src/**/*_spec.js
+!src/**/files/**/*.d.ts
+!src/**/files/**/*.js
+!src/**/other-files/**/*.d.ts
+!src/**/other-files/**/*.js
+out-tsc
+
+# IDEs
+.idea/
+jsconfig.json
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Misc
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Mac OSX Finder files.
+**/.DS_Store
+.DS_Store
