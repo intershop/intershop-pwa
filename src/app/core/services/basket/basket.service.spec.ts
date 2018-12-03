@@ -130,11 +130,11 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should get line item options for a basket item when 'getBasketItemOptions' is called", done => {
-    when(apiService.options(anything())).thenReturn(of({}));
+  it("should get eligible shipping methods for a basket when 'getBasketEligibleShippingMethods' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-    basketService.getBasketItemOptions(basketMockData.id, lineItemData.id).subscribe(() => {
-      verify(apiService.options(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+    basketService.getBasketEligibleShippingMethods(basketMockData.id).subscribe(() => {
+      verify(apiService.get(`baskets/${basketMockData.id}/eligible-shipping-methods`, anything())).once();
       done();
     });
   });

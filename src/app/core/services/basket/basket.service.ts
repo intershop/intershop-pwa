@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ShippingMethodMapper } from 'app/models/shipping-method/shipping-method.mapper';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
@@ -17,7 +18,8 @@ import { ApiService, resolveLinks, unpackEnvelope } from '../api/api.service';
 export declare type BasketUpdateType =
   | { invoiceToAddress: string }
   | { commonShipToAddress: string }
-  | { commonShippingMethod: string };
+  | { commonShippingMethod: string }
+  | { calculationState: string };
 export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
 export declare type BasketIncludeType =
   | 'invoiceToAddress'
@@ -167,25 +169,23 @@ export class BasketService {
   }
 
   /**
-   * Get basket item options for selected basket item.
+   * Get eligible shipping methods for the selected basket.
    * @param basketId  The basket id.
-   * @param itemId    The id of the line item that should be updated.
-   * @returns         The basket item options.
+   * @returns         The eligible shipping methods.
    */
-  getBasketItemOptions(
-    basketId: string,
-    itemId: string
-  ): Observable<{
-    eligibleShippingMethods: { shippingMethods: ShippingMethod[] };
-  }> {
+  getBasketEligibleShippingMethods(basketId: string): Observable<ShippingMethod[]> {
     if (!basketId) {
-      return throwError('getBasketItemOptions() called without basketId');
-    }
-    if (!itemId) {
-      return throwError('getBasketItemOptions() called without itemId');
+      return throwError('getBasketEligibleShippingMethods() called without basketId');
     }
 
-    return this.apiService.options(`baskets/${basketId}/items/${itemId}`);
+    return this.apiService
+      .get(`baskets/${basketId}/eligible-shipping-methods`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(({ data }) => data),
+        map(addressesData => addressesData.map(ShippingMethodMapper.fromData))
+      );
   }
 
   /**
@@ -248,6 +248,11 @@ export class BasketService {
     };
 
     return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(mapTo(paymentName));
+
+    /* return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(
+      concatMap(() => this.updateBasket(basketId, { calculationState: 'CALCULATED' })),
+      mapTo('success')
+    ) */
   }
 
   /**

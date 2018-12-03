@@ -821,8 +821,8 @@ describe('Basket Effects', () => {
 
   describe('loadBasketEligibleShippingMethods$', () => {
     beforeEach(() => {
-      when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
-        of({ eligibleShippingMethods: { shippingMethods: [BasketMockData.getShippingMethod()] } })
+      when(basketServiceMock.getBasketEligibleShippingMethods(anyString())).thenReturn(
+        of([BasketMockData.getShippingMethod()])
       );
 
       store$.dispatch(
@@ -839,7 +839,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.loadBasketEligibleShippingMethods$.subscribe(() => {
-        verify(basketServiceMock.getBasketItemOptions('BID', '4712')).once();
+        verify(basketServiceMock.getBasketEligibleShippingMethods('BID')).once();
         done();
       });
     });
@@ -856,7 +856,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
-      when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
+      when(basketServiceMock.getBasketEligibleShippingMethods(anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
       const action = new basketActions.LoadBasketEligibleShippingMethods();
