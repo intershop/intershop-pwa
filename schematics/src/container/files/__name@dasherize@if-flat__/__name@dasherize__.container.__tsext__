@@ -1,0 +1,13 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+@Component({
+  selector: '<%= selector %>',
+  templateUrl: './<%= dasherize(name) %>.container.html',<% if (!!styleFile) { %>
+  styleUrls: ['./<%= dasherize(name) %>.container.<%= styleext %>'],<% } %>
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class <%= classify(name) %>ContainerComponent {
+
+  constructor(private store: Store<{}>) {}
+}

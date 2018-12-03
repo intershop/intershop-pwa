@@ -5,9 +5,9 @@
  */
 
 /**
- * Creates a new presentational component.
+ * Creates a new smart component.
  */
-export interface PwaComponentOptionsSchema {
+export interface PwaContainerOptionsSchema {
   path?: string;
   tsext?: string;
   artifactFolder?: boolean;
@@ -17,11 +17,11 @@ export interface PwaComponentOptionsSchema {
   selector?: string;
   module?: string;
   /**
-   * The name of the component.
+   * The name of the container.
    */
   name?: string;
   /**
-   * When true, generates and includes a style file for the component.
+   * When true, generates and includes a style file for the container.
    */
   styleFile?: boolean;
   /**
@@ -29,15 +29,19 @@ export interface PwaComponentOptionsSchema {
    */
   flat?: boolean;
   /**
-   * When true, does not import this component into the owning NgModule.
+   * When true, does not import this container into the owning NgModule.
    */
   skipImport?: boolean;
   /**
-   * When true, the declaring NgModule exports this component.
+   * The HTML selector to reference in this containers HTML template.
+   */
+  referenceSelector?: string;
+  /**
+   * When true, the declaring NgModule exports this container.
    */
   export?: boolean;
   /**
-   * When true, the new component is the entry component of the declaring NgModule.
+   * When true, the new container is the entry component of the declaring NgModule.
    */
   entryComponent?: boolean;
 }
