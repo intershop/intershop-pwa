@@ -354,11 +354,8 @@ export class BasketEffects {
     concatMap(([, basket]) =>
       /* simplified solution: get eligible shipping methods only for the first item
        ToDo: differentiate between multi and single shipment */
-      this.basketService.getBasketItemOptions(basket.id, basket.lineItems[0].id).pipe(
-        map(
-          result =>
-            new basketActions.LoadBasketEligibleShippingMethodsSuccess(result.eligibleShippingMethods.shippingMethods)
-        ),
+      this.basketService.getBasketEligibleShippingMethods(basket.id).pipe(
+        map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess(result)),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
       )
     )
