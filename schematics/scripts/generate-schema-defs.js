@@ -31,7 +31,10 @@ async function generate(filesGlob) {
   return Promise.all(
     schemaFiles.map(async (schemaFile, idx) => {
       const definitionFile = schemaFile.replace(extname(schemaFile), tsDefExtension);
-      writeFileSync(definitionFile, await compileFromFile(schemaFile, json2schemaConfig));
+      const output = await compileFromFile(schemaFile, json2schemaConfig)
+      
+      const content = output.replace(new RegExp('.*any.*\n', 'g'), '')
+      writeFileSync(definitionFile, content);
       return definitionFile;
     })
   );

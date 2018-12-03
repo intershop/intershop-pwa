@@ -3,9 +3,37 @@
   "schematics": {
     "component": {
       "aliases": ["c"],
-      "factory": "./component",
-      "description": "Create an Angular component.",
+      "factory": "./component/factory#createComponent",
+      "description": "Create a presentation component.",
       "schema": "./component/schema.json"
+    },
+    "container": {
+      "aliases": ["cc"],
+      "factory": "./container/factory#createContainer",
+      "description": "Create a smart component.",
+      "schema": "./container/schema.json"
+    },
+    "module": {
+      "aliases": ["m"],
+      "factory": "./module/factory#createModule",
+      "description": "Create a module.",
+      "schema": "./module/schema.json"
+    },
+    "service": {
+      "aliases": ["s"],
+      "factory": "./service/factory#createService",
+      "description": "Create a ICM compatible REST Service.",
+      "schema": "./service/schema.json"
+    },
+    "pipe": {
+      "factory": "./pipe/factory#createPipe",
+      "description": "Create a pipe.",
+      "schema": "./pipe/schema.json"
+    },
+    "page": {
+      "factory": "./page/factory#createPage",
+      "description": "Create a page.",
+      "schema": "./page/schema.json"
     }
   }
 }
