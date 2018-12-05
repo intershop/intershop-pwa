@@ -1,5 +1,5 @@
 export interface Price {
-  type: string;
+  type?: string;
   value: number;
   currencyMnemonic?: string;
   currency?: string;

@@ -1,5 +1,9 @@
+import { AddressData } from '../address/address.interface';
+import { BasketItemData } from '../basket-item/basket-item.interface';
+import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from '../basket-total/basket-total.interface';
 import { PriceItem } from '../price-item/price-item.interface';
+import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 export interface BasketData {
   data: {
@@ -15,7 +19,7 @@ export interface BasketData {
     };
     buckets?: string[];
     totals: BasketTotalData;
-    totalProductQuantity: number;
+    totalProductQuantity?: number;
     surcharges?: {
       itemSurcharges?: {
         amount: PriceItem;
@@ -25,12 +29,10 @@ export interface BasketData {
     };
   };
   included?: {
-    // tslint:disable:no-any
-    invoiceToAddress?: any;
-    lineItems?: any;
-    discounts?: any;
-    commonShipToAddress?: any;
-    commonShippingMethod?: any;
-    attributes?;
+    invoiceToAddress?: { [urn: string]: AddressData };
+    lineItems?: { [id: string]: BasketItemData };
+    discounts?: { [id: string]: BasketRebateData };
+    commonShipToAddress?: { [urn: string]: AddressData };
+    commonShippingMethod?: { [id: string]: ShippingMethodData };
   };
 }

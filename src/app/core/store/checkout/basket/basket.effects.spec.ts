@@ -545,6 +545,19 @@ describe('Basket Effects', () => {
       });
     });
 
+    it('should call the basketService for createBasket if no basket is present', done => {
+      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
+
+      const payload = 'quoteId';
+      const action = new basketActions.AddQuoteToBasket(payload);
+      actions$ = of(action);
+
+      effects.getBasketBeforeAddQuoteToBasket$.subscribe(() => {
+        verify(basketServiceMock.createBasket()).once();
+        done();
+      });
+    });
+
     it('should map to action of type AddQuoteToBasketSuccess', () => {
       when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
 

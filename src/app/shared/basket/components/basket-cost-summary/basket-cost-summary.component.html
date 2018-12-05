@@ -9,12 +9,14 @@
 
     <!-- list all applied order level promotions -->
     <!-- TODO: #IS-23184 : display rebate details -->
-    <ng-container *ngFor="let rebate of totals.valueRebates">
+    <ng-container *ngIf="totals.valueRebates">
+      <ng-container *ngFor="let rebate of totals.valueRebates">
 
-      <dt class="col-6">{{ 'checkout.widget.promotion.discount' | translate }}</dt>
-      <dd class="col-6">
-        {{ invert(rebate.amount) | ishPrice }}
-      </dd>
+        <dt class="col-6">{{ 'checkout.widget.promotion.discount' | translate }}</dt>
+        <dd class="col-6">
+          {{ invert(rebate.amount) | ishPrice }}
+        </dd>
+      </ng-container>
     </ng-container>
 
     <!-- Shipping -->

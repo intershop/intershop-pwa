@@ -1,5 +1,5 @@
 import { AddressData } from '../address/address.interface';
-import { ShippingMethod } from '../shipping-method/shipping-method.model';
+import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 import { BasketData } from './basket.interface';
 import { BasketMapper } from './basket.mapper';
@@ -88,7 +88,7 @@ describe('Basket Mapper', () => {
             } as AddressData,
           },
           commonShippingMethod: {
-            shipping_method_123: { id: 'shipping_method_123', name: 'ShippingMethodName' } as ShippingMethod,
+            shipping_method_123: { id: 'shipping_method_123', name: 'ShippingMethodName' } as ShippingMethodData,
           },
           discounts: {
             discount_1: {
@@ -98,6 +98,10 @@ describe('Basket Mapper', () => {
                 gross: {
                   currency: 'USD',
                   value: 11.9,
+                },
+                net: {
+                  value: 10.56,
+                  currency: 'USD',
                 },
               },
               code: 'INTERSHOP',
@@ -155,7 +159,7 @@ describe('Basket Mapper', () => {
       expect(basket.totals.isEstimated).toBeTrue();
     });
 
-    it('should discounts if included', () => {
+    it('should return discounts if included', () => {
       basket = BasketMapper.fromData(basketData);
 
       expect(basket.totals.valueRebates[0].amount.value).toBePositive();
@@ -163,7 +167,7 @@ describe('Basket Mapper', () => {
 
     it('should return estimated as false if invoive address, shipping address and shipping method is set', () => {
       basket = BasketMapper.fromData(basketData);
-      expect(basket.totals.isEstimated).toBeTrue();
+      expect(basket.totals.isEstimated).toBeFalse();
     });
   });
 });

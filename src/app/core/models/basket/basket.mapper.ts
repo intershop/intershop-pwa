@@ -3,7 +3,7 @@ import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
 import { PriceMapper } from '../price/price.mapper';
-import { ShippingBucketData } from '../shipping-bucket/shipping-bucket.interface';
+import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
 
 import { Basket } from './basket.model';
 
@@ -11,8 +11,6 @@ export class BasketMapper {
   static fromData(payload: BasketData): Basket {
     const data = payload.data;
     const included = payload.included;
-
-    const shippingBucket: ShippingBucketData = undefined;
 
     const totals: BasketTotal =
       data.calculationState === 'CALCULATED'
@@ -40,11 +38,7 @@ export class BasketMapper {
                   description: surcharge.description,
                 }))
               : undefined,
-            isEstimated:
-              !data.invoiceToAddress ||
-              !shippingBucket ||
-              !shippingBucket.shipToAddress ||
-              !shippingBucket.shippingMethod,
+            isEstimated: !data.invoiceToAddress || !data.commonShipToAddress || !data.commonShippingMethod,
           }
         : undefined;
 
@@ -62,7 +56,7 @@ export class BasketMapper {
           : undefined,
       commonShippingMethod:
         included && included.commonShippingMethod && data.commonShippingMethod
-          ? included.commonShippingMethod[data.commonShippingMethod]
+          ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
           : undefined,
       totals,
     };
