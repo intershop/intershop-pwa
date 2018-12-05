@@ -257,19 +257,34 @@ export class BasketEffects {
 
   /**
    * Add quote to the current basket.
-   * Only triggers if basket is set.
+   * Only triggers if the user has a basket.
    */
   @Effect()
   addQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([, basket]) => !!basket && !!basket.id),
     concatMap(([quoteId, basket]) =>
       this.basketService.addQuoteToBasket(quoteId, basket.id).pipe(
         map(link => new basketActions.AddQuoteToBasketSuccess(link)),
         mapErrorToAction(basketActions.AddQuoteToBasketFail)
       )
     )
+  );
+
+  /**
+   * Get current basket if missing and call AddQuoteToBasketAction
+   * Only triggers if the user has not yet a basket
+   */
+  @Effect()
+  getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
+    map(action => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([, basket]) => !basket || !basket.id),
+    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
+    map(([payload]) => new basketActions.AddQuoteToBasket(payload))
   );
 
   /**
@@ -475,12 +490,25 @@ export class BasketEffects {
     ofType(
       basketActions.BasketActionTypes.UpdateBasketSuccess,
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
-      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
-      basketActions.BasketActionTypes.DeleteBasketItemSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentSuccess
+      basketActions.BasketActionTypes.DeleteBasketItemSuccess
     ),
     mapTo(new basketActions.LoadBasket())
+  );
+
+  /**
+   * Triggers a Caluculate Basket action after adding a quote to basket.
+   * ToDo: This is only necessary as long as api v0 is used for addQuote and addPayment
+   */
+  @Effect()
+  calculateBasketAfterAddToQuote = this.actions$.pipe(
+    ofType(
+      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
+      basketActions.BasketActionTypes.AddQuoteToBasketFail,
+      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
+      basketActions.BasketActionTypes.SetBasketPaymentFail
+    ),
+    mapTo(new basketActions.UpdateBasket({ calculationState: 'CALCULATED' }))
   );
 
   /**

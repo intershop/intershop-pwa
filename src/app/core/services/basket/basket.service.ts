@@ -51,9 +51,9 @@ export class BasketService {
    */
   getBasket(
     basketId: string = 'current',
-    include: BasketIncludeType[] = ['invoiceToAddress', 'commonShipToAddress', 'commonShippingMethod', 'discounts']
+    includes: BasketIncludeType[] = ['invoiceToAddress', 'commonShipToAddress', 'commonShippingMethod', 'discounts']
   ): Observable<Basket> {
-    const includeStr = include && include.length > 0 ? '?include=' + include.join('&include=') : '';
+    const includeStr = includes && includes.length > 0 ? '?include=' + includes.join('&include=') : '';
 
     return this.apiService
       .get<BasketData>(`baskets/${basketId}${includeStr}`, {
@@ -184,7 +184,7 @@ export class BasketService {
       })
       .pipe(
         map(({ data }) => data),
-        map(addressesData => addressesData.map(ShippingMethodMapper.fromData))
+        map(data => data.map(ShippingMethodMapper.fromData))
       );
   }
 
@@ -248,11 +248,6 @@ export class BasketService {
     };
 
     return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(mapTo(paymentName));
-
-    /* return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(
-      concatMap(() => this.updateBasket(basketId, { calculationState: 'CALCULATED' })),
-      mapTo('success')
-    ) */
   }
 
   /**
