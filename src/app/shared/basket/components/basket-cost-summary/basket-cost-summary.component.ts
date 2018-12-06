@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { BasketTotal } from '../../../../models/basket-total/basket-total.model';
-import { PriceHelper } from '../../../../models/price/price.model';
+import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
+import { PriceHelper } from 'ish-core/models/price/price.model';
 
 /**
  * The Cost Summary Component displays a detailed summary of basket or order costs, respectively.

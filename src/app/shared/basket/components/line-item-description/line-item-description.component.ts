@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
-import { Price } from '../../../../models/price/price.model';
-import { QuoteRequestItemView } from '../../../../models/quote-request-item/quote-request-item.model';
+import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 /**
  * The Line Item Description Component displays detailed line item information.
@@ -20,7 +19,7 @@ import { QuoteRequestItemView } from '../../../../models/quote-request-item/quot
 })
 export class LineItemDescriptionComponent implements OnChanges {
   @Input()
-  pli: BasketItemView | QuoteRequestItemView;
+  pli: BasketItemView;
 
   itemSurcharges: { amount: Price; description?: string; displayName?: string; text?: string }[] = [];
 

@@ -5,10 +5,9 @@ import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from '../../environments/environment';
-import { FeatureToggleModule } from '../shared/feature-toggle.module';
-import { FEATURE_TOGGLES } from '../shared/feature-toggle/configurations/injection-keys';
 
 import * as injectionKeys from './configurations/injection-keys';
+import { FEATURE_TOGGLES, FeatureToggleModule } from './feature-toggle.module';
 
 @NgModule({
   imports: [FeatureToggleModule.forRoot()],

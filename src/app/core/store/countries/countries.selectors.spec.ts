@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Country } from '../../../models/country/country.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
-import { coreReducers } from '../core.system';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { Country } from '../../models/country/country.model';
+import { HttpError } from '../../models/http-error/http-error.model';
+import { coreReducers } from '../core-store.module';
 
 import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { getAllCountries, getCountriesLoading } from './countries.selectors';

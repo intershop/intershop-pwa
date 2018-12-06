@@ -20,8 +20,8 @@ class CCPNoIntelligenceInComponentsWalker extends Lint.RuleWalker {
   }
 
   visitSourceFile(sourceFile: SourceFile) {
-    if (sourceFile.fileName.match(/.*\/(components|containers)\/(?!.*(interface|index|spec|module).ts$).*.ts/)) {
-      this.isContainer = sourceFile.fileName.indexOf('/containers/') >= 0;
+    if (sourceFile.fileName.match(/.*(component|container)\.ts/)) {
+      this.isContainer = sourceFile.fileName.indexOf('container') >= 0;
       super.visitSourceFile(sourceFile);
     }
   }

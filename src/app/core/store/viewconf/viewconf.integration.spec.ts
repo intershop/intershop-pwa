@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { Action } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
-import { coreReducers } from '../core.system';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { coreReducers } from '../core-store.module';
 
 import { ViewconfEffects } from './viewconf.effects';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';

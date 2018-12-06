@@ -1,0 +1,56 @@
+<div data-testing-id="cart-page">
+  <div class="row">
+    <div class="cart-header col-12">
+      <h1 class="pull-left">
+        <span class="cart-header-title">{{'shopping_cart.heading' | translate}}</span>
+        <span class="cart-header-note">
+          <span>{{'shopping_cart.transaction.text' |translate }}</span>
+          <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{'shopping_cart.read_more.link' | translate}}</a>
+        </span>
+      </h1>
+    </div>
+  </div>
+
+  <form class="form-horizontal" [formGroup]="form">
+    <div class="row">
+      <div class="col-md-12 col-lg-8">
+
+        <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
+          {{ error.status }}: {{ error.error }}
+        </div>
+
+        <ish-line-item-list
+          *ngIf="basket"
+          [lineItems]="basket.lineItems"
+          (updateItem)="onUpdateItem($event)"
+          (deleteItem)="onDeleteItem($event)"
+        ></ish-line-item-list>
+
+        <div>
+          <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
+        </div>
+        <a routerLink="/home" class="text-nowrap btn btn-link ">{{ 'shopping_cart.detailed.continue_shopping.link' | translate }}</a>
+      </div>
+
+      <div class="col-md-12 col-lg-4 order-summary">
+        <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
+        <div class="cost-summary">
+          <!-- Cost Summary Component -->
+          <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+
+          <!-- ToDo: ISREST-275: disable button if basket max value is exceeded -->
+          <button type="submit" class="btn btn-lg btn-block btn-primary" (click)="checkout()">
+              {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
+            </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ish-modal-dialog #modalDialog
+  [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, size: 'lg' }"
+>
+  <div [innerHTML]="'checkout.safeandsecure.details.text' | translate"></div>
+</ish-modal-dialog>

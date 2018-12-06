@@ -1,22 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  NgbCarouselModule,
-  NgbCollapseModule,
-  NgbDropdownModule,
-  NgbModalModule,
-  NgbPopoverConfig,
-  NgbPopoverModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
+import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { ConfigurationModule } from './configuration.module';
-import { FooterModule } from './footer.module';
-import { HeaderModule } from './header.module';
 import { IconModule } from './icon.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
@@ -27,18 +17,9 @@ export function translateFactory(http: HttpClient) {
 }
 @NgModule({
   imports: [
-    CommonModule,
     ConfigurationModule,
-    FooterModule,
-    HeaderModule,
     HttpClientModule,
-    IconModule,
-    NgbCarouselModule,
-    NgbCollapseModule,
-    NgbDropdownModule,
-    NgbModalModule,
-    NgbPopoverModule,
-    RecaptchaModule.forRoot(),
+    ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
     TranslateModule.forRoot({
@@ -53,7 +34,6 @@ export function translateFactory(http: HttpClient) {
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
   ],
-  exports: [FooterModule, HeaderModule],
 })
 export class CoreModule {
   constructor(
