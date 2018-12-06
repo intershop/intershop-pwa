@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { CMSCarouselComponent } from './components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
