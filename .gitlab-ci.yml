@@ -101,6 +101,20 @@ codestyle:
     - node reports/jscpd-report
     - echo "build complete"
 
+schematics:
+  image: node:10
+  stage: e2e
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  dependencies: []
+  script:
+    - npm install
+    - bash .gitlab-ci-test-schematics.sh
+    - echo "schematics complete"
+
 cypress_local:
   image: cypress/browsers:chrome69
   stage: e2e
