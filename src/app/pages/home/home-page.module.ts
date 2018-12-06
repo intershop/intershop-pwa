@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CMSModule } from '../../cms/cms.module';
 import { SharedModule } from '../../shared/shared.module';
-import { CMSModule } from '../../utils/cms/cms.module';
 
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HomePageContainerComponent } from './home-page.container';
