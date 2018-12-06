@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Address } from '../../../../models/address/address.model';
+import { Address } from 'ish-core/models/address/address.model';
 
 /**
  * The Address Component displays an address. The readout is country-dependent.

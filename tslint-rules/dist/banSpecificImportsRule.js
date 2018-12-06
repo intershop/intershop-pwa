@@ -27,7 +27,8 @@ var BanSpecificImportsWalker = (function (_super) {
         var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
         this.patterns.forEach(function (pattern) {
             if (new RegExp(pattern.filePattern).test(importStatement.getSourceFile().fileName) &&
-                new RegExp(pattern.from).test(fromStringText)) {
+                new RegExp(pattern.from).test(fromStringText) &&
+                importStatement.getChildAt(1).getChildAt(0)) {
                 var importSpecifier = importStatement.getChildAt(1).getChildAt(0);
                 var importList = void 0;
                 if (importSpecifier.kind === typescript_1.SyntaxKind.Identifier) {

@@ -10,7 +10,7 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-    "app/utils/dev/**/*.ts"
+    "**/dev/**/*.ts"
   ],
   // Add "angularCompilerOptions" with the AppServerModule you wrote
   // set as the "entryModule".

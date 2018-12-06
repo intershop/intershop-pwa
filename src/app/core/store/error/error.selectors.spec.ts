@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { coreReducers } from '../core.system';
+import { HttpError } from '../../models/http-error/http-error.model';
+import { coreReducers } from '../core-store.module';
 
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
 import { ErrorState } from './error.reducer';

@@ -1,0 +1,10 @@
+<ish-quote-edit
+  *ngIf="(quote$ | async) as quote"
+  [user]="user$ | async"
+  [quote]="quote"
+  (copyQuote)="copyQuote()"
+  (rejectQuote)="rejectQuote()"
+  (addQuoteToBasket)="addQuoteToBasket($event)"
+></ish-quote-edit>
+
+<ish-loading *ngIf="quoteLoading$ | async"></ish-loading>

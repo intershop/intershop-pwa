@@ -1,31 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { EffectsModule } from '@ngrx/effects';
-import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../../environments/environment';
 
-import { NgrxStateTransfer, ngrxStateTransferMeta } from './configurations/ngrx-state-transfer';
-import { CrosstabService } from './services/crosstab/crosstab.service';
-import * as stateTransfer from './services/state-transfer/factories';
-import { StatePropertiesService } from './services/state-transfer/state-properties.service';
-import { coreEffects, coreReducers } from './store/core.system';
-import { localStorageSyncReducer } from './store/local-storage-sync/local-storage-sync.reducer';
-
-// tslint:disable-next-line: no-any
-export const metaReducers: MetaReducer<any>[] = [
-  ...(environment.syncLocalStorage ? [localStorageSyncReducer] : []),
-  ngrxStateTransferMeta,
-];
+import { NgrxStateTransfer } from './configurations/ngrx-state-transfer';
+import { CoreStoreModule } from './store/core-store.module';
+import { CrosstabService } from './utils/local-storage-sync/crosstab.service';
+import * as stateTransfer from './utils/state-transfer/factories';
+import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
 
 @NgModule({
   imports: [
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.serviceWorker }),
     BrowserTransferStateModule,
-    StoreModule.forRoot(coreReducers, { metaReducers }),
-    EffectsModule.forRoot(coreEffects),
+    CoreStoreModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [

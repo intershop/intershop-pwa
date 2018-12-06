@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { checkoutReducers } from '../../../checkout/store/checkout.system';
-import { Customer } from '../../../models/customer/customer.model';
-import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
-import { User } from '../../../models/user/user.model';
-import { LoadProductSuccess } from '../../../shopping/store/products';
-import { shoppingReducers } from '../../../shopping/store/shopping.system';
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
-import { coreReducers } from '../core.system';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { Customer } from '../../models/customer/customer.model';
+import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
+import { Product } from '../../models/product/product.model';
+import { User } from '../../models/user/user.model';
+import { checkoutReducers } from '../checkout/checkout-store.module';
+import { coreReducers } from '../core-store.module';
+import { LoadProductSuccess } from '../shopping/products';
+import { shoppingReducers } from '../shopping/shopping-store.module';
 
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';

@@ -3,11 +3,11 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
-import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
-import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';
-import { Price } from '../../../../models/price/price.model';
-import { ProductHelper } from '../../../../models/product/product.model';
+import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
+import { SpecialValidators } from '../../../forms/validators/special-validators';
 
 /**
  * The Line Item List Component displays a line items.

@@ -1,3 +1,4 @@
+// tslint:disable:ccp-no-intelligence-in-components
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 

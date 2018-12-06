@@ -23,8 +23,8 @@ var CCPNoIntelligenceInComponentsWalker = (function (_super) {
         return _this;
     }
     CCPNoIntelligenceInComponentsWalker.prototype.visitSourceFile = function (sourceFile) {
-        if (sourceFile.fileName.match(/.*\/(components|containers)\/(?!.*(interface|index|spec|module).ts$).*.ts/)) {
-            this.isContainer = sourceFile.fileName.indexOf('/containers/') >= 0;
+        if (sourceFile.fileName.match(/.*(component|container)\.ts/)) {
+            this.isContainer = sourceFile.fileName.indexOf('container') >= 0;
             _super.prototype.visitSourceFile.call(this, sourceFile);
         }
     };

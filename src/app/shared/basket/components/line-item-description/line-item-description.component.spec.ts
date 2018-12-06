@@ -3,9 +3,9 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
-import { PipesModule } from '../../../pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { LineItemDescriptionComponent } from './line-item-description.component';
 

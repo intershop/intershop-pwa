@@ -7,9 +7,9 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
-import { coreReducers } from '../core.system';
+import { Locale } from '../../models/locale/locale.model';
+import { coreReducers } from '../core-store.module';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { LocaleEffects } from './locale.effects';
