@@ -1,9 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ShippingMethodMapper } from 'app/models/shipping-method/shipping-method.mapper';
+
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { BasketItemData } from '../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../models/basket-item/basket-item.mapper';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
