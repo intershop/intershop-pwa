@@ -182,7 +182,7 @@ describe('Basket Effects', () => {
   });
 
   describe('updateBasket$', () => {
-    it('should call the basketService for updateBasket', done => {
+    beforeEach(() => {
       when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(undefined));
 
       store$.dispatch(
@@ -191,9 +191,11 @@ describe('Basket Effects', () => {
           lineItems: [],
         } as Basket)
       );
+    });
 
+    it('should call the basketService for updateBasket', done => {
       const basketId = 'BID';
-      const payload = { invoiceToAddress: { id: '7654' } };
+      const payload = { invoiceToAddress: '7654' };
       const action = new basketActions.UpdateBasket(payload);
       actions$ = of(action);
 
@@ -202,66 +204,35 @@ describe('Basket Effects', () => {
         done();
       });
     });
-  });
-
-  describe('updateBasketShippingMethod$', () => {
-    beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of(undefined));
-
-      const basketId = 'BID';
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          id: basketId,
-          lineItems: [],
-        } as Basket)
-      );
-
-      store$.dispatch(
-        new basketActions.LoadBasketItemsSuccess([
-          {
-            id: 'BIID1',
-          } as BasketItem,
-          {
-            id: 'BIID2',
-          } as BasketItem,
-        ])
-      );
-    });
-
-    it('should call the basketService for updateBasketItem', done => {
-      const basketId = 'BID';
-      const payload = 'shippingId';
-      const action = new basketActions.UpdateBasketShippingMethod(payload);
-      actions$ = of(action);
-
-      effects.updateBasketShippingMethod$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem(basketId, anything(), anything())).twice();
-        verify(
-          basketServiceMock.updateBasketItem(basketId, 'BIID1', deepEqual({ shippingMethod: { id: 'shippingId' } }))
-        ).once();
-
-        done();
-      });
-    });
 
     it('should map to action of type UpdateBasketSuccess', () => {
-      const payload = 'shippingId';
-      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const payload = { commonShippingMethod: 'shippingId' };
+      const action = new basketActions.UpdateBasket(payload);
       const completion = new basketActions.UpdateBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
+      expect(effects.updateBasket$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type UpdateBasketFail', () => {
-      const payload = 'shippingId';
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
+      const payload = { commonShippingMethod: 'shippingId' };
+      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const action = new basketActions.UpdateBasket(payload);
       const completion = new basketActions.UpdateBasketFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketShippingMethod$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const payload = 'shippingId';
+      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const completion = new basketActions.UpdateBasket({ commonShippingMethod: payload });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -443,7 +414,7 @@ describe('Basket Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(of(undefined));
+      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(of(undefined));
     });
 
     it('should call the basketService for addItemsToBasket', done => {
@@ -459,7 +430,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket(payload.items, 'BID')).once();
+        verify(basketServiceMock.addItemsToBasket('BID', payload.items)).once();
         done();
       });
     });
@@ -477,7 +448,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket(payload.items, 'BID')).once();
+        verify(basketServiceMock.addItemsToBasket('BID', payload.items)).once();
         done();
       });
     });
@@ -489,18 +460,18 @@ describe('Basket Effects', () => {
 
       effects.addItemsToBasket$.subscribe(fail, fail);
 
-      verify(basketServiceMock.addItemsToBasket(anything(), 'BID')).never();
+      verify(basketServiceMock.addItemsToBasket('BID', anything())).never();
     });
 
-    it('should call the basketService for getBasket when no basket is present', done => {
-      when(basketServiceMock.getBasket()).thenReturn(of({} as Basket));
+    it('should call the basketService for createBasket when no basket is present', done => {
+      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
 
       const payload = { items: [{ sku: 'SKU', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
       actions$ = of(action);
 
       effects.getBasketBeforeAddItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.getBasket()).once();
+        verify(basketServiceMock.createBasket()).once();
         done();
       });
     });
@@ -523,7 +494,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
-      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -570,6 +541,19 @@ describe('Basket Effects', () => {
 
       effects.addQuoteToBasket$.subscribe(() => {
         verify(basketServiceMock.addQuoteToBasket(payload, 'BID')).once();
+        done();
+      });
+    });
+
+    it('should call the basketService for createBasket if no basket is present', done => {
+      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
+
+      const payload = 'quoteId';
+      const action = new basketActions.AddQuoteToBasket(payload);
+      actions$ = of(action);
+
+      effects.getBasketBeforeAddQuoteToBasket$.subscribe(() => {
+        verify(basketServiceMock.createBasket()).once();
         done();
       });
     });
@@ -740,7 +724,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem(payload[0].itemId, 'BID')).once();
+        verify(basketServiceMock.deleteBasketItem('BID', payload[0].itemId)).once();
         done();
       });
     });
@@ -809,7 +793,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.deleteBasketItem$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BIID', 'BID')).once();
+        verify(basketServiceMock.deleteBasketItem('BID', 'BIID')).once();
         done();
       });
     });
@@ -850,8 +834,8 @@ describe('Basket Effects', () => {
 
   describe('loadBasketEligibleShippingMethods$', () => {
     beforeEach(() => {
-      when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
-        of({ eligibleShippingMethods: { shippingMethods: [BasketMockData.getShippingMethod()] } })
+      when(basketServiceMock.getBasketEligibleShippingMethods(anyString())).thenReturn(
+        of([BasketMockData.getShippingMethod()])
       );
 
       store$.dispatch(
@@ -868,7 +852,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.loadBasketEligibleShippingMethods$.subscribe(() => {
-        verify(basketServiceMock.getBasketItemOptions('BID', '4712')).once();
+        verify(basketServiceMock.getBasketEligibleShippingMethods('BID')).once();
         done();
       });
     });
@@ -885,7 +869,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
-      when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
+      when(basketServiceMock.getBasketEligibleShippingMethods(anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
       const action = new basketActions.LoadBasketEligibleShippingMethods();

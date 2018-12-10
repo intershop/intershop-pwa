@@ -49,7 +49,7 @@ describe('Basket Reducer', () => {
   describe('UpdateBasket actions', () => {
     describe('UpdateBasket action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.UpdateBasket({ invoiceToAddress: { id: '1234' } });
+        const action = new fromActions.UpdateBasket({ invoiceToAddress: '1234' });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

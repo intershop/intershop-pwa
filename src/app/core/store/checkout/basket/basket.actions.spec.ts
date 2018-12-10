@@ -128,7 +128,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for UpdateBasket', () => {
-      const payload = { invoiceToAddress: { id: '123' } };
+      const payload = { invoiceToAddress: '123' };
       const action = new fromActions.UpdateBasket(payload);
 
       expect({ ...action }).toEqual({

@@ -108,6 +108,17 @@ describe('Api Service', () => {
       expect(req.request.method).toEqual('PUT');
     });
 
+    it('should call the httpClient.patch method when apiService.patch method is called.', done => {
+      apiService.patch('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
+      expect(req.request.method).toEqual('PATCH');
+    });
+
     it('should call the httpClient.post method when apiService.post method is called.', done => {
       apiService.post('data').subscribe(data => {
         expect(data).toBeTruthy();
@@ -138,7 +149,7 @@ describe('Api Service', () => {
 
       it('should throw when asked for an unsupported method', () => {
         // tslint:disable-next-line:no-any
-        expect(() => constructUrlForPath('relative', 'PATCH' as any, BASE_URL)).toThrowError('unhandled');
+        expect(() => constructUrlForPath('relative', 'HEAD' as any, BASE_URL)).toThrowError('unhandled');
       });
 
       using(
@@ -146,16 +157,19 @@ describe('Api Service', () => {
           { path: 'http://google.de', method: 'GET', expected: 'http://google.de' },
           { path: 'http://google.de', method: 'OPTIONS', expected: 'http://google.de' },
           { path: 'http://google.de', method: 'POST', expected: 'http://google.de' },
+          { path: 'http://google.de', method: 'PATCH', expected: 'http://google.de' },
           { path: 'http://google.de', method: 'PUT', expected: 'http://google.de' },
           { path: 'http://google.de', method: 'DELETE', expected: 'http://google.de' },
           { path: 'https://bing.de', method: 'GET', expected: 'https://bing.de' },
           { path: 'https://bing.de', method: 'OPTIONS', expected: 'https://bing.de' },
           { path: 'https://bing.de', method: 'POST', expected: 'https://bing.de' },
+          { path: 'https://bing.de', method: 'PATCH', expected: 'https://bing.de' },
           { path: 'https://bing.de', method: 'PUT', expected: 'https://bing.de' },
           { path: 'https://bing.de', method: 'DELETE', expected: 'https://bing.de' },
           { path: 'relative', method: 'GET', expected: 'http://example.org/site/relative' },
           { path: 'relative', method: 'OPTIONS', expected: 'http://example.org/site/relative' },
           { path: 'relative', method: 'POST', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site/relative' },
           { path: 'relative', method: 'PUT', expected: 'http://example.org/site/relative' },
           { path: 'relative', method: 'DELETE', expected: 'http://example.org/site/relative' },
           { path: 'relative', method: 'GET', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
@@ -166,6 +180,7 @@ describe('Api Service', () => {
             lang: JP,
           },
           { path: 'relative', method: 'POST', expected: 'http://example.org/site/relative', lang: JP },
+          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site/relative', lang: JP },
           { path: 'relative', method: 'PUT', expected: 'http://example.org/site/relative', lang: JP },
           { path: 'relative', method: 'DELETE', expected: 'http://example.org/site/relative', lang: JP },
         ],

@@ -17,8 +17,6 @@ export interface BasketTotal {
     amount: Price;
     description: string;
     displayName: string;
-    name: string;
-    type: string;
   }[];
   isEstimated: boolean;
 }

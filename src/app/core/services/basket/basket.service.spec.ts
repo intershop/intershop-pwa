@@ -34,6 +34,25 @@ describe('Basket Service', () => {
     },
   };
 
+  const basketMockDataV1 = {
+    data: {
+      id: 'test',
+      calculationState: 'UNCALCULATED',
+      buckets: [
+        {
+          lineItems: [],
+          shippingMethod: {},
+          shipToAddress: {},
+        },
+      ],
+      payment: {
+        name: 'testPayment',
+        id: 'paymentId',
+      },
+      totals: {},
+    },
+  };
+
   const itemMockData = {
     sku: 'test',
     quantity: 10,
@@ -45,20 +64,31 @@ describe('Basket Service', () => {
   });
 
   it("should get basket data when 'getBasket' is called", done => {
-    when(apiService.get(`baskets/${basketMockData.id}`)).thenReturn(of(basketMockData));
+    when(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).thenReturn(of(basketMockDataV1));
 
-    basketService.getBasket(basketMockData.id).subscribe(data => {
+    basketService.getBasket(basketMockDataV1.data.id, []).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
-      verify(apiService.get(`baskets/${basketMockData.id}`)).once();
+      verify(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).once();
+      done();
+    });
+  });
+
+  it("should create a basket data when 'createBasket' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of(basketMockDataV1));
+
+    basketService.createBasket().subscribe(data => {
+      expect(data.id).toEqual(basketMockData.id);
+      verify(apiService.post(`baskets`, anything(), anything())).once();
       done();
     });
   });
 
   it("should update data to basket of a specific basket when 'updateBasket' is called", done => {
-    when(apiService.put(anything(), anything())).thenReturn(of({}));
+    when(apiService.patch(anything(), anything(), anything())).thenReturn(of({}));
+    const payload = { invoiceToAddress: '123456' };
 
-    basketService.updateBasket(basketMockData.id, { invoiceToAddress: { id: '123456' } }).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.id}`, anything())).once();
+    basketService.updateBasket(basketMockData.id, payload).subscribe(() => {
+      verify(apiService.patch(`baskets/${basketMockData.id}`, payload, anything())).once();
       done();
     });
   });
@@ -73,38 +103,38 @@ describe('Basket Service', () => {
   });
 
   it("should post item to basket when 'addItemsToBasket' is called", done => {
-    when(apiService.post(anything(), anything())).thenReturn(of({}));
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
-    basketService.addItemsToBasket([itemMockData], basketMockData.id).subscribe(() => {
-      verify(apiService.post(`baskets/${basketMockData.id}/items`, anything())).once();
+    basketService.addItemsToBasket(basketMockData.id, [itemMockData]).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.id}/items`, anything(), anything())).once();
       done();
     });
   });
 
-  it("should put updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
-    when(apiService.put(anyString(), anything())).thenReturn(of({}));
+  it("should patch updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
+    when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
 
     const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
     basketService.updateBasketItem(basketMockData.id, lineItemData.id, payload).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, payload)).once();
+      verify(apiService.patch(`baskets/${basketMockData.id}/items/${lineItemData.id}`, payload, anything())).once();
       done();
     });
   });
 
   it("should remove line item from spefic basket when 'deleteBasketItem' is called", done => {
-    when(apiService.delete(anything())).thenReturn(of({}));
+    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
-    basketService.deleteBasketItem(lineItemData.id, basketMockData.id).subscribe(() => {
-      verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+    basketService.deleteBasketItem(basketMockData.id, lineItemData.id).subscribe(() => {
+      verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
       done();
     });
   });
 
-  it("should get line item options for a basket item when 'getBasketItemOptions' is called", done => {
-    when(apiService.options(anything())).thenReturn(of({}));
+  it("should get eligible shipping methods for a basket when 'getBasketEligibleShippingMethods' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-    basketService.getBasketItemOptions(basketMockData.id, lineItemData.id).subscribe(() => {
-      verify(apiService.options(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+    basketService.getBasketEligibleShippingMethods(basketMockData.id).subscribe(() => {
+      verify(apiService.get(`baskets/${basketMockData.id}/eligible-shipping-methods`, anything())).once();
       done();
     });
   });

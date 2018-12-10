@@ -73,7 +73,7 @@ function catchApiError<T>(handler: ApiServiceErrorHandler) {
  */
 export function constructUrlForPath(
   path: string,
-  method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'DELETE',
+  method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   restEndpoint: string,
   currentLocale?: Locale
 ): string {
@@ -90,6 +90,7 @@ export function constructUrlForPath(
         return `${restEndpoint}${localeAndCurrency}/${path}`;
       case 'POST':
       case 'PUT':
+      case 'PATCH':
       case 'DELETE':
         return `${restEndpoint}/${path}`;
       default:
@@ -149,20 +150,38 @@ export class ApiService {
   }
 
   /**
+   * http patch request
+   */
+  patch<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
+    return this.httpClient
+      .patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint), body, {
+        headers: this.defaultHeaders,
+        ...options,
+      })
+      .pipe(catchApiError(this.apiServiceErrorHandler));
+  }
+
+  /**
    * http post request
    */
-  post<T>(path: string, body = {}): Observable<T> {
+  post<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint), body, { headers: this.defaultHeaders })
+      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint), body, {
+        headers: this.defaultHeaders,
+        ...options,
+      })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
    * http delete request
    */
-  delete<T>(path): Observable<T> {
+  delete<T>(path, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint))
+      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint), {
+        headers: this.defaultHeaders,
+        ...options,
+      })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 }

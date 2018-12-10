@@ -1,52 +1,64 @@
 import { AddressMapper } from '../address/address.mapper';
-import { BasketItemMapper } from '../basket-item/basket-item.mapper';
+import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
-import { ShippingBucketData } from '../shipping-bucket/shipping-bucket.interface';
+import { PriceMapper } from '../price/price.mapper';
+import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
 
 import { Basket } from './basket.model';
 
 export class BasketMapper {
-  static fromData(data: BasketData) {
-    let shippingBucket: ShippingBucketData;
-    if (data.shippingBuckets && data.shippingBuckets.length > 0) {
-      shippingBucket = data.shippingBuckets[0];
-    }
+  static fromData(payload: BasketData): Basket {
+    const data = payload.data;
+    const included = payload.included;
 
-    const totals: BasketTotal = {
-      shippingRebatesTotal: data.totals.basketShippingRebatesTotal,
-      total: data.totals.basketTotal,
-      valueRebatesTotal: data.totals.basketValueRebatesTotal,
-      dutiesAndSurchargesTotal: data.totals.dutiesAndSurchargesTotal,
-      itemRebatesTotal: data.totals.itemRebatesTotal,
-      itemShippingRebatesTotal: data.totals.itemShippingRebatesTotal,
-      itemTotal: data.totals.itemTotal,
-      paymentCostsTotal: data.totals.paymentCostsTotal,
-      shippingTotal: data.totals.shippingTotal,
-      taxTotal: data.totals.taxTotal,
-      valueRebates: data.valueRebates,
-      itemSurchargeTotalsByType: data.itemSurchargeTotalsByType,
-      isEstimated:
-        !data.invoiceToAddress || !shippingBucket || !shippingBucket.shipToAddress || !shippingBucket.shippingMethod,
-    };
+    const totals: BasketTotal =
+      data.calculationState === 'CALCULATED'
+        ? {
+            itemTotal: PriceMapper.fromPriceItem(data.totals.discountedItemTotal),
+            total: PriceMapper.fromPriceItem(data.totals.grandTotal),
+            shippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketShippingDiscountsTotal),
+            valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketValueDiscountsTotal),
+            dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(data.totals.surchargeTotal),
+            itemRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemValueDiscountsTotal),
+            itemShippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemShippingDiscountsTotal),
+            paymentCostsTotal: undefined, // ToDo
+            shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
+            taxTotal: { ...data.totals.grandTotal.tax, type: 'Money' },
+            valueRebates:
+              data.discounts && data.discounts.valueBasedDiscounts && included.discounts
+                ? data.discounts.valueBasedDiscounts.map(discountId =>
+                    BasketRebateMapper.fromData(included.discounts[discountId])
+                  )
+                : undefined,
+            itemSurchargeTotalsByType: data.surcharges
+              ? data.surcharges.itemSurcharges.map(surcharge => ({
+                  amount: PriceMapper.fromPriceItem(surcharge.amount),
+                  displayName: surcharge.name,
+                  description: surcharge.description,
+                }))
+              : undefined,
+            isEstimated: !data.invoiceToAddress || !data.commonShipToAddress || !data.commonShippingMethod,
+          }
+        : undefined;
 
-    const basket: Basket = {
+    return {
       id: data.id,
-      purchaseCurrency: data.purchaseCurrency,
-      dynamicMessages: data.dynamicMessages,
-
-      invoiceToAddress: data.invoiceToAddress ? AddressMapper.fromData(data.invoiceToAddress) : undefined,
+      purchaseCurrency: undefined, // ToDo
+      dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
+      invoiceToAddress:
+        included && included.invoiceToAddress && data.invoiceToAddress
+          ? AddressMapper.fromData(included.invoiceToAddress[data.invoiceToAddress])
+          : undefined,
+      commonShipToAddress:
+        included && included.commonShipToAddress && data.commonShipToAddress
+          ? AddressMapper.fromData(included.commonShipToAddress[data.commonShipToAddress])
+          : undefined,
+      commonShippingMethod:
+        included && included.commonShippingMethod && data.commonShippingMethod
+          ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
+          : undefined,
       totals,
     };
-
-    if (shippingBucket) {
-      basket.commonShippingMethod = shippingBucket.shippingMethod;
-      basket.commonShipToAddress = shippingBucket.shipToAddress
-        ? AddressMapper.fromData(shippingBucket.shipToAddress)
-        : undefined;
-      basket.lineItems = shippingBucket.lineItems.map(item => BasketItemMapper.fromData(item));
-    }
-
-    return basket;
   }
 }

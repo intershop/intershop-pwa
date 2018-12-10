@@ -112,7 +112,7 @@ export class BasketEffects {
     map(
       action =>
         new basketActions.UpdateBasket({
-          invoiceToAddress: { id: action.payload },
+          invoiceToAddress: action.payload,
         })
     )
   );
@@ -127,30 +127,23 @@ export class BasketEffects {
     map(
       action =>
         new basketActions.UpdateBasket({
-          commonShipToAddress: { id: action.payload },
+          commonShipToAddress: action.payload,
         })
     )
   );
 
   /**
    * Updates the common shipping method of the basket.
-   * Works currently only if multipleShipment flag is set to true !!
+   * Works currently only if the basket has one bucket
    */
   @Effect()
   updateBasketShippingMethod$ = this.actions$.pipe(
     ofType<basketActions.UpdateBasketShippingMethod>(basketActions.BasketActionTypes.UpdateBasketShippingMethod),
-    map(action => action.payload),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([id, basket]) =>
-      concat(
-        ...basket.lineItems.map(item =>
-          this.basketService.updateBasketItem(basket.id, item.id, { shippingMethod: { id } })
-        )
-      ).pipe(
-        last(),
-        mapTo(new basketActions.UpdateBasketSuccess()),
-        mapErrorToAction(basketActions.UpdateBasketFail)
-      )
+    map(
+      action =>
+        new basketActions.UpdateBasket({
+          commonShippingMethod: action.payload,
+        })
     )
   );
 
@@ -255,7 +248,7 @@ export class BasketEffects {
       // get basket id from AddItemsToBasket action if set, otherwise use current basket id
       const basketId = payload.basketId || basket.id;
 
-      return this.basketService.addItemsToBasket(payload.items, basketId).pipe(
+      return this.basketService.addItemsToBasket(basketId, payload.items).pipe(
         mapTo(new basketActions.AddItemsToBasketSuccess()),
         mapErrorToAction(basketActions.AddItemsToBasketFail)
       );
@@ -264,19 +257,34 @@ export class BasketEffects {
 
   /**
    * Add quote to the current basket.
-   * Only triggers if basket is set.
+   * Only triggers if the user has a basket.
    */
   @Effect()
   addQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([, basket]) => !!basket && !!basket.id),
     concatMap(([quoteId, basket]) =>
       this.basketService.addQuoteToBasket(quoteId, basket.id).pipe(
         map(link => new basketActions.AddQuoteToBasketSuccess(link)),
         mapErrorToAction(basketActions.AddQuoteToBasketFail)
       )
     )
+  );
+
+  /**
+   * Get current basket if missing and call AddQuoteToBasketAction
+   * Only triggers if the user has not yet a basket
+   */
+  @Effect()
+  getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
+    map(action => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([, basket]) => !basket || !basket.id),
+    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
+    map(([payload]) => new basketActions.AddQuoteToBasket(payload))
   );
 
   /**
@@ -314,7 +322,7 @@ export class BasketEffects {
               },
             });
           }
-          return this.basketService.deleteBasketItem(item.itemId, basket.id);
+          return this.basketService.deleteBasketItem(basket.id, item.itemId);
         })
       ).pipe(
         defaultIfEmpty(undefined),
@@ -334,7 +342,7 @@ export class BasketEffects {
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([itemId, basket]) =>
-      this.basketService.deleteBasketItem(itemId, basket.id).pipe(
+      this.basketService.deleteBasketItem(basket.id, itemId).pipe(
         mapTo(new basketActions.DeleteBasketItemSuccess()),
         mapErrorToAction(basketActions.DeleteBasketItemFail)
       )
@@ -361,11 +369,8 @@ export class BasketEffects {
     concatMap(([, basket]) =>
       /* simplified solution: get eligible shipping methods only for the first item
        ToDo: differentiate between multi and single shipment */
-      this.basketService.getBasketItemOptions(basket.id, basket.lineItems[0].id).pipe(
-        map(
-          result =>
-            new basketActions.LoadBasketEligibleShippingMethodsSuccess(result.eligibleShippingMethods.shippingMethods)
-        ),
+      this.basketService.getBasketEligibleShippingMethods(basket.id).pipe(
+        map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess(result)),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
       )
     )
@@ -442,7 +447,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !basket && !payload.basketId),
     // TODO: add create basket if LoadBasket does not create basket anymore
-    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.getBasket())),
+    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
     map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
   );
 
@@ -485,12 +490,25 @@ export class BasketEffects {
     ofType(
       basketActions.BasketActionTypes.UpdateBasketSuccess,
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
-      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
-      basketActions.BasketActionTypes.DeleteBasketItemSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentSuccess
+      basketActions.BasketActionTypes.DeleteBasketItemSuccess
     ),
     mapTo(new basketActions.LoadBasket())
+  );
+
+  /**
+   * Triggers a Caluculate Basket action after adding a quote to basket.
+   * ToDo: This is only necessary as long as api v0 is used for addQuote and addPayment
+   */
+  @Effect()
+  calculateBasketAfterAddToQuote = this.actions$.pipe(
+    ofType(
+      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
+      basketActions.BasketActionTypes.AddQuoteToBasketFail,
+      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
+      basketActions.BasketActionTypes.SetBasketPaymentFail
+    ),
+    mapTo(new basketActions.UpdateBasket({ calculationState: 'CALCULATED' }))
   );
 
   /**

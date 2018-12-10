@@ -1,22 +1,38 @@
 import { AddressData } from '../address/address.interface';
-import { BasketRebate } from '../basket-rebate/basket-rebate.model';
+import { BasketItemData } from '../basket-item/basket-item.interface';
+import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from '../basket-total/basket-total.interface';
-import { Price } from '../price/price.model';
-import { ShippingBucketData } from '../shipping-bucket/shipping-bucket.interface';
+import { PriceItem } from '../price-item/price-item.interface';
+import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 export interface BasketData {
-  id: string;
-  purchaseCurrency: string;
-  dynamicMessages?: string[];
-  invoiceToAddress?: AddressData;
-  shippingBuckets: ShippingBucketData[];
-  totals: BasketTotalData;
-  valueRebates?: BasketRebate[];
-  itemSurchargeTotalsByType: {
-    amount: Price;
-    description: string;
-    displayName: string;
-    name: string;
-    type: string;
-  }[];
+  data: {
+    id: string;
+    calculationState: 'CALCULATED' | 'UNCALCULATED';
+    invoiceToAddress?: string;
+    commonShipToAddress?: string;
+    commonShippingMethod?: string;
+    discounts?: {
+      dynamicMessages?: string[];
+      shippingBasedDiscounts?: string[];
+      valueBasedDiscounts?: string[];
+    };
+    buckets?: string[];
+    totals: BasketTotalData;
+    totalProductQuantity?: number;
+    surcharges?: {
+      itemSurcharges?: {
+        amount: PriceItem;
+        description: string;
+        name: string;
+      }[];
+    };
+  };
+  included?: {
+    invoiceToAddress?: { [urn: string]: AddressData };
+    lineItems?: { [id: string]: BasketItemData };
+    discounts?: { [id: string]: BasketRebateData };
+    commonShipToAddress?: { [urn: string]: AddressData };
+    commonShippingMethod?: { [id: string]: ShippingMethodData };
+  };
 }

@@ -1,4 +1,5 @@
-import { BasketRebate } from '../basket-rebate/basket-rebate.model';
+import { AddressData } from '../address/address.interface';
+import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 import { BasketData } from './basket.interface';
 import { BasketMapper } from './basket.mapper';
@@ -10,87 +11,163 @@ describe('Basket Mapper', () => {
     let basketData: BasketData;
     beforeEach(() => {
       basketData = {
-        invoiceToAddress: { urn: '123' },
-        shippingBuckets: [
-          {
-            lineItems: [
+        data: {
+          id: 'basket_1234',
+          calculationState: 'CALCULATED',
+          invoiceToAddress: 'urn_invoiceToAddress_123',
+          commonShipToAddress: 'urn_commonShipToAddress_123',
+          commonShippingMethod: 'shipping_method_123',
+          totals: {
+            grandTotal: {
+              gross: {
+                value: 141796.98,
+                currency: 'USD',
+              },
+              net: {
+                value: 141796.98,
+                currency: 'USD',
+              },
+              tax: {
+                value: 543.65,
+                currency: 'USD',
+              },
+            },
+            itemTotal: {
+              gross: {
+                value: 141796.98,
+                currency: 'USD',
+              },
+              net: {
+                value: 141796.98,
+                currency: 'USD',
+              },
+            },
+            discountedItemTotal: {
+              gross: {
+                value: 141796.98,
+                currency: 'USD',
+              },
+              net: {
+                value: 141796.98,
+                currency: 'USD',
+              },
+            },
+          },
+
+          discounts: {
+            valueBasedDiscounts: ['discount_1'],
+          },
+          surcharges: {
+            itemSurcharges: [
               {
-                name: 'test',
+                name: 'surcharge',
+                amount: {
+                  gross: {
+                    value: 654.56,
+                    currency: 'USD',
+                  },
+                  net: {
+                    value: 647.56,
+                    currency: 'USD',
+                  },
+                },
+                description: 'Surcharge for battery deposit',
               },
             ],
-            name: 'test',
-            shippingMethod: {
-              id: 'test',
-            },
-            shipToAddress: {
-              urn: 'test',
-            },
-          },
-        ],
-        totals: {
-          itemTotal: {
-            value: 141796.98,
-            currencyMnemonic: 'USD',
           },
         },
-        valueRebates: [
-          {
-            name: 'appliedRebate',
-            amount: {
-              value: 11.9,
-              currencyMnemonic: 'USD',
-            },
-            rebateType: 'OrderValueOffDiscount',
-          } as BasketRebate,
-        ],
-        itemSurchargeTotalsByType: [
-          {
-            name: 'surcharge',
-            amount: {
-              value: 595,
-              currencyMnemonic: 'USD',
-            },
-            description: 'Surcharge for battery deposit',
-            displayName: 'Battery Deposit Surcharge',
+
+        included: {
+          invoiceToAddress: {
+            urn_invoiceToAddress_123: { id: 'invoiceToAddress_123', urn: 'urn_invoiceToAddress_123' } as AddressData,
           },
-        ],
+          commonShipToAddress: {
+            urn_commonShipToAddress_123: {
+              id: 'commonShipToAddress_123',
+              urn: 'urn_commonShipToAddress_123',
+            } as AddressData,
+          },
+          commonShippingMethod: {
+            shipping_method_123: { id: 'shipping_method_123', name: 'ShippingMethodName' } as ShippingMethodData,
+          },
+          discounts: {
+            discount_1: {
+              id: 'discount_1',
+              promotionType: 'OrderValueOffDiscount',
+              amount: {
+                gross: {
+                  currency: 'USD',
+                  value: 11.9,
+                },
+                net: {
+                  value: 10.56,
+                  currency: 'USD',
+                },
+              },
+              code: 'INTERSHOP',
+              description:
+                'For orders over 200 USD, a 10 USD Order discount is guaranteed for the Promo Code "INTERSHOP".',
+            },
+          },
+        },
       } as BasketData;
     });
 
-    it(`should return Basket when getting BasketData`, () => {
+    it(`should return Basket when getting BasketData without includes`, () => {
+      basketData.data.invoiceToAddress = undefined;
+      basketData.data.commonShipToAddress = undefined;
+      basketData.data.commonShippingMethod = undefined;
+      basketData.data.discounts = undefined;
+
       basket = BasketMapper.fromData(basketData);
       expect(basket).toBeTruthy();
-      expect(basket.lineItems.length).toBe(basketData.shippingBuckets[0].lineItems.length);
-      expect(basket.commonShippingMethod).toBe(basketData.shippingBuckets[0].shippingMethod);
-      expect(basket.commonShipToAddress.urn).toBe(basketData.shippingBuckets[0].shipToAddress.urn);
-      expect(basket.totals.itemTotal.value).toBe(basketData.totals.itemTotal.value);
-      expect(basket.totals.valueRebates[0].rebateType).toBe(basketData.valueRebates[0].rebateType);
+
+      expect(basket.totals.itemTotal.value).toBe(basketData.data.totals.discountedItemTotal.gross.value);
       expect(basket.totals.itemSurchargeTotalsByType[0].amount.value).toBe(
-        basketData.itemSurchargeTotalsByType[0].amount.value
+        basketData.data.surcharges.itemSurcharges[0].amount.gross.value
       );
+      expect(basket.totals.isEstimated).toBeTrue();
     });
 
-    it('should return false if invoice and shipping address and shipping method are available', () => {
+    it('should return invoice address if included', () => {
+      basketData.data.commonShipToAddress = undefined;
+      basketData.data.commonShippingMethod = undefined;
+      basketData.data.discounts = undefined;
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.invoiceToAddress.id).toEqual('invoiceToAddress_123');
+      expect(basket.totals.isEstimated).toBeTrue();
+    });
+
+    it('should return common ship to address if included', () => {
+      basketData.data.invoiceToAddress = undefined;
+      basketData.data.commonShippingMethod = undefined;
+      basketData.data.discounts = undefined;
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.commonShipToAddress.id).toEqual('commonShipToAddress_123');
+      expect(basket.totals.isEstimated).toBeTrue();
+    });
+
+    it('should return common shipping method if included', () => {
+      basketData.data.invoiceToAddress = undefined;
+      basketData.data.commonShipToAddress = undefined;
+      basketData.data.discounts = undefined;
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.commonShippingMethod.name).toEqual('ShippingMethodName');
+      expect(basket.totals.isEstimated).toBeTrue();
+    });
+
+    it('should return discounts if included', () => {
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.totals.valueRebates[0].amount.value).toBePositive();
+    });
+
+    it('should return estimated as false if invoive address, shipping address and shipping method is set', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket.totals.isEstimated).toBeFalse();
-    });
-
-    it('should return true if invoiceToAddress is missing', () => {
-      basketData.invoiceToAddress = undefined;
-      basket = BasketMapper.fromData(basketData);
-      expect(basket.totals.isEstimated).toBeTrue();
-    });
-
-    it('should return true if commonShipToAddress is missing', () => {
-      basketData.shippingBuckets[0].shipToAddress = undefined;
-      basket = BasketMapper.fromData(basketData);
-      expect(basket.totals.isEstimated).toBeTrue();
-    });
-
-    it('should return true if shippingMethod is missing', () => {
-      basketData.shippingBuckets[0].shippingMethod = undefined;
-      basket = BasketMapper.fromData(basketData);
-      expect(basket.totals.isEstimated).toBeTrue();
     });
   });
 });
