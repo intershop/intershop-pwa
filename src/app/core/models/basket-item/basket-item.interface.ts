@@ -1,38 +1,34 @@
-import { BasketRebate } from '../basket-rebate/basket-rebate.model';
-import { Link } from '../link/link.model';
+import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
+import { PriceItem } from '../price-item/price-item.interface';
 import { Price } from '../price/price.model';
 
 export interface BasketItemData {
   id: string;
-  name: string;
+  calculationState: 'CALCULATED' | 'UNCALCULATED';
   position: number;
   quantity: {
-    type: string;
     value: number;
     unit?: string;
   };
-  product: Link;
-  price: Price;
-  singleBasePrice: Price;
-  itemSurcharges?: [
+  product: string;
+  price: PriceItem;
+
+  surcharges?: [
     {
-      amount: Price;
+      amount: PriceItem;
       description?: string;
-      displayName?: string;
+      name?: string;
     }
   ];
-  valueRebates?: BasketRebate[];
+  discounts?: BasketRebateData[];
+  singleBasePrice: PriceItem;
   totals: {
     salesTaxTotal?: Price;
     shippingTaxTotal?: Price;
-    shippingTotal: Price;
-    total: Price;
-    valueRebatesTotal?: Price;
+    shippingTotal: PriceItem;
+    total: PriceItem;
+    valueRebatesTotal?: PriceItem;
   };
-  isHiddenGift: boolean;
-  isFreeGift: boolean;
-  inStock: boolean;
-  variationProduct: boolean;
-  bundleProduct: boolean;
-  availability: boolean;
+  hiddenGift: boolean;
+  freeGift: boolean;
 }

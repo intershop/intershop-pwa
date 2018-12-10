@@ -1,6 +1,6 @@
-import { BasketItemData } from '../basket-item/basket-item.interface';
 import { BasketItemMapper } from '../basket-item/basket-item.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
+import { OrderItemData } from '../order-item/order-item.interface';
 
 import { OrderData } from './order.interface';
 import { Order } from './order.model';
@@ -39,7 +39,7 @@ export class OrderMapper {
 
       order.commonShippingMethod = shippingBucket.shippingMethod;
       order.commonShipToAddress = shippingBucket.shipToAddress;
-      order.lineItems = shippingBucket.lineItems.map(pli => BasketItemMapper.fromData(pli as BasketItemData));
+      order.lineItems = shippingBucket.lineItems.map(pli => BasketItemMapper.fromOrderItemData(pli as OrderItemData));
     }
 
     if (data.payments && data.payments.length > 0) {

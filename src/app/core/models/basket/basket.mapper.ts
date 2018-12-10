@@ -1,4 +1,5 @@
 import { AddressMapper } from '../address/address.mapper';
+import { BasketItemMapper } from '../basket-item/basket-item.mapper';
 import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
@@ -58,6 +59,10 @@ export class BasketMapper {
         included && included.commonShippingMethod && data.commonShippingMethod
           ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
           : undefined,
+      lineItems:
+        included && included.lineItems && data.lineItems && data.lineItems.length
+          ? data.lineItems.map(lineItemId => BasketItemMapper.fromData(included.lineItems[lineItemId]))
+          : [],
       totals,
     };
   }

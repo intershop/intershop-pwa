@@ -105,6 +105,33 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('loadProductsForBasket$', () => {
+    it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
+      when(basketServiceMock.getBasket(anything(), anyString())).thenReturn(of());
+
+      const action = new basketActions.LoadBasketSuccess({
+        id: 'BID',
+        lineItems: [
+          {
+            id: 'BIID',
+            name: 'NAME',
+            position: 1,
+            quantity: { value: 1 },
+            price: undefined,
+            productSKU: 'SKU',
+          } as BasketItem,
+        ],
+        payment: undefined,
+      } as Basket);
+
+      const completion = new LoadProduct('SKU');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
+    });
+  });
+
   describe('createCustomerInvoiceAddress$', () => {
     beforeEach(() => {
       when(addressServiceMock.createCustomerAddress('-', anything())).thenReturn(of(BasketMockData.getAddress()));
@@ -382,7 +409,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('loadProductsForBasket$', () => {
+  describe('loadProductsForBasketItems$', () => {
     beforeEach(() => {
       when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(of());
 
@@ -408,7 +435,7 @@ describe('Basket Effects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
+      expect(effects.loadProductsForBasketItems$).toBeObservable(expected$);
     });
   });
 
@@ -615,19 +642,16 @@ describe('Basket Effects', () => {
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
           id: 'BID',
-          lineItems: [],
+          lineItems: [
+            {
+              id: 'BIID',
+              name: 'NAME',
+              quantity: { value: 1 },
+              productSKU: 'SKU',
+              price: undefined,
+            } as BasketItem,
+          ],
         } as Basket)
-      );
-      store$.dispatch(
-        new basketActions.LoadBasketItemsSuccess([
-          {
-            id: 'BIID',
-            name: 'NAME',
-            quantity: { value: 1 },
-            productSKU: 'SKU',
-            price: undefined,
-          } as BasketItem,
-        ])
       );
       store$.dispatch(new LoadProductSuccess({ sku: 'SKU' } as Product));
 
@@ -668,19 +692,16 @@ describe('Basket Effects', () => {
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
           id: 'BID',
-          lineItems: [],
+          lineItems: [
+            {
+              id: 'BIID',
+              name: 'NAME',
+              quantity: { value: 1 },
+              productSKU: 'SKU',
+              price: undefined,
+            } as BasketItem,
+          ],
         } as Basket)
-      );
-      store$.dispatch(
-        new basketActions.LoadBasketItemsSuccess([
-          {
-            id: 'BIID',
-            name: 'NAME',
-            quantity: { value: 1 },
-            productSKU: 'SKU',
-            price: undefined,
-          } as BasketItem,
-        ])
       );
     });
 
