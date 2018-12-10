@@ -3,9 +3,15 @@ import { createSelector } from '@ngrx/store';
 import { getProductEntities, getSelectedProductId } from '../products';
 import { getShoppingState } from '../shopping-store';
 
-const getRecentlyState = createSelector(getShoppingState, state => state.recently);
+const getRecentlyState = createSelector(
+  getShoppingState,
+  state => state.recently
+);
 
-export const getRecentlyProducts = createSelector(getRecentlyState, state => state.products);
+export const getRecentlyProducts = createSelector(
+  getRecentlyState,
+  state => state.products
+);
 
 export const getRecentlyViewedProducts = createSelector(
   getRecentlyProducts,

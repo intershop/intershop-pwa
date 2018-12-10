@@ -205,11 +205,10 @@ export class BasketService {
     return this.apiService
       .options<{ methods: { payments: PaymentMethod[] }[] }>(`baskets/${basketId}/payments`)
       .pipe(
-        map(
-          data =>
-            data && data.methods && data.methods.length
-              ? data.methods[0].payments.filter(payment => validPaymentMethods.includes(payment.id))
-              : []
+        map(data =>
+          data && data.methods && data.methods.length
+            ? data.methods[0].payments.filter(payment => validPaymentMethods.includes(payment.id))
+            : []
         )
       );
   }

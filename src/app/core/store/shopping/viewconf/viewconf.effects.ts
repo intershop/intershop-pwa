@@ -53,11 +53,10 @@ export class ViewconfEffects {
         map(event => Number.parseInt(event.snapshot.queryParams.page, 10)),
         map(page => (!!page ? page : 0)),
         distinctCompareWith(this.store.pipe(select(getPagingPage))),
-        mergeMap(
-          page =>
-            !!page
-              ? [new viewconfActions.DisableEndlessScrolling(), new viewconfActions.SetPage(page - 1)]
-              : [new viewconfActions.SetPage(0)]
+        mergeMap(page =>
+          !!page
+            ? [new viewconfActions.DisableEndlessScrolling(), new viewconfActions.SetPage(page - 1)]
+            : [new viewconfActions.SetPage(0)]
         )
       )
     )

@@ -34,11 +34,10 @@ export class FormControlFeedbackComponent implements DoCheck {
     }
 
     return Object.keys(this.control.errors)
-      .map(
-        key =>
-          this.messages && key in this.messages && this.messages[key]
-            ? this.messages[key]
-            : this.control.errors.customError
+      .map(key =>
+        this.messages && key in this.messages && this.messages[key]
+          ? this.messages[key]
+          : this.control.errors.customError
       )
       .filter(locString => !!locString)
       .map(locString => this.translate.get(locString));

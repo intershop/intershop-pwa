@@ -7,7 +7,11 @@ import { getCategoryLoading, getSelectedCategory, getSelectedCategoryId } from '
 import { LoadMoreProductsForCategory } from 'ish-core/store/shopping/products';
 import { getPagingLoading } from 'ish-core/store/shopping/viewconf';
 
-const loading = createSelector(getCategoryLoading, getPagingLoading, (a, b) => a && !b);
+const loading = createSelector(
+  getCategoryLoading,
+  getPagingLoading,
+  (a, b) => a && !b
+);
 
 @Component({
   selector: 'ish-category-page-container',
