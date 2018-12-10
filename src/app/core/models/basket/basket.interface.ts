@@ -18,6 +18,7 @@ export interface BasketData {
       valueBasedDiscounts?: string[];
     };
     buckets?: string[];
+    lineItems?: string[];
     totals: BasketTotalData;
     totalProductQuantity?: number;
     surcharges?: {

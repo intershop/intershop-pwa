@@ -46,9 +46,23 @@ describe('Checkout Store', () => {
   let store: TestStore;
   let locales: Locale[];
 
+  const lineItem = {
+    id: 'test',
+    name: 'test',
+    position: 1,
+    quantity: { type: 'test', value: 1 },
+    productSKU: 'test',
+    price: undefined,
+    singleBasePrice: undefined,
+    isHiddenGift: false,
+    isFreeGift: false,
+    inStock: false,
+    availability: false,
+  } as BasketItem;
+
   const basket = {
     id: 'test',
-    lineItems: [],
+    lineItems: [lineItem],
   } as Basket;
 
   const product = {
@@ -68,22 +82,6 @@ describe('Checkout Store', () => {
     sku: 'test',
     type: 0,
   };
-
-  const lineItem = {
-    id: 'test',
-    name: 'test',
-    position: 1,
-    quantity: { type: 'test', value: 1 },
-    productSKU: 'test',
-    price: undefined,
-    singleBasePrice: undefined,
-    isHiddenGift: false,
-    isFreeGift: false,
-    inStock: false,
-    variationProduct: false,
-    bundleProduct: false,
-    availability: false,
-  } as BasketItem;
 
   const user = {
     type: 'PrivateCustomer',

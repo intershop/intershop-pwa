@@ -21,7 +21,6 @@ import {
   LoadBasketEligibleShippingMethodsFail,
   LoadBasketEligibleShippingMethodsSuccess,
   LoadBasketFail,
-  LoadBasketItemsSuccess,
   LoadBasketPaymentsSuccess,
   LoadBasketSuccess,
 } from './basket.actions';
@@ -70,10 +69,13 @@ describe('Basket Selectors', () => {
     });
 
     it('should set loading to false and set basket state', () => {
-      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as BasketView));
       store$.dispatch(
-        new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as BasketItem])
+        new LoadBasketSuccess({
+          id: 'test',
+          lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as BasketItem],
+        } as BasketView)
       );
+
       store$.dispatch(new LoadBasketPaymentsSuccess([{ name: 'p_test' } as Payment]));
       expect(getBasketLoading(store$.state)).toBeFalse();
 
@@ -87,9 +89,9 @@ describe('Basket Selectors', () => {
     });
 
     it('should change the product of the basket line item if the product is changing', () => {
-      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
-      store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
-
+      store$.dispatch(
+        new LoadBasketSuccess({ id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as BasketItem] } as Basket)
+      );
       let currentBasket = getCurrentBasket(store$.state);
       expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
 

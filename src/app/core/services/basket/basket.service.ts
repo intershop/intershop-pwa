@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-import { BasketItemData } from '../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../models/basket-item/basket-item.mapper';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { BasketData } from '../../models/basket/basket.interface';
@@ -52,7 +52,13 @@ export class BasketService {
    */
   getBasket(
     basketId: string = 'current',
-    includes: BasketIncludeType[] = ['invoiceToAddress', 'commonShipToAddress', 'commonShippingMethod', 'discounts']
+    includes: BasketIncludeType[] = [
+      'invoiceToAddress',
+      'commonShipToAddress',
+      'commonShippingMethod',
+      'discounts',
+      'lineItems',
+    ]
   ): Observable<Basket> {
     const includeStr = includes && includes.length > 0 ? '?include=' + includes.join('&include=') : '';
 
@@ -100,13 +106,14 @@ export class BasketService {
    * @returns         The basket items.
    */
   getBasketItems(basketId: string): Observable<BasketItem[]> {
+    /* ToDo: Remove this method - it uses REST api v0 and is no longer necessary  */
     if (!basketId) {
       return throwError('getBasketItems() called without basketId');
     }
 
     return this.apiService.get(`baskets/${basketId}/items`).pipe(
-      unpackEnvelope<BasketItemData>(),
-      map(basketItemsData => basketItemsData.map(BasketItemMapper.fromData))
+      unpackEnvelope<OrderItemData>(),
+      map(basketItemsData => basketItemsData.map(BasketItemMapper.fromOrderItemData))
     );
   }
 

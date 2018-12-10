@@ -88,7 +88,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketSuccess: {
       const basket = {
         ...action.payload,
-        lineItems: undefined,
       };
 
       return {

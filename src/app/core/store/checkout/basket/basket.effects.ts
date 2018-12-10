@@ -62,6 +62,22 @@ export class BasketEffects {
   );
 
   /**
+   * After successfully loading the basket, trigger a LoadProduct action
+   * for each product that is missing in the current product entities state.
+   */
+  @Effect()
+  loadProductsForBasket$ = this.actions$.pipe(
+    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
+    map(action => action.payload),
+    withLatestFrom(this.store.pipe(select(getProductEntities))),
+    switchMap(([basket, products]) => [
+      ...basket.lineItems
+        .filter(basketItem => !products[basketItem.productSKU])
+        .map(basketItem => new LoadProduct(basketItem.productSKU)),
+    ])
+  );
+
+  /**
    * Creates a new customer invoice/shipping address which is assigned to the basket later on
    */
   @Effect()
@@ -213,7 +229,7 @@ export class BasketEffects {
    * for each product that is missing in the current product entities state.
    */
   @Effect()
-  loadProductsForBasket$ = this.actions$.pipe(
+  loadProductsForBasketItems$ = this.actions$.pipe(
     ofType<basketActions.LoadBasketItemsSuccess>(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getProductEntities))),

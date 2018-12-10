@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { LoadBasket, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -68,10 +68,8 @@ describe('Basket Page Container', () => {
   });
 
   it('should render shopping basket component if there is a basket with line items', () => {
-    const basket = { id: 'dummy' } as Basket;
-    const lineItems = [{ id: '123', productSKU: 'SKU_123' }] as BasketItem[];
+    const basket = { id: 'dummy', lineItems: [{ id: '123', productSKU: 'SKU_123' }] as BasketItem[] } as Basket;
     store$.dispatch(new LoadBasketSuccess(basket));
-    store$.dispatch(new LoadBasketItemsSuccess(lineItems));
     fixture.detectChanges();
     expect(element.querySelector('ish-shopping-basket')).toBeTruthy();
   });

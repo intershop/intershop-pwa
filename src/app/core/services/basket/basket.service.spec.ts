@@ -73,6 +73,23 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should get basket with all include data when 'getBasket' is called without second parameter", done => {
+    when(apiService.get(anyString(), anything())).thenReturn(of(basketMockDataV1));
+
+    basketService.getBasket(basketMockDataV1.data.id).subscribe(data => {
+      expect(data.id).toEqual(basketMockData.id);
+      verify(
+        apiService.get(
+          `baskets/${
+            basketMockDataV1.data.id
+          }?include=invoiceToAddress&include=commonShipToAddress&include=commonShippingMethod&include=discounts&include=lineItems`,
+          anything()
+        )
+      ).once();
+      done();
+    });
+  });
+
   it("should create a basket data when 'createBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(basketMockDataV1));
 
