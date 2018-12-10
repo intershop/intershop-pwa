@@ -1,6 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
+import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from '../../../models/product/product.model';
+import { getCategoryTree } from '../categories';
 import { ShoppingState, getShoppingState } from '../shopping-store';
 
 import { productAdapter } from './products.reducer';
@@ -22,9 +24,10 @@ export const getSelectedProductId = createSelector(
 );
 
 export const getSelectedProduct = createSelector(
+  getCategoryTree,
   getProductEntities,
   getSelectedProductId,
-  (entities, id): Product => entities[id]
+  (tree, entities, id): Product => createProductView(entities[id], tree)
 );
 
 export const getProductLoading = createSelector(
@@ -33,6 +36,7 @@ export const getProductLoading = createSelector(
 );
 
 export const getProduct = createSelector(
+  getCategoryTree,
   getProductEntities,
-  (products, props) => products[props.sku]
+  (tree, products, props) => createProductView(products[props.sku], tree)
 );

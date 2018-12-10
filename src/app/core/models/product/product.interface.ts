@@ -1,6 +1,7 @@
 // tslint:disable:no-any
 import { AttributeGroup } from '../attribute-group/attribute-group.model';
 import { Attribute } from '../attribute/attribute.model';
+import { CategoryData } from '../category/category.interface';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
 import { Warranty } from '../warranty/warranty.model';
@@ -60,6 +61,7 @@ export interface ProductData {
   readyForShipmentMax: number;
   attributes?: Attribute[];
   attributeGroups?: { [id: string]: AttributeGroup };
+  defaultCategory?: CategoryData;
 }
 
 export interface ProductDataStub {
@@ -67,4 +69,5 @@ export interface ProductDataStub {
   attributes: Attribute[];
   description: string;
   title: string;
+  defaultCategory?: CategoryData;
 }

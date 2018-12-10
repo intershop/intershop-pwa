@@ -13,14 +13,14 @@ const getCategoryState = createSelector(
  * Be aware that it can have invalid values and it can change
  * so the referenced category might not yet be available.
  *
- * When in doubt prefere using getSelectedCategory.
+ * When in doubt prefer using getSelectedCategory.
  */
 export const getSelectedCategoryId = createSelector(
   getCategoryState,
   state => state.selected
 );
 
-const getCategoryTree = createSelector(
+export const getCategoryTree = createSelector(
   getCategoryState,
   state => state.categories
 );

@@ -5,6 +5,7 @@ Object {
   "attributeGroups": undefined,
   "attributes": Array [],
   "availability": true,
+  "defaultCategoryId": undefined,
   "images": Array [
     Object {
       "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
