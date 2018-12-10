@@ -35,11 +35,10 @@ export class QuoteRequestService {
   constructor(private apiService: ApiService, private store: Store<{}>) {
     this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
       take(1),
-      concatMap(
-        ([user, customer]) =>
-          !!user && !!user.email && !!customer && !!customer.customerNo
-            ? of({ userId: user.email, customerId: customer.customerNo })
-            : throwError({ message: 'not logged in' })
+      concatMap(([user, customer]) =>
+        !!user && !!user.email && !!customer && !!customer.customerNo
+          ? of({ userId: user.email, customerId: customer.customerNo })
+          : throwError({ message: 'not logged in' })
       )
     );
 

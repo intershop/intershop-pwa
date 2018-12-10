@@ -7,21 +7,32 @@ import { getQuotingState } from '../quoting-store';
 
 import { initialState } from './quote-request.reducer';
 
-const getQuoteRequestState = createSelector(getQuotingState, state => (state ? state.quoteRequest : initialState));
-
-export const getSelectedQuoteRequestId = createSelector(getQuoteRequestState, state => state.selected);
-
-export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, state =>
-  state.quoteRequests.map(
-    item =>
-      ({
-        ...item,
-        state: QuoteRequestHelper.getQuoteRequestState(item),
-      } as QuoteRequest)
-  )
+const getQuoteRequestState = createSelector(
+  getQuotingState,
+  state => (state ? state.quoteRequest : initialState)
 );
 
-export const getQuoteRequstItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
+export const getSelectedQuoteRequestId = createSelector(
+  getQuoteRequestState,
+  state => state.selected
+);
+
+export const getCurrentQuoteRequests = createSelector(
+  getQuoteRequestState,
+  state =>
+    state.quoteRequests.map(
+      item =>
+        ({
+          ...item,
+          state: QuoteRequestHelper.getQuoteRequestState(item),
+        } as QuoteRequest)
+    )
+);
+
+export const getQuoteRequstItems = createSelector(
+  getQuoteRequestState,
+  state => state.quoteRequestItems
+);
 
 export const getActiveQuoteRequest = createSelector(
   createSelector(
@@ -47,8 +58,10 @@ export const getActiveQuoteRequest = createSelector(
  * Select the selected quote request with the appended line item and product data if available.
  */
 export const getSelectedQuoteRequest = createSelector(
-  createSelector(getCurrentQuoteRequests, getSelectedQuoteRequestId, (items, id) =>
-    items.filter(item => item.id === id).pop()
+  createSelector(
+    getCurrentQuoteRequests,
+    getSelectedQuoteRequestId,
+    (items, id) => items.filter(item => item.id === id).pop()
   ),
   getQuoteRequstItems,
   getProductEntities,
@@ -65,6 +78,12 @@ export const getSelectedQuoteRequest = createSelector(
         }
 );
 
-export const getQuoteRequestLoading = createSelector(getQuoteRequestState, state => state.loading);
+export const getQuoteRequestLoading = createSelector(
+  getQuoteRequestState,
+  state => state.loading
+);
 
-export const getQuoteRequestError = createSelector(getQuoteRequestState, state => state.error);
+export const getQuoteRequestError = createSelector(
+  getQuoteRequestState,
+  state => state.error
+);

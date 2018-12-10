@@ -4,7 +4,10 @@ import { BasketHelper, BasketView } from 'ish-core/models/basket/basket.model';
 import { getProductEntities } from '../../shopping/products';
 import { getCheckoutState } from '../checkout-store';
 
-const getBasketState = createSelector(getCheckoutState, state => state.basket);
+const getBasketState = createSelector(
+  getCheckoutState,
+  state => state.basket
+);
 
 /**
  * Select the current basket with the appended product data for each line item.
@@ -26,13 +29,22 @@ export const getCurrentBasket = createSelector(
         }
 );
 
-export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);
+export const getBasketLoading = createSelector(
+  getBasketState,
+  basket => basket.loading
+);
 
-export const getBasketError = createSelector(getBasketState, basket => basket.error);
+export const getBasketError = createSelector(
+  getBasketState,
+  basket => basket.error
+);
 
 export const getBasketEligibleShippingMethods = createSelector(
   getBasketState,
   basket => basket.eligibleShippingMethods
 );
 
-export const getBasketEligiblePaymentMethods = createSelector(getBasketState, basket => basket.eligiblePaymentMethods);
+export const getBasketEligiblePaymentMethods = createSelector(
+  getBasketState,
+  basket => basket.eligiblePaymentMethods
+);

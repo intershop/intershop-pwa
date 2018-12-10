@@ -6,7 +6,11 @@ import { takeUntil, withLatestFrom } from 'rxjs/operators';
 import { SearchMoreProducts, getSearchLoading, getSearchTerm } from 'ish-core/store/shopping/search';
 import { getPagingLoading, getTotalItems, isProductsAvailable } from 'ish-core/store/shopping/viewconf';
 
-const loading = createSelector(getSearchLoading, getPagingLoading, (a, b) => a && !b);
+const loading = createSelector(
+  getSearchLoading,
+  getPagingLoading,
+  (a, b) => a && !b
+);
 
 @Component({
   selector: 'ish-search-page-container',

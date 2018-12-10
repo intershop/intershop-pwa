@@ -3,7 +3,7 @@
 exports[`Cms Container Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="6.1.6"
+  ng-version="7.1.2"
 >
   <div
     class="content-container col-12 col-md-6 col-lg-4 float-left foo-class"

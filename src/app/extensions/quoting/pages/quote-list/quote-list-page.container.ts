@@ -11,10 +11,11 @@ import {
   getQuoteRequestLoading,
 } from '../../store/quote-request';
 
-const getQuotesAndQuoteRequests = createSelector(getCurrentQuotes, getCurrentQuoteRequests, (quotes, quoteRequests) => [
-  ...quotes,
-  ...quoteRequests,
-]);
+const getQuotesAndQuoteRequests = createSelector(
+  getCurrentQuotes,
+  getCurrentQuoteRequests,
+  (quotes, quoteRequests) => [...quotes, ...quoteRequests]
+);
 
 @Component({
   selector: 'ish-quote-list-page-container',

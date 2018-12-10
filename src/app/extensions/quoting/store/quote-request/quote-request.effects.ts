@@ -218,11 +218,10 @@ export class QuoteRequestEffects {
     })),
     concatMap(payload =>
       forkJoin(
-        payload.updatedItems.map(
-          item =>
-            item.quantity > 0
-              ? this.quoteRequestService.updateQuoteRequestItem(payload.quoteRequestId, item)
-              : this.quoteRequestService.removeItemFromQuoteRequest(payload.quoteRequestId, item.itemId)
+        payload.updatedItems.map(item =>
+          item.quantity > 0
+            ? this.quoteRequestService.updateQuoteRequestItem(payload.quoteRequestId, item)
+            : this.quoteRequestService.removeItemFromQuoteRequest(payload.quoteRequestId, item.itemId)
         )
       ).pipe(
         defaultIfEmpty(undefined),
