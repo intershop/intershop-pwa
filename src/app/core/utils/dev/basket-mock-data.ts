@@ -142,7 +142,6 @@ export class BasketMockData {
       },
       valueRebates: [
         {
-          name: 'appliedRebate',
           amount: {
             value: 11.9,
             currencyMnemonic: 'USD',
@@ -152,7 +151,6 @@ export class BasketMockData {
       ],
       itemSurchargeTotalsByType: [
         {
-          name: 'surcharge',
           amount: {
             value: 595,
             currencyMnemonic: 'USD',

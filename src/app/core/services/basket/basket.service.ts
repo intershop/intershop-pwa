@@ -1,7 +1,10 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { BasketItemData } from '../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../models/basket-item/basket-item.mapper';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
@@ -13,8 +16,19 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, resolveLinks, unpackEnvelope } from '../api/api.service';
 
-export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
+export declare type BasketUpdateType =
+  | { invoiceToAddress: string }
+  | { commonShipToAddress: string }
+  | { commonShippingMethod: string }
+  | { calculationState: string };
 export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
+export declare type BasketIncludeType =
+  | 'invoiceToAddress'
+  | 'commonShipToAddress'
+  | 'commonShippingMethod'
+  | 'discounts'
+  | 'lineItems'
+  | 'attributes';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -23,26 +37,61 @@ export declare type BasketItemUpdateType = { quantity: { value: number } } | { s
 export class BasketService {
   constructor(private apiService: ApiService) {}
 
+  // declare http header for Basket API v1
+  private basketHeaders = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('Accept', 'application/vnd.intershop.basket.v1+json');
+
   /**
-   * Get the basket for the given basket id or fallback to '-' as basket id to get the current basket for the current user.
+   * Get the basket for the given basket id or fallback to 'current' as basket id to get the current basket for the current user.
    * @param basketId  The basket id.
+   * @param include   The name of related objects which are to be included into the response;
+   *                  If the parameter is missing all possible data is included
+   *                  If the parameter is empty no additional data is included
    * @returns         The basket.
    */
-  getBasket(basketId: string = '-'): Observable<Basket> {
-    return this.apiService.get<BasketData>(`baskets/${basketId}`).pipe(map(BasketMapper.fromData));
+  getBasket(
+    basketId: string = 'current',
+    includes: BasketIncludeType[] = ['invoiceToAddress', 'commonShipToAddress', 'commonShippingMethod', 'discounts']
+  ): Observable<Basket> {
+    const includeStr = includes && includes.length > 0 ? '?include=' + includes.join('&include=') : '';
+
+    return this.apiService
+      .get<BasketData>(`baskets/${basketId}${includeStr}`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(BasketMapper.fromData));
   }
 
   /**
-   * Updates the basket for the given basket id or fallback to '-' as basket id.
+   * Creates a basket for the current user.
+   * @returns         The basket.
+   */
+  createBasket(): Observable<Basket> {
+    return this.apiService
+      .post<BasketData>(
+        `baskets`,
+        {},
+        {
+          headers: this.basketHeaders,
+        }
+      )
+      .pipe(map(BasketMapper.fromData));
+  }
+
+  /**
+   * Updates the basket for the given basket id or fallback to 'current' as basket id.
    * @param basketId  The basket id.
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
    * @returns         The basket.
    */
-  updateBasket(basketId: string = '-', body: BasketUpdateType): Observable<Basket> {
+  updateBasket(basketId: string = 'current', body: BasketUpdateType): Observable<Basket> {
     if (!body) {
       return throwError('updateBasket() called without body');
     }
-    return this.apiService.put(`baskets/${basketId}`, body);
+    return this.apiService.patch(`baskets/${basketId}`, body, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**
@@ -63,24 +112,24 @@ export class BasketService {
 
   /**
    * Adds a list of items with the given sku and quantity to the given basket.
-   * @param items     The list of product SKU and quantity pairs to be added to the basket.
    * @param basketId  The id of the basket to add the items to.
+   * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
+  addItemsToBasket(basketId: string, items: { sku: string; quantity: number }[]): Observable<void> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
 
-    const body = {
-      elements: items.map(item => ({
-        sku: item.sku,
-        quantity: {
-          value: item.quantity,
-        },
-      })),
-    };
+    const body = items.map(item => ({
+      product: item.sku,
+      quantity: {
+        value: item.quantity,
+      },
+    }));
 
-    return this.apiService.post(`baskets/${basketId}/items`, body);
+    return this.apiService.post(`baskets/${basketId}/items`, body, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**
@@ -104,38 +153,40 @@ export class BasketService {
    * @param body      request body
    */
   updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<void> {
-    return this.apiService.put(`baskets/${basketId}/items/${itemId}`, body);
+    return this.apiService.patch(`baskets/${basketId}/items/${itemId}`, body, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**
    * Remove specific line item from the given basket.
-   * @param itemId    The id of the line item that should be deleted.
    * @param basketId  The id of the basket where the item should be removed.
+   * @param itemId    The id of the line item that should be deleted.
    */
-  deleteBasketItem(itemId: string, basketId: string): Observable<void> {
-    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  deleteBasketItem(basketId: string, itemId: string): Observable<void> {
+    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**
-   * Get basket item options for selected basket item.
+   * Get eligible shipping methods for the selected basket.
    * @param basketId  The basket id.
-   * @param itemId    The id of the line item that should be updated.
-   * @returns         The basket item options.
+   * @returns         The eligible shipping methods.
    */
-  getBasketItemOptions(
-    basketId: string,
-    itemId: string
-  ): Observable<{
-    eligibleShippingMethods: { shippingMethods: ShippingMethod[] };
-  }> {
+  getBasketEligibleShippingMethods(basketId: string): Observable<ShippingMethod[]> {
     if (!basketId) {
-      return throwError('getBasketItemOptions() called without basketId');
-    }
-    if (!itemId) {
-      return throwError('getBasketItemOptions() called without itemId');
+      return throwError('getBasketEligibleShippingMethods() called without basketId');
     }
 
-    return this.apiService.options(`baskets/${basketId}/items/${itemId}`);
+    return this.apiService
+      .get(`baskets/${basketId}/eligible-shipping-methods`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(({ data }) => data),
+        map(data => data.map(ShippingMethodMapper.fromData))
+      );
   }
 
   /**

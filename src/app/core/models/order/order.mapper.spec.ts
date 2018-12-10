@@ -35,7 +35,6 @@ describe('Order Mapper', () => {
         },
         valueRebates: [
           {
-            name: 'appliedRebate',
             amount: {
               value: 11.9,
               currencyMnemonic: 'USD',
