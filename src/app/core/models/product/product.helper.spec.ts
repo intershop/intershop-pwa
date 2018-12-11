@@ -1,5 +1,9 @@
 import * as using from 'jasmine-data-provider';
 
+import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+
+import { ProductDataStub } from './product.interface';
 import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper } from './product.model';
 
@@ -172,6 +176,32 @@ describe('Product Helper', () => {
         const product = ProductMapper.fromData(dataSlice.product);
         expect(ProductHelper.isMasterProduct(product)).toEqual(dataSlice.expected);
       });
+    });
+  });
+
+  describe('get attributes', () => {
+    it('should return attribute when attribute is defined', () => {
+      const productData = {
+        attributes: [{ name: 'sku', type: 'string', value: '01234567' }],
+        description: '',
+      } as ProductDataStub;
+      expect(ProductHelper.getAttributeByAttributeName(productData, 'sku').value).toBe('01234567');
+    });
+
+    it('should return attribute of attribute group when attribute group is defined', () => {
+      const attributeGroup = {
+        attributes: [{ name: 'sale', type: 'string', value: 'sale' }],
+      } as AttributeGroup;
+      const product = {
+        name: 'FakeProduct',
+        sku: 'sku',
+        attributeGroups: {
+          [AttributeGroupTypes.ProductLabelAttributes]: attributeGroup,
+        } as { [id: string]: AttributeGroup },
+      } as Product;
+      const attributes = ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductLabelAttributes);
+      expect(attributes).not.toBeEmpty();
+      expect(attributes[0].name).toBe('sale');
     });
   });
 });
