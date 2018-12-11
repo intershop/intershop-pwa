@@ -19,16 +19,13 @@ stat src/app/shared/warehouse/containers/warehouse/warehouse.container.ts
 grep "WarehouseContainerComponent" src/app/shared/shared.module.ts
 
 
-(cd src/app/pages && npx ng g module warehouses/warehouses-page --flat)
+npx ng g p warehouses
 stat src/app/pages/warehouses/warehouses-page.module.ts
-
-(cd src/app/pages/warehouses && npx ng g cc warehouses-page --flat)
 stat src/app/pages/warehouses/warehouses-page.container.ts
 grep "WarehousesPageContainerComponent" src/app/pages/warehouses/warehouses-page.module.ts
-
-npx ng g c src/app/pages/warehouses/warehouses-page
 stat src/app/pages/warehouses/components/warehouses-page/warehouses-page.component.ts
 grep "WarehousesPageComponent" src/app/pages/warehouses/warehouses-page.module.ts
+grep "warehouses" src/app/pages/app-routing.module.ts
 
 
 npx ng g s super -e awesome

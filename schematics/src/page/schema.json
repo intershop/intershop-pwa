@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAPage",
+  "title": "PWA Page Options Schema",
+  "type": "object",
+  "description": "Creates a new page.",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "visible": false,
+      "default": true
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the page.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the page?"
+    },
+    "extension": {
+      "type": "string",
+      "description": "The extension to generate the page in. If empty it is generated in the project root.",
+      "alias": "e"
+    }
+  }
+}

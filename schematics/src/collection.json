@@ -31,6 +31,7 @@
       "schema": "./pipe/schema.json"
     },
     "page": {
+      "aliases": ["p"],
       "factory": "./page/factory#createPage",
       "description": "Create a page.",
       "schema": "./page/schema.json"

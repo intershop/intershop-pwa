@@ -30,7 +30,10 @@ export function applyNameAndPath(
   }
 
   const parsedPath = parseName(path || buildDefaultPath(project), name);
-  name = parsedPath.name.replace(new RegExp(`\-?${artifact}$`), '');
+  name = parsedPath.name;
+  if (artifact) {
+    name = name.replace(new RegExp(`\-?${artifact}$`), '');
+  }
 
   if (!options.restricted) {
     path = parsedPath.path;
@@ -45,15 +48,32 @@ export function applyNameAndPath(
 
   validateName(name);
 
-  const kebab = strings.dasherize(name);
-  const moduleImportPath = `/${path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
-
-  const artifactName = strings.classify(`${name}-${artifact}`);
-
   return {
     ...options,
     name,
     path,
+  };
+}
+
+export function determineArtifactName(
+  artifact: string,
+  _: Tree,
+  options: {
+    project?: string;
+    name?: string;
+    path?: string;
+    restricted?: boolean;
+    flat?: boolean;
+    artifactFolder?: boolean;
+  }
+) {
+  const kebab = strings.dasherize(options.name);
+  const moduleImportPath = `/${options.path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
+
+  const artifactName = strings.classify(`${options.name}-${artifact}`);
+
+  return {
+    ...options,
     moduleImportPath,
     artifactName,
   };
@@ -76,7 +96,8 @@ export function detectExtension(
   let path = options.path;
   if (options.restricted) {
     if (!extension) {
-      path = `${project.sourceRoot}/app/core/${artifact}s/`;
+      const rootLocation = artifact === 'page' ? '' : 'core/';
+      path = `${project.sourceRoot}/app/${rootLocation}${artifact}s/`;
     } else {
       path = `${project.sourceRoot}/app/extensions/${extension}/${artifact}s/`;
     }
