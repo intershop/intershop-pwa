@@ -9,7 +9,10 @@ import { getContentPageletEntities } from '../pagelets';
 
 import { includesAdapter } from './includes.reducer';
 
-const getIncludesState = createSelector(getContentState, state => state.includes);
+const getIncludesState = createSelector(
+  getContentState,
+  state => state.includes
+);
 
 const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelectors(getIncludesState);
 

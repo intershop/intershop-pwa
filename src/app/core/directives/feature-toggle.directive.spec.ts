@@ -5,10 +5,10 @@ import { FeatureToggleModule } from '../feature-toggle.module';
 
 @Component({
   template: `
-  <div>unrelated</div>
-  <div *ishFeature="'feature1'">content1</div>
-  <div *ishFeature="'feature2'">content2</div>
-  <div *ishFeature="'feature3'">content3</div>
+    <div>unrelated</div>
+    <div *ishFeature="'feature1'">content1</div>
+    <div *ishFeature="'feature2'">content2</div>
+    <div *ishFeature="'feature3'">content3</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

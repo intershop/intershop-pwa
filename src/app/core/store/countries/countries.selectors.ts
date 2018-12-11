@@ -10,4 +10,7 @@ export const { selectEntities: getCountryEntities, selectAll: getAllCountries } 
   getCountriesState
 );
 
-export const getCountriesLoading = createSelector(getCountriesState, countries => countries.loading);
+export const getCountriesLoading = createSelector(
+  getCountriesState,
+  countries => countries.loading
+);

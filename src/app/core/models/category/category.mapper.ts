@@ -13,11 +13,13 @@ export class CategoryMapper {
     if (path && path.length) {
       const ret = [];
       ret.push(path[0].id);
-      path.map(el => el.id).reduce((acc, item) => {
-        const r = acc + CategoryHelper.uniqueIdSeparator + item;
-        ret.push(r);
-        return r;
-      });
+      path
+        .map(el => el.id)
+        .reduce((acc, item) => {
+          const r = acc + CategoryHelper.uniqueIdSeparator + item;
+          ret.push(r);
+          return r;
+        });
       return ret;
     }
     throw new Error('input is falsy');
