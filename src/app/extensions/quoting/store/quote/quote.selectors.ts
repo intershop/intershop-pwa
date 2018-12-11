@@ -8,28 +8,41 @@ import { getQuotingState } from '../quoting-store';
 
 import { initialState } from './quote.reducer';
 
-const getQuoteState = createSelector(getQuotingState, state => (state ? state.quote : initialState));
+const getQuoteState = createSelector(
+  getQuotingState,
+  state => (state ? state.quote : initialState)
+);
 
-export const getSelectedQuoteId = createSelector(getQuoteState, state => state.selected);
+export const getSelectedQuoteId = createSelector(
+  getQuoteState,
+  state => state.selected
+);
 
-export const getCurrentQuotes = createSelector(getQuoteState, state => {
-  const quotes: Quote[] = [];
+export const getCurrentQuotes = createSelector(
+  getQuoteState,
+  state => {
+    const quotes: Quote[] = [];
 
-  for (const item of state.quotes) {
-    quotes.push({
-      ...item,
-      state: QuoteHelper.getQuoteState(item),
-    });
+    for (const item of state.quotes) {
+      quotes.push({
+        ...item,
+        state: QuoteHelper.getQuoteState(item),
+      });
+    }
+
+    return quotes;
   }
-
-  return quotes;
-});
+);
 
 /**
  * Select the selected quote with the appended product data if available.
  */
 export const getSelectedQuote = createSelector(
-  createSelector(getCurrentQuotes, getSelectedQuoteId, (items, id) => items.filter(item => item.id === id).pop()),
+  createSelector(
+    getCurrentQuotes,
+    getSelectedQuoteId,
+    (items, id) => items.filter(item => item.id === id).pop()
+  ),
   getProductEntities,
   (quote, products) =>
     !quote
@@ -44,6 +57,12 @@ export const getSelectedQuote = createSelector(
         }
 );
 
-export const getQuoteLoading = createSelector(getQuoteState, state => state.loading);
+export const getQuoteLoading = createSelector(
+  getQuoteState,
+  state => state.loading
+);
 
-export const getQuoteError = createSelector(getQuoteState, state => state.error);
+export const getQuoteError = createSelector(
+  getQuoteState,
+  state => state.error
+);

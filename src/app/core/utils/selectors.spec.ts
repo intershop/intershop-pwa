@@ -37,7 +37,10 @@ describe('Selectors', () => {
 
     it('should select a value when key is selected', () => {
       store.dispatch({ type: 'dummy', payload: { key: 'value' } } as Action);
-      const getKey = createSelector(getState, (state: any) => state.key);
+      const getKey = createSelector(
+        getState,
+        (state: any) => state.key
+      );
       expect(getKey(store.state)).toEqual('value');
     });
   });
@@ -47,8 +50,14 @@ describe('Selectors', () => {
     let getSecond: Selector<any, string>;
 
     beforeEach(() => {
-      getFirst = createSelector(getState, (state: any) => state.first);
-      getSecond = createSelector(getState, (state: any) => state.second);
+      getFirst = createSelector(
+        getState,
+        (state: any) => state.first
+      );
+      getSecond = createSelector(
+        getState,
+        (state: any) => state.second
+      );
     });
 
     it('should select the first if both are available', () => {

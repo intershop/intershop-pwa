@@ -16,9 +16,8 @@ export class CompareEffects {
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
-    map(
-      ({ sku, isInList }) =>
-        isInList ? new compareActions.RemoveFromCompare(sku) : new compareActions.AddToCompare(sku)
+    map(({ sku, isInList }) =>
+      isInList ? new compareActions.RemoveFromCompare(sku) : new compareActions.AddToCompare(sku)
     )
   );
 }

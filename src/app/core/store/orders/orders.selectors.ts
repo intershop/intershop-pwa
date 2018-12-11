@@ -11,7 +11,10 @@ const getOrdersState = (state: CoreState) => state.orders;
 
 const { selectEntities: getOrderEntities, selectAll: getOrdersInternal } = orderAdapter.getSelectors(getOrdersState);
 
-export const getSelectedOrderId = createSelector(getOrdersState, state => state.selected);
+export const getSelectedOrderId = createSelector(
+  getOrdersState,
+  state => state.selected
+);
 
 /*
   ToDo: create a helper method for the duplicated code
@@ -34,7 +37,10 @@ export const getSelectedOrder = createSelector(
         }
 );
 
-export const getOrdersLoading = createSelector(getOrdersState, orders => orders.loading);
+export const getOrdersLoading = createSelector(
+  getOrdersState,
+  orders => orders.loading
+);
 
 export const getOrders = createSelector(
   getOrdersInternal,
