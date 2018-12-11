@@ -15,7 +15,10 @@ function applyNameAndPath(artifact, host, options) {
         name = name.substr(8);
     }
     const parsedPath = parse_name_1.parseName(path || project_1.buildDefaultPath(project), name);
-    name = parsedPath.name.replace(new RegExp(`\-?${artifact}$`), '');
+    name = parsedPath.name;
+    if (artifact) {
+        name = name.replace(new RegExp(`\-?${artifact}$`), '');
+    }
     if (!options.restricted) {
         path = parsedPath.path;
     }
@@ -27,15 +30,18 @@ function applyNameAndPath(artifact, host, options) {
         }
     }
     validation_1.validateName(name);
-    const kebab = core_1.strings.dasherize(name);
-    const moduleImportPath = `/${path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
-    const artifactName = core_1.strings.classify(`${name}-${artifact}`);
     return Object.assign({}, options, { name,
-        path,
-        moduleImportPath,
-        artifactName });
+        path });
 }
 exports.applyNameAndPath = applyNameAndPath;
+function determineArtifactName(artifact, _, options) {
+    const kebab = core_1.strings.dasherize(options.name);
+    const moduleImportPath = `/${options.path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
+    const artifactName = core_1.strings.classify(`${options.name}-${artifact}`);
+    return Object.assign({}, options, { moduleImportPath,
+        artifactName });
+}
+exports.determineArtifactName = determineArtifactName;
 function detectExtension(artifact, host, options) {
     const project = project_1.getProject(host, options.project);
     let extension = options.extension;
@@ -47,7 +53,8 @@ function detectExtension(artifact, host, options) {
     let path = options.path;
     if (options.restricted) {
         if (!extension) {
-            path = `${project.sourceRoot}/app/core/${artifact}s/`;
+            const rootLocation = artifact === 'page' ? '' : 'core/';
+            path = `${project.sourceRoot}/app/${rootLocation}${artifact}s/`;
         }
         else {
             path = `${project.sourceRoot}/app/extensions/${extension}/${artifact}s/`;
