@@ -34,11 +34,20 @@ describe('Product Tile Component', () => {
           inputs: ['product'],
         }),
         MockComponent({
+          selector: 'ish-product-image',
+          template: 'Product Image Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-label',
+          template: 'Product Label Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
           selector: 'ish-product-price',
           template: 'Product Price Component',
           inputs: ['product', 'showInformationalPrice'],
         }),
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
         ProductTileComponent,
       ],
     }).compileComponents();

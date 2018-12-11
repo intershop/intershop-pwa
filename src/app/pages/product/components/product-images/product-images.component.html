@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-2 d-none d-lg-block">
+  <div class="col-lg-3 d-none d-lg-block">
     <div class="product-img-thumbs" data-type="S">
       <div class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(0) }" (click)="setActiveSlide(0)">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
@@ -10,7 +10,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12 col-lg-10 product-detail-img clearfix">
+  <div class="col-12 col-lg-9 product-detail-img clearfix">
     <div class="product-image-container">
       <ngb-carousel
         [activeId]="activeSlide"
@@ -26,6 +26,7 @@
           <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
         </ng-template>
       </ngb-carousel>
+      <ish-product-label [product]="product"></ish-product-label>
     </div>
   </div>
 </div>
