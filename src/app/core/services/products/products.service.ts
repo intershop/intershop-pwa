@@ -15,7 +15,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private productMapper: ProductMapper) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -29,7 +29,9 @@ export class ProductsService {
 
     const params = new HttpParams().set('allImages', 'true');
 
-    return this.apiService.get<ProductData>(`products/${sku}`, { params }).pipe(map(ProductMapper.fromData));
+    return this.apiService
+      .get<ProductData>(`products/${sku}`, { params })
+      .pipe(map(element => this.productMapper.fromData(element)));
   }
 
   /**
@@ -67,7 +69,7 @@ export class ProductsService {
       )
       .pipe(
         map(response => ({
-          products: response.elements.map((element: ProductDataStub) => ProductMapper.fromStubData(element) as Product),
+          products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
           categoryUniqueId,
           total: !!response.total ? response.total : response.elements.length,
@@ -102,7 +104,7 @@ export class ProductsService {
       .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
       .pipe(
         map(response => ({
-          products: response.elements.map(element => ProductMapper.fromStubData(element) as Product),
+          products: response.elements.map(element => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
           total: !!response.total ? response.total : response.elements.length,
         }))

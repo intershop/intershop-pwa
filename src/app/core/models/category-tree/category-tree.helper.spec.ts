@@ -1,5 +1,7 @@
+import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { Category } from '../category/category.model';
@@ -287,10 +289,16 @@ describe('Category Tree Helper', () => {
       } as CategoryData;
       const catBRaw = { categoryPath: [{ id: 'B' }] } as CategoryData;
       let tree: CategoryTree;
+      let categoryMapper: CategoryMapper;
 
       beforeEach(() => {
+        TestBed.configureTestingModule({
+          providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
+        });
+        categoryMapper = TestBed.get(CategoryMapper);
+
         tree = [catARaw, catBRaw].reduce(
-          (acc, val) => CategoryTreeHelper.merge(acc, CategoryMapper.fromData(val)),
+          (acc, val) => CategoryTreeHelper.merge(acc, categoryMapper.fromData(val)),
           CategoryTreeHelper.empty()
         );
       });
@@ -310,7 +318,7 @@ describe('Category Tree Helper', () => {
 
         beforeEach(() => {
           const catAbUpdateRaw = { ...catAbRaw, name: 'update' };
-          catAbUpdateTree = CategoryMapper.fromData(catAbUpdateRaw);
+          catAbUpdateTree = categoryMapper.fromData(catAbUpdateRaw);
           // increase completeness level to always perform an update
           catAbUpdateTree.nodes['A.b'].completenessLevel = tree.nodes['A.b'].completenessLevel + 1;
         });
@@ -348,7 +356,7 @@ describe('Category Tree Helper', () => {
 
         beforeEach(() => {
           const catBUpdateRaw = { ...catBRaw, name: 'update' };
-          catBUpdateTree = CategoryMapper.fromData(catBUpdateRaw);
+          catBUpdateTree = categoryMapper.fromData(catBUpdateRaw);
           // increase completeness level to always perform an update
           catBUpdateTree.nodes.B.completenessLevel = tree.nodes.B.completenessLevel + 1;
         });
