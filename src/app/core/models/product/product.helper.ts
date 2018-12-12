@@ -93,4 +93,23 @@ export class ProductHelper {
     }
     return product.attributes.find(attribute => attribute.name === attributeName);
   }
+
+  /**
+   * Get product attributes by attribute group id.
+   * @param product           The Product for which to get the attributes
+   * @param attributeGroupId  The attribute group id of the attributes to get
+   * @returns                 The product attributes of the attribute group (if any)
+   */
+  static getAttributesOfGroup(product: Product, attributeGroupId: string): Attribute[] {
+    if (
+      product &&
+      product.attributeGroups &&
+      product.attributeGroups[attributeGroupId] &&
+      product.attributeGroups[attributeGroupId].attributes &&
+      product.attributeGroups[attributeGroupId].attributes.length > 0
+    ) {
+      return product.attributeGroups[attributeGroupId].attributes;
+    }
+    return;
+  }
 }

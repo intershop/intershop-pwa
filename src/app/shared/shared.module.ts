@@ -40,6 +40,7 @@ import { OrderListContainerComponent } from './order/containers/order-list/order
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
+import { ProductLabelComponent } from './product/components/product-label/product-label.component';
 import { ProductListPagingComponent } from './product/components/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
@@ -78,6 +79,7 @@ const declaredComponents = [
   FilterSwatchImagesComponent,
   LineItemDescriptionComponent,
   OrderListComponent,
+  ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
@@ -104,6 +106,7 @@ const exportedComponents = [
   ProductAddToBasketComponent,
   ProductAttributesComponent,
   ProductInventoryComponent,
+  ProductLabelComponent,
   ProductListContainerComponent,
   ProductPriceComponent,
   ProductShipmentComponent,

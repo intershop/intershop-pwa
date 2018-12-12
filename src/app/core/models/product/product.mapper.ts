@@ -67,6 +67,7 @@ export class ProductMapper {
       // TODO: will be supplied by REST API with ISREST-401
       minOrderQuantity: 1,
       attributes: [],
+      attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
       type: ProductType.Product,
@@ -87,6 +88,7 @@ export class ProductMapper {
       minOrderQuantity: data.minOrderQuantity || 1,
       maxOrderQuantity: data.maxOrderQuantity || 100,
       attributes: data.attributes,
+      attributeGroups: data.attributeGroups,
       images: data.images,
       listPrice: filterPrice(data.listPrice),
       salePrice: filterPrice(data.salePrice),

@@ -3,6 +3,7 @@
     <a [routerLink]="generateProductRoute(product, category)">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     </a>
+    <ish-product-label [product]="product"></ish-product-label>
   </div>
 
   <a class="product-title" [routerLink]="generateProductRoute(product, category)">{{product.name}}</a>
