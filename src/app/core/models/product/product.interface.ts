@@ -1,4 +1,5 @@
 // tslint:disable:no-any
+import { AttributeGroup } from '../attribute-group/attribute-group.model';
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
@@ -58,9 +59,11 @@ export interface ProductData {
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   attributes?: Attribute[];
+  attributeGroups?: { [id: string]: AttributeGroup };
 }
 
 export interface ProductDataStub {
+  attributeGroups?: { [id: string]: AttributeGroup };
   attributes: Attribute[];
   description: string;
   title: string;

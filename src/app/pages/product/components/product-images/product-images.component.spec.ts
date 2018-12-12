@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { ProductImagesComponent } from './product-images.component';
 
@@ -57,15 +59,20 @@ describe('Product Images Component', () => {
       },
     ];
     TestBed.configureTestingModule({
-      imports: [NgbCarouselModule],
+      imports: [NgbCarouselModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent({
           selector: 'ish-product-image',
           template: '<img src="/assets/product_img/a.jpg" />',
           inputs: ['product', 'imageType', 'class', 'imageView'],
         }),
+        MockComponent({
+          selector: 'ish-product-label',
+          inputs: ['product'],
+        }),
         ProductImagesComponent,
       ],
+      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
     }).compileComponents();
   }));
 

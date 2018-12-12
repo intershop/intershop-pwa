@@ -1,3 +1,4 @@
+import { AttributeGroup } from '../attribute-group/attribute-group.model';
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
@@ -13,6 +14,7 @@ export interface Product {
   minOrderQuantity: number;
   maxOrderQuantity?: number;
   attributes: Attribute[];
+  attributeGroups?: { [id: string]: AttributeGroup };
   images: Image[];
   listPrice: Price;
   salePrice: Price;
