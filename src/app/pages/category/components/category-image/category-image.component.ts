@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 /**
  * The Category Image Component renders an HTML tag img of an image of a Category.
@@ -20,8 +19,6 @@ export class CategoryImageComponent implements OnChanges {
 
   categoryImageUrl = '/assets/img/not_available.png';
 
-  constructor(@Inject(ICM_BASE_URL) public icmBaseURL) {}
-
   ngOnChanges() {
     this.setCategoryImageUrl();
   }
@@ -37,7 +34,7 @@ export class CategoryImageComponent implements OnChanges {
       this.category.images[0].effectiveUrl &&
       this.category.images[0].effectiveUrl.length > 0
     ) {
-      this.categoryImageUrl = `${this.icmBaseURL}${this.category.images[0].effectiveUrl}`;
+      this.categoryImageUrl = `${this.category.images[0].effectiveUrl}`;
     }
   }
 }

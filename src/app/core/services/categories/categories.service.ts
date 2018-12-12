@@ -14,7 +14,7 @@ import { ApiService, unpackEnvelope } from '../api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private categoryMapper: CategoryMapper) {}
 
   /**
    * Get the full Category data for the given unique category ID.
@@ -28,7 +28,7 @@ export class CategoriesService {
 
     return this.apiService
       .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`)
-      .pipe(map(CategoryMapper.fromData));
+      .pipe(map(element => this.categoryMapper.fromData(element)));
   }
 
   /**
@@ -45,7 +45,9 @@ export class CategoriesService {
     return this.apiService.get('categories', { params }).pipe(
       unpackEnvelope<CategoryData>(),
       map(categoriesData =>
-        categoriesData.map(CategoryMapper.fromData).reduce((a, b) => CategoryTreeHelper.merge(a, b))
+        categoriesData
+          .map(element => this.categoryMapper.fromData(element))
+          .reduce((a, b) => CategoryTreeHelper.merge(a, b))
       )
     );
   }

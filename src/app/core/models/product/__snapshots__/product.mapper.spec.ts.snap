@@ -7,7 +7,7 @@ Object {
   "availability": true,
   "images": Array [
     Object {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
       "imageActualHeight": undefined,
       "imageActualWidth": undefined,
       "name": "front M",
@@ -17,7 +17,7 @@ Object {
       "viewID": "front",
     },
     Object {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
       "imageActualHeight": undefined,
       "imageActualWidth": undefined,
       "name": "front S",

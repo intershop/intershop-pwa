@@ -1,17 +1,32 @@
+import { TestBed, async } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
+import { anything, spy, verify } from 'ts-mockito';
 
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
+import { ImageMapper } from '../image/image.mapper';
 
 import { CategoryData } from './category.interface';
 import { CategoryMapper } from './category.mapper';
 import { Category } from './category.model';
 
 describe('Category Mapper', () => {
+  let categoryMapper: CategoryMapper;
+  let imageMapper: ImageMapper;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
+    });
+    categoryMapper = TestBed.get(CategoryMapper);
+    imageMapper = spy(TestBed.get(ImageMapper));
+  }));
+
   describe('mapCategoryPath()', () => {
     it('should throw on falsy or empty input', () => {
-      expect(() => CategoryMapper.mapCategoryPath(undefined)).toThrowError('input is falsy');
-      expect(() => CategoryMapper.mapCategoryPath(undefined)).toThrow('input is falsy');
-      expect(() => CategoryMapper.mapCategoryPath([])).toThrow('input is falsy');
+      expect(() => categoryMapper.mapCategoryPath(undefined)).toThrowError('input is falsy');
+      expect(() => categoryMapper.mapCategoryPath(undefined)).toThrow('input is falsy');
+      expect(() => categoryMapper.mapCategoryPath([])).toThrow('input is falsy');
     });
 
     using(
@@ -22,7 +37,7 @@ describe('Category Mapper', () => {
       ],
       slice => {
         it(`should return ${slice.result} when mapping path from '${JSON.stringify(slice.path)}'`, () => {
-          expect(CategoryMapper.mapCategoryPath(slice.path)).toEqual(slice.result);
+          expect(categoryMapper.mapCategoryPath(slice.path)).toEqual(slice.result);
         });
       }
     );
@@ -30,8 +45,8 @@ describe('Category Mapper', () => {
 
   describe('categoriesFromCategoryPath()', () => {
     it('should return empty tree on falsy or empty imput', () => {
-      expect(CategoryMapper.categoriesFromCategoryPath(undefined)).toEqual(categoryTree());
-      expect(CategoryMapper.categoriesFromCategoryPath([])).toEqual(categoryTree());
+      expect(categoryMapper.categoriesFromCategoryPath(undefined)).toEqual(categoryTree());
+      expect(categoryMapper.categoriesFromCategoryPath([])).toEqual(categoryTree());
     });
 
     const cat1 = { uniqueId: '1', categoryPath: ['1'], completenessLevel: 0, name: 'n1' } as Category;
@@ -56,7 +71,7 @@ describe('Category Mapper', () => {
         it(`should return tree with ${Object.keys(slice.result.nodes)} when mapping path from '${JSON.stringify(
           slice.path
         )}'`, () => {
-          expect(CategoryMapper.categoriesFromCategoryPath(slice.path)).toEqual(slice.result);
+          expect(categoryMapper.categoriesFromCategoryPath(slice.path)).toEqual(slice.result);
         });
       }
     );
@@ -64,61 +79,64 @@ describe('Category Mapper', () => {
 
   describe('computeCompleteness()', () => {
     it('should return -1 for falsy inputs', () => {
-      expect(CategoryMapper.computeCompleteness(undefined)).toEqual(-1);
+      expect(categoryMapper.computeCompleteness(undefined)).toEqual(-1);
     });
     it('should return 0 for input from top level call', () => {
-      expect(CategoryMapper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
+      expect(categoryMapper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
     });
     it('should return 1 for input from subcategories from category call', () => {
-      expect(CategoryMapper.computeCompleteness({ uri: 'some', images: [{}] } as CategoryData)).toEqual(1);
+      expect(categoryMapper.computeCompleteness({ uri: 'some', images: [{}] } as CategoryData)).toEqual(1);
     });
     it('should return 2 for input from categories call', () => {
-      expect(CategoryMapper.computeCompleteness({ images: [{}], categoryPath: [{}, {}] } as CategoryData)).toEqual(2);
+      expect(categoryMapper.computeCompleteness({ images: [{}], categoryPath: [{}, {}] } as CategoryData)).toEqual(2);
     });
     it('should return 2 for input from categories call with root categories', () => {
-      expect(CategoryMapper.computeCompleteness({ categoryPath: [{}] } as CategoryData)).toEqual(2);
+      expect(categoryMapper.computeCompleteness({ categoryPath: [{}] } as CategoryData)).toEqual(2);
     });
   });
 
   describe('fromDataSingle()', () => {
     it('should throw an error when input is falsy', () => {
-      expect(() => CategoryMapper.fromDataSingle(undefined)).toThrow();
+      expect(() => categoryMapper.fromDataSingle(undefined)).toThrow();
     });
 
     it('should return Category when supplied with raw CategoryData', () => {
-      const category = CategoryMapper.fromDataSingle({ categoryPath: [{ id: '1' }] } as CategoryData);
+      const category = categoryMapper.fromDataSingle({ categoryPath: [{ id: '1' }] } as CategoryData);
       expect(category).toBeTruthy();
+      verify(imageMapper.fromImages(anything())).once();
     });
 
     it('should insert uniqueId of raw CategoryData when categoryPath is supplied', () => {
-      const category = CategoryMapper.fromDataSingle({ categoryPath: [{ id: '1' }] } as CategoryData);
+      const category = categoryMapper.fromDataSingle({ categoryPath: [{ id: '1' }] } as CategoryData);
       expect(category.uniqueId).toEqual('1');
+      verify(imageMapper.fromImages(anything())).once();
     });
 
     it('should use categoryPath of raw CategoryData when creating uniqueId and categoryPath', () => {
-      const category = CategoryMapper.fromDataSingle({
+      const category = categoryMapper.fromDataSingle({
         categoryPath: [{ id: '1' }, { id: '2' }],
       } as CategoryData);
       expect(category.uniqueId).toEqual('1.2');
       expect(category.categoryPath).toEqual(['1', '1.2']);
+      verify(imageMapper.fromImages(anything())).once();
     });
   });
 
   describe('fromData', () => {
     it(`should throw error when input is falsy`, () => {
-      expect(() => CategoryMapper.fromData(undefined)).toThrow();
+      expect(() => categoryMapper.fromData(undefined)).toThrow();
     });
 
     it(`should return something truthy when mapping a raw CategoryData`, () => {
       expect(
-        CategoryMapper.fromData({
+        categoryMapper.fromData({
           categoryPath: [{ id: '1' }, { id: '2' }],
         } as CategoryData)
       ).toBeTruthy();
     });
 
     it(`should return CategoryTree with one root node when raw CategoryData only has one`, () => {
-      const tree = CategoryMapper.fromData({
+      const tree = categoryMapper.fromData({
         categoryPath: [{ id: '1' }],
       } as CategoryData);
       expect(tree).toBeTruthy();
@@ -128,10 +146,11 @@ describe('Category Mapper', () => {
       expect(rootNode).toBeTruthy();
       expect(rootNode.uniqueId).toEqual('1');
       expect(tree.edges).toBeEmpty();
+      verify(imageMapper.fromImages(anything())).once();
     });
 
     it(`should return CategoryTree with node and computed uniqueid when raw CategoryData was supplied with categoryPath`, () => {
-      const tree = CategoryMapper.fromData({
+      const tree = categoryMapper.fromData({
         categoryPath: [{ id: '1' }, { id: '2' }],
       } as CategoryData);
       expect(tree).toBeTruthy();
@@ -146,7 +165,7 @@ describe('Category Mapper', () => {
     });
 
     it(`should handle sub categories on raw CategoryData`, () => {
-      const tree = CategoryMapper.fromData({
+      const tree = categoryMapper.fromData({
         categoryPath: [{ id: '1' }],
         subCategories: [{ categoryPath: [{ id: '1' }, { id: '2' }] } as CategoryData],
       } as CategoryData);
