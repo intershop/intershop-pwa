@@ -79,23 +79,21 @@ export function constructUrlForPath(
 ): string {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
-  } else {
-    switch (method) {
-      case 'GET':
-      case 'OPTIONS':
-        let localeAndCurrency = '';
-        if (!!currentLocale) {
-          localeAndCurrency = `;loc=${currentLocale.lang};cur=${currentLocale.currency}`;
-        }
-        return `${restEndpoint}${localeAndCurrency}/${path}`;
-      case 'POST':
-      case 'PUT':
-      case 'PATCH':
-      case 'DELETE':
-        return `${restEndpoint}/${path}`;
-      default:
-        throw new Error(`unhandled method '${method}'`);
-    }
+  }
+  switch (method) {
+    case 'GET':
+    case 'OPTIONS':
+    case 'POST':
+    case 'PUT':
+    case 'PATCH':
+    case 'DELETE':
+      let localeAndCurrency = '';
+      if (!!currentLocale) {
+        localeAndCurrency = `;loc=${currentLocale.lang};cur=${currentLocale.currency}`;
+      }
+      return `${restEndpoint}${localeAndCurrency}/${path}`;
+    default:
+      throw new Error(`unhandled method '${method}'`);
   }
 }
 
@@ -145,7 +143,9 @@ export class ApiService {
    */
   put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
-      .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint), body, { headers: this.defaultHeaders })
+      .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale), body, {
+        headers: this.defaultHeaders,
+      })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
@@ -154,7 +154,7 @@ export class ApiService {
    */
   patch<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint), body, {
+      .patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale), body, {
         headers: this.defaultHeaders,
         ...options,
       })
@@ -166,7 +166,7 @@ export class ApiService {
    */
   post<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint), body, {
+      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale), body, {
         headers: this.defaultHeaders,
         ...options,
       })
@@ -178,7 +178,7 @@ export class ApiService {
    */
   delete<T>(path, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint), {
+      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale), {
         headers: this.defaultHeaders,
         ...options,
       })
