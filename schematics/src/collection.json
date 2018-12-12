@@ -35,6 +35,11 @@
       "factory": "./page/factory#createPage",
       "description": "Create a page.",
       "schema": "./page/schema.json"
+    },
+    "model": {
+      "factory": "./model/factory#createModel",
+      "description": "Create a model.",
+      "schema": "./model/schema.json"
     }
   }
 }

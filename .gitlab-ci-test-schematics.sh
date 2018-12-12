@@ -3,6 +3,15 @@
 set -x
 set -e
 
+npx ng g model warehouse
+stat src/app/core/models/warehouse/warehouse.model.ts
+stat src/app/core/models/warehouse/warehouse.interface.ts
+stat src/app/core/models/warehouse/warehouse.mapper.ts
+stat src/app/core/models/warehouse/warehouse.helper.ts
+
+npx ng g model stock --simple
+stat src/app/core/models/stock/stock.model.ts
+
 npx ng g s warehouses
 stat src/app/core/services/warehouses/warehouses.service.ts
 
