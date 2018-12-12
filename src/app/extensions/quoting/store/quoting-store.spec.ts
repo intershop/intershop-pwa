@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
@@ -13,6 +13,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { CountryService } from 'ish-core/services/country/country.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -65,6 +66,9 @@ describe('Quoting Store', () => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.icmServerURL).thenReturn('http://example.org');
 
+    const countryServiceMock = mock(CountryService);
+    when(countryServiceMock.getCountries()).thenReturn(EMPTY);
+
     quoteServiceMock = mock(QuoteService);
     when(quoteServiceMock.getQuotes()).thenReturn(of([]));
 
@@ -91,6 +95,7 @@ describe('Quoting Store', () => {
         QuoteRequestService,
         { provide: QuoteService, useFactory: () => instance(quoteServiceMock) },
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: AVAILABLE_LOCALES, useValue: locales },
       ],
     });
