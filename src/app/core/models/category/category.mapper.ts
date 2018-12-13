@@ -1,15 +1,22 @@
+import { Inject, Injectable } from '@angular/core';
+
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryTreeHelper } from '../category-tree/category-tree.helper';
 import { CategoryTree } from '../category-tree/category-tree.model';
+import { ImageMapper } from '../image/image.mapper';
 
 import { CategoryData, CategoryPathElement } from './category.interface';
 import { Category, CategoryHelper } from './category.model';
 
+@Injectable({ providedIn: 'root' })
 export class CategoryMapper {
+  constructor(@Inject(ICM_BASE_URL) public icmBaseURL, private imageMapper: ImageMapper) {}
+
   /**
    * Utility Method:
    * Maps the incoming raw category path to a path with unique IDs.
    */
-  static mapCategoryPath(path: CategoryPathElement[]) {
+  mapCategoryPath(path: CategoryPathElement[]) {
     if (path && path.length) {
       const ret = [];
       ret.push(path[0].id);
@@ -29,7 +36,7 @@ export class CategoryMapper {
    * Utility Method:
    * Creates Category stubs from the category path (excluding the last element)
    */
-  static categoriesFromCategoryPath(path: CategoryPathElement[]): CategoryTree {
+  categoriesFromCategoryPath(path: CategoryPathElement[]): CategoryTree {
     if (!path || !path.length) {
       return CategoryTreeHelper.empty();
     }
@@ -62,7 +69,7 @@ export class CategoryMapper {
   /**
    * Compute completeness level of incoming raw data.
    */
-  static computeCompleteness(categoryData: CategoryData): number {
+  computeCompleteness(categoryData: CategoryData): number {
     if (!categoryData) {
       return -1;
     }
@@ -89,9 +96,9 @@ export class CategoryMapper {
   /**
    * Maps a raw {@link CategoryData} element to a {@link Category} element ignoring subcategories.
    */
-  static fromDataSingle(categoryData: CategoryData): Category {
+  fromDataSingle(categoryData: CategoryData): Category {
     if (categoryData) {
-      const categoryPath = CategoryMapper.mapCategoryPath(categoryData.categoryPath);
+      const categoryPath = this.mapCategoryPath(categoryData.categoryPath);
       const uniqueId = categoryPath[categoryPath.length - 1];
 
       return {
@@ -100,8 +107,8 @@ export class CategoryMapper {
         name: categoryData.name,
         hasOnlineProducts: categoryData.hasOnlineProducts,
         description: categoryData.description,
-        images: categoryData.images,
-        completenessLevel: CategoryMapper.computeCompleteness(categoryData),
+        images: this.imageMapper.fromImages(categoryData.images),
+        completenessLevel: this.computeCompleteness(categoryData),
       };
     } else {
       throw new Error(`'categoryData' is required`);
@@ -112,24 +119,24 @@ export class CategoryMapper {
    * Converts the tree of {@link CategoryData} to the model entity {@link CategoryTree}.
    * Inserts all sub categories accordingly.
    */
-  static fromData(categoryData: CategoryData): CategoryTree {
+  fromData(categoryData: CategoryData): CategoryTree {
     if (categoryData) {
       // recurse into tree
       let subTrees: CategoryTree;
       if (categoryData.subCategories && categoryData.subCategories.length) {
         subTrees = categoryData.subCategories
-          .map(CategoryMapper.fromData)
+          .map(c => this.fromData(c) as CategoryTree)
           .reduce((a, b) => CategoryTreeHelper.merge(a, b));
       } else {
         subTrees = CategoryTreeHelper.empty();
       }
 
       // create tree from current category
-      const rootCat = CategoryMapper.fromDataSingle(categoryData);
+      const rootCat = this.fromDataSingle(categoryData);
       const tree = CategoryTreeHelper.single(rootCat);
 
       // create tree from categoryPath stubs
-      const categoryPathTree = CategoryMapper.categoriesFromCategoryPath(categoryData.categoryPath);
+      const categoryPathTree = this.categoriesFromCategoryPath(categoryData.categoryPath);
 
       // merge sub categories onto current tree
       const treeWithSubCategories = CategoryTreeHelper.merge(tree, subTrees);

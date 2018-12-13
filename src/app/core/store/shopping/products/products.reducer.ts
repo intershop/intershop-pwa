@@ -1,6 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { ProductMapper } from '../../../models/product/product.mapper';
+import { mergeObjectsMutably } from 'ish-core/utils/merge-objects';
 import { Product } from '../../../models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
@@ -49,7 +49,13 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       let updatedState;
 
       if (state.entities[sku]) {
-        const updated = ProductMapper.updateImmutably(state.entities[sku], loadedProduct);
+        const updated = mergeObjectsMutably(
+          { sku: state.entities[sku].sku } as Product,
+          ['sku'],
+          state.entities[sku],
+          loadedProduct
+        );
+
         const entities = {
           ...state.entities,
           [sku]: updated,

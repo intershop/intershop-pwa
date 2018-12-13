@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { CategoryImageComponent } from './category-image.component';
 
@@ -13,7 +12,6 @@ describe('Category Image Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CategoryImageComponent],
-      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
     }).compileComponents();
   }));
 
@@ -42,6 +40,6 @@ describe('Category Image Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     const imgElement = element.querySelector('img');
-    expect(imgElement.getAttribute('src')).toBe('http://www.example.org/assets/product_img/a.jpg');
+    expect(imgElement.getAttribute('src')).toBe('/assets/product_img/a.jpg');
   });
 });

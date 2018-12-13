@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryData } from '../../models/category/category.interface';
 import { ApiService } from '../api/api.service';
 
@@ -22,7 +23,10 @@ describe('Categories Service', () => {
       of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
     TestBed.configureTestingModule({
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, CategoriesService],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: ICM_BASE_URL, useValue: 'http://www.example.org' },
+      ],
     });
     categoriesService = TestBed.get(CategoriesService);
   });
@@ -36,6 +40,7 @@ describe('Categories Service', () => {
     it('should call ApiService "categories" in tree mode when called with a depth', () => {
       categoriesService.getTopLevelCategories(1);
       verify(apiServiceMock.get('categories', anything())).once();
+
       const args = capture(apiServiceMock.get).last();
       expect(args[0]).toBe('categories');
       // tslint:disable-next-line:no-any
@@ -73,7 +78,6 @@ describe('Categories Service', () => {
 
     it('should call underlying ApiService categories/id when asked to resolve a subcategory by id', () => {
       categoriesService.getCategory('dummyid/dummysubid');
-
       verify(apiServiceMock.get('categories/dummyid/dummysubid')).once();
     });
   });

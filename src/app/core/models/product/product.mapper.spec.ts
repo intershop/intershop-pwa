@@ -1,4 +1,9 @@
+import { TestBed, async } from '@angular/core/testing';
+import { anything, spy, verify } from 'ts-mockito';
+
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { Attribute } from '../attribute/attribute.model';
+import { ImageMapper } from '../image/image.mapper';
 
 import { VariationProduct } from './product-variation.model';
 import { ProductData, ProductDataStub } from './product.interface';
@@ -6,16 +11,28 @@ import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper, ProductType } from './product.model';
 
 describe('Product Mapper', () => {
+  let productMapper: ProductMapper;
+  let imageMapper: ImageMapper;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
+    });
+    productMapper = TestBed.get(ProductMapper);
+    imageMapper = spy(TestBed.get(ImageMapper));
+  }));
+
   describe('fromData', () => {
     it(`should return Product when getting a ProductData`, () => {
-      const product: Product = ProductMapper.fromData({ sku: '1' } as ProductData);
+      const product: Product = productMapper.fromData({ sku: '1' } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type === ProductType.Product).toBeTruthy();
       expect(product.type === ProductType.VariationProduct).toBeFalsy();
+      verify(imageMapper.fromImages(anything())).once();
     });
 
     it(`should return VariationProduct when getting a ProductData with mastered = true`, () => {
-      const product: Product = ProductMapper.fromData({
+      const product: Product = productMapper.fromData({
         sku: '1',
         mastered: true,
         productMasterSKU: '2',
@@ -23,17 +40,18 @@ describe('Product Mapper', () => {
       expect(product).toBeTruthy();
       expect(product.type === ProductType.VariationProduct).toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
+      verify(imageMapper.fromImages(anything())).once();
     });
 
     it(`should return VariationProductMaster when getting a ProductData with productMaster = true`, () => {
-      const product: Product = ProductMapper.fromData({ sku: '1', productMaster: true } as ProductData);
+      const product: Product = productMapper.fromData({ sku: '1', productMaster: true } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type === ProductType.VariationProductMaster).toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
     });
 
     it(`should return VariationProductMaster with variationAttributes when getting a ProductData with productMaster = true`, () => {
-      const product: Product = ProductMapper.fromData({
+      const product: Product = productMapper.fromData({
         sku: '1',
         productMaster: true,
         variableVariationAttributes: [],
@@ -45,7 +63,7 @@ describe('Product Mapper', () => {
     });
 
     it(`should return Product without variationAttributes when getting a ProductData with productMaster = false`, () => {
-      const product: Product = ProductMapper.fromData({
+      const product: Product = productMapper.fromData({
         sku: '1',
         productMaster: false,
         variableVariationAttributes: [],
@@ -60,11 +78,11 @@ describe('Product Mapper', () => {
 
   describe('fromStubData', () => {
     it('should throw an error when stub data has no sku attribute', () => {
-      expect(() => ProductMapper.fromStubData({} as ProductDataStub)).toThrowErrorMatchingSnapshot();
+      expect(() => productMapper.fromStubData({} as ProductDataStub)).toThrowErrorMatchingSnapshot();
     });
 
     it('should construct a stub when supplied with an API response', () => {
-      const stub = ProductMapper.fromStubData({
+      const stub = productMapper.fromStubData({
         attributes: [{ name: 'sku', value: 'productSKU', type: 'String' }],
         title: 'productName',
         description: 'productDescription',
@@ -73,10 +91,11 @@ describe('Product Mapper', () => {
       expect(stub.name).toEqual('productName');
       expect(stub.shortDescription).toEqual('productDescription');
       expect(stub.sku).toEqual('productSKU');
+      verify(imageMapper.fromImages(anything())).once();
     });
 
     it('should construct a stub when supplied with a complex API response', () => {
-      const stub = ProductMapper.fromStubData({
+      const stub = productMapper.fromStubData({
         attributes: [
           { name: 'sku', value: '7912057' },
           { name: 'image', value: '/assets/product_img/a.jpg' },
