@@ -12,50 +12,20 @@ exports[`Category List Component should be created 1`] = `
     <li
       class="category-list-item col-6 col-lg-4"
     >
-      <div
-        class="category-name"
-        data-testing-id="category-uid1"
+      <ish-category-tile
+        ng-reflect-category="[object Object]"
       >
-        <a
-          href="/category/uid1"
-          ng-reflect-router-link="/category,uid1"
-        >
-          
-          <img
-            data-testing-id="category-image-"
-            height="270"
-            src="http://www.example.org/url1.png"
-            width="270"
-          />
-          <h3>
-            name1
-          </h3>
-        </a>
-      </div>
+        Category Tile Component
+      </ish-category-tile>
     </li>
     <li
       class="category-list-item col-6 col-lg-4"
     >
-      <div
-        class="category-name"
-        data-testing-id="category-uid2"
+      <ish-category-tile
+        ng-reflect-category="[object Object]"
       >
-        <a
-          href="/category/uid2"
-          ng-reflect-router-link="/category,uid2"
-        >
-          
-          <img
-            data-testing-id="category-image-"
-            height="270"
-            src="http://www.example.org/url2.png"
-            width="270"
-          />
-          <h3>
-            name2
-          </h3>
-        </a>
-      </div>
+        Category Tile Component
+      </ish-category-tile>
     </li>
   </ul>
 </div>

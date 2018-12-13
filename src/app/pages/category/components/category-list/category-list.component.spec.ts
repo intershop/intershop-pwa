@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { CategoryListComponent } from './category-list.component';
 
@@ -14,8 +14,14 @@ describe('Category List Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [CategoryListComponent],
-      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
+      declarations: [
+        CategoryListComponent,
+        MockComponent({
+          selector: 'ish-category-tile',
+          template: 'Category Tile Component',
+          inputs: ['category'],
+        }),
+      ],
     }).compileComponents();
   }));
 
