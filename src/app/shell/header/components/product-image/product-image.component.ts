@@ -76,7 +76,7 @@ export class ProductImageComponent implements OnChanges {
   }
 
   private buildProductNameOrProductSku(): string {
-    return this.product && this.product.name ? this.product.name : this.product.sku;
+    return this.product ? (this.product.name ? this.product.name : this.product.sku) : '';
   }
 
   private buildAdditionalAltText(): string {
