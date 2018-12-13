@@ -124,6 +124,12 @@ describe('Product Image Component', () => {
       expect(element.querySelector('img').getAttribute('alt')).toBe('test');
     });
 
+    it('should render default text if product information is still undefined', () => {
+      component.product = undefined;
+      fixture.detectChanges();
+      expect(element.querySelector('img').getAttribute('alt')).toBe(' product photo');
+    });
+
     it('should show product name when product name available', () => {
       fixture.detectChanges();
       expect(element.querySelector('img').getAttribute('alt')).toBe('Lenco product photo');
