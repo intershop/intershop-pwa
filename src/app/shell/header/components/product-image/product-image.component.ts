@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Image } from 'ish-core/models/image/image.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 /**
  * The Product Image Component renders the product image
@@ -46,7 +45,7 @@ export class ProductImageComponent implements OnChanges {
 
   productImage: Image;
 
-  constructor(@Inject(ICM_BASE_URL) public icmBaseURL, private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService) {}
 
   ngOnChanges() {
     this.productImage = this.imageView
@@ -60,7 +59,7 @@ export class ProductImageComponent implements OnChanges {
    */
   imageSourceUrl(): string {
     return this.productImage && this.productImage.effectiveUrl && this.productImage.effectiveUrl.length > 0
-      ? `${this.icmBaseURL}${this.productImage.effectiveUrl}`
+      ? `${this.productImage.effectiveUrl}`
       : '/assets/img/not_available.png';
   }
 

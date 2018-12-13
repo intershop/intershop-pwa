@@ -4,8 +4,8 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 
 import { ProductDataStub } from './product.interface';
-import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper } from './product.model';
+import { ProductType } from './product.types';
 
 describe('Product Helper', () => {
   describe('generateProductRoute()', () => {
@@ -165,16 +165,15 @@ describe('Product Helper', () => {
   describe('isMasterProduct()', () => {
     function dataProvider() {
       return [
-        { product: {}, expected: false },
-        { product: { mastered: true }, expected: false },
-        { product: { productMaster: true }, expected: true },
+        { product: { type: ProductType.Product }, expected: false },
+        { product: { type: ProductType.VariationProduct }, expected: false },
+        { product: { type: ProductType.VariationProductMaster }, expected: true },
       ];
     }
 
     using(dataProvider, dataSlice => {
       it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(dataSlice.product)}'`, () => {
-        const product = ProductMapper.fromData(dataSlice.product);
-        expect(ProductHelper.isMasterProduct(product)).toEqual(dataSlice.expected);
+        expect(ProductHelper.isMasterProduct(dataSlice.product)).toEqual(dataSlice.expected);
       });
     });
   });
