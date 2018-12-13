@@ -179,10 +179,10 @@ describe('Api Service', () => {
             expected: 'http://example.org/site;loc=jp;cur=YEN/relative',
             lang: JP,
           },
-          { path: 'relative', method: 'POST', expected: 'http://example.org/site/relative', lang: JP },
-          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site/relative', lang: JP },
-          { path: 'relative', method: 'PUT', expected: 'http://example.org/site/relative', lang: JP },
-          { path: 'relative', method: 'DELETE', expected: 'http://example.org/site/relative', lang: JP },
+          { path: 'relative', method: 'POST', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          { path: 'relative', method: 'PUT', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          { path: 'relative', method: 'DELETE', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
         ],
         slice => {
           it(`should return '${slice.expected}' when constructing ${slice.method} request from '${slice.path}' ${
