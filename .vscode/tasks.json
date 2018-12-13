@@ -19,6 +19,13 @@
             "problemMatcher": [
                 "$tsc-watch"
             ]
+        },
+        {
+            "type": "npm",
+            "script": "lint",
+            "problemMatcher": [
+                "$tslint5"
+            ]
         }
     ]
 }
