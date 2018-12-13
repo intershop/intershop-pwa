@@ -13,6 +13,7 @@ describe('Product Images Component', () => {
   let fixture: ComponentFixture<ProductImagesComponent>;
   let product: Product;
   let element: HTMLElement;
+
   beforeEach(async(() => {
     product = { sku: 'sku' } as Product;
     product.name = 'Lenco';
@@ -63,8 +64,8 @@ describe('Product Images Component', () => {
       declarations: [
         MockComponent({
           selector: 'ish-product-image',
-          template: '<img src="/assets/product_img/a.jpg" />',
-          inputs: ['product', 'imageType', 'class', 'imageView'],
+          template: 'Product Image Component',
+          inputs: ['product', 'imageView', 'imageType'],
         }),
         MockComponent({
           selector: 'ish-product-label',
@@ -97,7 +98,10 @@ describe('Product Images Component', () => {
 
   it('should render thumbnails on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByClassName('product-thumb-set')).toHaveLength(2);
+    const thumbNailsSetElement = element.getElementsByClassName('product-thumb-set');
+    expect(thumbNailsSetElement).toHaveLength(2);
+    const productImageElem = thumbNailsSetElement[0].querySelector('ish-product-image');
+    expect(productImageElem.getAttribute('ng-reflect-image-type')).toBe(component.product.images[0].typeID);
   });
 
   it('should show corresponding image in carousel and set active class on thumbnail when clicking on thumbnail image', () => {
