@@ -88,7 +88,7 @@ export function constructUrlForPath(
     case 'PATCH':
     case 'DELETE':
       let localeAndCurrency = '';
-      if (!!currentLocale) {
+      if (currentLocale) {
         localeAndCurrency = `;loc=${currentLocale.lang};cur=${currentLocale.currency}`;
       }
       return `${restEndpoint}${localeAndCurrency}/${path}`;

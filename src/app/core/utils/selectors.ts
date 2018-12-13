@@ -7,5 +7,5 @@ export const firstTruthy = <State, S1, S2>(
   createSelector(
     s1,
     s2,
-    (a, b) => (!!a ? a : b)
+    (a, b) => (a ? a : b)
   );

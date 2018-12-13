@@ -186,7 +186,7 @@ describe('Api Service', () => {
         ],
         slice => {
           it(`should return '${slice.expected}' when constructing ${slice.method} request from '${slice.path}' ${
-            !!slice.lang ? `with locale '${slice.lang.lang}'` : 'with no locale'
+            slice.lang ? `with locale '${slice.lang.lang}'` : 'with no locale'
           }`, () => {
             expect(constructUrlForPath(slice.path, slice.method, BASE_URL, slice.lang)).toEqual(slice.expected);
           });
