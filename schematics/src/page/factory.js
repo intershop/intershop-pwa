@@ -24,6 +24,7 @@ function determineRoutingModule(host, options) {
     if (match && match[1] && match[2]) {
         const parent = match[1];
         child = match[2];
+        // tslint:disable-next-line:no-console
         console.log(`detected subpage, will insert '${child}' as sub page of '${parent}'`);
         routingModuleLocation = options.extension
             ? `extensions/${options.extension}/pages/${parent}/${parent}-page.module.ts`
