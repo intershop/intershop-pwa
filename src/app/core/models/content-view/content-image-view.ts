@@ -13,7 +13,7 @@ export interface ContentImagePageletView extends ContentPageletView {
  */
 export const getImagePath = (configParam: string, staticURL: string): string => {
   // TODO: the local has to be considered too
-  if (!!configParam && configParam.indexOf(':') > 0) {
+  if (configParam && configParam.indexOf(':') > 0) {
     return `${staticURL}/${configParam.split(':')[0]}/-${configParam.split(':')[1]}`;
   }
   return configParam;

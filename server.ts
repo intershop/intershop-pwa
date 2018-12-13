@@ -56,7 +56,7 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Node Express server listening on http://localhost:${PORT}`);
   const icmBaseUrl = process.env.ICM_BASE_URL;
-  if (!!icmBaseUrl) {
+  if (icmBaseUrl) {
     console.log('ICM_BASE_URL is', icmBaseUrl);
   }
 });

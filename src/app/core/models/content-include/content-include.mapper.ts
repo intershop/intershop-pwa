@@ -17,7 +17,7 @@ export class ContentIncludeMapper {
     let pagelets: ContentPagelet[] = [];
     let pageletIDs: string[] = [];
 
-    if (!!data.pagelets) {
+    if (data.pagelets) {
       pageletIDs = data.pagelets.map(p => p.id);
       pagelets = data.pagelets.map(ContentPageletMapper.fromData).reduce((acc, val) => [...acc, ...val], []);
     }

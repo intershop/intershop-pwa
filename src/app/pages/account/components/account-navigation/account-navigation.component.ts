@@ -44,7 +44,7 @@ export class AccountNavigationComponent implements OnInit {
   }
 
   navigateTo(link) {
-    if (!!link) {
+    if (link) {
       this.router.navigate([link]);
     }
   }
