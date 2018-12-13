@@ -220,7 +220,7 @@ class Walker extends Lint.AbstractWalker<Options> {
     const previousSource = this.currentImportsBlock.getLastImportSource();
     this.currentImportsBlock.addImportDeclaration(this.sourceFile, node, currentSource);
 
-    if (!!previousSource && compare(currentSource, previousSource) === -1) {
+    if (previousSource && compare(currentSource, previousSource) === -1) {
       this.lastFix = [];
       this.addFailureAtNode(node, IMPORT_SOURCES_UNORDERED, this.lastFix);
     }

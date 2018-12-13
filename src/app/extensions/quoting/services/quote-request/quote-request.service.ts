@@ -244,7 +244,7 @@ export class QuoteRequestService {
   private buildActiveQuoteRequestStream() {
     this.quoteRequest$ = this.store.pipe(select(getActiveQuoteRequest)).pipe(
       take(1),
-      concatMap(quoteRequest => (!!quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
+      concatMap(quoteRequest => (quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
       shareReplay(1)
     );
   }

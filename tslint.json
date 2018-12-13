@@ -4,6 +4,7 @@
     "tslint-clean-code",
     "tslint-consistent-codestyle",
     "tslint-etc",
+    "tslint-eslint-rules",
     "intershop-tslint-rules"
   ],
   "rulesDirectory": [
@@ -11,6 +12,7 @@
     "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
+    "no-extra-boolean-cast": true,
     "no-static-this": true,
     "no-unnecessary-type-annotation": true,
     "no-collapsible-if": { "severity": "warning" },

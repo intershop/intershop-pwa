@@ -21,7 +21,7 @@ function filterPrice(price: Price): Price {
  */
 function retrieveStubAttributeValue(data: ProductDataStub, attributeName: string) {
   const attribute = ProductHelper.getAttributeByAttributeName(data, attributeName);
-  return !!attribute ? attribute.value : undefined;
+  return attribute ? attribute.value : undefined;
 }
 
 /**
