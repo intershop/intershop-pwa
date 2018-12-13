@@ -22,7 +22,7 @@ export class UniversalMockInterceptor implements HttpInterceptor {
       console.log(`loading mock-data for '${req.url}' from file system.`);
       return new Observable((observer: Observer<HttpResponse<any>>) => {
         let rootPath = process.cwd();
-        if (!!rootPath && rootPath.indexOf('browser') > 0) {
+        if (rootPath && rootPath.indexOf('browser') > 0) {
           rootPath = process.cwd().split('browser')[0];
         }
         const file = join(rootPath, 'browser', req.url);

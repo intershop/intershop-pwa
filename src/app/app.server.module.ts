@@ -25,7 +25,7 @@ export class TranslateUniversalLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<string> {
     return new Observable((observer: Observer<string>) => {
       let rootPath = process.cwd();
-      if (!!rootPath && rootPath.indexOf('browser') > 0) {
+      if (rootPath && rootPath.indexOf('browser') > 0) {
         rootPath = process.cwd().split('browser')[0];
       }
       const file = join(rootPath, 'browser', 'assets', 'i18n', `${lang}.json`);

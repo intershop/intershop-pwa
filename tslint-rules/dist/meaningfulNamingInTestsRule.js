@@ -50,7 +50,7 @@ var MeaningfulNamingInTestsWalker = (function (_super) {
     MeaningfulNamingInTestsWalker.prototype.visitIdentifier = function (node) {
         if (node.getText() === 'it') {
             var descriptionToken = tsutils_1.getNextToken(tsutils_1.getNextToken(node));
-            if (!!descriptionToken) {
+            if (descriptionToken) {
                 var description = descriptionToken.getText();
                 if (description.indexOf('${') >= 0) {
                     description = descriptionToken.parent.getText();

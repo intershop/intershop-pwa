@@ -72,7 +72,7 @@ export class ProductsService {
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
           categoryUniqueId,
-          total: !!response.total ? response.total : response.elements.length,
+          total: response.total ? response.total : response.elements.length,
         }))
       );
   }
@@ -106,7 +106,7 @@ export class ProductsService {
         map(response => ({
           products: response.elements.map(element => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
-          total: !!response.total ? response.total : response.elements.length,
+          total: response.total ? response.total : response.elements.length,
         }))
       );
   }

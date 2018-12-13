@@ -47,7 +47,7 @@ export class CategoriesEffects {
     map(action => action.payload.params.categoryUniqueId),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
     map(categoryUniqueId =>
-      !!categoryUniqueId ? new actions.SelectCategory(categoryUniqueId) : new actions.DeselectCategory()
+      categoryUniqueId ? new actions.SelectCategory(categoryUniqueId) : new actions.DeselectCategory()
     )
   );
 
