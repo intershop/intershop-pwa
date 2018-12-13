@@ -96,7 +96,7 @@ export function detectExtension(
   let path = options.path;
   if (options.restricted) {
     if (!extension) {
-      const rootLocation = artifact === 'page' ? '' : 'core/';
+      const rootLocation = ['page', 'extension'].includes(artifact) ? '' : 'core/';
       path = `${project.sourceRoot}/app/${rootLocation}${artifact}s/`;
     } else {
       path = `${project.sourceRoot}/app/extensions/${extension}/${artifact}s/`;

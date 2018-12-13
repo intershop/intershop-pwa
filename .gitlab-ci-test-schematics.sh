@@ -44,6 +44,14 @@ grep "WarehousesPageComponent" src/app/pages/warehouses/warehouses-page.module.t
 grep "warehouses" src/app/pages/app-routing.module.ts
 
 
+npx ng g e awesome
+stat src/app/extensions/awesome/awesome.module.ts
+stat src/app/extensions/awesome/pages/awesome-routing.module.ts
+stat src/app/extensions/awesome/store/awesome-store.module.ts
+# workaround to handle no-empty-interface
+sed -i -e 's/{}/{ example?: boolean; }/g' src/app/extensions/awesome/store/awesome-store.ts
+stat src/app/extensions/awesome/exports/awesome-exports.module.ts
+
 npx ng g s super -e awesome
 stat src/app/extensions/awesome/services/super/super.service.ts
 

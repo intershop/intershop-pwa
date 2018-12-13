@@ -46,6 +46,12 @@
       "factory": "./model/factory#createModel",
       "description": "Create a model.",
       "schema": "./model/schema.json"
+    },
+    "extension": {
+      "aliases": ["e"],
+      "factory": "./extension/factory#createExtension",
+      "description": "Create an extension.",
+      "schema": "./extension/schema.json"
     }
   }
 }

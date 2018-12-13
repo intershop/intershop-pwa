@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAExtension",
+  "title": "PWA Extension Options Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "default": "true",
+      "visible": "false"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the extension.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the extension?"
+    }
+  }
+}
