@@ -1,13 +1,9 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
-import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-import { BasketItemMapper } from '../../models/basket-item/basket-item.mapper';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { BasketData } from '../../models/basket/basket.interface';
 import { BasketMapper } from '../../models/basket/basket.mapper';
 import { Basket } from '../../models/basket/basket.model';
@@ -98,23 +94,6 @@ export class BasketService {
     return this.apiService.patch(`baskets/${basketId}`, body, {
       headers: this.basketHeaders,
     });
-  }
-
-  /**
-   * Get basket items for selected basket.
-   * @param basketId  The basket id.
-   * @returns         The basket items.
-   */
-  getBasketItems(basketId: string): Observable<BasketItem[]> {
-    /* ToDo: Remove this method - it uses REST api v0 and is no longer necessary  */
-    if (!basketId) {
-      return throwError('getBasketItems() called without basketId');
-    }
-
-    return this.apiService.get(`baskets/${basketId}/items`).pipe(
-      unpackEnvelope<OrderItemData>(),
-      map(basketItemsData => basketItemsData.map(BasketItemMapper.fromOrderItemData))
-    );
   }
 
   /**

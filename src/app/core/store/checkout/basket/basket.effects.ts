@@ -210,37 +210,6 @@ export class BasketEffects {
   );
 
   /**
-   * The load basket items effect.
-   */
-  @Effect()
-  loadBasketItems$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketItems>(basketActions.BasketActionTypes.LoadBasketItems),
-    map(action => action.payload),
-    mergeMap(basketId =>
-      this.basketService.getBasketItems(basketId).pipe(
-        map(basketItems => new basketActions.LoadBasketItemsSuccess(basketItems)),
-        mapErrorToAction(basketActions.LoadBasketItemsFail)
-      )
-    )
-  );
-
-  /**
-   * After successfully loading the basket items, trigger a LoadProduct action
-   * for each product that is missing in the current product entities state.
-   */
-  @Effect()
-  loadProductsForBasketItems$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketItemsSuccess>(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
-    map(action => action.payload),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    switchMap(([basketItems, products]) => [
-      ...basketItems
-        .filter(basketItem => !products[basketItem.productSKU])
-        .map(basketItem => new LoadProduct(basketItem.productSKU)),
-    ])
-  );
-
-  /**
    * Add a product to the current basket.
    * Triggers the internal AddItemsToBasket action that handles the actual adding of the product to the basket.
    */
@@ -363,16 +332,6 @@ export class BasketEffects {
         mapErrorToAction(basketActions.DeleteBasketItemFail)
       )
     )
-  );
-
-  /**
-   * Trigger a LoadBasketItems action after a successful basket loading.
-   */
-  @Effect()
-  loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
-    map(action => action.payload),
-    map(basket => new basketActions.LoadBasketItems(basket.id))
   );
 
   /**
