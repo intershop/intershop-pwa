@@ -161,7 +161,7 @@ describe('Checkout Store', () => {
 
       return of(newBasket);
     });
-    when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
+
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
     when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 
@@ -235,9 +235,7 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
@@ -254,9 +252,7 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
