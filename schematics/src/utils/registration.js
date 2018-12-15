@@ -68,18 +68,21 @@ function addDeclarationToNgModule(options) {
     };
 }
 exports.addDeclarationToNgModule = addDeclarationToNgModule;
+function insertImport(source, recorder, artifactName, relativePath) {
+    // insert import statement to imports
+    const lastImportEnd = tsutils_1.findImports(source, tsutils_1.ImportKind.All)
+        .map(x => x.parent.end)
+        .sort((x, y) => x - y)
+        .pop();
+    recorder.insertRight(lastImportEnd, `\nimport { ${artifactName} } from '${relativePath}';`);
+}
+exports.insertImport = insertImport;
 function addImportToNgModuleBefore(options, beforeToken) {
     return host => {
         const relativePath = find_module_1.buildRelativePath(options.module, options.moduleImportPath);
         const source = filesystem_1.readIntoSourceFile(host, options.module);
         const importRecorder = host.beginUpdate(options.module);
-        // insert import statement to imports
-        const lastImportEnd = tsutils_1.findImports(source, tsutils_1.ImportKind.All)
-            .map(x => x.parent.end)
-            .sort((x, y) => x - y)
-            .pop();
-        importRecorder.insertRight(lastImportEnd, `
-import { ${options.artifactName} } from '${relativePath}';`);
+        insertImport(source, importRecorder, options.artifactName, relativePath);
         let edited = false;
         tsutils_1.forEachToken(source, node => {
             if (node.kind === ts.SyntaxKind.Identifier &&

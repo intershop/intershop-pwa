@@ -15,6 +15,17 @@ stat src/app/core/models/stock/stock.model.ts
 npx ng g s warehouses
 stat src/app/core/services/warehouses/warehouses.service.ts
 
+npx ng g store-group training
+stat src/app/core/store/training/training-store.ts
+grep "TrainingStoreModule" src/app/core/store/core-store.module.ts
+
+npx ng g store core/store/training/warehouses --entity warehouse
+stat src/app/core/store/training/warehouses/warehouses.actions.ts
+stat src/app/core/store/training/warehouses/warehouses.effects.ts
+stat src/app/core/store/training/warehouses/warehouses.reducer.ts
+stat src/app/core/store/training/warehouses/warehouses.selectors.ts
+grep "WarehousesState" src/app/core/store/training/training-store.ts
+
 npx ng g pipe warehouses
 stat src/app/core/pipes/warehouses.pipe.ts
 grep "WarehousesPipe" src/app/core/pipes.module.ts
@@ -48,8 +59,6 @@ npx ng g e awesome
 stat src/app/extensions/awesome/awesome.module.ts
 stat src/app/extensions/awesome/pages/awesome-routing.module.ts
 stat src/app/extensions/awesome/store/awesome-store.module.ts
-# workaround to handle no-empty-interface
-sed -i -e 's/{}/{ example?: boolean; }/g' src/app/extensions/awesome/store/awesome-store.ts
 stat src/app/extensions/awesome/exports/awesome-exports.module.ts
 
 npx ng g s super -e awesome
@@ -61,5 +70,10 @@ stat src/app/extensions/awesome/services/duper/duper.service.ts
 (cd src/app/extensions/awesome && npx ng g s hyper)
 stat src/app/extensions/awesome/services/hyper/hyper.service.ts
 
-
+npx ng g store -e awesome super
+stat src/app/extensions/awesome/store/super/super.actions.ts
+stat src/app/extensions/awesome/store/super/super.effects.ts
+stat src/app/extensions/awesome/store/super/super.reducer.ts
+stat src/app/extensions/awesome/store/super/super.selectors.ts
+grep "SuperState" src/app/extensions/awesome/store/awesome-store.ts
 npm run check

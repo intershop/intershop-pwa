@@ -17,4 +17,8 @@ export interface PwaModelOptionsSchema {
    * Flag to indicate if a simple model without helper and mapper should be created.
    */
   simple?: boolean;
+  /**
+   * The extension to generate the model in. If empty it is generated in the project core.
+   */
+  extension?: string;
 }

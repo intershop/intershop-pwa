@@ -39,6 +39,11 @@
       "type": "boolean",
       "description": "Flag to indicate if a simple model without helper and mapper should be created.",
       "default": false
+    },
+    "extension": {
+      "type": "string",
+      "description": "The extension to generate the model in. If empty it is generated in the project core.",
+      "alias": "e"
     }
   }
 }
