@@ -1,10 +1,13 @@
 import { createSelector } from '@ngrx/store';
 
-import { CoreState } from '../core-store.module';
+import { getCoreState } from '../core-store';
 
 import { countryAdapter } from './countries.reducer';
 
-const getCountriesState = (state: CoreState) => state.countries;
+const getCountriesState = createSelector(
+  getCoreState,
+  state => state.countries
+);
 
 export const { selectEntities: getCountryEntities, selectAll: getAllCountries } = countryAdapter.getSelectors(
   getCountriesState
