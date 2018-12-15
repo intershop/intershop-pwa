@@ -52,6 +52,16 @@
       "factory": "./extension/factory#createExtension",
       "description": "Create an extension.",
       "schema": "./extension/schema.json"
+    },
+    "store": {
+      "factory": "./store/factory#createStore",
+      "description": "Create a store.",
+      "schema": "./store/schema.json"
+    },
+    "store-group": {
+      "factory": "./store-group/factory#createStoreGroup",
+      "description": "Create a store group.",
+      "schema": "./store-group/schema.json"
     }
   }
 }

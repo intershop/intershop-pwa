@@ -1,5 +1,5 @@
 import { strings } from '@angular-devkit/core';
-import { Rule } from '@angular-devkit/schematics';
+import { Rule, UpdateRecorder } from '@angular-devkit/schematics';
 import {
   addDeclarationToModule,
   addEntryComponentToModule,
@@ -114,6 +114,20 @@ export function addDeclarationToNgModule(options: {
   };
 }
 
+export function insertImport(
+  source: ts.SourceFile,
+  recorder: UpdateRecorder,
+  artifactName: string,
+  relativePath: string
+) {
+  // insert import statement to imports
+  const lastImportEnd = findImports(source, ImportKind.All)
+    .map(x => x.parent.end)
+    .sort((x, y) => x - y)
+    .pop();
+  recorder.insertRight(lastImportEnd, `\nimport { ${artifactName} } from '${relativePath}';`);
+}
+
 export function addImportToNgModuleBefore(
   options: {
     module?: string;
@@ -127,16 +141,7 @@ export function addImportToNgModuleBefore(
     const source = readIntoSourceFile(host, options.module);
     const importRecorder = host.beginUpdate(options.module);
 
-    // insert import statement to imports
-    const lastImportEnd = findImports(source, ImportKind.All)
-      .map(x => x.parent.end)
-      .sort((x, y) => x - y)
-      .pop();
-    importRecorder.insertRight(
-      lastImportEnd,
-      `
-import { ${options.artifactName} } from '${relativePath}';`
-    );
+    insertImport(source, importRecorder, options.artifactName, relativePath);
 
     let edited = false;
     forEachToken(source, node => {
