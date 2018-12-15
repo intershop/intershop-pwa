@@ -1,10 +1,13 @@
 import { createSelector } from '@ngrx/store';
 
-import { CoreState } from '../core-store.module';
+import { getCoreState } from '../core-store';
 
 import { getAvailable, getCurrent } from './locale.reducer';
 
-const getLocaleState = (state: CoreState) => state.locale;
+const getLocaleState = createSelector(
+  getCoreState,
+  state => state.locale
+);
 
 export const getCurrentLocale = createSelector(
   getLocaleState,
