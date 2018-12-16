@@ -39,5 +39,6 @@ export const environment = {
     compare: true,
     recently: true,
     quoting: false,
+    stickyHeader: false,
   },
 };
