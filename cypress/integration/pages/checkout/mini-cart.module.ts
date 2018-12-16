@@ -10,12 +10,12 @@ export class MiniCartModule {
   goToCart() {
     cy.get('ish-mini-basket')
       .get('div.quick-cart-link')
-      .eq(2)
+      .first()
       .click();
 
     cy.get('a.view-cart', { timeout: 10000 })
       .should('be.visible')
-      .eq(2)
+      .first()
       .click();
   }
 }
