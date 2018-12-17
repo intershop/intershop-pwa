@@ -7,6 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -551,7 +552,7 @@ describe('Basket Effects', () => {
 
   describe('mergeBasketAfterLogin$', () => {
     it('should map to action of type addItemsToBasket if pre login basket is filled', () => {
-      when(basketServiceMock.getBasket()).thenReturn(of({ id: 'BIDNEW' } as Basket));
+      when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({

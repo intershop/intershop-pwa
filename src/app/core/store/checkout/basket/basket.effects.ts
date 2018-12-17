@@ -421,7 +421,6 @@ export class BasketEffects {
     map((action: basketActions.AddItemsToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !basket && !payload.basketId),
-    // TODO: add create basket if LoadBasket does not create basket anymore
     mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
     map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
   );
@@ -432,16 +431,17 @@ export class BasketEffects {
   @Effect()
   mergeBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
-    switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
-    map(([newBasket, currentBasket]) => {
+    switchMap(() => this.basketService.getBaskets()),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    map(([newBaskets, currentBasket]) => {
       const items = currentBasket.lineItems.map(lineItem => ({
         sku: lineItem.productSKU,
         quantity: lineItem.quantity.value,
       }));
 
-      return new basketActions.AddItemsToBasket({ items, basketId: newBasket.id });
+      return new basketActions.AddItemsToBasket({ items, basketId: newBaskets.length ? newBaskets[0].id : undefined });
     })
   );
 
@@ -451,7 +451,6 @@ export class BasketEffects {
   @Effect()
   loadBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
-    switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0),
     mapTo(new basketActions.LoadBasket())
@@ -492,6 +491,7 @@ export class BasketEffects {
   @Effect()
   resetBasketAfterLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.LogoutUser),
+
     mapTo(new basketActions.ResetBasket())
   );
 

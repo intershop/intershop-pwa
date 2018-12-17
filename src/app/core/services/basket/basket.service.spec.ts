@@ -110,6 +110,15 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should get active baskets of the current user when 'getBaskets' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({}));
+
+    basketService.getBaskets().subscribe(() => {
+      verify(apiService.get(`baskets`, anything())).once();
+      done();
+    });
+  });
+
   it("should post item to basket when 'addItemsToBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
