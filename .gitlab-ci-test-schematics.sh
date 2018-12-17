@@ -28,6 +28,13 @@ stat src/app/shared/warehouse/containers/warehouse/warehouse.container.ts
 grep "WarehouseContainerComponent" src/app/shared/shared.module.ts
 
 
+npx ng g ccp shared/warehouse/stocks
+stat src/app/shared/warehouse/containers/stocks/stocks.container.ts
+stat src/app/shared/warehouse/components/stocks/stocks.component.ts
+grep "StocksContainerComponent" src/app/shared/shared.module.ts
+grep "StocksComponent" src/app/shared/shared.module.ts
+
+
 npx ng g p warehouses
 stat src/app/pages/warehouses/warehouses-page.module.ts
 stat src/app/pages/warehouses/warehouses-page.container.ts

@@ -13,6 +13,12 @@
       "description": "Create a smart component.",
       "schema": "./container/schema.json"
     },
+    "container-component-pair": {
+      "aliases": ["ccp"],
+      "factory": "./container-component-pair/factory#createContainerComponentPair",
+      "description": "Create a presentational and smart component.",
+      "schema": "./container-component-pair/schema.json"
+    },
     "module": {
       "aliases": ["m"],
       "factory": "./module/factory#createModule",
