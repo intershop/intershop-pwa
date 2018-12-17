@@ -2,7 +2,7 @@ import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { Price } from '../price/price.model';
 import { Product } from '../product/product.model';
 
-export interface BasketItem {
+export interface LineItem {
   id: string;
   position: number;
   quantity: {
@@ -36,6 +36,6 @@ export interface BasketItem {
   availability?: boolean;
 }
 
-export interface BasketItemView extends BasketItem {
+export interface LineItemView extends LineItem {
   product: Product;
 }

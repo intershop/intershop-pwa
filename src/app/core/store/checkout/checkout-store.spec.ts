@@ -15,10 +15,10 @@ import {
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../configurations/injection-keys';
 import { Address } from '../../models/address/address.model';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { Basket } from '../../models/basket/basket.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
+import { LineItem } from '../../models/line-item/line-item.model';
 import { Locale } from '../../models/locale/locale.model';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { Price } from '../../models/price/price.model';
@@ -58,7 +58,7 @@ describe('Checkout Store', () => {
     isFreeGift: false,
     inStock: false,
     availability: false,
-  } as BasketItem;
+  } as LineItem;
 
   const basket = {
     id: 'test',

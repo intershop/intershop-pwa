@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 
 /**
@@ -19,7 +19,7 @@ import { Price } from 'ish-core/models/price/price.model';
 })
 export class LineItemDescriptionComponent implements OnChanges {
   @Input()
-  pli: BasketItemView;
+  pli: LineItemView;
 
   itemSurcharges: { amount: Price; description?: string; displayName?: string; text?: string }[] = [];
 
@@ -28,7 +28,7 @@ export class LineItemDescriptionComponent implements OnChanges {
    */
   ngOnChanges() {
     this.itemSurcharges = undefined;
-    const item = this.pli as BasketItemView;
+    const item = this.pli as LineItemView;
 
     if (item.itemSurcharges) {
       this.itemSurcharges = item.itemSurcharges;

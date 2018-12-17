@@ -1,6 +1,6 @@
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -225,7 +225,7 @@ describe('Basket Reducer', () => {
         const oldState = {
           ...initialState,
           loading: true,
-          lineItems: [{ id: 'test' } as BasketItem],
+          lineItems: [{ id: 'test' } as LineItem],
         };
         const action = new fromActions.ResetBasket();
         const state = basketReducer(oldState, action);
@@ -412,7 +412,7 @@ describe('Basket Reducer', () => {
         const oldState = {
           ...initialState,
           loading: true,
-          lineItems: [{ id: 'test' } as BasketItem],
+          lineItems: [{ id: 'test' } as LineItem],
         };
         const action = new fromActions.CreateOrderSuccess({ id: '123' } as Order);
         const state = basketReducer(oldState, action);

@@ -6,11 +6,11 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -120,7 +120,7 @@ describe('Basket Effects', () => {
             quantity: { value: 1 },
             price: undefined,
             productSKU: 'SKU',
-          } as BasketItem,
+          } as LineItem,
         ],
         payment: undefined,
       } as Basket);
@@ -564,7 +564,7 @@ describe('Basket Effects', () => {
               quantity: { value: 1 },
               productSKU: 'SKU',
               price: undefined,
-            } as BasketItem,
+            } as LineItem,
           ],
         } as Basket)
       );
@@ -589,7 +589,7 @@ describe('Basket Effects', () => {
 
   describe('loadBasketAfterLogin$', () => {
     it('should map to action of type LoadBasket if pre login basket is empty', () => {
-      when(basketServiceMock.getBasket()).thenReturn(of({} as Basket));
+      when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       const action = new LoginUserSuccess({} as Customer);
       const completion = new basketActions.LoadBasket();
@@ -614,7 +614,7 @@ describe('Basket Effects', () => {
               quantity: { value: 1 },
               productSKU: 'SKU',
               price: undefined,
-            } as BasketItem,
+            } as LineItem,
           ],
         } as Basket)
       );

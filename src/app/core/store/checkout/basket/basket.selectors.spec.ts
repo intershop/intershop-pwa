@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -72,7 +72,7 @@ describe('Basket Selectors', () => {
       store$.dispatch(
         new LoadBasketSuccess({
           id: 'test',
-          lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as BasketItem],
+          lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
         } as BasketView)
       );
 
@@ -90,7 +90,7 @@ describe('Basket Selectors', () => {
 
     it('should change the product of the basket line item if the product is changing', () => {
       store$.dispatch(
-        new LoadBasketSuccess({ id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as BasketItem] } as Basket)
+        new LoadBasketSuccess({ id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket)
       );
       let currentBasket = getCurrentBasket(store$.state);
       expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });

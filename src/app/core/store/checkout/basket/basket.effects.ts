@@ -342,8 +342,6 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([, basket]) =>
-      /* simplified solution: get eligible shipping methods only for the first item
-       ToDo: differentiate between multi and single shipment */
       this.basketService.getBasketEligibleShippingMethods(basket.id).pipe(
         map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess(result)),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
@@ -451,8 +449,12 @@ export class BasketEffects {
   @Effect()
   loadBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
+    switchMap(() => this.basketService.getBaskets()) /* prevent 404 error by checking on existing basket */,
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0),
+    filter(
+      ([newBaskets, currentBasket]) =>
+        (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) && newBaskets.length > 0
+    ),
     mapTo(new basketActions.LoadBasket())
   );
 
