@@ -162,6 +162,20 @@ describe('Checkout Store', () => {
       return of(newBasket);
     });
 
+    when(basketServiceMock.getBaskets()).thenCall(() => {
+      const newBaskets = [
+        {
+          ...basket,
+        },
+      ];
+
+      if (basketId) {
+        newBaskets[0].id = basketId;
+      }
+
+      return of(newBaskets);
+    });
+
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
     when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 

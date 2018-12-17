@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-import { BasketData } from '../../models/basket/basket.interface';
+import { BasketBaseData, BasketData } from '../../models/basket/basket.interface';
 import { BasketMapper } from '../../models/basket/basket.mapper';
 import { Basket } from '../../models/basket/basket.model';
 import { Link } from '../../models/link/link.model';
@@ -97,11 +98,24 @@ export class BasketService {
   }
 
   /**
+   * Returns the list of active baskets for the current user. The first basket is the last modified basket.
+   * Use this method to check if the user has at least one active basket
+   * @returns         An array of basket base data.
+   */
+  getBaskets(): Observable<BasketBaseData[]> {
+    return this.apiService
+      .get(`baskets`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(unpackEnvelope<BasketBaseData>('data'));
+  }
+
+  /**
    * Adds a list of items with the given sku and quantity to the given basket.
    * @param basketId  The id of the basket to add the items to.
    * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(basketId: string, items: { sku: string; quantity: number }[]): Observable<void> {
+  addItemsToBasket(basketId: string = 'current', items: { sku: string; quantity: number }[]): Observable<void> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -170,7 +184,7 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(
-        map(({ data }) => data),
+        unpackEnvelope<ShippingMethodData>('data'),
         map(data => data.map(ShippingMethodMapper.fromData))
       );
   }
