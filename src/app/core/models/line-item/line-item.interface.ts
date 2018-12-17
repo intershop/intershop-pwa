@@ -2,7 +2,7 @@ import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { Price } from '../price/price.model';
 
-export interface BasketItemData {
+export interface LineItemData {
   id: string;
   calculationState: 'CALCULATED' | 'UNCALCULATED';
   position: number;

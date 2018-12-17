@@ -3,8 +3,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { SpecialValidators } from '../../../forms/validators/special-validators';
@@ -30,7 +30,7 @@ import { SpecialValidators } from '../../../forms/validators/special-validators'
 })
 export class LineItemListComponent implements OnChanges, OnDestroy {
   @Input()
-  lineItems: BasketItemView[];
+  lineItems: LineItemView[];
   @Input()
   editable = true;
   @Input()
@@ -66,7 +66,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
    * @param lineItems An array of line items.
    * @returns         An array of formgroups.
    */
-  createItemForm(lineItems: BasketItemView[]): FormGroup[] {
+  createItemForm(lineItems: LineItemView[]): FormGroup[] {
     const itemsForm: FormGroup[] = [];
     this.destroy$.next();
 

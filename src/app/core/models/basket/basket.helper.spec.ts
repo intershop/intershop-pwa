@@ -1,14 +1,14 @@
-import { BasketItem } from '../basket-item/basket-item.model';
+import { LineItem } from '../line-item/line-item.model';
 
 import { BasketHelper } from './basket.model';
 
 describe('Basket Helper', () => {
   describe('getBasketItemsCount', () => {
-    let lineItems: BasketItem[];
+    let lineItems: LineItem[];
     beforeEach(() => {
       const li = {
         quantity: { value: 2 },
-      } as BasketItem;
+      } as LineItem;
       lineItems = [li, li, li];
     });
 

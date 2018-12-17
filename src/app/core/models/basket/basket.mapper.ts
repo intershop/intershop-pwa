@@ -1,8 +1,8 @@
 import { AddressMapper } from '../address/address.mapper';
-import { BasketItemMapper } from '../basket-item/basket-item.mapper';
 import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
+import { LineItemMapper } from '../line-item/line-item.mapper';
 import { PriceMapper } from '../price/price.mapper';
 import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
 
@@ -61,7 +61,7 @@ export class BasketMapper {
           : undefined,
       lineItems:
         included && included.lineItems && data.lineItems && data.lineItems.length
-          ? data.lineItems.map(lineItemId => BasketItemMapper.fromData(included.lineItems[lineItemId]))
+          ? data.lineItems.map(lineItemId => LineItemMapper.fromData(included.lineItems[lineItemId]))
           : [],
       totals,
     };

@@ -2,11 +2,11 @@ import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
 import { OrderItemData } from '../order-item/order-item.interface';
 import { PriceMapper } from '../price/price.mapper';
 
-import { BasketItemData } from './basket-item.interface';
-import { BasketItem } from './basket-item.model';
+import { LineItemData } from './line-item.interface';
+import { LineItem } from './line-item.model';
 
-export class BasketItemMapper {
-  static fromData(data: BasketItemData): BasketItem {
+export class LineItemMapper {
+  static fromData(data: LineItemData): LineItem {
     if (data) {
       return {
         id: data.id,
@@ -40,11 +40,11 @@ export class BasketItemMapper {
         productSKU: data.product,
       };
     } else {
-      throw new Error(`'BasketItemData' is required for the mapping`);
+      throw new Error(`'LineItemData' is required for the mapping`);
     }
   }
 
-  static fromOrderItemData(data: OrderItemData): BasketItem {
+  static fromOrderItemData(data: OrderItemData): LineItem {
     if (data) {
       return {
         id: data.id,
@@ -64,7 +64,7 @@ export class BasketItemMapper {
         productSKU: data.product ? data.product.title : undefined,
       };
     } else {
-      throw new Error(`'BasketItemData' is required for the mapping`);
+      throw new Error(`'OrderItemData' is required for the mapping`);
     }
   }
 }
