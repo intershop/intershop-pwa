@@ -15,7 +15,7 @@
     "ng": "npx ng",
     "test": "jest --ci",
     "test:watch": "jest --watch",
-    "e2e": "npx cypress open",
+    "e2e": "node open-cypress",
     "lint": "npx ng lint",
     "stylelint": "stylelint \"src/theme/**/*.scss\" --fix",
     "format": "node node_modules/prettier/bin-prettier.js --loglevel warn --write \"**/*.*\"",

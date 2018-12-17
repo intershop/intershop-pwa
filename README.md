@@ -68,7 +68,7 @@ Run `npm test` to start an on the fly test running environment to execute the un
 ## Running end-to-end tests
 
 Run `npm run e2e` to execute the end-to-end tests via [cypress](https://www.cypress.io/).
-The application is automatically started in the background.
+You have to start your development or production server first as cypress will instruct you.
 
 ## Build
 
