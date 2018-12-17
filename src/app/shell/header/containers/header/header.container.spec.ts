@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
@@ -14,7 +15,11 @@ describe('Header Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StoreModule.forRoot(coreReducers)],
+      imports: [
+        FeatureToggleModule.testingFeatures({ stickyHeader: true }),
+        RouterTestingModule,
+        StoreModule.forRoot(coreReducers),
+      ],
       declarations: [
         HeaderContainerComponent,
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),
