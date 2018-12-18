@@ -13,9 +13,7 @@ export const containsActionWithTypeAndPayload = (type: string, predicate: (paylo
 
 function includeAction(action: Action, include: (string | RegExp)[]) {
   const type = action.type;
-  return include
-    .map(inc => (typeof inc === 'string' ? type.indexOf(inc) >= 0 : type.search(inc) >= 0))
-    .reduce((l, r) => l || r);
+  return include.some(inc => (typeof inc === 'string' ? type.indexOf(inc) >= 0 : type.search(inc) >= 0));
 }
 
 @Injectable()

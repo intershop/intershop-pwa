@@ -42,13 +42,10 @@ class ProjectStructureWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: ts.SourceFile) {
     this.fileName = sourceFile.fileName;
 
-    const isIgnored = this.ignoredFiles
-      .map<boolean>(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName))
-      .reduce((l, r) => l || r);
+    const isIgnored = this.ignoredFiles.some(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName));
+
     if (!isIgnored) {
-      const matchesPathPattern = this.pathPatterns
-        .map(pattern => new RegExp(pattern).test(this.fileName))
-        .reduce((l, r) => l || r);
+      const matchesPathPattern = this.pathPatterns.some(pattern => new RegExp(pattern).test(this.fileName));
       if (!matchesPathPattern) {
         this.addFailureAt(0, 1, `this file path does not match any defined patterns`);
       }

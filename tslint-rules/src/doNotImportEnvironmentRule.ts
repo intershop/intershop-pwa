@@ -13,7 +13,7 @@ class DoNotImportEnvironmentWalker extends Lint.RuleWalker {
   visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText();
-    if (fromStringText.indexOf('environments/environment') > 0) {
+    if (fromStringText.includes('environments/environment')) {
       this.addFailureAtNode(importStatement, 'Importing environment is not allowed. Inject needed properties instead.');
     }
   }
