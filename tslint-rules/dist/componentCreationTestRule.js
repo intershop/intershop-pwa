@@ -69,23 +69,13 @@ var ComponentCreationTestWalker = (function (_super) {
             .getChildAt(2)
             .getChildAt(4)
             .getChildAt(1);
-        var orReduce = function (l, r) { return l || r; };
-        if (!shouldBeCreatedBlock
-            .getChildren()
-            .map(this.findComponentTruthy)
-            .reduce(orReduce, false)) {
+        if (!shouldBeCreatedBlock.getChildren().some(this.findComponentTruthy)) {
             _super.prototype.addFailureAtNode.call(this, node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if component is truthy");
         }
-        if (!shouldBeCreatedBlock
-            .getChildren()
-            .map(this.findElementTruthy)
-            .reduce(orReduce, false)) {
+        if (!shouldBeCreatedBlock.getChildren().some(this.findElementTruthy)) {
             _super.prototype.addFailureAtNode.call(this, node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if html element is truthy");
         }
-        if (!shouldBeCreatedBlock
-            .getChildren()
-            .map(this.findDetectChangesNotThrow)
-            .reduce(orReduce, false)) {
+        if (!shouldBeCreatedBlock.getChildren().some(this.findDetectChangesNotThrow)) {
             _super.prototype.addFailureAtNode.call(this, node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if feature.detectChanges does not throw");
         }
     };

@@ -26,7 +26,7 @@ var DoNotImportEnvironmentWalker = (function (_super) {
     DoNotImportEnvironmentWalker.prototype.visitImportDeclaration = function (importStatement) {
         var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, typescript_1.SyntaxKind.StringLiteral);
         var fromStringText = fromStringToken.getText();
-        if (fromStringText.indexOf('environments/environment') > 0) {
+        if (fromStringText.includes('environments/environment')) {
             this.addFailureAtNode(importStatement, 'Importing environment is not allowed. Inject needed properties instead.');
         }
     };
