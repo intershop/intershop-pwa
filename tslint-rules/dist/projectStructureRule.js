@@ -41,13 +41,9 @@ var ProjectStructureWalker = (function (_super) {
     ProjectStructureWalker.prototype.visitSourceFile = function (sourceFile) {
         var _this = this;
         this.fileName = sourceFile.fileName;
-        var isIgnored = this.ignoredFiles
-            .map(function (ignoredPattern) { return new RegExp(ignoredPattern).test(_this.fileName); })
-            .reduce(function (l, r) { return l || r; });
+        var isIgnored = this.ignoredFiles.some(function (ignoredPattern) { return new RegExp(ignoredPattern).test(_this.fileName); });
         if (!isIgnored) {
-            var matchesPathPattern = this.pathPatterns
-                .map(function (pattern) { return new RegExp(pattern).test(_this.fileName); })
-                .reduce(function (l, r) { return l || r; });
+            var matchesPathPattern = this.pathPatterns.some(function (pattern) { return new RegExp(pattern).test(_this.fileName); });
             if (!matchesPathPattern) {
                 this.addFailureAt(0, 1, "this file path does not match any defined patterns");
             }

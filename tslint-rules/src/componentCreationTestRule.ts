@@ -62,32 +62,15 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
       .getChildAt(4)
       .getChildAt(1);
 
-    const orReduce = (l: boolean, r: boolean) => l || r;
-
-    if (
-      !shouldBeCreatedBlock
-        .getChildren()
-        .map(this.findComponentTruthy)
-        .reduce(orReduce, false)
-    ) {
+    if (!shouldBeCreatedBlock.getChildren().some(this.findComponentTruthy)) {
       super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`);
     }
 
-    if (
-      !shouldBeCreatedBlock
-        .getChildren()
-        .map(this.findElementTruthy)
-        .reduce(orReduce, false)
-    ) {
+    if (!shouldBeCreatedBlock.getChildren().some(this.findElementTruthy)) {
       super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if html element is truthy`);
     }
 
-    if (
-      !shouldBeCreatedBlock
-        .getChildren()
-        .map(this.findDetectChangesNotThrow)
-        .reduce(orReduce, false)
-    ) {
+    if (!shouldBeCreatedBlock.getChildren().some(this.findDetectChangesNotThrow)) {
       super.addFailureAtNode(
         node,
         `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`
