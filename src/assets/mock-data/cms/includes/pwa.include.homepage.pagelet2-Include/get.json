@@ -416,7 +416,7 @@
       "configurationParameters": {
         "CSSClass": {
           "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CSSClass",
-          "value": "brands-carousel hidden-xs"
+          "value": "brands-carousel hidden-xs d-none d-md-block"
         },
         "CarouselCSSClass": {
           "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CarouselCSSClass",
