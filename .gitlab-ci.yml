@@ -164,12 +164,12 @@ cypress_remote:
   script:
     - node --version && npm --version
     - npm ci --prefer-offline --production
-    - npm run build:dynamic:prod
+    - npm run build
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
     - npm ci --prefer-offline
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - nohup bash -c "npm run serve:dynamic &"
+    - nohup bash -c "npm run serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true'
@@ -179,8 +179,6 @@ publish:
   cache: {}
   dependencies: []
   image: docker:stable
-  variables:
-    ENVIRONMENT: "prod"
   stage: publish
   tags:
     - docker-executor
@@ -188,14 +186,13 @@ publish:
     - docker:dind
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
-            --build-arg env=${ENVIRONMENT}
-            --label environment="${ENVIRONMENT}"
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+            --label environment="production"
             --label revision="${CI_BUILD_REF}"
             --label project="${CI_PROJECT_URL}"
             .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
 
 reports:
   cache: {}
@@ -219,16 +216,16 @@ push_reports:
   - docker
   - performance
   script:
-  - docker build -t ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}
+  - docker build -t ${CI_REGISTRY_IMAGE}-reports:${CI_BUILD_REF}
            --build-arg ICM_BASE_URL=${ICM_BASE_URL}
            --label revision="${CI_BUILD_REF}"
            --label project="${CI_PROJECT_URL}"
            --file Dockerfile_reports
            .
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}
-  - docker tag ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}/reports:latest
-  - docker push ${CI_REGISTRY_IMAGE}/reports:latest
+  - docker push ${CI_REGISTRY_IMAGE}-reports:${CI_BUILD_REF}
+  - docker tag ${CI_REGISTRY_IMAGE}-reports:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}-reports:latest
+  - docker push ${CI_REGISTRY_IMAGE}-reports:latest
 
 pull_images:
   stage: distribute
@@ -241,8 +238,8 @@ pull_images:
   - demoserver
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker pull "${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}"
-  - docker pull "${CI_REGISTRY_IMAGE}/prod:${CI_BUILD_REF}"
+  - docker pull "${CI_REGISTRY_IMAGE}-reports:${CI_BUILD_REF}"
+  - docker pull "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
 
 deploy_demo:
   stage: deploy
@@ -255,7 +252,7 @@ deploy_demo:
   - chuck-norris-swarm-manager
   variables:
     SERVICE: "intershop-pwa"
-    IMAGE: "${CI_REGISTRY_IMAGE}/prod:${CI_BUILD_REF}"
+    IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
   script: 
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish mode=host,target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
@@ -275,7 +272,7 @@ deploy_reports:
   - chuck-norris-swarm-manager
   variables:
     SERVICE: "intershop-pwa-reports"
-    IMAGE: "${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}"
+    IMAGE: "${CI_REGISTRY_IMAGE}-reports:${CI_BUILD_REF}"
   script: 
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish mode=host,target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}

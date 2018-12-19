@@ -404,7 +404,7 @@
           { "name": "^([A-Z].*)Page$", "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$" }
         ],
         "ignoredFiles": [
-          "/(prerender|server).ts$",
+          "/server.ts$",
           "src/[^\/]*.ts$",
           ".*.spec.ts$",
           "/tslint-rules/",
