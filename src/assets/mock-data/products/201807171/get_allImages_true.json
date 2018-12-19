@@ -1,4 +1,5 @@
 {
+  "attributeGroups": {},
   "attributes": [
     {
       "name": "Ports and connectors",
@@ -32,6 +33,26 @@
     }
   ],
   "availability": true,
+  "defaultCategory": {
+    "categoryPath": [
+      {
+        "id": "Home-Entertainment",
+        "name": "Home Entertainment",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/"
+      },
+      {
+        "id": "SmartHome",
+        "name": "Smart Home",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome/"
+      }
+    ],
+    "id": "SmartHome",
+    "name": "Smart Home",
+    "type": "DefaultCategory",
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome/"
+  },
   "images": [
     {
       "effectiveUrl": "/assets/product_img/a.jpg",
@@ -87,13 +108,13 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
-    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 185.5
   },
   "longDescription": "Get answers, play songs, tackle your day, enjoy your entertainment and control your smart home with just your voice.",
   "manufacturer": "Google",
   "mastered": false,
+  "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Google Home",
   "productBundle": false,
@@ -106,7 +127,6 @@
   "roundedAverageRating": "3.0",
   "salePrice": {
     "currencyMnemonic": "USD",
-    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 185.5
   },
@@ -142,5 +162,6 @@
   ],
   "shortDescription": "Hands-free help from the Google Assistant",
   "sku": "201807171",
+  "stepOrderQuantity": 1,
   "type": "Product"
 }

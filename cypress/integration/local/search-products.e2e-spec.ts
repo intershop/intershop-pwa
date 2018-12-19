@@ -37,6 +37,7 @@ describe('Searching User', () => {
     });
     at(ProductDetailPage, page => {
       page.sku.should('have.text', _.product);
+      page.breadcrumb.items.should('have.length', 4);
     });
   });
 });

@@ -108,7 +108,7 @@ describe('Products Selectors', () => {
       });
 
       it('should select the selected product when used', () => {
-        expect(getSelectedProduct(store$.state)).toEqual(prod);
+        expect(getSelectedProduct(store$.state)).toHaveProperty('sku', prod.sku);
         expect(getSelectedProductId(store$.state)).toEqual(prod.sku);
       });
     });
