@@ -1,4 +1,5 @@
 {
+  "attributeGroups": {},
   "attributes": [
     {
       "name": "Warranty",
@@ -8,6 +9,26 @@
   ],
   "availability": true,
   "bundles": "inSPIRED-inTRONICS-Site/-/products/201807194/bundles",
+  "defaultCategory": {
+    "categoryPath": [
+      {
+        "id": "Home-Entertainment",
+        "name": "Home Entertainment",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/"
+      },
+      {
+        "id": "SmartHome",
+        "name": "Smart Home",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome/"
+      }
+    ],
+    "id": "SmartHome",
+    "name": "Smart Home",
+    "type": "DefaultCategory",
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome/"
+  },
   "images": [
     {
       "effectiveUrl": "/assets/product_img/a.jpg",
@@ -73,13 +94,13 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
-    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 105.99
   },
   "longDescription": "Philips Hue apps for iOS and Android let you remotely control your lamps wherever you are. Check if you have left the light on before leaving and switch it on if you come home later.",
   "manufacturer": "Philips",
   "mastered": false,
+  "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Philips Hue White Starter Kit",
   "productBundle": true,
@@ -92,7 +113,6 @@
   "roundedAverageRating": "4.5",
   "salePrice": {
     "currencyMnemonic": "USD",
-    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 105.99
   },
@@ -128,5 +148,6 @@
   ],
   "shortDescription": "Automate your lamps for easy control and convenience",
   "sku": "201807194",
+  "stepOrderQuantity": 1,
   "type": "Product"
 }
