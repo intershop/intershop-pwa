@@ -1,5 +1,4 @@
-import { Facet } from '../facet/facet.model';
-import { Filter } from '../filter/filter.model';
+import { FacetData } from '../facet/facet.interface';
 
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigation } from './filter-navigation.model';
@@ -7,26 +6,29 @@ import { FilterNavigation } from './filter-navigation.model';
 export class FilterNavigationMapper {
   static fromData(data: FilterNavigationData): FilterNavigation {
     return {
-      filter: data.elements.map(
-        filterData =>
-          ({
-            id: filterData.id,
-            name: filterData.name,
-            displayType: filterData.displayType,
-            facets: filterData.facets.map(
-              facetData =>
-                ({
-                  name: facetData.name,
-                  type: facetData.type,
-                  count: facetData.count,
-                  selected: facetData.selected,
-                  link: facetData.link,
-                  filterId: facetData.link.uri.split('/filters/')[1].split(';')[0],
-                  searchParameter: facetData.link.uri.split(';SearchParameter=')[1],
-                } as Facet)
-            ),
-          } as Filter)
-      ),
+      filter:
+        data && data.elements
+          ? data.elements.map(filterData => ({
+              id: filterData.id,
+              name: filterData.name,
+              displayType: filterData.displayType,
+              facets: FilterNavigationMapper.mapFacetData(filterData.facets),
+            }))
+          : [],
     };
+  }
+
+  private static mapFacetData(facetDatas: FacetData[]) {
+    return facetDatas
+      ? facetDatas.map(facet => ({
+          name: facet.name,
+          type: facet.type,
+          count: facet.count,
+          selected: facet.selected,
+          link: facet.link,
+          filterId: facet.link.uri.split('/filters/')[1].split(';')[0],
+          searchParameter: facet.link.uri.split(';SearchParameter=')[1],
+        }))
+      : [];
   }
 }
