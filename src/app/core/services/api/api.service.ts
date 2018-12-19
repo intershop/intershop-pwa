@@ -15,11 +15,11 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
  * Pipable operator for elements translation (removing the envelop).
  * @returns The items of an elements array without the elements wrapper.
  */
-export function unpackEnvelope<T>(): OperatorFunction<{ elements: T[] }, T[]> {
+export function unpackEnvelope<T>(key: string = 'elements'): OperatorFunction<{}, T[]> {
   return source$ =>
     source$.pipe(
-      filter(data => !!data.elements && !!data.elements.length),
-      map(data => data.elements),
+      filter(data => !!data[key] && !!data[key].length),
+      map(data => data[key]),
       defaultIfEmpty([])
     );
 }

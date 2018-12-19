@@ -73,6 +73,23 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should get basket with all include data when 'getBasket' is called without second parameter", done => {
+    when(apiService.get(anyString(), anything())).thenReturn(of(basketMockDataV1));
+
+    basketService.getBasket(basketMockDataV1.data.id).subscribe(data => {
+      expect(data.id).toEqual(basketMockData.id);
+      verify(
+        apiService.get(
+          `baskets/${
+            basketMockDataV1.data.id
+          }?include=invoiceToAddress&include=commonShipToAddress&include=commonShippingMethod&include=discounts&include=lineItems`,
+          anything()
+        )
+      ).once();
+      done();
+    });
+  });
+
   it("should create a basket data when 'createBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(basketMockDataV1));
 
@@ -93,11 +110,11 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should get basket items for specific basketId when 'getBasketItems' is called", done => {
-    when(apiService.get(`baskets/${basketMockData.id}/items`)).thenReturn(of([]));
+  it("should get active baskets of the current user when 'getBaskets' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({}));
 
-    basketService.getBasketItems(basketMockData.id).subscribe(() => {
-      verify(apiService.get(`baskets/${basketMockData.id}/items`)).once();
+    basketService.getBaskets().subscribe(() => {
+      verify(apiService.get(`baskets`, anything())).once();
       done();
     });
   });

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -21,7 +21,6 @@ import {
   LoadBasketEligibleShippingMethodsFail,
   LoadBasketEligibleShippingMethodsSuccess,
   LoadBasketFail,
-  LoadBasketItemsSuccess,
   LoadBasketPaymentsSuccess,
   LoadBasketSuccess,
 } from './basket.actions';
@@ -70,10 +69,13 @@ describe('Basket Selectors', () => {
     });
 
     it('should set loading to false and set basket state', () => {
-      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as BasketView));
       store$.dispatch(
-        new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as BasketItem])
+        new LoadBasketSuccess({
+          id: 'test',
+          lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
+        } as BasketView)
       );
+
       store$.dispatch(new LoadBasketPaymentsSuccess([{ name: 'p_test' } as Payment]));
       expect(getBasketLoading(store$.state)).toBeFalse();
 
@@ -87,9 +89,9 @@ describe('Basket Selectors', () => {
     });
 
     it('should change the product of the basket line item if the product is changing', () => {
-      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
-      store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
-
+      store$.dispatch(
+        new LoadBasketSuccess({ id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket)
+      );
       let currentBasket = getCurrentBasket(store$.state);
       expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
 

@@ -1,9 +1,11 @@
 import { AddressData } from '../address/address.interface';
-import { BasketItemData } from '../basket-item/basket-item.interface';
+
+import { OrderItemData } from '../order-item/order-item.interface';
 import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
+/* shipping bucket data model is currently only used for orders */
 export interface ShippingBucketData {
-  lineItems: BasketItemData[];
+  lineItems: OrderItemData[];
   name: string;
   shipToAddress: AddressData;
   shippingMethod: ShippingMethod;

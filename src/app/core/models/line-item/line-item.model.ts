@@ -1,26 +1,24 @@
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
-import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
+import { Product } from '../product/product.model';
 
-export interface BasketItemData {
+export interface LineItem {
   id: string;
-  name: string;
   position: number;
   quantity: {
-    type: string;
+    type?: string;
     value: number;
     unit?: string;
   };
-  product: Link;
+  productSKU: string;
   price: Price;
   singleBasePrice: Price;
-  itemSurcharges?: [
-    {
-      amount: Price;
-      description?: string;
-      displayName?: string;
-    }
-  ];
+  itemSurcharges?: {
+    amount: Price;
+    description?: string;
+    displayName?: string;
+    text?: string;
+  }[];
   valueRebates?: BasketRebate[];
   totals: {
     salesTaxTotal?: Price;
@@ -31,8 +29,13 @@ export interface BasketItemData {
   };
   isHiddenGift: boolean;
   isFreeGift: boolean;
-  inStock: boolean;
-  variationProduct: boolean;
-  bundleProduct: boolean;
-  availability: boolean;
+
+  // attributes needed for order line items
+  name?: string;
+  inStock?: boolean;
+  availability?: boolean;
+}
+
+export interface LineItemView extends LineItem {
+  product: Product;
 }

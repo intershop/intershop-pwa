@@ -6,10 +6,11 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -102,6 +103,33 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadProductsForBasket$', () => {
+    it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
+      when(basketServiceMock.getBasket(anything(), anyString())).thenReturn(of());
+
+      const action = new basketActions.LoadBasketSuccess({
+        id: 'BID',
+        lineItems: [
+          {
+            id: 'BIID',
+            name: 'NAME',
+            position: 1,
+            quantity: { value: 1 },
+            price: undefined,
+            productSKU: 'SKU',
+          } as LineItem,
+        ],
+        payment: undefined,
+      } as Basket);
+
+      const completion = new LoadProduct('SKU');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
     });
   });
 
@@ -326,92 +354,6 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('loadBasketItems$', () => {
-    beforeEach(() => {
-      when(basketServiceMock.getBasketItems(anyString())).thenReturn(of([]));
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          id: 'BID',
-          lineItems: [],
-        } as Basket)
-      );
-    });
-
-    it('should call the basketService for loadBasketItems', done => {
-      const payload = 'BID';
-      const action = new basketActions.LoadBasketItems(payload);
-      actions$ = of(action);
-
-      effects.loadBasketItems$.subscribe(() => {
-        verify(basketServiceMock.getBasketItems(payload)).once();
-        done();
-      });
-    });
-
-    it('should map to action of type LoadBasketItemsSuccess', () => {
-      const payload = 'BID';
-      const action = new basketActions.LoadBasketItems(payload);
-      const completion = new basketActions.LoadBasketItemsSuccess([] as BasketItem[]);
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadBasketItems$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type LoadBasketItemsFail', () => {
-      when(basketServiceMock.getBasketItems(anyString())).thenReturn(throwError({ message: 'invalid' }));
-
-      const action = new basketActions.LoadBasketItems('BID');
-      const completion = new basketActions.LoadBasketItemsFail({ message: 'invalid' } as HttpError);
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadBasketItems$).toBeObservable(expected$);
-    });
-
-    it('should trigger LoadBasketItems action if LoadBasketSuccess action triggered', () => {
-      const action = new basketActions.LoadBasketSuccess({
-        id: 'BID',
-      } as Basket);
-      const completion = new basketActions.LoadBasketItems('BID');
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadBasketItemsAfterBasketLoad$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadProductsForBasket$', () => {
-    beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(of());
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          id: 'BID',
-          lineItems: [],
-        } as Basket)
-      );
-    });
-
-    it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
-      const action = new basketActions.LoadBasketItemsSuccess([
-        {
-          id: 'BIID',
-          name: 'NAME',
-          quantity: { value: 1 },
-          productSKU: 'SKU',
-          price: undefined,
-        } as BasketItem,
-      ]);
-      const completion = new LoadProduct('SKU');
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
-    });
-  });
-
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.addItemsToBasket(anyString(), anything())).thenReturn(of(undefined));
@@ -610,24 +552,21 @@ describe('Basket Effects', () => {
 
   describe('mergeBasketAfterLogin$', () => {
     it('should map to action of type addItemsToBasket if pre login basket is filled', () => {
-      when(basketServiceMock.getBasket()).thenReturn(of({ id: 'BIDNEW' } as Basket));
+      when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
           id: 'BID',
-          lineItems: [],
+          lineItems: [
+            {
+              id: 'BIID',
+              name: 'NAME',
+              quantity: { value: 1 },
+              productSKU: 'SKU',
+              price: undefined,
+            } as LineItem,
+          ],
         } as Basket)
-      );
-      store$.dispatch(
-        new basketActions.LoadBasketItemsSuccess([
-          {
-            id: 'BIID',
-            name: 'NAME',
-            quantity: { value: 1 },
-            productSKU: 'SKU',
-            price: undefined,
-          } as BasketItem,
-        ])
       );
       store$.dispatch(new LoadProductSuccess({ sku: 'SKU' } as Product));
 
@@ -650,7 +589,7 @@ describe('Basket Effects', () => {
 
   describe('loadBasketAfterLogin$', () => {
     it('should map to action of type LoadBasket if pre login basket is empty', () => {
-      when(basketServiceMock.getBasket()).thenReturn(of({} as Basket));
+      when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
 
       const action = new LoginUserSuccess({} as Customer);
       const completion = new basketActions.LoadBasket();
@@ -668,19 +607,16 @@ describe('Basket Effects', () => {
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
           id: 'BID',
-          lineItems: [],
+          lineItems: [
+            {
+              id: 'BIID',
+              name: 'NAME',
+              quantity: { value: 1 },
+              productSKU: 'SKU',
+              price: undefined,
+            } as LineItem,
+          ],
         } as Basket)
-      );
-      store$.dispatch(
-        new basketActions.LoadBasketItemsSuccess([
-          {
-            id: 'BIID',
-            name: 'NAME',
-            quantity: { value: 1 },
-            productSKU: 'SKU',
-            price: undefined,
-          } as BasketItem,
-        ])
       );
     });
 
@@ -844,9 +780,8 @@ describe('Basket Effects', () => {
           lineItems: [],
         } as Basket)
       );
-
-      store$.dispatch(new basketActions.LoadBasketItemsSuccess([BasketMockData.getBasketItem()]));
     });
+
     it('should call the basketService for loadBasketItemOptions', done => {
       const action = new basketActions.LoadBasketEligibleShippingMethods();
       actions$ = of(action);

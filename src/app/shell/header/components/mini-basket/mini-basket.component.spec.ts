@@ -6,8 +6,8 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -18,7 +18,7 @@ describe('Mini Basket Component', () => {
   let fixture: ComponentFixture<MiniBasketComponent>;
   let component: MiniBasketComponent;
   let element: HTMLElement;
-  let lineItem: BasketItemView;
+  let lineItem: LineItemView;
   let basket: BasketView;
   let translate: TranslateService;
 

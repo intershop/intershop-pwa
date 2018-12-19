@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -58,7 +58,7 @@ describe('Line Item List Component', () => {
         singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
         price: { value: 3, currencyMnemonic: 'USD' },
         totals: {},
-      } as BasketItemView,
+      } as LineItemView,
     ];
   });
 
@@ -92,7 +92,7 @@ describe('Line Item List Component', () => {
         id: 'IID',
         quantity: { value: 1, type: 'quantity' },
         product: { maxOrderQuantity: 2 },
-      } as BasketItemView,
+      } as LineItemView,
     ];
 
     component.updateItem.subscribe(item => {

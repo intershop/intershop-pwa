@@ -1,4 +1,4 @@
-import { BasketItem } from '../basket-item/basket-item.model';
+import { LineItem } from '../line-item/line-item.model';
 
 export class BasketHelper {
   /**
@@ -6,7 +6,7 @@ export class BasketHelper {
    * @param lineItems An array of basket/order line items
    * @returns Number of item quantities
    */
-  static getBasketItemsCount(lineItems: BasketItem[]): number {
+  static getBasketItemsCount(lineItems: LineItem[]): number {
     if (!lineItems || lineItems.length === 0 || (lineItems.length > 0 && !lineItems[0].quantity)) {
       return 0;
     }

@@ -15,10 +15,10 @@ import {
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../configurations/injection-keys';
 import { Address } from '../../models/address/address.model';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { Basket } from '../../models/basket/basket.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
+import { LineItem } from '../../models/line-item/line-item.model';
 import { Locale } from '../../models/locale/locale.model';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { Price } from '../../models/price/price.model';
@@ -46,9 +46,23 @@ describe('Checkout Store', () => {
   let store: TestStore;
   let locales: Locale[];
 
+  const lineItem = {
+    id: 'test',
+    name: 'test',
+    position: 1,
+    quantity: { type: 'test', value: 1 },
+    productSKU: 'test',
+    price: undefined,
+    singleBasePrice: undefined,
+    isHiddenGift: false,
+    isFreeGift: false,
+    inStock: false,
+    availability: false,
+  } as LineItem;
+
   const basket = {
     id: 'test',
-    lineItems: [],
+    lineItems: [lineItem],
   } as Basket;
 
   const product = {
@@ -68,22 +82,6 @@ describe('Checkout Store', () => {
     sku: 'test',
     type: 0,
   };
-
-  const lineItem = {
-    id: 'test',
-    name: 'test',
-    position: 1,
-    quantity: { type: 'test', value: 1 },
-    productSKU: 'test',
-    price: undefined,
-    singleBasePrice: undefined,
-    isHiddenGift: false,
-    isFreeGift: false,
-    inStock: false,
-    variationProduct: false,
-    bundleProduct: false,
-    availability: false,
-  } as BasketItem;
 
   const user = {
     type: 'PrivateCustomer',
@@ -163,7 +161,21 @@ describe('Checkout Store', () => {
 
       return of(newBasket);
     });
-    when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
+
+    when(basketServiceMock.getBaskets()).thenCall(() => {
+      const newBaskets = [
+        {
+          ...basket,
+        },
+      ];
+
+      if (basketId) {
+        newBaskets[0].id = basketId;
+      }
+
+      return of(newBaskets);
+    });
+
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
     when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 
@@ -237,9 +249,7 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
@@ -256,9 +266,7 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });

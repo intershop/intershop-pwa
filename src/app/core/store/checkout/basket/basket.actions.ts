@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
@@ -28,9 +27,6 @@ export enum BasketActionTypes {
   UpdateBasketFail = '[Basket API] Update Basket Fail',
   UpdateBasketSuccess = '[Basket API] Update Basket Success',
   DeleteBasketShippingAddress = '[Basket] Delete Basket Shipping Address',
-  LoadBasketItems = '[Basket Internal] Load Basket Items',
-  LoadBasketItemsFail = '[Basket API] Load Basket Items Fail',
-  LoadBasketItemsSuccess = '[Basket API] Load Basket Items Success',
   AddProductToBasket = '[Basket] Add Product',
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
   AddItemsToBasketFail = '[Basket API] Add Items To Basket Fail',
@@ -134,21 +130,6 @@ export class UpdateBasketSuccess implements Action {
 export class DeleteBasketShippingAddress implements Action {
   readonly type = BasketActionTypes.DeleteBasketShippingAddress;
   constructor(public payload: string) {}
-}
-
-export class LoadBasketItems implements Action {
-  readonly type = BasketActionTypes.LoadBasketItems;
-  constructor(public payload: string) {}
-}
-
-export class LoadBasketItemsFail implements Action {
-  readonly type = BasketActionTypes.LoadBasketItemsFail;
-  constructor(public payload: HttpError) {}
-}
-
-export class LoadBasketItemsSuccess implements Action {
-  readonly type = BasketActionTypes.LoadBasketItemsSuccess;
-  constructor(public payload: BasketItem[]) {}
 }
 
 export class AddProductToBasket implements Action {
@@ -307,9 +288,6 @@ export type BasketAction =
   | UpdateBasketFail
   | UpdateBasketSuccess
   | DeleteBasketShippingAddress
-  | LoadBasketItems
-  | LoadBasketItemsFail
-  | LoadBasketItemsSuccess
   | AddProductToBasket
   | AddItemsToBasket
   | AddItemsToBasketFail

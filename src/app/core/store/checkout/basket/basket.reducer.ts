@@ -1,4 +1,3 @@
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -9,7 +8,6 @@ import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
-  lineItems: BasketItem[];
   eligibleShippingMethods: ShippingMethod[];
   eligiblePaymentMethods: PaymentMethod[];
   payments: Payment[];
@@ -19,7 +17,6 @@ export interface BasketState {
 
 export const initialState: BasketState = {
   basket: undefined,
-  lineItems: [],
   eligibleShippingMethods: [],
   eligiblePaymentMethods: [],
   payments: [],
@@ -34,7 +31,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.UpdateBasketShippingAddress:
     case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
-    case BasketActionTypes.LoadBasketItems:
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
@@ -52,7 +48,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketFail:
-    case BasketActionTypes.LoadBasketItemsFail:
     case BasketActionTypes.LoadBasketPaymentsFail:
     case BasketActionTypes.CreateOrderFail:
     case BasketActionTypes.UpdateBasketFail:
@@ -88,7 +83,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketSuccess: {
       const basket = {
         ...action.payload,
-        lineItems: undefined,
       };
 
       return {
@@ -96,15 +90,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         basket,
         loading: false,
         error: undefined,
-      };
-    }
-
-    case BasketActionTypes.LoadBasketItemsSuccess: {
-      const lineItems = action.payload;
-      return {
-        ...state,
-        lineItems,
-        loading: false,
       };
     }
 

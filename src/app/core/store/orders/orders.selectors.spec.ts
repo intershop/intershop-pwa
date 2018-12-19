@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { HttpError } from '../../models/http-error/http-error.model';
+import { LineItem } from '../../models/line-item/line-item.model';
 import { OrderView } from '../../models/order/order.model';
 import { Product } from '../../models/product/product.model';
 import { coreReducers } from '../core-store.module';
@@ -20,12 +20,12 @@ describe('Orders Selectors', () => {
     {
       id: '1',
       documentNo: '00000001',
-      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } }] as BasketItem[],
+      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
     },
     {
       id: '2',
       documentNo: '00000002',
-      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } }] as BasketItem[],
+      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
     },
   ] as OrderView[];
 
