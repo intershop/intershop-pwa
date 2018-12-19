@@ -1,4 +1,3 @@
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
@@ -163,38 +162,6 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.DeleteBasketShippingAddress,
-        payload,
-      });
-    });
-  });
-
-  describe('Load Basket Items Actions', () => {
-    it('should create new action for LoadBasketItems', () => {
-      const payload = '123';
-      const action = new fromActions.LoadBasketItems(payload);
-
-      expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.LoadBasketItems,
-        payload,
-      });
-    });
-
-    it('should create new action for LoadBasketItemsFail', () => {
-      const payload = { message: 'error' } as HttpError;
-      const action = new fromActions.LoadBasketItemsFail(payload);
-
-      expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.LoadBasketItemsFail,
-        payload,
-      });
-    });
-
-    it('should create new action for LoadBasketItemsSuccess', () => {
-      const payload = [] as BasketItem[];
-      const action = new fromActions.LoadBasketItemsSuccess(payload);
-
-      expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.LoadBasketItemsSuccess,
         payload,
       });
     });

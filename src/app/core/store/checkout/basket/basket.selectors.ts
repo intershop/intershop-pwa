@@ -20,11 +20,14 @@ export const getCurrentBasket = createSelector(
       ? undefined
       : {
           ...basket.basket,
-          lineItems: basket.lineItems.map(li => ({
+          lineItems: basket.basket.lineItems.map(li => ({
             ...li,
             product: products[li.productSKU],
+            name: products[li.productSKU] ? products[li.productSKU].name : undefined,
+            inStock: products[li.productSKU] ? products[li.productSKU].inStock : undefined,
+            availability: products[li.productSKU] ? products[li.productSKU].availability : undefined,
           })),
-          itemsCount: BasketHelper.getBasketItemsCount(basket.lineItems),
+          itemsCount: BasketHelper.getBasketItemsCount(basket.basket.lineItems),
           payment: basket.payments[0],
         }
 );

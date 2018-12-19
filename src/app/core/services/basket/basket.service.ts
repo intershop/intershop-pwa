@@ -1,14 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-import { BasketItemData } from '../../models/basket-item/basket-item.interface';
-import { BasketItemMapper } from '../../models/basket-item/basket-item.mapper';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
-import { BasketData } from '../../models/basket/basket.interface';
+import { BasketBaseData, BasketData } from '../../models/basket/basket.interface';
 import { BasketMapper } from '../../models/basket/basket.mapper';
 import { Basket } from '../../models/basket/basket.model';
 import { Link } from '../../models/link/link.model';
@@ -52,7 +49,13 @@ export class BasketService {
    */
   getBasket(
     basketId: string = 'current',
-    includes: BasketIncludeType[] = ['invoiceToAddress', 'commonShipToAddress', 'commonShippingMethod', 'discounts']
+    includes: BasketIncludeType[] = [
+      'invoiceToAddress',
+      'commonShipToAddress',
+      'commonShippingMethod',
+      'discounts',
+      'lineItems',
+    ]
   ): Observable<Basket> {
     const includeStr = includes && includes.length > 0 ? '?include=' + includes.join('&include=') : '';
 
@@ -95,19 +98,16 @@ export class BasketService {
   }
 
   /**
-   * Get basket items for selected basket.
-   * @param basketId  The basket id.
-   * @returns         The basket items.
+   * Returns the list of active baskets for the current user. The first basket is the last modified basket.
+   * Use this method to check if the user has at least one active basket
+   * @returns         An array of basket base data.
    */
-  getBasketItems(basketId: string): Observable<BasketItem[]> {
-    if (!basketId) {
-      return throwError('getBasketItems() called without basketId');
-    }
-
-    return this.apiService.get(`baskets/${basketId}/items`).pipe(
-      unpackEnvelope<BasketItemData>(),
-      map(basketItemsData => basketItemsData.map(BasketItemMapper.fromData))
-    );
+  getBaskets(): Observable<BasketBaseData[]> {
+    return this.apiService
+      .get(`baskets`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(unpackEnvelope<BasketBaseData>('data'));
   }
 
   /**
@@ -115,7 +115,7 @@ export class BasketService {
    * @param basketId  The id of the basket to add the items to.
    * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(basketId: string, items: { sku: string; quantity: number }[]): Observable<void> {
+  addItemsToBasket(basketId: string = 'current', items: { sku: string; quantity: number }[]): Observable<void> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -184,7 +184,7 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(
-        map(({ data }) => data),
+        unpackEnvelope<ShippingMethodData>('data'),
         map(data => data.map(ShippingMethodMapper.fromData))
       );
   }

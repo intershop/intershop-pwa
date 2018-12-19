@@ -62,6 +62,22 @@ export class BasketEffects {
   );
 
   /**
+   * After successfully loading the basket, trigger a LoadProduct action
+   * for each product that is missing in the current product entities state.
+   */
+  @Effect()
+  loadProductsForBasket$ = this.actions$.pipe(
+    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
+    map(action => action.payload),
+    withLatestFrom(this.store.pipe(select(getProductEntities))),
+    switchMap(([basket, products]) => [
+      ...basket.lineItems
+        .filter(basketItem => !products[basketItem.productSKU])
+        .map(basketItem => new LoadProduct(basketItem.productSKU)),
+    ])
+  );
+
+  /**
    * Creates a new customer invoice/shipping address which is assigned to the basket later on
    */
   @Effect()
@@ -194,37 +210,6 @@ export class BasketEffects {
   );
 
   /**
-   * The load basket items effect.
-   */
-  @Effect()
-  loadBasketItems$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketItems>(basketActions.BasketActionTypes.LoadBasketItems),
-    map(action => action.payload),
-    mergeMap(basketId =>
-      this.basketService.getBasketItems(basketId).pipe(
-        map(basketItems => new basketActions.LoadBasketItemsSuccess(basketItems)),
-        mapErrorToAction(basketActions.LoadBasketItemsFail)
-      )
-    )
-  );
-
-  /**
-   * After successfully loading the basket items, trigger a LoadProduct action
-   * for each product that is missing in the current product entities state.
-   */
-  @Effect()
-  loadProductsForBasket$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketItemsSuccess>(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
-    map(action => action.payload),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    switchMap(([basketItems, products]) => [
-      ...basketItems
-        .filter(basketItem => !products[basketItem.productSKU])
-        .map(basketItem => new LoadProduct(basketItem.productSKU)),
-    ])
-  );
-
-  /**
    * Add a product to the current basket.
    * Triggers the internal AddItemsToBasket action that handles the actual adding of the product to the basket.
    */
@@ -350,16 +335,6 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasketItems action after a successful basket loading.
-   */
-  @Effect()
-  loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
-    map(action => action.payload),
-    map(basket => new basketActions.LoadBasketItems(basket.id))
-  );
-
-  /**
    * The load basket eligible shipping methods effect.
    */
   @Effect()
@@ -367,8 +342,6 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([, basket]) =>
-      /* simplified solution: get eligible shipping methods only for the first item
-       ToDo: differentiate between multi and single shipment */
       this.basketService.getBasketEligibleShippingMethods(basket.id).pipe(
         map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess(result)),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
@@ -446,7 +419,6 @@ export class BasketEffects {
     map((action: basketActions.AddItemsToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !basket && !payload.basketId),
-    // TODO: add create basket if LoadBasket does not create basket anymore
     mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
     map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
   );
@@ -457,16 +429,17 @@ export class BasketEffects {
   @Effect()
   mergeBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
-    switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
-    map(([newBasket, currentBasket]) => {
+    switchMap(() => this.basketService.getBaskets()),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    map(([newBaskets, currentBasket]) => {
       const items = currentBasket.lineItems.map(lineItem => ({
         sku: lineItem.productSKU,
         quantity: lineItem.quantity.value,
       }));
 
-      return new basketActions.AddItemsToBasket({ items, basketId: newBasket.id });
+      return new basketActions.AddItemsToBasket({ items, basketId: newBaskets.length ? newBaskets[0].id : undefined });
     })
   );
 
@@ -476,9 +449,12 @@ export class BasketEffects {
   @Effect()
   loadBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
-    switchMap(() => this.basketService.getBasket()),
+    switchMap(() => this.basketService.getBaskets()) /* prevent 404 error by checking on existing basket */,
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0),
+    filter(
+      ([newBaskets, currentBasket]) =>
+        (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) && newBaskets.length > 0
+    ),
     mapTo(new basketActions.LoadBasket())
   );
 
@@ -517,6 +493,7 @@ export class BasketEffects {
   @Effect()
   resetBasketAfterLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.LogoutUser),
+
     mapTo(new basketActions.ResetBasket())
   );
 

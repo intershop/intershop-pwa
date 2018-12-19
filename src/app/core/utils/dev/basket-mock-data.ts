@@ -1,8 +1,8 @@
 import { Address } from 'ish-core/models/address/address.model';
-import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { OrderView } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
@@ -21,7 +21,7 @@ export class BasketMockData {
     } as BasketView;
   }
 
-  static getBasketItem(): BasketItemView {
+  static getBasketItem(): LineItemView {
     return {
       id: '4712',
       name: 'pli name',
@@ -38,7 +38,7 @@ export class BasketMockData {
         },
       ],
       totals: {},
-    } as BasketItemView;
+    } as LineItemView;
   }
 
   static getOrder(): OrderView {

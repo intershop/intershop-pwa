@@ -8,13 +8,13 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
-import { LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { LoadProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -497,22 +497,18 @@ describe('Quote Request Effects', () => {
       store$.dispatch(
         new LoadBasketSuccess({
           id: 'BID',
-          lineItems: [],
+          lineItems: [
+            {
+              id: 'BIID',
+              name: 'NAME',
+              position: 1,
+              quantity: { value: 1 },
+              productSKU: 'SKU',
+            } as LineItem,
+          ],
           payment: undefined,
         } as Basket)
       );
-      store$.dispatch(
-        new LoadBasketItemsSuccess([
-          {
-            id: 'BIID',
-            name: 'NAME',
-            position: 1,
-            quantity: { value: 1 },
-            productSKU: 'SKU',
-          } as BasketItem,
-        ])
-      );
-
       when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(of('QRID'));
     });
 
