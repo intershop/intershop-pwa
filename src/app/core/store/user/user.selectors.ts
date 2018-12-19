@@ -1,8 +1,11 @@
 import { createSelector } from '@ngrx/store';
 
-import { CoreState } from '../core-store.module';
+import { getCoreState } from '../core-store';
 
-const getUserState = (state: CoreState) => state.user;
+const getUserState = createSelector(
+  getCoreState,
+  state => state.user
+);
 
 export const getLoggedInCustomer = createSelector(
   getUserState,

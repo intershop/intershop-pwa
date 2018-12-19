@@ -1,8 +1,11 @@
 import { createSelector } from '@ngrx/store';
 
-import { CoreState } from '../core-store.module';
+import { getCoreState } from '../core-store';
 
-const getViewconfState = (state: CoreState) => state.viewconf;
+const getViewconfState = createSelector(
+  getCoreState,
+  state => state.viewconf
+);
 
 export const getWrapperClass = createSelector(
   getViewconfState,

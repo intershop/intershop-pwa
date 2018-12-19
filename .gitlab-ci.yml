@@ -28,6 +28,8 @@ setup:
     - node --version && npm --version
     - bash -c "cd tslint-rules ; npm --silent run build"
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
+    - bash -c "cd schematics ; npm --silent run build"
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
     - npm ci --prefer-offline
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
     - echo "setup complete"
@@ -98,6 +100,20 @@ codestyle:
     - node reports/tslint-report
     - node reports/jscpd-report
     - echo "build complete"
+
+schematics:
+  image: node:10
+  stage: e2e
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  dependencies: []
+  script:
+    - npm install
+    - bash .gitlab-ci-test-schematics.sh
+    - echo "schematics complete"
 
 cypress_local:
   image: cypress/browsers:chrome69

@@ -2,8 +2,6 @@
 import { Action, ActionReducer } from '@ngrx/store';
 import { localStorageSync, rehydrateApplicationState } from 'ngrx-store-localstorage';
 
-import { CoreState } from '../../store/core-store.module';
-
 // https://github.com/btroncone/ngrx-store-localstorage/issues/40#issuecomment-336283880
 
 const STORAGE = '@ngrx/store/storage';
@@ -24,7 +22,7 @@ export class Storage implements Action {
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return (state: CoreState, action: any) => {
+  return (state: {}, action: any) => {
     if (action.type === STORAGE && keys.includes(action.payload)) {
       if (bindAllTabs && localStorage) {
         const rehydratedState = rehydrateApplicationState([action.payload], localStorage, k => k, true);

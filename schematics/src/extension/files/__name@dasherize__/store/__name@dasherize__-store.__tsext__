@@ -1,0 +1,5 @@
+import { createFeatureSelector } from '@ngrx/store';
+
+export interface <%= classify(name) %>State {}
+
+export const get<%= classify(name) %>State = createFeatureSelector<<%= classify(name) %>State>('<%= camelize(name) %>');

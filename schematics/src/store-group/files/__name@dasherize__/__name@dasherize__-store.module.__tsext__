@@ -1,0 +1,14 @@
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { ActionReducerMap, StoreModule } from '@ngrx/store';
+
+import { <%= classify(name) %>State } from './<%= dasherize(name) %>-store';
+
+export const <%= camelize(name) %>Reducers: ActionReducerMap<<%= classify(name) %>State> = {};
+
+export const <%= camelize(name) %>Effects = [];
+
+@NgModule({
+  imports: [EffectsModule.forFeature(<%= camelize(name) %>Effects), StoreModule.forFeature('<%= camelize(name) %>', <%= camelize(name) %>Reducers)],
+})
+export class <%= classify(name) %>StoreModule {}

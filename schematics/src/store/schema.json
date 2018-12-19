@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAStore",
+  "title": "PWA Store Options Schema",
+  "type": "object",
+  "description": "Creates a new store.",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "visible": false,
+      "default": true
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the store.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the store?"
+    },
+    "extension": {
+      "type": "string",
+      "description": "The extension to generate the store in. If empty it is generated in the project core store.",
+      "alias": "e"
+    },
+    "feature": {
+      "type": "string",
+      "description": "The feature to generate the store in the core store. If empty it is generated in the project core store."
+    },
+    "entity": {
+      "type": "string",
+      "description": "The entity to generate a ngrx entity state from."
+    }
+  }
+}

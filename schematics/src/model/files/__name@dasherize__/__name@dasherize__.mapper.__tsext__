@@ -1,0 +1,17 @@
+import { Injectable } from '@angular/core';
+
+import { <%= classify(name) %>Data } from './<%= dasherize(name) %>.interface';
+import { <%= classify(name) %> } from './<%= dasherize(name) %>.model';
+
+@Injectable({ providedIn: 'root' })
+export class <%= classify(name) %>Mapper {
+  fromData(<%= camelize(name) %>Data: <%= classify(name) %>Data): <%= classify(name) %> {
+    if (<%= camelize(name) %>Data) {
+      return {
+        id: <%= camelize(name) %>Data.incomingField,
+      };
+    } else {
+      throw new Error(`<%= camelize(name) %>Data is required`);
+    }
+  }
+}
