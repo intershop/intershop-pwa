@@ -1,3 +1,8 @@
-import { CoreState } from '../core-store.module';
+import { createSelector } from '@ngrx/store';
 
-export const getErrorState = (state: CoreState) => (state.error && state.error.type ? state.error : undefined);
+import { getCoreState } from '../core-store';
+
+export const getErrorState = createSelector(
+  getCoreState,
+  state => (state.error && state.error.type ? state.error : undefined)
+);

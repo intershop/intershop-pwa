@@ -10,28 +10,20 @@ import { localStorageSyncReducer } from '../utils/local-storage-sync/local-stora
 
 import { CheckoutStoreModule } from './checkout/checkout-store.module';
 import { ContentStoreModule } from './content/content-store.module';
+import { CoreState } from './core-store';
 import { CountriesEffects } from './countries/countries.effects';
-import { CountriesState, countriesReducer } from './countries/countries.reducer';
+import { countriesReducer } from './countries/countries.reducer';
 import { ErrorEffects } from './error/error.effects';
-import { ErrorState, errorReducer } from './error/error.reducer';
+import { errorReducer } from './error/error.reducer';
 import { LocaleEffects } from './locale/locale.effects';
-import { LocaleState, localeReducer } from './locale/locale.reducer';
+import { localeReducer } from './locale/locale.reducer';
 import { OrdersEffects } from './orders/orders.effects';
-import { OrdersState, ordersReducer } from './orders/orders.reducer';
+import { ordersReducer } from './orders/orders.reducer';
 import { ShoppingStoreModule } from './shopping/shopping-store.module';
 import { UserEffects } from './user/user.effects';
-import { UserState, userReducer } from './user/user.reducer';
+import { userReducer } from './user/user.reducer';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
-import { ViewconfState, viewconfReducer } from './viewconf/viewconf.reducer';
-
-export interface CoreState {
-  user: UserState;
-  orders: OrdersState;
-  locale: LocaleState;
-  countries: CountriesState;
-  error: ErrorState;
-  viewconf: ViewconfState;
-}
+import { viewconfReducer } from './viewconf/viewconf.reducer';
 
 export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,

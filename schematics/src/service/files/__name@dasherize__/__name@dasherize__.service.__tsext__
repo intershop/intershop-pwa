@@ -1,0 +1,8 @@
+import { Injectable } from '@angular/core';
+
+import { ApiService } from '<% if(!extension) { %>..<% } else { %>ish-core/services<% } %>/api/api.service';
+
+@Injectable({ providedIn: 'root' })
+export class <%= classify(name) %>Service {
+  constructor(private apiService: ApiService) {}
+}

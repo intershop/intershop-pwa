@@ -102,7 +102,9 @@ To generate the code documentation run `npm run docs`. To generate and serve the
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+With the integrated `intershop-schematics` this project provides the functionality to generate the different code artifacts acording to our style guide and code structure. `ng generate` will use the integrated schematics by default, e.g. in the shared folder run `ng generate component component-name` to generate a new shared component. `ng generate --help` gives an overview of the available intershop specific schematics.
+
+The Angular CLI default schematics are still available and working but they need to be prefixed now to use them, e.g. `ng generate @schematics/angular:component`. A list of the available Angular CLI schematics can be fetched with `ng generate @schematics/angular: --help`.
 
 ## Further help
 

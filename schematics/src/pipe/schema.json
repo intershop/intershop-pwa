@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAService",
+  "title": "PWA Pipe Options Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "visible": false,
+      "default": true
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "flat": {
+      "type": "boolean",
+      "default": true,
+      "visible": false
+    },
+    "module": {
+      "type": "string",
+      "alias": "m",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the pipe.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the pipe?"
+    },
+    "skipImport": {
+      "type": "boolean",
+      "description": "When true, does not import this pipe into the owning NgModule.",
+      "default": false
+    },
+    "extension": {
+      "type": "string",
+      "description": "The extension to generate the pipe in. If empty it is generated in core.",
+      "alias": "e"
+    }
+  }
+}

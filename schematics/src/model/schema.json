@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsAngularModel",
+  "title": "PWA Model Options Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "default": "true",
+      "visible": "false"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the model.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the model?"
+    },
+    "simple": {
+      "type": "boolean",
+      "description": "Flag to indicate if a simple model without helper and mapper should be created.",
+      "default": false
+    },
+    "extension": {
+      "type": "string",
+      "description": "The extension to generate the model in. If empty it is generated in the project core.",
+      "alias": "e"
+    }
+  }
+}

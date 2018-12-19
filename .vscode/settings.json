@@ -11,5 +11,9 @@
   },
   "[handlebars]": {
     "editor.formatOnSave": false,
-  }
+  },
+  "files.associations": {
+    "__*.*": "ng-template"
+  },
+  "ngschematics.schematics": ["intershop-schematics"]
 }
