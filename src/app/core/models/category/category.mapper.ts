@@ -18,16 +18,9 @@ export class CategoryMapper {
    */
   mapCategoryPath(path: CategoryPathElement[]) {
     if (path && path.length) {
-      const ret = [];
-      ret.push(path[0].id);
-      path
-        .map(el => el.id)
-        .reduce((acc, item) => {
-          const r = acc + CategoryHelper.uniqueIdSeparator + item;
-          ret.push(r);
-          return r;
-        });
-      return ret;
+      return path
+        .map(x => x.id)
+        .reduce((acc, _, idx, arr) => [...acc, arr.slice(0, idx + 1).join(CategoryHelper.uniqueIdSeparator)], []);
     }
     throw new Error('input is falsy');
   }
