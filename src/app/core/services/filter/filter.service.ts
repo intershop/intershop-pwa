@@ -31,7 +31,7 @@ export class FilterService {
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
     const searchParameter = SearchParameterMapper.toData({ queryTerm: searchTerm } as SearchParameter);
     return this.apiService
-      .get<FilterNavigationData>(`filters/blablub;SearchParameter=${searchParameter}`)
+      .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`)
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
