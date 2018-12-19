@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 
 import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
+import { CategoryData } from '../category/category.interface';
+import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
 import { Price } from '../price/price.model';
 
@@ -19,9 +21,9 @@ function filterPrice(price: Price): Price {
 /**
  * check if attribute is available and return value, otherwise undefined
  */
-function retrieveStubAttributeValue(data: ProductDataStub, attributeName: string) {
+function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: string) {
   const attribute = ProductHelper.getAttributeByAttributeName(data, attributeName);
-  return attribute ? attribute.value : undefined;
+  return attribute ? (attribute.value as T) : undefined;
 }
 
 /**
@@ -29,16 +31,21 @@ function retrieveStubAttributeValue(data: ProductDataStub, attributeName: string
  */
 @Injectable({ providedIn: 'root' })
 export class ProductMapper {
-  constructor(@Inject(ICM_BASE_URL) public icmBaseURL, private imageMapper: ImageMapper) {}
+  constructor(
+    @Inject(ICM_BASE_URL) public icmBaseURL,
+    private imageMapper: ImageMapper,
+    private categoryMapper: CategoryMapper
+  ) {}
 
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
   fromStubData(data: ProductDataStub): Product {
-    const sku = retrieveStubAttributeValue(data, 'sku');
+    const sku = retrieveStubAttributeValue<string>(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
     }
+    const productCategory = retrieveStubAttributeValue<CategoryData>(data, 'defaultCategory');
     return {
       shortDescription: data.description,
       name: data.title,
@@ -79,6 +86,7 @@ export class ProductMapper {
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
       type: ProductType.Product,
+      defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
     };
   }
 
@@ -104,6 +112,9 @@ export class ProductMapper {
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,
       sku: data.sku,
+      defaultCategoryId: data.defaultCategory
+        ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
+        : undefined,
     };
 
     if (data.productMaster) {

@@ -22,7 +22,9 @@ export interface Product {
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   sku: string;
+  defaultCategoryId?: string;
 
+  // properties added in model
   type: ProductType;
 }
 
