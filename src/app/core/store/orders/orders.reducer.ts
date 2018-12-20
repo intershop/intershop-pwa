@@ -27,16 +27,16 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
     case OrdersActionTypes.SelectOrder: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.orderId,
       };
     }
 
     case BasketActionTypes.CreateOrderSuccess: {
-      const payload = action.payload;
+      const { order } = action.payload;
 
       return {
-        ...orderAdapter.addOne(payload, state),
-        selected: action.payload.id,
+        ...orderAdapter.addOne(order, state),
+        selected: order.id,
       };
     }
 
@@ -48,7 +48,7 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
     }
 
     case OrdersActionTypes.LoadOrdersFail: {
-      const error = action.payload;
+      const { error } = action.payload;
       return {
         ...state,
         error,
@@ -57,9 +57,9 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
     }
 
     case OrdersActionTypes.LoadOrdersSuccess: {
-      const loadedOrders = action.payload;
+      const { orders } = action.payload;
       return {
-        ...orderAdapter.addAll(loadedOrders, state),
+        ...orderAdapter.addAll(orders, state),
         loading: false,
       };
     }

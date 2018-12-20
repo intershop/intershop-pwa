@@ -152,7 +152,7 @@
     "rxjs-no-unsafe-takeuntil": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
-    "ngrx-use-complex-type-with-action-payload": { "severity": "warning" },
+    "ngrx-use-complex-type-with-action-payload": true,
     "semicolon": [
       true,
       "always"

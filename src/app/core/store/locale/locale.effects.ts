@@ -41,13 +41,14 @@ export class LocaleEffects {
         filter(locales => !locales.length)
       )
     ),
-    mapTo(new fromActions.SetAvailableLocales(this.availableLocales))
+    mapTo(new fromActions.SetAvailableLocales({ locales: this.availableLocales }))
   );
 
   @Effect()
   setFirstAvailableLocale$ = this.actions$.pipe(
     ofType<fromActions.SetAvailableLocales>(fromActions.LocaleActionTypes.SetAvailableLocales),
-    map(action => (action.payload && action.payload[0] ? action.payload[0] : undefined)),
-    map(locale => new fromActions.SelectLocale(locale))
+    map(action => action.payload.locales),
+    map(locales => (locales && locales[0] ? locales[0] : undefined)),
+    map(locale => new fromActions.SelectLocale({ locale }))
   );
 }

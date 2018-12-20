@@ -13,11 +13,11 @@ export class CompareEffects {
   @Effect()
   toggleCompare$ = this.actions$.pipe(
     ofType<compareActions.ToggleCompare>(compareActions.CompareActionTypes.ToggleCompare),
-    map(action => action.payload),
+    map(action => action.payload.sku),
     withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
     map(({ sku, isInList }) =>
-      isInList ? new compareActions.RemoveFromCompare(sku) : new compareActions.AddToCompare(sku)
+      isInList ? new compareActions.RemoveFromCompare({ sku }) : new compareActions.AddToCompare({ sku })
     )
   );
 }

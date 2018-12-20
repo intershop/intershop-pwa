@@ -25,6 +25,6 @@ export class RegistrationPageContainerComponent {
   }
 
   onCreate(customer: Customer) {
-    this.store.dispatch(new CreateUser(customer));
+    this.store.dispatch(new CreateUser({ customer }));
   }
 }

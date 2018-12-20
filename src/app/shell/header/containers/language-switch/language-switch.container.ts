@@ -19,6 +19,6 @@ export class LanguageSwitchContainerComponent {
   constructor(private store: Store<{}>) {}
 
   switch(locale: Locale) {
-    this.store.dispatch(new SelectLocale(locale));
+    this.store.dispatch(new SelectLocale({ locale }));
   }
 }

@@ -67,7 +67,7 @@ export class ProductListContainerComponent {
    * @param sortBy The new sorting value.
    */
   changeSortBy(sortBy: string) {
-    this.store.dispatch(new ChangeSortBy(sortBy));
+    this.store.dispatch(new ChangeSortBy({ sorting: sortBy }));
   }
 
   /**

@@ -24,12 +24,12 @@ export class LoadAddresses implements Action {
 
 export class LoadAddressesFail implements Action {
   readonly type = AddressActionTypes.LoadAddressesFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadAddressesSuccess implements Action {
   readonly type = AddressActionTypes.LoadAddressesSuccess;
-  constructor(public payload: Address[]) {}
+  constructor(public payload: { addresses: Address[] }) {}
 }
 
 export class CreateCustomerAddress implements Action {
@@ -39,22 +39,22 @@ export class CreateCustomerAddress implements Action {
 
 export class CreateCustomerAddressFail implements Action {
   readonly type = AddressActionTypes.CreateCustomerAddressFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class CreateCustomerAddressSuccess implements Action {
   readonly type = AddressActionTypes.CreateCustomerAddressSuccess;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 export class UpdateCustomerAddressFail implements Action {
   readonly type = AddressActionTypes.UpdateCustomerAddressFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UpdateCustomerAddressSuccess implements Action {
   readonly type = AddressActionTypes.UpdateCustomerAddressSuccess;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 export class DeleteCustomerAddress implements Action {
@@ -64,7 +64,7 @@ export class DeleteCustomerAddress implements Action {
 
 export class DeleteCustomerAddressFail implements Action {
   readonly type = AddressActionTypes.DeleteCustomerAddressFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class DeleteCustomerAddressSuccess implements Action {

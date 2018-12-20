@@ -35,7 +35,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
         distinctUntilKeyChanged('id'),
         takeUntil(this.destroy$)
       )
-      .subscribe(quoteRequest => this.store.dispatch(new SelectQuoteRequest(quoteRequest.id)));
+      .subscribe(quoteRequest => this.store.dispatch(new SelectQuoteRequest({ id: quoteRequest.id })));
   }
 
   deleteQuoteRequestItem(payload: string) {
@@ -43,7 +43,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
   }
 
   updateQuoteRequestItem(payload: LineItemQuantity) {
-    this.store.dispatch(new UpdateQuoteRequestItems([payload]));
+    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemQuantities: [payload] }));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {

@@ -14,31 +14,31 @@ export enum ProductsActionTypes {
 
 export class SelectProduct implements Action {
   readonly type = ProductsActionTypes.SelectProduct;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 export class LoadProduct implements Action {
   readonly type = ProductsActionTypes.LoadProduct;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 
 export class LoadProductFail implements Action {
   readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadProductSuccess implements Action {
   readonly type = ProductsActionTypes.LoadProductSuccess;
-  constructor(public payload: Product) {}
+  constructor(public payload: { product: Product }) {}
 }
 
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
 }
 
 export class LoadMoreProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadMoreProductsForCategory;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
 }
 
 export type ProductsAction =

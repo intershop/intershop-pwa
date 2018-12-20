@@ -32,7 +32,7 @@ describe('<%= classify(name) %> Effects', () => {
     effects = TestBed.get(<%= classify(name) %>Effects);
   });
 
-  describe('load<%= classify(name) %>$', () =>{
+  describe('load<%= classify(name) %>$', () => {
     it('should not dispatch actions when encountering Load<%= classify(name) %>', () => {
       const action = new actions.Load<%= classify(name) %>();
       actions$ = hot('-a-a-a', { a: action });

@@ -58,7 +58,7 @@ describe('Content Include Container', () => {
 
     fixture.detectChanges();
 
-    verify(storeSpy$.dispatch(deepEqual(new LoadContentInclude('test.include')))).once();
+    verify(storeSpy$.dispatch(deepEqual(new LoadContentInclude({ includeId: 'test.include' })))).once();
   });
 
   describe('with content', () => {

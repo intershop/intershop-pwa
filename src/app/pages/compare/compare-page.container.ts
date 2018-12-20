@@ -20,6 +20,6 @@ export class ComparePageContainerComponent {
   }
 
   removeFromCompare(sku: string) {
-    this.store.dispatch(new RemoveFromCompare(sku));
+    this.store.dispatch(new RemoveFromCompare({ sku }));
   }
 }

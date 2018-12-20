@@ -26,7 +26,7 @@ export class CountriesEffects {
     ),
     concatMap(() =>
       this.countryService.getCountries().pipe(
-        map(countries => new countryActions.LoadCountriesSuccess(countries)),
+        map(countries => new countryActions.LoadCountriesSuccess({ countries })),
         mapErrorToAction(countryActions.LoadCountriesFail)
       )
     )

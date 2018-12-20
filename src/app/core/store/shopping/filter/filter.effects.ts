@@ -20,8 +20,8 @@ export class FilterEffects {
   loadAvailableFilterForCategories$ = this.actions$.pipe(
     ofType<filterActions.LoadFilterForCategory>(filterActions.FilterActionTypes.LoadFilterForCategory),
     mergeMap(action =>
-      this.filterService.getFilterForCategory(action.payload).pipe(
-        map(filterNavigation => new filterActions.LoadFilterForCategorySuccess(filterNavigation)),
+      this.filterService.getFilterForCategory(action.payload.category).pipe(
+        map(filterNavigation => new filterActions.LoadFilterForCategorySuccess({ filterNavigation })),
         mapErrorToAction(filterActions.LoadFilterForCategoryFail)
       )
     )
@@ -31,8 +31,8 @@ export class FilterEffects {
   loadFilterForSearch$ = this.actions$.pipe(
     ofType<filterActions.LoadFilterForSearch>(filterActions.FilterActionTypes.LoadFilterForSearch),
     mergeMap(action =>
-      this.filterService.getFilterForSearch(action.payload).pipe(
-        map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
+      this.filterService.getFilterForSearch(action.payload.searchTerm).pipe(
+        map(filterNavigation => new filterActions.LoadFilterForSearchSuccess({ filterNavigation })),
         mapErrorToAction(filterActions.LoadFilterForSearchFail)
       )
     )
@@ -42,7 +42,7 @@ export class FilterEffects {
   loadFilterIfCategoryWasSelected$ = this.actions$.pipe(
     ofType(CategoriesActionTypes.SelectedCategoryAvailable),
     withLatestFrom(this.store$.pipe(select(getSelectedCategory))),
-    map(([, category]) => new filterActions.LoadFilterForCategory(category))
+    map(([, category]) => new filterActions.LoadFilterForCategory({ category }))
   );
 
   @Effect()
@@ -72,7 +72,7 @@ export class FilterEffects {
         .getProductSkusForFilter(filterName, searchParameter)
         .pipe(
           mergeMap((newProducts: string[]) => [
-            ...newProducts.map(sku => new LoadProduct(sku)),
+            ...newProducts.map(sku => new LoadProduct({ sku })),
             new SetPagingInfo({ currentPage: 0, totalItems: newProducts.length, newProducts }),
           ])
         )

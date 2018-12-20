@@ -37,7 +37,7 @@ describe('Account Profile Settings Page Container', () => {
     })
       .compileComponents()
       .then(() => {
-        TestBed.get(Store).dispatch(new LoginUserSuccess(customer));
+        TestBed.get(Store).dispatch(new LoginUserSuccess({ customer }));
       });
   }));
 

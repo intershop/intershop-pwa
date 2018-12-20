@@ -12,12 +12,12 @@ export enum IncludesActionTypes {
 
 export class LoadContentInclude implements Action {
   readonly type = IncludesActionTypes.LoadContentInclude;
-  constructor(public payload: string) {}
+  constructor(public payload: { includeId: string }) {}
 }
 
 export class LoadContentIncludeFail implements Action {
   readonly type = IncludesActionTypes.LoadContentIncludeFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadContentIncludeSuccess implements Action {

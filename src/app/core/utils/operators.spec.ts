@@ -78,7 +78,7 @@ describe('Operators', () => {
     // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyFail implements Action {
       type = 'dummy';
-      constructor(public payload: HttpError) {}
+      constructor(public payload: { error: HttpError }) {}
     }
 
     it('should catch HttpErrorResponses and convert them to Fail actions', () => {
@@ -92,15 +92,17 @@ describe('Operators', () => {
       const resu$ = cold('---(a|)', {
         a: {
           payload: {
-            name: 'HttpErrorResponse',
-            message: 'Http failure response for http://example.org: 404 undefined',
-            error: 'null',
-            status: 404,
-            statusText: 'Unknown Error',
-            headers: {
-              key: 'value',
-            },
-          } as HttpError,
+            error: {
+              name: 'HttpErrorResponse',
+              message: 'Http failure response for http://example.org: 404 undefined',
+              error: 'null',
+              status: 404,
+              statusText: 'Unknown Error',
+              headers: {
+                key: 'value',
+              },
+            } as HttpError,
+          },
           type: 'dummy',
         },
       });

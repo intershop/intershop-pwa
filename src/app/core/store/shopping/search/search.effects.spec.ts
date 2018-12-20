@@ -78,7 +78,7 @@ describe('Search Effects', () => {
       effects = TestBed.get(SearchEffects);
 
       const store = TestBed.get(Store);
-      store.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
+      store.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
     });
 
     describe('triggerSearch$', () => {
@@ -91,7 +91,7 @@ describe('Search Effects', () => {
         actions$ = hot('a', { a: action });
 
         expect(effects.triggerSearch$).toBeObservable(
-          cold('(ab)', { a: new PrepareNewSearch(), b: new SearchProducts('dummy') })
+          cold('(ab)', { a: new PrepareNewSearch(), b: new SearchProducts({ searchTerm: 'dummy' }) })
         );
       });
     });
@@ -99,7 +99,7 @@ describe('Search Effects', () => {
     describe('searchProducts$', () => {
       it('should perform a search with given search term when search is requested', done => {
         const searchTerm = '123';
-        const action = new SearchProducts(searchTerm);
+        const action = new SearchProducts({ searchTerm });
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
@@ -116,14 +116,14 @@ describe('Search Effects', () => {
     describe('searchMoreProducts$', () => {
       it('should perform a continued search with given search term when search is requested', () => {
         const searchTerm = '123';
-        const action = new SearchMoreProducts(searchTerm);
+        const action = new SearchMoreProducts({ searchTerm });
         actions$ = hot('a', { a: action });
 
         expect(effects.searchMoreProducts$).toBeObservable(
           cold('(abc)', {
             a: new SetPagingLoading(),
-            b: new SetPage(1),
-            c: new SearchProducts('123'),
+            b: new SetPage({ pageNumber: 1 }),
+            c: new SearchProducts({ searchTerm: '123' }),
           })
         );
       });
@@ -154,12 +154,12 @@ describe('Search Effects', () => {
       effects = TestBed.get(SearchEffects);
       store$ = TestBed.get(TestStore);
 
-      store$.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
+      store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
     });
 
     describe('suggestSearch$', () => {
       it('should not fire when search term is falsy', fakeAsync(() => {
-        const action = new SuggestSearch(undefined);
+        const action = new SuggestSearch({ searchTerm: undefined });
         store$.dispatch(action);
 
         tick(5000);
@@ -168,7 +168,7 @@ describe('Search Effects', () => {
       }));
 
       it('should not fire when search term is empty', fakeAsync(() => {
-        const action = new SuggestSearch('');
+        const action = new SuggestSearch({ searchTerm: '' });
         store$.dispatch(action);
 
         tick(5000);
@@ -177,7 +177,7 @@ describe('Search Effects', () => {
       }));
 
       it('should return search terms when available', fakeAsync(() => {
-        const action = new SuggestSearch('g');
+        const action = new SuggestSearch({ searchTerm: 'g' });
         store$.dispatch(action);
 
         tick(5000);
@@ -186,11 +186,11 @@ describe('Search Effects', () => {
       }));
 
       it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-        store$.dispatch(new SuggestSearch('g'));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'g' }));
         tick(50);
-        store$.dispatch(new SuggestSearch('goo'));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'goo' }));
         tick(100);
-        store$.dispatch(new SuggestSearch('good'));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
         tick(200);
 
         verify(suggestServiceMock.search(anyString())).never();
@@ -200,10 +200,10 @@ describe('Search Effects', () => {
       }));
 
       it('should send only once if search term is entered multiple times', fakeAsync(() => {
-        store$.dispatch(new SuggestSearch('good'));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
         tick(2000);
         verify(suggestServiceMock.search(anyString())).once();
-        store$.dispatch(new SuggestSearch('good'));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
         tick(2000);
 
         verify(suggestServiceMock.search(anyString())).once();
@@ -212,7 +212,7 @@ describe('Search Effects', () => {
       it('should not fire action when error is encountered at service level', fakeAsync(() => {
         when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-        store$.dispatch(new SuggestSearch('good'));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
         tick(4000);
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
@@ -228,7 +228,7 @@ describe('Search Effects', () => {
 
     describe('redirectIfSearchProductFail$', () => {
       it('should redirect if triggered', fakeAsync(() => {
-        const action = new SearchProductsFail({ status: 404 } as HttpError);
+        const action = new SearchProductsFail({ error: { status: 404 } as HttpError });
 
         store$.dispatch(action);
 
@@ -244,16 +244,16 @@ describe('Search Effects', () => {
       it('should perform an additional search with given search term and trigger actions until maximum pages is reached', fakeAsync(() => {
         const searchTerm = '123';
 
-        store$.dispatch(new SearchProducts(searchTerm));
+        store$.dispatch(new SearchProducts({ searchTerm }));
         verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
 
-        store$.dispatch(new SearchMoreProducts(searchTerm));
+        store$.dispatch(new SearchMoreProducts({ searchTerm }));
         verify(productsServiceMock.searchProducts(searchTerm, 1, 3)).once();
 
-        store$.dispatch(new SearchMoreProducts(searchTerm));
+        store$.dispatch(new SearchMoreProducts({ searchTerm }));
         verify(productsServiceMock.searchProducts(searchTerm, 2, 3)).once();
 
-        store$.dispatch(new SearchMoreProducts(searchTerm));
+        store$.dispatch(new SearchMoreProducts({ searchTerm }));
         verify(productsServiceMock.searchProducts(searchTerm, 3, 3)).never();
       }));
     });

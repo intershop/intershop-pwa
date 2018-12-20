@@ -37,7 +37,7 @@ describe('Auth Guard', () => {
     });
 
     it('should return true when user is authorized', done => {
-      store$.dispatch(new LoginUserSuccess({} as Customer));
+      store$.dispatch(new LoginUserSuccess({ customer: {} as Customer }));
 
       authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
         expect(authorized).toBeTruthy();

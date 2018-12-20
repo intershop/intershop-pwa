@@ -59,11 +59,13 @@ describe('Quote List Page Container', () => {
   });
 
   it('should render quote list component if quotes present', () => {
-    const quotes = [
-      {
-        id: 'test',
-      } as QuoteData,
-    ];
+    const quotes = {
+      quotes: [
+        {
+          id: 'test',
+        } as QuoteData,
+      ],
+    };
 
     store$.dispatch(new LoadQuotesSuccess(quotes));
     fixture.detectChanges();

@@ -33,10 +33,10 @@ export function countriesReducer(state = initialState, action: CountryAction): C
     }
 
     case CountryActionTypes.LoadCountriesSuccess: {
-      const loadedCountries = action.payload;
+      const { countries } = action.payload;
 
       return {
-        ...countryAdapter.addAll(loadedCountries, state),
+        ...countryAdapter.addAll(countries, state),
         loading: false,
       };
     }

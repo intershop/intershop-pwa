@@ -64,7 +64,7 @@ describe('Product List Container', () => {
   });
 
   it('should display components with paging on the page if available', () => {
-    store$.dispatch(new SetEndlessScrollingPageSize(1));
+    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
     store$.dispatch(new SetPagingInfo({ totalItems: 3, currentPage: 2, newProducts: new Array(2) }));
 
     fixture.detectChanges();
@@ -78,7 +78,7 @@ describe('Product List Container', () => {
 
   describe('loading more products', () => {
     beforeEach(() => {
-      store$.dispatch(new SetEndlessScrollingPageSize(1));
+      store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
     });
 
     it('should emit an event when loading more products is possible', () => {

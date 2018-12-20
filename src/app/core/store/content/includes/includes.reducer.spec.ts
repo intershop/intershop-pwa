@@ -12,7 +12,7 @@ describe('Includes Reducer', () => {
   });
 
   it('should set loading state when reducing LoadContentInclude', () => {
-    const newState = includesReducer(initialState, new LoadContentInclude(''));
+    const newState = includesReducer(initialState, new LoadContentInclude({ includeId: '' }));
 
     expect(newState.entities).toBeEmpty();
     expect(newState.ids).toBeEmpty();
@@ -23,11 +23,14 @@ describe('Includes Reducer', () => {
     let loadingState;
 
     beforeEach(() => {
-      loadingState = includesReducer(initialState, new LoadContentInclude(''));
+      loadingState = includesReducer(initialState, new LoadContentInclude({ includeId: '' }));
     });
 
     it('should unset loading state when reducing LoadContentIncludeFail', () => {
-      const newState = includesReducer(loadingState, new LoadContentIncludeFail({ message: 'ERROR' } as HttpError));
+      const newState = includesReducer(
+        loadingState,
+        new LoadContentIncludeFail({ error: { message: 'ERROR' } as HttpError })
+      );
 
       expect(newState.entities).toBeEmpty();
       expect(newState.ids).toBeEmpty();

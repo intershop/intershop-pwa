@@ -16,7 +16,7 @@ describe('Products Reducer', () => {
 
   describe('SelectProduct', () => {
     it('should select a product when reduced', () => {
-      const action = new fromActions.SelectProduct('dummy');
+      const action = new fromActions.SelectProduct({ sku: 'dummy' });
       const state = productsReducer(initialState, action);
 
       expect(state.selected).toEqual('dummy');
@@ -26,7 +26,7 @@ describe('Products Reducer', () => {
   describe('LoadProduct actions', () => {
     describe('LoadProduct action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.LoadProduct('123');
+        const action = new fromActions.LoadProduct({ sku: '123' });
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -36,7 +36,7 @@ describe('Products Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadProductFail({} as HttpError);
+        const action = new fromActions.LoadProductFail({ error: {} as HttpError });
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -56,7 +56,7 @@ describe('Products Reducer', () => {
       });
 
       it('should insert product if not exists', () => {
-        const action = new fromActions.LoadProductSuccess(product);
+        const action = new fromActions.LoadProductSuccess({ product });
         const state = productsReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -64,14 +64,14 @@ describe('Products Reducer', () => {
       });
 
       it('should update product if already exists', () => {
-        const action1 = new fromActions.LoadProductSuccess(product);
+        const action1 = new fromActions.LoadProductSuccess({ product });
         const state1 = productsReducer(initialState, action1);
 
         const updatedProduct = { sku: '111' } as Product;
         updatedProduct.name = 'Updated product';
         updatedProduct.inStock = false;
 
-        const action2 = new fromActions.LoadProductSuccess(updatedProduct);
+        const action2 = new fromActions.LoadProductSuccess({ product: updatedProduct });
         const state2 = productsReducer(state1, action2);
 
         expect(state2.ids).toHaveLength(1);
@@ -79,7 +79,7 @@ describe('Products Reducer', () => {
       });
 
       it('should set loading to false', () => {
-        const action = new fromActions.LoadProductSuccess(product);
+        const action = new fromActions.LoadProductSuccess({ product });
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

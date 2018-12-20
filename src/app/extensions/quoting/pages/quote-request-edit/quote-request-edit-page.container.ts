@@ -26,7 +26,7 @@ export class QuoteRequestEditPageContainerComponent {
   constructor(private store: Store<{}>) {}
 
   updateQuoteRequestItem(payload: LineItemQuantity) {
-    this.store.dispatch(new UpdateQuoteRequestItems([payload]));
+    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemQuantities: [payload] }));
   }
 
   deleteQuoteRequestItem(payload: string) {

@@ -137,8 +137,8 @@ describe('Quoting Store', () => {
         return of({ type: 'Link', uri: 'customers/CID/users/UID/quoterequests/' + id, title: id }).pipe(delay(1000));
       });
 
-      store$.dispatch(new LoginUserSuccess(user as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess(user));
+      store$.dispatch(new LoginUserSuccess({ customer: user as Customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user }));
     });
 
     it('should be created', () => {
@@ -156,7 +156,10 @@ describe('Quoting Store', () => {
         containsActionWithTypeAndPayload(QuoteActionTypes.LoadQuotesSuccess, p => !p.length)
       );
       expect(firedActions).toSatisfy(
-        containsActionWithTypeAndPayload(QuoteRequestActionTypes.LoadQuoteRequestsSuccess, p => !!p.length)
+        containsActionWithTypeAndPayload(
+          QuoteRequestActionTypes.LoadQuoteRequestsSuccess,
+          p => !!p.quoteRequests.length
+        )
       );
     });
 
@@ -233,8 +236,8 @@ describe('Quoting Store', () => {
         describe('user logs in again', () => {
           beforeEach(() => {
             store$.reset();
-            store$.dispatch(new LoginUserSuccess(user as Customer));
-            store$.dispatch(new LoadCompanyUserSuccess(user));
+            store$.dispatch(new LoginUserSuccess({ customer: user as Customer }));
+            store$.dispatch(new LoadCompanyUserSuccess({ user }));
           });
 
           it('should load all the quotes when logging in again', done =>

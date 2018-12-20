@@ -68,13 +68,13 @@ describe('Products Effects', () => {
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
 
-    store$.dispatch(new SetAvailableLocales([DE_DE]));
+    store$.dispatch(new SetAvailableLocales({ locales: [DE_DE] }));
   });
 
   describe('loadProduct$', () => {
     it('should call the productsService for LoadProduct action', done => {
       const sku = 'P123';
-      const action = new fromActions.LoadProduct(sku);
+      const action = new fromActions.LoadProduct({ sku });
       actions$ = of(action);
 
       effects.loadProduct$.subscribe(() => {
@@ -85,8 +85,8 @@ describe('Products Effects', () => {
 
     it('should map to action of type LoadProductSuccess', () => {
       const sku = 'P123';
-      const action = new fromActions.LoadProduct(sku);
-      const completion = new fromActions.LoadProductSuccess({ sku } as Product);
+      const action = new fromActions.LoadProduct({ sku });
+      const completion = new fromActions.LoadProductSuccess({ product: { sku } as Product });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -95,8 +95,8 @@ describe('Products Effects', () => {
 
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
-      const action = new fromActions.LoadProduct(sku);
-      const completion = new fromActions.LoadProductFail({ message: 'invalid' } as HttpError);
+      const action = new fromActions.LoadProduct({ sku });
+      const completion = new fromActions.LoadProductFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -106,11 +106,11 @@ describe('Products Effects', () => {
 
   describe('loadProductsForCategory$', () => {
     beforeEach(() => {
-      store$.dispatch(new ChangeSortBy('name-asc'));
+      store$.dispatch(new ChangeSortBy({ sorting: 'name-asc' }));
     });
 
     it('should call service for SKU list', done => {
-      actions$ = of(new fromActions.LoadProductsForCategory('123'));
+      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).once();
@@ -120,13 +120,13 @@ describe('Products Effects', () => {
 
     it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProductSuccess for each product in the list', () => {
       actions$ = hot('a', {
-        a: new fromActions.LoadProductsForCategory('123'),
+        a: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       });
       const expectedValues = {
         b: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
-        c: new SetSortKeys(['name-asc', 'name-desc']),
-        d: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
-        e: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
+        c: new SetSortKeys({ sortKeys: ['name-asc', 'name-desc'] }),
+        d: new fromActions.LoadProductSuccess({ product: { sku: 'P222' } as Product }),
+        e: new fromActions.LoadProductSuccess({ product: { sku: 'P333' } as Product }),
       };
       expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcde)', expectedValues));
     });
@@ -136,10 +136,10 @@ describe('Products Effects', () => {
         throwError({ message: 'ERROR' })
       );
       actions$ = hot('-a-a-a', {
-        a: new fromActions.LoadProductsForCategory('123'),
+        a: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       });
       expect(effects.loadProductsForCategory$).toBeObservable(
-        cold('-a-a-a', { a: new fromActions.LoadProductFail({ message: 'ERROR' } as HttpError) })
+        cold('-a-a-a', { a: new fromActions.LoadProductFail({ error: { message: 'ERROR' } as HttpError }) })
       );
     });
   });
@@ -147,12 +147,12 @@ describe('Products Effects', () => {
   describe('loadMoreProductsForCategory$', () => {
     it('should trigger if more products are available', () => {
       actions$ = hot('a', {
-        a: new fromActions.LoadMoreProductsForCategory('123'),
+        a: new fromActions.LoadMoreProductsForCategory({ categoryId: '123' }),
       });
       const expectedValues = {
         a: new SetPagingLoading(),
-        b: new SetPage(1),
-        c: new fromActions.LoadProductsForCategory('123'),
+        b: new SetPage({ pageNumber: 1 }),
+        c: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       };
       expect(effects.loadMoreProductsForCategory$).toBeObservable(cold('(abc)', expectedValues));
     });
@@ -165,7 +165,7 @@ describe('Products Effects', () => {
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
         queryParams: {},
       });
-      const expected = new fromActions.SelectProduct('foobar');
+      const expected = new fromActions.SelectProduct({ sku: 'foobar' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('a', { a: expected }));
@@ -177,7 +177,7 @@ describe('Products Effects', () => {
         params: { sku: 'foobar' },
         queryParams: {},
       });
-      const expected = new fromActions.SelectProduct('foobar');
+      const expected = new fromActions.SelectProduct({ sku: 'foobar' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('a', { a: expected }));
@@ -194,12 +194,12 @@ describe('Products Effects', () => {
   describe('selectedProduct$', () => {
     it('should map to LoadProduct when product is selected', () => {
       const sku = 'P123';
-      actions$ = hot('a', { a: new fromActions.SelectProduct(sku) });
-      expect(effects.selectedProduct$).toBeObservable(cold('a', { a: new fromActions.LoadProduct(sku) }));
+      actions$ = hot('a', { a: new fromActions.SelectProduct({ sku }) });
+      expect(effects.selectedProduct$).toBeObservable(cold('a', { a: new fromActions.LoadProduct({ sku }) }));
     });
 
     it('should fire LoadProduct when product is undefined', () => {
-      actions$ = hot('a', { a: new fromActions.SelectProduct(undefined) });
+      actions$ = hot('a', { a: new fromActions.SelectProduct({ sku: undefined }) });
       expect(effects.selectedProduct$).toBeObservable(cold('-'));
     });
   });
@@ -208,17 +208,22 @@ describe('Products Effects', () => {
     it('should refetch product when language is changed distinctly', () => {
       const sku = 'P123';
 
-      store$.dispatch(new fromActions.LoadProductSuccess({ sku } as Product));
-      store$.dispatch(new fromActions.SelectProduct(sku));
-      actions$ = hot('-a--a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
+      store$.dispatch(new fromActions.LoadProductSuccess({ product: { sku } as Product }));
+      store$.dispatch(new fromActions.SelectProduct({ sku }));
+      actions$ = hot('-a--a--b--b--a', {
+        a: new SelectLocale({ locale: DE_DE }),
+        b: new SelectLocale({ locale: EN_US }),
+      });
 
-      expect(effects.languageChange$).toBeObservable(cold('-a-----a-----a', { a: new fromActions.LoadProduct(sku) }));
+      expect(effects.languageChange$).toBeObservable(
+        cold('-a-----a-----a', { a: new fromActions.LoadProduct({ sku }) })
+      );
     });
   });
 
   describe('redirectIfErrorInProducts$', () => {
     it('should redirect if triggered', done => {
-      const action = new fromActions.LoadProductFail({ status: 404 } as HttpError);
+      const action = new fromActions.LoadProductFail({ error: { status: 404 } as HttpError });
 
       actions$ = of(action);
 

@@ -82,7 +82,7 @@ describe('Filter Effects', () => {
 
   describe('loadAvailableFilterForCategories$', () => {
     it('should call the filterService for LoadFilterForCategories action', done => {
-      const action = new fromActions.LoadFilterForCategory({ name: 'c' } as Category);
+      const action = new fromActions.LoadFilterForCategory({ category: { name: 'c' } as Category });
       actions$ = of(action);
 
       effects.loadAvailableFilterForCategories$.subscribe(() => {
@@ -92,8 +92,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map to action of type LoadFilterForCategoriesSuccess', () => {
-      const action = new fromActions.LoadFilterForCategory({ name: 'c' } as Category);
-      const completion = new fromActions.LoadFilterForCategorySuccess(filterNav);
+      const action = new fromActions.LoadFilterForCategory({ category: { name: 'c' } as Category });
+      const completion = new fromActions.LoadFilterForCategorySuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -101,8 +101,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type LoadFilterForCategoriesFail', () => {
-      const action = new fromActions.LoadFilterForCategory({ name: 'invalid' } as Category);
-      const completion = new fromActions.LoadFilterForCategoryFail({ message: 'invalid' } as HttpError);
+      const action = new fromActions.LoadFilterForCategory({ category: { name: 'invalid' } as Category });
+      const completion = new fromActions.LoadFilterForCategoryFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -123,14 +123,14 @@ describe('Filter Effects', () => {
         } as Category,
       ]);
 
-      store$.dispatch(new LoadCategorySuccess(tree));
-      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
+      store$.dispatch(new LoadCategorySuccess({ categories: tree }));
+      store$.dispatch(new SelectCategory({ categoryId: 'Cameras.Camcorder' }));
 
-      actions$ = of(new SelectedCategoryAvailable('Cameras.Camcorder'));
+      actions$ = of(new SelectedCategoryAvailable({ categoryId: 'Cameras.Camcorder' }));
 
       effects.loadFilterIfCategoryWasSelected$.subscribe(action => {
         expect(action.type).toEqual(fromActions.FilterActionTypes.LoadFilterForCategory);
-        expect(action.payload.uniqueId).toEqual('Cameras.Camcorder');
+        expect(action.payload.category.uniqueId).toEqual('Cameras.Camcorder');
         done();
       });
     });
@@ -162,7 +162,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
       const action = new fromActions.ApplyFilter({ filterId: 'invalid', searchParameter: 'b' });
-      const completion = new fromActions.ApplyFilterFail({ message: 'invalid' } as HttpError);
+      const completion = new fromActions.ApplyFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -179,8 +179,8 @@ describe('Filter Effects', () => {
       });
       store$.dispatch(action);
       const completion = new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['123', '234'] });
-      const loadProducts1 = new LoadProduct('123');
-      const loadProducts2 = new LoadProduct('234');
+      const loadProducts1 = new LoadProduct({ sku: '123' });
+      const loadProducts2 = new LoadProduct({ sku: '234' });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bcd)', { b: loadProducts1, c: loadProducts2, d: completion });
       expect(effects.loadFilteredProducts$).toBeObservable(expected$);
@@ -189,7 +189,7 @@ describe('Filter Effects', () => {
 
   describe('loadFilterForSearch$', () => {
     it('should call the filterService for LoadFilterForSearch action', done => {
-      const action = new fromActions.LoadFilterForSearch('search');
+      const action = new fromActions.LoadFilterForSearch({ searchTerm: 'search' });
       actions$ = of(action);
 
       effects.loadFilterForSearch$.subscribe(() => {
@@ -199,8 +199,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map to action of type LoadFilterForSearchSuccess', () => {
-      const action = new fromActions.LoadFilterForSearch('search');
-      const completion = new fromActions.LoadFilterForSearchSuccess(filterNav);
+      const action = new fromActions.LoadFilterForSearch({ searchTerm: 'search' });
+      const completion = new fromActions.LoadFilterForSearchSuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -208,8 +208,8 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type LoadFilterForSearchFail', () => {
-      const action = new fromActions.LoadFilterForSearch('invalid');
-      const completion = new fromActions.LoadFilterForSearchFail({ message: 'invalid' } as HttpError);
+      const action = new fromActions.LoadFilterForSearch({ searchTerm: 'invalid' });
+      const completion = new fromActions.LoadFilterForSearchFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -219,9 +219,9 @@ describe('Filter Effects', () => {
 
   describe('loadFilterForSearchIfSearchSuccess$', () => {
     it('should trigger LoadFilterForSearch for SearchProductsSuccess action', () => {
-      const action = new SearchProductsSuccess('a');
+      const action = new SearchProductsSuccess({ searchTerm: 'a' });
 
-      const completion = new fromActions.LoadFilterForSearch('a');
+      const completion = new fromActions.LoadFilterForSearch({ searchTerm: 'a' });
       actions$ = hot('a', { a: action });
       const expected$ = cold('c', { c: completion });
       expect(effects.loadFilterForSearchIfSearchSuccess$).toBeObservable(expected$);
