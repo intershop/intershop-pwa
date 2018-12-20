@@ -34,7 +34,7 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
     );
 }
 
-export function mapErrorToAction<S, T>(actionType: new (error: HttpError) => T) {
+export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpError }) => T) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
       // tslint:disable-next-line:ban
@@ -49,11 +49,11 @@ export function mapErrorToAction<S, T>(actionType: new (error: HttpError) => T) 
         if (typeof window === 'undefined' || window.name !== 'nodejs' || process.env.DEBUG || err instanceof Error) {
           console.error(err);
         }
-        return of(new actionType(HttpErrorMapper.fromError(err)));
+        return of(new actionType({ error: HttpErrorMapper.fromError(err) }));
       })
     );
 }
 
 export function mapToProperty<T, K extends keyof T>(property: K) {
-  return (source$: Observable<T>) => source$.pipe<T[K]>(map(x => (!!x ? x[property] : undefined)));
+  return (source$: Observable<T>) => source$.pipe<T[K]>(map(x => (x ? x[property] : undefined)));
 }

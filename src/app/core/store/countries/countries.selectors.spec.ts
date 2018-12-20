@@ -39,7 +39,7 @@ describe('Countries Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCountriesSuccess(countries));
+        store$.dispatch(new LoadCountriesSuccess({ countries }));
       });
 
       it('should set loading to false', () => {
@@ -50,7 +50,7 @@ describe('Countries Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCountriesFail({ message: 'error' } as HttpError));
+        store$.dispatch(new LoadCountriesFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded category on error', () => {

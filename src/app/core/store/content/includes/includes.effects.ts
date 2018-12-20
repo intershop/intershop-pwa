@@ -15,6 +15,7 @@ export class IncludesEffects {
   loadContentInclude$ = this.actions$.pipe(
     ofType<includesActions.LoadContentInclude>(includesActions.IncludesActionTypes.LoadContentInclude),
     map(action => action.payload),
+    map(payload => payload.includeId),
     mergeMap(includeId =>
       this.cmsService.getContentInclude(includeId).pipe(
         map(contentInclude => new includesActions.LoadContentIncludeSuccess(contentInclude)),

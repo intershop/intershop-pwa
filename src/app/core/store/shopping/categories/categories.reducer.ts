@@ -23,7 +23,7 @@ export const initialState: CategoriesState = {
 };
 
 function mergeCategories(state: CategoriesState, action: LoadTopLevelCategoriesSuccess | LoadCategorySuccess) {
-  const loadedTree = action.payload;
+  const loadedTree = action.payload.categories;
   const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
   return {
     ...state,
@@ -38,11 +38,16 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
       return { ...state, topLevelLoaded: false };
     }
 
-    case CategoriesActionTypes.DeselectCategory:
+    case CategoriesActionTypes.DeselectCategory: {
+      return {
+        ...state,
+        selected: undefined,
+      };
+    }
     case CategoriesActionTypes.SelectCategory: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.categoryId,
       };
     }
 

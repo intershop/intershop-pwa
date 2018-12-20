@@ -22,22 +22,22 @@ export enum UserActionTypes {
 
 export class LoginUser implements Action {
   readonly type = UserActionTypes.LoginUser;
-  constructor(public payload: LoginCredentials) {}
+  constructor(public payload: { credentials: LoginCredentials }) {}
 }
 
 export class LoginUserFail implements Action {
   readonly type = UserActionTypes.LoginUserFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoginUserSuccess implements Action {
   readonly type = UserActionTypes.LoginUserSuccess;
-  constructor(public payload: Customer) {}
+  constructor(public payload: { customer: Customer }) {}
 }
 
 export class SetAPIToken implements Action {
   readonly type = UserActionTypes.SetAPIToken;
-  constructor(public payload: string) {}
+  constructor(public payload: { apiToken: string }) {}
 }
 
 export class LoadCompanyUser implements Action {
@@ -46,12 +46,12 @@ export class LoadCompanyUser implements Action {
 
 export class LoadCompanyUserFail implements Action {
   readonly type = UserActionTypes.LoadCompanyUserFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadCompanyUserSuccess implements Action {
   readonly type = UserActionTypes.LoadCompanyUserSuccess;
-  constructor(public payload: User) {}
+  constructor(public payload: { user: User }) {}
 }
 
 export class LogoutUser implements Action {
@@ -60,17 +60,17 @@ export class LogoutUser implements Action {
 
 export class CreateUser implements Action {
   readonly type = UserActionTypes.CreateUser;
-  constructor(public payload: Customer) {}
+  constructor(public payload: { customer: Customer }) {}
 }
 
 export class CreateUserSuccess implements Action {
   readonly type = UserActionTypes.CreateUserSuccess;
-  constructor(public payload: Customer) {}
+  constructor(public payload: { customer: Customer }) {}
 }
 
 export class CreateUserFail implements Action {
   readonly type = UserActionTypes.CreateUserFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UserErrorReset implements Action {

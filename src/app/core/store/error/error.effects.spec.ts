@@ -29,7 +29,7 @@ describe('Error Effects', () => {
 
   describe('gotoErrorPageInCaseOfError$', () => {
     it('should call Router Navigation when Error is handled', done => {
-      store$.dispatch(new CommunicationTimeoutError({} as HttpError));
+      store$.dispatch(new CommunicationTimeoutError({ error: {} as HttpError }));
 
       effects.gotoErrorPageInCaseOfError$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();

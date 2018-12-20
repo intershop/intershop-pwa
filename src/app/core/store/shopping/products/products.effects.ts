@@ -45,10 +45,10 @@ export class ProductsEffects {
   @Effect()
   loadProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
-    map(action => action.payload),
+    map(action => action.payload.sku),
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
-        map(product => new productsActions.LoadProductSuccess(product)),
+        map(product => new productsActions.LoadProductSuccess({ product })),
         mapErrorToAction(productsActions.LoadProductFail)
       )
     )
@@ -70,7 +70,7 @@ export class ProductsEffects {
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
     mergeMap(([action, , , page]) => [
       new SetPagingLoading(),
-      new SetPage(page),
+      new SetPage({ pageNumber: page }),
       new productsActions.LoadProductsForCategory(action.payload),
     ])
   );
@@ -81,7 +81,7 @@ export class ProductsEffects {
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    map(action => action.payload),
+    map(action => action.payload.categoryId),
     withLatestFrom(
       this.store.pipe(select(getPagingPage)),
       this.store.pipe(select(getSortBy)),
@@ -97,8 +97,10 @@ export class ProductsEffects {
             totalItems: res.total,
             newProducts: res.products.map(p => p.sku),
           }),
-          new SetSortKeys(res.sortKeys),
-          ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
+          new SetSortKeys({ sortKeys: res.sortKeys }),
+          ...res.products
+            .filter(stub => !entities[stub.sku])
+            .map(stub => new productsActions.LoadProductSuccess({ product: stub })),
         ]),
         mapErrorToAction(productsActions.LoadProductFail)
       )
@@ -111,15 +113,15 @@ export class ProductsEffects {
     map(action => action.payload.params.sku),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
-    map(([sku]) => new productsActions.SelectProduct(sku))
+    map(([sku]) => new productsActions.SelectProduct({ sku }))
   );
 
   @Effect()
   selectedProduct$ = this.actions$.pipe(
     ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
-    map(action => action.payload),
+    map(action => action.payload.sku),
     filter(sku => !!sku),
-    map(sku => new productsActions.LoadProduct(sku))
+    map(sku => new productsActions.LoadProduct({ sku }))
   );
 
   /**
@@ -135,7 +137,7 @@ export class ProductsEffects {
         distinctUntilChanged(),
         withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
         filter(([, sku]) => !!sku),
-        map(([, sku]) => new productsActions.LoadProduct(sku))
+        map(([, sku]) => new productsActions.LoadProduct({ sku }))
       )
     )
   );

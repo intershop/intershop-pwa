@@ -23,7 +23,7 @@ export class OrdersEffects {
     ofType(ordersActions.OrdersActionTypes.LoadOrders),
     concatMap(() =>
       this.orderService.getOrders().pipe(
-        map(orders => new ordersActions.LoadOrdersSuccess(orders)),
+        map(orders => new ordersActions.LoadOrdersSuccess({ orders })),
         mapErrorToAction(ordersActions.LoadOrdersFail)
       )
     )
@@ -38,7 +38,7 @@ export class OrdersEffects {
     map(action => action.payload.params.orderId),
     withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
     filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
-    map(([orderId]) => new ordersActions.SelectOrder(orderId))
+    map(([orderId]) => new ordersActions.SelectOrder({ orderId }))
   );
 
   @Effect()
@@ -57,11 +57,11 @@ export class OrdersEffects {
   loadProductsForSelectedOrder$ = combineLatest(
     this.actions$.pipe(
       ofType<ordersActions.SelectOrder>(ordersActions.OrdersActionTypes.SelectOrder),
-      map(action => action.payload)
+      map(action => action.payload.orderId)
     ),
     this.actions$.pipe(
       ofType<ordersActions.LoadOrdersSuccess>(ordersActions.OrdersActionTypes.LoadOrdersSuccess),
-      map(action => action.payload)
+      map(action => action.payload.orders)
     )
   ).pipe(
     map(([orderId, orders]) => orders.filter(order => order.id === orderId).pop()),
@@ -70,7 +70,7 @@ export class OrdersEffects {
     concatMap(([order, products]) => [
       ...order.lineItems
         .filter((lineItem: LineItem) => !products[lineItem.productSKU])
-        .map((lineItem: LineItem) => new LoadProduct(lineItem.productSKU)),
+        .map((lineItem: LineItem) => new LoadProduct({ sku: lineItem.productSKU })),
     ])
   );
 

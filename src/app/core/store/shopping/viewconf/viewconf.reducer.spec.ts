@@ -19,7 +19,7 @@ describe('Viewconf Reducer', () => {
   });
 
   it('should set the sortBy setting for ChangeSortBy action', () => {
-    const action = new fromActions.ChangeSortBy('name-asc');
+    const action = new fromActions.ChangeSortBy({ sorting: 'name-asc' });
     const state = viewconfReducer(initialState, action);
 
     expect(state.sortBy).toEqual('name-asc');

@@ -1,6 +1,5 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { mergeObjectsMutably } from 'ish-core/utils/merge-objects';
 import { Product } from '../../../models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
@@ -24,7 +23,7 @@ export function productsReducer(state = initialState, action: ProductsAction): P
     case ProductsActionTypes.SelectProduct: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.sku,
       };
     }
 
@@ -43,29 +42,7 @@ export function productsReducer(state = initialState, action: ProductsAction): P
     }
 
     case ProductsActionTypes.LoadProductSuccess: {
-      const loadedProduct = action.payload;
-      const { sku } = loadedProduct;
-
-      let updatedState;
-
-      if (state.entities[sku]) {
-        const updated = mergeObjectsMutably(
-          { sku: state.entities[sku].sku },
-          ['sku'],
-          state.entities[sku],
-          loadedProduct
-        );
-
-        const entities = {
-          ...state.entities,
-          [sku]: updated,
-        };
-        updatedState = { ...state, entities };
-      } else {
-        updatedState = productAdapter.addOne(loadedProduct, state);
-      }
-
-      return { ...updatedState, loading: false };
+      return productAdapter.upsertOne(action.payload.product, { ...state, loading: false });
     }
   }
 

@@ -109,8 +109,8 @@ describe('Quote Request Service', () => {
 
     beforeEach(() => {
       when(apiService.get(anything())).thenReturn(of({ elements: [] }));
-      store$.dispatch(new LoginUserSuccess(customer));
-      store$.dispatch(new LoadCompanyUserSuccess(user));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user }));
     });
 
     it('should complete after first successful result', () => {
@@ -118,7 +118,7 @@ describe('Quote Request Service', () => {
 
       verify(apiService.get(anything())).once();
 
-      store$.dispatch(new LoadCompanyUserSuccess({ ...user, firstName: 'test' } as User));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { ...user, firstName: 'test' } as User }));
 
       verify(apiService.get(anything())).once();
 
@@ -152,8 +152,8 @@ describe('Quote Request Service', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess(customer));
-      store$.dispatch(new LoadCompanyUserSuccess(user));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user }));
     });
 
     it("should get quoteRequests data when 'getQuoteRequests' is called", done => {
@@ -242,12 +242,14 @@ describe('Quote Request Service', () => {
 
     it("should post new item to quote request when 'addProductToQuoteRequest' is called", done => {
       store$.dispatch(
-        new LoadQuoteRequestsSuccess([
-          {
-            id: 'QRID',
-            editable: true,
-          } as QuoteRequestData,
-        ])
+        new LoadQuoteRequestsSuccess({
+          quoteRequests: [
+            {
+              id: 'QRID',
+              editable: true,
+            } as QuoteRequestData,
+          ],
+        })
       );
 
       when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));

@@ -28,7 +28,7 @@ export class ViewconfEffects {
     take(1),
     withLatestFrom(this.store.pipe(select(getItemsPerPage))),
     filter(([, itemsPerPage]) => itemsPerPage !== this.itemsPerPage),
-    mapTo(new viewconfActions.SetEndlessScrollingPageSize(this.itemsPerPage))
+    mapTo(new viewconfActions.SetEndlessScrollingPageSize({ itemsPerPage: this.itemsPerPage }))
   );
 
   @Effect()
@@ -37,7 +37,7 @@ export class ViewconfEffects {
     map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedCategory))),
     filter(([, category]) => !!category && !!category.uniqueId),
-    map(([, category]) => new LoadProductsForCategory(category.uniqueId))
+    map(([, category]) => new LoadProductsForCategory({ categoryId: category.uniqueId }))
   );
 
   @Effect()
@@ -55,8 +55,8 @@ export class ViewconfEffects {
         distinctCompareWith(this.store.pipe(select(getPagingPage))),
         mergeMap(page =>
           page
-            ? [new viewconfActions.DisableEndlessScrolling(), new viewconfActions.SetPage(page - 1)]
-            : [new viewconfActions.SetPage(0)]
+            ? [new viewconfActions.DisableEndlessScrolling(), new viewconfActions.SetPage({ pageNumber: page - 1 })]
+            : [new viewconfActions.SetPage({ pageNumber: 0 })]
         )
       )
     )

@@ -56,41 +56,41 @@ describe('Filter Navigation Container', () => {
   });
 
   it('should display filter-dropdown if facet with displayType dropdown is present', () => {
-    const filter = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
+    const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess(filter));
+    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-dropdown']);
   });
 
   it('should display filter-checkbox if facet with displayType text_clear is present', () => {
-    const filter = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
+    const filterNavigation = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess(filter));
+    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });
 
   it('should display filter-swatch-images if facet with displayType swatch is present', () => {
-    const filter = { filter: [{ displayType: 'swatch' } as Filter] } as FilterNavigation;
+    const filterNavigation = { filter: [{ displayType: 'swatch' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess(filter));
+    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-swatch-images']);
   });
 
   it('should display filter-checkbox if facet has no displayType set', () => {
-    const filter = { filter: [{} as Filter] } as FilterNavigation;
+    const filterNavigation = { filter: [{} as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess(filter));
+    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });
 
   it('should display filter-checkbox if facet has a typo in the displayType', () => {
-    const filter = { filter: [{ displayType: 'typo' } as Filter] } as FilterNavigation;
+    const filterNavigation = { filter: [{ displayType: 'typo' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess(filter));
+    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });

@@ -19,17 +19,17 @@ export function viewconfReducer(state: ViewconfState = initialState, action: Vie
     case ViewconfActionTypes.SetWrapperClass:
       return {
         ...state,
-        wrapperClass: action.payload,
+        wrapperClass: action.payload.wrapperClass,
       };
     case ViewconfActionTypes.SetHeaderType:
       return {
         ...state,
-        headerType: action.payload,
+        headerType: action.payload.headerType,
       };
     case ViewconfActionTypes.SetBreadcrumbData:
       return {
         ...state,
-        breadcrumbData: action.payload,
+        breadcrumbData: action.payload.breadcrumbData,
       };
   }
 

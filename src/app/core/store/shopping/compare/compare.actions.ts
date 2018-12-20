@@ -8,17 +8,17 @@ export enum CompareActionTypes {
 
 export class AddToCompare implements Action {
   readonly type = CompareActionTypes.AddToCompare;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 
 export class RemoveFromCompare implements Action {
   readonly type = CompareActionTypes.RemoveFromCompare;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 
 export class ToggleCompare implements Action {
   readonly type = CompareActionTypes.ToggleCompare;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 
 export type CompareAction = AddToCompare | RemoveFromCompare | ToggleCompare;

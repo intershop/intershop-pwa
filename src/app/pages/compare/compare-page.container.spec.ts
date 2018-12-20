@@ -57,10 +57,10 @@ describe('Compare Page Container', () => {
   });
 
   it('should display compare product list when compare products available', () => {
-    store$.dispatch(new LoadProductSuccess({ sku: '1' } as Product));
-    store$.dispatch(new LoadProductSuccess({ sku: '2' } as Product));
-    store$.dispatch(new AddToCompare('1'));
-    store$.dispatch(new AddToCompare('2'));
+    store$.dispatch(new LoadProductSuccess({ product: { sku: '1' } as Product }));
+    store$.dispatch(new LoadProductSuccess({ product: { sku: '2' } as Product }));
+    store$.dispatch(new AddToCompare({ sku: '1' }));
+    store$.dispatch(new AddToCompare({ sku: '2' }));
 
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-product-compare-list']);

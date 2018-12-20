@@ -40,10 +40,10 @@ describe('Viewconf Integration', () => {
   it('should extract breadcrumbData from routing to state', () => {
     store$.dispatch({
       type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: { breadcrumbData: { text: 'TEXT' } } },
+      payload: { data: { breadcrumbData: [{ text: 'TEXT' }] } },
     } as Action);
 
-    expect(getBreadcrumbData(store$.state)).toEqual({ text: 'TEXT' });
+    expect(getBreadcrumbData(store$.state)).toEqual([{ text: 'TEXT' }]);
   });
 
   it('should reset wrapperClass when no longer available in routing data', () => {

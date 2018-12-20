@@ -47,7 +47,7 @@ export class CategoriesEffects {
     map(action => action.payload.params.categoryUniqueId),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
     map(categoryUniqueId =>
-      categoryUniqueId ? new actions.SelectCategory(categoryUniqueId) : new actions.DeselectCategory()
+      categoryUniqueId ? new actions.SelectCategory({ categoryId: categoryUniqueId }) : new actions.DeselectCategory()
     )
   );
 
@@ -58,10 +58,10 @@ export class CategoriesEffects {
   @Effect()
   selectedCategory$ = this.actions$.pipe(
     ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
-    map(action => action.payload),
+    map(action => action.payload.categoryId),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
-    map(([id]) => new actions.LoadCategory(id))
+    map(([id]) => new actions.LoadCategory({ categoryId: id }))
   );
 
   /**
@@ -71,7 +71,7 @@ export class CategoriesEffects {
   selectedCategoryAvailable$ = combineLatest(
     this.actions$.pipe(
       ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
-      map(action => action.payload)
+      map(action => action.payload.categoryId)
     ),
     this.store.pipe(
       select(selectors.getSelectedCategory),
@@ -80,7 +80,7 @@ export class CategoriesEffects {
   ).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
-    map(x => new actions.SelectedCategoryAvailable(x[0]))
+    map(([id]) => new actions.SelectedCategoryAvailable({ categoryId: id }))
   );
 
   /**
@@ -93,7 +93,7 @@ export class CategoriesEffects {
     map(([, category]) => category.categoryPath),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
-    mergeMap(ids => ids.map(id => new actions.LoadCategory(id)))
+    mergeMap(ids => ids.map(id => new actions.LoadCategory({ categoryId: id })))
   );
 
   /**
@@ -102,10 +102,10 @@ export class CategoriesEffects {
   @Effect()
   loadCategory$ = this.actions$.pipe(
     ofType<actions.LoadCategory>(actions.CategoriesActionTypes.LoadCategory),
-    map(action => action.payload),
+    map(action => action.payload.categoryId),
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
-        map(category => new actions.LoadCategorySuccess(category)),
+        map(category => new actions.LoadCategorySuccess({ categories: category })),
         mapErrorToAction(actions.LoadCategoryFail)
       )
     )
@@ -121,16 +121,16 @@ export class CategoriesEffects {
         filter(loaded => !loaded)
       )
     ),
-    mapTo(new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
+    mapTo(new actions.LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
   );
 
   @Effect()
   loadTopLevelCategories$ = this.actions$.pipe(
     ofType<actions.LoadTopLevelCategories>(actions.CategoriesActionTypes.LoadTopLevelCategories),
-    map(action => action.payload),
+    map(action => action.payload.depth),
     mergeMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
-        map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
+        map(category => new actions.LoadTopLevelCategoriesSuccess({ categories: category })),
         mapErrorToAction(actions.LoadTopLevelCategoriesFail)
       )
     )
@@ -155,7 +155,7 @@ export class CategoriesEffects {
     filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
     withLatestFrom(this.store.pipe(select(getVisibleProducts))),
     filter(([[category], skus]) => category && category.hasOnlineProducts && !skus.length),
-    map(([[category]]) => new LoadProductsForCategory(category.uniqueId))
+    map(([[category]]) => new LoadProductsForCategory({ categoryId: category.uniqueId }))
   );
 
   @Effect({ dispatch: false })

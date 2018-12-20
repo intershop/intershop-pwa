@@ -42,7 +42,7 @@ describe('Addresses Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadAddressesSuccess(addresses));
+        store$.dispatch(new LoadAddressesSuccess({ addresses }));
       });
 
       it('should set loading to false', () => {
@@ -53,7 +53,7 @@ describe('Addresses Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadAddressesFail({ message: 'error' } as HttpError));
+        store$.dispatch(new LoadAddressesFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded addresses on error', () => {

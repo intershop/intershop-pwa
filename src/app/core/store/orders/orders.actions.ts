@@ -13,7 +13,7 @@ export enum OrdersActionTypes {
 
 export class SelectOrder implements Action {
   readonly type = OrdersActionTypes.SelectOrder;
-  constructor(public payload: string) {}
+  constructor(public payload: { orderId: string }) {}
 }
 
 export class LoadOrders implements Action {
@@ -22,12 +22,12 @@ export class LoadOrders implements Action {
 
 export class LoadOrdersFail implements Action {
   readonly type = OrdersActionTypes.LoadOrdersFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadOrdersSuccess implements Action {
   readonly type = OrdersActionTypes.LoadOrdersSuccess;
-  constructor(public payload: Order[]) {}
+  constructor(public payload: { orders: Order[] }) {}
 }
 
 export class ResetOrders implements Action {

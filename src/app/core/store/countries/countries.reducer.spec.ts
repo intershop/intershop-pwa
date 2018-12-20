@@ -27,7 +27,7 @@ describe('Countries Reducer', () => {
 
     describe('LoadCountriesFail action', () => {
       it('should set loading to false', () => {
-        const action = new LoadCountriesFail({} as HttpError);
+        const action = new LoadCountriesFail({ error: {} as HttpError });
         const state = countriesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -46,7 +46,7 @@ describe('Countries Reducer', () => {
       });
 
       it('should insert countries if not exist', () => {
-        const action = new LoadCountriesSuccess([country]);
+        const action = new LoadCountriesSuccess({ countries: [country] });
         const state = countriesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);

@@ -15,12 +15,12 @@ export class LoadCountries implements Action {
 
 export class LoadCountriesFail implements Action {
   readonly type = CountryActionTypes.LoadCountriesFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadCountriesSuccess implements Action {
   readonly type = CountryActionTypes.LoadCountriesSuccess;
-  constructor(public payload: Country[]) {}
+  constructor(public payload: { countries: Country[] }) {}
 }
 
 export type CountryAction = LoadCountries | LoadCountriesFail | LoadCountriesSuccess;

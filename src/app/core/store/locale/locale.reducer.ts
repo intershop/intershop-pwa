@@ -24,13 +24,13 @@ export const initialState: LocaleState = adapter.getInitialState({
 export function localeReducer(state = initialState, action: LocaleAction): LocaleState {
   switch (action.type) {
     case LocaleActionTypes.SelectLocale: {
-      const idx = action.payload.lang;
-      return { ...state, current: idx };
+      const current = action.payload.locale.lang;
+      return { ...state, current };
     }
     case LocaleActionTypes.SetAvailableLocales: {
-      const available = action.payload;
+      const { locales } = action.payload;
       const clearState = adapter.removeAll(state);
-      return adapter.addMany(available, clearState);
+      return adapter.addMany(locales, clearState);
     }
   }
   return state;

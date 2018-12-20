@@ -51,7 +51,7 @@ describe('Orders Effects', () => {
 
     it('should load all orders of a user and dispatch a LoadOrdersSuccess action', () => {
       const action = new orderActions.LoadOrders();
-      const completion = new orderActions.LoadOrdersSuccess(orders);
+      const completion = new orderActions.LoadOrdersSuccess({ orders });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -62,7 +62,7 @@ describe('Orders Effects', () => {
       when(orderServiceMock.getOrders()).thenReturn(throwError({ message: 'error' }));
 
       const action = new orderActions.LoadOrders();
-      const completion = new orderActions.LoadOrdersFail({ message: 'error' } as HttpError);
+      const completion = new orderActions.LoadOrdersFail({ error: { message: 'error' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -78,7 +78,7 @@ describe('Orders Effects', () => {
         params: { orderId: orderId },
         queryParams: {},
       });
-      const expected = new orderActions.SelectOrder(orderId);
+      const expected = new orderActions.SelectOrder({ orderId });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingOrder$).toBeObservable(cold('a', { a: expected }));
@@ -95,7 +95,7 @@ describe('Orders Effects', () => {
   describe('loadOrdersForSelectedOrder$', () => {
     it('should fire LoadOrders if an order is selected that is not yet loaded', () => {
       const orderId = '123';
-      const action = new orderActions.SelectOrder(orderId);
+      const action = new orderActions.SelectOrder({ orderId });
       const completion = new orderActions.LoadOrders();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

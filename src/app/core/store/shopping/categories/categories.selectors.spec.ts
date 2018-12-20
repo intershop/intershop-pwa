@@ -64,7 +64,7 @@ describe('Categories Selectors', () => {
 
   describe('loading a category', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadCategory(''));
+      store$.dispatch(new LoadCategory({ categoryId: '' }));
     });
 
     it('should set the state to loading', () => {
@@ -73,7 +73,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCategorySuccess(categoryTree([cat])));
+        store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([cat]) }));
       });
 
       it('should set loading to false', () => {
@@ -84,7 +84,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpError));
+        store$.dispatch(new LoadCategoryFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded category on error', () => {
@@ -96,8 +96,8 @@ describe('Categories Selectors', () => {
 
   describe('state with a category', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadCategorySuccess(categoryTree([cat])));
-      store$.dispatch(new LoadProductSuccess(prod));
+      store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([cat]) }));
+      store$.dispatch(new LoadProductSuccess({ product: prod }));
     });
 
     describe('but no current router state', () => {
@@ -114,7 +114,7 @@ describe('Categories Selectors', () => {
 
     describe('with category route', () => {
       beforeEach(() => {
-        store$.dispatch(new SelectCategory(cat.uniqueId));
+        store$.dispatch(new SelectCategory({ categoryId: cat.uniqueId }));
       });
 
       it('should return the category information when used', () => {
@@ -136,7 +136,7 @@ describe('Categories Selectors', () => {
     beforeEach(() => {
       catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
       catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
-      store$.dispatch(new LoadTopLevelCategoriesSuccess(categoryTree([catA, catB])));
+      store$.dispatch(new LoadTopLevelCategoriesSuccess({ categories: categoryTree([catA, catB]) }));
     });
 
     it('should select root categories when used', () => {

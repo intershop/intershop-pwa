@@ -48,7 +48,7 @@ describe('Products Selectors', () => {
 
   describe('loading a product', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadProduct(''));
+      store$.dispatch(new LoadProduct({ sku: '' }));
     });
 
     it('should set the state to loading', () => {
@@ -57,7 +57,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductSuccess(prod));
+        store$.dispatch(new LoadProductSuccess({ product: prod }));
       });
 
       it('should set loading to false', () => {
@@ -68,7 +68,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductFail({ message: 'error' } as HttpError));
+        store$.dispatch(new LoadProductFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded product on error', () => {
@@ -80,7 +80,7 @@ describe('Products Selectors', () => {
 
   describe('state with a product', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadProductSuccess(prod));
+      store$.dispatch(new LoadProductSuccess({ product: prod }));
     });
 
     describe('but no current router state', () => {
@@ -98,7 +98,7 @@ describe('Products Selectors', () => {
 
     describe('with product route', () => {
       beforeEach(() => {
-        store$.dispatch(new SelectProduct(prod.sku));
+        store$.dispatch(new SelectProduct({ sku: prod.sku }));
       });
 
       it('should return the product information when used', () => {

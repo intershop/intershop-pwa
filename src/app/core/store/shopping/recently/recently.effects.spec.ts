@@ -32,20 +32,20 @@ describe('Recently Effects', () => {
 
   describe('viewedProduct$', () => {
     it('should not fire when product is not yet loaded', () => {
-      actions$ = hot('a', { a: new SelectProduct('A') });
+      actions$ = hot('a', { a: new SelectProduct({ sku: 'A' }) });
 
       expect(effects.viewedProduct$).toBeObservable(cold('------'));
     });
 
     it('should fire when product is in store and selected', () => {
-      store$.dispatch(new LoadProductSuccess({ sku: 'A' } as Product));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'A' } as Product }));
 
-      const action = new SelectProduct('A');
+      const action = new SelectProduct({ sku: 'A' });
       store$.dispatch(action);
 
       actions$ = hot('---a', { a: action });
 
-      expect(effects.viewedProduct$).toBeObservable(cold('---a', { a: new AddToRecently('A') }));
+      expect(effects.viewedProduct$).toBeObservable(cold('---a', { a: new AddToRecently({ productId: 'A' }) }));
     });
 
     it('should not fire when product is deselected', () => {

@@ -69,7 +69,7 @@ describe('Api Service', () => {
       verify(storeMock$.dispatch(anything())).once();
       const [action] = capture(storeMock$.dispatch).last();
       expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((action as ServerError).error.statusText).toEqual(statusText);
+      expect((action as ServerError).payload.error).toHaveProperty('statusText', statusText);
     });
 
     it('should call the httpClient.get method when apiService.get method is called.', done => {
@@ -94,7 +94,7 @@ describe('Api Service', () => {
       verify(storeMock$.dispatch(anything())).once();
       const [action] = capture(storeMock$.dispatch).last();
       expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((action as ServerError).error.statusText).toEqual(statusText);
+      expect((action as ServerError).payload.error).toHaveProperty('statusText', statusText);
     });
 
     it('should call the httpClient.put method when apiService.put method is called.', done => {

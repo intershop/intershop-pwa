@@ -45,11 +45,11 @@ describe('Auth Interceptor', () => {
   });
 
   it(`should set request's header token on receiving from jwt service`, done => {
-    const TOKEN = 'testtoken';
-    store$.dispatch(new SetAPIToken(TOKEN));
+    const apiToken = 'testtoken';
+    store$.dispatch(new SetAPIToken({ apiToken }));
 
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe(() => {
-      expect(mockRequest.headers.get('authentication-token')).toEqual(TOKEN);
+      expect(mockRequest.headers.get('authentication-token')).toEqual(apiToken);
       done();
     });
   });

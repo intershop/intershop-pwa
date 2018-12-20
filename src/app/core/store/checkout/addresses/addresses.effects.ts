@@ -19,7 +19,7 @@ export class AddressesEffects {
     withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
     switchMap(([, customer]) =>
       this.addressService.getCustomerAddresses(customer.customerNo).pipe(
-        map(addresses => new addressActions.LoadAddressesSuccess(addresses)),
+        map(addresses => new addressActions.LoadAddressesSuccess({ addresses })),
         mapErrorToAction(addressActions.LoadAddressesFail)
       )
     )
@@ -36,7 +36,7 @@ export class AddressesEffects {
     filter(([payload, customer]) => !!payload || !!customer),
     concatMap(([{ address }, customer]) =>
       this.addressService.createCustomerAddress(customer.customerNo, address).pipe(
-        map(newAddress => new addressActions.CreateCustomerAddressSuccess(newAddress)),
+        map(newAddress => new addressActions.CreateCustomerAddressSuccess({ address: newAddress })),
         mapErrorToAction(addressActions.CreateCustomerAddressFail)
       )
     )

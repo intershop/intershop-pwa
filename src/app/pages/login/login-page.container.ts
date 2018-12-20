@@ -19,6 +19,6 @@ export class LoginPageContainerComponent {
   ) {}
 
   loginUser(userCredentials: LoginCredentials) {
-    this.store.dispatch(new LoginUser(userCredentials));
+    this.store.dispatch(new LoginUser({ credentials: userCredentials }));
   }
 }

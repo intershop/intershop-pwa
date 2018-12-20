@@ -48,7 +48,7 @@ describe('User Effects', () => {
 
   describe('loginUser$', () => {
     it('should call the api service when LoginUser event is called', done => {
-      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
+      const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
 
       actions$ = of(action);
 
@@ -59,8 +59,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
-      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
-      const completion = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const completion = new ua.LoginUserSuccess({ customer: {} as Customer });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -74,8 +74,8 @@ describe('User Effects', () => {
 
       when(registrationServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
-      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
-      const completion = new ua.LoginUserFail(HttpErrorMapper.fromError(error));
+      const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const completion = new ua.LoginUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -97,7 +97,7 @@ describe('User Effects', () => {
     it('should map to action of type LoadBasketSuccess', () => {
       const type = 'SMBCustomerUser';
       const action = new ua.LoadCompanyUser();
-      const completion = new ua.LoadCompanyUserSuccess({ type } as User);
+      const completion = new ua.LoadCompanyUserSuccess({ user: { type } as User });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -123,7 +123,7 @@ describe('User Effects', () => {
 
   describe('goToAccountAfterLogin$', () => {
     it('should navigate to /account after LoginUserSuccess', done => {
-      const action = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.LoginUserSuccess({ customer: {} as Customer });
 
       actions$ = of(action);
 
@@ -146,7 +146,7 @@ describe('User Effects', () => {
         },
       } as RouterState);
 
-      const action = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.LoginUserSuccess({ customer: {} as Customer });
 
       actions$ = of(action);
 
@@ -161,7 +161,7 @@ describe('User Effects', () => {
 
   describe('createUser$', () => {
     it('should call the api service when Create event is called', done => {
-      const action = new ua.CreateUser({} as Customer);
+      const action = new ua.CreateUser({ customer: {} as Customer });
 
       actions$ = of(action);
 
@@ -172,8 +172,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a CreateUserSuccess action on successful user creation', () => {
-      const action = new ua.CreateUser({} as Customer);
-      const completion = new ua.CreateUserSuccess({} as Customer);
+      const action = new ua.CreateUser({ customer: {} as Customer });
+      const completion = new ua.CreateUserSuccess({ customer: {} as Customer });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -186,8 +186,8 @@ describe('User Effects', () => {
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
       when(registrationServiceMock.createUser(anything())).thenReturn(throwError(error));
 
-      const action = new ua.CreateUser({} as Customer);
-      const completion = new ua.CreateUserFail(HttpErrorMapper.fromError(error));
+      const action = new ua.CreateUser({ customer: {} as Customer });
+      const completion = new ua.CreateUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -204,7 +204,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch UserErrorReset action on router navigation if error was set', () => {
-      store$.dispatch(new ua.LoginUserFail({ message: 'error' } as HttpError));
+      store$.dispatch(new ua.LoginUserFail({ error: { message: 'error' } as HttpError }));
 
       actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
 
@@ -214,8 +214,8 @@ describe('User Effects', () => {
 
   describe('publishLoginEventAfterCreate$', () => {
     it('should dispatch a LoginUserSuccess when CreateUserSuccess arrives', () => {
-      const action = new ua.CreateUserSuccess({} as Customer);
-      const completion = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.CreateUserSuccess({ customer: {} as Customer });
+      const completion = new ua.LoginUserSuccess({ customer: {} as Customer });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });

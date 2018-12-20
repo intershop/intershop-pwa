@@ -71,7 +71,7 @@ export class SearchEffects {
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
-    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts(searchTerm)])
+    mergeMap((searchTerm: string) => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
   );
 
   @Effect()
@@ -86,7 +86,11 @@ export class SearchEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([action, , , page]) => [new SetPagingLoading(), new SetPage(page), new SearchProducts(action.payload)])
+    mergeMap(([action, , , page]) => [
+      new SetPagingLoading(),
+      new SetPage({ pageNumber: page }),
+      new SearchProducts(action.payload),
+    ])
   );
 
   /**
@@ -95,21 +99,20 @@ export class SearchEffects {
   @Effect()
   searchProducts$ = this.actions$.pipe(
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    map(action => action.payload),
+    map(action => action.payload.searchTerm),
     withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
     distinctUntilChanged(),
     concatMap(([searchTerm, page, itemsPerPage]) =>
-      // get products
       this.productsService.searchProducts(searchTerm, page, itemsPerPage).pipe(
         mergeMap(res => [
           // dispatch action with search result
-          new SearchProductsSuccess(searchTerm),
+          new SearchProductsSuccess({ searchTerm }),
           // dispatch viewconf action
           new SetPagingInfo({ currentPage: page, totalItems: res.total, newProducts: res.products.map(p => p.sku) }),
           // dispatch actions to load the product information of the found products
-          ...res.products.map(product => new LoadProductSuccess(product)),
+          ...res.products.map(product => new LoadProductSuccess({ product })),
           // dispatch action to store the returned sorting options
-          new SetSortKeys(res.sortKeys),
+          new SetSortKeys({ sortKeys: res.sortKeys }),
         ]),
         mapErrorToAction(SearchProductsFail)
       )
@@ -119,13 +122,14 @@ export class SearchEffects {
   @Effect()
   suggestSearch$ = this.actions$.pipe(
     ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
-    debounceTime(400),
-    distinctUntilKeyChanged('payload'),
     map(action => action.payload),
+    debounceTime(400),
+    distinctUntilKeyChanged('searchTerm'),
+    map(payload => payload.searchTerm),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(
-        map(results => new SuggestSearchSuccess(results)),
+        map(suggests => new SuggestSearchSuccess({ suggests })),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       )

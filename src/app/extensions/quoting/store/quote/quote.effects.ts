@@ -33,7 +33,7 @@ export class QuoteEffects {
     ofType(quoteActions.QuoteActionTypes.LoadQuotes),
     concatMap(() =>
       this.quoteService.getQuotes().pipe(
-        map(quotes => new quoteActions.LoadQuotesSuccess(quotes)),
+        map(quotes => new quoteActions.LoadQuotesSuccess({ quotes })),
         mapErrorToAction(quoteActions.LoadQuotesFail)
       )
     )
@@ -45,10 +45,10 @@ export class QuoteEffects {
   @Effect()
   deleteQuote$ = this.actions$.pipe(
     ofType<quoteActions.DeleteQuote>(quoteActions.QuoteActionTypes.DeleteQuote),
-    map(action => action.payload),
+    map(action => action.payload.id),
     concatMap(quoteId =>
       this.quoteService.deleteQuote(quoteId).pipe(
-        map(id => new quoteActions.DeleteQuoteSuccess(id)),
+        map(id => new quoteActions.DeleteQuoteSuccess({ id })),
         mapErrorToAction(quoteActions.DeleteQuoteFail)
       )
     )
@@ -63,7 +63,7 @@ export class QuoteEffects {
     withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
     concatMap(([, quoteId]) =>
       this.quoteService.rejectQuote(quoteId).pipe(
-        map(id => new quoteActions.RejectQuoteSuccess(id)),
+        map(id => new quoteActions.RejectQuoteSuccess({ id })),
         mapErrorToAction(quoteActions.RejectQuoteFail)
       )
     )
@@ -78,7 +78,7 @@ export class QuoteEffects {
     withLatestFrom(this.store.pipe(select(getSelectedQuote))),
     concatMap(([, currentQuoteRequest]) =>
       this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
-        map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess(res)),
+        map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest: res })),
         mapErrorToAction(quoteActions.CreateQuoteRequestFromQuoteFail)
       )
     )
@@ -119,11 +119,11 @@ export class QuoteEffects {
   loadProductsForSelectedQuote$ = combineLatest(
     this.actions$.pipe(
       ofType<quoteActions.SelectQuote>(quoteActions.QuoteActionTypes.SelectQuote),
-      map(action => action.payload)
+      map(action => action.payload.id)
     ),
     this.actions$.pipe(
       ofType<quoteActions.LoadQuotesSuccess>(quoteActions.QuoteActionTypes.LoadQuotesSuccess),
-      map(action => action.payload)
+      map(action => action.payload.quotes)
     )
   ).pipe(
     map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),
@@ -132,7 +132,7 @@ export class QuoteEffects {
     concatMap(([quote, products]) => [
       ...quote.items
         .filter((lineItem: QuoteRequestItem) => !products[lineItem.productSKU])
-        .map((lineItem: QuoteRequestItem) => new LoadProduct(lineItem.productSKU)),
+        .map((lineItem: QuoteRequestItem) => new LoadProduct({ sku: lineItem.productSKU })),
     ])
   );
 }

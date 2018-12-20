@@ -28,6 +28,6 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
   }
 
   updateBasketPaymentMethod(paymentName: string) {
-    this.store.dispatch(new SetBasketPayment(paymentName));
+    this.store.dispatch(new SetBasketPayment({ id: paymentName }));
   }
 }
