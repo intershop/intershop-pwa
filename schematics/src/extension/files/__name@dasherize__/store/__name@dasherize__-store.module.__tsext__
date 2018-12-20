@@ -1,0 +1,25 @@
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { ActionReducerMap, ReducerManager, Store, combineReducers } from '@ngrx/store';
+import { take } from 'rxjs/operators';
+
+import { <%= classify(name) %>State } from './<%= dasherize(name) %>-store';
+
+export const <%= camelize(name) %>Reducers: ActionReducerMap<<%= classify(name) %>State> = {};
+
+export const <%= camelize(name) %>Effects = [];
+
+const <%= camelize(name) %>Feature = '<%= camelize(name) %>';
+
+@NgModule({
+  imports: [EffectsModule.forFeature(<%= camelize(name) %>Effects)],
+})
+export class <%= classify(name) %>StoreModule {
+  constructor(manager: ReducerManager, store: Store<{}>) {
+    store.pipe(take(1)).subscribe(x => {
+      if (!x[<%= camelize(name) %>Feature]) {
+        manager.addReducers({ [<%= camelize(name) %>Feature]: combineReducers(<%= camelize(name) %>Reducers) });
+      }
+    });
+  }
+}

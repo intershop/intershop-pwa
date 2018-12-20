@@ -4,10 +4,16 @@ import { ImportDeclaration, SourceFile, SyntaxKind } from 'typescript';
 import { RuleHelpers } from './ruleHelpers';
 
 class DoNotImportEnvironmentWalker extends Lint.RuleWalker {
+  visitSourceFile(sourceFile: SourceFile) {
+    if (!sourceFile.fileName.endsWith('module.ts')) {
+      super.visitSourceFile(sourceFile);
+    }
+  }
+
   visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText();
-    if (fromStringText.indexOf('environments/environment') > 0) {
+    if (fromStringText.includes('environments/environment')) {
       this.addFailureAtNode(importStatement, 'Importing environment is not allowed. Inject needed properties instead.');
     }
   }

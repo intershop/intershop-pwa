@@ -1,0 +1,7 @@
+import { <%= classify(name) %> } from './<%= dasherize(name) %>.model';
+
+export class <%= classify(name) %>Helper {
+  static equal(<%= camelize(name) %>1: <%= classify(name) %>, <%= camelize(name) %>2: <%= classify(name) %>): boolean {
+    return !!<%= camelize(name) %>1 && !!<%= camelize(name) %>2 && <%= camelize(name) %>1.id === <%= camelize(name) %>2.id;
+  }
+}

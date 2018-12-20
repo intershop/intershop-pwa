@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Locale } from '../../../models/locale/locale.model';
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
-import { coreReducers } from '../core.system';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { Locale } from '../../models/locale/locale.model';
+import { coreReducers } from '../core-store.module';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';

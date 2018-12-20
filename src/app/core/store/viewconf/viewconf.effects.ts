@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { map } from 'rxjs/operators';
 
-import { distinctCompareWith } from '../../../utils/operators';
+import { distinctCompareWith } from 'ish-core/utils/operators';
 
 import { SetBreadcrumbData, SetHeaderType, SetWrapperClass } from './viewconf.actions';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';

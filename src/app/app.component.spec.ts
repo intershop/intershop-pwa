@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+
 import { AppComponent } from './app.component';
-import { MockComponent } from './utils/dev/mock.component';
 
 let translate: TranslateService;
 
@@ -18,11 +19,11 @@ describe('App Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
         MockComponent({ selector: 'ish-footer', template: 'Footer Component' }),
+        MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      imports: [TranslateModule.forRoot(), RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

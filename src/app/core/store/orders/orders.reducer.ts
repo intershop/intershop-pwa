@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { BasketAction, BasketActionTypes } from '../../../checkout/store/basket';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Order } from '../../../models/order/order.model';
+import { HttpError } from '../../models/http-error/http-error.model';
+import { Order } from '../../models/order/order.model';
+import { BasketAction, BasketActionTypes } from '../checkout/basket';
 
 import { OrdersAction, OrdersActionTypes } from './orders.actions';
 
@@ -51,7 +51,7 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
       const error = action.payload;
       return {
         ...state,
-        error: error,
+        error,
         loading: false,
       };
     }

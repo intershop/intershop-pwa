@@ -3,6 +3,7 @@
   "editor.renderWhitespace": "all",
   "editor.formatOnSave": true,
   "tslint.autoFixOnSave": true,
+  "tslint.alwaysShowRuleFailuresAsWarnings": true,
 
   // file type specific exclusions
   "[html]": {
@@ -10,5 +11,9 @@
   },
   "[handlebars]": {
     "editor.formatOnSave": false,
-  }
+  },
+  "files.associations": {
+    "__*.*": "ng-template"
+  },
+  "ngschematics.schematics": ["intershop-schematics"]
 }

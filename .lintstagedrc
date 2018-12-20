@@ -4,5 +4,9 @@
     "npx prettier --loglevel warn --write",
     "npx jest --findRelatedTests",
     "git add"
+  ],
+  "*.{js,json}": [
+    "npx prettier --loglevel warn --write",
+    "git add"
   ]
 }

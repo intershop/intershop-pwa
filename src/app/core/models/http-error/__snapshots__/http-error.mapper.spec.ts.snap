@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Http Error Mapper should convert correctly for HttpErrorResponse with headers 1`] = `
+Object {
+  "error": "null",
+  "headers": Object {
+    "key1": "value1",
+    "key2": "value2",
+  },
+  "message": "Http failure response for (unknown url): 500 undefined",
+  "name": "HttpErrorResponse",
+  "status": 500,
+  "statusText": "Unknown Error",
+}
+`;
+
+exports[`Http Error Mapper should convert correctly for simple HttpErrorResponse 1`] = `
+Object {
+  "error": "null",
+  "headers": Object {},
+  "message": "Http failure response for (unknown url): 401 Unauthorized",
+  "name": "HttpErrorResponse",
+  "status": 401,
+  "statusText": "Unauthorized",
+}
+`;

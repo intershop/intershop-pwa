@@ -5,10 +5,10 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { OrderService } from '../../../account/services/order/order.service';
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
-import { mapErrorToAction } from '../../../utils/operators';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { mapErrorToAction } from 'ish-core/utils/operators';
+import { OrderService } from '../../services/order/order.service';
+import { LoadProduct, getProductEntities } from '../shopping/products';
 import { UserActionTypes } from '../user';
 
 import * as ordersActions from './orders.actions';
@@ -69,8 +69,8 @@ export class OrdersEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([order, products]) => [
       ...order.lineItems
-        .filter((lineItem: BasketItem) => !products[lineItem.productSKU])
-        .map((lineItem: BasketItem) => new LoadProduct(lineItem.productSKU)),
+        .filter((lineItem: LineItem) => !products[lineItem.productSKU])
+        .map((lineItem: LineItem) => new LoadProduct(lineItem.productSKU)),
     ])
   );
 

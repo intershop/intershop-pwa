@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -9,6 +8,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "baseUrl": "src",
+    "paths": {
+      "ish-core/*": [ "app/core/*" ]
+    },
     "typeRoots": [
       "node_modules/@types",
       "node_modules/jest-extended"

@@ -1,17 +1,23 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketHelper } from '../../../models/basket/basket.model';
-import { OrderView } from '../../../models/order/order.model';
-import { getProductEntities } from '../../../shopping/store/products';
-import { CoreState } from '../core.state';
+import { BasketHelper } from '../../models/basket/basket.model';
+import { OrderView } from '../../models/order/order.model';
+import { getCoreState } from '../core-store';
+import { getProductEntities } from '../shopping/products';
 
 import { orderAdapter } from './orders.reducer';
 
-const getOrdersState = (state: CoreState) => state.orders;
+const getOrdersState = createSelector(
+  getCoreState,
+  state => state.orders
+);
 
 const { selectEntities: getOrderEntities, selectAll: getOrdersInternal } = orderAdapter.getSelectors(getOrdersState);
 
-export const getSelectedOrderId = createSelector(getOrdersState, state => state.selected);
+export const getSelectedOrderId = createSelector(
+  getOrdersState,
+  state => state.selected
+);
 
 /*
   ToDo: create a helper method for the duplicated code
@@ -34,7 +40,10 @@ export const getSelectedOrder = createSelector(
         }
 );
 
-export const getOrdersLoading = createSelector(getOrdersState, orders => orders.loading);
+export const getOrdersLoading = createSelector(
+  getOrdersState,
+  orders => orders.loading
+);
 
 export const getOrders = createSelector(
   getOrdersInternal,

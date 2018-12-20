@@ -9,6 +9,9 @@
 // import Bootstrap styles
 @import '~bootstrap/scss/bootstrap';
 
+// import Font Awesome styles
+@import '~@fortawesome/fontawesome-svg-core/styles';
+
 // import breakpoint wrapper to match older bootstrap 3 implementation
 @import 'theme/breakpoints';
 

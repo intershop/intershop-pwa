@@ -9,22 +9,23 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
-import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
-import { UniversalMockInterceptor } from './core/interceptors/universal-mock.interceptor';
+import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import {
   ICM_APPLICATION_SK,
   ICM_BASE_URL_SK,
   ICM_SERVER_SK,
   StatePropertiesService,
-} from './core/services/state-transfer/state-properties.service';
-import { coreReducers } from './core/store/core.system';
+} from 'ish-core/utils/state-transfer/state-properties.service';
+
+import { AppComponent } from './app.component';
+import { AppModule } from './app.module';
 
 export class TranslateUniversalLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<string> {
-    return Observable.create((observer: Observer<string>) => {
+    return new Observable((observer: Observer<string>) => {
       let rootPath = process.cwd();
-      if (!!rootPath && rootPath.indexOf('browser') > 0) {
+      if (rootPath && rootPath.indexOf('browser') > 0) {
         rootPath = process.cwd().split('browser')[0];
       }
       const file = join(rootPath, 'browser', 'assets', 'i18n', `${lang}.json`);
@@ -48,16 +49,16 @@ export function translateLoaderFactory() {
 @NgModule({
   imports: [
     AppModule,
+    ModuleMapLoaderModule,
     ServerModule,
     ServerTransferStateModule,
-    ModuleMapLoaderModule,
+    StoreModule.forRoot(coreReducers, {}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: translateLoaderFactory,
       },
     }),
-    StoreModule.forRoot(coreReducers, {}),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
   bootstrap: [AppComponent],

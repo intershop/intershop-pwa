@@ -12,8 +12,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Lint = require("tslint");
 var ts = require("typescript");
-var kebabCaseFromPascalCase = function (input) {
-    return input.replace(/[A-Z]+/g, function (match) { return "-" + match.toLowerCase(); }).replace(/^-/, '');
+exports.kebabCaseFromPascalCase = function (input) {
+    return input
+        .replace(/[A-Z]{2,}$/, function (m) { return "" + m.substr(0, 1) + m.substr(1, m.length - 1).toLowerCase(); })
+        .replace(/[A-Z]{3,}/g, function (m) { return "" + m.substr(0, 1) + m.substr(1, m.length - 2).toLowerCase() + m.substr(m.length - 1, 1); })
+        .replace(/[A-Z]/g, function (match) { return "-" + match.toLowerCase(); })
+        .replace(/^-/, '');
 };
 var camelCaseFromPascalCase = function (input) {
     return "" + input.substring(0, 1).toLowerCase() + input.substring(1);
@@ -37,13 +41,9 @@ var ProjectStructureWalker = (function (_super) {
     ProjectStructureWalker.prototype.visitSourceFile = function (sourceFile) {
         var _this = this;
         this.fileName = sourceFile.fileName;
-        var isIgnored = this.ignoredFiles
-            .map(function (ignoredPattern) { return new RegExp(ignoredPattern).test(_this.fileName); })
-            .reduce(function (l, r) { return l || r; });
+        var isIgnored = this.ignoredFiles.some(function (ignoredPattern) { return new RegExp(ignoredPattern).test(_this.fileName); });
         if (!isIgnored) {
-            var matchesPathPattern = this.pathPatterns
-                .map(function (pattern) { return new RegExp(pattern).test(_this.fileName); })
-                .reduce(function (l, r) { return l || r; });
+            var matchesPathPattern = this.pathPatterns.some(function (pattern) { return new RegExp(pattern).test(_this.fileName); });
             if (!matchesPathPattern) {
                 this.addFailureAt(0, 1, "this file path does not match any defined patterns");
             }
@@ -58,7 +58,7 @@ var ProjectStructureWalker = (function (_super) {
             var config = matchingPatterns[0];
             var matched = config.match[1];
             var pathPattern = config.pattern.file
-                .replace(/<kebab>/g, kebabCaseFromPascalCase(matched))
+                .replace(/<kebab>/g, exports.kebabCaseFromPascalCase(matched))
                 .replace(/<camel>/g, camelCaseFromPascalCase(matched));
             if (!new RegExp(pathPattern).test(this.fileName)) {
                 this.addFailureAtNode(node, name + " is not in the correct file (expected " + pathPattern + ")");

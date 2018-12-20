@@ -1,8 +1,9 @@
-import { Customer, CustomerType } from '../../../models/customer/customer.model';
-import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
-import { User } from '../../../models/user/user.model';
+import { Customer, CustomerType } from '../../models/customer/customer.model';
+import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
+import { User } from '../../models/user/user.model';
 
 import {
+  CreateUserFail,
   LoadCompanyUserFail,
   LoadCompanyUserSuccess,
   LoginUser,
@@ -106,6 +107,14 @@ describe('User Reducer', () => {
     it('should set error when LoadCompanyUserFail action is reduced', () => {
       const error = { message: 'invalid' } as HttpError;
       const action = new LoadCompanyUserFail(error);
+      const state = userReducer(initialState, action);
+
+      expect(state.error).toEqual(error);
+    });
+
+    it('should set error when CreateUserFail action is reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new CreateUserFail(error);
       const state = userReducer(initialState, action);
 
       expect(state.error).toEqual(error);

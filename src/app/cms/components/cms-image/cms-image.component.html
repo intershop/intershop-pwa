@@ -1,0 +1,19 @@
+<ng-container *ngIf="pagelet && pagelet.hasParam('Link'); else image">
+  <a [routerLink]="pagelet.routerLink('Link')"
+    [attr.title]="pagelet.stringParam('LinkTitle')"
+    class="teaser-link"
+  >
+    <ng-container *ngTemplateOutlet="image"></ng-container>
+  </a>
+</ng-container>
+
+<ng-template #image>
+  <img [src]="pagelet.imagePath('Image', staticURL)"
+    [attr.alt]="pagelet.stringParam('AlternateText')"
+    [ngClass]="pagelet.stringParam('CSSClass')"
+  >
+</ng-template>
+
+<!-- TODO: (CMS Component Configuration)
+  Picture
+-->

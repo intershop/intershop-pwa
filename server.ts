@@ -1,4 +1,4 @@
-// tslint:disable:ordered-imports no-console
+// tslint:disable:ish-ordered-imports no-console
 import 'reflect-metadata';
 import 'zone.js/dist/zone-node';
 import { enableProdMode } from '@angular/core';
@@ -56,7 +56,7 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Node Express server listening on http://localhost:${PORT}`);
   const icmBaseUrl = process.env.ICM_BASE_URL;
-  if (!!icmBaseUrl) {
+  if (icmBaseUrl) {
     console.log('ICM_BASE_URL is', icmBaseUrl);
   }
 });

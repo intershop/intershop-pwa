@@ -19,12 +19,15 @@
 *.jar
 *.snap
 *.hbs
+*.mp4
+*.js.map
 *config*.json
 .gitignore
 /*.*
 /node_modules
 /build
 /builds
+/cache
 /dist
 /docs
 /src/assets
@@ -32,3 +35,7 @@
 /coverage
 /tslint-rules/dist
 /tslint-rules/*.*
+/schematics/src/**/files/**
+/schematics/src/**/other-files/**
+/schematics/*.*
+/schematics/**/*.js

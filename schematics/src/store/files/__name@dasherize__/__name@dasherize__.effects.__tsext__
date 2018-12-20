@@ -1,0 +1,17 @@
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { filter, tap } from 'rxjs/operators';
+
+import * as actions from './<%= dasherize(name) %>.actions';
+
+@Injectable()
+export class <%= classify(name) %>Effects {
+  constructor(private actions$: Actions) {}
+
+  @Effect()
+  load<%= classify(name) %>$ = this.actions$.pipe(
+    ofType<actions.Load<%= classify(name) %>>(actions.<%= classify(name) %>ActionTypes.Load<%= classify(name) %>),
+    tap(() => console.log('got Load<%= classify(name) %> in <%= classify(name) %>Effects.load<%= classify(name) %>$')),
+    filter(() => false)
+  );
+}

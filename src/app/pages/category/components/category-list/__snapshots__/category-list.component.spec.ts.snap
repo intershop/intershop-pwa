@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Category List Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="7.1.2"
+>
+  <ul
+    class="category-list row"
+  >
+    
+    <li
+      class="category-list-item col-6 col-lg-4"
+    >
+      <ish-category-tile
+        ng-reflect-category="[object Object]"
+      >
+        Category Tile Component
+      </ish-category-tile>
+    </li>
+    <li
+      class="category-list-item col-6 col-lg-4"
+    >
+      <ish-category-tile
+        ng-reflect-category="[object Object]"
+      >
+        Category Tile Component
+      </ish-category-tile>
+    </li>
+  </ul>
+</div>
+`;

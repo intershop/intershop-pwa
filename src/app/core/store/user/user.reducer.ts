@@ -1,6 +1,6 @@
-import { Customer } from '../../../models/customer/customer.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { User } from '../../../models/user/user.model';
+import { Customer } from '../../models/customer/customer.model';
+import { HttpError } from '../../models/http-error/http-error.model';
+import { User } from '../../models/user/user.model';
 
 import { UserAction, UserActionTypes } from './user.actions';
 
@@ -11,12 +11,6 @@ export interface UserState {
   _authToken: string;
   error: HttpError;
 }
-
-export const getCustomer = (state: UserState) => state.customer;
-export const getUser = (state: UserState) => state.user;
-export const getAuthorized = (state: UserState) => state.authorized;
-export const getAuthToken = (state: UserState) => state._authToken;
-export const getError = (state: UserState) => state.error;
 
 export const initialState: UserState = {
   customer: undefined,
@@ -36,9 +30,12 @@ export function userReducer(state = initialState, action: UserAction): UserState
     }
 
     case UserActionTypes.LoginUser:
-    case UserActionTypes.LogoutUser:
-    case UserActionTypes.CreateUserFail: {
+    case UserActionTypes.LogoutUser: {
       return initialState;
+    }
+
+    case UserActionTypes.CreateUserFail: {
+      return { ...initialState, error: action.payload };
     }
 
     case UserActionTypes.SetAPIToken: {
@@ -54,7 +51,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
 
       return {
         ...initialState,
-        error: error,
+        error,
       };
     }
 

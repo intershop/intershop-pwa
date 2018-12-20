@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from '../../../../core/icon.module';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
-import { Price } from '../../../../models/price/price.model';
-import { MockComponent } from '../../../../utils/dev/mock.component';
-import { PipesModule } from '../../../pipes.module';
+import { IconModule } from 'ish-core/icon.module';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { PipesModule } from 'ish-core/pipes.module';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { FormsSharedModule } from '../../../forms/forms.module';
 
 import { LineItemListComponent } from './line-item-list.component';
 
@@ -32,8 +33,14 @@ describe('Line Item List Component', () => {
           inputs: ['product'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule, IconModule],
-      providers: [FormBuilder],
+      imports: [
+        FormsSharedModule,
+        IconModule,
+        PipesModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   }));
 
@@ -51,7 +58,7 @@ describe('Line Item List Component', () => {
         singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
         price: { value: 3, currencyMnemonic: 'USD' },
         totals: {},
-      } as BasketItemView,
+      } as LineItemView,
     ];
   });
 
@@ -79,13 +86,13 @@ describe('Line Item List Component', () => {
   });
 
   it('should throw updateItem event when form group item changes', done => {
-    let firedItem = {} as { itemId: string; quantity: number };
+    let firedItem = {} as LineItemQuantity;
     component.lineItems = [
       {
         id: 'IID',
         quantity: { value: 1, type: 'quantity' },
         product: { maxOrderQuantity: 2 },
-      } as BasketItemView,
+      } as LineItemView,
     ];
 
     component.updateItem.subscribe(item => {

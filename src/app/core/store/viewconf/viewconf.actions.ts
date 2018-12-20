@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
+import { BreadcrumbItem } from '../../models/breadcrumb-item/breadcrumb-item.interface';
 
 export enum ViewconfActionTypes {
   SetWrapperClass = '[Viewconf Internal] Set Wrapper Class',

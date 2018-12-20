@@ -1,3 +1,41 @@
+# [0.8.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.8.0/) (2018-12-20)
+
+**required Intershop Commerce Management version: 7.10.5.2**
+
+### Code Refactoring
+
+* module refactoring (ISREST-505)
+
+### Features
+
+* Angular 7 upgrade
+* update to node.js 10 LTS and npm 6.4.1
+* custom schematics for new module structure (ISREST-255)
+* use cypress instead of protractor for end-to-end testing
+* migration to new REST API for basket - part I (ISREST-344)
+* use new basket REST API for item handling (ISREST-344)
+* use default category from product in breadcrumb if no category context is given (ISREST-207)
+* add Product Label functionality (ISREST-522)
+* change and create address during checkout (ISREST-463)
+* address listing in My Account (ISREST-484)
+
+### Bug Fixes
+
+* URL for images delivered by an image server are not composed correctly (ISREST-524)
+* add locale information to all REST requests methods (POST, PUT, PATCH, DELETE was missing) - (ISREST-533)
+* undefined checks in filternavigation mapper
+
+### Performance Improvements
+
+* optimization for ng2-validation tree shaking
+* initialize icon module only once in core module
+* use treeshakeable lodash-es instead of lodash
+
+### BREAKING CHANGES
+
+* Folder structure changed due to module refactoring.
+
+
 # [0.7.10](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.7.10/) (2018-09-10)
 
 First public release of the Intershop Progressive Web App

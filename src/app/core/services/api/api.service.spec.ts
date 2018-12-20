@@ -1,14 +1,16 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
+import * as using from 'jasmine-data-provider';
 import { EMPTY } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { Link } from '../../../models/link/link.model';
+import { Link } from '../../models/link/link.model';
+import { Locale } from '../../models/locale/locale.model';
 import { ErrorActionTypes, ServerError } from '../../store/error';
-import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
+import { ICM_SERVER_URL, REST_ENDPOINT } from '../../utils/state-transfer/factories';
 
-import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
+import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service', () => {
@@ -106,6 +108,17 @@ describe('Api Service', () => {
       expect(req.request.method).toEqual('PUT');
     });
 
+    it('should call the httpClient.patch method when apiService.patch method is called.', done => {
+      apiService.patch('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
+      expect(req.request.method).toEqual('PATCH');
+    });
+
     it('should call the httpClient.post method when apiService.post method is called.', done => {
       apiService.post('data').subscribe(data => {
         expect(data).toBeTruthy();
@@ -126,6 +139,59 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('DELETE');
+    });
+  });
+
+  describe('API Service Helper Methods', () => {
+    describe('constructUrlForPath()', () => {
+      const BASE_URL = 'http://example.org/site';
+      const JP = { lang: 'jp', currency: 'YEN' } as Locale;
+
+      it('should throw when asked for an unsupported method', () => {
+        // tslint:disable-next-line:no-any
+        expect(() => constructUrlForPath('relative', 'HEAD' as any, BASE_URL)).toThrowError('unhandled');
+      });
+
+      using(
+        [
+          { path: 'http://google.de', method: 'GET', expected: 'http://google.de' },
+          { path: 'http://google.de', method: 'OPTIONS', expected: 'http://google.de' },
+          { path: 'http://google.de', method: 'POST', expected: 'http://google.de' },
+          { path: 'http://google.de', method: 'PATCH', expected: 'http://google.de' },
+          { path: 'http://google.de', method: 'PUT', expected: 'http://google.de' },
+          { path: 'http://google.de', method: 'DELETE', expected: 'http://google.de' },
+          { path: 'https://bing.de', method: 'GET', expected: 'https://bing.de' },
+          { path: 'https://bing.de', method: 'OPTIONS', expected: 'https://bing.de' },
+          { path: 'https://bing.de', method: 'POST', expected: 'https://bing.de' },
+          { path: 'https://bing.de', method: 'PATCH', expected: 'https://bing.de' },
+          { path: 'https://bing.de', method: 'PUT', expected: 'https://bing.de' },
+          { path: 'https://bing.de', method: 'DELETE', expected: 'https://bing.de' },
+          { path: 'relative', method: 'GET', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'OPTIONS', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'POST', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'PUT', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'DELETE', expected: 'http://example.org/site/relative' },
+          { path: 'relative', method: 'GET', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          {
+            path: 'relative',
+            method: 'OPTIONS',
+            expected: 'http://example.org/site;loc=jp;cur=YEN/relative',
+            lang: JP,
+          },
+          { path: 'relative', method: 'POST', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          { path: 'relative', method: 'PATCH', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          { path: 'relative', method: 'PUT', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+          { path: 'relative', method: 'DELETE', expected: 'http://example.org/site;loc=jp;cur=YEN/relative', lang: JP },
+        ],
+        slice => {
+          it(`should return '${slice.expected}' when constructing ${slice.method} request from '${slice.path}' ${
+            slice.lang ? `with locale '${slice.lang.lang}'` : 'with no locale'
+          }`, () => {
+            expect(constructUrlForPath(slice.path, slice.method, BASE_URL, slice.lang)).toEqual(slice.expected);
+          });
+        }
+      );
     });
   });
 

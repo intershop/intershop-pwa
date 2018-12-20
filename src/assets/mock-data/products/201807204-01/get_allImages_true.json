@@ -1,4 +1,5 @@
 {
+  "attributeGroups": {},
   "attributes": [
     {
       "name": "Processor",
@@ -36,14 +37,14 @@
       "value": "Windows 10 in S mode"
     },
     {
-      "name": "Sensors",
-      "type": "String",
-      "value": "Ambient light sensor"
-    },
-    {
       "name": "Camera",
       "type": "String",
       "value": "720p HD camera (front-facing)"
+    },
+    {
+      "name": "Sensors",
+      "type": "String",
+      "value": "Ambient light sensor"
     },
     {
       "name": "Weight",
@@ -51,17 +52,43 @@
       "value": "1.25 kg"
     },
     {
-      "name": "Colour_of_product",
-      "type": "String",
-      "value": "Platinum"
-    },
-    {
       "name": "Display",
       "type": "String",
       "value": "13.5 in PixelSense Display, 2256*1504 (201 PPI)"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Platinum"
     }
   ],
   "availability": true,
+  "defaultCategory": {
+    "categoryPath": [
+      {
+        "id": "Computers",
+        "name": "Computers",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/"
+      },
+      {
+        "id": "1835",
+        "name": "Notebooks and PCs",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/"
+      },
+      {
+        "id": "151",
+        "name": "Notebooks",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/151/"
+      }
+    ],
+    "id": "151",
+    "name": "Notebooks",
+    "type": "DefaultCategory",
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/151/"
+  },
   "images": [
     {
       "effectiveUrl": "/assets/product_img/a.jpg",
@@ -127,13 +154,13 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
-    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 1376.94
   },
   "longDescription": "Work and play your way: Do the things you want on Surface Laptop with protection you can count on and performance that lasts, with Windows 10 in S mode. Get work done with Office all day, listen to iTunes or Spotify, and unwind with your favorite shows on Netflix and Hulu. The perfect balance of portability and performance: You don't have to choose between power and traveling light. Starting at just 2.76 pounds, Surface Laptop gives you an ideal balance of both, plus all-day battery life – up to 14.5 hours. A stunning screen that responds to your touch: Experience faster, more natural navigation on the vibrant 13.5\" PixelSense Display with immersive touchscreen. Enjoy more space for your ideas with an edge-to-edge display and ultra-thin bezel.",
   "manufacturer": "Microsoft",
   "mastered": true,
+  "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Microsoft Surface Laptop",
   "productBundle": false,
@@ -146,7 +173,6 @@
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currencyMnemonic": "USD",
-    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 1376.94
   },
@@ -182,6 +208,7 @@
   ],
   "shortDescription": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
   "sku": "201807204-01",
+  "stepOrderQuantity": 1,
   "type": "Product",
   "variableVariationAttributes": [
     {

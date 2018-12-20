@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsAngularCCP",
+  "title": "PWA Container Component Pair Options Schema",
+  "type": "object",
+  "description": "Creates a new container and component.",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "prefix": {
+      "type": "string",
+      "alias": "p",
+      "visible": false
+    },
+    "styleext": {
+      "type": "string",
+      "default": "scss",
+      "visible": false
+    },
+    "selector": {
+      "type": "string",
+      "format": "html-selector",
+      "visible": false
+    },
+    "module": {
+      "type": "string",
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the container and component pair.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the container and component pair?"
+    },
+    "styleFile": {
+      "description": "When true, generates and includes a style file for the container.",
+      "type": "boolean",
+      "default": false,
+      "alias": "s"
+    }
+  }
+}

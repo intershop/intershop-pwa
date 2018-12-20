@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAStoreGroup",
+  "title": "PWA Store Group Options Schema",
+  "type": "object",
+  "description": "Creates a new store group.",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "visible": false,
+      "default": true
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "module": {
+      "type": "string",
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the store group.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the store group?"
+    }
+  }
+}

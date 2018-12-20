@@ -6,8 +6,15 @@ interface RuleDeclaration {
   file: string;
 }
 
-const kebabCaseFromPascalCase = (input: string): string =>
-  input.replace(/[A-Z]+/g, match => `-${match.toLowerCase()}`).replace(/^-/, '');
+export const kebabCaseFromPascalCase = (input: string): string =>
+  input
+    .replace(/[A-Z]{2,}$/, m => `${m.substr(0, 1)}${m.substr(1, m.length - 1).toLowerCase()}`)
+    .replace(
+      /[A-Z]{3,}/g,
+      m => `${m.substr(0, 1)}${m.substr(1, m.length - 2).toLowerCase()}${m.substr(m.length - 1, 1)}`
+    )
+    .replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)
+    .replace(/^-/, '');
 
 const camelCaseFromPascalCase = (input: string): string =>
   `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
@@ -35,13 +42,10 @@ class ProjectStructureWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: ts.SourceFile) {
     this.fileName = sourceFile.fileName;
 
-    const isIgnored = this.ignoredFiles
-      .map<boolean>(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName))
-      .reduce((l, r) => l || r);
+    const isIgnored = this.ignoredFiles.some(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName));
+
     if (!isIgnored) {
-      const matchesPathPattern = this.pathPatterns
-        .map(pattern => new RegExp(pattern).test(this.fileName))
-        .reduce((l, r) => l || r);
+      const matchesPathPattern = this.pathPatterns.some(pattern => new RegExp(pattern).test(this.fileName));
       if (!matchesPathPattern) {
         this.addFailureAt(0, 1, `this file path does not match any defined patterns`);
       }

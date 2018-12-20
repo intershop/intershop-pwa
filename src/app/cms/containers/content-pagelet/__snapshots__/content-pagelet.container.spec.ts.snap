@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Pagelet Container should be created 1`] = `
+<div
+  id="root0"
+  ng-version="7.1.2"
+>
+  
+  
+  <div
+    class="content-pagelet"
+    style="border: 1px solid yellow; padding: 10px;"
+  >
+    <div
+      class="content-pagelet-info"
+      title="id"
+    >
+      id (fq)
+    </div>
+  </div>
+  <div />
+</div>
+`;
+
+exports[`Content Pagelet Container should render assigned template if name matches 1`] = `
+<div
+  id="root1"
+  ng-version="7.1.2"
+>
+  
+  <div />
+  <ish-cms-text>
+    
+    <span>
+      foo
+    </span>
+  </ish-cms-text>
+</div>
+`;

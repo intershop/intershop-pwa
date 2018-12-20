@@ -31,11 +31,10 @@ export class AuthInterceptor implements HttpInterceptor {
     return this.store.pipe(
       select(getAPIToken),
       take(1),
-      map(
-        TOKEN =>
-          TOKEN && !req.headers.has(authorizationHeaderKey)
-            ? req.clone({ headers: req.headers.set(tokenHeaderKeyName, TOKEN) })
-            : req
+      map(token =>
+        token && !req.headers.has(authorizationHeaderKey)
+          ? req.clone({ headers: req.headers.set(tokenHeaderKeyName, token) })
+          : req
       ),
       concatMap(r => next.handle(r).pipe(tap(event => setTokenFromResponse(this.store, event))))
     );

@@ -15,12 +15,6 @@
                 var failures = $xml.attr('failures');
                 $("#unit-tests").text(`Tests: ${tests}, Failures: ${failures}`);
             });
-            $.get("e2e/junit.xml", function (data, status) {
-                $xml = $(data).find('testsuites');
-                var tests = $xml.attr('tests');
-                var failures = $xml.attr('failures');
-                $("#e2e-tests").text(`Tests: ${tests}, Failures: ${failures}`);
-            });
             $.get("coverage/index.html", function (data, status) {
                 var html = $.parseHTML(data);
                 var summary = $('div.clearfix', html)[0];
@@ -30,6 +24,11 @@
                 var html = $.parseHTML(data);
                 var summary = $('span.badge', html)[0];
                 $("#tslint").append("TSLint: ").append(summary);
+            });
+            $.get("jscpd/index.html", function (data, status) {
+                var html = $.parseHTML(data);
+                var summary = $('h3', html)[0].textContent;
+                $("#jscpd").append(summary);
             });
         });
     </script>
@@ -49,20 +48,29 @@
         <h2>Coverage Report</h2>
         <div id="coverage"></div>
     </a>
-    <a href="e2e/htmlReport.html">
-        <h2>End-to-end Test Report</h2>
-        <div id="e2e-tests"></div>
-    </a>
     <a href="tslint/index.html">
         <h2>TSLint Report</h2>
         <div id="tslint"></div>
+    </a>
+    <a href="jscpd/index.html">
+        <h2>jscpd - Duplicate Code Report</h2>
+        <div id="jscpd"></div>
+    </a>
+    <a href="bundle_prod/index.html">
+        <h2>Bundle Analyzer Report - Production</h2>
+        <div id="bundle_prod"></div>
+    </a>
+    <a href="bundle_aot/index.html">
+        <h2>Bundle Analyzer Report - Development</h2>
+        <div id="bundle_aot"></div>
     </a>
     <hr/>
     <a href="junit.xml">
         <h2>JUnit XML</h2>
     </a>
-    <a href="e2e/junit.xml">
-        <h2>E2E JUnit XML</h2>
+    <hr/>
+    <a href="licenses/index.html">
+        <h2>3rd Party Licenses</h2>
     </a>
 </body>
 

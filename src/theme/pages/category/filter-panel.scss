@@ -131,6 +131,10 @@
       }
     }
 
+    @mixin filter-list-item-layer($layer) {
+      padding-left: $layer * $space-default;
+    }
+
     &.filter-layer1 {
       @include filter-list-item-layer(1);
     }
@@ -266,21 +270,12 @@ label {
     text-align: center;
     text-transform: uppercase;
 
-    &.collapsed {
-      .fa-angle-up {
-        &::before {
-          content: '\e114';
-        }
-      }
-    }
-
     &:hover {
       text-decoration: none;
     }
 
     .ng-fa-icon {
       display: block;
-      font-size: 12px;
     }
   }
 }

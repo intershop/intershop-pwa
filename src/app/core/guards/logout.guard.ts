@@ -7,7 +7,7 @@ import { LogoutUser } from '../store/user';
 /**
  * triggers logging out the user if the guarded route is visited
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LogoutGuard implements CanActivate {
   constructor(private store: Store<{}>) {}
 

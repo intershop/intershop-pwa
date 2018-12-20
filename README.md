@@ -3,7 +3,7 @@
 An Angular based storefront clone of the Responsive Starter Store that communicates with the Intershop Commerce Management server via REST API only.
 
 ---
-Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager. Currently Node.js 8.x with npm 5.6.0 is required.
+Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager. Currently Node.js 10.x LTS with corresponding npm is required.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming coventions.
 
@@ -20,7 +20,7 @@ ng serve --open
 
 The `ng ...` commands require Angular CLI to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development mashine.
 
-The project can alternatively be run with `npm start`.
+The project can alternatively be run in production mode with `npm start`.
 
 ## Project update
 
@@ -51,17 +51,15 @@ Running `ng serve --open` will automatically open a new browser tab with the sta
 
 Deployments are generated to the `dist` folder of the project.
 
-Use `npm run build` to get an application using browser rendering. All the files under `dist/browser` have to be served statically.
+Use `npm run build` to generate the preferred angular universal enabled version. On the server the `dist/server.js` script has to be executed with `node`.
 
-Use `npm run build:static` to generate a prerendered version. All the files under `dist/browser` have to be served statically. Paths entered in `static.paths.js` are pre-rendered for static serving. This speeds up browser-side bootstrapping.
-
-Use `npm run build:dynamic` to generate the angular universal enabled version. On the server the `dist/server.js` script has to be executed with `node`.
+Use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically.
 
 see also [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration)
 
 ## Progressive Web App (PWA)
 
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started) use `npm run start:static:prod` to build an serve the application. After that open `http://localhost:4200` in your browser and test it or run a PWA Audit. Currently only `localhost` or `127.0.0.1` will work with the service worker since it requires `https` communication on any other domain.
+To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started) use `npm run start` to build and serve the application. After that open `http://localhost:4200` in your browser and test it or run a PWA Audit. Currently only `localhost` or `127.0.0.1` will work with the service worker since it requires `https` communication on any other domain.
 
 ## Running unit tests
 
@@ -69,8 +67,8 @@ Run `npm test` to start an on the fly test running environment to execute the un
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-The application is automatically started in the background.
+Run `npm run e2e` to execute the end-to-end tests via [cypress](https://www.cypress.io/).
+You have to start your development or production server first as cypress will instruct you.
 
 ## Build
 
@@ -102,7 +100,9 @@ To generate the code documentation run `npm run docs`. To generate and serve the
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+With the integrated `intershop-schematics` this project provides the functionality to generate the different code artifacts acording to our style guide and code structure. `ng generate` will use the integrated schematics by default, e.g. in the shared folder run `ng generate component component-name` to generate a new shared component. `ng generate --help` gives an overview of the available intershop specific schematics.
+
+The Angular CLI default schematics are still available and working but they need to be prefixed now to use them, e.g. `ng generate @schematics/angular:component`. A list of the available Angular CLI schematics can be fetched with `ng generate @schematics/angular: --help`.
 
 ## Further help
 

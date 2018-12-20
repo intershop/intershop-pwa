@@ -1,9 +1,21 @@
 import { createSelector } from '@ngrx/store';
 
-import { CoreState } from '../core.state';
+import { getCoreState } from '../core-store';
 
-const getViewconfState = (state: CoreState) => state.viewconf;
+const getViewconfState = createSelector(
+  getCoreState,
+  state => state.viewconf
+);
 
-export const getWrapperClass = createSelector(getViewconfState, state => state.wrapperClass);
-export const getHeaderType = createSelector(getViewconfState, state => state.headerType);
-export const getBreadcrumbData = createSelector(getViewconfState, state => state.breadcrumbData);
+export const getWrapperClass = createSelector(
+  getViewconfState,
+  state => state.wrapperClass
+);
+export const getHeaderType = createSelector(
+  getViewconfState,
+  state => state.headerType
+);
+export const getBreadcrumbData = createSelector(
+  getViewconfState,
+  state => state.breadcrumbData
+);
