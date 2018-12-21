@@ -95,7 +95,16 @@ export class UserService {
       };
     }
 
-    return this.apiService.post<void>('customers', newCustomer);
+    if (body.captchaResponse) {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      const headers = new HttpHeaders().set(
+        'Authorization',
+        `CAPTCHA g-recaptcha-response=${body.captchaResponse} foo=bar`
+      );
+      return this.apiService.post<void>('customers', newCustomer, { headers });
+    } else {
+      return this.apiService.post<void>('customers', newCustomer);
+    }
   }
 
   /**
