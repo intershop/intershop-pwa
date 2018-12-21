@@ -35,3 +35,8 @@ export const SMALL_BREAKPOINT_WIDTH = new InjectionToken<number>('smallBreakpoin
 export const MEDIUM_BREAKPOINT_WIDTH = new InjectionToken<number>('mediumBreakpointWidth');
 export const LARGE_BREAKPOINT_WIDTH = new InjectionToken<number>('largeBreakpointWidth');
 export const EXTRALARGE_BREAKPOINT_WIDTH = new InjectionToken<number>('extralargeBreakpointWidth');
+
+/**
+ * The captcha configuration siteKey
+ */
+export const CAPTCHA_SITE_KEY = new InjectionToken<string>('captchaSiteKey');

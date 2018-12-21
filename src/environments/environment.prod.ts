@@ -31,6 +31,7 @@ export const environment = {
 
     /* features which have not the degree of maturity to use them in production */
     // 'experimental',
+    // 'captcha',
   ],
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -67,4 +68,12 @@ export const environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
+  /** For production systems the captcha site key needs to match the one configured in the ICM ReCaptcha service configuration.
+   * For development we use the development keys provided by Google (https://developers.google.com/recaptcha/docs/faq)
+   * that don't require real verification and are used in the ICM as well.
+     Site key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+     Secret key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+   */
+  // TODO: get captcha site key, when Configuration Response in REST API is available
+  captchaSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
 };

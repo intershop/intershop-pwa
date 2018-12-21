@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 
+import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
+
 import { CaptchaComponent } from './captcha.component';
 
 describe('Captcha Component', () => {
   let fixture: ComponentFixture<CaptchaComponent>;
   let component: CaptchaComponent;
   let element: HTMLElement;
+  const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CaptchaComponent],
       imports: [RecaptchaModule.forRoot()],
+      providers: [{ provide: CAPTCHA_SITE_KEY, useValue: captchaSiteKey }],
     }).compileComponents();
   }));
 
@@ -29,7 +33,7 @@ describe('Captcha Component', () => {
 
   it(`should render controls on the HTML`, () => {
     fixture.detectChanges();
-    const elem = element.getElementsByClassName('form-group');
-    expect(elem[0].innerHTML).toContain('re-captcha');
+    const elem = element.getElementsByTagName('re-captcha');
+    expect(elem).toHaveLength(1);
   });
 });
