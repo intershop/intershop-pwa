@@ -12,18 +12,18 @@ describe('Recently Reducer', () => {
   });
 
   it('should add products when AddToRecently is reduced', () => {
-    const result = recentlyReducer(initialState, new AddToRecently({ productId: 'A' }));
+    const result = recentlyReducer(initialState, new AddToRecently({ sku: 'A' }));
     expect(result.products).toEqual(['A']);
   });
 
   it('should remove duplicates when when AddToRecently is reduced', () => {
-    let result = recentlyReducer(initialState, new AddToRecently({ productId: 'A' }));
-    result = recentlyReducer(result, new AddToRecently({ productId: 'A' }));
-    result = recentlyReducer(result, new AddToRecently({ productId: 'A' }));
-    result = recentlyReducer(result, new AddToRecently({ productId: 'B' }));
-    result = recentlyReducer(result, new AddToRecently({ productId: 'B' }));
-    result = recentlyReducer(result, new AddToRecently({ productId: 'A' }));
-    result = recentlyReducer(result, new AddToRecently({ productId: 'A' }));
+    let result = recentlyReducer(initialState, new AddToRecently({ sku: 'A' }));
+    result = recentlyReducer(result, new AddToRecently({ sku: 'A' }));
+    result = recentlyReducer(result, new AddToRecently({ sku: 'A' }));
+    result = recentlyReducer(result, new AddToRecently({ sku: 'B' }));
+    result = recentlyReducer(result, new AddToRecently({ sku: 'B' }));
+    result = recentlyReducer(result, new AddToRecently({ sku: 'A' }));
+    result = recentlyReducer(result, new AddToRecently({ sku: 'A' }));
     expect(result.products).toEqual(['A', 'B']);
   });
 

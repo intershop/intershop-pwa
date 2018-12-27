@@ -6,7 +6,7 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { Customer } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../services/registration/registration.service';
@@ -41,7 +41,7 @@ export class UserEffects {
   @Effect()
   loginUser$ = this.actions$.pipe(
     ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
-    map(action => action.payload.credentials),
+    mapToPayloadProperty('credentials'),
     mergeMap(credentials =>
       this.registrationService.signinUser(credentials).pipe(
         map(customer => new userActions.LoginUserSuccess({ customer })),
@@ -85,7 +85,7 @@ export class UserEffects {
   @Effect()
   createUser$ = this.actions$.pipe(
     ofType<userActions.CreateUser>(userActions.UserActionTypes.CreateUser),
-    map(action => action.payload.customer),
+    mapToPayloadProperty('customer'),
     mergeMap((customerData: Customer) =>
       this.registrationService.createUser(customerData).pipe(
         map(customer => new userActions.CreateUserSuccess({ customer })),
@@ -105,13 +105,14 @@ export class UserEffects {
   @Effect()
   publishLoginEventAfterCreate$ = this.actions$.pipe(
     ofType<userActions.CreateUserSuccess>(userActions.UserActionTypes.CreateUserSuccess),
-    map(action => new userActions.LoginUserSuccess(action.payload))
+    mapToPayloadProperty('customer'),
+    map(customer => new userActions.LoginUserSuccess({ customer }))
   );
 
   @Effect()
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
     ofType<userActions.LoginUserSuccess>(userActions.UserActionTypes.LoginUserSuccess),
-    map(action => action.payload.customer),
+    mapToPayloadProperty('customer'),
     filter(customer => customer.type === 'SMBCustomer'),
     mapTo(new userActions.LoadCompanyUser())
   );

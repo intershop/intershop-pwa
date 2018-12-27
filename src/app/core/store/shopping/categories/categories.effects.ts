@@ -17,7 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { distinctCompareWith, mapErrorToAction } from 'ish-core/utils/operators';
+import { distinctCompareWith, mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
@@ -58,10 +58,10 @@ export class CategoriesEffects {
   @Effect()
   selectedCategory$ = this.actions$.pipe(
     ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
-    map(action => action.payload.categoryId),
+    mapToPayloadProperty('categoryId'),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
-    map(([id]) => new actions.LoadCategory({ categoryId: id }))
+    map(([categoryId]) => new actions.LoadCategory({ categoryId }))
   );
 
   /**
@@ -71,7 +71,7 @@ export class CategoriesEffects {
   selectedCategoryAvailable$ = combineLatest(
     this.actions$.pipe(
       ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
-      map(action => action.payload.categoryId)
+      mapToPayloadProperty('categoryId')
     ),
     this.store.pipe(
       select(selectors.getSelectedCategory),
@@ -80,7 +80,7 @@ export class CategoriesEffects {
   ).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
-    map(([id]) => new actions.SelectedCategoryAvailable({ categoryId: id }))
+    map(([categoryId]) => new actions.SelectedCategoryAvailable({ categoryId }))
   );
 
   /**
@@ -93,7 +93,7 @@ export class CategoriesEffects {
     map(([, category]) => category.categoryPath),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
-    mergeMap(ids => ids.map(id => new actions.LoadCategory({ categoryId: id })))
+    mergeMap(ids => ids.map(categoryId => new actions.LoadCategory({ categoryId })))
   );
 
   /**
@@ -102,7 +102,7 @@ export class CategoriesEffects {
   @Effect()
   loadCategory$ = this.actions$.pipe(
     ofType<actions.LoadCategory>(actions.CategoriesActionTypes.LoadCategory),
-    map(action => action.payload.categoryId),
+    mapToPayloadProperty('categoryId'),
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new actions.LoadCategorySuccess({ categories: category })),
@@ -127,7 +127,7 @@ export class CategoriesEffects {
   @Effect()
   loadTopLevelCategories$ = this.actions$.pipe(
     ofType<actions.LoadTopLevelCategories>(actions.CategoriesActionTypes.LoadTopLevelCategories),
-    map(action => action.payload.depth),
+    mapToPayloadProperty('depth'),
     mergeMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
         map(category => new actions.LoadTopLevelCategoriesSuccess({ categories: category })),

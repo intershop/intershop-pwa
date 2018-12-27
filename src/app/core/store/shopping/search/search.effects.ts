@@ -10,7 +10,6 @@ import {
   debounce,
   debounceTime,
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   map,
   mergeMap,
@@ -19,7 +18,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
@@ -70,13 +69,14 @@ export class SearchEffects {
     ),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
-    distinctUntilChanged(),
-    mergeMap((searchTerm: string) => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
+    distinctUntilChanged<string>(),
+    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
   );
 
   @Effect()
   searchMoreProducts$ = this.actions$.pipe(
     ofType<SearchMoreProducts>(SearchActionTypes.SearchMoreProducts),
+    mapToPayloadProperty('searchTerm'),
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
@@ -86,10 +86,10 @@ export class SearchEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([action, , , page]) => [
+    mergeMap(([searchTerm, , , page]) => [
       new SetPagingLoading(),
       new SetPage({ pageNumber: page }),
-      new SearchProducts(action.payload),
+      new SearchProducts({ searchTerm }),
     ])
   );
 
@@ -99,7 +99,7 @@ export class SearchEffects {
   @Effect()
   searchProducts$ = this.actions$.pipe(
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    map(action => action.payload.searchTerm),
+    mapToPayloadProperty('searchTerm'),
     withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
     distinctUntilChanged(),
     concatMap(([searchTerm, page, itemsPerPage]) =>
@@ -122,10 +122,9 @@ export class SearchEffects {
   @Effect()
   suggestSearch$ = this.actions$.pipe(
     ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
-    map(action => action.payload),
+    mapToPayloadProperty('searchTerm'),
     debounceTime(400),
-    distinctUntilKeyChanged('searchTerm'),
-    map(payload => payload.searchTerm),
+    distinctUntilChanged(),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(

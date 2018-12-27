@@ -3,6 +3,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
 
+import { mapToPayloadProperty } from 'ish-core/utils/operators';
+
 import * as compareActions from './compare.actions';
 import { getCompareProductsSKUs } from './compare.selectors';
 
@@ -13,7 +15,7 @@ export class CompareEffects {
   @Effect()
   toggleCompare$ = this.actions$.pipe(
     ofType<compareActions.ToggleCompare>(compareActions.CompareActionTypes.ToggleCompare),
-    map(action => action.payload.sku),
+    mapToPayloadProperty('sku'),
     withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
     map(({ sku, isInList }) =>

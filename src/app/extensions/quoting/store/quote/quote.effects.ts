@@ -8,7 +8,7 @@ import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 
@@ -44,7 +44,7 @@ export class QuoteEffects {
   @Effect()
   deleteQuote$ = this.actions$.pipe(
     ofType<quoteActions.DeleteQuote>(quoteActions.QuoteActionTypes.DeleteQuote),
-    map(action => action.payload.id),
+    mapToPayloadProperty('id'),
     concatMap(quoteId =>
       this.quoteService.deleteQuote(quoteId).pipe(
         map(id => new quoteActions.DeleteQuoteSuccess({ id })),
@@ -118,11 +118,11 @@ export class QuoteEffects {
   loadProductsForSelectedQuote$ = combineLatest(
     this.actions$.pipe(
       ofType<quoteActions.SelectQuote>(quoteActions.QuoteActionTypes.SelectQuote),
-      map(action => action.payload.id)
+      mapToPayloadProperty('id')
     ),
     this.actions$.pipe(
       ofType<quoteActions.LoadQuotesSuccess>(quoteActions.QuoteActionTypes.LoadQuotesSuccess),
-      map(action => action.payload.quotes)
+      mapToPayloadProperty('quotes')
     )
   ).pipe(
     map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),
