@@ -11,7 +11,7 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
@@ -131,7 +131,7 @@ export class QuoteRequestEffects {
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentQuoteRequests))),
     map(([quoteId, quoteRequests]) => quoteRequests.filter(item => item.id === quoteId).pop()),
-    filter(quoteRequest => !!quoteRequest),
+    whenTruthy(),
     mergeMap(quoteRequest =>
       forkJoin(
         // tslint:disable-next-line:no-string-literal
@@ -257,7 +257,7 @@ export class QuoteRequestEffects {
   goToLoginOnAddQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest),
     mergeMap(() => this.store.pipe(select(getUserAuthorized))),
-    filter(authorized => !authorized),
+    whenFalsy(),
     tap(() => {
       const queryParams = { returnUrl: this.router.routerState.snapshot.url };
       this.router.navigate(['/login'], { queryParams });

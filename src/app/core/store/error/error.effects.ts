@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Effect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { filter, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { getErrorState } from './error.selectors';
 
@@ -13,7 +15,7 @@ export class ErrorEffects {
   @Effect({ dispatch: false })
   gotoErrorPageInCaseOfError$ = this.store.pipe(
     select(getErrorState),
-    filter(state => !!state),
+    whenTruthy(),
     tap(() => this.router.navigate(['/error']))
   );
 }

@@ -8,7 +8,7 @@ import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 
@@ -126,7 +126,7 @@ export class QuoteEffects {
     )
   ).pipe(
     map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),
-    filter(quote => !!quote),
+    whenTruthy(),
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([quote, products]) => [
       ...quote.items

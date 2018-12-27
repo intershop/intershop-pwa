@@ -18,7 +18,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
@@ -68,7 +68,7 @@ export class SearchEffects {
       )
     ),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
-    filter(x => !!x),
+    whenTruthy(),
     distinctUntilChanged<string>(),
     mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
   );
