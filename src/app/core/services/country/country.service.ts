@@ -1,32 +1,29 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { CountryMapper } from '../../models/country/country.mapper';
 import { Country } from '../../models/country/country.model';
+import { ApiService, unpackEnvelope } from '../api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class CountryService {
-  countries$: Observable<Country[]>;
+  constructor(private apiService: ApiService) {}
 
-  /*
-    ToDo: get Countries via REST, result should be locale dependent
-  */
-  constructor() {
-    this.countries$ = of([
-      { countryCode: 'BG', name: 'Bulgaria' },
-      { countryCode: 'DE', name: 'Germany' },
-      { countryCode: 'FR', name: 'France' },
-      { countryCode: 'IN', name: 'India' },
-      { countryCode: 'GB', name: 'United Kingdom' },
-      { countryCode: 'US', name: 'United States' },
-    ]).pipe(delay(500));
-  }
+  // declare http header for Country API v1
+  private countryHeadersV1 = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('Accept', 'application/vnd.intershop.country.v1+json');
 
   /*
     gets the available countries
     @returns (Observable<Country[]>)
   */
   getCountries(): Observable<Country[]> {
-    return this.countries$;
+    return this.apiService.get(`countries`, { headers: this.countryHeadersV1 }).pipe(
+      unpackEnvelope('data'),
+      map(countryItemsData => countryItemsData.map(CountryMapper.fromData))
+    );
   }
 }
