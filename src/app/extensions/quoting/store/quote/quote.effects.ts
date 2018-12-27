@@ -9,7 +9,6 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction } from 'ish-core/utils/operators';
-import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 
@@ -131,8 +130,9 @@ export class QuoteEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([quote, products]) => [
       ...quote.items
-        .filter((lineItem: QuoteRequestItem) => !products[lineItem.productSKU])
-        .map((lineItem: QuoteRequestItem) => new LoadProduct({ sku: lineItem.productSKU })),
+        .filter(lineItem => !products[lineItem.productSKU])
+        .map(lineItem => lineItem.productSKU)
+        .map(sku => new LoadProduct({ sku })),
     ])
   );
 }
