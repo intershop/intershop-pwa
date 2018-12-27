@@ -288,7 +288,7 @@ describe('Quote Request Service', () => {
       expect(
         quoteRequestService.createQuoteRequestFromQuoteRequest({ submitted: false, items: [] } as QuoteRequest)
       ).toBeObservable(
-        cold('#', undefined, { message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' })
+        cold('#', undefined, { message: 'createQuoteRequestFromQuoteRequest() called with unsubmitted quote request' })
       );
     });
 
