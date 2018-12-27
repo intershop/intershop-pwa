@@ -5,7 +5,7 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { OrderService } from '../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../shopping/products';
 import { UserActionTypes } from '../user';
@@ -44,7 +44,7 @@ export class OrdersEffects {
   loadOrdersForSelectedOrder$ = this.actions$.pipe(
     ofType<ordersActions.SelectOrder>(ordersActions.OrdersActionTypes.SelectOrder),
     mapToPayloadProperty('orderId'),
-    filter(orderId => !!orderId),
+    whenTruthy(),
     map(() => new ordersActions.LoadOrders())
   );
 
@@ -64,7 +64,7 @@ export class OrdersEffects {
     )
   ).pipe(
     map(([orderId, orders]) => orders.filter(order => order.id === orderId).pop()),
-    filter(order => !!order),
+    whenTruthy(),
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([order, products]) => [
       ...order.lineItems

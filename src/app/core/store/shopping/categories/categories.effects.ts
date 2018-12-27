@@ -17,7 +17,13 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { distinctCompareWith, mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import {
+  distinctCompareWith,
+  mapErrorToAction,
+  mapToPayloadProperty,
+  whenFalsy,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
@@ -118,7 +124,7 @@ export class CategoriesEffects {
     switchMapTo(
       this.store.pipe(
         select(selectors.isTopLevelCategoriesLoaded),
-        filter(loaded => !loaded)
+        whenFalsy()
       )
     ),
     mapTo(new actions.LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
@@ -144,7 +150,7 @@ export class CategoriesEffects {
   productOrCategoryChanged$ = combineLatest(
     this.store.pipe(
       select(selectors.getSelectedCategory),
-      filter(x => !!x),
+      whenTruthy(),
       distinctUntilKeyChanged('uniqueId')
     ),
     this.actions$.pipe(

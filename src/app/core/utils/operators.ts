@@ -1,4 +1,4 @@
-import { Observable, OperatorFunction, of } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
 
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
@@ -69,4 +69,12 @@ export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payloa
       map(action => action.payload),
       mapToProperty(key)
     );
+}
+
+export function whenTruthy<T>(): MonoTypeOperatorFunction<T> {
+  return (source$: Observable<T>) => source$.pipe(filter(x => !!x));
+}
+
+export function whenFalsy<T>(): MonoTypeOperatorFunction<T> {
+  return (source$: Observable<T>) => source$.pipe(filter(x => !x));
 }

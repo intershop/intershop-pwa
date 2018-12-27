@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
-import { mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsActionTypes, SelectProduct } from '../products';
 import { getSelectedProduct } from '../products/products.selectors';
 
@@ -19,11 +19,11 @@ export class RecentlyEffects {
     this.actions.pipe(
       ofType<SelectProduct>(ProductsActionTypes.SelectProduct),
       mapToPayloadProperty('sku'),
-      filter(sku => !!sku)
+      whenTruthy()
     ),
     this.store.pipe(
       select(getSelectedProduct),
-      filter(product => !!product)
+      whenTruthy()
     )
   ).pipe(
     filter(([sku, product]) => sku === product.sku),

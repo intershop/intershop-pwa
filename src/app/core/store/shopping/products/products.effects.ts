@@ -15,7 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LocaleActionTypes } from '../../locale';
 import {
@@ -121,7 +121,7 @@ export class ProductsEffects {
   selectedProduct$ = this.actions$.pipe(
     ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
     mapToPayloadProperty('sku'),
-    filter(sku => !!sku),
+    whenTruthy(),
     map(sku => new productsActions.LoadProduct({ sku }))
   );
 
@@ -131,7 +131,7 @@ export class ProductsEffects {
   @Effect()
   languageChange$ = this.store.pipe(
     select(productsSelectors.getSelectedProduct),
-    filter(x => !!x),
+    whenTruthy(),
     switchMapTo(
       this.actions$.pipe(
         ofType(LocaleActionTypes.SelectLocale),
