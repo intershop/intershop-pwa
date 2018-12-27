@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { filter, map, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
 
+import { mapToPayloadProperty } from 'ish-core/utils/operators';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { Locale } from '../../models/locale/locale.model';
 
@@ -47,7 +48,7 @@ export class LocaleEffects {
   @Effect()
   setFirstAvailableLocale$ = this.actions$.pipe(
     ofType<fromActions.SetAvailableLocales>(fromActions.LocaleActionTypes.SetAvailableLocales),
-    map(action => action.payload.locales),
+    mapToPayloadProperty('locales'),
     map(locales => (locales && locales[0] ? locales[0] : undefined)),
     map(locale => new fromActions.SelectLocale({ locale }))
   );

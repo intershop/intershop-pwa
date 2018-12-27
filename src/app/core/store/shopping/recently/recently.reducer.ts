@@ -11,7 +11,7 @@ export const initialState: RecentlyState = {
 export function recentlyReducer(state = initialState, action: fromRecently.RecentlyAction): RecentlyState {
   switch (action.type) {
     case fromRecently.RecentlyActionTypes.AddToRecently: {
-      const newProduct = action.payload.productId;
+      const newProduct = action.payload.sku;
       const products = [newProduct, ...state.products.filter(id => id !== newProduct)];
 
       return { ...state, products };

@@ -15,7 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LocaleActionTypes } from '../../locale';
 import {
@@ -45,7 +45,7 @@ export class ProductsEffects {
   @Effect()
   loadProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
-    map(action => action.payload.sku),
+    mapToPayloadProperty('sku'),
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess({ product })),
@@ -59,6 +59,7 @@ export class ProductsEffects {
     ofType<productsActions.LoadMoreProductsForCategory>(
       productsActions.ProductsActionTypes.LoadMoreProductsForCategory
     ),
+    mapToPayloadProperty('categoryId'),
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
@@ -68,10 +69,10 @@ export class ProductsEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([action, , , page]) => [
+    mergeMap(([categoryId, , , page]) => [
       new SetPagingLoading(),
       new SetPage({ pageNumber: page }),
-      new productsActions.LoadProductsForCategory(action.payload),
+      new productsActions.LoadProductsForCategory({ categoryId }),
     ])
   );
 
@@ -81,7 +82,7 @@ export class ProductsEffects {
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    map(action => action.payload.categoryId),
+    mapToPayloadProperty('categoryId'),
     withLatestFrom(
       this.store.pipe(select(getPagingPage)),
       this.store.pipe(select(getSortBy)),
@@ -119,7 +120,7 @@ export class ProductsEffects {
   @Effect()
   selectedProduct$ = this.actions$.pipe(
     ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
-    map(action => action.payload.sku),
+    mapToPayloadProperty('sku'),
     filter(sku => !!sku),
     map(sku => new productsActions.LoadProduct({ sku }))
   );

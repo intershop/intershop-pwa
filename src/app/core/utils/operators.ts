@@ -1,4 +1,3 @@
-// tslint:disable:ban-specific-imports
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
 
@@ -56,4 +55,18 @@ export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpErro
 
 export function mapToProperty<T, K extends keyof T>(property: K) {
   return (source$: Observable<T>) => source$.pipe<T[K]>(map(x => (x ? x[property] : undefined)));
+}
+
+// tslint:disable-next-line:no-any
+export function mapToPayload<T>(): OperatorFunction<{ payload: T; type: any }, T> {
+  return (source$: Observable<{ payload: T }>) => source$.pipe(map(action => action.payload));
+}
+
+// tslint:disable-next-line:no-any
+export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payload: T; type: any }, T[keyof T]> {
+  return (source$: Observable<{ payload: T }>) =>
+    source$.pipe(
+      map(action => action.payload),
+      mapToProperty(key)
+    );
 }

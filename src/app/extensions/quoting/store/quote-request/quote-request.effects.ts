@@ -11,7 +11,7 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
@@ -64,7 +64,7 @@ export class QuoteRequestEffects {
   @Effect()
   updateQuoteRequest$ = this.actions$.pipe(
     ofType<quoteRequestActions.UpdateQuoteRequest>(quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequest),
-    map(action => action.payload),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) =>
       this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
@@ -80,7 +80,7 @@ export class QuoteRequestEffects {
   @Effect()
   deleteQuoteRequest$ = this.actions$.pipe(
     ofType<quoteRequestActions.DeleteQuoteRequest>(quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequest),
-    map(action => action.payload.id),
+    mapToPayloadProperty('id'),
 
     concatMap(quoteRequestId =>
       this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
@@ -128,7 +128,7 @@ export class QuoteRequestEffects {
     ofType<quoteRequestActions.LoadQuoteRequestItems>(
       quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestItems
     ),
-    map(action => action.payload.id),
+    mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentQuoteRequests))),
     map(([quoteId, quoteRequests]) => quoteRequests.filter(item => item.id === quoteId).pop()),
     filter(quoteRequest => !!quoteRequest),
@@ -153,7 +153,7 @@ export class QuoteRequestEffects {
     ofType<quoteRequestActions.LoadQuoteRequestItemsSuccess>(
       quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess
     ),
-    map(action => action.payload.quoteRequestItems),
+    mapToPayloadProperty('quoteRequestItems'),
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([lineItems, products]) => [
       ...lineItems
@@ -170,7 +170,7 @@ export class QuoteRequestEffects {
     ofType<quoteRequestActions.AddProductToQuoteRequest>(
       quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest
     ),
-    map(action => action.payload),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getUserAuthorized))),
     filter(([, authorized]) => authorized),
     concatMap(([item]) =>
@@ -211,7 +211,7 @@ export class QuoteRequestEffects {
     ofType<quoteRequestActions.UpdateQuoteRequestItems>(
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItems
     ),
-    map(action => action.payload.lineItemQuantities),
+    mapToPayloadProperty('lineItemQuantities'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
     map(([lineItemQuantities, selectedQuoteRequest]) => ({
       quoteRequestId: selectedQuoteRequest.id,
@@ -225,7 +225,7 @@ export class QuoteRequestEffects {
             : this.quoteRequestService.removeItemFromQuoteRequest(payload.quoteRequestId, item.itemId)
         )
       ).pipe(
-        defaultIfEmpty(undefined),
+        defaultIfEmpty(),
         map(itemIds => new quoteRequestActions.UpdateQuoteRequestItemsSuccess({ itemIds })),
         mapErrorToAction(quoteRequestActions.UpdateQuoteRequestItemsFail)
       )
@@ -240,7 +240,7 @@ export class QuoteRequestEffects {
     ofType<quoteRequestActions.DeleteItemFromQuoteRequest>(
       quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequest
     ),
-    map(action => action.payload.itemId),
+    mapToPayloadProperty('itemId'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) =>
       this.quoteRequestService.removeItemFromQuoteRequest(quoteRequestId, payload).pipe(
@@ -269,7 +269,7 @@ export class QuoteRequestEffects {
     ofType<quoteRequestActions.AddBasketToQuoteRequestSuccess>(
       quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess
     ),
-    map(action => action.payload.id),
+    mapToPayloadProperty('id'),
     tap(quoteRequestId => {
       this.router.navigate([`/account/quote-request/${quoteRequestId}`]);
     })
@@ -316,7 +316,7 @@ export class QuoteRequestEffects {
   loadQuoteRequestItemsAfterSelectQuoteRequest$ = combineLatest(
     this.actions$.pipe(
       ofType<quoteRequestActions.SelectQuoteRequest>(quoteRequestActions.QuoteRequestActionTypes.SelectQuoteRequest),
-      map(action => action.payload.id)
+      mapToPayloadProperty('id')
     ),
     this.actions$.pipe(ofType(quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestsSuccess))
   ).pipe(
