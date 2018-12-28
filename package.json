@@ -21,7 +21,7 @@
     "format": "node node_modules/prettier/bin-prettier.js --loglevel warn --write \"**/*.*\"",
     "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npx tsc --project src/tsconfig.spec.json && npm run build && npm run test",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -t RELEASE_ -n intershop-changelog.js -i CHANGELOG.md -s",
-    "3rd-party-licenses": "npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
+    "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
     "docs": "npx @compodoc/compodoc -p src/tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "docs:serve": "npm run docs -- -s",
