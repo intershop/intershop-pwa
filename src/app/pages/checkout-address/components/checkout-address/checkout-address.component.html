@@ -1,4 +1,4 @@
-<div class="row checkout-address-book">
+<div *ngIf="basket" class="row checkout-address-book">
 
   <!-- error messages -->
   <div *ngIf="error && error.status" class="col-md-12">
