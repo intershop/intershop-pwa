@@ -40,7 +40,7 @@ export class CMSContainerComponent implements DoCheck {
 
     // transform an incomming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
     const gridObject = { ExtraSmall: 0, Small: 0, Medium: 0, Large: 0 };
-    grid.split(',').map(element => {
+    grid.split(',').forEach(element => {
       gridObject[element.split(':')[0]] = Number(element.split(':')[1]);
     });
 

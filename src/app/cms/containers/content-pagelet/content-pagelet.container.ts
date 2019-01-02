@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
+import { CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 
 @Component({
   selector: 'ish-content-pagelet',
@@ -37,7 +37,7 @@ export class ContentPageletContainerComponent implements OnInit {
     const component = this.components.find(c => c.definitionQualifiedName === this.pagelet.definitionQualifiedName);
     this.noMappingFound = !component;
     if (component) {
-      const factory = this.componentFactoryResolver.resolveComponentFactory<CMSComponentInterface>(component.class);
+      const factory = this.componentFactoryResolver.resolveComponentFactory(component.class);
       const componentRef = this.cmsOutlet.createComponent(factory);
       componentRef.instance.pagelet = this.pagelet;
     }
