@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -81,9 +81,16 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
         });
 
         // Subscribe on form value changes
-        formGroup.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(item => {
-          this.onUpdateItem(item);
-        });
+        formGroup.valueChanges
+          .pipe(
+            debounceTime(500),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(item => {
+            if (formGroup.valid) {
+              this.onUpdateItem(item);
+            }
+          });
 
         itemsForm.push(formGroup);
       }

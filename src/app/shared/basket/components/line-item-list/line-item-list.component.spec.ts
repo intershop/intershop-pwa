@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -85,8 +85,7 @@ describe('Line Item List Component', () => {
     );
   });
 
-  it('should throw updateItem event when form group item changes', done => {
-    let firedItem = {} as LineItemQuantity;
+  it('should throw updateItem event when form group item changes', fakeAsync(() => {
     component.lineItems = [
       {
         id: 'IID',
@@ -95,19 +94,18 @@ describe('Line Item List Component', () => {
       } as LineItemView,
     ];
 
-    component.updateItem.subscribe(item => {
-      firedItem = item;
-      done();
-    });
+    fixture.detectChanges();
+    const emitter = spy(component.updateItem);
 
+    // init form
     component.ngOnChanges();
 
+    // change value
     (component.form.controls.items as FormArray).controls[0].patchValue({ quantity: 2 });
-    fixture.detectChanges();
+    tick(1500);
 
-    expect(firedItem.itemId).toBe('IID');
-    expect(firedItem.quantity).toBe(2);
-  });
+    verify(emitter.emit(anything())).once();
+  }));
 
   it('should throw deleteItem event when delete item is clicked', done => {
     let firedItem = '';
