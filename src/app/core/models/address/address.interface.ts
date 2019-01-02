@@ -22,12 +22,18 @@ export interface AddressData {
   phoneBusinessDirect?: string;
   fax?: string;
   email?: string;
+  eligibleInvoiceToAddress: boolean;
+  eligibleShipToAddress: boolean;
+  eligibleShipFromAddress?: boolean;
+  eligibleServiceToAddress?: boolean;
+  eligibleInstallToAddress?: boolean;
+
+  /* will be obsolete */
   invoiceToAddress: boolean;
   shipToAddress: boolean;
   shipFromAddress?: boolean;
   serviceToAddress?: boolean;
   installToAddress?: boolean;
-
   company?: string;
   street: string;
   street2?: string;
