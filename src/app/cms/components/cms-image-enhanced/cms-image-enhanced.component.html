@@ -1,5 +1,5 @@
 <ng-container *ngIf="pagelet && pagelet.hasParam('Link') && !(pagelet.hasParam('LinkText')); else imageEnhanced">
-  <a [routerLink]="pagelet.routerLink('Link')"
+  <a [routerLink]="routerLink(pagelet, 'Link')"
     [attr.title]="pagelet.stringParam('LinkTitle')"
     class="teaser-link"
   >
@@ -13,7 +13,7 @@
       <source *ngIf="pagelet.hasParam('ImageXS')"
         [srcset]="pagelet.imagePath('ImageXS', staticURL)" media="(max-width: 767px)"
       >
-      <source *ngIf="pagelet.hasParam('ImageSM')" 
+      <source *ngIf="pagelet.hasParam('ImageSM')"
         [srcset]="pagelet.imagePath('ImageSM', staticURL)" media="(max-width: 991px)"
       >
       <source *ngIf="pagelet.hasParam('ImageMD')"
@@ -30,7 +30,7 @@
       <h2 *ngIf="pagelet.hasParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
       <p *ngIf="pagelet.hasParam('Description')" class="hidden-xs" [innerHTML]="pagelet.stringParam('Description') | safeHtml"></p>
       <a *ngIf="pagelet.hasParam('Link') && pagelet.hasParam('LinkText')"
-        [routerLink]="pagelet.routerLink('Link')"
+        [routerLink]="routerLink(pagelet, 'Link')"
         [attr.title]="pagelet.stringParam('LinkTitle')"
         class="btn btn-lg btn-primary"
       >
