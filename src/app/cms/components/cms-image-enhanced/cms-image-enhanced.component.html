@@ -11,15 +11,15 @@
   <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
       <source *ngIf="pagelet.hasParam('ImageXS')"
-        [srcset]="pagelet.imagePath('ImageXS', staticURL)" media="(max-width: 767px)"
+        [srcset]="pagelet.stringParam('ImageXS')" media="(max-width: 767px)"
       >
       <source *ngIf="pagelet.hasParam('ImageSM')"
-        [srcset]="pagelet.imagePath('ImageSM', staticURL)" media="(max-width: 991px)"
+        [srcset]="pagelet.stringParam('ImageSM')" media="(max-width: 991px)"
       >
       <source *ngIf="pagelet.hasParam('ImageMD')"
-        [srcset]="pagelet.imagePath('ImageMD', staticURL)" media="(max-width: 1199px)"
+        [srcset]="pagelet.stringParam('ImageMD')" media="(max-width: 1199px)"
       >
-      <img [src]="pagelet.imagePath('Image', staticURL)"
+      <img [src]="pagelet.stringParam('Image')"
         [attr.alt]="pagelet.stringParam('AlternateText')"
         [ngClass]="pagelet.stringParam('CSSClass')"
         class="enhanced-image"

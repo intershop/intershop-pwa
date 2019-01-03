@@ -8,7 +8,7 @@
 </ng-container>
 
 <ng-template #image>
-  <img [src]="pagelet.imagePath('Image', staticURL)"
+  <img [src]="pagelet.stringParam('Image')"
     [attr.alt]="pagelet.stringParam('AlternateText')"
     [ngClass]="pagelet.stringParam('CSSClass')"
   >
