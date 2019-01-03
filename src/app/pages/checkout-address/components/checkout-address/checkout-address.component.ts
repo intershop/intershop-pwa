@@ -16,9 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Region } from 'ish-core/models/region/region.model';
 import { User } from 'ish-core/models/user/user.model';
 
 class FormType {
@@ -39,16 +37,12 @@ class FormType {
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
     [error]="basketError$ | async"
-    [countries]="countries$ | async"
-    [regions]="regionsForSelectedCountry$ | async"
-    [titles]="titlesForSelectedCountry$ | async"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
     (updateCustomerAddress)="updateBasketCustomerAddress($event)"
     (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
     (createShippingAddress)="createCustomerShippingAddress($event)"
     (deleteShippingAddress)="deleteCustomerAddress($event)"
-    (countryChange)="updateDataAfterCountryChange($event)"
   ></ish-checkout-address>
  */
 @Component({
@@ -65,12 +59,6 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   addresses: Address[];
   @Input()
   error: HttpError;
-  @Input()
-  countries: Country[];
-  @Input()
-  regions: Region[];
-  @Input()
-  titles: string[];
 
   @Output()
   updateInvoiceAddress = new EventEmitter<string>();
@@ -84,8 +72,6 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   createShippingAddress = new EventEmitter<Address>();
   @Output()
   deleteShippingAddress = new EventEmitter<string>();
-  @Output()
-  countryChange = new EventEmitter<string>();
 
   invoice = new FormType();
   shipping = new FormType();
@@ -224,10 +210,6 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   deleteAddress(address: Address) {
     this.deleteShippingAddress.emit(address.id);
-  }
-
-  handleCountryChange(countryCode: string) {
-    this.countryChange.emit(countryCode);
   }
 
   /**

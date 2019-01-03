@@ -6,16 +6,12 @@
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
     [error]="(basketError$ | async) || (addressesError$ | async)"
-    [countries]="countries$ | async"
-    [regions]="regionsForSelectedCountry"
-    [titles]="titlesForSelectedCountry"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
     (updateCustomerAddress)="updateBasketCustomerAddress($event)"
     (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
     (createShippingAddress)="createCustomerShippingAddress($event)"
     (deleteShippingAddress)="deleteCustomerAddress($event)"
-    (countryChange)="updateDataAfterCountryChange($event)"
   ></ish-checkout-address>
 
   <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
