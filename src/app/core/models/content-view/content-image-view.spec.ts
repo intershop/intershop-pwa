@@ -1,9 +1,9 @@
 import * as using from 'jasmine-data-provider';
 
+import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
 import { createImagePageletView, getImagePath, getRouterLink } from './content-image-view';
-import { createSimplePageletView } from './content-views';
 
 describe('Content Image View', () => {
   describe('ContentImagePageletView', () => {
