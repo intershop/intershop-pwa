@@ -1,15 +1,16 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
-import { CMSImageComponent } from '../cms-image/cms-image.component';
+import { ContentViewHelper } from 'ish-core/models/content-view/content-view.helper';
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 @Component({
   selector: 'ish-cms-image-enhanced',
   templateUrl: './cms-image-enhanced.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSImageEnhancedComponent extends CMSImageComponent {
-  constructor(@Inject(STATIC_URL) public staticURL: string) {
-    super(staticURL);
-  }
+export class CMSImageEnhancedComponent {
+  @Input()
+  pagelet: ContentPageletView;
+
+  routerLink = ContentViewHelper.getRouterLink;
 }

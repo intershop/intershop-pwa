@@ -13,7 +13,7 @@ import { ApiService } from '../api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class CMSService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private contentIncludeMapper: ContentIncludeMapper) {}
 
   /**
    * Get the content for the given Content Include ID.
@@ -27,6 +27,6 @@ export class CMSService {
 
     return this.apiService
       .get<ContentIncludeData>(`cms/includes/${includeId}`)
-      .pipe(map(ContentIncludeMapper.fromData));
+      .pipe(map(x => this.contentIncludeMapper.fromData(x)));
   }
 }
