@@ -49,7 +49,7 @@ describe('Checkout Address Component', () => {
         MockComponent({
           selector: 'ish-customer-address-form',
           template: 'Customer Address Form Component',
-          inputs: ['countries', 'regions', 'titles', 'address', 'resetForm'],
+          inputs: ['address', 'resetForm'],
         }),
         MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
       ],
@@ -321,14 +321,6 @@ describe('Checkout Address Component', () => {
 
     component.cancelEditAddress(component.shipping);
     expect(component.shipping.isFormCollapsed).toBeTrue();
-  });
-
-  it('should throw countryChange event when handleCountryChange is triggered', () => {
-    const emitter = spy(component.countryChange);
-
-    component.handleCountryChange('DE');
-
-    verify(emitter.emit(anything())).once();
   });
 
   it('should not render an error if the user has currently no addresses selected', () => {
