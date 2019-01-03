@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { createImagePageletView } from 'ish-core/models/content-view/content-image-view';
-import { createSimplePageletView } from 'ish-core/models/content-view/content-views';
+import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { CMSImageComponent } from './cms-image.component';

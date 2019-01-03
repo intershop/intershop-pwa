@@ -70,9 +70,6 @@ export const createPageletView = (id: string, pagelets: { [id: string]: ContentP
   };
 };
 
-export const createSimplePageletView = (pagelet: ContentPagelet): ContentPageletView =>
-  createPageletView(pagelet.id, { [pagelet.id]: pagelet });
-
 export const createSlotView = (slot: ContentSlot, pagelets: { [id: string]: ContentPagelet }): ContentSlotView =>
   !slot
     ? undefined
