@@ -7,7 +7,9 @@ export enum AddressActionTypes {
   LoadAddresses = '[Address Internal] Load Addresses',
   LoadAddressesFail = '[Address API] Load Addresses Fail',
   LoadAddressesSuccess = '[Address API] Load Addresses Success',
+  CreateCustomerAddress = '[Address] Create Customer Address',
   CreateCustomerAddressFail = '[Address API] Create Customer Address Fail',
+  CreateCustomerAddressSuccess = '[Address API] Create Customer Address Success',
   UpdateCustomerAddressFail = '[Address API] Update Customer Address Fail',
   UpdateCustomerAddressSuccess = '[Address API] Update Customer Address Success',
   DeleteCustomerAddressFail = '[Address API] Delete Customer Address Fail',
@@ -29,9 +31,19 @@ export class LoadAddressesSuccess implements Action {
   constructor(public payload: Address[]) {}
 }
 
+export class CreateCustomerAddress implements Action {
+  readonly type = AddressActionTypes.CreateCustomerAddress;
+  constructor(public payload: Address) {}
+}
+
 export class CreateCustomerAddressFail implements Action {
   readonly type = AddressActionTypes.CreateCustomerAddressFail;
   constructor(public payload: HttpError) {}
+}
+
+export class CreateCustomerAddressSuccess implements Action {
+  readonly type = AddressActionTypes.CreateCustomerAddressSuccess;
+  constructor(public payload: Address) {}
 }
 
 export class UpdateCustomerAddressFail implements Action {
@@ -61,7 +73,9 @@ export type AddressAction =
   | LoadAddresses
   | LoadAddressesFail
   | LoadAddressesSuccess
+  | CreateCustomerAddress
   | CreateCustomerAddressFail
+  | CreateCustomerAddressSuccess
   | UpdateCustomerAddressFail
   | UpdateCustomerAddressSuccess
   | DeleteCustomerAddressFail

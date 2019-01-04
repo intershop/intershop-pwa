@@ -68,6 +68,7 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges {
   doResetForm(resetForm: boolean) {
     if (resetForm && this.form) {
       this.form.reset();
+      this.submitted = false;
     }
   }
 

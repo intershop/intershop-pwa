@@ -19,7 +19,7 @@ describe('Account Addresses Page Container', () => {
         MockComponent({
           selector: 'ish-account-addresses-page',
           template: 'Account Addresses Page Component',
-          inputs: ['user', 'addresses'],
+          inputs: ['user', 'addresses', 'error'],
         }),
         MockComponent({
           selector: 'ish-loading',
@@ -41,5 +41,10 @@ describe('Account Addresses Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render account addresses component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-account-addresses-page')).toBeTruthy();
   });
 });
