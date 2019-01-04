@@ -36,12 +36,32 @@ describe('Addresses Actions', () => {
   });
 
   describe('Create Customer Address Actions', () => {
+    it('should create new action for CreateCustomerAddress', () => {
+      const payload = { urn: '123' } as Address;
+      const action = new fromActions.CreateCustomerAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.CreateCustomerAddress,
+        payload,
+      });
+    });
+
     it('should create new action for CreateCustomerAddressFail', () => {
       const payload = { message: 'error' } as HttpError;
       const action = new fromActions.CreateCustomerAddressFail(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.AddressActionTypes.CreateCustomerAddressFail,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateCustomerAddressSuccess', () => {
+      const payload = { urn: '123' } as Address;
+      const action = new fromActions.CreateCustomerAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.CreateCustomerAddressSuccess,
         payload,
       });
     });
