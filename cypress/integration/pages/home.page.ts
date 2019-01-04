@@ -12,4 +12,8 @@ export class HomePage {
   get content() {
     return cy.get(this.tag);
   }
+
+  get featuredProducts() {
+    return cy.get('ish-cms-product-list').find('div.product-tile');
+  }
 }
