@@ -19,8 +19,9 @@ export interface ContentSlotView extends ConfigParameterView {
   pagelets(): ContentPageletView[];
 }
 
-export interface ContentIncludeView extends ContentSlotView {
+export interface ContentIncludeView extends ConfigParameterView {
   id: string;
+  pagelets(): ContentPageletView[];
 }
 
 export interface ContentPageletView extends ConfigParameterView {
