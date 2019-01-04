@@ -30,23 +30,23 @@ export function createExtension(options: Options): Rule {
       )
     );
     const projectRoot = buildDefaultPath(getProject(host, options.project));
-    const artifactName = strings.classify(options.name) + 'ExportsModule';
-    const moduleImportPath = `${projectRoot}/extensions/${strings.dasherize(options.name)}/exports/${strings.dasherize(
-      options.name
-    )}-exports.module`;
 
     const sharedModuleOptions = {
       module: `${projectRoot}/shared/shared.module.ts`,
-      artifactName,
-      moduleImportPath,
+      artifactName: strings.classify(options.name) + 'ExportsModule',
+      moduleImportPath: `${projectRoot}/extensions/${strings.dasherize(options.name)}/exports/${strings.dasherize(
+        options.name
+      )}-exports.module`,
     };
     operations.push(addExportToNgModule(sharedModuleOptions));
     operations.push(addImportToNgModule(sharedModuleOptions));
 
     const appModuleOptions = {
       module: `${projectRoot}/app.module.ts`,
-      artifactName,
-      moduleImportPath,
+      artifactName: strings.classify(options.name) + 'RoutingModule',
+      moduleImportPath: `${projectRoot}/extensions/${strings.dasherize(options.name)}/pages/${strings.dasherize(
+        options.name
+      )}-routing.module`,
     };
     operations.push(addImportToNgModuleBefore(appModuleOptions, 'AppNotFoundRoutingModule'));
 
