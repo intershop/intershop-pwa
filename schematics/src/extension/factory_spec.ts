@@ -94,7 +94,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppNotFoundRoutingModule } from './pages/app-not-found-routing.module';
-import { FooExportsModule } from './extensions/foo/exports/foo-exports.module';
+import { FooRoutingModule } from './extensions/foo/pages/foo-routing.module';
 
 @NgModule({
   declarations: [
@@ -103,7 +103,7 @@ import { FooExportsModule } from './extensions/foo/exports/foo-exports.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FooExportsModule, AppNotFoundRoutingModule
+    FooRoutingModule, AppNotFoundRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
