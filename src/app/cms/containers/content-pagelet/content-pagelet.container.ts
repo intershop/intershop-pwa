@@ -6,12 +6,13 @@ import {
   Injector,
   Input,
   OnInit,
+  SimpleChange,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
+import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 
 @Component({
   selector: 'ish-content-pagelet',
@@ -34,12 +35,28 @@ export class ContentPageletContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    const component = this.components.find(c => c.definitionQualifiedName === this.pagelet.definitionQualifiedName);
-    this.noMappingFound = !component;
-    if (component) {
-      const factory = this.componentFactoryResolver.resolveComponentFactory(component.class);
-      const componentRef = this.cmsOutlet.createComponent(factory);
-      componentRef.instance.pagelet = this.pagelet;
+    const mappedComponent = this.components.find(
+      c => c.definitionQualifiedName === this.pagelet.definitionQualifiedName
+    );
+
+    if (mappedComponent) {
+      const componentRef = this.createComponent(mappedComponent);
+      this.initializeComponent(componentRef.instance);
+    }
+
+    this.noMappingFound = !mappedComponent;
+  }
+
+  private createComponent(mappedComponent: CMSComponentProvider) {
+    const factory = this.componentFactoryResolver.resolveComponentFactory(mappedComponent.class);
+    return this.cmsOutlet.createComponent(factory);
+  }
+
+  private initializeComponent(instance: CMSComponentInterface) {
+    instance.pagelet = this.pagelet;
+    // OnChanges has to be manually invoked on dynamically created components
+    if (instance.ngOnChanges) {
+      instance.ngOnChanges({ pagelet: new SimpleChange(undefined, this.pagelet, true) });
     }
   }
 }
