@@ -3,7 +3,7 @@
 exports[`Cms Text Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="7.1.2"
+  ng-version="7.1.4"
 >
   
 </div>
@@ -12,7 +12,7 @@ exports[`Cms Text Component should be created 1`] = `
 exports[`Cms Text Component should render html text pagelet if set 1`] = `
 <div
   id="root1"
-  ng-version="7.1.2"
+  ng-version="7.1.4"
 >
   
   <span>

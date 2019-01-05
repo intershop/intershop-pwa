@@ -33,7 +33,7 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
     );
 }
 
-export function mapErrorToAction<S, T>(actionType: { new (error: HttpError): T }) {
+export function mapErrorToAction<S, T>(actionType: new (error: HttpError) => T) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
       // tslint:disable-next-line:ban
