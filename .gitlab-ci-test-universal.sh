@@ -20,7 +20,7 @@ universalTest 5 "http://localhost:4200/category/Cameras-Camcorders" "<h1>Cameras
 universalTest 6 "http://localhost:4200/category/Cameras-Camcorders" "<h3>Webcams</h3>"
 universalTest 7 "http://localhost:4200/category/Cameras-Camcorders.584" "add-to-compare"
 universalTest 8 "http://localhost:4200/home" "intershop-pwa-state"
-universalTest 9 "http://localhost:4200/home" "&q;icmBaseURL&q;:&q;$ICM_BASE_URL"
+universalTest 9 "http://localhost:4200/home" "&q;baseURL&q;:&q;$ICM_BASE_URL"
 universalTest 10 "http://localhost:4200/home" "<ish-cms-carousel>"
 
 exit 0

@@ -1,6 +1,7 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 
-import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
+import { getICMStaticURL } from 'ish-core/store/configuration';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
@@ -10,7 +11,11 @@ export declare interface ContentConfigurationParameters {
 
 @Injectable({ providedIn: 'root' })
 export class ContentConfigurationParameterMapper {
-  constructor(@Inject(STATIC_URL) private staticURL: string) {}
+  private staticURL: string;
+
+  constructor(store: Store<{}>) {
+    store.pipe(select(getICMStaticURL)).subscribe(url => (this.staticURL = url));
+  }
 
   fromData(data: { [name: string]: ContentConfigurationParameterData }): ContentConfigurationParameters {
     return !data

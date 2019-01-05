@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
@@ -24,6 +25,7 @@ describe('Product Page Container', () => {
       imports: [
         FeatureToggleModule.testingFeatures({ recently: true }),
         NgbModalModule,
+        RouterTestingModule,
         StoreModule.forRoot({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
@@ -40,8 +42,12 @@ describe('Product Page Container', () => {
           template: 'Product Add To Quote Dialog',
           inputs: ['quote', 'quoteLoading'],
         }),
+        MockComponent({
+          selector: 'ish-product-detail',
+          template: 'Category Page Component',
+          inputs: ['product', 'currentUrl'],
+        }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         ProductPageContainerComponent,
       ],

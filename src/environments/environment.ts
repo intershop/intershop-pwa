@@ -12,7 +12,7 @@ export const environment = {
   icmBaseURL: 'http://localhost:4200',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
-  icmApplication: 'inSPIRED-inTRONICS-Site',
+  icmChannel: 'inSPIRED-inTRONICS-Site',
 
   // configuration of the available locales - hard coded for now
   locales: [

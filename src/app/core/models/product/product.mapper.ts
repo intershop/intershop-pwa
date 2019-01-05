@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
@@ -31,11 +30,7 @@ function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: str
  */
 @Injectable({ providedIn: 'root' })
 export class ProductMapper {
-  constructor(
-    @Inject(ICM_BASE_URL) public icmBaseURL,
-    private imageMapper: ImageMapper,
-    private categoryMapper: CategoryMapper
-  ) {}
+  constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
 
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data

@@ -10,6 +10,7 @@ import { Product } from 'ish-core/models/product/product.model';
 })
 export class ProductDetailComponent implements OnInit {
   @Input() product: Product;
+  @Input() currentUrl: string;
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
 
