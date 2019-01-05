@@ -94,11 +94,12 @@ codestyle:
   dependencies: []
   script:
     - npm ci --prefer-offline
+    - npm i --no-save tslint-html-report jscpd-html-reporter
+    - node reports/tslint-report
+    - node reports/jscpd-report
     - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
-    - node reports/tslint-report
-    - node reports/jscpd-report
     - echo "build complete"
 
 schematics:
