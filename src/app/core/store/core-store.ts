@@ -1,5 +1,6 @@
 import { Selector } from '@ngrx/store';
 
+import { ConfigurationState } from './configuration/configuration.reducer';
 import { CountriesState } from './countries/countries.reducer';
 import { ErrorState } from './error/error.reducer';
 import { LocaleState } from './locale/locale.reducer';
@@ -14,6 +15,7 @@ export interface CoreState {
   countries: CountriesState;
   error: ErrorState;
   viewconf: ViewconfState;
+  configuration: ConfigurationState;
 }
 
 export const getCoreState: Selector<CoreState, CoreState> = state => state;

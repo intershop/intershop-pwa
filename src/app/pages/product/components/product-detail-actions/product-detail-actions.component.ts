@@ -1,8 +1,6 @@
-import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 @Component({
   selector: 'ish-product-detail-actions',
@@ -11,18 +9,13 @@ import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 })
 export class ProductDetailActionsComponent {
   @Input() product: Product;
+  @Input() currentUrl: string;
   @Output() productToCompare = new EventEmitter<void>();
 
   // TODO: to be removed once channelName inforamtion available in system
   channelName = 'inTRONICS';
 
   isMasterProduct = ProductHelper.isMasterProduct;
-
-  constructor(private location: Location, @Inject(ICM_BASE_URL) public icmBaseURL) {}
-
-  get currentUrl(): string {
-    return this.icmBaseURL + this.location.path();
-  }
 
   addToCompare() {
     this.productToCompare.emit();

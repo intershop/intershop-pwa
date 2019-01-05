@@ -1,12 +1,11 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { instance, mock, spy, verify } from 'ts-mockito';
+import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Product, ProductType } from 'ish-core/models/product/product.model';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
@@ -24,10 +23,6 @@ describe('Product Detail Actions Component', () => {
         FeatureToggleModule.testingFeatures({ compare: true }),
         IconModule,
         TranslateModule.forRoot(),
-      ],
-      providers: [
-        { provide: Location, useFactory: () => instance(mock(Location)) },
-        { provide: ICM_BASE_URL, useValue: 'http://example.org' },
       ],
       declarations: [ProductDetailActionsComponent],
     }).compileComponents();

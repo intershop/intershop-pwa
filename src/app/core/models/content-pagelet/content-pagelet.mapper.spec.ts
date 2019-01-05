@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 
-import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPageletMapper } from './content-pagelet.mapper';
@@ -10,7 +11,20 @@ describe('Content Pagelet Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: STATIC_URL, useValue: 'http://www.example.org/static' }],
+      imports: [
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          {
+            initialState: {
+              configuration: {
+                baseURL: 'http://www.example.org',
+                serverStatic: 'static',
+                channel: 'channel',
+              },
+            },
+          }
+        ),
+      ],
     });
 
     contentPageletMapper = TestBed.get(ContentPageletMapper);
@@ -156,7 +170,7 @@ describe('Content Pagelet Mapper', () => {
 
     expect(contentPageletMapper.fromData(input)[0]).toHaveProperty(
       'configurationParameters.Image',
-      'http://www.example.org/static/inSPIRED-inTRONICS-b2c-responsive/-/brands/adata.jpg'
+      'http://www.example.org/static/channel/-/inSPIRED-inTRONICS-b2c-responsive/-/brands/adata.jpg'
     );
   });
 });

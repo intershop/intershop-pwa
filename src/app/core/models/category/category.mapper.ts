@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryTreeHelper } from '../category-tree/category-tree.helper';
 import { CategoryTree } from '../category-tree/category-tree.model';
 import { ImageMapper } from '../image/image.mapper';
@@ -10,7 +9,7 @@ import { Category, CategoryHelper } from './category.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryMapper {
-  constructor(@Inject(ICM_BASE_URL) public icmBaseURL, private imageMapper: ImageMapper) {}
+  constructor(private imageMapper: ImageMapper) {}
 
   /**
    * Utility Method:
