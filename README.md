@@ -9,29 +9,19 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ---
 
-## Project setup
+## Quick Start
 
-After cloning the project from the Git repository a command line needs to be oppend in the project folder and the following commands need to be run.
+After cloning the project from the Git repository open a command line in the project folder and run `npm install`.
 
-```
-npm install
-ng serve --open
-```
-
-The `ng ...` commands require Angular CLI to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development mashine.
+The project uses Angular CLI which has to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine. Use `ng serve` to start up the development server.
 
 The project can alternatively be run in production mode with `npm start`.
 
-## Project update
+## Project Update
 
-An update of the project to a new release version might include added or updated dependencies. So in case of an update the following command will be necessary too before serving or building the application.
+An update of the project to a new release version might include added or updated dependencies. So in case of an update run `npm install` before serving or building the application.
 
-```
-npm install
-```
-
-
-## Development server
+## Development Server
 
 Run `ng serve` or `ng s` for a dev server that is configured via `environment.ts` to use mocked responses instead of actual REST calls.
 
@@ -47,50 +37,47 @@ Running `ng serve --port 4300` will start the server on different port than the 
 
 Running `ng serve --open` will automatically open a new browser tab with the started application. The different start options can be combined.
 
+> DO NOT USE webpack-dev-server IN PRODUCTION!
+
 ## Deployment
 
 Deployments are generated to the `dist` folder of the project.
 
 Use `npm run build` to generate the preferred angular universal enabled version. On the server the `dist/server.js` script has to be executed with `node`.
 
-Use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically.
-
-see also [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration)
+You can alternatively use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically. The server has to be configured for fallback routing, 
+see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).
 
 ## Progressive Web App (PWA)
 
 To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started) use `npm run start` to build and serve the application. After that open `http://localhost:4200` in your browser and test it or run a PWA Audit. Currently only `localhost` or `127.0.0.1` will work with the service worker since it requires `https` communication on any other domain.
 
-## Running unit tests
+## Running Unit Tests
 
 Run `npm test` to start an on the fly test running environment to execute the unit tests via [Jest](https://facebook.github.io/jest/) once. To run Jest in watch mode with interactive interface run `npm run test:watch`.
 
-## Running end-to-end tests
+## Running End-to-End Tests
 
 Run `npm run e2e` to execute the end-to-end tests via [cypress](https://www.cypress.io/).
 You have to start your development or production server first as cypress will instruct you.
 
-## Build
+## Running CI Build Jobs Locally
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+To run the CI build of gitlab locally you can use `gitlab-runner`. Get it [here](https://docs.gitlab.com/runner/install/). To execute the build, start `gitlab-runner exec docker <job>`.
 
-## Running the CI build locally
+## Code Style
 
-To run the CI build of gitlab locally within a nativ Linux environment you can use `gitlab-runner`. Get it [here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/bleeding-edge.md). To execute the build, start `gitlab-ci-multi-runner exec docker build`.
-
-## Code formatting
-
-Run `ng lint` to check the application of the default tslint rules configuration. `npm run lint` will additionaly check custom tslint rules.
+Use `npm run lint` to run a static code analysis.
 
 For development make sure the used IDE or Editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project and uses [Prettier](https://prettier.io/) to help maintain consistent coding styles (see `.editorconfig` and `.prettierrc.json`).
 
-Use `npm run format` to run Prettier to apply a consistent code style to the source code.
+Use `npm run format` to perform a formatting run on the code base with Prettier.
 
 ## Pre-Commit Check
 
-`npm run check` is a combination task of `lint`, `format`, `test` and `e2e` that performs some of the checks that will be performed in GitLab too.
+`npm run check` is a combination task of `lint`, `format` and `test` that runs some of the checks that will also be performed in Continuous Integration on the whole code base. Do not overuse it as the run might take a long time.
 
-This task might be helpful to prevent the most common causes for red builds in GitLab. After a succesfull run, one needs to check for local file modifications done by `lint` or `format` that need to be added to the intended commit.
+Prefer using `npx lint-staged` to perform a manual quick evaluation of staged files. This also happens automatically when committing files. It is also possible to bypass verification on commit, following the suggestions of the versioning control tool of your choice.
 
 ## Code Documentation
 
@@ -98,12 +85,12 @@ The project is configured to use [Compodoc](https://compodoc.github.io/website) 
 
 To generate the code documentation run `npm run docs`. To generate and serve the documentation at http://localhost:8080 run `npm run docs:serve`. Watching the source files to force documentation rebuild and serve run `npm run docs:watch`.
 
-## Code scaffolding
+## Code Scaffolding
 
-With the integrated `intershop-schematics` this project provides the functionality to generate the different code artifacts acording to our style guide and code structure. `ng generate` will use the integrated schematics by default, e.g. in the shared folder run `ng generate component component-name` to generate a new shared component. `ng generate --help` gives an overview of the available intershop specific schematics.
+With the integrated `intershop-schematics` this project provides the functionality to generate different code artifacts according to our style guide and project structure. `ng generate` will use our custom schematics by default, e.g. run `ng generate component component-name` in the shared folder to generate a new shared component. `ng generate --help` gives an overview of available intershop specific schematics.
 
-The Angular CLI default schematics are still available and working but they need to be prefixed now to use them, e.g. `ng generate @schematics/angular:component`. A list of the available Angular CLI schematics can be fetched with `ng generate @schematics/angular: --help`.
+The Angular CLI default schematics are still available and working but they need to be prefixed to use them, e.g. `ng generate @schematics/angular:guard`. A list of the available Angular CLI schematics can be fetched with `ng generate @schematics/angular: --help`.
 
-## Further help
+## Further Help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Documentation](https://github.com/angular/angular-cli/wiki).
