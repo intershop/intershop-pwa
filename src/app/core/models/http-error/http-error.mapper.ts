@@ -12,7 +12,7 @@ export class HttpErrorMapper {
     return {
       name: error.name,
       message: error.message,
-      error: JSON.stringify(error.error),
+      error: typeof error.error === 'string' ? error.error : undefined,
       status: error.status,
       statusText: error.statusText,
       headers,
