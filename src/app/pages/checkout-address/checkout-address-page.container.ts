@@ -63,6 +63,6 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   }
 
   deleteCustomerAddress(addressId: string) {
-    this.store.dispatch(new DeleteBasketShippingAddress(addressId));
+    this.store.dispatch(new DeleteBasketShippingAddress({ addressId }));
   }
 }

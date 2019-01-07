@@ -183,7 +183,16 @@ describe('Addresses Reducer', () => {
   describe('DeleteCustomerAddress actions', () => {
     describe('DeleteBasketShippingAddress action', () => {
       it('should set loading to true', () => {
-        const action = new DeleteBasketShippingAddress('addressId');
+        const action = new DeleteBasketShippingAddress({ addressId: 'addressId' });
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('DeleteCustomerAddress action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.DeleteCustomerAddress({ addressId: 'addressId' });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -210,7 +219,7 @@ describe('Addresses Reducer', () => {
         const preAction = new CreateBasketShippingAddressSuccess(address);
         let state = addressesReducer(initialState, preAction);
 
-        const action = new fromActions.DeleteCustomerAddressSuccess(address.id);
+        const action = new fromActions.DeleteCustomerAddressSuccess({ addressId: address.id });
         state = addressesReducer(state, action);
 
         expect(state.ids).toHaveLength(0);

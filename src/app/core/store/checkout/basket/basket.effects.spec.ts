@@ -318,7 +318,7 @@ describe('Basket Effects', () => {
     });
 
     it('should call the addressService for deleteBasketShippingAddress', done => {
-      const payload = 'addressId';
+      const payload = { addressId: 'addressId' };
       const action = new basketActions.DeleteBasketShippingAddress(payload);
       actions$ = of(action);
 
@@ -329,7 +329,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map to action of type DeleteCustomerAddressSuccess and LoadBasket', () => {
-      const payload = 'addressId';
+      const payload = { addressId: 'addressId' };
       const action = new basketActions.DeleteBasketShippingAddress(payload);
       const completion1 = new DeleteCustomerAddressSuccess(payload);
       const completion2 = new basketActions.LoadBasket();
@@ -340,7 +340,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteCustomerAddressFail', () => {
-      const payload = 'addressId';
+      const payload = { addressId: 'addressId' };
       when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );

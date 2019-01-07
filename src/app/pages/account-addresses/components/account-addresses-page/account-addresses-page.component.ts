@@ -35,6 +35,9 @@ export class AccountAddressesPageComponent implements OnChanges {
   @Output()
   createCustomerAddress = new EventEmitter<Address>();
 
+  @Output()
+  deleteCustomerAddress = new EventEmitter<string>();
+
   furtherAddresses: Address[] = [];
 
   hasPreferredAddresses = false;
@@ -80,5 +83,9 @@ export class AccountAddressesPageComponent implements OnChanges {
 
   createAddress(address: Address) {
     this.createCustomerAddress.emit(address);
+  }
+
+  deleteAddress(address: Address) {
+    this.deleteCustomerAddress.emit(address.id);
   }
 }

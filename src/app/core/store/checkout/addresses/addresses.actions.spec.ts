@@ -90,6 +90,16 @@ describe('Addresses Actions', () => {
   });
 
   describe('Delete Customer Address Actions', () => {
+    it('should create new action for DeleteCustomerAddress', () => {
+      const payload = { addressId: '123' };
+      const action = new fromActions.DeleteCustomerAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.DeleteCustomerAddress,
+        payload,
+      });
+    });
+
     it('should create new action for DeleteCustomerAddressFail', () => {
       const payload = { message: 'error' } as HttpError;
       const action = new fromActions.DeleteCustomerAddressFail(payload);
@@ -101,7 +111,7 @@ describe('Addresses Actions', () => {
     });
 
     it('should create new action for DeleteCustomerAddressSuccess', () => {
-      const payload = '123';
+      const payload = { addressId: '123' };
       const action = new fromActions.DeleteCustomerAddressSuccess(payload);
 
       expect({ ...action }).toEqual({

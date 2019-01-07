@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Address } from 'ish-core/models/address/address.model';
 import {
   CreateCustomerAddress,
+  DeleteCustomerAddress,
   LoadAddresses,
   getAddressesError,
   getAddressesLoading,
@@ -33,5 +34,9 @@ export class AccountAddressesPageContainerComponent implements OnInit {
 
   createCustomerAddress(address: Address) {
     this.store.dispatch(new CreateCustomerAddress(address));
+  }
+
+  deleteCustomerAddress(addressId: string) {
+    this.store.dispatch(new DeleteCustomerAddress({ addressId }));
   }
 }
