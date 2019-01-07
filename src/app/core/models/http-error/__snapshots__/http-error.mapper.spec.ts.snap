@@ -2,7 +2,7 @@
 
 exports[`Http Error Mapper should convert correctly for HttpErrorResponse with headers 1`] = `
 Object {
-  "error": "null",
+  "error": undefined,
   "headers": Object {
     "key1": "value1",
     "key2": "value2",
@@ -16,7 +16,7 @@ Object {
 
 exports[`Http Error Mapper should convert correctly for simple HttpErrorResponse 1`] = `
 Object {
-  "error": "null",
+  "error": undefined,
   "headers": Object {},
   "message": "Http failure response for (unknown url): 401 Unauthorized",
   "name": "HttpErrorResponse",
