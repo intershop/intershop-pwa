@@ -18,7 +18,7 @@ exports[`Cms Image Component should be created 1`] = `
       alt="foo"
       class="foo"
       ng-reflect-ng-class="foo"
-      src="http://www.example.org/foo/-bar.png"
+      src="http://example.com/foo/bar.png"
     />
   </a>
   

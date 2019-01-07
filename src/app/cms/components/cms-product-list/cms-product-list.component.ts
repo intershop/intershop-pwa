@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
@@ -7,19 +7,15 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   templateUrl: './cms-product-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSProductListComponent implements DoCheck {
+export class CMSProductListComponent implements OnChanges {
   @Input()
   pagelet: ContentPageletView;
 
   productSKUs: string[] = [];
 
-  private initialized: boolean;
-
-  ngDoCheck() {
-    if (!this.initialized && this.pagelet) {
-      this.productSKUs = this.pagelet.hasParam('Products')
-        ? this.pagelet.configParam<string[]>('Products').map(product => product.split('@')[0])
-        : [];
-    }
+  ngOnChanges() {
+    this.productSKUs = this.pagelet.hasParam('Products')
+      ? this.pagelet.configParam<string[]>('Products').map(product => product.split('@')[0])
+      : [];
   }
 }

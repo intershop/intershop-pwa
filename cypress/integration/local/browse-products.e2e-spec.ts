@@ -23,6 +23,12 @@ describe('Browsing User', () => {
   describe('starting at home page', () => {
     before(() => HomePage.navigateTo());
 
+    it('should see featured products on home page', () => {
+      at(HomePage, page => {
+        page.featuredProducts.should('have.length', 4);
+      });
+    });
+
     it(`should go from home page to category page`, () => {
       at(HomePage, page => {
         page.header.gotoCategoryPage(_.catalog);
