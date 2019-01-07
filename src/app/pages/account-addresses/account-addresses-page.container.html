@@ -4,6 +4,7 @@
     [addresses]="addresses$ | async"
     [error]="error$ | async"
     (createCustomerAddress)="createCustomerAddress($event)"
+    (deleteCustomerAddress)="deleteCustomerAddress($event)"
   ></ish-account-addresses-page>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>

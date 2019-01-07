@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
+import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -31,8 +32,9 @@ describe('Account Addresses Page Component', () => {
           template: 'Customer Address Form Component',
           inputs: ['address', 'resetForm'],
         }),
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
       ],
-      imports: [NgbModule, TranslateModule.forRoot()],
+      imports: [IconModule, NgbModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -227,5 +229,14 @@ describe('Account Addresses Page Component', () => {
     component.createAddress(address);
 
     verify(emitter.emit(address)).once();
+  });
+
+  it('should emit deleteCustomerAddress event when deleteCustomerAddress is triggered', () => {
+    const address = { id: '123' } as Address;
+    const emitter = spy(component.deleteCustomerAddress);
+
+    component.deleteAddress(address);
+
+    verify(emitter.emit(address.id)).once();
   });
 });

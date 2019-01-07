@@ -27,6 +27,7 @@ describe('Addresses Effects', () => {
 
     when(addressServiceMock.getCustomerAddresses(anyString())).thenReturn(of([{ urn: 'test' } as Address]));
     when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(of({ urn: 'test' } as Address));
+    when(addressServiceMock.deleteCustomerAddress(anyString(), anything())).thenReturn(of('123'));
 
     TestBed.configureTestingModule({
       imports: [
@@ -101,6 +102,42 @@ describe('Addresses Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.createCustomerAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteCustomerAddress$', () => {
+    it('should call the addressService for deleteCustomerAddress', done => {
+      const payload = { addressId: '123' };
+      const action = new addressesActions.DeleteCustomerAddress(payload);
+      actions$ = of(action);
+
+      effects.deleteCustomerAddress$.subscribe(() => {
+        verify(addressServiceMock.deleteCustomerAddress('patricia', '123')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type DeleteCustomerSuccess', () => {
+      const payload = { addressId: '123' };
+      const action = new addressesActions.DeleteCustomerAddress(payload);
+      const completion = new addressesActions.DeleteCustomerAddressSuccess(payload);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteCustomerFail', () => {
+      when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+      const payload = { addressId: '123' };
+      const action = new addressesActions.DeleteCustomerAddress(payload);
+      const completion = new addressesActions.DeleteCustomerAddressFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
     });
   });
 
