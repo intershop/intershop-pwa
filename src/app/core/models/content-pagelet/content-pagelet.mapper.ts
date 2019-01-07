@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+
 import { ContentConfigurationParameterMapper } from '../content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentSlotData } from '../content-slot/content-slot.interface';
 import { ContentSlot } from '../content-slot/content-slot.model';
@@ -5,19 +7,30 @@ import { ContentSlot } from '../content-slot/content-slot.model';
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPagelet } from './content-pagelet.model';
 
+@Injectable({ providedIn: 'root' })
 export class ContentPageletMapper {
-  static fromData(data: ContentPageletData): ContentPagelet[] {
+  constructor(private contentConfigurationParameterMapper: ContentConfigurationParameterMapper) {}
+
+  fromData(data: ContentPageletData): ContentPagelet[] {
     if (!data) {
       throw new Error('falsy input');
     }
 
     const { definitionQualifiedName, id } = data;
-    const configurationParameters = ContentConfigurationParameterMapper.fromData(data.configurationParameters);
+    const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
+
+    // TODO: make this dependant on the type of the configuration parameter
+    if (
+      definitionQualifiedName === 'app_sf_responsive_cm:component.common.image.pagelet2-Component' ||
+      definitionQualifiedName === 'app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component'
+    ) {
+      this.contentConfigurationParameterMapper.postProcessImageURLs(configurationParameters);
+    }
 
     let slots: ContentSlot[] = [];
     let pagelets: ContentPagelet[] = [];
     if (data.slots) {
-      const deep = Object.values(data.slots).map(ContentPageletMapper.fromSlotData);
+      const deep = Object.values(data.slots).map(x => this.fromSlotData(x));
       slots = deep.map(val => val.slot);
       pagelets = deep.map(val => val.pagelets).reduce((acc, val) => [...acc, ...val]);
     }
@@ -33,13 +46,13 @@ export class ContentPageletMapper {
     ];
   }
 
-  private static fromSlotData(data: ContentSlotData): { slot: ContentSlot; pagelets: ContentPagelet[] } {
+  private fromSlotData(data: ContentSlotData): { slot: ContentSlot; pagelets: ContentPagelet[] } {
     if (!data) {
       throw new Error('falsy input');
     }
 
     const definitionQualifiedName = data.definitionQualifiedName;
-    const configurationParameters = ContentConfigurationParameterMapper.fromData(data.configurationParameters);
+    const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
     const pageletIDs = !data.pagelets ? [] : data.pagelets.map(pagelet => pagelet.id);
 
     const slot: ContentSlot = {
@@ -50,7 +63,7 @@ export class ContentPageletMapper {
 
     const pagelets = !data.pagelets
       ? []
-      : data.pagelets.map(ContentPageletMapper.fromData).reduce((acc, val) => [...acc, ...val], []);
+      : data.pagelets.map(x => this.fromData(x)).reduce((acc, val) => [...acc, ...val], []);
 
     return { slot, pagelets };
   }

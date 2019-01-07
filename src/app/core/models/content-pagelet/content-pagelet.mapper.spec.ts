@@ -1,9 +1,23 @@
+import { TestBed } from '@angular/core/testing';
+
+import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
+
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPageletMapper } from './content-pagelet.mapper';
 
 describe('Content Pagelet Mapper', () => {
+  let contentPageletMapper: ContentPageletMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: STATIC_URL, useValue: 'http://www.example.org/static' }],
+    });
+
+    contentPageletMapper = TestBed.get(ContentPageletMapper);
+  });
+
   it('should throw on empty input', () => {
-    expect(() => ContentPageletMapper.fromData(undefined)).toThrowError('falsy input');
+    expect(() => contentPageletMapper.fromData(undefined)).toThrowError('falsy input');
   });
 
   it('should convert simple pagelet to single array instance', () => {
@@ -19,7 +33,7 @@ describe('Content Pagelet Mapper', () => {
       },
     };
 
-    const result = ContentPageletMapper.fromData(input);
+    const result = contentPageletMapper.fromData(input);
     expect(result).toMatchSnapshot();
   });
 
@@ -42,7 +56,7 @@ describe('Content Pagelet Mapper', () => {
       },
     };
 
-    const result = ContentPageletMapper.fromData(input);
+    const result = contentPageletMapper.fromData(input);
     expect(result).toMatchSnapshot();
   });
 
@@ -115,7 +129,7 @@ describe('Content Pagelet Mapper', () => {
       },
     };
 
-    const result = ContentPageletMapper.fromData(input);
+    const result = contentPageletMapper.fromData(input);
 
     expect(result).toHaveLength(4);
     expect(result.map(p => p.id)).toIncludeAllMembers([
@@ -125,5 +139,24 @@ describe('Content Pagelet Mapper', () => {
       'pagelet-deeply-nested',
     ]);
     expect(result).toMatchSnapshot();
+  });
+
+  it('should have special handling for image pagelet configuration parmeters', () => {
+    const input = {
+      definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component',
+      displayName: 'Brand Image 5',
+      id: 'cmp_brandImage_5',
+      configurationParameters: {
+        Image: {
+          value: 'inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg',
+          definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component-Image',
+        },
+      },
+    };
+
+    expect(contentPageletMapper.fromData(input)[0]).toHaveProperty(
+      'configurationParameters.Image',
+      'http://www.example.org/static/inSPIRED-inTRONICS-b2c-responsive/-/brands/adata.jpg'
+    );
   });
 });
