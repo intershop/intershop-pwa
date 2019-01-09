@@ -56,7 +56,7 @@ describe('Addresses Reducer', () => {
   describe('CreateCustomerAddress actions', () => {
     describe('CreateCustomerAddress action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.CreateCustomerAddress(BasketMockData.getAddress());
+        const action = new fromActions.CreateCustomerAddress({ address: BasketMockData.getAddress() });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -102,7 +102,7 @@ describe('Addresses Reducer', () => {
         const state = addressesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
-        expect(state.entities.test).toEqual({ id: 'test' } as Address);
+        expect(state.entities.test).toHaveProperty('id', 'test');
         expect(state.loading).toBeFalse();
       });
     });

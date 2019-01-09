@@ -72,7 +72,8 @@
               <div class="row">
                 <div class="col-xs-11 col-sm-7 col-md-5">
                   <div class="float-right">
-                      <a class="btn-tool"
+                    <!-- delete address: is only possible if the customer has more than one address -->
+                    <a *ngIf="addresses.length > 1" class="btn-tool"
                       title="{{ 'account.addresses.delete_address.text' | translate }}"
                       (click)="modalDialog.show(currentAddress)">
                       <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>

@@ -71,7 +71,7 @@ describe('Addresses Effects', () => {
 
   describe('createCustomerAddress$', () => {
     it('should call the addressService for createCustomerAddress', done => {
-      const payload = { urn: '123' } as Address;
+      const payload = { address: { urn: '123' } as Address };
       const action = new addressesActions.CreateCustomerAddress(payload);
       actions$ = of(action);
 
@@ -82,7 +82,7 @@ describe('Addresses Effects', () => {
     });
 
     it('should map to action of type CreateCustomerSuccess', () => {
-      const payload = { urn: '123' } as Address;
+      const payload = { address: { urn: '123' } as Address };
       const action = new addressesActions.CreateCustomerAddress(payload);
       const completion = new addressesActions.CreateCustomerAddressSuccess({ urn: 'test' } as Address);
       actions$ = hot('-a-a-a', { a: action });
@@ -95,7 +95,7 @@ describe('Addresses Effects', () => {
       when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const payload = { urn: '123' } as Address;
+      const payload = { address: { urn: '123' } as Address };
       const action = new addressesActions.CreateCustomerAddress(payload);
       const completion = new addressesActions.CreateCustomerAddressFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });

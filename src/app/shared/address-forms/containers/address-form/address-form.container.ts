@@ -58,7 +58,7 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
   ) {}
 
   ngOnChanges(c: SimpleChanges) {
-    if (c.parentForm && this.parentForm) {
+    if (c.parentForm) {
       this.parentForm
         .get('countryCodeSwitch')
         .valueChanges.pipe(takeUntil(this.destroy$))

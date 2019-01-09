@@ -34,7 +34,7 @@ export class LoadAddressesSuccess implements Action {
 
 export class CreateCustomerAddress implements Action {
   readonly type = AddressActionTypes.CreateCustomerAddress;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 export class CreateCustomerAddressFail implements Action {
