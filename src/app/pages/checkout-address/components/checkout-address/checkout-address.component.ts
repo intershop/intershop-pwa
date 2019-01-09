@@ -134,6 +134,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.shipping.isAddressDeleteable =
       this.basket.commonShipToAddress &&
       this.currentUser &&
+      this.addresses.length > 1 &&
       (!this.currentUser.preferredInvoiceToAddress ||
         this.basket.commonShipToAddress.id !== this.currentUser.preferredInvoiceToAddress.id) &&
       (!this.currentUser.preferredShipToAddress ||

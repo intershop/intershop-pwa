@@ -33,7 +33,7 @@ export class AccountAddressesPageContainerComponent implements OnInit {
   }
 
   createCustomerAddress(address: Address) {
-    this.store.dispatch(new CreateCustomerAddress(address));
+    this.store.dispatch(new CreateCustomerAddress({ address }));
   }
 
   deleteCustomerAddress(addressId: string) {

@@ -37,7 +37,7 @@ describe('Addresses Actions', () => {
 
   describe('Create Customer Address Actions', () => {
     it('should create new action for CreateCustomerAddress', () => {
-      const payload = { urn: '123' } as Address;
+      const payload = { address: { urn: '123' } as Address };
       const action = new fromActions.CreateCustomerAddress(payload);
 
       expect({ ...action }).toEqual({
