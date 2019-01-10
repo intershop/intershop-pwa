@@ -22,6 +22,7 @@ setup:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   script:
@@ -40,6 +41,7 @@ jest_test:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   artifacts:
@@ -62,6 +64,7 @@ compile:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   artifacts:
@@ -84,6 +87,7 @@ codestyle:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   artifacts:
@@ -108,6 +112,7 @@ schematics:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   dependencies: []
@@ -122,6 +127,7 @@ cypress_local:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   artifacts:
@@ -149,6 +155,7 @@ cypress_remote:
   except:
     refs:
       - develop
+      - master
   tags:
     - docker-executor
   services:
@@ -200,6 +207,10 @@ reports:
   stage: publish
   tags:
     - docker-executor
+  except:
+    refs:
+      - develop
+      - master
   artifacts:
     expire_in: 30 days
     paths:
@@ -299,6 +310,10 @@ deploy_review:
   - shell-executor
   - docker
   - chuck-norris-swarm-manager
+  except:
+    refs:
+      - develop
+      - master
   variables:
     GIT_STRATEGY: none
     SERVICE: "intershop-pwa-review"
@@ -320,6 +335,10 @@ stop_review:
   - shell-executor
   - docker
   - chuck-norris-swarm-manager
+  except:
+    refs:
+      - develop
+      - master
   variables:
     GIT_STRATEGY: none
     SERVICE: "intershop-pwa-review"
@@ -328,4 +347,3 @@ stop_review:
   environment:
     name: review
     action: stop
-
