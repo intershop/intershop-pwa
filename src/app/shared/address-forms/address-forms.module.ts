@@ -20,9 +20,11 @@ import { AddressFormUSFactory } from './components/address-form-us/address-form-
 import { AddressFormComponent } from './components/address-form/address-form.component';
 import { CustomerAddressFormComponent } from './components/customer-address-form/customer-address-form.component';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from './configurations/address-form-factory.provider';
+import { AddressFormContainerComponent } from './containers/address-form/address-form.container';
 
 const components = [
   AddressFormComponent,
+  AddressFormContainerComponent,
   AddressFormDEComponent,
   AddressFormDefaultComponent,
   AddressFormFRComponent,

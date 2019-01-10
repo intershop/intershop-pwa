@@ -54,6 +54,15 @@ describe('Addresses Reducer', () => {
   });
 
   describe('CreateCustomerAddress actions', () => {
+    describe('CreateCustomerAddress action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.CreateCustomerAddress({ address: BasketMockData.getAddress() });
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
     describe('CreateBasketInvoiceAddress action', () => {
       it('should set loading to true', () => {
         const action = new CreateBasketInvoiceAddress(BasketMockData.getAddress());
@@ -83,6 +92,21 @@ describe('Addresses Reducer', () => {
       });
     });
 
+    describe('CreateCustomerAddressSuccess action', () => {
+      it('should add customer address to store, set loading to false and reset error', () => {
+        const address = {
+          id: 'test',
+        } as Address;
+
+        const action = new fromActions.CreateCustomerAddressSuccess(address);
+        const state = addressesReducer(initialState, action);
+
+        expect(state.ids).toHaveLength(1);
+        expect(state.entities.test).toHaveProperty('id', 'test');
+        expect(state.loading).toBeFalse();
+      });
+    });
+
     describe('CreateBasketInvoiceAddressSuccess action', () => {
       it('should add invoice address to store, set loading to false and reset error', () => {
         const address = {
@@ -96,7 +120,9 @@ describe('Addresses Reducer', () => {
         expect(state.entities.test).toEqual({ id: 'test' } as Address);
         expect(state.loading).toBeFalse();
       });
+    });
 
+    describe('CreateBasketShippingAddressSuccess action', () => {
       it('should add shipping address to store, set loading to false and reset error', () => {
         const address = {
           id: 'test',
@@ -157,7 +183,16 @@ describe('Addresses Reducer', () => {
   describe('DeleteCustomerAddress actions', () => {
     describe('DeleteBasketShippingAddress action', () => {
       it('should set loading to true', () => {
-        const action = new DeleteBasketShippingAddress('addressId');
+        const action = new DeleteBasketShippingAddress({ addressId: 'addressId' });
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('DeleteCustomerAddress action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.DeleteCustomerAddress({ addressId: 'addressId' });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -184,7 +219,7 @@ describe('Addresses Reducer', () => {
         const preAction = new CreateBasketShippingAddressSuccess(address);
         let state = addressesReducer(initialState, preAction);
 
-        const action = new fromActions.DeleteCustomerAddressSuccess(address.id);
+        const action = new fromActions.DeleteCustomerAddressSuccess({ addressId: address.id });
         state = addressesReducer(state, action);
 
         expect(state.ids).toHaveLength(0);

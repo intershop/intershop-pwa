@@ -1,11 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-  <ish-address-form
+  <ish-address-form-container
     [parentForm]="form"
-    [countryCode]="countryCode"
-    [regions]="regions"
-    [titles]="titles"
-    [countries]="countries"
-  ></ish-address-form>
+  ></ish-address-form-container>
 
   <div class="row">
     <div class="offset-md-4 col-md-8 offset-lg-0 col-lg-12 offset-lg-4 col-xl-8">

@@ -1,13 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { Observable, of, throwError } from 'rxjs';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { userReducer } from 'ish-core/store/user/user.reducer';
 import { Address } from '../../../models/address/address.model';
 import { AddressService } from '../../../services/address/address.service';
-import { LogoutUser } from '../../user';
+import { LoginUserSuccess, LogoutUser } from '../../user';
 import { checkoutReducers } from '../checkout-store.module';
 
 import * as addressesActions from './addresses.actions';
@@ -17,16 +20,20 @@ describe('Addresses Effects', () => {
   let actions$: Observable<Action>;
   let addressServiceMock: AddressService;
   let effects: AddressesEffects;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     addressServiceMock = mock(AddressService);
 
-    when(addressServiceMock.getCustomerAddresses()).thenReturn(of([{ urn: 'test' } as Address]));
+    when(addressServiceMock.getCustomerAddresses(anyString())).thenReturn(of([{ urn: 'test' } as Address]));
+    when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(of({ urn: 'test' } as Address));
+    when(addressServiceMock.deleteCustomerAddress(anyString(), anything())).thenReturn(of('123'));
 
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
+          user: userReducer,
         }),
       ],
       providers: [
@@ -37,6 +44,8 @@ describe('Addresses Effects', () => {
     });
 
     effects = TestBed.get(AddressesEffects);
+    store$ = TestBed.get(Store);
+    store$.dispatch(new LoginUserSuccess({ customerNo: 'patricia' } as Customer));
   });
 
   describe('loadAddresses$', () => {
@@ -45,7 +54,7 @@ describe('Addresses Effects', () => {
       actions$ = of(action);
 
       effects.loadAddresses$.subscribe(() => {
-        verify(addressServiceMock.getCustomerAddresses()).once();
+        verify(addressServiceMock.getCustomerAddresses('patricia')).once();
         done();
       });
     });
@@ -57,6 +66,78 @@ describe('Addresses Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadAddresses$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createCustomerAddress$', () => {
+    it('should call the addressService for createCustomerAddress', done => {
+      const payload = { address: { urn: '123' } as Address };
+      const action = new addressesActions.CreateCustomerAddress(payload);
+      actions$ = of(action);
+
+      effects.createCustomerAddress$.subscribe(() => {
+        verify(addressServiceMock.createCustomerAddress('patricia', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type CreateCustomerSuccess', () => {
+      const payload = { address: { urn: '123' } as Address };
+      const action = new addressesActions.CreateCustomerAddress(payload);
+      const completion = new addressesActions.CreateCustomerAddressSuccess({ urn: 'test' } as Address);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createCustomerAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type CreateCustomerFail', () => {
+      when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+      const payload = { address: { urn: '123' } as Address };
+      const action = new addressesActions.CreateCustomerAddress(payload);
+      const completion = new addressesActions.CreateCustomerAddressFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createCustomerAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteCustomerAddress$', () => {
+    it('should call the addressService for deleteCustomerAddress', done => {
+      const payload = { addressId: '123' };
+      const action = new addressesActions.DeleteCustomerAddress(payload);
+      actions$ = of(action);
+
+      effects.deleteCustomerAddress$.subscribe(() => {
+        verify(addressServiceMock.deleteCustomerAddress('patricia', '123')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type DeleteCustomerSuccess', () => {
+      const payload = { addressId: '123' };
+      const action = new addressesActions.DeleteCustomerAddress(payload);
+      const completion = new addressesActions.DeleteCustomerAddressSuccess(payload);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteCustomerFail', () => {
+      when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+      const payload = { addressId: '123' };
+      const action = new addressesActions.DeleteCustomerAddress(payload);
+      const completion = new addressesActions.DeleteCustomerAddressFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
     });
   });
 

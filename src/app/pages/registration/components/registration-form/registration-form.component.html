@@ -25,13 +25,9 @@
       <p>{{'account.register.address.message' | translate}}</p>
       <div class="row">
         <div class="col-md-10 col-lg-8 col-xl-6">
-          <ish-address-form
+          <ish-address-form-container
             [parentForm]="form"
-            [countryCode]="countryCode"
-            [regions]="regions"
-            [titles]="titles"
-            [countries]="countries"
-          ></ish-address-form>
+          ></ish-address-form-container>
 
           <!--- TODO: language and birthday selection
           <ish-registration-personal-form

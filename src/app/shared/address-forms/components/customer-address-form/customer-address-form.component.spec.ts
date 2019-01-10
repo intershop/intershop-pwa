@@ -26,9 +26,9 @@ describe('Customer Address Form Component', () => {
       declarations: [
         CustomerAddressFormComponent,
         MockComponent({
-          selector: 'ish-address-form',
+          selector: 'ish-address-form-container',
           template: 'Address Component',
-          inputs: ['parentForm', 'countryCode', 'countries', 'regions', 'titles'],
+          inputs: ['parentForm'],
         }),
       ],
       imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
@@ -61,7 +61,7 @@ describe('Customer Address Form Component', () => {
 
   it('should render an address form component on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-address-form')).toBeTruthy();
+    expect(element.querySelector('ish-address-form-container')).toBeTruthy();
   });
 
   it('should throw cancel event when cancel is clicked', () => {

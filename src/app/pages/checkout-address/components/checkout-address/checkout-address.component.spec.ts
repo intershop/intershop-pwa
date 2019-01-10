@@ -2,7 +2,7 @@ import { Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -49,14 +49,14 @@ describe('Checkout Address Component', () => {
         MockComponent({
           selector: 'ish-customer-address-form',
           template: 'Customer Address Form Component',
-          inputs: ['countries', 'regions', 'titles', 'address', 'resetForm'],
+          inputs: ['address', 'resetForm'],
         }),
         MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
       ],
       imports: [
         FormsSharedModule,
         IconModule,
-        NgbModule,
+        NgbCollapseModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
         TranslateModule.forRoot(),
@@ -321,14 +321,6 @@ describe('Checkout Address Component', () => {
 
     component.cancelEditAddress(component.shipping);
     expect(component.shipping.isFormCollapsed).toBeTrue();
-  });
-
-  it('should throw countryChange event when handleCountryChange is triggered', () => {
-    const emitter = spy(component.countryChange);
-
-    component.handleCountryChange('DE');
-
-    verify(emitter.emit(anything())).once();
   });
 
   it('should not render an error if the user has currently no addresses selected', () => {

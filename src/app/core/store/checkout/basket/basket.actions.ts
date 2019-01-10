@@ -129,7 +129,7 @@ export class UpdateBasketSuccess implements Action {
 }
 export class DeleteBasketShippingAddress implements Action {
   readonly type = BasketActionTypes.DeleteBasketShippingAddress;
-  constructor(public payload: string) {}
+  constructor(public payload: { addressId: string }) {}
 }
 
 export class AddProductToBasket implements Action {

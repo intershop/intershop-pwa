@@ -28,9 +28,9 @@ describe('Registration Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent({
-          selector: 'ish-address-form',
-          template: 'Address Template',
-          inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles'],
+          selector: 'ish-address-form-container',
+          template: 'Address Form Template',
+          inputs: ['parentForm', 'controlName'],
         }),
         MockComponent({
           selector: 'ish-registration-credentials-form',

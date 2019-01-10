@@ -61,14 +61,10 @@
     <!-- invoice address form -->
     <div id="collapseBasic" [ngbCollapse]="invoice.isFormCollapsed" data-testing-id="invoice-address-form">
       <ish-customer-address-form
-        [regions]="regions"
-        [titles]="titles"
-        [countries]="countries"
         [address]="invoice.address"
         [resetForm]="!invoice.isFormCollapsed"
         (save)="saveCustomerInvoiceAddress($event)"
-        (cancel)="cancelEditAddress(invoice)"
-        (countryChange)="handleCountryChange($event)">
+        (cancel)="cancelEditAddress(invoice)">
       </ish-customer-address-form>
     </div>
   </div>
@@ -147,14 +143,10 @@
     <!-- shipping address form -->
     <div id="collapseBasic" [ngbCollapse]="shipping.isFormCollapsed" data-testing-id="shipping-address-form">
       <ish-customer-address-form
-        [regions]="regions"
-        [titles]="titles"
-        [countries]="countries"
         [address]="shipping.address"
         [resetForm]="!shipping.isFormCollapsed"
         (save)="saveCustomerShippingAddress($event)"
-        (cancel)="cancelEditAddress(shipping)"
-        (countryChange)="handleCountryChange($event)">
+        (cancel)="cancelEditAddress(shipping)">
       </ish-customer-address-form>
     </div>
   </div>
