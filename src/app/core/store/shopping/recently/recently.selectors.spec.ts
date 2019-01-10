@@ -33,19 +33,12 @@ describe('Recently Selectors', () => {
 
   describe('after short shopping spree', () => {
     beforeEach(() => {
-      ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(sku => store$.dispatch(new LoadProductSuccess({ sku } as Product)));
-
-      store$.dispatch(new SelectProduct('A'));
-      store$.dispatch(new SelectProduct('B'));
-      store$.dispatch(new SelectProduct('F'));
-      store$.dispatch(new SelectProduct('C'));
-      store$.dispatch(new SelectProduct('A'));
-      store$.dispatch(new SelectProduct('D'));
-      store$.dispatch(new SelectProduct('E'));
-      store$.dispatch(new SelectProduct('D'));
-      store$.dispatch(new SelectProduct('A'));
-      store$.dispatch(new SelectProduct('B'));
-      store$.dispatch(new SelectProduct('A'));
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(sku =>
+        store$.dispatch(new LoadProductSuccess({ product: { sku } as Product }))
+      );
+      ['A', 'B', 'F', 'C', 'A', 'D', 'E', 'D', 'A', 'B', 'A'].forEach(sku =>
+        store$.dispatch(new SelectProduct({ sku }))
+      );
     });
 
     it('should have collected data for display on pages', () => {

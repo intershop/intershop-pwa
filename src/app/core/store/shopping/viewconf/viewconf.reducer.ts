@@ -36,22 +36,22 @@ export function viewconfReducer(
     case fromViewconf.ViewconfActionTypes.SetEndlessScrollingPageSize: {
       return {
         ...state,
-        itemsPerPage: action.payload,
+        itemsPerPage: action.payload.itemsPerPage,
       };
     }
 
     case fromViewconf.ViewconfActionTypes.ChangeViewType: {
-      const viewType = action.payload;
+      const { viewType } = action.payload;
       return { ...state, viewType };
     }
 
     case fromViewconf.ViewconfActionTypes.ChangeSortBy: {
-      const sortBy = action.payload;
+      const sortBy = action.payload.sorting;
       return { ...state, sortBy };
     }
 
     case fromViewconf.ViewconfActionTypes.SetSortKeys: {
-      const sortKeys = action.payload;
+      const sortKeys = action.payload.sortKeys;
       return {
         ...state,
         sortKeys: [...sortKeys],
@@ -80,7 +80,7 @@ export function viewconfReducer(
     case fromViewconf.ViewconfActionTypes.SetPage: {
       return {
         ...state,
-        page: action.payload,
+        page: action.payload.pageNumber,
       };
     }
 

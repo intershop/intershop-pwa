@@ -22,7 +22,7 @@ export class ProductPageContainerComponent {
     this.store.dispatch(new AddProductToBasket({ sku, quantity }));
   }
 
-  addToCompare(sku) {
-    this.store.dispatch(new AddToCompare(sku));
+  addToCompare(sku: string) {
+    this.store.dispatch(new AddToCompare({ sku }));
   }
 }

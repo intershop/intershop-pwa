@@ -18,6 +18,7 @@ const keys = ['checkout', 'countries', 'locale', 'shopping', 'user', 'quoting', 
 
 export class Storage implements Action {
   readonly type = STORAGE;
+  // tslint:disable-next-line:ngrx-use-complex-type-with-action-payload
   constructor(public payload: string) {}
 }
 

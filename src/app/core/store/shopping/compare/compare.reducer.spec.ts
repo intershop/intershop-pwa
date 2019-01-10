@@ -14,7 +14,7 @@ describe('Compare Reducer', () => {
   describe('AddToCompare action', () => {
     it('should add SKU to compare state for the given SKU', () => {
       const sku = '1234567';
-      const action = new fromActions.AddToCompare(sku);
+      const action = new fromActions.AddToCompare({ sku });
       const state = compareReducer(initialState, action);
 
       expect(state.products).toContain(sku);
@@ -29,7 +29,7 @@ describe('Compare Reducer', () => {
         ...initialState,
         products: ['123', sku],
       };
-      const action = new fromActions.RemoveFromCompare(sku);
+      const action = new fromActions.RemoveFromCompare({ sku });
       const state = compareReducer(previousState, action);
 
       expect(state.products).not.toContain(sku);

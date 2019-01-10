@@ -26,6 +26,6 @@ export class ContentIncludeContainerComponent implements OnInit {
         take(1),
         filter(x => !x)
       )
-      .subscribe(() => this.store.dispatch(new LoadContentInclude(this.includeId)));
+      .subscribe(() => this.store.dispatch(new LoadContentInclude({ includeId: this.includeId })));
   }
 }

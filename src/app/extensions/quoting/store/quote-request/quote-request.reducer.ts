@@ -30,7 +30,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     case QuoteRequestActionTypes.SelectQuoteRequest: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.id,
       };
     }
 
@@ -62,7 +62,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     case QuoteRequestActionTypes.AddBasketToQuoteRequestFail:
     case QuoteRequestActionTypes.UpdateQuoteRequestItemsFail:
     case QuoteRequestActionTypes.DeleteItemFromQuoteRequestFail: {
-      const error = action.payload;
+      const error = action.payload.error;
 
       return {
         ...state,
@@ -72,7 +72,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     }
 
     case QuoteRequestActionTypes.LoadQuoteRequestsSuccess: {
-      const quoteRequests = action.payload;
+      const quoteRequests = action.payload.quoteRequests;
 
       return {
         ...state,
@@ -82,7 +82,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     }
 
     case QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess: {
-      const quoteRequestItems = action.payload;
+      const quoteRequestItems = action.payload.quoteRequestItems;
 
       return {
         ...state,

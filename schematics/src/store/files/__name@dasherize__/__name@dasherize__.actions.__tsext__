@@ -15,7 +15,7 @@ export class Load<%= classify(name) %> implements Action {
 <% if(entity) { %>
 export class Load<%= classify(name) %>Fail implements Action {
   readonly type = <%= classify(name) %>ActionTypes.Load<%= classify(name) %>Fail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class Load<%= classify(name) %>Success implements Action {

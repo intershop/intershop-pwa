@@ -23,10 +23,10 @@ export class BasketPageContainerComponent {
   constructor(private store: Store<{}>) {}
 
   deleteBasketItem(itemId: string) {
-    this.store.dispatch(new DeleteBasketItem(itemId));
+    this.store.dispatch(new DeleteBasketItem({ itemId }));
   }
 
   updateBasketItem(formValue: LineItemQuantity) {
-    this.store.dispatch(new UpdateBasketItems([formValue]));
+    this.store.dispatch(new UpdateBasketItems({ lineItemQuantities: [formValue] }));
   }
 }

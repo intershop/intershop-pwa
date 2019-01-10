@@ -12,9 +12,9 @@ const authorizationHeaderKey = 'Authorization';
 
 function setTokenFromResponse(store: Store<{}>, event: HttpEvent<any>) {
   if (event instanceof HttpResponse) {
-    const tokenReturned = event.headers.get(tokenHeaderKeyName);
-    if (tokenReturned) {
-      store.dispatch(new SetAPIToken(tokenReturned));
+    const apiToken = event.headers.get(tokenHeaderKeyName);
+    if (apiToken) {
+      store.dispatch(new SetAPIToken({ apiToken }));
     }
   }
 }

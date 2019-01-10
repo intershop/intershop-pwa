@@ -33,7 +33,7 @@ export class SearchBoxContainerComponent {
   constructor(private store: Store<{}>, private router: Router) {}
 
   suggestSearch(term: string) {
-    this.store.dispatch(new SuggestSearch(term));
+    this.store.dispatch(new SuggestSearch({ searchTerm: term }));
   }
 
   performSearch(searchTerm: string) {

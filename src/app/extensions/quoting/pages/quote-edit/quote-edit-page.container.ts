@@ -27,7 +27,7 @@ export class QuoteEditPageContainerComponent {
   }
 
   addQuoteToBasket(quoteId: string) {
-    this.store.dispatch(new AddQuoteToBasket(quoteId));
+    this.store.dispatch(new AddQuoteToBasket({ quoteId }));
     this.router.navigate(['/basket']);
   }
 }

@@ -43,23 +43,23 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   }
 
   updateBasketInvoiceAddress(addressId: string) {
-    this.store.dispatch(new UpdateBasketInvoiceAddress(addressId));
+    this.store.dispatch(new UpdateBasketInvoiceAddress({ addressId }));
   }
 
   updateBasketShippingAddress(addressId: string) {
-    this.store.dispatch(new UpdateBasketShippingAddress(addressId));
+    this.store.dispatch(new UpdateBasketShippingAddress({ addressId }));
   }
 
   updateBasketCustomerAddress(address: Address) {
-    this.store.dispatch(new UpdateBasketCustomerAddress(address));
+    this.store.dispatch(new UpdateBasketCustomerAddress({ address }));
   }
 
   createCustomerInvoiceAddress(address: Address) {
-    this.store.dispatch(new CreateBasketInvoiceAddress(address));
+    this.store.dispatch(new CreateBasketInvoiceAddress({ address }));
   }
 
   createCustomerShippingAddress(address: Address) {
-    this.store.dispatch(new CreateBasketShippingAddress(address));
+    this.store.dispatch(new CreateBasketShippingAddress({ address }));
   }
 
   deleteCustomerAddress(addressId: string) {

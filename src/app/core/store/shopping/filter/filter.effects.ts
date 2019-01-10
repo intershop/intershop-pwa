@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { FilterService } from '../../../services/filter/filter.service';
 import { CategoriesActionTypes, getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';
@@ -19,9 +19,10 @@ export class FilterEffects {
   @Effect()
   loadAvailableFilterForCategories$ = this.actions$.pipe(
     ofType<filterActions.LoadFilterForCategory>(filterActions.FilterActionTypes.LoadFilterForCategory),
-    mergeMap(action =>
-      this.filterService.getFilterForCategory(action.payload).pipe(
-        map(filterNavigation => new filterActions.LoadFilterForCategorySuccess(filterNavigation)),
+    mapToPayloadProperty('category'),
+    mergeMap(category =>
+      this.filterService.getFilterForCategory(category).pipe(
+        map(filterNavigation => new filterActions.LoadFilterForCategorySuccess({ filterNavigation })),
         mapErrorToAction(filterActions.LoadFilterForCategoryFail)
       )
     )
@@ -30,9 +31,10 @@ export class FilterEffects {
   @Effect()
   loadFilterForSearch$ = this.actions$.pipe(
     ofType<filterActions.LoadFilterForSearch>(filterActions.FilterActionTypes.LoadFilterForSearch),
-    mergeMap(action =>
-      this.filterService.getFilterForSearch(action.payload).pipe(
-        map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
+    mapToPayloadProperty('searchTerm'),
+    mergeMap(searchTerm =>
+      this.filterService.getFilterForSearch(searchTerm).pipe(
+        map(filterNavigation => new filterActions.LoadFilterForSearchSuccess({ filterNavigation })),
         mapErrorToAction(filterActions.LoadFilterForSearchFail)
       )
     )
@@ -42,19 +44,20 @@ export class FilterEffects {
   loadFilterIfCategoryWasSelected$ = this.actions$.pipe(
     ofType(CategoriesActionTypes.SelectedCategoryAvailable),
     withLatestFrom(this.store$.pipe(select(getSelectedCategory))),
-    map(([, category]) => new filterActions.LoadFilterForCategory(category))
+    map(([, category]) => new filterActions.LoadFilterForCategory({ category }))
   );
 
   @Effect()
   loadFilterForSearchIfSearchSuccess$ = this.actions$.pipe(
     ofType<SearchProductsSuccess>(SearchActionTypes.SearchProductsSuccess),
-    map(action => new filterActions.LoadFilterForSearch(action.payload))
+    mapToPayloadProperty('searchTerm'),
+    map(searchTerm => new filterActions.LoadFilterForSearch({ searchTerm }))
   );
 
   @Effect()
   applyFilter$ = this.actions$.pipe(
     ofType<filterActions.ApplyFilter>(filterActions.FilterActionTypes.ApplyFilter),
-    map(action => action.payload),
+    mapToPayload(),
     mergeMap(({ filterId: filterName, searchParameter }) =>
       this.filterService.applyFilter(filterName, searchParameter).pipe(
         map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, filterName, searchParameter })),
@@ -66,13 +69,13 @@ export class FilterEffects {
   @Effect()
   loadFilteredProducts$ = this.actions$.pipe(
     ofType<filterActions.ApplyFilterSuccess>(filterActions.FilterActionTypes.ApplyFilterSuccess),
-    map(action => action.payload),
+    mapToPayload(),
     switchMap(({ filterName, searchParameter }) =>
       this.filterService
         .getProductSkusForFilter(filterName, searchParameter)
         .pipe(
           mergeMap((newProducts: string[]) => [
-            ...newProducts.map(sku => new LoadProduct(sku)),
+            ...newProducts.map(sku => new LoadProduct({ sku })),
             new SetPagingInfo({ currentPage: 0, totalItems: newProducts.length, newProducts }),
           ])
         )

@@ -5,8 +5,7 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { OrderService } from '../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../shopping/products';
 import { UserActionTypes } from '../user';
@@ -23,7 +22,7 @@ export class OrdersEffects {
     ofType(ordersActions.OrdersActionTypes.LoadOrders),
     concatMap(() =>
       this.orderService.getOrders().pipe(
-        map(orders => new ordersActions.LoadOrdersSuccess(orders)),
+        map(orders => new ordersActions.LoadOrdersSuccess({ orders })),
         mapErrorToAction(ordersActions.LoadOrdersFail)
       )
     )
@@ -38,14 +37,14 @@ export class OrdersEffects {
     map(action => action.payload.params.orderId),
     withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
     filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
-    map(([orderId]) => new ordersActions.SelectOrder(orderId))
+    map(([orderId]) => new ordersActions.SelectOrder({ orderId }))
   );
 
   @Effect()
   loadOrdersForSelectedOrder$ = this.actions$.pipe(
     ofType<ordersActions.SelectOrder>(ordersActions.OrdersActionTypes.SelectOrder),
-    map(action => action.payload),
-    filter(orderId => !!orderId),
+    mapToPayloadProperty('orderId'),
+    whenTruthy(),
     map(() => new ordersActions.LoadOrders())
   );
 
@@ -57,20 +56,21 @@ export class OrdersEffects {
   loadProductsForSelectedOrder$ = combineLatest(
     this.actions$.pipe(
       ofType<ordersActions.SelectOrder>(ordersActions.OrdersActionTypes.SelectOrder),
-      map(action => action.payload)
+      mapToPayloadProperty('orderId')
     ),
     this.actions$.pipe(
       ofType<ordersActions.LoadOrdersSuccess>(ordersActions.OrdersActionTypes.LoadOrdersSuccess),
-      map(action => action.payload)
+      mapToPayloadProperty('orders')
     )
   ).pipe(
     map(([orderId, orders]) => orders.filter(order => order.id === orderId).pop()),
-    filter(order => !!order),
+    whenTruthy(),
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([order, products]) => [
       ...order.lineItems
-        .filter((lineItem: LineItem) => !products[lineItem.productSKU])
-        .map((lineItem: LineItem) => new LoadProduct(lineItem.productSKU)),
+        .map(lineItem => lineItem.productSKU)
+        .filter(sku => !products[sku])
+        .map(sku => new LoadProduct({ sku })),
     ])
   );
 

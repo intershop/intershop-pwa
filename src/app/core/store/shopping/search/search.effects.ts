@@ -10,7 +10,6 @@ import {
   debounce,
   debounceTime,
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   map,
   mergeMap,
@@ -19,7 +18,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
@@ -69,14 +68,15 @@ export class SearchEffects {
       )
     ),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
-    filter(x => !!x),
-    distinctUntilChanged(),
-    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts(searchTerm)])
+    whenTruthy(),
+    distinctUntilChanged<string>(),
+    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
   );
 
   @Effect()
   searchMoreProducts$ = this.actions$.pipe(
     ofType<SearchMoreProducts>(SearchActionTypes.SearchMoreProducts),
+    mapToPayloadProperty('searchTerm'),
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
@@ -86,7 +86,11 @@ export class SearchEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([action, , , page]) => [new SetPagingLoading(), new SetPage(page), new SearchProducts(action.payload)])
+    mergeMap(([searchTerm, , , pageNumber]) => [
+      new SetPagingLoading(),
+      new SetPage({ pageNumber }),
+      new SearchProducts({ searchTerm }),
+    ])
   );
 
   /**
@@ -95,21 +99,20 @@ export class SearchEffects {
   @Effect()
   searchProducts$ = this.actions$.pipe(
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    map(action => action.payload),
+    mapToPayloadProperty('searchTerm'),
     withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
     distinctUntilChanged(),
-    concatMap(([searchTerm, page, itemsPerPage]) =>
-      // get products
-      this.productsService.searchProducts(searchTerm, page, itemsPerPage).pipe(
-        mergeMap(res => [
+    concatMap(([searchTerm, currentPage, itemsPerPage]) =>
+      this.productsService.searchProducts(searchTerm, currentPage, itemsPerPage).pipe(
+        mergeMap(({ total: totalItems, products, sortKeys }) => [
           // dispatch action with search result
-          new SearchProductsSuccess(searchTerm),
+          new SearchProductsSuccess({ searchTerm }),
           // dispatch viewconf action
-          new SetPagingInfo({ currentPage: page, totalItems: res.total, newProducts: res.products.map(p => p.sku) }),
+          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
           // dispatch actions to load the product information of the found products
-          ...res.products.map(product => new LoadProductSuccess(product)),
+          ...products.map(product => new LoadProductSuccess({ product })),
           // dispatch action to store the returned sorting options
-          new SetSortKeys(res.sortKeys),
+          new SetSortKeys({ sortKeys }),
         ]),
         mapErrorToAction(SearchProductsFail)
       )
@@ -119,13 +122,13 @@ export class SearchEffects {
   @Effect()
   suggestSearch$ = this.actions$.pipe(
     ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
+    mapToPayloadProperty('searchTerm'),
     debounceTime(400),
-    distinctUntilKeyChanged('payload'),
-    map(action => action.payload),
+    distinctUntilChanged(),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(
-        map(results => new SuggestSearchSuccess(results)),
+        map(suggests => new SuggestSearchSuccess({ suggests })),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       )

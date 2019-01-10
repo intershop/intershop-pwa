@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { AddressService } from '../../../services/address/address.service';
 import { UserActionTypes, getLoggedInCustomer } from '../../user';
 
@@ -19,7 +19,7 @@ export class AddressesEffects {
     withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
     switchMap(([, customer]) =>
       this.addressService.getCustomerAddresses(customer.customerNo).pipe(
-        map(addresses => new addressActions.LoadAddressesSuccess(addresses)),
+        map(addresses => new addressActions.LoadAddressesSuccess({ addresses })),
         mapErrorToAction(addressActions.LoadAddressesFail)
       )
     )
@@ -31,12 +31,12 @@ export class AddressesEffects {
   @Effect()
   createCustomerAddress$ = this.actions$.pipe(
     ofType<addressActions.CreateCustomerAddress>(addressActions.AddressActionTypes.CreateCustomerAddress),
-    map(action => action.payload),
+    mapToPayloadProperty('address'),
     withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
-    filter(([payload, customer]) => !!payload || !!customer),
-    concatMap(([{ address }, customer]) =>
+    filter(([address, customer]) => !!address || !!customer),
+    concatMap(([address, customer]) =>
       this.addressService.createCustomerAddress(customer.customerNo, address).pipe(
-        map(newAddress => new addressActions.CreateCustomerAddressSuccess(newAddress)),
+        map(newAddress => new addressActions.CreateCustomerAddressSuccess({ address: newAddress })),
         mapErrorToAction(addressActions.CreateCustomerAddressFail)
       )
     )
@@ -48,10 +48,10 @@ export class AddressesEffects {
   @Effect()
   deleteCustomerAddress$ = this.actions$.pipe(
     ofType<addressActions.DeleteCustomerAddress>(addressActions.AddressActionTypes.DeleteCustomerAddress),
-    map(action => action.payload),
+    mapToPayloadProperty('addressId'),
     withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
     filter(([addressId, customer]) => !!addressId || !!customer),
-    mergeMap(([{ addressId }, customer]) =>
+    mergeMap(([addressId, customer]) =>
       this.addressService.deleteCustomerAddress(customer.customerNo, addressId).pipe(
         map(id => new addressActions.DeleteCustomerAddressSuccess({ addressId: id })),
         mapErrorToAction(addressActions.DeleteCustomerAddressFail)

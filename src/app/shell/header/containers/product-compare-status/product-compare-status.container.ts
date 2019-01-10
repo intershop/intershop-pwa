@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { pluck } from 'rxjs/operators';
 
 import { getCompareProductsSKUs } from 'ish-core/store/shopping/compare';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-compare-status-container',
@@ -15,7 +15,7 @@ export class ProductCompareStatusContainerComponent {
 
   productCompareCount$ = this.store.pipe(
     select(getCompareProductsSKUs),
-    pluck('length')
+    mapToProperty('length')
   );
 
   constructor(private store: Store<{}>) {}

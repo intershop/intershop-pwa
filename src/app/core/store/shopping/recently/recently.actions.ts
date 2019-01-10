@@ -7,7 +7,7 @@ export enum RecentlyActionTypes {
 
 export class AddToRecently implements Action {
   readonly type = RecentlyActionTypes.AddToRecently;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 
 export class ClearRecently implements Action {

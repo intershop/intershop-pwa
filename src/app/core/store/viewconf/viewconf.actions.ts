@@ -10,17 +10,17 @@ export enum ViewconfActionTypes {
 
 export class SetWrapperClass implements Action {
   readonly type = ViewconfActionTypes.SetWrapperClass;
-  constructor(public payload: string) {}
+  constructor(public payload: { wrapperClass: string }) {}
 }
 
 export class SetHeaderType implements Action {
   readonly type = ViewconfActionTypes.SetHeaderType;
-  constructor(public payload: string) {}
+  constructor(public payload: { headerType: string }) {}
 }
 
 export class SetBreadcrumbData implements Action {
   readonly type = ViewconfActionTypes.SetBreadcrumbData;
-  constructor(public payload: BreadcrumbItem[]) {}
+  constructor(public payload: { breadcrumbData: BreadcrumbItem[] }) {}
 }
 
 export declare type ViewconfActions = SetWrapperClass | SetHeaderType | SetBreadcrumbData;

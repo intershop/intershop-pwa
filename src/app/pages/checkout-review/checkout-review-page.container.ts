@@ -20,6 +20,6 @@ export class CheckoutReviewPageContainerComponent {
    * creates an order and routes to receipt page in case of success
    */
   onCreateOrder(basket: Basket) {
-    this.store.dispatch(new CreateOrder(basket));
+    this.store.dispatch(new CreateOrder({ basket }));
   }
 }

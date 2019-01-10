@@ -18,7 +18,7 @@ export class ViewconfEffects {
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
     map(action => action.payload.data.wrapperClass),
     distinctCompareWith(this.store.pipe(select(getWrapperClass))),
-    map(wrapperClass => new SetWrapperClass(wrapperClass))
+    map(wrapperClass => new SetWrapperClass({ wrapperClass }))
   );
 
   @Effect()
@@ -26,7 +26,7 @@ export class ViewconfEffects {
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
     map(action => action.payload.data.headerType),
     distinctCompareWith(this.store.pipe(select(getHeaderType))),
-    map(headerType => new SetHeaderType(headerType))
+    map(headerType => new SetHeaderType({ headerType }))
   );
 
   @Effect()
@@ -34,6 +34,6 @@ export class ViewconfEffects {
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
     map(action => action.payload.data.breadcrumbData),
     distinctCompareWith(this.store.pipe(select(getBreadcrumbData))),
-    map(breadcrumbData => new SetBreadcrumbData(breadcrumbData))
+    map(breadcrumbData => new SetBreadcrumbData({ breadcrumbData }))
   );
 }

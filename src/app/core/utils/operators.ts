@@ -1,4 +1,4 @@
-import { Observable, OperatorFunction, of } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
 
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
@@ -33,7 +33,7 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
     );
 }
 
-export function mapErrorToAction<S, T>(actionType: new (error: HttpError) => T) {
+export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpError }) => T) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
       // tslint:disable-next-line:ban
@@ -48,7 +48,33 @@ export function mapErrorToAction<S, T>(actionType: new (error: HttpError) => T) 
         if (typeof window === 'undefined' || window.name !== 'nodejs' || process.env.DEBUG || err instanceof Error) {
           console.error(err);
         }
-        return of(new actionType(HttpErrorMapper.fromError(err)));
+        return of(new actionType({ error: HttpErrorMapper.fromError(err) }));
       })
     );
+}
+
+export function mapToProperty<T, K extends keyof T>(property: K) {
+  return (source$: Observable<T>) => source$.pipe<T[K]>(map(x => (x ? x[property] : undefined)));
+}
+
+// tslint:disable-next-line:no-any
+export function mapToPayload<T>(): OperatorFunction<{ payload: T; type: any }, T> {
+  return (source$: Observable<{ payload: T }>) => source$.pipe(map(action => action.payload));
+}
+
+// tslint:disable-next-line:no-any
+export function mapToPayloadProperty<T>(key: keyof T): OperatorFunction<{ payload: T; type: any }, T[keyof T]> {
+  return (source$: Observable<{ payload: T }>) =>
+    source$.pipe(
+      map(action => action.payload),
+      mapToProperty(key)
+    );
+}
+
+export function whenTruthy<T>(): MonoTypeOperatorFunction<T> {
+  return (source$: Observable<T>) => source$.pipe(filter(x => !!x));
+}
+
+export function whenFalsy<T>(): MonoTypeOperatorFunction<T> {
+  return (source$: Observable<T>) => source$.pipe(filter(x => !x));
 }

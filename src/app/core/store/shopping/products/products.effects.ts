@@ -15,7 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LocaleActionTypes } from '../../locale';
 import {
@@ -45,10 +45,10 @@ export class ProductsEffects {
   @Effect()
   loadProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
-    map(action => action.payload),
+    mapToPayloadProperty('sku'),
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
-        map(product => new productsActions.LoadProductSuccess(product)),
+        map(product => new productsActions.LoadProductSuccess({ product })),
         mapErrorToAction(productsActions.LoadProductFail)
       )
     )
@@ -59,6 +59,7 @@ export class ProductsEffects {
     ofType<productsActions.LoadMoreProductsForCategory>(
       productsActions.ProductsActionTypes.LoadMoreProductsForCategory
     ),
+    mapToPayloadProperty('categoryId'),
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
@@ -68,10 +69,10 @@ export class ProductsEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([action, , , page]) => [
+    mergeMap(([categoryId, , , pageNumber]) => [
       new SetPagingLoading(),
-      new SetPage(page),
-      new productsActions.LoadProductsForCategory(action.payload),
+      new SetPage({ pageNumber }),
+      new productsActions.LoadProductsForCategory({ categoryId }),
     ])
   );
 
@@ -81,24 +82,22 @@ export class ProductsEffects {
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    map(action => action.payload),
+    mapToPayloadProperty('categoryId'),
     withLatestFrom(
       this.store.pipe(select(getPagingPage)),
       this.store.pipe(select(getSortBy)),
       this.store.pipe(select(getItemsPerPage))
     ),
     distinctUntilChanged(),
-    concatMap(([categoryUniqueId, page, sortBy, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, page, itemsPerPage, sortBy).pipe(
+    concatMap(([categoryUniqueId, currentPage, sortBy, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryUniqueId, currentPage, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-        switchMap(([res, entities]) => [
-          new SetPagingInfo({
-            currentPage: page,
-            totalItems: res.total,
-            newProducts: res.products.map(p => p.sku),
-          }),
-          new SetSortKeys(res.sortKeys),
-          ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
+        switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
+          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
+          new SetSortKeys({ sortKeys }),
+          ...products
+            .filter(stub => !entities[stub.sku])
+            .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
         mapErrorToAction(productsActions.LoadProductFail)
       )
@@ -111,15 +110,15 @@ export class ProductsEffects {
     map(action => action.payload.params.sku),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
-    map(([sku]) => new productsActions.SelectProduct(sku))
+    map(([sku]) => new productsActions.SelectProduct({ sku }))
   );
 
   @Effect()
   selectedProduct$ = this.actions$.pipe(
     ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
-    map(action => action.payload),
-    filter(sku => !!sku),
-    map(sku => new productsActions.LoadProduct(sku))
+    mapToPayloadProperty('sku'),
+    whenTruthy(),
+    map(sku => new productsActions.LoadProduct({ sku }))
   );
 
   /**
@@ -128,14 +127,14 @@ export class ProductsEffects {
   @Effect()
   languageChange$ = this.store.pipe(
     select(productsSelectors.getSelectedProduct),
-    filter(x => !!x),
+    whenTruthy(),
     switchMapTo(
       this.actions$.pipe(
         ofType(LocaleActionTypes.SelectLocale),
         distinctUntilChanged(),
         withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
         filter(([, sku]) => !!sku),
-        map(([, sku]) => new productsActions.LoadProduct(sku))
+        map(([, sku]) => new productsActions.LoadProduct({ sku }))
       )
     )
   );

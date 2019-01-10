@@ -55,21 +55,21 @@ describe('Basket Page Container', () => {
   });
 
   it('should render loading component if there is no basket', () => {
-    store$.dispatch(new LoadBasket('BASKET_ID'));
+    store$.dispatch(new LoadBasket({ id: 'BASKET_ID' }));
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
   it('should render empty basket component if the basket has no line items', () => {
     const basket = { id: 'dummy', lineItems: [] } as Basket;
-    store$.dispatch(new LoadBasketSuccess(basket));
+    store$.dispatch(new LoadBasketSuccess({ basket }));
     fixture.detectChanges();
     expect(element.querySelector('ish-shopping-basket-empty')).toBeTruthy();
   });
 
   it('should render shopping basket component if there is a basket with line items', () => {
     const basket = { id: 'dummy', lineItems: [{ id: '123', productSKU: 'SKU_123' }] as LineItem[] } as Basket;
-    store$.dispatch(new LoadBasketSuccess(basket));
+    store$.dispatch(new LoadBasketSuccess({ basket }));
     fixture.detectChanges();
     expect(element.querySelector('ish-shopping-basket')).toBeTruthy();
   });
