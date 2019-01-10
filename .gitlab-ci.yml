@@ -208,6 +208,7 @@ reports:
 
 push_reports:
   stage: publish
+  cache: {}
   only:
     refs:
       - develop
@@ -228,6 +229,8 @@ push_reports:
 
 pull_images:
   stage: distribute
+  cache: {}
+  dependencies: []
   only:
     refs:
       - develop
@@ -235,6 +238,8 @@ pull_images:
   - shell-executor
   - docker
   - demoserver
+  variables:
+    GIT_STRATEGY: none
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   - docker pull "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
@@ -242,6 +247,8 @@ pull_images:
 
 deploy_demo:
   stage: deploy
+  cache: {}
+  dependencies: []
   only:
     refs:
       - develop
@@ -250,6 +257,7 @@ deploy_demo:
   - docker
   - chuck-norris-swarm-manager
   variables:
+    GIT_STRATEGY: none
     SERVICE: "intershop-pwa"
     IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
   script:
@@ -261,6 +269,8 @@ deploy_demo:
 
 deploy_reports:
   stage: deploy
+  cache: {}
+  dependencies: []
   only:
     refs:
       - develop
@@ -270,6 +280,7 @@ deploy_reports:
   - docker
   - chuck-norris-swarm-manager
   variables:
+    GIT_STRATEGY: none
     SERVICE: "intershop-pwa-reports"
     IMAGE: "${CI_REGISTRY_IMAGE}:reports"
   script:
@@ -281,12 +292,15 @@ deploy_reports:
 
 deploy_review:
   stage: deploy
+  cache: {}
+  dependencies: []
   when: manual
   tags:
   - shell-executor
   - docker
   - chuck-norris-swarm-manager
   variables:
+    GIT_STRATEGY: none
     SERVICE: "intershop-pwa-review"
     IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
   script:
