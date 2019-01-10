@@ -21,7 +21,7 @@ export class SetEndlessScrollingPageSize implements Action {
 
 export class ChangeViewType implements Action {
   readonly type = ViewconfActionTypes.ChangeViewType;
-  constructor(public payload: ViewType) {}
+  constructor(public payload: { viewType: ViewType }) {}
 }
 
 export class ChangeSortBy implements Action {

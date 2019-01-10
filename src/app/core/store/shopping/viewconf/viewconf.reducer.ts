@@ -41,7 +41,7 @@ export function viewconfReducer(
     }
 
     case fromViewconf.ViewconfActionTypes.ChangeViewType: {
-      const viewType = action.payload;
+      const { viewType } = action.payload;
       return { ...state, viewType };
     }
 

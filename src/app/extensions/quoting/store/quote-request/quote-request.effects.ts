@@ -17,7 +17,7 @@ import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
 
-import * as quoteRequestActions from './quote-request.actions';
+import * as actions from './quote-request.actions';
 import { getCurrentQuoteRequests, getSelectedQuoteRequest, getSelectedQuoteRequestId } from './quote-request.selectors';
 
 @Injectable()
@@ -35,11 +35,11 @@ export class QuoteRequestEffects {
    */
   @Effect()
   loadQuoteRequests$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequests),
+    ofType(actions.QuoteRequestActionTypes.LoadQuoteRequests),
     concatMap(() =>
       this.quoteRequestService.getQuoteRequests().pipe(
-        map(quoteRequests => new quoteRequestActions.LoadQuoteRequestsSuccess({ quoteRequests })),
-        mapErrorToAction(quoteRequestActions.LoadQuoteRequestsFail)
+        map(quoteRequests => new actions.LoadQuoteRequestsSuccess({ quoteRequests })),
+        mapErrorToAction(actions.LoadQuoteRequestsFail)
       )
     )
   );
@@ -49,11 +49,11 @@ export class QuoteRequestEffects {
    */
   @Effect()
   addQuoteRequest$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.AddQuoteRequest),
+    ofType(actions.QuoteRequestActionTypes.AddQuoteRequest),
     concatMap(() =>
       this.quoteRequestService.addQuoteRequest().pipe(
-        map(id => new quoteRequestActions.AddQuoteRequestSuccess({ id })),
-        mapErrorToAction(quoteRequestActions.AddQuoteRequestFail)
+        map(id => new actions.AddQuoteRequestSuccess({ id })),
+        mapErrorToAction(actions.AddQuoteRequestFail)
       )
     )
   );
@@ -63,13 +63,13 @@ export class QuoteRequestEffects {
    */
   @Effect()
   updateQuoteRequest$ = this.actions$.pipe(
-    ofType<quoteRequestActions.UpdateQuoteRequest>(quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequest),
+    ofType<actions.UpdateQuoteRequest>(actions.QuoteRequestActionTypes.UpdateQuoteRequest),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) =>
       this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
-        map(quoteRequest => new quoteRequestActions.UpdateQuoteRequestSuccess({ quoteRequest })),
-        mapErrorToAction(quoteRequestActions.UpdateQuoteRequestFail)
+        map(quoteRequest => new actions.UpdateQuoteRequestSuccess({ quoteRequest })),
+        mapErrorToAction(actions.UpdateQuoteRequestFail)
       )
     )
   );
@@ -79,13 +79,13 @@ export class QuoteRequestEffects {
    */
   @Effect()
   deleteQuoteRequest$ = this.actions$.pipe(
-    ofType<quoteRequestActions.DeleteQuoteRequest>(quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequest),
+    ofType<actions.DeleteQuoteRequest>(actions.QuoteRequestActionTypes.DeleteQuoteRequest),
     mapToPayloadProperty('id'),
 
     concatMap(quoteRequestId =>
       this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
-        map(id => new quoteRequestActions.DeleteQuoteRequestSuccess({ id })),
-        mapErrorToAction(quoteRequestActions.DeleteQuoteRequestFail)
+        map(id => new actions.DeleteQuoteRequestSuccess({ id })),
+        mapErrorToAction(actions.DeleteQuoteRequestFail)
       )
     )
   );
@@ -95,12 +95,12 @@ export class QuoteRequestEffects {
    */
   @Effect()
   submitQuoteRequest$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequest),
+    ofType(actions.QuoteRequestActionTypes.SubmitQuoteRequest),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([, quoteRequestId]) =>
       this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
-        map(id => new quoteRequestActions.SubmitQuoteRequestSuccess({ id })),
-        mapErrorToAction(quoteRequestActions.SubmitQuoteRequestFail)
+        map(id => new actions.SubmitQuoteRequestSuccess({ id })),
+        mapErrorToAction(actions.SubmitQuoteRequestFail)
       )
     )
   );
@@ -110,12 +110,12 @@ export class QuoteRequestEffects {
    */
   @Effect()
   createQuoteRequestFromQuoteRequest$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest),
+    ofType(actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
     concatMap(([, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuoteRequest(currentQuoteRequest).pipe(
-        map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult: res })),
-        mapErrorToAction(quoteRequestActions.CreateQuoteRequestFromQuoteRequestFail)
+        map(quoteLineItemResult => new actions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult })),
+        mapErrorToAction(actions.CreateQuoteRequestFromQuoteRequestFail)
       )
     )
   );
@@ -125,9 +125,7 @@ export class QuoteRequestEffects {
    */
   @Effect()
   loadQuoteRequestItems$ = this.actions$.pipe(
-    ofType<quoteRequestActions.LoadQuoteRequestItems>(
-      quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestItems
-    ),
+    ofType<actions.LoadQuoteRequestItems>(actions.QuoteRequestActionTypes.LoadQuoteRequestItems),
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentQuoteRequests))),
     map(([quoteId, quoteRequests]) => quoteRequests.filter(item => item.id === quoteId).pop()),
@@ -138,8 +136,8 @@ export class QuoteRequestEffects {
         quoteRequest.items.map(item => this.quoteRequestService.getQuoteRequestItem(quoteRequest.id, item['title']))
       ).pipe(
         defaultIfEmpty([]),
-        map(quoteRequestItems => new quoteRequestActions.LoadQuoteRequestItemsSuccess({ quoteRequestItems })),
-        mapErrorToAction(quoteRequestActions.LoadQuoteRequestItemsFail)
+        map(quoteRequestItems => new actions.LoadQuoteRequestItemsSuccess({ quoteRequestItems })),
+        mapErrorToAction(actions.LoadQuoteRequestItemsFail)
       )
     )
   );
@@ -150,15 +148,14 @@ export class QuoteRequestEffects {
    */
   @Effect()
   loadProductsForQuoteRequest$ = this.actions$.pipe(
-    ofType<quoteRequestActions.LoadQuoteRequestItemsSuccess>(
-      quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess
-    ),
+    ofType<actions.LoadQuoteRequestItemsSuccess>(actions.QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess),
     mapToPayloadProperty('quoteRequestItems'),
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([lineItems, products]) => [
       ...lineItems
-        .filter(lineItem => !products[lineItem.productSKU])
-        .map(lineItem => new LoadProduct({ sku: lineItem.productSKU })),
+        .map(lineItem => lineItem.productSKU)
+        .filter(sku => !products[sku])
+        .map(sku => new LoadProduct({ sku })),
     ])
   );
 
@@ -167,16 +164,14 @@ export class QuoteRequestEffects {
    */
   @Effect()
   addProductToQuoteRequest$ = this.actions$.pipe(
-    ofType<quoteRequestActions.AddProductToQuoteRequest>(
-      quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest
-    ),
+    ofType<actions.AddProductToQuoteRequest>(actions.QuoteRequestActionTypes.AddProductToQuoteRequest),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getUserAuthorized))),
     filter(([, authorized]) => authorized),
     concatMap(([item]) =>
       this.quoteRequestService.addProductToQuoteRequest(item.sku, item.quantity).pipe(
-        map(id => new quoteRequestActions.AddProductToQuoteRequestSuccess({ id })),
-        mapErrorToAction(quoteRequestActions.AddProductToQuoteRequestFail)
+        map(id => new actions.AddProductToQuoteRequestSuccess({ id })),
+        mapErrorToAction(actions.AddProductToQuoteRequestFail)
       )
     )
   );
@@ -186,7 +181,7 @@ export class QuoteRequestEffects {
    */
   @Effect()
   addBasketToQuoteRequest$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequest),
+    ofType(actions.QuoteRequestActionTypes.AddBasketToQuoteRequest),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([, currentBasket]) =>
       forkJoin(
@@ -194,8 +189,8 @@ export class QuoteRequestEffects {
           this.quoteRequestService.addProductToQuoteRequest(lineItem.productSKU, lineItem.quantity.value)
         )
       ).pipe(
-        map(ids => new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id: ids[0] })),
-        mapErrorToAction(quoteRequestActions.AddBasketToQuoteRequestFail)
+        map(ids => new actions.AddBasketToQuoteRequestSuccess({ id: ids[0] })),
+        mapErrorToAction(actions.AddBasketToQuoteRequestFail)
       )
     )
   );
@@ -208,9 +203,7 @@ export class QuoteRequestEffects {
    */
   @Effect()
   updateQuoteRequestItems$ = this.actions$.pipe(
-    ofType<quoteRequestActions.UpdateQuoteRequestItems>(
-      quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItems
-    ),
+    ofType<actions.UpdateQuoteRequestItems>(actions.QuoteRequestActionTypes.UpdateQuoteRequestItems),
     mapToPayloadProperty('lineItemQuantities'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
     map(([lineItemQuantities, selectedQuoteRequest]) => ({
@@ -226,8 +219,8 @@ export class QuoteRequestEffects {
         )
       ).pipe(
         defaultIfEmpty(),
-        map(itemIds => new quoteRequestActions.UpdateQuoteRequestItemsSuccess({ itemIds })),
-        mapErrorToAction(quoteRequestActions.UpdateQuoteRequestItemsFail)
+        map(itemIds => new actions.UpdateQuoteRequestItemsSuccess({ itemIds })),
+        mapErrorToAction(actions.UpdateQuoteRequestItemsFail)
       )
     )
   );
@@ -237,15 +230,13 @@ export class QuoteRequestEffects {
    */
   @Effect()
   deleteItemFromQuoteRequest$ = this.actions$.pipe(
-    ofType<quoteRequestActions.DeleteItemFromQuoteRequest>(
-      quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequest
-    ),
+    ofType<actions.DeleteItemFromQuoteRequest>(actions.QuoteRequestActionTypes.DeleteItemFromQuoteRequest),
     mapToPayloadProperty('itemId'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) =>
       this.quoteRequestService.removeItemFromQuoteRequest(quoteRequestId, payload).pipe(
-        map(id => new quoteRequestActions.DeleteItemFromQuoteRequestSuccess({ id })),
-        mapErrorToAction(quoteRequestActions.DeleteItemFromQuoteRequestFail)
+        map(id => new actions.DeleteItemFromQuoteRequestSuccess({ id })),
+        mapErrorToAction(actions.DeleteItemFromQuoteRequestFail)
       )
     )
   );
@@ -255,7 +246,7 @@ export class QuoteRequestEffects {
    */
   @Effect({ dispatch: false })
   goToLoginOnAddQuoteRequest$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest),
+    ofType(actions.QuoteRequestActionTypes.AddProductToQuoteRequest),
     mergeMap(() => this.store.pipe(select(getUserAuthorized))),
     whenFalsy(),
     tap(() => {
@@ -266,9 +257,7 @@ export class QuoteRequestEffects {
 
   @Effect({ dispatch: false })
   goToQuoteRequestDetail$ = this.actions$.pipe(
-    ofType<quoteRequestActions.AddBasketToQuoteRequestSuccess>(
-      quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess
-    ),
+    ofType<actions.AddBasketToQuoteRequestSuccess>(actions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess),
     mapToPayloadProperty('id'),
     tap(quoteRequestId => {
       this.router.navigate([`/account/quote-request/${quoteRequestId}`]);
@@ -281,20 +270,20 @@ export class QuoteRequestEffects {
   @Effect()
   loadQuoteRequestsAfterChangeSuccess$ = this.actions$.pipe(
     ofType(
-      quoteRequestActions.QuoteRequestActionTypes.AddQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.AddQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.UpdateQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.DeleteQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.AddProductToQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess,
+      actions.QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess,
+      actions.QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess,
       QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess,
       UserActionTypes.LoadCompanyUserSuccess
     ),
     filter(() => this.featureToggleService.enabled('quoting')),
-    mapTo(new quoteRequestActions.LoadQuoteRequests())
+    mapTo(new actions.LoadQuoteRequests())
   );
 
   /**
@@ -306,7 +295,7 @@ export class QuoteRequestEffects {
     map(action => action.payload.params.quoteRequestId),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
-    map(([itemId]) => new quoteRequestActions.SelectQuoteRequest({ id: itemId }))
+    map(([itemId]) => new actions.SelectQuoteRequest({ id: itemId }))
   );
 
   /**
@@ -315,13 +304,13 @@ export class QuoteRequestEffects {
   @Effect()
   loadQuoteRequestItemsAfterSelectQuoteRequest$ = combineLatest(
     this.actions$.pipe(
-      ofType<quoteRequestActions.SelectQuoteRequest>(quoteRequestActions.QuoteRequestActionTypes.SelectQuoteRequest),
+      ofType<actions.SelectQuoteRequest>(actions.QuoteRequestActionTypes.SelectQuoteRequest),
       mapToPayloadProperty('id')
     ),
-    this.actions$.pipe(ofType(quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestsSuccess))
+    this.actions$.pipe(ofType(actions.QuoteRequestActionTypes.LoadQuoteRequestsSuccess))
   ).pipe(
     filter(([quoteId]) => !!quoteId),
-    map(([quoteId]) => new quoteRequestActions.LoadQuoteRequestItems({ id: quoteId }))
+    map(([quoteId]) => new actions.LoadQuoteRequestItems({ id: quoteId }))
   );
 
   /**

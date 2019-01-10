@@ -69,9 +69,9 @@ export class ProductsEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([categoryId, , , page]) => [
+    mergeMap(([categoryId, , , pageNumber]) => [
       new SetPagingLoading(),
-      new SetPage({ pageNumber: page }),
+      new SetPage({ pageNumber }),
       new productsActions.LoadProductsForCategory({ categoryId }),
     ])
   );
@@ -89,19 +89,15 @@ export class ProductsEffects {
       this.store.pipe(select(getItemsPerPage))
     ),
     distinctUntilChanged(),
-    concatMap(([categoryUniqueId, page, sortBy, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, page, itemsPerPage, sortBy).pipe(
+    concatMap(([categoryUniqueId, currentPage, sortBy, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryUniqueId, currentPage, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-        switchMap(([res, entities]) => [
-          new SetPagingInfo({
-            currentPage: page,
-            totalItems: res.total,
-            newProducts: res.products.map(p => p.sku),
-          }),
-          new SetSortKeys({ sortKeys: res.sortKeys }),
-          ...res.products
+        switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
+          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
+          new SetSortKeys({ sortKeys }),
+          ...products
             .filter(stub => !entities[stub.sku])
-            .map(stub => new productsActions.LoadProductSuccess({ product: stub })),
+            .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
         mapErrorToAction(productsActions.LoadProductFail)
       )
