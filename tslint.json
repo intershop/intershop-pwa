@@ -15,6 +15,7 @@
     "no-extra-boolean-cast": true,
     "no-static-this": true,
     "no-unnecessary-type-annotation": true,
+    "ish-no-object-literal-type-assertion": [ true, "^((?!(\/dev\/|\/tslint-rules\/|spec\\.ts$)).)*$" ],
     "no-collapsible-if": { "severity": "warning" },
     "no-unused": true,
     "no-var-before-return": true,
