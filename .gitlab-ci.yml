@@ -309,3 +309,23 @@ deploy_review:
   environment:
     name: review
     url: http://10.0.206.226:4300
+    on_stop: stop_review
+
+stop_review:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  when: manual
+  tags:
+  - shell-executor
+  - docker
+  - chuck-norris-swarm-manager
+  variables:
+    GIT_STRATEGY: none
+    SERVICE: "intershop-pwa-review"
+  script:
+  - docker service remove ${SERVICE}
+  environment:
+    name: review
+    action: stop
+
