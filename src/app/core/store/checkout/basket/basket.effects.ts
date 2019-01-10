@@ -18,7 +18,6 @@ import {
 } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { Basket } from '../../../models/basket/basket.model';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';
@@ -72,8 +71,9 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     switchMap(([basket, products]) => [
       ...basket.lineItems
-        .filter(basketItem => !products[basketItem.productSKU])
-        .map(basketItem => new LoadProduct({ sku: basketItem.productSKU })),
+        .map(basketItem => basketItem.productSKU)
+        .filter(sku => !products[sku])
+        .map(sku => new LoadProduct({ sku })),
     ])
   );
 
@@ -498,7 +498,7 @@ export class BasketEffects {
   createOrder$ = this.actions$.pipe(
     ofType<basketActions.CreateOrder>(basketActions.BasketActionTypes.CreateOrder),
     mapToPayloadProperty('basket'),
-    mergeMap((basket: Basket) =>
+    mergeMap(basket =>
       this.orderService.createOrder(basket, true).pipe(
         map(order => new basketActions.CreateOrderSuccess({ order })),
         mapErrorToAction(basketActions.CreateOrderFail)

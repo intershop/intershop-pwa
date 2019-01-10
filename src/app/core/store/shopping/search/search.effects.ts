@@ -86,9 +86,9 @@ export class SearchEffects {
       )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([searchTerm, , , page]) => [
+    mergeMap(([searchTerm, , , pageNumber]) => [
       new SetPagingLoading(),
-      new SetPage({ pageNumber: page }),
+      new SetPage({ pageNumber }),
       new SearchProducts({ searchTerm }),
     ])
   );
@@ -102,17 +102,17 @@ export class SearchEffects {
     mapToPayloadProperty('searchTerm'),
     withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
     distinctUntilChanged(),
-    concatMap(([searchTerm, page, itemsPerPage]) =>
-      this.productsService.searchProducts(searchTerm, page, itemsPerPage).pipe(
-        mergeMap(res => [
+    concatMap(([searchTerm, currentPage, itemsPerPage]) =>
+      this.productsService.searchProducts(searchTerm, currentPage, itemsPerPage).pipe(
+        mergeMap(({ total: totalItems, products, sortKeys }) => [
           // dispatch action with search result
           new SearchProductsSuccess({ searchTerm }),
           // dispatch viewconf action
-          new SetPagingInfo({ currentPage: page, totalItems: res.total, newProducts: res.products.map(p => p.sku) }),
+          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
           // dispatch actions to load the product information of the found products
-          ...res.products.map(product => new LoadProductSuccess({ product })),
+          ...products.map(product => new LoadProductSuccess({ product })),
           // dispatch action to store the returned sorting options
-          new SetSortKeys({ sortKeys: res.sortKeys }),
+          new SetSortKeys({ sortKeys }),
         ]),
         mapErrorToAction(SearchProductsFail)
       )

@@ -52,9 +52,7 @@ export class CategoriesEffects {
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
     map(action => action.payload.params.categoryUniqueId),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
-    map(categoryUniqueId =>
-      categoryUniqueId ? new actions.SelectCategory({ categoryId: categoryUniqueId }) : new actions.DeselectCategory()
-    )
+    map(categoryId => (categoryId ? new actions.SelectCategory({ categoryId }) : new actions.DeselectCategory()))
   );
 
   /**
@@ -111,7 +109,7 @@ export class CategoriesEffects {
     mapToPayloadProperty('categoryId'),
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
-        map(category => new actions.LoadCategorySuccess({ categories: category })),
+        map(categories => new actions.LoadCategorySuccess({ categories })),
         mapErrorToAction(actions.LoadCategoryFail)
       )
     )
@@ -136,7 +134,7 @@ export class CategoriesEffects {
     mapToPayloadProperty('depth'),
     mergeMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
-        map(category => new actions.LoadTopLevelCategoriesSuccess({ categories: category })),
+        map(categories => new actions.LoadTopLevelCategoriesSuccess({ categories })),
         mapErrorToAction(actions.LoadTopLevelCategoriesFail)
       )
     )

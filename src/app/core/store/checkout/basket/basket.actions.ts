@@ -222,7 +222,6 @@ export class LoadBasketEligiblePaymentMethodsSuccess implements Action {
   constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
 }
 
-/* payload: BasketId */
 export class LoadBasketPayments implements Action {
   readonly type = BasketActionTypes.LoadBasketPayments;
   constructor(public payload: { id: string }) {}
@@ -238,7 +237,6 @@ export class LoadBasketPaymentsSuccess implements Action {
   constructor(public payload: { paymentMethods: Payment[] }) {}
 }
 
-/* payload: PaymentName */
 export class SetBasketPayment implements Action {
   readonly type = BasketActionTypes.SetBasketPayment;
   constructor(public payload: { id: string }) {}

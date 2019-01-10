@@ -68,8 +68,8 @@ export class OrdersEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     concatMap(([order, products]) => [
       ...order.lineItems
-        .filter(lineItem => !products[lineItem.productSKU])
         .map(lineItem => lineItem.productSKU)
+        .filter(sku => !products[sku])
         .map(sku => new LoadProduct({ sku })),
     ])
   );
