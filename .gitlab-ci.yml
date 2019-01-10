@@ -278,3 +278,20 @@ deploy_reports:
   environment:
     name: reports
     url: http://jdevbuildslave01.rnd.j.intershop.de:4324
+
+deploy_review:
+  stage: deploy
+  when: manual
+  tags:
+  - shell-executor
+  - docker
+  - chuck-norris-swarm-manager
+  variables:
+    SERVICE: "intershop-pwa-review"
+    IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
+  script:
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker service create --with-registry-auth --constraint node.hostname==jxdhoffmann --replicas 1 --publish mode=host,target=4200,published=4300 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas 1 --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+  environment:
+    name: review
+    url: http://10.0.206.226:4300
