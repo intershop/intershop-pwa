@@ -20,6 +20,7 @@ class IshNoObjectLiteralTypeAssertionWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: ts.SourceFile) {
     if (new RegExp(this.includePattern).test(sourceFile.fileName)) {
       const failures = IshNoObjectLiteralTypeAssertionWalker.RULE.apply(sourceFile);
+      // tslint:disable-next-line: deprecation
       failures.forEach(f => this.addFailure(f));
     }
   }

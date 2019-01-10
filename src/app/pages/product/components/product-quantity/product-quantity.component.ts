@@ -46,7 +46,7 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
     if (change.product && change.product.currentValue) {
       this.quantityOptions = range(this.product.minOrderQuantity, this.product.maxOrderQuantity)
         .map(num => num.toString())
-        .map(num => ({ label: num, value: num } as SelectOption));
+        .map(num => ({ label: num, value: num }));
     }
   }
 }

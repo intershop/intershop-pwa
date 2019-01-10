@@ -50,7 +50,7 @@ export function productsReducer(state = initialState, action: ProductsAction): P
 
       if (state.entities[sku]) {
         const updated = mergeObjectsMutably(
-          { sku: state.entities[sku].sku } as Product,
+          { sku: state.entities[sku].sku },
           ['sku'],
           state.entities[sku],
           loadedProduct

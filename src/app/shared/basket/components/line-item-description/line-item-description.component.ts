@@ -28,10 +28,9 @@ export class LineItemDescriptionComponent implements OnChanges {
    */
   ngOnChanges() {
     this.itemSurcharges = undefined;
-    const item = this.pli as LineItemView;
 
-    if (item.itemSurcharges) {
-      this.itemSurcharges = item.itemSurcharges;
+    if (this.pli.itemSurcharges) {
+      this.itemSurcharges = this.pli.itemSurcharges;
     }
   }
 }
