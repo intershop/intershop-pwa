@@ -45,12 +45,9 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     if (!titles) {
       return;
     }
-    return titles.map(
-      t =>
-        ({
-          label: t,
-          value: t,
-        } as SelectOption)
-    );
+    return titles.map(t => ({
+      label: t,
+      value: t,
+    }));
   }
 }

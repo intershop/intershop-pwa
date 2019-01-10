@@ -28,12 +28,9 @@ export class SelectCountryComponent extends SelectComponent implements OnChanges
     if (!countries) {
       return;
     }
-    return countries.map(
-      c =>
-        ({
-          label: c.name,
-          value: c.countryCode,
-        } as SelectOption)
-    );
+    return countries.map(c => ({
+      label: c.name,
+      value: c.countryCode,
+    }));
   }
 }

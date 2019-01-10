@@ -7,6 +7,6 @@ export class QuoteRequestMapper {
     return {
       ...data,
       state: QuoteRequestHelper.getQuoteRequestState(data),
-    } as QuoteRequest;
+    };
   }
 }
