@@ -78,7 +78,7 @@ export class MiniBasketComponent implements OnChanges {
       return;
     }
 
-    const slider = this.slider.nativeElement as HTMLDivElement;
+    const slider: HTMLDivElement = this.slider.nativeElement;
     const tileHeight = slider.children.length > 0 ? slider.lastElementChild.getBoundingClientRect().height : 0;
 
     this.currentProduct -= 1;
@@ -94,7 +94,7 @@ export class MiniBasketComponent implements OnChanges {
       return;
     }
 
-    const slider = this.slider.nativeElement as HTMLDivElement;
+    const slider: HTMLDivElement = this.slider.nativeElement;
     const tileHeight = slider.children.length > 0 ? slider.lastElementChild.getBoundingClientRect().height : 0;
     if (this.currentProduct < this.basket.lineItems.length - 2) {
       this.currentProduct += 1;

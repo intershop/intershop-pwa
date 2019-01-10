@@ -28,12 +28,9 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges 
     if (!regions) {
       return;
     }
-    return regions.map(
-      r =>
-        ({
-          label: r.name,
-          value: r.name,
-        } as SelectOption)
-    );
+    return regions.map(r => ({
+      label: r.name,
+      value: r.name,
+    }));
   }
 }
