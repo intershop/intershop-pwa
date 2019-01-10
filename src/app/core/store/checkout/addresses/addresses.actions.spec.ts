@@ -36,12 +36,32 @@ describe('Addresses Actions', () => {
   });
 
   describe('Create Customer Address Actions', () => {
+    it('should create new action for CreateCustomerAddress', () => {
+      const payload = { address: { urn: '123' } as Address };
+      const action = new fromActions.CreateCustomerAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.CreateCustomerAddress,
+        payload,
+      });
+    });
+
     it('should create new action for CreateCustomerAddressFail', () => {
       const payload = { message: 'error' } as HttpError;
       const action = new fromActions.CreateCustomerAddressFail(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.AddressActionTypes.CreateCustomerAddressFail,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateCustomerAddressSuccess', () => {
+      const payload = { urn: '123' } as Address;
+      const action = new fromActions.CreateCustomerAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.CreateCustomerAddressSuccess,
         payload,
       });
     });
@@ -70,6 +90,16 @@ describe('Addresses Actions', () => {
   });
 
   describe('Delete Customer Address Actions', () => {
+    it('should create new action for DeleteCustomerAddress', () => {
+      const payload = { addressId: '123' };
+      const action = new fromActions.DeleteCustomerAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.DeleteCustomerAddress,
+        payload,
+      });
+    });
+
     it('should create new action for DeleteCustomerAddressFail', () => {
       const payload = { message: 'error' } as HttpError;
       const action = new fromActions.DeleteCustomerAddressFail(payload);
@@ -81,7 +111,7 @@ describe('Addresses Actions', () => {
     });
 
     it('should create new action for DeleteCustomerAddressSuccess', () => {
-      const payload = '123';
+      const payload = { addressId: '123' };
       const action = new fromActions.DeleteCustomerAddressSuccess(payload);
 
       expect({ ...action }).toEqual({

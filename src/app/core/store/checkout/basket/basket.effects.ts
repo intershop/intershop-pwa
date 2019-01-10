@@ -200,10 +200,10 @@ export class BasketEffects {
   @Effect()
   deleteBasketShippingAddress$ = this.actions$.pipe(
     ofType<basketActions.DeleteBasketShippingAddress>(basketActions.BasketActionTypes.DeleteBasketShippingAddress),
-    map(action => action.payload),
+    map(action => action.payload.addressId),
     mergeMap(addressId =>
       this.addressService.deleteCustomerAddress('-', addressId).pipe(
-        concatMapTo([new DeleteCustomerAddressSuccess(addressId), new basketActions.LoadBasket()]),
+        concatMapTo([new DeleteCustomerAddressSuccess({ addressId }), new basketActions.LoadBasket()]),
         mapErrorToAction(DeleteCustomerAddressFail)
       )
     )

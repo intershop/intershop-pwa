@@ -21,9 +21,11 @@ export const initialState: AddressesState = addressAdapter.getInitialState({
 export function addressesReducer(state = initialState, action: AddressAction | BasketAction): AddressesState {
   switch (action.type) {
     case AddressActionTypes.LoadAddresses:
+    case AddressActionTypes.CreateCustomerAddress:
     case BasketActionTypes.CreateBasketInvoiceAddress:
     case BasketActionTypes.CreateBasketShippingAddress:
     case BasketActionTypes.UpdateBasketCustomerAddress:
+    case AddressActionTypes.DeleteCustomerAddress:
     case BasketActionTypes.DeleteBasketShippingAddress: {
       return {
         ...state,
@@ -54,6 +56,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
       };
     }
 
+    case AddressActionTypes.CreateCustomerAddressSuccess:
     case BasketActionTypes.CreateBasketInvoiceAddressSuccess:
     case BasketActionTypes.CreateBasketShippingAddressSuccess: {
       const payload = action.payload;
@@ -79,7 +82,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
       const payload = action.payload;
 
       return {
-        ...addressAdapter.removeOne(payload, state),
+        ...addressAdapter.removeOne(payload.addressId, state),
         loading: false,
         error: undefined,
       };

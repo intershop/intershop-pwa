@@ -157,7 +157,7 @@ describe('Basket Actions', () => {
 
   describe('Delete Basket Shipping Address Actions', () => {
     it('should create new action for DeleteBasketShippingAddress', () => {
-      const payload = 'addressId';
+      const payload = { addressId: 'addressId' };
       const action = new fromActions.DeleteBasketShippingAddress(payload);
 
       expect({ ...action }).toEqual({
