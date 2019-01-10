@@ -31,7 +31,7 @@ describe('Error Selectors', () => {
   });
 
   it('should select a error when a HttpError action is reduced', done => {
-    store$.dispatch(new CommunicationTimeoutError({ status: 123 } as HttpError));
+    store$.dispatch(new CommunicationTimeoutError({ error: { status: 123 } as HttpError }));
 
     getErrorState$.subscribe(error => {
       expect(error.type).toBe(ErrorActionTypes.TimeoutError);

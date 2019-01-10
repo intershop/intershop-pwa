@@ -13,8 +13,8 @@ describe('Search Reducer', () => {
 
   describe('SearchProducts actions', () => {
     it('should set search loading to true', () => {
-      const term = 'gopro';
-      const action = new SearchProducts(term);
+      const searchTerm = 'gopro';
+      const action = new SearchProducts({ searchTerm });
       const state = searchReducer(initialState, action);
 
       expect(state.loading).toBeTrue();
@@ -23,7 +23,7 @@ describe('Search Reducer', () => {
 
   describe('SearchProductsSuccess action', () => {
     it('should set loading to false', () => {
-      const action = new SearchProductsSuccess('search');
+      const action = new SearchProductsSuccess({ searchTerm: 'search' });
       const state = searchReducer(initialState, action);
 
       expect(state.loading).toBeFalse();

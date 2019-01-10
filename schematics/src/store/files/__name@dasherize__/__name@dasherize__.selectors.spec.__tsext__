@@ -77,7 +77,7 @@ describe('<%= classify(name) %> Selectors', () => {
 
     describe('Load<%= classify(name) %>Fail', () => {
       const error = { error: 'ERROR' } as HttpError;
-      const failAction = new actions.Load<%= classify(name) %>Fail(error);
+      const failAction = new actions.Load<%= classify(name) %>Fail({ error });
 
       beforeEach(() => {
         store$.dispatch(failAction);

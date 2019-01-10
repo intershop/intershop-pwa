@@ -69,7 +69,7 @@ describe('Product Page Container', () => {
   });
 
   it('should display loading when product is loading', () => {
-    store$.dispatch(new LoadProduct('dummy'));
+    store$.dispatch(new LoadProduct({ sku: 'dummy' }));
 
     fixture.detectChanges();
 
@@ -79,8 +79,8 @@ describe('Product Page Container', () => {
 
   it('should display product-detail when product is available', () => {
     const product = { sku: 'dummy' } as Product;
-    store$.dispatch(new LoadProductSuccess(product));
-    store$.dispatch(new SelectProduct(product.sku));
+    store$.dispatch(new LoadProductSuccess({ product }));
+    store$.dispatch(new SelectProduct({ sku: product.sku }));
 
     fixture.detectChanges();
 

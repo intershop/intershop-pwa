@@ -236,7 +236,7 @@ describe('Checkout Store', () => {
     const payload = { sku: 'test', quantity: 1 };
 
     beforeEach(() => {
-      store.dispatch(new LoadProduct('test'));
+      store.dispatch(new LoadProduct({ sku: 'test' }));
       store.dispatch(new AddProductToBasket(payload));
     });
 
@@ -261,7 +261,7 @@ describe('Checkout Store', () => {
         basketId = 'newTest';
         store.reset();
 
-        store.dispatch(new LoginUser({} as LoginCredentials));
+        store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
         expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'newTest' }));
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);

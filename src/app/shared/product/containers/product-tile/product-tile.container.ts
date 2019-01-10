@@ -33,12 +33,12 @@ export class ProductTileContainerComponent implements OnInit {
         take(1),
         filter(x => !x)
       )
-      .subscribe(() => this.store.dispatch(new LoadProduct(this.productSku)));
+      .subscribe(() => this.store.dispatch(new LoadProduct({ sku: this.productSku })));
     this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(this.productSku)));
   }
 
   toggleCompare() {
-    this.store.dispatch(new ToggleCompare(this.productSku));
+    this.store.dispatch(new ToggleCompare({ sku: this.productSku }));
   }
 
   addToBasket() {

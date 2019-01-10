@@ -10,17 +10,17 @@ export enum ErrorActionTypes {
 
 export class GeneralError implements Action {
   readonly type = ErrorActionTypes.GeneralError;
-  constructor(public error: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class CommunicationTimeoutError implements Action {
   readonly type = ErrorActionTypes.TimeoutError;
-  constructor(public error: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 // 500
 export class ServerError implements Action {
   readonly type = ErrorActionTypes.ServerError;
-  constructor(public error: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export type HttpErrorAction = GeneralError | CommunicationTimeoutError | ServerError;

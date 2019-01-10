@@ -35,19 +35,19 @@ export function userReducer(state = initialState, action: UserAction): UserState
     }
 
     case UserActionTypes.CreateUserFail: {
-      return { ...initialState, error: action.payload };
+      return { ...initialState, error: action.payload.error };
     }
 
     case UserActionTypes.SetAPIToken: {
       return {
         ...state,
-        _authToken: action.payload,
+        _authToken: action.payload.apiToken,
       };
     }
 
     case UserActionTypes.LoginUserFail:
     case UserActionTypes.LoadCompanyUserFail: {
-      const error = action.payload;
+      const error = action.payload.error;
 
       return {
         ...initialState,
@@ -56,28 +56,28 @@ export function userReducer(state = initialState, action: UserAction): UserState
     }
 
     case UserActionTypes.LoginUserSuccess: {
-      const payload = action.payload;
+      const { customer } = action.payload;
       let newState;
 
       newState = {
         ...state,
         authorized: true,
-        customer: payload,
+        customer,
       };
 
-      if (payload.type === 'PrivateCustomer') {
-        newState.user = payload;
+      if (customer.type === 'PrivateCustomer') {
+        newState.user = customer;
       }
 
       return newState;
     }
 
     case UserActionTypes.LoadCompanyUserSuccess: {
-      const payload = action.payload;
+      const user = action.payload.user;
 
       return {
         ...state,
-        user: payload,
+        user,
       };
     }
   }

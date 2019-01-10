@@ -45,7 +45,8 @@ describe('Addresses Effects', () => {
 
     effects = TestBed.get(AddressesEffects);
     store$ = TestBed.get(Store);
-    store$.dispatch(new LoginUserSuccess({ customerNo: 'patricia' } as Customer));
+    const customer = { customerNo: 'patricia' } as Customer;
+    store$.dispatch(new LoginUserSuccess({ customer }));
   });
 
   describe('loadAddresses$', () => {
@@ -61,7 +62,7 @@ describe('Addresses Effects', () => {
 
     it('should map to action of type LoadAddressesSuccess', () => {
       const action = new addressesActions.LoadAddresses();
-      const completion = new addressesActions.LoadAddressesSuccess([{ urn: 'test' } as Address]);
+      const completion = new addressesActions.LoadAddressesSuccess({ addresses: [{ urn: 'test' } as Address] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -71,8 +72,8 @@ describe('Addresses Effects', () => {
 
   describe('createCustomerAddress$', () => {
     it('should call the addressService for createCustomerAddress', done => {
-      const payload = { address: { urn: '123' } as Address };
-      const action = new addressesActions.CreateCustomerAddress(payload);
+      const address = { urn: '123' } as Address;
+      const action = new addressesActions.CreateCustomerAddress({ address });
       actions$ = of(action);
 
       effects.createCustomerAddress$.subscribe(() => {
@@ -82,9 +83,9 @@ describe('Addresses Effects', () => {
     });
 
     it('should map to action of type CreateCustomerSuccess', () => {
-      const payload = { address: { urn: '123' } as Address };
-      const action = new addressesActions.CreateCustomerAddress(payload);
-      const completion = new addressesActions.CreateCustomerAddressSuccess({ urn: 'test' } as Address);
+      const address = { urn: '123' } as Address;
+      const action = new addressesActions.CreateCustomerAddress({ address });
+      const completion = new addressesActions.CreateCustomerAddressSuccess({ address: { urn: 'test' } as Address });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -95,9 +96,10 @@ describe('Addresses Effects', () => {
       when(addressServiceMock.createCustomerAddress(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const payload = { address: { urn: '123' } as Address };
-      const action = new addressesActions.CreateCustomerAddress(payload);
-      const completion = new addressesActions.CreateCustomerAddressFail({ message: 'invalid' } as HttpError);
+      const address = { urn: '123' } as Address;
+      const action = new addressesActions.CreateCustomerAddress({ address });
+      const error = { message: 'invalid' } as HttpError;
+      const completion = new addressesActions.CreateCustomerAddressFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -107,8 +109,8 @@ describe('Addresses Effects', () => {
 
   describe('deleteCustomerAddress$', () => {
     it('should call the addressService for deleteCustomerAddress', done => {
-      const payload = { addressId: '123' };
-      const action = new addressesActions.DeleteCustomerAddress(payload);
+      const addressId = '123';
+      const action = new addressesActions.DeleteCustomerAddress({ addressId });
       actions$ = of(action);
 
       effects.deleteCustomerAddress$.subscribe(() => {
@@ -118,9 +120,9 @@ describe('Addresses Effects', () => {
     });
 
     it('should map to action of type DeleteCustomerSuccess', () => {
-      const payload = { addressId: '123' };
-      const action = new addressesActions.DeleteCustomerAddress(payload);
-      const completion = new addressesActions.DeleteCustomerAddressSuccess(payload);
+      const addressId = '123';
+      const action = new addressesActions.DeleteCustomerAddress({ addressId });
+      const completion = new addressesActions.DeleteCustomerAddressSuccess({ addressId });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -131,9 +133,10 @@ describe('Addresses Effects', () => {
       when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const payload = { addressId: '123' };
-      const action = new addressesActions.DeleteCustomerAddress(payload);
-      const completion = new addressesActions.DeleteCustomerAddressFail({ message: 'invalid' } as HttpError);
+      const addressId = '123';
+      const action = new addressesActions.DeleteCustomerAddress({ addressId });
+      const error = { message: 'invalid' } as HttpError;
+      const completion = new addressesActions.DeleteCustomerAddressFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

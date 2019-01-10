@@ -28,6 +28,6 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
   }
 
   updateBasketShippingMethod(shippingId: string) {
-    this.store.dispatch(new UpdateBasketShippingMethod(shippingId));
+    this.store.dispatch(new UpdateBasketShippingMethod({ shippingId }));
   }
 }

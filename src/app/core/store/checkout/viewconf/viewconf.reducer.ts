@@ -13,7 +13,7 @@ export function viewconfReducer(state: ViewconfState = initialState, action: Vie
     case ViewconfActionTypes.SetCheckoutStep:
       return {
         ...state,
-        checkoutStep: action.payload,
+        checkoutStep: action.payload.step,
       };
   }
 

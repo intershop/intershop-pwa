@@ -36,9 +36,9 @@ export class QuoteListPageContainerComponent implements OnInit {
 
   deleteItem(item: Quote | QuoteRequest) {
     if (item.type === 'QuoteRequest') {
-      this.store.dispatch(new DeleteQuoteRequest(item.id));
+      this.store.dispatch(new DeleteQuoteRequest({ id: item.id }));
     } else if (item.type === 'Quote') {
-      this.store.dispatch(new DeleteQuote(item.id));
+      this.store.dispatch(new DeleteQuote({ id: item.id }));
     }
   }
 }

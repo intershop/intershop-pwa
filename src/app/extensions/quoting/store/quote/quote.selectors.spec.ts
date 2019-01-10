@@ -42,13 +42,12 @@ describe('Quote Selectors', () => {
   describe('selecting a quote', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoadQuotesSuccess([
-          { id: 'test', items: [{ productSKU: 'test' }] },
-          { id: 'test2', items: [] },
-        ] as QuoteData[])
+        new LoadQuotesSuccess({
+          quotes: [{ id: 'test', items: [{ productSKU: 'test' }] }, { id: 'test2', items: [] }] as QuoteData[],
+        })
       );
-      store$.dispatch(new LoadProductSuccess({ sku: 'test' } as Product));
-      store$.dispatch(new SelectQuote('test'));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'test' } as Product }));
+      store$.dispatch(new SelectQuote({ id: 'test' }));
     });
 
     it('should set "selected" to selected quote item id and set selected quote', () => {
@@ -78,7 +77,7 @@ describe('Quote Selectors', () => {
     });
 
     it('should set loading to false and set quote state', () => {
-      const quotes = [{ id: 'test' }] as QuoteData[];
+      const quotes = { quotes: [{ id: 'test' }] as QuoteData[] };
       store$.dispatch(new LoadQuotesSuccess(quotes));
 
       expect(getQuoteLoading(store$.state)).toBeFalse();
@@ -86,7 +85,7 @@ describe('Quote Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuotesFail({ message: 'invalid' } as HttpError));
+      store$.dispatch(new LoadQuotesFail({ error: { message: 'invalid' } as HttpError }));
       expect(getQuoteLoading(store$.state)).toBeFalse();
       expect(getCurrentQuotes(store$.state)).toBeEmpty();
       expect(getQuoteError(store$.state)).toEqual({ message: 'invalid' });

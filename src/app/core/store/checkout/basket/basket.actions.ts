@@ -61,67 +61,67 @@ export enum BasketActionTypes {
 
 export class LoadBasket implements Action {
   readonly type = BasketActionTypes.LoadBasket;
-  constructor(public payload?: string) {}
+  constructor(public payload?: { id: string }) {}
 }
 
 export class LoadBasketFail implements Action {
   readonly type = BasketActionTypes.LoadBasketFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadBasketSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketSuccess;
-  constructor(public payload: Basket) {}
+  constructor(public payload: { basket: Basket }) {}
 }
 
 export class CreateBasketInvoiceAddress implements Action {
   readonly type = BasketActionTypes.CreateBasketInvoiceAddress;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 export class CreateBasketInvoiceAddressSuccess implements Action {
   readonly type = BasketActionTypes.CreateBasketInvoiceAddressSuccess;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 export class CreateBasketShippingAddress implements Action {
   readonly type = BasketActionTypes.CreateBasketShippingAddress;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 export class CreateBasketShippingAddressSuccess implements Action {
   readonly type = BasketActionTypes.CreateBasketShippingAddressSuccess;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 export class UpdateBasketInvoiceAddress implements Action {
   readonly type = BasketActionTypes.UpdateBasketInvoiceAddress;
-  constructor(public payload: string) {}
+  constructor(public payload: { addressId: string }) {}
 }
 
 export class UpdateBasketShippingAddress implements Action {
   readonly type = BasketActionTypes.UpdateBasketShippingAddress;
-  constructor(public payload: string) {}
+  constructor(public payload: { addressId: string }) {}
 }
 
 export class UpdateBasketCustomerAddress implements Action {
   readonly type = BasketActionTypes.UpdateBasketCustomerAddress;
-  constructor(public payload: Address) {}
+  constructor(public payload: { address: Address }) {}
 }
 
 /* payload: Shipping Method Id */
 export class UpdateBasketShippingMethod implements Action {
   readonly type = BasketActionTypes.UpdateBasketShippingMethod;
-  constructor(public payload: string) {}
+  constructor(public payload: { shippingId: string }) {}
 }
 
 export class UpdateBasket implements Action {
   readonly type = BasketActionTypes.UpdateBasket;
-  constructor(public payload: BasketUpdateType) {}
+  constructor(public payload: { update: BasketUpdateType }) {}
 }
 
 export class UpdateBasketFail implements Action {
   readonly type = BasketActionTypes.UpdateBasketFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UpdateBasketSuccess implements Action {
@@ -144,7 +144,7 @@ export class AddItemsToBasket implements Action {
 
 export class AddItemsToBasketFail implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class AddItemsToBasketSuccess implements Action {
@@ -153,27 +153,27 @@ export class AddItemsToBasketSuccess implements Action {
 
 export class AddQuoteToBasket implements Action {
   readonly type = BasketActionTypes.AddQuoteToBasket;
-  constructor(public payload: string) {}
+  constructor(public payload: { quoteId: string }) {}
 }
 
 export class AddQuoteToBasketFail implements Action {
   readonly type = BasketActionTypes.AddQuoteToBasketFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class AddQuoteToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddQuoteToBasketSuccess;
-  constructor(public payload: Link) {}
+  constructor(public payload: { link: Link }) {}
 }
 
 export class UpdateBasketItems implements Action {
   readonly type = BasketActionTypes.UpdateBasketItems;
-  constructor(public payload: LineItemQuantity[]) {}
+  constructor(public payload: { lineItemQuantities: LineItemQuantity[] }) {}
 }
 
 export class UpdateBasketItemsFail implements Action {
   readonly type = BasketActionTypes.UpdateBasketItemsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UpdateBasketItemsSuccess implements Action {
@@ -182,12 +182,12 @@ export class UpdateBasketItemsSuccess implements Action {
 
 export class DeleteBasketItem implements Action {
   readonly type = BasketActionTypes.DeleteBasketItem;
-  constructor(public payload: string) {}
+  constructor(public payload: { itemId: string }) {}
 }
 
 export class DeleteBasketItemFail implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class DeleteBasketItemSuccess implements Action {
@@ -200,12 +200,12 @@ export class LoadBasketEligibleShippingMethods implements Action {
 
 export class LoadBasketEligibleShippingMethodsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketEligibleShippingMethodsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadBasketEligibleShippingMethodsSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess;
-  constructor(public payload: ShippingMethod[]) {}
+  constructor(public payload: { shippingMethods: ShippingMethod[] }) {}
 }
 
 export class LoadBasketEligiblePaymentMethods implements Action {
@@ -214,39 +214,37 @@ export class LoadBasketEligiblePaymentMethods implements Action {
 
 export class LoadBasketEligiblePaymentMethodsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadBasketEligiblePaymentMethodsSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess;
-  constructor(public payload: PaymentMethod[]) {}
+  constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
 }
 
-/* payload: BasketId */
 export class LoadBasketPayments implements Action {
   readonly type = BasketActionTypes.LoadBasketPayments;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class LoadBasketPaymentsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketPaymentsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadBasketPaymentsSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketPaymentsSuccess;
-  constructor(public payload: Payment[]) {}
+  constructor(public payload: { paymentMethods: Payment[] }) {}
 }
 
-/* payload: PaymentName */
 export class SetBasketPayment implements Action {
   readonly type = BasketActionTypes.SetBasketPayment;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class SetBasketPaymentFail implements Action {
   readonly type = BasketActionTypes.SetBasketPaymentFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class SetBasketPaymentSuccess implements Action {
@@ -259,17 +257,17 @@ export class ResetBasket implements Action {
 
 export class CreateOrder implements Action {
   readonly type = BasketActionTypes.CreateOrder;
-  constructor(public payload: Basket) {}
+  constructor(public payload: { basket: Basket }) {}
 }
 
 export class CreateOrderFail implements Action {
   readonly type = BasketActionTypes.CreateOrderFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class CreateOrderSuccess implements Action {
   readonly type = BasketActionTypes.CreateOrderSuccess;
-  constructor(public payload: Order) {}
+  constructor(public payload: { order: Order }) {}
 }
 
 export type BasketAction =

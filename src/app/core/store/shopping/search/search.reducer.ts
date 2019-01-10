@@ -26,7 +26,7 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
     case SearchActionTypes.SearchProductsSuccess: {
       return {
         ...state,
-        searchTerm: action.payload,
+        searchTerm: action.payload.searchTerm,
         loading: false,
       };
     }
@@ -34,7 +34,7 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
     case SearchActionTypes.SuggestSearchSuccess: {
       return {
         ...state,
-        suggestSearchResults: action.payload,
+        suggestSearchResults: action.payload.suggests,
       };
     }
   }

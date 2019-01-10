@@ -66,7 +66,7 @@ describe('Category Page Container', () => {
   });
 
   it('should display loading when category is loading', () => {
-    store$.dispatch(new LoadCategory('dummy'));
+    store$.dispatch(new LoadCategory({ categoryId: 'dummy' }));
 
     fixture.detectChanges();
 
@@ -76,8 +76,8 @@ describe('Category Page Container', () => {
   it('should display category-page when category has sub categories', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     const subCategory = { uniqueId: 'dummy.A', categoryPath: ['dummy', 'dummy.A'] } as Category;
-    store$.dispatch(new LoadCategorySuccess(categoryTree([category, subCategory])));
-    store$.dispatch(new SelectCategory(category.uniqueId));
+    store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category, subCategory]) }));
+    store$.dispatch(new SelectCategory({ categoryId: category.uniqueId }));
 
     fixture.detectChanges();
 
@@ -87,8 +87,8 @@ describe('Category Page Container', () => {
   it('should display family-page when category has products', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     category.hasOnlineProducts = true;
-    store$.dispatch(new LoadCategorySuccess(categoryTree([category])));
-    store$.dispatch(new SelectCategory(category.uniqueId));
+    store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category]) }));
+    store$.dispatch(new SelectCategory({ categoryId: category.uniqueId }));
 
     fixture.detectChanges();
 

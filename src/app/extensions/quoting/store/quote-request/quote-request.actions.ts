@@ -45,7 +45,7 @@ export enum QuoteRequestActionTypes {
 
 export class SelectQuoteRequest implements Action {
   readonly type = QuoteRequestActionTypes.SelectQuoteRequest;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class LoadQuoteRequests implements Action {
@@ -54,12 +54,12 @@ export class LoadQuoteRequests implements Action {
 
 export class LoadQuoteRequestsFail implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadQuoteRequestsSuccess implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestsSuccess;
-  constructor(public payload: QuoteRequestData[]) {}
+  constructor(public payload: { quoteRequests: QuoteRequestData[] }) {}
 }
 
 export class AddQuoteRequest implements Action {
@@ -68,12 +68,12 @@ export class AddQuoteRequest implements Action {
 
 export class AddQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.AddQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class AddQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.AddQuoteRequestSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class UpdateQuoteRequest implements Action {
@@ -83,27 +83,27 @@ export class UpdateQuoteRequest implements Action {
 
 export class UpdateQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UpdateQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestSuccess;
-  constructor(public payload: QuoteRequestData) {}
+  constructor(public payload: { quoteRequest: QuoteRequestData }) {}
 }
 
 export class DeleteQuoteRequest implements Action {
   readonly type = QuoteRequestActionTypes.DeleteQuoteRequest;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class DeleteQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.DeleteQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class DeleteQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.DeleteQuoteRequestSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class SubmitQuoteRequest implements Action {
@@ -112,12 +112,12 @@ export class SubmitQuoteRequest implements Action {
 
 export class SubmitQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.SubmitQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class SubmitQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.SubmitQuoteRequestSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class CreateQuoteRequestFromQuoteRequest implements Action {
@@ -126,27 +126,27 @@ export class CreateQuoteRequestFromQuoteRequest implements Action {
 
 export class CreateQuoteRequestFromQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class CreateQuoteRequestFromQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess;
-  constructor(public payload: QuoteLineItemResultModel) {}
+  constructor(public payload: { quoteLineItemResult: QuoteLineItemResultModel }) {}
 }
 
 export class LoadQuoteRequestItems implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestItems;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class LoadQuoteRequestItemsFail implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestItemsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadQuoteRequestItemsSuccess implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess;
-  constructor(public payload: QuoteRequestItem[]) {}
+  constructor(public payload: { quoteRequestItems: QuoteRequestItem[] }) {}
 }
 
 export class AddProductToQuoteRequest implements Action {
@@ -156,12 +156,12 @@ export class AddProductToQuoteRequest implements Action {
 
 export class AddProductToQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.AddProductToQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class AddProductToQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.AddProductToQuoteRequestSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class AddBasketToQuoteRequest implements Action {
@@ -170,27 +170,27 @@ export class AddBasketToQuoteRequest implements Action {
 
 export class AddBasketToQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.AddBasketToQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class AddBasketToQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class UpdateQuoteRequestItems implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestItems;
-  constructor(public payload: LineItemQuantity[]) {}
+  constructor(public payload: { lineItemQuantities: LineItemQuantity[] }) {}
 }
 
 export class UpdateQuoteRequestItemsFail implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestItemsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UpdateQuoteRequestItemsSuccess implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess;
-  constructor(public payload: string[]) {}
+  constructor(public payload: { itemIds: string[] }) {}
 }
 
 export class DeleteItemFromQuoteRequest implements Action {
@@ -200,12 +200,12 @@ export class DeleteItemFromQuoteRequest implements Action {
 
 export class DeleteItemFromQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.DeleteItemFromQuoteRequestFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class DeleteItemFromQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export type QuoteAction =

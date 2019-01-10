@@ -19,32 +19,32 @@ export class PrepareNewSearch implements Action {
 
 export class SearchProducts implements Action {
   readonly type = SearchActionTypes.SearchProducts;
-  constructor(public payload: string) {}
+  constructor(public payload: { searchTerm: string }) {}
 }
 
 export class SearchProductsSuccess implements Action {
   readonly type = SearchActionTypes.SearchProductsSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { searchTerm: string }) {}
 }
 
 export class SearchProductsFail implements Action {
   readonly type = SearchActionTypes.SearchProductsFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class SuggestSearch implements Action {
   readonly type = SearchActionTypes.SuggestSearch;
-  constructor(public payload: string) {}
+  constructor(public payload: { searchTerm: string }) {}
 }
 
 export class SuggestSearchSuccess implements Action {
   readonly type = SearchActionTypes.SuggestSearchSuccess;
-  constructor(public payload: SuggestTerm[]) {}
+  constructor(public payload: { suggests: SuggestTerm[] }) {}
 }
 
 export class SearchMoreProducts implements Action {
   readonly type = SearchActionTypes.SearchMoreProducts;
-  constructor(public payload: string) {}
+  constructor(public payload: { searchTerm: string }) {}
 }
 
 export type SearchAction =

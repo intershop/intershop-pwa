@@ -17,7 +17,7 @@ export enum CategoriesActionTypes {
 
 export class SelectCategory implements Action {
   readonly type = CategoriesActionTypes.SelectCategory;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
 }
 
 export class DeselectCategory implements Action {
@@ -27,37 +27,37 @@ export class DeselectCategory implements Action {
 
 export class SelectedCategoryAvailable implements Action {
   readonly type = CategoriesActionTypes.SelectedCategoryAvailable;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
 }
 
 export class LoadTopLevelCategories implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategories;
-  constructor(public payload: number) {}
+  constructor(public payload: { depth: number }) {}
 }
 
 export class LoadTopLevelCategoriesFail implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadTopLevelCategoriesSuccess implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesSuccess;
-  constructor(public payload: CategoryTree) {}
+  constructor(public payload: { categories: CategoryTree }) {}
 }
 
 export class LoadCategory implements Action {
   readonly type = CategoriesActionTypes.LoadCategory;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
 }
 
 export class LoadCategoryFail implements Action {
   readonly type = CategoriesActionTypes.LoadCategoryFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadCategorySuccess implements Action {
   readonly type = CategoriesActionTypes.LoadCategorySuccess;
-  constructor(public payload: CategoryTree) {}
+  constructor(public payload: { categories: CategoryTree }) {}
 }
 
 export type CategoriesAction =

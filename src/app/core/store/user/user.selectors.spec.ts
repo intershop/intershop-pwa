@@ -27,7 +27,7 @@ describe('User Selectors', () => {
     });
 
     store$ = TestBed.get(TestStore);
-    store$.dispatch(new LoadProductSuccess({ sku: 'sku' } as Product));
+    store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku' } as Product }));
   });
 
   it('should select no customer/user when no event was sent', () => {
@@ -39,7 +39,7 @@ describe('User Selectors', () => {
 
   it('should select the customer when logging in successfully', () => {
     const customerNo = 'test';
-    store$.dispatch(new LoginUserSuccess({ customerNo } as Customer));
+    store$.dispatch(new LoginUserSuccess({ customer: { customerNo } as Customer }));
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
     expect(getLoggedInUser(store$.state)).toBeUndefined();
@@ -50,7 +50,7 @@ describe('User Selectors', () => {
   it('should select the user when logging in as private customer successfully', () => {
     const firstName = 'test';
     const type = 'PrivateCustomer';
-    store$.dispatch(new LoginUserSuccess({ firstName, type } as Customer));
+    store$.dispatch(new LoginUserSuccess({ customer: { firstName, type } as Customer }));
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('firstName', firstName);
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
@@ -60,7 +60,7 @@ describe('User Selectors', () => {
 
   it('should not select the user when logging in as company customer successfully', () => {
     const type = 'SMBCustomer';
-    store$.dispatch(new LoginUserSuccess({ type } as Customer));
+    store$.dispatch(new LoginUserSuccess({ customer: { type } as Customer }));
 
     expect(getLoggedInCustomer(store$.state)).toBeTruthy();
     expect(getLoggedInUser(store$.state)).toBeUndefined();
@@ -71,7 +71,7 @@ describe('User Selectors', () => {
   it('should select the user when load company user is successful', () => {
     const firstName = 'test';
     const type = 'PrivateCustomer';
-    store$.dispatch(new LoadCompanyUserSuccess({ firstName, type } as User));
+    store$.dispatch(new LoadCompanyUserSuccess({ user: { firstName, type } as User }));
 
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
@@ -81,7 +81,7 @@ describe('User Selectors', () => {
 
   it('should select no customer and an error when an error event was sent', () => {
     const error = { status: 401, headers: { 'error-key': 'dummy' } as HttpHeader } as HttpError;
-    store$.dispatch(new LoginUserFail(error));
+    store$.dispatch(new LoginUserFail({ error }));
 
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
     expect(getLoggedInUser(store$.state)).toBeUndefined();

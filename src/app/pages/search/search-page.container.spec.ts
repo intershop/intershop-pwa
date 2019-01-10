@@ -60,7 +60,7 @@ describe('Search Page Container', () => {
 
   it('should render search no result component if search has no results', () => {
     const newProducts = [];
-    store$.dispatch(new SearchProductsSuccess('search'));
+    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search' }));
     store$.dispatch(new SetPagingInfo({ newProducts, currentPage: 0, totalItems: newProducts.length }));
     fixture.detectChanges();
     expect(element.querySelector('ish-search-no-result')).toBeTruthy();
@@ -69,7 +69,7 @@ describe('Search Page Container', () => {
 
   it('should render search result component if search has results', () => {
     const newProducts = ['testSKU1', 'testSKU2'];
-    store$.dispatch(new SearchProductsSuccess('search'));
+    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search' }));
     store$.dispatch(new SetPagingInfo({ newProducts, currentPage: 0, totalItems: newProducts.length }));
     fixture.detectChanges();
     expect(element.querySelector('ish-search-result')).toBeTruthy();

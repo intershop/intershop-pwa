@@ -22,7 +22,7 @@ export enum QuoteActionTypes {
 
 export class SelectQuote implements Action {
   readonly type = QuoteActionTypes.SelectQuote;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class LoadQuotes implements Action {
@@ -31,27 +31,27 @@ export class LoadQuotes implements Action {
 
 export class LoadQuotesFail implements Action {
   readonly type = QuoteActionTypes.LoadQuotesFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadQuotesSuccess implements Action {
   readonly type = QuoteActionTypes.LoadQuotesSuccess;
-  constructor(public payload: QuoteData[]) {}
+  constructor(public payload: { quotes: QuoteData[] }) {}
 }
 
 export class DeleteQuote implements Action {
   readonly type = QuoteActionTypes.DeleteQuote;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class DeleteQuoteFail implements Action {
   readonly type = QuoteActionTypes.DeleteQuoteFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class DeleteQuoteSuccess implements Action {
   readonly type = QuoteActionTypes.DeleteQuoteSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class RejectQuote implements Action {
@@ -60,12 +60,12 @@ export class RejectQuote implements Action {
 
 export class RejectQuoteFail implements Action {
   readonly type = QuoteActionTypes.RejectQuoteFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class RejectQuoteSuccess implements Action {
   readonly type = QuoteActionTypes.RejectQuoteSuccess;
-  constructor(public payload: string) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export class CreateQuoteRequestFromQuote implements Action {
@@ -74,12 +74,12 @@ export class CreateQuoteRequestFromQuote implements Action {
 
 export class CreateQuoteRequestFromQuoteFail implements Action {
   readonly type = QuoteActionTypes.CreateQuoteRequestFromQuoteFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class CreateQuoteRequestFromQuoteSuccess implements Action {
   readonly type = QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess;
-  constructor(public payload: QuoteLineItemResultModel) {}
+  constructor(public payload: { quoteLineItemRequest: QuoteLineItemResultModel }) {}
 }
 
 export type QuoteAction =
