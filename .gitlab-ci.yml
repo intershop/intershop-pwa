@@ -242,9 +242,9 @@ pull_images:
   stage: distribute
   cache: {}
   dependencies: []
-  only:
+  except:
     refs:
-      - develop
+      - master
   tags:
   - shell-executor
   - docker
@@ -273,7 +273,7 @@ deploy_demo:
     IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish mode=host,target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo
     url: http://jdevbuildslave01.rnd.j.intershop.de:4321
@@ -296,7 +296,7 @@ deploy_reports:
     IMAGE: "${CI_REGISTRY_IMAGE}:reports"
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish mode=host,target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
+  - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
   environment:
     name: reports
     url: http://jdevbuildslave01.rnd.j.intershop.de:4324
@@ -320,10 +320,10 @@ deploy_review:
     IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --constraint node.hostname==jxdhoffmann --replicas 1 --publish mode=host,target=4200,published=4300 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas 1 --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+  - docker service create --with-registry-auth --replicas 1 --publish target=4200,published=4300 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas 1 --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: review
-    url: http://10.0.206.226:4300
+    url: http://jdevbuildslave01.rnd.j.intershop.de:4300
     on_stop: stop_review
 
 stop_review:
