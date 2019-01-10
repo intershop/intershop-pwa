@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
@@ -57,16 +57,16 @@ export function updateValidatorsByDataLength(
 export function markFormControlsAsInvalid(form: FormGroup, fields: string[]) {
   fields
     .map(attr => {
-      let obj: AbstractControl | FormControl = form;
+      let obj: AbstractControl = form;
       attr.split('.').forEach(sub => {
         obj = obj.get(sub);
       });
-      return obj as FormControl;
+      return obj;
     })
-    .filter(formControl => !!formControl)
-    .forEach(formControl => {
-      formControl.markAsDirty();
-      formControl.setErrors({ incorrect: true });
+    .filter(control => !!control)
+    .forEach(control => {
+      control.markAsDirty();
+      control.setErrors({ incorrect: true });
     });
 }
 

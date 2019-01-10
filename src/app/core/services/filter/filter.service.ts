@@ -29,6 +29,7 @@ export class FilterService {
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
+    // tslint:disable-next-line:ish-no-object-literal-type-assertion
     const searchParameter = SearchParameterMapper.toData({ queryTerm: searchTerm } as SearchParameter);
     return this.apiService
       .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`)

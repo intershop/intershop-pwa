@@ -21,12 +21,9 @@ export class SelectAddressComponent extends SelectComponent implements OnChanges
   }
 
   private mapToOptions(addresses: Address[]): SelectOption[] {
-    return addresses.map(
-      (a: Address) =>
-        ({
-          label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
-          value: a.id,
-        } as SelectOption)
-    );
+    return addresses.map((a: Address) => ({
+      label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
+      value: a.id,
+    }));
   }
 }

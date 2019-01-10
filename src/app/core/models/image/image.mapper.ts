@@ -40,7 +40,7 @@ export class ImageMapper {
     return {
       ...image,
       effectiveUrl: this.fromEffectiveUrl(image.effectiveUrl),
-    } as Image;
+    };
   }
 
   /**

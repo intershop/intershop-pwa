@@ -29,12 +29,9 @@ export class SelectLanguageComponent extends SelectComponent implements OnChange
     if (!languages) {
       return;
     }
-    return languages.map(
-      lang =>
-        ({
-          label: lang.displayLong,
-          value: lang.lang,
-        } as SelectOption)
-    );
+    return languages.map(lang => ({
+      label: lang.displayLong,
+      value: lang.lang,
+    }));
   }
 }
