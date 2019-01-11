@@ -57,7 +57,6 @@ export class NgrxStateTransfer {
           map(filterState)
         )
         .subscribe((saveState: any) => {
-          /* console.debug('Set for browser', JSON.stringify(saveState));*/
           state = saveState;
         });
 
@@ -69,6 +68,5 @@ export class NgrxStateTransfer {
     const state = this.transferState.get<any>(NGRX_STATE_SK, undefined);
     this.transferState.remove(NGRX_STATE_SK);
     this.store.dispatch({ type: STATE_ACTION_TYPE, payload: state });
-    /* console.debug('Got state from server', JSON.stringify(state)); */
   }
 }
