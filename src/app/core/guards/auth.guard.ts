@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import { getUserAuthorized } from '../store/user';
 
@@ -12,25 +19,22 @@ import { getUserAuthorized } from '../store/user';
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private store: Store<{}>, private router: Router) {}
-  canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.guardAccess(state.url);
   }
 
-  canActivateChild(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivateChild(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.guardAccess(state.url);
   }
 
-  private guardAccess(url: string): Observable<boolean> {
+  private guardAccess(url: string): Observable<boolean | UrlTree> {
     return this.store.pipe(
       select(getUserAuthorized),
       take(1),
-      tap(authorized => {
-        if (!authorized) {
-          // not logged in so redirect to login page with the return url
-          const queryParams = { returnUrl: url };
-          this.router.navigate(['/login'], { queryParams });
-        }
-      })
+      // if not logged in redirect to login page with the return url
+      map(authorized =>
+        authorized ? true : this.router.createUrlTree(['/login'], { queryParams: { returnUrl: url } })
+      )
     );
   }
 }
