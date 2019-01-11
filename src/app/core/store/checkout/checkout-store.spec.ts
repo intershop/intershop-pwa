@@ -14,7 +14,6 @@ import {
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../configurations/injection-keys';
-import { Address } from '../../models/address/address.model';
 import { Basket } from '../../models/basket/basket.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
@@ -86,8 +85,6 @@ describe('Checkout Store', () => {
   const user = {
     type: 'PrivateCustomer',
     customerNo: 'test',
-    preferredInvoiceToAddress: {} as Address,
-    preferredShipToAddress: {} as Address,
     title: '',
     firstName: 'test',
     lastName: 'test',

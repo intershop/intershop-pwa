@@ -12,7 +12,6 @@ describe('Login Status Component', () => {
   let element: HTMLElement;
 
   const userData = {
-    type: 'PrivateCustomer',
     firstName: 'Patricia',
     lastName: 'Miller',
   } as User;
