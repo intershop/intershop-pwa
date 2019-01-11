@@ -16,6 +16,8 @@ import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
 import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { LoadProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
@@ -43,12 +45,13 @@ describe('Quote Request Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ quoting: true }),
+        FeatureToggleModule,
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           checkout: combineReducers(checkoutReducers),
           user: userReducer,
+          configuration: configurationReducer,
         }),
       ],
       providers: [
@@ -61,6 +64,7 @@ describe('Quote Request Effects', () => {
 
     effects = TestBed.get(QuoteRequestEffects);
     store$ = TestBed.get(Store);
+    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
 
   describe('loadQuoteRequests$', () => {

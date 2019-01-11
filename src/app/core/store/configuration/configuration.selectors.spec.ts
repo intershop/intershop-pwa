@@ -4,7 +4,13 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApplyConfiguration } from './configuration.actions';
-import { getICMBaseURL, getICMServerURL, getICMStaticURL, getRestEndpoint } from './configuration.selectors';
+import {
+  getFeatures,
+  getICMBaseURL,
+  getICMServerURL,
+  getICMStaticURL,
+  getRestEndpoint,
+} from './configuration.selectors';
 
 describe('Configuration Selectors', () => {
   let store$: TestStore;
@@ -20,11 +26,12 @@ describe('Configuration Selectors', () => {
   });
 
   describe('initial state', () => {
-    it('should only have undefined values for all selectors', () => {
+    it('should only have undefined of empty values for all selectors', () => {
       expect(getRestEndpoint(store$.state)).toBeUndefined();
       expect(getICMBaseURL(store$.state)).toBeUndefined();
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
+      expect(getFeatures(store$.state)).toBeEmpty();
     });
 
     describe('after importing settings', () => {
@@ -35,6 +42,7 @@ describe('Configuration Selectors', () => {
             server: 'api',
             serverStatic: 'static',
             channel: 'site',
+            features: ['compare', 'recently'],
           })
         );
       });
@@ -44,6 +52,7 @@ describe('Configuration Selectors', () => {
         expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
         expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
         expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/-');
+        expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       });
     });
   });

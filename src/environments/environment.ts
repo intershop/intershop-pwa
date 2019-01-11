@@ -39,11 +39,11 @@ export const environment = {
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
 
-  // experimental feature: enable feature toggles for specific features
-  features: {
-    compare: true,
-    recently: true,
-    quoting: false,
-    stickyHeader: true,
-  },
+  // enable feature toggles for specific features
+  features: [
+    'compare',
+    'recently',
+    // 'quoting',
+    'stickyHeader',
+  ],
 };

@@ -18,7 +18,7 @@ export class StatePropertiesService {
   /**
    * Retrieve property from first set property of server state, system environment or environment.ts
    */
-  getStateOrEnvOrDefault(envKey: string, envPropKey: string): Observable<string> {
+  getStateOrEnvOrDefault<T>(envKey: string, envPropKey: string): Observable<T> {
     return this.store.pipe(
       pluck(`configuration.${envPropKey}`),
       map(value => {

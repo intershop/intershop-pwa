@@ -16,12 +16,7 @@ describe('Product Row Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
-        PipesModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [FeatureToggleModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent({
           selector: 'ish-lazy-product-add-to-quote',
