@@ -2,7 +2,7 @@
     <h1>
       {{ 'account.addresses.saved_address.heading' | translate }}
       <a *ngIf="isCreateAddressFormCollapsed"
-        class="btn btn-outline-secondary float-right"
+        class="btn btn-secondary float-right"
         (click)="showCreateAddressForm()"
         [attr.aria-expanded]="!isCreateAddressFormCollapsed"
         aria-controls="collapseBasic"
