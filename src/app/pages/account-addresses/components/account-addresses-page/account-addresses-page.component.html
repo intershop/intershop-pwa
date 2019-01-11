@@ -34,7 +34,7 @@
         <ng-container *ngIf="hasPreferredAddresses && preferredAddressesEqual">
           <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
             <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
-            <ish-address [address]="user.preferredInvoiceToAddress"></ish-address>
+            <ish-address [address]="preferredInvoiceToAddress"></ish-address>
           </div>
         </ng-container>
 
@@ -44,8 +44,8 @@
           <!-- preferred invoice address -->
           <div class="section" data-testing-id="preferred-invoice-address">
             <h3>{{ 'account.addresses.preferredinvoice.heading' | translate }}</h3>
-            <ng-container *ngIf="user.preferredInvoiceToAddress; else noInvoiceToAddress">
-              <ish-address [address]="user.preferredInvoiceToAddress"></ish-address>
+            <ng-container *ngIf="preferredInvoiceToAddress; else noInvoiceToAddress">
+              <ish-address [address]="preferredInvoiceToAddress"></ish-address>
             </ng-container>
             <ng-template #noInvoiceToAddress>
               <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
@@ -55,8 +55,8 @@
           <!--preferred shipping address -->
           <div class="section" data-testing-id="preferred-shipping-address">
             <h3>{{ 'account.addresses.preferredshipping.heading' | translate }}</h3>
-            <ng-container *ngIf="user.preferredShipToAddress; else noShipToAddress">
-              <ish-address [address]="user.preferredShipToAddress"></ish-address>
+            <ng-container *ngIf="preferredShipToAddress; else noShipToAddress">
+              <ish-address [address]="preferredShipToAddress"></ish-address>
             </ng-container>
             <ng-template #noShipToAddress>
               <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>

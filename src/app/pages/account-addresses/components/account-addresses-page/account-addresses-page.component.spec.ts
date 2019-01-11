@@ -46,6 +46,7 @@ describe('Account Addresses Page Component', () => {
     component.addresses = [
       {
         id: '0001"',
+        urn: 'urn:address:customer:JgEKAE8BA50AAAFgDtAd1LZU:1001',
         title: 'Ms.',
         firstName: 'Patricia',
         lastName: 'Miller',
@@ -55,6 +56,7 @@ describe('Account Addresses Page Component', () => {
       },
       {
         id: '0002"',
+        urn: 'urn:address:customer:JgEKAE8BA50AAAFgDtAd1LZU:1002',
         title: 'Ms.',
         firstName: 'Patricia',
         lastName: 'Miller',
@@ -64,6 +66,7 @@ describe('Account Addresses Page Component', () => {
       },
       {
         id: '0003"',
+        urn: 'urn:address:customer:JgEKAE8BA50AAAFgDtAd1LZU:1003',
         title: 'Ms.',
         firstName: 'Patricia',
         lastName: 'Miller',
@@ -74,6 +77,7 @@ describe('Account Addresses Page Component', () => {
       },
       {
         id: '0004"',
+        urn: 'urn:address:customer:JgEKAE8BA50AAAFgDtAd1LZU:1004',
         title: 'Ms.',
         firstName: 'Patricia',
         lastName: 'Miller',
@@ -85,10 +89,10 @@ describe('Account Addresses Page Component', () => {
     ] as Address[];
 
     component.user = {
-      type: 'SMBCustomerUser',
       firstName: 'Patricia',
       lastName: 'Miller',
       email: 'patricia@test.intershop.de',
+      preferredInvoiceToAddressUrn: component.addresses[0].urn,
     } as User;
 
     addressChange = {
@@ -103,8 +107,7 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should display only one preferred address if preferred invoice and shipping address are equal', () => {
-    component.user.preferredInvoiceToAddress = component.addresses[0];
-    component.user.preferredShipToAddress = component.addresses[0];
+    component.user.preferredShipToAddressUrn = component.addresses[0].urn;
 
     component.ngOnChanges(addressChange);
     fixture.detectChanges();
@@ -116,8 +119,7 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should display both preferred addresses if preferred invoice and shipping address are not equal', () => {
-    component.user.preferredInvoiceToAddress = component.addresses[0];
-    component.user.preferredShipToAddress = component.addresses[1];
+    component.user.preferredShipToAddressUrn = component.addresses[1].urn;
 
     component.ngOnChanges(addressChange);
     fixture.detectChanges();
@@ -128,8 +130,7 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should not display further addresses if only preferred invoice and shipping addresses are available', () => {
-    component.user.preferredInvoiceToAddress = component.addresses[0];
-    component.user.preferredShipToAddress = component.addresses[1];
+    component.user.preferredShipToAddressUrn = component.addresses[1].urn;
     component.addresses = [component.addresses[0], component.addresses[1]] as Address[];
 
     component.ngOnChanges(addressChange);
@@ -139,6 +140,8 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should display the proper headlines and info texts if no preferred addresses are available', () => {
+    component.user.preferredInvoiceToAddressUrn = undefined;
+
     component.ngOnChanges(addressChange);
     fixture.detectChanges();
 
@@ -148,6 +151,8 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should not filter further addresses if no preferred addresses are available', () => {
+    component.user.preferredInvoiceToAddressUrn = undefined;
+
     component.ngOnChanges(addressChange);
     fixture.detectChanges();
 
@@ -156,8 +161,7 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should reduce further addresses by two if both preferred addresses are available', () => {
-    component.user.preferredInvoiceToAddress = component.addresses[0];
-    component.user.preferredShipToAddress = component.addresses[1];
+    component.user.preferredShipToAddressUrn = component.addresses[1].urn;
 
     component.ngOnChanges(addressChange);
     fixture.detectChanges();
@@ -167,8 +171,6 @@ describe('Account Addresses Page Component', () => {
   });
 
   it('should reduce further addresses by one if only one preferred address is available', () => {
-    component.user.preferredInvoiceToAddress = component.addresses[0];
-
     component.ngOnChanges(addressChange);
     fixture.detectChanges();
 

@@ -48,7 +48,8 @@ describe('Quoting Store', () => {
   let apiServiceMock: ApiService;
   let quoteServiceMock: QuoteService;
   let locales: Locale[];
-  const user = { email: 'UID', customerNo: 'CID' } as User;
+  const user = { email: 'UID' } as User;
+  const customer = { email: 'UID', customerNo: 'CID' } as Customer;
 
   beforeEach(() => {
     jest.useRealTimers();
@@ -137,7 +138,7 @@ describe('Quoting Store', () => {
         return of({ type: 'Link', uri: 'customers/CID/users/UID/quoterequests/' + id, title: id }).pipe(delay(1000));
       });
 
-      store$.dispatch(new LoginUserSuccess({ customer: user as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user }));
     });
 
@@ -236,7 +237,7 @@ describe('Quoting Store', () => {
         describe('user logs in again', () => {
           beforeEach(() => {
             store$.reset();
-            store$.dispatch(new LoginUserSuccess({ customer: user as Customer }));
+            store$.dispatch(new LoginUserSuccess({ customer }));
             store$.dispatch(new LoadCompanyUserSuccess({ user }));
           });
 

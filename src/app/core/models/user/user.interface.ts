@@ -1,4 +1,7 @@
-export interface User {
+import { Address } from '../address/address.model';
+
+// used for business users only
+export interface UserData {
   firstName: string;
   lastName: string;
   email: string;
@@ -9,11 +12,10 @@ export interface User {
   phoneBusiness?: string;
   phoneMobile?: string;
   fax?: string;
-  preferredInvoiceToAddressUrn?: string;
-  preferredShipToAddressUrn?: string;
+  preferredInvoiceToAddress?: Address;
+  preferredShipToAddress?: Address;
   birthday?: string;
 
-  // Business User only
   businessPartnerNo?: string;
   department?: string;
 }
