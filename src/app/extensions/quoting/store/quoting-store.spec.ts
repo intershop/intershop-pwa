@@ -15,6 +15,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import {
@@ -85,7 +86,7 @@ describe('Quoting Store', () => {
           },
           [...coreEffects, ...quotingEffects]
         ),
-        FeatureToggleModule.testingFeatures({ quoting: true }),
+        FeatureToggleModule,
         RouterTestingModule.withRoutes([
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
@@ -102,6 +103,7 @@ describe('Quoting Store', () => {
     });
 
     store$ = TestBed.get(TestStore);
+    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
 
   it('should be created', () => {

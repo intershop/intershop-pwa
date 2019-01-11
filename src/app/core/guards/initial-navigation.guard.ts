@@ -10,11 +10,15 @@ export class InitialNavigationGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private store: Store<{}>) {}
 
   private do(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL'];
+    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL', 'features'];
     const properties = keys
       .filter(key => next.params[key])
       .map(key => ({ [key]: next.params[key] }))
       .reduce((acc, val) => ({ ...acc, ...val }), {});
+
+    if (properties.features) {
+      properties.features = properties.features.split(/,/g);
+    }
 
     if (Object.keys(properties).length) {
       this.store.dispatch(new ApplyConfiguration(properties));

@@ -6,6 +6,7 @@ import { cold } from 'jest-marbles';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProduct, LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -23,7 +24,7 @@ describe('Product Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ recently: true }),
+        FeatureToggleModule,
         NgbModalModule,
         RouterTestingModule,
         StoreModule.forRoot({
@@ -60,6 +61,7 @@ describe('Product Page Container', () => {
     element = fixture.nativeElement;
 
     store$ = TestBed.get(Store);
+    store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
   });
 
   it('should be created', () => {

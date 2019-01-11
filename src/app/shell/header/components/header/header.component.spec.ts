@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { HeaderComponent } from './header.component';
@@ -18,10 +20,14 @@ describe('Header Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ compare: true }),
+        FeatureToggleModule,
         IconModule,
         NgbCollapseModule,
         RouterTestingModule,
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          { initialState: { configuration: { features: ['compare'] } } }
+        ),
         TranslateModule.forRoot(),
       ],
       declarations: [
