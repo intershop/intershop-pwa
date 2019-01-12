@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { QuotingExportsModule } from 'app/extensions/quoting/exports/quoting-exports.module';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -48,6 +49,7 @@ const exportedComponents = [
     NgbCollapseModule,
     NgbDropdownModule,
     PipesModule,
+    QuotingExportsModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,

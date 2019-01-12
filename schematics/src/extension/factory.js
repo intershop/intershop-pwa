@@ -20,13 +20,15 @@ function createExtension(options) {
             schematics_1.move(options.path),
         ])));
         const projectRoot = project_1.buildDefaultPath(project_1.getProject(host, options.project));
-        const sharedModuleOptions = {
-            module: `${projectRoot}/shared/shared.module.ts`,
+        const moduleImportOptions = {
             artifactName: core_1.strings.classify(options.name) + 'ExportsModule',
             moduleImportPath: `${projectRoot}/extensions/${core_1.strings.dasherize(options.name)}/exports/${core_1.strings.dasherize(options.name)}-exports.module`,
         };
+        const sharedModuleOptions = Object.assign({ module: `${projectRoot}/shared/shared.module.ts` }, moduleImportOptions);
         operations.push(registration_1.addExportToNgModule(sharedModuleOptions));
         operations.push(registration_1.addImportToNgModule(sharedModuleOptions));
+        const shellModuleOptions = Object.assign({ module: `${projectRoot}/shell/shell.module.ts` }, moduleImportOptions);
+        operations.push(registration_1.addImportToNgModule(shellModuleOptions));
         const appModuleOptions = {
             module: `${projectRoot}/app.module.ts`,
             artifactName: core_1.strings.classify(options.name) + 'RoutingModule',
