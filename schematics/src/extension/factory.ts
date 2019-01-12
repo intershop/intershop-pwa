@@ -31,15 +31,25 @@ export function createExtension(options: Options): Rule {
     );
     const projectRoot = buildDefaultPath(getProject(host, options.project));
 
-    const sharedModuleOptions = {
-      module: `${projectRoot}/shared/shared.module.ts`,
+    const moduleImportOptions = {
       artifactName: strings.classify(options.name) + 'ExportsModule',
       moduleImportPath: `${projectRoot}/extensions/${strings.dasherize(options.name)}/exports/${strings.dasherize(
         options.name
       )}-exports.module`,
     };
+
+    const sharedModuleOptions = {
+      module: `${projectRoot}/shared/shared.module.ts`,
+      ...moduleImportOptions,
+    };
     operations.push(addExportToNgModule(sharedModuleOptions));
     operations.push(addImportToNgModule(sharedModuleOptions));
+
+    const shellModuleOptions = {
+      module: `${projectRoot}/shell/shell.module.ts`,
+      ...moduleImportOptions,
+    };
+    operations.push(addImportToNgModule(shellModuleOptions));
 
     const appModuleOptions = {
       module: `${projectRoot}/app.module.ts`,
