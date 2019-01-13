@@ -26,8 +26,8 @@ import { QuotingStoreModule } from './store/quoting-store.module';
   ],
   exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
   entryComponents: [
-    ProductAddToQuoteContainerComponent,
     BasketAddToQuoteContainerComponent,
+    ProductAddToQuoteContainerComponent,
     ProductAddToQuoteDialogContainerComponent,
   ],
 })
