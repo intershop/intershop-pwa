@@ -32,14 +32,9 @@ class NgModulesSortedFieldsWalker extends NgWalker {
       .filter(node => node.kind === ts.SyntaxKind.VariableStatement)
       .map(node => node.getChildAt(0))
       .filter(node => node.kind === ts.SyntaxKind.VariableDeclarationList)
-      .map(node =>
-        node
-          .getChildAt(1)
-          .getChildAt(0)
-          .getChildAt(2)
-          .getChildAt(1)
-      )
-      .forEach(node => this.sortList(node as ts.SyntaxList));
+      .map(node => node.getChildAt(1).getChildAt(0))
+      // .filter(node => this.assertList(node))
+      .forEach(node => this.sortList(node.getChildAt(2).getChildAt(1) as ts.SyntaxList));
 
     const ngModuleDeclarationList = decorator
       .getChildAt(1)
@@ -55,11 +50,25 @@ class NgModulesSortedFieldsWalker extends NgWalker {
     ngModuleDeclarationList
       .getChildren()
       .filter(node => node.kind !== ts.SyntaxKind.CommaToken)
-      .filter(node => /^(exports|imports|declarations)$/.test(node.getChildAt(0).getText()))
+      .filter(node => /^(exports|imports|declarations|entryComponents)$/.test(node.getChildAt(0).getText()))
+      .filter(node => this.assertList(node))
       .forEach(node => {
-        const list = node.getChildAt(2).getChildAt(1) as ts.SyntaxList;
-        this.sortList(list);
+        this.sortList(node.getChildAt(2).getChildAt(1) as ts.SyntaxList);
       });
+  }
+
+  private assertList(node: ts.Node): boolean {
+    if (node.getSourceFile().fileName.endsWith('.spec.ts')) {
+      return true;
+    }
+    if (node.getChildCount() < 3 || node.getChildAt(2).kind !== ts.SyntaxKind.ArrayLiteralExpression) {
+      this.addFailureAtNode(
+        node,
+        'Right-hand side is not an array, but it should be for schematics to function properly.'
+      );
+      return false;
+    }
+    return true;
   }
 
   private sortList(list: ts.SyntaxList) {

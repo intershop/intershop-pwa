@@ -372,7 +372,7 @@ export class Rule extends Lint.Rules.AbstractRule {
   /* tslint:enable:object-literal-sort-keys */
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new Walker(sourceFile, this.ruleName, parseOptions(/*this.ruleArguments*/)));
+    return this.applyWithWalker(new Walker(sourceFile, this.ruleName, parseOptions(/*ruleArguments*/)));
   }
 }
 
