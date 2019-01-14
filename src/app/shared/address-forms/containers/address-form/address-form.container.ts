@@ -48,7 +48,8 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
 
   regions: Region[];
   titles: string[];
-  destroy$ = new Subject();
+
+  private destroy$ = new Subject();
 
   constructor(
     private store: Store<{}>,

@@ -48,10 +48,11 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   performSearch = new EventEmitter<string>();
 
-  destroy$ = new Subject();
   searchForm: FormGroup;
   isHidden = true;
   activeIndex = -1;
+
+  private destroy$ = new Subject();
 
   ngOnInit() {
     this.searchForm = new FormGroup({
