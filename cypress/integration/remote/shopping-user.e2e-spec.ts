@@ -1,7 +1,6 @@
 import { at } from '../framework';
 import { createUserViaREST } from '../framework/users';
 import { LoginPage } from '../pages/account/login.page';
-import { MyAccountPage } from '../pages/account/my-account.page';
 import { sensibleDefaults } from '../pages/account/registration.page';
 import { AddressesPage } from '../pages/checkout/addresses.page';
 import { CartPage } from '../pages/checkout/cart.page';
@@ -33,21 +32,11 @@ const _ = {
 describe('Shopping User', () => {
   before(() => {
     createUserViaREST(_.user);
-    LoginPage.navigateTo();
-  });
-
-  it('should log in', () => {
-    at(LoginPage, page => {
-      page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
-    });
+    HomePage.navigateTo();
   });
 
   it('should navigate to a product', () => {
-    at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
+    at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.category.id));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
@@ -67,6 +56,13 @@ describe('Shopping User', () => {
 
   it('should begin checkout', () => {
     at(CartPage, page => page.beginCheckout());
+    at(LoginPage, page => {
+      page.fillForm(_.user.login, _.user.password);
+      page
+        .submit()
+        .its('status')
+        .should('equal', 200);
+    });
     at(AddressesPage);
   });
 

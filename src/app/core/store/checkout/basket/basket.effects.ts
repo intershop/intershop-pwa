@@ -235,6 +235,20 @@ export class BasketEffects {
   );
 
   /**
+   * Creates a basket if missing and call AddItemsToBasketAction
+   * Only triggers if basket is unset set and action payload does not contain basketId.
+   */
+  @Effect()
+  createBasketBeforeAddItemsToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    mapToPayload(),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([payload]) => !payload.basketId),
+    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
+    map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
+  );
+
+  /**
    * Add quote to the current basket.
    * Only triggers if the user has a basket.
    */
@@ -404,20 +418,6 @@ export class BasketEffects {
   );
 
   /**
-   * Get current basket if missing and call AddItemsToBasketAction
-   * Only triggers if basket is unset set and action payload does not contain basketId.
-   */
-  @Effect()
-  getBasketBeforeAddItemsToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
-    mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([payload, basket]) => !basket && !payload.basketId),
-    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
-    map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
-  );
-
-  /**
    * Trigger an AddItemsToBasket action after LoginUserSuccess, if basket items are present from pre login state.
    */
   @Effect()
@@ -427,6 +427,7 @@ export class BasketEffects {
     filter(([, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
     switchMap(() => this.basketService.getBaskets()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    tap(() => this.store.dispatch(new basketActions.ResetBasket())),
     map(([newBaskets, currentBasket]) => {
       const items = currentBasket.lineItems.map(lineItem => ({
         sku: lineItem.productSKU,

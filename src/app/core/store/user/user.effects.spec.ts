@@ -30,7 +30,7 @@ describe('User Effects', () => {
     registrationServiceMock = mock(RegistrationService);
     when(registrationServiceMock.signinUser(anything())).thenReturn(of({} as Customer));
     when(registrationServiceMock.createUser(anything())).thenReturn(of({} as Customer));
-    when(registrationServiceMock.getCompanyUserData()).thenReturn(of({ type: 'SMBCustomerUser' } as User));
+    when(registrationServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'patricia' } as User));
 
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot(coreReducers)],
@@ -95,9 +95,9 @@ describe('User Effects', () => {
     });
 
     it('should map to action of type LoadBasketSuccess', () => {
-      const type = 'SMBCustomerUser';
       const action = new ua.LoadCompanyUser();
-      const completion = new ua.LoadCompanyUserSuccess({ user: { type } as User });
+      const completion = new ua.LoadCompanyUserSuccess({ user: { firstName: 'patricia' } as User });
+
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

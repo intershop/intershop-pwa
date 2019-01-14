@@ -135,10 +135,10 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
       this.basket.commonShipToAddress &&
       this.currentUser &&
       this.addresses.length > 1 &&
-      (!this.currentUser.preferredInvoiceToAddress ||
-        this.basket.commonShipToAddress.id !== this.currentUser.preferredInvoiceToAddress.id) &&
-      (!this.currentUser.preferredShipToAddress ||
-        this.basket.commonShipToAddress.id !== this.currentUser.preferredShipToAddress.id);
+      (!this.currentUser.preferredInvoiceToAddressUrn ||
+        this.basket.commonShipToAddress.urn !== this.currentUser.preferredInvoiceToAddressUrn) &&
+      (!this.currentUser.preferredShipToAddressUrn ||
+        this.basket.commonShipToAddress.urn !== this.currentUser.preferredShipToAddressUrn);
   }
 
   /**

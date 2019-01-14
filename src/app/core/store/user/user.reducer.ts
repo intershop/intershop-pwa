@@ -1,3 +1,4 @@
+import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Customer } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
@@ -66,7 +67,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
 
       if (customer.type === 'PrivateCustomer') {
-        newState.user = customer;
+        newState.user = UserMapper.fromCustomer(customer);
       }
 
       return newState;

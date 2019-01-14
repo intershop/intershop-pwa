@@ -42,15 +42,15 @@ describe('Registration Service', () => {
     });
   });
 
-  it("should get comapny user data  data when 'getCompanyUserData' is called", done => {
+  it("should get company user data when 'getCompanyUserData' is called", done => {
     const userData = {
-      type: 'SMBCustomerUser',
+      firstName: 'patricia',
     } as User;
 
     when(apiServiceMock.get('customers/-/users/-')).thenReturn(of(userData));
 
     registrationService.getCompanyUserData().subscribe(data => {
-      expect(data.type).toEqual(userData.type);
+      expect(data.firstName).toEqual(userData.firstName);
       verify(apiServiceMock.get('customers/-/users/-')).once();
       done();
     });

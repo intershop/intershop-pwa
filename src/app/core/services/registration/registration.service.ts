@@ -2,8 +2,9 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 import { Observable } from 'rxjs';
-import { switchMapTo } from 'rxjs/operators';
+import { map, switchMapTo } from 'rxjs/operators';
 
+import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
 import { User } from '../../models/user/user.model';
@@ -45,6 +46,6 @@ export class RegistrationService {
    * @returns The related customer user data.
    */
   getCompanyUserData(): Observable<User> {
-    return this.apiService.get('customers/-/users/-');
+    return this.apiService.get('customers/-/users/-').pipe(map(UserMapper.fromData));
   }
 }

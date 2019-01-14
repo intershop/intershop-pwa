@@ -11,11 +11,17 @@ export class MiniCartModule {
     cy.get('ish-mini-basket')
       .get('div.quick-cart-link')
       .first()
-      .click();
+      .click({ force: true });
 
     cy.get('a.view-cart', { timeout: 10000 })
-      .should('be.visible')
       .first()
-      .click();
+      .click({ force: true });
+  }
+
+  get text() {
+    return cy
+      .get('ish-mini-basket')
+      .get('div.quick-cart-link')
+      .first();
   }
 }
