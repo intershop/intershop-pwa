@@ -33,7 +33,6 @@ describe('Line Item Description Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.pli = BasketMockData.getBasketItem();
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
@@ -53,7 +52,13 @@ describe('Line Item Description Component', () => {
   });
 
   it('should hold itemSurcharges for the line item', () => {
-    component.ngOnChanges();
-    expect(component.itemSurcharges).toHaveLength(1);
+    fixture.detectChanges();
+    expect(element.querySelectorAll('a.details-tooltip')).toHaveLength(1);
+  });
+
+  it('should not display itemSurcharges for the line item if not available', () => {
+    component.pli = { ...BasketMockData.getBasketItem(), itemSurcharges: undefined };
+    expect(() => fixture.detectChanges()).not.toThrow();
+    expect(element.querySelectorAll('a.details-tooltip')).toHaveLength(0);
   });
 });
