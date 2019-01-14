@@ -150,6 +150,7 @@
     "rxjs-no-unsafe-catch": true,
     "rxjs-no-unsafe-scope": { "severity": "off" },
     "rxjs-no-unsafe-takeuntil": true,
+    "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
     "ngrx-use-complex-type-with-action-payload": true,

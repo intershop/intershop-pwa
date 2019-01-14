@@ -36,9 +36,10 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Output()
   sortByChange = new EventEmitter<string>();
 
-  destroy$ = new Subject();
   sortForm: FormGroup;
   sortOptions: SelectOption[] = [];
+
+  private destroy$ = new Subject();
 
   ngOnInit() {
     this.sortForm = new FormGroup({

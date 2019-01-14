@@ -13,7 +13,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ContentPageContainerComponent implements OnInit, OnDestroy {
   contentPageId: string;
-  destroy$ = new Subject();
+
+  private destroy$ = new Subject();
 
   constructor(private route: ActivatedRoute) {}
 

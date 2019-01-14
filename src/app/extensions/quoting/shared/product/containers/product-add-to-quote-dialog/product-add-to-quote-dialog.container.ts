@@ -24,7 +24,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
   activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));
   quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
 
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
 
   constructor(public ngbActiveModal: NgbActiveModal, private store: Store<{}>) {}
 

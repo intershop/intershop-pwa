@@ -44,7 +44,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   form: FormGroup;
   generateProductRoute = ProductHelper.generateProductRoute;
 
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
 
   constructor(private formBuilder: FormBuilder) {
     this.form = new FormGroup({});
