@@ -423,7 +423,7 @@ describe('Basket Effects', () => {
       const action = new basketActions.AddItemsToBasket({ items });
       actions$ = of(action);
 
-      effects.getBasketBeforeAddItemsToBasket$.subscribe(() => {
+      effects.createBasketBeforeAddItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.createBasket()).once();
         done();
       });
@@ -603,8 +603,8 @@ describe('Basket Effects', () => {
         ],
         basketId: 'BIDNEW',
       });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
 
       expect(effects.mergeBasketAfterLogin$).toBeObservable(expected$);
     });
