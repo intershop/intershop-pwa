@@ -16,6 +16,7 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
+import { DesignViewAdapterService } from './design-view-adapter/design-view-adapter.service';
 
 const exportedComponents = [ContentIncludeContainerComponent, ContentPageletContainerComponent];
 
@@ -120,4 +121,8 @@ const entryComponents = [
   exports: [...exportedComponents],
   entryComponents: [...entryComponents],
 })
-export class CMSModule {}
+export class CMSModule {
+  constructor(dvadapter: DesignViewAdapterService) {
+    dvadapter.init();
+  }
+}
