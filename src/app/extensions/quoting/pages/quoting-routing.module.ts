@@ -1,23 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'quote-list',
     loadChildren: './quote-list/quote-list-page.module#QuoteListPageModule',
-    canActivate: [AuthGuard],
+    canActivate: [FeatureToggleGuard, AuthGuard],
+    data: { feature: 'quoting' },
   },
   {
     path: 'quote',
     loadChildren: './quote-edit/quote-edit-page.module#QuoteEditPageModule',
-    canActivate: [AuthGuard],
+    canActivate: [FeatureToggleGuard, AuthGuard],
+    data: { feature: 'quoting' },
   },
   {
     path: 'quote-request',
     loadChildren: './quote-request-edit/quote-request-edit-page.module#QuoteRequestEditPageModule',
-    canActivate: [AuthGuard],
+    canActivate: [FeatureToggleGuard, AuthGuard],
+    data: { feature: 'quoting' },
   },
 ];
 
