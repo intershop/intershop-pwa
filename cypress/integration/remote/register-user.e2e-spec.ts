@@ -26,7 +26,7 @@ describe('New User', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
         page
-          .submit()
+          .submitAndObserve()
           .its('statusMessage')
           .should('equal', '201 (Created)');
       });
@@ -74,7 +74,7 @@ describe('New User', () => {
     it('should get an error when submitting', () => {
       at(RegistrationPage, page => {
         page
-          .submit()
+          .submitAndObserve()
           .its('statusMessage')
           .should('equal', '409 (Conflict)');
         page.errorText.should('be.visible').and('contain', 'email address already exists');

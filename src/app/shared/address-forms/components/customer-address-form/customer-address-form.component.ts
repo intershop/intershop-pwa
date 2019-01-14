@@ -28,7 +28,7 @@ import { AddressFormFactoryProvider } from '../../configurations/address-form-fa
 @Component({
   selector: 'ish-customer-address-form',
   templateUrl: './customer-address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CustomerAddressFormComponent implements OnInit, OnChanges {
   @Input()
