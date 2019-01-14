@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'ish-address-form-gb',
   templateUrl: './address-form-gb.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormGBComponent implements OnInit {
   @Input()

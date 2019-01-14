@@ -7,7 +7,7 @@ import { Region } from 'ish-core/models/region/region.model';
 @Component({
   selector: 'ish-address-form',
   templateUrl: './address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormComponent implements OnInit {
   @Input()
