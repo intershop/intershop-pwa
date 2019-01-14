@@ -271,6 +271,7 @@
     "ban-types": [
       true,
       ["Object", "Use {} instead."],
+      ["Array", "Use [] instead."],
       ["String", "Use 'string'"],
       ["Boolean", "Use 'boolean'"],
       ["Number", "Use 'number'"],

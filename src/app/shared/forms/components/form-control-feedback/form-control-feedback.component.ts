@@ -18,7 +18,7 @@ export class FormControlFeedbackComponent implements DoCheck {
   @Input()
   control: AbstractControl;
 
-  errors: Array<Observable<string>>;
+  errors: Observable<string>[];
 
   constructor(private translate: TranslateService) {}
 
