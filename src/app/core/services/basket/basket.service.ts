@@ -57,7 +57,7 @@ export class BasketService {
       'lineItems',
     ]
   ): Observable<Basket> {
-    const includeStr = includes && includes.length > 0 ? '?include=' + includes.join('&include=') : '';
+    const includeStr = includes && includes.length > 0 ? '?include=' + includes.join() : '';
 
     return this.apiService
       .get<BasketData>(`baskets/${basketId}${includeStr}`, {

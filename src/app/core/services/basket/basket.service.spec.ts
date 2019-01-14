@@ -82,7 +82,7 @@ describe('Basket Service', () => {
         apiService.get(
           `baskets/${
             basketMockDataV1.data.id
-          }?include=invoiceToAddress&include=commonShipToAddress&include=commonShippingMethod&include=discounts&include=lineItems`,
+          }?include=invoiceToAddress,commonShipToAddress,commonShippingMethod,discounts,lineItems`,
           anything()
         )
       ).once();
