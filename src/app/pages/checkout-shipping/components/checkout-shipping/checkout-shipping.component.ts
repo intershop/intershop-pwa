@@ -36,7 +36,8 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
 
   shippingForm: FormGroup;
   submitted = false;
-  destroy$ = new Subject();
+
+  private destroy$ = new Subject();
 
   constructor(private router: Router) {}
 

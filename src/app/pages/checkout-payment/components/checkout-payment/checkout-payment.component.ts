@@ -36,7 +36,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   paymentForm: FormGroup;
   submitted = false;
-  destroy$ = new Subject();
+
+  private destroy$ = new Subject();
 
   constructor(private router: Router) {}
 

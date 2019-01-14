@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { interval } from 'rxjs';
-import { mapTo, startWith } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { mapTo, share } from 'rxjs/operators';
 
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -62,9 +62,9 @@ export class QuoteEditComponent implements OnChanges {
   validToDate: number;
   submitted = false;
 
-  currentDateTime$ = interval(1000).pipe(
-    startWith(0),
-    mapTo(Date.now())
+  hasValidToDate$: Observable<boolean> = timer(0, 1000).pipe(
+    mapTo(Date.now() < this.validToDate),
+    share()
   );
 
   constructor() {

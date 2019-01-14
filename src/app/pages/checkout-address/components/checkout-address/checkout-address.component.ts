@@ -78,7 +78,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   submitted = false;
 
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
 
   constructor(private router: Router, private fb: FormBuilder) {}
 
