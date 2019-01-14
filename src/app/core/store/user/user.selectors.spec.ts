@@ -70,8 +70,7 @@ describe('User Selectors', () => {
 
   it('should select the user when load company user is successful', () => {
     const firstName = 'test';
-    const type = 'PrivateCustomer';
-    store$.dispatch(new LoadCompanyUserSuccess({ user: { firstName, type } as User }));
+    store$.dispatch(new LoadCompanyUserSuccess({ user: { firstName } as User }));
 
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);

@@ -1,3 +1,4 @@
+import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Customer, CustomerType } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
@@ -18,9 +19,10 @@ import { initialState, userReducer } from './user.reducer';
 describe('User Reducer', () => {
   const customer = {
     customerNo: 'dummy',
+    firstName: 'Patricia',
   } as Customer;
   const user = {
-    firstName: 'test',
+    firstName: 'Patricia',
   } as User;
 
   describe('initialState', () => {
@@ -99,8 +101,8 @@ describe('User Reducer', () => {
 
       const newState = userReducer(initialState, new LoginUserSuccess({ customer: privateCustomer }));
 
-      expect(newState.customer).toEqual(privateCustomer);
-      expect(newState.user).toEqual(privateCustomer as User);
+      expect(newState.customer.type).toEqual(privateCustomer.type);
+      expect(newState.user).toEqual(UserMapper.fromCustomer(privateCustomer));
       expect(newState.authorized).toBeTrue();
     });
 

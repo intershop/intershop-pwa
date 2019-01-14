@@ -30,7 +30,7 @@
       <!-- display invoice address -->
       <ish-address [address]="basket.invoiceToAddress"></ish-address>
     </div>
-    <p *ngIf="!basket.invoiceToAddress" class="text-danger">
+    <p *ngIf="!basket.invoiceToAddress && nextDisabled" class="text-danger">
       {{ 'checkout.addresses.no_Selection.invoice.error' | translate}}
     </p>
 
@@ -112,7 +112,7 @@
         <p>
     </div>
 
-    <p *ngIf="!basket.commonShipToAddress" class="text-danger">
+    <p *ngIf="!basket.commonShipToAddress && nextDisabled" class="text-danger">
       {{ 'checkout.addresses.no_Selection.shipping.error' | translate}}
     </p>
 

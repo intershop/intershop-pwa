@@ -70,7 +70,7 @@ describe('Checkout Address Component', () => {
     element = fixture.nativeElement;
     component.basket = BasketMockData.getBasket();
     component.addresses = [
-      { id: 'ilMKAE8BlIUAAAFgEdAd1LZU', firstName: 'Patricia', invoiceToAddress: true, shipToAddress: true } as Address,
+      BasketMockData.getAddress(),
       { id: '4712', firstName: 'John', invoiceToAddress: true, shipToAddress: true } as Address,
       { id: '4713', firstName: 'Susan', invoiceToAddress: false, shipToAddress: true } as Address,
       { id: '4714', firstName: 'Dave', invoiceToAddress: true, shipToAddress: false } as Address,
@@ -241,7 +241,7 @@ describe('Checkout Address Component', () => {
     const changes: SimpleChanges = {
       addresses: new SimpleChange(undefined, component.addresses, false),
     };
-    component.currentUser.preferredInvoiceToAddress = BasketMockData.getAddress();
+    component.currentUser.preferredInvoiceToAddressUrn = BasketMockData.getAddress().urn;
     component.ngOnChanges(changes);
     expect(component.shipping.isAddressDeleteable).toBeFalse();
   });
@@ -250,7 +250,7 @@ describe('Checkout Address Component', () => {
     const changes: SimpleChanges = {
       addresses: new SimpleChange(undefined, component.addresses, false),
     };
-    component.currentUser.preferredShipToAddress = BasketMockData.getAddress();
+    component.currentUser.preferredShipToAddressUrn = BasketMockData.getAddress().urn;
     component.ngOnChanges(changes);
     expect(component.shipping.isAddressDeleteable).toBeFalse();
   });
