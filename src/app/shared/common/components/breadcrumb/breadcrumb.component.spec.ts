@@ -1,5 +1,5 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -19,8 +19,7 @@ describe('Breadcrumb Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [BreadcrumbComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     });
     fixture = TestBed.createComponent(BreadcrumbComponent);
     component = fixture.componentInstance;
