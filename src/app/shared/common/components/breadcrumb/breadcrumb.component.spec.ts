@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -43,21 +43,18 @@ describe('Breadcrumb Component', () => {
   describe('breadcrumbtrail from property trail', () => {
     it('should render trail from home and trail with translation keys if set', () => {
       component.trail = [{ key: 'KEY' }, { key: 'KEY2' }];
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/KEY/KEY2"`);
     });
 
     it('should render trail from home and trail with text if set', () => {
       component.trail = [{ text: 'TEXT' }, { text: 'TEXT2' }];
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/TEXT/TEXT2"`);
     });
 
     it('should render trail from home and with link if set', () => {
       component.trail = [{ link: '/LINK', text: 'L1' }, { link: '/LINK', text: 'L2' }];
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/L1/L2"`);
     });
@@ -79,18 +76,12 @@ describe('Breadcrumb Component', () => {
 
     it('should render breadcrumbtrail from home and category when available', () => {
       component.category = view;
-      component.ngOnChanges({
-        category: { currentValue: view } as SimpleChange,
-      });
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/cat123/cat456"`);
     });
     it('should render breadcrumbtrail from category when available', () => {
       component.showHome = false;
       component.category = view;
-      component.ngOnChanges({
-        category: { currentValue: view } as SimpleChange,
-      });
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"cat123/cat456"`);
     });
@@ -117,9 +108,6 @@ describe('Breadcrumb Component', () => {
       } as Product;
       const view = createProductView(product, tree);
       component.product = view;
-      component.ngOnChanges({
-        product: { currentValue: view } as SimpleChange,
-      });
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/n1/n2/FakeProduct"`);
     });
@@ -135,9 +123,6 @@ describe('Breadcrumb Component', () => {
       } as Product;
       const view = createProductView(product, categoryTree());
       component.product = view;
-      component.ngOnChanges({
-        product: { currentValue: view } as SimpleChange,
-      });
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"FakeProduct"`);
     });
@@ -148,7 +133,6 @@ describe('Breadcrumb Component', () => {
       component.showHome = false;
       component.account = true;
       component.trail = [{ key: 'account.order_history.link' }];
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"My Account/Orders"`);
     });
@@ -156,7 +140,6 @@ describe('Breadcrumb Component', () => {
     it('should render breadcrumbtrail from home and account and trail when account is active', () => {
       component.account = true;
       component.trail = [{ key: 'account.order_history.link' }];
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/My Account/Orders"`);
       expect(element.textContent).toContain('My Account');
@@ -167,7 +150,6 @@ describe('Breadcrumb Component', () => {
     it('should render trail from search term when is available', () => {
       component.showHome = false;
       component.searchTerm = 'Test Search Term';
-      component.ngOnChanges({});
 
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Search Results: Test Search Term"`);
@@ -175,13 +157,11 @@ describe('Breadcrumb Component', () => {
 
     it('should render trail from home and search term when search term is available', () => {
       component.searchTerm = 'Test Search Term';
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/Search Results: Test Search Term"`);
     });
 
     it('should render home only by default if nothing else is available', () => {
-      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toMatchInlineSnapshot(`"Home/"`);
     });
