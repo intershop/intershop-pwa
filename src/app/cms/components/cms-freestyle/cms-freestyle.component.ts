@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { CMSComponentBase } from '../cms-component-base/cms-component-base';
 
 @Component({
   selector: 'ish-cms-freestyle',
   templateUrl: './cms-freestyle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSFreestyleComponent {
-  @Input() pagelet: ContentPageletView;
-}
+export class CMSFreestyleComponent extends CMSComponentBase {}

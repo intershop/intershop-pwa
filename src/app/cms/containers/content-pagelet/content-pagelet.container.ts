@@ -54,6 +54,8 @@ export class ContentPageletContainerComponent implements OnChanges {
 
   private initializeComponent(instance: CMSComponentInterface) {
     instance.pagelet = this.pagelet;
+    instance.cmsDQNAttribute = this.pagelet.definitionQualifiedName;
+
     // OnChanges has to be manually invoked on dynamically created components
     if (instance.ngOnChanges) {
       instance.ngOnChanges({ pagelet: new SimpleChange(undefined, this.pagelet, true) });

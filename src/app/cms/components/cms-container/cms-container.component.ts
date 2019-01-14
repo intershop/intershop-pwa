@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { CMSComponentBase } from '../cms-component-base/cms-component-base';
 
 // naming collision with container-component-pattern
 // tslint:disable-next-line:project-structure
@@ -9,9 +10,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSContainerComponent implements OnChanges {
-  @Input() pagelet: ContentPageletView;
-
+export class CMSContainerComponent extends CMSComponentBase implements OnChanges {
   contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';
 
