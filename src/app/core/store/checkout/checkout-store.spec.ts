@@ -259,6 +259,7 @@ describe('Checkout Store', () => {
         store.reset();
 
         store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
+        expect(i.next().type).toEqual(BasketActionTypes.ResetBasket);
         expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'newTest' }));
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
