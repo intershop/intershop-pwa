@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 /**
  * The Content Page Container Component prepares all data required to display content managed pages.
@@ -11,20 +10,8 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './content-page.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ContentPageContainerComponent implements OnInit, OnDestroy {
-  contentPageId: string;
-
-  private destroy$ = new Subject();
+export class ContentPageContainerComponent {
+  contentPageId$ = this.route.params.pipe(map(params => params.contentPageId));
 
   constructor(private route: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      this.contentPageId = params.contentPageId;
-    });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
 }
