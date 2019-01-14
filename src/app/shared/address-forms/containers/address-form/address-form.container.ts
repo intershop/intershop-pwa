@@ -28,7 +28,7 @@ import { AddressFormFactoryProvider } from '../../configurations/address-form-fa
 @Component({
   selector: 'ish-address-form-container',
   templateUrl: './address-form.container.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormContainerComponent implements OnChanges, OnDestroy {
   countries$ = this.store.pipe(select(getAllCountries));
