@@ -25,9 +25,10 @@ export class HeaderStickyComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   screenHeight: number;
   showSearch = false;
-  destroy$ = new Subject();
 
   mobileStickyHeaderHeight = 40;
+
+  private destroy$ = new Subject();
 
   constructor(
     @Inject(SMALL_BREAKPOINT_WIDTH) private mobileWidth: number,

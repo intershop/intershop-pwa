@@ -35,7 +35,8 @@ import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   navbarCollapsed = false;
-  destroy$ = new Subject();
+
+  private destroy$ = new Subject();
 
   constructor(
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
