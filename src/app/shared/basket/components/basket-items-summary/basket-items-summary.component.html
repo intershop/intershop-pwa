@@ -4,7 +4,7 @@
 
       <!-- product name and price -->
       <div class="col-8">
-        <a [routerLink]="generateProductRoute(pli.product)">
+        <a [routerLink]="pli.product | ishProductRoute">
           {{ pli.name }}
         </a>
       </div>

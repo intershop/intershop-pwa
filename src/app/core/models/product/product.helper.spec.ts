@@ -8,51 +8,6 @@ import { Product, ProductHelper } from './product.model';
 import { ProductType } from './product.types';
 
 describe('Product Helper', () => {
-  describe('generateProductRoute()', () => {
-    function dataProvider() {
-      return [
-        {
-          product: { sku: 'SKU' },
-          category: { uniqueId: 'CAT' },
-          expected: '/category/CAT/product/SKU',
-        },
-        { product: { sku: 'SKU' }, category: undefined, expected: '/product/SKU' },
-        { product: {}, category: undefined, expected: '/' },
-        { product: undefined, category: undefined, expected: '/' },
-        {
-          product: { sku: 'SKU', name: 'name' },
-          category: { uniqueId: 'CAT' },
-          expected: '/category/CAT/product/SKU/name',
-        },
-        { product: { sku: 'SKU', name: 'name' }, category: undefined, expected: '/product/SKU/name' },
-      ];
-    }
-
-    using(dataProvider, dataSlice => {
-      it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(
-        dataSlice.product
-      )}' and category '${JSON.stringify(dataSlice.category)}'`, () => {
-        expect(ProductHelper.generateProductRoute(dataSlice.product, dataSlice.category)).toEqual(dataSlice.expected);
-      });
-    });
-  });
-
-  describe('generateProductSlug()', () => {
-    using(
-      [
-        { product: { sku: 'A' }, expected: undefined },
-        { product: { sku: 'A', name: '' }, expected: undefined },
-        { product: { sku: 'A', name: 'some example name' }, expected: 'some-example-name' },
-        { product: { sku: 'A', name: 'name & speci@l char$' }, expected: 'name-speci-l-char' },
-      ],
-      dataSlice => {
-        it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(dataSlice.product)}'`, () => {
-          expect(ProductHelper.generateProductSlug(dataSlice.product)).toEqual(dataSlice.expected);
-        });
-      }
-    );
-  });
-
   describe('image', () => {
     let product: Product;
     beforeEach(() => {

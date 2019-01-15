@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-tile',
@@ -19,8 +19,6 @@ export class ProductTileComponent {
   compareToggle = new EventEmitter<void>();
   @Output()
   productToBasket = new EventEmitter<void>();
-
-  generateProductRoute = ProductHelper.generateProductRoute;
 
   toggleCompare() {
     this.compareToggle.emit();

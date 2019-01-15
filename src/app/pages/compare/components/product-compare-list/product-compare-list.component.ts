@@ -48,7 +48,6 @@ export class ProductCompareListComponent implements OnChanges {
   visibleProducts: Product[] = [];
   currentPage = 1;
 
-  generateProductRoute = ProductHelper.generateProductRoute;
   getAttributeByAttributeName = ProductHelper.getAttributeByAttributeName;
 
   ngOnChanges() {
