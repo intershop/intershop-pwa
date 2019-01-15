@@ -1,5 +1,4 @@
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
-import { LocaleActionTypes, SelectLocale } from '../../locale';
 
 import {
   CategoriesAction,
@@ -32,12 +31,8 @@ function mergeCategories(state: CategoriesState, action: LoadTopLevelCategoriesS
   };
 }
 
-export function categoriesReducer(state = initialState, action: CategoriesAction | SelectLocale): CategoriesState {
+export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
-    case LocaleActionTypes.SelectLocale: {
-      return { ...state, topLevelLoaded: false };
-    }
-
     case CategoriesActionTypes.DeselectCategory: {
       return {
         ...state,

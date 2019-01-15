@@ -10,7 +10,7 @@
       <ul *ngIf="availableLocales && availableLocales.length">
         <ng-container *ngFor="let l of availableLocales">
           <li *ngIf="l.lang !== locale.lang">
-            <a (click)="switch(l)"> {{ l.displayName }} </a>
+            <a [href]="location.path() + ';redirect=1;lang=' + l.lang"> {{ l.displayName }} </a>
           </li>
         </ng-container>
       </ul>

@@ -77,10 +77,6 @@ export class HeaderModule {
   }
 
   switchLanguage(lang: string) {
-    cy.server();
-    cy.route('GET', '**/categories*').as('categories');
-    cy.wait(500);
-
     cy.get('ish-header span.language-switch-current-selection')
       .should('be.visible')
       .first()
@@ -90,9 +86,5 @@ export class HeaderModule {
       .should('contain', lang)
       .first()
       .click();
-
-    cy.wait('@categories')
-      .its('status')
-      .should('equal', 200);
   }
 }
