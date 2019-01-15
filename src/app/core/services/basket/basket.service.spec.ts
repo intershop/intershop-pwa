@@ -66,26 +66,9 @@ describe('Basket Service', () => {
   it("should get basket data when 'getBasket' is called", done => {
     when(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).thenReturn(of(basketMockDataV1));
 
-    basketService.getBasket(basketMockDataV1.data.id, []).subscribe(data => {
-      expect(data.id).toEqual(basketMockData.id);
-      verify(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).once();
-      done();
-    });
-  });
-
-  it("should get basket with all include data when 'getBasket' is called without second parameter", done => {
-    when(apiService.get(anyString(), anything())).thenReturn(of(basketMockDataV1));
-
     basketService.getBasket(basketMockDataV1.data.id).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
-      verify(
-        apiService.get(
-          `baskets/${
-            basketMockDataV1.data.id
-          }?include=invoiceToAddress,commonShipToAddress,commonShippingMethod,discounts,lineItems`,
-          anything()
-        )
-      ).once();
+      verify(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).once();
       done();
     });
   });
@@ -101,7 +84,7 @@ describe('Basket Service', () => {
   });
 
   it("should update data to basket of a specific basket when 'updateBasket' is called", done => {
-    when(apiService.patch(anything(), anything(), anything())).thenReturn(of({}));
+    when(apiService.patch(anything(), anything(), anything())).thenReturn(of(basketMockDataV1));
     const payload = { invoiceToAddress: '123456' };
 
     basketService.updateBasket(basketMockData.id, payload).subscribe(() => {

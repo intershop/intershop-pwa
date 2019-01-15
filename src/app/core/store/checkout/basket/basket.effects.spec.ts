@@ -108,7 +108,7 @@ describe('Basket Effects', () => {
 
   describe('loadProductsForBasket$', () => {
     it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
-      when(basketServiceMock.getBasket(anything(), anyString())).thenReturn(of());
+      when(basketServiceMock.getBasket(anything())).thenReturn(of());
 
       const action = new basketActions.LoadBasketSuccess({
         basket: {
@@ -213,7 +213,7 @@ describe('Basket Effects', () => {
 
   describe('updateBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(undefined));
+      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -237,10 +237,10 @@ describe('Basket Effects', () => {
       });
     });
 
-    it('should map to action of type UpdateBasketSuccess', () => {
+    it('should map to action of type LoadBasketSuccess', () => {
       const update = { commonShippingMethod: 'shippingId' };
       const action = new basketActions.UpdateBasket({ update });
-      const completion = new basketActions.UpdateBasketSuccess();
+      const completion = new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
