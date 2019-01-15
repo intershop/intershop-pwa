@@ -243,7 +243,7 @@ export class BasketEffects {
     ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([payload]) => !payload.basketId),
+    filter(([payload, basket]) => !basket && !payload.basketId),
     mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
     map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
   );
