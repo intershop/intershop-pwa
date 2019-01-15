@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductRowComponent } from './product-row.component';
@@ -17,6 +18,7 @@ describe('Product Row Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
+        PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],

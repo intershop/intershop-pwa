@@ -29,12 +29,12 @@
         <div class="slider" #slider>
           <div *ngFor="let lineItem of basket.lineItems" class="product-row">
             <div class="mini-product-img">
-              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="collapse()">
+              <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()">
                 <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
               </a>
             </div>
             <div class="mini-product-info">
-              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="collapse()">
+              <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()">
                 {{ lineItem.name }}
               </a>
               <div class="product-price">{{ lineItem.price | ishPrice }}</div>
