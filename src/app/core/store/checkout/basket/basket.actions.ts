@@ -25,7 +25,6 @@ export enum BasketActionTypes {
   UpdateBasketShippingMethod = '[Basket] Update Baskets Shipping Method',
   UpdateBasket = '[Basket Internal] Update Basket',
   UpdateBasketFail = '[Basket API] Update Basket Fail',
-  UpdateBasketSuccess = '[Basket API] Update Basket Success',
   DeleteBasketShippingAddress = '[Basket] Delete Basket Shipping Address',
   AddProductToBasket = '[Basket] Add Product',
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
@@ -124,9 +123,6 @@ export class UpdateBasketFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
-export class UpdateBasketSuccess implements Action {
-  readonly type = BasketActionTypes.UpdateBasketSuccess;
-}
 export class DeleteBasketShippingAddress implements Action {
   readonly type = BasketActionTypes.DeleteBasketShippingAddress;
   constructor(public payload: { addressId: string }) {}
@@ -284,7 +280,6 @@ export type BasketAction =
   | UpdateBasketShippingMethod
   | UpdateBasket
   | UpdateBasketFail
-  | UpdateBasketSuccess
   | DeleteBasketShippingAddress
   | AddProductToBasket
   | AddItemsToBasket

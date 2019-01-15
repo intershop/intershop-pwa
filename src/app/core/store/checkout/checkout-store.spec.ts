@@ -136,7 +136,7 @@ describe('Checkout Store', () => {
 
       return of(newBasket);
     });
-    when(basketServiceMock.getBasket(anything(), anything())).thenCall(() => {
+    when(basketServiceMock.getBasket(anything())).thenCall(() => {
       const newBasket = {
         ...basket,
       };

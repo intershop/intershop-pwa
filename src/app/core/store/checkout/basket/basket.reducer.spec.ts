@@ -75,16 +75,6 @@ describe('Basket Reducer', () => {
         expect(state.error).toEqual(error);
       });
     });
-
-    describe('UpdateBasketSuccess action', () => {
-      it('should set loading to false', () => {
-        const action = new fromActions.UpdateBasketSuccess();
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toBeUndefined();
-      });
-    });
   });
 
   describe('AddItemsToBasket actions', () => {

@@ -164,9 +164,9 @@ export class BasketEffects {
     ofType<basketActions.UpdateBasket>(basketActions.BasketActionTypes.UpdateBasket),
     mapToPayloadProperty('update'),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([update, basket]) =>
-      this.basketService.updateBasket(basket.id, update).pipe(
-        mapTo(new basketActions.UpdateBasketSuccess()),
+    concatMap(([update, currentBasket]) =>
+      this.basketService.updateBasket(currentBasket.id, update).pipe(
+        map(basket => new basketActions.LoadBasketSuccess({ basket })),
         mapErrorToAction(basketActions.UpdateBasketFail)
       )
     )
@@ -222,10 +222,10 @@ export class BasketEffects {
     ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([{ basketId }, basket]) => !!basket || !!basketId),
-    concatMap(([payload, basket]) => {
+    filter(([{ basketId }, currentBasket]) => !!currentBasket || !!basketId),
+    concatMap(([payload, currentBasket]) => {
       // get basket id from AddItemsToBasket action if set, otherwise use current basket id
-      const basketId = payload.basketId || basket.id;
+      const basketId = payload.basketId || currentBasket.id;
 
       return this.basketService.addItemsToBasket(basketId, payload.items).pipe(
         mapTo(new basketActions.AddItemsToBasketSuccess()),
@@ -459,7 +459,6 @@ export class BasketEffects {
   @Effect()
   loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
     ofType(
-      basketActions.BasketActionTypes.UpdateBasketSuccess,
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
       basketActions.BasketActionTypes.DeleteBasketItemSuccess

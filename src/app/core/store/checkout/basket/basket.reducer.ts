@@ -67,7 +67,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.UpdateBasketSuccess:
     case BasketActionTypes.AddItemsToBasketSuccess:
     case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
