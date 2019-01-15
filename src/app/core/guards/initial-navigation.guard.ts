@@ -24,7 +24,8 @@ export class InitialNavigationGuard implements CanActivate, CanActivateChild {
       this.store.dispatch(new ApplyConfiguration(properties));
 
       if (next.params.redirect) {
-        const navigateTo = state.url.match(/\/(.*?);/)[1];
+        const params = state.url.match(/\/.*?(;[^?]*).*?/);
+        const navigateTo = state.url.replace(params[1], '');
         return this.router.parseUrl(navigateTo);
       }
     }
