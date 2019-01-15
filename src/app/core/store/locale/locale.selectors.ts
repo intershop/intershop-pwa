@@ -2,19 +2,20 @@ import { createSelector } from '@ngrx/store';
 
 import { getCoreState } from '../core-store';
 
-import { getAvailable, getCurrent } from './locale.reducer';
-
 const getLocaleState = createSelector(
   getCoreState,
   state => state.locale
 );
 
-export const getCurrentLocale = createSelector(
-  getLocaleState,
-  getCurrent
-);
-
 export const getAvailableLocales = createSelector(
   getLocaleState,
-  getAvailable
+  state => state.locales
+);
+
+/**
+ * selects the current locale if set. If not returns the first available locale
+ */
+export const getCurrentLocale = createSelector(
+  getLocaleState,
+  state => (state.current ? state.locales.find(l => l.lang === state.current) : state.locales[0])
 );

@@ -236,7 +236,7 @@ describe('Categories Effects', () => {
     });
 
     it('should trigger when language is changed after first routing action', () => {
-      const action = new SelectLocale({ locale: EN_US });
+      const action = new SelectLocale({ lang: EN_US.lang });
       const completion = new fromActions.LoadTopLevelCategories({ depth });
       store$.dispatch(action);
 

@@ -7,12 +7,12 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { SelectLocale } from 'ish-core/store/locale';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
-import { SelectLocale, SetAvailableLocales } from '../../locale';
 import { localeReducer } from '../../locale/locale.reducer';
 import { shoppingReducers } from '../shopping-store.module';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
@@ -67,8 +67,6 @@ describe('Products Effects', () => {
 
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
-
-    store$.dispatch(new SetAvailableLocales({ locales: [DE_DE] }));
   });
 
   describe('loadProduct$', () => {
@@ -216,8 +214,8 @@ describe('Products Effects', () => {
       store$.dispatch(new fromActions.LoadProductSuccess({ product: { sku } as Product }));
       store$.dispatch(new fromActions.SelectProduct({ sku }));
       actions$ = hot('-a--a--b--b--a', {
-        a: new SelectLocale({ locale: DE_DE }),
-        b: new SelectLocale({ locale: EN_US }),
+        a: new SelectLocale({ lang: DE_DE.lang }),
+        b: new SelectLocale({ lang: EN_US.lang }),
       });
 
       expect(effects.languageChange$).toBeObservable(
