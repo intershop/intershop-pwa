@@ -9,7 +9,7 @@ export enum LocaleActionTypes {
 
 export class SelectLocale implements Action {
   readonly type = LocaleActionTypes.SelectLocale;
-  constructor(public payload: { locale: Locale }) {}
+  constructor(public payload: { lang: string }) {}
 }
 
 export class SetAvailableLocales implements Action {

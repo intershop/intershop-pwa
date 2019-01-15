@@ -208,7 +208,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
+        store.dispatch(new SelectLocale({ lang: locales[1].lang }));
         tick(5000);
       }));
 
@@ -339,7 +339,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
+        store.dispatch(new SelectLocale({ lang: locales[1].lang }));
         tick(5000);
       }));
 
@@ -453,7 +453,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
+        store.dispatch(new SelectLocale({ lang: locales[1].lang }));
         tick(5000);
       }));
 
@@ -535,7 +535,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
+        store.dispatch(new SelectLocale({ lang: locales[1].lang }));
         tick(5000);
       }));
 
@@ -634,7 +634,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
+        store.dispatch(new SelectLocale({ lang: locales[1].lang }));
         tick(5000);
       }));
 

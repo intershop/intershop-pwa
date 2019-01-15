@@ -15,9 +15,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { LocaleActionTypes } from 'ish-core/store/locale';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
-import { LocaleActionTypes } from '../../locale';
 import {
   SetPage,
   SetPagingInfo,
