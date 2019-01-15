@@ -72,14 +72,24 @@ describe('Basket Handling', () => {
     at(MyAccountPage, page => page.header.miniCart.total.should('contain', _.product.price * 2));
   });
 
+  it('user adds one more product to basket when logged in', () => {
+    at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
+    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+    at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
+    at(ProductDetailPage, page => {
+      page.addProductToCart();
+      page.header.miniCart.total.should('contain', _.product.price * 3);
+    });
+  });
+
   it('user should be able to modify the amount of products', () => {
-    at(MyAccountPage, page => page.header.miniCart.goToCart());
+    at(ProductDetailPage, page => page.header.miniCart.goToCart());
     at(CartPage, page => {
       page.lineItems.should('have.length', 1);
-      page.summary.subtotal.should('contain', _.product.price * 2);
-      page.lineItem(0).quantity.set(3);
-      waitLoadingEnd();
       page.summary.subtotal.should('contain', _.product.price * 3);
+      page.lineItem(0).quantity.set(2);
+      waitLoadingEnd();
+      page.summary.subtotal.should('contain', _.product.price * 2);
       page.lineItem(0).remove();
       waitLoadingEnd();
       page.header.miniCart.text.should('contain', '0 items');
