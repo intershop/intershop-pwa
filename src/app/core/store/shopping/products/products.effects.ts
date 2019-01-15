@@ -3,19 +3,8 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
-import {
-  concatMap,
-  distinctUntilChanged,
-  filter,
-  map,
-  mergeMap,
-  switchMap,
-  switchMapTo,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { LocaleActionTypes } from 'ish-core/store/locale';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import {
@@ -121,24 +110,6 @@ export class ProductsEffects {
     mapToPayloadProperty('sku'),
     whenTruthy(),
     map(sku => new productsActions.LoadProduct({ sku }))
-  );
-
-  /**
-   * reload the current (if available) product when language is changed
-   */
-  @Effect()
-  languageChange$ = this.store.pipe(
-    select(productsSelectors.getSelectedProduct),
-    whenTruthy(),
-    switchMapTo(
-      this.actions$.pipe(
-        ofType(LocaleActionTypes.SelectLocale),
-        distinctUntilChanged(),
-        withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-        filter(([, sku]) => !!sku),
-        map(([, sku]) => new productsActions.LoadProduct({ sku }))
-      )
-    )
   );
 
   @Effect({ dispatch: false })

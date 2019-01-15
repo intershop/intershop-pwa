@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
-import { SelectLocale, getAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
 
 @Component({
   selector: 'ish-language-switch-container',
@@ -16,8 +15,4 @@ export class LanguageSwitchContainerComponent {
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
 
   constructor(private store: Store<{}>) {}
-
-  switch(locale: Locale) {
-    this.store.dispatch(new SelectLocale({ locale }));
-  }
 }

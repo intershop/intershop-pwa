@@ -7,8 +7,6 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
-import { SelectLocale } from 'ish-core/store/locale';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
@@ -25,8 +23,6 @@ describe('Products Effects', () => {
   let effects: ProductsEffects;
   let store$: Store<{}>;
   let productsServiceMock: ProductsService;
-  const DE_DE = { lang: 'de' } as Locale;
-  const EN_US = { lang: 'en' } as Locale;
 
   const router = mock(Router);
 
@@ -204,23 +200,6 @@ describe('Products Effects', () => {
     it('should fire LoadProduct when product is undefined', () => {
       actions$ = hot('a', { a: new fromActions.SelectProduct({ sku: undefined }) });
       expect(effects.selectedProduct$).toBeObservable(cold('-'));
-    });
-  });
-
-  describe('languageChange$', () => {
-    it('should refetch product when language is changed distinctly', () => {
-      const sku = 'P123';
-
-      store$.dispatch(new fromActions.LoadProductSuccess({ product: { sku } as Product }));
-      store$.dispatch(new fromActions.SelectProduct({ sku }));
-      actions$ = hot('-a--a--b--b--a', {
-        a: new SelectLocale({ lang: DE_DE.lang }),
-        b: new SelectLocale({ lang: EN_US.lang }),
-      });
-
-      expect(effects.languageChange$).toBeObservable(
-        cold('-a-----a-----a', { a: new fromActions.LoadProduct({ sku }) })
-      );
     });
   });
 

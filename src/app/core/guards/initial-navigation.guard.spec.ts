@@ -4,9 +4,12 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { getFeatures, getRestEndpoint } from 'ish-core/store/configuration';
 import { ConfigurationEffects } from 'ish-core/store/configuration/configuration.effects';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { SetAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { InitialNavigationGuard } from './initial-navigation.guard';
@@ -25,7 +28,7 @@ describe('Initial Navigation Guard', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting({ configuration: configurationReducer }, [ConfigurationEffects]),
+        ...ngrxTesting({ configuration: configurationReducer, locale: localeReducer }, [ConfigurationEffects]),
         RouterTestingModule.withRoutes([
           { path: 'home', component: DummyComponent, canActivate: [InitialNavigationGuard] },
         ]),
@@ -36,6 +39,7 @@ describe('Initial Navigation Guard', () => {
     router = TestBed.get(Router);
     location = TestBed.get(Location);
     store$ = TestBed.get(TestStore);
+    store$.dispatch(new SetAvailableLocales({ locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[] }));
   });
 
   it('should be created', () => {
@@ -69,5 +73,12 @@ describe('Initial Navigation Guard', () => {
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
     expect(getFeatures(store$.state)).toIncludeAllMembers(['a', 'b', 'c']);
+  }));
+
+  it('should set imported locale to state', fakeAsync(() => {
+    router.navigateByUrl('/home;redirect=1;lang=de_DE');
+    tick(500);
+    expect(location.path()).toMatchInlineSnapshot(`"/home"`);
+    expect(getCurrentLocale(store$.state).lang).toEqual('de_DE');
   }));
 });

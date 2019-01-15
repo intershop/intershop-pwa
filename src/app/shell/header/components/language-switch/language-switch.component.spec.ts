@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { deepEqual, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Locale } from 'ish-core/models/locale/locale.model';
@@ -20,7 +20,7 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbDropdownModule, TranslateModule.forRoot()],
+      imports: [IconModule, NgbDropdownModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [LanguageSwitchComponent],
     })
       .compileComponents()
@@ -58,18 +58,4 @@ describe('Language Switch Component', () => {
     expect(component.availableLocales).toEqual(locales);
     expect(selectedLanguage[0].textContent.trim()).toEqual('de');
   }));
-
-  it('should change language when languageChange method is called', () => {
-    const FR = findLang('fr');
-
-    const emitter = spy(component.localeChange);
-    component.switch(FR);
-    verify(emitter.emit(deepEqual(FR))).once();
-
-    // setting from container
-    component.locale = FR;
-    fixture.detectChanges();
-    const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
-    expect(selectedLanguage[0].textContent.trim()).toEqual('fr');
-  });
 });

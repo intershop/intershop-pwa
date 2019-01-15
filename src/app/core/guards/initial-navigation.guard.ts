@@ -4,30 +4,36 @@ import { Store } from '@ngrx/store';
 
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { ConfigurationState } from 'ish-core/store/configuration/configuration.reducer';
+import { SelectLocale } from 'ish-core/store/locale';
 
 @Injectable({ providedIn: 'root' })
 export class InitialNavigationGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private store: Store<{}>) {}
 
   private do(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL', 'features'];
-    const properties = keys
-      .filter(key => next.params[key])
-      .map(key => ({ [key]: next.params[key] }))
+    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL'];
+    const properties: { [id: string]: unknown } = keys
+      .filter(key => next.paramMap.has(key))
+      .map(key => ({ [key]: next.paramMap.get(key) }))
       .reduce((acc, val) => ({ ...acc, ...val }), {});
 
-    if (properties.features) {
-      properties.features = properties.features.split(/,/g);
+    if (next.paramMap.has('features')) {
+      properties.features = next.paramMap.get('features').split(/,/g);
+    }
+
+    if (next.paramMap.has('lang')) {
+      const lang = next.paramMap.get('lang');
+      this.store.dispatch(new SelectLocale({ lang }));
     }
 
     if (Object.keys(properties).length) {
       this.store.dispatch(new ApplyConfiguration(properties));
+    }
 
-      if (next.params.redirect) {
-        const params = state.url.match(/\/.*?(;[^?]*).*?/);
-        const navigateTo = state.url.replace(params[1], '');
-        return this.router.parseUrl(navigateTo);
-      }
+    if (next.paramMap.has('redirect')) {
+      const params = state.url.match(/\/.*?(;[^?]*).*?/);
+      const navigateTo = state.url.replace(params[1], '');
+      return this.router.parseUrl(navigateTo);
     }
 
     return true;

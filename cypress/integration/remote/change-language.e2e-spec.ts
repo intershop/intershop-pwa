@@ -55,19 +55,19 @@ describe('Language Changing User', () => {
       });
     });
 
-    xit('when switching to german', () => {
+    it('when switching to german', () => {
       at(ProductDetailPage, page => {
         page.header.switchLanguage('German');
       });
     });
 
-    xit('should see euro prices', () => {
+    it('should see euro prices', () => {
       at(ProductDetailPage, page => {
         page.price.should('contain', _.product.euroPrice).should('contain', '€');
       });
     });
 
-    xit('should see german categories', () => {
+    it('should see german categories', () => {
       at(ProductDetailPage, page => {
         page.header.topLevelCategoryLink(_.catalog.id).should('contain', _.catalog.germanName);
       });
@@ -92,13 +92,13 @@ describe('Language Changing User', () => {
       });
     });
 
-    xit('when switching to german', () => {
+    it('when switching to german', () => {
       at(FamilyPage, page => {
         page.header.switchLanguage('German');
       });
     });
 
-    xit('should see euro prices', () => {
+    it('should see euro prices', () => {
       at(FamilyPage, page => {
         page.productList
           .productTile(_.product.sku)
@@ -107,7 +107,7 @@ describe('Language Changing User', () => {
       });
     });
 
-    xit('should see german categories', () => {
+    it('should see german categories', () => {
       at(FamilyPage, page => {
         page.header.topLevelCategoryLink(_.catalog.id).should('contain', _.catalog.germanName);
       });
