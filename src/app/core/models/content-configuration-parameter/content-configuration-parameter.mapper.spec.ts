@@ -1,20 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { SetAvailableLocales } from 'ish-core/store/locale';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
+import { Locale } from '../locale/locale.model';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 import { ContentConfigurationParameterMapper } from './content-configuration-parameter.mapper';
 
 describe('Content Configuration Parameter Mapper', () => {
   let contentConfigurationParameterMapper: ContentConfigurationParameterMapper;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot(
-          { configuration: configurationReducer },
+          { configuration: configurationReducer, locale: localeReducer },
           {
             initialState: {
               configuration: {
@@ -29,6 +33,7 @@ describe('Content Configuration Parameter Mapper', () => {
     });
 
     contentConfigurationParameterMapper = TestBed.get(ContentConfigurationParameterMapper);
+    store$ = TestBed.get(Store);
   });
 
   it('should return a value for undefined input', () => {
@@ -93,5 +98,18 @@ describe('Content Configuration Parameter Mapper', () => {
         });
       }
     );
+
+    it('should include the current locale into the URL if set', () => {
+      const locales = [{ lang: 'de_DE' }] as Locale[];
+      store$.dispatch(new SetAvailableLocales({ locales }));
+
+      const key = 'Image';
+      const input = 'site:/pwa/pwa_home_teaser_1.jpg';
+      const expected = 'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg';
+
+      expect(contentConfigurationParameterMapper.postProcessImageURLs({ [key]: input })).toEqual({
+        [key]: expected,
+      });
+    });
   });
 });
