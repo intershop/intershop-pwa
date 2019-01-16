@@ -1,0 +1,34 @@
+server {
+    listen 80;
+    server_name ~^$SUBDOMAIN\..+$;
+
+    location / {
+        proxy_cache my_cache;
+        proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header X-Cache-Status $upstream_cache_status;
+
+        proxy_ignore_headers Cache-Control;
+        proxy_cache_valid any 10m;
+
+        add_header X-icm-subdomain $SUBDOMAIN always;
+        add_header X-icm-channel $CHANNEL always;
+        add_header X-icm-application $APPLICATION always;
+        add_header X-icm-features $FEATURES always;
+        add_header X-icm-default-lang $LANG always;
+
+        rewrite ^/$ /home;
+        if ($request_uri !~* ";lang="){
+            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;lang=$LANG";
+        }
+        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
+
+        proxy_pass $UPSTREAM_PWA;
+    }
+
+    include /etc/nginx/conf.d/icm.common;
+}

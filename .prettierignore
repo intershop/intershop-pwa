@@ -38,3 +38,4 @@
 /schematics/src/**/other-files/**
 /schematics/*.*
 /schematics/**/*.js
+/templates/**/*.*

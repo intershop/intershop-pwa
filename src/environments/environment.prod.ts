@@ -29,7 +29,7 @@ export const environment = {
   endlessScrollingItemsPerPage: 9,
 
   // enable or disable service worker
-  serviceWorker: true,
+  serviceWorker: false,
 
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
