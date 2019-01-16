@@ -6,7 +6,6 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
 import { SpecialValidators } from '../../../forms/validators/special-validators';
 
 /**
@@ -42,7 +41,6 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
-  generateProductRoute = ProductHelper.generateProductRoute;
 
   private destroy$ = new Subject();
 

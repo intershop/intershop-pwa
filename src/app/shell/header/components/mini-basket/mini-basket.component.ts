@@ -2,7 +2,6 @@ import { AnimationBuilder, animate, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Mini Basket Component displays a quick overview over the users basket items.
@@ -35,8 +34,6 @@ export class MiniBasketComponent implements OnChanges {
   isCollapsed = true;
   itemCount = 0;
   currentProduct = 0;
-
-  generateProductRoute = ProductHelper.generateProductRoute;
 
   constructor(private animationBuilder: AnimationBuilder) {}
 
