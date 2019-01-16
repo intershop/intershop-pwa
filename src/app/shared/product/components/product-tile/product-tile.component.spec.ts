@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductTileComponent } from './product-tile.component';
@@ -19,6 +20,7 @@ describe('Product Tile Component', () => {
       imports: [
         FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
         IconModule,
+        PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],

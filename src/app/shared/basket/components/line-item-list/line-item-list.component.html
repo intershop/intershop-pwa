@@ -11,7 +11,7 @@
       <div *ngIf="pli.product" class="row list-item-row list-item-row-big">
         <!-- Product Image -->
         <div class="col-2 list-item">
-          <a [routerLink]="generateProductRoute(pli.product)">
+          <a [routerLink]="pli.product | ishProductRoute">
             <ish-product-image [product]="pli.product" imageType="S" class="product-image"></ish-product-image>
           </a>
         </div>
@@ -19,7 +19,7 @@
         <div *ngIf="form.get(['items', i])" class="col-7 col-md-6 col-xl-4 list-item">
           <!--Product Description -->
           <div class="pli-description">
-            <a class="product-title" [routerLink]="generateProductRoute(pli.product)">
+            <a class="product-title" [routerLink]="pli.product | ishProductRoute">
               {{ pli.product.name }}
             </a>
 
