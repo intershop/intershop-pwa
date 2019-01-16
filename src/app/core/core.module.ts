@@ -6,6 +6,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
+import { TrackingModule } from '../extensions/tracking/tracking.module';
+
 import { ConfigurationModule } from './configuration.module';
 import { IconModule } from './icon.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -22,6 +24,7 @@ export function translateFactory(http: HttpClient) {
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
+    TrackingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
