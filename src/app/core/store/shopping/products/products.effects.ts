@@ -49,7 +49,7 @@ export class ProductsEffects {
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess({ product })),
-        mapErrorToAction(productsActions.LoadProductFail)
+        mapErrorToAction(productsActions.LoadProductFail, { sku })
       )
     )
   );
@@ -89,8 +89,8 @@ export class ProductsEffects {
       this.store.pipe(select(getItemsPerPage))
     ),
     distinctUntilChanged(),
-    concatMap(([categoryUniqueId, currentPage, sortBy, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, currentPage, itemsPerPage, sortBy).pipe(
+    concatMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
           new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
@@ -99,7 +99,7 @@ export class ProductsEffects {
             .filter(stub => !entities[stub.sku])
             .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
-        mapErrorToAction(productsActions.LoadProductFail)
+        mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
     )
   );
