@@ -12,14 +12,10 @@ import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit {
-  @Input()
-  loginType: string;
-  @Input()
-  isLoggedIn: boolean;
-  @Input()
-  error: HttpError;
-  @Output()
-  login = new EventEmitter<LoginCredentials>();
+  @Input() loginType: string;
+  @Input() isLoggedIn: boolean;
+  @Input() error: HttpError;
+  @Output() login = new EventEmitter<LoginCredentials>();
 
   form: FormGroup;
   submitted = false;

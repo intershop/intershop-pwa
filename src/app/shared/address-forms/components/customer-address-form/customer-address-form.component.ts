@@ -31,15 +31,11 @@ import { AddressFormFactoryProvider } from '../../configurations/address-form-fa
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CustomerAddressFormComponent implements OnInit, OnChanges {
-  @Input()
-  address: Address;
-  @Input()
-  resetForm = false;
+  @Input() address: Address;
+  @Input() resetForm = false;
 
-  @Output()
-  save = new EventEmitter<Address>();
-  @Output()
-  cancel = new EventEmitter();
+  @Output() save = new EventEmitter<Address>();
+  @Output() cancel = new EventEmitter();
 
   form: FormGroup;
   submitted = false;

@@ -25,18 +25,13 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountAddressesPageComponent implements OnChanges {
-  @Input()
-  addresses: Address[];
-  @Input()
-  user: User;
-  @Input()
-  error: HttpError;
+  @Input() addresses: Address[];
+  @Input() user: User;
+  @Input() error: HttpError;
 
-  @Output()
-  createCustomerAddress = new EventEmitter<Address>();
+  @Output() createCustomerAddress = new EventEmitter<Address>();
 
-  @Output()
-  deleteCustomerAddress = new EventEmitter<string>();
+  @Output() deleteCustomerAddress = new EventEmitter<string>();
 
   furtherAddresses: Address[] = [];
 

@@ -37,14 +37,12 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
   /**
    * Parent form: it must contain control 'countryCodeSwitch' and the actual address control
    */
-  @Input()
-  parentForm: FormGroup;
+  @Input() parentForm: FormGroup;
 
   /**
    * control name of the address form control:  default name 'address'
    */
-  @Input()
-  controlName = 'address';
+  @Input() controlName = 'address';
 
   regions: Region[];
   titles: string[];

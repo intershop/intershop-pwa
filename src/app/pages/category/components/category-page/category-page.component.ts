@@ -10,8 +10,7 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryPageComponent implements OnInit {
-  @Input()
-  category: CategoryView;
+  @Input() category: CategoryView;
 
   isCollapsed = false;
 

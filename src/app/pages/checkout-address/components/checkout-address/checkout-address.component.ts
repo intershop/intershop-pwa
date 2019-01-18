@@ -51,27 +51,17 @@ class FormType {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  currentUser: User;
-  @Input()
-  basket: Basket;
-  @Input()
-  addresses: Address[];
-  @Input()
-  error: HttpError;
+  @Input() currentUser: User;
+  @Input() basket: Basket;
+  @Input() addresses: Address[];
+  @Input() error: HttpError;
 
-  @Output()
-  updateInvoiceAddress = new EventEmitter<string>();
-  @Output()
-  updateShippingAddress = new EventEmitter<string>();
-  @Output()
-  updateCustomerAddress = new EventEmitter<Address>();
-  @Output()
-  createInvoiceAddress = new EventEmitter<Address>();
-  @Output()
-  createShippingAddress = new EventEmitter<Address>();
-  @Output()
-  deleteShippingAddress = new EventEmitter<string>();
+  @Output() updateInvoiceAddress = new EventEmitter<string>();
+  @Output() updateShippingAddress = new EventEmitter<string>();
+  @Output() updateCustomerAddress = new EventEmitter<Address>();
+  @Output() createInvoiceAddress = new EventEmitter<Address>();
+  @Output() createShippingAddress = new EventEmitter<Address>();
+  @Output() deleteShippingAddress = new EventEmitter<string>();
 
   invoice = new FormType();
   shipping = new FormType();

@@ -28,17 +28,12 @@ import { SpecialValidators } from '../../../forms/validators/special-validators'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemListComponent implements OnChanges, OnDestroy {
-  @Input()
-  lineItems: LineItemView[];
-  @Input()
-  editable = true;
-  @Input()
-  total: Price;
+  @Input() lineItems: LineItemView[];
+  @Input() editable = true;
+  @Input() total: Price;
 
-  @Output()
-  updateItem = new EventEmitter<LineItemQuantity>();
-  @Output()
-  deleteItem = new EventEmitter<string>();
+  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
 

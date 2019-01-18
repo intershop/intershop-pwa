@@ -24,8 +24,7 @@ export class SearchBoxContainerComponent {
   /**
    * the configuration for this component
    */
-  @Input()
-  configuration?: SearchBoxConfiguration;
+  @Input() configuration?: SearchBoxConfiguration;
 
   searchResults$ = this.store.pipe(select(getSuggestSearchResults));
   previousSearchTerm$ = this.store.pipe(select(getSearchTerm));

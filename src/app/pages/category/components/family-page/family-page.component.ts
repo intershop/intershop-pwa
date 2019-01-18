@@ -23,14 +23,12 @@ export class FamilyPageComponent implements OnInit {
   /**
    * The the category leading to the displayed result.
    */
-  @Input()
-  category: CategoryView;
+  @Input() category: CategoryView;
 
   /**
    * Request from the product-list to retrieve more products.
    */
-  @Output()
-  loadMore = new EventEmitter<void>();
+  @Output() loadMore = new EventEmitter<void>();
 
   isCollapsed = false;
 

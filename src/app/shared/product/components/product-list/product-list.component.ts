@@ -21,15 +21,10 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
-  @Input()
-  products: Product[];
-  @Input()
-  category?: Category;
-  @Input()
-  viewType?: ViewType = 'grid';
-  @Input()
-  loadingMore: boolean;
+  @Input() products: Product[];
+  @Input() category?: Category;
+  @Input() viewType?: ViewType = 'grid';
+  @Input() loadingMore: boolean;
 
-  @Output()
-  loadMore = new EventEmitter<void>();
+  @Output() loadMore = new EventEmitter<void>();
 }

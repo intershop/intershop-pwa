@@ -37,16 +37,11 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  configuration: SearchBoxConfiguration = {};
-  @Input()
-  searchTerm: string;
-  @Input()
-  results: SuggestTerm[];
-  @Output()
-  searchTermChange = new EventEmitter<string>();
-  @Output()
-  performSearch = new EventEmitter<string>();
+  @Input() configuration: SearchBoxConfiguration = {};
+  @Input() searchTerm: string;
+  @Input() results: SuggestTerm[];
+  @Output() searchTermChange = new EventEmitter<string>();
+  @Output() performSearch = new EventEmitter<string>();
 
   searchForm: FormGroup;
   isHidden = true;

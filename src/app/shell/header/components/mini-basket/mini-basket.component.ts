@@ -19,12 +19,9 @@ export class MiniBasketComponent implements OnChanges {
   /**
    * The basket that should be displayed.
    */
-  @Input()
-  basket: BasketView;
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
-  @Input()
-  basketAnimation = '';
+  @Input() basket: BasketView;
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() basketAnimation = '';
   /**
    * The vertical product slider element reference.
    */

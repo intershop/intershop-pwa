@@ -9,10 +9,8 @@ import { CategoryHelper } from 'ish-core/models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryNavigationComponent {
-  @Input()
-  category: CategoryView;
-  @Input()
-  categoryNavigationLevel: number;
+  @Input() category: CategoryView;
+  @Input() categoryNavigationLevel: number;
 
   categoryEquals = CategoryHelper.equals;
 }

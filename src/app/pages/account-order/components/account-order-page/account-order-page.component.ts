@@ -14,6 +14,5 @@ import { OrderView } from 'ish-core/models/order/order.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderPageComponent {
-  @Input()
-  order: OrderView;
+  @Input() order: OrderView;
 }

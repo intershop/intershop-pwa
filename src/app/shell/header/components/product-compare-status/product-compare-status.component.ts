@@ -6,9 +6,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCompareStatusComponent {
-  @Input()
-  productCompareCount: number;
+  @Input() productCompareCount: number;
 
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
 }

@@ -18,6 +18,5 @@ export class ServerErrorPageComponent {
   /**
    * The occured error.
    */
-  @Input()
-  error;
+  @Input() error;
 }

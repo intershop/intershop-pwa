@@ -9,14 +9,10 @@ import { SelectComponent, SelectOption } from '../select/select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectCountryComponent extends SelectComponent implements OnChanges {
-  @Input()
-  countries: Country[];
-  @Input()
-  controlName = 'countryCode';
-  @Input()
-  label = 'Country';
-  @Input()
-  errorMessages = { required: 'account.address.country.error.default' };
+  @Input() countries: Country[];
+  @Input() controlName = 'countryCode';
+  @Input() label = 'Country';
+  @Input() errorMessages = { required: 'account.address.country.error.default' };
 
   ngOnChanges(c: SimpleChanges) {
     if (c.countries) {

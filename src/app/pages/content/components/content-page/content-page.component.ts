@@ -15,6 +15,5 @@ export class ContentPageComponent {
   /**
    * The id of the content page to be displayed.
    */
-  @Input()
-  contentPageId: string;
+  @Input() contentPageId: string;
 }
