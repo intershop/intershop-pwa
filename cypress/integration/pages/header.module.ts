@@ -10,6 +10,12 @@ export class HeaderModule {
       .then(el => Number.parseInt(el.text(), 10));
   }
 
+  gotoHomePage() {
+    cy.get('img[alt="Logo"]')
+      .last()
+      .click();
+  }
+
   gotoLoginPage() {
     cy.get('ish-header a.my-account-login')
       .first()

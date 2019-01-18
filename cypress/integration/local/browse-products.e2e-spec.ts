@@ -58,7 +58,7 @@ describe('Browsing User', () => {
 
   describe('starting at product detail page', () => {
     before(() => {
-      ProductDetailPage.navigateTo(_.category.id, _.product1.sku);
+      ProductDetailPage.navigateTo(_.product1.sku, _.category.id);
     });
 
     it('should be at product detail page to check product price', () => {
