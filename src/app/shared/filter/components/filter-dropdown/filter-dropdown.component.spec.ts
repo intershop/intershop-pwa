@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { FilterDropdownComponent } from './filter-dropdown.component';
 
@@ -15,7 +16,7 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [IconModule, NgbCollapseModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [FilterDropdownComponent],
     }).compileComponents();
   }));
@@ -52,7 +53,7 @@ describe('Filter Dropdown Component', () => {
     const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
     expect(selectedFilterFacet.textContent).toContain('Logitech');
 
-    const hiddenFilters = element.querySelector('div [data-testing-id=collapseFilterBrands]');
+    const hiddenFilters = element.querySelector('div [data-testing-id=collapse-filter-Brands]');
     expect(hiddenFilters.className).not.toContain('show');
   }));
 });
