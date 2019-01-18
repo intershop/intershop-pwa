@@ -13,10 +13,8 @@ interface FormErrorMessages {
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormControlFeedbackComponent implements DoCheck {
-  @Input()
-  messages: FormErrorMessages = {};
-  @Input()
-  control: AbstractControl;
+  @Input() messages: FormErrorMessages = {};
+  @Input() control: AbstractControl;
 
   errors: Observable<string>[];
 

@@ -9,10 +9,8 @@ import { Region } from 'ish-core/models/region/region.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormUSComponent implements OnInit {
-  @Input()
-  addressForm: FormGroup;
-  @Input()
-  regions: Region[];
+  @Input() addressForm: FormGroup;
+  @Input() regions: Region[];
 
   ngOnInit() {
     if (!this.addressForm) {

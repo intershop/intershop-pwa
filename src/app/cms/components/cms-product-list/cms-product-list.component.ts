@@ -8,8 +8,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSProductListComponent implements OnChanges {
-  @Input()
-  pagelet: ContentPageletView;
+  @Input() pagelet: ContentPageletView;
 
   productSKUs: string[] = [];
 

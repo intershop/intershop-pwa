@@ -19,8 +19,7 @@ export class ProductLabelComponent implements OnChanges {
   /**
    * The product for which the label should be displayed
    */
-  @Input()
-  product: Product;
+  @Input() product: Product;
 
   productLabel: string;
 

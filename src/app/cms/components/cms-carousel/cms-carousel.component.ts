@@ -9,8 +9,7 @@ import { arraySlices } from 'ish-core/utils/functions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSCarouselComponent implements OnChanges {
-  @Input()
-  pagelet: ContentPageletView;
+  @Input() pagelet: ContentPageletView;
 
   slideItems = 6;
   itemGridSize = 12;

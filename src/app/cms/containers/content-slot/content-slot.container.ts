@@ -8,6 +8,5 @@ import { ContentSlotView } from 'ish-core/models/content-view/content-views';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentSlotContainerComponent {
-  @Input()
-  slot: ContentSlotView;
+  @Input() slot: ContentSlotView;
 }

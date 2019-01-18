@@ -17,6 +17,5 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemDescriptionComponent {
-  @Input()
-  pli: LineItemView;
+  @Input() pli: LineItemView;
 }

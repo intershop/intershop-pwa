@@ -8,10 +8,8 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginStatusComponent {
-  @Input()
-  user: User;
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() user: User;
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   getViewClasses(): string {
     switch (this.view) {

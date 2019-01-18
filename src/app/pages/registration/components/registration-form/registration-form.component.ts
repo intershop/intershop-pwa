@@ -26,15 +26,11 @@ import { SpecialValidators } from '../../../../shared/forms/validators/special-v
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationFormComponent implements OnInit, OnChanges {
-  @Input()
-  languages: Locale[];
-  @Input()
-  error: HttpError;
+  @Input() languages: Locale[];
+  @Input() error: HttpError;
 
-  @Output()
-  create = new EventEmitter<Customer>();
-  @Output()
-  cancel = new EventEmitter<void>();
+  @Output() create = new EventEmitter<Customer>();
+  @Output() cancel = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;

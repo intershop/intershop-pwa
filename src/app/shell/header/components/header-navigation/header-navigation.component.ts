@@ -20,11 +20,9 @@ import { Category } from 'ish-core/models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationComponent {
-  @Input()
-  view = 'auto';
+  @Input() view = 'auto';
 
-  @Input()
-  categories: CategoryView[];
+  @Input() categories: CategoryView[];
 
   openedCategories = [];
 

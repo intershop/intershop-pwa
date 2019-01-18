@@ -9,10 +9,8 @@ import { Locale } from 'ish-core/models/locale/locale.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationPersonalFormComponent implements OnInit {
-  @Input()
-  parentForm: FormGroup;
-  @Input()
-  languages: Locale[];
+  @Input() parentForm: FormGroup;
+  @Input() languages: Locale[];
 
   ngOnInit() {
     this.checkRequired();

@@ -20,13 +20,11 @@ export class AddressComponent {
    * The Address to be displayed.
    *
    */
-  @Input()
-  address: Address;
+  @Input() address: Address;
 
   /**
    * If set to true, the email is displayed as part of the address.
    *
    */
-  @Input()
-  displayEmail = false;
+  @Input() displayEmail = false;
 }

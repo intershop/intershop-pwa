@@ -20,8 +20,7 @@ import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentPageletContainerComponent implements OnInit {
-  @Input()
-  pagelet: ContentPageletView;
+  @Input() pagelet: ContentPageletView;
 
   noMappingFound: boolean;
 

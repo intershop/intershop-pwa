@@ -18,16 +18,11 @@ import { ProductAddToQuoteDialogContainerComponent } from '../product-add-to-quo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteContainerComponent {
-  @Input()
-  product: Product;
-  @Input()
-  disabled?: boolean;
-  @Input()
-  displayType?: string;
-  @Input()
-  cssClass?: string;
-  @Input()
-  quantity?: number;
+  @Input() product: Product;
+  @Input() disabled?: boolean;
+  @Input() displayType?: string;
+  @Input() cssClass?: string;
+  @Input() quantity?: number;
 
   constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
 

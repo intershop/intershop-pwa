@@ -9,12 +9,9 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit {
-  @Input()
-  product: Product;
-  @Output()
-  productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
-  @Output()
-  productToCompare = new EventEmitter<string>();
+  @Input() product: Product;
+  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
+  @Output() productToCompare = new EventEmitter<string>();
 
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';

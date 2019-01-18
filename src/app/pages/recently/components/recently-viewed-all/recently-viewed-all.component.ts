@@ -8,10 +8,8 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecentlyViewedAllComponent {
-  @Input()
-  products: Product[];
-  @Output()
-  clearRecently = new EventEmitter<void>();
+  @Input() products: Product[];
+  @Output() clearRecently = new EventEmitter<void>();
 
   clearAll() {
     this.clearRecently.emit();

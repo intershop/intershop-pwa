@@ -9,8 +9,7 @@ import { SelectComponent, SelectOption } from '../select/select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
-  @Input()
-  titles: string[];
+  @Input() titles: string[];
 
   constructor(protected translate: TranslateService) {
     super(translate);
