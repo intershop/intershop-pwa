@@ -1,6 +1,6 @@
 <ng-container *ngIf="pli && pli.product">
   <!-- Product ID -->
-  <p class="product-id">{{'checkout.pli.item.text.id' | translate }} {{pli.productSKU}}</p>
+  <p class="product-id">{{ 'checkout.pli.item.text.id' | translate }} {{ pli.productSKU }}</p>
 
   <!-- TODO: Product Variations -->
 
@@ -22,23 +22,17 @@
 
   <!-- Surcharges -->
   <div *ngFor="let surcharge of pli.itemSurcharges">
-    {{surcharge.displayName}}
-    <span *ngIf="!surcharge.displayName">{{surcharge.text}}</span>
-    <span class="text-nowrap">
-      {{ surcharge.amount | ishPrice }}
-    </span>
-    <ng-template #SurchargeDescription>
-      <span [innerHTML]="surcharge.description"></span>
-    </ng-template>
-    <a class="details-tooltip"
+    {{ surcharge.displayName }} <span *ngIf="!surcharge.displayName">{{ surcharge.text }}</span>
+    <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
+    <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
+    <a
+      class="details-tooltip"
       [ngbPopover]="SurchargeDescription"
       [popoverTitle]="surcharge.displayName"
       placement="top"
     >
-      {{'shopping_cart.detail.text' | translate }}
+      {{ 'shopping_cart.detail.text' | translate }}
       <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
     </a>
   </div>
 </ng-container>
-
-

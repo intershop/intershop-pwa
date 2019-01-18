@@ -3,12 +3,12 @@
     <ng-container *ngFor="let item of navigationItems">
       <ng-container *ngIf="item.feature; else unrestricted">
         <li *ishFeature="item.feature" routerLinkActive="active">
-          <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
+          <a [routerLink]="item.link">{{ item.localizationKey | translate }}</a>
         </li>
       </ng-container>
       <ng-template #unrestricted>
         <li routerLinkActive="active">
-          <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
+          <a [routerLink]="item.link">{{ item.localizationKey | translate }}</a>
         </li>
       </ng-template>
     </ng-container>
@@ -19,13 +19,17 @@
   <select (change)="navigateTo($event.target.value)" class="form-control">
     <ng-container *ngFor="let item of navigationItems">
       <ng-container *ngIf="item.feature; else unrestricted">
-        <option *ishFeature="item.feature" [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
-          {{ item.localizationKey | translate}}
+        <option
+          *ishFeature="item.feature"
+          [value]="item.link"
+          [attr.selected]="item.link === currentPath ? 'selected' : undefined"
+        >
+          {{ item.localizationKey | translate }}
         </option>
       </ng-container>
       <ng-template #unrestricted>
-        <option [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
-          {{ item.localizationKey | translate}}
+        <option [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected' : undefined">
+          {{ item.localizationKey | translate }}
         </option>
       </ng-template>
     </ng-container>

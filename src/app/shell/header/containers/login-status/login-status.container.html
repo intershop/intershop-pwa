@@ -1,8 +1,5 @@
-
 <ng-container *ngIf="logoutOnly; else loginStatus">
   <ish-logout [user]="user$ | async" [view]="view"></ish-logout>
 </ng-container>
 
-<ng-template #loginStatus>
-  <ish-login-status [user]="user$ | async" [view]="view"></ish-login-status>
-</ng-template>
+<ng-template #loginStatus> <ish-login-status [user]="user$ | async" [view]="view"></ish-login-status> </ng-template>

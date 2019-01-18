@@ -8,5 +8,5 @@
     (updateShippingMethod)="updateBasketShippingMethod($event)"
   ></ish-checkout-shipping>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="(loading$ | async)"></ish-loading>
 </div>

@@ -4,12 +4,8 @@
     <div class="row justify-content-between align-items-center">
       <div class="col">
         <ul class="user-links">
-          <li>
-            <ish-login-status-container></ish-login-status-container>
-          </li>
-          <li *ishFeature="'compare'">
-            <ish-product-compare-status-container></ish-product-compare-status-container>
-          </li>
+          <li><ish-login-status-container></ish-login-status-container></li>
+          <li *ishFeature="'compare'"><ish-product-compare-status-container></ish-product-compare-status-container></li>
         </ul>
         <div class="header-utility">
           <ish-language-switch-container></ish-language-switch-container>
@@ -22,7 +18,7 @@
   <nav class="container d-md-none">
     <div class="row justify-content-between">
       <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
-        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
+        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
       </a>
       <div class="header-utility">
         <ish-login-status-container view="small"></ish-login-status-container>
@@ -30,10 +26,8 @@
       </div>
       <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
         <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-        <div class="hamburger-menu" [ngClass]="{'open': !navbarCollapsed}">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="hamburger-menu" [ngClass]="{ open: !navbarCollapsed }">
+          <span></span> <span></span> <span></span>
         </div>
       </button>
     </div>
@@ -44,9 +38,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3 logo-wrapper d-none d-md-block">
-        <a rel="home" routerLink="/home">
-          <img src="assets/img/logo.png" alt="Logo">
-        </a>
+        <a rel="home" routerLink="/home"> <img src="assets/img/logo.png" alt="Logo" /> </a>
       </div>
       <div class="col-md-5 header-info-wrapper d-none d-md-block"></div>
       <div class="col-md-4 search-container header-search-container">
