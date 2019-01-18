@@ -222,7 +222,9 @@ describe('Products Effects', () => {
   });
 
   describe('redirectIfErrorInProducts$', () => {
-    it('should redirect if triggered', done => {
+    it('should redirect if triggered on product detail page', done => {
+      when(router.url).thenReturn('/category/A/product/SKU');
+
       const action = new fromActions.LoadProductFail({ error: { status: 404 } as HttpError });
 
       actions$ = of(action);
@@ -233,6 +235,16 @@ describe('Products Effects', () => {
         expect(param).toEqual(['/error']);
         done();
       });
+    });
+
+    it('should not redirect if triggered on page other than product detail page', done => {
+      when(router.url).thenReturn('/search/term');
+
+      const action = new fromActions.LoadProductFail({ error: { status: 404 } as HttpError });
+
+      actions$ = of(action);
+
+      effects.redirectIfErrorInProducts$.subscribe(fail, fail, done);
     });
   });
 });
