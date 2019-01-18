@@ -142,6 +142,7 @@ export class ProductsEffects {
   @Effect({ dispatch: false })
   redirectIfErrorInProducts$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductFail),
+    filter(() => this.router.url.includes('/product/')),
     tap(() => this.router.navigate(['/error']))
   );
 }
