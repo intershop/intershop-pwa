@@ -8,6 +8,7 @@ import { shoppingReducers } from '../shopping-store.module';
 
 import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
 import {
+  getProduct,
   getProductEntities,
   getProductLoading,
   getProducts,
@@ -68,12 +69,16 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(new LoadProductFail({ error: { message: 'error' } as HttpError, sku: 'invalid' }));
       });
 
       it('should not have loaded product on error', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
         expect(getProductEntities(store$.state)).toBeEmpty();
+      });
+
+      it('should return a product stub if product is selected', () => {
+        expect(getProduct(store$.state, { sku: 'invalid' })).toBeTruthy();
       });
     });
   });

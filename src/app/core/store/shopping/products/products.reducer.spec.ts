@@ -2,7 +2,7 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 
 import * as fromActions from './products.actions';
-import { initialState, productsReducer } from './products.reducer';
+import { ProductsState, initialState, productsReducer } from './products.reducer';
 
 describe('Products Reducer', () => {
   describe('undefined action', () => {
@@ -35,12 +35,31 @@ describe('Products Reducer', () => {
     });
 
     describe('LoadCategoryFail action', () => {
-      it('should set loading to false', () => {
-        const action = new fromActions.LoadProductFail({ error: {} as HttpError });
-        const state = productsReducer(initialState, action);
+      let state: ProductsState;
 
+      beforeEach(() => {
+        const action = new fromActions.LoadProductFail({ error: {} as HttpError, sku: 'invalid' });
+        state = productsReducer(initialState, action);
+      });
+
+      it('should set loading to false and add product to failed list', () => {
         expect(state.loading).toBeFalse();
         expect(state.entities).toBeEmpty();
+        expect(state.failed).toIncludeAllMembers(['invalid']);
+      });
+
+      describe('followed by LoadProductSuccess', () => {
+        beforeEach(() => {
+          const product = { sku: 'invalid' } as Product;
+          const action = new fromActions.LoadProductSuccess({ product });
+          state = productsReducer(initialState, action);
+        });
+
+        it('should set loading to false and remove product from failed list', () => {
+          expect(state.loading).toBeFalse();
+          expect(state.entities).toHaveProperty('invalid');
+          expect(state.failed).toBeEmpty();
+        });
       });
     });
 
