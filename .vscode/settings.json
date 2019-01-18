@@ -6,9 +6,6 @@
   "tslint.alwaysShowRuleFailuresAsWarnings": true,
 
   // file type specific exclusions
-  "[html]": {
-    "editor.formatOnSave": false,
-  },
   "[handlebars]": {
     "editor.formatOnSave": false,
   },
