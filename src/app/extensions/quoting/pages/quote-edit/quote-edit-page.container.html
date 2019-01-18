@@ -7,4 +7,4 @@
   (addQuoteToBasket)="addQuoteToBasket($event)"
 ></ish-quote-edit>
 
-<ish-loading *ngIf="quoteLoading$ | async"></ish-loading>
+<ish-loading *ngIf="(quoteLoading$ | async)"></ish-loading>

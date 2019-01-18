@@ -1,10 +1,5 @@
 <ish-breadcrumb [trail]="[{ key: 'application.recentlyViewed.breadcrumb.label' }]"></ish-breadcrumb>
 
 <ng-container *ngIf="(products$ | async) as products">
-
-  <ish-recently-viewed-all
-    [products]="products"
-    (clearRecently)="clearAll()"
-  ></ish-recently-viewed-all>
-
+  <ish-recently-viewed-all [products]="products" (clearRecently)="clearAll()"></ish-recently-viewed-all>
 </ng-container>

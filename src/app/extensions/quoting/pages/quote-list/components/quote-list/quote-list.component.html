@@ -12,34 +12,46 @@
           <th>{{ 'quote.list.table.expiration_date' | translate }}</th>
           <th>{{ 'quote.list.table.status' | translate }}</th>
           <th></th>
+        </tr>
       </thead>
 
       <tr *ngFor="let quote of quotes">
-        <td><a [routerLink]="generateDetailRoute(quote)">{{ quote.number }}</a></td>
-        <td><a [routerLink]="generateDetailRoute(quote)">{{ quote.displayName }}</a></td>
+        <td>
+          <a [routerLink]="generateDetailRoute(quote)">{{ quote.number }}</a>
+        </td>
+        <td>
+          <a [routerLink]="generateDetailRoute(quote)">{{ quote.displayName }}</a>
+        </td>
         <td>{{ quote.items.length }}</td>
         <td>{{ quote.creationDate | date: 'shortDate' }}</td>
 
         <!-- valid to date-->
         <td *ngIf="!quote.validToDate">-</td>
         <td *ngIf="quote['validToDate'] && quote['validToDate'] <= currentDateTime">
-          <span class="text-danger">{{ 'quote.edit.submitted.your_quote_expired.text' | translate : { '0' : (quote['validToDate'] | date : 'shortDate'), '1' : (quote['validToDate'] | date : 'mediumTime') } }}</span>
+          <span class="text-danger">{{
+            'quote.edit.submitted.your_quote_expired.text'
+              | translate
+                : { '0': quote['validToDate'] | date: 'shortDate', '1': quote['validToDate'] | date: 'mediumTime' }
+          }}</span>
         </td>
         <td *ngIf="quote['validToDate'] && quote['validToDate'] > currentDateTime">
-            {{ quote['validToDate'] | date : 'shortDate' }}
+          {{ quote['validToDate'] | date: 'shortDate' }}
         </td>
 
-        <td align="left" nowrap="nowrap">
-          <ish-quote-state [quote]="quote"></ish-quote-state>
-        </td>
+        <td align="left" nowrap="nowrap"><ish-quote-state [quote]="quote"></ish-quote-state></td>
         <td class="text-right">
-          <a class="btn-tool" [title]="'quote.list.delete.button.delete.label' | translate" (click)="modalDialog.show(quote); selectedQuoteName = quote.displayName;">
+          <a
+            class="btn-tool"
+            [title]="'quote.list.delete.button.delete.label' | translate"
+            (click)="modalDialog.show(quote); selectedQuoteName = quote.displayName"
+          >
             <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
           </a>
         </td>
       </tr>
 
-      <ish-modal-dialog #modalDialog
+      <ish-modal-dialog
+        #modalDialog
         [options]="{
           titleText: 'quote.list.modaldialog.title' | translate,
           confirmText: 'quote.list.delete.button.yes.label' | translate,
@@ -47,17 +59,11 @@
         }"
         (confirmed)="onDeleteItem($event)"
       >
-        <p>
-          {{ 'quote.list.delete.heading' | translate: { '0' : selectedQuoteName } }}
-        </p>
-        <p>
-          {{ 'quote.list.delete.do_you_really_want_to_delete.text' | translate }}
-        </p>
+        <p>{{ 'quote.list.delete.heading' | translate: { '0': selectedQuoteName } }}</p>
+        <p>{{ 'quote.list.delete.do_you_really_want_to_delete.text' | translate }}</p>
       </ish-modal-dialog>
     </table>
   </div>
 </ng-container>
 
-<ng-template #emptyBlock>
-  {{ 'quote.list.empty' | translate }}
-</ng-template>
+<ng-template #emptyBlock> {{ 'quote.list.empty' | translate }} </ng-template>

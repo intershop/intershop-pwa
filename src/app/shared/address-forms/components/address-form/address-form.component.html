@@ -16,13 +16,12 @@
     <ish-address-form-fr *ngSwitchCase="'FR'" [addressForm]="addressForm" [titles]="titles"></ish-address-form-fr>
     <ish-address-form-gb *ngSwitchCase="'GB'" [addressForm]="addressForm" [titles]="titles"></ish-address-form-gb>
     <ish-address-form-us *ngSwitchCase="'US'" [addressForm]="addressForm" [regions]="regions"></ish-address-form-us>
-    <ish-address-form-default *ngSwitchDefault [addressForm]="addressForm" [regions]="regions"></ish-address-form-default>
+    <ish-address-form-default
+      *ngSwitchDefault
+      [addressForm]="addressForm"
+      [regions]="regions"
+    ></ish-address-form-default>
   </ng-container>
 
-  <ish-input
-    controlName="phoneHome"
-    [form]="addressForm"
-    label="account.profile.phone.label"
-  ></ish-input>
-
+  <ish-input controlName="phoneHome" [form]="addressForm" label="account.profile.phone.label"></ish-input>
 </div>
