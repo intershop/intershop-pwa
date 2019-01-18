@@ -51,7 +51,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
       captcha: [false, [Validators.required]],
-      address: this.afs.getFactory('default').getGroup(), // filled dynamically when country code changes
+      address: this.afs.getFactory('default').getGroup({}), // filled dynamically when country code changes
     });
 
     // set validators for credentials form

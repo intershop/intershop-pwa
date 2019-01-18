@@ -12,7 +12,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { markAsDirtyRecursive } from '../../../forms/utils/form-utils';
-import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 
 /**
  * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address. When the user submits the form the new/changed address will be sent to the parent component.
@@ -40,13 +39,14 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges {
   form: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder, private afs: AddressFormFactoryProvider) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     // create form for creating a new address
     this.form = this.fb.group({
       countryCodeSwitch: ['', [Validators.required]],
-      address: this.afs.getFactory('default').getGroup(), // filled dynamically when country code changes
+      // create address sub form, init/country change will be done by address-form-container
+      address: this.fb.group({}),
     });
 
     // initialize address form

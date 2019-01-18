@@ -1,10 +1,12 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { PipesModule } from 'ish-core/pipes.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { AddressFormFactory } from '../../components/address-form/address-form.factory';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
@@ -18,16 +20,8 @@ describe('Address Form Container', () => {
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
-    when(addressFormFactoryMock.getGroup(anything())).thenReturn(
-      new FormGroup({
-        firstName: new FormControl(''),
-        lastName: new FormControl(''),
-        addressLine1: new FormControl(''),
-        city: new FormControl(''),
-        mainDivision: new FormControl(''),
-        countryCode: new FormControl('BG'),
-      })
-    );
+    when(addressFormFactoryMock.getGroup(anything())).thenReturn(AddressMockData.getAddressForm('BG'));
+
     when(addressFormFactoryMock.countryCode).thenReturn('default');
 
     TestBed.configureTestingModule({
@@ -39,9 +33,8 @@ describe('Address Form Container', () => {
           inputs: ['parentForm', 'countryCode', 'countries', 'regions', 'titles'],
         }),
       ],
-      imports: [PipesModule],
+      imports: [PipesModule, StoreModule.forRoot(coreReducers)],
       providers: [
-        { provide: Store, useFactory: () => instance(mock(Store)) },
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },
       ],
@@ -68,16 +61,8 @@ describe('Address Form Container', () => {
   it('should react on country changes', () => {
     const parentForm = new FormGroup({
       countryCodeSwitch: new FormControl('DE'),
+      address: new FormGroup({}),
     });
-    const addressForm = new FormGroup({
-      firstName: new FormControl('Patricia'),
-      lastName: new FormControl(''),
-      addressLine1: new FormControl(''),
-      city: new FormControl(''),
-      mainDivision: new FormControl(''),
-      countryCode: new FormControl(''),
-    });
-    parentForm.addControl('address', addressForm);
     component.parentForm = parentForm;
 
     const changes: SimpleChanges = {

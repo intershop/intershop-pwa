@@ -10,11 +10,12 @@ import {
 import { FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { Region } from 'ish-core/models/region/region.model';
 import { RegionService } from 'ish-core/services/region/region.service';
 import { getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
+import { isBusinessCustomer } from 'ish-core/store/user';
 import { determineSalutations, updateValidatorsByDataLength } from '../../../forms/utils/form-utils';
 import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 
@@ -46,6 +47,7 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
 
   regions: Region[];
   titles: string[];
+  isBusinessCustomer = false;
 
   private destroy$ = new Subject();
 
@@ -58,6 +60,13 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(c: SimpleChanges) {
     if (c.parentForm) {
+      this.store.pipe(select(isBusinessCustomer, take(1))).subscribe(data => {
+        this.isBusinessCustomer = data;
+        const group = this.afs.getFactory('default').getGroup({ isBusinessAddress: this.isBusinessCustomer });
+        console.log(this.isBusinessCustomer);
+        console.log(group);
+        this.parentForm.setControl(this.controlName, group);
+      });
       this.parentForm
         .get('countryCodeSwitch')
         .valueChanges.pipe(takeUntil(this.destroy$))
@@ -73,8 +82,11 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
   private handleCountryChange(countryCode: string) {
     const oldFormValue = this.parentForm.get(this.controlName).value;
     const group = this.afs.getFactory(countryCode).getGroup({
-      ...oldFormValue,
-      countryCode,
+      isBusinessAddress: this.isBusinessCustomer,
+      value: {
+        ...oldFormValue,
+        countryCode,
+      },
     });
     this.parentForm.setControl(this.controlName, group);
 
