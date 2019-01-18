@@ -1,8 +1,9 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
+
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AddressFormComponent } from './address-form.component';
 
@@ -13,9 +14,50 @@ describe('Address Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressFormComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        AddressFormComponent,
+        MockComponent({
+          selector: 'ish-address-form-business',
+          template: 'Business address form extension',
+          inputs: ['addressForm'],
+        }),
+        MockComponent({
+          selector: 'ish-address-form-de',
+          template: 'German address form extension',
+          inputs: ['addressForm', 'titles'],
+        }),
+        MockComponent({
+          selector: 'ish-address-form-default',
+          template: 'Default address form extension',
+          inputs: ['addressForm', 'regions'],
+        }),
+        MockComponent({
+          selector: 'ish-address-form-fr',
+          template: 'French address form extension',
+          inputs: ['addressForm', 'titles'],
+        }),
+        MockComponent({
+          selector: 'ish-address-form-gb',
+          template: 'British address form extension',
+          inputs: ['addressForm', 'titles'],
+        }),
+        MockComponent({
+          selector: 'ish-address-form-us',
+          template: 'US address form extension',
+          inputs: ['addressForm', 'regions'],
+        }),
+        MockComponent({
+          selector: 'ish-input',
+          template: 'Input component',
+          inputs: ['controlName', 'form', 'label'],
+        }),
+        MockComponent({
+          selector: 'ish-select-country',
+          template: 'Country Select',
+          inputs: ['countries', 'form', 'controlName'],
+        }),
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {

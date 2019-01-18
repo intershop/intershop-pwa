@@ -12,7 +12,13 @@ import { LoadProductSuccess } from '../shopping/products';
 import { shoppingReducers } from '../shopping/shopping-store.module';
 
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
-import { getLoggedInCustomer, getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';
+import {
+  getLoggedInCustomer,
+  getLoggedInUser,
+  getUserAuthorized,
+  getUserError,
+  isBusinessCustomer,
+} from './user.selectors';
 
 describe('User Selectors', () => {
   let store$: TestStore;
@@ -32,6 +38,7 @@ describe('User Selectors', () => {
 
   it('should select no customer/user when no event was sent', () => {
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
+    expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
@@ -53,6 +60,7 @@ describe('User Selectors', () => {
     store$.dispatch(new LoginUserSuccess({ customer: { firstName, type } as Customer }));
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('firstName', firstName);
+    expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
     expect(getUserAuthorized(store$.state)).toBeTrue();
     expect(getUserError(store$.state)).toBeFalsy();
@@ -63,6 +71,7 @@ describe('User Selectors', () => {
     store$.dispatch(new LoginUserSuccess({ customer: { type } as Customer }));
 
     expect(getLoggedInCustomer(store$.state)).toBeTruthy();
+    expect(isBusinessCustomer(store$.state)).toBeTrue();
     expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeTrue();
     expect(getUserError(store$.state)).toBeFalsy();
