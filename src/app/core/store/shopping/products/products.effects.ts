@@ -46,11 +46,13 @@ export class ProductsEffects {
   loadProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
     mapToPayloadProperty('sku'),
-    mergeMap(sku =>
-      this.productsService.getProduct(sku).pipe(
-        map(product => new productsActions.LoadProductSuccess({ product })),
-        mapErrorToAction(productsActions.LoadProductFail, { sku })
-      )
+    mergeMap(
+      sku =>
+        this.productsService.getProduct(sku).pipe(
+          map(product => new productsActions.LoadProductSuccess({ product })),
+          mapErrorToAction(productsActions.LoadProductFail, { sku })
+        ),
+      5
     )
   );
 
