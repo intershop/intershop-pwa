@@ -11,7 +11,7 @@ export class InitialNavigationGuard implements CanActivate, CanActivateChild {
   constructor(private router: Router, private store: Store<{}>) {}
 
   private do(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL'];
+    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL', 'application'];
     const properties: { [id: string]: unknown } = keys
       .filter(key => next.paramMap.has(key))
       .map(key => ({ [key]: next.paramMap.get(key) }))

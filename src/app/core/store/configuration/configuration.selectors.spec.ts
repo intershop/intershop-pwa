@@ -54,6 +54,24 @@ describe('Configuration Selectors', () => {
         expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/-');
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       });
+
+      describe('after setting application', () => {
+        beforeEach(() => {
+          store$.dispatch(
+            new ApplyConfiguration({
+              application: 'app',
+            })
+          );
+        });
+
+        it('should have defined values for all selectors', () => {
+          expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
+          expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
+          expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
+          expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
+          expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
+        });
+      });
     });
   });
 });
