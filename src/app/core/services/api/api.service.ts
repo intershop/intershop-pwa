@@ -131,13 +131,15 @@ export class ApiService {
   /**
    * http get request
    */
-  get<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
-        headers: this.defaultHeaders,
-        ...options,
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  get<T>(
+    path: string,
+    options?: { params?: HttpParams; headers?: HttpHeaders; skipApiErrorHandling?: boolean }
+  ): Observable<T> {
+    const obs$ = this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
+      headers: this.defaultHeaders,
+      ...options,
+    });
+    return options && options.skipApiErrorHandling ? obs$ : obs$.pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**

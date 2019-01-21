@@ -37,7 +37,8 @@ describe('Deleted Products', () => {
     });
   });
 
-  describe('in Product Lists', () => {
+  // TODO: re-activate once search results have a filter navigation again (IS-25833)
+  xdescribe('in Product Lists', () => {
     before(() => {
       HomePage.navigateTo();
 
