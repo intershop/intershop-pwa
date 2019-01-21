@@ -1,9 +1,15 @@
 import { at, waitLoadingEnd } from '../framework';
 import { LoginPage } from '../pages/account/login.page';
 import { HomePage } from '../pages/home.page';
+import { CategoryPage } from '../pages/shopping/category.page';
 import { NotFoundPage } from '../pages/shopping/not-found.page';
 import { ProductDetailPage } from '../pages/shopping/product-detail.page';
 import { SearchResultPage } from '../pages/shopping/search-result.page';
+
+const _ = {
+  catalog: 'Cameras-Camcorders',
+  categoryid: 'Cameras-Camcorders.584',
+};
 
 describe('Deleted Products', () => {
   beforeEach(() => {
@@ -61,6 +67,25 @@ describe('Deleted Products', () => {
   describe('on Product Detail Page', () => {
     it('should lead straight to error page', () => {
       ProductDetailPage.navigateTo('ERROAR');
+      at(NotFoundPage);
+    });
+  });
+
+  describe('error when retrieving Products on Family Page', () => {
+    before(() => {
+      HomePage.navigateTo();
+
+      cy.route({
+        method: 'GET',
+        url: '**/products*',
+        status: 404,
+        response: {},
+      });
+    });
+
+    it('should lead straight to error page', () => {
+      at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
+      at(CategoryPage, page => page.gotoSubCategory(_.categoryid));
       at(NotFoundPage);
     });
   });
