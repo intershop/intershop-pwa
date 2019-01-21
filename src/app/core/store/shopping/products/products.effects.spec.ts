@@ -5,7 +5,7 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -250,6 +250,26 @@ describe('Products Effects', () => {
       actions$ = of(action);
 
       effects.redirectIfErrorInProducts$.subscribe(fail, fail, done);
+    });
+  });
+
+  describe('redirectIfErrorInCategoryProducts$', () => {
+    it('should redirect if triggered', done => {
+      resetCalls(router);
+
+      const action = new fromActions.LoadProductsForCategoryFail({
+        categoryId: 'ID',
+        error: { status: 404 } as HttpError,
+      });
+
+      actions$ = of(action);
+
+      effects.redirectIfErrorInCategoryProducts$.subscribe(() => {
+        verify(router.navigate(anything())).once();
+        const [param] = capture(router.navigate).last();
+        expect(param).toEqual(['/error']);
+        done();
+      });
     });
   });
 });
