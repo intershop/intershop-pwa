@@ -19,13 +19,14 @@ export class ConfigurationEffects {
       this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER', 'icmServer'),
       this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER_STATIC', 'icmServerStatic'),
       this.stateProperties.getStateOrEnvOrDefault<string>('ICM_CHANNEL', 'icmChannel'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
       this.stateProperties
         .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
         .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x)))
     ),
     map(
-      ([, baseURL, server, serverStatic, channel, features]) =>
-        new ApplyConfiguration({ baseURL, server, serverStatic, channel, features })
+      ([, baseURL, server, serverStatic, channel, application, features]) =>
+        new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features })
     )
   );
 }

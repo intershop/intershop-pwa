@@ -5,6 +5,7 @@ export interface ConfigurationState {
   server?: string;
   serverStatic?: string;
   channel?: string;
+  application?: string;
   features?: string[];
 }
 
@@ -13,6 +14,7 @@ const initialState: ConfigurationState = {
   server: undefined,
   serverStatic: undefined,
   channel: undefined,
+  application: undefined,
   features: [],
 };
 

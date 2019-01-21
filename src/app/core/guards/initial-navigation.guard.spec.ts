@@ -54,6 +54,13 @@ describe('Initial Navigation Guard', () => {
     expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://localhost:4200/INTERSHOP/rest/WFS/site/-"`);
   }));
 
+  it('should set imported channel and application to state', fakeAsync(() => {
+    router.navigateByUrl('/home;channel=site;application=app');
+    tick(500);
+    expect(location.path()).toMatchInlineSnapshot(`"/home;channel=site;application=app"`);
+    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://localhost:4200/INTERSHOP/rest/WFS/site/app"`);
+  }));
+
   it('should set imported channel to state and redirect if requested', fakeAsync(() => {
     router.navigateByUrl('/home;channel=site;redirect=1');
     tick(500);
