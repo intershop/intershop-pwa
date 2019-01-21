@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryData } from '../../models/category/category.interface';
 import { ApiService } from '../api/api.service';
@@ -48,6 +49,18 @@ describe('Categories Service', () => {
       expect(params).toBeTruthy();
       expect(params.get('view')).toBe('tree');
       expect(params.get('limit')).toBe('1');
+    });
+
+    it('should not throw when response is without categories', done => {
+      when(apiServiceMock.get('categories', anything())).thenReturn(of({ elements: [] }));
+      categoriesService.getTopLevelCategories(0).subscribe({
+        error: fail,
+        complete: done,
+        next: data => {
+          expect(data).toEqual(categoryTree());
+          verify(apiServiceMock.get('categories', anything())).once();
+        },
+      });
     });
   });
 
