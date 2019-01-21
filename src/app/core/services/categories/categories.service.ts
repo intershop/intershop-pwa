@@ -47,7 +47,7 @@ export class CategoriesService {
       map(categoriesData =>
         categoriesData
           .map(element => this.categoryMapper.fromData(element))
-          .reduce((a, b) => CategoryTreeHelper.merge(a, b))
+          .reduce((a, b) => CategoryTreeHelper.merge(a, b), CategoryTreeHelper.empty())
       )
     );
   }
