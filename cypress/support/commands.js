@@ -28,7 +28,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
   cy.route('**/i18n/*.json').as('translations');
   originalFn(url, options);
   cy.wait('@translations');
-  cy.url().should('match', new RegExp(`${url.replace(/[\/\?]/g, '.')}`));
+  cy.url().should('match', new RegExp(`${url.replace(/[\/\?]/g, '.').replace(' ', '.+')}`));
   cy.get('body', { timeout: 60000 }).should('have.descendants', 'ish-root');
 
   return cy.get('body').then(body => {
