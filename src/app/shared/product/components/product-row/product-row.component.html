@@ -17,12 +17,21 @@
           <span itemprop="sku">{{ product.sku }}</span>
         </div>
         <!-- TODO: remove style attribute -->
-        <div class="product-tile-actions btn-group" style="position: relative">
+        <div class="product-tile-actions btn-group" style="position: relative;">
           <ish-lazy-product-add-to-quote
             [product]="product"
             displayType="icon"
             cssClass="btn-link"
           ></ish-lazy-product-add-to-quote>
+          <button
+            class="btn btn-link add-to-compare"
+            [ngClass]="{ 'is-selected': isInCompareList }"
+            title="{{ 'product.compare.link' | translate }}"
+            *ishFeature="'compare'"
+            (click)="toggleCompare()"
+            >
+            <fa-icon [icon]="['fas', 'columns']"></fa-icon>
+          </button>
         </div>
       </div>
       <div class="col-12 col-md-4 text-right text-left-xs">
