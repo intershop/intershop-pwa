@@ -13,6 +13,5 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOverviewPageComponent {
-  @Input()
-  user: User;
+  @Input() user: User;
 }

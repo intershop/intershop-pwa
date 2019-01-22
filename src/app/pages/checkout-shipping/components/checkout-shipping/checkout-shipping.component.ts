@@ -24,15 +24,11 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  basket: Basket;
-  @Input()
-  shippingMethods: ShippingMethod[];
-  @Input()
-  error: HttpError;
+  @Input() basket: Basket;
+  @Input() shippingMethods: ShippingMethod[];
+  @Input() error: HttpError;
 
-  @Output()
-  updateShippingMethod = new EventEmitter<string>();
+  @Output() updateShippingMethod = new EventEmitter<string>();
 
   shippingForm: FormGroup;
   submitted = false;

@@ -1,12 +1,12 @@
 <div class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <a [routerLink]="product | ishProductRoute:category">
+    <a [routerLink]="product | ishProductRoute: category">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     </a>
     <ish-product-label [product]="product"></ish-product-label>
   </div>
 
-  <a class="product-title" [routerLink]="product | ishProductRoute:category">{{product.name}}</a>
+  <a class="product-title" [routerLink]="product | ishProductRoute: category">{{ product.name }}</a>
 
   <div class="price-container">
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
@@ -34,5 +34,4 @@
       (productToBasket)="addToBasket()"
     ></ish-product-add-to-basket>
   </div>
-
 </div>

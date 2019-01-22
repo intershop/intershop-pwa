@@ -18,6 +18,5 @@ export class CategoryTileComponent {
   /**
    * The Category to render a tile for
    */
-  @Input()
-  category: Category;
+  @Input() category: Category;
 }

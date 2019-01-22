@@ -10,14 +10,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteComponent {
-  @Input()
-  disabled: boolean;
-  @Input()
-  displayType?: string;
-  @Input()
-  cssClass?: string;
-  @Output()
-  productToQuote = new EventEmitter<void>();
+  @Input() disabled: boolean;
+  @Input() displayType?: string;
+  @Input() cssClass?: string;
+  @Output() productToQuote = new EventEmitter<void>();
 
   addToQuote() {
     this.productToQuote.emit();

@@ -14,14 +14,10 @@ export interface SelectOption {
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectComponent extends FormElementComponent implements OnInit {
-  @Input()
-  options: SelectOption[]; // required
-  @Input()
-  translateOptionLabels = false;
-  @Input()
-  translateOptionValues = false;
-  @Input()
-  emptyOptionLabel = 'account.option.select.text';
+  @Input() options: SelectOption[]; // required
+  @Input() translateOptionLabels = false;
+  @Input() translateOptionValues = false;
+  @Input() emptyOptionLabel = 'account.option.select.text';
 
   showEmptyOption: boolean; // is automatically set if the control value is empty
 

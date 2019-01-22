@@ -7,10 +7,8 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class RegistrationCredentialsFormComponent implements OnInit {
-  @Input()
-  parentForm: FormGroup;
-  @Input()
-  controlName = 'credentials';
+  @Input() parentForm: FormGroup;
+  @Input() controlName = 'credentials';
 
   ngOnInit() {
     if (!this.parentForm) {

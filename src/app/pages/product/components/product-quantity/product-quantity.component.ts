@@ -18,16 +18,11 @@ function generateSelectOptionsForRange(min: number, max: number): SelectOption[]
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit, OnChanges {
-  @Input()
-  product: Product;
-  @Input()
-  parentForm: FormGroup;
-  @Input()
-  controlName: string;
-  @Input()
-  type?: string;
-  @Input()
-  class?: string;
+  @Input() product: Product;
+  @Input() parentForm: FormGroup;
+  @Input() controlName: string;
+  @Input() type?: string;
+  @Input() class?: string;
 
   readonly selectType = 'select';
 

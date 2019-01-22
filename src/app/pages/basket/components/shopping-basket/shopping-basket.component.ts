@@ -27,15 +27,11 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShoppingBasketComponent {
-  @Input()
-  basket: BasketView;
-  @Input()
-  error: HttpError;
+  @Input() basket: BasketView;
+  @Input() error: HttpError;
 
-  @Output()
-  updateItem = new EventEmitter<LineItemQuantity>();
-  @Output()
-  deleteItem = new EventEmitter<string>();
+  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
   submitted = false;

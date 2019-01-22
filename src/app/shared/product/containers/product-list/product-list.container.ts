@@ -27,14 +27,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListContainerComponent {
-  @Input()
-  category?: Category;
+  @Input() category?: Category;
 
-  @Input()
-  pageUrl: string;
+  @Input() pageUrl: string;
 
-  @Output()
-  loadMore = new EventEmitter<void>();
+  @Output() loadMore = new EventEmitter<void>();
 
   products$ = this.store.pipe(select(getVisibleProducts));
   totalItems$ = this.store.pipe(select(getTotalItems));

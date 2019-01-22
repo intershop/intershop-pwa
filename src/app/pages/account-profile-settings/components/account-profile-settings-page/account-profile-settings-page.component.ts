@@ -8,8 +8,7 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileSettingsPageComponent {
-  @Input()
-  user: User;
+  @Input() user: User;
 
   showSuccessMessage: string;
 }

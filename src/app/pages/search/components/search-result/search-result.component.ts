@@ -20,18 +20,15 @@ export class SearchResultComponent {
   /**
    * The the search term leading to the displayed result.
    */
-  @Input()
-  searchTerm: string;
+  @Input() searchTerm: string;
 
   /**
    * The total number of product search results (might be different from products.length if paging is applied).
    */
-  @Input()
-  totalItems: number;
+  @Input() totalItems: number;
 
   /**
    * Request from the product-list to retrieve more products.
    */
-  @Output()
-  loadMore = new EventEmitter<void>();
+  @Output() loadMore = new EventEmitter<void>();
 }

@@ -10,8 +10,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSContainerComponent implements OnChanges {
-  @Input()
-  pagelet: ContentPageletView;
+  @Input() pagelet: ContentPageletView;
 
   contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';

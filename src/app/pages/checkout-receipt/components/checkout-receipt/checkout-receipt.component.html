@@ -1,6 +1,8 @@
 <div *ngIf="order" class="row">
   <div class="col-md-12 col-lg-8">
-    <p *ngIf="order.status === 'PENDING'" class="alert alert-info">{{ 'checkout.receipt.order_pending.message' | translate }}</p>
+    <p *ngIf="order.status === 'PENDING'" class="alert alert-info">
+      {{ 'checkout.receipt.order_pending.message' | translate }}
+    </p>
 
     <!-- Receipt message -->
     <div class="section">
@@ -8,7 +10,7 @@
         <span>{{ 'checkout.order.number.label' | translate }}</span>
         <strong data-testing-id="order-document-number"> {{ order.documentNo }}</strong>
       </p>
-      <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate:{'0': user.email }"></p>
+      <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': user.email }"></p>
     </div>
 
     <div class="row d-flex">
@@ -36,20 +38,25 @@
     </div>
 
     <!-- Line Items -->
-    <ish-line-item-list *ngIf="order.lineItems?.length > 0" [lineItems]="order.lineItems" [editable]="false"></ish-line-item-list>
+    <ish-line-item-list
+      *ngIf="order.lineItems?.length > 0"
+      [lineItems]="order.lineItems"
+      [editable]="false"
+    ></ish-line-item-list>
   </div>
 
   <!-- basket summary -->
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
-    <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary>
-    </div>
+    <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary></div>
     <div class="cart-summary">
-        <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
-        {{ 'checkout.account.email.registered.text' | translate}}&nbsp;
-        <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{ 'checkout.account.email.registered.link' | translate }}</a>.
+      <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
+      {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
+      <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{
+        'checkout.account.email.registered.link' | translate
+      }}</a
+      >.
     </div>
     <a routerLink="/home" data-testing-id="home-link">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
   </div>

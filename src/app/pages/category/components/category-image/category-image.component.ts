@@ -14,8 +14,7 @@ export class CategoryImageComponent implements OnChanges {
   /**
    * The category for which the image should be displayed
    */
-  @Input()
-  category: Category;
+  @Input() category: Category;
 
   categoryImageUrl = '/assets/img/not_available.png';
 

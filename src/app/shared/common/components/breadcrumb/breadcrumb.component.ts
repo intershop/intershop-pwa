@@ -34,20 +34,13 @@ function buildTrailFromCategoryOrProduct(category: CategoryView, product: Produc
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent implements DoCheck {
-  @Input()
-  separator = '/';
-  @Input()
-  showHome = true;
-  @Input()
-  category: CategoryView;
-  @Input()
-  product: ProductView;
-  @Input()
-  searchTerm: string;
-  @Input()
-  account: boolean;
-  @Input()
-  trail: BreadcrumbItem[] = [];
+  @Input() separator = '/';
+  @Input() showHome = true;
+  @Input() category: CategoryView;
+  @Input() product: ProductView;
+  @Input() searchTerm: string;
+  @Input() account: boolean;
+  @Input() trail: BreadcrumbItem[] = [];
 
   ngDoCheck() {
     if (this.category || this.product) {

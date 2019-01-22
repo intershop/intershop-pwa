@@ -1,13 +1,8 @@
 <div class="form-control form-control-checkbox has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
   <div class="form-check form-control">
     <label [for]="uuid">
-      <input
-        type="checkbox"
-        [id]="uuid"
-        [formControlName]="controlName"
-        [attr.data-testing-id]="controlName"
-      >
-      <span *ngIf="label">{{label | translate}}<span *ngIf="required" class="required">*</span></span>
+      <input type="checkbox" [id]="uuid" [formControlName]="controlName" [attr.data-testing-id]="controlName" />
+      <span *ngIf="label">{{ label | translate }}<span *ngIf="required" class="required">*</span></span>
       <ng-content></ng-content>
     </label>
   </div>

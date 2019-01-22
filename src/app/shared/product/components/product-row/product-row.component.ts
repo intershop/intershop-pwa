@@ -9,12 +9,9 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowComponent {
-  @Input()
-  product: Product;
-  @Input()
-  category?: Category;
-  @Output()
-  productToBasket = new EventEmitter<void>();
+  @Input() product: Product;
+  @Input() category?: Category;
+  @Output() productToBasket = new EventEmitter<void>();
 
   addToBasket() {
     this.productToBasket.emit();

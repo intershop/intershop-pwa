@@ -1,12 +1,23 @@
-<div *ngIf="isShipmentInformationAvailable && product.availability" class="ready-for-shipment" data-testing-id="section-productshipping-shortinfo">
+<div
+  *ngIf="isShipmentInformationAvailable && product.availability"
+  class="ready-for-shipment"
+  data-testing-id="section-productshipping-shortinfo"
+>
   <ng-container *ngIf="product.readyForShipmentMin === 0; else shipmentRange">
-    {{ (product.readyForShipmentMax === 1 ? 'product.ready_for_shipment.within24' : 'product.ready_for_shipment.within') | translate:{'0':
-    product.readyForShipmentMax} }}
+    {{
+      (product.readyForShipmentMax === 1 ? 'product.ready_for_shipment.within24' : 'product.ready_for_shipment.within')
+        | translate: { '0': product.readyForShipmentMax }
+    }}
   </ng-container>
   <ng-template #shipmentRange>
-    {{ 'product.ready_for_shipment.minmax' | translate:{'0': product.readyForShipmentMin, '1': product.readyForShipmentMax} }}
+    {{
+      'product.ready_for_shipment.minmax'
+        | translate: { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
+    }}
   </ng-template>
-  <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{'product.ready_for_shipment.detail.text' | translate}}</a>
+  <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{
+    'product.ready_for_shipment.detail.text' | translate
+  }}</a>
 </div>
 
 <ish-modal-dialog #modalDialog [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate }">

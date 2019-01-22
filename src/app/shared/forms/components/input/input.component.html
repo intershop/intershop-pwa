@@ -1,6 +1,6 @@
 <div class="row form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
-  <label *ngIf="label" [for]="uuid" class="col-form-label" [ngClass]="labelClass">{{label | translate}}
-    <span *ngIf="required" class="required">*</span>
+  <label *ngIf="label" [for]="uuid" class="col-form-label" [ngClass]="labelClass"
+    >{{ label | translate }} <span *ngIf="required" class="required">*</span>
   </label>
   <div [ngClass]="inputClass">
     <input
@@ -14,7 +14,7 @@
       [min]="min || ''"
       [max]="max || ''"
       [placeholder]="placeholderText ? (placeholderText | translate) : ''"
-    >
+    />
     <ng-content></ng-content>
     <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
   </div>

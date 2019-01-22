@@ -8,5 +8,9 @@
   "*.{js,json}": [
     "npx prettier --loglevel warn --write",
     "git add"
+  ],
+  "*.html": [
+    "npx prettier --loglevel warn --write --parser angular",
+    "git add"
   ]
 }

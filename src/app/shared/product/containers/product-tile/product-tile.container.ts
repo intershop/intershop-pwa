@@ -15,10 +15,8 @@ import { LoadProduct, getProduct } from 'ish-core/store/shopping/products';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductTileContainerComponent implements OnInit {
-  @Input()
-  productSku: string;
-  @Input()
-  category?: Category;
+  @Input() productSku: string;
+  @Input() category?: Category;
 
   product$: Observable<Product>;
   isInCompareList$: Observable<boolean>;

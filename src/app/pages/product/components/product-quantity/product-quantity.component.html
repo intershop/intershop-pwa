@@ -1,5 +1,4 @@
 <div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity row">
-
   <ng-container *ngIf="type === selectType; else inputType">
     <ish-select
       [options]="quantityOptions"
@@ -24,12 +23,11 @@
       [min]="product.minOrderQuantity"
       [max]="product.maxOrderQuantity"
       [errorMessages]="{
-        'required':'product.quantity.notempty.text',
-        'integer': 'product.quantity.integer.text',
-        'min': 'product.quantity.greaterthan.text' | translate:{ '0': product.minOrderQuantity },
-        'max': 'product.quantity.lessthan.text' | translate:{ '0': product.maxOrderQuantity }
+        required: 'product.quantity.notempty.text',
+        integer: 'product.quantity.integer.text',
+        min: 'product.quantity.greaterthan.text' | translate: { '0': product.minOrderQuantity },
+        max: 'product.quantity.lessthan.text' | translate: { '0': product.maxOrderQuantity }
       }"
     ></ish-input>
   </ng-template>
-
 </div>

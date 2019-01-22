@@ -8,6 +8,5 @@ import { Category } from 'ish-core/models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryListComponent {
-  @Input()
-  categories: Category[];
+  @Input() categories: Category[];
 }
