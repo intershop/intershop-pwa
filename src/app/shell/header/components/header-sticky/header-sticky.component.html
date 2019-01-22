@@ -1,20 +1,17 @@
-<div class="fixed-top showed-on-scroll" [ngClass]="{'hidden': !stickyHeader }">
-
+<div class="fixed-top showed-on-scroll" [ngClass]="{ hidden: !stickyHeader }">
   <!--- Pc Sticky Header -->
   <nav class="header-sticky navbar-expand-md d-none d-lg-block container">
     <div class="row justify-content-between">
       <div class="col d-flex">
         <div class="logo-wrapper">
-          <a rel="home" routerLink="/home">
-            <img class="logo" src="assets/img/logo.png" alt="Logo">
-          </a>
+          <a rel="home" routerLink="/home"> <img class="logo" src="assets/img/logo.png" alt="Logo" /> </a>
         </div>
         <div class="main-navigation" role="navigation">
           <ish-header-navigation-container></ish-header-navigation-container>
         </div>
 
         <div class="header-utility">
-          <a class="search-toggler" [ngClass]="{'active-search': showSearch }">
+          <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
             <fa-icon [icon]="['fas', 'search']" class="header-icon" (click)="toggleSearch()"></fa-icon>
             <div class="search-container header-search-container" [ngbCollapse]="!showSearch">
               <ish-search-box-container
@@ -39,11 +36,11 @@
     <div class="row justify-content-between">
       <div class="logo-wrapper">
         <a rel="home" routerLink="/home" class="mobile-logo">
-          <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
+          <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
         </a>
       </div>
       <div class="header-utility">
-        <a class="search-toggler" [ngClass]="{'active-search': showSearch }">
+        <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
           <fa-icon [icon]="['fas', 'search']" class="header-icon" (click)="toggleSearch()"></fa-icon>
         </a>
         <ish-login-status-container view="small"></ish-login-status-container>
@@ -51,16 +48,17 @@
       </div>
       <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
         <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-        <div class="hamburger-menu" [ngClass]="{'open': !navbarCollapsed}">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="hamburger-menu" [ngClass]="{ open: !navbarCollapsed }">
+          <span></span> <span></span> <span></span>
         </div>
       </button>
     </div>
   </nav>
 
-  <div class="search-container sticky-header-search-container d-lg-none header-search-container" [ngbCollapse]="!showSearch">
+  <div
+    class="search-container sticky-header-search-container d-lg-none header-search-container"
+    [ngbCollapse]="!showSearch"
+  >
     <ish-search-box-container
       [configuration]="{
         placeholderText: 'search.searchbox.instructional_text' | translate,
@@ -70,9 +68,12 @@
       }"
     ></ish-search-box-container>
   </div>
-  <div class="main-navigation d-block d-lg-none" role="navigation" [style.max-height]="navbarCollapsed ? '0px' : (screenHeight +'px')">
+  <div
+    class="main-navigation d-block d-lg-none"
+    role="navigation"
+    [style.max-height]="navbarCollapsed ? '0px' : screenHeight + 'px'"
+  >
     <ish-header-navigation-container view="small"></ish-header-navigation-container>
     <ish-user-information-mobile></ish-user-information-mobile>
   </div>
-
 </div>

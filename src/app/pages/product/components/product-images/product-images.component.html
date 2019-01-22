@@ -1,12 +1,21 @@
 <div class="row">
   <div class="col-lg-3 d-none d-lg-block">
     <div class="product-img-thumbs" data-type="S">
-      <div class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(0) }" (click)="setActiveSlide(0)">
+      <div class="product-thumb-set" [ngClass]="{ active: isActiveSlide(0) }" (click)="setActiveSlide(0)">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
       </div>
-      <div *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'S'); index as i;"
-        class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(i + 1) }" (click)="setActiveSlide(i + 1)">
-        <ish-product-image [product]="product" imageType="S" [imageView]="imageView" class="product-image"></ish-product-image>
+      <div
+        *ngFor="let imageView of getImageViewIDsExcludePrimary(product, 'S'); index as i"
+        class="product-thumb-set"
+        [ngClass]="{ active: isActiveSlide(i + 1) }"
+        (click)="setActiveSlide(i + 1)"
+      >
+        <ish-product-image
+          [product]="product"
+          imageType="S"
+          [imageView]="imageView"
+          class="product-image"
+        ></ish-product-image>
       </div>
     </div>
   </div>
@@ -15,14 +24,18 @@
       <ngb-carousel
         [activeId]="activeSlide"
         (slide)="setActiveSlide($event.current)"
-        [showNavigationArrows]="getImageViewIDsExcludePrimary(product,'L').length > 0"
+        [showNavigationArrows]="getImageViewIDsExcludePrimary(product, 'L').length > 0"
         [showNavigationIndicators]="false"
         [interval]="false"
       >
         <ng-template ngbSlide [id]="0">
           <ish-product-image [product]="product" imageType="L"></ish-product-image>
         </ng-template>
-        <ng-template ngbSlide *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'L'); index as i;" [id]="i + 1">
+        <ng-template
+          ngbSlide
+          *ngFor="let imageView of getImageViewIDsExcludePrimary(product, 'L'); index as i"
+          [id]="i + 1"
+        >
           <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
         </ng-template>
       </ngb-carousel>

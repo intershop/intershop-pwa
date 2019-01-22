@@ -10,8 +10,7 @@ import { mapToProperty } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCompareStatusContainerComponent {
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   productCompareCount$ = this.store.pipe(
     select(getCompareProductsSKUs),

@@ -8,5 +8,5 @@
     (updatePaymentMethod)="updateBasketPaymentMethod($event)"
   ></ish-checkout-payment>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="(loading$ | async)"></ish-loading>
 </div>

@@ -11,12 +11,9 @@ import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReviewComponent implements OnInit {
-  @Input()
-  basket: Basket;
-  @Input()
-  error: HttpError;
-  @Output()
-  createOrder = new EventEmitter<Basket>();
+  @Input() basket: Basket;
+  @Input() error: HttpError;
+  @Output() createOrder = new EventEmitter<Basket>();
 
   form: FormGroup;
   submitted = false;

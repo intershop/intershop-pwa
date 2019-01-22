@@ -15,7 +15,8 @@
   (loadMore)="loadMoreProducts()"
 ></ish-product-list>
 
-<ish-product-list-paging *ngIf="displayPaging$ | async"
+<ish-product-list-paging
+  *ngIf="(displayPaging$ | async)"
   [currentPage]="currentPage$ | async"
   [pageIndices]="pageIndices$ | async"
   [pageUrl]="pageUrl"

@@ -12,8 +12,7 @@ import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/in
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentIncludeContainerComponent implements OnInit {
-  @Input()
-  includeId: string;
+  @Input() includeId: string;
 
   contentInclude$: Observable<ContentIncludeView>;
 

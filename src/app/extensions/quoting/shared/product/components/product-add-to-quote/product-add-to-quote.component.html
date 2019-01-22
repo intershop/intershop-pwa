@@ -1,4 +1,5 @@
-<button type="submit"
+<button
+  type="submit"
   class="btn"
   [ngClass]="cssClass"
   [class.btn-secondary]="displayType !== 'icon'"
@@ -7,14 +8,9 @@
   data-testing-id="addToQuoteButton"
   (click)="addToQuote()"
 >
-
   <ng-container *ngIf="displayType === 'icon'; else defaultButton">
     <fa-icon [icon]="['fas', 'inbox']"></fa-icon>
   </ng-container>
 
-  <ng-template #defaultButton>
-    {{'quote.add_product_to_quote.button.add_to_quote.label' | translate}}
-  </ng-template>
-
+  <ng-template #defaultButton> {{ 'quote.add_product_to_quote.button.add_to_quote.label' | translate }} </ng-template>
 </button>
-

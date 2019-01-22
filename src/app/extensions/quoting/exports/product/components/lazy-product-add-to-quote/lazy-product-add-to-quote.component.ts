@@ -21,16 +21,11 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class LazyProductAddToQuoteComponent {
-  @Input()
-  product: Product;
-  @Input()
-  disabled = false;
-  @Input()
-  displayType?: string;
-  @Input()
-  cssClass?: string;
-  @Input()
-  quantity?: number;
+  @Input() product: Product;
+  @Input() disabled = false;
+  @Input() displayType?: string;
+  @Input() cssClass?: string;
+  @Input() quantity?: number;
 
   componentLocation = {
     moduleId: 'ish-extensions-quoting',

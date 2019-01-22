@@ -1,45 +1,34 @@
 <div *ngIf="basket?.lineItems" class="cart-summary">
   <div *ngFor="let pli of basket.lineItems; index as i" class="row cart-summary-checkout">
     <ng-container *ngIf="isItemVisible(i)">
-
       <!-- product name and price -->
       <div class="col-8">
-        <a [routerLink]="pli.product | ishProductRoute">
-          {{ pli.name }}
-        </a>
+        <a [routerLink]="pli.product | ishProductRoute"> {{ pli.name }} </a>
       </div>
-      <div class="col-4 text-right">
-        {{ pli.totals.total | ishPrice }}
-      </div>
+      <div class="col-4 text-right">{{ pli.totals.total | ishPrice }}</div>
 
       <!-- quantity and undiscounted price -->
       <div class="col-8 cart-pli-data">
-        <span>
-          {{'checkout.pli.qty.label' | translate }} {{ pli.quantity.value }}
-        </span>
+        <span> {{ 'checkout.pli.qty.label' | translate }} {{ pli.quantity.value }} </span>
       </div>
       <div class="col-4 text-right">
-        <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
-          {{ pli.price | ishPrice }}
-        </div>
-        <div *ngIf="pli.isFreeGift" class="list-item-promo">
-          {{ 'checkout.pli.freegift.text' | translate }}
-        </div>
+        <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">{{ pli.price | ishPrice }}</div>
+        <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
       </div>
 
       <!-- TODO: #IS-23184 : display rebate details -->
       <div *ngIf="pli.valueRebates && pli.valueRebates.length > 0" class="col-12">
-        {{ pli.valueRebates.length | i18nPlural: ( 'checkout.widget.promotion.discounts' | translate ) || {"other": "#"} }}
-        <span *ngFor="let rebate of pli.valueRebates">
-          {{ rebate.rebateType}}
-        </span>&nbsp;
+        {{
+          pli.valueRebates.length | i18nPlural: ('checkout.widget.promotion.discounts' | translate) || { other: '#' }
+        }}
+        <span *ngFor="let rebate of pli.valueRebates"> {{ rebate.rebateType }} </span>&nbsp;
       </div>
     </ng-container>
   </div>
 
   <!-- 'Show All' and 'Hide All' links -->
   <a *ngIf="isShowAllLinkVisible()" (click)="toggleCollapse()">
-    {{ 'checkout.show_all.link' | translate:{'0': basket.lineItems.length} }}&nbsp;
+    {{ 'checkout.show_all.link' | translate: { '0': basket.lineItems.length } }}&nbsp;
     <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
   </a>
   <a *ngIf="isHideLinkVisible()" (click)="toggleCollapse()">

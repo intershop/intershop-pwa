@@ -24,15 +24,11 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  basket: Basket;
-  @Input()
-  paymentMethods: PaymentMethod[];
-  @Input()
-  error: HttpError;
+  @Input() basket: Basket;
+  @Input() paymentMethods: PaymentMethod[];
+  @Input() error: HttpError;
 
-  @Output()
-  updatePaymentMethod = new EventEmitter<string>();
+  @Output() updatePaymentMethod = new EventEmitter<string>();
 
   paymentForm: FormGroup;
   submitted = false;

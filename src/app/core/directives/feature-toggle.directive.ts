@@ -13,8 +13,7 @@ export class FeatureToggleDirective {
     private featureToggle: FeatureToggleService
   ) {}
 
-  @Input()
-  set ishFeature(val) {
+  @Input() set ishFeature(val) {
     const enabled = this.featureToggle.enabled(val);
 
     if (enabled) {

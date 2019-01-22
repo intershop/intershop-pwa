@@ -8,14 +8,10 @@ import { Locale } from 'ish-core/models/locale/locale.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchComponent {
-  @Input()
-  locale: Locale;
-  @Input()
-  availableLocales: Locale[];
-  @Input()
-  view: '' | 'accordion' = '';
-  @Output()
-  localeChange = new EventEmitter<Locale>();
+  @Input() locale: Locale;
+  @Input() availableLocales: Locale[];
+  @Input() view: '' | 'accordion' = '';
+  @Output() localeChange = new EventEmitter<Locale>();
 
   switch(locale: Locale) {
     this.localeChange.emit(locale);

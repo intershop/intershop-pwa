@@ -11,10 +11,8 @@ import { AddProductToBasket } from 'ish-core/store/checkout/basket';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowContainerComponent {
-  @Input()
-  product: Product;
-  @Input()
-  category?: Category;
+  @Input() product: Product;
+  @Input() category?: Category;
 
   constructor(private store: Store<{}>) {}
 

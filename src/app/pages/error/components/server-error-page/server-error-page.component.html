@@ -4,11 +4,9 @@
     <div [innerHTML]="'servererror.page.text' | translate"></div>
     <p class="text-muted">
       <ng-container [ngSwitch]="error.current.status">
-        <ng-container *ngSwitchCase="0">
-          Server timeout
-        </ng-container>
+        <ng-container *ngSwitchCase="0"> Server timeout </ng-container>
         <ng-container *ngSwitchDefault>
-          Error code {{ error.current.status }}<br/>
+          Error code {{ error.current.status }}<br />
           {{ error.type }}
         </ng-container>
       </ng-container>

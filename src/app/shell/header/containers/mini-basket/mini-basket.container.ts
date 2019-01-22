@@ -15,8 +15,7 @@ export class MiniBasketContainerComponent implements OnInit {
   basket$ = this.store.pipe(select(getCurrentBasket));
   basketAnimation$: Observable<string>;
 
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {

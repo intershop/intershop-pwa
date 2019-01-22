@@ -9,8 +9,7 @@ import { getTopLevelCategories } from 'ish-core/store/shopping/categories';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationContainerComponent {
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   categories$ = this.store.pipe(select(getTopLevelCategories));
 

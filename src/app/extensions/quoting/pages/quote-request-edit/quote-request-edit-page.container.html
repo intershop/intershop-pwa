@@ -9,4 +9,4 @@
   (copyQuote)="copyQuote()"
 ></ish-quote-edit>
 
-<ish-loading *ngIf="quoteRequestLoading$ | async"></ish-loading>
+<ish-loading *ngIf="(quoteRequestLoading$ | async)"></ish-loading>

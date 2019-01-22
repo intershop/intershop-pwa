@@ -30,21 +30,14 @@ import { QuoteRequest } from '../../../../models/quote-request/quote-request.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteDialogComponent implements OnChanges {
-  @Input()
-  ngbActiveModal: NgbActiveModal;
-  @Input()
-  quote: QuoteRequest;
-  @Input()
-  quoteLoading = false;
+  @Input() ngbActiveModal: NgbActiveModal;
+  @Input() quote: QuoteRequest;
+  @Input() quoteLoading = false;
 
-  @Output()
-  updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
-  @Output()
-  submitQuoteRequest = new EventEmitter<void>();
-  @Output()
-  updateItem = new EventEmitter<LineItemQuantity>();
-  @Output()
-  deleteItem = new EventEmitter<string>();
+  @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
+  @Output() submitQuoteRequest = new EventEmitter<void>();
+  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
 

@@ -17,21 +17,18 @@ export class OrderListComponent {
   /**
    * An array of orders to be displayed.
    */
-  @Input()
-  orders: OrderView[];
+  @Input() orders: OrderView[];
 
   /**
    * The maximum number of items to be displayed.
    * Use 0, if you want to display all items without any restrictions.
    * Default value: see {@link OrderListContainerComponent}
    */
-  @Input()
-  maxListItems: number;
+  @Input() maxListItems: number;
 
   /**
    * Indicates whether or not the list should be displayed in a compact view (single row)
    * Default: A detailed list will be displayed
    */
-  @Input()
-  compact = false;
+  @Input() compact = false;
 }

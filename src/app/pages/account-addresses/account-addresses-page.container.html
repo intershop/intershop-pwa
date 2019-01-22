@@ -7,5 +7,5 @@
     (deleteCustomerAddress)="deleteCustomerAddress($event)"
   ></ish-account-addresses-page>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="(loading$ | async)"></ish-loading>
 </div>

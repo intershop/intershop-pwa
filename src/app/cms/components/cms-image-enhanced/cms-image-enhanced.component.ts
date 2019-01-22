@@ -9,8 +9,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CMSImageEnhancedComponent {
-  @Input()
-  pagelet: ContentPageletView;
+  @Input() pagelet: ContentPageletView;
 
   routerLink = ContentViewHelper.getRouterLink;
 }

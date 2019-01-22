@@ -1,77 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>PWA Reports</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $.get("junit.xml", function (data, status) {
-                $xml = $(data).find('testsuites');
-                var tests = $xml.attr('tests');
-                var failures = $xml.attr('failures');
-                $("#unit-tests").text(`Tests: ${tests}, Failures: ${failures}`);
-            });
-            $.get("coverage/index.html", function (data, status) {
-                var html = $.parseHTML(data);
-                var summary = $('div.clearfix', html)[0];
-                $("#coverage").append(summary);
-            });
-            $.get("tslint/index.html", function (data, status) {
-                var html = $.parseHTML(data);
-                var summary = $('span.badge', html)[0];
-                $("#tslint").append("TSLint: ").append(summary);
-            });
-            $.get("jscpd/index.html", function (data, status) {
-                var html = $.parseHTML(data);
-                var summary = $('h3', html)[0].textContent;
-                $("#jscpd").append(summary);
-            });
+      $(document).ready(function() {
+        $.get('junit.xml', function(data, status) {
+          $xml = $(data).find('testsuites');
+          var tests = $xml.attr('tests');
+          var failures = $xml.attr('failures');
+          $('#unit-tests').text(`Tests: ${tests}, Failures: ${failures}`);
         });
+        $.get('coverage/index.html', function(data, status) {
+          var html = $.parseHTML(data);
+          var summary = $('div.clearfix', html)[0];
+          $('#coverage').append(summary);
+        });
+        $.get('tslint/index.html', function(data, status) {
+          var html = $.parseHTML(data);
+          var summary = $('span.badge', html)[0];
+          $('#tslint')
+            .append('TSLint: ')
+            .append(summary);
+        });
+        $.get('jscpd/index.html', function(data, status) {
+          var html = $.parseHTML(data);
+          var summary = $('h3', html)[0].textContent;
+          $('#jscpd').append(summary);
+        });
+      });
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Intershop Progressive Webapp Reporting</h1>
-    <a href="docs/compodoc/index.html">
-        <h2>Documentation</h2>
-    </a>
-    <hr/>
+    <a href="docs/compodoc/index.html"> <h2>Documentation</h2> </a>
+    <hr />
     <a href="unit-tests.html">
-        <h2>Unit Test Report</h2>
-        <div id="unit-tests"></div>
+      <h2>Unit Test Report</h2>
+      <div id="unit-tests"></div>
     </a>
     <a href="coverage/index.html">
-        <h2>Coverage Report</h2>
-        <div id="coverage"></div>
+      <h2>Coverage Report</h2>
+      <div id="coverage"></div>
     </a>
     <a href="tslint/index.html">
-        <h2>TSLint Report</h2>
-        <div id="tslint"></div>
+      <h2>TSLint Report</h2>
+      <div id="tslint"></div>
     </a>
     <a href="jscpd/index.html">
-        <h2>jscpd - Duplicate Code Report</h2>
-        <div id="jscpd"></div>
+      <h2>jscpd - Duplicate Code Report</h2>
+      <div id="jscpd"></div>
     </a>
     <a href="bundle_prod/index.html">
-        <h2>Bundle Analyzer Report - Production</h2>
-        <div id="bundle_prod"></div>
+      <h2>Bundle Analyzer Report - Production</h2>
+      <div id="bundle_prod"></div>
     </a>
     <a href="bundle_aot/index.html">
-        <h2>Bundle Analyzer Report - Development</h2>
-        <div id="bundle_aot"></div>
+      <h2>Bundle Analyzer Report - Development</h2>
+      <div id="bundle_aot"></div>
     </a>
-    <hr/>
-    <a href="junit.xml">
-        <h2>JUnit XML</h2>
-    </a>
-    <hr/>
-    <a href="licenses/index.html">
-        <h2>3rd Party Licenses</h2>
-    </a>
-</body>
-
+    <hr />
+    <a href="junit.xml"> <h2>JUnit XML</h2> </a>
+    <hr />
+    <a href="licenses/index.html"> <h2>3rd Party Licenses</h2> </a>
+  </body>
 </html>
