@@ -16,7 +16,8 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
-import { DesignViewAdapterService } from './design-view-adapter/design-view-adapter.service';
+import { SlotWrapperComponent } from './containers/slot-wrapper/slot-wrapper.component';
+import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
 
 const exportedComponents = [ContentIncludeContainerComponent, ContentPageletContainerComponent];
 
@@ -35,7 +36,13 @@ const entryComponents = [
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [...entryComponents, ...exportedComponents, ContentSlotContainerComponent],
+  declarations: [
+    ...entryComponents,
+    ...exportedComponents,
+    ContentPageletContainerComponent,
+    ContentSlotContainerComponent,
+    SlotWrapperComponent,
+  ],
   providers: [
     {
       provide: CMS_COMPONENT,
@@ -122,7 +129,7 @@ const entryComponents = [
   entryComponents: [...entryComponents],
 })
 export class CMSModule {
-  constructor(dvadapter: DesignViewAdapterService) {
-    dvadapter.init();
+  constructor(sfeAdapter: SfeAdapterService) {
+    sfeAdapter.init();
   }
 }

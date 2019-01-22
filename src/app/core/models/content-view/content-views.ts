@@ -16,6 +16,9 @@ export interface ContentConfigurationParameterView {
 }
 
 export interface ContentEntryPointView {
+  id: string;
+  domain: string;
+  displayName?: string;
   pagelets(): ContentPageletView[];
 }
 
@@ -23,13 +26,18 @@ export interface ContentSlotView extends ContentEntryPointView, ContentConfigura
 
 export interface ContentPageletEntryPointView extends ContentEntryPointView, ContentConfigurationParameterView {
   id: string;
-  name: string;
+  domain: string;
+  displayName: string;
+  resourceSetId: string;
+  pagelets(): ContentPageletView[];
 }
 
 export interface ContentPageletView extends ContentConfigurationParameterView {
   definitionQualifiedName: string;
   configurationParameters: ContentConfigurationParameters;
   id: string;
+  domain: string;
+  displayName: string;
   slot(qualifiedName: string): ContentSlotView;
 }
 
@@ -71,6 +79,8 @@ export const createContentPageletView = (
     definitionQualifiedName: pagelet.definitionQualifiedName,
     configurationParameters: pagelet.configurationParameters,
     id: pagelet.id,
+    domain: pagelet.domain,
+    displayName: pagelet.displayName,
     slot: !pagelet.slots
       ? () => undefined
       : memoize(qualifiedName =>
@@ -84,6 +94,8 @@ export const createContentEntryPointView = (
   pageletIDs: string[],
   pagelets: { [id: string]: ContentPagelet }
 ): ContentEntryPointView => ({
+  id: '', // TODO
+  domain: '', // TODO
   pagelets:
     pageletIDs && pageletIDs.length
       ? once(() => pageletIDs.map(id => createContentPageletView(id, pagelets)))
@@ -96,6 +108,7 @@ export const createContentSlotView = (slot: ContentSlot, pagelets: { [id: string
     : {
         ...createContentEntryPointView(slot.pageletIDs, pagelets),
         ...createContentConfigurationParameterView(slot.configurationParameters || {}),
+        displayName: slot.displayName,
       };
 
 export const createContentPageletEntryPointView = (
@@ -103,7 +116,9 @@ export const createContentPageletEntryPointView = (
   pagelets: { [id: string]: ContentPagelet }
 ): ContentPageletEntryPointView => ({
   id: pageletEntryPoint.id,
-  name: pageletEntryPoint.displayName,
+  domain: pageletEntryPoint.domain,
+  resourceSetId: pageletEntryPoint.resourceSetId,
+  displayName: pageletEntryPoint.displayName,
   ...createContentEntryPointView(pageletEntryPoint.pageletIDs, pagelets),
   ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
 });

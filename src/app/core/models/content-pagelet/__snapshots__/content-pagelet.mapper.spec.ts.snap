@@ -7,11 +7,14 @@ Array [
       "key": "test",
     },
     "definitionQualifiedName": "domain-pagelet",
+    "displayName": "pagelet",
+    "domain": "domain",
     "id": "pagelet",
     "slots": Array [
       Object {
         "configurationParameters": Object {},
         "definitionQualifiedName": "quali-slot",
+        "displayName": "slot1",
         "pageletIDs": Array [
           "pagelet-nested",
         ],
@@ -25,6 +28,7 @@ Array [
           ],
         },
         "definitionQualifiedName": "quali-slot",
+        "displayName": "slot2",
         "pageletIDs": Array [
           "pagelet-nested2",
         ],
@@ -34,6 +38,8 @@ Array [
   Object {
     "configurationParameters": Object {},
     "definitionQualifiedName": "fq",
+    "displayName": "name-nested",
+    "domain": "domain",
     "id": "pagelet-nested",
     "slots": Array [],
   },
@@ -42,11 +48,14 @@ Array [
       "key1": "test-key1",
     },
     "definitionQualifiedName": "domain-pagelet",
+    "displayName": "name1",
+    "domain": "domain",
     "id": "pagelet-nested2",
     "slots": Array [
       Object {
         "configurationParameters": Object {},
         "definitionQualifiedName": "fq-2",
+        "displayName": "slot11",
         "pageletIDs": Array [
           "pagelet-deeply-nested",
         ],
@@ -58,6 +67,8 @@ Array [
       "key3": "1",
     },
     "definitionQualifiedName": "fq",
+    "displayName": "name-nested",
+    "domain": "domain",
     "id": "pagelet-deeply-nested",
     "slots": Array [],
   },
@@ -71,11 +82,14 @@ Array [
       "key": "test",
     },
     "definitionQualifiedName": "domain-pagelet",
+    "displayName": "pagelet",
+    "domain": "domain",
     "id": "pagelet",
     "slots": Array [
       Object {
         "configurationParameters": Object {},
         "definitionQualifiedName": "quali-slot",
+        "displayName": "Slot",
         "pageletIDs": Array [],
       },
     ],
@@ -90,6 +104,8 @@ Array [
       "key": "test",
     },
     "definitionQualifiedName": "domain-pagelet",
+    "displayName": "pagelet",
+    "domain": "domain",
     "id": "pagelet",
     "slots": Array [],
   },

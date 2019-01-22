@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
 import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 
 @Component({
@@ -54,7 +55,7 @@ export class ContentPageletContainerComponent implements OnChanges {
 
   private initializeComponent(instance: CMSComponentInterface) {
     instance.pagelet = this.pagelet;
-    instance.cmsDQNAttribute = this.pagelet.definitionQualifiedName;
+    instance.setSfeMetadata(SfeMapper.mapPageletViewToSfeMetadata(this.pagelet));
 
     // OnChanges has to be manually invoked on dynamically created components
     if (instance.ngOnChanges) {

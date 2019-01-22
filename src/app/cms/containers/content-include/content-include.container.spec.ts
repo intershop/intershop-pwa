@@ -21,7 +21,9 @@ describe('Content Include Container', () => {
     include = {
       id: 'test.include',
       definitionQualifiedName: 'test.include-Include',
-      displayName: 'test include',
+      domain: 'domain',
+      displayName: 'displayName',
+      resourceSetId: 'resId',
       configurationParameters: {
         key: '1',
       },

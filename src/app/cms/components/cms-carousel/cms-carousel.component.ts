@@ -1,15 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 import { arraySlices } from 'ish-core/utils/functions';
-import { CMSComponentBase } from '../cms-component-base/cms-component-base';
+import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
 
 @Component({
   selector: 'ish-cms-carousel',
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSCarouselComponent extends CMSComponentBase implements OnChanges {
+export class CMSCarouselComponent extends SfeMetadataWrapper implements OnChanges {
+  @Input() pagelet: ContentPageletView;
+
   slideItems = 6;
   itemGridSize = 12;
   pageletSlides: ContentPageletView[][] = [];

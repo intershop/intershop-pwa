@@ -1,0 +1,95 @@
+import * as using from 'jasmine-data-provider';
+
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import {
+  createContentPageletEntryPointView,
+  createContentPageletView,
+} from 'ish-core/models/content-view/content-views';
+import { createDocumentFromHTML } from 'ish-core/utils/dev/html-query-utils';
+
+import { SfeMapper } from './sfe.mapper';
+import { domDataProvider, htmlComplex, reducedTreeComplex } from './sfe.mapper.spec.dom-data';
+
+describe('Sfe Mapper', () => {
+  describe('tree mappings with getDomTree and reduceDomTree', () => {
+    using(domDataProvider, (slice, description) => {
+      it(`should extract the tree structure for DOM with ${description}`, () => {
+        const dom = createDocumentFromHTML(slice.html).querySelector('body').firstChild;
+        const tree = SfeMapper.getDomTree(dom);
+
+        expect(tree).toEqual(slice.tree);
+      });
+    });
+
+    using(domDataProvider, (slice, description) => {
+      it(`should reduce the tree structure for ${description}`, () => {
+        const reducedTree = SfeMapper.reduceDomTree(slice.tree);
+
+        expect(reducedTree).toEqual(slice.reducedTree);
+      });
+    });
+
+    it('should create reduced tree for complex DOM', () => {
+      const dom = createDocumentFromHTML(htmlComplex).querySelector('body').firstChild;
+      const tree = SfeMapper.getDomTree(dom);
+      const reducedTree = SfeMapper.reduceDomTree(tree);
+
+      expect(reducedTree).toEqual(reducedTreeComplex);
+    });
+  });
+
+  describe('sfeMetadata Mappings', () => {
+    let include: ContentPageletEntryPoint;
+    let pagelets: { [id: string]: ContentPagelet };
+
+    beforeEach(() => {
+      include = {
+        id: 'include',
+        definitionQualifiedName: 'ifq',
+        domain: 'idomain',
+        resourceSetId: 'iresId',
+        displayName: 'name',
+        pageletIDs: ['p1'],
+        configurationParameters: {
+          ikey1: '1',
+          ikey2: 'true',
+          ikey3: ['hello', 'world'],
+          ikey4: { test: 'hello' },
+        },
+      };
+
+      pagelets = {
+        p1: {
+          id: 'p1',
+          domain: 'pdomain',
+          displayName: 'p1',
+          definitionQualifiedName: 'pfq',
+          configurationParameters: {
+            pkey4: '2',
+          },
+          slots: [
+            {
+              definitionQualifiedName: 'fq',
+              displayName: 'slot',
+            },
+          ],
+        },
+      };
+    });
+
+    it('should map ContentPageletView to SfeMetadata', () => {
+      const pagelet = createContentPageletView('p1', pagelets);
+      const sfeMetadata = SfeMapper.mapPageletViewToSfeMetadata(pagelet);
+
+      expect(sfeMetadata).toMatchSnapshot();
+    });
+
+    it('should map ContentPageletEntryPointView to SfeMetadata', () => {
+      const includeView = createContentPageletEntryPointView(include, pagelets);
+      const sfeMetadata = SfeMapper.mapIncludeViewToSfeMetadata(includeView);
+
+      expect(sfeMetadata).toMatchSnapshot();
+    });
+  });
+});

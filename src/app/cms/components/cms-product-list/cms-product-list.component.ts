@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { CMSComponentBase } from '../cms-component-base/cms-component-base';
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
 
 @Component({
   selector: 'ish-cms-product-list',
   templateUrl: './cms-product-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSProductListComponent extends CMSComponentBase implements OnChanges {
+export class CMSProductListComponent extends SfeMetadataWrapper implements OnChanges {
+  @Input() pagelet: ContentPageletView;
   productSKUs: string[] = [];
 
   ngOnChanges() {

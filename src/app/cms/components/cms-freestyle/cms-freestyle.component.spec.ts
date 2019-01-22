@@ -33,6 +33,8 @@ describe('Cms Freestyle Component', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      displayName: 'name',
+      domain: 'domain',
       configurationParameters: { HTML: '<h3>foo</h3>bar' },
     };
     component.pagelet = createSimplePageletView(pagelet);

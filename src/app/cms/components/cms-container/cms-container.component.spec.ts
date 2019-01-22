@@ -14,7 +14,21 @@ describe('Cms Container Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CMSContainerComponent,
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
+        MockComponent({
+          selector: 'ish-content-pagelet',
+          template: 'outlet',
+          inputs: ['pagelet'],
+        }),
+        MockComponent({
+          selector: 'ish-content-slot',
+          template: 'Slot',
+          inputs: ['pagelet', 'definitionQualifiedName'],
+        }),
+        MockComponent({
+          selector: 'ish-slot-wrapper',
+          template: 'outlet',
+          inputs: ['pagelet', 'definitionQualifiedName'],
+        }),
       ],
     }).compileComponents();
   }));
@@ -25,14 +39,20 @@ describe('Cms Container Component', () => {
     const slide1 = {
       definitionQualifiedName: 'fq',
       id: 'slide1',
+      domain: 'domain',
+      displayName: 'slide1',
     };
     const slide2 = {
       definitionQualifiedName: 'fq',
       id: 'slide2',
+      domain: 'domain',
+      displayName: 'slide2',
     };
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      domain: 'domain',
+      displayName: 'pagelet',
       configurationParameters: {
         CSSClass: 'foo-class',
         Grid: 'ExtraSmall:12,Small:6,Medium:4,Large:0',

@@ -17,6 +17,8 @@ describe('Content View Helper', () => {
           const pagelet = createSimplePageletView({
             definitionQualifiedName: 'fq',
             id: 'id',
+            domain: 'domain',
+            displayName: 'name',
             configurationParameters: {
               Link: input,
             },

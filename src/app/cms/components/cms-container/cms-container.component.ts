@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { CMSComponentBase } from '../cms-component-base/cms-component-base';
+import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
 
 // naming collision with container-component-pattern
 // tslint:disable-next-line:project-structure
@@ -10,7 +10,9 @@ import { CMSComponentBase } from '../cms-component-base/cms-component-base';
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSContainerComponent extends CMSComponentBase implements OnChanges {
+export class CMSContainerComponent extends SfeMetadataWrapper implements OnChanges {
+  @Input() pagelet: ContentPageletView;
+
   contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';
 
@@ -28,7 +30,7 @@ export class CMSContainerComponent extends CMSComponentBase implements OnChanges
   getGridCSS(grid: string): string {
     let gridCSS = '';
 
-    // transform an incomming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
+    // transform an incoming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
     const gridObject = { ExtraSmall: 0, Small: 0, Medium: 0, Large: 0 };
     grid.split(',').forEach(element => {
       gridObject[element.split(':')[0]] = Number(element.split(':')[1]);

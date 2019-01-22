@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentSlotView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 @Component({
   selector: 'ish-content-slot',
@@ -8,5 +8,6 @@ import { ContentSlotView } from 'ish-core/models/content-view/content-views';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentSlotContainerComponent {
-  @Input() slot: ContentSlotView;
+  @Input() slot: string;
+  @Input() pagelet: ContentPageletView;
 }

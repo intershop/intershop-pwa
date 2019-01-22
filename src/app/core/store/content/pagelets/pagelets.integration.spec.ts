@@ -31,6 +31,8 @@ describe('Pagelets Integration', () => {
       {
         definitionQualifiedName: 'fq',
         id: 'id',
+        domain: 'domain',
+        displayName: 'name',
       },
     ];
 

@@ -1,10 +1,11 @@
 import { InjectionToken, SimpleChange, Type } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { SfeMetadata } from '../sfe-adapter/sfe.types';
 
 export interface CMSComponentInterface {
   pagelet: ContentPageletView;
-  cmsDQNAttribute: string;
+  setSfeMetadata(sfeInfo: SfeMetadata): void;
   ngOnChanges?(changes?: { pagelet: SimpleChange }): void;
 }
 
