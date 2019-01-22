@@ -17,8 +17,12 @@ export class InitialNavigationGuard implements CanActivate, CanActivateChild {
       .map(key => ({ [key]: next.paramMap.get(key) }))
       .reduce((acc, val) => ({ ...acc, ...val }), {});
 
-    if (next.paramMap.has('features')) {
-      properties.features = next.paramMap.get('features').split(/,/g);
+    if (next.paramMap.has('features') && next.paramMap.get('features') !== 'default') {
+      if (next.paramMap.get('features') === 'none') {
+        properties.features = [];
+      } else {
+        properties.features = next.paramMap.get('features').split(/,/g);
+      }
     }
 
     if (next.paramMap.has('lang')) {

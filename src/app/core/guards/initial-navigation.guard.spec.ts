@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { getFeatures, getRestEndpoint } from 'ish-core/store/configuration';
+import { ApplyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/configuration';
 import { ConfigurationEffects } from 'ish-core/store/configuration/configuration.effects';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { SetAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
@@ -77,6 +77,22 @@ describe('Initial Navigation Guard', () => {
 
   it('should set imported features to state', fakeAsync(() => {
     router.navigateByUrl('/home;features=a,b,c;redirect=1');
+    tick(500);
+    expect(location.path()).toMatchInlineSnapshot(`"/home"`);
+    expect(getFeatures(store$.state)).toIncludeAllMembers(['a', 'b', 'c']);
+  }));
+
+  it('should unset features if "none" was provided', fakeAsync(() => {
+    store$.dispatch(new ApplyConfiguration({ features: ['a', 'b', 'c'] }));
+    router.navigateByUrl('/home;features=none;redirect=1');
+    tick(500);
+    expect(location.path()).toMatchInlineSnapshot(`"/home"`);
+    expect(getFeatures(store$.state)).toBeEmpty();
+  }));
+
+  it('should not set features if "default" was provided', fakeAsync(() => {
+    store$.dispatch(new ApplyConfiguration({ features: ['a', 'b', 'c'] }));
+    router.navigateByUrl('/home;features=default;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
     expect(getFeatures(store$.state)).toIncludeAllMembers(['a', 'b', 'c']);
