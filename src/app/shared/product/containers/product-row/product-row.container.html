@@ -1,1 +1,7 @@
-<ish-product-row [product]="product" [category]="category" (productToBasket)="addToBasket()"></ish-product-row>
+<ish-product-row
+  [product]="product"
+  [category]="category"
+  [isInCompareList]="isInCompareList$ | async"
+  (productToBasket)="addToBasket()"
+  (compareToggle)="toggleCompare()"
+></ish-product-row>
