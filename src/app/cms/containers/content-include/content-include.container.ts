@@ -1,29 +1,35 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
+import { ContentEntryPointView, ContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
+import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
 
-import { CMSComponentBase } from '../../components/cms-component-base/cms-component-base';
 @Component({
   selector: 'ish-content-include',
   templateUrl: './content-include.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentIncludeContainerComponent extends CMSComponentBase implements OnInit {
+export class ContentIncludeContainerComponent extends SfeMetadataWrapper implements OnInit {
   @Input() includeId: string;
 
-  contentInclude$: Observable<ContentPageletEntryPointView>;
-
-  constructor(private store: Store<{}>) {
+  constructor(private store: Store<{}>, private cd: ChangeDetectorRef) {
     super();
   }
 
+  contentInclude$: Observable<ContentPageletEntryPointView>;
+
   ngOnInit() {
-    this.cmsDQNAttribute = this.includeId;
     this.contentInclude$ = this.store.pipe(select(getContentInclude, this.includeId));
+
+    this.contentInclude$.pipe(filter(include => !!include)).subscribe(include => {
+      this.setSfeMetadata(SfeMapper.mapIncludeViewToSfeMetadata(include));
+      this.cd.markForCheck();
+    });
+
     this.contentInclude$
       .pipe(
         take(1),

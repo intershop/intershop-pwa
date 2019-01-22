@@ -40,6 +40,8 @@ export class ContentPageletEntryPointMapper {
       id: data.link.title,
       definitionQualifiedName: data.definitionQualifiedName,
       displayName: data.displayName,
+      domain: data.domain,
+      resourceSetId: data.resourceSetId,
       pageletIDs,
       configurationParameters,
     };

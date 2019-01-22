@@ -6,11 +6,13 @@ Object {
     "configurationParameters": Object {},
     "definitionQualifiedName": "fq",
     "displayName": "name-include",
+    "domain": "the-domain",
     "id": "include-id",
     "pageletIDs": Array [
       "pagelet1",
       "pagelet2",
     ],
+    "resourceSetID": "resource-set-id",
   },
   "pagelets": Array [
     Object {
@@ -18,11 +20,14 @@ Object {
         "key1": "hallo 1",
       },
       "definitionQualifiedName": "fq",
+      "displayName": "name1",
+      "domain": "domain",
       "id": "pagelet1",
       "slots": Array [
         Object {
           "configurationParameters": Object {},
           "definitionQualifiedName": "fq",
+          "displayName": "slot1",
           "pageletIDs": Array [
             "pagelet11",
           ],
@@ -34,12 +39,16 @@ Object {
         "key11": "test",
       },
       "definitionQualifiedName": "fq",
+      "displayName": "name11",
+      "domain": "Domain",
       "id": "pagelet11",
       "slots": Array [],
     },
     Object {
       "configurationParameters": Object {},
       "definitionQualifiedName": "fq",
+      "displayName": "name2",
+      "domain": "domain",
       "id": "pagelet2",
       "slots": Array [],
     },

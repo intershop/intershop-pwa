@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sfe Mapper sfeMetadata Mappings should map ContentPageletEntryPointView to SfeMetadata 1`] = `
+Object {
+  "displayName": "name",
+  "displayType": "Include",
+  "id": "include:idomain:include",
+  "renderObject": Object {
+    "domainId": "idomain",
+    "id": "include",
+    "type": "Include",
+  },
+}
+`;
+
+exports[`Sfe Mapper sfeMetadata Mappings should map ContentPageletView to SfeMetadata 1`] = `
+Object {
+  "displayName": "p1",
+  "displayType": "pfq",
+  "id": "pagelet:pdomain:p1",
+  "renderObject": Object {
+    "domainId": "pdomain",
+    "id": "p1",
+    "type": "Pagelet",
+  },
+}
+`;

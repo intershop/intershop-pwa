@@ -38,6 +38,7 @@ describe('Content Pagelet Mapper', () => {
     const input: ContentPageletData = {
       id: 'pagelet',
       displayName: 'pagelet',
+      domain: 'domain',
       definitionQualifiedName: 'domain-pagelet',
       configurationParameters: {
         key: {
@@ -55,6 +56,7 @@ describe('Content Pagelet Mapper', () => {
     const input: ContentPageletData = {
       id: 'pagelet',
       displayName: 'pagelet',
+      domain: 'domain',
       definitionQualifiedName: 'domain-pagelet',
       configurationParameters: {
         key: {
@@ -64,6 +66,7 @@ describe('Content Pagelet Mapper', () => {
       },
       slots: {
         slot1: {
+          displayName: 'Slot',
           definitionQualifiedName: 'quali-slot',
           pagelets: [],
         },
@@ -78,6 +81,7 @@ describe('Content Pagelet Mapper', () => {
     const input: ContentPageletData = {
       id: 'pagelet',
       displayName: 'pagelet',
+      domain: 'domain',
       definitionQualifiedName: 'domain-pagelet',
       configurationParameters: {
         key: {
@@ -87,22 +91,26 @@ describe('Content Pagelet Mapper', () => {
       },
       slots: {
         slot1: {
+          displayName: 'slot1',
           definitionQualifiedName: 'quali-slot',
           pagelets: [
             {
               id: 'pagelet-nested',
               definitionQualifiedName: 'fq',
               displayName: 'name-nested',
+              domain: 'domain',
             },
           ],
         },
         slot2: {
           definitionQualifiedName: 'quali-slot',
+          displayName: 'slot2',
           pagelets: [
             {
               id: 'pagelet-nested2',
               definitionQualifiedName: 'domain-pagelet',
               displayName: 'name1',
+              domain: 'domain',
               configurationParameters: {
                 key1: {
                   definitionQualifiedName: 'fq',
@@ -112,11 +120,13 @@ describe('Content Pagelet Mapper', () => {
               slots: {
                 slot11: {
                   definitionQualifiedName: 'fq-2',
+                  displayName: 'slot11',
                   pagelets: [
                     {
                       id: 'pagelet-deeply-nested',
                       definitionQualifiedName: 'fq',
                       displayName: 'name-nested',
+                      domain: 'domain',
                       configurationParameters: {
                         key3: {
                           definitionQualifiedName: 'fq',
@@ -159,6 +169,7 @@ describe('Content Pagelet Mapper', () => {
     const input = {
       definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component',
       displayName: 'Brand Image 5',
+      domain: 'domain',
       id: 'cmp_brandImage_5',
       configurationParameters: {
         Image: {
@@ -166,7 +177,7 @@ describe('Content Pagelet Mapper', () => {
           definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component-Image',
         },
       },
-    };
+    } as ContentPageletData;
 
     expect(contentPageletMapper.fromData(input)[0]).toHaveProperty(
       'configurationParameters.Image',

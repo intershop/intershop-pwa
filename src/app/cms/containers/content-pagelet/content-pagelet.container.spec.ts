@@ -38,6 +38,8 @@ describe('Content Pagelet Container', () => {
     pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      displayName: 'pagelet',
+      domain: 'domain',
       configurationParameters: {
         HTMLText: 'foo',
       },
