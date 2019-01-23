@@ -41,6 +41,10 @@ export class ProductMapper {
       throw new Error('cannot construct product stub without SKU');
     }
     const productCategory = retrieveStubAttributeValue<CategoryData>(data, 'defaultCategory');
+
+    const minOrderQuantityValue = retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity');
+    const minOrderQuantity = minOrderQuantityValue ? minOrderQuantityValue.value : undefined;
+
     return {
       shortDescription: data.description,
       name: data.title,
@@ -71,11 +75,9 @@ export class ProductMapper {
       ]),
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
       availability: retrieveStubAttributeValue(data, 'availability'),
-      // TODO: will be supplied by REST API with ISREST-389
-      inStock: retrieveStubAttributeValue(data, 'availability'),
+      inStock: retrieveStubAttributeValue(data, 'inStock'),
       longDescription: undefined,
-      // TODO: will be supplied by REST API with ISREST-401
-      minOrderQuantity: 1,
+      minOrderQuantity,
       attributes: [],
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
