@@ -11,12 +11,22 @@ export const productAdapter = createEntityAdapter<Product>({
 export interface ProductsState extends EntityState<Product> {
   loading: boolean;
   selected: string;
+  failed: string[];
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
   selected: undefined,
+  failed: [],
 });
+
+function addFailed(failed: string[], sku: string): string[] {
+  return [...failed, sku].filter((val, idx, arr) => arr.indexOf(val) === idx);
+}
+
+function removeFailed(failed: string[], sku: string): string[] {
+  return failed.filter(val => val !== sku);
+}
 
 export function productsReducer(state = initialState, action: ProductsAction): ProductsState {
   switch (action.type) {
@@ -38,11 +48,17 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       return {
         ...state,
         loading: false,
+        failed: addFailed(state.failed, action.payload.sku),
       };
     }
 
     case ProductsActionTypes.LoadProductSuccess: {
-      return productAdapter.upsertOne(action.payload.product, { ...state, loading: false });
+      const product = action.payload.product;
+      return productAdapter.upsertOne(product, {
+        ...state,
+        loading: false,
+        failed: removeFailed(state.failed, product.sku),
+      });
     }
   }
 

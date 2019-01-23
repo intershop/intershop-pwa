@@ -33,7 +33,8 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
     );
 }
 
-export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpError }) => T) {
+// tslint:disable-next-line:no-any
+export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpError }) => T, extras?: any) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
       // tslint:disable-next-line:ban
@@ -48,7 +49,8 @@ export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpErro
         if (typeof window === 'undefined' || window.name !== 'nodejs' || process.env.DEBUG || err instanceof Error) {
           console.error(err);
         }
-        return of(new actionType({ error: HttpErrorMapper.fromError(err) }));
+        const errorAction = new actionType({ error: HttpErrorMapper.fromError(err), ...extras });
+        return of(errorAction);
       })
     );
 }

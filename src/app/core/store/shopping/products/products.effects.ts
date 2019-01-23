@@ -46,11 +46,13 @@ export class ProductsEffects {
   loadProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
     mapToPayloadProperty('sku'),
-    mergeMap(sku =>
-      this.productsService.getProduct(sku).pipe(
-        map(product => new productsActions.LoadProductSuccess({ product })),
-        mapErrorToAction(productsActions.LoadProductFail)
-      )
+    mergeMap(
+      sku =>
+        this.productsService.getProduct(sku).pipe(
+          map(product => new productsActions.LoadProductSuccess({ product })),
+          mapErrorToAction(productsActions.LoadProductFail, { sku })
+        ),
+      5
     )
   );
 
@@ -89,8 +91,8 @@ export class ProductsEffects {
       this.store.pipe(select(getItemsPerPage))
     ),
     distinctUntilChanged(),
-    concatMap(([categoryUniqueId, currentPage, sortBy, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, currentPage, itemsPerPage, sortBy).pipe(
+    concatMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
           new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
@@ -99,7 +101,7 @@ export class ProductsEffects {
             .filter(stub => !entities[stub.sku])
             .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
-        mapErrorToAction(productsActions.LoadProductFail)
+        mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
     )
   );
@@ -142,6 +144,13 @@ export class ProductsEffects {
   @Effect({ dispatch: false })
   redirectIfErrorInProducts$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductFail),
+    filter(() => this.router.url.includes('/product/')),
+    tap(() => this.router.navigate(['/error']))
+  );
+
+  @Effect({ dispatch: false })
+  redirectIfErrorInCategoryProducts$ = this.actions$.pipe(
+    ofType(productsActions.ProductsActionTypes.LoadProductsForCategoryFail),
     tap(() => this.router.navigate(['/error']))
   );
 }

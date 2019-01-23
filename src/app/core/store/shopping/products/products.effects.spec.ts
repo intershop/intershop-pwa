@@ -5,7 +5,7 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -96,7 +96,7 @@ describe('Products Effects', () => {
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
       const action = new fromActions.LoadProduct({ sku });
-      const completion = new fromActions.LoadProductFail({ error: { message: 'invalid' } as HttpError });
+      const completion = new fromActions.LoadProductFail({ error: { message: 'invalid' } as HttpError, sku });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -139,7 +139,12 @@ describe('Products Effects', () => {
         a: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       });
       expect(effects.loadProductsForCategory$).toBeObservable(
-        cold('-a-a-a', { a: new fromActions.LoadProductFail({ error: { message: 'ERROR' } as HttpError }) })
+        cold('-a-a-a', {
+          a: new fromActions.LoadProductsForCategoryFail({
+            error: { message: 'ERROR' } as HttpError,
+            categoryId: '123',
+          }),
+        })
       );
     });
   });
@@ -222,12 +227,44 @@ describe('Products Effects', () => {
   });
 
   describe('redirectIfErrorInProducts$', () => {
-    it('should redirect if triggered', done => {
-      const action = new fromActions.LoadProductFail({ error: { status: 404 } as HttpError });
+    it('should redirect if triggered on product detail page', done => {
+      when(router.url).thenReturn('/category/A/product/SKU');
+
+      const action = new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError });
 
       actions$ = of(action);
 
       effects.redirectIfErrorInProducts$.subscribe(() => {
+        verify(router.navigate(anything())).once();
+        const [param] = capture(router.navigate).last();
+        expect(param).toEqual(['/error']);
+        done();
+      });
+    });
+
+    it('should not redirect if triggered on page other than product detail page', done => {
+      when(router.url).thenReturn('/search/term');
+
+      const action = new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError });
+
+      actions$ = of(action);
+
+      effects.redirectIfErrorInProducts$.subscribe(fail, fail, done);
+    });
+  });
+
+  describe('redirectIfErrorInCategoryProducts$', () => {
+    it('should redirect if triggered', done => {
+      resetCalls(router);
+
+      const action = new fromActions.LoadProductsForCategoryFail({
+        categoryId: 'ID',
+        error: { status: 404 } as HttpError,
+      });
+
+      actions$ = of(action);
+
+      effects.redirectIfErrorInCategoryProducts$.subscribe(() => {
         verify(router.navigate(anything())).once();
         const [param] = capture(router.navigate).last();
         expect(param).toEqual(['/error']);

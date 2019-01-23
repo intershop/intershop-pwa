@@ -9,6 +9,7 @@ export enum ProductsActionTypes {
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
+  LoadProductsForCategoryFail = '[Shopping] Load Products for Category Fail',
   LoadMoreProductsForCategory = '[Shopping] Load More Products',
 }
 
@@ -23,7 +24,7 @@ export class LoadProduct implements Action {
 
 export class LoadProductFail implements Action {
   readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: { error: HttpError }) {}
+  constructor(public payload: { error: HttpError; sku: string }) {}
 }
 
 export class LoadProductSuccess implements Action {
@@ -34,6 +35,11 @@ export class LoadProductSuccess implements Action {
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
   constructor(public payload: { categoryId: string }) {}
+}
+
+export class LoadProductsForCategoryFail implements Action {
+  readonly type = ProductsActionTypes.LoadProductsForCategoryFail;
+  constructor(public payload: { error: HttpError; categoryId: string }) {}
 }
 
 export class LoadMoreProductsForCategory implements Action {
