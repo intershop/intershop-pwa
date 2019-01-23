@@ -23,15 +23,10 @@
             displayType="icon"
             cssClass="btn-link"
           ></ish-lazy-product-add-to-quote>
-          <button
-            class="btn btn-link add-to-compare"
-            [ngClass]="{ 'is-selected': isInCompareList }"
-            title="{{ 'product.compare.link' | translate }}"
-            *ishFeature="'compare'"
-            (click)="toggleCompare()"
-            >
-            <fa-icon [icon]="['fas', 'columns']"></fa-icon>
-          </button>
+          <ish-product-add-to-compare
+            [isInCompareList]="isInCompareList"
+            (compareToggle)="toggleCompare()"
+          ></ish-product-add-to-compare>
         </div>
       </div>
       <div class="col-12 col-md-4 text-right text-left-xs">

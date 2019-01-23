@@ -1,0 +1,9 @@
+<button
+  *ishFeature="'compare'"
+  class="btn btn-link add-to-compare"
+  [ngClass]="{ 'is-selected': isInCompareList }"
+  title="{{ 'product.compare.link' | translate }}"
+  (click)="toggleCompare()"
+>
+  <fa-icon [icon]="['fas', 'columns']"></fa-icon>
+</button>
