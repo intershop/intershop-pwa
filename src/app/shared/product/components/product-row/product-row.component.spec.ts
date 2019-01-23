@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -19,7 +18,6 @@ describe('Product Row Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
-        IconModule,
         PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
@@ -33,6 +31,16 @@ describe('Product Row Component', () => {
         MockComponent({
           selector: 'ish-product-add-to-basket',
           template: 'Product Add To Basket Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-add-to-compare',
+          template: 'Product Add To Compare Component',
+          inputs: ['isInCompareList'],
+        }),
+        MockComponent({
+          selector: 'ish-product-image',
+          template: 'Product Image Component',
           inputs: ['product'],
         }),
         MockComponent({
@@ -50,7 +58,6 @@ describe('Product Row Component', () => {
           template: 'Product Price Component',
           inputs: ['product', 'showInformationalPrice'],
         }),
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
         ProductRowComponent,
       ],
     }).compileComponents();

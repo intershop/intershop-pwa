@@ -38,6 +38,7 @@ import { FormsSharedModule } from './forms/forms.module';
 import { OrderListComponent } from './order/components/order-list/order-list.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
+import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
 import { ProductLabelComponent } from './product/components/product-label/product-label.component';
@@ -104,6 +105,7 @@ const exportedComponents = [
   ModalDialogComponent,
   OrderListContainerComponent,
   ProductAddToBasketComponent,
+  ProductAddToCompareComponent,
   ProductAttributesComponent,
   ProductInventoryComponent,
   ProductLabelComponent,

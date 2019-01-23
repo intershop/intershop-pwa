@@ -12,7 +12,7 @@ import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/comp
   templateUrl: './product-row.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductRowContainerComponent {
+export class ProductRowContainerComponent implements OnInit {
   @Input() product: Product;
   @Input() category?: Category;
 

@@ -15,11 +15,11 @@ export class ProductRowComponent {
   @Output() productToBasket = new EventEmitter<void>();
   @Output() compareToggle = new EventEmitter<void>();
 
-  toggleCompare() {
-    this.compareToggle.emit();
-  }
-
   addToBasket() {
     this.productToBasket.emit();
+  }
+
+  toggleCompare() {
+    this.compareToggle.emit();
   }
 }

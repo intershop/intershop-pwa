@@ -10,8 +10,8 @@ import { Product } from 'ish-core/models/product/product.model';
 })
 export class ProductTileComponent {
   @Input() product: Product;
-  @Input() category?: Category;
-  @Input() isInCompareList?: boolean;
+  @Input() category: Category;
+  @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
   @Output() productToBasket = new EventEmitter<void>();
 
