@@ -3,6 +3,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { FilterCheckboxComponent } from './filter-checkbox.component';
 
@@ -13,7 +14,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule],
+      imports: [IconModule, NgbCollapseModule, PipesModule],
       declarations: [FilterCheckboxComponent],
     }).compileComponents();
   }));

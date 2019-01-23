@@ -84,7 +84,7 @@ exports[`Filter Dropdown Component should be created 1`] = `
     </ul>
     <div
       class="collapse show"
-      data-testing-id="collapseFilterBrands"
+      data-testing-id="collapse-filter-Brands"
       id="collapseFilter"
       ng-reflect-collapsed="false"
     >

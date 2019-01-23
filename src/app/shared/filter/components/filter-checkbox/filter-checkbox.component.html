@@ -21,7 +21,11 @@
     <ng-container *ngFor="let facet of filterElement.facets">
       <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item">
         <!--- TODO: add filter count -->
-        <a class="filter-item-name" (click)="filter(facet)" [attr.data-testing-id]="'filter-link-' + facet.name">
+        <a
+          class="filter-item-name"
+          (click)="filter(facet)"
+          [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
+        >
           <span class="icon-notselected"></span>{{ facet.link.title }}
         </a>
       </li>

@@ -41,7 +41,7 @@ describe('Language Changing User', () => {
   });
 
   describe('starting at product detail page', () => {
-    before(() => ProductDetailPage.navigateTo(_.category, _.product.sku));
+    before(() => ProductDetailPage.navigateTo(_.product.sku, _.category));
 
     it('should see dollar prices', () => {
       at(ProductDetailPage, page => {
