@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CookieLawModule } from 'angular2-cookie-law';
 import { instance, mock } from 'ts-mockito';
 
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -23,7 +25,7 @@ describe('App Component', () => {
         MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [CookieLawModule, NoopAnimationsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
