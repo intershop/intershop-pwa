@@ -5,7 +5,21 @@
         {
           "name": "sku",
           "type": "String",
-          "value": "8182790134362"
+          "value": "3953312"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
         },
         {
           "name": "image",
@@ -16,18 +30,20 @@
           "name": "listPrice",
           "type": "ResourceAttribute",
           "value": {
+            "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 391.98
+            "value": 337.35
           }
         },
         {
           "name": "salePrice",
           "type": "ResourceAttribute",
           "value": {
+            "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 391.98
+            "value": 303.62
           }
         },
         {
@@ -38,20 +54,34 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "GoPro"
+          "value": "Canon"
         }
       ],
-      "description": "High-performance capture. Touch-display convenience. - Features 1080p60 and",
-      "title": "GoPro HERO4 Silver",
+      "description": "LEGRIA HF R16 - 8GB, SDHC, 1/ 13.97 cm (5.5 \") CMOS, 20x opt., dig. 400x",
+      "title": "Canon LEGRIA HF R16",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832/products/8182790134362"
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/3953312"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "8182790134363"
+          "value": "7912061"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
         },
         {
           "name": "image",
@@ -62,18 +92,20 @@
           "name": "listPrice",
           "type": "ResourceAttribute",
           "value": {
+            "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 391.98
+            "value": 129.85
           }
         },
         {
           "name": "salePrice",
           "type": "ResourceAttribute",
           "value": {
+            "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 391.98
+            "value": 129.85
           }
         },
         {
@@ -84,13 +116,13 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "GoPro"
+          "value": "Kodak"
         }
       ],
-      "description": "The best, only smaller. HERO5 Session combines 4K video, one-button simplicity and voice control all in a small, waterproof design.",
-      "title": "GoPro HERO5 Session",
+      "description": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
+      "title": "Kodak PlayFull Ze1",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832/products/8182790134363"
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/7912061"
     }
   ],
   "name": "products",

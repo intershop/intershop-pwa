@@ -47,14 +47,14 @@
       "value": "1/2 - 1/20000 s"
     },
     {
-      "name": "Maximum video resolution",
-      "type": "String",
-      "value": "1920 x 1080 pixels"
-    },
-    {
       "name": "Shooting modes",
       "type": "String",
       "value": "FXP, XP+, SP, LP"
+    },
+    {
+      "name": "Maximum video resolution",
+      "type": "String",
+      "value": "1920 x 1080 pixels"
     },
     {
       "name": "Depth",
@@ -76,14 +76,14 @@
       "value": "Lithium-Ion"
     },
     {
-      "name": "Manual focus",
-      "type": "String",
-      "value": "Y"
-    },
-    {
       "name": "S-Video in",
       "type": "String",
       "value": "0"
+    },
+    {
+      "name": "Manual focus",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "USB 2.0 ports quantity",
@@ -110,9 +110,9 @@
       "value": "400 x"
     },
     {
-      "name": "Battery life (max)",
+      "name": "Effective megapixels (movie)",
       "type": "String",
-      "value": "3 h"
+      "value": "1.56 MP"
     },
     {
       "name": "Width",
@@ -124,9 +124,9 @@
       }
     },
     {
-      "name": "Effective megapixels (movie)",
+      "name": "Battery life (max)",
       "type": "String",
-      "value": "1.56 MP"
+      "value": "3 h"
     },
     {
       "name": "Sports",
@@ -178,9 +178,9 @@
       "value": "N"
     },
     {
-      "name": "Night mode",
+      "name": "HDMI ports quantity",
       "type": "String",
-      "value": "Y"
+      "value": "1"
     },
     {
       "name": "Component video (YPbPr/YCbCr) out",
@@ -188,9 +188,9 @@
       "value": "1"
     },
     {
-      "name": "HDMI ports quantity",
+      "name": "Night mode",
       "type": "String",
-      "value": "1"
+      "value": "Y"
     },
     {
       "name": "Audio system",
@@ -198,14 +198,14 @@
       "value": "Dolby Digital"
     },
     {
-      "name": "Optical sensor size",
-      "type": "String",
-      "value": "1/0.217 mm (1/5.5 \")"
-    },
-    {
       "name": "Auto focus",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Optical sensor size",
+      "type": "String",
+      "value": "1/0.217 mm (1/5.5 \")"
     },
     {
       "name": "Flash memory",
@@ -213,14 +213,14 @@
       "value": "8 GB"
     },
     {
-      "name": "Audio output",
-      "type": "String",
-      "value": "1"
-    },
-    {
       "name": "Focus",
       "type": "String",
       "value": "TTL"
+    },
+    {
+      "name": "Audio output",
+      "type": "String",
+      "value": "1"
     },
     {
       "name": "Interface",
@@ -231,11 +231,6 @@
       "name": "Total megapixels",
       "type": "String",
       "value": "2.39 MP"
-    },
-    {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
     },
     {
       "name": "Display",
@@ -251,6 +246,11 @@
       "name": "Image stabilizer",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
     }
   ],
   "availability": true,
@@ -294,6 +294,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     }
   ],
+  "availableStock": 0,
   "defaultCategory": {
     "categoryPath": [
       {
@@ -408,6 +409,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 337.35
@@ -426,6 +428,7 @@
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 303.62

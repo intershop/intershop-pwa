@@ -8,6 +8,7 @@
     }
   ],
   "availability": true,
+  "availableStock": 0,
   "bundles": "inSPIRED-inTRONICS-Site/-/products/201807194/bundles",
   "defaultCategory": {
     "categoryPath": [
@@ -93,6 +94,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 105.99
@@ -112,6 +114,7 @@
   "reviews": "inSPIRED-inTRONICS-Site/-/products/201807194/reviews",
   "roundedAverageRating": "4.5",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 105.99

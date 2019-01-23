@@ -33,6 +33,7 @@
     }
   ],
   "availability": true,
+  "availableStock": 0,
   "defaultCategory": {
     "categoryPath": [
       {
@@ -107,6 +108,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 185.5
@@ -126,6 +128,7 @@
   "reviews": "inSPIRED-inTRONICS-Site/-/products/201807171/reviews",
   "roundedAverageRating": "3.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 185.5
