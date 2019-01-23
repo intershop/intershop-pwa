@@ -7,14 +7,14 @@
       "value": "Y"
     },
     {
-      "name": "Video out",
-      "type": "String",
-      "value": "1"
-    },
-    {
       "name": "Sensor type",
       "type": "String",
       "value": "CMOS"
+    },
+    {
+      "name": "Video out",
+      "type": "String",
+      "value": "1"
     },
     {
       "name": "Tripod mountable",
@@ -32,6 +32,11 @@
       "value": "-"
     },
     {
+      "name": "Built-in speakers",
+      "type": "String",
+      "value": "Y"
+    },
+    {
       "name": "Image formats supported",
       "type": "String",
       "value": "JPG,EXIF"
@@ -40,11 +45,6 @@
       "name": "Focal length (35mm film equivalent)",
       "type": "String",
       "value": "3.9 - 44 mm"
-    },
-    {
-      "name": "Built-in speakers",
-      "type": "String",
-      "value": "Y"
     },
     {
       "name": "Depth",
@@ -76,9 +76,9 @@
       "value": "128 MB"
     },
     {
-      "name": "Capture modes",
+      "name": "Minimum system requirements",
       "type": "String",
-      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
+      "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
     },
     {
       "name": "USB 2.0 ports quantity",
@@ -86,9 +86,9 @@
       "value": "1"
     },
     {
-      "name": "Minimum system requirements",
+      "name": "Capture modes",
       "type": "String",
-      "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
+      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
     },
     {
       "name": "Compatible memory cards",
@@ -149,11 +149,6 @@
       "value": "38.1 mm (1.5 \")"
     },
     {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "Arcsoft Media Impression"
-    },
-    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -161,6 +156,11 @@
         "unit": "g",
         "value": 95
       }
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "Arcsoft Media Impression"
     },
     {
       "name": "HDMI ports quantity",
@@ -188,11 +188,6 @@
       "value": "5 MP"
     },
     {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
-    },
-    {
       "name": "Display",
       "type": "String",
       "value": "LCD"
@@ -214,6 +209,11 @@
       "name": "Image stabilizer",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
     }
   ],
   "availability": true,
@@ -257,6 +257,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     }
   ],
+  "availableStock": 0,
   "defaultCategory": {
     "categoryPath": [
       {
@@ -341,6 +342,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 129.85
@@ -359,6 +361,7 @@
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 129.85

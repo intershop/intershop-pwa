@@ -22,14 +22,14 @@
       "value": "-"
     },
     {
-      "name": "Focal length",
-      "type": "String",
-      "value": "-"
-    },
-    {
       "name": "Video capability",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Focal length",
+      "type": "String",
+      "value": "-"
     },
     {
       "name": "Minimum hard disk space",
@@ -112,11 +112,6 @@
       "value": "SD,SDHC"
     },
     {
-      "name": "Maximum memory card size",
-      "type": "String",
-      "value": "4 GB"
-    },
-    {
       "name": "Camera type",
       "type": "String",
       "value": "Compact"
@@ -125,6 +120,11 @@
       "name": "Megapixel",
       "type": "String",
       "value": "14 MP"
+    },
+    {
+      "name": "Maximum memory card size",
+      "type": "String",
+      "value": "4 GB"
     },
     {
       "name": "Digital zoom",
@@ -177,12 +177,12 @@
       "value": "Y"
     },
     {
-      "name": "Maximum image resolution",
+      "name": "Display resolution (numeric)",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Display resolution (numeric)",
+      "name": "Maximum image resolution",
       "type": "String",
       "value": "-"
     },
@@ -268,6 +268,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     }
   ],
+  "availableStock": 0,
   "defaultCategory": {
     "categoryPath": [
       {
@@ -382,6 +383,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 132.24
@@ -400,6 +402,7 @@
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 132.24

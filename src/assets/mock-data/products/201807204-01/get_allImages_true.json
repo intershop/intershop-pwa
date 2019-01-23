@@ -22,14 +22,14 @@
       "value": "Up to 14.5 hours video playback"
     },
     {
-      "name": "Dimensions",
-      "type": "String",
-      "value": "308.02*223.20*14.47 mm"
-    },
-    {
       "name": "Ports",
       "type": "String",
       "value": "USB 3.0, 3.5mm Headset jack, mini DisplayPort, Surface Connect"
+    },
+    {
+      "name": "Dimensions",
+      "type": "String",
+      "value": "308.02*223.20*14.47 mm"
     },
     {
       "name": "Software",
@@ -37,14 +37,14 @@
       "value": "Windows 10 in S mode"
     },
     {
-      "name": "Camera",
-      "type": "String",
-      "value": "720p HD camera (front-facing)"
-    },
-    {
       "name": "Sensors",
       "type": "String",
       "value": "Ambient light sensor"
+    },
+    {
+      "name": "Camera",
+      "type": "String",
+      "value": "720p HD camera (front-facing)"
     },
     {
       "name": "Weight",
@@ -63,6 +63,7 @@
     }
   ],
   "availability": true,
+  "availableStock": 0,
   "defaultCategory": {
     "categoryPath": [
       {
@@ -153,6 +154,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 1376.94
@@ -172,6 +174,7 @@
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 1376.94

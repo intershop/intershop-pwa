@@ -47,11 +47,6 @@
       "value": "3840 x 2160 pixels"
     },
     {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
-    },
-    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -59,6 +54,11 @@
         "unit": "g",
         "value": 83
       }
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
     },
     {
       "name": "Video formats supported",
@@ -81,14 +81,14 @@
       "value": "Auto|Manual"
     },
     {
-      "name": "Full HD",
-      "type": "String",
-      "value": "Yes"
-    },
-    {
       "name": "Battery technology",
       "type": "String",
       "value": "Lithium-Ion (Li-Ion)"
+    },
+    {
+      "name": "Full HD",
+      "type": "String",
+      "value": "Yes"
     },
     {
       "name": "Wireless LAN (WLAN) connection",
@@ -179,6 +179,7 @@
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers"
     }
   ],
+  "availableStock": 0,
   "crosssells": "inSPIRED-inTRONICS-Site/-/products/8182790134363/crosssells",
   "defaultCategory": {
     "categoryPath": [
@@ -294,6 +295,7 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 391.98
@@ -312,6 +314,7 @@
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 391.98
