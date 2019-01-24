@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { Quote } from '../../../../models/quote/quote.model';
 
@@ -29,8 +29,7 @@ describe('Quote List Component', () => {
         }),
         QuoteListComponent,
       ],
-      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
-      providers: [DatePipe],
+      imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

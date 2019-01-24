@@ -16,7 +16,7 @@
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">{{ order.documentNo }}</dd>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
-    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-date">{{ order.creationDate | date }}</dd>
+    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
     <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
     <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-status">{{ order.status }}</dd>
     <!-- ToDo: should actually be the status display name -->

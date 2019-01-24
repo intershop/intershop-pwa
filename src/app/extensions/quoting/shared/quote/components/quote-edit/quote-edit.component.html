@@ -77,7 +77,7 @@
     <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
     <div class="col-8 col-md-9 col-xl-10">
       <p class="form-control-plaintext">
-        {{ validFromDate | date: 'shortDate' }} - {{ validToDate | date: 'shortDate' }}
+        {{ validFromDate | ishDate: 'shortDate' }} - {{ validToDate | ishDate: 'shortDate' }}
       </p>
     </div>
   </div>

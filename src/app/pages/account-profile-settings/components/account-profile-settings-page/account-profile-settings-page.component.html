@@ -79,7 +79,7 @@
           <dd class="col-md-8">{{ user.fax }}</dd>
           <dt class="col-md-4">{{ 'account.profile.birthday.label' | translate }}</dt>
           <dd class="col-md-8">
-            {{ user.birthday ? (user.birthday | date) : ('account.profile.birthday.not_available' | translate) }}
+            {{ user.birthday ? (user.birthday | ishDate) : ('account.profile.birthday.not_available' | translate) }}
           </dd>
           <dt class="col-md-4">{{ 'account.profile.language.label' | translate }}</dt>
           <dd class="col-md-8">
