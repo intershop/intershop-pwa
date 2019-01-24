@@ -1,17 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Router, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
-import { InitialNavigationGuard } from 'ish-core/guards/initial-navigation.guard';
 import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
-function insertIntoArray<T>(array: T[], object: T): T[] {
-  return array ? [object, ...array] : [object];
-}
-
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full', runGuardsAndResolvers: 'always' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home-page.module#HomePageModule' },
   { path: 'error', loadChildren: './error/error-page.module#ErrorPageModule' },
   { path: 'product', loadChildren: './product/product-page.module#ProductPageModule' },
@@ -64,12 +59,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-  constructor(router: Router) {
-    // add guard to all routes
-    router.config.forEach(route => {
-      route.canActivate = insertIntoArray(route.canActivate, InitialNavigationGuard);
-      route.canActivateChild = insertIntoArray(route.canActivateChild, InitialNavigationGuard);
-    });
-  }
-}
+export class AppRoutingModule {}
