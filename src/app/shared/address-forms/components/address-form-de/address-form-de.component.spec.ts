@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
 import { InputComponent } from '../../../forms/components/input/input.component';
 import { SelectTitleComponent } from '../../../forms/components/select-title/select-title.component';
 
@@ -25,17 +25,7 @@ describe('Address Form De Component', () => {
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
-        const addressForm = new FormGroup({
-          countryCode: new FormControl('DE'),
-          title: new FormControl(''),
-          firstName: new FormControl(''),
-          lastName: new FormControl(''),
-          addressLine1: new FormControl(''),
-          addressLine2: new FormControl(''),
-          addressLine3: new FormControl(''),
-          postalCode: new FormControl(''),
-          city: new FormControl(''),
-        });
+        const addressForm = AddressMockData.getAddressForm('DE');
         component.addressForm = addressForm;
         component.titles = ['Mrs.'];
       });

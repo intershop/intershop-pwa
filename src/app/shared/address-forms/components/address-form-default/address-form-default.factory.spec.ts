@@ -34,9 +34,12 @@ describe('Address Form Default Factory', () => {
   describe('getGroup', () => {
     it('should return a form group if called and apply values to it', () => {
       const fg = addressFactory.getGroup({
-        firstName: 'John',
-        lastName: 'Doe',
-        city: 'Denver',
+        isBusinessAddress: false,
+        value: {
+          firstName: 'John',
+          lastName: 'Doe',
+          city: 'Denver',
+        },
       });
       expect(fg.get('firstName').value).toEqual('John');
       expect(fg.get('lastName').value).toEqual('Doe');

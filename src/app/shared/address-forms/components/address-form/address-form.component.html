@@ -10,6 +10,8 @@
     ></ish-select-country>
   </fieldset>
 
+  <ish-address-form-business [addressForm]="addressForm"></ish-address-form-business>
+
   <!-- country dependent address forms -->
   <ng-container [ngSwitch]="countryCode">
     <ish-address-form-de *ngSwitchCase="'DE'" [addressForm]="addressForm" [titles]="titles"></ish-address-form-de>
