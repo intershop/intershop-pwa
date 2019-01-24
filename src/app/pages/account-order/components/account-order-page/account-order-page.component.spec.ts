@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
@@ -37,7 +38,7 @@ describe('Account Order Page Component', () => {
           inputs: ['lineItems', 'editable'],
         }),
       ],
-      imports: [IconModule, TranslateModule.forRoot()],
+      imports: [IconModule, PipesModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

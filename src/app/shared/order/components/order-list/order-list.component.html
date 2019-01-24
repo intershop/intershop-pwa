@@ -24,7 +24,7 @@
     <ng-container *ngFor="let order of orders; index as i">
       <div *ngIf="!maxListItems || i < maxListItems" class="list-item-row-big list-item-row d-flex flex-row flex-wrap">
         <!-- Creation Date -->
-        <div class="col-7 col-md-2 order-md-1 list-item">{{ order.creationDate | date }}</div>
+        <div class="col-7 col-md-2 order-md-1 list-item">{{ order.creationDate | ishDate }}</div>
 
         <!-- Order Total -->
         <div class="col-3 col-md-2 order-md-10 list-item text-md-right">{{ order.totals.total | ishPrice }}</div>
