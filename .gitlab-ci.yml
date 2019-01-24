@@ -405,7 +405,6 @@ stop_review_b2b:
 cypress_remote:
   image: cypress/browsers:chrome69
   stage: e2e
-  retry: 2
   except:
     refs:
       - develop
@@ -432,5 +431,5 @@ cypress_remote:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=${PWA_BASE_URL}" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true'
+    - node cypress-ci-e2e
     - echo "E2E complete"
