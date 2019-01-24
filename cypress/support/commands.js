@@ -28,14 +28,18 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
   cy.route('**/i18n/*.json').as('translations');
   originalFn(url, options);
   cy.wait('@translations');
-  cy.url().should('match', new RegExp(`${url.replace(/[\/\?]/g, '.').replace(' ', '.+')}`));
   cy.get('body', { timeout: 60000 }).should('have.descendants', 'ish-root');
 
   return cy.get('body').then(body => {
     if (!body.find('#intershop-pwa-state').length) {
-      return cy.wait('@categories').log('page ready -- top level categories loaded');
+      cy.wait('@categories').log('page ready -- top level categories loaded');
     } else {
-      return cy.log('page ready -- found transferred state');
+      cy.log('page ready -- found transferred state');
     }
+    return cy.url().should(newUrl => {
+      const simplifiedUrl = url.replace(/[\/\?]/g, '.').replace(' ', '.+');
+      const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
+      expect(newUrl).to.match(oldUrlRegex);
+    });
   });
 });
