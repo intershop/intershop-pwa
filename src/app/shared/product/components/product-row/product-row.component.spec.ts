@@ -34,6 +34,16 @@ describe('Product Row Component', () => {
           inputs: ['product'],
         }),
         MockComponent({
+          selector: 'ish-product-add-to-compare',
+          template: 'Product Add To Compare Component',
+          inputs: ['isInCompareList'],
+        }),
+        MockComponent({
+          selector: 'ish-product-image',
+          template: 'Product Image Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
           selector: 'ish-product-inventory',
           template: 'Product Inventory Component',
           inputs: ['product'],
@@ -48,7 +58,6 @@ describe('Product Row Component', () => {
           template: 'Product Price Component',
           inputs: ['product', 'showInformationalPrice'],
         }),
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
         ProductRowComponent,
       ],
     }).compileComponents();
