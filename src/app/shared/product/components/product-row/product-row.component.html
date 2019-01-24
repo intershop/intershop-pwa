@@ -17,12 +17,16 @@
           <span itemprop="sku">{{ product.sku }}</span>
         </div>
         <!-- TODO: remove style attribute -->
-        <div class="product-tile-actions btn-group" style="position: relative">
+        <div class="product-tile-actions btn-group" style="position: relative;">
           <ish-lazy-product-add-to-quote
             [product]="product"
             displayType="icon"
             cssClass="btn-link"
           ></ish-lazy-product-add-to-quote>
+          <ish-product-add-to-compare
+            [isInCompareList]="isInCompareList"
+            (compareToggle)="toggleCompare()"
+          ></ish-product-add-to-compare>
         </div>
       </div>
       <div class="col-12 col-md-4 text-right text-left-xs">

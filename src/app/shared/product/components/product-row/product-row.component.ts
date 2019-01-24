@@ -11,9 +11,15 @@ import { Product } from 'ish-core/models/product/product.model';
 export class ProductRowComponent {
   @Input() product: Product;
   @Input() category?: Category;
+  @Input() isInCompareList?: boolean;
   @Output() productToBasket = new EventEmitter<void>();
+  @Output() compareToggle = new EventEmitter<void>();
 
   addToBasket() {
     this.productToBasket.emit();
+  }
+
+  toggleCompare() {
+    this.compareToggle.emit();
   }
 }
