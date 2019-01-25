@@ -1,6 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 
-import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
+import { getICMStaticURL } from 'ish-core/store/configuration';
+import { getCurrentLocale } from 'ish-core/store/locale';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
@@ -10,7 +13,18 @@ export declare interface ContentConfigurationParameters {
 
 @Injectable({ providedIn: 'root' })
 export class ContentConfigurationParameterMapper {
-  constructor(@Inject(STATIC_URL) private staticURL: string) {}
+  private staticURL: string;
+  private lang = '-';
+
+  constructor(store: Store<{}>) {
+    store.pipe(select(getICMStaticURL)).subscribe(url => (this.staticURL = url));
+    store
+      .pipe(
+        select(getCurrentLocale),
+        mapToProperty('lang')
+      )
+      .subscribe(lang => (this.lang = lang || '-'));
+  }
 
   fromData(data: { [name: string]: ContentConfigurationParameterData }): ContentConfigurationParameters {
     return !data
@@ -25,7 +39,7 @@ export class ContentConfigurationParameterMapper {
       .filter(key => key.startsWith('Image') && data[key] && data[key].toString().includes(':'))
       .forEach(key => {
         const split = data[key].toString().split(':');
-        data[key] = `${this.staticURL}/${split[0]}/-${split[1]}`;
+        data[key] = `${this.staticURL}/${split[0]}/${this.lang}${split[1]}`;
       });
     return data;
   }

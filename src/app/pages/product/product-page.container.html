@@ -4,6 +4,7 @@
 
     <ish-product-detail
       [product]="product"
+      [currentUrl]="currentUrl$ | async"
       (productToBasket)="addToBasket($event)"
       (productToCompare)="addToCompare($event)"
     ></ish-product-detail>

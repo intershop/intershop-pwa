@@ -1,4 +1,8 @@
-<ish-product-detail-actions [product]="product" (productToCompare)="addToCompare()"></ish-product-detail-actions>
+<ish-product-detail-actions
+  [product]="product"
+  [currentUrl]="currentUrl"
+  (productToCompare)="addToCompare()"
+></ish-product-detail-actions>
 
 <div class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images [product]="product"></ish-product-images></div>

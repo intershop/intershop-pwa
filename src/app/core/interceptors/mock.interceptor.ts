@@ -10,11 +10,12 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { getRestEndpoint } from 'ish-core/store/configuration';
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
-import { REST_ENDPOINT } from '../utils/state-transfer/factories';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
@@ -23,11 +24,15 @@ const MOCK_DATA_ROOT = './assets/mock-data';
  */
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
+  private restEndpoint: string;
+
   constructor(
-    @Inject(REST_ENDPOINT) private restEndpoint: string,
     @Inject(NEED_MOCK) private needMock: boolean,
-    @Inject(MUST_MOCK_PATHS) private mustMockPaths: string[]
-  ) {}
+    @Inject(MUST_MOCK_PATHS) private mustMockPaths: string[],
+    store: Store<{}>
+  ) {
+    store.pipe(select(getRestEndpoint)).subscribe(data => (this.restEndpoint = data));
+  }
 
   /**
    * Intercepts out going request and changes url to mock url if needed.

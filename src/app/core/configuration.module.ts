@@ -7,10 +7,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 
 import * as injectionKeys from './configurations/injection-keys';
-import { FEATURE_TOGGLES, FeatureToggleModule } from './feature-toggle.module';
+import { FeatureToggleModule } from './feature-toggle.module';
 
 @NgModule({
-  imports: [FeatureToggleModule.forRoot()],
+  imports: [FeatureToggleModule],
   providers: [
     { provide: injectionKeys.NEED_MOCK, useValue: environment.needMock },
     // tslint:disable-next-line:no-string-literal
@@ -23,8 +23,6 @@ import { FEATURE_TOGGLES, FeatureToggleModule } from './feature-toggle.module';
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-    // tslint:disable-next-line:no-string-literal
-    { provide: FEATURE_TOGGLES, useValue: environment['features'] },
     { provide: injectionKeys.SMALL_BREAKPOINT_WIDTH, useValue: environment.smallBreakpointWidth },
     { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },

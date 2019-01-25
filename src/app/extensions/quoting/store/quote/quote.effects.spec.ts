@@ -9,6 +9,8 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
@@ -33,11 +35,12 @@ describe('Quote Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ quoting: true }),
+        FeatureToggleModule,
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           user: userReducer,
+          configuration: configurationReducer,
         }),
       ],
       providers: [
@@ -50,6 +53,7 @@ describe('Quote Effects', () => {
     effects = TestBed.get(QuoteEffects);
     store$ = TestBed.get(Store);
 
+    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
     store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
     store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
   });

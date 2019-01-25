@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Location } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
 
@@ -11,10 +12,6 @@ export class LanguageSwitchComponent {
   @Input() locale: Locale;
   @Input() availableLocales: Locale[];
   @Input() view: '' | 'accordion' = '';
-  @Output() localeChange = new EventEmitter<Locale>();
 
-  switch(locale: Locale) {
-    this.localeChange.emit(locale);
-    return false; // prevent actual navigation, only change localized values on the current page and set language state
-  }
+  constructor(public location: Location) {}
 }

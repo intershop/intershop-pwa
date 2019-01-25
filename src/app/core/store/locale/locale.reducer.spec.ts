@@ -7,8 +7,7 @@ describe('Locale Reducer', () => {
   describe('initialState', () => {
     it('should have nothing in it when unmodified', () => {
       expect(initialState.current).toBeUndefined();
-      expect(initialState.entities).toBeEmpty();
-      expect(initialState.ids).toBeEmpty();
+      expect(initialState.locales).toBeEmpty();
     });
   });
 
@@ -26,7 +25,7 @@ describe('Locale Reducer', () => {
 
   describe('SelectLocale action', () => {
     it('should set the current element when reduced', () => {
-      const action = new SelectLocale({ locale: { lang: 'cn' } as Locale });
+      const action = new SelectLocale({ lang: 'cn' });
       const response = localeReducer(initialState, action);
 
       expect(response.current).toEqual('cn');
@@ -41,23 +40,21 @@ describe('Locale Reducer', () => {
       const response = localeReducer(initialState, action);
 
       expect(response.current).toBeUndefined();
-      expect(response.ids).toEqual(locales.map(locale => locale.lang));
-      expect(response.entities.cn).toBeTruthy();
+      expect(response.locales).toEqual(locales);
     });
 
     it('should reset available locales when reduced', () => {
       let action = new SetAvailableLocales({ locales: [{ lang: 'cn' }, { lang: 'ru' }] as Locale[] });
       let response = localeReducer(initialState, action);
 
-      expect(response.ids).toEqual(['cn', 'ru']);
-      expect(response.entities.cn).toBeTruthy();
+      expect(response.current).toBeUndefined();
+      expect(response.locales.map(l => l.lang)).toEqual(['cn', 'ru']);
 
       action = new SetAvailableLocales({ locales: [{ lang: 'de' }, { lang: 'jp' }] as Locale[] });
       response = localeReducer(response, action);
 
-      expect(response.ids).toEqual(['de', 'jp']);
-      expect(response.entities.cn).toBeFalsy();
-      expect(response.entities.de).toBeTruthy();
+      expect(response.current).toBeUndefined();
+      expect(response.locales.map(l => l.lang)).toEqual(['de', 'jp']);
     });
   });
 });

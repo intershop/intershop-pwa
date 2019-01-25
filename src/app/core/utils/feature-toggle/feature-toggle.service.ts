@@ -1,14 +1,17 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 
-import { FEATURE_TOGGLES } from '../../configurations/injection-keys';
+import { getFeatures } from 'ish-core/store/configuration';
 
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleService {
-  constructor(@Inject(FEATURE_TOGGLES) private featureToggles) {}
+  private featureToggles: string[];
+
+  constructor(store: Store<{}>) {
+    store.pipe(select(getFeatures)).subscribe(features => (this.featureToggles = features));
+  }
 
   enabled(feature: string): boolean {
-    return (
-      this.featureToggles === undefined || this.featureToggles[feature] === undefined || !!this.featureToggles[feature]
-    );
+    return this.featureToggles.includes(feature);
   }
 }

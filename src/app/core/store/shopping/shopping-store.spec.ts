@@ -28,7 +28,6 @@ import { ProductsService } from '../../services/products/products.service';
 import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { coreEffects, coreReducers } from '../core-store.module';
-import { SelectLocale } from '../locale';
 
 import {
   CategoriesActionTypes,
@@ -205,21 +204,6 @@ describe('Shopping Store', () => {
       expect(getProductIds(store.state)).toBeEmpty();
     }));
 
-    describe('and changing the language', () => {
-      beforeEach(fakeAsync(() => {
-        store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
-        tick(5000);
-      }));
-
-      it('should just reload top level categories when language is changed', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-        expect(i.next()).toBeUndefined();
-      }));
-    });
-
     describe('and going to a category page', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
@@ -336,21 +320,6 @@ describe('Shopping Store', () => {
       expect(i.next()).toBeUndefined();
     }));
 
-    describe('and changing the language', () => {
-      beforeEach(fakeAsync(() => {
-        store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
-        tick(5000);
-      }));
-
-      it('should just reload top level categories when language is changed', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-        expect(i.next()).toBeUndefined();
-      }));
-    });
-
     describe('and and going to compare page', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
@@ -450,25 +419,6 @@ describe('Shopping Store', () => {
       });
     });
 
-    describe('and changing the language', () => {
-      beforeEach(fakeAsync(() => {
-        store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
-        tick(5000);
-      }));
-
-      it('should reload top level categories when language is changed', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-        expect(i.next()).toBeUndefined();
-      }));
-
-      it('should not put anything additionally in recently viewed products when changing the language', fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toBeEmpty();
-      }));
-    });
-
     describe('and and going to compare page', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
@@ -531,27 +481,6 @@ describe('Shopping Store', () => {
     it('should put the product to recently viewed products when going to product detail page', fakeAsync(() => {
       expect(getRecentlyProducts(store.state)).toEqual(['P1']);
     }));
-
-    describe('and changing the language', () => {
-      beforeEach(fakeAsync(() => {
-        store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
-        tick(5000);
-      }));
-
-      it('should reload the product and top level categries when language is changed', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next()).toBeUndefined();
-      }));
-
-      it('should not put anything additionally to recently viewed products when changing the language', fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual(['P1']);
-      }));
-    });
 
     describe('and and going back to the family page', () => {
       beforeEach(fakeAsync(() => {
@@ -630,23 +559,6 @@ describe('Shopping Store', () => {
       expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
       expect(i.next()).toBeUndefined();
     }));
-
-    describe('and changing the language', () => {
-      beforeEach(fakeAsync(() => {
-        store.reset();
-        store.dispatch(new SelectLocale({ locale: locales[1] }));
-        tick(5000);
-      }));
-
-      it('should reload the product and top level categries when language is changed', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next()).toBeUndefined();
-      }));
-    });
 
     describe('and and going to compare page', () => {
       beforeEach(fakeAsync(() => {

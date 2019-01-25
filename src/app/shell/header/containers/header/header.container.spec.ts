@@ -15,11 +15,7 @@ describe('Header Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule.testingFeatures({ stickyHeader: true }),
-        RouterTestingModule,
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [FeatureToggleModule, RouterTestingModule, StoreModule.forRoot(coreReducers)],
       declarations: [
         HeaderContainerComponent,
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),
