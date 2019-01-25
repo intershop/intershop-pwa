@@ -1,4 +1,3 @@
-import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Customer } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
@@ -57,20 +56,15 @@ export function userReducer(state = initialState, action: UserAction): UserState
     }
 
     case UserActionTypes.LoginUserSuccess: {
-      const { customer } = action.payload;
-      let newState;
+      const customer = action.payload.customer;
+      const user = action.payload.user;
 
-      newState = {
+      return {
         ...state,
         authorized: true,
         customer,
+        user,
       };
-
-      if (customer.type === 'PrivateCustomer') {
-        newState.user = UserMapper.fromCustomer(customer);
-      }
-
-      return newState;
     }
 
     case UserActionTypes.LoadCompanyUserSuccess: {

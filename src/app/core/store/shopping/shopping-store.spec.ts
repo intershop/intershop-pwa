@@ -25,8 +25,8 @@ import { CountryService } from '../../services/country/country.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { OrderService } from '../../services/order/order.service';
 import { ProductsService } from '../../services/products/products.service';
-import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
+import { UserService } from '../../services/user/user.service';
 import { coreEffects, coreReducers } from '../core-store.module';
 
 import {
@@ -168,7 +168,7 @@ describe('Shopping Store', () => {
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
-        { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
+        { provide: UserService, useFactory: () => instance(mock(UserService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
