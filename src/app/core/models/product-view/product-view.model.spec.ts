@@ -11,9 +11,11 @@ describe('Product View Model', () => {
     expect(createProductView(undefined, undefined)).toBeUndefined();
   });
 
-  it('should return undefined if the product default category is not in the category tree', () => {
+  it('should return product without defaultCategory() if the product default category is not in the category tree', () => {
     const empty = categoryTree();
-    expect(createProductView({ defaultCategoryId: 'some' } as Product, empty)).toBeUndefined();
+    const view = createProductView({ defaultCategoryId: 'some' } as Product, empty);
+    expect(view).toBeTruthy();
+    expect(view.defaultCategory()).toBeUndefined();
   });
 
   it('should return product if the product default category is empty', () => {
