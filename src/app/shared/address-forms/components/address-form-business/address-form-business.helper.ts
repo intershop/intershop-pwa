@@ -1,7 +1,7 @@
+// tslint:disable:project-structure
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-// tslint:disable-next-line:project-structure
 @Injectable()
 export class AddressFormBusinessHelper {
   static addControls(formGroup: FormGroup) {

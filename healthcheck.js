@@ -1,3 +1,8 @@
+if (!process.env['ICM_BASE_URL']) {
+  console.log(`no ICM_BASE_URL set -- skipping healthcheck`);
+  exit(0);
+}
+
 var http = require("http");
 
 const icmBase = process.env['ICM_BASE_URL'].split('//')[1];
@@ -25,7 +30,7 @@ console.log(`checking for ICM on ${icmHost}:${icmPort}`)
 var requestICMRest = http.request(optionsICMRest, (res) => {
   console.log(`STATUS ICM REST: ${res.statusCode} ${res.statusMessage}`);
   if (res.statusCode == 200) {
-    requestAngularUniversal = http.request(optionsAngularUniversal, (res) => {
+    const requestAngularUniversal = http.request(optionsAngularUniversal, (res) => {
       console.log(`STATUS STOREFRONT: ${res.statusCode} ${res.statusMessage}`);
       if (res.statusCode == 200) {
         process.exit(0);
