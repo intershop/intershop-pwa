@@ -32,7 +32,7 @@ export const getSelectedProduct = createSelector(
   getCategoryTree,
   getProductEntities,
   getSelectedProductId,
-  (tree, entities, id): Product => createProductView(entities[id], tree)
+  (tree, entities, id) => createProductView(entities[id], tree)
 );
 
 export const getProductLoading = createSelector(
