@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
-import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
+import { StoreModule } from '@ngrx/store';
 
 import { ContentIncludeData } from './content-include.interface';
 import { ContentIncludeMapper } from './content-include.mapper';
@@ -10,7 +9,7 @@ describe('Content Include Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: STATIC_URL, useValue: 'http://www.example.org/static' }],
+      imports: [StoreModule.forRoot({})],
     });
     contentIncludeMapper = TestBed.get(ContentIncludeMapper);
   });

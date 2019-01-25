@@ -51,7 +51,7 @@ describe('Locale Effects', () => {
       });
 
       store$.dispatch(new SetAvailableLocales({ locales: defaultLocales }));
-      store$.dispatch(new SelectLocale({ locale: { lang: 'en_US' } as Locale }));
+      store$.dispatch(new SelectLocale({ lang: 'en_US' }));
     });
   });
 
@@ -63,27 +63,6 @@ describe('Locale Effects', () => {
       actions$ = hot('-a--a-----a', { a: action });
 
       expect(effects.loadAllLocales$).toBeObservable(cold('-b----------------', { b: expected }));
-    });
-  });
-
-  describe('setFirstAvailableLocale$', () => {
-    it('should trigger loading the first available locale when SetAvailableLocales action was received', () => {
-      const japanese = { lang: 'jp' } as Locale;
-      const action = new SetAvailableLocales({ locales: [japanese] });
-      const expected = new SelectLocale({ locale: japanese });
-
-      actions$ = hot('-a', { a: action });
-
-      expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
-    });
-
-    it('should trigger SelectLocale with undefined locale when SetAvailableLocales action was received with no locales', () => {
-      const action = new SetAvailableLocales({ locales: [] });
-      const expected = new SelectLocale({ locale: undefined });
-
-      actions$ = hot('-a', { a: action });
-
-      expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
     });
   });
 });

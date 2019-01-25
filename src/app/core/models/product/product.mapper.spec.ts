@@ -1,7 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { Attribute } from '../attribute/attribute.model';
 import { ImageMapper } from '../image/image.mapper';
 
@@ -16,7 +17,16 @@ describe('Product Mapper', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
+      imports: [
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          {
+            initialState: {
+              configuration: { baseURL: 'http://www.example.org' },
+            },
+          }
+        ),
+      ],
     });
     productMapper = TestBed.get(ProductMapper);
     imageMapper = spy(TestBed.get(ImageMapper));

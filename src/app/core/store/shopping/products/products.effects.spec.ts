@@ -9,10 +9,8 @@ import { anyNumber, anyString, anything, capture, instance, mock, resetCalls, ve
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
-import { SelectLocale, SetAvailableLocales } from '../../locale';
 import { localeReducer } from '../../locale/locale.reducer';
 import { shoppingReducers } from '../shopping-store.module';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
@@ -25,8 +23,6 @@ describe('Products Effects', () => {
   let effects: ProductsEffects;
   let store$: Store<{}>;
   let productsServiceMock: ProductsService;
-  const DE_DE = { lang: 'de' } as Locale;
-  const EN_US = { lang: 'en' } as Locale;
 
   const router = mock(Router);
 
@@ -67,8 +63,6 @@ describe('Products Effects', () => {
 
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
-
-    store$.dispatch(new SetAvailableLocales({ locales: [DE_DE] }));
   });
 
   describe('loadProduct$', () => {
@@ -206,23 +200,6 @@ describe('Products Effects', () => {
     it('should fire LoadProduct when product is undefined', () => {
       actions$ = hot('a', { a: new fromActions.SelectProduct({ sku: undefined }) });
       expect(effects.selectedProduct$).toBeObservable(cold('-'));
-    });
-  });
-
-  describe('languageChange$', () => {
-    it('should refetch product when language is changed distinctly', () => {
-      const sku = 'P123';
-
-      store$.dispatch(new fromActions.LoadProductSuccess({ product: { sku } as Product }));
-      store$.dispatch(new fromActions.SelectProduct({ sku }));
-      actions$ = hot('-a--a--b--b--a', {
-        a: new SelectLocale({ locale: DE_DE }),
-        b: new SelectLocale({ locale: EN_US }),
-      });
-
-      expect(effects.languageChange$).toBeObservable(
-        cold('-a-----a-----a', { a: new fromActions.LoadProduct({ sku }) })
-      );
     });
   });
 

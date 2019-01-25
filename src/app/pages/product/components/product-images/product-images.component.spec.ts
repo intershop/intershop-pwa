@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { ProductImagesComponent } from './product-images.component';
 
@@ -73,7 +72,6 @@ describe('Product Images Component', () => {
         }),
         ProductImagesComponent,
       ],
-      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
     }).compileComponents();
   }));
 

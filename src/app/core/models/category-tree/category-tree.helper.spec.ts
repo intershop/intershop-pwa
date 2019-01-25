@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { Category } from '../category/category.model';
@@ -292,9 +292,7 @@ describe('Category Tree Helper', () => {
       let categoryMapper: CategoryMapper;
 
       beforeEach(() => {
-        TestBed.configureTestingModule({
-          providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
-        });
+        TestBed.configureTestingModule({ imports: [StoreModule.forRoot({})] });
         categoryMapper = TestBed.get(CategoryMapper);
 
         tree = [catARaw, catBRaw].reduce(

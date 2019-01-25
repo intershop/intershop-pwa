@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { FeatureToggleGuard, FeatureToggleModule } from '../feature-toggle.module';
 
 describe('Feature Toggle Guard', () => {
@@ -16,7 +18,7 @@ describe('Feature Toggle Guard', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        FeatureToggleModule.testingFeatures({ feature1: true, feature2: false }),
+        FeatureToggleModule,
         RouterTestingModule.withRoutes([
           {
             path: 'error',
@@ -34,13 +36,11 @@ describe('Feature Toggle Guard', () => {
             canActivate: [FeatureToggleGuard],
             data: { feature: 'feature2' },
           },
-          {
-            path: 'feature3',
-            component: DummyComponent,
-            canActivate: [FeatureToggleGuard],
-            data: { feature: 'feature3' },
-          },
         ]),
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          { initialState: { configuration: { features: ['feature1'] } } }
+        ),
       ],
     });
 
@@ -59,12 +59,5 @@ describe('Feature Toggle Guard', () => {
     tick(2000);
 
     expect(router.url).toEndWith('error');
-  }));
-
-  it('should navigate to unhandled features successfully', fakeAsync(() => {
-    router.navigate(['/feature3']);
-    tick(2000);
-
-    expect(router.url).toEndWith('feature3');
   }));
 });

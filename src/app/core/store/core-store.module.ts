@@ -9,6 +9,8 @@ import { ngrxStateTransferMeta } from '../configurations/ngrx-state-transfer';
 import { localStorageSyncReducer } from '../utils/local-storage-sync/local-storage-sync.reducer';
 
 import { CheckoutStoreModule } from './checkout/checkout-store.module';
+import { ConfigurationEffects } from './configuration/configuration.effects';
+import { configurationReducer } from './configuration/configuration.reducer';
 import { ContentStoreModule } from './content/content-store.module';
 import { CoreState } from './core-store';
 import { CountriesEffects } from './countries/countries.effects';
@@ -32,6 +34,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   countries: countriesReducer,
   error: errorReducer,
   viewconf: viewconfReducer,
+  configuration: configurationReducer,
 };
 
 export const coreEffects = [
@@ -42,6 +45,7 @@ export const coreEffects = [
   ErrorEffects,
   RouterEffects,
   ViewconfEffects,
+  ConfigurationEffects,
 ];
 
 // tslint:disable-next-line: no-any

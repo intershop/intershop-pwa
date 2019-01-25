@@ -1,10 +1,11 @@
 stages:
   - setup
   - build
-  - e2e
+  - integration
   - publish
   - distribute
   - deploy
+  - e2e
 
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/cache/.npm"
@@ -108,7 +109,7 @@ codestyle:
 
 schematics:
   image: node:10
-  stage: e2e
+  stage: integration
   except:
     refs:
       - develop
@@ -123,7 +124,7 @@ schematics:
 
 cypress_local:
   image: cypress/browsers:chrome69
-  stage: e2e
+  stage: integration
   except:
     refs:
       - develop
@@ -148,46 +149,11 @@ cypress_local:
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
-cypress_remote:
-  image: cypress/browsers:chrome69
-  stage: e2e
-  retry: 2
-  except:
-    refs:
-      - develop
-      - master
-  tags:
-    - docker-executor
-  services:
-    - name: registry.intershop.de/ispwa/intershop7-devenv/master/a_responsive
-      alias: icm
-  artifacts:
-    reports:
-      junit: reports/e2e-*.xml
-    when: on_failure
-    expire_in: 2 weeks
-    paths:
-      - cypress/screenshots
-  dependencies: []
-  script:
-    - node --version && npm --version
-    - npm ci --prefer-offline --production
-    - npm run build
-    - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
-    - npm ci --prefer-offline
-    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - nohup bash -c "Xvfb ${DISPLAY} &"
-    - nohup bash -c "npm run serve &"
-    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - sh .gitlab-ci-test-universal.sh
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true'
-    - echo "E2E complete"
-
-publish:
+publish_pwa:
   cache: {}
   dependencies: []
   image: docker:stable
-  stage: publish
+  stage: integration
   tags:
     - docker-executor
   services:
@@ -201,6 +167,32 @@ publish:
             .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+
+start_nginx_proxy:
+  cache: {}
+  dependencies: []
+  stage: publish
+  tags:
+    - shell-executor
+    - docker
+    - demoserver
+  script:
+    - docker run -d -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
+
+publish_nginx:
+  cache: {}
+  dependencies: []
+  image: docker:stable
+  stage: publish
+  tags:
+    - docker-executor
+  services:
+    - docker:dind
+  script:
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - docker build -t ${CI_REGISTRY_IMAGE}:nginx templates/nginx
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx
 
 reports:
   cache: {}
@@ -242,9 +234,9 @@ pull_images:
   stage: distribute
   cache: {}
   dependencies: []
-  except:
+  only:
     refs:
-      - master
+      - develop
   tags:
   - shell-executor
   - docker
@@ -301,49 +293,143 @@ deploy_reports:
     name: reports
     url: http://jdevbuildslave01.rnd.j.intershop.de:4324
 
-deploy_review:
+deploy_review_b2c:
   stage: deploy
   cache: {}
   dependencies: []
-  when: manual
   tags:
   - shell-executor
-  - docker
-  - chuck-norris-swarm-manager
+  - demoserver
   except:
     refs:
       - develop
       - master
   variables:
     GIT_STRATEGY: none
-    SERVICE: "intershop-pwa-review"
-    IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
+  script:
+  - echo "done"
+  environment:
+    name: review/b2c-$CI_COMMIT_REF_SLUG
+    url: http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    on_stop: stop_review_b2c
+
+stop_review_b2c:
+  stage: e2e
+  cache: {}
+  dependencies: []
+  when: manual
+  tags:
+  - shell-executor
+  - demoserver
+  except:
+    refs:
+      - develop
+      - master
+  variables:
+    GIT_STRATEGY: none
+  script:
+  - echo "done"
+  environment:
+    name: review/b2c-$CI_COMMIT_REF_SLUG
+    action: stop
+
+deploy_review_b2b:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  tags:
+  - shell-executor
+  - docker
+  - demoserver
+  except:
+    refs:
+      - develop
+      - master
+  variables:
+    GIT_STRATEGY: none
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --replicas 1 --publish target=4200,published=4300 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas 1 --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+  - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
+  - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+  - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
+        -e ICM_BASE_URL=http://10.0.206.226:4322
+        ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+  - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
+  - docker pull ${CI_REGISTRY_IMAGE}:nginx
+  - docker run -d --name "${CI_COMMIT_REF_SLUG}-nginx"
+        -e UPSTREAM_ICM=http://10.0.206.226:4322
+        --link $CI_COMMIT_REF_SLUG-pwa
+        -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa:4200
+        -e PWA_1_SUBDOMAIN=b2b
+        -e PWA_1_CHANNEL=inSPIRED-inTRONICS_Business-Site
+        -e PWA_1_FEATURES=quoting,recently,compare
+        -e PWA_2_SUBDOMAIN=b2c
+        -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site
+        -e PWA_3_SUBDOMAIN=de
+        -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
+        -e PWA_3_LANG=de_DE
+        -e PWA_3_FEATURES=none
+        -e PWA_4_SUBDOMAIN=smb
+        -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
+        -e PWA_4_APPLICATION=smb-responsive
+        -e PWA_4_FEATURES=quoting
+        -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
+        ${CI_REGISTRY_IMAGE}:nginx
   environment:
-    name: review
-    url: http://jdevbuildslave01.rnd.j.intershop.de:4300
-    on_stop: stop_review
+    name: review/b2b-$CI_COMMIT_REF_SLUG
+    url: http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    on_stop: stop_review_b2b
 
-stop_review:
-  stage: deploy
+stop_review_b2b:
+  stage: e2e
   cache: {}
   dependencies: []
   when: manual
   tags:
   - shell-executor
   - docker
-  - chuck-norris-swarm-manager
+  - demoserver
   except:
     refs:
       - develop
       - master
   variables:
     GIT_STRATEGY: none
-    SERVICE: "intershop-pwa-review"
+    SERVICE: "${CI_COMMIT_REF_SLUG}-nginx"
   script:
-  - docker service remove ${SERVICE}
+  - docker rm -f "${SERVICE}" || true
   environment:
-    name: review
+    name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
+
+cypress_remote:
+  image: cypress/browsers:chrome69
+  stage: e2e
+  except:
+    refs:
+      - develop
+      - master
+  tags:
+    - docker-executor
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  dependencies: []
+  variables:
+    ICM_BASE_URL: http://10.0.206.226:4322
+    PWA_BASE_URL: http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+  script:
+    - node --version && npm --version
+    - export DISPLAY=:5
+    - npm ci --prefer-offline
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - echo "10.0.29.3 b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
+    - sh .gitlab-ci-test-universal.sh
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - node cypress-ci-e2e
+    - echo "E2E complete"

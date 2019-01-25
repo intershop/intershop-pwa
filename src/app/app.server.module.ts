@@ -1,6 +1,5 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { StoreModule } from '@ngrx/store';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
@@ -11,12 +10,6 @@ import { Observable, Observer } from 'rxjs';
 
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import {
-  ICM_APPLICATION_SK,
-  ICM_BASE_URL_SK,
-  ICM_SERVER_SK,
-  StatePropertiesService,
-} from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
@@ -63,10 +56,4 @@ export function translateLoaderFactory() {
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
-export class AppServerModule {
-  constructor(transferState: TransferState, statePropertiesService: StatePropertiesService) {
-    transferState.set(ICM_BASE_URL_SK, statePropertiesService.getICMBaseURL());
-    transferState.set(ICM_APPLICATION_SK, statePropertiesService.getICMApplication());
-    transferState.set(ICM_SERVER_SK, statePropertiesService.getICMServer());
-  }
-}
+export class AppServerModule {}

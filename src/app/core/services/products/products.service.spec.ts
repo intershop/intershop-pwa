@@ -1,10 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 
 import { ProductsService } from './products.service';
 
@@ -37,10 +38,8 @@ describe('Products Service', () => {
   beforeEach(async(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
-        { provide: ICM_BASE_URL, useValue: 'http://www.example.org' },
-      ],
+      imports: [StoreModule.forRoot({ configuration: configurationReducer })],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
     productsService = TestBed.get(ProductsService);
   }));
