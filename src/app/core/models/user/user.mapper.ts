@@ -1,32 +1,7 @@
-import { Customer } from '../customer/customer.model';
-
 import { UserData } from './user.interface';
 import { User } from './user.model';
 
 export class UserMapper {
-  // is used for private users
-  static fromCustomer(customer: Customer): User {
-    return customer
-      ? {
-          firstName: customer.firstName,
-          lastName: customer.lastName,
-          email: customer.email,
-          preferredLanguage: customer.preferredLanguage,
-
-          title: customer.title,
-          phoneHome: customer.phoneHome,
-          phoneBusiness: customer.phoneBusiness,
-          phoneMobile: customer.phoneMobile,
-          fax: customer.fax,
-          preferredInvoiceToAddressUrn: customer.preferredInvoiceToAddress
-            ? customer.preferredInvoiceToAddress.urn
-            : undefined,
-          preferredShipToAddressUrn: customer.preferredShipToAddress ? customer.preferredShipToAddress.urn : undefined,
-          birthday: customer.birthday,
-        }
-      : undefined;
-  }
-
   static fromData(user: UserData): User {
     // is used for business users
     return user

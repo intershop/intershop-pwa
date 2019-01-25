@@ -152,7 +152,7 @@ describe('Quote Request Service', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoginUserSuccess({ customer, user }));
       store$.dispatch(new LoadCompanyUserSuccess({ user }));
     });
 

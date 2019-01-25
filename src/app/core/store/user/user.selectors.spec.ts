@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { Customer } from '../../models/customer/customer.model';
+import { CustomerLoginType } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { Product } from '../../models/product/product.model';
 import { User } from '../../models/user/user.model';
@@ -45,8 +45,15 @@ describe('User Selectors', () => {
   });
 
   it('should select the customer when logging in successfully', () => {
-    const customerNo = 'test';
-    store$.dispatch(new LoginUserSuccess({ customer: { customerNo } as Customer }));
+    const customerNo = 'PC';
+    store$.dispatch(
+      new LoginUserSuccess({
+        customer: {
+          type: 'SMBCustomer',
+          customerNo: customerNo,
+        },
+      } as CustomerLoginType)
+    );
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
     expect(getLoggedInUser(store$.state)).toBeUndefined();
@@ -56,10 +63,22 @@ describe('User Selectors', () => {
 
   it('should select the user when logging in as private customer successfully', () => {
     const firstName = 'test';
+    const customerNo = 'PC';
     const type = 'PrivateCustomer';
-    store$.dispatch(new LoginUserSuccess({ customer: { firstName, type } as Customer }));
+    store$.dispatch(
+      new LoginUserSuccess({
+        customer: {
+          type: type,
+          customerNo: customerNo,
+        },
+        user: {
+          firstName: firstName,
+        },
+      } as CustomerLoginType)
+    );
 
-    expect(getLoggedInCustomer(store$.state)).toHaveProperty('firstName', firstName);
+    expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
+    expect(getLoggedInCustomer(store$.state)).toHaveProperty('type', type);
     expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
     expect(getUserAuthorized(store$.state)).toBeTrue();
@@ -67,8 +86,14 @@ describe('User Selectors', () => {
   });
 
   it('should not select the user when logging in as company customer successfully', () => {
-    const type = 'SMBCustomer';
-    store$.dispatch(new LoginUserSuccess({ customer: { type } as Customer }));
+    store$.dispatch(
+      new LoginUserSuccess({
+        customer: {
+          type: 'SMBCustomer',
+          customerNo: 'PC',
+        },
+      } as CustomerLoginType)
+    );
 
     expect(getLoggedInCustomer(store$.state)).toBeTruthy();
     expect(isBusinessCustomer(store$.state)).toBeTrue();

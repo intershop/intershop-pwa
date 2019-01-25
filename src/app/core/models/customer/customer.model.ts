@@ -1,25 +1,12 @@
 import { Address } from '../address/address.model';
 import { Credentials } from '../credentials/credentials.model';
+import { User } from '../user/user.model';
 
 export type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
 
 export interface Customer {
-  type?: CustomerType;
+  type: CustomerType;
   customerNo: string;
-  preferredInvoiceToAddress?: Address;
-  preferredShipToAddress?: Address;
-
-  // Private Customer only
-  title?: string;
-  firstName?: string;
-  lastName?: string;
-  phoneHome?: string;
-  phoneBusiness?: string;
-  phoneMobile?: string;
-  fax?: string;
-  email?: string;
-  preferredLanguage?: string;
-  birthday?: string;
 
   // Business Customer only
   companyName?: string;
@@ -27,8 +14,20 @@ export interface Customer {
   taxationID?: string;
   industry?: string;
   description?: string;
+}
 
-  // for registration only
-  address?: Address;
-  credentials?: Credentials;
+/**
+ * login result response data type, for business customers user data are missing and have to be fetched seperately
+ */
+export interface CustomerLoginType {
+  customer: Customer;
+  user?: User;
+}
+
+/**
+ * registration request data type
+ */
+export interface CustomerRegistrationType extends CustomerLoginType {
+  credentials: Credentials;
+  address: Address;
 }

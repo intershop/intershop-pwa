@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer } from '../../models/customer/customer.model';
+import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 
@@ -15,7 +15,6 @@ export enum UserActionTypes {
   LoadCompanyUserSuccess = '[Account API] Load Company User Success',
   LogoutUser = '[Account] Logout User',
   CreateUser = '[Account] Create User',
-  CreateUserSuccess = '[Account API] Create User Success',
   CreateUserFail = '[Account API] Create User Failed',
   UserErrorReset = '[Account Internal] Reset User Error',
 }
@@ -32,7 +31,7 @@ export class LoginUserFail implements Action {
 
 export class LoginUserSuccess implements Action {
   readonly type = UserActionTypes.LoginUserSuccess;
-  constructor(public payload: { customer: Customer }) {}
+  constructor(public payload: CustomerLoginType) {}
 }
 
 export class SetAPIToken implements Action {
@@ -60,12 +59,7 @@ export class LogoutUser implements Action {
 
 export class CreateUser implements Action {
   readonly type = UserActionTypes.CreateUser;
-  constructor(public payload: { customer: Customer }) {}
-}
-
-export class CreateUserSuccess implements Action {
-  readonly type = UserActionTypes.CreateUserSuccess;
-  constructor(public payload: { customer: Customer }) {}
+  constructor(public payload: CustomerRegistrationType) {}
 }
 
 export class CreateUserFail implements Action {
@@ -88,5 +82,4 @@ export type UserAction =
   | LogoutUser
   | CreateUser
   | CreateUserFail
-  | CreateUserSuccess
   | UserErrorReset;

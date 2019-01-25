@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
+import { User } from 'ish-core/models/user/user.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
@@ -28,8 +29,8 @@ import { CountryService } from '../../services/country/country.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { OrderService } from '../../services/order/order.service';
 import { ProductsService } from '../../services/products/products.service';
-import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
+import { UserService } from '../../services/user/user.service';
 import { coreEffects, coreReducers } from '../core-store.module';
 import { LoadProduct } from '../shopping/products';
 import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
@@ -82,9 +83,12 @@ describe('Checkout Store', () => {
     type: 0,
   };
 
-  const user = {
+  const customer = {
     type: 'PrivateCustomer',
     customerNo: 'test',
+  } as Customer;
+
+  const user = {
     title: '',
     firstName: 'test',
     lastName: 'test',
@@ -95,7 +99,7 @@ describe('Checkout Store', () => {
     email: 'patricia@test.intershop.de',
     preferredLanguage: 'en_US',
     birthday: 'test',
-  } as Customer;
+  } as User;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -179,8 +183,8 @@ describe('Checkout Store', () => {
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
 
-    const registrationServiceMock = mock(RegistrationService);
-    when(registrationServiceMock.signinUser(anything())).thenReturn(of(user));
+    const userServiceMock = mock(UserService);
+    when(userServiceMock.signinUser(anything())).thenReturn(of({ customer, user }));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -211,7 +215,7 @@ describe('Checkout Store', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: RegistrationService, useFactory: () => instance(registrationServiceMock) },
+        { provide: UserService, useFactory: () => instance(userServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },

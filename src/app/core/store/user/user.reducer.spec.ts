@@ -1,5 +1,4 @@
-import { UserMapper } from 'ish-core/models/user/user.mapper';
-import { Customer, CustomerType } from '../../models/customer/customer.model';
+import { Customer } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 
@@ -19,7 +18,7 @@ import { initialState, userReducer } from './user.reducer';
 describe('User Reducer', () => {
   const customer = {
     customerNo: 'dummy',
-    firstName: 'Patricia',
+    type: 'PrivateCustomer',
   } as Customer;
   const user = {
     firstName: 'Patricia',
@@ -88,21 +87,16 @@ describe('User Reducer', () => {
     });
 
     it('should set customer and authorized when LoginUserSuccess action is reduced', () => {
-      const newState = userReducer(initialState, new LoginUserSuccess({ customer }));
+      const newState = userReducer(initialState, new LoginUserSuccess({ customer, user }));
 
-      expect(newState).toEqual({ ...initialState, customer, authorized: true });
+      expect(newState).toEqual({ ...initialState, customer, user, authorized: true });
     });
 
     it('should set user when LoginUserSuccess action is reduced with type = PrivateCustomer', () => {
-      const privateCustomer = {
-        ...customer,
-        type: 'PrivateCustomer' as CustomerType,
-      };
+      const newState = userReducer(initialState, new LoginUserSuccess({ customer, user }));
 
-      const newState = userReducer(initialState, new LoginUserSuccess({ customer: privateCustomer }));
-
-      expect(newState.customer.type).toEqual(privateCustomer.type);
-      expect(newState.user).toEqual(UserMapper.fromCustomer(privateCustomer));
+      expect(newState.customer.type).toEqual(customer.type);
+      expect(newState.user.firstName).toEqual(user.firstName);
       expect(newState.authorized).toBeTrue();
     });
 
