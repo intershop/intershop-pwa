@@ -13,11 +13,10 @@ export function createProductView(product: Product, tree: CategoryTree): Product
   if (!tree || !product) {
     return;
   }
-  if (product.defaultCategoryId && !tree.nodes[product.defaultCategoryId]) {
-    return;
-  }
+
   return {
     ...product,
-    defaultCategory: () => createCategoryView(tree, product.defaultCategoryId),
+    defaultCategory: () =>
+      tree.nodes[product.defaultCategoryId] ? createCategoryView(tree, product.defaultCategoryId) : undefined,
   };
 }
