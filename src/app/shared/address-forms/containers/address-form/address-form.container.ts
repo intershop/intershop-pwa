@@ -63,8 +63,6 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
       this.store.pipe(select(isBusinessCustomer, take(1))).subscribe(data => {
         this.isBusinessCustomer = data;
         const group = this.afs.getFactory('default').getGroup({ isBusinessAddress: this.isBusinessCustomer });
-        console.log(this.isBusinessCustomer);
-        console.log(group);
         this.parentForm.setControl(this.controlName, group);
       });
       this.parentForm

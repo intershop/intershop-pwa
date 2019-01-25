@@ -95,7 +95,7 @@ describe('Operators', () => {
             error: {
               name: 'HttpErrorResponse',
               message: 'Http failure response for http://example.org: 404 undefined',
-              error: 'null',
+              error: undefined,
               status: 404,
               statusText: 'Unknown Error',
               headers: {
