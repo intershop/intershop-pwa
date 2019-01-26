@@ -1,4 +1,4 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
@@ -39,29 +39,26 @@ export class BasketService {
     .set('content-type', 'application/json')
     .set('Accept', 'application/vnd.intershop.basket.v1+json');
 
+  private allBasketIncludes: BasketIncludeType[] = [
+    'invoiceToAddress',
+    'commonShipToAddress',
+    'commonShippingMethod',
+    'discounts',
+    'lineItems',
+  ];
+
   /**
    * Get the basket for the given basket id or fallback to 'current' as basket id to get the current basket for the current user.
    * @param basketId  The basket id.
-   * @param include   The name of related objects which are to be included into the response;
-   *                  If the parameter is missing all possible data is included
-   *                  If the parameter is empty no additional data is included
    * @returns         The basket.
    */
-  getBasket(
-    basketId: string = 'current',
-    includes: BasketIncludeType[] = [
-      'invoiceToAddress',
-      'commonShipToAddress',
-      'commonShippingMethod',
-      'discounts',
-      'lineItems',
-    ]
-  ): Observable<Basket> {
-    const includeStr = includes && includes.length > 0 ? '?include=' + includes.join('&include=') : '';
+  getBasket(basketId: string = 'current'): Observable<Basket> {
+    const params = new HttpParams().set('include', this.allBasketIncludes.join());
 
     return this.apiService
-      .get<BasketData>(`baskets/${basketId}${includeStr}`, {
+      .get<BasketData>(`baskets/${basketId}`, {
         headers: this.basketHeaders,
+        params,
       })
       .pipe(map(BasketMapper.fromData));
   }
@@ -86,15 +83,20 @@ export class BasketService {
    * Updates the basket for the given basket id or fallback to 'current' as basket id.
    * @param basketId  The basket id.
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
-   * @returns         The basket.
+   * @returns         The changed basket.
    */
   updateBasket(basketId: string = 'current', body: BasketUpdateType): Observable<Basket> {
     if (!body) {
       return throwError('updateBasket() called without body');
     }
-    return this.apiService.patch(`baskets/${basketId}`, body, {
-      headers: this.basketHeaders,
-    });
+
+    const params = new HttpParams().set('include', this.allBasketIncludes.join());
+    return this.apiService
+      .patch(`baskets/${basketId}`, body, {
+        headers: this.basketHeaders,
+        params,
+      })
+      .pipe(map(BasketMapper.fromData));
   }
 
   /**
