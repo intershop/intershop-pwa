@@ -119,6 +119,8 @@ describe('Product Mapper', () => {
           },
           { name: 'availability', value: true },
           { name: 'manufacturer', value: 'Kodak' },
+          { name: 'minOrderQuantity', value: { value: 5 } },
+          { name: 'inStock', value: false },
         ] as Attribute[],
         description: 'EasyShare M552, 14MP, 6.858 cm (2.7 ") LCD, 4x, 28mm, HD 720p, Black',
         title: 'Kodak M series EasyShare M552',

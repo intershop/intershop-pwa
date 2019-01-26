@@ -15,6 +15,8 @@ import { ApiService } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
+  private static STUB_ATTRS = 'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock';
+
   constructor(private apiService: ApiService, private productMapper: ProductMapper) {}
 
   /**
@@ -53,7 +55,7 @@ export class ProductsService {
     }
 
     let params = new HttpParams()
-      .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
+      .set('attrs', ProductsService.STUB_ATTRS)
       .set('attrsGroups', AttributeGroupTypes.ProductLabelAttributes) // TODO: validate if this is working once ISREST-523 is implemented
       .set('amount', itemsPerPage.toString())
       .set('offset', (page * itemsPerPage).toString())
@@ -97,7 +99,7 @@ export class ProductsService {
       .set('searchTerm', searchTerm)
       .set('amount', itemsPerPage.toString())
       .set('offset', (page * itemsPerPage).toString())
-      .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
+      .set('attrs', ProductsService.STUB_ATTRS)
       .set('returnSortKeys', 'true');
 
     return this.apiService

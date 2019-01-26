@@ -9,6 +9,20 @@
           "value": "7912057"
         },
         {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
           "name": "image",
           "type": "String",
           "value": "/assets/product_img/a.jpg"
@@ -17,6 +31,7 @@
           "name": "listPrice",
           "type": "ResourceAttribute",
           "value": {
+            "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
             "value": 132.24
@@ -26,6 +41,7 @@
           "name": "salePrice",
           "type": "ResourceAttribute",
           "value": {
+            "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
             "value": 132.24

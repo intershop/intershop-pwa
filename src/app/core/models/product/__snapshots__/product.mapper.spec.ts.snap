@@ -28,7 +28,7 @@ Object {
       "viewID": "front",
     },
   ],
-  "inStock": true,
+  "inStock": false,
   "listPrice": Object {
     "currencyMnemonic": "USD",
     "type": "Money",
@@ -36,7 +36,7 @@ Object {
   },
   "longDescription": undefined,
   "manufacturer": "Kodak",
-  "minOrderQuantity": 1,
+  "minOrderQuantity": 5,
   "name": "Kodak M series EasyShare M552",
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
