@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { User } from 'ish-core/models/user/user.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { AccountProfileSettingsPageComponent } from './account-profile-settings-page.component';
 
@@ -15,7 +16,7 @@ describe('Account Profile Settings Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccountProfileSettingsPageComponent],
-      imports: [IconModule, TranslateModule.forRoot()],
+      imports: [IconModule, PipesModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

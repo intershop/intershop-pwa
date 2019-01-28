@@ -23,7 +23,7 @@
           <a [routerLink]="generateDetailRoute(quote)">{{ quote.displayName }}</a>
         </td>
         <td>{{ quote.items.length }}</td>
-        <td>{{ quote.creationDate | date: 'shortDate' }}</td>
+        <td>{{ quote.creationDate | ishDate: 'shortDate' }}</td>
 
         <!-- valid to date-->
         <td *ngIf="!quote.validToDate">-</td>
@@ -31,11 +31,14 @@
           <span class="text-danger">{{
             'quote.edit.submitted.your_quote_expired.text'
               | translate
-                : { '0': quote['validToDate'] | date: 'shortDate', '1': quote['validToDate'] | date: 'mediumTime' }
+                : {
+                    '0': quote['validToDate'] | ishDate: 'shortDate',
+                    '1': quote['validToDate'] | ishDate: 'mediumTime'
+                  }
           }}</span>
         </td>
         <td *ngIf="quote['validToDate'] && quote['validToDate'] > currentDateTime">
-          {{ quote['validToDate'] | date: 'shortDate' }}
+          {{ quote['validToDate'] | ishDate: 'shortDate' }}
         </td>
 
         <td align="left" nowrap="nowrap"><ish-quote-state [quote]="quote"></ish-quote-state></td>
