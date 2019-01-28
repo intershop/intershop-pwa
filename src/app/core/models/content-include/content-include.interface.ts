@@ -8,4 +8,5 @@ export interface ContentIncludeData {
   pagelets: ContentPageletData[];
   configurationParameters?: { [name: string]: ContentConfigurationParameterData };
   link: Link;
+  id: string;
 }

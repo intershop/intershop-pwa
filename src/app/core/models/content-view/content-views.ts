@@ -4,6 +4,7 @@ import { memoize, once } from 'lodash-es';
 
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentInclude } from '../content-include/content-include.model';
+import { ContentPage } from '../content-page/content-page.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 import { ContentSlot } from '../content-slot/content-slot.model';
 
@@ -24,8 +25,15 @@ export interface ContentIncludeView extends ConfigParameterView {
   pagelets(): ContentPageletView[];
 }
 
+export interface ContentPageView extends ConfigParameterView {
+  id: string;
+  name: string;
+  pagelets(): ContentPageletView[];
+}
+
 export interface ContentPageletView extends ConfigParameterView {
   definitionQualifiedName: string;
+  configurationParameters: ContentConfigurationParameters;
   id: string;
   slot(qualifiedName: string): ContentSlotView;
 }
@@ -61,6 +69,7 @@ export const createPageletView = (id: string, pagelets: { [id: string]: ContentP
   const pagelet = pagelets[id];
   return {
     definitionQualifiedName: pagelet.definitionQualifiedName,
+    configurationParameters: pagelet.configurationParameters,
     id: pagelet.id,
     slot: !pagelet.slots
       ? () => undefined
@@ -85,4 +94,10 @@ export const createIncludeView = (
 ): ContentIncludeView => ({
   id: include.id,
   ...createSlotView(include, pagelets),
+});
+
+export const createPageView = (page: ContentPage, pagelets: { [id: string]: ContentPagelet }): ContentPageView => ({
+  id: page.id,
+  name: page.displayName,
+  ...createSlotView(page, pagelets),
 });
