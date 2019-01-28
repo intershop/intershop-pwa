@@ -18,8 +18,6 @@ export const AVAILABLE_LOCALES = new InjectionToken<Locale[]>('availableLocales'
  * If 'username' login name is used for registration, if 'email' the email is used as login name (default: 'email')
  */
 export const USER_REGISTRATION_LOGIN_TYPE = new InjectionToken<string>('userRegistrationLoginType');
-
-export const GTM_TOKEN = new InjectionToken<string>('gtmToken');
 /**
  * The maximum subcategories level depth rendered in the main navigation
  */

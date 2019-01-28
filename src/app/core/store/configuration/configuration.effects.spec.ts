@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, PLATFORM_ID } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -38,7 +38,11 @@ describe('Configuration Effects', () => {
         ...ngrxTesting({ configuration: configurationReducer, locale: localeReducer }, [ConfigurationEffects]),
         RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
       ],
-      providers: [ConfigurationEffects, provideMockActions(() => actions$)],
+      providers: [
+        ConfigurationEffects,
+        provideMockActions(() => actions$),
+        { provide: PLATFORM_ID, useValue: 'server' },
+      ],
     });
 
     effects = TestBed.get(ConfigurationEffects);
@@ -46,6 +50,7 @@ describe('Configuration Effects', () => {
     location = TestBed.get(Location);
     store$ = TestBed.get(TestStore);
     store$.dispatch(new SetAvailableLocales({ locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[] }));
+    store$.dispatch(new ApplyConfiguration({ baseURL: 'http://example.org' }));
   });
 
   describe('setInitialRestEndpoint$', () => {
@@ -74,30 +79,28 @@ describe('Configuration Effects', () => {
       router.navigateByUrl('/home;channel=site');
       tick(500);
       expect(location.path()).toMatchInlineSnapshot(`"/home;channel=site"`);
-      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://localhost:4200/INTERSHOP/rest/WFS/site/-"`);
+      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/-"`);
     }));
 
     it('should set imported channel and application to state', fakeAsync(() => {
       router.navigateByUrl('/home;channel=site;application=app');
       tick(500);
       expect(location.path()).toMatchInlineSnapshot(`"/home;channel=site;application=app"`);
-      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(
-        `"http://localhost:4200/INTERSHOP/rest/WFS/site/app"`
-      );
+      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/app"`);
     }));
 
     it('should set imported channel to state and redirect if requested', fakeAsync(() => {
       router.navigateByUrl('/home;channel=site;redirect=1');
       tick(500);
       expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://localhost:4200/INTERSHOP/rest/WFS/site/-"`);
+      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/-"`);
     }));
 
     it('should preserve query parameters when redirecting', fakeAsync(() => {
       router.navigateByUrl('/home;channel=site;redirect=1?foo=bar&test=hello');
       tick(500);
       expect(location.path()).toMatchInlineSnapshot(`"/home?foo=bar&test=hello"`);
-      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://localhost:4200/INTERSHOP/rest/WFS/site/-"`);
+      expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/-"`);
     }));
 
     it('should set imported features to state', fakeAsync(() => {
@@ -129,5 +132,36 @@ describe('Configuration Effects', () => {
       expect(location.path()).toMatchInlineSnapshot(`"/home"`);
       expect(getCurrentLocale(store$.state).lang).toEqual('de_DE');
     }));
+  });
+
+  describe('setGTMToken$', () => {
+    beforeEach(() => {
+      // on server
+      process.env.GTM_TOKEN = 'dummy';
+    });
+
+    afterEach(() => {
+      process.env.GTM_TOKEN = undefined;
+    });
+
+    it('should set the token once on effects init and complete', done => {
+      // tslint:disable:use-async-synchronisation-in-tests
+      const testComplete$ = new Subject<void>();
+
+      actions$ = of({ type: ROOT_EFFECTS_INIT });
+
+      testComplete$.pipe(take(2)).subscribe({ complete: done });
+
+      effects.setGTMToken$.subscribe(
+        data => {
+          expect(data.type).toEqual(ConfigurationActionTypes.SetGTMToken);
+          expect(data.payload).toHaveProperty('gtmToken', 'dummy');
+          testComplete$.next();
+        },
+        fail,
+        () => testComplete$.next()
+      );
+      // tslint:enable:use-async-synchronisation-in-tests
+    });
   });
 });

@@ -4,6 +4,7 @@ import { ConfigurationState } from './configuration.reducer';
 
 export enum ConfigurationActionTypes {
   ApplyConfiguration = '[Configuration] Apply Configuration',
+  SetGTMToken = '[Configuration] Set Google Tag Manager Token',
 }
 
 declare type ConfigurationType = Partial<ConfigurationState>;
@@ -13,4 +14,9 @@ export class ApplyConfiguration implements Action {
   constructor(public payload: ConfigurationType) {}
 }
 
-export type ConfigurationAction = ApplyConfiguration;
+export class SetGTMToken implements Action {
+  type = ConfigurationActionTypes.SetGTMToken;
+  constructor(public payload: { gtmToken: string }) {}
+}
+
+export type ConfigurationAction = ApplyConfiguration | SetGTMToken;

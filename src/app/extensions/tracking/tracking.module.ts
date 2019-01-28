@@ -1,11 +1,13 @@
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
-
-import { GTM_TOKEN } from 'ish-core/configurations/injection-keys';
+import { filter, takeWhile } from 'rxjs/operators';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { getGTMToken } from 'ish-core/store/configuration';
+
 @NgModule({
   imports: [Angulartics2Module.forRoot(), FeatureToggleModule],
   declarations: [],
@@ -25,16 +27,20 @@ export class TrackingModule {
   }
 
   constructor(
-    private angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
-    @Inject(GTM_TOKEN) gtmToken: string,
-    @Inject(PLATFORM_ID) private platformId,
-    featureToggleService: FeatureToggleService
+    angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+    @Inject(PLATFORM_ID) platformId: string,
+    featureToggleService: FeatureToggleService,
+    store: Store<{}>
   ) {
-    if (featureToggleService.enabled('tracking')) {
-      if (!isPlatformServer(this.platformId)) {
+    store
+      .pipe(
+        takeWhile(() => isPlatformBrowser(platformId)),
+        select(getGTMToken),
+        filter(gtmToken => !!gtmToken && featureToggleService.enabled('tracking'))
+      )
+      .subscribe(gtmToken => {
         this.gtm(window, 'dataLayer', gtmToken);
-      }
-      this.angulartics2GoogleTagManager.startTracking();
-    }
+        angulartics2GoogleTagManager.startTracking();
+      });
   }
 }

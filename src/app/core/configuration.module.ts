@@ -23,9 +23,6 @@ import { FeatureToggleModule } from './feature-toggle.module';
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-    // GTM Token
-    // tslint:disable-next-line:no-string-literal
-    { provide: injectionKeys.GTM_TOKEN, useValue: environment['gtmToken'] },
     { provide: injectionKeys.SMALL_BREAKPOINT_WIDTH, useValue: environment.smallBreakpointWidth },
     { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },
