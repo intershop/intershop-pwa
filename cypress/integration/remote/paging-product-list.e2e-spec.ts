@@ -27,10 +27,7 @@ describe('Scrolling User', () => {
 
   it('should scroll all the way down and not see paging bar any more', () => {
     at(FamilyPage, page => {
-      for (let num = 0; num < 4; num++) {
-        cy.scrollTo('bottom');
-        waitLoadingEnd();
-      }
+      page.productList.makeAllProductsVisible();
       page.productList.pagingBar.should('not.be.visible');
     });
   });
