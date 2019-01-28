@@ -172,12 +172,16 @@ start_nginx_proxy:
   cache: {}
   dependencies: []
   stage: publish
+  except:
+    refs:
+      - develop
+      - master
   tags:
     - shell-executor
     - docker
     - demoserver
   script:
-    - docker run -d -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
+    - docker run --restart always -d -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
 
 publish_nginx:
   cache: {}
@@ -270,6 +274,28 @@ deploy_demo:
     name: demo
     url: http://jdevbuildslave01.rnd.j.intershop.de:4321
 
+deploy_demo_b2b:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  only:
+    refs:
+      - develop
+  tags:
+  - shell-executor
+  - docker
+  - chuck-norris-swarm-manager
+  variables:
+    GIT_STRATEGY: none
+    SERVICE: "intershop-pwa-b2b"
+    IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
+  script:
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} --env FEATURES=quoting,compare,recently --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+  environment:
+    name: demo-b2b
+    url: http://jdevbuildslave01.rnd.j.intershop.de:4325
+
 deploy_reports:
   stage: deploy
   cache: {}
@@ -357,6 +383,7 @@ deploy_review_b2b:
   - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
   - docker pull ${CI_REGISTRY_IMAGE}:nginx
   - docker run -d --name "${CI_COMMIT_REF_SLUG}-nginx"
+        --restart always
         -e UPSTREAM_ICM=http://10.0.206.226:4322
         --link $CI_COMMIT_REF_SLUG-pwa
         -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa:4200
