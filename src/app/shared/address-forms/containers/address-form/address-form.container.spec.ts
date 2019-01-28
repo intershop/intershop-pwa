@@ -1,11 +1,15 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { Store, StoreModule } from '@ngrx/store';
+import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { Region } from 'ish-core/models/region/region.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
+import { LoginUserSuccess } from 'ish-core/store/user';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { AddressFormFactory } from '../../components/address-form/address-form.factory';
@@ -17,6 +21,7 @@ describe('Address Form Container', () => {
   let component: AddressFormContainerComponent;
   let fixture: ComponentFixture<AddressFormContainerComponent>;
   let element: HTMLElement;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
@@ -45,6 +50,11 @@ describe('Address Form Container', () => {
     fixture = TestBed.createComponent(AddressFormContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    store$ = TestBed.get(Store);
+    const customer: Customer = { customerNo: '1', type: 'SMBCustomer' };
+    const region: Region[] = [{ countryCode: 'BG', id: 'BGS', name: 'Sofia', regionCode: 'S' }];
+    store$.dispatch(new LoginUserSuccess({ customer }));
+    store$.dispatch(new LoadRegionsSuccess({ regions: region }));
   });
 
   it('should be created', () => {
@@ -59,6 +69,9 @@ describe('Address Form Container', () => {
   });
 
   it('should react on country changes', () => {
+    const storeSpy$ = spy(store$);
+    const newCountry = 'BG';
+
     const parentForm = new FormGroup({
       countryCodeSwitch: new FormControl('DE'),
       address: new FormGroup({}),
@@ -71,10 +84,10 @@ describe('Address Form Container', () => {
 
     fixture.detectChanges();
     component.ngOnChanges(changes);
-    component.parentForm.get('countryCodeSwitch').setValue('BG');
+    component.parentForm.get('countryCodeSwitch').setValue(newCountry);
 
-    expect(component.parentForm.get('address').get('countryCode').value).toEqual('BG');
-    expect(component.regions.length).toBeGreaterThan(0);
+    expect(component.parentForm.get('address').get('countryCode').value).toEqual(newCountry);
+    verify(storeSpy$.dispatch(deepEqual(new LoadRegions({ countryCode: newCountry })))).once();
     expect(parentForm.get('address').get('mainDivision').validator).not.toBeNull();
   });
 });

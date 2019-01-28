@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Region } from 'ish-core/models/region/region.model';
-import { RegionService } from 'ish-core/services/region/region.service';
 import { getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
+import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
 import { isBusinessCustomer } from 'ish-core/store/user';
 import { determineSalutations, updateValidatorsByDataLength } from '../../../forms/utils/form-utils';
 import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
@@ -46,7 +46,7 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
    */
   @Input() controlName = 'address';
 
-  regions: Region[];
+  regions$: Observable<Region[]>;
   titles: string[];
   isBusinessCustomer = false;
 
@@ -55,7 +55,6 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
   constructor(
     private store: Store<{}>,
     private afs: AddressFormFactoryProvider,
-    private rs: RegionService,
     private cd: ChangeDetectorRef,
     private featureToggle: FeatureToggleService
   ) {
@@ -104,10 +103,13 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
    * fetches titles and regions after country change and updates address form validator for regions
    */
   private fetchDataAfterCountryChange(countryCode: string) {
-    this.regions = this.rs.getRegions(countryCode);
-    this.updateRegions(this.regions);
-    this.titles = determineSalutations(countryCode);
-    this.cd.detectChanges(); // necessary to show titles/regions while editing an existing address
+    if (countryCode) {
+      this.store.dispatch(new LoadRegions({ countryCode }));
+      this.regions$ = this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
+      this.regions$.pipe(takeUntil(this.destroy$)).subscribe(regions => this.updateRegions(regions));
+      this.titles = determineSalutations(countryCode);
+      this.cd.detectChanges(); // necessary to show titles/regions while editing an existing address
+    }
   }
 
   /**
@@ -117,7 +119,7 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
     if (this.parentForm && this.parentForm.get(this.controlName)) {
       const stateControl = this.parentForm.get(this.controlName).get('mainDivision');
       if (regions && stateControl) {
-        updateValidatorsByDataLength(stateControl, this.regions, Validators.required, false);
+        updateValidatorsByDataLength(stateControl, regions, Validators.required, false);
       }
     }
   }

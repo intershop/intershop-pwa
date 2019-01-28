@@ -21,6 +21,8 @@ import { LocaleEffects } from './locale/locale.effects';
 import { localeReducer } from './locale/locale.reducer';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
+import { RegionsEffects } from './regions/regions.effects';
+import { regionsReducer } from './regions/regions.reducer';
 import { ShoppingStoreModule } from './shopping/shopping-store.module';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -32,6 +34,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   orders: ordersReducer,
   locale: localeReducer,
   countries: countriesReducer,
+  regions: regionsReducer,
   error: errorReducer,
   viewconf: viewconfReducer,
   configuration: configurationReducer,
@@ -43,6 +46,7 @@ export const coreEffects = [
   LocaleEffects,
   CountriesEffects,
   ErrorEffects,
+  RegionsEffects,
   RouterEffects,
   ViewconfEffects,
   ConfigurationEffects,
