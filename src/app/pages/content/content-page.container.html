@@ -1,1 +1,3 @@
-<ish-content-page [contentPageId]="contentPageId$ | async"></ish-content-page>
+<ng-container *ngIf="(contentPage$ | async) as contentPage">
+  <ish-content-page [contentPage]="contentPage"></ish-content-page>
+</ng-container>

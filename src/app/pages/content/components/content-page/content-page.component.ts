@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
-/**
- * The Content Page Component displays managed content pages.
- *
- * @example
+import { ContentPageView } from 'ish-core/models/content-view/content-views';
+
+/* example
  * <ish-content-page [contentPageId]="contentPageId"></ish-content-page>
  */
 @Component({
@@ -11,9 +10,18 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   templateUrl: './content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentPageComponent {
+export class ContentPageComponent implements OnInit {
   /**
-   * The id of the content page to be displayed.
+   * The content Page of the current contentPageId.
    */
-  @Input() contentPageId: string;
+  @Input() contentPage: ContentPageView;
+
+  contentHtml: string;
+
+  ngOnInit(): void {
+    const pagelets = this.contentPage.pagelets();
+    const slot = pagelets[0].slot('app_sf_responsive_cm:slot.pagevariant.content.pagelet2-Slot');
+    const contentPagelet = slot.pagelets();
+    this.contentHtml = contentPagelet[0].configurationParameters.HTML.toString();
+  }
 }

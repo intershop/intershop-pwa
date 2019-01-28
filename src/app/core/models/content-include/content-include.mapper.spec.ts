@@ -27,6 +27,7 @@ describe('Content Include Mapper', () => {
       },
       definitionQualifiedName: 'fq',
       displayName: 'name-include',
+      id: 'include-id',
       pagelets: [
         {
           id: 'pagelet1',

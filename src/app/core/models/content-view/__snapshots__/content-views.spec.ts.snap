@@ -5,6 +5,7 @@ Array [
   Object {
     "booleanParam": [Function],
     "configParam": [Function],
+    "configurationParameters": undefined,
     "definitionQualifiedName": "fq",
     "hasParam": [Function],
     "id": "p3",
@@ -30,6 +31,9 @@ exports[`Content Views include view created should have deepest level navigateab
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
+  "configurationParameters": Object {
+    "key7": "4",
+  },
   "definitionQualifiedName": "fq",
   "hasParam": [Function],
   "id": "p4",
@@ -44,6 +48,9 @@ Array [
   Object {
     "booleanParam": [Function],
     "configParam": [Function],
+    "configurationParameters": Object {
+      "key4": "2",
+    },
     "definitionQualifiedName": "fq",
     "hasParam": [Function],
     "id": "p1",
@@ -54,6 +61,7 @@ Array [
   Object {
     "booleanParam": [Function],
     "configParam": [Function],
+    "configurationParameters": undefined,
     "definitionQualifiedName": "fq",
     "hasParam": [Function],
     "id": "p2",
