@@ -172,6 +172,10 @@ start_nginx_proxy:
   cache: {}
   dependencies: []
   stage: publish
+  except:
+    refs:
+      - develop
+      - master
   tags:
     - shell-executor
     - docker
