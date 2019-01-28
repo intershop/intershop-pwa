@@ -291,7 +291,7 @@ deploy_demo_b2b:
     IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
   script:
   - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} --env FEATURES=quoting,compare,recently --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env FEATURES=quoting,compare,recently --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo-b2b
     url: http://jdevbuildslave01.rnd.j.intershop.de:4325
