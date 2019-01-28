@@ -2,11 +2,22 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
-import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import {
+  concatMap,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
+import { LoadCategory } from '../categories';
 import {
   SetPage,
   SetPagingInfo,
@@ -110,6 +121,23 @@ export class ProductsEffects {
     mapToPayloadProperty('sku'),
     whenTruthy(),
     map(sku => new productsActions.LoadProduct({ sku }))
+  );
+
+  @Effect()
+  loadDefaultCategoryContextForProduct$ = this.actions$.pipe(
+    ofRoute(/^product/),
+    switchMap(() =>
+      this.store.pipe(
+        select(productsSelectors.getSelectedProduct),
+        whenTruthy(),
+        filter(product => !product.defaultCategory()),
+        mapToProperty('defaultCategoryId'),
+        whenTruthy(),
+        distinctUntilChanged(),
+        map(categoryId => new LoadCategory({ categoryId })),
+        takeUntil(this.actions$.pipe(ofRoute(/.*/)))
+      )
+    )
   );
 
   @Effect({ dispatch: false })

@@ -1,3 +1,5 @@
+import { waitLoadingEnd } from '../../framework';
+
 export class ProductListModule {
   get visibleProducts() {
     return cy.get('ish-product-tile');
@@ -36,5 +38,12 @@ export class ProductListModule {
 
   get currentPage() {
     return this.pagingBar.find('a.active').then(el => Number.parseInt(el.text(), 10));
+  }
+
+  makeAllProductsVisible() {
+    for (let num = 0; num < 10; num++) {
+      cy.scrollTo('bottom');
+      waitLoadingEnd(10);
+    }
   }
 }
