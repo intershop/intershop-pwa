@@ -14,7 +14,13 @@ describe('Country Service', () => {
     name: 'countryName',
   };
 
+  const region = {
+    id: 'regionID',
+    name: 'regionName',
+  };
+
   const countryData = { data: [country] };
+  const regionData = { data: [region] };
 
   beforeEach(() => {
     apiService = mock(ApiService);
@@ -26,6 +32,17 @@ describe('Country Service', () => {
 
     countryService.getCountries().subscribe(() => {
       verify(apiService.get(`countries`, anything())).once();
+      done();
+    });
+  });
+
+  it("should get all available regions when 'getRegionByCountry' is called", done => {
+    when(apiService.get(`countries/countryCode/main-divisions`, anything())).thenReturn(of(regionData));
+
+    countryService.getRegionsByCountry('countryCode').subscribe(regions => {
+      verify(apiService.get(`countries/countryCode/main-divisions`, anything())).once();
+      expect(regions).toHaveLength(1);
+      expect(regions[0]).toHaveProperty('id', 'countryCode_regionID');
       done();
     });
   });
