@@ -1,3 +1,4 @@
+// tslint:disable:no-commented-out-code
 export const environment = {
   production: true,
   needMock: false,
@@ -44,5 +45,6 @@ export const environment = {
     // 'quoting',
     // 'stickyHeader',
     // 'tracking',
+    // 'businessCustomerRegistration'
   ],
 };

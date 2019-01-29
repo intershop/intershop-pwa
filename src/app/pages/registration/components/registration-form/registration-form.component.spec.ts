@@ -1,10 +1,13 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { AddressFormFactory } from '../../../../shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
@@ -33,6 +36,11 @@ describe('Registration Form Component', () => {
           inputs: ['parentForm', 'controlName'],
         }),
         MockComponent({
+          selector: 'ish-registration-company-form',
+          template: 'Company Extensions Template',
+          inputs: ['customerForm', 'controlName'],
+        }),
+        MockComponent({
           selector: 'ish-registration-credentials-form',
           template: 'Credentials Template',
           inputs: ['parentForm', 'controlName'],
@@ -40,7 +48,16 @@ describe('Registration Form Component', () => {
         RegistrationFormComponent,
       ],
       providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],
-      imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule,
+        FormsSharedModule,
+        ReactiveFormsModule,
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          { initialState: { configuration: { features: ['businessCustomerRegistration'] } } }
+        ),
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   }));
 
@@ -62,6 +79,12 @@ describe('Registration Form Component', () => {
     fixture.detectChanges();
     expect(component.form.get('preferredLanguage')).toBeTruthy();
     expect(component.form.get('birthday')).toBeTruthy();
+    expect(component.form.get('taxationID')).toBeTruthy();
+  });
+
+  it('should display registration company form for a business customer registration', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-registration-company-form')).toBeTruthy();
   });
 
   it('should throw cancel event when cancel is clicked', done => {
