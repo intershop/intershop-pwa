@@ -2,6 +2,8 @@ server {
     listen 80;
     server_name ~^$SUBDOMAIN\..+$;
 
+    include /etc/nginx/pagespeed.conf;
+
     location / {
         proxy_cache my_cache;
         proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
