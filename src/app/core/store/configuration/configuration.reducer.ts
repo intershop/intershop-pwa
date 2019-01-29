@@ -7,6 +7,7 @@ export interface ConfigurationState {
   channel?: string;
   application?: string;
   features?: string[];
+  gtmToken?: string;
 }
 
 const initialState: ConfigurationState = {
@@ -16,11 +17,15 @@ const initialState: ConfigurationState = {
   channel: undefined,
   application: undefined,
   features: [],
+  gtmToken: undefined,
 };
 
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {
   if (action.type === ConfigurationActionTypes.ApplyConfiguration) {
     return { ...state, ...action.payload };
+  } else if (action.type === ConfigurationActionTypes.SetGTMToken) {
+    const { gtmToken } = action.payload;
+    return { ...state, gtmToken };
   }
 
   return state;

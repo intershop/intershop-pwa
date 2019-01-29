@@ -1,17 +1,24 @@
-import { Injectable } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { filter, map, mergeMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
+import { whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 import { SelectLocale } from '../locale';
 
-import { ApplyConfiguration } from './configuration.actions';
+import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
 import { ConfigurationState } from './configuration.reducer';
 
 @Injectable()
 export class ConfigurationEffects {
-  constructor(private actions$: Actions, private stateProperties: StatePropertiesService, private router: Router) {}
+  constructor(
+    private actions$: Actions,
+    private stateProperties: StatePropertiesService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {}
 
   @Effect()
   routerWatch$ = this.router.events.pipe(
@@ -40,6 +47,17 @@ export class ConfigurationEffects {
       ([, baseURL, server, serverStatic, channel, application, features]) =>
         new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features })
     )
+  );
+
+  @Effect()
+  setGTMToken$ = this.actions$.pipe(
+    takeWhile(() => isPlatformServer(this.platformId)),
+    ofType(ROOT_EFFECTS_INIT),
+    take(1),
+    withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
+    map(([, gtmToken]) => gtmToken),
+    whenTruthy(),
+    map(gtmToken => new SetGTMToken({ gtmToken }))
   );
 
   extractConfigurationParameters(paramMap: ParamMap) {

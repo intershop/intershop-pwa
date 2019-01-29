@@ -70,6 +70,7 @@
     "@wishtack/reactive-component-loader": "^0.2.0",
     "@wishtack/rx-scavenger": "^1.0.2",
     "angular2-uuid": "^1.1.1",
+    "angulartics2": "^7.4.0",
     "b64u": "^2.0.0",
     "bootstrap": "^4.2.1",
     "conventional-changelog-cli": "^2.0.11",

@@ -36,3 +36,8 @@ export const getFeatures = createSelector(
   getConfigurationState,
   state => state.features
 );
+
+export const getGTMToken = createSelector(
+  getConfigurationState,
+  state => state.gtmToken
+);

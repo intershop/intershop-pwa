@@ -3,9 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ApplyConfiguration } from './configuration.actions';
+import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
 import {
   getFeatures,
+  getGTMToken,
   getICMBaseURL,
   getICMServerURL,
   getICMStaticURL,
@@ -32,6 +33,7 @@ describe('Configuration Selectors', () => {
       expect(getICMServerURL(store$.state)).toBeUndefined();
       expect(getICMStaticURL(store$.state)).toBeUndefined();
       expect(getFeatures(store$.state)).toBeEmpty();
+      expect(getGTMToken(store$.state)).toBeUndefined();
     });
 
     describe('after importing settings', () => {
@@ -71,6 +73,16 @@ describe('Configuration Selectors', () => {
           expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
           expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
         });
+      });
+    });
+
+    describe('after setting gtm token', () => {
+      beforeEach(() => {
+        store$.dispatch(new SetGTMToken({ gtmToken: 'dummy' }));
+      });
+
+      it('should set token to state', () => {
+        expect(getGTMToken(store$.state)).toEqual('dummy');
       });
     });
   });
