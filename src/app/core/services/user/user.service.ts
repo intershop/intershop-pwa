@@ -10,7 +10,7 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Credentials, LoginCredentials } from '../../models/credentials/credentials.model';
-import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
+import { Customer, CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
 import { User } from '../../models/user/user.model';
 import { ApiService } from '../api/api.service';
 /**
@@ -21,6 +21,12 @@ import { ApiService } from '../api/api.service';
 declare interface CreatePrivateCustomerType extends CustomerData {
   address: Address;
   credentials: Credentials;
+}
+
+declare interface CreateBusinessCustomerType extends Customer {
+  address: Address;
+  credentials: Credentials;
+  user: User;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -51,12 +57,28 @@ export class UserService {
       return throwError('createUser() called without required body data');
     }
 
-    const newCustomer: CreatePrivateCustomerType = {
-      ...body.customer,
-      ...body.user,
-      address: body.address,
-      credentials: body.credentials,
-    };
+    if (!body.customer.type) {
+      return throwError('createUser() called without required customer type (PrivateCustomer/SMBCustomer)');
+    }
+
+    let newCustomer: CreatePrivateCustomerType | CreateBusinessCustomerType;
+
+    if (body.customer.type === 'PrivateCustomer') {
+      newCustomer = {
+        ...body.customer,
+        ...body.user,
+        address: body.address,
+        credentials: body.credentials,
+      };
+    } else {
+      newCustomer = {
+        ...body.customer,
+        user: body.user,
+        address: body.address,
+        credentials: body.credentials,
+      };
+    }
+
     return this.apiService.post<void>('customers', newCustomer);
   }
 

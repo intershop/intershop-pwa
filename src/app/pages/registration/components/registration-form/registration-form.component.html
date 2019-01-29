@@ -12,16 +12,28 @@
     <div class="section">
       <div class="row">
         <div class="col-md-10 col-lg-8 col-xl-6">
+          <p class="indicates-required">
+            <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+          </p>
           <ish-registration-credentials-form [parentForm]="form"></ish-registration-credentials-form>
         </div>
       </div>
     </div>
 
-    <h2>{{ 'account.register.address.headding' | translate }}</h2>
+    <h2>
+      <ng-container *ngIf="businessCustomerRegistration; else b2cRegistrationSubTitle">{{
+        'account.register.company_information.heading' | translate
+      }}</ng-container>
+      <ng-template #b2cRegistrationSubTitle>{{ 'account.register.address.headding' | translate }}</ng-template>
+    </h2>
     <div class="section">
       <p>{{ 'account.register.address.message' | translate }}</p>
       <div class="row">
         <div class="col-md-10 col-lg-8 col-xl-6">
+          <p class="indicates-required">
+            <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+          </p>
+
           <ish-address-form-container [parentForm]="form"></ish-address-form-container>
 
           <!--- TODO: language and birthday selection
@@ -33,6 +45,11 @@
           <!--- TODO: captcha integration
           <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
           -->
+
+          <ish-registration-company-form
+            *ngIf="businessCustomerRegistration"
+            [customerForm]="form"
+          ></ish-registration-company-form>
 
           <div class="row form-group">
             <div class="offset-md-4 col-md-8">

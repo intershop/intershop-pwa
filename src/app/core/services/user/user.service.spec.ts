@@ -47,11 +47,22 @@ describe('User Service', () => {
   });
 
   describe('Register a user', () => {
-    it("should create a new user when 'createUser' is called", done => {
+    it('should return an error when called with undefined', done => {
+      when(apiServiceMock.post(anything(), anything())).thenReturn(of({}));
+
+      userService.createUser(undefined).subscribe(fail, err => {
+        expect(err).toBeTruthy();
+        done();
+      });
+
+      verify(apiServiceMock.post(anything(), anything())).never();
+    });
+
+    it("should create a new private user when 'createUser' is called with type 'PrivateCustomer'", done => {
       when(apiServiceMock.post(anyString(), anything())).thenReturn(of({}));
 
       const payload = {
-        customer: { customerNo: '4711' } as Customer,
+        customer: { customerNo: '4711', type: 'PrivateCustomer' } as Customer,
         address: {} as Address,
         credentials: {} as Credentials,
         user: {} as User,

@@ -1,4 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
+  <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
   <ish-address-form-container [parentForm]="form"></ish-address-form-container>
 
   <div class="row">

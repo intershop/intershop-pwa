@@ -1,17 +1,18 @@
 export interface User {
+  title?: string;
   firstName: string;
   lastName: string;
-  email: string;
   preferredLanguage: string;
+  birthday?: string;
 
-  title?: string;
   phoneHome?: string;
   phoneBusiness?: string;
   phoneMobile?: string;
   fax?: string;
+  email: string;
+
   preferredInvoiceToAddressUrn?: string;
   preferredShipToAddressUrn?: string;
-  birthday?: string;
 
   // Business User only
   businessPartnerNo?: string;
