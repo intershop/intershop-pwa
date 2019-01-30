@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Locale } from 'ish-core/models/locale/locale.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { LanguageSwitchComponent } from './language-switch.component';
 
@@ -20,7 +21,7 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbDropdownModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [IconModule, NgbDropdownModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [LanguageSwitchComponent],
     })
       .compileComponents()
