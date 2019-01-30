@@ -9,6 +9,10 @@ export class LoginPage {
     cy.visit('/login');
   }
 
+  get content() {
+    return cy.get(this.tag);
+  }
+
   fillForm(user: string, password: string) {
     cy.get('input[data-testing-id="login"]')
       .clear()
