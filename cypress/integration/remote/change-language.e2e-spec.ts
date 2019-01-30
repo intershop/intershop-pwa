@@ -20,6 +20,10 @@ const _ = {
     dollarPrice: '303.62',
     euroPrice: '227,05',
   },
+  myAccount: {
+    englishTitle: 'My Account',
+    germanTitle: 'Mein Konto',
+  },
   searchTerm: 'canon legria',
   user: {
     ...sensibleDefaults,
@@ -193,6 +197,22 @@ describe('Language Changing User', () => {
       at(MyAccountPage, page =>
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`)
       );
+    });
+  });
+
+  describe('when accessing protected content', () => {
+    before(() => MyAccountPage.navigateTo());
+
+    it('should see english content on login page', () => {
+      at(LoginPage, page => page.content.should('contain', _.myAccount.englishTitle));
+    });
+
+    it('when switching to german', () => {
+      at(LoginPage, page => page.header.switchLanguage('German'));
+    });
+
+    it('should see german content on login page', () => {
+      at(LoginPage, page => page.content.should('contain', _.myAccount.germanTitle));
     });
   });
 });
