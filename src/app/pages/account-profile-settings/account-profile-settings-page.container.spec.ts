@@ -3,6 +3,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { User } from 'ish-core/models/user/user.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -15,13 +16,13 @@ describe('Account Profile Settings Page Container', () => {
   let element: HTMLElement;
   const customer = {
     type: 'PrivateCustomer',
+  } as Customer;
+
+  const user = {
     firstName: 'Patricia',
     lastName: 'Miller',
     title: '',
-    credentials: {
-      login: '',
-    },
-  } as Customer;
+  } as User;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,7 +38,7 @@ describe('Account Profile Settings Page Container', () => {
     })
       .compileComponents()
       .then(() => {
-        TestBed.get(Store).dispatch(new LoginUserSuccess({ customer }));
+        TestBed.get(Store).dispatch(new LoginUserSuccess({ customer, user }));
       });
   }));
 

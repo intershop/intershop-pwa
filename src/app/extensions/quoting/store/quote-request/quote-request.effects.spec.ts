@@ -39,6 +39,8 @@ describe('Quote Request Effects', () => {
   let effects: QuoteRequestEffects;
   let store$: Store<{}>;
 
+  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+
   beforeEach(() => {
     quoteRequestServiceMock = mock(QuoteRequestService);
     routerMock = mock(Router);
@@ -69,7 +71,7 @@ describe('Quote Request Effects', () => {
 
   describe('loadQuoteRequests$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
 
       when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(of([{ id: 'QRID' } as QuoteRequestData]));
@@ -110,7 +112,7 @@ describe('Quote Request Effects', () => {
 
   describe('addQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
 
       when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(of('QRID'));
@@ -149,7 +151,7 @@ describe('Quote Request Effects', () => {
 
   describe('updateQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({ quoteRequests: [{ id: 'QRID' } as QuoteRequestData] })
@@ -207,7 +209,7 @@ describe('Quote Request Effects', () => {
 
   describe('deleteQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
 
       when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(of('QRID'));
@@ -249,7 +251,7 @@ describe('Quote Request Effects', () => {
 
   describe('submitQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
@@ -289,7 +291,7 @@ describe('Quote Request Effects', () => {
 
   describe('createQuoteRequestFromQuote$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({
@@ -357,7 +359,7 @@ describe('Quote Request Effects', () => {
 
   describe('loadQuoteRequestItems$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({
@@ -431,7 +433,7 @@ describe('Quote Request Effects', () => {
 
   describe('addProductToQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({
@@ -504,7 +506,7 @@ describe('Quote Request Effects', () => {
 
   describe('addBasketToQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({
@@ -581,7 +583,7 @@ describe('Quote Request Effects', () => {
 
   describe('updateQuoteRequestItems$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({
@@ -713,7 +715,7 @@ describe('Quote Request Effects', () => {
 
   describe('deleteItemFromQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteRequestActions.LoadQuoteRequestsSuccess({ quoteRequests: [{ id: 'QRID' } as QuoteRequestData] })

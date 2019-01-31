@@ -1,22 +1,23 @@
 import { Address } from '../address/address.model';
 
-// used for business users only
-export interface UserData {
+import { Customer } from './customer.model';
+
+/**
+ * response data type for signIn user
+ */
+export interface CustomerData extends Customer {
   title?: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   birthday?: string;
 
   phoneHome?: string;
   phoneBusiness?: string;
   phoneMobile?: string;
   fax?: string;
-  email: string;
+  email?: string;
 
-  preferredLanguage: string;
+  preferredLanguage?: string;
   preferredInvoiceToAddress?: Address;
   preferredShipToAddress?: Address;
-
-  businessPartnerNo?: string;
-  department?: string;
 }
