@@ -23,11 +23,16 @@ export const getSelectedProductId = createSelector(
   state => state.selected
 );
 
+export const getFailed = createSelector(
+  getProductsState,
+  state => state.failed
+);
+
 export const getSelectedProduct = createSelector(
   getCategoryTree,
   getProductEntities,
   getSelectedProductId,
-  (tree, entities, id): Product => createProductView(entities[id], tree)
+  (tree, entities, id) => createProductView(entities[id], tree)
 );
 
 export const getProductLoading = createSelector(
@@ -38,5 +43,10 @@ export const getProductLoading = createSelector(
 export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
-  (tree, products, props) => createProductView(products[props.sku], tree)
+  getFailed,
+  (tree, products, failed, props: { sku: string }) =>
+    failed.includes(props.sku)
+      ? // tslint:disable-next-line:ish-no-object-literal-type-assertion
+        createProductView({ sku: props.sku } as Product, tree)
+      : createProductView(products[props.sku], tree)
 );

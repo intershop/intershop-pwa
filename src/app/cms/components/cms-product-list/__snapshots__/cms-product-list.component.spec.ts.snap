@@ -3,16 +3,7 @@
 exports[`Cms Product List Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="7.1.2"
->
-  
-</div>
-`;
-
-exports[`Cms Product List Component should render product list pagelet if available 1`] = `
-<div
-  id="root1"
-  ng-version="7.1.2"
+  ng-version="7.1.4"
 >
   
   <div

@@ -21,15 +21,13 @@ export class OrderListContainerComponent implements OnInit {
    * Use 0, if you want to display all items without any restrictions.
    * Default: At most 30 items will be displayed
    */
-  @Input()
-  maxListItems = 30;
+  @Input() maxListItems = 30;
 
   /**
    * Indicates whether or not the list should be displayed in a compact view (single row)
    * Default value: see {@link OrderListComponent}
    */
-  @Input()
-  compact: boolean;
+  @Input() compact: boolean;
 
   orders$ = this.store.pipe(select(getOrders));
   loading$ = this.store.pipe(select(getOrdersLoading));

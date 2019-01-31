@@ -55,7 +55,7 @@ describe('Orders Selectors', () => {
   describe('loading orders', () => {
     beforeEach(() => {
       store$.dispatch(new LoadOrders());
-      store$.dispatch(new LoadProductSuccess({ sku: 'sku' } as Product));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku' } as Product }));
     });
 
     it('should set the state to loading', () => {
@@ -64,7 +64,7 @@ describe('Orders Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadOrdersSuccess(orders));
+        store$.dispatch(new LoadOrdersSuccess({ orders }));
       });
 
       it('should set loading to false', () => {
@@ -81,7 +81,7 @@ describe('Orders Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadOrdersFail({ message: 'error' } as HttpError));
+        store$.dispatch(new LoadOrdersFail({ error: { message: 'error' } as HttpError }));
       });
 
       it('should not have loaded orders on error', () => {
@@ -92,15 +92,15 @@ describe('Orders Selectors', () => {
   });
   describe('select order', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadOrdersSuccess(orders));
-      store$.dispatch(new SelectOrder(orders[1].id));
+      store$.dispatch(new LoadOrdersSuccess({ orders }));
+      store$.dispatch(new SelectOrder({ orderId: orders[1].id }));
     });
     it('should get a certain order if they are loaded orders', () => {
       expect(getSelectedOrder(store$.state).id).toEqual(orders[1].id);
     });
 
     it('should not get any order if the previously selected order was not found', () => {
-      store$.dispatch(new SelectOrder('invalid'));
+      store$.dispatch(new SelectOrder({ orderId: 'invalid' }));
       expect(getSelectedOrder(store$.state)).toBeUndefined();
     });
   });

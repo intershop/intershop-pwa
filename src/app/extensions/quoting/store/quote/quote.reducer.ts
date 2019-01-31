@@ -22,7 +22,7 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
     case QuoteActionTypes.SelectQuote: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.id,
       };
     }
 
@@ -40,7 +40,7 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
     case QuoteActionTypes.DeleteQuoteFail:
     case QuoteActionTypes.RejectQuoteFail:
     case QuoteActionTypes.CreateQuoteRequestFromQuoteFail: {
-      const error = action.payload;
+      const error = action.payload.error;
 
       return {
         ...state,
@@ -50,7 +50,7 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
     }
 
     case QuoteActionTypes.LoadQuotesSuccess: {
-      const quotes = action.payload;
+      const quotes = action.payload.quotes;
 
       return {
         ...state,

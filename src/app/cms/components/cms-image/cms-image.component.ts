@@ -1,23 +1,15 @@
-import { ChangeDetectionStrategy, Component, DoCheck, Inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentImagePageletView, createImagePageletView } from 'ish-core/models/content-view/content-image-view';
-import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
+import { ContentViewHelper } from 'ish-core/models/content-view/content-view.helper';
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 @Component({
   selector: 'ish-cms-image',
   templateUrl: './cms-image.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSImageComponent implements DoCheck {
-  @Input()
-  pagelet: ContentImagePageletView;
+export class CMSImageComponent {
+  @Input() pagelet: ContentPageletView;
 
-  constructor(@Inject(STATIC_URL) public staticURL: string) {}
-
-  ngDoCheck() {
-    if (this.pagelet && !this.pagelet.routerLink) {
-      // tslint:disable-next-line:no-assignement-to-inputs
-      this.pagelet = createImagePageletView(this.pagelet);
-    }
-  }
+  routerLink = ContentViewHelper.getRouterLink;
 }

@@ -2,7 +2,6 @@ import { AnimationBuilder, animate, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Mini Basket Component displays a quick overview over the users basket items.
@@ -20,12 +19,9 @@ export class MiniBasketComponent implements OnChanges {
   /**
    * The basket that should be displayed.
    */
-  @Input()
-  basket: BasketView;
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
-  @Input()
-  basketAnimation = '';
+  @Input() basket: BasketView;
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() basketAnimation = '';
   /**
    * The vertical product slider element reference.
    */
@@ -35,8 +31,6 @@ export class MiniBasketComponent implements OnChanges {
   isCollapsed = true;
   itemCount = 0;
   currentProduct = 0;
-
-  generateProductRoute = ProductHelper.generateProductRoute;
 
   constructor(private animationBuilder: AnimationBuilder) {}
 
@@ -78,7 +72,7 @@ export class MiniBasketComponent implements OnChanges {
       return;
     }
 
-    const slider = this.slider.nativeElement as HTMLDivElement;
+    const slider: HTMLDivElement = this.slider.nativeElement;
     const tileHeight = slider.children.length > 0 ? slider.lastElementChild.getBoundingClientRect().height : 0;
 
     this.currentProduct -= 1;
@@ -94,7 +88,7 @@ export class MiniBasketComponent implements OnChanges {
       return;
     }
 
-    const slider = this.slider.nativeElement as HTMLDivElement;
+    const slider: HTMLDivElement = this.slider.nativeElement;
     const tileHeight = slider.children.length > 0 ? slider.lastElementChild.getBoundingClientRect().height : 0;
     if (this.currentProduct < this.basket.lineItems.length - 2) {
       this.currentProduct += 1;

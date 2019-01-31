@@ -38,7 +38,7 @@ describe('Filter Selectors', () => {
 
   describe('with LoadFilterForCategory state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategory({} as Category));
+      store$.dispatch(new LoadFilterForCategory({ category: {} as Category }));
     });
 
     it('should set the state to loading', () => {
@@ -48,7 +48,9 @@ describe('Filter Selectors', () => {
 
   describe('with LoadFilterForCategorySuccess state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategorySuccess({ filter: [{ name: 'a' }] } as FilterNavigation));
+      store$.dispatch(
+        new LoadFilterForCategorySuccess({ filterNavigation: { filter: [{ name: 'a' }] } as FilterNavigation })
+      );
     });
 
     it('should set the state to loaded', () => {
@@ -62,7 +64,7 @@ describe('Filter Selectors', () => {
 
   describe('with LoadFilterForCategoryFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategoryFail({} as HttpError));
+      store$.dispatch(new LoadFilterForCategoryFail({ error: {} as HttpError }));
     });
 
     it('should set the state to loaded', () => {
@@ -102,7 +104,7 @@ describe('Filter Selectors', () => {
 
   describe('with ApplyFilterFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new ApplyFilterFail({} as HttpError));
+      store$.dispatch(new ApplyFilterFail({ error: {} as HttpError }));
     });
 
     it('should set the state to loaded', () => {

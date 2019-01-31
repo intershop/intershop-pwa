@@ -21,9 +21,11 @@ export const initialState: AddressesState = addressAdapter.getInitialState({
 export function addressesReducer(state = initialState, action: AddressAction | BasketAction): AddressesState {
   switch (action.type) {
     case AddressActionTypes.LoadAddresses:
+    case AddressActionTypes.CreateCustomerAddress:
     case BasketActionTypes.CreateBasketInvoiceAddress:
     case BasketActionTypes.CreateBasketShippingAddress:
     case BasketActionTypes.UpdateBasketCustomerAddress:
+    case AddressActionTypes.DeleteCustomerAddress:
     case BasketActionTypes.DeleteBasketShippingAddress: {
       return {
         ...state,
@@ -35,7 +37,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     case AddressActionTypes.CreateCustomerAddressFail:
     case AddressActionTypes.UpdateCustomerAddressFail:
     case AddressActionTypes.DeleteCustomerAddressFail: {
-      const error = action.payload;
+      const { error } = action.payload;
 
       return {
         ...state,
@@ -45,41 +47,42 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     }
 
     case AddressActionTypes.LoadAddressesSuccess: {
-      const loadedAddresses = action.payload;
+      const { addresses } = action.payload;
 
       return {
-        ...addressAdapter.addAll(loadedAddresses, state),
+        ...addressAdapter.addAll(addresses, state),
         error: undefined,
         loading: false,
       };
     }
 
+    case AddressActionTypes.CreateCustomerAddressSuccess:
     case BasketActionTypes.CreateBasketInvoiceAddressSuccess:
     case BasketActionTypes.CreateBasketShippingAddressSuccess: {
-      const payload = action.payload;
+      const { address } = action.payload;
 
       return {
-        ...addressAdapter.addOne(payload, state),
+        ...addressAdapter.addOne(address, state),
         loading: false,
         error: undefined,
       };
     }
 
     case AddressActionTypes.UpdateCustomerAddressSuccess: {
-      const payload = action.payload;
+      const { address } = action.payload;
 
       return {
-        ...addressAdapter.updateOne({ id: payload.id, changes: payload }, state),
+        ...addressAdapter.updateOne({ id: address.id, changes: address }, state),
         loading: false,
         error: undefined,
       };
     }
 
     case AddressActionTypes.DeleteCustomerAddressSuccess: {
-      const payload = action.payload;
+      const { addressId } = action.payload;
 
       return {
-        ...addressAdapter.removeOne(payload, state),
+        ...addressAdapter.removeOne(addressId, state),
         loading: false,
         error: undefined,
       };

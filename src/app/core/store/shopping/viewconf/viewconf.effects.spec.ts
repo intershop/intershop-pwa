@@ -41,25 +41,25 @@ describe('Viewconf Effects', () => {
 
   describe('changeSortBy$', () => {
     it('should do nothing if no category is selected', () => {
-      const action = new ChangeSortBy('name-desc');
+      const action = new ChangeSortBy({ sorting: 'name-desc' });
       actions$ = hot('-a-a-a', { a: action });
       expect(effects.changeSortBy$).toBeObservable(cold('-'));
     });
 
     it('should do nothing if category is selected but not available', () => {
-      store$.dispatch(new SelectCategory('123'));
+      store$.dispatch(new SelectCategory({ categoryId: '123' }));
 
-      const action = new ChangeSortBy('name-desc');
+      const action = new ChangeSortBy({ sorting: 'name-desc' });
       actions$ = hot('-a-a-a', { a: action });
       expect(effects.changeSortBy$).toBeObservable(cold('-'));
     });
 
     it('should map to action of type LoadProductsForCategory if category is selected and available', () => {
-      store$.dispatch(new LoadCategorySuccess(categoryTree([{ uniqueId: '123' } as Category])));
-      store$.dispatch(new SelectCategory('123'));
+      store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([{ uniqueId: '123' } as Category]) }));
+      store$.dispatch(new SelectCategory({ categoryId: '123' }));
 
-      const action = new ChangeSortBy('name-desc');
-      const completion = new LoadProductsForCategory('123');
+      const action = new ChangeSortBy({ sorting: 'name-desc' });
+      const completion = new LoadProductsForCategory({ categoryId: '123' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

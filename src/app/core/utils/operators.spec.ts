@@ -6,7 +6,7 @@ import { concatMap, filter, last, mapTo } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { Partition, distinctCompareWith, mapErrorToAction, partitionBy } from './operators';
+import { Partition, distinctCompareWith, mapErrorToAction, mapToProperty, partitionBy } from './operators';
 
 describe('Operators', () => {
   describe('distinctCompareWith', () => {
@@ -78,7 +78,7 @@ describe('Operators', () => {
     // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyFail implements Action {
       type = 'dummy';
-      constructor(public payload: HttpError) {}
+      constructor(public payload: { error: HttpError }) {}
     }
 
     it('should catch HttpErrorResponses and convert them to Fail actions', () => {
@@ -92,20 +92,39 @@ describe('Operators', () => {
       const resu$ = cold('---(a|)', {
         a: {
           payload: {
-            name: 'HttpErrorResponse',
-            message: 'Http failure response for http://example.org: 404 undefined',
-            error: 'null',
-            status: 404,
-            statusText: 'Unknown Error',
-            headers: {
-              key: 'value',
-            },
-          } as HttpError,
+            error: {
+              name: 'HttpErrorResponse',
+              message: 'Http failure response for http://example.org: 404 undefined',
+              error: undefined,
+              status: 404,
+              statusText: 'Unknown Error',
+              headers: {
+                key: 'value',
+              },
+            } as HttpError,
+          },
           type: 'dummy',
         },
       });
 
       expect(input$.pipe(mapErrorToAction(DummyFail))).toBeObservable(resu$);
+    });
+  });
+
+  describe('mapToProperty', () => {
+    it('should map to property', () => {
+      expect(of({ test: 'hello world' }).pipe(mapToProperty('test'))).toBeObservable(
+        cold('(a|)', { a: 'hello world' })
+      );
+    });
+
+    it('should ignore falsy input when used', done => {
+      of(undefined)
+        .pipe(mapToProperty('test'))
+        .subscribe(data => {
+          expect(data).toBeUndefined();
+          done();
+        });
     });
   });
 });

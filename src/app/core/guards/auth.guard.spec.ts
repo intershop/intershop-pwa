@@ -1,8 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
-import { anything, spy, verify } from 'ts-mockito';
 
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { Customer } from '../models/customer/customer.model';
@@ -15,7 +14,6 @@ describe('Auth Guard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
     let store$: Store<{}>;
-    let router: Router;
 
     beforeEach(async(() => {
       const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
@@ -32,26 +30,27 @@ describe('Auth Guard', () => {
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);
       store$ = TestBed.get(Store);
-      const realRouter = TestBed.get(Router);
-      router = spy(realRouter);
     });
 
     it('should return true when user is authorized', done => {
-      store$.dispatch(new LoginUserSuccess({} as Customer));
+      store$.dispatch(new LoginUserSuccess({ customer: {} as Customer }));
 
-      authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
-        expect(authorized).toBeTruthy();
-        verify(router.navigate(anything(), anything())).never();
-        done();
-      });
+      authGuard
+        .canActivate({} as ActivatedRouteSnapshot, { url: 'home' } as RouterStateSnapshot)
+        .subscribe(authorized => {
+          expect(authorized).toBeTruthy();
+          done();
+        });
     });
 
     it('should return false when called as unauthorized', done => {
-      authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
-        expect(authorized).toBeFalsy();
-        verify(router.navigate(anything(), anything())).once();
-        done();
-      });
+      authGuard
+        .canActivate({} as ActivatedRouteSnapshot, { url: 'home' } as RouterStateSnapshot)
+        .subscribe(authorized => {
+          expect(authorized).toBeInstanceOf(UrlTree);
+          expect((authorized as UrlTree).queryParams).toHaveProperty('returnUrl', 'home');
+          done();
+        });
     });
   });
 });

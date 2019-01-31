@@ -1,23 +1,19 @@
 <ng-container *ngIf="(searchTerm$ | async) as searchTerm">
-
   <ish-breadcrumb [searchTerm]="searchTerm"></ish-breadcrumb>
 
   <!-- search result with products -->
-  <ng-container *ngIf="productsAvailable$ | async; else noResult">
+  <ng-container *ngIf="(productsAvailable$ | async); else noResult">
     <ish-search-result
       [searchTerm]="searchTerm"
       [totalItems]="totalItems$ | async"
       (loadMore)="loadMore.emit()"
     ></ish-search-result>
   </ng-container>
-  
+
   <!-- empty search result -->
   <ng-template #noResult>
-    <ish-search-no-result *ngIf="!(searchLoading$ | async)"
-      [searchTerm]="searchTerm"
-    ></ish-search-no-result>
+    <ish-search-no-result *ngIf="!(searchLoading$ | async)" [searchTerm]="searchTerm"></ish-search-no-result>
   </ng-template>
-
 </ng-container>
 
-<ish-loading *ngIf="searchLoading$ | async"></ish-loading>
+<ish-loading *ngIf="(searchLoading$ | async)"></ish-loading>

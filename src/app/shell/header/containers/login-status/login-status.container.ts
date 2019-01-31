@@ -9,10 +9,8 @@ import { getLoggedInUser } from 'ish-core/store/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginStatusContainerComponent {
-  @Input()
-  logoutOnly = false;
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() logoutOnly = false;
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   user$ = this.store.pipe(select(getLoggedInUser));
 

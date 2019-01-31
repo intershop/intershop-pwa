@@ -4,29 +4,23 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { Country } from 'ish-core/models/country/country.model';
-import { Customer } from 'ish-core/models/customer/customer.model';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { Credentials } from 'ish-core/models/credentials/credentials.model';
+import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { Region } from 'ish-core/models/region/region.model';
+import { User } from 'ish-core/models/user/user.model';
 import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
-import {
-  markAsDirtyRecursive,
-  markFormControlsAsInvalid,
-  updateValidatorsByDataLength,
-} from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive, markFormControlsAsInvalid } from '../../../../shared/forms/utils/form-utils';
 import { SpecialValidators } from '../../../../shared/forms/validators/special-validators';
 
 @Component({
@@ -34,32 +28,38 @@ import { SpecialValidators } from '../../../../shared/forms/validators/special-v
   templateUrl: './registration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  countries: Country[];
-  @Input()
-  regions: Region[];
-  @Input()
-  languages: Locale[];
-  @Input()
-  titles: string[];
-  @Input()
-  error: HttpError;
+export class RegistrationFormComponent implements OnInit, OnChanges {
+  @Input() languages: Locale[];
+  @Input() error: HttpError;
 
-  @Output()
-  create = new EventEmitter<Customer>();
-  @Output()
-  cancel = new EventEmitter<void>();
-  @Output()
-  countryChange = new EventEmitter<string>();
+  @Output() create = new EventEmitter<CustomerRegistrationType>();
+  @Output() cancel = new EventEmitter<void>();
 
-  destroy$ = new Subject();
+  /* switch for business customer registration */
+  businessCustomerRegistration;
+
   form: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder, private afs: AddressFormFactoryProvider) {}
+  constructor(
+    private fb: FormBuilder,
+    private afs: AddressFormFactoryProvider,
+    private featureToggle: FeatureToggleService
+  ) {}
 
   ngOnInit() {
+    // toggles business / private customer registration
+    this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
+
+    this.createRegistrationForm();
+  }
+
+  ngOnChanges(c: SimpleChanges) {
+    this.applyError(c.error);
+  }
+
+  // generates the registration form depending on the registration type (business/private)
+  private createRegistrationForm(): void {
     this.form = this.fb.group({
       credentials: this.fb.group({
         login: ['', [Validators.required, CustomValidators.email]],
@@ -73,33 +73,17 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
       captcha: [false, [Validators.required]],
-      address: this.afs.getFactory('default').getGroup(), // filled dynamically when country code changes
+      address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
     });
-
-    // build and register new address form when country code changed
-    this.form
-      .get('countryCodeSwitch')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
 
     // set validators for credentials form
     const credForm = this.form.get('credentials');
     credForm.get('loginConfirmation').setValidators(CustomValidators.equalTo(credForm.get('login')));
     credForm.get('passwordConfirmation').setValidators(CustomValidators.equalTo(credForm.get('password')));
-  }
 
-  ngOnChanges(c: SimpleChanges) {
-    this.updateRegions(c.regions);
-    this.applyError(c.error);
-  }
-
-  /**
-   * update validators for "state" control in address form according to regions
-   */
-  private updateRegions(regions: SimpleChange) {
-    const stateControl = this.form && this.form.get('address.state');
-    if (regions && stateControl) {
-      updateValidatorsByDataLength(stateControl, this.regions, Validators.required, true);
+    // add form control(s) for business customers
+    if (this.businessCustomerRegistration) {
+      this.form.addControl('taxationID', new FormControl(''));
     }
   }
 
@@ -110,10 +94,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
       const list = missingAttributes.split(',').map(attr => (attr === 'email' ? 'credentials.login' : attr));
       markFormControlsAsInvalid(this.form, list);
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
   }
 
   cancelForm() {
@@ -130,45 +110,44 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    const formCustomer = this.form.value;
+    const formValue = this.form.value;
+
+    const address = formValue.address;
 
     const customer: Customer = {
-      firstName: formCustomer.address.firstName,
-      lastName: formCustomer.address.lastName,
-      customerNo: UUID.UUID(), // TODO: customerNo should be generated by the server
-      email: formCustomer.credentials.login,
-      phoneHome: formCustomer.address.phoneHome,
-      title: formCustomer.address.title,
-      address: formCustomer.address,
-      credentials: {
-        login: formCustomer.credentials.login,
-        password: formCustomer.credentials.password,
-        securityQuestion: formCustomer.credentials.securityQuestion,
-        securityQuestionAnswer: formCustomer.credentials.securityQuestionAnswer,
-      },
-      birthday: formCustomer.birthday === '' ? undefined : formCustomer.birthday, // TODO: see IS-22276
-      preferredLanguage: formCustomer.preferredLanguage,
+      type: 'PrivateCustomer',
+      customerNo: UUID.UUID(), // TODO: customerNo should be generated by the server - IS-24884
     };
 
-    this.create.emit(customer);
-  }
+    const user: User = {
+      title: formValue.address.title,
+      firstName: formValue.address.firstName,
+      lastName: formValue.address.lastName,
+      email: formValue.credentials.login,
+      phoneHome: formValue.address.phoneHome,
+      birthday: formValue.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
+      preferredLanguage: formValue.preferredLanguage,
+    };
 
-  private handleCountryChange(countryCode: string) {
-    const oldFormValue = this.form.get('address').value;
-    const group = this.afs.getFactory(countryCode).getGroup({
-      ...oldFormValue,
-      countryCode,
-    });
-    this.form.setControl('address', group);
+    const credentials: Credentials = {
+      login: formValue.credentials.login,
+      password: formValue.credentials.password,
+      securityQuestion: formValue.credentials.securityQuestion,
+      securityQuestionAnswer: formValue.credentials.securityQuestionAnswer,
+    };
 
-    this.countryChange.emit(countryCode);
+    if (this.businessCustomerRegistration) {
+      customer.type = 'SMBCustomer';
+      customer.companyName = formValue.address.companyName1;
+      customer.companyName2 = formValue.address.companyName2;
+      customer.taxationID = formValue.taxationID;
+      user.businessPartnerNo = customer.customerNo;
+    }
+
+    this.create.emit({ customer, user, credentials, address });
   }
 
   get formDisabled() {
     return this.form.invalid && this.submitted;
-  }
-
-  get countryCode() {
-    return this.form.get('countryCodeSwitch').value;
   }
 }

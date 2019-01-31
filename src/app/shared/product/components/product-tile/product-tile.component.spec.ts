@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
+import { PipesModule } from 'ish-core/pipes.module';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ProductTileComponent } from './product-tile.component';
@@ -17,9 +19,10 @@ describe('Product Tile Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
-        IconModule,
+        FeatureToggleModule,
+        PipesModule,
         RouterTestingModule,
+        StoreModule.forRoot({ configuration: configurationReducer }),
         TranslateModule.forRoot(),
       ],
       declarations: [
@@ -32,6 +35,11 @@ describe('Product Tile Component', () => {
           selector: 'ish-product-add-to-basket',
           template: 'Product Add To Basket',
           inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-add-to-compare',
+          template: 'Product Add To Compare',
+          inputs: ['isInCompareList'],
         }),
         MockComponent({
           selector: 'ish-product-image',

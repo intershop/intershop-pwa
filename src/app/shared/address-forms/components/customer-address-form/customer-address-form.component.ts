@@ -4,79 +4,50 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Country } from 'ish-core/models/country/country.model';
-import { Region } from 'ish-core/models/region/region.model';
 import { markAsDirtyRecursive } from '../../../forms/utils/form-utils';
-import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 
 /**
  * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address. When the user submits the form the new/changed address will be sent to the parent component.
  *
  * @example
  * <ish-customer-address-form
-      [regions]="regions"
-      [titles]="titles"
-      [countries]="countries"
       [address]="basket.invoiceToAddress"
       [resetForm]="resetForm"
       (save)="createCustomerInvoiceAddress($event)"
       (cancel)="cancelCreateCustomerInvoiceAddress()"
-      (countryChange)="handleCountryChange($event)"
    ></ish-checkout-address-form>
  */
 @Component({
   selector: 'ish-customer-address-form',
   templateUrl: './customer-address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CustomerAddressFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  countries: Country[];
-  @Input()
-  regions: Region[];
-  @Input()
-  titles: string[];
-  @Input()
-  address: Address;
-  @Input()
-  resetForm = false;
+export class CustomerAddressFormComponent implements OnInit, OnChanges {
+  @Input() address: Address;
+  @Input() resetForm = false;
 
-  @Output()
-  save = new EventEmitter<Address>();
-  @Output()
-  cancel = new EventEmitter();
-  @Output()
-  countryChange = new EventEmitter<string>();
+  @Output() save = new EventEmitter<Address>();
+  @Output() cancel = new EventEmitter();
 
   form: FormGroup;
   submitted = false;
 
-  destroy$ = new Subject();
-
-  constructor(private fb: FormBuilder, private afs: AddressFormFactoryProvider) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     // create form for creating a new address
     this.form = this.fb.group({
       countryCodeSwitch: ['', [Validators.required]],
-      address: this.afs.getFactory('default').getGroup(), // filled dynamically when country code changes
+      // create address sub form, init/country change will be done by address-form-container
+      address: this.fb.group({}),
     });
-
-    // build and register new address form when country code changed
-    this.form
-      .get('countryCodeSwitch')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
 
     // initialize address form
     this.initializeAddressForm(this.address);
@@ -93,6 +64,7 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges, OnDestro
   doResetForm(resetForm: boolean) {
     if (resetForm && this.form) {
       this.form.reset();
+      this.submitted = false;
     }
   }
 
@@ -101,28 +73,7 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges, OnDestro
       this.form.reset();
       this.form.controls.address.patchValue(this.address);
       this.form.controls.countryCodeSwitch.setValue(this.address.countryCode);
-      this.handleCountryChange(this.address.countryCode);
     }
-  }
-
-  /**
-   * Changes address form after country has been changed.
-   * Emits countryChange event to get country specific data like regions and salutations
-   * @param countryCode country code of the country that has been selected in the address form
-   */
-  private handleCountryChange(countryCode: string) {
-    const oldFormValue = this.form.get('address').value;
-    const group = this.afs.getFactory(countryCode).getGroup({
-      ...oldFormValue,
-      countryCode,
-    });
-    this.form.setControl('address', group);
-
-    this.countryChange.emit(countryCode);
-  }
-
-  get countryCode() {
-    return this.form.get('countryCodeSwitch').value;
   }
 
   get formDisabled() {
@@ -148,9 +99,5 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges, OnDestro
 
   cancelForm() {
     this.cancel.emit();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
   }
 }

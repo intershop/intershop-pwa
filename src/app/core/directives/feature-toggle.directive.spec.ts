@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { FeatureToggleModule } from '../feature-toggle.module';
 
 @Component({
@@ -8,7 +10,6 @@ import { FeatureToggleModule } from '../feature-toggle.module';
     <div>unrelated</div>
     <div *ishFeature="'feature1'">content1</div>
     <div *ishFeature="'feature2'">content2</div>
-    <div *ishFeature="'feature3'">content3</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -22,7 +23,13 @@ describe('Feature Toggle Directive', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
-      imports: [FeatureToggleModule.testingFeatures({ feature1: true, feature2: false })],
+      imports: [
+        FeatureToggleModule,
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          { initialState: { configuration: { features: ['feature1'] } } }
+        ),
+      ],
     }).compileComponents();
   }));
 
@@ -42,9 +49,5 @@ describe('Feature Toggle Directive', () => {
 
   it('should not render content of disabled features', () => {
     expect(element.textContent).not.toContain('content2');
-  });
-
-  it('should render content of unhandled features', () => {
-    expect(element.textContent).toContain('content3');
   });
 });

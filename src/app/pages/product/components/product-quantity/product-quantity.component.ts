@@ -6,22 +6,23 @@ import { Product } from 'ish-core/models/product/product.model';
 import { SelectOption } from '../../../../shared/forms/components/select/select.component';
 import { SpecialValidators } from '../../../../shared/forms/validators/special-validators';
 
+function generateSelectOptionsForRange(min: number, max: number): SelectOption[] {
+  return range(min, max)
+    .map(num => num.toString())
+    .map(num => ({ label: num, value: num }));
+}
+
 @Component({
   selector: 'ish-product-quantity',
   templateUrl: './product-quantity.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit, OnChanges {
-  @Input()
-  product: Product;
-  @Input()
-  parentForm: FormGroup;
-  @Input()
-  controlName: string;
-  @Input()
-  type?: string;
-  @Input()
-  class?: string;
+  @Input() product: Product;
+  @Input() parentForm: FormGroup;
+  @Input() controlName: string;
+  @Input() type?: string;
+  @Input() class?: string;
 
   readonly selectType = 'select';
 
@@ -44,9 +45,10 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
 
   ngOnChanges(change: SimpleChanges) {
     if (change.product && change.product.currentValue) {
-      this.quantityOptions = range(this.product.minOrderQuantity, this.product.maxOrderQuantity)
-        .map(num => num.toString())
-        .map(num => ({ label: num, value: num } as SelectOption));
+      this.quantityOptions = generateSelectOptionsForRange(
+        this.product.minOrderQuantity,
+        this.product.maxOrderQuantity
+      );
     }
   }
 }

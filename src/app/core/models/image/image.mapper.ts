@@ -1,6 +1,7 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
+import { getICMBaseURL } from 'ish-core/store/configuration';
 
 import { Image } from './image.model';
 
@@ -15,7 +16,11 @@ import { Image } from './image.model';
  */
 @Injectable({ providedIn: 'root' })
 export class ImageMapper {
-  constructor(@Inject(ICM_BASE_URL) public icmBaseURL) {}
+  private icmBaseURL: string;
+
+  constructor(store: Store<{}>) {
+    store.pipe(select(getICMBaseURL)).subscribe(url => (this.icmBaseURL = url));
+  }
 
   /**
    * Maps Images to Images.
@@ -40,7 +45,7 @@ export class ImageMapper {
     return {
       ...image,
       effectiveUrl: this.fromEffectiveUrl(image.effectiveUrl),
-    } as Image;
+    };
   }
 
   /**

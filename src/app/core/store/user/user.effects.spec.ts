@@ -8,11 +8,12 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { Customer } from '../../models/customer/customer.model';
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
-import { RegistrationService } from '../../services/registration/registration.service';
+import { UserService } from '../../services/user/user.service';
 import { coreReducers } from '../core-store.module';
 
 import * as ua from './user.actions';
@@ -22,15 +23,22 @@ describe('User Effects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
   let store$: Store<{}>;
-  let registrationServiceMock: RegistrationService;
+  let userServiceMock: UserService;
   let routerMock: Router;
+
+  const loginResponseData = {
+    customer: {
+      type: 'SMBCustomer',
+      customerNo: 'PC',
+    },
+  } as CustomerLoginType;
 
   beforeEach(() => {
     routerMock = mock(Router);
-    registrationServiceMock = mock(RegistrationService);
-    when(registrationServiceMock.signinUser(anything())).thenReturn(of({} as Customer));
-    when(registrationServiceMock.createUser(anything())).thenReturn(of({} as Customer));
-    when(registrationServiceMock.getCompanyUserData()).thenReturn(of({ type: 'SMBCustomerUser' } as User));
+    userServiceMock = mock(UserService);
+    when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
+    when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
+    when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'patricia' } as User));
 
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot(coreReducers)],
@@ -38,7 +46,7 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: Router, useFactory: () => instance(routerMock) },
-        { provide: RegistrationService, useFactory: () => instance(registrationServiceMock) },
+        { provide: UserService, useFactory: () => instance(userServiceMock) },
       ],
     });
 
@@ -48,19 +56,19 @@ describe('User Effects', () => {
 
   describe('loginUser$', () => {
     it('should call the api service when LoginUser event is called', done => {
-      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
+      const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
 
       actions$ = of(action);
 
       effects.loginUser$.subscribe(() => {
-        verify(registrationServiceMock.signinUser(anything())).once();
+        verify(userServiceMock.signinUser(anything())).once();
         done();
       });
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
-      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
-      const completion = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const completion = new ua.LoginUserSuccess(loginResponseData);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -72,10 +80,10 @@ describe('User Effects', () => {
       // tslint:disable-next-line:ban-types
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
 
-      when(registrationServiceMock.signinUser(anything())).thenReturn(throwError(error));
+      when(userServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
-      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
-      const completion = new ua.LoginUserFail(HttpErrorMapper.fromError(error));
+      const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
+      const completion = new ua.LoginUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -89,15 +97,15 @@ describe('User Effects', () => {
       actions$ = of(action);
 
       effects.loadCompanyUser$.subscribe(() => {
-        verify(registrationServiceMock.getCompanyUserData()).once();
+        verify(userServiceMock.getCompanyUserData()).once();
         done();
       });
     });
 
     it('should map to action of type LoadBasketSuccess', () => {
-      const type = 'SMBCustomerUser';
       const action = new ua.LoadCompanyUser();
-      const completion = new ua.LoadCompanyUserSuccess({ type } as User);
+      const completion = new ua.LoadCompanyUserSuccess({ user: { firstName: 'patricia' } as User });
+
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -123,7 +131,7 @@ describe('User Effects', () => {
 
   describe('goToAccountAfterLogin$', () => {
     it('should navigate to /account after LoginUserSuccess', done => {
-      const action = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.LoginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
@@ -146,7 +154,7 @@ describe('User Effects', () => {
         },
       } as RouterState);
 
-      const action = new ua.LoginUserSuccess({} as Customer);
+      const action = new ua.LoginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
@@ -161,19 +169,26 @@ describe('User Effects', () => {
 
   describe('createUser$', () => {
     it('should call the api service when Create event is called', done => {
-      const action = new ua.CreateUser({} as Customer);
+      const action = new ua.CreateUser({
+        customer: {
+          type: 'SMBCustomer',
+          customerNo: 'PC',
+        },
+      } as CustomerRegistrationType);
 
       actions$ = of(action);
 
       effects.createUser$.subscribe(() => {
-        verify(registrationServiceMock.createUser(anything())).once();
+        verify(userServiceMock.createUser(anything())).once();
         done();
       });
     });
 
-    it('should dispatch a CreateUserSuccess action on successful user creation', () => {
-      const action = new ua.CreateUser({} as Customer);
-      const completion = new ua.CreateUserSuccess({} as Customer);
+    it('should dispatch a CreateUserLogin action on successful user creation', () => {
+      const credentials: LoginCredentials = { login: '1234', password: 'xxx' };
+
+      const action = new ua.CreateUser({ credentials } as CustomerRegistrationType);
+      const completion = new ua.LoginUser({ credentials });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -184,10 +199,10 @@ describe('User Effects', () => {
     it('should dispatch a CreateUserFail action on failed user creation', () => {
       // tslint:disable-next-line:ban-types
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
-      when(registrationServiceMock.createUser(anything())).thenReturn(throwError(error));
+      when(userServiceMock.createUser(anything())).thenReturn(throwError(error));
 
-      const action = new ua.CreateUser({} as Customer);
-      const completion = new ua.CreateUserFail(HttpErrorMapper.fromError(error));
+      const action = new ua.CreateUser({} as CustomerRegistrationType);
+      const completion = new ua.CreateUserFail({ error: HttpErrorMapper.fromError(error) });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -204,23 +219,11 @@ describe('User Effects', () => {
     });
 
     it('should dispatch UserErrorReset action on router navigation if error was set', () => {
-      store$.dispatch(new ua.LoginUserFail({ message: 'error' } as HttpError));
+      store$.dispatch(new ua.LoginUserFail({ error: { message: 'error' } as HttpError }));
 
       actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
 
       expect(effects.resetUserError$).toBeObservable(cold('a', { a: new ua.UserErrorReset() }));
-    });
-  });
-
-  describe('publishLoginEventAfterCreate$', () => {
-    it('should dispatch a LoginUserSuccess when CreateUserSuccess arrives', () => {
-      const action = new ua.CreateUserSuccess({} as Customer);
-      const completion = new ua.LoginUserSuccess({} as Customer);
-
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
-
-      expect(effects.publishLoginEventAfterCreate$).toBeObservable(expected$);
     });
   });
 });

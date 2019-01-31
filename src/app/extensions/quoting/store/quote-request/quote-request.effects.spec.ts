@@ -16,6 +16,8 @@ import { Price } from 'ish-core/models/price/price.model';
 import { User } from 'ish-core/models/user/user.model';
 import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { LoadProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
@@ -37,18 +39,21 @@ describe('Quote Request Effects', () => {
   let effects: QuoteRequestEffects;
   let store$: Store<{}>;
 
+  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+
   beforeEach(() => {
     quoteRequestServiceMock = mock(QuoteRequestService);
     routerMock = mock(Router);
 
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ quoting: true }),
+        FeatureToggleModule,
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           checkout: combineReducers(checkoutReducers),
           user: userReducer,
+          configuration: configurationReducer,
         }),
       ],
       providers: [
@@ -61,12 +66,13 @@ describe('Quote Request Effects', () => {
 
     effects = TestBed.get(QuoteRequestEffects);
     store$ = TestBed.get(Store);
+    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
 
   describe('loadQuoteRequests$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
 
       when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(of([{ id: 'QRID' } as QuoteRequestData]));
     });
@@ -83,7 +89,9 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type LoadQuoteRequestsSuccess', () => {
       const action = new quoteRequestActions.LoadQuoteRequests();
-      const completion = new quoteRequestActions.LoadQuoteRequestsSuccess([{ id: 'QRID' } as QuoteRequestData]);
+      const completion = new quoteRequestActions.LoadQuoteRequestsSuccess({
+        quoteRequests: [{ id: 'QRID' } as QuoteRequestData],
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -94,7 +102,7 @@ describe('Quote Request Effects', () => {
       when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteRequestActions.LoadQuoteRequests();
-      const completion = new quoteRequestActions.LoadQuoteRequestsFail({ message: 'invalid' } as HttpError);
+      const completion = new quoteRequestActions.LoadQuoteRequestsFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -104,8 +112,8 @@ describe('Quote Request Effects', () => {
 
   describe('addQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
 
       when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(of('QRID'));
     });
@@ -122,7 +130,7 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type AddQuoteRequestSuccess', () => {
       const action = new quoteRequestActions.AddQuoteRequest();
-      const completion = new quoteRequestActions.AddQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.AddQuoteRequestSuccess({ id: 'QRID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -133,7 +141,7 @@ describe('Quote Request Effects', () => {
       when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteRequestActions.AddQuoteRequest();
-      const completion = new quoteRequestActions.AddQuoteRequestFail({ message: 'invalid' } as HttpError);
+      const completion = new quoteRequestActions.AddQuoteRequestFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -143,10 +151,12 @@ describe('Quote Request Effects', () => {
 
   describe('updateQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
-      store$.dispatch(new quoteRequestActions.LoadQuoteRequestsSuccess([{ id: 'QRID' } as QuoteRequestData]));
-      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
+      store$.dispatch(
+        new quoteRequestActions.LoadQuoteRequestsSuccess({ quoteRequests: [{ id: 'QRID' } as QuoteRequestData] })
+      );
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
       when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenCall((_, quoteRequest) =>
         of(quoteRequest)
@@ -168,9 +178,11 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type UpdateQuoteRequestSuccess', () => {
       const payload = {
-        displayName: 'test',
-      } as QuoteRequestData;
-      const action = new quoteRequestActions.UpdateQuoteRequest(payload);
+        quoteRequest: {
+          displayName: 'test',
+        } as QuoteRequestData,
+      };
+      const action = new quoteRequestActions.UpdateQuoteRequest(payload.quoteRequest);
       const completion = new quoteRequestActions.UpdateQuoteRequestSuccess(payload);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -187,7 +199,7 @@ describe('Quote Request Effects', () => {
         id: 'QRID',
       } as QuoteRequest;
       const action = new quoteRequestActions.UpdateQuoteRequest(payload);
-      const completion = new quoteRequestActions.UpdateQuoteRequestFail({ message: 'invalid' } as HttpError);
+      const completion = new quoteRequestActions.UpdateQuoteRequestFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -197,27 +209,27 @@ describe('Quote Request Effects', () => {
 
   describe('deleteQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
 
       when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for deleteQuoteRequest with specific quoteRequestId', done => {
-      const payload = 'QRID';
-      const action = new quoteRequestActions.DeleteQuoteRequest(payload);
+      const id = 'QRID';
+      const action = new quoteRequestActions.DeleteQuoteRequest({ id });
       actions$ = of(action);
 
       effects.deleteQuoteRequest$.subscribe(() => {
-        verify(quoteRequestServiceMock.deleteQuoteRequest(payload)).once();
+        verify(quoteRequestServiceMock.deleteQuoteRequest(id)).once();
         done();
       });
     });
 
     it('should map to action of type deleteQuoteRequestSuccess', () => {
-      const payload = 'QRID';
-      const action = new quoteRequestActions.DeleteQuoteRequest(payload);
-      const completion = new quoteRequestActions.DeleteQuoteRequestSuccess(payload);
+      const id = 'QRID';
+      const action = new quoteRequestActions.DeleteQuoteRequest({ id });
+      const completion = new quoteRequestActions.DeleteQuoteRequestSuccess({ id });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -227,9 +239,9 @@ describe('Quote Request Effects', () => {
     it('should map invalid request to action of type DeleteQuoteRequestFail', () => {
       when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
-      const payload = 'QRID';
-      const action = new quoteRequestActions.DeleteQuoteRequest(payload);
-      const completion = new quoteRequestActions.DeleteQuoteRequestFail({ message: 'invalid' } as HttpError);
+      const id = 'QRID';
+      const action = new quoteRequestActions.DeleteQuoteRequest({ id });
+      const completion = new quoteRequestActions.DeleteQuoteRequestFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -239,9 +251,9 @@ describe('Quote Request Effects', () => {
 
   describe('submitQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
-      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
       when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenReturn(of('QRID'));
     });
@@ -258,7 +270,7 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type SubmitQuoteRequestSuccess', () => {
       const action = new quoteRequestActions.SubmitQuoteRequest();
-      const completion = new quoteRequestActions.SubmitQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.SubmitQuoteRequestSuccess({ id: 'QRID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -269,7 +281,7 @@ describe('Quote Request Effects', () => {
       when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteRequestActions.SubmitQuoteRequest();
-      const completion = new quoteRequestActions.SubmitQuoteRequestFail({ message: 'invalid' } as HttpError);
+      const completion = new quoteRequestActions.SubmitQuoteRequestFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -279,23 +291,25 @@ describe('Quote Request Effects', () => {
 
   describe('createQuoteRequestFromQuote$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestsSuccess([
-          {
-            id: 'QRID',
-            items: [],
-            submitted: true,
-          } as QuoteRequestData,
-        ])
+        new quoteRequestActions.LoadQuoteRequestsSuccess({
+          quoteRequests: [
+            {
+              id: 'QRID',
+              items: [],
+              submitted: true,
+            } as QuoteRequestData,
+          ],
+        })
       );
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestItemsSuccess([
-          { productSKU: 'SKU', quantity: { value: 1 } } as QuoteRequestItem,
-        ])
+        new quoteRequestActions.LoadQuoteRequestItemsSuccess({
+          quoteRequestItems: [{ productSKU: 'SKU', quantity: { value: 1 } } as QuoteRequestItem],
+        })
       );
-      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
       when(quoteRequestServiceMock.createQuoteRequestFromQuoteRequest(anything())).thenReturn(
         of({ type: 'test' } as QuoteLineItemResultModel)
@@ -315,8 +329,10 @@ describe('Quote Request Effects', () => {
     it('should map to action of type CreateQuoteRequestFromQuoteRequestSuccess', () => {
       const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequest();
       const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({
-        type: 'test',
-      } as QuoteLineItemResultModel);
+        quoteLineItemResult: {
+          type: 'test',
+        } as QuoteLineItemResultModel,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -330,8 +346,10 @@ describe('Quote Request Effects', () => {
 
       const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequest();
       const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestFail({
-        message: 'invalid',
-      } as HttpError);
+        error: {
+          message: 'invalid',
+        } as HttpError,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -341,16 +359,18 @@ describe('Quote Request Effects', () => {
 
   describe('loadQuoteRequestItems$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestsSuccess([
-          {
-            id: 'QRID',
-            editable: true,
-            items: [{ title: 'IID' }],
-          } as QuoteRequestData,
-        ])
+        new quoteRequestActions.LoadQuoteRequestsSuccess({
+          quoteRequests: [
+            {
+              id: 'QRID',
+              editable: true,
+              items: [{ title: 'IID' }],
+            } as QuoteRequestData,
+          ],
+        })
       );
 
       when(quoteRequestServiceMock.getQuoteRequestItem(anyString(), anything())).thenReturn(
@@ -359,8 +379,8 @@ describe('Quote Request Effects', () => {
     });
 
     it('should call the quoteService for getQuoteRequestItem', done => {
-      const payload = 'QRID';
-      const action = new quoteRequestActions.LoadQuoteRequestItems(payload);
+      const id = 'QRID';
+      const action = new quoteRequestActions.LoadQuoteRequestItems({ id });
       actions$ = of(action);
 
       effects.loadQuoteRequestItems$.subscribe(() => {
@@ -370,11 +390,11 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequestItemsSuccess', () => {
-      const payload = 'QRID';
-      const action = new quoteRequestActions.LoadQuoteRequestItems(payload);
-      const completion = new quoteRequestActions.LoadQuoteRequestItemsSuccess([
-        { productSKU: 'SKU' } as QuoteRequestItem,
-      ]);
+      const id = 'QRID';
+      const action = new quoteRequestActions.LoadQuoteRequestItems({ id });
+      const completion = new quoteRequestActions.LoadQuoteRequestItemsSuccess({
+        quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -386,9 +406,11 @@ describe('Quote Request Effects', () => {
         throwError({ message: 'invalid' })
       );
 
-      const payload = 'QRID';
-      const action = new quoteRequestActions.LoadQuoteRequestItems(payload);
-      const completion = new quoteRequestActions.LoadQuoteRequestItemsFail({ message: 'invalid' } as HttpError);
+      const id = 'QRID';
+      const action = new quoteRequestActions.LoadQuoteRequestItems({ id });
+      const completion = new quoteRequestActions.LoadQuoteRequestItemsFail({
+        error: { message: 'invalid' } as HttpError,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -398,8 +420,10 @@ describe('Quote Request Effects', () => {
 
   describe('loadProductsForQuoteRequest$', () => {
     it('should trigger LoadProduct actions for line items if LoadQuoteRequestItemsSuccess action triggered', () => {
-      const action = new quoteRequestActions.LoadQuoteRequestItemsSuccess([{ productSKU: 'SKU' } as QuoteRequestItem]);
-      const completion = new LoadProduct('SKU');
+      const action = new quoteRequestActions.LoadQuoteRequestItemsSuccess({
+        quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
+      });
+      const completion = new LoadProduct({ sku: 'SKU' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -409,21 +433,23 @@ describe('Quote Request Effects', () => {
 
   describe('addProductToQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestsSuccess([
-          {
-            id: 'QRID',
-            type: 'QuoteRequest',
-            displayName: 'DNAME',
-            number: 'NUM',
-            editable: true,
-            creationDate: 1,
-            total: {} as Price,
-            items: [],
-          } as QuoteRequestData,
-        ])
+        new quoteRequestActions.LoadQuoteRequestsSuccess({
+          quoteRequests: [
+            {
+              id: 'QRID',
+              type: 'QuoteRequest',
+              displayName: 'DNAME',
+              number: 'NUM',
+              editable: true,
+              creationDate: 1,
+              total: {} as Price,
+              items: [],
+            } as QuoteRequestData,
+          ],
+        })
       );
 
       when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(of('QRID'));
@@ -449,7 +475,7 @@ describe('Quote Request Effects', () => {
         quantity: 1,
       };
       const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
-      const completion = new quoteRequestActions.AddProductToQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.AddProductToQuoteRequestSuccess({ id: 'QRID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -467,8 +493,10 @@ describe('Quote Request Effects', () => {
       };
       const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
       const completion = new quoteRequestActions.AddProductToQuoteRequestFail({
-        message: 'invalid',
-      } as HttpError);
+        error: {
+          message: 'invalid',
+        } as HttpError,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -478,36 +506,40 @@ describe('Quote Request Effects', () => {
 
   describe('addBasketToQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestsSuccess([
-          {
-            id: 'QRID',
-            type: 'QuoteRequest',
-            displayName: 'DNAME',
-            number: 'NUM',
-            editable: true,
-            creationDate: 1,
-            total: {} as Price,
-            items: [],
-          } as QuoteRequestData,
-        ])
+        new quoteRequestActions.LoadQuoteRequestsSuccess({
+          quoteRequests: [
+            {
+              id: 'QRID',
+              type: 'QuoteRequest',
+              displayName: 'DNAME',
+              number: 'NUM',
+              editable: true,
+              creationDate: 1,
+              total: {} as Price,
+              items: [],
+            } as QuoteRequestData,
+          ],
+        })
       );
       store$.dispatch(
         new LoadBasketSuccess({
-          id: 'BID',
-          lineItems: [
-            {
-              id: 'BIID',
-              name: 'NAME',
-              position: 1,
-              quantity: { value: 1 },
-              productSKU: 'SKU',
-            } as LineItem,
-          ],
-          payment: undefined,
-        } as Basket)
+          basket: {
+            id: 'BID',
+            lineItems: [
+              {
+                id: 'BIID',
+                name: 'NAME',
+                position: 1,
+                quantity: { value: 1 },
+                productSKU: 'SKU',
+              } as LineItem,
+            ],
+            payment: undefined,
+          } as Basket,
+        })
       );
       when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(of('QRID'));
     });
@@ -524,7 +556,7 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type AddBasketToQuoteRequestSuccess', () => {
       const action = new quoteRequestActions.AddBasketToQuoteRequest();
-      const completion = new quoteRequestActions.AddBasketToQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id: 'QRID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -538,8 +570,10 @@ describe('Quote Request Effects', () => {
 
       const action = new quoteRequestActions.AddBasketToQuoteRequest();
       const completion = new quoteRequestActions.AddBasketToQuoteRequestFail({
-        message: 'invalid',
-      } as HttpError);
+        error: {
+          message: 'invalid',
+        } as HttpError,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -549,60 +583,68 @@ describe('Quote Request Effects', () => {
 
   describe('updateQuoteRequestItems$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestsSuccess([
-          {
-            id: 'QRID',
-            editable: true,
-            items: [],
-          } as QuoteRequestData,
-        ])
+        new quoteRequestActions.LoadQuoteRequestsSuccess({
+          quoteRequests: [
+            {
+              id: 'QRID',
+              editable: true,
+              items: [],
+            } as QuoteRequestData,
+          ],
+        })
       );
       store$.dispatch(
-        new quoteRequestActions.LoadQuoteRequestItemsSuccess([
-          {
-            id: 'IID',
-            quantity: {
-              value: 1,
-            },
-          } as QuoteRequestItem,
-        ])
+        new quoteRequestActions.LoadQuoteRequestItemsSuccess({
+          quoteRequestItems: [
+            {
+              id: 'IID',
+              quantity: {
+                value: 1,
+              },
+            } as QuoteRequestItem,
+          ],
+        })
       );
-      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
       when(quoteRequestServiceMock.updateQuoteRequestItem(anyString(), anything())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for updateQuoteRequestItems if quantity > 0', done => {
-      const payload = [
-        {
-          itemId: 'IID',
-          quantity: 2,
-        },
-      ];
+      const payload = {
+        lineItemQuantities: [
+          {
+            itemId: 'IID',
+            quantity: 2,
+          },
+        ],
+      };
       const action = new quoteRequestActions.UpdateQuoteRequestItems(payload);
       actions$ = of(action);
 
       effects.updateQuoteRequestItems$.subscribe(() => {
-        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload[0])).once();
+        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload.lineItemQuantities[0])).once();
         done();
       });
     });
 
     it('should not call the quoteService for updateQuoteRequestItems if quantity is identical', done => {
-      const payload = [
-        {
-          itemId: 'IID',
-          quantity: 1,
-        },
-      ];
+      const payload = {
+        lineItemQuantities: [
+          {
+            itemId: 'IID',
+            quantity: 1,
+          },
+        ],
+      };
       const action = new quoteRequestActions.UpdateQuoteRequestItems(payload);
       actions$ = of(action);
 
       effects.updateQuoteRequestItems$.subscribe(() => {
-        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload[0])).never();
+        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload.lineItemQuantities[0])).never();
         done();
       });
     });
@@ -610,31 +652,35 @@ describe('Quote Request Effects', () => {
     it('should call the quoteService for removeItemFromQuoteRequest if quantity is 0', done => {
       when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(of('QRID'));
 
-      const payload = [
-        {
-          itemId: 'IID',
-          quantity: 0,
-        },
-      ];
+      const payload = {
+        lineItemQuantities: [
+          {
+            itemId: 'IID',
+            quantity: 0,
+          },
+        ],
+      };
       const action = new quoteRequestActions.UpdateQuoteRequestItems(payload);
       actions$ = of(action);
 
       effects.updateQuoteRequestItems$.subscribe(() => {
-        verify(quoteRequestServiceMock.removeItemFromQuoteRequest('QRID', payload[0].itemId)).once();
+        verify(quoteRequestServiceMock.removeItemFromQuoteRequest('QRID', 'IID')).once();
 
         done();
       });
     });
 
     it('should map to action of type UpdateQuoteRequestItemsSuccess', () => {
-      const payload = [
-        {
-          itemId: 'IID',
-          quantity: 2,
-        },
-      ];
+      const payload = {
+        lineItemQuantities: [
+          {
+            itemId: 'IID',
+            quantity: 2,
+          },
+        ],
+      };
       const action = new quoteRequestActions.UpdateQuoteRequestItems(payload);
-      const completion = new quoteRequestActions.UpdateQuoteRequestItemsSuccess(['QRID']);
+      const completion = new quoteRequestActions.UpdateQuoteRequestItemsSuccess({ itemIds: ['QRID'] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -646,16 +692,20 @@ describe('Quote Request Effects', () => {
         throwError({ message: 'invalid' })
       );
 
-      const payload = [
-        {
-          itemId: 'IID',
-          quantity: 2,
-        },
-      ];
+      const payload = {
+        lineItemQuantities: [
+          {
+            itemId: 'IID',
+            quantity: 2,
+          },
+        ],
+      };
       const action = new quoteRequestActions.UpdateQuoteRequestItems(payload);
       const completion = new quoteRequestActions.UpdateQuoteRequestItemsFail({
-        message: 'invalid',
-      } as HttpError);
+        error: {
+          message: 'invalid',
+        } as HttpError,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -665,10 +715,12 @@ describe('Quote Request Effects', () => {
 
   describe('deleteItemFromQuoteRequest$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
-      store$.dispatch(new quoteRequestActions.LoadQuoteRequestsSuccess([{ id: 'QRID' } as QuoteRequestData]));
-      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
+      store$.dispatch(
+        new quoteRequestActions.LoadQuoteRequestsSuccess({ quoteRequests: [{ id: 'QRID' } as QuoteRequestData] })
+      );
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
       when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(of('QRID'));
     });
@@ -692,7 +744,7 @@ describe('Quote Request Effects', () => {
         itemId: 'IID',
       };
       const action = new quoteRequestActions.DeleteItemFromQuoteRequest(payload);
-      const completion = new quoteRequestActions.DeleteItemFromQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.DeleteItemFromQuoteRequestSuccess({ id: 'QRID' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -709,8 +761,10 @@ describe('Quote Request Effects', () => {
       };
       const action = new quoteRequestActions.DeleteItemFromQuoteRequest(payload);
       const completion = new quoteRequestActions.DeleteItemFromQuoteRequestFail({
-        message: 'invalid',
-      } as HttpError);
+        error: {
+          message: 'invalid',
+        } as HttpError,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -748,8 +802,8 @@ describe('Quote Request Effects', () => {
 
   describe('goToQuoteRequestDetail$', () => {
     it('should navigate to /account/quote-request/QRID if AddBasketToQuoteRequestSuccess called.', done => {
-      const payload = 'QRID';
-      const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess(payload);
+      const id = 'QRID';
+      const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id });
       actions$ = of(action);
 
       effects.goToQuoteRequestDetail$.subscribe(() => {
@@ -763,7 +817,7 @@ describe('Quote Request Effects', () => {
 
   describe('loadQuoteRequestsAfterChangeSuccess$', () => {
     it('should map to action of type LoadQuoteRequests if AddQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.AddQuoteRequestSuccess('QRID');
+      const action = new quoteRequestActions.AddQuoteRequestSuccess({ id: 'QRID' });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -772,7 +826,9 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if UpdateQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.UpdateQuoteRequestSuccess({ id: 'QRID' } as QuoteRequestData);
+      const action = new quoteRequestActions.UpdateQuoteRequestSuccess({
+        quoteRequest: { id: 'QRID' } as QuoteRequestData,
+      });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -781,7 +837,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if DeleteQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.DeleteQuoteRequestSuccess('QRID');
+      const action = new quoteRequestActions.DeleteQuoteRequestSuccess({ id: 'QRID' });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -790,7 +846,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if SubmitQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.SubmitQuoteRequestSuccess('QRID');
+      const action = new quoteRequestActions.SubmitQuoteRequestSuccess({ id: 'QRID' });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -799,7 +855,9 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if CreateQuoteRequestFromQuoteSuccess action triggered', () => {
-      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({} as QuoteLineItemResultModel);
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({
+        quoteLineItemResult: {} as QuoteLineItemResultModel,
+      });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -808,7 +866,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if AddProductToQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.AddProductToQuoteRequestSuccess('QRID');
+      const action = new quoteRequestActions.AddProductToQuoteRequestSuccess({ id: 'QRID' });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -817,7 +875,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if AddBasketToQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess('QRID');
+      const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id: 'QRID' });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -826,7 +884,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if UpdateQuoteRequestItemsSuccess action triggered', () => {
-      const action = new quoteRequestActions.UpdateQuoteRequestItemsSuccess(['QRID']);
+      const action = new quoteRequestActions.UpdateQuoteRequestItemsSuccess({ itemIds: ['QRID'] });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -835,7 +893,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if DeleteItemFromQuoteRequestSuccess action triggered', () => {
-      const action = new quoteRequestActions.DeleteItemFromQuoteRequestSuccess('QRID');
+      const action = new quoteRequestActions.DeleteItemFromQuoteRequestSuccess({ id: 'QRID' });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -844,7 +902,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if LoadCompanyUserSuccess action triggered', () => {
-      const action = new LoadCompanyUserSuccess({} as User);
+      const action = new LoadCompanyUserSuccess({ user: {} as User });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -860,7 +918,7 @@ describe('Quote Request Effects', () => {
         params: { quoteRequestId: 'QRID' },
         queryParams: {},
       });
-      const expected = new quoteRequestActions.SelectQuoteRequest('QRID');
+      const expected = new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingQuote$).toBeObservable(cold('a', { a: expected }));
@@ -876,9 +934,9 @@ describe('Quote Request Effects', () => {
 
   describe('loadQuoteRequestItemsAfterSelectQuoteRequest', () => {
     it('should fire LoadQuoteRequestItems when SelectQuoteRequest and LoadQuoteRequestsSuccess action triggered.', () => {
-      const selectQuoteRequestAction = new quoteRequestActions.SelectQuoteRequest('QRID');
-      const loadQuoteRequestSuccessAction = new quoteRequestActions.LoadQuoteRequestsSuccess([]);
-      const expected = new quoteRequestActions.LoadQuoteRequestItems('QRID');
+      const selectQuoteRequestAction = new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' });
+      const loadQuoteRequestSuccessAction = new quoteRequestActions.LoadQuoteRequestsSuccess({ quoteRequests: [] });
+      const expected = new quoteRequestActions.LoadQuoteRequestItems({ id: 'QRID' });
 
       actions$ = hot('a--b--a', { a: selectQuoteRequestAction, b: loadQuoteRequestSuccessAction });
       expect(effects.loadQuoteRequestItemsAfterSelectQuoteRequest$).toBeObservable(cold('---a--a', { a: expected }));

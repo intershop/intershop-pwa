@@ -3,7 +3,7 @@
 exports[`Filter Swatch Images Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="7.1.2"
+  ng-version="7.1.4"
 >
   <div
     class="filter-group"
@@ -49,9 +49,12 @@ exports[`Filter Swatch Images Component should be created 1`] = `
       >
         <a
           class="filter-swatch"
-          title="ColorBlack"
+          data-testing-id="filter-link-Black"
+          title="Black"
         >
-          <span />
+          <span
+            style="background-color: black;"
+          />
         </a>
       </li>
       
@@ -62,9 +65,12 @@ exports[`Filter Swatch Images Component should be created 1`] = `
       >
         <a
           class="filter-swatch"
-          title="ColorRed"
+          data-testing-id="filter-link-Red"
+          title="Red"
         >
-          <span />
+          <span
+            style="background-color: red;"
+          />
         </a>
       </li>
     </ul>

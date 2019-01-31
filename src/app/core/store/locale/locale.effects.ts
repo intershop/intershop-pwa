@@ -3,8 +3,9 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { filter, map, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
+import { filter, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
 
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { Locale } from '../../models/locale/locale.model';
 
@@ -23,8 +24,8 @@ export class LocaleEffects {
   @Effect({ dispatch: false })
   setLocale$ = this.store.pipe(
     select(getCurrentLocale),
-    filter(locale => !!locale && !!locale.lang),
-    map(locale => locale.lang),
+    mapToProperty('lang'),
+    whenTruthy(),
     tap(lang => this.translateService.use(lang))
   );
 
@@ -41,13 +42,6 @@ export class LocaleEffects {
         filter(locales => !locales.length)
       )
     ),
-    mapTo(new fromActions.SetAvailableLocales(this.availableLocales))
-  );
-
-  @Effect()
-  setFirstAvailableLocale$ = this.actions$.pipe(
-    ofType<fromActions.SetAvailableLocales>(fromActions.LocaleActionTypes.SetAvailableLocales),
-    map(action => (action.payload && action.payload[0] ? action.payload[0] : undefined)),
-    map(locale => new fromActions.SelectLocale(locale))
+    mapTo(new fromActions.SetAvailableLocales({ locales: this.availableLocales }))
   );
 }

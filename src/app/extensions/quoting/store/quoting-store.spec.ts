@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
@@ -13,7 +13,9 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { CountryService } from 'ish-core/services/country/country.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import {
@@ -47,7 +49,8 @@ describe('Quoting Store', () => {
   let apiServiceMock: ApiService;
   let quoteServiceMock: QuoteService;
   let locales: Locale[];
-  const user = { email: 'UID', customerNo: 'CID' } as User;
+  const user = { email: 'UID' } as User;
+  const customer = { customerNo: 'CID' } as Customer;
 
   beforeEach(() => {
     jest.useRealTimers();
@@ -65,6 +68,9 @@ describe('Quoting Store', () => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.icmServerURL).thenReturn('http://example.org');
 
+    const countryServiceMock = mock(CountryService);
+    when(countryServiceMock.getCountries()).thenReturn(EMPTY);
+
     quoteServiceMock = mock(QuoteService);
     when(quoteServiceMock.getQuotes()).thenReturn(of([]));
 
@@ -80,7 +86,7 @@ describe('Quoting Store', () => {
           },
           [...coreEffects, ...quotingEffects]
         ),
-        FeatureToggleModule.testingFeatures({ quoting: true }),
+        FeatureToggleModule,
         RouterTestingModule.withRoutes([
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
@@ -91,11 +97,13 @@ describe('Quoting Store', () => {
         QuoteRequestService,
         { provide: QuoteService, useFactory: () => instance(quoteServiceMock) },
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: AVAILABLE_LOCALES, useValue: locales },
       ],
     });
 
     store$ = TestBed.get(TestStore);
+    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
 
   it('should be created', () => {
@@ -132,8 +140,8 @@ describe('Quoting Store', () => {
         return of({ type: 'Link', uri: 'customers/CID/users/UID/quoterequests/' + id, title: id }).pipe(delay(1000));
       });
 
-      store$.dispatch(new LoginUserSuccess(user as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess(user));
+      store$.dispatch(new LoginUserSuccess({ customer, user }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user }));
     });
 
     it('should be created', () => {
@@ -151,7 +159,10 @@ describe('Quoting Store', () => {
         containsActionWithTypeAndPayload(QuoteActionTypes.LoadQuotesSuccess, p => !p.length)
       );
       expect(firedActions).toSatisfy(
-        containsActionWithTypeAndPayload(QuoteRequestActionTypes.LoadQuoteRequestsSuccess, p => !!p.length)
+        containsActionWithTypeAndPayload(
+          QuoteRequestActionTypes.LoadQuoteRequestsSuccess,
+          p => !!p.quoteRequests.length
+        )
       );
     });
 
@@ -228,8 +239,8 @@ describe('Quoting Store', () => {
         describe('user logs in again', () => {
           beforeEach(() => {
             store$.reset();
-            store$.dispatch(new LoginUserSuccess(user as Customer));
-            store$.dispatch(new LoadCompanyUserSuccess(user));
+            store$.dispatch(new LoginUserSuccess({ customer, user }));
+            store$.dispatch(new LoadCompanyUserSuccess({ user }));
           });
 
           it('should load all the quotes when logging in again', done =>

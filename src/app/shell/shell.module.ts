@@ -9,6 +9,7 @@ import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directi
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 
 import { FooterComponent } from './footer/components/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
@@ -48,6 +49,7 @@ const exportedComponents = [
     NgbCollapseModule,
     NgbDropdownModule,
     PipesModule,
+    QuotingExportsModule,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule,
@@ -74,6 +76,6 @@ const exportedComponents = [
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
   ],
-  exports: exportedComponents,
+  exports: [...exportedComponents],
 })
 export class ShellModule {}

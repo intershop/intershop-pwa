@@ -5,7 +5,7 @@ export interface Registration {
   passwordConfirmation: string;
   securityQuestion: number;
   securityQuestionAnswer: string;
-  countryCodeSwitch: 'BG' | 'DE' | 'FR' | 'IN' | 'GB' | 'US';
+  countryCodeSwitch: string;
   title: number;
   firstName: string;
   lastName: string;
@@ -22,13 +22,14 @@ export const sensibleDefaults: Partial<Registration> = {
   password: '!InterShop00!',
   securityQuestion: 1,
   securityQuestionAnswer: 'something',
-  countryCodeSwitch: 'DE',
+  countryCodeSwitch: 'AT',
   title: 1,
   firstName: 'Test',
   lastName: 'User',
   addressLine1: 'Testroad 1',
   postalCode: '12345',
   city: 'Testcity',
+  mainDivision: 'Wien',
 };
 
 export class RegistrationPage {
@@ -38,7 +39,24 @@ export class RegistrationPage {
     cy.visit('/register');
   }
 
-  private fillInput(key: string, value: string) {
+  input(key: keyof Registration) {
+    const input = cy.get(`[data-testing-id="${key}"]`);
+    return {
+      ...input,
+      should: (t: 'be.valid' | 'be.invalid' | string, arg?) => {
+        switch (t) {
+          case 'be.valid':
+            return input.should('have.class', 'ng-dirty').should('have.class', 'ng-valid');
+          case 'be.invalid':
+            return input.should('have.class', 'ng-dirty').should('have.class', 'ng-invalid');
+          default:
+            return input.should(t, arg);
+        }
+      },
+    };
+  }
+
+  private fillInput(key: keyof Registration, value: string) {
     cy.get(`[data-testing-id="${key}"]`)
       .clear()
       .type(value)
@@ -46,10 +64,10 @@ export class RegistrationPage {
   }
 
   fillForm(register: Partial<Registration>) {
-    Object.keys(register).forEach(key => {
+    Object.keys(register).forEach((key: keyof Registration) => {
       cy.get(this.tag).then(form => {
         if (form.find(`input[data-testing-id="${key}"]`).length) {
-          this.fillInput(key, register[key]);
+          this.fillInput(key, register[key].toString());
           if (key === 'login' && !register.loginConfirmation) {
             this.fillInput('loginConfirmation', register.login);
           } else if (key === 'password' && !register.passwordConfirmation) {
@@ -59,7 +77,7 @@ export class RegistrationPage {
           if (typeof register[key] === 'number') {
             cy.get(`[data-testing-id="${key}"]`)
               .find('option')
-              .eq(register[key])
+              .eq(register[key] as number)
               .then(option => {
                 const val = option.attr('value');
                 // tslint:disable-next-line:ban
@@ -67,7 +85,7 @@ export class RegistrationPage {
               });
           } else {
             // tslint:disable-next-line:ban
-            cy.get(`[data-testing-id="${key}"]`).select(register[key]);
+            cy.get(`[data-testing-id="${key}"]`).select(register[key].toString());
           }
         }
       });
@@ -76,13 +94,18 @@ export class RegistrationPage {
   }
 
   submit() {
+    return cy
+      .get(`${this.tag} form`)
+      .first()
+      .submit();
+  }
+
+  submitAndObserve() {
     cy.server();
     cy.route('POST', '**/customers').as('customers');
     cy.wait(500);
 
-    cy.get(`${this.tag} form`)
-      .first()
-      .submit();
+    this.submit();
     return cy.wait('@customers');
   }
 

@@ -6,13 +6,11 @@ import { Region } from 'ish-core/models/region/region.model';
 @Component({
   selector: 'ish-address-form-us',
   templateUrl: './address-form-us.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormUSComponent implements OnInit {
-  @Input()
-  addressForm: FormGroup;
-  @Input()
-  regions: Region[];
+  @Input() addressForm: FormGroup;
+  @Input() regions: Region[];
 
   ngOnInit() {
     if (!this.addressForm) {

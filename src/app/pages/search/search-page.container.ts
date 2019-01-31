@@ -35,7 +35,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
         withLatestFrom(this.searchTerm$),
         takeUntil(this.destroy$)
       )
-      .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts(searchTerm)));
+      .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts({ searchTerm })));
   }
 
   ngOnDestroy() {

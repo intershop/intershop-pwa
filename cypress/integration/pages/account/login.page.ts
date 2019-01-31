@@ -1,8 +1,16 @@
+import { HeaderModule } from '../header.module';
+
 export class LoginPage {
   readonly tag = 'ish-login-form';
 
+  readonly header = new HeaderModule();
+
   static navigateTo() {
     cy.visit('/login');
+  }
+
+  get content() {
+    return cy.get(this.tag);
   }
 
   fillForm(user: string, password: string) {

@@ -16,22 +16,22 @@ export enum ViewconfActionTypes {
 
 export class SetEndlessScrollingPageSize implements Action {
   readonly type = ViewconfActionTypes.SetEndlessScrollingPageSize;
-  constructor(public payload: number) {}
+  constructor(public payload: { itemsPerPage: number }) {}
 }
 
 export class ChangeViewType implements Action {
   readonly type = ViewconfActionTypes.ChangeViewType;
-  constructor(public payload: ViewType) {}
+  constructor(public payload: { viewType: ViewType }) {}
 }
 
 export class ChangeSortBy implements Action {
   readonly type = ViewconfActionTypes.ChangeSortBy;
-  constructor(public payload: string) {}
+  constructor(public payload: { sorting: string }) {}
 }
 
 export class SetSortKeys implements Action {
   readonly type = ViewconfActionTypes.SetSortKeys;
-  constructor(public payload: string[]) {}
+  constructor(public payload: { sortKeys: string[] }) {}
 }
 
 export class SetPagingInfo implements Action {
@@ -45,7 +45,7 @@ export class SetPagingLoading implements Action {
 
 export class SetPage implements Action {
   readonly type = ViewconfActionTypes.SetPage;
-  constructor(public payload: number) {}
+  constructor(public payload: { pageNumber: number }) {}
 }
 
 export class DisableEndlessScrolling implements Action {

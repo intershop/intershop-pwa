@@ -1,25 +1,18 @@
-import { Address } from '../address/address.model';
-
-export type UserType = 'PrivateCustomer' | 'SMBCustomerUser';
-
 export interface User {
-  type: UserType;
+  title?: string;
   firstName: string;
   lastName: string;
-  email: string;
   preferredLanguage: string;
+  birthday?: string;
 
-  title?: string;
   phoneHome?: string;
   phoneBusiness?: string;
   phoneMobile?: string;
   fax?: string;
-  preferredInvoiceToAddress?: Address;
-  preferredShipToAddress?: Address;
-  birthday?: string;
+  email: string;
 
-  // Private User only
-  customerNo?: string;
+  preferredInvoiceToAddressUrn?: string;
+  preferredShipToAddressUrn?: string;
 
   // Business User only
   businessPartnerNo?: string;

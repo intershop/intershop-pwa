@@ -1,0 +1,48 @@
+// CookieLaw plugin theme customizations
+
+.cookie-law-wrapper {
+  background: $color-primary !important;
+  opacity: 0.9;
+
+  span {
+    font-family: $font-family-regular;
+    color: $color-inverse;
+  }
+
+  a {
+    color: $color-inverse !important;
+
+    &:hover {
+      color: $text-color-quarternary !important;
+    }
+  }
+
+  button {
+    color: $color-inverse;
+    border-color: $color-inverse;
+
+    &:hover {
+      color: darken($color-inverse, 10%);
+      background-color: darken($color-primary, 10%);
+    }
+
+    @media (max-width: $screen-xs-max) {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+  }
+
+  .dismiss {
+    display: none !important;
+  }
+
+  .copy {
+    padding-right: 16px !important;
+  }
+
+  .button-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+}

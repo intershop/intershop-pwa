@@ -57,9 +57,14 @@ describe('Extension Schematic', () => {
                 schematicRunner
                   .runSchematicAsync('module', { name: 'shared', project: 'bar' }, tree)
                   .toPromise()
-                  .then(completeTree => {
-                    appTree = completeTree;
-                    done();
+                  .then(sharedModuleTree => {
+                    schematicRunner
+                      .runSchematicAsync('module', { name: 'shell', project: 'bar' }, sharedModuleTree)
+                      .toPromise()
+                      .then(completeTree => {
+                        appTree = completeTree;
+                        done();
+                      });
                   });
               })
           )
@@ -94,7 +99,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppNotFoundRoutingModule } from './pages/app-not-found-routing.module';
-import { FooExportsModule } from './extensions/foo/exports/foo-exports.module';
+import { FooRoutingModule } from './extensions/foo/pages/foo-routing.module';
 
 @NgModule({
   declarations: [
@@ -103,7 +108,7 @@ import { FooExportsModule } from './extensions/foo/exports/foo-exports.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FooExportsModule, AppNotFoundRoutingModule
+    FooRoutingModule, AppNotFoundRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -129,6 +134,26 @@ import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
   entryComponents: []
 })
 export class SharedModule { }
+"
+`);
+  });
+
+  it('should import extension exports in shell module', () => {
+    const options = { ...defaultOptions };
+
+    const tree = schematicRunner.runSchematic('extension', options, appTree);
+    const shellModuleContent = tree.readContent('/projects/bar/src/app/shell/shell.module.ts');
+    expect(shellModuleContent).toMatchInlineSnapshot(`
+"import { NgModule } from '@angular/core';
+import { FooExportsModule } from '../extensions/foo/exports/foo-exports.module';
+
+@NgModule({
+  imports: [FooExportsModule],
+  declarations: [],
+  exports: [],
+  entryComponents: []
+})
+export class ShellModule { }
 "
 `);
   });

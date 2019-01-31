@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
@@ -40,7 +41,7 @@ describe('Quote Edit Component', () => {
         MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
         QuoteEditComponent,
       ],
-      imports: [FormsSharedModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -48,6 +49,10 @@ describe('Quote Edit Component', () => {
     fixture = TestBed.createComponent(QuoteEditComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    const translateService = TestBed.get(TranslateService);
+    translateService.use('en');
+
     component.quote = {} as Quote;
   });
 

@@ -40,7 +40,7 @@ describe('Countries Effects', () => {
   describe('loadCountries$', () => {
     it('should load all countries on effects init and dispatch a LoadCountriesSuccess action', () => {
       const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
-      const expected = new LoadCountriesSuccess(countries);
+      const expected = new LoadCountriesSuccess({ countries });
 
       actions$ = hot('-a-------', { a: action });
 
@@ -51,7 +51,7 @@ describe('Countries Effects', () => {
       when(countryServiceMock.getCountries()).thenReturn(throwError({ message: 'error' }));
 
       const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
-      const expected = new LoadCountriesFail({ message: 'error' } as HttpError);
+      const expected = new LoadCountriesFail({ error: { message: 'error' } as HttpError });
 
       actions$ = hot('-a', { a: action });
 

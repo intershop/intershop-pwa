@@ -1,3 +1,4 @@
+// tslint:disable:no-commented-out-code
 // The file contents for the current environment will overwrite these during build.
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --prod` then `environment.prod.ts` will be used instead.
@@ -12,7 +13,7 @@ export const environment = {
   icmBaseURL: 'http://localhost:4200',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
-  icmApplication: 'inSPIRED-inTRONICS-Site',
+  icmChannel: 'inSPIRED-inTRONICS-Site',
 
   // configuration of the available locales - hard coded for now
   locales: [
@@ -39,11 +40,12 @@ export const environment = {
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
 
-  // experimental feature: enable feature toggles for specific features
-  features: {
-    compare: true,
-    recently: true,
-    quoting: false,
-    stickyHeader: true,
-  },
+  // enable feature toggles for specific features
+  features: [
+    'compare',
+    'recently',
+    // 'quoting',
+    'stickyHeader',
+    // 'businessCustomerRegistration'
+  ],
 };

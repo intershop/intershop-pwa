@@ -6,7 +6,7 @@ export enum ViewconfActionTypes {
 
 export class SetCheckoutStep implements Action {
   readonly type = ViewconfActionTypes.SetCheckoutStep;
-  constructor(public payload: number) {}
+  constructor(public payload: { step: number }) {}
 }
 
 export declare type ViewconfActions = SetCheckoutStep;

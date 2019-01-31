@@ -1,8 +1,11 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -42,14 +45,8 @@ var NgModulesSortedFieldsWalker = (function (_super) {
             .filter(function (node) { return node.kind === ts.SyntaxKind.VariableStatement; })
             .map(function (node) { return node.getChildAt(0); })
             .filter(function (node) { return node.kind === ts.SyntaxKind.VariableDeclarationList; })
-            .map(function (node) {
-            return node
-                .getChildAt(1)
-                .getChildAt(0)
-                .getChildAt(2)
-                .getChildAt(1);
-        })
-            .forEach(function (node) { return _this.sortList(node); });
+            .map(function (node) { return node.getChildAt(1).getChildAt(0); })
+            .forEach(function (node) { return _this.sortList(node.getChildAt(2).getChildAt(1)); });
         var ngModuleDeclarationList = decorator
             .getChildAt(1)
             .getChildAt(2)
@@ -63,11 +60,21 @@ var NgModulesSortedFieldsWalker = (function (_super) {
         ngModuleDeclarationList
             .getChildren()
             .filter(function (node) { return node.kind !== ts.SyntaxKind.CommaToken; })
-            .filter(function (node) { return /^(exports|imports|declarations)$/.test(node.getChildAt(0).getText()); })
+            .filter(function (node) { return /^(exports|imports|declarations|entryComponents)$/.test(node.getChildAt(0).getText()); })
+            .filter(function (node) { return _this.assertList(node); })
             .forEach(function (node) {
-            var list = node.getChildAt(2).getChildAt(1);
-            _this.sortList(list);
+            _this.sortList(node.getChildAt(2).getChildAt(1));
         });
+    };
+    NgModulesSortedFieldsWalker.prototype.assertList = function (node) {
+        if (node.getSourceFile().fileName.endsWith('.spec.ts')) {
+            return true;
+        }
+        if (node.getChildCount() < 3 || node.getChildAt(2).kind !== ts.SyntaxKind.ArrayLiteralExpression) {
+            this.addFailureAtNode(node, 'Right-hand side is not an array, but it should be for schematics to function properly.');
+            return false;
+        }
+        return true;
     };
     NgModulesSortedFieldsWalker.prototype.sortList = function (list) {
         var possibleSorted = this.getSortedIfNot(list);

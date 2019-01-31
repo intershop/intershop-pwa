@@ -5,6 +5,9 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
+import { CookieLawModule } from 'angular2-cookie-law';
+
+import { TrackingModule } from '../extensions/tracking/tracking.module';
 
 import { ConfigurationModule } from './configuration.module';
 import { IconModule } from './icon.module';
@@ -18,10 +21,12 @@ export function translateFactory(http: HttpClient) {
 @NgModule({
   imports: [
     ConfigurationModule,
+    CookieLawModule,
     HttpClientModule,
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
+    TrackingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -34,6 +39,8 @@ export function translateFactory(http: HttpClient) {
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
   ],
+  // exports needed to use the CookieLaw module in the AppComponent
+  exports: [CookieLawModule, TranslateModule],
 })
 export class CoreModule {
   constructor(

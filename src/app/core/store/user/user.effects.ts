@@ -6,10 +6,10 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction } from 'ish-core/utils/operators';
-import { Customer } from '../../models/customer/customer.model';
+import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
-import { RegistrationService } from '../../services/registration/registration.service';
+import { UserService } from '../../services/user/user.service';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
@@ -22,8 +22,8 @@ function mapUserErrorToActionIfPossible<T>(specific) {
       catchError(error =>
         of(
           error.headers.has('error-key')
-            ? new specific(HttpErrorMapper.fromError(error))
-            : new GeneralError(HttpErrorMapper.fromError(error))
+            ? new specific({ error: HttpErrorMapper.fromError(error) })
+            : new GeneralError({ error: HttpErrorMapper.fromError(error) })
         )
       )
     );
@@ -34,17 +34,17 @@ export class UserEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<{}>,
-    private registrationService: RegistrationService,
+    private userService: UserService,
     private router: Router
   ) {}
 
   @Effect()
   loginUser$ = this.actions$.pipe(
     ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
-    map(action => action.payload),
+    mapToPayloadProperty('credentials'),
     mergeMap(credentials =>
-      this.registrationService.signinUser(credentials).pipe(
-        map(customer => new userActions.LoginUserSuccess(customer)),
+      this.userService.signinUser(credentials).pipe(
+        map(data => new userActions.LoginUserSuccess(data)),
         mapUserErrorToActionIfPossible(userActions.LoginUserFail)
       )
     )
@@ -54,8 +54,8 @@ export class UserEffects {
   loadCompanyUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoadCompanyUser),
     mergeMap(() =>
-      this.registrationService.getCompanyUserData().pipe(
-        map(user => new userActions.LoadCompanyUserSuccess(user)),
+      this.userService.getCompanyUserData().pipe(
+        map(user => new userActions.LoadCompanyUserSuccess({ user })),
         mapErrorToAction(userActions.LoadCompanyUserFail)
       )
     )
@@ -85,10 +85,11 @@ export class UserEffects {
   @Effect()
   createUser$ = this.actions$.pipe(
     ofType<userActions.CreateUser>(userActions.UserActionTypes.CreateUser),
-    map(action => action.payload),
-    mergeMap((customerData: Customer) =>
-      this.registrationService.createUser(customerData).pipe(
-        map(customer => new userActions.CreateUserSuccess(customer)),
+    mapToPayload(),
+    mergeMap((data: CustomerRegistrationType) =>
+      this.userService.createUser(data).pipe(
+        // TODO:see #IS-22750 - user should actually be logged in after registration
+        map(() => new userActions.LoginUser({ credentials: data.credentials })),
         mapUserErrorToActionIfPossible(userActions.CreateUserFail)
       )
     )
@@ -103,16 +104,10 @@ export class UserEffects {
   );
 
   @Effect()
-  publishLoginEventAfterCreate$ = this.actions$.pipe(
-    ofType<userActions.CreateUserSuccess>(userActions.UserActionTypes.CreateUserSuccess),
-    map(action => new userActions.LoginUserSuccess(action.payload))
-  );
-
-  @Effect()
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
     ofType<userActions.LoginUserSuccess>(userActions.UserActionTypes.LoginUserSuccess),
-    map(action => action.payload),
-    filter(customer => customer.type === 'SMBCustomer'),
+    mapToPayload(),
+    filter(payload => payload.customer.type === 'SMBCustomer'),
     mapTo(new userActions.LoadCompanyUser())
   );
 }

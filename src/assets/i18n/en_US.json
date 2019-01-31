@@ -1605,6 +1605,8 @@
   "common.user.language.text": "LANGUAGE",
   "common.user.locale.text": "EN",
   "common.view_all.link": "View All",
+  "cookie_law.button": "Accept",
+  "cookie_law.text": "This website uses cookies to improve your experience on our site. More detailed informations are provided in our <a href=\"{{0}}\">Privacy Policy<\/a>.",
   "dialog.close.text": "Close",
   "email.address.message": "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"footerAddressItem\" width=\"50%\">Max Mustermann<br />Pattern Street 15<br />99999 Patterncity<\/td><td class=\"footerAddressItem\" width=\"50%\">Max Mustermann<br />Pattern Street 15<br />99999 Patterncity<\/td><\/tr><\/table>",
   "email.approve_customer.button": "<a href=\"{{0}}\">Approve Customer<\/a>",

@@ -1,24 +1,40 @@
 <!-- NEEDS_WORK: DUMMY COMPONENT -->
 <div class="clearfix">
-
   <div class="footer-top">
     <div class="container">
       <div class="row">
         <div class="contact col-12 col-sm-5 col-md-6 col-lg-8 clearfix">
           <fa-icon [icon]="['fas', 'phone']" class="header-icon"></fa-icon>
           <h4>Contact</h4>
-          <span>{{'common.header.contact_no.text' | translate}}</span>
+          <span>{{ 'common.header.contact_no.text' | translate }}</span>
         </div>
         <div class="social-links col-12 pt-4 col-sm-7 pt-sm-0 col-md-6 col-lg-4 clearfix">
           <h4><strong>CONNECT</strong> WITH US</h4>
           <ul>
-            <li><a class="icon-svg icon-facebook" title="Facebook" target="_blank" href="http://www.facebook.com/"></a></li>
-            <li><a class="icon-svg icon-twitter" title="twitter" target="_blank" href="http://www.twitter.com/"></a></li>
-            <li><a class="icon-svg icon-youtube" title="Youtube" target="_blank" href="http://www.youtube.com/"></a></li>
+            <li>
+              <a class="icon-svg icon-facebook" title="Facebook" target="_blank" href="http://www.facebook.com/"></a>
+            </li>
+            <li>
+              <a class="icon-svg icon-twitter" title="twitter" target="_blank" href="http://www.twitter.com/"></a>
+            </li>
+            <li>
+              <a class="icon-svg icon-youtube" title="Youtube" target="_blank" href="http://www.youtube.com/"></a>
+            </li>
             <li><a class="icon-svg icon-vimeo" title="Vimeo" target="_blank" href="http://www.vimeo.com/"></a></li>
-            <li><a class="icon-svg icon-pinterest" title="Pinterest" target="_blank" href="http://www.pinterest.com/"></a></li>
-            <li><a class="icon-svg icon-googleplus" title="Google plus" target="_blank" href="http://plus.google.com/"></a></li>
-            <li><a class="icon-svg icon-instagram" title="Instagram" target="_blank" href="http://instagram.com//"></a></li>
+            <li>
+              <a class="icon-svg icon-pinterest" title="Pinterest" target="_blank" href="http://www.pinterest.com/"></a>
+            </li>
+            <li>
+              <a
+                class="icon-svg icon-googleplus"
+                title="Google plus"
+                target="_blank"
+                href="http://plus.google.com/"
+              ></a>
+            </li>
+            <li>
+              <a class="icon-svg icon-instagram" title="Instagram" target="_blank" href="http://instagram.com//"></a>
+            </li>
           </ul>
         </div>
       </div>
@@ -28,18 +44,18 @@
   <div class="footer">
     <div class="container">
       <div class="row">
-        <p class="disclaimer"><strong>Disclaimer: </strong>We advise you that this inSPIRED demo shop is a shop for demonstration only and all
-          contents are of exemplary nature for demonstration and illustration purposes solely. Intershop Communications
-          AG does not guarantee and accepts no liability for correctness, completeness and up-to-dateness of the contents
-          provided. The contents of the demo shop must not be adopted or copied to your shop or otherwise being used by
-          you.
+        <p class="disclaimer">
+          <strong>Disclaimer: </strong>We advise you that this inSPIRED demo shop is a shop for demonstration only and
+          all contents are of exemplary nature for demonstration and illustration purposes solely. Intershop
+          Communications AG does not guarantee and accepts no liability for correctness, completeness and up-to-dateness
+          of the contents provided. The contents of the demo shop must not be adopted or copied to your shop or
+          otherwise being used by you.
         </p>
       </div>
       <div class="row">
         <div class="col-md-4 col-lg-2">
           <h4 class="d-md-none link-group-title" (click)="collapsed[0] = !collapsed[0]">
-            <span style="text-transform: none;">in</span>
-            SPIRED
+            <span style="text-transform: none;">in</span> SPIRED
             <fa-icon class="link-group-icon" [icon]="['fas', 'angle-down']"></fa-icon>
           </h4>
           <h4 class="d-none d-md-block"><span style="text-transform: none;">in</span>SPIRED</h4>
@@ -90,10 +106,10 @@
           </div>
         </div>
         <div class="col-md-4 col-lg-2">
-            <h4 class="d-md-none link-group-title" (click)="collapsed[3] = !collapsed[3]">
-              TOP CATEGORIES
-              <fa-icon class="link-group-icon" [icon]="['fas', 'angle-down']"></fa-icon>
-            </h4>
+          <h4 class="d-md-none link-group-title" (click)="collapsed[3] = !collapsed[3]">
+            TOP CATEGORIES
+            <fa-icon class="link-group-icon" [icon]="['fas', 'angle-down']"></fa-icon>
+          </h4>
           <h4 class="d-none d-md-block">TOP CATEGORIES</h4>
           <div class="link-group" [ngbCollapse]="collapsed[3]">
             <ul>
@@ -115,7 +131,11 @@
           <div class="link-group" [ngbCollapse]="collapsed[4]">
             <ul>
               <li><a routerLink="/category/Cameras-Camcorders.832/product/8182790134362">GoPro Hero 4 Silver</a></li>
-              <li><a routerLink="/category/Home-Entertainment.220.1584/product/8806086011815">Samsung Full HD 3D Smart TV</a></li>
+              <li>
+                <a routerLink="/category/Home-Entertainment.220.1584/product/8806086011815"
+                  >Samsung Full HD 3D Smart TV</a
+                >
+              </li>
               <li><a routerLink="/product/3953312">Canon LEGRIA HF R16</a></li>
               <li><a routerLink="/product/8806086070188">Samsung Galaxy NotePRO 4G </a></li>
               <li><a routerLink="/product/689796">Wrist Rest Fellowes</a></li>
@@ -130,7 +150,9 @@
           <h4 class="d-none d-md-block">DEMO CONTENT</h4>
           <div class="link-group" [ngbCollapse]="collapsed[5]">
             <ul>
-              <li><a href="" title="Demo Content provided by Icecat" class="cms-footer-longLinks">Icecat Content</a></li>
+              <li>
+                <a href="" title="Demo Content provided by Icecat" class="cms-footer-longLinks">Icecat Content</a>
+              </li>
               <li><a href="" title="Demo Content Disclaimer">Demo Disclaimer</a></li>
               <!-- <li><a (click)="addDUMMYModal.show()" title="Open Modal">Modal</a></li> -->
               <li><a routerLink="/error" title="Error Page">Error</a></li>
@@ -141,13 +163,8 @@
         </div>
       </div>
       <div class="row text-center">
-        <p class="copyright">© 2018 INTERSHOP Communications AG. All rights reserved.</p>
+        <p class="copyright">© 2019 INTERSHOP Communications AG. All rights reserved.</p>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-

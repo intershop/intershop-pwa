@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProduct, LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -22,8 +24,9 @@ describe('Product Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule.testingFeatures({ recently: true }),
+        FeatureToggleModule,
         NgbModalModule,
+        RouterTestingModule,
         StoreModule.forRoot({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
@@ -40,8 +43,12 @@ describe('Product Page Container', () => {
           template: 'Product Add To Quote Dialog',
           inputs: ['quote', 'quoteLoading'],
         }),
+        MockComponent({
+          selector: 'ish-product-detail',
+          template: 'Category Page Component',
+          inputs: ['product', 'currentUrl'],
+        }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         ProductPageContainerComponent,
       ],
@@ -54,6 +61,7 @@ describe('Product Page Container', () => {
     element = fixture.nativeElement;
 
     store$ = TestBed.get(Store);
+    store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
   });
 
   it('should be created', () => {
@@ -69,7 +77,7 @@ describe('Product Page Container', () => {
   });
 
   it('should display loading when product is loading', () => {
-    store$.dispatch(new LoadProduct('dummy'));
+    store$.dispatch(new LoadProduct({ sku: 'dummy' }));
 
     fixture.detectChanges();
 
@@ -79,8 +87,8 @@ describe('Product Page Container', () => {
 
   it('should display product-detail when product is available', () => {
     const product = { sku: 'dummy' } as Product;
-    store$.dispatch(new LoadProductSuccess(product));
-    store$.dispatch(new SelectProduct(product.sku));
+    store$.dispatch(new LoadProductSuccess({ product }));
+    store$.dispatch(new SelectProduct({ sku: product.sku }));
 
     fixture.detectChanges();
 

@@ -1,37 +1,33 @@
-<div class="row checkout-address-book">
-
+<div *ngIf="basket" class="row checkout-address-book">
   <!-- error messages -->
   <div *ngIf="error && error.status" class="col-md-12">
-    <div role="alert" class="alert alert-danger">
-      {{ error.status }}: {{ error.error }}
-    </div>
+    <div role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
   </div>
 
   <div *ngIf="nextDisabled && !error" class="col-md-12">
-    <div class="alert alert-danger">
-      {{ 'checkout.addresses.no_Selection.error' | translate }}
-    </div>
+    <div class="alert alert-danger">{{ 'checkout.addresses.no_Selection.error' | translate }}</div>
   </div>
 
   <!-- ------------------------------- invoice address ---------------------------------- -->
   <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
-    <h2> {{ 'checkout.address.billing.label' | translate }}</h2>
+    <h2>{{ 'checkout.address.billing.label' | translate }}</h2>
     <div *ngIf="basket.invoiceToAddress" class="address-box">
-
       <!-- edit invoice address -->
-      <a *ngIf="invoice.isFormCollapsed"
+      <a
+        *ngIf="invoice.isFormCollapsed"
         class="btn-tool float-right"
         title="{{ 'checkout.address.update.button.label' | translate }}"
         (click)="showInvoiceAddressForm(basket.invoiceToAddress)"
-        data-testing-id="edit-invoice-address-link">
+        data-testing-id="edit-invoice-address-link"
+      >
         <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
       </a>
 
       <!-- display invoice address -->
       <ish-address [address]="basket.invoiceToAddress"></ish-address>
     </div>
-    <p *ngIf="!basket.invoiceToAddress" class="text-danger">
-      {{ 'checkout.addresses.no_Selection.invoice.error' | translate}}
+    <p *ngIf="!basket.invoiceToAddress && nextDisabled" class="text-danger">
+      {{ 'checkout.addresses.no_Selection.invoice.error' | translate }}
     </p>
 
     <!-- invoice address selection -->
@@ -53,7 +49,8 @@
         class="btn btn-link"
         (click)="showInvoiceAddressForm()"
         [attr.aria-expanded]="!invoice.isFormCollapsed"
-        aria-controls="collapseBasic">
+        aria-controls="collapseBasic"
+      >
         {{ 'checkout.create_address.link' | translate }}
       </button>
     </div>
@@ -61,46 +58,53 @@
     <!-- invoice address form -->
     <div id="collapseBasic" [ngbCollapse]="invoice.isFormCollapsed" data-testing-id="invoice-address-form">
       <ish-customer-address-form
-        [regions]="regions"
-        [titles]="titles"
-        [countries]="countries"
         [address]="invoice.address"
         [resetForm]="!invoice.isFormCollapsed"
         (save)="saveCustomerInvoiceAddress($event)"
         (cancel)="cancelEditAddress(invoice)"
-        (countryChange)="handleCountryChange($event)">
+      >
       </ish-customer-address-form>
     </div>
   </div>
 
   <!-- ------------------------------ shipping address ----------------------------------------- -->
   <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
-    <h2> {{ 'checkout.address.shipping.label' | translate }}</h2>
+    <h2>{{ 'checkout.address.shipping.label' | translate }}</h2>
 
     <!-- Display shipping address container -->
     <div *ngIf="basket.commonShipToAddress" class="address-box">
       <ng-container *ngIf="!basket.invoiceToAddress || basket.commonShipToAddress.urn !== basket.invoiceToAddress.urn">
         <div class="float-right">
           <!-- edit shipping address -->
-          <a *ngIf="shipping.isFormCollapsed" class="btn-tool" title="{{ 'checkout.address.update.button.label' | translate }}"
-            (click)="showShippingAddressForm(basket.commonShipToAddress)" data-testing-id="edit-shipping-address-link">
+          <a
+            *ngIf="shipping.isFormCollapsed"
+            class="btn-tool"
+            title="{{ 'checkout.address.update.button.label' | translate }}"
+            (click)="showShippingAddressForm(basket.commonShipToAddress)"
+            data-testing-id="edit-shipping-address-link"
+          >
             <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
           </a>
 
           <!-- delete shipping address -->
-          <a *ngIf="shipping.isAddressDeleteable"
+          <a
+            *ngIf="shipping.isAddressDeleteable"
             class="btn-tool"
             title="{{ 'checkout.address.delete.button.label' | translate }}"
-            (click)="modalDialog.show(basket.commonShipToAddress)">
+            (click)="modalDialog.show(basket.commonShipToAddress)"
+          >
             <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
           </a>
 
-          <ish-modal-dialog #modalDialog [options]="{
-                titleText: 'checkout.address.delete.confirmation.heading' | translate,
-                confirmText: 'checkout.address.button.delete' | translate,
-                rejectText: 'checkout.address.button.cancel' | translate
-              }"
-            (confirmed)="deleteAddress($event)">
+          <ish-modal-dialog
+            #modalDialog
+            [options]="{
+              titleText: 'checkout.address.delete.confirmation.heading' | translate,
+              confirmText: 'checkout.address.button.delete' | translate,
+              rejectText: 'checkout.address.button.cancel' | translate
+            }"
+            (confirmed)="deleteAddress($event)"
+          >
             <p>{{ 'checkout.address.delete.confirmation.text' | translate }}</p>
             <small class="help-block">{{ 'checkout.address.delete.confirmation.deletionhint' | translate }}</small>
           </ish-modal-dialog>
@@ -110,14 +114,19 @@
         <ish-address [address]="basket.commonShipToAddress"></ish-address>
       </ng-container>
 
-      <p *ngIf="basket.invoiceToAddress && basket.commonShipToAddress.urn === basket.invoiceToAddress.urn"
-        data-testing-id="sameAsInvoice" class="section">
-        {{ 'checkout.same_as_billing_address.text' | translate}}
-        <p>
+      <p
+        *ngIf="basket.invoiceToAddress && basket.commonShipToAddress.urn === basket.invoiceToAddress.urn"
+        data-testing-id="sameAsInvoice"
+        class="section"
+      >
+        {{ 'checkout.same_as_billing_address.text' | translate }}
+      </p>
+
+      <p></p>
     </div>
 
-    <p *ngIf="!basket.commonShipToAddress" class="text-danger">
-      {{ 'checkout.addresses.no_Selection.shipping.error' | translate}}
+    <p *ngIf="!basket.commonShipToAddress && nextDisabled" class="text-danger">
+      {{ 'checkout.addresses.no_Selection.shipping.error' | translate }}
     </p>
 
     <!-- shipping address selection -->
@@ -139,7 +148,8 @@
         class="btn btn-link"
         (click)="showShippingAddressForm()"
         [attr.aria-expanded]="!shipping.isFormCollapsed"
-        aria-controls="collapseBasic">
+        aria-controls="collapseBasic"
+      >
         {{ 'checkout.create_address.link' | translate }}
       </button>
     </div>
@@ -147,14 +157,11 @@
     <!-- shipping address form -->
     <div id="collapseBasic" [ngbCollapse]="shipping.isFormCollapsed" data-testing-id="shipping-address-form">
       <ish-customer-address-form
-        [regions]="regions"
-        [titles]="titles"
-        [countries]="countries"
         [address]="shipping.address"
         [resetForm]="!shipping.isFormCollapsed"
         (save)="saveCustomerShippingAddress($event)"
         (cancel)="cancelEditAddress(shipping)"
-        (countryChange)="handleCountryChange($event)">
+      >
       </ish-customer-address-form>
     </div>
   </div>
@@ -168,14 +175,9 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
-      <button
-        class="btn btn-lg btn-block btn-primary"
-        type="button"
-        [disabled]="nextDisabled"
-        (click)="nextStep()">
-        {{'checkout.button.label' | translate}}
+      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="nextDisabled" (click)="nextStep()">
+        {{ 'checkout.button.label' | translate }}
       </button>
     </div>
-
   </div>
 </div>

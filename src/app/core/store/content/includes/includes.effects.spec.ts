@@ -41,7 +41,7 @@ describe('Includes Effects', () => {
         of({ include: { id: 'dummy' } as ContentInclude, pagelets: [] })
       );
 
-      actions$ = of(new LoadContentInclude('dummy'));
+      actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe((action: LoadContentIncludeSuccess) => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -54,12 +54,12 @@ describe('Includes Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = of(new LoadContentInclude('dummy'));
+      actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));
 
-      effects.loadContentInclude$.subscribe((action: LoadContentIncludeSuccess) => {
+      effects.loadContentInclude$.subscribe((action: LoadContentIncludeFail) => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
         expect(action.type).toEqual(IncludesActionTypes.LoadContentIncludeFail);
-        expect(action.payload).toHaveProperty('message', 'ERROR');
+        expect(action.payload.error).toHaveProperty('message', 'ERROR');
         done();
       });
     });
@@ -67,10 +67,10 @@ describe('Includes Effects', () => {
     it('should not die when encountering an error', () => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = hot('a-a-a-a', { a: new LoadContentInclude('dummy') });
+      actions$ = hot('a-a-a-a', { a: new LoadContentInclude({ includeId: 'dummy' }) });
 
       expect(effects.loadContentInclude$).toBeObservable(
-        cold('a-a-a-a', { a: new LoadContentIncludeFail({ message: 'ERROR' } as HttpError) })
+        cold('a-a-a-a', { a: new LoadContentIncludeFail({ error: { message: 'ERROR' } as HttpError }) })
       );
     });
   });

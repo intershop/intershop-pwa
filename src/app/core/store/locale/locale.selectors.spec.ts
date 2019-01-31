@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { Locale } from '../../models/locale/locale.model';
-import { coreReducers } from '../core-store.module';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
+import { localeReducer } from './locale.reducer';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
 
 describe('Locale Selectors', () => {
@@ -14,7 +14,7 @@ describe('Locale Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting(coreReducers),
+      imports: ngrxTesting({ locale: localeReducer }),
     });
 
     store$ = TestBed.get(TestStore);
@@ -26,15 +26,15 @@ describe('Locale Selectors', () => {
   });
 
   it('should select a available locales when SetAvailableLocales action is reduced', () => {
-    store$.dispatch(new SetAvailableLocales(locales));
+    store$.dispatch(new SetAvailableLocales({ locales }));
 
-    expect(getCurrentLocale(store$.state)).toBeUndefined();
+    expect(getCurrentLocale(store$.state)).toEqual(locales[0]);
     expect(getAvailableLocales(store$.state)).toEqual(locales);
   });
 
   it('should select a locale when SelectLocale action is reduced', () => {
-    store$.dispatch(new SetAvailableLocales(locales));
-    store$.dispatch(new SelectLocale(locales[1]));
+    store$.dispatch(new SetAvailableLocales({ locales }));
+    store$.dispatch(new SelectLocale({ lang: locales[1].lang }));
 
     expect(getCurrentLocale(store$.state)).toEqual(locales[1]);
     expect(getAvailableLocales(store$.state)).toEqual(locales);

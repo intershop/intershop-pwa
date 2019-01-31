@@ -1,5 +1,4 @@
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
-import { LocaleActionTypes, SelectLocale } from '../../locale';
 
 import {
   CategoriesAction,
@@ -23,7 +22,7 @@ export const initialState: CategoriesState = {
 };
 
 function mergeCategories(state: CategoriesState, action: LoadTopLevelCategoriesSuccess | LoadCategorySuccess) {
-  const loadedTree = action.payload;
+  const loadedTree = action.payload.categories;
   const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
   return {
     ...state,
@@ -32,17 +31,18 @@ function mergeCategories(state: CategoriesState, action: LoadTopLevelCategoriesS
   };
 }
 
-export function categoriesReducer(state = initialState, action: CategoriesAction | SelectLocale): CategoriesState {
+export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
-    case LocaleActionTypes.SelectLocale: {
-      return { ...state, topLevelLoaded: false };
+    case CategoriesActionTypes.DeselectCategory: {
+      return {
+        ...state,
+        selected: undefined,
+      };
     }
-
-    case CategoriesActionTypes.DeselectCategory:
     case CategoriesActionTypes.SelectCategory: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.categoryId,
       };
     }
 

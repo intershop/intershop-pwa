@@ -1,39 +1,10 @@
 import { Attribute } from '../attribute/attribute.model';
-import { Category } from '../category/category.model';
 import { Image } from '../image/image.model';
 
 import { Product } from './product.model';
 import { ProductType } from './product.types';
 
 export class ProductHelper {
-  /**
-   * Generate a product detail route with optional category context.
-   * @param product   The Product to genereate the route for
-   * @param category  The optional Category that should be used as context for the product route
-   * @returns         Product route string
-   */
-  static generateProductRoute(product: Product, category?: Category): string {
-    if (!(product && product.sku)) {
-      return '/';
-    }
-    let productRoute = '/product/' + product.sku;
-    const productSlug = ProductHelper.generateProductSlug(product);
-    if (productSlug) {
-      productRoute += '/' + productSlug;
-    }
-
-    if (category) {
-      productRoute = `/category/${category.uniqueId}${productRoute}`;
-    } else {
-      // TODO: add defaultCategory to route once this information is available with the products REST call
-    }
-    return productRoute;
-  }
-
-  static generateProductSlug(product: Product) {
-    return product && product.name ? product.name.replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+$/g, '') : undefined;
-  }
-
   /**
    * Get primary product image based on image type
    * @param product   The Product for which to get the primary image

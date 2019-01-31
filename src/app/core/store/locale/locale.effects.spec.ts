@@ -50,40 +50,19 @@ describe('Locale Effects', () => {
         done();
       });
 
-      store$.dispatch(new SetAvailableLocales(defaultLocales));
-      store$.dispatch(new SelectLocale({ lang: 'en_US' } as Locale));
+      store$.dispatch(new SetAvailableLocales({ locales: defaultLocales }));
+      store$.dispatch(new SelectLocale({ lang: 'en_US' }));
     });
   });
 
   describe('loadAllLocales$', () => {
     it('should load all locales on first routing action', () => {
       const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
-      const expected = new SetAvailableLocales(defaultLocales);
+      const expected = new SetAvailableLocales({ locales: defaultLocales });
 
       actions$ = hot('-a--a-----a', { a: action });
 
       expect(effects.loadAllLocales$).toBeObservable(cold('-b----------------', { b: expected }));
-    });
-  });
-
-  describe('setFirstAvailableLocale$', () => {
-    it('should trigger loading the first available locale when SetAvailableLocales action was received', () => {
-      const japanese = { lang: 'jp' } as Locale;
-      const action = new SetAvailableLocales([japanese]);
-      const expected = new SelectLocale(japanese);
-
-      actions$ = hot('-a', { a: action });
-
-      expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
-    });
-
-    it('should trigger SelectLocale with undefined locale when SetAvailableLocales action was received with no locales', () => {
-      const action = new SetAvailableLocales([]);
-      const expected = new SelectLocale(undefined);
-
-      actions$ = hot('-a', { a: action });
-
-      expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
     });
   });
 });

@@ -22,7 +22,7 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
     case FilterActionTypes.LoadFilterForSearchSuccess: {
       return {
         ...state,
-        availableFilter: action.payload,
+        availableFilter: action.payload.filterNavigation,
         loading: false,
       };
     }

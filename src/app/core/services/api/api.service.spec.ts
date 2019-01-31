@@ -1,45 +1,44 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Action, Store } from '@ngrx/store';
+import { Action, Store, StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
-import { EMPTY } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { Link } from '../../models/link/link.model';
 import { Locale } from '../../models/locale/locale.model';
 import { ErrorActionTypes, ServerError } from '../../store/error';
-import { ICM_SERVER_URL, REST_ENDPOINT } from '../../utils/state-transfer/factories';
 
 import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service', () => {
   describe('API Service Methods', () => {
-    const BASE_URL = 'http://www.example.org';
+    const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
-    let storeMock$: Store<{}>;
+    let storeSpy$: Store<{}>;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
-      storeMock$ = mock(Store);
-      when(storeMock$.pipe(anything())).thenReturn(EMPTY);
-
       TestBed.configureTestingModule({
         imports: [
           // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
+          StoreModule.forRoot(
+            { configuration: configurationReducer },
+            {
+              initialState: {
+                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
+              },
+            }
+          ),
         ],
-        providers: [
-          { provide: REST_ENDPOINT, useValue: BASE_URL },
-          { provide: ICM_SERVER_URL, useValue: BASE_URL },
-          { provide: Store, useFactory: () => instance(storeMock$) },
-          ApiServiceErrorHandler,
-          ApiService,
-        ],
+        providers: [ApiServiceErrorHandler, ApiService],
       });
 
       apiService = TestBed.get(ApiService);
       httpTestingController = TestBed.get(HttpTestingController);
+      storeSpy$ = spy(TestBed.get(Store));
     });
 
     afterEach(() => {
@@ -53,7 +52,7 @@ describe('Api Service', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('OPTIONS');
     });
@@ -62,14 +61,14 @@ describe('Api Service', () => {
       const statusText = 'ERROAAR';
 
       apiService.options('data').subscribe(fail, fail);
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
 
       req.flush('err', { status: 500, statusText });
 
-      verify(storeMock$.dispatch(anything())).once();
-      const [action] = capture(storeMock$.dispatch).last();
+      verify(storeSpy$.dispatch(anything())).once();
+      const [action] = capture(storeSpy$.dispatch).last();
       expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((action as ServerError).error.statusText).toEqual(statusText);
+      expect((action as ServerError).payload.error).toHaveProperty('statusText', statusText);
     });
 
     it('should call the httpClient.get method when apiService.get method is called.', done => {
@@ -78,7 +77,7 @@ describe('Api Service', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('GET');
     });
@@ -87,14 +86,14 @@ describe('Api Service', () => {
       const statusText = 'ERROAAR';
 
       apiService.get('data').subscribe(fail, fail);
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
 
       req.flush('err', { status: 500, statusText });
 
-      verify(storeMock$.dispatch(anything())).once();
-      const [action] = capture(storeMock$.dispatch).last();
+      verify(storeSpy$.dispatch(anything())).once();
+      const [action] = capture(storeSpy$.dispatch).last();
       expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((action as ServerError).error.statusText).toEqual(statusText);
+      expect((action as ServerError).payload.error).toHaveProperty('statusText', statusText);
     });
 
     it('should call the httpClient.put method when apiService.put method is called.', done => {
@@ -103,7 +102,7 @@ describe('Api Service', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('PUT');
     });
@@ -114,7 +113,7 @@ describe('Api Service', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('PATCH');
     });
@@ -125,7 +124,7 @@ describe('Api Service', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('POST');
     });
@@ -136,7 +135,7 @@ describe('Api Service', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      const req = httpTestingController.expectOne(`${REST_URL}/data`);
       req.flush({});
       expect(req.request.method).toEqual('DELETE');
     });
@@ -198,10 +197,9 @@ describe('Api Service', () => {
   describe('API Service Pipable Operators', () => {
     let httpTestingController: HttpTestingController;
     let apiService: ApiService;
-    let storeMock$: Store<{}>;
 
-    const BASE_URL = 'http://www.example.org/WFS';
-    const categoriesPath = `${BASE_URL}/site/categories`;
+    const REST_URL = 'http://www.example.org/WFS/site/-';
+    const categoriesPath = `${REST_URL}/categories`;
     const webcamsPath = `${categoriesPath}/Cameras-Camcorders/577`;
     const webcamResponse = {
       name: 'Webcams',
@@ -210,7 +208,7 @@ describe('Api Service', () => {
     };
     const webcamLink = {
       type: 'Link',
-      uri: 'site/categories/Cameras-Camcorders/577',
+      uri: 'site/-/categories/Cameras-Camcorders/577',
     };
     const categoriesResponse = {
       elements: [webcamLink],
@@ -218,18 +216,19 @@ describe('Api Service', () => {
     };
 
     beforeEach(() => {
-      storeMock$ = mock(Store);
-      when(storeMock$.pipe(anything())).thenReturn(EMPTY);
-
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [
-          { provide: REST_ENDPOINT, useValue: `${BASE_URL}/site` },
-          { provide: ICM_SERVER_URL, useValue: BASE_URL },
-          { provide: Store, useFactory: () => instance(storeMock$) },
-          ApiServiceErrorHandler,
-          ApiService,
+        imports: [
+          HttpClientTestingModule,
+          StoreModule.forRoot(
+            { configuration: configurationReducer },
+            {
+              initialState: {
+                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
+              },
+            }
+          ),
         ],
+        providers: [ApiServiceErrorHandler, ApiService],
       });
       apiService = TestBed.get(ApiService);
       httpTestingController = TestBed.get(HttpTestingController);
@@ -310,12 +309,12 @@ describe('Api Service', () => {
           done();
         });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
-      req.flush([{ uri: 'site/dummy1' }, { type: 'Link', uri: 'site/dummy2' }, { type: 'Link' }] as Link[]);
+      const req = httpTestingController.expectOne(`${REST_URL}/something`);
+      req.flush([{ uri: 'site/-/dummy1' }, { type: 'Link', uri: 'site/-/dummy2' }, { type: 'Link' }] as Link[]);
 
-      httpTestingController.expectNone(`${BASE_URL}/site/dummy1`);
-      httpTestingController.expectOne(`${BASE_URL}/site/dummy2`).flush({});
-      httpTestingController.expectNone(`${BASE_URL}/site/dummy3`);
+      httpTestingController.expectNone(`${REST_URL}/dummy1`);
+      httpTestingController.expectOne(`${REST_URL}/dummy2`).flush({});
+      httpTestingController.expectNone(`${REST_URL}/dummy3`);
     });
 
     it('should return empty array on link translation when no links are available', done => {
@@ -327,7 +326,7 @@ describe('Api Service', () => {
           done();
         });
 
-      const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
+      const req = httpTestingController.expectOne(`${REST_URL}/something`);
       req.flush([]);
     });
 
@@ -356,9 +355,9 @@ describe('Api Service', () => {
           done();
         });
 
-      httpTestingController.expectOne(`${BASE_URL}/site/something`).flush({ type: 'Link', uri: 'site/dummy' });
+      httpTestingController.expectOne(`${REST_URL}/something`).flush({ type: 'Link', uri: 'site/-/dummy' });
 
-      httpTestingController.expectOne(`${BASE_URL}/site/dummy`).flush({ data: 'dummy' });
+      httpTestingController.expectOne(`${REST_URL}/dummy`).flush({ data: 'dummy' });
     });
 
     it('should not resolve data when resolveLink is used and an invalid link is supplied', done => {
@@ -374,9 +373,9 @@ describe('Api Service', () => {
           fail
         );
 
-      httpTestingController.expectOne(`${BASE_URL}/site/something`).flush({ uri: 'site/dummy' });
+      httpTestingController.expectOne(`${REST_URL}/something`).flush({ uri: 'site/-/dummy' });
 
-      httpTestingController.expectNone(`${BASE_URL}/site/dummy`);
+      httpTestingController.expectNone(`${REST_URL}/dummy`);
     });
   });
 });

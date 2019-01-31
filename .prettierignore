@@ -2,7 +2,6 @@
 *.yml
 *.yaml
 *.bat
-*.html
 *.jpg
 *.gif
 *.png
@@ -39,3 +38,4 @@
 /schematics/src/**/other-files/**
 /schematics/*.*
 /schematics/**/*.js
+/templates/**/*.*

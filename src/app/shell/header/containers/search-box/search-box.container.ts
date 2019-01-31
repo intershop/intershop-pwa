@@ -24,8 +24,7 @@ export class SearchBoxContainerComponent {
   /**
    * the configuration for this component
    */
-  @Input()
-  configuration?: SearchBoxConfiguration;
+  @Input() configuration?: SearchBoxConfiguration;
 
   searchResults$ = this.store.pipe(select(getSuggestSearchResults));
   previousSearchTerm$ = this.store.pipe(select(getSearchTerm));
@@ -33,7 +32,7 @@ export class SearchBoxContainerComponent {
   constructor(private store: Store<{}>, private router: Router) {}
 
   suggestSearch(term: string) {
-    this.store.dispatch(new SuggestSearch(term));
+    this.store.dispatch(new SuggestSearch({ searchTerm: term }));
   }
 
   performSearch(searchTerm: string) {

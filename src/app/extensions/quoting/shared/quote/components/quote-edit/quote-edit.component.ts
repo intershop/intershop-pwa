@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { interval } from 'rxjs';
-import { mapTo, startWith } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { mapTo, share } from 'rxjs/operators';
 
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -35,25 +35,16 @@ import { Quote } from '../../../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteEditComponent implements OnChanges {
-  @Input()
-  quote: Quote | QuoteRequest;
-  @Input()
-  user: User;
+  @Input() quote: Quote | QuoteRequest;
+  @Input() user: User;
 
-  @Output()
-  updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
-  @Output()
-  submitQuoteRequest = new EventEmitter<void>();
-  @Output()
-  updateItem = new EventEmitter<LineItemQuantity>();
-  @Output()
-  deleteItem = new EventEmitter<string>();
-  @Output()
-  copyQuote = new EventEmitter<void>();
-  @Output()
-  rejectQuote = new EventEmitter<void>();
-  @Output()
-  addQuoteToBasket = new EventEmitter<string>();
+  @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
+  @Output() submitQuoteRequest = new EventEmitter<void>();
+  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() deleteItem = new EventEmitter<string>();
+  @Output() copyQuote = new EventEmitter<void>();
+  @Output() rejectQuote = new EventEmitter<void>();
+  @Output() addQuoteToBasket = new EventEmitter<string>();
 
   form: FormGroup;
 
@@ -62,9 +53,9 @@ export class QuoteEditComponent implements OnChanges {
   validToDate: number;
   submitted = false;
 
-  currentDateTime$ = interval(1000).pipe(
-    startWith(0),
-    mapTo(Date.now())
+  hasValidToDate$: Observable<boolean> = timer(0, 1000).pipe(
+    mapTo(Date.now() < this.validToDate),
+    share()
   );
 
   constructor() {

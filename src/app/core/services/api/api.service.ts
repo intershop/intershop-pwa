@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, OperatorFunction, forkJoin } from 'rxjs';
 import { catchError, defaultIfEmpty, filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
 
+import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
 import { Link } from '../../models/link/link.model';
 import { Locale } from '../../models/locale/locale.model';
 import { getCurrentLocale } from '../../store/locale';
-import { ICM_SERVER_URL, REST_ENDPOINT } from '../../utils/state-transfer/factories';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
@@ -100,15 +100,17 @@ export function constructUrlForPath(
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
+  private restEndpoint: string;
+  icmServerURL: string;
 
   constructor(
-    @Inject(REST_ENDPOINT) private restEndpoint: string,
-    @Inject(ICM_SERVER_URL) public icmServerURL: string,
     private httpClient: HttpClient,
-    store: Store<{}>,
-    private apiServiceErrorHandler: ApiServiceErrorHandler
+    private apiServiceErrorHandler: ApiServiceErrorHandler,
+    store: Store<{}>
   ) {
     store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
+    store.pipe(select(getICMServerURL)).subscribe(url => (this.icmServerURL = url));
+    store.pipe(select(getRestEndpoint)).subscribe(url => (this.restEndpoint = url));
   }
 
   // declare default http header
@@ -129,13 +131,15 @@ export class ApiService {
   /**
    * http get request
    */
-  get<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
-        headers: this.defaultHeaders,
-        ...options,
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  get<T>(
+    path: string,
+    options?: { params?: HttpParams; headers?: HttpHeaders; skipApiErrorHandling?: boolean }
+  ): Observable<T> {
+    const obs$ = this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
+      headers: this.defaultHeaders,
+      ...options,
+    });
+    return options && options.skipApiErrorHandling ? obs$ : obs$.pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**

@@ -1,35 +1,34 @@
 <div class="filter-group">
-
   <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
-    {{filterElement.name}}
+    {{ filterElement.name }}
     <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'angle-down']"></fa-icon>
-    <ng-template #collapsed>
-      <fa-icon class="float-right" [icon]="['fas', 'angle-right']"></fa-icon>
-    </ng-template>
+    <ng-template #collapsed> <fa-icon class="float-right" [icon]="['fas', 'angle-right']"></fa-icon> </ng-template>
   </h3>
 
   <ul class="filter-list">
     <ng-container *ngFor="let facet of filterElement.facets">
       <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
-        <span class="icon-selected"></span>{{facet.link.title}}
-        <span class="filter-count">({{facet.count}})</span>
+        <span class="icon-selected"></span>{{ facet.link.title }} <span class="filter-count">({{ facet.count }})</span>
         <!--- TODO: implement delete filter -->
-        <a class="filter-clear">
-          <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
-        </a>
+        <a class="filter-clear"> <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon> </a>
       </li>
     </ng-container>
   </ul>
 
-  <div id="collapseFilter" [ngbCollapse]="isCollapsed" [attr.data-testing-id]="'collapseFilter' + filterElement.name">
+  <div
+    id="collapseFilter"
+    [ngbCollapse]="isCollapsed"
+    [attr.data-testing-id]="'collapse-filter-' + (filterElement.name | sanitize)"
+  >
     <form role="filter" name="Filter" [formGroup]="filterForm">
       <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
         <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
         <ng-container *ngFor="let facet of filterElement.facets">
-          <option *ngIf="!facet.selected  && facet.name !== 'Show all'" [value]="facet.name">{{facet.link.title}}</option>
+          <option *ngIf="!facet.selected && facet.name !== 'Show all'" [value]="facet.name">{{
+            facet.link.title
+          }}</option>
         </ng-container>
       </select>
     </form>
   </div>
-
 </div>

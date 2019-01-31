@@ -15,6 +15,7 @@
     "no-extra-boolean-cast": true,
     "no-static-this": true,
     "no-unnecessary-type-annotation": true,
+    "ish-no-object-literal-type-assertion": [ true, "^((?!(\/dev\/|\/tslint-rules\/|spec\\.ts$)).)*$" ],
     "no-collapsible-if": { "severity": "warning" },
     "no-unused": true,
     "no-var-before-return": true,
@@ -149,8 +150,10 @@
     "rxjs-no-unsafe-catch": true,
     "rxjs-no-unsafe-scope": { "severity": "off" },
     "rxjs-no-unsafe-takeuntil": true,
+    "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
+    "ngrx-use-complex-type-with-action-payload": true,
     "semicolon": [
       true,
       "always"
@@ -262,12 +265,14 @@
         { "from": "^\\.\\..*(component|container|reducer|effects|store)", "filePattern": ".*.module.ts", "message": "Modules should only aggregate deeper lying components." },
         { "from": ".*/extensions/.*", "filePattern": "^((?!module\\.ts).)*$", "message": "Imports from (other) extensions are not allowed here." },
         { "from": ".*/pages/.*", "filePattern": "^((?!(cypress|\\.module\\.ts$)).)*$", "message": "Imports from pages are not allowed." },
-        { "import": "^SharedModule$", "from": "\\..*", "filePattern": "^(?!.+(page|src/app/cms|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$", "message": "SharedModule must only be imported in page or extension modules." }
+        { "import": "^SharedModule$", "from": "\\..*", "filePattern": "^(?!.+(page|src/app/cms|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$", "message": "SharedModule must only be imported in page or extension modules." },
+        { "import": "pluck", "from": "rxjs/operators", "message": "This operator is not typesafe. Use 'mapToProperty' instead." }
       ]
     },
     "ban-types": [
       true,
       ["Object", "Use {} instead."],
+      ["Array", "Use [] instead."],
       ["String", "Use 'string'"],
       ["Boolean", "Use 'boolean'"],
       ["Number", "Use 'number'"],

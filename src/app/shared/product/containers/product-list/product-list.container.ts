@@ -27,14 +27,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListContainerComponent {
-  @Input()
-  category?: Category;
+  @Input() category?: Category;
 
-  @Input()
-  pageUrl: string;
+  @Input() pageUrl: string;
 
-  @Output()
-  loadMore = new EventEmitter<void>();
+  @Output() loadMore = new EventEmitter<void>();
 
   products$ = this.store.pipe(select(getVisibleProducts));
   totalItems$ = this.store.pipe(select(getTotalItems));
@@ -59,15 +56,15 @@ export class ProductListContainerComponent {
    * @param viewType The new view type.
    */
   changeViewType(viewType: ViewType) {
-    this.store.dispatch(new ChangeViewType(viewType));
+    this.store.dispatch(new ChangeViewType({ viewType }));
   }
 
   /**
    * Emits the event for changing the sorting of the product list.
-   * @param sortBy The new sorting value.
+   * @param sorting The new sorting value.
    */
-  changeSortBy(sortBy: string) {
-    this.store.dispatch(new ChangeSortBy(sortBy));
+  changeSortBy(sorting: string) {
+    this.store.dispatch(new ChangeSortBy({ sorting }));
   }
 
   /**

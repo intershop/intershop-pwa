@@ -16,9 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Region } from 'ish-core/models/region/region.model';
 import { User } from 'ish-core/models/user/user.model';
 
 class FormType {
@@ -39,16 +37,12 @@ class FormType {
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
     [error]="basketError$ | async"
-    [countries]="countries$ | async"
-    [regions]="regionsForSelectedCountry$ | async"
-    [titles]="titlesForSelectedCountry$ | async"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
     (updateCustomerAddress)="updateBasketCustomerAddress($event)"
     (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
     (createShippingAddress)="createCustomerShippingAddress($event)"
     (deleteShippingAddress)="deleteCustomerAddress($event)"
-    (countryChange)="updateDataAfterCountryChange($event)"
   ></ish-checkout-address>
  */
 @Component({
@@ -57,42 +51,24 @@ class FormType {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  currentUser: User;
-  @Input()
-  basket: Basket;
-  @Input()
-  addresses: Address[];
-  @Input()
-  error: HttpError;
-  @Input()
-  countries: Country[];
-  @Input()
-  regions: Region[];
-  @Input()
-  titles: string[];
+  @Input() currentUser: User;
+  @Input() basket: Basket;
+  @Input() addresses: Address[];
+  @Input() error: HttpError;
 
-  @Output()
-  updateInvoiceAddress = new EventEmitter<string>();
-  @Output()
-  updateShippingAddress = new EventEmitter<string>();
-  @Output()
-  updateCustomerAddress = new EventEmitter<Address>();
-  @Output()
-  createInvoiceAddress = new EventEmitter<Address>();
-  @Output()
-  createShippingAddress = new EventEmitter<Address>();
-  @Output()
-  deleteShippingAddress = new EventEmitter<string>();
-  @Output()
-  countryChange = new EventEmitter<string>();
+  @Output() updateInvoiceAddress = new EventEmitter<string>();
+  @Output() updateShippingAddress = new EventEmitter<string>();
+  @Output() updateCustomerAddress = new EventEmitter<Address>();
+  @Output() createInvoiceAddress = new EventEmitter<Address>();
+  @Output() createShippingAddress = new EventEmitter<Address>();
+  @Output() deleteShippingAddress = new EventEmitter<string>();
 
   invoice = new FormType();
   shipping = new FormType();
 
   submitted = false;
 
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
 
   constructor(private router: Router, private fb: FormBuilder) {}
 
@@ -121,7 +97,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    if (c.addresses || c.basket) {
+    if (this.haveBasketOrAddressesChanged(this.basket, c)) {
       // prepare select box label and content
       this.prepareInvoiceAddressSelectBox();
       this.prepareShippingAddressSelectBox();
@@ -135,16 +111,24 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * determine whether the basket or the customer addresses have changed
+   */
+  private haveBasketOrAddressesChanged(basket: Basket, c: SimpleChanges) {
+    return basket && (c.addresses || c.basket);
+  }
+
+  /**
    * determine whether the shipping address is deleteable
    */
   private calculateShippingAddressDeletable() {
     this.shipping.isAddressDeleteable =
       this.basket.commonShipToAddress &&
       this.currentUser &&
-      (!this.currentUser.preferredInvoiceToAddress ||
-        this.basket.commonShipToAddress.id !== this.currentUser.preferredInvoiceToAddress.id) &&
-      (!this.currentUser.preferredShipToAddress ||
-        this.basket.commonShipToAddress.id !== this.currentUser.preferredShipToAddress.id);
+      this.addresses.length > 1 &&
+      (!this.currentUser.preferredInvoiceToAddressUrn ||
+        this.basket.commonShipToAddress.urn !== this.currentUser.preferredInvoiceToAddressUrn) &&
+      (!this.currentUser.preferredShipToAddressUrn ||
+        this.basket.commonShipToAddress.urn !== this.currentUser.preferredShipToAddressUrn);
   }
 
   /**
@@ -219,10 +203,6 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.deleteShippingAddress.emit(address.id);
   }
 
-  handleCountryChange(countryCode: string) {
-    this.countryChange.emit(countryCode);
-  }
-
   /**
    * leads to next checkout page (checkout shipping)
    */
@@ -235,7 +215,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return (!this.basket.invoiceToAddress || !this.basket.commonShipToAddress) && this.submitted;
+    return this.basket && (!this.basket.invoiceToAddress || !this.basket.commonShipToAddress) && this.submitted;
   }
 
   ngOnDestroy() {

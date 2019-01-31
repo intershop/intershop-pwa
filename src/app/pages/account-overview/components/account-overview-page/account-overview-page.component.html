@@ -1,21 +1,20 @@
-<h1 *ngIf="user" [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (user.firstName || user.credentials.login)}"></h1>
-<p>{{'account.overview.message.text' | translate}}</p>
+<h1
+  *ngIf="user"
+  [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName || user.credentials.login }"
+></h1>
+<p>{{ 'account.overview.message.text' | translate }}</p>
 
 <div class="row account-dashboard">
   <div class="col-6 col-md-3 dashboard-item">
     <a routerLink="/account/orders">
-      <div class="circle-icon">
-        <fa-icon [icon]="['fas', 'list-alt']"></fa-icon>
-      </div>
-      {{'account.order_history.link' | translate}}
+      <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
+      {{ 'account.order_history.link' | translate }}
     </a>
   </div>
   <div class="col-6 col-md-3 dashboard-item">
     <a routerLink="/account/profile">
-      <div class="circle-icon">
-        <fa-icon [icon]="['fas', 'cog']"></fa-icon>
-      </div>
-      {{'account.profile.link' | translate}}
+      <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
+      {{ 'account.profile.link' | translate }}
     </a>
   </div>
 </div>
@@ -23,13 +22,11 @@
 <!-- Latest orders list -->
 <h2>{{ 'account.order.most_recent.heading' | translate }}</h2>
 <div class="section">
-  <ish-order-list-container
-    maxListItems="5"
-    [compact]="true"
-  ></ish-order-list-container>
+  <ish-order-list-container maxListItems="5" [compact]="true"></ish-order-list-container>
 
   <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>
 </div>
-<p class="form-text">{{'account.overview.note.heading' | translate}}:
-  <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/page/privacyPolicy'}"></span>
+<p class="form-text">
+  {{ 'account.overview.note.heading' | translate }}:
+  <span [innerHTML]="'account.overview.note.text' | translate: { '0': '/page/privacyPolicy' }"></span>
 </p>

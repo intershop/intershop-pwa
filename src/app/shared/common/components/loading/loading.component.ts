@@ -18,6 +18,5 @@ export class LoadingComponent {
   /**
    * If standalone is set to true the loading animation will not be displayed as overlay.
    */
-  @Input()
-  standalone = false;
+  @Input() standalone = false;
 }

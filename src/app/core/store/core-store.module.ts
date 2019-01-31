@@ -9,6 +9,8 @@ import { ngrxStateTransferMeta } from '../configurations/ngrx-state-transfer';
 import { localStorageSyncReducer } from '../utils/local-storage-sync/local-storage-sync.reducer';
 
 import { CheckoutStoreModule } from './checkout/checkout-store.module';
+import { ConfigurationEffects } from './configuration/configuration.effects';
+import { configurationReducer } from './configuration/configuration.reducer';
 import { ContentStoreModule } from './content/content-store.module';
 import { CoreState } from './core-store';
 import { CountriesEffects } from './countries/countries.effects';
@@ -19,6 +21,8 @@ import { LocaleEffects } from './locale/locale.effects';
 import { localeReducer } from './locale/locale.reducer';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
+import { RegionsEffects } from './regions/regions.effects';
+import { regionsReducer } from './regions/regions.reducer';
 import { ShoppingStoreModule } from './shopping/shopping-store.module';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -30,8 +34,10 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   orders: ordersReducer,
   locale: localeReducer,
   countries: countriesReducer,
+  regions: regionsReducer,
   error: errorReducer,
   viewconf: viewconfReducer,
+  configuration: configurationReducer,
 };
 
 export const coreEffects = [
@@ -40,8 +46,10 @@ export const coreEffects = [
   LocaleEffects,
   CountriesEffects,
   ErrorEffects,
+  RegionsEffects,
   RouterEffects,
   ViewconfEffects,
+  ConfigurationEffects,
 ];
 
 // tslint:disable-next-line: no-any

@@ -1,3 +1,4 @@
+// tslint:disable:no-commented-out-code
 export const environment = {
   production: true,
   needMock: false,
@@ -7,7 +8,10 @@ export const environment = {
   icmBaseURL: 'http://192.168.99.100:8081',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
-  icmApplication: 'inSPIRED-inTRONICS-Site',
+  icmChannel: 'inSPIRED-inTRONICS-Site',
+
+  // To use the Google Tag Manager, insert a correct GTM-Token and uncomment the next line
+  // gtmToken: 'GTM-XXXXXXX',
 
   // configuration of the available locales - hard coded for now
   locales: [
@@ -29,16 +33,18 @@ export const environment = {
   endlessScrollingItemsPerPage: 9,
 
   // enable or disable service worker
-  serviceWorker: true,
+  serviceWorker: false,
 
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
 
-  // experimental feature: enable feature toggles for specific features
-  features: {
-    compare: true,
-    recently: true,
-    quoting: false,
-    stickyHeader: false,
-  },
+  // enable feature toggles for specific features
+  features: [
+    'compare',
+    'recently',
+    // 'quoting',
+    // 'stickyHeader',
+    // 'tracking',
+    // 'businessCustomerRegistration'
+  ],
 };

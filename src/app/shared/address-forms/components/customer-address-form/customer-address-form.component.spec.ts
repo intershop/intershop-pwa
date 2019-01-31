@@ -2,12 +2,11 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anything, spy, verify } from 'ts-mockito';
 
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
-import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
-import { AddressFormFactory } from '../address-form/address-form.factory';
+import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
 
@@ -18,24 +17,17 @@ describe('Customer Address Form Component', () => {
   let fb: FormBuilder;
 
   beforeEach(async(() => {
-    const addressFormFactoryMock = mock(AddressFormFactory);
-    when(addressFormFactoryMock.getGroup(anything())).thenReturn(new FormGroup({}));
-    when(addressFormFactoryMock.countryCode).thenReturn('default');
-
     TestBed.configureTestingModule({
       declarations: [
         CustomerAddressFormComponent,
         MockComponent({
-          selector: 'ish-address-form',
+          selector: 'ish-address-form-container',
           template: 'Address Component',
-          inputs: ['parentForm', 'countryCode', 'countries', 'regions', 'titles'],
+          inputs: ['parentForm'],
         }),
       ],
       imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [
-        AddressFormFactoryProvider,
-        { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },
-      ],
+      providers: [AddressFormFactoryProvider],
     }).compileComponents();
   }));
 
@@ -61,7 +53,7 @@ describe('Customer Address Form Component', () => {
 
   it('should render an address form component on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-address-form')).toBeTruthy();
+    expect(element.querySelector('ish-address-form-container')).toBeTruthy();
   });
 
   it('should throw cancel event when cancel is clicked', () => {

@@ -1,47 +1,63 @@
 <div class="row">
   <div class="col-md-12 col-lg-8">
     <div *ngIf="error as error" role="alert" class="alert alert-danger">
-      <ng-container *ngIf = "error.status === 406; else generalError">
-        {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures}}
+      <ng-container *ngIf="error.status === 406; else generalError">
+        {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures }}
       </ng-container>
-      <ng-template #generalError>
-        {{ error.status }}: {{ error.error }}
-      </ng-template>
+      <ng-template #generalError> {{ error.status }}: {{ error.error }} </ng-template>
     </div>
     <div class="row">
-      <p class="col-md-9">
-        {{ 'checkout.order_review.heading.text' | translate }}
-      </p>
+      <p class="col-md-9">{{ 'checkout.order_review.heading.text' | translate }}</p>
       <p class="col-md-3 text-right">
         <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
       </p>
     </div>
     <div class="row d-flex">
       <!-- Invoice Address -->
-      <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address" class="infobox-wrapper col-md-6">
+      <ish-info-box
+        heading="checkout.widget.billing-address.heading"
+        editRouterLink="/checkout/address"
+        class="infobox-wrapper col-md-6"
+      >
         <ish-address [address]="basket.invoiceToAddress"></ish-address>
       </ish-info-box>
 
       <!-- Shipping Address -->
-      <ish-info-box heading="checkout.widget.shipping-address.heading" editRouterLink="/checkout/address" class="infobox-wrapper col-md-6">
+      <ish-info-box
+        heading="checkout.widget.shipping-address.heading"
+        editRouterLink="/checkout/address"
+        class="infobox-wrapper col-md-6"
+      >
         <ish-address [address]="basket.commonShipToAddress"></ish-address>
       </ish-info-box>
     </div>
 
     <div class="row d-flex">
       <!-- Shipping Method -->
-      <ish-info-box heading="checkout.widget.shipping_method.heading" editRouterLink="/checkout/shipping" class="infobox-wrapper col-md-6">
+      <ish-info-box
+        heading="checkout.widget.shipping_method.heading"
+        editRouterLink="/checkout/shipping"
+        class="infobox-wrapper col-md-6"
+      >
         <p>{{ basket.commonShippingMethod.name }}</p>
       </ish-info-box>
 
       <!-- Payment Method -->
-      <ish-info-box heading="checkout.widget.payment_method.heading" editRouterLink="/checkout/payment" class="infobox-wrapper col-md-6">
+      <ish-info-box
+        heading="checkout.widget.payment_method.heading"
+        editRouterLink="/checkout/payment"
+        class="infobox-wrapper col-md-6"
+      >
         <p>{{ basket.payment.name }}</p>
       </ish-info-box>
     </div>
 
     <!-- Line Items -->
-    <ish-line-item-list *ngIf="basket.lineItems?.length > 0" [lineItems]="basket.lineItems" [editable]="false"></ish-line-item-list>
+    <ish-line-item-list
+      *ngIf="basket.lineItems?.length > 0"
+      [lineItems]="basket.lineItems"
+      [editable]="false"
+    ></ish-line-item-list>
   </div>
 
   <!-- basket summary -->
@@ -55,7 +71,7 @@
         <ish-checkbox
           [form]="form"
           controlName="termsAndConditions"
-          [errorMessages]="{pattern: 'checkout.tac.error.tip'}"
+          [errorMessages]="{ pattern: 'checkout.tac.error.tip' }"
         >
           <span>{{ 'checkout.tac' | translate }}&nbsp;</span>
           <a (click)="modalDialog.show()" rel="nofollow">{{ 'checkout.tac.link' | translate }}</a>
@@ -63,14 +79,15 @@
       </form>
 
       <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="formDisabled" (click)="submitOrder()">
-        {{'checkout.order_review.send.button' | translate}}
+        {{ 'checkout.order_review.send.button' | translate }}
       </button>
     </div>
     <!-- ToDo: Privacy policy link - ISREST-341 -->
   </div>
 </div>
 
-<ish-modal-dialog #modalDialog
+<ish-modal-dialog
+  #modalDialog
   [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
 >
   <div [innerHTML]="'checkout.termsandconditions.details.text' | translate"></div>

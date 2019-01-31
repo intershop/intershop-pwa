@@ -1,31 +1,34 @@
-
-
 <div class="modal-header">
   <h2 class="modal-title" *ngIf="!!quote">
     <!-- Titel and Description -->
     <ng-container *ngIf="quote.displayName; else noDisplayName">
-      {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate}} - {{ quote.displayName }}
+      {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.displayName }}
     </ng-container>
     <ng-template #noDisplayName>
       {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.number }}
     </ng-template>
   </h2>
-  <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()"><span aria-hidden="true">&times;</span></button>
+  <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 
 <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
   <div class="modal-body">
     <ng-container *ngIf="!!quote">
-
       <div class="row">
-        <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
+        <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
+          'quote.edit.unsubmitted.quote_no.label' | translate
+        }}</label>
         <div class="col-8 col-md-9 col-xl-10">
           <p class="form-control-plaintext">{{ quote.number }}</p>
         </div>
       </div>
 
       <div class="row">
-        <label class="col-4 col-md-3 col-xl-2 col-form-label ">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
+        <label class="col-4 col-md-3 col-xl-2 col-form-label ">{{
+          'quote.edit.unsubmitted.status.label' | translate
+        }}</label>
         <div class="col-8 col-md-9 col-xl-10">
           <p class="form-control-plaintext"><ish-quote-state [quote]="quote"></ish-quote-state></p>
         </div>
@@ -42,12 +45,14 @@
           maxLength="256"
           [placeholderText]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
           [errorMessages]="{
-            'required':'shopping_cart.quote.name.required.validation.message'
+            required: 'shopping_cart.quote.name.required.validation.message'
           }"
         ></ish-input>
 
         <div class="row form-group">
-          <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-form-label col-4 col-md-3 col-xl-2">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
+          <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-form-label col-4 col-md-3 col-xl-2">{{
+            'quote.edit.unsubmitted.comment.label' | translate
+          }}</label>
           <div class="col-8 col-md-9 col-xl-10">
             <textarea
               formControlName="description"
@@ -58,7 +63,6 @@
             <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
           </div>
         </div>
-
       </div>
 
       <!--- Quote Item List -->
@@ -76,13 +80,11 @@
     </ng-container>
 
     <ish-loading *ngIf="quoteLoading"></ish-loading>
-
   </div>
 
   <div class="modal-footer">
-
     <div class="d-none d-md-block clearfix pull-left">
-        <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+      <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
     </div>
 
     <div class="d-md-none row form-group pull-left">
@@ -95,7 +97,7 @@
       *ngIf="quote"
       [routerLink]="'/account/quote-request/' + quote.id"
       type="submit"
-      class="btn btn-default"
+      class="btn btn-secondary"
       [disabled]="!quote"
       (click)="update()"
     >

@@ -1,6 +1,5 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { mergeObjectsMutably } from 'ish-core/utils/merge-objects';
 import { Product } from '../../../models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
@@ -12,19 +11,29 @@ export const productAdapter = createEntityAdapter<Product>({
 export interface ProductsState extends EntityState<Product> {
   loading: boolean;
   selected: string;
+  failed: string[];
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
   selected: undefined,
+  failed: [],
 });
+
+function addFailed(failed: string[], sku: string): string[] {
+  return [...failed, sku].filter((val, idx, arr) => arr.indexOf(val) === idx);
+}
+
+function removeFailed(failed: string[], sku: string): string[] {
+  return failed.filter(val => val !== sku);
+}
 
 export function productsReducer(state = initialState, action: ProductsAction): ProductsState {
   switch (action.type) {
     case ProductsActionTypes.SelectProduct: {
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.sku,
       };
     }
 
@@ -39,33 +48,17 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       return {
         ...state,
         loading: false,
+        failed: addFailed(state.failed, action.payload.sku),
       };
     }
 
     case ProductsActionTypes.LoadProductSuccess: {
-      const loadedProduct = action.payload;
-      const { sku } = loadedProduct;
-
-      let updatedState;
-
-      if (state.entities[sku]) {
-        const updated = mergeObjectsMutably(
-          { sku: state.entities[sku].sku } as Product,
-          ['sku'],
-          state.entities[sku],
-          loadedProduct
-        );
-
-        const entities = {
-          ...state.entities,
-          [sku]: updated,
-        };
-        updatedState = { ...state, entities };
-      } else {
-        updatedState = productAdapter.addOne(loadedProduct, state);
-      }
-
-      return { ...updatedState, loading: false };
+      const product = action.payload.product;
+      return productAdapter.upsertOne(product, {
+        ...state,
+        loading: false,
+        failed: removeFailed(state.failed, product.sku),
+      });
     }
   }
 

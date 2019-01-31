@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -33,33 +33,19 @@ function buildTrailFromCategoryOrProduct(category: CategoryView, product: Produc
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BreadcrumbComponent implements OnChanges {
-  @Input()
-  separator = '/';
-  @Input()
-  showHome = true;
-  @Input()
-  category: CategoryView;
-  @Input()
-  product: ProductView;
-  @Input()
-  searchTerm: string;
-  @Input()
-  account: boolean;
-  @Input()
-  trail: BreadcrumbItem[] = [];
+export class BreadcrumbComponent implements DoCheck {
+  @Input() separator = '/';
+  @Input() showHome = true;
+  @Input() category: CategoryView;
+  @Input() product: ProductView;
+  @Input() searchTerm: string;
+  @Input() account: boolean;
+  @Input() trail: BreadcrumbItem[] = [];
 
-  ngOnChanges(c: SimpleChanges) {
-    if (c.category || c.product) {
-      this.replaceTrail(buildTrailFromCategoryOrProduct(this.category, this.product));
+  ngDoCheck() {
+    if (this.category || this.product) {
+      // tslint:disable-next-line:no-assignement-to-inputs
+      this.trail = buildTrailFromCategoryOrProduct(this.category, this.product);
     }
-  }
-
-  private replaceTrail(trail: BreadcrumbItem[]) {
-    // manual work as re-assignement would possibly trigger change detection
-    while (this.trail.length) {
-      this.trail.pop();
-    }
-    this.trail.push(...trail);
   }
 }

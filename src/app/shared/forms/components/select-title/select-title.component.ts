@@ -9,8 +9,7 @@ import { SelectComponent, SelectOption } from '../select/select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
-  @Input()
-  titles: string[];
+  @Input() titles: string[];
 
   constructor(protected translate: TranslateService) {
     super(translate);
@@ -45,12 +44,9 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     if (!titles) {
       return;
     }
-    return titles.map(
-      t =>
-        ({
-          label: t,
-          value: t,
-        } as SelectOption)
-    );
+    return titles.map(t => ({
+      label: t,
+      value: t,
+    }));
   }
 }

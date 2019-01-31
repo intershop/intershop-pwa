@@ -9,36 +9,42 @@ export enum ProductsActionTypes {
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
+  LoadProductsForCategoryFail = '[Shopping] Load Products for Category Fail',
   LoadMoreProductsForCategory = '[Shopping] Load More Products',
 }
 
 export class SelectProduct implements Action {
   readonly type = ProductsActionTypes.SelectProduct;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 export class LoadProduct implements Action {
   readonly type = ProductsActionTypes.LoadProduct;
-  constructor(public payload: string) {}
+  constructor(public payload: { sku: string }) {}
 }
 
 export class LoadProductFail implements Action {
   readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError; sku: string }) {}
 }
 
 export class LoadProductSuccess implements Action {
   readonly type = ProductsActionTypes.LoadProductSuccess;
-  constructor(public payload: Product) {}
+  constructor(public payload: { product: Product }) {}
 }
 
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
+}
+
+export class LoadProductsForCategoryFail implements Action {
+  readonly type = ProductsActionTypes.LoadProductsForCategoryFail;
+  constructor(public payload: { error: HttpError; categoryId: string }) {}
 }
 
 export class LoadMoreProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadMoreProductsForCategory;
-  constructor(public payload: string) {}
+  constructor(public payload: { categoryId: string }) {}
 }
 
 export type ProductsAction =

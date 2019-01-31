@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer } from '../../models/customer/customer.model';
+import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 
@@ -15,29 +15,28 @@ export enum UserActionTypes {
   LoadCompanyUserSuccess = '[Account API] Load Company User Success',
   LogoutUser = '[Account] Logout User',
   CreateUser = '[Account] Create User',
-  CreateUserSuccess = '[Account API] Create User Success',
   CreateUserFail = '[Account API] Create User Failed',
   UserErrorReset = '[Account Internal] Reset User Error',
 }
 
 export class LoginUser implements Action {
   readonly type = UserActionTypes.LoginUser;
-  constructor(public payload: LoginCredentials) {}
+  constructor(public payload: { credentials: LoginCredentials }) {}
 }
 
 export class LoginUserFail implements Action {
   readonly type = UserActionTypes.LoginUserFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoginUserSuccess implements Action {
   readonly type = UserActionTypes.LoginUserSuccess;
-  constructor(public payload: Customer) {}
+  constructor(public payload: CustomerLoginType) {}
 }
 
 export class SetAPIToken implements Action {
   readonly type = UserActionTypes.SetAPIToken;
-  constructor(public payload: string) {}
+  constructor(public payload: { apiToken: string }) {}
 }
 
 export class LoadCompanyUser implements Action {
@@ -46,12 +45,12 @@ export class LoadCompanyUser implements Action {
 
 export class LoadCompanyUserFail implements Action {
   readonly type = UserActionTypes.LoadCompanyUserFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class LoadCompanyUserSuccess implements Action {
   readonly type = UserActionTypes.LoadCompanyUserSuccess;
-  constructor(public payload: User) {}
+  constructor(public payload: { user: User }) {}
 }
 
 export class LogoutUser implements Action {
@@ -60,17 +59,12 @@ export class LogoutUser implements Action {
 
 export class CreateUser implements Action {
   readonly type = UserActionTypes.CreateUser;
-  constructor(public payload: Customer) {}
-}
-
-export class CreateUserSuccess implements Action {
-  readonly type = UserActionTypes.CreateUserSuccess;
-  constructor(public payload: Customer) {}
+  constructor(public payload: CustomerRegistrationType) {}
 }
 
 export class CreateUserFail implements Action {
   readonly type = UserActionTypes.CreateUserFail;
-  constructor(public payload: HttpError) {}
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export class UserErrorReset implements Action {
@@ -88,5 +82,4 @@ export type UserAction =
   | LogoutUser
   | CreateUser
   | CreateUserFail
-  | CreateUserSuccess
   | UserErrorReset;

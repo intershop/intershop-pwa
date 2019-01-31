@@ -16,12 +16,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListPagingComponent {
-  @Input()
-  currentPage: number;
-  @Input()
-  pageIndices: number[];
-  @Input()
-  pageUrl: string;
+  @Input() currentPage: number;
+  @Input() pageIndices: number[];
+  @Input() pageUrl: string;
 
   /**
    * Generates a paging URL for the given page number with the current page URL

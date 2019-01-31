@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
@@ -31,11 +30,7 @@ function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: str
  */
 @Injectable({ providedIn: 'root' })
 export class ProductMapper {
-  constructor(
-    @Inject(ICM_BASE_URL) public icmBaseURL,
-    private imageMapper: ImageMapper,
-    private categoryMapper: CategoryMapper
-  ) {}
+  constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
 
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
@@ -46,6 +41,10 @@ export class ProductMapper {
       throw new Error('cannot construct product stub without SKU');
     }
     const productCategory = retrieveStubAttributeValue<CategoryData>(data, 'defaultCategory');
+
+    const minOrderQuantityValue = retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity');
+    const minOrderQuantity = minOrderQuantityValue ? minOrderQuantityValue.value : undefined;
+
     return {
       shortDescription: data.description,
       name: data.title,
@@ -76,11 +75,9 @@ export class ProductMapper {
       ]),
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
       availability: retrieveStubAttributeValue(data, 'availability'),
-      // TODO: will be supplied by REST API with ISREST-389
-      inStock: retrieveStubAttributeValue(data, 'availability'),
+      inStock: retrieveStubAttributeValue(data, 'inStock'),
       longDescription: undefined,
-      // TODO: will be supplied by REST API with ISREST-401
-      minOrderQuantity: 1,
+      minOrderQuantity,
       attributes: [],
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,

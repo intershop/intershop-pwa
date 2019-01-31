@@ -8,6 +8,5 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductInventoryComponent {
-  @Input()
-  product: Product;
+  @Input() product: Product;
 }

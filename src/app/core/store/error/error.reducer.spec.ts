@@ -3,18 +3,18 @@ import { RouteNavigation } from 'ngrx-router';
 import { anything } from 'ts-mockito';
 
 import { HttpError } from '../../models/http-error/http-error.model';
-import { CreateUserSuccess } from '../user';
+import { LoginUserSuccess } from '../user';
 
 import { CommunicationTimeoutError, ErrorActionTypes, HttpErrorAction } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
   describe('initialState', () => {
-    it('should not have a error when unmodified', () => {
+    it('should not have an error when unmodified', () => {
       expect(initialState.current).toBeUndefined();
     });
 
-    it('should not have an type when unmodified', () => {
+    it('should not have a type when unmodified', () => {
       expect(initialState.type).toBeFalsy();
     });
   });
@@ -36,12 +36,12 @@ describe('Error Reducer', () => {
       },
       {
         state: initialState,
-        action: new CommunicationTimeoutError({} as HttpError),
+        action: new CommunicationTimeoutError({ error: {} as HttpError }),
         expected: { current: {}, type: ErrorActionTypes.TimeoutError },
       },
       {
         state: initialState,
-        action: new CreateUserSuccess(anything()),
+        action: new LoginUserSuccess(anything()),
         expected: initialState,
       },
       {

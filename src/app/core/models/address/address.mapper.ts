@@ -28,11 +28,15 @@ export class AddressMapper {
         phoneBusinessDirect: data.phoneBusinessDirect,
         fax: data.fax,
         email: data.email,
-        invoiceToAddress: data.invoiceToAddress,
-        shipToAddress: data.shipToAddress,
-        shipFromAddress: data.shipFromAddress,
-        serviceToAddress: data.serviceToAddress,
-        installToAddress: data.installToAddress,
+        invoiceToAddress:
+          data.eligibleInvoiceToAddress !== undefined ? data.eligibleInvoiceToAddress : data.invoiceToAddress,
+        shipToAddress: data.eligibleShipToAddress !== undefined ? data.eligibleShipToAddress : data.shipToAddress,
+        shipFromAddress:
+          data.eligibleShipFromAddress !== undefined ? data.eligibleShipFromAddress : data.shipFromAddress,
+        serviceToAddress:
+          data.eligibleServiceToAddress !== undefined ? data.eligibleServiceToAddress : data.serviceToAddress,
+        installToAddress:
+          data.eligibleInstallToAddress !== undefined ? data.eligibleInstallToAddress : data.installToAddress,
       };
     } else {
       throw new Error(`'addressData' is required for the mapping`);

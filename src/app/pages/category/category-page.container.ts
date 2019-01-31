@@ -34,7 +34,9 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
         withLatestFrom(this.store.pipe(select(getSelectedCategoryId))),
         takeUntil(this.destroy$)
       )
-      .subscribe(([, categoryUniqueId]) => this.store.dispatch(new LoadMoreProductsForCategory(categoryUniqueId)));
+      .subscribe(([, categoryUniqueId]) =>
+        this.store.dispatch(new LoadMoreProductsForCategory({ categoryId: categoryUniqueId }))
+      );
   }
 
   ngOnDestroy() {

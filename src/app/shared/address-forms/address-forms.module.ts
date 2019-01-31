@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from '../forms/forms.module';
 
+import { AddressFormBusinessComponent } from './components/address-form-business/address-form-business.component';
 import { AddressFormDEComponent } from './components/address-form-de/address-form-de.component';
 import { AddressFormDEFactory } from './components/address-form-de/address-form-de.factory';
 import { AddressFormDefaultComponent } from './components/address-form-default/address-form-default.component';
@@ -20,8 +21,10 @@ import { AddressFormUSFactory } from './components/address-form-us/address-form-
 import { AddressFormComponent } from './components/address-form/address-form.component';
 import { CustomerAddressFormComponent } from './components/customer-address-form/customer-address-form.component';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from './configurations/address-form-factory.provider';
+import { AddressFormContainerComponent } from './containers/address-form/address-form.container';
 
-const components = [
+const declaredComponents = [
+  AddressFormBusinessComponent,
   AddressFormComponent,
   AddressFormDEComponent,
   AddressFormDefaultComponent,
@@ -30,10 +33,12 @@ const components = [
   AddressFormUSComponent,
 ];
 
+const exportedComponents = [AddressFormContainerComponent, CustomerAddressFormComponent];
+
 @NgModule({
   imports: [CommonModule, FormsSharedModule, IconModule, NgbPopoverModule, ReactiveFormsModule, TranslateModule],
-  declarations: [...components, CustomerAddressFormComponent],
-  exports: [...components, CustomerAddressFormComponent],
+  declarations: [...declaredComponents, ...exportedComponents],
+  exports: [...exportedComponents],
   providers: [
     AddressFormFactoryProvider,
     { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormDefaultFactory, multi: true },

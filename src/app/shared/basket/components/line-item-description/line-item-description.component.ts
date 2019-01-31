@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { Price } from 'ish-core/models/price/price.model';
 
 /**
  * The Line Item Description Component displays detailed line item information.
@@ -17,21 +16,6 @@ import { Price } from 'ish-core/models/price/price.model';
   templateUrl: './line-item-description.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LineItemDescriptionComponent implements OnChanges {
-  @Input()
-  pli: LineItemView;
-
-  itemSurcharges: { amount: Price; description?: string; displayName?: string; text?: string }[] = [];
-
-  /**
-   * If the line item changes new itemSurcharges are set
-   */
-  ngOnChanges() {
-    this.itemSurcharges = undefined;
-    const item = this.pli as LineItemView;
-
-    if (item.itemSurcharges) {
-      this.itemSurcharges = item.itemSurcharges;
-    }
-  }
+export class LineItemDescriptionComponent {
+  @Input() pli: LineItemView;
 }

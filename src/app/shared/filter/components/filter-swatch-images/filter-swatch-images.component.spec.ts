@@ -3,6 +3,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
@@ -13,7 +14,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule],
+      imports: [IconModule, NgbCollapseModule, PipesModule],
       declarations: [FilterSwatchImagesComponent],
     }).compileComponents();
   }));
@@ -22,8 +23,8 @@ describe('Filter Swatch Images Component', () => {
     const filterElement = {
       name: 'Color',
       facets: [
-        { name: 'ColorBlack', count: 4, link: { title: 'Black' } },
-        { name: 'ColorRed', count: 5, link: { title: 'Red' }, selected: true },
+        { name: 'Black', count: 4, link: { title: 'Black' } },
+        { name: 'Red', count: 5, link: { title: 'Red' }, selected: true },
       ],
     } as Filter;
     fixture = TestBed.createComponent(FilterSwatchImagesComponent);

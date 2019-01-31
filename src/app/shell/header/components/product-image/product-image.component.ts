@@ -20,28 +20,23 @@ export class ProductImageComponent implements OnChanges {
   /**
    * The product with the image information.
    */
-  @Input()
-  product: Product;
+  @Input() product: Product;
   /**
    * The image type (size), i.e. 'S' for the small image.
    */
-  @Input()
-  imageType: string;
+  @Input() imageType: string;
   /**
    * The image view, e.g. 'front', 'back'.
    */
-  @Input()
-  imageView?: string;
+  @Input() imageView?: string;
   /**
    * The additional CSS classes for the img tag.
    */
-  @Input()
-  class?: string;
+  @Input() class?: string;
   /**
    * A custom alt text for the img tag.
    */
-  @Input()
-  altText?: string;
+  @Input() altText?: string;
 
   productImage: Image;
 

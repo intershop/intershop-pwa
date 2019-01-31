@@ -9,10 +9,8 @@ import { SelectComponent, SelectOption } from '../select/select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectAddressComponent extends SelectComponent implements OnChanges {
-  @Input()
-  addresses: Address[];
-  @Input()
-  emptyOptionLabel: string;
+  @Input() addresses: Address[];
+  @Input() emptyOptionLabel: string;
 
   ngOnChanges(c: SimpleChanges) {
     if (c.addresses) {
@@ -21,12 +19,9 @@ export class SelectAddressComponent extends SelectComponent implements OnChanges
   }
 
   private mapToOptions(addresses: Address[]): SelectOption[] {
-    return addresses.map(
-      (a: Address) =>
-        ({
-          label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
-          value: a.id,
-        } as SelectOption)
-    );
+    return addresses.map((a: Address) => ({
+      label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
+      value: a.id,
+    }));
   }
 }

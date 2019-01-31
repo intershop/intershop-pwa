@@ -23,6 +23,12 @@ describe('Browsing User', () => {
   describe('starting at home page', () => {
     before(() => HomePage.navigateTo());
 
+    it('should see featured products on home page', () => {
+      at(HomePage, page => {
+        page.featuredProducts.should('have.length', 4);
+      });
+    });
+
     it(`should go from home page to category page`, () => {
       at(HomePage, page => {
         page.header.gotoCategoryPage(_.catalog);
@@ -52,7 +58,7 @@ describe('Browsing User', () => {
 
   describe('starting at product detail page', () => {
     before(() => {
-      ProductDetailPage.navigateTo(_.category.id, _.product1.sku);
+      ProductDetailPage.navigateTo(_.product1.sku, _.category.id);
     });
 
     it('should be at product detail page to check product price', () => {

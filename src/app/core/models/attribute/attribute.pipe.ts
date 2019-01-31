@@ -1,7 +1,8 @@
-import { formatDate, formatNumber } from '@angular/common';
+import { formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { formatISHDate } from 'ish-core/pipes/date.pipe';
 import { Price } from '../price/price.model';
 import { formatPrice } from '../price/price.pipe';
 
@@ -12,7 +13,7 @@ export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   private toDate(val): string {
-    return formatDate(val, 'shortDate', this.translateService.currentLang);
+    return formatISHDate(val, 'shortDate', this.translateService.currentLang);
   }
 
   private toDecimal(val): string {
@@ -39,7 +40,6 @@ export class AttributeToStringPipe implements PipeTransform {
       case 'Boolean':
         return data.value.toString();
       case 'Date':
-        // TODO: ISREST-222 - waiting for adaption of REST API response to return Date values not as 'String' so they can be handled accordingly
         return this.toDate(data.value);
       case 'MultipleInteger':
       case 'MultipleDouble':

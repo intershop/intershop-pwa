@@ -17,12 +17,10 @@ export class InfoBoxComponent {
   /**
    * Translation key of the box title (or fix title text).
    */
-  @Input()
-  heading = '';
+  @Input() heading = '';
 
   /**
    * Router link for Editing the displayed data. If a routerLink is given a link is displayed to route *to an edit page
    */
-  @Input()
-  editRouterLink: string;
+  @Input() editRouterLink: string;
 }

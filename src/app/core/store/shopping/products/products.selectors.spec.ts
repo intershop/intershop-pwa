@@ -8,6 +8,7 @@ import { shoppingReducers } from '../shopping-store.module';
 
 import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
 import {
+  getProduct,
   getProductEntities,
   getProductLoading,
   getProducts,
@@ -48,7 +49,7 @@ describe('Products Selectors', () => {
 
   describe('loading a product', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadProduct(''));
+      store$.dispatch(new LoadProduct({ sku: '' }));
     });
 
     it('should set the state to loading', () => {
@@ -57,7 +58,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductSuccess(prod));
+        store$.dispatch(new LoadProductSuccess({ product: prod }));
       });
 
       it('should set loading to false', () => {
@@ -68,19 +69,23 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductFail({ message: 'error' } as HttpError));
+        store$.dispatch(new LoadProductFail({ error: { message: 'error' } as HttpError, sku: 'invalid' }));
       });
 
       it('should not have loaded product on error', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
         expect(getProductEntities(store$.state)).toBeEmpty();
       });
+
+      it('should return a product stub if product is selected', () => {
+        expect(getProduct(store$.state, { sku: 'invalid' })).toBeTruthy();
+      });
     });
   });
 
   describe('state with a product', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadProductSuccess(prod));
+      store$.dispatch(new LoadProductSuccess({ product: prod }));
     });
 
     describe('but no current router state', () => {
@@ -98,7 +103,7 @@ describe('Products Selectors', () => {
 
     describe('with product route', () => {
       beforeEach(() => {
-        store$.dispatch(new SelectProduct(prod.sku));
+        store$.dispatch(new SelectProduct({ sku: prod.sku }));
       });
 
       it('should return the product information when used', () => {

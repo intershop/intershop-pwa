@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { pluck } from 'rxjs/operators';
 
 import { getCompareProductsSKUs } from 'ish-core/store/shopping/compare';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-compare-status-container',
@@ -10,12 +10,11 @@ import { getCompareProductsSKUs } from 'ish-core/store/shopping/compare';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCompareStatusContainerComponent {
-  @Input()
-  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
   productCompareCount$ = this.store.pipe(
     select(getCompareProductsSKUs),
-    pluck('length')
+    mapToProperty('length')
   );
 
   constructor(private store: Store<{}>) {}

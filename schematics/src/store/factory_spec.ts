@@ -42,29 +42,33 @@ describe('Store Schematic', () => {
             schematicRunner
               .runSchematicAsync('module', { name: 'shared', project: 'bar' }, application)
               .toPromise()
-              .then(tree => {
+              .then(sharedTree => {
                 schematicRunner
-                  .runExternalSchematicAsync(
-                    '@schematics/angular',
-                    'module',
-                    {
-                      name: 'pages/app-not-found-routing',
-                      flat: true,
-                      project: 'bar',
-                      module: 'app.module',
-                    },
-                    tree
-                  )
+                  .runSchematicAsync('module', { name: 'shell', project: 'bar' }, sharedTree)
                   .toPromise()
-                  .then(extensionTree =>
+                  .then(tree => {
                     schematicRunner
-                      .runSchematicAsync('extension', { name: 'feature', project: 'bar' }, extensionTree)
+                      .runExternalSchematicAsync(
+                        '@schematics/angular',
+                        'module',
+                        {
+                          name: 'pages/app-not-found-routing',
+                          flat: true,
+                          project: 'bar',
+                          module: 'app.module',
+                        },
+                        tree
+                      )
                       .toPromise()
-                      .then(completeTree => {
-                        appTree = completeTree;
-                        appTree.create(
-                          '/projects/bar/src/app/core/store/core-store.module.ts',
-                          `import { NgModule } from '@angular/core';
+                      .then(extensionTree =>
+                        schematicRunner
+                          .runSchematicAsync('extension', { name: 'feature', project: 'bar' }, extensionTree)
+                          .toPromise()
+                          .then(completeTree => {
+                            appTree = completeTree;
+                            appTree.create(
+                              '/projects/bar/src/app/core/store/core-store.module.ts',
+                              `import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { RouterEffects } from 'ngrx-router';
@@ -87,10 +91,10 @@ export const coreEffects = [
 })
 export class CoreStoreModule {}
 `
-                        );
-                        appTree.create(
-                          '/projects/bar/src/app/core/store/core-store.ts',
-                          `import { Selector } from '@ngrx/store';
+                            );
+                            appTree.create(
+                              '/projects/bar/src/app/core/store/core-store.ts',
+                              `import { Selector } from '@ngrx/store';
 
 import { CountriesState } from './countries/countries.reducer';
 
@@ -100,10 +104,10 @@ export interface CoreState {
 
 export const getCoreState: Selector<CoreState, CoreState> = state => state;
 `
-                        );
-                        appTree.create(
-                          '/projects/bar/src/app/core/store/bar/bar-store.module.ts',
-                          `import { NgModule } from '@angular/core';
+                            );
+                            appTree.create(
+                              '/projects/bar/src/app/core/store/bar/bar-store.module.ts',
+                              `import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
@@ -121,17 +125,18 @@ export const barEffects = [];
 })
 export class BarStoreModule {}
 `
-                        );
-                        appTree.create(
-                          '/projects/bar/src/app/core/store/bar/bar-store.ts',
-                          `import { Selector } from '@ngrx/store';
+                            );
+                            appTree.create(
+                              '/projects/bar/src/app/core/store/bar/bar-store.ts',
+                              `import { Selector } from '@ngrx/store';
 
 export interface BarState {}
 `
-                        );
-                        done();
-                      })
-                  );
+                            );
+                            done();
+                          })
+                      );
+                  });
               })
           )
       );

@@ -1,7 +1,5 @@
 <div [ngClass]="wrapperClass$ | async">
-  <header data-testing-id="page-header" class="top">
-    <ish-header-container></ish-header-container>
-  </header>
+  <header data-testing-id="page-header" class="top"><ish-header-container></ish-header-container></header>
 
   <div class="wrapper">
     <div role="main" class="container main-container" style="position: relative; min-height: 200px;">
@@ -9,7 +7,17 @@
     </div>
   </div>
 
-  <footer data-testing-id="section-footer">
-    <ish-footer></ish-footer>
-  </footer>
+  <footer data-testing-id="section-footer"><ish-footer></ish-footer></footer>
 </div>
+
+<!-- component that provides a banner to inform users about cookie usage -->
+<cookie-law #cookieLaw>
+  <div class="row">
+    <div class="col-12 col-md-10">
+      <span [innerHTML]="'cookie_law.text' | translate: { '0': '/page/privacy.policy' }"></span>
+    </div>
+    <div class="col-12 col-md-2 button-container">
+      <button class="btn" type="button" (click)="dismiss()">{{ 'cookie_law.button' | translate }}</button>
+    </div>
+  </div>
+</cookie-law>

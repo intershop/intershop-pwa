@@ -35,7 +35,7 @@ export function <%= camelize(name) %>Reducer(state = initialState, action: <%= c
     }<% if(entity) { %>
 
     case <%= classify(name) %>ActionTypes.Load<%= classify(name) %>Fail: {
-      const error = action.payload;
+      const { error } = action.payload;
       return {
         ...state,
         loading: false,

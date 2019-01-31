@@ -1,65 +1,113 @@
-  <div class="my-account-savedAddresses myAccount-addressBox">
-    <h1>{{ 'account.addresses.saved_address.heading' | translate }}</h1>
+<div class="my-account-savedAddresses myAccount-addressBox">
+  <h1>
+    {{ 'account.addresses.saved_address.heading' | translate }}
+    <a
+      *ngIf="isCreateAddressFormCollapsed"
+      class="btn btn-secondary float-right"
+      (click)="showCreateAddressForm()"
+      [attr.aria-expanded]="!isCreateAddressFormCollapsed"
+      aria-controls="collapseBasic"
+      data-testing-id="create-address-button"
+      >{{ 'account.addresses.add_address.button.text' | translate }}</a
+    >
+  </h1>
+
+  <div *ngIf="error && error.status" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+
+  <!-- create address form -->
+  <div
+    id="collapseBasic"
+    class="section"
+    [ngbCollapse]="isCreateAddressFormCollapsed"
+    data-testing-id="create-address-form"
+  >
+    <ish-customer-address-form
+      [resetForm]="isCreateAddressFormCollapsed"
+      (save)="createAddress($event)"
+      (cancel)="hideCreateAddressForm()"
+    >
+    </ish-customer-address-form>
   </div>
+</div>
 
-  <div class="my-account-address-list shift-content">
-
-    <div class="myAccount-addressBook">
-      <!-- display saved addresses -->
-      <ng-container *ngIf="addresses && addresses.length > 0; else emptyList">
-
-        <!-- preferred invoice address == preferred shipping address -->
-        <ng-container *ngIf="hasPreferredAddresses && preferredAddressesEqual">
-          <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
-            <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
-            <ish-address [address]="user.preferredInvoiceToAddress"></ish-address>
-          </div>
-        </ng-container>
-
-        <!-- preferred invoice address != preferred shipping address -->
-        <ng-container *ngIf="!hasPreferredAddresses || !preferredAddressesEqual">
-
-          <!-- preferred invoice address -->
-          <div class="section" data-testing-id="preferred-invoice-address">
-            <h3>{{ 'account.addresses.preferredinvoice.heading' | translate }}</h3>
-            <ng-container *ngIf="user.preferredInvoiceToAddress; else noInvoiceToAddress">
-              <ish-address [address]="user.preferredInvoiceToAddress"></ish-address>
-            </ng-container>
-            <ng-template #noInvoiceToAddress>
-              <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
-            </ng-template>
-          </div>
-
-          <!--preferred shipping address -->
-          <div class="section" data-testing-id="preferred-shipping-address">
-            <h3>{{ 'account.addresses.preferredshipping.heading' | translate }}</h3>
-            <ng-container *ngIf="user.preferredShipToAddress; else noShipToAddress">
-              <ish-address [address]="user.preferredShipToAddress"></ish-address>
-            </ng-container>
-            <ng-template #noShipToAddress>
-              <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>
-            </ng-template>
-          </div>
-        </ng-container>
-
-        <!-- further addresses -->
-        <ng-container *ngIf="furtherAddresses && furtherAddresses.length > 0">
-          <div class="section" data-testing-id="further-addresses">
-            <h3>{{ 'account.addresses.heading' | translate }}</h3>
-            <div *ngFor="let currentAddress of furtherAddresses" class="list-item-row">
-              <ish-address [address]="currentAddress"></ish-address>
-            </div>
-          </div>
-        </ng-container>
+<div class="my-account-address-list shift-content">
+  <div class="myAccount-addressBook">
+    <!-- display saved addresses -->
+    <ng-container *ngIf="addresses && addresses.length > 0; else emptyList">
+      <!-- preferred invoice address == preferred shipping address -->
+      <ng-container *ngIf="hasPreferredAddresses && preferredAddressesEqual">
+        <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
+          <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
+          <ish-address [address]="preferredInvoiceToAddress"></ish-address>
+        </div>
       </ng-container>
 
-      <!-- no saved addresses  -->
-      <ng-template #emptyList>
-        <p class="empty-list">{{ 'account.addresses.have_no_saved_address.text' | translate }}</p>
-      </ng-template>
+      <!-- preferred invoice address != preferred shipping address -->
+      <ng-container *ngIf="!hasPreferredAddresses || !preferredAddressesEqual">
+        <!-- preferred invoice address -->
+        <div class="section" data-testing-id="preferred-invoice-address">
+          <h3>{{ 'account.addresses.preferredinvoice.heading' | translate }}</h3>
+          <ng-container *ngIf="preferredInvoiceToAddress; else noInvoiceToAddress">
+            <ish-address [address]="preferredInvoiceToAddress"></ish-address>
+          </ng-container>
+          <ng-template #noInvoiceToAddress>
+            <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
+          </ng-template>
+        </div>
 
-    </div>
+        <!--preferred shipping address -->
+        <div class="section" data-testing-id="preferred-shipping-address">
+          <h3>{{ 'account.addresses.preferredshipping.heading' | translate }}</h3>
+          <ng-container *ngIf="preferredShipToAddress; else noShipToAddress">
+            <ish-address [address]="preferredShipToAddress"></ish-address>
+          </ng-container>
+          <ng-template #noShipToAddress>
+            <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>
+          </ng-template>
+        </div>
+      </ng-container>
+
+      <!-- further addresses -->
+      <ng-container *ngIf="furtherAddresses && furtherAddresses.length > 0">
+        <div class="section" data-testing-id="further-addresses">
+          <h3>{{ 'account.addresses.heading' | translate }}</h3>
+          <div *ngFor="let currentAddress of furtherAddresses" class="list-item-row">
+            <div class="row">
+              <div class="col-xs-11 col-sm-7 col-md-5">
+                <div class="float-right">
+                  <!-- delete address: is only possible if the customer has more than one address -->
+                  <a
+                    *ngIf="addresses.length > 1"
+                    class="btn-tool"
+                    title="{{ 'account.addresses.delete_address.text' | translate }}"
+                    (click)="modalDialog.show(currentAddress)"
+                  >
+                    <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+                  </a>
+
+                  <ish-modal-dialog
+                    #modalDialog
+                    [options]="{
+                      titleText: 'account.addresses.remove_dialog.title' | translate,
+                      confirmText: 'account.addresses.remove_dialog.label_ok' | translate,
+                      rejectText: 'account.addresses.remove_dialog.label_no' | translate
+                    }"
+                    (confirmed)="deleteAddress($event)"
+                  >
+                    <p>{{ 'account.addresses.remove_dialog.message_line2' | translate }}</p>
+                  </ish-modal-dialog>
+                </div>
+                <ish-address [address]="currentAddress"></ish-address>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- no saved addresses  -->
+    <ng-template #emptyList>
+      <p class="empty-list">{{ 'account.addresses.have_no_saved_address.text' | translate }}</p>
+    </ng-template>
   </div>
-
-
-
+</div>

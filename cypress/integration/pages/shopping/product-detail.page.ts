@@ -7,8 +7,12 @@ export class ProductDetailPage {
   readonly header = new HeaderModule();
   readonly breadcrumb = new BreadcrumbModule();
 
-  static navigateTo(categoryUniqueId: string, sku: string) {
-    cy.visit(`/category/${categoryUniqueId}/product/${sku}`);
+  static navigateTo(sku: string, categoryUniqueId?: string) {
+    if (categoryUniqueId) {
+      cy.visit(`/category/${categoryUniqueId}/product/${sku}`);
+    } else {
+      cy.visit(`/product/${sku}`);
+    }
   }
 
   private addToCartButton = () => cy.get('[data-testing-id="addToCartButton"]');

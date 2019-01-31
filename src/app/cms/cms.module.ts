@@ -94,7 +94,7 @@ const entryComponents = [
       multi: true,
     },
   ],
-  exports: exportedComponents,
-  entryComponents,
+  exports: [...exportedComponents],
+  entryComponents: [...entryComponents],
 })
 export class CMSModule {}

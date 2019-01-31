@@ -17,8 +17,7 @@ import { Quote } from '../../../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteStateComponent implements OnChanges {
-  @Input()
-  quote: Quote | QuoteRequest;
+  @Input() quote: Quote | QuoteRequest;
 
   validToDate: number;
 

@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 
 /**
@@ -16,36 +25,75 @@ import { User } from 'ish-core/models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountAddressesPageComponent implements OnChanges {
-  @Input()
-  addresses: Address[];
-  @Input()
-  user: User;
+  @Input() addresses: Address[];
+  @Input() user: User;
+  @Input() error: HttpError;
+
+  @Output() createCustomerAddress = new EventEmitter<Address>();
+
+  @Output() deleteCustomerAddress = new EventEmitter<string>();
 
   furtherAddresses: Address[] = [];
 
   hasPreferredAddresses = false;
   preferredAddressesEqual: boolean;
+  preferredInvoiceToAddress: Address;
+  preferredShipToAddress: Address;
+
+  isCreateAddressFormCollapsed = true;
 
   /*
     on changes - update the shown further addresses
   */
-  ngOnChanges() {
-    this.calculareFurtherAddresses();
+  ngOnChanges(c: SimpleChanges) {
+    if (this.hasAddressOrUserChanged(c)) {
+      this.calculateFurtherAddresses();
 
-    this.hasPreferredAddresses = !!this.user.preferredInvoiceToAddress || !!this.user.preferredShipToAddress;
+      this.hasPreferredAddresses = !!this.user.preferredInvoiceToAddressUrn || !!this.user.preferredShipToAddressUrn;
 
-    this.preferredAddressesEqual = AddressHelper.equal(
-      this.user.preferredInvoiceToAddress,
-      this.user.preferredShipToAddress
-    );
+      // determine preferred addresses
+      this.preferredInvoiceToAddress = this.getAddress(this.user.preferredInvoiceToAddressUrn);
+      this.preferredShipToAddress = this.getAddress(this.user.preferredShipToAddressUrn);
+
+      this.preferredAddressesEqual = AddressHelper.equal(this.preferredInvoiceToAddress, this.preferredShipToAddress);
+
+      // close possibly open address forms
+      this.hideCreateAddressForm();
+    }
   }
 
-  private calculareFurtherAddresses() {
+  // for b2b, the user data are loaded later than the customer addresses
+  private hasAddressOrUserChanged(c: SimpleChanges) {
+    return (c.addresses || c.user) && this.user;
+  }
+
+  private getAddress(urn: string) {
+    return this.addresses && !!urn ? this.addresses.find(address => address.urn === urn) : undefined;
+  }
+
+  private calculateFurtherAddresses() {
     // all addresses of the user except the preferred invoiceTo and shipTo addresses
     this.furtherAddresses = this.addresses.filter(
       (address: Address) =>
-        (!this.user.preferredInvoiceToAddress || address.id !== this.user.preferredInvoiceToAddress.id) &&
-        (!this.user.preferredShipToAddress || address.id !== this.user.preferredShipToAddress.id)
+        (!this.user.preferredInvoiceToAddressUrn || address.urn !== this.user.preferredInvoiceToAddressUrn) &&
+        (!this.user.preferredShipToAddressUrn || address.urn !== this.user.preferredShipToAddressUrn)
     );
+  }
+
+  showCreateAddressForm() {
+    this.isCreateAddressFormCollapsed = false;
+    // do not close address form immediately to show possible server errors
+  }
+
+  hideCreateAddressForm() {
+    this.isCreateAddressFormCollapsed = true;
+  }
+
+  createAddress(address: Address) {
+    this.createCustomerAddress.emit(address);
+  }
+
+  deleteAddress(address: Address) {
+    this.deleteCustomerAddress.emit(address.id);
   }
 }

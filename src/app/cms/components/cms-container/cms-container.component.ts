@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
@@ -9,30 +9,21 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSContainerComponent implements DoCheck {
-  @Input()
-  pagelet: ContentPageletView;
+export class CMSContainerComponent implements OnChanges {
+  @Input() pagelet: ContentPageletView;
 
   contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';
 
-  private initialized: boolean;
-
-  ngDoCheck() {
-    if (!this.initialized && this.pagelet) {
-      let contentSlotPagelets = this.pagelet
-        .slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot')
-        .pagelets();
-      if (this.pagelet.hasParam('UpperBound')) {
-        contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
-      }
-      this.contentSlotPagelets = contentSlotPagelets;
-
-      this.containerClasses = this.getGridCSS(this.pagelet.stringParam('Grid'));
-      this.containerClasses += this.pagelet.stringParam('CSSClass', '');
-
-      this.initialized = true;
+  ngOnChanges() {
+    let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pagelets();
+    if (this.pagelet.hasParam('UpperBound')) {
+      contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
     }
+    this.contentSlotPagelets = contentSlotPagelets;
+
+    this.containerClasses = this.getGridCSS(this.pagelet.stringParam('Grid'));
+    this.containerClasses += this.pagelet.stringParam('CSSClass', '');
   }
 
   getGridCSS(grid: string): string {
@@ -40,7 +31,7 @@ export class CMSContainerComponent implements DoCheck {
 
     // transform an incomming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
     const gridObject = { ExtraSmall: 0, Small: 0, Medium: 0, Large: 0 };
-    grid.split(',').map(element => {
+    grid.split(',').forEach(element => {
       gridObject[element.split(':')[0]] = Number(element.split(':')[1]);
     });
 

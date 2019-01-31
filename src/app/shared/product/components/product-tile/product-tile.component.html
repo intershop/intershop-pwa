@@ -1,12 +1,12 @@
 <div class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
-    <a [routerLink]="generateProductRoute(product, category)">
+    <a [routerLink]="product | ishProductRoute: category">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     </a>
     <ish-product-label [product]="product"></ish-product-label>
   </div>
 
-  <a class="product-title" [routerLink]="generateProductRoute(product, category)">{{product.name}}</a>
+  <a class="product-title" [routerLink]="product | ishProductRoute: category">{{ product.name }}</a>
 
   <div class="price-container">
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
@@ -18,15 +18,10 @@
       displayType="icon"
       cssClass="btn-link"
     ></ish-lazy-product-add-to-quote>
-    <button
-      *ishFeature="'compare'"
-      (click)="toggleCompare()"
-      class="btn btn-link add-to-compare"
-      [ngClass]="{ 'is-selected': isInCompareList }"
-      title="{{ 'product.compare.link' | translate }}"
-    >
-      <fa-icon [icon]="['fas', 'columns']"></fa-icon>
-    </button>
+    <ish-product-add-to-compare
+      [isInCompareList]="isInCompareList"
+      (compareToggle)="toggleCompare()"
+    ></ish-product-add-to-compare>
     <ish-product-add-to-basket
       [product]="product"
       displayType="icon"
@@ -34,5 +29,4 @@
       (productToBasket)="addToBasket()"
     ></ish-product-add-to-basket>
   </div>
-
 </div>
