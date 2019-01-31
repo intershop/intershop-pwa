@@ -5,7 +5,7 @@ export interface Registration {
   passwordConfirmation: string;
   securityQuestion: number;
   securityQuestionAnswer: string;
-  countryCodeSwitch: 'BG' | 'DE' | 'FR' | 'IN' | 'GB' | 'US';
+  countryCodeSwitch: string;
   title: number;
   firstName: string;
   lastName: string;
@@ -22,13 +22,14 @@ export const sensibleDefaults: Partial<Registration> = {
   password: '!InterShop00!',
   securityQuestion: 1,
   securityQuestionAnswer: 'something',
-  countryCodeSwitch: 'DE',
+  countryCodeSwitch: 'AT',
   title: 1,
   firstName: 'Test',
   lastName: 'User',
   addressLine1: 'Testroad 1',
   postalCode: '12345',
   city: 'Testcity',
+  mainDivision: 'Wien',
 };
 
 export class RegistrationPage {
