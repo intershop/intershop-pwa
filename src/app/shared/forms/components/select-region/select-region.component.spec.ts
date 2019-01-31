@@ -28,8 +28,8 @@ describe('Select Region Component', () => {
         });
         component.form = form;
         component.regions = [
-          { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
-          { countryCode: 'BG', regionCode: '23', name: 'Sofia' },
+          { countryCode: 'BG', regionCode: '02', name: 'Burgas', id: 'BG02' },
+          { countryCode: 'BG', regionCode: '23', name: 'Sofia', id: 'BG23' },
         ];
       });
   }));
