@@ -82,6 +82,12 @@
           clear: both;
         }
       }
+
+      .product-tile-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
     }
 
     &.list-view {
@@ -92,23 +98,6 @@
           padding-top: 0;
           text-align: left;
         }
-      }
-
-      .add-to-wishlist {
-        padding-right: 0;
-      }
-
-      .add-to-compare {
-        padding-right: 0;
-
-        @media (min-width: $screen-sm-min) {
-          display: block;
-          text-align: right;
-        }
-      }
-
-      .add-to-quote {
-        padding-right: 0;
       }
     }
   }
@@ -126,10 +115,6 @@
   }
 
   .product-tile-actions {
-    position: absolute;
-    top: 0;
-    right: 0;
-
     .btn {
       padding: 3px 6px;
       font-size: $font-size-lg;
