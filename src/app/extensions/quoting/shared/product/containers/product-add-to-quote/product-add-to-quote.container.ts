@@ -21,7 +21,7 @@ export class ProductAddToQuoteContainerComponent {
   @Input() product: Product;
   @Input() disabled?: boolean;
   @Input() displayType?: string;
-  @Input() cssClass?: string;
+  @Input() class?: string;
   @Input() quantity?: number;
 
   constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
