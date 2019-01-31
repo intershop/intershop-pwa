@@ -24,7 +24,7 @@ server {
         add_header X-icm-default-lang $LANG always;
 
         rewrite ^/$ /home;
-        if ($request_uri !~* ";lang="){
+        if ($request_uri !~* ";lang=") {
             rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;lang=$LANG";
         }
         rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
