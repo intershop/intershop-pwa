@@ -56,8 +56,8 @@ describe('Address Form Us Component', () => {
     expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
 
     component.regions = [
-      { countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
-      { countryCode: 'US', regionCode: 'FL', name: 'Florida' },
+      { countryCode: 'US', regionCode: 'AL', name: 'Alabama', id: 'USAL' },
+      { countryCode: 'US', regionCode: 'FL', name: 'Florida', id: 'USFL' },
     ];
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();

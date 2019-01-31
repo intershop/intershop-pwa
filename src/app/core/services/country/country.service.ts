@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { RegionData } from 'ish-core/models/region/region.interface';
+import { RegionMapper } from 'ish-core/models/region/region.mapper';
+import { Region } from 'ish-core/models/region/region.model';
 import { CountryMapper } from '../../models/country/country.mapper';
 import { Country } from '../../models/country/country.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
@@ -25,5 +28,18 @@ export class CountryService {
       unpackEnvelope('data'),
       map(countryItemsData => countryItemsData.map(CountryMapper.fromData))
     );
+  }
+
+  /*
+    gets the available regions for requested country by countrycode
+    @returns (Observable<Region[]>)
+  */
+  getRegionsByCountry(countryCode: string): Observable<Region[]> {
+    return this.apiService
+      .get<RegionData>(`countries/${countryCode}/main-divisions`, { headers: this.countryHeadersV1 })
+      .pipe(
+        unpackEnvelope<RegionData>('data'),
+        map(regionData => regionData.map(regionItemData => RegionMapper.fromData(regionItemData, countryCode)))
+      );
   }
 }
