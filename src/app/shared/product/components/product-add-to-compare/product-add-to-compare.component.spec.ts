@@ -47,16 +47,27 @@ describe('Product Add To Compare Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should show disable button when "isInCompareList" is set to "true" ', () => {
+  it('should show muted button when "isInCompareList" is set to "true" ', () => {
     component.isInCompareList = true;
     fixture.detectChanges();
     expect(element.querySelector('button').className).toContain('is-selected');
   });
 
-  it('should show disable button when "isInCompareList" is set to "false" ', () => {
+  it('should show normal button when "isInCompareList" is set to "false" ', () => {
     component.isInCompareList = false;
     fixture.detectChanges();
-    expect(element.querySelector('button').className).toBe('btn btn-link add-to-compare');
+    expect(element.querySelector('button').className).toBe('btn add-to-compare');
+  });
+
+  it('should not show an icon when display type is not icon ', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('fa-icon')).toBeFalsy();
+  });
+
+  it('should show icon button when display type is icon ', () => {
+    component.displayType = 'icon';
+    fixture.detectChanges();
+    expect(element.querySelector('fa-icon')).toBeTruthy();
   });
 
   it('should detect errors on emitter using spy', () => {
