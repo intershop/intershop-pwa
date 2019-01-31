@@ -1605,6 +1605,8 @@
   "common.user.language.text": "SPRACHE",
   "common.user.locale.text": "EN",
   "common.view_all.link": "Alle anzeigen",
+  "cookie_law.button": "Akzeptieren",
+  "cookie_law.text": "Diese Website verwendet Cookies, um Ihre Erfahrung auf unserer Website zu verbessern. Weitere Informationen finden Sie in unserer <a href=\"{{0}}\">Privacy Policy<\/a>.",
   "dialog.close.text": "Schließen",
   "email.address.message": "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"footerAddressItem\" width=\"50%\">Max Mustermann<br />Musterstraße 15<br />99999 Musterstadt<\/td><td class=\"footerAddressItem\" width=\"50%\">Max Mustermann<br />Musterstraße 15<br />99999 Musterstadt<\/td><\/tr><\/table>",
   "email.approve_customer.button": "<a href=\"{{0}}\">Kunde genehmigen<\/a>",
