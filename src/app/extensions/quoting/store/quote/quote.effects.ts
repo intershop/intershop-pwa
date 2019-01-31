@@ -107,7 +107,7 @@ export class QuoteEffects {
     map(action => action.payload.params.quoteId),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
-    map(([itemId]) => new actions.SelectQuote(itemId))
+    map(([itemId]) => new actions.SelectQuote({ id: itemId }))
   );
 
   /**
