@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
-import { Customer } from 'ish-core/models/customer/customer.model';
+import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { CreateUser, getUserError } from 'ish-core/store/user';
 
@@ -24,7 +24,7 @@ export class RegistrationPageContainerComponent {
     this.router.navigate(['/home']);
   }
 
-  onCreate(customer: Customer) {
-    this.store.dispatch(new CreateUser({ customer }));
+  onCreate(body: CustomerRegistrationType) {
+    this.store.dispatch(new CreateUser(body));
   }
 }

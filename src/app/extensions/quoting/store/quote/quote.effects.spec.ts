@@ -30,6 +30,8 @@ describe('Quote Effects', () => {
   let effects: QuoteEffects;
   let store$: Store<{}>;
 
+  const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
+
   beforeEach(() => {
     quoteServiceMock = mock(QuoteService);
 
@@ -54,7 +56,7 @@ describe('Quote Effects', () => {
     store$ = TestBed.get(Store);
 
     store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
-    store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+    store$.dispatch(new LoginUserSuccess({ customer }));
     store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
   });
 
@@ -182,7 +184,7 @@ describe('Quote Effects', () => {
 
   describe('createQuoteRequestFromQuote$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer: { customerNo: 'test', type: 'SMBCustomer' } as Customer }));
+      store$.dispatch(new LoginUserSuccess({ customer }));
       store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
       store$.dispatch(
         new quoteActions.LoadQuotesSuccess({

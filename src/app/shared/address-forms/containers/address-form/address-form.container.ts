@@ -10,8 +10,9 @@ import {
 import { FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Region } from 'ish-core/models/region/region.model';
 import { RegionService } from 'ish-core/services/region/region.service';
 import { getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
@@ -55,16 +56,24 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
     private store: Store<{}>,
     private afs: AddressFormFactoryProvider,
     private rs: RegionService,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private featureToggle: FeatureToggleService
+  ) {
+    this.store
+      .pipe(
+        select(isBusinessCustomer),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(
+        data => (this.isBusinessCustomer = data || this.featureToggle.enabled('businessCustomerRegistration'))
+      );
+  }
 
   ngOnChanges(c: SimpleChanges) {
     if (c.parentForm) {
-      this.store.pipe(select(isBusinessCustomer, take(1))).subscribe(data => {
-        this.isBusinessCustomer = data;
-        const group = this.afs.getFactory('default').getGroup({ isBusinessAddress: this.isBusinessCustomer });
-        this.parentForm.setControl(this.controlName, group);
-      });
+      const group = this.afs.getFactory('default').getGroup({ isBusinessAddress: this.isBusinessCustomer });
+      this.parentForm.setControl(this.controlName, group);
+
       this.parentForm
         .get('countryCodeSwitch')
         .valueChanges.pipe(takeUntil(this.destroy$))
