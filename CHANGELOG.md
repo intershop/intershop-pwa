@@ -1,3 +1,45 @@
+# [0.9.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.9.0/) (2019-01-31)
+
+**required Intershop Commerce Management version: 7.10.5.4**
+
+### Features
+
+* multi-site handling (ISREST-529)
+* display cookie usage notice - used angular2-cookie-law (ISREST-557)
+* business customer registration (ISREST-538)
+* Add Angulartics2 to enable Tracking with Google Analytics and Google Tag Manager
+* add ishDate pipe for correctly localizing dates
+* use additional attributes of changed products REST API
+* consume basket rest api changes (ISREST-556)
+* load regions from REST API (ISREST-532)
+* compare button in list view (ISREST-552)
+* company input fields for business customers added to address forms (ISREST-497)
+* add and delete addresses in My Account (ISREST-293)
+* dependency upgrades (including ngrx@7)
+* get countries per REST (ISREST-532)
+
+
+### Bug Fixes
+
+* visiting product detail page of certain products leads to endless product calls for that product in product listings (ISREST-564)
+* loading deleted products in listings routes to error page
+* repair address form validation feedback (ISREST-555)
+* merge basket after login (ISREST-554)
+* updating address during checkout using the new Basket REST API (ISREST-344)
+* enable initialNavigation to prevent flickering when loading page in universal mode
+
+
+### Performance Improvements
+
+* use the font-display property with 'swap' for faster initial text display
+
+
+### BREAKING CHANGES
+
+* Properties ICM_APPLICATION (system environment) and icmApplication (environment.ts) are correctly renamed to ICM_CHANNEL and icmChannel respectively. 
+* Features now have to be supplied using a string array or as a string containing a comma separated list. Features are now opt-in instead of previously opt-out. 
+
+
 # [0.8.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.8.0/) (2018-12-20)
 
 **required Intershop Commerce Management version: 7.10.5.2**
