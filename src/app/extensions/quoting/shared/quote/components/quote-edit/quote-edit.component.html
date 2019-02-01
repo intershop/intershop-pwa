@@ -201,8 +201,9 @@
       </ng-container>
 
       <!-- ELSE ( if type === Quote )-->
+
       <ng-container *ngIf="quote.type === 'Quote'">
-        <ng-container *ngIf="quote.state === 'Responded' && (hasValidToDate$ | async)">
+        <ng-container *ngIf="quote.state === 'Responded' && isQuoteValid">
           <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">
             {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
           </button>
@@ -213,7 +214,7 @@
         </button>
 
         <button
-          *ngIf="quote.state === 'Responded' && (hasValidToDate$ | async)"
+          *ngIf="quote.state === 'Responded' && isQuoteValid"
           type="submit"
           id="button-reject"
           class="btn btn-secondary"
