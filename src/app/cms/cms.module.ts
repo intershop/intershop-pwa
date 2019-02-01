@@ -13,7 +13,6 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
-import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 const exportedComponents = [ContentIncludeContainerComponent];
 
@@ -34,7 +33,6 @@ const entryComponents = [
     ...exportedComponents,
     ContentPageletContainerComponent,
     ContentSlotContainerComponent,
-    SafeHtmlPipe,
   ],
   providers: [
     {
