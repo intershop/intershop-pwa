@@ -31,7 +31,7 @@ describe('Account Profile Settings Page Container', () => {
         MockComponent({
           selector: 'ish-account-profile-settings-page',
           template: 'Profile Settings Component',
-          inputs: ['user'],
+          inputs: ['user', 'customer'],
         }),
       ],
       imports: [StoreModule.forRoot(coreReducers), TranslateModule.forRoot()],
