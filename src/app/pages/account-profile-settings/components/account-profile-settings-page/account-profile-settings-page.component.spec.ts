@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
@@ -12,6 +13,7 @@ describe('Account Profile Settings Page Component', () => {
   let fixture: ComponentFixture<AccountProfileSettingsPageComponent>;
   let element: HTMLElement;
   const user = { firstName: 'Patricia', lastName: 'Miller' } as User;
+  const customer = { type: 'PrivateCustomer' } as Customer;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,6 +27,7 @@ describe('Account Profile Settings Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.user = user;
+    component.customer = customer;
   });
 
   it('should be created', () => {
