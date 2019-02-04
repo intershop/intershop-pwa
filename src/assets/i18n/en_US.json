@@ -1605,8 +1605,6 @@
   "common.user.language.text": "LANGUAGE",
   "common.user.locale.text": "EN",
   "common.view_all.link": "View All",
-  "cookie_law.button": "Accept",
-  "cookie_law.text": "This website uses cookies to improve your experience on our site. More detailed informations are provided in our <a href=\"{{0}}\">Privacy Policy<\/a>.",
   "dialog.close.text": "Close",
   "email.address.message": "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"footerAddressItem\" width=\"50%\">Max Mustermann<br />Pattern Street 15<br />99999 Patterncity<\/td><td class=\"footerAddressItem\" width=\"50%\">Max Mustermann<br />Pattern Street 15<br />99999 Patterncity<\/td><\/tr><\/table>",
   "email.approve_customer.button": "<a href=\"{{0}}\">Approve Customer<\/a>",
@@ -2580,5 +2578,7 @@
   "error.page.text": "<h3>We are sorry ...</h3><p>The page you are looking for is currently not available. This could be caused by out-of-date links, a typing error, or moving, renaming or deleting a file. We've informed our webmaster of this problem.</p><h4>Please try one of the following:</h4><ul><li>Check the page address in the Address Bar for typing errors</li><li>Go back to the <a href=\"javascript:history.back()\">Previous Page</a></li><li>Go back to the <a href=\"/home\">Home Page</a></li><li>Or use our site search:</li></ul>",
   "servererror.page.title": "Something Went Wrong",
   "servererror.page.text": "<h3>We are sorry ...</h3><h4>Please go back to the <a href=\"/home\">Home Page</a> and try again.</h4>",
-  "header.welcome.text": "Welcome to inSPIRED"
+  "header.welcome.text": "Welcome to inSPIRED",
+  "cookie_law.text": "This website uses cookies to improve your experience on our site. More detailed information is provided in our <a href=\"{{0}}\">Privacy Policy<\/a>.",
+  "cookie_law.button": "Accept"
 }
