@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 import { CMSImageEnhancedComponent } from './cms-image-enhanced.component';
 

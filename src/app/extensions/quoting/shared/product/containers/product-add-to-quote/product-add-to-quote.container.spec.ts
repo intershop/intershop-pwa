@@ -22,7 +22,7 @@ describe('Product Add To Quote Container', () => {
         MockComponent({
           selector: 'ish-product-add-to-quote',
           template: 'Product Add To Quote',
-          inputs: ['displayType', 'disabled', 'cssClass'],
+          inputs: ['displayType', 'disabled', 'class'],
         }),
         ProductAddToQuoteContainerComponent,
       ],

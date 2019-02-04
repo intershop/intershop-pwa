@@ -11,7 +11,7 @@ import { Product } from 'ish-core/models/product/product.model';
  * <ish-lazy-product-add-to-quote
  *   [disabled]="disabled"
  *   [product]="product$ | async"
- *   cssClass="btn-block"
+ *   class="btn-block"
  *   displayType="icon"
  * ></ish-lazy-product-add-to-quote>
  */
@@ -24,7 +24,7 @@ export class LazyProductAddToQuoteComponent {
   @Input() product: Product;
   @Input() disabled = false;
   @Input() displayType?: string;
-  @Input() cssClass?: string;
+  @Input() class?: string;
   @Input() quantity?: number;
 
   componentLocation = {
