@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
+import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 import { CMSFreestyleComponent } from './cms-freestyle.component';
 

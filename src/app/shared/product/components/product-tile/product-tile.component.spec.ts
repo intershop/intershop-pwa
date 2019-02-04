@@ -29,7 +29,7 @@ describe('Product Tile Component', () => {
         MockComponent({
           selector: 'ish-lazy-product-add-to-quote',
           template: 'Lazy Product Add To Quote',
-          inputs: ['displayType', 'disabled', 'cssClass', 'product', 'quantity'],
+          inputs: ['displayType', 'disabled', 'class', 'product', 'quantity'],
         }),
         MockComponent({
           selector: 'ish-product-add-to-basket',

@@ -1,4 +1,4 @@
-import { SafeHtmlPipe } from './safe-html.pipe';
+import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 
 describe('Safe Html Pipe', () => {
   it('should be created', () => {

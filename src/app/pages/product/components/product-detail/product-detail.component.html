@@ -46,14 +46,14 @@
           [product]="product"
           [disabled]="!productDetailForm.valid"
           (productToBasket)="addToBasket()"
-          [class]="'btn-lg btn-block'"
+          class="btn-lg btn-block"
         ></ish-product-add-to-basket>
 
         <ish-lazy-product-add-to-quote
           [product]="product"
           [disabled]="!productDetailForm.valid"
           [quantity]="quantity"
-          cssClass="btn-block"
+          class="btn-block"
         ></ish-lazy-product-add-to-quote>
       </form>
     </div>
