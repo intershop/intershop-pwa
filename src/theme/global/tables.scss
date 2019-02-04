@@ -70,7 +70,7 @@
 
   // legacy col- styles that where used in tables
   .legacy-col-6 {
-    width: 50%;
+    width: 25%;
   }
 
   @media (min-width: $screen-md) {
@@ -261,6 +261,28 @@ a.product-title {
           border: none;
           border-bottom: 1px solid $border-color-lighter;
         }
+      }
+    }
+
+    .btn {
+      width: auto;
+    }
+
+    .product-title {
+      text-align: left;
+    }
+
+    .no-border {
+      padding-top: 0;
+      padding-bottom: 0;
+      border: 0;
+    }
+
+    @media (max-width: 767px) {
+      td,
+      th {
+        min-width: 400px;
+        white-space: normal;
       }
     }
   }
