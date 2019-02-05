@@ -1,5 +1,6 @@
 // tslint:disable:ccp-no-intelligence-in-components
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { CookieLawContainerComponent } from 'angular2-cookie-law';
 
@@ -20,8 +21,11 @@ export class AppComponent {
   private cookieLaw: CookieLawContainerComponent;
 
   wrapperClass$ = this.store.pipe(select(getWrapperClass));
+  isBrowser: boolean;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store<{}>, @Inject(PLATFORM_ID) platformId: string) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   dismiss() {
     this.cookieLaw.dismiss();
