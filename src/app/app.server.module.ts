@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { StoreModule } from '@ngrx/store';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
@@ -8,6 +9,7 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
+import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 import { coreReducers } from 'ish-core/store/core-store.module';
 
@@ -56,4 +58,8 @@ export function translateLoaderFactory() {
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
-export class AppServerModule {}
+export class AppServerModule {
+  constructor(transferState: TransferState) {
+    transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
+  }
+}
