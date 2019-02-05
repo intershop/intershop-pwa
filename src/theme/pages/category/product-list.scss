@@ -82,16 +82,14 @@
           clear: both;
         }
       }
-
-      .product-tile-actions {
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
     }
 
     &.list-view {
       width: 100%;
+
+      .product-tile-actions {
+        position: relative;
+      }
 
       a {
         &.product-title {
@@ -115,6 +113,10 @@
   }
 
   .product-tile-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+
     .btn {
       padding: 3px 6px;
       font-size: $font-size-lg;
