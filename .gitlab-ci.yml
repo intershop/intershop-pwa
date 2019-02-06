@@ -20,6 +20,8 @@ cache:
 setup:
   image: node:10
   stage: setup
+  only:
+    - merge_requests
   except:
     refs:
       - develop
@@ -39,6 +41,8 @@ setup:
 jest_test:
   image: node:10
   stage: build
+  only:
+    - merge_requests
   except:
     refs:
       - develop
@@ -62,6 +66,8 @@ jest_test:
 compile:
   image: node:10
   stage: build
+  only:
+    - merge_requests
   except:
     refs:
       - develop
@@ -85,6 +91,8 @@ compile:
 codestyle:
   image: node:10
   stage: build
+  only:
+    - merge_requests
   except:
     refs:
       - develop
@@ -110,6 +118,8 @@ codestyle:
 schematics:
   image: node:10
   stage: integration
+  only:
+    - merge_requests
   except:
     refs:
       - develop
@@ -125,6 +135,8 @@ schematics:
 cypress_local:
   image: cypress/browsers:chrome69
   stage: integration
+  only:
+    - merge_requests
   except:
     refs:
       - develop
@@ -154,8 +166,13 @@ publish_pwa:
   dependencies: []
   image: docker:stable
   stage: integration
+  only:
+    - tags
+    - merge_requests
   tags:
-    - docker-executor
+    - shell-executor
+    - docker
+    - performance
   services:
     - docker:dind
   script:
@@ -170,14 +187,30 @@ publish_pwa:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
 
+publish_pwa_latest:
+  cache: {}
+  dependencies: []
+  image: docker:stable
+  stage: publish
+  only:
+    - tags
+  tags:
+    - docker-executor
+  services:
+    - docker:dind
+  script:
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:latest
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:latest
+
 start_nginx_proxy:
   cache: {}
   dependencies: []
   stage: publish
-  except:
-    refs:
-      - develop
-      - master
+  only:
+    - merge_requests
   tags:
     - shell-executor
     - docker
@@ -190,30 +223,24 @@ publish_nginx:
   dependencies: []
   image: docker:stable
   stage: publish
+  only:
+    refs:
+      - develop
+      - master
+      - tags
+      - merge_requests
   tags:
-    - docker-executor
+    - shell-executor
+    - docker
+    - performance
   services:
     - docker:dind
   script:
+    - sh .gitlab-ci-check-app-changes.sh '^nginx' || exit 0
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - docker build -t ${CI_REGISTRY_IMAGE}:nginx nginx
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx
-
-reports:
-  cache: {}
-  stage: publish
-  tags:
-    - docker-executor
-  except:
-    refs:
-      - develop
-      - master
-  artifacts:
-    expire_in: 30 days
-    paths:
-      - reports
-  script: echo "accumulate reports"
 
 push_reports:
   stage: publish
@@ -327,11 +354,8 @@ deploy_review_b2c:
   dependencies: []
   tags:
   - shell-executor
-  - demoserver
-  except:
-    refs:
-      - develop
-      - master
+  only:
+    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
@@ -349,10 +373,8 @@ stop_review_b2c:
   tags:
   - shell-executor
   - demoserver
-  except:
-    refs:
-      - develop
-      - master
+  only:
+    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
@@ -369,10 +391,8 @@ deploy_review_b2b:
   - shell-executor
   - docker
   - demoserver
-  except:
-    refs:
-      - develop
-      - master
+  only:
+    - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
@@ -418,10 +438,8 @@ stop_review_b2b:
   - shell-executor
   - docker
   - demoserver
-  except:
-    refs:
-      - develop
-      - master
+  only:
+    - merge_requests
   variables:
     GIT_STRATEGY: none
     SERVICE: "${CI_COMMIT_REF_SLUG}-nginx"
@@ -434,10 +452,8 @@ stop_review_b2b:
 cypress_remote:
   image: cypress/browsers:chrome69
   stage: e2e
-  except:
-    refs:
-      - develop
-      - master
+  only:
+    - merge_requests
   tags:
     - docker-executor
   artifacts:
