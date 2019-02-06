@@ -218,6 +218,7 @@ publish_nginx:
   services:
     - docker:dind
   script:
+    - sh .gitlab-ci-check-app-changes.sh '^nginx' || exit 0
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - docker build -t ${CI_REGISTRY_IMAGE}:nginx nginx
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
