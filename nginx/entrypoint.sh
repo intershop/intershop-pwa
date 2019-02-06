@@ -6,7 +6,7 @@ set -e
 [ -z "$UPSTREAM_ICM" ] && echo "UPSTREAM_ICM is not set" && exit 1
 [ -z "$UPSTREAM_PWA" ] && echo "UPSTREAM_PWA is not set" && exit 1
 
-rm /etc/nginx/conf.d/default.conf
+[ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
 envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.common.tmpl > /etc/nginx/conf.d/icm.common
 
 cat /etc/nginx/conf.d/icm.common
@@ -31,6 +31,18 @@ do
   i=$((i+1))
 done
 
-find /etc/nginx/conf.d -name '*.conf' -print -exec cat '{}' \;
+# Generate Pagespeed config based on environment variables
+env | grep NPSC_ | sed -e 's/^NPSC_//g' -e "s/\([A-Z_]*\)=/\L\1=/g" -e "s/_\([a-zA-Z]\)/\u\1/g" -e "s/^\([a-zA-Z]\)/\u\1/g" -e 's/=.*$//' -e 's/\=/ /' -e 's/^/\pagespeed /' > /tmp/pagespeed-prefix.txt
 
-nginx -g "daemon off;"
+env | grep NPSC_ | sed -e 's/^[^=]*=//' -e 's/$/;/' > /tmp/pagespeed-suffix.txt
+
+paste -d" " /tmp/pagespeed-prefix.txt /tmp/pagespeed-suffix.txt >> /etc/nginx/pagespeed.conf
+
+find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
+
+if [ -z "$*" ]
+then
+  /usr/local/nginx/sbin/nginx -c /etc/nginx/nginx.conf -g "daemon off;"
+else
+  exec "$@"
+fi

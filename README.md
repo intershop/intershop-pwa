@@ -48,6 +48,8 @@ Use `npm run build` to generate the preferred angular universal enabled version.
 You can alternatively use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically. The server has to be configured for fallback routing, 
 see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).
 
+For a production setup we recommend building the docker image supplied with the `Dockerfile` in the root folder of the project. Build it with `docker build -t my_pwa .`. To run the PWA with multiple channels and [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/) optimizations, you can use the nginx docker image supplied in the sub folder [nginx](./nginx).
+
 ## Progressive Web App (PWA)
 
 To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started) use `npm run start` to build and serve the application. After that open `http://localhost:4200` in your browser and test it or run a PWA Audit. Currently only `localhost` or `127.0.0.1` will work with the service worker since it requires `https` communication on any other domain.
