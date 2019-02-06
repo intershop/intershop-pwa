@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,7 +16,13 @@ describe('Footer Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [
+        BrowserTransferStateModule,
+        IconModule,
+        NgbCollapseModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [FooterComponent],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })

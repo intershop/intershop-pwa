@@ -159,8 +159,10 @@ publish_pwa:
   services:
     - docker:dind
   script:
+    - VERSION="$(grep "version" package.json | grep -Eo '[0-9][^"]*')"
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+            --build-arg displayVersion="$VERSION ($CI_COMMIT_REF_NAME @ $CI_COMMIT_SHA)"
             --label environment="production"
             --label revision="${CI_BUILD_REF}"
             --label project="${CI_PROJECT_URL}"
