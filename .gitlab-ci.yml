@@ -167,8 +167,10 @@ publish_pwa:
   image: docker:stable
   stage: integration
   only:
-    - tags
-    - merge_requests
+    refs:
+      - develop
+      - tags
+      - merge_requests
   tags:
     - shell-executor
     - docker
