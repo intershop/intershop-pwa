@@ -17,7 +17,7 @@ git remote | grep bitbucket || git remote add bitbucket ssh://git@bitbucket.inte
 git fetch --all
 
 git checkout -b "release_$version" bitbucket/master
-git merge -s subtree --no-commit --squash origin/master
+git merge -s subtree --no-commit --allow-unrelated-histories --squash origin/master || git merge -s subtree --no-commit --squash origin/master
 git reset HEAD -- settings.gradle gradle gradlew build.gradle
 git checkout -- settings.gradle gradle gradlew build.gradle
 git -c user.name="Intershop" -c user.email=support@intershop.de commit --message="Release $version"
