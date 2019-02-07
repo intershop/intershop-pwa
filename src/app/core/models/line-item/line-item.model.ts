@@ -26,6 +26,9 @@ export interface LineItem {
     shippingTotal: Price;
     total: Price;
     valueRebatesTotal?: Price;
+
+    // attributes needed for quote feature
+    originTotal?: Price;
   };
   isHiddenGift: boolean;
   isFreeGift: boolean;
@@ -34,6 +37,9 @@ export interface LineItem {
   name?: string;
   inStock?: boolean;
   availability?: boolean;
+
+  // attributes needed for quote feature
+  originSingleBasePrice?: Price;
 }
 
 export interface LineItemView extends LineItem {

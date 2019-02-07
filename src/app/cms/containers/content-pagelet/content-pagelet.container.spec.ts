@@ -2,10 +2,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 import { CMSTextComponent } from '../../components/cms-text/cms-text.component';
 import { CMS_COMPONENT } from '../../configurations/injection-keys';
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 import { ContentPageletContainerComponent } from './content-pagelet.container';
 

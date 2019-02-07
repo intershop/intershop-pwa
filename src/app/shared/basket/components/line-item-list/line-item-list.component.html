@@ -102,13 +102,13 @@
         <!-- Prices -->
         <div class="col-md-2 d-none d-md-block list-item column-price single-price">
           <!-- Original Single Base Price  -->
-          <p *ngIf="pli.singleBasePrice" class="text-nowrap">
-            {{ 'quote.items.original_price.label' | translate }} {{ pli.singleBasePrice | ishPrice }}
+          <p *ngIf="pli.originSingleBasePrice" class="text-nowrap">
+            {{ 'quote.items.original_price.label' | translate }} {{ pli.originSingleBasePrice | ishPrice }}
           </p>
 
           <!-- (Suggested) Single Base Price  -->
           <p class="text-nowrap">
-            <ng-container *ngIf="pli.singleBasePrice">{{
+            <ng-container *ngIf="pli.originSingleBasePrice">{{
               'quote.items.suggested_price.label' | translate
             }}</ng-container>
             {{ pli.singleBasePrice | ishPrice }}
@@ -116,8 +116,7 @@
         </div>
         <div *ngIf="pli.totals" class="col-3 col-md-2 list-item column-price">
           <div>
-            <!-- Original Total Price  -->
-            <p *ngIf="pli.totals.total" class="text-nowrap">{{ pli.totals.total | ishPrice }}</p>
+            <p *ngIf="pli.totals.originTotal" class="text-nowrap">{{ pli.totals.originTotal | ishPrice }}</p>
 
             <!-- (Suggested) Total Price  -->
             <p class="text-nowrap">{{ pli.totals.total | ishPrice }}</p>

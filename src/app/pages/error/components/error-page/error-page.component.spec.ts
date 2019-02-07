@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
@@ -14,7 +15,7 @@ describe('Error Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [PipesModule, TranslateModule.forRoot()],
       declarations: [
         ErrorPageComponent,
         MockComponent({

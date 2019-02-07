@@ -87,35 +87,22 @@
     &.list-view {
       width: 100%;
 
+      .product-tile-actions {
+        position: relative;
+      }
+
       a {
         &.product-title {
           padding-top: 0;
           text-align: left;
         }
       }
-
-      .add-to-wishlist {
-        padding-right: 0;
-      }
-
-      .add-to-compare {
-        padding-right: 0;
-
-        @media (min-width: $screen-sm-min) {
-          display: block;
-          text-align: right;
-        }
-      }
-
-      .add-to-quote {
-        padding-right: 0;
-      }
     }
   }
 
   a {
     &.product-title {
-      display: inline-block;
+      display: block;
       padding-top: $space-default;
       font-family: $font-family-condensedregular;
       font-size: $font-size-lg;

@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, timer } from 'rxjs';
-import { mapTo, share } from 'rxjs/operators';
 
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -52,11 +50,6 @@ export class QuoteEditComponent implements OnChanges {
   validFromDate: number;
   validToDate: number;
   submitted = false;
-
-  hasValidToDate$: Observable<boolean> = timer(0, 1000).pipe(
-    mapTo(Date.now() < this.validToDate),
-    share()
-  );
 
   constructor() {
     this.form = new FormGroup({
@@ -140,5 +133,9 @@ export class QuoteEditComponent implements OnChanges {
    */
   addToBasket() {
     this.addQuoteToBasket.emit(this.quote.id);
+  }
+
+  get isQuoteValid(): boolean {
+    return Date.now() < this.validToDate;
   }
 }

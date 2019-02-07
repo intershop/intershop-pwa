@@ -5,7 +5,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
  *
  * @example
  * <ish-product-add-to-compare
- *               [isInCompareList]="isInCompareList$ | async"
+ *               [isInCompareList]="isInCompareList"
+ *               displayType="icon"
+ *               class="btn-link"
  *               (compareToggle)="toggleCompare()"
  * ></ish-product-add-to-compare>
  */
@@ -16,6 +18,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class ProductAddToCompareComponent {
   @Input() isInCompareList: boolean;
+  @Input() displayType?: string;
+  @Input() class?: string;
   @Output() compareToggle = new EventEmitter<void>();
 
   toggleCompare() {
