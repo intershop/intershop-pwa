@@ -1,3 +1,21 @@
+# [0.9.1](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.9.1/) (2019-02-07)
+
+
+### Features
+
+* display PWA version info in footer (ISREST-215)
+
+
+### Bug Fixes
+
+* display cookie warning on client side only (ISREST-557)
+* display company info in profile settings (ISREST-587)
+* localization and styling issues
+* compare products columns don't have same sizes on mobile (ISREST-558)
+* various quoting issues (ISREST-588)
+
+
+
 # [0.9.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.9.0/) (2019-01-31)
 
 **required Intershop Commerce Management version: 7.10.5.4**
