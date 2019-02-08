@@ -3,6 +3,7 @@ import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-load
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
+import { LazyQuoteWidgetComponent } from './account/components/lazy-quote-widget/lazy-quote-widget.component';
 import { LazyBasketAddToQuoteComponent } from './basket/components/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 import { LazyProductAddToQuoteComponent } from './product/components/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 
@@ -14,7 +15,7 @@ import { LazyProductAddToQuoteComponent } from './product/components/lazy-produc
       loadChildren: '../quoting.module#QuotingModule',
     }),
   ],
-  declarations: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent],
-  exports: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent],
+  declarations: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],
+  exports: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],
 })
 export class QuotingExportsModule {}

@@ -19,6 +19,10 @@ describe('Account Overview Page Component', () => {
       declarations: [
         AccountOverviewPageComponent,
         MockComponent({
+          selector: 'ish-lazy-quote-widget',
+          template: 'Lazy Quote Widget Component',
+        }),
+        MockComponent({
           selector: 'ish-order-list-container',
           template: 'Order List Container Component',
           inputs: ['maxListItems', 'compact'],
