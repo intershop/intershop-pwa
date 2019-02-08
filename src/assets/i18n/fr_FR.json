@@ -2476,5 +2476,11 @@
   "checkout.termsandconditions.details.text": "<div><h3>1. Other Documents</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>2. Payment Terms; Orders; Quotes; Interest</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>3. Shipping Charges; Taxes; Title; Risk of Loss</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p></div>",
   "header.welcome.text": "Welcome to inSPIRED",
   "cookie_law.text": "Ce site Web utilise des cookies pour am\u00E9liorer votre exp\u00E9rience sur notre site. Vous trouverez des informations plus d\u00E9taill\u00E9es dans notre <a href=\"{{0}}\">politique de confidentialit\u00E9</a>.",
-  "cookie_law.button": "Accepter"
+  "cookie_law.button": "Accepter",
+  "account.quotes.widget.my_quotes.heading": "Mes devis",
+  "account.quotes.widget.new.label": "Nouveau",
+  "account.quotes.widget.submitted.label": "Envoy\u00E9",
+  "account.quotes.widget.accepted.label": "Accept\u00E9",
+  "account.quotes.widget.rejected.label": "Rejet\u00E9",
+  "account.quotes.widget.view_all_quotes.link": "Afficher tous les devis"
 }

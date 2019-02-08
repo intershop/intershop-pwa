@@ -1,0 +1,10 @@
+<div class="row pb-2">
+  <div class="col-6">{{ 'account.quotes.widget.new.label' | translate }}</div>
+  <div class="col-6 text-right">{{ getCount('New') }}</div>
+  <div class="col-6">{{ 'account.quotes.widget.submitted.label' | translate }}</div>
+  <div class="col-6 text-right">{{ getCount('Submitted') }}</div>
+  <div class="col-6">{{ 'account.quotes.widget.accepted.label' | translate }}</div>
+  <div class="col-6 text-right">{{ getCount('Responded') + getCount('Expired') + getCount('Converted') }}</div>
+  <div class="col-6">{{ 'account.quotes.widget.rejected.label' | translate }}</div>
+  <div class="col-6 text-right">{{ getCount('Rejected') }}</div>
+</div>

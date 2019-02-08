@@ -2583,5 +2583,11 @@
   "checkout.termsandconditions.details.text": "<div><h3>1. Other Documents</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>2. Payment Terms; Orders; Quotes; Interest</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>3. Shipping Charges; Taxes; Title; Risk of Loss</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p></div>",
   "header.welcome.text": "Wilkommen bei inSPIRED",
   "cookie_law.text": "Diese Website verwendet Cookies, um Ihre Nutzung unserer Website zu verbessern. Detailliertere Informationen finden Sie in unserer <a href=\"{{0}}\">Datenschutzerkl\u00E4rung</a>.",
-  "cookie_law.button": "Akzeptieren"
+  "cookie_law.button": "Akzeptieren",
+  "account.quotes.widget.my_quotes.heading": "Meine Preisangebote",
+  "account.quotes.widget.new.label": "Neu",
+  "account.quotes.widget.submitted.label": "Gesendet",
+  "account.quotes.widget.accepted.label": "Akzeptiert",
+  "account.quotes.widget.rejected.label": "Abgelehnt",
+  "account.quotes.widget.view_all_quotes.link": "Alle Preisangebote anzeigen"
 }

@@ -26,6 +26,10 @@
 
   <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>
 </div>
+
+<!-- Quote Widget - displays different quote states if quoting is enabled -->
+<ish-lazy-quote-widget></ish-lazy-quote-widget>
+
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
   <span [innerHTML]="'account.overview.note.text' | translate: { '0': '/page/privacyPolicy' }"></span>
