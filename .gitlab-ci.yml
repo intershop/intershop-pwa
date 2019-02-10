@@ -402,6 +402,7 @@ deploy_review_b2b:
   - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
   - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
   - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
+        -e LOGGING=true
         -e ICM_BASE_URL=http://10.0.206.226:4322
         ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
   - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
