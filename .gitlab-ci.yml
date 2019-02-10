@@ -375,7 +375,6 @@ stop_review_b2c:
   when: manual
   tags:
   - shell-executor
-  - demoserver
   only:
     - merge_requests
   variables:
@@ -446,9 +445,9 @@ stop_review_b2b:
     - merge_requests
   variables:
     GIT_STRATEGY: none
-    SERVICE: "${CI_COMMIT_REF_SLUG}-nginx"
   script:
-  - docker rm -f "${SERVICE}" || true
+  - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
+  - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
