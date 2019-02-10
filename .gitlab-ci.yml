@@ -135,6 +135,7 @@ schematics:
 cypress_local:
   image: cypress/browsers:chrome69
   stage: integration
+  retry: 1
   only:
     - merge_requests
   except:
