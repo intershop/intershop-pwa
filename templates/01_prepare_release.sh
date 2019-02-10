@@ -7,10 +7,9 @@ set -v
 set -e
 
 git fetch --all
-git checkout master
+git checkout -b origin_master origin/master
 git reset --hard origin/master
-git clean -xdf -e '*environment*'
-npm ci
+git clean -xdf -e '*environment*' -e 'node_modules'
 git merge -m dummy origin/develop
 tagged="$(npm version "$RELEASE")"
 version="$(echo "$tagged" | cut -c2-)"
@@ -18,8 +17,9 @@ git reset --soft HEAD^
 git tag -d "$tagged"
 npm run 3rd-party-licenses
 npm run changelog
-git stash --all
+git stash
 git reset --hard origin/master
 git checkout -b "chore/release_$version" origin/develop
+git branch -D origin_master
 git stash pop
 git commit -a -m "chore: release $version preparation"

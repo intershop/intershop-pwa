@@ -1,6 +1,7 @@
 {
   "name": "intershop-schematics",
   "version": "0.0.1",
+  "private": true,
   "description": "Angular CLI schematics for Intershop PWA",
   "keywords": ["schematics", "intershop"],
   "schematics": "./collection.json",
