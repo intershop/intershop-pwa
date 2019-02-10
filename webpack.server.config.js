@@ -5,24 +5,22 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  mode: "none",
+  mode: 'none',
   entry: {
     // This is our Express server for Dynamic universal
-    server: './server.ts'
+    server: './server.ts',
   },
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
   // Make sure we include all node_modules etc
-  externals: [/(node_modules|main\..*\.js)/,],
+  externals: [/(node_modules|main\..*\.js)/],
   output: {
     // Puts the output at the root of the dist folder
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   module: {
-    rules: [
-      { test: /\.ts$/, loader: 'ts-loader?configFile=./src/tsconfig.server.json' }
-    ]
+    rules: [{ test: /\.ts$/, loader: 'ts-loader?configFile=./src/tsconfig.server.json' }],
   },
   plugins: [
     new webpack.ContextReplacementPlugin(
@@ -41,8 +39,8 @@ module.exports = {
       uglifyOptions: {
         compress: false,
         mangle: false,
-        comments: false
-      }
-    })
-  ]
-}
+        comments: false,
+      },
+    }),
+  ],
+};
