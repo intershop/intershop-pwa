@@ -6,10 +6,7 @@ var resolve = require('path').resolve;
 var path = require('path');
 var pkgJson = {};
 try {
-  pkgJson = require(path.resolve(
-    process.cwd(),
-    './package.json'
-  ));
+  pkgJson = require(path.resolve(process.cwd(), './package.json'));
 } catch (err) {
   console.error('no root package.json found');
 }
@@ -19,14 +16,10 @@ var parserOpts = {
   //   merges: true
   // },
   headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
-  headerCorrespondence: [
-    'type',
-    'scope',
-    'subject'
-  ],
+  headerCorrespondence: ['type', 'scope', 'subject'],
   noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
   revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,
-  revertCorrespondence: ['header', 'hash']
+  revertCorrespondence: ['header', 'hash'],
 };
 
 var writerOpts = {
@@ -81,7 +74,7 @@ var writerOpts = {
     return commit;
   },
   groupBy: 'type',
-  commitGroupsSort: function (arg1, arg2) {
+  commitGroupsSort: function(arg1, arg2) {
     var order = ['Features', 'Bug Fixes', 'Performance Improvements', 'Documentation'];
     if (order.indexOf(arg1.title) < order.indexOf(arg2.title)) {
       return -1;
@@ -93,17 +86,15 @@ var writerOpts = {
   },
   commitsSort: ['scope'],
   noteGroupsSort: 'title',
-  notesSort: compareFunc
+  notesSort: compareFunc,
 };
 
 module.exports = Q.all([
   readFile(resolve(__dirname, 'node_modules/conventional-changelog-angular/templates/template.hbs'), 'utf-8'),
   readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
   readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'node_modules/conventional-changelog-angular/templates/footer.hbs'), 'utf-8')
-])
-.spread(function(template, header, commit, footer) {
-
+  readFile(resolve(__dirname, 'node_modules/conventional-changelog-angular/templates/footer.hbs'), 'utf-8'),
+]).spread(function(template, header, commit, footer) {
   writerOpts.mainTemplate = template;
   writerOpts.headerPartial = header;
   writerOpts.commitPartial = commit;
@@ -112,6 +103,6 @@ module.exports = Q.all([
   return {
     gitRawCommitsOpts: { merges: true },
     parserOpts: parserOpts,
-    writerOpts: writerOpts
+    writerOpts: writerOpts,
   };
 });
