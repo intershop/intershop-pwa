@@ -5,12 +5,8 @@
     "npx jest --findRelatedTests",
     "git add"
   ],
-  "*.{js,json,yml,yaml,md}": [
+  "*.{js,json,yml,yaml,md,html}": [
     "npx prettier --loglevel warn --write",
-    "git add"
-  ],
-  "*.html": [
-    "npx prettier --loglevel warn --write --parser angular",
     "git add"
   ]
 }
