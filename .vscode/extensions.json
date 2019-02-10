@@ -11,7 +11,6 @@
     "msjsdiag.debugger-for-chrome",
     // code assist
     "visualstudioexptteam.vscodeintellicode",
-    "christian-kohler.path-intellisense",
     "cyrilletuzi.angular-schematics",
     "angular.ng-template",
     "mikael.angular-beastcode",
