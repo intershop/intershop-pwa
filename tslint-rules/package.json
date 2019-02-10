@@ -4,10 +4,7 @@
   "description": "Intershop specific tslint rules",
   "main": "index.js",
   "private": true,
-  "keywords": [
-    "tslint",
-    "intershop"
-  ],
+  "keywords": ["tslint", "intershop"],
   "devDependencies": {
     "@angular/compiler": "^7.1.0",
     "@angular/core": "^7.1.0",

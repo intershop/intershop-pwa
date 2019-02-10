@@ -3,9 +3,7 @@
   "description": "Intershop Progressive Web App",
   "version": "0.9.1",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
-  "keywords": [
-    "intershop"
-  ],
+  "keywords": ["intershop"],
   "engines": {
     "node": ">=10.13.0",
     "npm": "~6.4.1"
