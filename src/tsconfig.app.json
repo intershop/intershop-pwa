@@ -6,9 +6,5 @@
     "module": "es2015",
     "types": ["node"]
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts",
-    "**/dev/**/*.ts"
-  ]
+  "exclude": ["test.ts", "**/*.spec.ts", "**/dev/**/*.ts"]
 }

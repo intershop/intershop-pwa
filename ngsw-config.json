@@ -5,12 +5,7 @@
       "name": "app",
       "installMode": "prefetch",
       "resources": {
-        "files": [
-          "/favicon.ico",
-          "/manifest.json",
-          "/*.css",
-          "/*.js"
-        ]
+        "files": ["/favicon.ico", "/manifest.json", "/*.css", "/*.js"]
       }
     },
     {
@@ -18,9 +13,7 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": [
-          "/assets/**"
-        ]
+        "files": ["/assets/**"]
       }
     }
   ]

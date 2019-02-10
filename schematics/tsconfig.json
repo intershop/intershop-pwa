@@ -2,10 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src/",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -15,21 +12,12 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": false,
-    "types": [
-      "jest",
-      "jest-extended",
-      "node"
-    ],
+    "types": ["jest", "jest-extended", "node"],
     // @lint rules
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true
     // "noUnusedLocals": true,
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/*/files/**/*",
-    "src/*/other-files/**/*"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["src/*/files/**/*", "src/*/other-files/**/*"]
 }

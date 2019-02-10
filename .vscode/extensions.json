@@ -1,32 +1,32 @@
 {
-	// See http://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
-	// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-	// List of extensions which should be recommended for users of this workspace.
-	"recommendations": [
-		// general
-		"eamodio.gitlens",
-		"robertohuertasm.vscode-icons",
-		"coenraads.bracket-pair-colorizer",
-		"vincaslt.highlight-matching-tag",
-		"msjsdiag.debugger-for-chrome",
-		// code assist
-		"visualstudioexptteam.vscodeintellicode",
-		"christian-kohler.path-intellisense",
-		"cyrilletuzi.angular-schematics",
-		"angular.ng-template",
-		"mikael.angular-beastcode",
-		"formulahendry.auto-rename-tag",
-		"stringham.move-ts",
-		// code style + formatting
-		"editorconfig.editorconfig",
-		"esbenp.prettier-vscode",
-		"shinnn.stylelint",
-		"eg2.tslint",
-		// testing
-		"orta.vscode-jest",
-		"andys8.jest-snippets",
-		"asvetliakov.snapshot-tools",
-	],
-	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-	"unwantedRecommendations": []
+  // See http://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+  // List of extensions which should be recommended for users of this workspace.
+  "recommendations": [
+    // general
+    "eamodio.gitlens",
+    "robertohuertasm.vscode-icons",
+    "coenraads.bracket-pair-colorizer",
+    "vincaslt.highlight-matching-tag",
+    "msjsdiag.debugger-for-chrome",
+    // code assist
+    "visualstudioexptteam.vscodeintellicode",
+    "christian-kohler.path-intellisense",
+    "cyrilletuzi.angular-schematics",
+    "angular.ng-template",
+    "mikael.angular-beastcode",
+    "formulahendry.auto-rename-tag",
+    "stringham.move-ts",
+    // code style + formatting
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "shinnn.stylelint",
+    "eg2.tslint",
+    // testing
+    "orta.vscode-jest",
+    "andys8.jest-snippets",
+    "asvetliakov.snapshot-tools"
+  ],
+  // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+  "unwantedRecommendations": []
 }

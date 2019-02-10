@@ -3,6 +3,7 @@
 An Angular based storefront clone of the Responsive Starter Store that communicates with the Intershop Commerce Management server via REST API only.
 
 ---
+
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager. Currently Node.js 10.x LTS with corresponding npm is required.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming coventions.
@@ -45,7 +46,7 @@ Deployments are generated to the `dist` folder of the project.
 
 Use `npm run build` to generate the preferred angular universal enabled version. On the server the `dist/server.js` script has to be executed with `node`.
 
-You can alternatively use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically. The server has to be configured for fallback routing, 
+You can alternatively use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically. The server has to be configured for fallback routing,
 see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).
 
 For a production setup we recommend building the docker image supplied with the `Dockerfile` in the root folder of the project. Build it with `docker build -t my_pwa .`. To run the PWA with multiple channels and [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/) optimizations, you can use the nginx docker image supplied in the sub folder [nginx](./nginx).

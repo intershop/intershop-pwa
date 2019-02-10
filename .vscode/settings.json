@@ -7,7 +7,7 @@
 
   // file type specific exclusions
   "[handlebars]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": false
   },
   "files.associations": {
     "__*.*": "ng-template"

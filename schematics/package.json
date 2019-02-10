@@ -9,10 +9,7 @@
     "test": "jest",
     "generate:schemas": "node scripts/generate-schema-defs.js"
   },
-  "keywords": [
-    "schematics",
-    "intershop"
-  ],
+  "keywords": ["schematics", "intershop"],
   "schematics": "./src/collection.json",
   "jest": {
     "transform": {
@@ -23,12 +20,7 @@
       "<rootDir>/.*/(files|other-files)",
       "<rootDir>/node_modules/"
     ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
     "setupTestFrameworkScriptFile": "<rootDir>/test.js"
   },
   "dependencies": {
