@@ -12,5 +12,6 @@
   "files.associations": {
     "__*.*": "ng-template"
   },
-  "ngschematics.schematics": ["intershop-schematics"]
+  "ngschematics.schematics": ["intershop-schematics"],
+  "workbench.iconTheme": "vscode-icons"
 }
