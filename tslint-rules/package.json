@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Intershop specific tslint rules",
   "main": "index.js",
+  "private": true,
   "keywords": [
     "tslint",
     "intershop"

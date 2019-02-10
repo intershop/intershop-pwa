@@ -135,6 +135,7 @@ schematics:
 cypress_local:
   image: cypress/browsers:chrome69
   stage: integration
+  retry: 1
   only:
     - merge_requests
   except:
@@ -237,12 +238,13 @@ publish_nginx:
     - performance
   services:
     - docker:dind
+  variables:
+    CI_DEBUG_TRACE: "true"
   script:
-    - sh .gitlab-ci-check-app-changes.sh '^nginx' || exit 0
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:nginx nginx
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx
+    - (sh .gitlab-ci-check-app-changes.sh '^nginx' || test 'develop' = "${CI_COMMIT_REF_SLUG}") && docker build -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} nginx || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
 
 push_reports:
   stage: publish
@@ -374,7 +376,6 @@ stop_review_b2c:
   when: manual
   tags:
   - shell-executor
-  - demoserver
   only:
     - merge_requests
   variables:
@@ -402,10 +403,11 @@ deploy_review_b2b:
   - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
   - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
   - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
+        -e LOGGING=true
         -e ICM_BASE_URL=http://10.0.206.226:4322
         ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
   - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
-  - docker pull ${CI_REGISTRY_IMAGE}:nginx
+  - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
   - docker run -d --name "${CI_COMMIT_REF_SLUG}-nginx"
         --restart always
         -e UPSTREAM_ICM=http://10.0.206.226:4322
@@ -425,7 +427,7 @@ deploy_review_b2b:
         -e PWA_4_APPLICATION=smb-responsive
         -e PWA_4_FEATURES=quoting
         -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
-        ${CI_REGISTRY_IMAGE}:nginx
+        ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     url: http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
@@ -444,9 +446,9 @@ stop_review_b2b:
     - merge_requests
   variables:
     GIT_STRATEGY: none
-    SERVICE: "${CI_COMMIT_REF_SLUG}-nginx"
   script:
-  - docker rm -f "${SERVICE}" || true
+  - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
+  - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
