@@ -27,10 +27,7 @@
     "title": "Ms.",
     "type": "Address",
     "urn": "urn:address:customer:w5ysEQAGHi4AAAFo3WgOY3oz:BpCsEQAG_YYAAAFo3mgOY3oz",
-    "usage": [
-      true,
-      true
-    ]
+    "usage": [true, true]
   },
   "preferredLanguage": "en_US",
   "preferredShipToAddress": {
@@ -53,10 +50,7 @@
     "title": "Ms.",
     "type": "Address",
     "urn": "urn:address:customer:w5ysEQAGHi4AAAFo3WgOY3oz:KpOsEQAG_YUAAAFo3mgOY3oz",
-    "usage": [
-      true,
-      true
-    ]
+    "usage": [true, true]
   },
   "title": "",
   "type": "PrivateCustomer"

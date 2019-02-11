@@ -200,10 +200,7 @@
     {
       "name": "Colour_of_product",
       "type": "MultipleString",
-      "value": [
-        "Black",
-        "Blue"
-      ]
+      "value": ["Black", "Blue"]
     },
     {
       "name": "Image stabilizer",
