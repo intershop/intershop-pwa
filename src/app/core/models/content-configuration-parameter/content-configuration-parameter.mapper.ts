@@ -35,11 +35,20 @@ export class ContentConfigurationParameterMapper {
   }
 
   postProcessImageURLs(data: ContentConfigurationParameters): ContentConfigurationParameters {
+    return this.postProcessMediaURLs(data, 'Image');
+  }
+
+  postProcessVideoURLs(data: ContentConfigurationParameters): ContentConfigurationParameters {
+    data.Internal = 'true';
+    return this.postProcessMediaURLs(data, 'Video');
+  }
+
+  private postProcessMediaURLs(data: ContentConfigurationParameters, media: string): ContentConfigurationParameters {
     Object.keys(data)
-      .filter(key => key.startsWith('Image') && data[key] && data[key].toString().includes(':'))
+      .filter(key => key.startsWith(media) && data[key] && data[key].toString().includes(':'))
       .forEach(key => {
         const split = data[key].toString().split(':');
-        data[key] = `${this.staticURL}/${split[0]}/${this.lang}${split[1]}`;
+        data[key] = encodeURI(`${this.staticURL}/${split[0]}/${this.lang}${split[1]}`);
       });
     return data;
   }

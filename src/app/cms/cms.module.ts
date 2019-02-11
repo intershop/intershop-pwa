@@ -9,6 +9,7 @@ import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-i
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
+import { CMSVideoComponent } from './components/cms-video/cms-video.component';
 import { CMS_COMPONENT } from './configurations/injection-keys';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
@@ -24,6 +25,7 @@ const entryComponents = [
   CMSImageEnhancedComponent,
   CMSProductListComponent,
   CMSTextComponent,
+  CMSVideoComponent,
 ];
 
 @NgModule({
@@ -88,6 +90,14 @@ const entryComponents = [
       useValue: {
         definitionQualifiedName: 'app_sf_responsive_cm:component.common.productListManual.pagelet2-Component',
         class: CMSProductListComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.common.video.pagelet2-Component',
+        class: CMSVideoComponent,
       },
       multi: true,
     },
