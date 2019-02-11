@@ -11,7 +11,7 @@
       }
     },
     {
-      "files": ["*.json", ".*.json", ".lintstagedrc"],
+      "files": ["*.json", ".*.json"],
       "options": {
         "parser": "json",
         "printWidth": 80
