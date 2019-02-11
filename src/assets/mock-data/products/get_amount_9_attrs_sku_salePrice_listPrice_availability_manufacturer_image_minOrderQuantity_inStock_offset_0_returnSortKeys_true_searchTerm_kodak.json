@@ -66,12 +66,7 @@
   ],
   "name": "products",
   "offset": 0,
-  "sortKeys": [
-    "name-desc",
-    "name-asc",
-    "value-asc",
-    "value-desc"
-  ],
+  "sortKeys": ["name-desc", "name-asc", "value-asc", "value-desc"],
   "total": 1,
   "type": "ResourceCollection"
 }
