@@ -1,0 +1,24 @@
+<div class="video-container" [class]="containerClasses" [style.height.px]="height" [style.width.px]="width">
+  <div class="video-wrapper">
+    <iframe *ngIf="!isInternal" [src]="videoUrl" allowfullscreen></iframe>
+    <video
+      #videoPlayer
+      *ngIf="isInternal"
+      class="video"
+      width="100%"
+      height="auto"
+      [autoplay]="isAutoplay"
+      [muted]="isMute"
+      [attr.poster]="imageLink"
+      controls
+    >
+      <source [src]="videoUrl" />
+    </video>
+    <div *ngIf="isInternal && !isAutoplay && !isPlay" class="video-text">
+      <h1 *ngIf="headingText">{{ headingText }}</h1>
+      <a class="video-link" (click)="isPlay = true; playVideo()">
+        <fa-icon [icon]="['fas', 'play-circle']"></fa-icon
+      ></a>
+    </div>
+  </div>
+</div>

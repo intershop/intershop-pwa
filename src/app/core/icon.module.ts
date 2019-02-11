@@ -20,6 +20,7 @@ import {
   faPaperPlane,
   faPencilAlt,
   faPhone,
+  faPlayCircle,
   faPlus,
   faPrint,
   faSearch,
@@ -63,7 +64,8 @@ export class IconModule {
       faTh,
       faTimes,
       faTrashAlt,
-      faUser
+      faUser,
+      faPlayCircle
     );
   }
 }

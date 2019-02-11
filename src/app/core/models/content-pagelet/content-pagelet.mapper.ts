@@ -20,11 +20,23 @@ export class ContentPageletMapper {
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
 
     // TODO: make this dependant on the type of the configuration parameter
-    if (
-      definitionQualifiedName === 'app_sf_responsive_cm:component.common.image.pagelet2-Component' ||
-      definitionQualifiedName === 'app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component'
-    ) {
-      this.contentConfigurationParameterMapper.postProcessImageURLs(configurationParameters);
+    switch (definitionQualifiedName) {
+      case 'app_sf_responsive_cm:component.common.image.pagelet2-Component' ||
+        'app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component': {
+        this.contentConfigurationParameterMapper.postProcessImageURLs(configurationParameters);
+        break;
+      }
+      case 'app_sf_responsive_cm:component.common.video.pagelet2-Component': {
+        this.contentConfigurationParameterMapper.postProcessImageURLs(configurationParameters);
+        if (
+          configurationParameters.Video.toString()
+            .toLowerCase()
+            .indexOf('http') < 0
+        ) {
+          this.contentConfigurationParameterMapper.postProcessVideoURLs(configurationParameters);
+        }
+        break;
+      }
     }
 
     let slots: ContentSlot[] = [];
