@@ -16,9 +16,7 @@
     "e2e": "node open-cypress",
     "lint": "npx ng lint",
     "stylelint": "stylelint \"src/theme/**/*.scss\" --fix",
-    "typescriptformat": "node node_modules/prettier/bin-prettier.js --loglevel warn --write \"**/*.ts\"",
-    "templateformat": "node node_modules/prettier/bin-prettier.js --loglevel warn --write --parser angular \"**/*.html\"",
-    "format": "npm run typescriptformat && npm run templateformat",
+    "format": "npx prettier --loglevel warn --write \"**/*.*\"",
     "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npx tsc --project src/tsconfig.spec.json && npm run build && npm run test",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -t RELEASE_ -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json && npx license-checker --excludePrivatePackages --onlyAllow 'MIT;ISC;BSD;Apache;Apache-2.0;WTFPL;CC-BY-4.0;CC-BY-3.0;CC0-1.0;Unlicense' --summary",
@@ -130,5 +128,16 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "linters": {
+      "*": ["npx prettier --loglevel warn --write", "git add"],
+      "*.ts": [
+        "npx tslint --project tsconfig.json --fix",
+        "npx jest --findRelatedTests",
+        "git add"
+      ]
+    },
+    "concurrent": false
   }
 }
