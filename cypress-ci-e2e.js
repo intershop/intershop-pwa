@@ -22,7 +22,7 @@ if (!process.env.ICM_BASE_URL) {
 const DEFAULT_CONFIG = {
   browser: 'chrome',
   reporter: 'junit',
-  reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true',
+  reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
   config: { baseUrl: process.env.PWA_BASE_URL },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
