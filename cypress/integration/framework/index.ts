@@ -7,12 +7,12 @@ let currentPage: Page;
 
 export function waitLoadingEnd(initialWait: number = 500) {
   cy.wait(initialWait);
-  cy.get('div.loading', { timeout: 60000 }).should('not.exist');
+  cy.get('div.loading').should('not.exist');
 }
 
 function onPage<T extends Page>(page: new () => T) {
   currentPage = new page();
-  return cy.get(currentPage.tag, { timeout: 120000 });
+  return cy.get(currentPage.tag);
 }
 
 export function at<T extends Page>(type: new () => T, callback?: (page: T) => void) {
