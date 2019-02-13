@@ -36,6 +36,6 @@ export class LoginPage {
   }
 
   get errorText() {
-    return cy.get('div.alert', { timeout: 5000 });
+    return cy.get('div.alert');
   }
 }

@@ -116,6 +116,6 @@ export class RegistrationPage {
   }
 
   get errorText() {
-    return cy.get('div.alert', { timeout: 5000 });
+    return cy.get('div.alert');
   }
 }

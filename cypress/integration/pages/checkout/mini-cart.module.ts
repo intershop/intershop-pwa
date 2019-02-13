@@ -13,7 +13,7 @@ export class MiniCartModule {
       .first()
       .click({ force: true });
 
-    cy.get('a.view-cart', { timeout: 10000 })
+    cy.get('a.view-cart')
       .first()
       .click({ force: true });
   }
