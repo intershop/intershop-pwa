@@ -141,7 +141,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       customer.companyName = formValue.address.companyName1;
       customer.companyName2 = formValue.address.companyName2;
       customer.taxationID = formValue.taxationID;
-      user.businessPartnerNo = customer.customerNo;
+      user.businessPartnerNo = 'U' + customer.customerNo;
     }
 
     this.create.emit({ customer, user, credentials, address });
