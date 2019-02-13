@@ -13,7 +13,7 @@ describe('Basket Mapper', () => {
       basketData = {
         data: {
           id: 'basket_1234',
-          calculationState: 'CALCULATED',
+          calculated: true,
           invoiceToAddress: 'urn_invoiceToAddress_123',
           commonShipToAddress: 'urn_commonShipToAddress_123',
           commonShippingMethod: 'shipping_method_123',

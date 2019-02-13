@@ -26,16 +26,15 @@ export class LineItemMapper {
           : undefined,
         isHiddenGift: data.hiddenGift,
         isFreeGift: data.freeGift,
-        totals:
-          data.calculationState === 'CALCULATED'
-            ? {
-                salesTaxTotal: data.totals.salesTaxTotal,
-                shippingTaxTotal: data.totals.shippingTaxTotal,
-                shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
-                total: PriceMapper.fromPriceItem(data.totals.total),
-                valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.valueRebatesTotal),
-              }
-            : undefined,
+        totals: data.calculated
+          ? {
+              salesTaxTotal: data.totals.salesTaxTotal,
+              shippingTaxTotal: data.totals.shippingTaxTotal,
+              shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
+              total: PriceMapper.fromPriceItem(data.totals.total),
+              valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.valueRebatesTotal),
+            }
+          : undefined,
 
         productSKU: data.product,
       };
