@@ -9,7 +9,7 @@ import { ShippingMethodData } from '../shipping-method/shipping-method.interface
 // tslint:disable-next-line:project-structure
 export interface BasketBaseData {
   id: string;
-  calculationState: 'CALCULATED' | 'UNCALCULATED';
+  calculated: boolean;
   invoiceToAddress?: string;
   commonShipToAddress?: string;
   commonShippingMethod?: string;
