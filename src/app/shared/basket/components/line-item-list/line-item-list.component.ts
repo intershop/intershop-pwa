@@ -81,7 +81,8 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
           )
           .subscribe(item => {
             if (formGroup.valid) {
-              this.onUpdateItem(item);
+              // TODO: figure out why quantity is returned as string by the valueChanges instead of number (the '+item.quantity' fixes that for now) - see ISREST-755
+              this.onUpdateItem({ ...item, quantity: +item.quantity });
             }
           });
 
