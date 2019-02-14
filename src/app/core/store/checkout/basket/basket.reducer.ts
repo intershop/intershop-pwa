@@ -1,7 +1,6 @@
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 import { BasketAction, BasketActionTypes } from './basket.actions';
@@ -10,7 +9,6 @@ export interface BasketState {
   basket: Basket;
   eligibleShippingMethods: ShippingMethod[];
   eligiblePaymentMethods: PaymentMethod[];
-  payments: Payment[];
   loading: boolean;
   error: HttpError; // add, update and delete errors
 }
@@ -19,7 +17,6 @@ export const initialState: BasketState = {
   basket: undefined,
   eligibleShippingMethods: [],
   eligiblePaymentMethods: [],
-  payments: [],
   loading: false,
   error: undefined,
 };
@@ -38,7 +35,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.DeleteBasketItem:
     case BasketActionTypes.LoadBasketEligibleShippingMethods:
     case BasketActionTypes.LoadBasketEligiblePaymentMethods:
-    case BasketActionTypes.LoadBasketPayments:
     case BasketActionTypes.SetBasketPayment:
     case BasketActionTypes.CreateOrder: {
       return {
@@ -48,7 +44,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketFail:
-    case BasketActionTypes.LoadBasketPaymentsFail:
     case BasketActionTypes.CreateOrderFail:
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
@@ -107,14 +102,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         eligiblePaymentMethods: action.payload.paymentMethods,
         loading: false,
         error: undefined,
-      };
-    }
-
-    case BasketActionTypes.LoadBasketPaymentsSuccess: {
-      return {
-        ...state,
-        payments: action.payload.paymentMethods,
-        loading: false,
       };
     }
 

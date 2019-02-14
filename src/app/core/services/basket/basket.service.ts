@@ -11,7 +11,7 @@ import { Basket } from '../../models/basket/basket.model';
 import { Link } from '../../models/link/link.model';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
-import { ApiService, resolveLinks, unpackEnvelope } from '../api/api.service';
+import { ApiService, unpackEnvelope } from '../api/api.service';
 
 export declare type BasketUpdateType =
   | { invoiceToAddress: string }
@@ -25,7 +25,7 @@ export declare type BasketIncludeType =
   | 'commonShippingMethod'
   | 'discounts'
   | 'lineItems'
-  | 'attributes';
+  | 'payments';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -45,6 +45,7 @@ export class BasketService {
     'commonShippingMethod',
     'discounts',
     'lineItems',
+    'payments',
   ];
 
   /**
@@ -192,79 +193,49 @@ export class BasketService {
   }
 
   /**
-   * Get basket payment options for selected basket item.
+   * Get eligible payment methods for selected basket.
    * @param basketId  The basket id.
-   * @returns         The basket payment options (eligible payment methods).
+   * @returns         The eligible payment methods.
    */
-  getBasketPaymentOptions(basketId: string): Observable<PaymentMethod[]> {
+  getBasketEligiblePaymentMethods(basketId: string): Observable<PaymentMethod[]> {
     if (!basketId) {
-      return throwError('getBasketPaymentOptions() called without basketId');
+      return throwError('getBasketEligiblePaymentMethods() called without basketId');
     }
 
-    /* ToDo: Exchange this fix filter for a dynamic one */
+    /* ToDo: Replace this fix filter by a dynamic one */
     const validPaymentMethods = 'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE';
 
     return this.apiService
-      .options<{ methods: { payments: PaymentMethod[] }[] }>(`baskets/${basketId}/payments`)
+      .get(`baskets/${basketId}/eligible-payment-methods`, {
+        headers: this.basketHeaders,
+      })
       .pipe(
-        map(data =>
-          data && data.methods && data.methods.length
-            ? data.methods[0].payments.filter(payment => validPaymentMethods.includes(payment.id))
-            : []
-        )
+        unpackEnvelope<PaymentMethod>('data'),
+        map(data => data.filter(payment => validPaymentMethods.includes(payment.id)))
       );
   }
 
   /**
-   * Get basket payments for selected basket.
-   * @param basketId  The basket id.
-   * @returns         The basket payments.
-   */
-  getBasketPayments(basketId: string): Observable<PaymentMethod[]> {
-    if (!basketId) {
-      return throwError('getBasketPayments() called without basketId');
-    }
-
-    return this.apiService.get(`baskets/${basketId}/payments`).pipe(
-      unpackEnvelope<Link>(),
-      resolveLinks<PaymentMethod>(this.apiService)
-    );
-  }
-
-  /**
    * Add a payment at the selected basket.
-   * @param basketId    The basket id.
-   * @param paymentName The unique name of the payment method.
+   * @param basketId          The basket id.
+   * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
    */
-  addBasketPayment(basketId: string, paymentName: string): Observable<string> {
+  setBasketPayment(basketId: string, paymentInstrument: string): Observable<string> {
     if (!basketId) {
       return throwError('setBasketPayment() called without basketId');
     }
-    if (!paymentName) {
-      return throwError('setBasketPayment() called without paymentName');
+    if (!paymentInstrument) {
+      return throwError('setBasketPayment() called without paymentInstrument');
     }
 
     const body = {
-      name: paymentName,
-      type: 'Payment',
+      paymentInstrument,
     };
 
-    return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(mapTo(paymentName));
-  }
-
-  /**
-   * Delete a payment from the selected basket.
-   * @param basketId  The basket id.
-   * @param paymentId The id of the payment that should be removed from basket.
-   */
-  deleteBasketPayment(basketId: string, paymentId: string): Observable<string> {
-    if (!basketId) {
-      return throwError('deleteBasketPayment() called without basketId');
-    }
-    if (!paymentId) {
-      return throwError('deleteBasketPayment() called without paymentId');
-    }
-
-    return this.apiService.delete(`baskets/${basketId}/payments/${paymentId}`).pipe(mapTo(paymentId));
+    return this.apiService
+      .put(`baskets/${basketId}/payments/open-tender`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(mapTo(paymentInstrument));
   }
 }

@@ -3,7 +3,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
-import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import * as fromActions from './basket.actions';
@@ -303,45 +302,6 @@ describe('Basket Reducer', () => {
         expect(state.eligiblePaymentMethods).toEqual(paymentMethods);
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
-      });
-    });
-  });
-
-  describe('LoadBasketPayments actions', () => {
-    describe('LoadBasketPayments action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.LoadBasketPayments({ id: 'test' });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('LoadBasketPaymentsFail action', () => {
-      it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.LoadBasketPaymentsFail({ error });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toEqual(error);
-      });
-    });
-
-    describe('LoadBasketPaymentsSuccess action', () => {
-      it('should set basketPayments and set loading to false', () => {
-        const basket = {
-          id: 'test',
-        } as Basket;
-        const payments = { paymentMethods: [] as PaymentMethod[] };
-
-        const basketAction = new fromActions.LoadBasketSuccess({ basket });
-        const basketPaymentsAction = new fromActions.LoadBasketPaymentsSuccess(payments);
-        let state = basketReducer(initialState, basketAction);
-        state = basketReducer(state, basketPaymentsAction);
-
-        expect(state.payments).toEqual(payments.paymentMethods);
-        expect(state.loading).toBeFalse();
       });
     });
   });

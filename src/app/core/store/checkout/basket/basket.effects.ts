@@ -365,36 +365,11 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketEligiblePaymentMethods),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([, basket]) =>
-      this.basketService.getBasketPaymentOptions(basket.id).pipe(
+      this.basketService.getBasketEligiblePaymentMethods(basket.id).pipe(
         map(result => new basketActions.LoadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
         mapErrorToAction(basketActions.LoadBasketEligiblePaymentMethodsFail)
       )
     )
-  );
-
-  /**
-   * The load basket payments effect.
-   */
-  @Effect()
-  loadBasketPayments$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketPayments>(basketActions.BasketActionTypes.LoadBasketPayments),
-    mapToPayloadProperty('id'),
-    mergeMap(basketId =>
-      this.basketService.getBasketPayments(basketId).pipe(
-        map(basketPayments => new basketActions.LoadBasketPaymentsSuccess({ paymentMethods: basketPayments })),
-        mapErrorToAction(basketActions.LoadBasketPaymentsFail)
-      )
-    )
-  );
-
-  /**
-   * Trigger a LoadBasketPayments action after a successful basket loading.
-   */
-  @Effect()
-  loadBasketPaymentsAfterBasketLoad$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
-    mapToPayloadProperty('basket'),
-    map(basket => new basketActions.LoadBasketPayments({ id: basket.id }))
   );
 
   /**
@@ -405,16 +380,12 @@ export class BasketEffects {
     ofType<basketActions.SetBasketPayment>(basketActions.BasketActionTypes.SetBasketPayment),
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([paymentName, basket]) => {
-      const addPayment$ = this.basketService.addBasketPayment(basket.id, paymentName);
-      return (basket.payment
-        ? this.basketService.deleteBasketPayment(basket.id, basket.payment.id).pipe(concatMap(() => addPayment$))
-        : addPayment$
-      ).pipe(
+    concatMap(([paymentInstrument, basket]) =>
+      this.basketService.setBasketPayment(basket.id, paymentInstrument).pipe(
         mapTo(new basketActions.SetBasketPaymentSuccess()),
         mapErrorToAction(basketActions.SetBasketPaymentFail)
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -461,7 +432,9 @@ export class BasketEffects {
     ofType(
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
-      basketActions.BasketActionTypes.DeleteBasketItemSuccess
+      basketActions.BasketActionTypes.DeleteBasketItemSuccess,
+      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
+      basketActions.BasketActionTypes.SetBasketPaymentFail
     ),
     mapTo(new basketActions.LoadBasket())
   );
@@ -474,9 +447,7 @@ export class BasketEffects {
   calculateBasketAfterAddToQuote = this.actions$.pipe(
     ofType(
       basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
-      basketActions.BasketActionTypes.AddQuoteToBasketFail,
-      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentFail
+      basketActions.BasketActionTypes.AddQuoteToBasketFail
     ),
     mapTo(new basketActions.UpdateBasket({ update: { calculationState: 'CALCULATED' } }))
   );

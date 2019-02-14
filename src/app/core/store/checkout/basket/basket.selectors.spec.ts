@@ -4,7 +4,6 @@ import { combineReducers } from '@ngrx/store';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Payment } from 'ish-core/models/payment/payment.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -21,7 +20,6 @@ import {
   LoadBasketEligibleShippingMethodsFail,
   LoadBasketEligibleShippingMethodsSuccess,
   LoadBasketFail,
-  LoadBasketPaymentsSuccess,
   LoadBasketSuccess,
 } from './basket.actions';
 import {
@@ -74,11 +72,11 @@ describe('Basket Selectors', () => {
           basket: {
             id: 'test',
             lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
+            payment: { paymentInstrument: 'ISH_INVOICE' },
           } as BasketView,
         })
       );
 
-      store$.dispatch(new LoadBasketPaymentsSuccess({ paymentMethods: [{ name: 'p_test' } as Payment] }));
       expect(getBasketLoading(store$.state)).toBeFalse();
 
       const currentBasket = getCurrentBasket(store$.state);
@@ -87,7 +85,7 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
       expect(currentBasket.itemsCount).toEqual(5);
-      expect(currentBasket.payment.name).toEqual('p_test');
+      expect(currentBasket.payment.paymentInstrument).toEqual('ISH_INVOICE');
     });
 
     it('should change the product of the basket line item if the product is changing', () => {

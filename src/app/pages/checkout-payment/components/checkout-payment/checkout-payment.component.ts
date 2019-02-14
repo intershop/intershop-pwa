@@ -53,7 +53,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBasketPayment(): string {
-    return this.basket.payment ? this.basket.payment.name : '';
+    return this.basket && this.basket.payment ? this.basket.payment.paymentInstrument : '';
   }
 
   /**
@@ -76,7 +76,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return !this.basket.payment && this.submitted;
+    return (!this.basket || !this.basket.payment) && this.submitted;
   }
 
   ngOnDestroy() {
