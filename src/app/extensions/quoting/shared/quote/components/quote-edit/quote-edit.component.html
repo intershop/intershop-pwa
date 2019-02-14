@@ -98,7 +98,7 @@
       }"
     ></ish-input>
     <ng-template #staticDisplayName>
-      <div class="row form-group has-feedback">
+      <div class="row has-feedback">
         <label for="#SHOUD_EQUAL_INPUT_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{
           'quote.edit.unsubmitted.name.label' | translate
         }}</label>
@@ -108,7 +108,11 @@
       </div>
     </ng-template>
 
-    <div *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)" class="row form-group">
+    <div
+      *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)"
+      class="row"
+      [ngClass]="{ 'form-group': quote.state === 'New' }"
+    >
       <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{
         'quote.edit.unsubmitted.comment.label' | translate
       }}</label>
@@ -127,7 +131,7 @@
       </div>
     </div>
 
-    <div *ngIf="quote.type === 'Quote' && sellerComment" class="row form-group">
+    <div *ngIf="quote.type === 'Quote' && sellerComment" class="row">
       <label for="" class="col-4 col-md-3 col-xl-2 col-form-label">{{
         'quote.edit.unsubmitted.seller_comment.label' | translate
       }}</label>
