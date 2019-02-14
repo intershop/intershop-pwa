@@ -139,38 +139,22 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should get basket payment options for a basket when 'getBasketPaymentOptions' is called", done => {
-    when(apiService.options(anything())).thenReturn(of({ methods: [] }));
+  it("should get basket eligible payment methods for a basket when 'getBasketEligiblePaymentMethods' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-    basketService.getBasketPaymentOptions(basketMockData.id).subscribe(() => {
-      verify(apiService.options(`baskets/${basketMockData.id}/payments`)).once();
+    basketService.getBasketEligiblePaymentMethods(basketMockData.id).subscribe(() => {
+      verify(apiService.get(`baskets/${basketMockData.id}/eligible-payment-methods`, anything())).once();
       done();
     });
   });
 
-  it("should get basket payments for specific basketId when 'getBasketPayments' is called", done => {
-    when(apiService.get(`baskets/${basketMockData.id}/payments`)).thenReturn(of([]));
+  it("should set a payment to the basket when 'setBasketPayment' is called", done => {
+    when(apiService.put(`baskets/${basketMockData.id}/payments/open-tender`, anything(), anything())).thenReturn(
+      of([])
+    );
 
-    basketService.getBasketPayments(basketMockData.id).subscribe(() => {
-      verify(apiService.get(`baskets/${basketMockData.id}/payments`)).once();
-      done();
-    });
-  });
-
-  it("should add a payment to the basket when 'addBasketPayment' is called", done => {
-    when(apiService.post(`baskets/${basketMockData.id}/payments`, anything())).thenReturn(of([]));
-
-    basketService.addBasketPayment(basketMockData.id, basketMockData.payment.name).subscribe(() => {
-      verify(apiService.post(`baskets/${basketMockData.id}/payments`, anything())).once();
-      done();
-    });
-  });
-
-  it("should delete a payment from the basket when 'deleteBasketPayment' is called", done => {
-    when(apiService.delete(anything())).thenReturn(of({}));
-
-    basketService.deleteBasketPayment(basketMockData.id, basketMockData.payment.id).subscribe(() => {
-      verify(apiService.delete(`baskets/${basketMockData.id}/payments/${basketMockData.payment.id}`)).once();
+    basketService.setBasketPayment(basketMockData.id, basketMockData.payment.name).subscribe(() => {
+      verify(apiService.put(`baskets/${basketMockData.id}/payments/open-tender`, anything(), anything())).once();
       done();
     });
   });
