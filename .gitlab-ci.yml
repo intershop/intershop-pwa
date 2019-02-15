@@ -132,7 +132,7 @@ schematics:
     - bash .gitlab-ci-test-schematics.sh
     - echo "schematics complete"
 
-cypress_local:
+cypress_mocked:
   image: cypress/browsers:chrome69
   stage: integration
   retry: 1
@@ -159,7 +159,7 @@ cypress_local:
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
     - echo "E2E complete"
 
 publish_pwa:
