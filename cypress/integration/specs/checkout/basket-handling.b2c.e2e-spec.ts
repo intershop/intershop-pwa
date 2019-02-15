@@ -1,13 +1,13 @@
-import { at, waitLoadingEnd } from '../framework';
-import { createUserViaREST } from '../framework/users';
-import { LoginPage } from '../pages/account/login.page';
-import { MyAccountPage } from '../pages/account/my-account.page';
-import { sensibleDefaults } from '../pages/account/registration.page';
-import { CartPage } from '../pages/checkout/cart.page';
-import { HomePage } from '../pages/home.page';
-import { CategoryPage } from '../pages/shopping/category.page';
-import { FamilyPage } from '../pages/shopping/family.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
+import { at, waitLoadingEnd } from '../../framework';
+import { createUserViaREST } from '../../framework/users';
+import { LoginPage } from '../../pages/account/login.page';
+import { MyAccountPage } from '../../pages/account/my-account.page';
+import { sensibleDefaults } from '../../pages/account/registration.page';
+import { CartPage } from '../../pages/checkout/cart.page';
+import { HomePage } from '../../pages/home.page';
+import { CategoryPage } from '../../pages/shopping/category.page';
+import { FamilyPage } from '../../pages/shopping/family.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   user: {

@@ -1,17 +1,17 @@
-import { at } from '../framework';
-import { createUserViaREST } from '../framework/users';
-import { LoginPage } from '../pages/account/login.page';
-import { sensibleDefaults } from '../pages/account/registration.page';
-import { AddressesPage } from '../pages/checkout/addresses.page';
-import { CartPage } from '../pages/checkout/cart.page';
-import { PaymentPage } from '../pages/checkout/payment.page';
-import { ReceiptPage } from '../pages/checkout/receipt.page';
-import { ReviewPage } from '../pages/checkout/review.page';
-import { ShippingPage } from '../pages/checkout/shipping.page';
-import { HomePage } from '../pages/home.page';
-import { CategoryPage } from '../pages/shopping/category.page';
-import { FamilyPage } from '../pages/shopping/family.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
+import { at } from '../../framework';
+import { createUserViaREST } from '../../framework/users';
+import { LoginPage } from '../../pages/account/login.page';
+import { sensibleDefaults } from '../../pages/account/registration.page';
+import { AddressesPage } from '../../pages/checkout/addresses.page';
+import { CartPage } from '../../pages/checkout/cart.page';
+import { PaymentPage } from '../../pages/checkout/payment.page';
+import { ReceiptPage } from '../../pages/checkout/receipt.page';
+import { ReviewPage } from '../../pages/checkout/review.page';
+import { ShippingPage } from '../../pages/checkout/shipping.page';
+import { HomePage } from '../../pages/home.page';
+import { CategoryPage } from '../../pages/shopping/category.page';
+import { FamilyPage } from '../../pages/shopping/family.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   user: {
