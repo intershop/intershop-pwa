@@ -4,12 +4,12 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
-  suggestTerm: 'k',
-  searchTerm: 'kodak',
-  product: '7912057',
+  suggestTerm: 'b',
+  searchTerm: 'belkin',
+  product: '643941',
 };
 
-describe('Searching User', () => {
+describe('Searching B2B User', () => {
   before(() => HomePage.navigateTo());
 
   it('should enter search term and wait for displayed suggestions', () => {
