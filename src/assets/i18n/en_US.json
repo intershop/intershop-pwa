@@ -2595,5 +2595,11 @@
   "servererror.page.text": "<h3>We are sorry ...</h3><h4>Please go back to the <a href=\"/home\">Home Page</a> and try again.</h4>",
   "header.welcome.text": "Welcome to inSPIRED",
   "cookie_law.text": "This website uses cookies to improve your experience on our site. More detailed information is provided in our <a href=\"{{0}}\">Privacy Policy</a>.",
-  "cookie_law.button": "Accept"
+  "cookie_law.button": "Accept",
+  "account.quotes.widget.my_quotes.heading": "My Quotes",
+  "account.quotes.widget.new.label": "New",
+  "account.quotes.widget.submitted.label": "Submitted",
+  "account.quotes.widget.accepted.label": "Accepted",
+  "account.quotes.widget.rejected.label": "Rejected",
+  "account.quotes.widget.view_all_quotes.link": "View all Quotes"
 }
