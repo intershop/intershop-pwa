@@ -1,7 +1,7 @@
-import { at } from '../framework';
-import { ComparePage } from '../pages/shopping/compare.page';
-import { FamilyPage } from '../pages/shopping/family.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
+import { at } from '../../framework';
+import { ComparePage } from '../../pages/shopping/compare.page';
+import { FamilyPage } from '../../pages/shopping/family.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   category: 'Cameras-Camcorders.584',

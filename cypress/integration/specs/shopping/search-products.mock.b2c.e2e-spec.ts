@@ -1,7 +1,7 @@
-import { at } from '../framework';
-import { HomePage } from '../pages/home.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
-import { SearchResultPage } from '../pages/shopping/search-result.page';
+import { at } from '../../framework';
+import { HomePage } from '../../pages/home.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   suggestTerm: 'k',

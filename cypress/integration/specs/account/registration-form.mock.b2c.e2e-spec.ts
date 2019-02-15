@@ -1,5 +1,5 @@
-import { at } from '../framework';
-import { Registration, RegistrationPage } from '../pages/account/registration.page';
+import { at } from '../../framework';
+import { Registration, RegistrationPage } from '../../pages/account/registration.page';
 
 describe('Potential Registering User', () => {
   beforeEach(() => RegistrationPage.navigateTo());

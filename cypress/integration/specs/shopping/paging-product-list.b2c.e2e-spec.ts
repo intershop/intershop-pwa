@@ -1,5 +1,5 @@
-import { at, waitLoadingEnd } from '../framework';
-import { FamilyPage } from '../pages/shopping/family.page';
+import { at, waitLoadingEnd } from '../../framework';
+import { FamilyPage } from '../../pages/shopping/family.page';
 
 const _ = {
   category: 'Computers.106.830.1307',

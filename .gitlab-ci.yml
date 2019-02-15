@@ -159,7 +159,7 @@ cypress_mocked:
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c 'baseUrl=http://localhost:4200,testFiles=**/*mock*.e2e-spec.ts' -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
     - echo "E2E complete"
 
 publish_pwa:
@@ -480,5 +480,5 @@ cypress_remote:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - node cypress-ci-e2e
+    - node cypress-ci-e2e '**/*b2c*.e2e-spec.ts'
     - echo "E2E complete"

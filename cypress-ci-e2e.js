@@ -9,6 +9,8 @@ const cypress = require('cypress');
 
 const MAX_NUM_RUNS = 3;
 
+const TEST_FILES = process.argv.length > 2 ? process.argv[2] : '**/*.e2e-spec.ts';
+
 if (!process.env.PWA_BASE_URL) {
   console.error('PWA_BASE_URL is not set');
   process.exit(1);
@@ -23,7 +25,10 @@ const DEFAULT_CONFIG = {
   browser: 'chrome',
   reporter: 'junit',
   reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
-  config: { baseUrl: process.env.PWA_BASE_URL },
+  config: {
+    baseUrl: process.env.PWA_BASE_URL,
+    testFiles: TEST_FILES,
+  },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
 

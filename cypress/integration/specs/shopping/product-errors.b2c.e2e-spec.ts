@@ -1,10 +1,10 @@
-import { at, waitLoadingEnd } from '../framework';
-import { LoginPage } from '../pages/account/login.page';
-import { HomePage } from '../pages/home.page';
-import { CategoryPage } from '../pages/shopping/category.page';
-import { NotFoundPage } from '../pages/shopping/not-found.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
-import { SearchResultPage } from '../pages/shopping/search-result.page';
+import { at, waitLoadingEnd } from '../../framework';
+import { LoginPage } from '../../pages/account/login.page';
+import { HomePage } from '../../pages/home.page';
+import { CategoryPage } from '../../pages/shopping/category.page';
+import { NotFoundPage } from '../../pages/shopping/not-found.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   catalog: 'Cameras-Camcorders',
