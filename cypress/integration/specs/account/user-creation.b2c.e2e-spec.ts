@@ -1,9 +1,9 @@
-import { at } from '../framework';
-import { createUserViaREST } from '../framework/users';
-import { LoginPage } from '../pages/account/login.page';
-import { MyAccountPage } from '../pages/account/my-account.page';
-import { sensibleDefaults } from '../pages/account/registration.page';
-import { HomePage } from '../pages/home.page';
+import { at } from '../../framework';
+import { createUserViaREST } from '../../framework/users';
+import { LoginPage } from '../../pages/account/login.page';
+import { MyAccountPage } from '../../pages/account/my-account.page';
+import { sensibleDefaults } from '../../pages/account/registration.page';
+import { HomePage } from '../../pages/home.page';
 
 const _ = {
   user: {

@@ -1,9 +1,9 @@
-import { at } from '../framework';
-import { HomePage } from '../pages/home.page';
-import { CategoryPage } from '../pages/shopping/category.page';
-import { FamilyPage } from '../pages/shopping/family.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
-import { SearchResultPage } from '../pages/shopping/search-result.page';
+import { at } from '../../framework';
+import { HomePage } from '../../pages/home.page';
+import { CategoryPage } from '../../pages/shopping/category.page';
+import { FamilyPage } from '../../pages/shopping/family.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   bundleCategory: {

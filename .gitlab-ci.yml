@@ -132,7 +132,7 @@ schematics:
     - bash .gitlab-ci-test-schematics.sh
     - echo "schematics complete"
 
-cypress_local:
+cypress_mocked:
   image: cypress/browsers:chrome69
   stage: integration
   retry: 1
@@ -159,7 +159,7 @@ cypress_local:
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c 'baseUrl=http://localhost:4200,testFiles=**/*mock*.e2e-spec.ts' -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
     - echo "E2E complete"
 
 publish_pwa:
@@ -474,11 +474,43 @@ cypress_remote:
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
     - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://10.0.206.226:4321 || export PWA_BASE_URL=http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm ci --prefer-offline
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - test $CI_PIPELINE_SOURCE = trigger || echo "10.0.29.3 b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - node cypress-ci-e2e
+    - node cypress-ci-e2e '**/*b2c*.e2e-spec.ts'
+    - echo "E2E complete"
+
+cypress_remote_b2b:
+  image: cypress/browsers:chrome69
+  stage: e2e
+  only:
+    - merge_requests
+    - triggers
+  tags:
+    - docker-executor
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  dependencies: []
+  script:
+    - node --version && npm --version
+    - export DISPLAY=:5
+    - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://10.0.206.226:4325 || export PWA_BASE_URL=http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    - export CYPRESS_NO_CHANNEL_REDIRECT=1
+    - npm ci --prefer-offline
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
+    - test $CI_PIPELINE_SOURCE = trigger || echo "10.0.29.3 b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
+    - sh .gitlab-ci-test-universal.sh
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - node cypress-ci-e2e '**/*b2b*.e2e-spec.ts'
     - echo "E2E complete"
