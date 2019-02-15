@@ -36,6 +36,7 @@ import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-i
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsSharedModule } from './forms/forms.module';
 import { OrderListComponent } from './order/components/order-list/order-list.component';
+import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
@@ -104,6 +105,7 @@ const exportedComponents = [
   LoadingComponent,
   ModalDialogComponent,
   OrderListContainerComponent,
+  OrderWidgetComponent,
   ProductAddToBasketComponent,
   ProductAddToCompareComponent,
   ProductAttributesComponent,
