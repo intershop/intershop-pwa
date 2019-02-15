@@ -1,8 +1,8 @@
-import { at, back } from '../framework';
-import { HomePage } from '../pages/home.page';
-import { CategoryPage } from '../pages/shopping/category.page';
-import { FamilyPage } from '../pages/shopping/family.page';
-import { ProductDetailPage } from '../pages/shopping/product-detail.page';
+import { at, back } from '../../framework';
+import { HomePage } from '../../pages/home.page';
+import { CategoryPage } from '../../pages/shopping/category.page';
+import { FamilyPage } from '../../pages/shopping/family.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   catalog: 'Cameras-Camcorders',

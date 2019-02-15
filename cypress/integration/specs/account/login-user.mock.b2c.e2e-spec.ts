@@ -1,7 +1,7 @@
-import { at } from '../framework';
-import { LoginPage } from '../pages/account/login.page';
-import { MyAccountPage } from '../pages/account/my-account.page';
-import { HomePage } from '../pages/home.page';
+import { at } from '../../framework';
+import { LoginPage } from '../../pages/account/login.page';
+import { MyAccountPage } from '../../pages/account/my-account.page';
+import { HomePage } from '../../pages/home.page';
 
 const _ = {
   name: 'Patricia Miller',
