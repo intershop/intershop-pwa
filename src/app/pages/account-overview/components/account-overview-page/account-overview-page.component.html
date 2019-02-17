@@ -19,13 +19,8 @@
   </div>
 </div>
 
-<!-- Latest orders list -->
-<h2>{{ 'account.order.most_recent.heading' | translate }}</h2>
-<div class="section">
-  <ish-order-list-container maxListItems="5" [compact]="true"></ish-order-list-container>
-
-  <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>
-</div>
+<!-- Order Widget - displays latest orders as list -->
+<ish-order-widget></ish-order-widget>
 
 <!-- Quote Widget - displays different quote states if quoting is enabled -->
 <ish-lazy-quote-widget></ish-lazy-quote-widget>

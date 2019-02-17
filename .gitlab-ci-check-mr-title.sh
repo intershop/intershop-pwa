@@ -3,7 +3,7 @@
 set -e
 
 response="$(curl -s --header "PRIVATE-TOKEN: TR5wGFtNSyQX7dZxsRsA" https://gitlab.intershop.de/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID)"
-title="$(echo "$response" | grep -Eo 'title":"[^"]+' | cut -c9-)"
+title="$(echo "$response" | grep -Eo 'title":"[^"]+' | head -n1 | cut -c9-)"
 
 topic="$(echo "$title" | grep -Eo '^[^:]*')"
 
