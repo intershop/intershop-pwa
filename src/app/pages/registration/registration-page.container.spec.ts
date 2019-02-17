@@ -1,11 +1,13 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { Locale } from 'ish-core/models/locale/locale.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { RegistrationPageContainerComponent } from './registration-page.container';
@@ -14,19 +16,22 @@ describe('Registration Page Container', () => {
   let fixture: ComponentFixture<RegistrationPageContainerComponent>;
   let component: RegistrationPageContainerComponent;
   let element: HTMLElement;
-  let routerMock: Router;
-  let storeMock$: Store<{}>;
+  let location: Location;
+
   const defaultLocales = [
     { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
     { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
   ] as Locale[];
 
-  beforeEach(async(() => {
-    routerMock = mock(Router);
-    storeMock$ = mock(Store);
+  // tslint:disable-next-line:use-component-change-detection
+  @Component({ template: 'dummy' })
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+  class DummyComponent {}
 
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        DummyComponent,
         MockComponent({
           selector: 'ish-registration-form',
           template: 'Form Template',
@@ -34,13 +39,15 @@ describe('Registration Page Container', () => {
         }),
         RegistrationPageContainerComponent,
       ],
-      providers: [
-        { provide: Router, useFactory: () => instance(routerMock) },
-        { provide: Store, useFactory: () => instance(storeMock$) },
-        { provide: AVAILABLE_LOCALES, useValue: defaultLocales },
+      providers: [{ provide: AVAILABLE_LOCALES, useValue: defaultLocales }],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
+        StoreModule.forRoot(coreReducers),
+        TranslateModule.forRoot(),
       ],
-      imports: [TranslateModule.forRoot()],
     }).compileComponents();
+
+    location = TestBed.get(Location);
   }));
 
   beforeEach(() => {
@@ -55,11 +62,11 @@ describe('Registration Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should navigate to homepage when cancel is clicked', async(() => {
+  it('should navigate to homepage when cancel is clicked', fakeAsync(() => {
     component.onCancel();
 
-    verify(routerMock.navigate(anything())).once();
-    const [param] = capture(routerMock.navigate).last();
-    expect(param).toEqual(['/home']);
+    tick(500);
+
+    expect(location.path()).toEqual('/home');
   }));
 });

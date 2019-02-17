@@ -1,11 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-import { Params, Router, RouterState } from '@angular/router';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { of, throwError } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { noop, of, throwError } from 'rxjs';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -35,19 +38,33 @@ import { QuoteRequestEffects } from './quote-request.effects';
 describe('Quote Request Effects', () => {
   let actions$;
   let quoteRequestServiceMock: QuoteRequestService;
-  let routerMock: Router;
   let effects: QuoteRequestEffects;
   let store$: Store<{}>;
+  let location: Location;
+  let router: Router;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
 
+  // tslint:disable-next-line:use-component-change-detection
+  @Component({ template: 'dummy' })
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+  class DummyComponent {}
+
   beforeEach(() => {
     quoteRequestServiceMock = mock(QuoteRequestService);
-    routerMock = mock(Router);
 
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
         FeatureToggleModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'account',
+            children: [{ path: 'quote-request', children: [{ path: ':quoteRequestId', component: DummyComponent }] }],
+          },
+          { path: 'login', component: DummyComponent },
+          { path: 'foobar', component: DummyComponent },
+        ]),
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
@@ -60,12 +77,14 @@ describe('Quote Request Effects', () => {
         QuoteRequestEffects,
         provideMockActions(() => actions$),
         { provide: QuoteRequestService, useFactory: () => instance(quoteRequestServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) },
       ],
     });
 
     effects = TestBed.get(QuoteRequestEffects);
     store$ = TestBed.get(Store);
+    location = TestBed.get(Location);
+    router = TestBed.get(Router);
+
     store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
 
@@ -773,16 +792,10 @@ describe('Quote Request Effects', () => {
   });
 
   describe('goToLoginOnAddQuoteRequest$', () => {
-    it('should navigate to /login with returnUrl set if AddQuoteRequest called without propper login.', done => {
-      when(routerMock.routerState).thenReturn({
-        snapshot: {
-          root: {
-            queryParams: {
-              returnUrl: '/foobar',
-            } as Params,
-          },
-        },
-      } as RouterState);
+    it('should navigate to /login with returnUrl set if AddQuoteRequest called without proper login.', fakeAsync(() => {
+      router.navigateByUrl('/foobar');
+      tick(500);
+      expect(location.path()).toEqual('/foobar');
 
       const payload = {
         sku: 'SKU',
@@ -791,28 +804,26 @@ describe('Quote Request Effects', () => {
       const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
       actions$ = of(action);
 
-      effects.goToLoginOnAddQuoteRequest$.subscribe(() => {
-        verify(routerMock.navigate(anything(), anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/login']);
-        done();
-      });
-    });
+      effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar');
+    }));
   });
 
   describe('goToQuoteRequestDetail$', () => {
-    it('should navigate to /account/quote-request/QRID if AddBasketToQuoteRequestSuccess called.', done => {
+    it('should navigate to /account/quote-request/QRID if AddBasketToQuoteRequestSuccess called.', fakeAsync(() => {
       const id = 'QRID';
       const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id });
       actions$ = of(action);
 
-      effects.goToQuoteRequestDetail$.subscribe(() => {
-        verify(routerMock.navigate(anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/account/quote-request/QRID']);
-        done();
-      });
-    });
+      effects.goToQuoteRequestDetail$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/account/quote-request/QRID');
+    }));
   });
 
   describe('loadQuoteRequestsAfterChangeSuccess$', () => {
