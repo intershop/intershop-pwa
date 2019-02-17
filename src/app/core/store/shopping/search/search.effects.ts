@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { RouteNavigation, ofRoute } from 'ngrx-router';
@@ -18,6 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
@@ -51,7 +51,7 @@ export class SearchEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private router: Router
+    private httpStatusCodeService: HttpStatusCodeService
   ) {}
 
   /**
@@ -138,6 +138,6 @@ export class SearchEffects {
   @Effect({ dispatch: false })
   redirectIfSearchProductFail$ = this.actions$.pipe(
     ofType(SearchActionTypes.SearchProductsFail),
-    tap(() => this.router.navigate(['/error']))
+    tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 }
