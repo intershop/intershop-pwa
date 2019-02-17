@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -26,7 +26,6 @@ describe('Filter Effects', () => {
   let store$: Store<{}>;
   let filterServiceMock: FilterService;
 
-  const router = mock(Router);
   const filterNav = {
     filter: [{ name: 'blubb', displayType: 'text_clear', facets: [{ name: 'a' }, { name: 'b' }] }],
   } as FilterNavigation;
@@ -64,6 +63,7 @@ describe('Filter Effects', () => {
     });
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
@@ -72,7 +72,6 @@ describe('Filter Effects', () => {
         FilterEffects,
         provideMockActions(() => actions$),
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: Router, useFactory: () => instance(router) },
       ],
     });
 
