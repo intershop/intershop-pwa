@@ -23,9 +23,8 @@ describe('Account Overview Page Component', () => {
           template: 'Lazy Quote Widget Component',
         }),
         MockComponent({
-          selector: 'ish-order-list-container',
-          template: 'Order List Container Component',
-          inputs: ['maxListItems', 'compact'],
+          selector: 'ish-order-widget',
+          template: 'Order Widget Component',
         }),
       ],
       imports: [IconModule, TranslateModule.forRoot()],
@@ -54,8 +53,8 @@ describe('Account Overview Page Component', () => {
     expect(element.querySelector('h1').textContent).toContain(user.firstName);
   });
 
-  it('should render order list container component on page', () => {
+  it('should render order widget component on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-order-list-container')).toBeTruthy();
+    expect(element.querySelector('ish-order-widget')).toBeTruthy();
   });
 });
