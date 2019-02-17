@@ -1,12 +1,15 @@
+import { Location } from '@angular/common';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
-import { Params, Router, RouterState } from '@angular/router';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable, of, throwError } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { Observable, noop, of, throwError } from 'rxjs';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
@@ -24,7 +27,8 @@ describe('User Effects', () => {
   let effects: UserEffects;
   let store$: Store<{}>;
   let userServiceMock: UserService;
-  let routerMock: Router;
+  let router: Router;
+  let location: Location;
 
   const loginResponseData = {
     customer: {
@@ -33,25 +37,39 @@ describe('User Effects', () => {
     },
   } as CustomerLoginType;
 
+  // tslint:disable-next-line:use-component-change-detection
+  @Component({ template: 'dummy' })
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+  class DummyComponent {}
+
   beforeEach(() => {
-    routerMock = mock(Router);
     userServiceMock = mock(UserService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'patricia' } as User));
 
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'login', component: DummyComponent },
+          { path: 'home', component: DummyComponent },
+          { path: 'account', component: DummyComponent },
+          { path: 'foobar', component: DummyComponent },
+        ]),
+        StoreModule.forRoot(coreReducers),
+      ],
       providers: [
         UserEffects,
         provideMockActions(() => actions$),
-        { provide: Router, useFactory: () => instance(routerMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
       ],
     });
 
     effects = TestBed.get(UserEffects);
     store$ = TestBed.get(Store);
+    router = TestBed.get(Router);
+    location = TestBed.get(Location);
   });
 
   describe('loginUser$', () => {
@@ -116,55 +134,46 @@ describe('User Effects', () => {
   });
 
   describe('goToHomeAfterLogout$', () => {
-    it('should navigate to /home after LogoutUser', done => {
+    it('should navigate to /home after LogoutUser', fakeAsync(() => {
       const action = new ua.LogoutUser();
       actions$ = of(action);
 
-      effects.goToHomeAfterLogout$.subscribe(() => {
-        verify(routerMock.navigate(anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/home']);
-        done();
-      });
-    });
+      effects.goToHomeAfterLogout$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/home');
+    }));
   });
 
   describe('goToAccountAfterLogin$', () => {
-    it('should navigate to /account after LoginUserSuccess', done => {
+    it('should navigate to /account after LoginUserSuccess', fakeAsync(() => {
       const action = new ua.LoginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
-      effects.goToAccountAfterLogin$.subscribe(() => {
-        verify(routerMock.navigate(anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/account']);
-        done();
-      });
-    });
+      effects.goToAccountAfterLogin$.subscribe(noop, fail, noop);
 
-    it('should navigate to returnUrl after LoginUserSuccess when it is set', done => {
-      when(routerMock.routerState).thenReturn({
-        snapshot: {
-          root: {
-            queryParams: {
-              returnUrl: '/foobar',
-            } as Params,
-          },
-        },
-      } as RouterState);
+      tick(500);
+
+      expect(location.path()).toEqual('/account');
+    }));
+
+    it('should navigate to returnUrl after LoginUserSuccess when it is set', fakeAsync(() => {
+      router.navigate(['/login'], { queryParams: { returnUrl: '/foobar' } });
+      tick(500);
+      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar');
 
       const action = new ua.LoginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
-      effects.goToAccountAfterLogin$.subscribe(() => {
-        verify(routerMock.navigate(anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/foobar']);
-        done();
-      });
-    });
+      effects.goToAccountAfterLogin$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/foobar');
+    }));
   });
 
   describe('createUser$', () => {

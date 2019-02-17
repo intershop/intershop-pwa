@@ -1,11 +1,13 @@
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
@@ -30,10 +32,8 @@ import { SearchEffects } from './search.effects';
 describe('Search Effects', () => {
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
-  let routerMock: Router;
 
   beforeEach(() => {
-    routerMock = mock(Router);
     suggestServiceMock = mock(SuggestService);
     const result = [{ type: undefined, term: 'Goods' }];
     when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
@@ -61,16 +61,18 @@ describe('Search Effects', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: ngrxTesting({
-          shopping: combineReducers(shoppingReducers),
-        }),
+        imports: [
+          ...ngrxTesting({
+            shopping: combineReducers(shoppingReducers),
+          }),
+          RouterTestingModule,
+        ],
         providers: [
           SearchEffects,
           provideMockActions(() => actions$),
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-          { provide: Router, useFactory: () => instance(routerMock) },
           { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
         ],
       });
@@ -133,26 +135,36 @@ describe('Search Effects', () => {
   describe('with fakeAsync', () => {
     let store$: TestStore;
     let effects: SearchEffects;
+    let location: Location;
+
+    // tslint:disable-next-line:use-component-change-detection
+    @Component({ template: 'dummy' })
+    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+    class DummyComponent {}
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: ngrxTesting(
-          {
-            shopping: combineReducers(shoppingReducers),
-          },
-          [SearchEffects]
-        ),
+        declarations: [DummyComponent],
+        imports: [
+          ...ngrxTesting(
+            {
+              shopping: combineReducers(shoppingReducers),
+            },
+            [SearchEffects]
+          ),
+          RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+        ],
         providers: [
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-          { provide: Router, useFactory: () => instance(routerMock) },
           { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
         ],
       });
 
       effects = TestBed.get(SearchEffects);
       store$ = TestBed.get(TestStore);
+      location = TestBed.get(Location);
 
       store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
     });
@@ -234,9 +246,7 @@ describe('Search Effects', () => {
 
         tick(4000);
 
-        verify(routerMock.navigate(anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/error']);
+        expect(location.path()).toEqual('/error');
       }));
     });
 

@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
@@ -17,6 +16,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   distinctCompareWith,
   mapErrorToAction,
@@ -39,8 +39,8 @@ export class CategoriesEffects {
     private actions$: Actions,
     private store: Store<{}>,
     private categoryService: CategoriesService,
-    private router: Router,
-    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number
+    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
+    private httpStatusCodeService: HttpStatusCodeService
   ) {}
 
   /**
@@ -165,6 +165,6 @@ export class CategoriesEffects {
   @Effect({ dispatch: false })
   redirectIfErrorInCategories$ = this.actions$.pipe(
     ofType(actions.CategoriesActionTypes.LoadCategoryFail),
-    tap(() => this.router.navigate(['/error']))
+    tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 }

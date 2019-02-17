@@ -15,6 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
@@ -39,7 +40,8 @@ export class ProductsEffects {
     private actions$: Actions,
     private store: Store<{}>,
     private productsService: ProductsService,
-    private router: Router
+    private router: Router,
+    private httpStatusCodeService: HttpStatusCodeService
   ) {}
 
   @Effect()
@@ -144,12 +146,12 @@ export class ProductsEffects {
   redirectIfErrorInProducts$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductFail),
     filter(() => this.router.url.includes('/product/')),
-    tap(() => this.router.navigate(['/error']))
+    tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 
   @Effect({ dispatch: false })
   redirectIfErrorInCategoryProducts$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategoryFail),
-    tap(() => this.router.navigate(['/error']))
+    tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 }
