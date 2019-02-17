@@ -6,7 +6,8 @@ server {
 
     location / {
         proxy_cache my_cache;
-        proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
+        # enable to also cache error responses
+        # proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
