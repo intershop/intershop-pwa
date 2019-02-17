@@ -36,15 +36,11 @@ app.engine(
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
-/* - Example Express Rest API endpoints -
-  app.get('/api/**', (req, res) => { });
-*/
-
 // Server static files from /browser
 app.get(
   '*.*',
   express.static(join(DIST_FOLDER, 'browser'), {
-    maxAge: '1y',
+    maxAge: '5m',
   })
 );
 
