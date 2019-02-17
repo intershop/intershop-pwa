@@ -11,7 +11,7 @@
       }
     },
     {
-      "files": ["*.json", ".*.json"],
+      "files": ["*.json", ".*.json", "*.code-snippets"],
       "options": {
         "parser": "json",
         "printWidth": 80
