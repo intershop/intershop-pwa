@@ -45,11 +45,26 @@ app.get(
 );
 
 // ALl regular routes use the Universal engine
-app.get('*', (req, res) => {
+app.get('*', (req: express.Request, res: express.Response) => {
   if (logging) {
     console.log(`GET ${req.url}`);
   }
-  res.render('index', { req });
+  res.render(
+    'index',
+    {
+      req,
+      res,
+    },
+    (err: Error, html: string) => {
+      res.status(html ? res.statusCode : 500).send(html || err.message);
+      if (logging) {
+        console.log(`RES ${res.statusCode} ${req.url}`);
+        if (err) {
+          console.log(err);
+        }
+      }
+    }
+  );
 });
 
 // Start up the Node server
