@@ -36,24 +36,35 @@ app.engine(
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
-/* - Example Express Rest API endpoints -
-  app.get('/api/**', (req, res) => { });
-*/
-
 // Server static files from /browser
 app.get(
   '*.*',
   express.static(join(DIST_FOLDER, 'browser'), {
-    maxAge: '1y',
+    maxAge: '5m',
   })
 );
 
 // ALl regular routes use the Universal engine
-app.get('*', (req, res) => {
+app.get('*', (req: express.Request, res: express.Response) => {
   if (logging) {
     console.log(`GET ${req.url}`);
   }
-  res.render('index', { req });
+  res.render(
+    'index',
+    {
+      req,
+      res,
+    },
+    (err: Error, html: string) => {
+      res.status(html ? res.statusCode : 500).send(html || err.message);
+      if (logging) {
+        console.log(`RES ${res.statusCode} ${req.url}`);
+        if (err) {
+          console.log(err);
+        }
+      }
+    }
+  );
 });
 
 // Start up the Node server

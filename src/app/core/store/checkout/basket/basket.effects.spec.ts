@@ -1,10 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { Observable, noop, of, throwError } from 'rxjs';
+import { anyString, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -39,17 +41,25 @@ describe('Basket Effects', () => {
   let orderServiceMock: OrderService;
   let addressServiceMock: AddressService;
   let effects: BasketEffects;
-  let routerMock: Router;
   let store$: Store<{}>;
+  let location: Location;
+
+  // tslint:disable-next-line:use-component-change-detection
+  @Component({ template: 'dummy' })
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+  class DummyComponent {}
 
   beforeEach(() => {
-    routerMock = mock(Router);
     basketServiceMock = mock(BasketService);
     orderServiceMock = mock(OrderService);
     addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
+        ]),
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
           checkout: combineReducers(checkoutReducers),
@@ -61,12 +71,12 @@ describe('Basket Effects', () => {
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: AddressService, useFactory: () => instance(addressServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) },
       ],
     });
 
     effects = TestBed.get(BasketEffects);
     store$ = TestBed.get(Store);
+    location = TestBed.get(Location);
   });
 
   describe('loadBasket$', () => {
@@ -1143,16 +1153,15 @@ describe('Basket Effects', () => {
   });
 
   describe('goToCheckoutReceiptPageAfterOrderCreation', () => {
-    it('should navigate to /checkout/receipt after CreateOrderSuccess', done => {
+    it('should navigate to /checkout/receipt after CreateOrderSuccess', fakeAsync(() => {
       const action = new basketActions.CreateOrderSuccess({ order: { id: '123' } as Order });
       actions$ = of(action);
 
-      effects.goToCheckoutReceiptPageAfterOrderCreation$.subscribe(() => {
-        verify(routerMock.navigate(anything())).once();
-        const [param] = capture(routerMock.navigate).last();
-        expect(param).toEqual(['/checkout/receipt']);
-        done();
-      });
-    });
+      effects.goToCheckoutReceiptPageAfterOrderCreation$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/receipt');
+    }));
   });
 });
