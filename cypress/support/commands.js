@@ -42,12 +42,12 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     }
   }
 
-  originalFn(newUrl, options);
+  originalFn(newUrl, { ...options, failOnStatusCode: false });
 
-  cy.wait('@translations');
   cy.get('body').should('have.descendants', 'ish-root');
 
   return cy.get('body').then(body => {
+    cy.wait('@translations');
     if (!body.find('#intershop-pwa-state').length) {
       cy.wait('@categories').log('page ready -- top level categories loaded');
     } else {
