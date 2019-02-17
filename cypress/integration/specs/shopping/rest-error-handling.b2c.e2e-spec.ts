@@ -1,7 +1,9 @@
 import { at, waitLoadingEnd } from '../../framework';
 import { LoginPage } from '../../pages/account/login.page';
 import { HomePage } from '../../pages/home.page';
+import { ServerErrorPage } from '../../pages/server-error.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
+import { FamilyPage } from '../../pages/shopping/family.page';
 import { NotFoundPage } from '../../pages/shopping/not-found.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 import { SearchResultPage } from '../../pages/shopping/search-result.page';
@@ -11,12 +13,54 @@ const _ = {
   categoryid: 'Cameras-Camcorders.584',
 };
 
-describe('Deleted Products', () => {
+describe('Missing Data', () => {
   beforeEach(() => {
     cy.server();
   });
 
-  describe('in CMS managed content', () => {
+  describe('server error when getting CMS managed content', () => {
+    before(() => {
+      LoginPage.navigateTo();
+
+      cy.route({
+        method: 'GET',
+        url: '**/cms/**',
+        status: 500,
+        response: {},
+      });
+    });
+
+    it('should lead to server error page', () => {
+      at(LoginPage, page => {
+        page.header.gotoHomePage();
+      });
+      waitLoadingEnd();
+      at(ServerErrorPage);
+    });
+  });
+
+  describe('error when getting CMS managed content', () => {
+    before(() => {
+      LoginPage.navigateTo();
+
+      cy.route({
+        method: 'GET',
+        url: '**/cms/**',
+        status: 404,
+        response: {},
+      });
+    });
+
+    it('should not lead to error page', () => {
+      at(LoginPage, page => {
+        page.header.gotoHomePage();
+      });
+      waitLoadingEnd();
+      at(HomePage);
+    });
+  });
+
+  describe('of products in CMS managed content', () => {
     before(() => {
       LoginPage.navigateTo();
 
@@ -37,8 +81,7 @@ describe('Deleted Products', () => {
     });
   });
 
-  // TODO: re-activate once search results have a filter navigation again (IS-25833)
-  xdescribe('in Product Lists', () => {
+  describe('of products in Product Lists', () => {
     before(() => {
       HomePage.navigateTo();
 
@@ -65,7 +108,7 @@ describe('Deleted Products', () => {
     });
   });
 
-  describe('on Product Detail Page', () => {
+  describe('of product on Product Detail Page', () => {
     it('should lead straight to error page', () => {
       ProductDetailPage.navigateTo('ERROAR');
       at(NotFoundPage);
@@ -87,6 +130,13 @@ describe('Deleted Products', () => {
     it('should lead straight to error page', () => {
       at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
       at(CategoryPage, page => page.gotoSubCategory(_.categoryid));
+      at(NotFoundPage);
+    });
+  });
+
+  describe('of category on Category Page', () => {
+    it('should lead straight to error page', () => {
+      FamilyPage.navigateTo('ERROAR');
       at(NotFoundPage);
     });
   });
