@@ -18,7 +18,7 @@ describe('Price Mapper', () => {
       const price = PriceMapper.fromPriceItem(priceItem);
 
       expect(price).toBeTruthy();
-      expect(price.value).toBe(priceItem[PriceMapper.priceType].value);
+      expect(price.value).toBe(priceItem[PriceMapper.defaultPriceType].value);
       expect(price.currencyMnemonic).toBe('USD');
     });
   });

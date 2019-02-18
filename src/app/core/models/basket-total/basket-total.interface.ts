@@ -10,6 +10,7 @@ export interface BasketTotalData {
   basketValueDiscountsTotal?: PriceItem;
   itemShippingDiscountsTotal?: PriceItem;
   itemValueDiscountsTotal?: PriceItem;
+  paymentCostTotal?: PriceItem;
   surchargeTotal?: PriceItem;
   taxTotalsByTaxRate?: {
     calculatedTax: Price;
@@ -17,7 +18,4 @@ export interface BasketTotalData {
 
   /* is currently not available */
   taxTotal?: PriceItem;
-
-  /* is currently not available */
-  paymentCostsTotal?: PriceItem;
 }

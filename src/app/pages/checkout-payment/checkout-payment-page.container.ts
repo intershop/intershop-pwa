@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { filter, take } from 'rxjs/operators';
 
 import {
   LoadBasketEligiblePaymentMethods,
@@ -24,7 +25,12 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadBasketEligiblePaymentMethods());
+    this.basket$
+      .pipe(
+        filter(x => !!x),
+        take(1)
+      )
+      .subscribe(() => this.store.dispatch(new LoadBasketEligiblePaymentMethods()));
   }
 
   updateBasketPaymentMethod(paymentName: string) {

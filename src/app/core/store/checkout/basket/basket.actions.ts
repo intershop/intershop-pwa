@@ -7,7 +7,6 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from '../../../services/basket/basket.service';
 
@@ -45,9 +44,6 @@ export enum BasketActionTypes {
   LoadBasketEligiblePaymentMethods = '[Basket] Load Basket Eligible Payment Methods',
   LoadBasketEligiblePaymentMethodsFail = '[Basket API] Load Basket Eligible Payment Methods Fail',
   LoadBasketEligiblePaymentMethodsSuccess = '[Basket API] Load Basket Eligible Payment Methods Success',
-  LoadBasketPayments = '[Basket Internal] Load Basket Payments',
-  LoadBasketPaymentsFail = '[Basket API] Load Basket Payments Fail',
-  LoadBasketPaymentsSuccess = '[Basket API] Load Basket Payments Success',
   SetBasketPayment = '[Basket] Set a Payment at Basket ',
   SetBasketPaymentFail = '[Basket API] Set a Payment at Basket Fail',
   SetBasketPaymentSuccess = '[Basket API] Set a Payment at Basket Success',
@@ -217,22 +213,6 @@ export class LoadBasketEligiblePaymentMethodsSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess;
   constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
 }
-
-export class LoadBasketPayments implements Action {
-  readonly type = BasketActionTypes.LoadBasketPayments;
-  constructor(public payload: { id: string }) {}
-}
-
-export class LoadBasketPaymentsFail implements Action {
-  readonly type = BasketActionTypes.LoadBasketPaymentsFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class LoadBasketPaymentsSuccess implements Action {
-  readonly type = BasketActionTypes.LoadBasketPaymentsSuccess;
-  constructor(public payload: { paymentMethods: Payment[] }) {}
-}
-
 export class SetBasketPayment implements Action {
   readonly type = BasketActionTypes.SetBasketPayment;
   constructor(public payload: { id: string }) {}
@@ -300,9 +280,6 @@ export type BasketAction =
   | LoadBasketEligiblePaymentMethods
   | LoadBasketEligiblePaymentMethodsFail
   | LoadBasketEligiblePaymentMethodsSuccess
-  | LoadBasketPayments
-  | LoadBasketPaymentsFail
-  | LoadBasketPaymentsSuccess
   | SetBasketPayment
   | SetBasketPaymentFail
   | SetBasketPaymentSuccess

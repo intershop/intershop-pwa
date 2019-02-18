@@ -145,10 +145,11 @@ export class ApiService {
   /**
    * http put request
    */
-  put<T>(path: string, body = {}): Observable<T> {
+  put<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
       .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale), body, {
         headers: this.defaultHeaders,
+        ...options,
       })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }

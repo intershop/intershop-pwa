@@ -20,7 +20,6 @@ import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
 import { LineItem } from '../../models/line-item/line-item.model';
 import { Locale } from '../../models/locale/locale.model';
-import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { Price } from '../../models/price/price.model';
 import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
@@ -178,7 +177,6 @@ describe('Checkout Store', () => {
     });
 
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
-    when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
@@ -250,8 +248,6 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
     });
@@ -268,8 +264,6 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
     });
