@@ -1,4 +1,5 @@
 stages:
+  - mrconfig
   - setup
   - build
   - integration
@@ -16,6 +17,32 @@ cache:
   untracked: false
   paths:
     - cache
+
+check_mr_title:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: mrconfig
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-check-mr-title.sh
+    - echo "check complete"
+
+cancel_old_pipelines:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: mrconfig
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-cancel-old-pipelines.sh
+    - echo "cancel complete"
 
 setup:
   image: node:10
@@ -37,32 +64,6 @@ setup:
     - npm ci --prefer-offline
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
     - echo "setup complete"
-
-check_mr_title:
-  cache: {}
-  dependencies: []
-  image: endeveit/docker-jq
-  stage: setup
-  only:
-    - merge_requests
-  tags:
-    - docker-executor
-  script:
-    - sh .gitlab-ci-check-mr-title.sh
-    - echo "check complete"
-
-cancel_old_pipelines:
-  cache: {}
-  dependencies: []
-  image: endeveit/docker-jq
-  stage: setup
-  only:
-    - merge_requests
-  tags:
-    - docker-executor
-  script:
-    - sh .gitlab-ci-cancel-old-pipelines.sh
-    - echo "cancel complete"
 
 jest_test:
   image: node:10
