@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
@@ -48,6 +49,7 @@ describe('Checkout Shipping Component', () => {
         FormsSharedModule,
         IconModule,
         NgbPopoverModule,
+        PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
         TranslateModule.forRoot(),
