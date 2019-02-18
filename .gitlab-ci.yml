@@ -51,6 +51,19 @@ check_mr_title:
     - sh .gitlab-ci-check-mr-title.sh
     - echo "check complete"
 
+cancel_old_pipelines:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: setup
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-cancel-old-pipelines.sh
+    - echo "cancel complete"
+
 jest_test:
   image: node:10
   stage: build
