@@ -2,7 +2,7 @@
 
 set -e
 
-response="$(curl -s --header "PRIVATE-TOKEN: TR5wGFtNSyQX7dZxsRsA" https://gitlab.intershop.de/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID)"
+response="$(curl -s --header "PRIVATE-TOKEN: $PRIVATE_API_TOKEN" https://gitlab.intershop.de/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID)"
 title="$(echo "$response" | jq -Mrc .title)"
 
 topic="$(echo "$title" | grep -Eo '^[^:]*')"
