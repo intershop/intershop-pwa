@@ -2,14 +2,20 @@ import { PriceItem } from '../price-item/price-item.interface';
 
 import { Price } from './price.model';
 
+/**
+ * Maps a price item to a gross or net price.
+ * @param priceItem A price Item.
+ * @param priceType The price type (gross/net), default: gross
+ * @returns         The price.
+ */
 export class PriceMapper {
-  static priceType = 'gross';
-  static fromPriceItem(dataItem: PriceItem): Price {
-    if (dataItem && dataItem[PriceMapper.priceType]) {
+  static defaultPriceType = 'gross';
+  static fromPriceItem(dataItem: PriceItem, priceType: string = PriceMapper.defaultPriceType): Price {
+    if (dataItem && dataItem[priceType]) {
       return {
         type: 'Money',
-        value: dataItem[PriceMapper.priceType].value,
-        currencyMnemonic: dataItem[PriceMapper.priceType].currency,
+        value: dataItem[priceType].value,
+        currencyMnemonic: dataItem[priceType].currency,
       };
     }
   }

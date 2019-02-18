@@ -24,6 +24,7 @@
               formControlName="name"
               [id]="'paymentOption_' + paymentMethod.id"
               [value]="paymentMethod.id"
+              [attr.disabled]="paymentMethod.isRestricted ? true : null"
             />
             <label class="form-check-label" [for]="'paymentOption_' + paymentMethod.id">
               <strong>
@@ -31,6 +32,31 @@
                 }}<ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
               </strong>
               <p *ngIf="paymentMethod.description">{{ paymentMethod.description }}</p>
+              <p
+                *ngIf="
+                  paymentMethod.paymentCostsThreshold &&
+                    paymentMethod.paymentCostsThreshold.value <= basket.totals.total.value;
+                  else displayPaymentCosts
+                "
+              >
+                {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}&nbsp;{{
+                  basket.totals.total | ishPrice
+                }}
+              </p>
+              <ng-template #displayPaymentCosts>
+                <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts.value">
+                  {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
+                    paymentMethod.paymentCosts | ishPrice
+                  }}&nbsp;
+                  <span *ngIf="paymentMethod.paymentCostsThreshold" class=".form-text text-muted">
+                    <span class="hidden-xs">&nbsp;-&nbsp;</span
+                    >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
+                    <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
+                  </span>
+                </p>
+              </ng-template>
+              <!-- ToDo: Display restriction reason -->
+              <p *ngIf="paymentMethod.isRestricted"><i>Restricted use</i></p>
             </label>
           </div>
         </li>
