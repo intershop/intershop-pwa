@@ -41,14 +41,14 @@ setup:
 check_mr_title:
   cache: {}
   dependencies: []
-  image: node:10
+  image: endeveit/docker-jq
   stage: setup
   only:
     - merge_requests
   tags:
     - docker-executor
   script:
-    - bash .gitlab-ci-check-mr-title.sh
+    - sh .gitlab-ci-check-mr-title.sh
     - echo "check complete"
 
 jest_test:
