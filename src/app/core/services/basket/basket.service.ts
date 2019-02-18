@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { BasketBaseData, BasketData } from '../../models/basket/basket.interface';
 import { BasketMapper } from '../../models/basket/basket.mapper';
 import { Basket } from '../../models/basket/basket.model';
 import { Link } from '../../models/link/link.model';
+import { PaymentMethodData } from '../../models/payment-method/payment-method.interface';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
@@ -210,8 +212,8 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(
-        unpackEnvelope<PaymentMethod>('data'),
-        map(data => data.filter(payment => validPaymentMethods.includes(payment.id)))
+        unpackEnvelope<PaymentMethodData>('data'),
+        map(data => data.filter(payment => validPaymentMethods.includes(payment.id)).map(PaymentMethodMapper.fromData))
       );
   }
 

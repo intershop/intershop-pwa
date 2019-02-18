@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
@@ -44,6 +45,7 @@ describe('Checkout Payment Component', () => {
       ],
       imports: [
         FormsSharedModule,
+        PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
         TranslateModule.forRoot(),
