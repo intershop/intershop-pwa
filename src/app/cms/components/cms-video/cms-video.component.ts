@@ -4,7 +4,9 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 /**
- * The CMS Video Component displays a video in a HTML5 <iframe> or an internal video in HTML5 <video> container.
+ * The CMS Video Component integrates a CMS managed video either via native video tag
+ * or for selected video hosting platforms with the appropriate iframe embedding.
+ * Currently supported video hosting: Youtube, Vimeo.
  */
 @Component({
   selector: 'ish-cms-video',
@@ -14,70 +16,90 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 export class CMSVideoComponent implements OnInit {
   @Input() pagelet: ContentPageletView;
 
-  @ViewChild('videoPlayer') videoplayer: ElementRef;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef;
 
-  videoUrl: SafeUrl;
-  containerClasses = '';
-  height = '';
-  width = '';
-  headingText: string;
-  imageLink: SafeUrl;
-  isInternal: boolean;
-  isAutoplay: boolean;
-  isMute: boolean;
-  isPlay: boolean;
+  video: string;
+  nativeVideoUrl: SafeUrl;
+  iframeVideoUrl: SafeUrl;
+  videoHeight = '';
+  videoWidth = '';
+  autoplay: boolean;
+  mute: boolean;
+  playing: boolean;
 
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.getVideoSettings();
-    this.createUrl();
+    this.video = this.pagelet.stringParam('Video');
+    this.autoplay = this.pagelet.booleanParam('Autoplay');
+    this.mute = this.pagelet.booleanParam('Mute');
+    this.processVideoSize();
+    this.processVideoUrl();
   }
 
-  private getVideoSettings() {
-    this.containerClasses = this.pagelet.stringParam('CSSClass');
-    this.headingText = this.pagelet.stringParam('Heading');
-    this.isAutoplay = this.pagelet.booleanParam('Autoplay');
-    this.isMute = this.pagelet.booleanParam('Mute');
-    this.isInternal = this.pagelet.booleanParam('Internal');
-
-    this.imageLink = this.pagelet.stringParam('Image');
-
+  private processVideoSize() {
     const videoSize = this.pagelet.stringParam('VideoSizePreset');
     if (videoSize) {
       if (videoSize === 'custom') {
-        this.width = this.pagelet.stringParam('VideoWidth');
-        this.height = this.pagelet.stringParam('VideoHeight');
+        this.videoWidth = this.pagelet.stringParam('VideoWidth');
+        this.videoHeight = this.pagelet.stringParam('VideoHeight');
       } else {
-        this.width = videoSize.slice(0, videoSize.indexOf('x'));
-        this.height = videoSize.slice(videoSize.indexOf('x') + 1, videoSize.length);
+        const split = videoSize.split('x');
+        this.videoWidth = split[0];
+        this.videoHeight = split[1];
       }
     }
   }
 
-  private createUrl() {
-    const urlLowerCase = this.pagelet.stringParam('Video').toLowerCase();
-
-    if (urlLowerCase.indexOf('youtube') > -1) {
-      this.createVideoUrlYoutube();
+  private processVideoUrl() {
+    // tslint:disable:no-empty
+    if (this.processedYoutubeVideo()) {
+    } else if (this.processedVimeoVideo()) {
     } else {
-      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pagelet.stringParam('Video'));
+      this.nativeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video);
     }
+    // tslint:enable:no-empty
   }
 
-  private createVideoUrlYoutube() {
-    let url = this.pagelet.stringParam('Video').replace('watch?v=', 'embed/') + '?';
+  // process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
+  private processedYoutubeVideo(): boolean {
+    const youtubeVideoRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
+    if (youtubeVideoRegex.test(this.video)) {
+      const videoId = youtubeVideoRegex.exec(this.video)[1];
+      const videoUrl = new URL(`https://www.youtube.com/embed/${videoId}`);
+      if (this.autoplay) {
+        videoUrl.searchParams.set('autoplay', '1');
+      }
+      if (this.mute) {
+        videoUrl.searchParams.set('mute', '1');
+      }
+      this.iframeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl.toString());
+      return true;
+    }
+    return false;
+  }
 
-    if (this.isAutoplay) {
-      url = url.concat('autoplay=1&');
+  // process video URL with a Vimeo video ID regex (https://github.com/regexhq/vimeo-regex)
+  private processedVimeoVideo(): boolean {
+    const vimeoVideoRegex = /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/i;
+    if (vimeoVideoRegex.test(this.video)) {
+      const videoId = vimeoVideoRegex.exec(this.video)[4];
+      const videoUrl = new URL(`https://player.vimeo.com/video/${videoId}`);
+      if (this.autoplay) {
+        videoUrl.searchParams.set('autoplay', '1');
+      }
+      if (this.mute) {
+        videoUrl.searchParams.set('muted', '1');
+      }
+      this.iframeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl.toString());
+      return true;
     }
-    if (this.isMute) {
-      url = url.concat('mute=1&');
-    }
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    return false;
   }
 
   playVideo() {
-    this.videoplayer.nativeElement.play();
+    const videoElement = this.videoPlayer.nativeElement;
+    videoElement.controls = 'controls';
+    videoElement.play();
   }
 }
