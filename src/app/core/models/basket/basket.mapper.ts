@@ -22,7 +22,7 @@ export class BasketMapper {
           dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(data.totals.surchargeTotal),
           itemRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemValueDiscountsTotal),
           itemShippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemShippingDiscountsTotal),
-          paymentCostsTotal: undefined, // ToDo
+          paymentCostsTotal: PriceMapper.fromPriceItem(data.totals.paymentCostTotal),
           shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
           taxTotal: { ...data.totals.grandTotal.tax, type: 'Money' },
           valueRebates:
@@ -62,6 +62,14 @@ export class BasketMapper {
         included && included.lineItems && data.lineItems && data.lineItems.length
           ? data.lineItems.map(lineItemId => LineItemMapper.fromData(included.lineItems[lineItemId]))
           : [],
+      payment:
+        included && included.payments && included.payments['open-tender']
+          ? {
+              paymentInstrument: included.payments['open-tender'].paymentInstrument,
+              id: included.payments['open-tender'].id,
+              displayName: undefined, // ToDo: REST request should provide displayName
+            }
+          : undefined,
       totals,
     };
   }
