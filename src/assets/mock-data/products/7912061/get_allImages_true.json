@@ -7,14 +7,14 @@
       "value": "Y"
     },
     {
-      "name": "Sensor type",
-      "type": "String",
-      "value": "CMOS"
-    },
-    {
       "name": "Video out",
       "type": "String",
       "value": "1"
+    },
+    {
+      "name": "Sensor type",
+      "type": "String",
+      "value": "CMOS"
     },
     {
       "name": "Tripod mountable",
@@ -32,11 +32,6 @@
       "value": "-"
     },
     {
-      "name": "Built-in speakers",
-      "type": "String",
-      "value": "Y"
-    },
-    {
       "name": "Image formats supported",
       "type": "String",
       "value": "JPG,EXIF"
@@ -47,6 +42,16 @@
       "value": "3.9 - 44 mm"
     },
     {
+      "name": "Built-in speakers",
+      "type": "String",
+      "value": "Y"
+    },
+    {
+      "name": "Video formats supported",
+      "type": "String",
+      "value": "MPEG-4, AAC-LC"
+    },
+    {
       "name": "Depth",
       "type": "ResourceAttribute",
       "value": {
@@ -54,11 +59,6 @@
         "unit": "mm",
         "value": 99
       }
-    },
-    {
-      "name": "Video formats supported",
-      "type": "String",
-      "value": "MPEG-4, AAC-LC"
     },
     {
       "name": "Battery technology",
@@ -76,6 +76,11 @@
       "value": "128 MB"
     },
     {
+      "name": "Capture modes",
+      "type": "String",
+      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
+    },
+    {
       "name": "Minimum system requirements",
       "type": "String",
       "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
@@ -84,11 +89,6 @@
       "name": "USB 2.0 ports quantity",
       "type": "String",
       "value": "1"
-    },
-    {
-      "name": "Capture modes",
-      "type": "String",
-      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
     },
     {
       "name": "Compatible memory cards",
@@ -149,6 +149,11 @@
       "value": "38.1 mm (1.5 \")"
     },
     {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "Arcsoft Media Impression"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -156,11 +161,6 @@
         "unit": "g",
         "value": 95
       }
-    },
-    {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "Arcsoft Media Impression"
     },
     {
       "name": "HDMI ports quantity",
@@ -188,19 +188,9 @@
       "value": "5 MP"
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
       "name": "Compatible operating systems",
       "type": "String",
       "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
-    },
-    {
-      "name": "Colour_of_product",
-      "type": "MultipleString",
-      "value": ["Black", "Blue"]
     },
     {
       "name": "Image stabilizer",
@@ -211,6 +201,16 @@
       "name": "Camcorder tape type",
       "type": "String",
       "value": "Flash memory"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "MultipleString",
+      "value": ["Black", "Blue"]
     }
   ],
   "availability": true,
@@ -277,7 +277,7 @@
   },
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "back L",
@@ -287,7 +287,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "back M",
@@ -297,7 +297,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "back S",
@@ -307,7 +307,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -317,7 +317,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -327,7 +327,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",

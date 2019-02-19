@@ -12,24 +12,24 @@
       "value": "White, Slate fabric"
     },
     {
-      "name": "Supported operating systems",
-      "type": "String",
-      "value": "Anroid 4.4 and higher, iOS 9.1 and higher"
-    },
-    {
       "name": "Dimensions",
       "type": "String",
       "value": "96mm*142mm"
     },
     {
-      "name": "Weight",
+      "name": "Supported operating systems",
       "type": "String",
-      "value": "477g"
+      "value": "Anroid 4.4 and higher, iOS 9.1 and higher"
     },
     {
       "name": "Power",
       "type": "String",
       "value": "16.5V, 2A"
+    },
+    {
+      "name": "Weight",
+      "type": "String",
+      "value": "477g"
     }
   ],
   "availability": true,
@@ -56,7 +56,7 @@
   },
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -66,7 +66,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -76,7 +76,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",
@@ -86,7 +86,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "side L",
@@ -96,7 +96,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "side S",

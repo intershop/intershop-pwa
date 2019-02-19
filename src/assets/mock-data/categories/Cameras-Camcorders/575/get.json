@@ -13,13 +13,13 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/575"
     }
   ],
-  "description": "The camera products and services catalog.",
+  "description": "The cameras and camcorders products catalog.",
   "hasOnlineProducts": true,
   "hasOnlineSubCategories": false,
   "id": "575",
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",

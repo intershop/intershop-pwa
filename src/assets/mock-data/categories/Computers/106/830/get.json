@@ -19,13 +19,13 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
     }
   ],
-  "description": "Computer, computer peripherals and services catalog",
+  "description": "The Computers products and services catalog.",
   "hasOnlineProducts": true,
   "hasOnlineSubCategories": true,
   "id": "830",
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -65,13 +65,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1307"
         }
       ],
-      "description": "Computer, computer peripherals and services catalog",
+      "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "1307",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -113,13 +113,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501"
         }
       ],
-      "description": "Computer, computer peripherals and services catalog",
+      "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "1501",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -161,13 +161,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1306"
         }
       ],
-      "description": "Computer, computer peripherals and services catalog",
+      "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "1306",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -209,13 +209,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1303"
         }
       ],
-      "description": "Computer, computer peripherals and services catalog",
+      "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "1303",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -257,13 +257,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1158"
         }
       ],
-      "description": "Computer, computer peripherals and services catalog",
+      "description": "The Computers products and services catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "1158",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",

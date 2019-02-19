@@ -57,12 +57,12 @@
       "value": "-"
     },
     {
-      "name": "Camera shutter speed",
+      "name": "Maximum video resolution",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Maximum video resolution",
+      "name": "Camera shutter speed",
       "type": "String",
       "value": "-"
     },
@@ -132,14 +132,14 @@
       "value": "-"
     },
     {
-      "name": "Photo effects",
-      "type": "String",
-      "value": "Sepia,Black&White"
-    },
-    {
       "name": "Auto focusing (AF) modes",
       "type": "String",
       "value": "Unspecified,Face tracking"
+    },
+    {
+      "name": "Photo effects",
+      "type": "String",
+      "value": "Sepia,Black&White"
     },
     {
       "name": "ISO sensitivity",
@@ -177,12 +177,12 @@
       "value": "Y"
     },
     {
-      "name": "Display resolution (numeric)",
+      "name": "Maximum image resolution",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Maximum image resolution",
+      "name": "Display resolution (numeric)",
       "type": "String",
       "value": "-"
     },
@@ -207,24 +207,24 @@
       "value": "USB"
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
       "name": "Compatible operating systems",
       "type": "String",
       "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
     },
     {
-      "name": "Colour_of_product",
-      "type": "String",
-      "value": "Black"
-    },
-    {
       "name": "Image stabilizer",
       "type": "String",
       "value": "-"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Black"
     }
   ],
   "availability": true,
@@ -291,7 +291,7 @@
   },
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "back L",
@@ -301,7 +301,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "back M",
@@ -311,7 +311,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "back S",
@@ -321,7 +321,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -331,7 +331,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -341,7 +341,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",
@@ -351,7 +351,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "side L",
@@ -361,7 +361,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "side M",
@@ -371,7 +371,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "side S",
