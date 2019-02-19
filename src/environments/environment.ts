@@ -6,7 +6,9 @@
 
 export const environment = {
   production: false,
-  needMock: true,
+  // set to true if not working against a real ICM server
+  mockServerAPI: true,
+  // array of REST path expressions that should always be mocked
   // mustMockPaths: ['cms/.*'],
 
   // Intershop Commerce Management REST server configuration
