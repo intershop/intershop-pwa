@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
-import { combineLatest, forkJoin } from 'rxjs';
-import { concatMap, defaultIfEmpty, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, concat, forkJoin } from 'rxjs';
+import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
@@ -177,19 +177,20 @@ export class QuoteRequestEffects {
   );
 
   /**
-   * Trigger a AddProductToQuoteRequest action for each line item thats in the current basket.
+   * Trigger an AddProductToQuoteRequest action for each line item thats in the current basket.
    */
   @Effect()
   addBasketToQuoteRequest$ = this.actions$.pipe(
     ofType(actions.QuoteRequestActionTypes.AddBasketToQuoteRequest),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([, currentBasket]) =>
-      forkJoin(
-        currentBasket.lineItems.map(lineItem =>
+      concat(
+        ...currentBasket.lineItems.map(lineItem =>
           this.quoteRequestService.addProductToQuoteRequest(lineItem.productSKU, lineItem.quantity.value)
         )
       ).pipe(
-        map(ids => new actions.AddBasketToQuoteRequestSuccess({ id: ids[0] })),
+        last(),
+        map(id => new actions.AddBasketToQuoteRequestSuccess({ id })),
         mapErrorToAction(actions.AddBasketToQuoteRequestFail)
       )
     )
