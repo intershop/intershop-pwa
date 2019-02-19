@@ -1,7 +1,11 @@
 .gradle
 build
-dist
+cypress
+nginx
 node_modules
+schematics
+templates
+tslint-rules
 .dockerignore
 .git
 .gitattributes
