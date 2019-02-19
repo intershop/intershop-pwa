@@ -64,6 +64,7 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges {
   doResetForm(resetForm: boolean) {
     if (resetForm && this.form) {
       this.form.reset();
+      this.form.controls.countryCodeSwitch.setValue(''); // prevent null value to show please select entry
       this.submitted = false;
     }
   }
