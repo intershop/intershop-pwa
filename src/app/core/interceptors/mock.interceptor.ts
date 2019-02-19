@@ -15,7 +15,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { getRestEndpoint } from 'ish-core/store/configuration';
-import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
+import { MOCK_SERVER_API, MUST_MOCK_PATHS } from '../configurations/injection-keys';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
@@ -27,7 +27,7 @@ export class MockInterceptor implements HttpInterceptor {
   private restEndpoint: string;
 
   constructor(
-    @Inject(NEED_MOCK) private needMock: boolean,
+    @Inject(MOCK_SERVER_API) private mockServerAPI: boolean,
     @Inject(MUST_MOCK_PATHS) private mustMockPaths: string[],
     store: Store<{}>
   ) {
@@ -139,7 +139,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private pathHasToBeMocked(path: string): boolean {
-    return this.needMock || this.matchPath(path, this.mustMockPaths);
+    return this.mockServerAPI || this.matchPath(path, this.mustMockPaths);
   }
 
   private removeQueryStringParameter(path: string): string {
