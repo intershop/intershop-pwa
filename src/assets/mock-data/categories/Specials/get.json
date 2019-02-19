@@ -35,7 +35,7 @@
       "id": "GiftCardsCertificates",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -71,7 +71,7 @@
       "id": "HotDeals",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -107,7 +107,7 @@
       "id": "NewProducts",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -143,7 +143,7 @@
       "id": "TopSellers",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "/assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",

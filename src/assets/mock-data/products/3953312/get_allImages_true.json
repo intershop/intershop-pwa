@@ -42,9 +42,9 @@
       "value": "10 s"
     },
     {
-      "name": "Camera shutter speed",
+      "name": "Maximum video resolution",
       "type": "String",
-      "value": "1/2 - 1/20000 s"
+      "value": "1920 x 1080 pixels"
     },
     {
       "name": "Shooting modes",
@@ -52,9 +52,9 @@
       "value": "FXP, XP+, SP, LP"
     },
     {
-      "name": "Maximum video resolution",
+      "name": "Camera shutter speed",
       "type": "String",
-      "value": "1920 x 1080 pixels"
+      "value": "1/2 - 1/20000 s"
     },
     {
       "name": "Depth",
@@ -76,14 +76,14 @@
       "value": "Lithium-Ion"
     },
     {
-      "name": "S-Video in",
-      "type": "String",
-      "value": "0"
-    },
-    {
       "name": "Manual focus",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "S-Video in",
+      "type": "String",
+      "value": "0"
     },
     {
       "name": "USB 2.0 ports quantity",
@@ -110,6 +110,11 @@
       "value": "400 x"
     },
     {
+      "name": "Battery life (max)",
+      "type": "String",
+      "value": "3 h"
+    },
+    {
       "name": "Effective megapixels (movie)",
       "type": "String",
       "value": "1.56 MP"
@@ -122,11 +127,6 @@
         "unit": "mm",
         "value": 60
       }
-    },
-    {
-      "name": "Battery life (max)",
-      "type": "String",
-      "value": "3 h"
     },
     {
       "name": "Sports",
@@ -159,6 +159,11 @@
       "value": "68.6 mm (2.7 \")"
     },
     {
+      "name": "Built-in flash",
+      "type": "String",
+      "value": "N"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -166,11 +171,6 @@
         "unit": "g",
         "value": 270
       }
-    },
-    {
-      "name": "Built-in flash",
-      "type": "String",
-      "value": "N"
     },
     {
       "name": "DV port",
@@ -183,14 +183,14 @@
       "value": "1"
     },
     {
-      "name": "Component video (YPbPr/YCbCr) out",
-      "type": "String",
-      "value": "1"
-    },
-    {
       "name": "Night mode",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Component video (YPbPr/YCbCr) out",
+      "type": "String",
+      "value": "1"
     },
     {
       "name": "Audio system",
@@ -198,14 +198,14 @@
       "value": "Dolby Digital"
     },
     {
-      "name": "Auto focus",
-      "type": "String",
-      "value": "Y"
-    },
-    {
       "name": "Optical sensor size",
       "type": "String",
       "value": "1/0.217 mm (1/5.5 \")"
+    },
+    {
+      "name": "Auto focus",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "Flash memory",
@@ -233,16 +233,6 @@
       "value": "2.39 MP"
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
-      "name": "Colour_of_product",
-      "type": "String",
-      "value": "Red"
-    },
-    {
       "name": "Image stabilizer",
       "type": "String",
       "value": "Y"
@@ -251,6 +241,16 @@
       "name": "Camcorder tape type",
       "type": "String",
       "value": "Flash memory"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Red"
     }
   ],
   "availability": true,
@@ -317,7 +317,7 @@
   },
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "back L",
@@ -327,7 +327,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "back M",
@@ -337,7 +337,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "back S",
@@ -347,7 +347,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -357,7 +357,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -367,7 +367,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",
@@ -377,7 +377,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "side L",
@@ -387,7 +387,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "side M",
@@ -397,7 +397,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "/assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "side S",
