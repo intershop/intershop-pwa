@@ -76,7 +76,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
         // Subscribe on form value changes
         formGroup.valueChanges
           .pipe(
-            debounceTime(500),
+            debounceTime(800),
             takeUntil(this.destroy$)
           )
           .subscribe(item => {
