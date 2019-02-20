@@ -82,36 +82,34 @@
     <ish-loading *ngIf="quoteLoading"></ish-loading>
   </div>
 
-  <div class="modal-footer">
-    <div class="d-none d-md-block clearfix pull-left">
+  <div class="modal-footer flex-wrap flex-row-reverse justify-content-between">
+    <div>
+      <button
+        *ngIf="quote"
+        [routerLink]="'/account/quote-request/' + quote.id"
+        type="submit"
+        class="btn btn-secondary"
+        [disabled]="!quote"
+        (click)="update()"
+      >
+        {{ 'quote.edit.button.save.label' | translate }}
+      </button>
+      <button
+        *ngIf="quote"
+        [routerLink]="'/account/quote-request/' + quote.id"
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="quote.items.length === 0"
+        (click)="submit()"
+      >
+        {{ 'quote.edit.button.submit.label' | translate }}
+      </button>
+    </div>
+    <div class="d-md-none row form-group md-left">
       <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
     </div>
-
-    <div class="d-md-none row form-group pull-left">
-      <div class="col-6">
-        <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
-      </div>
+    <div class="d-none d-md-block clearfix">
+      <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
     </div>
-
-    <button
-      *ngIf="quote"
-      [routerLink]="'/account/quote-request/' + quote.id"
-      type="submit"
-      class="btn btn-secondary"
-      [disabled]="!quote"
-      (click)="update()"
-    >
-      {{ 'quote.edit.button.save.label' | translate }}
-    </button>
-    <button
-      *ngIf="quote"
-      [routerLink]="'/account/quote-request/' + quote.id"
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="quote.items.length === 0"
-      (click)="submit()"
-    >
-      {{ 'quote.edit.button.submit.label' | translate }}
-    </button>
   </div>
 </form>
