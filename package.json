@@ -61,6 +61,7 @@
     "@ngrx/store-devtools": "^7.0.0",
     "@nguniversal/express-engine": "^7.0.2",
     "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
+    "@ngx-formly/core": "^4.8.2",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@ngx-utils/cookies": "^3.0.2",
