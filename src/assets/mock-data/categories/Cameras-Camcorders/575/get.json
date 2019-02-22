@@ -19,7 +19,7 @@
   "id": "575",
   "images": [
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",

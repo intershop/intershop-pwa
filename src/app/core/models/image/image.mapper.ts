@@ -58,7 +58,7 @@ export class ImageMapper {
     if (!url) {
       return;
     }
-    if (url.match('^(https?|file):')) {
+    if (url.match('^(https?|file):') || !url.startsWith('/')) {
       return url;
     }
     return `${this.icmBaseURL}${url}`;
