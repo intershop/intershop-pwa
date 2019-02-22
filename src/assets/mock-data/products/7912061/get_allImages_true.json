@@ -61,14 +61,14 @@
       }
     },
     {
-      "name": "Battery technology",
-      "type": "String",
-      "value": "Lithium-Ion"
-    },
-    {
       "name": "Minimum processor",
       "type": "String",
       "value": "Pentium 4, 1.4 GHz"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion"
     },
     {
       "name": "Internal memory",
@@ -81,14 +81,14 @@
       "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
     },
     {
-      "name": "Minimum system requirements",
-      "type": "String",
-      "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
-    },
-    {
       "name": "USB 2.0 ports quantity",
       "type": "String",
       "value": "1"
+    },
+    {
+      "name": "Minimum system requirements",
+      "type": "String",
+      "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
     },
     {
       "name": "Compatible memory cards",
@@ -149,11 +149,6 @@
       "value": "38.1 mm (1.5 \")"
     },
     {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "Arcsoft Media Impression"
-    },
-    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -161,6 +156,11 @@
         "unit": "g",
         "value": 95
       }
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "Arcsoft Media Impression"
     },
     {
       "name": "HDMI ports quantity",
@@ -178,14 +178,14 @@
       "value": "1/0.126 mm (1/3.2 \")"
     },
     {
-      "name": "Interface",
-      "type": "String",
-      "value": "USB 2.0"
-    },
-    {
       "name": "Total megapixels",
       "type": "String",
       "value": "5 MP"
+    },
+    {
+      "name": "Interface",
+      "type": "String",
+      "value": "USB 2.0"
     },
     {
       "name": "Compatible operating systems",
@@ -193,24 +193,24 @@
       "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
     },
     {
-      "name": "Image stabilizer",
-      "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
-    },
-    {
       "name": "Display",
       "type": "String",
       "value": "LCD"
     },
     {
+      "name": "Image stabilizer",
+      "type": "String",
+      "value": "Y"
+    },
+    {
       "name": "Colour_of_product",
       "type": "MultipleString",
       "value": ["Black", "Blue"]
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
     }
   ],
   "availability": true,
@@ -277,7 +277,7 @@
   },
   "images": [
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "back L",
@@ -287,7 +287,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "back M",
@@ -297,7 +297,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "back S",
@@ -307,7 +307,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -317,7 +317,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -327,7 +327,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",
