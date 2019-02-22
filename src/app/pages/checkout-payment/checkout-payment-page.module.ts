@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '../../shared/shared.module';
 
@@ -7,7 +6,7 @@ import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.c
 import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';
 
 @NgModule({
-  imports: [ReactiveFormsModule, SharedModule],
+  imports: [SharedModule],
   declarations: [CheckoutPaymentComponent, CheckoutPaymentPageContainerComponent],
 })
 export class CheckoutPaymentPageModule {
