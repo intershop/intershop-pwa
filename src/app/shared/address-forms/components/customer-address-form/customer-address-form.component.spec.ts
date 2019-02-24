@@ -101,7 +101,7 @@ describe('Customer Address Form Component', () => {
 
   it('should reset the form if resetForm changes and is true', () => {
     component.form = fb.group({
-      control: new FormControl('foo', Validators.required),
+      countryCodeSwitch: new FormControl('foo', Validators.required),
       address: fb.group({}),
     });
     const changes: SimpleChanges = {
@@ -109,12 +109,12 @@ describe('Customer Address Form Component', () => {
     };
     component.ngOnChanges(changes);
 
-    expect(component.form.value.control).toBeNull();
+    expect(component.form.value.countryCodeSwitch).toBeEmpty();
   });
 
   it('should not reset the form if resetForm changes and is false', () => {
     component.form = fb.group({
-      control: new FormControl('foo', Validators.required),
+      countryCodeSwitch: new FormControl('foo', Validators.required),
       address: fb.group({}),
     });
     const changes: SimpleChanges = {
@@ -122,6 +122,6 @@ describe('Customer Address Form Component', () => {
     };
     component.ngOnChanges(changes);
 
-    expect(component.form.value.control).toEqual('foo');
+    expect(component.form.value.countryCodeSwitch).toEqual('foo');
   });
 });

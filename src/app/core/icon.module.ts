@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { config, library } from '@fortawesome/fontawesome-svg-core';
 import {
+  faAddressBook,
   faAngleDown,
   faAngleRight,
   faAngleUp,
@@ -37,6 +38,7 @@ export class IconModule {
   static init() {
     config.autoAddCss = false;
     library.add(
+      faAddressBook,
       faAngleDown,
       faAngleRight,
       faAngleUp,

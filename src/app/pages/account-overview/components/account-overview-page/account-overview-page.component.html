@@ -5,13 +5,19 @@
 <p>{{ 'account.overview.message.text' | translate }}</p>
 
 <div class="row account-dashboard">
-  <div class="col-6 col-md-3 dashboard-item">
+  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
     <a routerLink="/account/orders">
       <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
       {{ 'account.order_history.link' | translate }}
     </a>
   </div>
-  <div class="col-6 col-md-3 dashboard-item">
+  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+    <a routerLink="/account/addresses">
+      <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>
+      {{ 'account.saved_addresses.link' | translate }}
+    </a>
+  </div>
+  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
     <a routerLink="/account/profile">
       <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
       {{ 'account.profile.link' | translate }}
