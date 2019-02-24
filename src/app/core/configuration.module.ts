@@ -12,7 +12,8 @@ import { FeatureToggleModule } from './feature-toggle.module';
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
-    { provide: injectionKeys.NEED_MOCK, useValue: environment.needMock },
+    // tslint:disable-next-line:no-string-literal
+    { provide: injectionKeys.MOCK_SERVER_API, useValue: environment['mockServerAPI'] },
     // tslint:disable-next-line:no-string-literal
     { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
     {

@@ -24,7 +24,7 @@
         {
           "name": "image",
           "type": "String",
-          "value": "/assets/product_img/a.jpg"
+          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
@@ -86,7 +86,7 @@
         {
           "name": "image",
           "type": "String",
-          "value": "/assets/product_img/a.jpg"
+          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
