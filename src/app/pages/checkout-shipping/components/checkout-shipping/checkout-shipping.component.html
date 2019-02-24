@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="basket" class="row">
   <div class="col-md-12 col-lg-8">
     <!-- Messages -->
     <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
@@ -16,12 +16,13 @@
           <label [for]="'ShippingMethod_' + shippingMethod.id">
             <input
               formControlName="id"
-              [id]="'ShippingMethod_' + shippingMethod"
+              [id]="'ShippingMethod_' + shippingMethod.id"
               [value]="shippingMethod.id"
               type="radio"
             />
 
             <span>{{ shippingMethod.name }}:</span>&nbsp;
+            <strong *ngIf="shippingMethod.shippingCosts">{{ shippingMethod.shippingCosts | ishPrice }}&nbsp;</strong>
             <span
               *ngIf="shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax"
               class="form-text form-text-inline"
