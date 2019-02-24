@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
+import { MOCK_SERVER_API, MUST_MOCK_PATHS } from '../configurations/injection-keys';
 
 import { MockInterceptor } from './mock.interceptor';
 
@@ -36,7 +36,11 @@ describe('Mock Interceptor', () => {
           }
         ),
       ],
-      providers: [MockInterceptor, { provide: NEED_MOCK, useValue: true }, { provide: MUST_MOCK_PATHS, useValue: [] }],
+      providers: [
+        MockInterceptor,
+        { provide: MOCK_SERVER_API, useValue: true },
+        { provide: MUST_MOCK_PATHS, useValue: [] },
+      ],
     });
     mockInterceptor = TestBed.get(MockInterceptor);
   });

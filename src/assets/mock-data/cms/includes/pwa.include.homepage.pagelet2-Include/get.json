@@ -111,11 +111,11 @@
                               "configurationParameters": {
                                 "Image": {
                                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Image",
-                                  "value": "assets/pwa/pwa_home_teaser_1.jpg"
+                                  "value": "assets/mock-img/pwa/pwa_home_teaser_1.jpg"
                                 },
                                 "ImageXS": {
                                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-ImageXS",
-                                  "value": "assets/pwa/pwa_home_teaser_1_767.jpg"
+                                  "value": "assets/mock-img/pwa/pwa_home_teaser_1_767.jpg"
                                 },
                                 "Link": {
                                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Link",
@@ -135,11 +135,11 @@
                               "configurationParameters": {
                                 "Image": {
                                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Image",
-                                  "value": "assets/pwa/pwa_home_teaser_2.jpg"
+                                  "value": "assets/mock-img/pwa/pwa_home_teaser_2.jpg"
                                 },
                                 "ImageXS": {
                                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-ImageXS",
-                                  "value": "assets/pwa/pwa_home_teaser_2_767.jpg"
+                                  "value": "assets/mock-img/pwa/pwa_home_teaser_2_767.jpg"
                                 },
                                 "Link": {
                                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Link",
@@ -199,7 +199,7 @@
                       "configurationParameters": {
                         "Image": {
                           "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                          "value": "assets/pwa/pwa_home_cat_teaser_1.jpg"
+                          "value": "assets/mock-img/pwa/pwa_home_cat_teaser_1.jpg"
                         },
                         "Link": {
                           "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link",
@@ -255,7 +255,7 @@
                       "configurationParameters": {
                         "Image": {
                           "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                          "value": "assets/pwa/pwa_home_cat_teaser_2.jpg"
+                          "value": "assets/mock-img/pwa/pwa_home_cat_teaser_2.jpg"
                         },
                         "Link": {
                           "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link",
@@ -311,7 +311,7 @@
                       "configurationParameters": {
                         "Image": {
                           "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                          "value": "assets/pwa/pwa_home_cat_teaser_3.jpg"
+                          "value": "assets/mock-img/pwa/pwa_home_cat_teaser_3.jpg"
                         },
                         "Link": {
                           "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link",
@@ -452,7 +452,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/acer.jpg"
+                  "value": "assets/mock-img/brands/acer.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -468,7 +468,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -484,7 +484,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/benq.jpg"
+                  "value": "assets/mock-img/brands/benq.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -500,7 +500,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/acer.jpg"
+                  "value": "assets/mock-img/brands/acer.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -516,7 +516,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -532,7 +532,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/benq.jpg"
+                  "value": "assets/mock-img/brands/benq.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -548,7 +548,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -564,7 +564,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -580,7 +580,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -596,7 +596,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -612,7 +612,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
@@ -628,7 +628,7 @@
               "configurationParameters": {
                 "Image": {
                   "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
-                  "value": "assets/brands/adata.jpg"
+                  "value": "assets/mock-img/brands/adata.jpg"
                 }
               },
               "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",

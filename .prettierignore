@@ -17,6 +17,7 @@
 .gitattributes
 .editorconfig
 .createMockdata.table
+Dockerfile*
 /node_modules
 /build
 /builds
