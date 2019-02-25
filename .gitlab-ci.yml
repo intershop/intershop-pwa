@@ -432,6 +432,10 @@ deploy_review_b2b:
     - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
       -e LOGGING=true
       -e ICM_BASE_URL=http://10.0.206.226:4322
+      --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
