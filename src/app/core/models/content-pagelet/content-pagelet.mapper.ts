@@ -19,14 +19,6 @@ export class ContentPageletMapper {
     const { definitionQualifiedName, id } = data;
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
 
-    // TODO: make this dependant on the type of the configuration parameter
-    if (
-      definitionQualifiedName === 'app_sf_responsive_cm:component.common.image.pagelet2-Component' ||
-      definitionQualifiedName === 'app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component'
-    ) {
-      this.contentConfigurationParameterMapper.postProcessImageURLs(configurationParameters);
-    }
-
     let slots: ContentSlot[] = [];
     let pagelets: ContentPagelet[] = [];
     if (data.slots) {

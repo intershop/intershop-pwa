@@ -1,0 +1,31 @@
+<div
+  *ngIf="pagelet.hasParam('Video')"
+  class="video-container"
+  [ngClass]="pagelet.stringParam('CSSClass')"
+  [ngStyle]="{ 'width.px': videoWidth, 'height.px': videoHeight }"
+>
+  <ng-container *ngIf="iframeVideoUrl; else nativeVideo">
+    <div class="video-wrapper"><iframe [src]="iframeVideoUrl" frameborder="0" allowfullscreen></iframe></div>
+  </ng-container>
+
+  <ng-template #nativeVideo>
+    <video
+      #videoPlayer
+      [src]="nativeVideoUrl"
+      class="video"
+      width="100%"
+      height="auto"
+      [autoplay]="autoplay"
+      [controls]="autoplay"
+      [muted]="mute"
+      [poster]="pagelet.stringParam('Image')"
+    ></video>
+
+    <div *ngIf="!autoplay && !playing" class="video-text">
+      <h1 *ngIf="pagelet.hasParam('Heading')">{{ pagelet.stringParam('Heading') }}</h1>
+      <a class="video-link" (click)="playing = true; playVideo()">
+        <fa-icon [icon]="['fas', 'play-circle']"></fa-icon
+      ></a>
+    </div>
+  </ng-template>
+</div>
