@@ -9,10 +9,8 @@ set -e
 
 if [ -n "$UPSTREAM_ICM" ]
 then
-  envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.common.tmpl > /etc/nginx/conf.d/icm.common
-  cat /etc/nginx/conf.d/icm.common
-
-  export ICM_INCLUDE="include /etc/nginx/conf.d/icm.common;"
+  envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.conf.tmpl > /etc/nginx/conf.d/icm.conf
+  export ICM_INCLUDE="include /etc/nginx/conf.d/icm.conf;"
 fi
 
 i=1
