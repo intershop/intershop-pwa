@@ -28,10 +28,13 @@ server {
         if ($request_uri !~* ";lang=") {
             rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;lang=$LANG";
         }
-        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;icmScheme=$scheme;icmHost=$http_host" break;
+        if (-f /etc/nginx/conf.d/icm.common) {
+            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
+        }
+        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
 
         proxy_pass $UPSTREAM_PWA;
     }
 
-    include /etc/nginx/conf.d/icm.common;
+    $ICM_INCLUDE
 }
