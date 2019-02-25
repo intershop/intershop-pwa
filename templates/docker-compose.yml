@@ -13,7 +13,8 @@ services:
     depends_on:
       - pwa
     environment:
-      UPSTREAM_ICM: "$ICM_BASE_URL"
+      # uncomment to tunnel all traffic through nginx
+      # UPSTREAM_ICM: "$ICM_BASE_URL"
       UPSTREAM_PWA: "http://pwa:4200"
       PWA_1_SUBDOMAIN: "b2c"
       PWA_1_CHANNEL: "inSPIRED-inTRONICS-Site"
