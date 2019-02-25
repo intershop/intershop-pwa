@@ -2,8 +2,6 @@ server {
     listen 80;
     server_name ~^$SUBDOMAIN\..+$;
 
-    include /etc/nginx/pagespeed.conf;
-
     location / {
         proxy_cache my_cache;
         # enable to also cache error responses
@@ -28,7 +26,7 @@ server {
         if ($request_uri !~* ";lang=") {
             rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;lang=$LANG";
         }
-        if (-f /etc/nginx/conf.d/icm.common) {
+        if (-f /etc/nginx/conf.d/icm.conf) {
             rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
         }
         rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
