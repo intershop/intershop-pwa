@@ -32,4 +32,3 @@ Dockerfile*
 /templates/**/*.*
 /nginx/*.conf
 /nginx/*.tmpl
-/nginx/*.common

@@ -61,11 +61,15 @@ export class ConfigurationEffects {
   );
 
   extractConfigurationParameters(paramMap: ParamMap) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'baseURL', 'application'];
-    const properties: { [id: string]: unknown } = keys
+    const keys: (keyof ConfigurationState)[] = ['channel', 'application'];
+    const properties: Partial<ConfigurationState> = keys
       .filter(key => paramMap.has(key))
       .map(key => ({ [key]: paramMap.get(key) }))
       .reduce((acc, val) => ({ ...acc, ...val }), {});
+
+    if (paramMap.has('icmHost')) {
+      properties.baseURL = `${paramMap.get('icmScheme') || 'https'}://${paramMap.get('icmHost')}`;
+    }
 
     if (paramMap.has('features') && paramMap.get('features') !== 'default') {
       if (paramMap.get('features') === 'none') {
