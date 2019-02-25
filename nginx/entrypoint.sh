@@ -3,13 +3,15 @@
 set -e
 # set -x
 
-[ -z "$UPSTREAM_ICM" ] && echo "UPSTREAM_ICM is not set" && exit 1
 [ -z "$UPSTREAM_PWA" ] && echo "UPSTREAM_PWA is not set" && exit 1
 
 [ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
-envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.common.tmpl > /etc/nginx/conf.d/icm.common
 
-cat /etc/nginx/conf.d/icm.common
+if [ -n "$UPSTREAM_ICM" ]
+then
+  envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.conf.tmpl > /etc/nginx/conf.d/icm.conf
+  export ICM_INCLUDE="include /etc/nginx/conf.d/icm.conf;"
+fi
 
 i=1
 while true
@@ -26,7 +28,7 @@ do
 
   echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
 
-  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
+  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$ICM_INCLUDE' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
 
   i=$((i+1))
 done

@@ -12,3 +12,4 @@ tslint-rules
 .gitignore
 .gitlab-ci.yml
 Dockerfile*
+templates

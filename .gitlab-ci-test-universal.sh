@@ -22,7 +22,7 @@ universalTest 5 "${PWA_BASE_URL}/category/Computers.1835" "<h1>Notebooks and PCs
 universalTest 6 "${PWA_BASE_URL}/category/Computers.1835" "<h3>PCs</h3>"
 universalTest 7 "${PWA_BASE_URL}/category/Computers.1835.151" "add-to-compare"
 universalTest 8 "${PWA_BASE_URL}/home" "intershop-pwa-state"
-universalTest 9 "${PWA_BASE_URL}/home" "&q;baseURL&q;:&q;$ICM_BASE_URL"
+universalTest 9 "${PWA_BASE_URL}/home" "&q;baseURL&q;:"
 universalTest 10 "${PWA_BASE_URL}/home" "<ish-content-include includeid=.pwa.include.homepage.pagelet2-Include"
 
 exit 0

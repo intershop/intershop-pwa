@@ -7,8 +7,8 @@ RUN echo "intalling nginx with mod-pagespeed" && \
 
 FROM scratch as configstep
 COPY --from=nginx:mainline /etc/nginx /etc/nginx
-COPY nginx.conf pagespeed.conf /etc/nginx/
-COPY perf.common icm.common.tmpl channel.conf.tmpl /etc/nginx/conf.d/
+COPY nginx.conf perf.conf pagespeed.conf /etc/nginx/
+COPY icm.conf.tmpl channel.conf.tmpl /etc/nginx/conf.d/
 COPY entrypoint.sh /
 COPY 50x.html /usr/share/nginx/html/
 
