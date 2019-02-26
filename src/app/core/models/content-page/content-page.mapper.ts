@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ContentConfigurationParameterMapper } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentIncludeData } from '../content-include/content-include.interface';
+import { ContentPageData } from '../content-page/content-page.interface';
 import { ContentPageletMapper } from '../content-pagelet/content-pagelet.mapper';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
@@ -17,7 +17,7 @@ export class ContentPageMapper {
   /**
    * Converts {@link ContentIncludeData} to the model entity {@link ContentInclude} and enclosed {@link ContentPagelet}s.
    */
-  fromData(data: ContentIncludeData): { page: ContentPage; pagelets: ContentPagelet[] } {
+  fromData(data: ContentPageData): { page: ContentPage; pagelets: ContentPagelet[] } {
     if (!data) {
       throw new Error('falsy input');
     }
