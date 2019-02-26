@@ -10,14 +10,23 @@ export const pagesAdapter = createEntityAdapter<ContentPage>({
 
 export interface PagesState extends EntityState<ContentPage> {
   loading: boolean;
+  selected: string;
 }
 
 export const initialState: PagesState = pagesAdapter.getInitialState({
   loading: false,
+  selected: undefined,
 });
 
 export function pagesReducer(state = initialState, action: PageAction): PagesState {
   switch (action.type) {
+    case PagesActionTypes.SelectContentPage: {
+      return {
+        ...state,
+        selected: action.payload.contentPageId,
+      };
+    }
+
     case PagesActionTypes.LoadContentPage: {
       return {
         ...state,

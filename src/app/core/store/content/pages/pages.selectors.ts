@@ -14,12 +14,24 @@ const getPagesState = createSelector(
   state => state.pages
 );
 
-export const getPagesLoading = createSelector(
+const { selectEntities: getPageEntities } = pagesAdapter.getSelectors(getPagesState);
+
+export const getContentPageLoading = createSelector(
   getPagesState,
   state => state.loading
 );
 
-const { selectEntities: getPageEntities } = pagesAdapter.getSelectors(getPagesState);
+export const getSelectedContentPageId = createSelector(
+  getPagesState,
+  state => state.selected
+);
+
+export const getSelectedContentPage = createSelector(
+  getPageEntities,
+  getContentPageletEntities,
+  getSelectedContentPageId,
+  (pages, pagelets, id) => (!pages[id] ? undefined : createPageView(pages[id], pagelets))
+);
 
 export const getContentPage = createSelector(
   getPageEntities,
