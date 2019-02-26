@@ -56,9 +56,9 @@ describe('Content Page Component', () => {
       declarations: [
         ContentPageComponent,
         MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['trail', 'contentPage'],
+          selector: 'ish-content-pagelet',
+          template: 'Content Pagelet Container',
+          inputs: ['pagelet'],
         }),
       ],
     }).compileComponents();
