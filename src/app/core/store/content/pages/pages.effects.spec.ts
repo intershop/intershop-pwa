@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
@@ -20,6 +20,7 @@ describe('Pages Effects', () => {
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
+      imports: [StoreModule.forRoot({})],
       providers: [
         PagesEffects,
         provideMockActions(() => actions$),
@@ -34,7 +35,7 @@ describe('Pages Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = of(new LoadContentPage({ id: 'dummy' }));
+      actions$ = of(new LoadContentPage({ contentPageId: 'dummy' }));
 
       effects.loadContentPage$.subscribe((action: LoadContentPageFail) => {
         verify(cmsServiceMock.getContentPage('dummy')).once();
@@ -47,7 +48,7 @@ describe('Pages Effects', () => {
     it('should not die when encountering an error', () => {
       when(cmsServiceMock.getContentPage('dummy')).thenReturn(throwError({ message: 'ERROR' }));
 
-      actions$ = hot('a-a-a-a', { a: new LoadContentPage({ id: 'dummy' }) });
+      actions$ = hot('a-a-a-a', { a: new LoadContentPage({ contentPageId: 'dummy' }) });
 
       expect(effects.loadContentPage$).toBeObservable(
         cold('a-a-a-a', { a: new LoadContentPageFail({ error: { message: 'ERROR' } as HttpError }) })

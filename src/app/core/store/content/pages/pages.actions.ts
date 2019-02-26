@@ -5,14 +5,19 @@ import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export enum PagesActionTypes {
-  LoadContentPage = '[Pages] Load Content Page',
-  LoadContentPageFail = '[Pages] Load Content Page Fail',
-  LoadContentPageSuccess = '[Pages] Load Content Page Success',
+  SelectContentPage = '[Content Page] Select Content Page',
+  LoadContentPage = '[Content Page] Load Content Page',
+  LoadContentPageFail = '[Content Page API] Load Content Page Fail',
+  LoadContentPageSuccess = '[Content Page API] Load Content Page Success',
 }
 
+export class SelectContentPage implements Action {
+  readonly type = PagesActionTypes.SelectContentPage;
+  constructor(public payload: { contentPageId: string }) {}
+}
 export class LoadContentPage implements Action {
   readonly type = PagesActionTypes.LoadContentPage;
-  constructor(public payload: { id: string }) {}
+  constructor(public payload: { contentPageId: string }) {}
 }
 
 export class LoadContentPageFail implements Action {
@@ -25,4 +30,4 @@ export class LoadContentPageSuccess implements Action {
   constructor(public payload: { page: ContentPage; pagelets: ContentPagelet[] }) {}
 }
 
-export type PageAction = LoadContentPage | LoadContentPageFail | LoadContentPageSuccess;
+export type PageAction = SelectContentPage | LoadContentPage | LoadContentPageFail | LoadContentPageSuccess;

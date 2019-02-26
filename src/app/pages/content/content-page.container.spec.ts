@@ -67,7 +67,7 @@ describe('Content Page Container', () => {
     fixture.detectChanges();
     params$.next({ contentPageId: 'test.page' });
 
-    verify(storeSpy$.dispatch(deepEqual(new LoadContentPage({ id: 'test.page' })))).once();
+    verify(storeSpy$.dispatch(deepEqual(new LoadContentPage({ contentPageId: 'test.page' })))).once();
   });
 
   describe('with content', () => {

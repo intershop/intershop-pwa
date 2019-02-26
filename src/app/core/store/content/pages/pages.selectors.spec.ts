@@ -7,7 +7,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as actions from './pages.actions';
-import { getContentPage, getPagesLoading } from './pages.selectors';
+import { getContentPage, getContentPageLoading } from './pages.selectors';
 
 describe('Pages Selectors', () => {
   let store$: TestStore;
@@ -25,7 +25,7 @@ describe('Pages Selectors', () => {
 
   describe('initial state', () => {
     it('should not be loading when in initial state', () => {
-      expect(getPagesLoading(store$.state)).toBeFalse();
+      expect(getContentPageLoading(store$.state)).toBeFalse();
     });
   });
 

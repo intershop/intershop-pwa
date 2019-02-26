@@ -1,25 +1,45 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as pagesActions from './pages.actions';
+import * as pagesSelectors from './pages.selectors';
 
 @Injectable()
 export class PagesEffects {
-  constructor(private actions$: Actions, private cmsService: CMSService) {}
+  constructor(private actions$: Actions, private store: Store<{}>, private cmsService: CMSService) {}
 
   @Effect()
   loadContentPage$ = this.actions$.pipe(
     ofType<pagesActions.LoadContentPage>(pagesActions.PagesActionTypes.LoadContentPage),
-    mapToPayloadProperty('id'),
-    mergeMap(id =>
-      this.cmsService.getContentPage(id).pipe(
+    mapToPayloadProperty('contentPageId'),
+    mergeMap(contentPageId =>
+      this.cmsService.getContentPage(contentPageId).pipe(
         map(contentPage => new pagesActions.LoadContentPageSuccess(contentPage)),
         mapErrorToAction(pagesActions.LoadContentPageFail)
       )
     )
+  );
+
+  @Effect()
+  routeListenerForSelectingContentPages$ = this.actions$.pipe(
+    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
+    map(action => action.payload.params.contentPageId),
+    withLatestFrom(this.store.pipe(select(pagesSelectors.getSelectedContentPageId))),
+    filter(([fromAction, fromStore]) => fromAction !== fromStore),
+    map(([contentPageId]) => new pagesActions.SelectContentPage({ contentPageId }))
+  );
+
+  @Effect()
+  selectedContentPage$ = this.actions$.pipe(
+    ofType<pagesActions.SelectContentPage>(pagesActions.PagesActionTypes.SelectContentPage),
+    mapToPayloadProperty('contentPageId'),
+    whenTruthy(),
+    map(contentPageId => new pagesActions.LoadContentPage({ contentPageId }))
   );
 }
