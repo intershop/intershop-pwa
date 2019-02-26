@@ -17,7 +17,7 @@ import { ContentIncludeContainerComponent } from './containers/content-include/c
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
 
-const exportedComponents = [ContentIncludeContainerComponent];
+const exportedComponents = [ContentIncludeContainerComponent, ContentPageletContainerComponent];
 
 const entryComponents = [
   CMSCarouselComponent,
@@ -34,12 +34,7 @@ const entryComponents = [
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [
-    ...entryComponents,
-    ...exportedComponents,
-    ContentPageletContainerComponent,
-    ContentSlotContainerComponent,
-  ],
+  declarations: [...entryComponents, ...exportedComponents, ContentSlotContainerComponent],
   providers: [
     {
       provide: CMS_COMPONENT,
