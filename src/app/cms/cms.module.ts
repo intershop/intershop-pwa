@@ -8,6 +8,7 @@ import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
+import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './components/cms-video/cms-video.component';
 import { CMS_COMPONENT } from './configurations/injection-keys';
@@ -24,6 +25,7 @@ const entryComponents = [
   CMSImageComponent,
   CMSImageEnhancedComponent,
   CMSProductListComponent,
+  CMSStaticPageComponent,
   CMSTextComponent,
   CMSVideoComponent,
 ];
@@ -98,6 +100,14 @@ const entryComponents = [
       useValue: {
         definitionQualifiedName: 'app_sf_responsive_cm:component.common.video.pagelet2-Component',
         class: CMSVideoComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.shopping.staticPage.pagelet2-Component',
+        class: CMSStaticPageComponent,
       },
       multi: true,
     },
