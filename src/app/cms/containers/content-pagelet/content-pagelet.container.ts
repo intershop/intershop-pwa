@@ -5,7 +5,7 @@ import {
   ComponentFactoryResolver,
   Injector,
   Input,
-  OnInit,
+  OnChanges,
   SimpleChange,
   ViewChild,
   ViewContainerRef,
@@ -19,7 +19,7 @@ import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../.
   templateUrl: './content-pagelet.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentPageletContainerComponent implements OnInit {
+export class ContentPageletContainerComponent implements OnChanges {
   @Input() pagelet: ContentPageletView;
 
   noMappingFound: boolean;
@@ -33,7 +33,7 @@ export class ContentPageletContainerComponent implements OnInit {
     this.components = injector.get<CMSComponentProvider[]>(CMS_COMPONENT, []);
   }
 
-  ngOnInit() {
+  ngOnChanges() {
     const mappedComponent = this.components.find(
       c => c.definitionQualifiedName === this.pagelet.definitionQualifiedName
     );
@@ -48,6 +48,7 @@ export class ContentPageletContainerComponent implements OnInit {
 
   private createComponent(mappedComponent: CMSComponentProvider) {
     const factory = this.componentFactoryResolver.resolveComponentFactory(mappedComponent.class);
+    this.cmsOutlet.clear();
     return this.cmsOutlet.createComponent(factory);
   }
 

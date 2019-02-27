@@ -6,18 +6,6 @@ exports[`Content Pagelet Container should be created 1`] = `
   ng-version="7.1.4"
 >
   
-  
-  <div
-    class="content-pagelet"
-    style="border: 1px solid yellow; padding: 10px;"
-  >
-    <div
-      class="content-pagelet-info"
-      title="id"
-    >
-       id (fq) 
-    </div>
-  </div>
   <div />
 </div>
 `;
@@ -29,11 +17,5 @@ exports[`Content Pagelet Container should render assigned template if name match
 >
   
   <div />
-  <ish-cms-text>
-    
-    <span>
-      foo
-    </span>
-  </ish-cms-text>
 </div>
 `;
