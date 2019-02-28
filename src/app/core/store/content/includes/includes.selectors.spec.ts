@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { ContentInclude } from '../../../models/content-include/content-include.model';
 import { contentReducers } from '../content-store.module';
 
 import { LoadContentIncludeSuccess } from './includes.actions';
@@ -27,7 +27,7 @@ describe('Includes Selectors', () => {
     });
 
     it('should select include when it was successfully loaded', () => {
-      store$.dispatch(new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentInclude, pagelets: [] }));
+      store$.dispatch(new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentEntryPoint, pagelets: [] }));
 
       expect(getContentInclude(store$.state, 'dummy')).toHaveProperty('id', 'dummy');
     });
@@ -37,7 +37,7 @@ describe('Includes Selectors', () => {
 
       beforeEach(() => {
         IDS.forEach(title =>
-          store$.dispatch(new LoadContentIncludeSuccess({ include: { id: title } as ContentInclude, pagelets: [] }))
+          store$.dispatch(new LoadContentIncludeSuccess({ include: { id: title } as ContentEntryPoint, pagelets: [] }))
         );
       });
 

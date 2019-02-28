@@ -1,10 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Content Include Mapper should convert a complex example to complex type 1`] = `
+exports[`Content Entry Point Mapper should convert a complex example to complex type 1`] = `
 Object {
-  "include": Object {
+  "contentEntryPoint": Object {
     "configurationParameters": Object {},
     "definitionQualifiedName": "fq",
+    "displayName": "name-include",
     "id": "include-id",
     "pageletIDs": Array [
       "pagelet1",

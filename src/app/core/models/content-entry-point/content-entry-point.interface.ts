@@ -2,11 +2,11 @@ import { ContentConfigurationParameterData } from '../content-configuration-para
 import { ContentPageletData } from '../content-pagelet/content-pagelet.interface';
 import { Link } from '../link/link.model';
 
-export interface ContentPageData {
+export interface ContentEntryPointData {
+  id: string;
   definitionQualifiedName: string;
   displayName: string;
   pagelets: ContentPageletData[];
   configurationParameters?: { [name: string]: ContentConfigurationParameterData };
   link: Link;
-  id: string;
 }

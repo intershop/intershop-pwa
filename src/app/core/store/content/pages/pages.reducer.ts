@@ -1,14 +1,14 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { ContentPage } from 'ish-core/models/content-page/content-page.model';
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
 
 import { PageAction, PagesActionTypes } from './pages.actions';
 
-export const pagesAdapter = createEntityAdapter<ContentPage>({
+export const pagesAdapter = createEntityAdapter<ContentEntryPoint>({
   selectId: contentPage => contentPage.id,
 });
 
-export interface PagesState extends EntityState<ContentPage> {
+export interface PagesState extends EntityState<ContentEntryPoint> {
   loading: boolean;
   selected: string;
 }
