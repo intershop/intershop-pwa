@@ -40,7 +40,15 @@ app.set('views', join(DIST_FOLDER, 'browser'));
 app.get(
   '*.*',
   express.static(join(DIST_FOLDER, 'browser'), {
-    maxAge: '5m',
+    setHeaders: (res, path) => {
+      if (/\.[0-9a-f]{20,}\./.test(path)) {
+        // file was output-hashed -> 1y
+        res.set('Cache-Control', 'public, max-age=31557600');
+      } else {
+        // file should be re-checked more frequently -> 5m
+        res.set('Cache-Control', 'public, max-age=300');
+      }
+    },
   })
 );
 
