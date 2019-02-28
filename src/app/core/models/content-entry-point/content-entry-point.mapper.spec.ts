@@ -1,25 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 
-import { ContentIncludeData } from './content-include.interface';
-import { ContentIncludeMapper } from './content-include.mapper';
+import { ContentEntryPointData } from './content-entry-point.interface';
+import { ContentEntryPointMapper } from './content-entry-point.mapper';
 
-describe('Content Include Mapper', () => {
-  let contentIncludeMapper: ContentIncludeMapper;
+describe('Content Entry Point Mapper', () => {
+  let contentEntryPointMapper: ContentEntryPointMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot({})],
     });
-    contentIncludeMapper = TestBed.get(ContentIncludeMapper);
+    contentEntryPointMapper = TestBed.get(ContentEntryPointMapper);
   });
 
   it('should throw on falsy input', () => {
-    expect(() => contentIncludeMapper.fromData(undefined)).toThrowError('falsy input');
+    expect(() => contentEntryPointMapper.fromData(undefined)).toThrowError('falsy input');
   });
 
   it('should convert a complex example to complex type', () => {
-    const input: ContentIncludeData = {
+    const input: ContentEntryPointData = {
       link: {
         title: 'include-id',
         uri: 'uri://test',
@@ -27,6 +27,7 @@ describe('Content Include Mapper', () => {
       },
       definitionQualifiedName: 'fq',
       displayName: 'name-include',
+      id: 'include-id',
       pagelets: [
         {
           id: 'pagelet1',
@@ -65,11 +66,11 @@ describe('Content Include Mapper', () => {
       ],
     };
 
-    const result = contentIncludeMapper.fromData(input);
+    const result = contentEntryPointMapper.fromData(input);
 
     expect(result.pagelets).toHaveLength(3);
     expect(result.pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11', 'pagelet2']);
-    expect(result.include).not.toBeEmpty();
+    expect(result.contentEntryPoint).not.toBeEmpty();
     expect(result).toMatchSnapshot();
   });
 });

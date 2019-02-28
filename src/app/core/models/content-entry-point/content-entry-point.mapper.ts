@@ -4,20 +4,20 @@ import { ContentConfigurationParameterMapper } from '../content-configuration-pa
 import { ContentPageletMapper } from '../content-pagelet/content-pagelet.mapper';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
-import { ContentIncludeData } from './content-include.interface';
-import { ContentInclude } from './content-include.model';
+import { ContentEntryPointData } from './content-entry-point.interface';
+import { ContentEntryPoint } from './content-entry-point.model';
 
 @Injectable({ providedIn: 'root' })
-export class ContentIncludeMapper {
+export class ContentEntryPointMapper {
   constructor(
     private contentConfigurationParameterMapper: ContentConfigurationParameterMapper,
     private contentPageletMapper: ContentPageletMapper
   ) {}
 
   /**
-   * Converts {@link ContentIncludeData} to the model entity {@link ContentInclude} and enclosed {@link ContentPagelet}s.
+   * Converts {@link ContentEntryPointData} to the model entity {@link ContentEntryPoint} and enclosed {@link ContentPagelet}s.
    */
-  fromData(data: ContentIncludeData): { include: ContentInclude; pagelets: ContentPagelet[] } {
+  fromData(data: ContentEntryPointData): { contentEntryPoint: ContentEntryPoint; pagelets: ContentPagelet[] } {
     if (!data) {
       throw new Error('falsy input');
     }
@@ -34,13 +34,14 @@ export class ContentIncludeMapper {
 
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
 
-    const include: ContentInclude = {
+    const contentEntryPoint: ContentEntryPoint = {
       id: data.link.title,
       definitionQualifiedName: data.definitionQualifiedName,
-      configurationParameters,
+      displayName: data.displayName,
       pageletIDs,
+      configurationParameters,
     };
 
-    return { include, pagelets };
+    return { contentEntryPoint, pagelets };
   }
 }

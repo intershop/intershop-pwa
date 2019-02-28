@@ -1,12 +1,17 @@
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentInclude } from '../content-include/content-include.model';
+import { ContentEntryPoint } from '../content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
-import { ConfigParameterView, ContentIncludeView, createConfigParameterView, createIncludeView } from './content-views';
+import {
+  ConfigParameterView,
+  ContentEntryPointView,
+  createConfigParameterView,
+  createContentEntryPointView,
+} from './content-views';
 
 describe('Content Views', () => {
   let configurationParameters: ContentConfigurationParameters;
-  let include: ContentInclude;
+  let contentEntryPoint: ContentEntryPoint;
   let pagelets: { [id: string]: ContentPagelet };
 
   beforeEach(() => {
@@ -17,9 +22,10 @@ describe('Content Views', () => {
       key4: { test: 'hello' },
     };
 
-    include = {
+    contentEntryPoint = {
       id: 'include',
       definitionQualifiedName: 'fq',
+      displayName: 'i1',
       pageletIDs: ['p1', 'p2'],
       configurationParameters,
     };
@@ -79,12 +85,12 @@ describe('Content Views', () => {
       .reduce((acc, val) => ({ ...acc, ...val }));
   });
 
-  it('should be able to create a view of includes', () => {
-    expect(() => createIncludeView(include, pagelets)).not.toThrow();
-    expect(createIncludeView(include, pagelets)).toMatchSnapshot();
+  it('should be able to create a view of a content entry point', () => {
+    expect(() => createContentEntryPointView(contentEntryPoint, pagelets)).not.toThrow();
+    expect(createContentEntryPointView(contentEntryPoint, pagelets)).toMatchSnapshot();
   });
 
-  it('should be able to create a view of includes', () => {
+  it('should be able to create a view of configuration parameters', () => {
     expect(() => createConfigParameterView(configurationParameters)).not.toThrow();
     expect(createConfigParameterView(configurationParameters)).toMatchSnapshot();
   });
@@ -199,10 +205,10 @@ describe('Content Views', () => {
   });
 
   describe('include view created', () => {
-    let view: ContentIncludeView;
+    let view: ContentEntryPointView;
 
     beforeEach(() => {
-      view = createIncludeView(include, pagelets);
+      view = createContentEntryPointView(contentEntryPoint, pagelets);
     });
 
     it('should have properties on first level', () => {

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 
@@ -22,7 +22,7 @@ export class LoadContentIncludeFail implements Action {
 
 export class LoadContentIncludeSuccess implements Action {
   readonly type = IncludesActionTypes.LoadContentIncludeSuccess;
-  constructor(public payload: { include: ContentInclude; pagelets: ContentPagelet[] }) {}
+  constructor(public payload: { include: ContentEntryPoint; pagelets: ContentPagelet[] }) {}
 }
 
 export type IncludesAction = LoadContentInclude | LoadContentIncludeFail | LoadContentIncludeSuccess;

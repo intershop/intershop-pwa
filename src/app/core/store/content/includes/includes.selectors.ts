@@ -1,9 +1,9 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentEntryPointView, createContentEntryPointView } from 'ish-core/models/content-view/content-views';
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
-import { ContentIncludeView, createIncludeView } from '../../../models/content-view/content-views';
 import { getContentState } from '../content-store';
 import { getContentPageletEntities } from '../pagelets';
 
@@ -21,9 +21,9 @@ export const getContentInclude = createSelector(
   getContentIncludeEntities,
   getContentPageletEntities,
   (
-    contentIncludes: Dictionary<ContentInclude>,
+    contentIncludes: Dictionary<ContentEntryPoint>,
     pagelets: Dictionary<ContentPagelet>,
     includeId: string
-  ): ContentIncludeView =>
-    !contentIncludes[includeId] ? undefined : createIncludeView(contentIncludes[includeId], pagelets)
+  ): ContentEntryPointView =>
+    !contentIncludes[includeId] ? undefined : createContentEntryPointView(contentIncludes[includeId], pagelets)
 );

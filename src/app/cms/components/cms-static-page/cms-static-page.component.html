@@ -1,0 +1,44 @@
+<div class="marketing-area">
+  <ish-content-slot [slot]="pagelet.slot('app_sf_responsive_cm:slot.marketing.base.pagelet2-Slot')"></ish-content-slot>
+</div>
+
+<div class="row">
+  <ng-container
+    *ngIf="pagelet.booleanParam('ShowSidePanel') || pagelet.booleanParam('ShowNavigation'); else noSidePanel"
+  >
+    <div class="page-navigation col-md-3">
+      <div *ngIf="pagelet.booleanParam('ShowNavigation')" class="page-navigation-contents">
+        <!--
+            <isContentNavigation
+              navigationRoot="#PageletConfigurationParameters:NavigationRoot#"
+              navigationDepth="#PageletConfigurationParameters:NavigationDepth#"
+              currentPageletEntryPointID="#PageletEntryPointID#"
+              locale="#CurrentRequest:Locale#"
+            >
+        -->
+      </div>
+      <div class="marketing-area">
+        <ish-content-slot
+          [slot]="pagelet.slot('app_sf_responsive_cm:slot.marketing.sidePanel.pagelet2-Slot')"
+        ></ish-content-slot>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <ish-content-slot [slot]="pagelet.slot('app_sf_responsive_cm:slot.staticPage.content.pagelet2-Slot')">
+      </ish-content-slot>
+    </div>
+  </ng-container>
+
+  <ng-template #noSidePanel>
+    <div class="col-md-12">
+      <ish-content-slot [slot]="pagelet.slot('app_sf_responsive_cm:slot.staticPage.content.pagelet2-Slot')">
+      </ish-content-slot>
+    </div>
+  </ng-template>
+</div>
+
+<!-- TODO: (CMS Component Configuration)
+  NavigationRoot
+  ShowNavigation
+  NavigationDepth
+-->

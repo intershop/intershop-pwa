@@ -61,11 +61,10 @@
           <h4 class="d-none d-md-block"><span style="text-transform: none;">in</span>SPIRED</h4>
           <div class="link-group" [ngbCollapse]="collapsed[0]">
             <ul>
-              <li><a [routerLink]="'/page/aboutUs'">About Us</a></li>
-              <li><a [routerLink]="'/page/termsAndConditions'">Terms &amp; Conditions</a></li>
-              <li><a [routerLink]="'/page/privacyPolicy'">Privacy Policy</a></li>
-              <li><a href="">Sitemap</a></li>
-              <li><a [routerLink]="'/page/help'">Help</a></li>
+              <li><a routerLink="/page/page.aboutus">About Us</a></li>
+              <li><a routerLink="/page/systempage.termsAndConditions.pagelet2-Page">Terms &amp; Conditions</a></li>
+              <li><a routerLink="/page/systempage.privacyPolicy.pagelet2-Page">Privacy Policy</a></li>
+              <li><a routerLink="/page/systempage.helpdesk.index.pagelet2-Page">Help</a></li>
             </ul>
           </div>
         </div>
@@ -77,12 +76,11 @@
           <h4 class="d-none d-md-block">SERVICE</h4>
           <div class="link-group" [ngbCollapse]="collapsed[1]">
             <ul>
-              <li><a href="">Frequently Asked Questions</a></li>
-              <li><a href="">Ordering, Shipping and Payment</a></li>
-              <li><a href="">Return Policy</a></li>
-              <li><a href="">Gift Services</a></li>
-              <li><a href="">Safety, Security &amp; Privacy</a></li>
-              <li><a href="">Contact Us</a></li>
+              <li><a routerLink="/page/page.helpdesk.faq">Frequently Asked Questions</a></li>
+              <li><a routerLink="/page/page.helpdesk.orderingShippingPayment">Ordering, Shipping and Payment</a></li>
+              <li><a routerLink="/page/page.returnpolicy">Return Policy</a></li>
+              <li><a routerLink="/page/page.helpdesk.giftServices">Gift Services</a></li>
+              <li><a routerLink="/page/page.helpdesk.safetySecurityPrivacy">Safety, Security &amp; Privacy</a></li>
             </ul>
           </div>
         </div>
@@ -94,13 +92,12 @@
           <h4 class="d-none d-md-block">MY ACCOUNT</h4>
           <div class="link-group" [ngbCollapse]="collapsed[2]">
             <ul>
-              <li><a rel="nofollow" href="">Order History</a></li>
-              <li><a rel="nofollow" href="">Wish Lists</a></li>
+              <li><a rel="nofollow" routerLink="/account/orders">Order History</a></li>
               <li><a rel="nofollow" href="">Gift Cards &amp; Certificates</a></li>
               <li><a rel="nofollow" href="">Gift Card Balance Lookup</a></li>
               <li><a rel="nofollow" href="">Saved Payment Information</a></li>
-              <li><a rel="nofollow" href="">Saved Addresses</a></li>
-              <li><a rel="nofollow" href="">Profile Settings</a></li>
+              <li><a rel="nofollow" routerLink="/account/addresses">Saved Addresses</a></li>
+              <li><a rel="nofollow" routerLink="/account/profile">Profile Settings</a></li>
               <li><a rel="nofollow" href="">Product Notifications</a></li>
             </ul>
           </div>
@@ -151,10 +148,15 @@
           <div class="link-group" [ngbCollapse]="collapsed[5]">
             <ul>
               <li>
-                <a href="" title="Demo Content provided by Icecat" class="cms-footer-longLinks">Icecat Content</a>
+                <a
+                  href="https://icecat.biz/"
+                  target="_blank"
+                  title="Demo Content provided by Icecat"
+                  class="cms-footer-longLinks"
+                  >Icecat Content</a
+                >
               </li>
-              <li><a href="" title="Demo Content Disclaimer">Demo Disclaimer</a></li>
-              <!-- <li><a (click)="addDUMMYModal.show()" title="Open Modal">Modal</a></li> -->
+              <li><a routerLink="/page/page.democontent" title="Demo Content Disclaimer">Demo Disclaimer</a></li>
               <li><a routerLink="/error" title="Error Page">Error</a></li>
               <li><a routerLink="/" title="Root Route">Root</a></li>
               <li><a routerLink="/basket" title="Basket Page">Basket</a></li>
