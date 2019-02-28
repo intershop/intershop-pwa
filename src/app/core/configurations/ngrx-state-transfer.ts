@@ -20,7 +20,7 @@ export function ngrxStateTransferMeta(reducer: ActionReducer<any>): ActionReduce
 }
 
 export function filterState(store) {
-  if (typeof store === 'object' && !(store instanceof Array)) {
+  if (store && typeof store === 'object' && !(store instanceof Array)) {
     return Object.keys(store)
       .filter(k => !k.startsWith('_'))
       .map(k => ({ [k]: filterState(store[k]) }))
