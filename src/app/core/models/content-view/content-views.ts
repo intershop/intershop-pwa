@@ -3,8 +3,7 @@
 import { memoize, once } from 'lodash-es';
 
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentInclude } from '../content-include/content-include.model';
-import { ContentPage } from '../content-page/content-page.model';
+import { ContentEntryPoint } from '../content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 import { ContentSlot } from '../content-slot/content-slot.model';
 
@@ -20,12 +19,7 @@ export interface ContentSlotView extends ConfigParameterView {
   pagelets(): ContentPageletView[];
 }
 
-export interface ContentIncludeView extends ConfigParameterView {
-  id: string;
-  pagelets(): ContentPageletView[];
-}
-
-export interface ContentPageView extends ConfigParameterView {
+export interface ContentEntryPointView extends ConfigParameterView {
   id: string;
   name: string;
   pagelets(): ContentPageletView[];
@@ -88,16 +82,11 @@ export const createSlotView = (slot: ContentSlot, pagelets: { [id: string]: Cont
         ...createConfigParameterView(slot.configurationParameters || {}),
       };
 
-export const createIncludeView = (
-  include: ContentInclude,
+export const createContentEntryPointView = (
+  contentEntryPoint: ContentEntryPoint,
   pagelets: { [id: string]: ContentPagelet }
-): ContentIncludeView => ({
-  id: include.id,
-  ...createSlotView(include, pagelets),
-});
-
-export const createPageView = (page: ContentPage, pagelets: { [id: string]: ContentPagelet }): ContentPageView => ({
-  id: page.id,
-  name: page.displayName,
-  ...createSlotView(page, pagelets),
+): ContentEntryPointView => ({
+  id: contentEntryPoint.id,
+  name: contentEntryPoint.displayName,
+  ...createSlotView(contentEntryPoint, pagelets),
 });

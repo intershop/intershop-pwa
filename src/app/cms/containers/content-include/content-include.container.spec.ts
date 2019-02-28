@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { deepEqual, spy, verify } from 'ts-mockito';
 
-import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { LoadContentInclude, LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
@@ -14,14 +14,14 @@ describe('Content Include Container', () => {
   let component: ContentIncludeContainerComponent;
   let fixture: ComponentFixture<ContentIncludeContainerComponent>;
   let element: HTMLElement;
-  let include: ContentInclude;
+  let include: ContentEntryPoint;
   let store$: Store<{}>;
 
   beforeEach(async(() => {
     include = {
       id: 'test.include',
       definitionQualifiedName: 'test.include-Include',
-
+      displayName: 'test include',
       configurationParameters: {
         key: '1',
       },

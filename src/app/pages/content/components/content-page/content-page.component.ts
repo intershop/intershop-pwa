@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentPageView } from 'ish-core/models/content-view/content-views';
+import { ContentEntryPointView } from 'ish-core/models/content-view/content-views';
 
 /**
  * The Content Page Component renders the CMS content of a given content page.
@@ -11,5 +11,5 @@ import { ContentPageView } from 'ish-core/models/content-view/content-views';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentPageComponent {
-  @Input() contentPage: ContentPageView;
+  @Input() contentPage: ContentEntryPointView;
 }

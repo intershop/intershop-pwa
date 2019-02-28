@@ -72,19 +72,20 @@ Array [
 ]
 `;
 
-exports[`Content Views should be able to create a view of includes 1`] = `
+exports[`Content Views should be able to create a view of a content entry point 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
   "hasParam": [Function],
   "id": "include",
+  "name": "i1",
   "numberParam": [Function],
   "pagelets": [Function],
   "stringParam": [Function],
 }
 `;
 
-exports[`Content Views should be able to create a view of includes 2`] = `
+exports[`Content Views should be able to create a view of configuration parameters 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
