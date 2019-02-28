@@ -8,6 +8,7 @@ import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
 import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
+import { CMSStandardPageComponent } from './components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './components/cms-video/cms-video.component';
@@ -25,6 +26,7 @@ const entryComponents = [
   CMSImageComponent,
   CMSImageEnhancedComponent,
   CMSProductListComponent,
+  CMSStandardPageComponent,
   CMSStaticPageComponent,
   CMSTextComponent,
   CMSVideoComponent,
@@ -108,6 +110,14 @@ const entryComponents = [
       useValue: {
         definitionQualifiedName: 'app_sf_responsive_cm:component.shopping.staticPage.pagelet2-Component',
         class: CMSStaticPageComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:pagevariant.standard.pagelet2-Pagevariant',
+        class: CMSStandardPageComponent,
       },
       multi: true,
     },
