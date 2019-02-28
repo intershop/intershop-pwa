@@ -2,6 +2,7 @@ FROM node:10-alpine as reporting
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
+ENV CI=true
 RUN npm i
 COPY . /workspace/
 RUN npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
