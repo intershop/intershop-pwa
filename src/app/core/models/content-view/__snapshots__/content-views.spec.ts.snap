@@ -5,6 +5,7 @@ Array [
   Object {
     "booleanParam": [Function],
     "configParam": [Function],
+    "configurationParameters": undefined,
     "definitionQualifiedName": "fq",
     "hasParam": [Function],
     "id": "p3",
@@ -30,6 +31,9 @@ exports[`Content Views include view created should have deepest level navigateab
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
+  "configurationParameters": Object {
+    "key7": "4",
+  },
   "definitionQualifiedName": "fq",
   "hasParam": [Function],
   "id": "p4",
@@ -44,6 +48,9 @@ Array [
   Object {
     "booleanParam": [Function],
     "configParam": [Function],
+    "configurationParameters": Object {
+      "key4": "2",
+    },
     "definitionQualifiedName": "fq",
     "hasParam": [Function],
     "id": "p1",
@@ -54,6 +61,7 @@ Array [
   Object {
     "booleanParam": [Function],
     "configParam": [Function],
+    "configurationParameters": undefined,
     "definitionQualifiedName": "fq",
     "hasParam": [Function],
     "id": "p2",
@@ -64,19 +72,20 @@ Array [
 ]
 `;
 
-exports[`Content Views should be able to create a view of includes 1`] = `
+exports[`Content Views should be able to create a view of a content entry point 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
   "hasParam": [Function],
   "id": "include",
+  "name": "i1",
   "numberParam": [Function],
   "pagelets": [Function],
   "stringParam": [Function],
 }
 `;
 
-exports[`Content Views should be able to create a view of includes 2`] = `
+exports[`Content Views should be able to create a view of configuration parameters 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],

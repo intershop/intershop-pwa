@@ -1,4 +1,4 @@
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 
 import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
@@ -40,7 +40,7 @@ describe('Includes Reducer', () => {
     it('should add include when reducing LoadContentIncludeSuccess', () => {
       const newState = includesReducer(
         loadingState,
-        new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentInclude, pagelets: [] })
+        new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentEntryPoint, pagelets: [] })
       );
 
       expect(newState.entities).toHaveProperty('dummy');
@@ -58,7 +58,7 @@ describe('Includes Reducer', () => {
         title =>
           (state = includesReducer(
             state,
-            new LoadContentIncludeSuccess({ include: { id: title } as ContentInclude, pagelets: [] })
+            new LoadContentIncludeSuccess({ include: { id: title } as ContentEntryPoint, pagelets: [] })
           ))
       );
     });

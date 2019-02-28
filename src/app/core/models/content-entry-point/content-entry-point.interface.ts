@@ -2,7 +2,8 @@ import { ContentConfigurationParameterData } from '../content-configuration-para
 import { ContentPageletData } from '../content-pagelet/content-pagelet.interface';
 import { Link } from '../link/link.model';
 
-export interface ContentIncludeData {
+export interface ContentEntryPointData {
+  id: string;
   definitionQualifiedName: string;
   displayName: string;
   pagelets: ContentPageletData[];

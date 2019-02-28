@@ -330,7 +330,7 @@
           "message": "Imports from (other) extensions are not allowed here."
         },
         {
-          "from": ".*/pages/.*",
+          "from": ".*/pages/[a-z][a-z0-9-]+/.*",
           "filePattern": "^((?!(cypress|\\.module\\.ts$)).)*$",
           "message": "Imports from pages are not allowed."
         },
