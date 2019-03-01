@@ -10,7 +10,7 @@ import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Credentials, LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer, CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { User } from '../../models/user/user.model';
 import { ApiService } from '../api/api.service';
 /**
@@ -40,7 +40,7 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signinUser(loginCredentials: LoginCredentials): Observable<CustomerLoginType> {
+  signinUser(loginCredentials: LoginCredentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       'Authorization',
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
@@ -80,6 +80,35 @@ export class UserService {
     }
 
     return this.apiService.post<void>('customers', newCustomer);
+  }
+
+  /**
+   * Updates the data of the currently logged in user.
+   * @param body  The user data (customer, user ) to update the user.
+   */
+  updateUser(body: CustomerUserType): Observable<User> {
+    if (!body || !body.customer || !body.user) {
+      return throwError('updateUser() called without required body data');
+    }
+
+    if (!body.customer.type) {
+      return throwError('updateUser() called without required customer type (PrivateCustomer/SMBCustomer)');
+    }
+
+    const changedUser = {
+      ...body.customer,
+      ...body.user,
+      preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
+      preferredShipToAddress: { urn: body.user.preferredShipToAddressUrn },
+      preferredInvoiceToAddressUrn: undefined,
+      preferredShipToAddressUrn: undefined,
+    };
+
+    if (body.customer.type === 'PrivateCustomer') {
+      return this.apiService.put<User>('customers/-', changedUser).pipe(map(UserMapper.fromData));
+    } else {
+      return this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData));
+    }
   }
 
   /**

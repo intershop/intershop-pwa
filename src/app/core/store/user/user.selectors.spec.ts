@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { CustomerLoginType } from '../../models/customer/customer.model';
+import { CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { Product } from '../../models/product/product.model';
 import { User } from '../../models/user/user.model';
@@ -52,7 +52,7 @@ describe('User Selectors', () => {
           type: 'SMBCustomer',
           customerNo: customerNo,
         },
-      } as CustomerLoginType)
+      } as CustomerUserType)
     );
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
@@ -74,7 +74,7 @@ describe('User Selectors', () => {
         user: {
           firstName: firstName,
         },
-      } as CustomerLoginType)
+      } as CustomerUserType)
     );
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
@@ -92,7 +92,7 @@ describe('User Selectors', () => {
           type: 'SMBCustomer',
           customerNo: 'PC',
         },
-      } as CustomerLoginType)
+      } as CustomerUserType)
     );
 
     expect(getLoggedInCustomer(store$.state)).toBeTruthy();

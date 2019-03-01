@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { User } from 'ish-core/models/user/user.model';
 import {
   CreateCustomerAddress,
   DeleteCustomerAddress,
@@ -10,7 +11,7 @@ import {
   getAddressesLoading,
   getAllAddresses,
 } from 'ish-core/store/checkout/addresses';
-import { getLoggedInUser } from 'ish-core/store/user';
+import { UpdateUser, getLoggedInUser, getUserError } from 'ish-core/store/user';
 
 /**
  * The Account Addresses Page Container Component renders the account addresses page of a logged in user using the {@link AccountAddressesPageComponent}
@@ -24,7 +25,8 @@ export class AccountAddressesPageContainerComponent implements OnInit {
   addresses$ = this.store.pipe(select(getAllAddresses));
   user$ = this.store.pipe(select(getLoggedInUser));
   loading$ = this.store.pipe(select(getAddressesLoading));
-  error$ = this.store.pipe(select(getAddressesError));
+  errorAddresses$ = this.store.pipe(select(getAddressesError));
+  errorUser$ = this.store.pipe(select(getUserError));
 
   constructor(private store: Store<{}>) {}
 
@@ -38,5 +40,9 @@ export class AccountAddressesPageContainerComponent implements OnInit {
 
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(new DeleteCustomerAddress({ addressId }));
+  }
+
+  updateUser(user: User) {
+    this.store.dispatch(new UpdateUser({ user }));
   }
 }

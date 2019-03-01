@@ -26,13 +26,14 @@ describe('Select Address Component', () => {
     element = fixture.nativeElement;
 
     const form = new FormGroup({
-      addressId: new FormControl(),
+      id: new FormControl(),
+      urn: new FormControl(),
     });
-    component.controlName = 'addressId';
+    component.controlName = 'id';
     component.form = form;
     component.addresses = [
-      { id: '4711', firstName: 'Patricia' } as Address,
-      { id: '4712', firstName: 'John' } as Address,
+      { id: '4711', urn: 'urn4711', firstName: 'Patricia' } as Address,
+      { id: '4712', urn: 'urn4712', firstName: 'John' } as Address,
     ];
   });
 
@@ -50,6 +51,18 @@ describe('Select Address Component', () => {
 
     fixture.detectChanges();
     expect(component.options).toHaveLength(2);
-    expect(element.querySelector('select[data-testing-id=addressId]')).toBeTruthy();
+    expect(element.querySelector('select[data-testing-id=id]')).toBeTruthy();
+    expect(element.querySelector('option[value="4711"]')).toBeTruthy();
+  });
+
+  it('should use urn as value if controlName does not equals id', () => {
+    const changes: SimpleChanges = {
+      addresses: new SimpleChange(undefined, component.addresses, false),
+    };
+    component.controlName = 'urn';
+    component.ngOnChanges(changes);
+
+    fixture.detectChanges();
+    expect(element.querySelector('option[value=urn4711]')).toBeTruthy();
   });
 });
