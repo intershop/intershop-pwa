@@ -1,3 +1,28 @@
+# [0.10.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.10.0/) (2019-03-01)
+
+**required Intershop Commerce Management version: 7.10.5.5**
+
+### Features
+
+- render CMS content pages (Static Pages, Helpdesk Pages) (ISREST-646)
+- CMS Video Component (ISREST-615)
+- use new basket payment rest api (ISREST-362)
+- add Order Widget and use it in Account Overview
+- add Quoting Widget and use it in Account Overview (ISREST-591)
+- consume changes for basket REST API (ISREST-626)
+
+### Bug Fixes
+
+- set adaptive max-age for static files in universal mode (ISREST-605)
+- set authentication token in ApiService (ISREST-657)
+- smaller quoting related bugfixes (ISREST-593, ISREST-604)
+- SSR express returns appropriate HTTP error codes (ISREST-630)
+- minor styling and localization quoting bug fixes (ISREST-601, ISREST-606, ISREST-599)
+
+### BREAKING CHANGES
+
+- renamed Angular CLI environment property 'needMock' to 'mockServerAPI' (now optional)
+
 # [0.9.1](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.9.1/) (2019-02-07)
 
 ### Features
