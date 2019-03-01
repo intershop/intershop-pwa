@@ -24,6 +24,10 @@ export class ProductListModule {
     cy.get(`ish-product-tile div[data-testing-sku="${sku}"] button.add-to-compare`).click();
   }
 
+  addProductToQuoteRequest(sku: string) {
+    cy.get(`ish-product-tile div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`).click();
+  }
+
   get numberOfItems() {
     return cy
       .get('.pagination-total')

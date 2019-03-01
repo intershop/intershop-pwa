@@ -199,7 +199,13 @@
             <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
           <iselse>
           -->
-        <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">
+        <button
+          class="btn btn-secondary"
+          name="copy"
+          type="submit"
+          (click)="copy()"
+          data-testing-id="copy-quote-request"
+        >
           {{ 'quote.edit.button.create_new_from_quote.label' | translate }}
         </button>
       </ng-container>

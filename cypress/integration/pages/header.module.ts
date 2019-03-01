@@ -47,6 +47,10 @@ export class HeaderModule {
       .first();
   }
 
+  goToMyAccount() {
+    return this.myAccountLink.click({ force: true });
+  }
+
   get content() {
     return cy.get('ish-header');
   }
