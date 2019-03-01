@@ -66,10 +66,8 @@ describe('Shopping User', () => {
     at(AddressesPage);
   });
 
-  it('should set first addresses', () => {
+  it('should set first addresses automatically', () => {
     at(AddressesPage, page => {
-      page.selectFirstInvoiceAddress();
-      page.selectFirstShippingAddress();
       page.continueCheckout();
     });
   });

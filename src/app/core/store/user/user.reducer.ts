@@ -9,6 +9,7 @@ export interface UserState {
   user: User;
   authorized: boolean;
   _authToken: string;
+  loading: boolean;
   error: HttpError;
 }
 
@@ -17,6 +18,7 @@ export const initialState: UserState = {
   user: undefined,
   authorized: false,
   _authToken: undefined,
+  loading: false,
   error: undefined,
 };
 
@@ -34,10 +36,6 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return initialState;
     }
 
-    case UserActionTypes.CreateUserFail: {
-      return { ...initialState, error: action.payload.error };
-    }
-
     case UserActionTypes.SetAPIToken: {
       return {
         ...state,
@@ -45,12 +43,33 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.LoadCompanyUser:
+    case UserActionTypes.CreateUser:
+    case UserActionTypes.UpdateUser: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
     case UserActionTypes.LoginUserFail:
-    case UserActionTypes.LoadCompanyUserFail: {
+    case UserActionTypes.LoadCompanyUserFail:
+    case UserActionTypes.CreateUserFail: {
       const error = action.payload.error;
 
       return {
         ...initialState,
+        loading: false,
+        error,
+      };
+    }
+
+    case UserActionTypes.UpdateUserFail: {
+      const error = action.payload.error;
+
+      return {
+        ...state,
+        loading: false,
         error,
       };
     }
@@ -64,15 +83,20 @@ export function userReducer(state = initialState, action: UserAction): UserState
         authorized: true,
         customer,
         user,
+        loading: false,
+        error: undefined,
       };
     }
 
-    case UserActionTypes.LoadCompanyUserSuccess: {
+    case UserActionTypes.LoadCompanyUserSuccess:
+    case UserActionTypes.UpdateUserSuccess: {
       const user = action.payload.user;
 
       return {
         ...state,
         user,
+        loading: false,
+        error: undefined,
       };
     }
   }
