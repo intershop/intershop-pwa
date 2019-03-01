@@ -91,6 +91,7 @@
         class="btn btn-secondary"
         [disabled]="!quote"
         (click)="update()"
+        data-testing-id="saveQuoteRequest"
       >
         {{ 'quote.edit.button.save.label' | translate }}
       </button>
@@ -101,6 +102,7 @@
         class="btn btn-primary"
         [disabled]="quote.items.length === 0"
         (click)="submit()"
+        data-testing-id="submitQuoteRequest"
       >
         {{ 'quote.edit.button.submit.label' | translate }}
       </button>

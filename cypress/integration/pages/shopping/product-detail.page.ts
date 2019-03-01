@@ -17,6 +17,8 @@ export class ProductDetailPage {
 
   private addToCartButton = () => cy.get('[data-testing-id="addToCartButton"]');
   private addToCompareButton = () => cy.get('[data-testing-id*="compare"]');
+  private addToQuoteRequestButton = () => cy.get('[data-testing-id="addToQuoteButton"]');
+  private quantityInput = () => cy.get('[data-testing-id="quantity"]');
 
   isComplete() {
     return this.addToCartButton().should('be.visible');
@@ -39,8 +41,17 @@ export class ProductDetailPage {
     this.addToCartButton().click();
   }
 
+  addProductToQuoteRequest() {
+    this.addToQuoteRequestButton().click();
+  }
+
   get recentlyViewedItems() {
     return cy.get('ish-recently-viewed div.product-tile');
+  }
+
+  setQuantity(quantity: number) {
+    this.quantityInput().clear();
+    this.quantityInput().type(quantity.toString());
   }
 
   recentlyViewedItem(sku: string) {
