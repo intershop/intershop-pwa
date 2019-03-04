@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { instance, mock } from 'ts-mockito';
 
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.container';
 
@@ -26,12 +27,12 @@ describe('Checkout Payment Page Container', () => {
       ],
 
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          checkout: combineReducers(checkoutReducers),
+          shopping: combineReducers(shoppingReducers),
+        }),
       ],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();
   }));
 

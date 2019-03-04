@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-import { ContentIncludeView } from 'ish-core/models/content-view/content-views';
+import { ContentEntryPointView } from 'ish-core/models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 
 @Component({
@@ -14,7 +14,7 @@ import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/in
 export class ContentIncludeContainerComponent implements OnInit {
   @Input() includeId: string;
 
-  contentInclude$: Observable<ContentIncludeView>;
+  contentInclude$: Observable<ContentEntryPointView>;
 
   constructor(private store: Store<{}>) {}
 

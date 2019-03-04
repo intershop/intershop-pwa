@@ -6,7 +6,7 @@ export class HomePage {
   readonly header = new HeaderModule();
 
   static navigateTo() {
-    cy.visit('/');
+    cy.visit('/home');
   }
 
   get content() {

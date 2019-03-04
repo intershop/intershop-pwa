@@ -13,35 +13,34 @@ export class BasketMapper {
     const data = payload.data;
     const included = payload.included;
 
-    const totals: BasketTotal =
-      data.calculationState === 'CALCULATED'
-        ? {
-            itemTotal: PriceMapper.fromPriceItem(data.totals.discountedItemTotal),
-            total: PriceMapper.fromPriceItem(data.totals.grandTotal),
-            shippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketShippingDiscountsTotal),
-            valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketValueDiscountsTotal),
-            dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(data.totals.surchargeTotal),
-            itemRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemValueDiscountsTotal),
-            itemShippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemShippingDiscountsTotal),
-            paymentCostsTotal: undefined, // ToDo
-            shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
-            taxTotal: { ...data.totals.grandTotal.tax, type: 'Money' },
-            valueRebates:
-              data.discounts && data.discounts.valueBasedDiscounts && included.discounts
-                ? data.discounts.valueBasedDiscounts.map(discountId =>
-                    BasketRebateMapper.fromData(included.discounts[discountId])
-                  )
-                : undefined,
-            itemSurchargeTotalsByType: data.surcharges
-              ? data.surcharges.itemSurcharges.map(surcharge => ({
-                  amount: PriceMapper.fromPriceItem(surcharge.amount),
-                  displayName: surcharge.name,
-                  description: surcharge.description,
-                }))
+    const totals: BasketTotal = data.calculated
+      ? {
+          itemTotal: PriceMapper.fromPriceItem(data.totals.discountedItemTotal),
+          total: PriceMapper.fromPriceItem(data.totals.grandTotal),
+          shippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketShippingDiscountsTotal),
+          valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketValueDiscountsTotal),
+          dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(data.totals.surchargeTotal),
+          itemRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemValueDiscountsTotal),
+          itemShippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemShippingDiscountsTotal),
+          paymentCostsTotal: PriceMapper.fromPriceItem(data.totals.paymentCostTotal),
+          shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
+          taxTotal: { ...data.totals.grandTotal.tax, type: 'Money' },
+          valueRebates:
+            data.discounts && data.discounts.valueBasedDiscounts && included.discounts
+              ? data.discounts.valueBasedDiscounts.map(discountId =>
+                  BasketRebateMapper.fromData(included.discounts[discountId])
+                )
               : undefined,
-            isEstimated: !data.invoiceToAddress || !data.commonShipToAddress || !data.commonShippingMethod,
-          }
-        : undefined;
+          itemSurchargeTotalsByType: data.surcharges
+            ? data.surcharges.itemSurcharges.map(surcharge => ({
+                amount: PriceMapper.fromPriceItem(surcharge.amount),
+                displayName: surcharge.name,
+                description: surcharge.description,
+              }))
+            : undefined,
+          isEstimated: !data.invoiceToAddress || !data.commonShipToAddress || !data.commonShippingMethod,
+        }
+      : undefined;
 
     return {
       id: data.id,
@@ -63,6 +62,14 @@ export class BasketMapper {
         included && included.lineItems && data.lineItems && data.lineItems.length
           ? data.lineItems.map(lineItemId => LineItemMapper.fromData(included.lineItems[lineItemId]))
           : [],
+      payment:
+        included && included.payments && included.payments['open-tender']
+          ? {
+              paymentInstrument: included.payments['open-tender'].paymentInstrument,
+              id: included.payments['open-tender'].id,
+              displayName: undefined, // ToDo: REST request should provide displayName
+            }
+          : undefined,
       totals,
     };
   }

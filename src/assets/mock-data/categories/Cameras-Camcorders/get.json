@@ -29,13 +29,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832"
         }
       ],
-      "description": "The camera products and services catalog.",
+      "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "832",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -65,13 +65,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/1290"
         }
       ],
-      "description": "The camera products and services catalog.",
+      "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "1290",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -101,13 +101,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584"
         }
       ],
-      "description": "The camera products and services catalog.",
+      "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "584",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -137,13 +137,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/585"
         }
       ],
-      "description": "The camera products and services catalog.",
+      "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "585",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -173,13 +173,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/575"
         }
       ],
-      "description": "The camera products and services catalog.",
+      "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "575",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -210,13 +210,13 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577"
         }
       ],
-      "description": "The camera products and services catalog.",
+      "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "577",
       "images": [
         {
-          "effectiveUrl": "/assets/product_img/a.jpg",
+          "effectiveUrl": "assets/mock-img/product/a.jpg",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",

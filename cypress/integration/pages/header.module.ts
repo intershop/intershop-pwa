@@ -48,14 +48,14 @@ export class HeaderModule {
   }
 
   get content() {
-    return cy.get('ish-header', { timeout: 60000 });
+    return cy.get('ish-header');
   }
 
   getSearchSuggestions(searchTerm: string) {
     cy.get('ish-header input.searchTerm')
       .clear()
       .type(searchTerm);
-    cy.get('ul.search-suggest-results', { timeout: 30000 }).should('be.visible');
+    cy.get('ul.search-suggest-results').should('be.visible');
     return cy
       .get('ul.search-suggest-results')
       .last()
@@ -71,7 +71,7 @@ export class HeaderModule {
 
   topLevelCategoryLink(id: string) {
     return cy
-      .get(`ish-header a[data-testing-id="${id}-link"]`, { timeout: 60000, log: true })
+      .get(`ish-header a[data-testing-id="${id}-link"]`)
       .should('be.visible')
       .first();
   }

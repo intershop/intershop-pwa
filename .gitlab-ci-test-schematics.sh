@@ -81,7 +81,7 @@ git add -A
 npx lint-staged
 npx tsc --project src/tsconfig.spec.json
 
-sed -i -e 's/needMock.*/needMock: true,/g' src/environments/environment.prod.ts
+sed -i -e 's/mockServerAPI.*/mockServerAPI: true,/g' src/environments/environment.prod.ts
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
 
 npm run build

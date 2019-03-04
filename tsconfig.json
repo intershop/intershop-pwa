@@ -10,18 +10,10 @@
     "target": "es5",
     "baseUrl": "src",
     "paths": {
-      "ish-core/*": [ "app/core/*" ]
+      "ish-core/*": ["app/core/*"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/jest-extended"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types", "node_modules/jest-extended"],
+    "lib": ["es2017", "dom"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

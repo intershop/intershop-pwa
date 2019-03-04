@@ -1,14 +1,14 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
 
 import { IncludesAction, IncludesActionTypes } from './includes.actions';
 
-export const includesAdapter = createEntityAdapter<ContentInclude>({
+export const includesAdapter = createEntityAdapter<ContentEntryPoint>({
   selectId: contentInclude => contentInclude.id,
 });
 
-export interface IncludesState extends EntityState<ContentInclude> {
+export interface IncludesState extends EntityState<ContentEntryPoint> {
   loading: boolean;
 }
 

@@ -5,7 +5,7 @@ import { Locale } from '../models/locale/locale.model';
 /**
  * If 'true' the application has to work with the implemented mock data, if 'false' a backend system is used
  */
-export const NEED_MOCK = new InjectionToken<boolean>('needMock');
+export const MOCK_SERVER_API = new InjectionToken<boolean>('mockServerAPI');
 /**
  * Array of paths that always use mocked data
  */

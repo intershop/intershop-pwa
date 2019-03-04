@@ -1,0 +1,11 @@
+<div class="section">
+  <h2>{{ 'account.quotes.widget.my_quotes.heading' | translate }}</h2>
+
+  <div class="loading-container">
+    <ish-quote-widget [quoteRequests]="quoteRequests$ | async" [quotes]="quotes$ | async"></ish-quote-widget>
+
+    <ish-loading *ngIf="(quoteLoading$ | async) || (quoteRequestLoading$ | async)"></ish-loading>
+  </div>
+
+  <a routerLink="/account/quote-list">{{ 'account.quotes.widget.view_all_quotes.link' | translate }}</a>
+</div>

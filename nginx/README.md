@@ -17,7 +17,6 @@ Just run `docker build -t <your_tag_name> .`
 
 Basic environment variables:
 
-- connect it to the ICM with `UPSTREAM_ICM` in the form of `http(s)://<IP>:<PORT>`
 - connect it to the PWA with `UPSTREAM_PWA` in the form of `http(s)://<IP>:<PORT>`
 
 If you want to use fully qualified names here, do not forget to also add host mappings to your orchestrator name resolution. For `docker run` this can be done with `--add-host`.
@@ -41,7 +40,6 @@ docker build -t my_awesome_nginx .
 docker run -d --name "my-awesome-nginx" \
         --restart always \
         -p 4199:80 \
-        -e UPSTREAM_ICM=http://10.0.206.226:4322 \
         -e UPSTREAM_PWA=http://192.168.0.10:4200 \
         -e PWA_1_SUBDOMAIN=b2b \
         -e PWA_1_CHANNEL=inSPIRED-inTRONICS_Business-Site \
@@ -65,4 +63,4 @@ If your DNS is not set up correctly, you have to use something like _dnsmasq_ (L
 
 ## Extras
 
-To fully release the potential of this nginx, point the `ICM_BASE_URL` of the deployed PWA to it. This however is still experimental.
+To fully release the potential of this nginx, also set `UPSTREAM_ICM` in the form of `http(s)://<IP>:<PORT>` to tunnel all ICM traffic through this PageSpeed optimized nginx. This will automatically point the `ICM_BASE_URL` of the deployed PWA on a request basis to it. This however is still experimental.

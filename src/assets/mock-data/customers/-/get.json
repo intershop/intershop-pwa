@@ -14,7 +14,7 @@
     "country": "Germany",
     "countryCode": "DE",
     "firstName": "Patricia",
-    "id": "BpCsEQAG_YYAAAFo3mgOY3oz",
+    "id": "iiysEQAGNbMAAAFo5YoOgvsK",
     "installToAddress": false,
     "invoiceToAddress": true,
     "lastName": "Miller",
@@ -26,11 +26,8 @@
     "street": "Potsdamer Str. 20",
     "title": "Ms.",
     "type": "Address",
-    "urn": "urn:address:customer:w5ysEQAGHi4AAAFo3WgOY3oz:BpCsEQAG_YYAAAFo3mgOY3oz",
-    "usage": [
-      true,
-      true
-    ]
+    "urn": "urn:address:customer:lzysEQAG0SkAAAFo44oOgvsK:iiysEQAGNbMAAAFo5YoOgvsK",
+    "usage": [true, true]
   },
   "preferredLanguage": "en_US",
   "preferredShipToAddress": {
@@ -40,7 +37,7 @@
     "country": "Germany",
     "countryCode": "DE",
     "firstName": "Patricia",
-    "id": "KpOsEQAG_YUAAAFo3mgOY3oz",
+    "id": "GlWsEQAGNbIAAAFo5YoOgvsK",
     "installToAddress": false,
     "invoiceToAddress": true,
     "lastName": "Miller",
@@ -52,11 +49,8 @@
     "street": "Berliner Str. 20",
     "title": "Ms.",
     "type": "Address",
-    "urn": "urn:address:customer:w5ysEQAGHi4AAAFo3WgOY3oz:KpOsEQAG_YUAAAFo3mgOY3oz",
-    "usage": [
-      true,
-      true
-    ]
+    "urn": "urn:address:customer:lzysEQAG0SkAAAFo44oOgvsK:GlWsEQAGNbIAAAFo5YoOgvsK",
+    "usage": [true, true]
   },
   "title": "",
   "type": "PrivateCustomer"

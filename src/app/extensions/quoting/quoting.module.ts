@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../../shared/shared.module';
 
+import { QuoteWidgetComponent } from './shared/account/components/quote-widget/quote-widget.component';
+import { QuoteWidgetContainerComponent } from './shared/account/containers/quote-widget/quote-widget.container';
 import { BasketAddToQuoteComponent } from './shared/basket/components/basket-add-to-quote/basket-add-to-quote.component';
 import { BasketAddToQuoteContainerComponent } from './shared/basket/containers/basket-add-to-quote/basket-add-to-quote.container';
 import { ProductAddToQuoteDialogComponent } from './shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
@@ -23,12 +25,15 @@ import { QuotingStoreModule } from './store/quoting-store.module';
     ProductAddToQuoteDialogContainerComponent,
     QuoteEditComponent,
     QuoteStateComponent,
+    QuoteWidgetComponent,
+    QuoteWidgetContainerComponent,
   ],
   exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
   entryComponents: [
     BasketAddToQuoteContainerComponent,
     ProductAddToQuoteContainerComponent,
     ProductAddToQuoteDialogContainerComponent,
+    QuoteWidgetContainerComponent,
   ],
 })
 export class QuotingModule {}

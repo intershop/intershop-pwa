@@ -5,6 +5,7 @@ import { Observable, OperatorFunction, forkJoin } from 'rxjs';
 import { catchError, defaultIfEmpty, filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
 
 import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
+import { getAPIToken } from 'ish-core/store/user';
 import { Link } from '../../models/link/link.model';
 import { Locale } from '../../models/locale/locale.model';
 import { getCurrentLocale } from '../../store/locale';
@@ -99,8 +100,12 @@ export function constructUrlForPath(
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
+  static TOKEN_HEADER_KEY = 'authentication-token';
+  static AUTHORIZATION_HEADER_KEY = 'Authorization';
+
   private currentLocale: Locale;
   private restEndpoint: string;
+  private apiToken: string;
   icmServerURL: string;
 
   constructor(
@@ -111,10 +116,30 @@ export class ApiService {
     store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
     store.pipe(select(getICMServerURL)).subscribe(url => (this.icmServerURL = url));
     store.pipe(select(getRestEndpoint)).subscribe(url => (this.restEndpoint = url));
+    store.pipe(select(getAPIToken)).subscribe(token => (this.apiToken = token));
   }
 
-  // declare default http header
-  private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
+  /**
+   * appends API token to requests if available and request is not an authorization request
+   */
+  private appendAPITokenToHeaders(headers: HttpHeaders) {
+    return this.apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
+      ? headers.set(ApiService.TOKEN_HEADER_KEY, this.apiToken)
+      : headers;
+  }
+
+  /**
+   * merges supplied and default headers
+   */
+  private constructHeaders(options?: { headers?: HttpHeaders }): HttpHeaders {
+    const defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
+
+    let newHeaders = defaultHeaders;
+    if (options && options.headers) {
+      newHeaders = options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeaders);
+    }
+    return this.appendAPITokenToHeaders(newHeaders);
+  }
 
   /**
    * http options request
@@ -122,8 +147,8 @@ export class ApiService {
   options<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
       .options<T>(constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale), {
-        headers: this.defaultHeaders,
         ...options,
+        headers: this.constructHeaders(options),
       })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
@@ -136,8 +161,8 @@ export class ApiService {
     options?: { params?: HttpParams; headers?: HttpHeaders; skipApiErrorHandling?: boolean }
   ): Observable<T> {
     const obs$ = this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
-      headers: this.defaultHeaders,
       ...options,
+      headers: this.constructHeaders(options),
     });
     return options && options.skipApiErrorHandling ? obs$ : obs$.pipe(catchApiError(this.apiServiceErrorHandler));
   }
@@ -145,10 +170,11 @@ export class ApiService {
   /**
    * http put request
    */
-  put<T>(path: string, body = {}): Observable<T> {
+  put<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
       .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale), body, {
-        headers: this.defaultHeaders,
+        ...options,
+        headers: this.constructHeaders(options),
       })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
@@ -159,8 +185,8 @@ export class ApiService {
   patch<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
       .patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale), body, {
-        headers: this.defaultHeaders,
         ...options,
+        headers: this.constructHeaders(options),
       })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
@@ -171,8 +197,8 @@ export class ApiService {
   post<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
       .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale), body, {
-        headers: this.defaultHeaders,
         ...options,
+        headers: this.constructHeaders(options),
       })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
@@ -183,8 +209,8 @@ export class ApiService {
   delete<T>(path, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
       .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale), {
-        headers: this.defaultHeaders,
         ...options,
+        headers: this.constructHeaders(options),
       })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }

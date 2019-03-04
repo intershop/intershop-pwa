@@ -66,7 +66,7 @@ describe('Content Configuration Parameter Mapper', () => {
     expect(result).toMatchSnapshot();
   });
 
-  describe('postProcessImageURLs', () => {
+  describe('postProcessFileReferences', () => {
     using(
       [
         {
@@ -89,10 +89,20 @@ describe('Content Configuration Parameter Mapper', () => {
           input: 'site:/pwa/pwa_home_teaser_1.jpg',
           expected: 'site:/pwa/pwa_home_teaser_1.jpg',
         },
+        {
+          key: 'Video',
+          input: 'site:/video/video.mp4',
+          expected: 'http://www.example.org/static/channel/-/site/-/video/video.mp4',
+        },
+        {
+          key: 'Video',
+          input: 'https://www.youtube.com/watch?v=ABCDEFG',
+          expected: 'https://www.youtube.com/watch?v=ABCDEFG',
+        },
       ],
       ({ key, input, expected }) => {
         it(`should transform ${input} to ${expected} for key ${key}`, () => {
-          expect(contentConfigurationParameterMapper.postProcessImageURLs({ [key]: input })).toEqual({
+          expect(contentConfigurationParameterMapper.postProcessFileReferences({ [key]: input })).toEqual({
             [key]: expected,
           });
         });
@@ -107,7 +117,7 @@ describe('Content Configuration Parameter Mapper', () => {
       const input = 'site:/pwa/pwa_home_teaser_1.jpg';
       const expected = 'http://www.example.org/static/channel/-/site/de_DE/pwa/pwa_home_teaser_1.jpg';
 
-      expect(contentConfigurationParameterMapper.postProcessImageURLs({ [key]: input })).toEqual({
+      expect(contentConfigurationParameterMapper.postProcessFileReferences({ [key]: input })).toEqual({
         [key]: expected,
       });
     });

@@ -3,28 +3,28 @@ import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/comm
 import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+import { anything, spy, verify } from 'ts-mockito';
 
+import { ApiService } from 'ish-core/services/api/api.service';
 import { coreReducers } from '../store/core-store.module';
-import { SetAPIToken } from '../store/user';
 
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor', () => {
   const responseData = `{"name":"test","age":"34"}`;
+  let responseHeaders: HttpHeaders;
   let getRequest: HttpRequest<any>;
-  let mockRequest: HttpRequest<any>;
   let authInterceptor: AuthInterceptor;
   let mockInterceptor: any;
   let store$: Store<{}>;
 
   beforeEach(() => {
     getRequest = new HttpRequest<any>('GET', ' ');
-    mockRequest = undefined;
+    responseHeaders = new HttpHeaders();
     mockInterceptor = {
-      handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
-        const headers = new HttpHeaders();
+      handle(_: HttpRequest<any>): Observable<HttpEvent<any>> {
+        const headers = responseHeaders;
         const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers: headers });
-        mockRequest = req;
         return of(res);
       },
     };
@@ -33,7 +33,7 @@ describe('Auth Interceptor', () => {
       providers: [AuthInterceptor],
     });
     authInterceptor = TestBed.get(AuthInterceptor);
-    store$ = TestBed.get(Store);
+    store$ = spy(TestBed.get(Store));
   });
 
   it('should return mocked body in response when requested', done => {
@@ -44,30 +44,11 @@ describe('Auth Interceptor', () => {
     });
   });
 
-  it(`should set request's header token on receiving from jwt service`, done => {
-    const apiToken = 'testtoken';
-    store$.dispatch(new SetAPIToken({ apiToken }));
+  it('should set api token from response when found', done => {
+    responseHeaders = responseHeaders.set(ApiService.TOKEN_HEADER_KEY, 'dummy');
 
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe(() => {
-      expect(mockRequest.headers.get('authentication-token')).toEqual(apiToken);
-      done();
-    });
-  });
-
-  it(`should not set token when request's header contains 'Authorization'`, done => {
-    const headers = new HttpHeaders().set('Authorization', 'Basic');
-    const request = new HttpRequest<any>('GET', ' ', { headers });
-    authInterceptor.intercept(request, mockInterceptor).subscribe(() => {
-      expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
-      done();
-    });
-  });
-
-  it('should not set token when token is empty', done => {
-    store$.dispatch(new SetAPIToken(undefined));
-
-    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(() => {
-      expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
+      verify(store$.dispatch(anything())).once();
       done();
     });
   });

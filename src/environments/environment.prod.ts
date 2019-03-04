@@ -1,7 +1,9 @@
 // tslint:disable:no-commented-out-code
 export const environment = {
   production: true,
-  needMock: false,
+  // set to true if not working against a real ICM server
+  // mockServerAPI: false,
+  // array of REST path expressions that should always be mocked
   // mustMockPaths: [],
 
   // Intershop Commerce Management REST server configuration

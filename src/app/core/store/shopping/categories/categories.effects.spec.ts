@@ -1,11 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
-import { Observable, of, throwError } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { Observable, noop, of, throwError } from 'rxjs';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
@@ -26,15 +28,19 @@ describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
   let store$: Store<{}>;
+  let location: Location;
 
   let categoriesServiceMock: CategoriesService;
-
-  let router: Router;
 
   const TOP_LEVEL_CATEGORIES = categoryTree([
     { uniqueId: '123', categoryPath: ['123'] },
     { uniqueId: '456', categoryPath: ['456'] },
   ] as Category[]);
+
+  // tslint:disable-next-line:use-component-change-detection
+  @Component({ template: 'dummy' })
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+  class DummyComponent {}
 
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
@@ -44,9 +50,10 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(throwError({ message: 'invalid category' }));
     when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of(TOP_LEVEL_CATEGORIES));
     when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(throwError({ message: 'invalid number' }));
-    router = mock(Router);
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
+        RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
           locale: localeReducer,
@@ -56,13 +63,13 @@ describe('Categories Effects', () => {
         CategoriesEffects,
         provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: Router, useFactory: () => instance(router) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
       ],
     });
 
     effects = TestBed.get(CategoriesEffects);
     store$ = TestBed.get(Store);
+    location = TestBed.get(Location);
   });
 
   describe('routeListenerForSelectingCategory$', () => {
@@ -355,18 +362,17 @@ describe('Categories Effects', () => {
   });
 
   describe('redirectIfErrorInCategories$', () => {
-    it('should redirect if triggered', done => {
+    it('should redirect if triggered', fakeAsync(() => {
       const action = new fromActions.LoadCategoryFail({ error: { status: 404 } as HttpError });
 
       actions$ = of(action);
 
-      effects.redirectIfErrorInCategories$.subscribe(() => {
-        verify(router.navigate(anything())).once();
-        const [param] = capture(router.navigate).last();
-        expect(param).toEqual(['/error']);
-        done();
-      });
-    });
+      effects.redirectIfErrorInCategories$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/error');
+    }));
   });
 
   describe('selectedCategoryAvailable$', () => {

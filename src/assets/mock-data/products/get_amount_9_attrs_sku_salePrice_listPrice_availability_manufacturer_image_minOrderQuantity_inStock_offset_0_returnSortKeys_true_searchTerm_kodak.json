@@ -25,7 +25,7 @@
         {
           "name": "image",
           "type": "String",
-          "value": "/assets/product_img/a.jpg"
+          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
@@ -66,12 +66,7 @@
   ],
   "name": "products",
   "offset": 0,
-  "sortKeys": [
-    "name-desc",
-    "name-asc",
-    "value-asc",
-    "value-desc"
-  ],
+  "sortKeys": ["name-desc", "name-asc", "value-asc", "value-desc"],
   "total": 1,
   "type": "ResourceCollection"
 }

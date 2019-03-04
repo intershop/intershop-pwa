@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
@@ -5,6 +6,8 @@ import * as using from 'jasmine-data-provider';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { SetAPIToken } from 'ish-core/store/user';
+import { userReducer } from 'ish-core/store/user/user.reducer';
 import { Link } from '../../models/link/link.model';
 import { Locale } from '../../models/locale/locale.model';
 import { ErrorActionTypes, ServerError } from '../../store/error';
@@ -376,6 +379,109 @@ describe('Api Service', () => {
       httpTestingController.expectOne(`${REST_URL}/something`).flush({ uri: 'site/-/dummy' });
 
       httpTestingController.expectNone(`${REST_URL}/dummy`);
+    });
+  });
+
+  describe('API Service Headers', () => {
+    const REST_URL = 'http://www.example.org/WFS/site/-';
+    let apiService: ApiService;
+    let store$: Store<{}>;
+    let httpTestingController: HttpTestingController;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          // https://angular.io/guide/http#testing-http-requests
+          HttpClientTestingModule,
+          StoreModule.forRoot(
+            { configuration: configurationReducer, user: userReducer },
+            {
+              initialState: {
+                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
+              },
+            }
+          ),
+        ],
+        providers: [ApiServiceErrorHandler, ApiService],
+      });
+
+      apiService = TestBed.get(ApiService);
+      httpTestingController = TestBed.get(HttpTestingController);
+      store$ = TestBed.get(Store);
+    });
+
+    afterEach(() => {
+      // After every test, assert that there are no more pending requests.
+      httpTestingController.verify();
+    });
+
+    it('should always have default headers', () => {
+      apiService.get('dummy').subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.keys()).not.toBeEmpty();
+      expect(req.request.headers.get('content-type')).toEqual('application/json');
+      expect(req.request.headers.get('Accept')).toEqual('application/json');
+    });
+
+    it('should always append additional headers', () => {
+      apiService
+        .get('dummy', {
+          headers: new HttpHeaders({
+            dummy: 'test',
+          }),
+        })
+        .subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.keys()).not.toBeEmpty();
+      expect(req.request.headers.has('dummy')).toBeTrue();
+      expect(req.request.headers.get('content-type')).toEqual('application/json');
+      expect(req.request.headers.get('Accept')).toEqual('application/json');
+    });
+
+    it('should always have overridable default headers', () => {
+      apiService
+        .get('dummy', {
+          headers: new HttpHeaders({
+            Accept: 'application/xml',
+            'content-type': 'application/xml',
+          }),
+        })
+        .subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.keys()).not.toBeEmpty();
+      expect(req.request.headers.get('content-type')).toEqual('application/xml');
+      expect(req.request.headers.get('Accept')).toEqual('application/xml');
+    });
+
+    it('should not have a token, when no token is in store', () => {
+      apiService.get('dummy').subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+    });
+
+    it('should have a token, when token is in store', () => {
+      const apiToken = 'blubb';
+      store$.dispatch(new SetAPIToken({ apiToken }));
+      apiService.get('dummy').subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeTrue();
+      expect(req.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(apiToken);
+    });
+
+    it('should not have a token, when request is authorization request', () => {
+      const apiToken = 'blubb';
+      store$.dispatch(new SetAPIToken({ apiToken }));
+      apiService
+        .get('dummy', { headers: new HttpHeaders().set(ApiService.AUTHORIZATION_HEADER_KEY, 'dummy') })
+        .subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
     });
   });
 });

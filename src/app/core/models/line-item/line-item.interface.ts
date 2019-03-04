@@ -4,7 +4,7 @@ import { Price } from '../price/price.model';
 
 export interface LineItemData {
   id: string;
-  calculationState: 'CALCULATED' | 'UNCALCULATED';
+  calculated: boolean;
   position: number;
   quantity: {
     value: number;

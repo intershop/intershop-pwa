@@ -1,9 +1,11 @@
+import { Price } from '../price/price.model';
+
 export interface PaymentMethod {
-  name: string;
-  type: string;
   id: string;
-  displayName?: string;
-  applicability?: string;
-  restrictions?: string[];
-  paymentParameters?: { name: string; type: string; key: string }[];
+  displayName: string;
+  description?: string;
+  paymentCosts?: Price;
+  paymentCostsThreshold?: Price;
+  isRestricted?: boolean;
+  restrictionCode?: string;
 }

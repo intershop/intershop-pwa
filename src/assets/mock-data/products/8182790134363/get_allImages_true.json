@@ -56,14 +56,14 @@
       }
     },
     {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
-    },
-    {
       "name": "Video formats supported",
       "type": "String",
       "value": "H.264|MP4"
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
     },
     {
       "name": "Supported video modes",
@@ -71,19 +71,14 @@
       "value": "1080p|1440p|720p|960p"
     },
     {
-      "name": "Cables included",
-      "type": "String",
-      "value": "USB"
-    },
-    {
       "name": "White balance",
       "type": "String",
       "value": "Auto|Manual"
     },
     {
-      "name": "Battery technology",
+      "name": "Cables included",
       "type": "String",
-      "value": "Lithium-Ion (Li-Ion)"
+      "value": "USB"
     },
     {
       "name": "Full HD",
@@ -94,6 +89,11 @@
       "name": "Wireless LAN (WLAN) connection",
       "type": "String",
       "value": "Yes"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion (Li-Ion)"
     },
     {
       "name": "Compatible memory cards",
@@ -203,7 +203,7 @@
   },
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "back L",
@@ -213,7 +213,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "back M",
@@ -223,7 +223,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "back S",
@@ -233,7 +233,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -243,7 +243,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -253,7 +253,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",
@@ -263,7 +263,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "side L",
@@ -273,7 +273,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "side M",
@@ -283,7 +283,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "side S",

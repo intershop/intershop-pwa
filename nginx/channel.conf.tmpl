@@ -2,11 +2,10 @@ server {
     listen 80;
     server_name ~^$SUBDOMAIN\..+$;
 
-    include /etc/nginx/pagespeed.conf;
-
     location / {
         proxy_cache my_cache;
-        proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
+        # enable to also cache error responses
+        # proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -27,10 +26,13 @@ server {
         if ($request_uri !~* ";lang=") {
             rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;lang=$LANG";
         }
+        if (-f /etc/nginx/conf.d/icm.conf) {
+            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
+        }
         rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
 
         proxy_pass $UPSTREAM_PWA;
     }
 
-    include /etc/nginx/conf.d/icm.common;
+    $ICM_INCLUDE
 }

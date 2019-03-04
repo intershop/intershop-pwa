@@ -1,1 +1,6 @@
-<ish-content-page [contentPageId]="contentPageId$ | async"></ish-content-page>
+<ng-container *ngIf="(contentPage$ | async) as contentPage">
+  <ish-breadcrumb [trail]="[{ key: contentPage.name }]"></ish-breadcrumb>
+  <ish-content-page [contentPage]="contentPage"></ish-content-page>
+</ng-container>
+
+<ish-loading *ngIf="(contentPageLoading$ | async)"></ish-loading>

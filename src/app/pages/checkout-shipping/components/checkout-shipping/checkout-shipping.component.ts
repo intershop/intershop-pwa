@@ -50,7 +50,7 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getCommonShippingMethod(): string {
-    return this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : '';
+    return this.basket && this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : '';
   }
 
   /**
@@ -73,7 +73,7 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return !this.basket.commonShippingMethod && this.submitted;
+    return !this.basket || (!this.basket.commonShippingMethod && this.submitted);
   }
 
   ngOnDestroy() {

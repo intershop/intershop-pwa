@@ -1,11 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, resetCalls, verify, when } from 'ts-mockito';
+import { Observable, noop, of, throwError } from 'rxjs';
+import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -23,8 +26,13 @@ describe('Products Effects', () => {
   let effects: ProductsEffects;
   let store$: Store<{}>;
   let productsServiceMock: ProductsService;
+  let router: Router;
+  let location: Location;
 
-  const router = mock(Router);
+  // tslint:disable-next-line:use-component-change-detection
+  @Component({ template: 'dummy' })
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+  class DummyComponent {}
 
   beforeEach(() => {
     productsServiceMock = mock(ProductsService);
@@ -46,7 +54,9 @@ describe('Products Effects', () => {
     );
 
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
+        RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
           locale: localeReducer,
@@ -56,13 +66,14 @@ describe('Products Effects', () => {
         ProductsEffects,
         provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: Router, useFactory: () => instance(router) },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
+    router = spy(TestBed.get(Router));
+    location = TestBed.get(Location);
   });
 
   describe('loadProduct$', () => {
@@ -204,20 +215,19 @@ describe('Products Effects', () => {
   });
 
   describe('redirectIfErrorInProducts$', () => {
-    it('should redirect if triggered on product detail page', done => {
+    it('should redirect if triggered on product detail page', fakeAsync(() => {
       when(router.url).thenReturn('/category/A/product/SKU');
 
       const action = new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError });
 
       actions$ = of(action);
 
-      effects.redirectIfErrorInProducts$.subscribe(() => {
-        verify(router.navigate(anything())).once();
-        const [param] = capture(router.navigate).last();
-        expect(param).toEqual(['/error']);
-        done();
-      });
-    });
+      effects.redirectIfErrorInProducts$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/error');
+    }));
 
     it('should not redirect if triggered on page other than product detail page', done => {
       when(router.url).thenReturn('/search/term');
@@ -231,7 +241,7 @@ describe('Products Effects', () => {
   });
 
   describe('redirectIfErrorInCategoryProducts$', () => {
-    it('should redirect if triggered', done => {
+    it('should redirect if triggered', fakeAsync(() => {
       resetCalls(router);
 
       const action = new fromActions.LoadProductsForCategoryFail({
@@ -241,12 +251,11 @@ describe('Products Effects', () => {
 
       actions$ = of(action);
 
-      effects.redirectIfErrorInCategoryProducts$.subscribe(() => {
-        verify(router.navigate(anything())).once();
-        const [param] = capture(router.navigate).last();
-        expect(param).toEqual(['/error']);
-        done();
-      });
-    });
+      effects.redirectIfErrorInCategoryProducts$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/error');
+    }));
   });
 });

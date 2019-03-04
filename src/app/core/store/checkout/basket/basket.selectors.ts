@@ -28,7 +28,6 @@ export const getCurrentBasket = createSelector(
             availability: products[li.productSKU] ? products[li.productSKU].availability : undefined,
           })),
           itemsCount: BasketHelper.getBasketItemsCount(basket.basket.lineItems),
-          payment: basket.payments[0],
         }
 );
 

@@ -2,15 +2,16 @@
 {
   "editor.renderWhitespace": "all",
   "editor.formatOnSave": true,
-  "tslint.autoFixOnSave": true,
   "tslint.alwaysShowRuleFailuresAsWarnings": true,
 
   // file type specific exclusions
   "[handlebars]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": false
   },
   "files.associations": {
     "__*.*": "ng-template"
   },
-  "ngschematics.schematics": ["intershop-schematics"]
+  "ngschematics.schematics": ["intershop-schematics"],
+  "workbench.iconTheme": "vscode-icons",
+  "prettier.tslintIntegration": true
 }

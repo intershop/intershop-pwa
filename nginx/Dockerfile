@@ -7,8 +7,8 @@ RUN echo "intalling nginx with mod-pagespeed" && \
 
 FROM scratch as configstep
 COPY --from=nginx:mainline /etc/nginx /etc/nginx
-COPY nginx.conf pagespeed.conf /etc/nginx/
-COPY perf.common icm.common.tmpl channel.conf.tmpl /etc/nginx/conf.d/
+COPY nginx.conf perf.conf pagespeed.conf /etc/nginx/
+COPY icm.conf.tmpl channel.conf.tmpl /etc/nginx/conf.d/
 COPY entrypoint.sh /
 COPY 50x.html /usr/share/nginx/html/
 
@@ -20,7 +20,7 @@ RUN apt-get update && \
   rm -r /var/cache/apt /var/lib/apt/lists
 COPY --from=buildstep /usr/local/nginx /usr/local/nginx
 COPY --from=configstep / /
-ENV NPSC_ENABLE_FILTERS=in_place_optimize_for_browser,prioritize_critical_css,inline_preview_images,lazyload_images,rewrite_images,rewrite_css,remove_comments,local_storage_cache,move_css_to_head,move_css_above_scripts,collapse_whitespace,combine_javascript,extend_cache NPSC_JS_PRESERVE_UR_Ls=on
+ENV NPSC_ENABLE_FILTERS=in_place_optimize_for_browser,prioritize_critical_css,inline_preview_images,lazyload_images,rewrite_images,rewrite_css,remove_comments,local_storage_cache,move_css_to_head,move_css_above_scripts,collapse_whitespace,combine_javascript,extend_cache NPSC_JsPreserveURLs=off NPSC_ImagePreserveURLs=on NPSC_ForceCaching=off
 
 EXPOSE 80
 

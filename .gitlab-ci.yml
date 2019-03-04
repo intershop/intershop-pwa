@@ -1,4 +1,5 @@
 stages:
+  - mrconfig
   - setup
   - build
   - integration
@@ -8,14 +9,40 @@ stages:
   - e2e
 
 variables:
-  npm_config_cache: "$CI_PROJECT_DIR/cache/.npm"
-  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  npm_config_cache: '$CI_PROJECT_DIR/cache/.npm'
+  CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   untracked: false
   paths:
     - cache
+
+check_mr_title:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: mrconfig
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-check-mr-title.sh
+    - echo "check complete"
+
+cancel_old_pipelines:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: mrconfig
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-cancel-old-pipelines.sh
+    - echo "cancel complete"
 
 setup:
   image: node:10
@@ -132,9 +159,10 @@ schematics:
     - bash .gitlab-ci-test-schematics.sh
     - echo "schematics complete"
 
-cypress_local:
+cypress_mocked:
   image: cypress/browsers:chrome69
   stage: integration
+  retry: 1
   only:
     - merge_requests
   except:
@@ -158,7 +186,7 @@ cypress_local:
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c 'baseUrl=http://localhost:4200,testFiles=**/*mock*.e2e-spec.ts' -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
     - echo "E2E complete"
 
 publish_pwa:
@@ -181,13 +209,15 @@ publish_pwa:
     - VERSION="$(grep "version" package.json | grep -Eo '[0-9][^"]*')"
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-            --build-arg displayVersion="$VERSION ($CI_COMMIT_REF_NAME @ $CI_COMMIT_SHA)"
-            --label environment="production"
-            --label revision="${CI_BUILD_REF}"
-            --label project="${CI_PROJECT_URL}"
-            .
+      --build-arg displayVersion="$VERSION ($CI_COMMIT_REF_NAME @ $CI_COMMIT_SHA)"
+      --label environment="production"
+      --label revision="${CI_BUILD_REF}"
+      --label project="${CI_PROJECT_URL}"
+      .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
 
 publish_pwa_latest:
   cache: {}
@@ -237,12 +267,13 @@ publish_nginx:
     - performance
   services:
     - docker:dind
+  variables:
+    CI_DEBUG_TRACE: 'true'
   script:
-    - sh .gitlab-ci-check-app-changes.sh '^nginx' || exit 0
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:nginx nginx
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx
+    - (sh .gitlab-ci-check-app-changes.sh '^nginx' || test 'develop' = "${CI_COMMIT_REF_SLUG}") && docker build -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} nginx || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
 
 push_reports:
   stage: publish
@@ -252,18 +283,18 @@ push_reports:
       - develop
   allow_failure: true
   tags:
-  - shell-executor
-  - docker
-  - performance
+    - shell-executor
+    - docker
+    - performance
   script:
-  - docker build -t ${CI_REGISTRY_IMAGE}:reports
-           --build-arg ICM_BASE_URL=${ICM_BASE_URL}
-           --label revision="${CI_BUILD_REF}"
-           --label project="${CI_PROJECT_URL}"
-           --file Dockerfile_reports
-           .
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY_IMAGE}:reports
+    - docker build -t ${CI_REGISTRY_IMAGE}:reports
+      --build-arg ICM_BASE_URL=${ICM_BASE_URL}
+      --label revision="${CI_BUILD_REF}"
+      --label project="${CI_PROJECT_URL}"
+      --file Dockerfile_reports
+      .
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker push ${CI_REGISTRY_IMAGE}:reports
 
 pull_images:
   stage: distribute
@@ -273,15 +304,15 @@ pull_images:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  - demoserver
+    - shell-executor
+    - docker
+    - demoserver
   variables:
     GIT_STRATEGY: none
   script:
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker pull "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
-  - docker pull "${CI_REGISTRY_IMAGE}:reports" || true
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker pull "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
+    - docker pull "${CI_REGISTRY_IMAGE}:reports" || true
 
 deploy_demo:
   stage: deploy
@@ -291,16 +322,16 @@ deploy_demo:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  - chuck-norris-swarm-manager
+    - shell-executor
+    - docker
+    - chuck-norris-swarm-manager
   variables:
     GIT_STRATEGY: none
-    SERVICE: "intershop-pwa"
-    IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
+    SERVICE: 'intershop-pwa'
+    IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo
     url: http://jdevbuildslave01.rnd.j.intershop.de:4321
@@ -313,16 +344,16 @@ deploy_demo_b2b:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  - chuck-norris-swarm-manager
+    - shell-executor
+    - docker
+    - chuck-norris-swarm-manager
   variables:
     GIT_STRATEGY: none
-    SERVICE: "intershop-pwa-b2b"
-    IMAGE: "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
+    SERVICE: 'intershop-pwa-b2b'
+    IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env FEATURES=quoting,compare,recently,businessCustomerRegistration --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently,businessCustomerRegistration --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env FEATURES=quoting,compare,recently,businessCustomerRegistration --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently,businessCustomerRegistration --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo-b2b
     url: http://jdevbuildslave01.rnd.j.intershop.de:4325
@@ -336,16 +367,16 @@ deploy_reports:
       - develop
   allow_failure: true
   tags:
-  - shell-executor
-  - docker
-  - chuck-norris-swarm-manager
+    - shell-executor
+    - docker
+    - chuck-norris-swarm-manager
   variables:
     GIT_STRATEGY: none
-    SERVICE: "intershop-pwa-reports"
-    IMAGE: "${CI_REGISTRY_IMAGE}:reports"
+    SERVICE: 'intershop-pwa-reports'
+    IMAGE: '${CI_REGISTRY_IMAGE}:reports'
   script:
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
   environment:
     name: reports
     url: http://jdevbuildslave01.rnd.j.intershop.de:4324
@@ -355,13 +386,13 @@ deploy_review_b2c:
   cache: {}
   dependencies: []
   tags:
-  - shell-executor
+    - shell-executor
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
-  - echo "done"
+    - echo "done"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
     url: http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
@@ -373,14 +404,13 @@ stop_review_b2c:
   dependencies: []
   when: manual
   tags:
-  - shell-executor
-  - demoserver
+    - shell-executor
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
-  - echo "done"
+    - echo "done"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
     action: stop
@@ -390,42 +420,47 @@ deploy_review_b2b:
   cache: {}
   dependencies: []
   tags:
-  - shell-executor
-  - docker
-  - demoserver
+    - shell-executor
+    - docker
+    - demoserver
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
-  - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-  - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
-        -e ICM_BASE_URL=http://10.0.206.226:4322
-        ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-  - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
-  - docker pull ${CI_REGISTRY_IMAGE}:nginx
-  - docker run -d --name "${CI_COMMIT_REF_SLUG}-nginx"
-        --restart always
-        -e UPSTREAM_ICM=http://10.0.206.226:4322
-        --link $CI_COMMIT_REF_SLUG-pwa
-        -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa:4200
-        -e PWA_1_SUBDOMAIN=b2b
-        -e PWA_1_CHANNEL=inSPIRED-inTRONICS_Business-Site
-        -e PWA_1_FEATURES=quoting,recently,compare,businessCustomerRegistration
-        -e PWA_2_SUBDOMAIN=b2c
-        -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site
-        -e PWA_3_SUBDOMAIN=de
-        -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
-        -e PWA_3_LANG=de_DE
-        -e PWA_3_FEATURES=none
-        -e PWA_4_SUBDOMAIN=smb
-        -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
-        -e PWA_4_APPLICATION=smb-responsive
-        -e PWA_4_FEATURES=quoting
-        -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
-        ${CI_REGISTRY_IMAGE}:nginx
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
+      -e LOGGING=true
+      -e ICM_BASE_URL=http://10.0.206.226:4322
+      --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
+    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+    - docker run -d --name "${CI_COMMIT_REF_SLUG}-nginx"
+      --restart always
+      -e UPSTREAM_ICM=http://10.0.206.226:4322
+      --link $CI_COMMIT_REF_SLUG-pwa
+      -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa:4200
+      -e PWA_1_SUBDOMAIN=b2b
+      -e PWA_1_CHANNEL=inSPIRED-inTRONICS_Business-Site
+      -e PWA_1_FEATURES=quoting,recently,compare,businessCustomerRegistration
+      -e PWA_2_SUBDOMAIN=b2c
+      -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_3_SUBDOMAIN=de
+      -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_3_LANG=de_DE
+      -e PWA_3_FEATURES=none
+      -e PWA_4_SUBDOMAIN=smb
+      -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_4_APPLICATION=smb-responsive
+      -e PWA_4_FEATURES=quoting
+      -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
+      ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     url: http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
@@ -437,16 +472,16 @@ stop_review_b2b:
   dependencies: []
   when: manual
   tags:
-  - shell-executor
-  - docker
-  - demoserver
+    - shell-executor
+    - docker
+    - demoserver
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
-    SERVICE: "${CI_COMMIT_REF_SLUG}-nginx"
   script:
-  - docker rm -f "${SERVICE}" || true
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
@@ -456,6 +491,7 @@ cypress_remote:
   stage: e2e
   only:
     - merge_requests
+    - triggers
   tags:
     - docker-executor
   artifacts:
@@ -466,17 +502,48 @@ cypress_remote:
     paths:
       - cypress/screenshots
   dependencies: []
-  variables:
-    ICM_BASE_URL: http://10.0.206.226:4322
-    PWA_BASE_URL: http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
   script:
     - node --version && npm --version
     - export DISPLAY=:5
+    - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://10.0.206.226:4321 || export PWA_BASE_URL=http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm ci --prefer-offline
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - echo "10.0.29.3 b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - test $CI_PIPELINE_SOURCE = trigger || echo "10.0.29.3 b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - node cypress-ci-e2e
+    - node cypress-ci-e2e '**/*b2c*.e2e-spec.ts'
+    - echo "E2E complete"
+
+cypress_remote_b2b:
+  image: cypress/browsers:chrome69
+  stage: e2e
+  only:
+    - merge_requests
+    - triggers
+  tags:
+    - docker-executor
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  dependencies: []
+  script:
+    - node --version && npm --version
+    - export DISPLAY=:5
+    - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://10.0.206.226:4325 || export PWA_BASE_URL=http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    - export CYPRESS_NO_CHANNEL_REDIRECT=1
+    - npm ci --prefer-offline
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
+    - test $CI_PIPELINE_SOURCE = trigger || echo "10.0.29.3 b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
+    - sh .gitlab-ci-test-universal.sh
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - node cypress-ci-e2e '**/*b2b*.e2e-spec.ts'
     - echo "E2E complete"
