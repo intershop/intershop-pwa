@@ -7,5 +7,7 @@
     <ish-loading *ngIf="(quoteLoading$ | async) || (quoteRequestLoading$ | async)"></ish-loading>
   </div>
 
-  <a routerLink="/account/quote-list">{{ 'account.quotes.widget.view_all_quotes.link' | translate }}</a>
+  <a routerLink="/account/quote-list" data-testing-id="quoute-list-link">{{
+    'account.quotes.widget.view_all_quotes.link' | translate
+  }}</a>
 </div>
