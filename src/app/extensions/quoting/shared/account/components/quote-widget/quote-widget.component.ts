@@ -38,4 +38,8 @@ export class QuoteWidgetComponent implements OnChanges {
   getCount(state: StateType): number {
     return this.counts[state] || 0;
   }
+
+  getAcceptedCount(): number {
+    return this.getCount('Responded') + this.getCount('Expired') + this.getCount('Converted');
+  }
 }

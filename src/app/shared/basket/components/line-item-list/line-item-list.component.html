@@ -119,7 +119,7 @@
             <p *ngIf="pli.totals.originTotal" class="text-nowrap">{{ pli.totals.originTotal | ishPrice }}</p>
 
             <!-- (Suggested) Total Price  -->
-            <p class="text-nowrap">{{ pli.totals.total | ishPrice }}</p>
+            <p class="text-nowrap" data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</p>
           </div>
 
           <!-- Value Rebates Total -->

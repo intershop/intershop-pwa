@@ -5,12 +5,18 @@ export class CartPage {
 
   readonly header = new HeaderModule();
 
+  private saveQuoteRequestButton = () => cy.get('[id="createQuote"]');
+
   beginCheckout() {
     cy.wait(1000);
     cy.get(this.tag)
       .find('button')
       .contains('Checkout')
       .click();
+  }
+
+  createQuoteRequest() {
+    this.saveQuoteRequestButton().click();
   }
 
   get lineItems() {
