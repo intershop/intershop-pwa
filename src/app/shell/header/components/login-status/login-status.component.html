@@ -18,7 +18,12 @@
 </ng-container>
 <!-- not logged in -->
 <ng-template #notLoggedIn>
-  <a routerLink="/login" class="my-account-link my-account-login" rel="nofollow">
+  <a
+    routerLink="/login"
+    [queryParams]="{ returnUrl: '/account' }"
+    class="my-account-link my-account-login"
+    rel="nofollow"
+  >
     <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
     <span [ngClass]="getViewClasses()">{{ 'account.login.link' | translate }}</span>
   </a>

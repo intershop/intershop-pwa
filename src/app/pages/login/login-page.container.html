@@ -1,6 +1,1 @@
-<ish-login-form
-  [loginType]="userRegistrationLoginType"
-  [isLoggedIn]="isLoggedIn$ | async"
-  [error]="loginError$ | async"
-  (login)="loginUser($event)"
-></ish-login-form>
+<ish-login-page [isLoggedIn]="isLoggedIn$ | async"></ish-login-page>
