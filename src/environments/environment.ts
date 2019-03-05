@@ -17,6 +17,9 @@ export const environment = {
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
+  // To use the Google Tag Manager, insert a correct GTM-Token and uncomment the next line
+  // gtmToken: 'GTM-XXXXXXX',
+
   // configuration of the available locales - hard coded for now
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
@@ -48,6 +51,7 @@ export const environment = {
     'recently',
     // 'quoting',
     'stickyHeader',
+    // 'tracking',
     // 'businessCustomerRegistration'
   ],
 };
