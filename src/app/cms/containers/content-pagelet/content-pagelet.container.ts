@@ -1,4 +1,5 @@
 // tslint:disable:ccp-no-markup-in-containers
+// tslint:disable:ccp-no-intelligence-in-components
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +13,7 @@ import {
 } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
 import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
 import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 
@@ -30,7 +32,11 @@ export class ContentPageletContainerComponent implements OnChanges {
   @ViewChild('cmsOutlet', { read: ViewContainerRef })
   cmsOutlet: ViewContainerRef;
 
-  constructor(injector: Injector, private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(
+    injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private sfeAdapter: SfeAdapterService
+  ) {
     this.components = injector.get<CMSComponentProvider[]>(CMS_COMPONENT, []);
   }
 
@@ -55,7 +61,10 @@ export class ContentPageletContainerComponent implements OnChanges {
 
   private initializeComponent(instance: CMSComponentInterface) {
     instance.pagelet = this.pagelet;
-    instance.setSfeMetadata(SfeMapper.mapPageletViewToSfeMetadata(this.pagelet));
+
+    if (this.sfeAdapter.isInitialized()) {
+      instance.setSfeMetadata(SfeMapper.mapPageletViewToSfeMetadata(this.pagelet));
+    }
 
     // OnChanges has to be manually invoked on dynamically created components
     if (instance.ngOnChanges) {
