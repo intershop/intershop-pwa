@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
-import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { LoginPageContainerComponent } from './login-page.container';
@@ -20,15 +19,12 @@ describe('Login Page Container', () => {
       declarations: [
         LoginPageContainerComponent,
         MockComponent({
-          selector: 'ish-login-form',
+          selector: 'ish-login-page',
           template: 'Login Form',
-          inputs: ['loginType', 'isLoggedIn', 'error'],
+          inputs: ['isLoggedIn'],
         }),
       ],
-      providers: [
-        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-        { provide: Store, useFactory: () => instance(storeMock$) },
-      ],
+      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
     }).compileComponents();
   }));
 
@@ -46,6 +42,6 @@ describe('Login Page Container', () => {
 
   it('should render login form on Login page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-login-form')).toBeTruthy();
+    expect(element.querySelector('ish-login-page')).toBeTruthy();
   });
 });
