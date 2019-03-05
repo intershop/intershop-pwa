@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+// tslint:disable:ccp-no-intelligence-in-components
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
-import { ContentEntryPointView, ContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
+import { ContentEntryPointView } from 'ish-core/models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
+import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
 import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
 import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
 
@@ -13,22 +15,28 @@ import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
   templateUrl: './content-include.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentIncludeContainerComponent extends SfeMetadataWrapper implements OnInit {
+export class ContentIncludeContainerComponent extends SfeMetadataWrapper implements OnInit, OnDestroy {
   @Input() includeId: string;
+  contentInclude$: Observable<ContentEntryPointView>;
+  private destroy$ = new Subject();
 
-  constructor(private store: Store<{}>, private cd: ChangeDetectorRef) {
+  constructor(private store: Store<{}>, private cd: ChangeDetectorRef, private sfeAdapter: SfeAdapterService) {
     super();
   }
-
-  contentInclude$: Observable<ContentPageletEntryPointView>;
 
   ngOnInit() {
     this.contentInclude$ = this.store.pipe(select(getContentInclude, this.includeId));
 
-    this.contentInclude$.pipe(filter(include => !!include)).subscribe(include => {
-      this.setSfeMetadata(SfeMapper.mapIncludeViewToSfeMetadata(include));
-      this.cd.markForCheck();
-    });
+    this.contentInclude$
+      .pipe(
+        filter(() => this.sfeAdapter.isInitialized()),
+        filter(include => !!include),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(include => {
+        this.setSfeMetadata(SfeMapper.mapIncludeViewToSfeMetadata(include));
+        this.cd.markForCheck();
+      });
 
     this.contentInclude$
       .pipe(
@@ -36,5 +44,9 @@ export class ContentIncludeContainerComponent extends SfeMetadataWrapper impleme
         filter(x => !x)
       )
       .subscribe(() => this.store.dispatch(new LoadContentInclude({ includeId: this.includeId })));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }
