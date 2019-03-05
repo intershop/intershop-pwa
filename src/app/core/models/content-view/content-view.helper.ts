@@ -8,15 +8,15 @@ export class ContentViewHelper {
       !!configParamValue && configParamValue.includes(':') ? configParamValue.split(':')[0] : undefined;
     switch (linkPrefix) {
       case 'product':
-        // for consistent product links it should have the default category in the route
+        // TODO: for consistent product links it should have the default category in the route
         routerLink = `/product/${configParamValue.substring(10, configParamValue.indexOf('@'))}`;
         break;
       case 'category':
-        // the configuration parameter currently only works for first level categories
+        // TODO: the configuration parameter currently only works for first level categories
         routerLink = `/category/${configParamValue.substring(11, configParamValue.indexOf('@'))}`;
         break;
       case 'page':
-        // we do not yet have a '/page' route
+        // TODO: we do not yet have a '/page' route
         routerLink = `/page/${configParamValue.substring(7)}`;
         break;
       case 'route':
@@ -25,7 +25,7 @@ export class ContentViewHelper {
         break;
       case 'http':
       case 'https':
-        // use 'href' instead of 'routerLink' with external links
+        // TODO: use 'href' instead of 'routerLink' with external links
         // tslint:disable-next-line:no-console
         console.log('External links need handling', configParamValue);
         break;
