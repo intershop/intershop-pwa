@@ -1,11 +1,11 @@
 import { CustomerData } from './customer.interface';
-import { CustomerLoginType } from './customer.model';
+import { CustomerUserType } from './customer.model';
 
 export class CustomerMapper {
   /**
    * Get User data for the logged in Business Customer.
    */
-  static mapLoginData(data: CustomerData): CustomerLoginType {
+  static mapLoginData(data: CustomerData): CustomerUserType {
     return data.type === 'SMBCustomer'
       ? {
           customer: {

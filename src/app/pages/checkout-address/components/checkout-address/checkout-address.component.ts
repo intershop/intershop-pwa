@@ -146,6 +146,11 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
           !this.basket.invoiceToAddress) &&
         address.invoiceToAddress
     );
+
+    // preset (empty) basket invoice address if there is only one invoice address available
+    if (this.invoice.form && this.invoice.addresses.length === 1 && this.basket && !this.basket.invoiceToAddress) {
+      this.invoice.form.get('id').setValue(this.invoice.addresses[0].id);
+    }
   }
 
   /**
@@ -163,6 +168,11 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
           !this.basket.commonShipToAddress) &&
         address.shipToAddress
     );
+
+    // preset (empty) basket shipping address if there is only one shipping address available
+    if (this.shipping.form && this.shipping.addresses.length === 1 && this.basket && !this.basket.commonShipToAddress) {
+      this.shipping.form.get('id').setValue(this.shipping.addresses[0].id);
+    }
   }
 
   showInvoiceAddressForm(address?: Address) {

@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
+import { CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 
@@ -16,6 +16,9 @@ export enum UserActionTypes {
   LogoutUser = '[Account] Logout User',
   CreateUser = '[Account] Create User',
   CreateUserFail = '[Account API] Create User Failed',
+  UpdateUser = '[Account] Update User',
+  UpdateUserSuccess = '[Account API] Update User Succeeded',
+  UpdateUserFail = '[Account API] Update User Failed',
   UserErrorReset = '[Account Internal] Reset User Error',
 }
 
@@ -31,7 +34,7 @@ export class LoginUserFail implements Action {
 
 export class LoginUserSuccess implements Action {
   readonly type = UserActionTypes.LoginUserSuccess;
-  constructor(public payload: CustomerLoginType) {}
+  constructor(public payload: CustomerUserType) {}
 }
 
 export class SetAPIToken implements Action {
@@ -67,6 +70,21 @@ export class CreateUserFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
+export class UpdateUser implements Action {
+  readonly type = UserActionTypes.UpdateUser;
+  constructor(public payload: { user: User }) {}
+}
+
+export class UpdateUserSuccess implements Action {
+  readonly type = UserActionTypes.UpdateUserSuccess;
+  constructor(public payload: { user: User }) {}
+}
+
+export class UpdateUserFail implements Action {
+  readonly type = UserActionTypes.UpdateUserFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
 export class UserErrorReset implements Action {
   readonly type = UserActionTypes.UserErrorReset;
 }
@@ -82,4 +100,7 @@ export type UserAction =
   | LogoutUser
   | CreateUser
   | CreateUserFail
+  | UpdateUser
+  | UpdateUserSuccess
+  | UpdateUserFail
   | UserErrorReset;

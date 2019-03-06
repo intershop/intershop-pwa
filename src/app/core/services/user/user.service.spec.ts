@@ -4,7 +4,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType } from '../../models/customer/customer.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { User } from '../../models/user/user.model';
 import { ApiService } from '../api/api.service';
 
@@ -70,6 +70,47 @@ describe('User Service', () => {
 
       userService.createUser(payload).subscribe(() => {
         verify(apiServiceMock.post('customers', anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('Update a user', () => {
+    it('should return an error when called with undefined', done => {
+      when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
+
+      userService.updateUser(undefined).subscribe(fail, err => {
+        expect(err).toBeTruthy();
+        done();
+      });
+
+      verify(apiServiceMock.put(anything(), anything())).never();
+    });
+
+    it("should update a private user when 'updateUser' is called with type 'PrivateCustomer'", done => {
+      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
+
+      const payload = {
+        customer: { customerNo: '4711', type: 'PrivateCustomer' } as Customer,
+        user: {} as User,
+      } as CustomerUserType;
+
+      userService.updateUser(payload).subscribe(() => {
+        verify(apiServiceMock.put('customers/-', anything())).once();
+        done();
+      });
+    });
+
+    it("should update a business user when 'updateUser' is called with type 'SMBCustomer'", done => {
+      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
+
+      const payload = {
+        customer: { customerNo: '4711', type: 'SMBCustomer' } as Customer,
+        user: {} as User,
+      } as CustomerUserType;
+
+      userService.updateUser(payload).subscribe(() => {
+        verify(apiServiceMock.put('customers/-/users/-', anything())).once();
         done();
       });
     });

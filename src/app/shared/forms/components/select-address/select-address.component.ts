@@ -3,6 +3,10 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectComponent, SelectOption } from '../select/select.component';
 
+/**
+ * Select box for the given addresses.
+ * if controlName equals 'id' the form control gets the id of the addresses as selected value, otherwise the address urn is taken as value
+ */
 @Component({
   selector: 'ish-select-address',
   templateUrl: '../select/select.component.html',
@@ -13,7 +17,7 @@ export class SelectAddressComponent extends SelectComponent implements OnChanges
   @Input() emptyOptionLabel: string;
 
   ngOnChanges(c: SimpleChanges) {
-    if (c.addresses) {
+    if (c.addresses && this.addresses) {
       this.options = this.mapToOptions(this.addresses);
     }
   }
@@ -21,7 +25,7 @@ export class SelectAddressComponent extends SelectComponent implements OnChanges
   private mapToOptions(addresses: Address[]): SelectOption[] {
     return addresses.map((a: Address) => ({
       label: `${a.firstName} ${a.lastName}, ${a.addressLine1}, ${a.city}`,
-      value: a.id,
+      value: this.controlName === 'id' ? a.id : a.urn,
     }));
   }
 }
