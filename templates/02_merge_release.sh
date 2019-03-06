@@ -4,11 +4,11 @@ set -v
 set -e
 
 git fetch --all
-version="$(git log --oneline -1 origin/develop | grep -Eo '[0-9]\.[0-9]\.[0-9]')"
+version="$(git log --oneline -1 origin/develop | grep -Eo '[0-9]*\.[0-9]*\.[0-9]*')"
 [ -z "$version" ] && echo "no release prepared" && exit 1
 git checkout master
 git reset --hard origin/master
-git clean -xdf -e '*environment*'
+#git clean -xdf -e '*environment*' -e '*tslint-rules*' -e '*src/schematics*'
 git merge -m "Merge branch 'develop' into 'master' for $version release" origin/develop
 git push
 git tag -a "RELEASE_$version" -m "Release $version" && git push --tags || true

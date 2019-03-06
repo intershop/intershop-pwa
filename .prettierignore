@@ -6,8 +6,10 @@
 *.svg
 *.groovy
 *.woff
+*.ttf
 *.ico
 *.txt
+*.zip
 *.jar
 *.snap
 *.hbs
@@ -32,3 +34,5 @@ Dockerfile*
 /templates/**/*.*
 /nginx/*.conf
 /nginx/*.tmpl
+*gradle*
+LICENSE
