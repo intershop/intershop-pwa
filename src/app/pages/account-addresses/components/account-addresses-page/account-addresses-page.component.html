@@ -1,6 +1,7 @@
 <div class="my-account-savedAddresses myAccount-addressBox">
   <h1>
     {{ 'account.addresses.saved_address.heading' | translate }}
+    <!-- Add address link -->
     <a
       *ngIf="isCreateAddressFormCollapsed"
       class="btn btn-secondary float-right"
@@ -39,6 +40,26 @@
         <div class="section" data-testing-id="preferred-invoice-and-shipping-address">
           <h3>{{ 'account.addresses.preferredinvoiceandshipping.heading' | translate }}</h3>
           <ish-address [address]="preferredInvoiceToAddress"></ish-address>
+
+          <div class="col-xs-11 col-sm-7 col-md-5">
+            <form [formGroup]="preferredAddressForm">
+              <ish-select-address
+                [form]="preferredAddressForm"
+                controlName="preferredInvoiceAddressUrn"
+                [addresses]="invoiceAddresses"
+                [emptyOptionLabel]="'account.addresses.preferredinvoice.button.label' | translate"
+                inputClass="w-100"
+              ></ish-select-address>
+
+              <ish-select-address
+                [form]="preferredAddressForm"
+                controlName="preferredShippingAddressUrn"
+                [addresses]="shippingAddresses"
+                [emptyOptionLabel]="'account.addresses.preferredshipping.button.label' | translate"
+                inputClass="w-100"
+              ></ish-select-address>
+            </form>
+          </div>
         </div>
       </ng-container>
 
@@ -53,6 +74,17 @@
           <ng-template #noInvoiceToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_invoice_address.text' | translate }}</p>
           </ng-template>
+          <div class="col-xs-11 col-sm-7 col-md-5">
+            <form [formGroup]="preferredAddressForm">
+              <ish-select-address
+                [form]="preferredAddressForm"
+                controlName="preferredInvoiceAddressUrn"
+                [addresses]="invoiceAddresses"
+                [emptyOptionLabel]="'account.addresses.preferredinvoice.button.label' | translate"
+                inputClass="w-100"
+              ></ish-select-address>
+            </form>
+          </div>
         </div>
 
         <!--preferred shipping address -->
@@ -64,6 +96,17 @@
           <ng-template #noShipToAddress>
             <p class="no-address-info">{{ 'account.addresses.no_preferred_shipping_address.text' | translate }}</p>
           </ng-template>
+          <div class="col-xs-11 col-sm-7 col-md-5">
+            <form [formGroup]="preferredAddressForm">
+              <ish-select-address
+                [form]="preferredAddressForm"
+                controlName="preferredShippingAddressUrn"
+                [addresses]="shippingAddresses"
+                [emptyOptionLabel]="'account.addresses.preferredshipping.button.label' | translate"
+                inputClass="w-100"
+              ></ish-select-address>
+            </form>
+          </div>
         </div>
       </ng-container>
 

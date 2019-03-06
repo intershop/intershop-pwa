@@ -12,7 +12,7 @@ import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
-import { CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
@@ -35,7 +35,7 @@ describe('User Effects', () => {
       type: 'SMBCustomer',
       customerNo: 'PC',
     },
-  } as CustomerLoginType;
+  } as CustomerUserType;
 
   // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
@@ -46,7 +46,8 @@ describe('User Effects', () => {
     userServiceMock = mock(UserService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
-    when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'patricia' } as User));
+    when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
+    when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -103,8 +104,8 @@ describe('User Effects', () => {
       const action = new ua.LoginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = new ua.LoginUserFail({ error: HttpErrorMapper.fromError(error) });
 
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-b', { b: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
       expect(effects.loginUser$).toBeObservable(expected$);
     });
   });
@@ -119,10 +120,9 @@ describe('User Effects', () => {
         done();
       });
     });
-
-    it('should map to action of type LoadBasketSuccess', () => {
+    it('should map to action of type LoadCompanyUserSuccess', () => {
       const action = new ua.LoadCompanyUser();
-      const completion = new ua.LoadCompanyUserSuccess({ user: { firstName: 'patricia' } as User });
+      const completion = new ua.LoadCompanyUserSuccess({ user: { firstName: 'Patricia' } as User });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -130,7 +130,19 @@ describe('User Effects', () => {
       expect(effects.loadCompanyUser$).toBeObservable(expected$);
     });
 
-    // TODO: test LoadBasketFail
+    it('should dispatch a LoadCompanyUserFail action on failed for LoadCompanyUser', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      when(userServiceMock.getCompanyUserData()).thenReturn(throwError(error));
+
+      const action = new ua.LoadCompanyUser();
+      const completion = new ua.LoadCompanyUserFail({ error: HttpErrorMapper.fromError(error) });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.loadCompanyUser$).toBeObservable(expected$);
+    });
   });
 
   describe('goToHomeAfterLogout$', () => {
@@ -217,6 +229,60 @@ describe('User Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateUser$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer: {
+            customerNo: '4711',
+            type: 'PrivateCustomer',
+          } as Customer,
+          user: {} as User,
+        })
+      );
+    });
+    it('should call the api service when Update event is called', done => {
+      const action = new ua.UpdateUser({
+        user: {
+          firstName: 'Patricia',
+        } as User,
+      });
+
+      actions$ = of(action);
+
+      effects.updateUser$.subscribe(() => {
+        verify(userServiceMock.updateUser(anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a UpdateUserSuccess action on successful user update', () => {
+      const user = { firstName: 'Patricia' } as User;
+
+      const action = new ua.UpdateUser({ user });
+      const completion = new ua.UpdateUserSuccess({ user });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.updateUser$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateUserFail action on failed user update', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      when(userServiceMock.updateUser(anything())).thenReturn(throwError(error));
+
+      const action = new ua.UpdateUser({ user: {} as User });
+      const completion = new ua.UpdateUserFail({ error: HttpErrorMapper.fromError(error) });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.updateUser$).toBeObservable(expected$);
     });
   });
 

@@ -4,7 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -13,7 +13,7 @@ import { UserService } from '../../services/user/user.service';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
-import { getUserError } from './user.selectors';
+import { getLoggedInCustomer, getUserError } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
   return (source$: Observable<T>) =>
@@ -91,6 +91,19 @@ export class UserEffects {
         // TODO:see #IS-22750 - user should actually be logged in after registration
         map(() => new userActions.LoginUser({ credentials: data.credentials })),
         mapUserErrorToActionIfPossible(userActions.CreateUserFail)
+      )
+    )
+  );
+
+  @Effect()
+  updateUser$ = this.actions$.pipe(
+    ofType<userActions.UpdateUser>(userActions.UserActionTypes.UpdateUser),
+    mapToPayloadProperty('user'),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    concatMap(([user, customer]) =>
+      this.userService.updateUser({ user, customer }).pipe(
+        map(changedUser => new userActions.UpdateUserSuccess({ user: changedUser })),
+        mapErrorToAction(userActions.UpdateUserFail)
       )
     )
   );
