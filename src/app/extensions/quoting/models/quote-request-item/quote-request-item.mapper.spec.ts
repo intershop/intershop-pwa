@@ -18,22 +18,22 @@ describe('Quote Request Item Mapper', () => {
         singlePrice: {
           type: 'Money',
           value: 237.5,
-          currencyMnemonic: 'USD',
+          currency: 'USD',
         },
         originSinglePrice: {
           type: 'Money',
           value: 237.5,
-          currencyMnemonic: 'USD',
+          currency: 'USD',
         },
         totalPrice: {
           type: 'Money',
           value: 475,
-          currencyMnemonic: 'USD',
+          currency: 'USD',
         },
         originTotalPrice: {
           type: 'Money',
           value: 495,
-          currencyMnemonic: 'USD',
+          currency: 'USD',
         },
         productSKU: '9438012',
       };

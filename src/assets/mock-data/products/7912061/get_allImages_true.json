@@ -340,7 +340,6 @@
   "inStock": true,
   "listPrice": {
     "currency": "USD",
-    "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 129.85
   },
@@ -359,7 +358,6 @@
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currency": "USD",
-    "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 129.85
   },

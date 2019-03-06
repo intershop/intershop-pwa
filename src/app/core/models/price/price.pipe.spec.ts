@@ -28,7 +28,7 @@ describe('Price Pipe', () => {
         price: {
           type: 'Money',
           value: 391.98,
-          currencyMnemonic: 'USD',
+          currency: 'USD',
         },
         en_US: '$391.98',
         de_DE: '391,98\xA0$',
@@ -37,7 +37,7 @@ describe('Price Pipe', () => {
         price: {
           type: 'ProductPrice',
           value: 391.99,
-          currencyMnemonic: 'EUR',
+          currency: 'EUR',
         },
         en_US: '€391.99',
         de_DE: '391,99\xA0€',
