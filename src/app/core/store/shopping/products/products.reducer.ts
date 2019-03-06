@@ -1,6 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { Product } from '../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { ProductVariationLinksMap } from 'ish-core/models/variation-link/variation-link.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
@@ -12,7 +13,7 @@ export interface ProductsState extends EntityState<Product> {
   loading: boolean;
   selected: string;
   failed: string[];
-  variations: {};
+  variations: ProductVariationLinksMap;
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
@@ -52,7 +53,7 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       return {
         ...state,
         loading: false,
-        failed: addFailed(state.failed, action.payload.sku),
+        // failed: addFailed(state.failed, action.payload.sku), // TODO
       };
     }
 
@@ -69,7 +70,7 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       const loadedVariations = action.payload.variations;
       const sku = action.payload.sku;
 
-      const variationEntries = {
+      const variationEntries: ProductVariationLinksMap = {
         ...state.variations,
         [sku]: loadedVariations,
       };

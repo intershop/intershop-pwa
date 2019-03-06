@@ -1,5 +1,7 @@
 import { CategoryTree } from '../category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from '../category-view/category-view.model';
+import { VariationProductMaster } from '../product/product-variation-master.model';
+import { VariationProduct } from '../product/product-variation.model';
 import { Product } from '../product/product.model';
 
 /**
@@ -9,7 +11,18 @@ export interface ProductView extends Product {
   defaultCategory(): CategoryView;
 }
 
-export function createProductView(product: Product, tree: CategoryTree): ProductView {
+export interface VariationProductView extends VariationProduct {
+  defaultCategory(): CategoryView;
+}
+
+export interface VariationProductMasterView extends VariationProductMaster {
+  defaultCategory(): CategoryView;
+}
+
+export function createProductView(
+  product: Product,
+  tree: CategoryTree
+): ProductView | VariationProductView | VariationProductMasterView {
   if (!tree || !product) {
     return;
   }

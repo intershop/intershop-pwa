@@ -202,7 +202,7 @@ describe('Products Effects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.loastMasterProductForProduct$).toBeObservable(expected$);
+      expect(effects.loadMasterProductForProduct$).toBeObservable(expected$);
     });
 
     it('should not trigger LoadProduct action if LoadProductSuccess contains productMasterSKU of loaded product', () => {
@@ -216,7 +216,7 @@ describe('Products Effects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-');
 
-      expect(effects.loastMasterProductForProduct$).toBeObservable(expected$);
+      expect(effects.loadMasterProductForProduct$).toBeObservable(expected$);
     });
   });
 

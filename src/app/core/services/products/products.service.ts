@@ -117,14 +117,11 @@ export class ProductsService {
   /**
    * Get product variations for the given master product sku.
    */
-  getProductVariations(sku: string): Observable<{ sku: string; variations: VariationLink[] }> {
+  getProductVariations(sku: string): Observable<VariationLink[]> {
     if (!sku) {
       return throwError('getProductVariations() called without a sku');
     }
 
-    return this.apiService.get(`products/${sku}/variations`).pipe(
-      unpackEnvelope<VariationLink>(),
-      map(variations => ({ sku, variations }))
-    );
+    return this.apiService.get(`products/${sku}/variations`).pipe(unpackEnvelope<VariationLink>());
   }
 }
