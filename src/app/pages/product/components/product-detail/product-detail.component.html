@@ -51,14 +51,14 @@
 
         <ish-product-add-to-basket
           [product]="product"
-          [disabled]="!productDetailForm.valid"
           [class]="'btn-lg btn-block'"
+          [disabled]="productDetailForm.invalid"
           (productToBasket)="addToBasket()"
         ></ish-product-add-to-basket>
 
         <ish-lazy-product-add-to-quote
           [product]="product"
-          [disabled]="!productDetailForm.valid"
+          [disabled]="productDetailForm.invalid"
           [quantity]="quantity"
           [class]="'btn-block'"
         ></ish-lazy-product-add-to-quote>

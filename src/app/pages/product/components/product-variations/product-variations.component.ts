@@ -9,12 +9,19 @@ import { VariationProduct } from 'ish-core/models/product/product-variation.mode
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { VariationAttribute } from 'ish-core/models/variation-attribute/variation-attribute.model';
 import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
+import { groupBy, objectToArray } from 'ish-core/utils/functions';
 
 export interface SelectOption {
   label: string;
   value: string;
   type: string;
   alternativeCombination?: boolean;
+}
+
+interface AttributeOptionGroup {
+  options: SelectOption[];
+  label: string;
+  id: string;
 }
 
 @Component({
@@ -27,9 +34,8 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
   @Input() masterProduct: VariationProductMaster;
   @Input() variations: VariationLink[];
 
-  selectOptions: {};
   form: FormGroup;
-  controlMetaItems: { id: string; label: string }[] = [];
+  optionGroups: AttributeOptionGroup[];
   private destroy$ = new Subject();
 
   constructor(private formBuilder: FormBuilder, private router: Router) {
@@ -37,17 +43,21 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
+    this.setUpOptionsAndForm();
+  }
+
+  setUpOptionsAndForm() {
     if (this.product && this.masterProduct && this.variations) {
       if (ProductHelper.isMasterProduct(this.product)) {
         this.defaultProductRedirect();
         return;
       }
 
-      this.buildSelectOptions();
-      this.buildSelectForm();
+      this.optionGroups = this.buildOptionGroups(this.masterProduct, this.product);
+      this.form = this.buildSelectForm(this.optionGroups);
 
       if (ProductHelper.isVariationProduct(this.product)) {
-        this.preselectProductAttributes();
+        this.preselectProductAttributes(this.product, this.form);
       }
 
       this.destroy$.next();
@@ -59,85 +69,61 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
   }
 
   /**
-   * Build possible select value structure.
+   * Build select value structure
    */
-  buildSelectOptions() {
-    const selectOptions = {};
+  buildOptionGroups(masterProduct: VariationProductMaster, product: Product): AttributeOptionGroup[] {
+    const options: SelectOption[] = masterProduct.variationAttributeValues
+      .map(attr => ({
+        label: attr.value,
+        value: attr.value,
+        type: attr.variationAttributeId,
+      }))
+      .map(option => ({
+        ...option,
+        alternativeCombination: this.alternativeCombinationCheck(option, product as VariationProduct),
+      }));
 
-    for (const attribute of this.masterProduct.variationAttributeValues) {
-      if (!selectOptions[attribute.variationAttributeId]) {
-        selectOptions[attribute.variationAttributeId] = [];
-      }
+    const groupedOptions = groupBy(options, option => option.type);
 
-      selectOptions[attribute.variationAttributeId].push({
-        label: attribute.value,
-        value: attribute.value,
-        type: attribute.variationAttributeId,
-      });
-    }
-
-    // add alternative combination flag
-    for (const key in selectOptions) {
-      if (selectOptions.hasOwnProperty(key)) {
-        for (const option of selectOptions[key]) {
-          option.alternativeCombination = this.alternativeCombinationCheck(option);
-        }
-      }
-    }
-
-    this.selectOptions = selectOptions;
+    return Object.keys(groupedOptions).map(attrId => {
+      const attribute = masterProduct.variationAttributeValues.find(a => a.variationAttributeId === attrId);
+      return {
+        id: attribute.variationAttributeId,
+        label: attribute.name,
+        options: groupedOptions[attrId],
+      };
+    });
   }
 
   /**
    * Build the product variations select form.
    */
-  buildSelectForm() {
-    const items = {};
-    const controlMetaItems: { id: string; label: string }[] = [];
-
-    for (const attribute of this.masterProduct.variationAttributeValues) {
-      if (!items[attribute.variationAttributeId]) {
-        items[attribute.variationAttributeId] = new FormControl(undefined);
-
-        // Build an array of control meta items for select component rendering.
-        controlMetaItems.push({ id: attribute.variationAttributeId, label: attribute.name });
-      }
-    }
-
-    this.controlMetaItems = controlMetaItems;
-    this.form = this.formBuilder.group(items);
+  buildSelectForm(optionGroups: AttributeOptionGroup[]): FormGroup {
+    return new FormGroup(optionGroups.reduce((acc, group) => ({ ...acc, [group.id]: new FormControl() }), {}));
   }
 
   /**
    * Preselect form selects with valid product variation attributes
    */
-  preselectProductAttributes() {
-    for (const attribute of (this.product as VariationProduct).variableVariationAttributes) {
-      this.form.controls[attribute.variationAttributeId].patchValue(attribute.value);
-    }
+  preselectProductAttributes(product: VariationProduct, form: FormGroup) {
+    product.variableVariationAttributes.forEach(attr => form.get(attr.variationAttributeId).setValue(attr.value));
   }
 
   /**
    * Redirect to default product if master product is selected.
    */
   defaultProductRedirect() {
-    let defaultVariation: VariationLink;
-
-    for (const variation of this.variations) {
-      if (
+    const defaultVariation = this.variations.find(
+      variation =>
         variation.attributes &&
         variation.attributes[0] &&
         variation.attributes[0].name === 'defaultVariation' &&
         variation.attributes[0].value === true
-      ) {
-        defaultVariation = variation;
-        break;
-      }
-    }
+    );
 
     if (defaultVariation) {
       const sku = this.getSku(defaultVariation.uri);
-      this.router.navigate([`/product/${sku}`]);
+      this.router.navigate(['/product', sku]);
     }
   }
 
@@ -146,7 +132,7 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
    * @param values The selected variant form values.
    */
   variantRedirect(values: {}) {
-    const valueArray = this.convertValues(values);
+    const valueArray = objectToArray(values);
     let possibleRedirectUri: string;
 
     for (const variation of this.variations) {
@@ -185,13 +171,13 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
    * @param option  The select option to check.
    * @returns       Indicates if no perfect match is found.
    */
-  alternativeCombinationCheck(option: SelectOption) {
+  alternativeCombinationCheck(option: SelectOption, product: VariationProduct) {
     let quality: number;
     const selectedProductAttributes: VariationAttribute[] = [];
-    const perfectMatchQuality = (this.product as VariationProduct).variableVariationAttributes.length;
+    const perfectMatchQuality = product.variableVariationAttributes.length;
 
     // remove option related attribute type since it should not be involved in combination check.
-    for (const attribute of (this.product as VariationProduct).variableVariationAttributes) {
+    for (const attribute of product.variableVariationAttributes) {
       if (attribute.variationAttributeId !== option.type) {
         selectedProductAttributes.push(attribute);
       }
@@ -228,15 +214,6 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
 
     // imperfect match
     return true;
-  }
-
-  /**
-   * Convert object to array containing objects with key and value
-   * @param values  The object
-   * @returns       The converted array
-   */
-  convertValues(values: { [key: string]: string }) {
-    return Object.keys(values).map(key => ({ key, value: values[key] }));
   }
 
   /**
