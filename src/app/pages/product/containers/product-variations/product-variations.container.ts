@@ -11,8 +11,7 @@ import { getSelectedMasterProduct, getSelectedProductVariations } from 'ish-core
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationsContainerComponent {
-  @Input()
-  product: VariationProduct | VariationProductMaster;
+  @Input() product: VariationProduct | VariationProductMaster;
 
   masterProduct$ = this.store.pipe(select(getSelectedMasterProduct));
   variations$ = this.store.pipe(select(getSelectedProductVariations));

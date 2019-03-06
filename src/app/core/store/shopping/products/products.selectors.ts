@@ -1,17 +1,15 @@
 import { createSelector } from '@ngrx/store';
 
-import { createProductView } from 'ish-core/models/product-view/product-view.model';
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product, ProductType } from '../../../models/product/product.model';
+import { VariationProductMasterView, createProductView } from 'ish-core/models/product-view/product-view.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from '../categories';
-import { ShoppingState, getShoppingState } from '../shopping-store';
+import { getShoppingState } from '../shopping-store';
 
 import { productAdapter } from './products.reducer';
 
 const getProductsState = createSelector(
   getShoppingState,
-  (state: ShoppingState) => state.products
+  state => state.products
 );
 
 export const {
@@ -57,15 +55,12 @@ export const getSelectedProductVariations = createSelector(
   getSelectedProduct,
   getProductVariations,
   (product, variations) => {
-    if (product && product.type === ProductType.VariationProductMaster && variations[product.sku]) {
-      return variations[product.sku];
+    if (ProductHelper.isMasterProduct(product)) {
+      return variations[product.sku] || [];
     }
-    if (
-      product &&
-      product.type === ProductType.VariationProduct &&
-      variations[(product as VariationProduct).productMasterSKU]
-    ) {
-      return variations[(product as VariationProduct).productMasterSKU];
+
+    if (ProductHelper.isVariationProduct(product)) {
+      return variations[product.productMasterSKU] || [];
     }
 
     return [];
@@ -73,14 +68,16 @@ export const getSelectedProductVariations = createSelector(
 );
 
 export const getSelectedMasterProduct = createSelector(
+  getCategoryTree,
   getProductEntities,
   getSelectedProduct,
-  (entities, product): VariationProductMaster => {
-    if (product && product.type === ProductType.VariationProductMaster) {
-      return product as VariationProductMaster;
+  (tree, entities, product): VariationProductMasterView => {
+    if (ProductHelper.isMasterProduct(product)) {
+      return product;
     }
-    if (product && product.type === ProductType.VariationProduct) {
-      return entities[(product as VariationProduct).productMasterSKU] as VariationProductMaster;
+    if (ProductHelper.isVariationProduct(product)) {
+      const masterProduct = entities[product.productMasterSKU];
+      return createProductView(masterProduct, tree);
     }
   }
 );

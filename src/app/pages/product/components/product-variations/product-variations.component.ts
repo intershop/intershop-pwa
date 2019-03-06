@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product, ProductType } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { VariationAttribute } from 'ish-core/models/variation-attribute/variation-attribute.model';
 import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
 
@@ -23,12 +23,9 @@ export interface SelectOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationsComponent implements OnChanges, OnDestroy {
-  @Input()
-  product: Product;
-  @Input()
-  masterProduct: VariationProductMaster;
-  @Input()
-  variations: VariationLink[];
+  @Input() product: Product;
+  @Input() masterProduct: VariationProductMaster;
+  @Input() variations: VariationLink[];
 
   selectOptions: {};
   form: FormGroup;
@@ -41,7 +38,7 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     if (this.product && this.masterProduct && this.variations) {
-      if (this.product.type === ProductType.VariationProductMaster) {
+      if (ProductHelper.isMasterProduct(this.product)) {
         this.defaultProductRedirect();
         return;
       }
@@ -49,7 +46,7 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
       this.buildSelectOptions();
       this.buildSelectForm();
 
-      if (this.product.type === ProductType.VariationProduct) {
+      if (ProductHelper.isVariationProduct(this.product)) {
         this.preselectProductAttributes();
       }
 
@@ -234,23 +231,12 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
   }
 
   /**
-   * Convert value associative array to real array.
-   * @param values  The associative array.
-   * @returns       The converted array.
+   * Convert object to array containing objects with key and value
+   * @param values  The object
+   * @returns       The converted array
    */
-  convertValues(values: {}) {
-    const valueArray: { key: string; value: string }[] = [];
-
-    for (const key in values) {
-      if (values.hasOwnProperty(key)) {
-        valueArray.push({
-          key,
-          value: values[key],
-        });
-      }
-    }
-
-    return valueArray;
+  convertValues(values: { [key: string]: string }) {
+    return Object.keys(values).map(key => ({ key, value: values[key] }));
   }
 
   /**

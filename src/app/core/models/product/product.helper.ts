@@ -1,6 +1,9 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
+import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
+import { VariationProductMaster } from './product-variation-master.model';
+import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
 import { ProductType } from './product.types';
 
@@ -48,8 +51,15 @@ export class ProductHelper {
   /**
    * Check if product is a master product
    */
-  static isMasterProduct(product: Product): boolean {
-    return product.type === ProductType.VariationProductMaster;
+  static isMasterProduct(product: Product): product is VariationProductMaster | VariationProductMasterView {
+    return product && product.type === ProductType.VariationProductMaster;
+  }
+
+  /**
+   * Check if product is a master product
+   */
+  static isVariationProduct(product: Product): product is VariationProduct | VariationProductView {
+    return product && product.type === ProductType.VariationProduct;
   }
 
   /**
