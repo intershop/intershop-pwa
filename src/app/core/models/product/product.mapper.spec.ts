@@ -111,11 +111,11 @@ describe('Product Mapper', () => {
           { name: 'image', value: '/assets/product_img/a.jpg' },
           {
             name: 'listPrice',
-            value: { currencyMnemonic: 'USD', type: 'Money', value: 132.24 },
+            value: { currency: 'USD', type: 'Money', value: 132.24 },
           },
           {
             name: 'salePrice',
-            value: { currencyMnemonic: 'USD', type: 'Money', value: 132.24 },
+            value: { currency: 'USD', type: 'Money', value: 132.24 },
           },
           { name: 'availability', value: true },
           { name: 'manufacturer', value: 'Kodak' },

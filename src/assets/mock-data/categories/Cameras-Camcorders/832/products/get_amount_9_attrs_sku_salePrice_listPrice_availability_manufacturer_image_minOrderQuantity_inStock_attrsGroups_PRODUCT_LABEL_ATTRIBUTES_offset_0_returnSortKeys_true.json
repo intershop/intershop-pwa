@@ -31,7 +31,6 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
-            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 391.98
           }
@@ -41,7 +40,6 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
-            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 391.98
           }
@@ -93,7 +91,6 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
-            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 391.98
           }
@@ -103,7 +100,6 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
-            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 391.98
           }

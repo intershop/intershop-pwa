@@ -15,7 +15,7 @@ export class PriceMapper {
       return {
         type: 'Money',
         value: dataItem[priceType].value,
-        currencyMnemonic: dataItem[priceType].currency,
+        currency: dataItem[priceType].currency,
       };
     }
   }
