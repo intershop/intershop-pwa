@@ -35,7 +35,10 @@
 
       <ish-product-shipment [product]="product"></ish-product-shipment>
 
-      <ish-product-variations-container [product]="product"></ish-product-variations-container>
+      <ish-product-variations
+        *ngIf="hasVariations(product)"
+        [variationOptions]="variationOptions"
+      ></ish-product-variations>
 
       <form [formGroup]="productDetailForm" class="product-form form-horizontal">
         <div class="row">

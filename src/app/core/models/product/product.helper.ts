@@ -1,6 +1,6 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
-import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
+import { ProductView, VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
@@ -60,6 +60,16 @@ export class ProductHelper {
    */
   static isVariationProduct(product: Product): product is VariationProduct | VariationProductView {
     return product && product.type === ProductType.VariationProduct;
+  }
+
+  static hasVariations(
+    product: ProductView | VariationProductView | VariationProductMasterView
+  ): product is VariationProductView | VariationProductMasterView {
+    return (
+      (ProductHelper.isVariationProduct(product) || ProductHelper.isMasterProduct(product)) &&
+      product.variations &&
+      !!product.variations.length
+    );
   }
 
   /**

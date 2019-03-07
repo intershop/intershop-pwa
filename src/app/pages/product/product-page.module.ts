@@ -7,7 +7,6 @@ import { ProductDetailActionsComponent } from './components/product-detail-actio
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductImagesComponent } from './components/product-images/product-images.component';
 import { ProductVariationsComponent } from './components/product-variations/product-variations.component';
-import { ProductVariationsContainerComponent } from './containers/product-variations/product-variations.container';
 import { ProductPageContainerComponent } from './product-page.container';
 
 const productPageRoutes: Routes = [
@@ -30,7 +29,6 @@ const productPageRoutes: Routes = [
     ProductImagesComponent,
     ProductPageContainerComponent,
     ProductVariationsComponent,
-    ProductVariationsContainerComponent,
   ],
 })
 export class ProductPageModule {}
