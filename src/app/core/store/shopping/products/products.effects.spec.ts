@@ -255,7 +255,7 @@ describe('Products Effects', () => {
         product: {
           sku: 'SKU',
           type: ProductType.Product,
-        } as VariationProductMaster,
+        } as Product,
       });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-');
