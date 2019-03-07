@@ -77,7 +77,7 @@ describe('New User', () => {
           .submitAndObserve()
           .its('statusMessage')
           .should('equal', '409 (Conflict)');
-        page.errorText.should('be.visible').and('contain', 'email address already exists');
+        page.errorText.should('be.visible').and('contain', 'e-mail address already exists');
       });
     });
 
