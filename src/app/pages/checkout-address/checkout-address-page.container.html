@@ -2,6 +2,7 @@
   <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
 
   <ish-checkout-address
+    *ngIf="(currentUser$ | async); else anonymousCheckoutStart"
     [currentUser]="currentUser$ | async"
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
@@ -13,6 +14,13 @@
     (createShippingAddress)="createCustomerShippingAddress($event)"
     (deleteShippingAddress)="deleteCustomerAddress($event)"
   ></ish-checkout-address>
+  <ng-template #anonymousCheckoutStart>
+    <ish-checkout-address-anonymous
+      [basket]="basket$ | async"
+      [error]="(basketError$ | async) || (addressesError$ | async)"
+      (createBasketAddress)="createBasketAddress($event)"
+    ></ish-checkout-address-anonymous>
+  </ng-template>
 
   <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
 </div>

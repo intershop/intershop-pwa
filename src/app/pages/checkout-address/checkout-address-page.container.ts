@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { filter, take } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/checkout/addresses';
@@ -15,7 +16,6 @@ import {
   getBasketLoading,
   getCurrentBasket,
 } from 'ish-core/store/checkout/basket';
-
 import { getLoggedInUser } from 'ish-core/store/user';
 
 /**
@@ -39,7 +39,12 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadAddresses());
+    this.currentUser$
+      .pipe(
+        filter(x => !!x),
+        take(1)
+      )
+      .subscribe(() => this.store.dispatch(new LoadAddresses()));
   }
 
   updateBasketInvoiceAddress(addressId: string) {
@@ -60,6 +65,10 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
 
   createCustomerShippingAddress(address: Address) {
     this.store.dispatch(new CreateBasketShippingAddress({ address }));
+  }
+
+  createBasketAddress(addresses: { invoiceAddress: Address; shippingAddress: Address }) {
+    console.log(addresses);
   }
 
   deleteCustomerAddress(addressId: string) {

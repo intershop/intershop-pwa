@@ -2601,5 +2601,6 @@
   "account.quotes.widget.submitted.label": "Submitted",
   "account.quotes.widget.accepted.label": "Accepted",
   "account.quotes.widget.rejected.label": "Rejected",
-  "account.quotes.widget.view_all_quotes.link": "View all Quotes"
+  "account.quotes.widget.view_all_quotes.link": "View all Quotes",
+  "checkout.address.anonymous.guestcheckout.text": "You want to shop as a guest and do not want to create a profile? No problem."
 }

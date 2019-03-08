@@ -2599,5 +2599,6 @@
   "account.quotes.widget.submitted.label": "Gesendet",
   "account.quotes.widget.accepted.label": "Akzeptiert",
   "account.quotes.widget.rejected.label": "Abgelehnt",
-  "account.quotes.widget.view_all_quotes.link": "Alle Preisangebote anzeigen"
+  "account.quotes.widget.view_all_quotes.link": "Alle Preisangebote anzeigen",
+  "checkout.address.anonymous.guestcheckout.text": "Sie m\u00F6chten als Gast einkaufen und kein Profil erstellen? Kein Problem."
 }
