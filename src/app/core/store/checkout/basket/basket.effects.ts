@@ -22,7 +22,7 @@ import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../../shopping/products';
-import { UserActionTypes } from '../../user';
+import { UserActionTypes, getLoggedInCustomer } from '../../user';
 import {
   CreateCustomerAddressFail,
   DeleteCustomerAddressFail,
@@ -78,27 +78,35 @@ export class BasketEffects {
   );
 
   /**
-   * Creates a new customer invoice/shipping address which is assigned to the basket later on
+   * Creates a new invoice/shipping address which is assigned to the basket later on
+   * if the user is logged in a customer address will be created, otherwise a new basket address will be created
    */
   @Effect()
-  createCustomerAddressForBasket$ = this.actions$.pipe(
-    ofType<basketActions.CreateBasketInvoiceAddress | basketActions.CreateBasketShippingAddress>(
-      basketActions.BasketActionTypes.CreateBasketInvoiceAddress,
-      basketActions.BasketActionTypes.CreateBasketShippingAddress
-    ),
+  createAddressForBasket$ = this.actions$.pipe(
+    ofType<basketActions.CreateBasketAddress>(basketActions.BasketActionTypes.CreateBasketAddress),
+    withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
 
-    mergeMap(action =>
-      this.addressService.createCustomerAddress('-', action.payload.address).pipe(
-        map(newAddress => {
-          if (action.type === basketActions.BasketActionTypes.CreateBasketInvoiceAddress) {
-            return new basketActions.CreateBasketInvoiceAddressSuccess({ address: newAddress });
-          } else {
-            return new basketActions.CreateBasketShippingAddressSuccess({ address: newAddress });
-          }
-        }),
-        mapErrorToAction(CreateCustomerAddressFail)
-      )
-    )
+    mergeMap(([action, customer]) => {
+      // create address at customer for logged in user
+      if (customer) {
+        return this.addressService.createCustomerAddress('-', action.payload.address).pipe(
+          map(
+            newAddress =>
+              new basketActions.CreateBasketAddressSuccess({ address: newAddress, scope: action.payload.scope })
+          ),
+          mapErrorToAction(CreateCustomerAddressFail)
+        );
+        // create address at basket for anonymous user
+      } else {
+        return this.basketService.createBasketAddress('current', action.payload.address).pipe(
+          map(
+            newAddress =>
+              new basketActions.CreateBasketAddressSuccess({ address: newAddress, scope: action.payload.scope })
+          ),
+          mapErrorToAction(CreateCustomerAddressFail)
+        );
+      }
+    })
   );
 
   /**
@@ -106,17 +114,20 @@ export class BasketEffects {
    */
   @Effect()
   updateBasketWithNewAddress$ = this.actions$.pipe(
-    ofType<basketActions.CreateBasketInvoiceAddressSuccess | basketActions.CreateBasketShippingAddressSuccess>(
-      basketActions.BasketActionTypes.CreateBasketInvoiceAddressSuccess,
-      basketActions.BasketActionTypes.CreateBasketShippingAddressSuccess
-    ),
+    ofType<basketActions.CreateBasketAddressSuccess>(basketActions.BasketActionTypes.CreateBasketAddressSuccess),
     map(action => {
-      if (action.type === basketActions.BasketActionTypes.CreateBasketInvoiceAddressSuccess) {
+      if (action.payload.scope === 'invoice') {
         return new basketActions.UpdateBasketInvoiceAddress({
           addressId: action.payload.address.id,
         });
-      } else {
+      }
+      if (action.payload.scope === 'shipping') {
         return new basketActions.UpdateBasketShippingAddress({
+          addressId: action.payload.address.id,
+        });
+      }
+      if (action.payload.scope === 'any') {
+        return new basketActions.UpdateBasketInvoiceShippingAddress({
           addressId: action.payload.address.id,
         });
       }
@@ -143,6 +154,21 @@ export class BasketEffects {
     ofType<basketActions.UpdateBasketShippingAddress>(basketActions.BasketActionTypes.UpdateBasketShippingAddress),
     mapToPayloadProperty('addressId'),
     map(commonShipToAddress => new basketActions.UpdateBasket({ update: { commonShipToAddress } }))
+  );
+
+  /**
+   * Updates the invoice and common shipping address of the basket.
+   * Triggers the internal UpdateBasket action that handles the actual updating operation.
+   */
+  @Effect()
+  updateBasketInvoiceShippingAddress$ = this.actions$.pipe(
+    ofType<basketActions.UpdateBasketInvoiceShippingAddress>(
+      basketActions.BasketActionTypes.UpdateBasketInvoiceShippingAddress
+    ),
+    mapToPayloadProperty('addressId'),
+    map(
+      address => new basketActions.UpdateBasket({ update: { invoiceToAddress: address, commonShipToAddress: address } })
+    )
   );
 
   /**

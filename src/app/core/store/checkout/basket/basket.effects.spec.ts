@@ -16,6 +16,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user/user.actions';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressService } from '../../../services/address/address.service';
@@ -60,6 +61,7 @@ describe('Basket Effects', () => {
           { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
         ]),
         StoreModule.forRoot({
+          ...coreReducers,
           shopping: combineReducers(shoppingReducers),
           checkout: combineReducers(checkoutReducers),
         }),
@@ -144,36 +146,70 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('createCustomerInvoiceAddress$', () => {
+  describe('createCustomerAddressForBasket$', () => {
     beforeEach(() => {
       when(addressServiceMock.createCustomerAddress('-', anything())).thenReturn(of(BasketMockData.getAddress()));
+
+      store$.dispatch(
+        new LoginUserSuccess({
+          customer: {
+            customerNo: '4711',
+          } as Customer,
+        })
+      );
     });
-    it('should call the addressService for createCustomerInvoiceAddress', done => {
+    it('should call the addressService if user is logged in', done => {
       const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketInvoiceAddress({ address });
+      const action = new basketActions.CreateBasketAddress({ address, scope: 'invoice' });
       actions$ = of(action);
 
-      effects.createCustomerAddressForBasket$.subscribe(() => {
+      effects.createAddressForBasket$.subscribe(() => {
         verify(addressServiceMock.createCustomerAddress('-', anything())).once();
         done();
       });
     });
 
-    it('should map to Action createCustomerInvoiceAddressSuccess', () => {
+    it('should map to Action createBasketAddressSuccess', () => {
       const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketInvoiceAddress({ address });
-      const completion = new basketActions.CreateBasketInvoiceAddressSuccess({ address });
+      const action = new basketActions.CreateBasketAddress({ address, scope: 'invoice' });
+      const completion = new basketActions.CreateBasketAddressSuccess({ address, scope: 'invoice' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.createCustomerAddressForBasket$).toBeObservable(expected$);
+      expect(effects.createAddressForBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createBasketAddressForBasket$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.createBasketAddress('current', anything())).thenReturn(of(BasketMockData.getAddress()));
+    });
+    it('should call the basketService if user is not logged in', done => {
+      const address = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketAddress({ address, scope: 'invoice' });
+      actions$ = of(action);
+
+      effects.createAddressForBasket$.subscribe(() => {
+        verify(basketServiceMock.createBasketAddress('current', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to Action createBasketAddressSuccess', () => {
+      const address = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketAddress({ address, scope: 'invoice' });
+      const completion = new basketActions.CreateBasketAddressSuccess({ address, scope: 'invoice' });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createAddressForBasket$).toBeObservable(expected$);
     });
   });
 
   describe('updateBasketWithNewInvoiceAddress$', () => {
     it('should map to Action UpdateBasketInvoiceAddress', () => {
       const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketInvoiceAddressSuccess({ address });
+      const action = new basketActions.CreateBasketAddressSuccess({ address, scope: 'invoice' });
       const completion = new basketActions.UpdateBasketInvoiceAddress({ addressId: address.id });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -182,36 +218,10 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('createCustomerShippingAddress$', () => {
-    beforeEach(() => {
-      when(addressServiceMock.createCustomerAddress('-', anything())).thenReturn(of(BasketMockData.getAddress()));
-    });
-    it('should call the addressService for createCustomerShippingAddress', done => {
-      const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketShippingAddress({ address });
-      actions$ = of(action);
-
-      effects.createCustomerAddressForBasket$.subscribe(() => {
-        verify(addressServiceMock.createCustomerAddress('-', anything())).once();
-        done();
-      });
-    });
-
-    it('should map to Action createCustomerShippingAddressSuccess', () => {
-      const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketShippingAddress({ address });
-      const completion = new basketActions.CreateBasketShippingAddressSuccess({ address });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.createCustomerAddressForBasket$).toBeObservable(expected$);
-    });
-  });
-
   describe('updateBasketWithNewShippingAddress$', () => {
     it('should map to Action UpdateBasketShippingAddress', () => {
       const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketShippingAddressSuccess({ address });
+      const action = new basketActions.CreateBasketAddressSuccess({ address, scope: 'shipping' });
       const completion = new basketActions.UpdateBasketShippingAddress({ addressId: address.id });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -266,6 +276,48 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketInvoiceAddress$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const addressId = 'addressId';
+      const action = new basketActions.UpdateBasketInvoiceAddress({ addressId });
+      const completion = new basketActions.UpdateBasket({
+        update: { invoiceToAddress: addressId },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketInvoiceAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketShippingAddress$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const addressId = 'addressId';
+      const action = new basketActions.UpdateBasketShippingAddress({ addressId });
+      const completion = new basketActions.UpdateBasket({
+        update: { commonShipToAddress: addressId },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketShippingAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketInvoiceAndShippingAddress$', () => {
+    it('should trigger the updateBasket action if called', () => {
+      const addressId = 'addressId';
+      const action = new basketActions.UpdateBasketInvoiceShippingAddress({ addressId });
+      const completion = new basketActions.UpdateBasket({
+        update: { invoiceToAddress: addressId, commonShipToAddress: addressId },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketInvoiceShippingAddress$).toBeObservable(expected$);
     });
   });
 

@@ -6,8 +6,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/checkout/addresses';
 import { LoadAddresses } from 'ish-core/store/checkout/addresses/addresses.actions';
 import {
-  CreateBasketInvoiceAddress,
-  CreateBasketShippingAddress,
+  CreateBasketAddress,
   DeleteBasketShippingAddress,
   UpdateBasketCustomerAddress,
   UpdateBasketInvoiceAddress,
@@ -60,15 +59,22 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   }
 
   createCustomerInvoiceAddress(address: Address) {
-    this.store.dispatch(new CreateBasketInvoiceAddress({ address }));
+    this.store.dispatch(new CreateBasketAddress({ address, scope: 'invoice' }));
   }
 
   createCustomerShippingAddress(address: Address) {
-    this.store.dispatch(new CreateBasketShippingAddress({ address }));
+    this.store.dispatch(new CreateBasketAddress({ address, scope: 'shipping' }));
   }
 
-  createBasketAddress(addresses: { invoiceAddress: Address; shippingAddress: Address }) {
-    console.log(addresses);
+  /**
+   * create a basket address and assign it to basket
+   */
+  createBasketAddress(body: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {
+    if (!body || !body.address || !body.scope) {
+      return;
+    }
+
+    this.store.dispatch(new CreateBasketAddress({ address: body.address, scope: body.scope }));
   }
 
   deleteCustomerAddress(addressId: string) {
