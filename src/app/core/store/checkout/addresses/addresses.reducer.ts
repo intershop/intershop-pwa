@@ -22,8 +22,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
   switch (action.type) {
     case AddressActionTypes.LoadAddresses:
     case AddressActionTypes.CreateCustomerAddress:
-    case BasketActionTypes.CreateBasketInvoiceAddress:
-    case BasketActionTypes.CreateBasketShippingAddress:
+    case BasketActionTypes.CreateBasketAddress:
     case BasketActionTypes.UpdateBasketCustomerAddress:
     case AddressActionTypes.DeleteCustomerAddress:
     case BasketActionTypes.DeleteBasketShippingAddress: {
@@ -57,8 +56,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     }
 
     case AddressActionTypes.CreateCustomerAddressSuccess:
-    case BasketActionTypes.CreateBasketInvoiceAddressSuccess:
-    case BasketActionTypes.CreateBasketShippingAddressSuccess: {
+    case BasketActionTypes.CreateBasketAddressSuccess: {
       const { address } = action.payload;
 
       return {

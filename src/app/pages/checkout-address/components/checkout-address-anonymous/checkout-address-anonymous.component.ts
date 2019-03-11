@@ -39,7 +39,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
   @Input() basket: Basket;
   @Input() error: HttpError;
 
-  @Output() createBasketAddress = new EventEmitter<{ invoiceAddress: Address; shippingAddress: Address }>();
+  @Output() createBasketAddress = new EventEmitter<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>();
 
   form: FormGroup;
   invoiceAddressForm: FormGroup;
@@ -122,12 +122,18 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
     // submit address form
     const invoiceAddress = { ...this.invoiceAddressForm.get('address').value, email: this.form.controls.email.value };
+
     const shippingAddress =
       this.form.controls.shipOption.value === 'shipToInvoiceAddress'
-        ? this.invoiceAddressForm.get('address').value
+        ? undefined
         : this.shippingAddressForm.get('address').value;
 
-    this.createBasketAddress.emit({ invoiceAddress, shippingAddress });
+    if (shippingAddress) {
+      this.createBasketAddress.emit({ address: invoiceAddress, scope: 'invoice' });
+      this.createBasketAddress.emit({ address: shippingAddress, scope: 'shipping' });
+    } else {
+      this.createBasketAddress.emit({ address: invoiceAddress, scope: 'any' });
+    }
   }
 
   get nextDisabled() {

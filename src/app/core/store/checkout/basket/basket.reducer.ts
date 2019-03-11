@@ -26,6 +26,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasket:
     case BasketActionTypes.UpdateBasketInvoiceAddress:
     case BasketActionTypes.UpdateBasketShippingAddress:
+    case BasketActionTypes.UpdateBasketInvoiceShippingAddress:
     case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:

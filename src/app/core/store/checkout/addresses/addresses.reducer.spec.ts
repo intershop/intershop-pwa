@@ -2,10 +2,8 @@ import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import {
-  CreateBasketInvoiceAddress,
-  CreateBasketInvoiceAddressSuccess,
-  CreateBasketShippingAddress,
-  CreateBasketShippingAddressSuccess,
+  CreateBasketAddress,
+  CreateBasketAddressSuccess,
   DeleteBasketShippingAddress,
   UpdateBasketCustomerAddress,
 } from '../basket/basket.actions';
@@ -63,18 +61,9 @@ describe('Addresses Reducer', () => {
       });
     });
 
-    describe('CreateBasketInvoiceAddress action', () => {
+    describe('CreateBasketAddress action', () => {
       it('should set loading to true', () => {
-        const action = new CreateBasketInvoiceAddress({ address: BasketMockData.getAddress() });
-        const state = addressesReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('CreateBasketShippingAddress action', () => {
-      it('should set loading to true', () => {
-        const action = new CreateBasketShippingAddress({ address: BasketMockData.getAddress() });
+        const action = new CreateBasketAddress({ address: BasketMockData.getAddress(), scope: 'invoice' });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -107,28 +96,13 @@ describe('Addresses Reducer', () => {
       });
     });
 
-    describe('CreateBasketInvoiceAddressSuccess action', () => {
+    describe('CreateBasketAddressSuccess action', () => {
       it('should add invoice address to store, set loading to false and reset error', () => {
         const address = {
           id: 'test',
         } as Address;
 
-        const action = new CreateBasketInvoiceAddressSuccess({ address });
-        const state = addressesReducer(initialState, action);
-
-        expect(state.ids).toHaveLength(1);
-        expect(state.entities.test).toEqual({ id: 'test' } as Address);
-        expect(state.loading).toBeFalse();
-      });
-    });
-
-    describe('CreateBasketShippingAddressSuccess action', () => {
-      it('should add shipping address to store, set loading to false and reset error', () => {
-        const address = {
-          id: 'test',
-        } as Address;
-
-        const action = new CreateBasketShippingAddressSuccess({ address });
+        const action = new CreateBasketAddressSuccess({ address, scope: 'invoice' });
         const state = addressesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
@@ -166,7 +140,7 @@ describe('Addresses Reducer', () => {
           firstName: 'Patricia',
         } as Address;
 
-        const preAction = new CreateBasketShippingAddressSuccess({ address });
+        const preAction = new CreateBasketAddressSuccess({ address, scope: 'shipping' });
         let state = addressesReducer(initialState, preAction);
 
         address.firstName = 'John';
@@ -216,7 +190,7 @@ describe('Addresses Reducer', () => {
           id: 'addressId',
         } as Address;
 
-        const preAction = new CreateBasketShippingAddressSuccess({ address });
+        const preAction = new CreateBasketAddressSuccess({ address, scope: 'shipping' });
         let state = addressesReducer(initialState, preAction);
 
         const action = new fromActions.DeleteCustomerAddressSuccess({ addressId: address.id });
