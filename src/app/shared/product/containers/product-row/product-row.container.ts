@@ -28,7 +28,7 @@ export class ProductRowContainerComponent implements OnInit {
     this.store.dispatch(new ToggleCompare({ sku: this.product.sku }));
   }
 
-  addToBasket() {
-    this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
+  addToBasket(quantity: number) {
+    this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity }));
   }
 }
