@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -16,7 +17,7 @@ describe('Product Row Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent({
           selector: 'ish-lazy-product-add-to-quote',
@@ -52,6 +53,11 @@ describe('Product Row Component', () => {
           selector: 'ish-product-price',
           template: 'Product Price Component',
           inputs: ['product', 'showInformationalPrice'],
+        }),
+        MockComponent({
+          selector: 'ish-product-quantity',
+          template: 'Product Quantity Component',
+          inputs: ['product', 'parentForm', 'controlName'],
         }),
         ProductRowComponent,
       ],
