@@ -3,7 +3,9 @@
   "description": "Intershop Progressive Web App",
   "version": "0.10.5",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
-  "keywords": ["intershop"],
+  "keywords": [
+    "intershop"
+  ],
   "engines": {
     "node": ">=10.13.0",
     "npm": "~6.4.1"
@@ -131,7 +133,10 @@
   },
   "lint-staged": {
     "linters": {
-      "*": ["npx prettier --loglevel warn --write", "git add"],
+      "*": [
+        "npx prettier --loglevel warn --write",
+        "git add"
+      ],
       "*.ts": [
         "npx tslint --project tsconfig.json --fix",
         "npx jest --findRelatedTests",
