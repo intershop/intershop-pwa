@@ -1,4 +1,4 @@
-# [0.10.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.10.0/) (2019-03-01)
+# [0.10.5](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.10.5/) (2019-03-12)
 
 **required Intershop Commerce Management version: 7.10.5.5**
 
