@@ -2,7 +2,7 @@
   <h1>{{ 'product.compare.link' | translate }}</h1>
 
   <ng-container *ngIf="(compareProductsCount$ | async) as compareProductsCount; else emptyCompareList">
-    <h2>{{ 'product.compare.selected_product_count.message' | translate: { '0': compareProductsCount } }}</h2>
+    <p>{{ 'product.compare.selected_product_count.message' | translate: { '0': compareProductsCount } }}</p>
 
     <ish-product-compare-list
       [compareProducts]="compareProducts$ | async"
