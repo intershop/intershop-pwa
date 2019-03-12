@@ -570,7 +570,7 @@
   "account.productnotification.text": "Cette liste montre tous les produits pour lesquels vous souhaitez recevoir des notifications. Afin d'éditer ou arrêter une notification, cliquez sur le nom du produit.",
   "account.profile.account.profile.update_profile_success.message": "Votre profil a été mis à jour.",
   "account.profile.birthday.label": "Date de naissance",
-  "account.profile.birthday.not_available": "Non disponible",
+  "account.profile.birthday.not_available": "Non indiquée",
   "account.profile.department.label": "Département",
   "account.profile.detail.heading": "Votre profil",
   "account.profile.email.heading": "E-mail",
