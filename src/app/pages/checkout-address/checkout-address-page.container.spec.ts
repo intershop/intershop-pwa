@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -52,6 +54,8 @@ describe('Checkout Address Page Container', () => {
     fixture = TestBed.createComponent(CheckoutAddressPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    store$.dispatch(new LoadBasketSuccess({ basket: { lineItems: [] } as Basket }));
   });
 
   it('should be created', () => {

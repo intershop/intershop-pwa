@@ -56,11 +56,9 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input() addresses: Address[];
   @Input() error: HttpError;
 
-  @Output() updateInvoiceAddress = new EventEmitter<string>();
-  @Output() updateShippingAddress = new EventEmitter<string>();
-  @Output() updateCustomerAddress = new EventEmitter<Address>();
-  @Output() createInvoiceAddress = new EventEmitter<Address>();
-  @Output() createShippingAddress = new EventEmitter<Address>();
+  @Output() assignAddressToBasket = new EventEmitter<{ addressId: string; scope: 'invoice' | 'shipping' | 'any' }>();
+  @Output() createAddress = new EventEmitter<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>();
+  @Output() updateAddress = new EventEmitter<Address>();
   @Output() deleteShippingAddress = new EventEmitter<string>();
 
   invoice = new FormType();
@@ -82,7 +80,9 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.invoice.form
       .get('id')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(invoiceAddressId => this.updateInvoiceAddress.emit(invoiceAddressId));
+      .subscribe(invoiceAddressId =>
+        this.assignAddressToBasket.emit({ addressId: invoiceAddressId, scope: 'invoice' })
+      );
 
     // create shipping address form (selectbox)
     this.shipping.form = new FormGroup({
@@ -93,7 +93,9 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.shipping.form
       .get('id')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(shippingAddressId => this.updateShippingAddress.emit(shippingAddressId));
+      .subscribe(shippingAddressId =>
+        this.assignAddressToBasket.emit({ addressId: shippingAddressId, scope: 'shipping' })
+      );
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -190,17 +192,17 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   /* functions for reactioning on events of the checkout-address-component */
   saveCustomerInvoiceAddress(address: Address) {
     if (this.invoice.address) {
-      this.updateCustomerAddress.emit(address);
+      this.updateAddress.emit(address);
     } else {
-      this.createInvoiceAddress.emit(address);
+      this.createAddress.emit({ address, scope: 'invoice' });
     }
   }
 
   saveCustomerShippingAddress(address: Address) {
     if (this.shipping.address) {
-      this.updateCustomerAddress.emit(address);
+      this.updateAddress.emit(address);
     } else {
-      this.createShippingAddress.emit(address);
+      this.createAddress.emit({ address, scope: 'shipping' });
     }
   }
 
@@ -226,6 +228,14 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   get nextDisabled() {
     return this.basket && (!this.basket.invoiceToAddress || !this.basket.commonShipToAddress) && this.submitted;
+  }
+
+  get sameShippingAndInvoiceAddress() {
+    return (
+      this.basket &&
+      this.basket.invoiceToAddress &&
+      this.basket.commonShipToAddress.urn === this.basket.invoiceToAddress.urn
+    );
   }
 
   ngOnDestroy() {
