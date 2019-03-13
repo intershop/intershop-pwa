@@ -115,6 +115,9 @@ export class QuoteRequestEffects {
     concatMap(([, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuoteRequest(currentQuoteRequest).pipe(
         map(quoteLineItemResult => new actions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult })),
+        tap(quoteLineItemResult =>
+          this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemResult.title}`])
+        ),
         mapErrorToAction(actions.CreateQuoteRequestFromQuoteRequestFail)
       )
     )

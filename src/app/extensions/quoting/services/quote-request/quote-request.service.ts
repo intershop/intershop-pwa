@@ -189,10 +189,12 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.addQuoteRequest().pipe(
           concatMap(quoteRequestId =>
-            this.apiService.put<QuoteLineItemResultModel>(
-              `customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`,
-              body
-            )
+            this.apiService
+              .put<QuoteLineItemResultModel>(
+                `customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`,
+                body
+              )
+              .pipe(map(quoteLineItemResultModel => ({ ...quoteLineItemResultModel, title: quoteRequestId })))
           )
         )
       )
