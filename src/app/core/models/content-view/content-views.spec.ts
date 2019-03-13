@@ -1,17 +1,17 @@
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentEntryPoint } from '../content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
 import {
-  ConfigParameterView,
-  ContentEntryPointView,
-  createConfigParameterView,
-  createContentEntryPointView,
+  ContentConfigurationParameterView,
+  ContentPageletEntryPointView,
+  createContentConfigurationParameterView,
+  createContentPageletEntryPointView,
 } from './content-views';
 
 describe('Content Views', () => {
   let configurationParameters: ContentConfigurationParameters;
-  let contentEntryPoint: ContentEntryPoint;
+  let pageletEntryPoint: ContentPageletEntryPoint;
   let pagelets: { [id: string]: ContentPagelet };
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Content Views', () => {
       key4: { test: 'hello' },
     };
 
-    contentEntryPoint = {
+    pageletEntryPoint = {
       id: 'include',
       definitionQualifiedName: 'fq',
       displayName: 'i1',
@@ -85,21 +85,21 @@ describe('Content Views', () => {
       .reduce((acc, val) => ({ ...acc, ...val }));
   });
 
-  it('should be able to create a view of a content entry point', () => {
-    expect(() => createContentEntryPointView(contentEntryPoint, pagelets)).not.toThrow();
-    expect(createContentEntryPointView(contentEntryPoint, pagelets)).toMatchSnapshot();
+  it('should be able to create a view of a pagelet entry point', () => {
+    expect(() => createContentPageletEntryPointView(pageletEntryPoint, pagelets)).not.toThrow();
+    expect(createContentPageletEntryPointView(pageletEntryPoint, pagelets)).toMatchSnapshot();
   });
 
   it('should be able to create a view of configuration parameters', () => {
-    expect(() => createConfigParameterView(configurationParameters)).not.toThrow();
-    expect(createConfigParameterView(configurationParameters)).toMatchSnapshot();
+    expect(() => createContentConfigurationParameterView(configurationParameters)).not.toThrow();
+    expect(createContentConfigurationParameterView(configurationParameters)).toMatchSnapshot();
   });
 
   describe('parameter view created', () => {
-    let view: ConfigParameterView;
+    let view: ContentConfigurationParameterView;
 
     beforeEach(() => {
-      view = createConfigParameterView(configurationParameters);
+      view = createContentConfigurationParameterView(configurationParameters);
     });
 
     describe('hasParam', () => {
@@ -205,10 +205,10 @@ describe('Content Views', () => {
   });
 
   describe('include view created', () => {
-    let view: ContentEntryPointView;
+    let view: ContentPageletEntryPointView;
 
     beforeEach(() => {
-      view = createContentEntryPointView(contentEntryPoint, pagelets);
+      view = createContentPageletEntryPointView(pageletEntryPoint, pagelets);
     });
 
     it('should have properties on first level', () => {

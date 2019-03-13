@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -35,7 +35,9 @@ describe('Pages Selectors', () => {
     });
 
     it('should select include when it was successfully loaded', () => {
-      store$.dispatch(new actions.LoadContentPageSuccess({ page: { id: 'dummy' } as ContentEntryPoint, pagelets: [] }));
+      store$.dispatch(
+        new actions.LoadContentPageSuccess({ page: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
+      );
 
       expect(getContentPage(store$.state, 'dummy')).toHaveProperty('id', 'dummy');
     });
@@ -46,7 +48,7 @@ describe('Pages Selectors', () => {
       beforeEach(() => {
         IDS.forEach(title =>
           store$.dispatch(
-            new actions.LoadContentPageSuccess({ page: { id: title } as ContentEntryPoint, pagelets: [] })
+            new actions.LoadContentPageSuccess({ page: { id: title } as ContentPageletEntryPoint, pagelets: [] })
           )
         );
       });

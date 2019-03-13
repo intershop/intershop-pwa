@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Content Entry Point Mapper should convert a complex example to complex type 1`] = `
+exports[`Content Pagelet Entry Point Mapper should convert a complex example to complex type 1`] = `
 Object {
-  "contentEntryPoint": Object {
+  "pageletEntryPoint": Object {
     "configurationParameters": Object {},
     "definitionQualifiedName": "fq",
     "displayName": "name-include",
