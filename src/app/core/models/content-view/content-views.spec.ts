@@ -4,9 +4,9 @@ import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
 import {
   ConfigParameterView,
-  ContentEntryPointView,
+  ContentPageletEntryPointView,
   createConfigParameterView,
-  createContentEntryPointView,
+  createContentPageletEntryPointView,
 } from './content-views';
 
 describe('Content Views', () => {
@@ -86,8 +86,8 @@ describe('Content Views', () => {
   });
 
   it('should be able to create a view of a pagelet entry point', () => {
-    expect(() => createContentEntryPointView(pageletEntryPoint, pagelets)).not.toThrow();
-    expect(createContentEntryPointView(pageletEntryPoint, pagelets)).toMatchSnapshot();
+    expect(() => createContentPageletEntryPointView(pageletEntryPoint, pagelets)).not.toThrow();
+    expect(createContentPageletEntryPointView(pageletEntryPoint, pagelets)).toMatchSnapshot();
   });
 
   it('should be able to create a view of configuration parameters', () => {
@@ -205,10 +205,10 @@ describe('Content Views', () => {
   });
 
   describe('include view created', () => {
-    let view: ContentEntryPointView;
+    let view: ContentPageletEntryPointView;
 
     beforeEach(() => {
-      view = createContentEntryPointView(pageletEntryPoint, pagelets);
+      view = createContentPageletEntryPointView(pageletEntryPoint, pagelets);
     });
 
     it('should have properties on first level', () => {
