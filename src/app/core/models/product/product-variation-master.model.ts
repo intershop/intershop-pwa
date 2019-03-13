@@ -1,4 +1,4 @@
-import { VariationAttribute } from '../variation-attribute/variation-attribute.model';
+import { VariationAttribute } from '../product-variation/variation-attribute.model';
 
 import { Product, ProductType } from './product.model';
 

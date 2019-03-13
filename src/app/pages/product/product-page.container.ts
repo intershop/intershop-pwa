@@ -4,8 +4,11 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 
-import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
+import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
+import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
+import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
@@ -55,25 +58,21 @@ export class ProductPageContainerComponent implements OnInit {
     this.store.dispatch(new AddToCompare({ sku }));
   }
 
+  variationSelected({ selection, product }: { selection: VariationSelection; product: VariationProductView }) {
+    const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+    this.redirectToVariation(variation);
+  }
+
+  redirectToVariation(variation: VariationLink) {
+    const sku = variation && variation.uri.split('/').pop();
+    return sku && this.router.navigate(['/product', sku]);
+  }
+
   /**
    * Redirect to default variation product if master product is selected.
    */
   redirectMasterToDefaultVariation(product: VariationProductMasterView) {
-    const defaultVariation = this.findDefaultVariation(product);
-
-    if (defaultVariation) {
-      const sku = defaultVariation.uri.split('/').pop();
-      this.router.navigate(['/product', sku]);
-    }
-  }
-
-  findDefaultVariation(product: VariationProductMasterView) {
-    return product.variations.find(
-      variation =>
-        variation.attributes &&
-        variation.attributes[0] &&
-        variation.attributes[0].name === 'defaultVariation' &&
-        variation.attributes[0].value === true
-    );
+    const defaultVariation = ProductVariationHelper.findDefaultVariationForMaster(product);
+    this.redirectToVariation(defaultVariation);
   }
 }

@@ -1,123 +1,14 @@
 import { createSelector } from '@ngrx/store';
 
-import {
-  VariationProductMasterView,
-  VariationProductView,
-  createProductView,
-} from 'ish-core/models/product-view/product-view.model';
+import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import { VariationProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { VariationAttribute } from 'ish-core/models/variation-attribute/variation-attribute.model';
-import { getSelectedOrder } from 'ish-core/store/orders';
-import { groupBy } from 'ish-core/utils/functions';
 import { getCategoryTree } from '../categories';
 import { getShoppingState } from '../shopping-store';
 
 import { productAdapter } from './products.reducer';
 
 // all this is just placed here temporarily
-export interface VariationSelectOption {
-  label: string;
-  value: string;
-  type: string;
-  alternativeCombination?: boolean;
-  active?: boolean;
-}
-
-export interface VariationOptionGroup {
-  options: VariationSelectOption[];
-  label: string;
-  id: string;
-}
-
-export interface VariationSelection {
-  [key: string]: string;
-}
-
-/**
- * Check specific option if perfect variant match is not existing.
- * @param option  The select option to check.
- * @returns       Indicates if no perfect match is found.
- */
-const alternativeCombinationCheck = (option: VariationSelectOption, product: VariationProductView) => {
-  let quality: number;
-  const selectedProductAttributes: VariationAttribute[] = [];
-  const perfectMatchQuality = product.variableVariationAttributes.length;
-
-  // remove option related attribute type since it should not be involved in combination check.
-  for (const attribute of product.variableVariationAttributes) {
-    if (attribute.variationAttributeId !== option.type) {
-      selectedProductAttributes.push(attribute);
-    }
-  }
-
-  // loop all selected product attributes ignoring the ones related to currently checked option.
-  for (const selectedAttribute of selectedProductAttributes) {
-    // loop all possible variations
-    for (const variation of product.variations) {
-      quality = 0;
-
-      // loop attributes of possible variation.
-      for (const attribute of variation.variableVariationAttributeValues) {
-        // increment quality if variation attribute matches selected product attribute.
-        if (
-          attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
-          attribute.value === selectedAttribute.value
-        ) {
-          quality += 1;
-        }
-
-        // increment quality if variation attribute matches currently checked option.
-        if (attribute.variationAttributeId === option.type && attribute.value === option.value) {
-          quality += 1;
-        }
-      }
-
-      // perfect match found
-      if (quality === perfectMatchQuality) {
-        return false;
-      }
-    }
-  }
-
-  // imperfect match
-  return true;
-};
-
-/**
- * Build select value structure
- */
-const buildVariationOptionGroups = (product: VariationProductView): VariationOptionGroup[] => {
-  const currentSettings = product.variableVariationAttributes.reduce(
-    (acc, attr) => ({
-      ...acc,
-      [attr.variationAttributeId]: attr,
-    }),
-    {}
-  );
-
-  const options: VariationSelectOption[] = product.productMaster.variationAttributeValues
-    .map(attr => ({
-      label: attr.value,
-      value: attr.value,
-      type: attr.variationAttributeId,
-      active: currentSettings && currentSettings[attr.variationAttributeId].value === attr.value,
-    }))
-    .map(option => ({
-      ...option,
-      alternativeCombination: alternativeCombinationCheck(option, product),
-    }));
-
-  const groupedOptions = groupBy(options, option => option.type);
-
-  return Object.keys(groupedOptions).map(attrId => {
-    const attribute = product.productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
-    return {
-      id: attribute.variationAttributeId,
-      label: attribute.name,
-      options: groupedOptions[attrId],
-    };
-  });
-};
 
 ///////////////////////////
 
@@ -192,7 +83,7 @@ export const getSelectedProductVariationOptions = createSelector(
   getSelectedProduct,
   product => {
     if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
-      return buildVariationOptionGroups(product as VariationProductView);
+      return ProductVariationHelper.buildVariationOptionGroups(product as VariationProductView);
     }
   }
 );

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
-import { VariationOptionGroup, VariationSelection } from 'ish-core/store/shopping/products';
-import { objectToArray } from 'ish-core/utils/functions';
+import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
+import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-variations',
@@ -13,25 +13,31 @@ import { objectToArray } from 'ish-core/utils/functions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationsComponent implements OnChanges, OnDestroy {
-  // @Input() product: VariationProductView | VariationProductMasterView;
   @Input() variationOptions: VariationOptionGroup[];
   @Output() selectVariation = new EventEmitter<VariationSelection>();
 
   form: FormGroup;
   private destroy$ = new Subject();
 
-  constructor() {
-    this.form = new FormGroup({});
-  }
-
   ngOnChanges() {
-    this.setUpOptionsAndForm();
+    this.initForm();
+    const variationsFormGroup = this.buildSelectForm(this.variationOptions);
+    this.form.setControl('variations', variationsFormGroup);
   }
 
-  setUpOptionsAndForm() {
-    this.form = this.buildSelectForm(this.variationOptions);
+  initForm() {
+    if (!this.form) {
+      this.form = new FormGroup({
+        variations: new FormGroup({}),
+      });
 
-    this.form.valueChanges.subscribe(this.selectVariation);
+      this.form.valueChanges
+        .pipe(
+          mapToProperty('variations'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(this.selectVariation);
+    }
   }
 
   /**
@@ -48,42 +54,6 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
         };
       }, {})
     );
-  }
-
-  /**
-   * Find possible variant match and redirect.
-   * @param values The selected variant form values.
-   */
-  selectVariationX(formValue: {}, product: VariationProductView): VariationLink {
-    const valueArray = objectToArray(formValue);
-    let possibleVariation: VariationLink;
-
-    for (const variation of product.variations) {
-      let quality = 0;
-
-      for (const variationAttribute of variation.variableVariationAttributeValues) {
-        // selected variant object loop
-        for (const item of valueArray) {
-          if (variationAttribute.variationAttributeId === item.key && variationAttribute.value === item.value) {
-            quality += 1;
-          }
-        }
-      }
-
-      // redirect to perfect match
-      if (quality === valueArray.length) {
-        return variation;
-      }
-      // store possible redirect uri (quality > 0)
-      if (quality > 0 && !possibleVariation) {
-        possibleVariation = variation;
-      }
-    }
-
-    // redirect if match quality > 0
-    if (possibleVariation) {
-      return possibleVariation;
-    }
   }
 
   ngOnDestroy() {
