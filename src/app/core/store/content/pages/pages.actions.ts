@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -27,7 +27,7 @@ export class LoadContentPageFail implements Action {
 
 export class LoadContentPageSuccess implements Action {
   readonly type = PagesActionTypes.LoadContentPageSuccess;
-  constructor(public payload: { page: ContentEntryPoint; pagelets: ContentPagelet[] }) {}
+  constructor(public payload: { page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }) {}
 }
 
 export type PageAction = SelectContentPage | LoadContentPage | LoadContentPageFail | LoadContentPageSuccess;

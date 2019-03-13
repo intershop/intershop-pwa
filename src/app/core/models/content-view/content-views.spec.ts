@@ -1,5 +1,5 @@
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentEntryPoint } from '../content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
 import {
@@ -11,7 +11,7 @@ import {
 
 describe('Content Views', () => {
   let configurationParameters: ContentConfigurationParameters;
-  let contentEntryPoint: ContentEntryPoint;
+  let pageletEntryPoint: ContentPageletEntryPoint;
   let pagelets: { [id: string]: ContentPagelet };
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Content Views', () => {
       key4: { test: 'hello' },
     };
 
-    contentEntryPoint = {
+    pageletEntryPoint = {
       id: 'include',
       definitionQualifiedName: 'fq',
       displayName: 'i1',
@@ -85,9 +85,9 @@ describe('Content Views', () => {
       .reduce((acc, val) => ({ ...acc, ...val }));
   });
 
-  it('should be able to create a view of a content entry point', () => {
-    expect(() => createContentEntryPointView(contentEntryPoint, pagelets)).not.toThrow();
-    expect(createContentEntryPointView(contentEntryPoint, pagelets)).toMatchSnapshot();
+  it('should be able to create a view of a pagelet entry point', () => {
+    expect(() => createContentEntryPointView(pageletEntryPoint, pagelets)).not.toThrow();
+    expect(createContentEntryPointView(pageletEntryPoint, pagelets)).toMatchSnapshot();
   });
 
   it('should be able to create a view of configuration parameters', () => {
@@ -208,7 +208,7 @@ describe('Content Views', () => {
     let view: ContentEntryPointView;
 
     beforeEach(() => {
-      view = createContentEntryPointView(contentEntryPoint, pagelets);
+      view = createContentEntryPointView(pageletEntryPoint, pagelets);
     });
 
     it('should have properties on first level', () => {

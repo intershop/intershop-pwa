@@ -2,8 +2,8 @@
 // due to recursive depending types the definitions must remain in the same file
 import { memoize, once } from 'lodash-es';
 
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentEntryPoint } from '../content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 import { ContentSlot } from '../content-slot/content-slot.model';
 
@@ -83,10 +83,10 @@ export const createSlotView = (slot: ContentSlot, pagelets: { [id: string]: Cont
       };
 
 export const createContentEntryPointView = (
-  contentEntryPoint: ContentEntryPoint,
+  pageletEntryPoint: ContentPageletEntryPoint,
   pagelets: { [id: string]: ContentPagelet }
 ): ContentEntryPointView => ({
-  id: contentEntryPoint.id,
-  name: contentEntryPoint.displayName,
-  ...createSlotView(contentEntryPoint, pagelets),
+  id: pageletEntryPoint.id,
+  name: pageletEntryPoint.displayName,
+  ...createSlotView(pageletEntryPoint, pagelets),
 });

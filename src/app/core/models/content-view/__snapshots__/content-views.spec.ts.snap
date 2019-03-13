@@ -72,7 +72,7 @@ Array [
 ]
 `;
 
-exports[`Content Views should be able to create a view of a content entry point 1`] = `
+exports[`Content Views should be able to create a view of a pagelet entry point 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
