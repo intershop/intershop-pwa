@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 import { contentReducers } from '../content-store.module';
@@ -34,7 +34,7 @@ describe('Pagelets Integration', () => {
       },
     ];
 
-    store$.dispatch(new LoadContentIncludeSuccess({ include: { id: 'id' } as ContentEntryPoint, pagelets }));
+    store$.dispatch(new LoadContentIncludeSuccess({ include: { id: 'id' } as ContentPageletEntryPoint, pagelets }));
 
     const entities = getContentPageletEntities(store$.state);
     expect(entities).not.toBeEmpty();

@@ -1,7 +1,7 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentEntryPointView, createContentEntryPointView } from 'ish-core/models/content-view/content-views';
 import { getContentState } from '../content-store';
@@ -36,6 +36,9 @@ export const getSelectedContentPage = createSelector(
 export const getContentPage = createSelector(
   getPageEntities,
   getContentPageletEntities,
-  (pages: Dictionary<ContentEntryPoint>, pagelets: Dictionary<ContentPagelet>, id: string): ContentEntryPointView =>
-    !pages[id] ? undefined : createContentEntryPointView(pages[id], pagelets)
+  (
+    pages: Dictionary<ContentPageletEntryPoint>,
+    pagelets: Dictionary<ContentPagelet>,
+    id: string
+  ): ContentEntryPointView => (!pages[id] ? undefined : createContentEntryPointView(pages[id], pagelets))
 );

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Dictionary } from '@ngrx/entity';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
 import { createContentEntryPointView } from 'ish-core/models/content-view/content-views';
@@ -14,7 +14,7 @@ describe('Content Page Component', () => {
   let component: ContentPageComponent;
   let element: HTMLElement;
   let fixture: ComponentFixture<ContentPageComponent>;
-  let contentPage: ContentEntryPoint;
+  let contentPage: ContentPageletEntryPoint;
   let pagelets: Dictionary<ContentPagelet>;
   let slot: ContentSlot;
 
