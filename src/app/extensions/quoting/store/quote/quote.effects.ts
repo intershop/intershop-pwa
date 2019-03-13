@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
-import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
@@ -21,6 +22,7 @@ export class QuoteEffects {
     private actions$: Actions,
     private featureToggleService: FeatureToggleService,
     private quoteService: QuoteService,
+    private router: Router,
     private store: Store<{}>
   ) {}
 
@@ -78,6 +80,9 @@ export class QuoteEffects {
     concatMap(([, currentQuoteRequest]) =>
       this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(quoteLineItemRequest => new actions.CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest })),
+        tap(quoteLineItemResult =>
+          this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemRequest.title}`])
+        ),
         mapErrorToAction(actions.CreateQuoteRequestFromQuoteFail)
       )
     )
