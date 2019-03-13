@@ -5,7 +5,7 @@ import {
   CreateBasketAddress,
   CreateBasketAddressSuccess,
   DeleteBasketShippingAddress,
-  UpdateBasketCustomerAddress,
+  UpdateBasketAddress,
 } from '../basket/basket.actions';
 
 import * as fromActions from './addresses.actions';
@@ -115,7 +115,7 @@ describe('Addresses Reducer', () => {
   describe('UpdateCustomerAddress actions', () => {
     describe('UpdateBasketCustomerAddress action', () => {
       it('should set loading to true', () => {
-        const action = new UpdateBasketCustomerAddress({ address: BasketMockData.getAddress() });
+        const action = new UpdateBasketAddress({ address: BasketMockData.getAddress() });
         const state = addressesReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

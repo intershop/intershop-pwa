@@ -23,7 +23,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     case AddressActionTypes.LoadAddresses:
     case AddressActionTypes.CreateCustomerAddress:
     case BasketActionTypes.CreateBasketAddress:
-    case BasketActionTypes.UpdateBasketCustomerAddress:
+    case BasketActionTypes.UpdateBasketAddress:
     case AddressActionTypes.DeleteCustomerAddress:
     case BasketActionTypes.DeleteBasketShippingAddress: {
       return {

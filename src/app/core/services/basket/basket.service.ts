@@ -182,13 +182,43 @@ export class BasketService {
    * @param address   The address which should be created
    * @returns         The new basket address.
    */
-  createBasketAddress(basketId: string, body: Address): Observable<Address> {
+  createBasketAddress(basketId: string, address: Address): Observable<Address> {
     if (!basketId) {
       return throwError('createBasketAddress() called without basketId');
     }
+    if (!address) {
+      return throwError('createBasketAddress() called without address');
+    }
 
     return this.apiService
-      .post(`baskets/${basketId}/addresses`, body, {
+      .post(`baskets/${basketId}/addresses`, address, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(({ data }) => data),
+        map(AddressMapper.fromData)
+      );
+  }
+
+  /**
+   * Updates partly or completely an address for the selected basket of an anonymous user.
+   * @param basketId  The basket id.
+   * @param address   The address data which should be updated
+   * @returns         The new basket address.
+   */
+  updateBasketAddress(basketId: string, address: Address): Observable<Address> {
+    if (!basketId) {
+      return throwError('updateBasketAddress() called without basketId');
+    }
+    if (!address) {
+      return throwError('updateBasketAddress() called without address');
+    }
+    if (!address.id) {
+      return throwError('updateBasketAddress() called without addressId');
+    }
+
+    return this.apiService
+      .patch(`baskets/${basketId}/addresses/${address.id}`, address, {
         headers: this.basketHeaders,
       })
       .pipe(

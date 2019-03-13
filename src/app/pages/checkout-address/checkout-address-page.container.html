@@ -1,26 +1,28 @@
 <div data-testing-id="checkout-address-page">
-  <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
-
-  <ish-checkout-address
-    *ngIf="(currentUser$ | async); else anonymousCheckoutStart"
-    [currentUser]="currentUser$ | async"
-    [basket]="basket$ | async"
-    [addresses]="addresses$ | async"
-    [error]="(basketError$ | async) || (addressesError$ | async)"
-    (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
-    (updateShippingAddress)="updateBasketShippingAddress($event)"
-    (updateCustomerAddress)="updateBasketCustomerAddress($event)"
-    (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
-    (createShippingAddress)="createCustomerShippingAddress($event)"
-    (deleteShippingAddress)="deleteCustomerAddress($event)"
-  ></ish-checkout-address>
-  <ng-template #anonymousCheckoutStart>
-    <ish-checkout-address-anonymous
-      [basket]="basket$ | async"
-      [error]="(basketError$ | async) || (addressesError$ | async)"
-      (createBasketAddress)="createBasketAddress($event)"
-    ></ish-checkout-address-anonymous>
-  </ng-template>
+  <ng-container *ngIf="(basket$ | async) as basket">
+    <ng-container *ngIf="(currentUser$ | async) || validBasketAddresses; else anonymousCheckoutStart">
+      <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
+      <ish-checkout-address
+        [currentUser]="currentUser$ | async"
+        [basket]="basket"
+        [addresses]="addresses$ | async"
+        [error]="(basketError$ | async) || (addressesError$ | async)"
+        (assignAddressToBasket)="assignAddressToBasket($event)"
+        (updateAddress)="updateAddress($event)"
+        (createAddress)="createAddress($event)"
+        (deleteShippingAddress)="deleteCustomerAddress($event)"
+      ></ish-checkout-address>
+    </ng-container>
+    <ng-template #anonymousCheckoutStart>
+      <h1>&nbsp;</h1>
+      <!-- empty h1 to provide space -->
+      <ish-checkout-address-anonymous
+        [basket]="basket"
+        [error]="(basketError$ | async) || (addressesError$ | async)"
+        (createBasketAddress)="createAddress($event)"
+      ></ish-checkout-address-anonymous>
+    </ng-template>
+  </ng-container>
 
   <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
 </div>

@@ -6,11 +6,10 @@ import { Address } from 'ish-core/models/address/address.model';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/checkout/addresses';
 import { LoadAddresses } from 'ish-core/store/checkout/addresses/addresses.actions';
 import {
+  AssignBasketAddress,
   CreateBasketAddress,
   DeleteBasketShippingAddress,
-  UpdateBasketCustomerAddress,
-  UpdateBasketInvoiceAddress,
-  UpdateBasketShippingAddress,
+  UpdateBasketAddress,
   getBasketError,
   getBasketLoading,
   getCurrentBasket,
@@ -35,41 +34,40 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   addressesLoading$ = this.store.pipe(select(getAddressesLoading));
   currentUser$ = this.store.pipe(select(getLoggedInUser));
 
+  // initial basket's valid addresses in order to decide which address component should be displayed
+  validBasketAddresses = false;
+
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
+    // load customer addresses from server if user is logged in
     this.currentUser$
       .pipe(
         filter(x => !!x),
         take(1)
       )
       .subscribe(() => this.store.dispatch(new LoadAddresses()));
-  }
 
-  updateBasketInvoiceAddress(addressId: string) {
-    this.store.dispatch(new UpdateBasketInvoiceAddress({ addressId }));
-  }
-
-  updateBasketShippingAddress(addressId: string) {
-    this.store.dispatch(new UpdateBasketShippingAddress({ addressId }));
-  }
-
-  updateBasketCustomerAddress(address: Address) {
-    this.store.dispatch(new UpdateBasketCustomerAddress({ address }));
-  }
-
-  createCustomerInvoiceAddress(address: Address) {
-    this.store.dispatch(new CreateBasketAddress({ address, scope: 'invoice' }));
-  }
-
-  createCustomerShippingAddress(address: Address) {
-    this.store.dispatch(new CreateBasketAddress({ address, scope: 'shipping' }));
+    // determine if basket addresses are available at page start
+    this.basket$
+      .pipe(
+        filter(x => !!x),
+        take(1)
+      )
+      .subscribe(basket => (this.validBasketAddresses = !!basket.invoiceToAddress && !!basket.commonShipToAddress));
   }
 
   /**
-   * create a basket address and assign it to basket
+   * Assigns another address as basket invoice and/or shipping address
    */
-  createBasketAddress(body: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {
+  assignAddressToBasket(body: { addressId: string; scope: 'invoice' | 'shipping' | 'any' }) {
+    this.store.dispatch(new AssignBasketAddress({ addressId: body.addressId, scope: body.scope }));
+  }
+
+  /**
+   * creates address and assigns it to basket
+   */
+  createAddress(body: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {
     if (!body || !body.address || !body.scope) {
       return;
     }
@@ -77,6 +75,16 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
     this.store.dispatch(new CreateBasketAddress({ address: body.address, scope: body.scope }));
   }
 
+  /**
+   * Updates an address which is assigned to basket
+   */
+  updateAddress(address: Address) {
+    this.store.dispatch(new UpdateBasketAddress({ address }));
+  }
+
+  /**
+   * Deletes a customer address which is assigned to basket
+   */
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(new DeleteBasketShippingAddress({ addressId }));
   }

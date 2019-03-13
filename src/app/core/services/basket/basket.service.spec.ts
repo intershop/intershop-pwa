@@ -127,6 +127,19 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should update a basket address when 'updateBasketAddress' is called", done => {
+    when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({ data: {} as Address }));
+
+    const address = BasketMockData.getAddress();
+
+    basketService.updateBasketAddress(basketMockData.data.id, address).subscribe(() => {
+      verify(
+        apiService.patch(`baskets/${basketMockData.data.id}/addresses/${address.id}`, anything(), anything())
+      ).once();
+      done();
+    });
+  });
+
   it("should get eligible shipping methods for a basket when 'getBasketEligibleShippingMethods' is called", done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 

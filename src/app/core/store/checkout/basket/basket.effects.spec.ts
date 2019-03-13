@@ -206,27 +206,74 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('updateBasketWithNewInvoiceAddress$', () => {
-    it('should map to Action UpdateBasketInvoiceAddress', () => {
+  describe('assignNewAddressToBasket$', () => {
+    it('should map to Action AssignBasketAddress for Invoice Address', () => {
       const address = BasketMockData.getAddress();
       const action = new basketActions.CreateBasketAddressSuccess({ address, scope: 'invoice' });
-      const completion = new basketActions.UpdateBasketInvoiceAddress({ addressId: address.id });
+      const completion = new basketActions.AssignBasketAddress({ addressId: address.id, scope: 'invoice' });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.updateBasketWithNewAddress$).toBeObservable(expected$);
+      expect(effects.assignNewAddressToBasket$).toBeObservable(expected$);
+    });
+
+    it('should map to Action AssignBasketAddress for Shipping Address', () => {
+      const address = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketAddressSuccess({ address, scope: 'shipping' });
+      const completion = new basketActions.AssignBasketAddress({ addressId: address.id, scope: 'shipping' });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.assignNewAddressToBasket$).toBeObservable(expected$);
+    });
+
+    it('should map to Action AssignBasketAddress for Invoice and Shipping Address', () => {
+      const address = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketAddressSuccess({ address, scope: 'any' });
+      const completion = new basketActions.AssignBasketAddress({ addressId: address.id, scope: 'any' });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.assignNewAddressToBasket$).toBeObservable(expected$);
     });
   });
 
-  describe('updateBasketWithNewShippingAddress$', () => {
-    it('should map to Action UpdateBasketShippingAddress', () => {
-      const address = BasketMockData.getAddress();
-      const action = new basketActions.CreateBasketAddressSuccess({ address, scope: 'shipping' });
-      const completion = new basketActions.UpdateBasketShippingAddress({ addressId: address.id });
+  describe('assignBasketAddress$', () => {
+    it('should trigger the updateBasket action to assign an Invoice Address', () => {
+      const addressId = 'addressId';
+      const action = new basketActions.AssignBasketAddress({ addressId, scope: 'invoice' });
+      const completion = new basketActions.UpdateBasket({
+        update: { invoiceToAddress: addressId },
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.updateBasketWithNewAddress$).toBeObservable(expected$);
+      expect(effects.assignBasketAddress$).toBeObservable(expected$);
+    });
+
+    it('should trigger the updateBasket action to assign a Shipping Address', () => {
+      const addressId = 'addressId';
+      const action = new basketActions.AssignBasketAddress({ addressId, scope: 'shipping' });
+
+      const completion = new basketActions.UpdateBasket({
+        update: { commonShipToAddress: addressId },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.assignBasketAddress$).toBeObservable(expected$);
+    });
+
+    it('should trigger the updateBasket action to assign an Invoice and Shipping Address', () => {
+      const addressId = 'addressId';
+      const action = new basketActions.AssignBasketAddress({ addressId, scope: 'any' });
+      const completion = new basketActions.UpdateBasket({
+        update: { invoiceToAddress: addressId, commonShipToAddress: addressId },
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.assignBasketAddress$).toBeObservable(expected$);
     });
   });
 
@@ -279,48 +326,6 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('updateBasketInvoiceAddress$', () => {
-    it('should trigger the updateBasket action if called', () => {
-      const addressId = 'addressId';
-      const action = new basketActions.UpdateBasketInvoiceAddress({ addressId });
-      const completion = new basketActions.UpdateBasket({
-        update: { invoiceToAddress: addressId },
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.updateBasketInvoiceAddress$).toBeObservable(expected$);
-    });
-  });
-
-  describe('updateBasketShippingAddress$', () => {
-    it('should trigger the updateBasket action if called', () => {
-      const addressId = 'addressId';
-      const action = new basketActions.UpdateBasketShippingAddress({ addressId });
-      const completion = new basketActions.UpdateBasket({
-        update: { commonShipToAddress: addressId },
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.updateBasketShippingAddress$).toBeObservable(expected$);
-    });
-  });
-
-  describe('updateBasketInvoiceAndShippingAddress$', () => {
-    it('should trigger the updateBasket action if called', () => {
-      const addressId = 'addressId';
-      const action = new basketActions.UpdateBasketInvoiceShippingAddress({ addressId });
-      const completion = new basketActions.UpdateBasket({
-        update: { invoiceToAddress: addressId, commonShipToAddress: addressId },
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.updateBasketInvoiceShippingAddress$).toBeObservable(expected$);
-    });
-  });
-
   describe('updateBasketShippingMethod$', () => {
     it('should trigger the updateBasket action if called', () => {
       const shippingId = 'shippingId';
@@ -335,19 +340,20 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('updateBasketCustomerAddress$', () => {
+  describe('updateBasketAddress$ for logged in user', () => {
     beforeEach(() => {
       when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(
         of(BasketMockData.getAddress())
       );
+      store$.dispatch(new LoginUserSuccess({ customer: {} as Customer }));
     });
 
-    it('should call the addressService for updateBasketCustomerAddress', done => {
+    it('should call the addressService for updateBasketAddress', done => {
       const address = BasketMockData.getAddress();
-      const action = new basketActions.UpdateBasketCustomerAddress({ address });
+      const action = new basketActions.UpdateBasketAddress({ address });
       actions$ = of(action);
 
-      effects.updateBasketCustomerAddress$.subscribe(() => {
+      effects.updateBasketAddress$.subscribe(() => {
         verify(addressServiceMock.updateCustomerAddress('-', anything())).once();
         done();
       });
@@ -355,13 +361,13 @@ describe('Basket Effects', () => {
 
     it('should map to action of type UpdateCustomerAddressSuccess and LoadBasket', () => {
       const address = BasketMockData.getAddress();
-      const action = new basketActions.UpdateBasketCustomerAddress({ address });
+      const action = new basketActions.UpdateBasketAddress({ address });
       const completion1 = new UpdateCustomerAddressSuccess({ address });
       const completion2 = new basketActions.LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
-      expect(effects.updateBasketCustomerAddress$).toBeObservable(expected$);
+      expect(effects.updateBasketAddress$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
@@ -370,12 +376,54 @@ describe('Basket Effects', () => {
         throwError({ message: 'invalid' })
       );
 
-      const action = new basketActions.UpdateBasketCustomerAddress({ address });
+      const action = new basketActions.UpdateBasketAddress({ address });
       const completion = new UpdateCustomerAddressFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.updateBasketCustomerAddress$).toBeObservable(expected$);
+      expect(effects.updateBasketAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketAddress$ for anonymous user', () => {
+    beforeEach(() => {
+      when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(of(BasketMockData.getAddress()));
+    });
+
+    it('should call the basketService for updateBasketAddress', done => {
+      const address = BasketMockData.getAddress();
+      const action = new basketActions.UpdateBasketAddress({ address });
+      actions$ = of(action);
+
+      effects.updateBasketAddress$.subscribe(() => {
+        verify(basketServiceMock.updateBasketAddress('current', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type UpdateCustomerAddressSuccess and LoadBasket', () => {
+      const address = BasketMockData.getAddress();
+      const action = new basketActions.UpdateBasketAddress({ address });
+      const completion1 = new UpdateCustomerAddressSuccess({ address });
+      const completion2 = new basketActions.LoadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.updateBasketAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
+      const address = BasketMockData.getAddress();
+      when(basketServiceMock.updateBasketAddress(anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+
+      const action = new basketActions.UpdateBasketAddress({ address });
+      const completion = new UpdateCustomerAddressFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketAddress$).toBeObservable(expected$);
     });
   });
 

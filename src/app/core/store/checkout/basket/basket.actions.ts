@@ -16,10 +16,8 @@ export enum BasketActionTypes {
   LoadBasketSuccess = '[Basket API] Load Basket Success',
   CreateBasketAddress = '[Basket] Create Basket Address',
   CreateBasketAddressSuccess = '[Basket Internal] Create Basket Address Success',
-  UpdateBasketInvoiceAddress = '[Basket] Update Baskets Invoice Address',
-  UpdateBasketShippingAddress = '[Basket] Update Baskets Shipping Address',
-  UpdateBasketInvoiceShippingAddress = '[Basket] Update Baskets Invoice and Shipping Address',
-  UpdateBasketCustomerAddress = '[Basket] Update Baskets Customer Address',
+  AssignBasketAddress = '[Basket] Assign an Address to the Basket',
+  UpdateBasketAddress = '[Basket] Update an Address at Basket',
   UpdateBasketShippingMethod = '[Basket] Update Baskets Shipping Method',
   UpdateBasket = '[Basket Internal] Update Basket',
   UpdateBasketFail = '[Basket API] Update Basket Fail',
@@ -78,23 +76,13 @@ export class CreateBasketAddressSuccess implements Action {
   constructor(public payload: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {}
 }
 
-export class UpdateBasketInvoiceAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketInvoiceAddress;
-  constructor(public payload: { addressId: string }) {}
+export class AssignBasketAddress implements Action {
+  readonly type = BasketActionTypes.AssignBasketAddress;
+  constructor(public payload: { addressId: string; scope: 'invoice' | 'shipping' | 'any' }) {}
 }
 
-export class UpdateBasketShippingAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketShippingAddress;
-  constructor(public payload: { addressId: string }) {}
-}
-
-export class UpdateBasketInvoiceShippingAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketInvoiceShippingAddress;
-  constructor(public payload: { addressId: string }) {}
-}
-
-export class UpdateBasketCustomerAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketCustomerAddress;
+export class UpdateBasketAddress implements Action {
+  readonly type = BasketActionTypes.UpdateBasketAddress;
   constructor(public payload: { address: Address }) {}
 }
 
@@ -247,10 +235,8 @@ export type BasketAction =
   | LoadBasketSuccess
   | CreateBasketAddress
   | CreateBasketAddressSuccess
-  | UpdateBasketInvoiceAddress
-  | UpdateBasketShippingAddress
-  | UpdateBasketInvoiceShippingAddress
-  | UpdateBasketCustomerAddress
+  | AssignBasketAddress
+  | UpdateBasketAddress
   | UpdateBasketShippingMethod
   | UpdateBasket
   | UpdateBasketFail

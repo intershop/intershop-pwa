@@ -167,8 +167,8 @@ describe('Checkout Address Component', () => {
   it('should throw updateInvoiceAddress event when invoice address form value id changes', done => {
     fixture.detectChanges();
 
-    component.updateInvoiceAddress.subscribe(formValue => {
-      expect(formValue).toBe('testId');
+    component.assignAddressToBasket.subscribe(formValue => {
+      expect(formValue.addressId).toBe('testId');
       done();
     });
 
@@ -178,8 +178,8 @@ describe('Checkout Address Component', () => {
   it('should throw updateshippingAddress event when shipping address form value id changes', done => {
     fixture.detectChanges();
 
-    component.updateShippingAddress.subscribe(x => {
-      expect(x).toBe('testId');
+    component.assignAddressToBasket.subscribe(formValue => {
+      expect(formValue.addressId).toBe('testId');
       done();
     });
 
@@ -258,8 +258,8 @@ describe('Checkout Address Component', () => {
   it('should throw createInvoiceAddress event when saveCustomerInvoiceAddress is triggered and invoice.address is undefined', done => {
     fixture.detectChanges();
 
-    component.createInvoiceAddress.subscribe(address => {
-      expect(address.id).toBe(BasketMockData.getAddress().id);
+    component.createAddress.subscribe(address => {
+      expect(address.address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
 
@@ -270,7 +270,7 @@ describe('Checkout Address Component', () => {
     fixture.detectChanges();
     component.invoice.address = component.basket.invoiceToAddress;
 
-    component.updateCustomerAddress.subscribe(address => {
+    component.updateAddress.subscribe(address => {
       expect(address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
@@ -281,8 +281,8 @@ describe('Checkout Address Component', () => {
   it('should throw createShippingAddress event when saveCustomerShippingAddress is triggered and shipping.address is undefined', done => {
     fixture.detectChanges();
 
-    component.createShippingAddress.subscribe(address => {
-      expect(address.id).toBe(BasketMockData.getAddress().id);
+    component.createAddress.subscribe(address => {
+      expect(address.address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
 
@@ -293,7 +293,7 @@ describe('Checkout Address Component', () => {
     fixture.detectChanges();
     component.shipping.address = component.basket.commonShipToAddress;
 
-    component.updateCustomerAddress.subscribe(address => {
+    component.updateAddress.subscribe(address => {
       expect(address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
