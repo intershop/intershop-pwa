@@ -5,7 +5,7 @@ import { Dictionary } from '@ngrx/entity';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
-import { createContentEntryPointView } from 'ish-core/models/content-view/content-views';
+import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ContentPageComponent } from './content-page.component';
@@ -67,7 +67,7 @@ describe('Content Page Component', () => {
     fixture = TestBed.createComponent(ContentPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.contentPage = createContentEntryPointView(contentPage, pagelets);
+    component.contentPage = createContentPageletEntryPointView(contentPage, pagelets);
     fixture.detectChanges();
   });
 
