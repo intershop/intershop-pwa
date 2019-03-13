@@ -2,12 +2,12 @@
 // due to recursive depending types the definitions must remain in the same file
 import { memoize, once } from 'lodash-es';
 
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentEntryPoint } from '../content-entry-point/content-entry-point.model';
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 import { ContentSlot } from '../content-slot/content-slot.model';
 
-export interface ConfigParameterView {
+export interface ContentConfigurationParameterView {
   hasParam(key: string): boolean;
   stringParam(key: string, defaultValue?: string): string;
   numberParam(key: string, defaultValue?: number): number;
@@ -15,17 +15,18 @@ export interface ConfigParameterView {
   configParam<T extends object>(key: string): T;
 }
 
-export interface ContentSlotView extends ConfigParameterView {
+export interface ContentEntryPointView {
   pagelets(): ContentPageletView[];
 }
 
-export interface ContentEntryPointView extends ConfigParameterView {
+export interface ContentSlotView extends ContentEntryPointView, ContentConfigurationParameterView {}
+
+export interface ContentPageletEntryPointView extends ContentEntryPointView, ContentConfigurationParameterView {
   id: string;
   name: string;
-  pagelets(): ContentPageletView[];
 }
 
-export interface ContentPageletView extends ConfigParameterView {
+export interface ContentPageletView extends ContentConfigurationParameterView {
   definitionQualifiedName: string;
   configurationParameters: ContentConfigurationParameters;
   id: string;
@@ -34,7 +35,9 @@ export interface ContentPageletView extends ConfigParameterView {
 
 const paramMemoize = (key, defaultValue) => JSON.stringify({ key, defaultValue });
 
-export const createConfigParameterView = (params: ContentConfigurationParameters): ConfigParameterView => ({
+export const createContentConfigurationParameterView = (
+  params: ContentConfigurationParameters
+): ContentConfigurationParameterView => ({
   hasParam: memoize(key => Object.keys(params).includes(key)),
   booleanParam: memoize(
     (key, defaultValue = undefined) =>
@@ -59,7 +62,10 @@ export const createConfigParameterView = (params: ContentConfigurationParameters
 // tslint:disable no-use-before-declare
 // due to cyclic dependencies of slot and pagelets
 
-export const createPageletView = (id: string, pagelets: { [id: string]: ContentPagelet }): ContentPageletView => {
+export const createContentPageletView = (
+  id: string,
+  pagelets: { [id: string]: ContentPagelet }
+): ContentPageletView => {
   const pagelet = pagelets[id];
   return {
     definitionQualifiedName: pagelet.definitionQualifiedName,
@@ -68,25 +74,36 @@ export const createPageletView = (id: string, pagelets: { [id: string]: ContentP
     slot: !pagelet.slots
       ? () => undefined
       : memoize(qualifiedName =>
-          createSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
+          createContentSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
         ),
-    ...createConfigParameterView(pagelet.configurationParameters || {}),
+    ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };
 };
 
-export const createSlotView = (slot: ContentSlot, pagelets: { [id: string]: ContentPagelet }): ContentSlotView =>
+export const createContentEntryPointView = (
+  pageletIDs: string[],
+  pagelets: { [id: string]: ContentPagelet }
+): ContentEntryPointView => ({
+  pagelets:
+    pageletIDs && pageletIDs.length
+      ? once(() => pageletIDs.map(id => createContentPageletView(id, pagelets)))
+      : () => [],
+});
+
+export const createContentSlotView = (slot: ContentSlot, pagelets: { [id: string]: ContentPagelet }): ContentSlotView =>
   !slot
     ? undefined
     : {
-        pagelets: !slot.pageletIDs ? () => [] : once(() => slot.pageletIDs.map(id => createPageletView(id, pagelets))),
-        ...createConfigParameterView(slot.configurationParameters || {}),
+        ...createContentEntryPointView(slot.pageletIDs, pagelets),
+        ...createContentConfigurationParameterView(slot.configurationParameters || {}),
       };
 
-export const createContentEntryPointView = (
-  contentEntryPoint: ContentEntryPoint,
+export const createContentPageletEntryPointView = (
+  pageletEntryPoint: ContentPageletEntryPoint,
   pagelets: { [id: string]: ContentPagelet }
-): ContentEntryPointView => ({
-  id: contentEntryPoint.id,
-  name: contentEntryPoint.displayName,
-  ...createSlotView(contentEntryPoint, pagelets),
+): ContentPageletEntryPointView => ({
+  id: pageletEntryPoint.id,
+  name: pageletEntryPoint.displayName,
+  ...createContentEntryPointView(pageletEntryPoint.pageletIDs, pagelets),
+  ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
 });

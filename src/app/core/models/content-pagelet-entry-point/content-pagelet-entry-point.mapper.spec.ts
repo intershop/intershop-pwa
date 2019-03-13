@@ -1,25 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 
-import { ContentEntryPointData } from './content-entry-point.interface';
-import { ContentEntryPointMapper } from './content-entry-point.mapper';
+import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
+import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 
-describe('Content Entry Point Mapper', () => {
-  let contentEntryPointMapper: ContentEntryPointMapper;
+describe('Content Pagelet Entry Point Mapper', () => {
+  let contentPageletEntryPointMapper: ContentPageletEntryPointMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot({})],
     });
-    contentEntryPointMapper = TestBed.get(ContentEntryPointMapper);
+    contentPageletEntryPointMapper = TestBed.get(ContentPageletEntryPointMapper);
   });
 
   it('should throw on falsy input', () => {
-    expect(() => contentEntryPointMapper.fromData(undefined)).toThrowError('falsy input');
+    expect(() => contentPageletEntryPointMapper.fromData(undefined)).toThrowError('falsy input');
   });
 
   it('should convert a complex example to complex type', () => {
-    const input: ContentEntryPointData = {
+    const input: ContentPageletEntryPointData = {
       link: {
         title: 'include-id',
         uri: 'uri://test',
@@ -66,11 +66,11 @@ describe('Content Entry Point Mapper', () => {
       ],
     };
 
-    const result = contentEntryPointMapper.fromData(input);
+    const result = contentPageletEntryPointMapper.fromData(input);
 
     expect(result.pagelets).toHaveLength(3);
     expect(result.pagelets.map(p => p.id)).toIncludeAllMembers(['pagelet1', 'pagelet11', 'pagelet2']);
-    expect(result.contentEntryPoint).not.toBeEmpty();
+    expect(result.pageletEntryPoint).not.toBeEmpty();
     expect(result).toMatchSnapshot();
   });
 });
