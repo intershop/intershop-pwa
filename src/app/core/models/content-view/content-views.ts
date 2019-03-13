@@ -7,7 +7,7 @@ import { ContentConfigurationParameters } from '../content-configuration-paramet
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 import { ContentSlot } from '../content-slot/content-slot.model';
 
-export interface ConfigParameterView {
+export interface ContentConfigurationParameterView {
   hasParam(key: string): boolean;
   stringParam(key: string, defaultValue?: string): string;
   numberParam(key: string, defaultValue?: number): number;
@@ -15,17 +15,17 @@ export interface ConfigParameterView {
   configParam<T extends object>(key: string): T;
 }
 
-export interface ContentSlotView extends ConfigParameterView {
+export interface ContentSlotView extends ContentConfigurationParameterView {
   pagelets(): ContentPageletView[];
 }
 
-export interface ContentPageletEntryPointView extends ConfigParameterView {
+export interface ContentPageletEntryPointView extends ContentConfigurationParameterView {
   id: string;
   name: string;
   pagelets(): ContentPageletView[];
 }
 
-export interface ContentPageletView extends ConfigParameterView {
+export interface ContentPageletView extends ContentConfigurationParameterView {
   definitionQualifiedName: string;
   configurationParameters: ContentConfigurationParameters;
   id: string;
@@ -34,7 +34,9 @@ export interface ContentPageletView extends ConfigParameterView {
 
 const paramMemoize = (key, defaultValue) => JSON.stringify({ key, defaultValue });
 
-export const createConfigParameterView = (params: ContentConfigurationParameters): ConfigParameterView => ({
+export const createContentConfigurationParameterView = (
+  params: ContentConfigurationParameters
+): ContentConfigurationParameterView => ({
   hasParam: memoize(key => Object.keys(params).includes(key)),
   booleanParam: memoize(
     (key, defaultValue = undefined) =>
@@ -70,7 +72,7 @@ export const createPageletView = (id: string, pagelets: { [id: string]: ContentP
       : memoize(qualifiedName =>
           createSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
         ),
-    ...createConfigParameterView(pagelet.configurationParameters || {}),
+    ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };
 };
 
@@ -79,7 +81,7 @@ export const createSlotView = (slot: ContentSlot, pagelets: { [id: string]: Cont
     ? undefined
     : {
         pagelets: !slot.pageletIDs ? () => [] : once(() => slot.pageletIDs.map(id => createPageletView(id, pagelets))),
-        ...createConfigParameterView(slot.configurationParameters || {}),
+        ...createContentConfigurationParameterView(slot.configurationParameters || {}),
       };
 
 export const createContentPageletEntryPointView = (
