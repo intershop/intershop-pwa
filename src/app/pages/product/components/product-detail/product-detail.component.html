@@ -38,6 +38,7 @@
       <ish-product-variations
         *ngIf="hasVariations(product)"
         [variationOptions]="variationOptions"
+        (selectVariation)="variationSelected($event)"
       ></ish-product-variations>
 
       <form [formGroup]="productDetailForm" class="product-form form-horizontal">

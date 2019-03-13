@@ -8,6 +8,7 @@
       [variationOptions]="productVariationOptions$ | async"
       (productToBasket)="addToBasket($event)"
       (productToCompare)="addToCompare($event)"
+      (selectVariation)="variationSelected($event)"
     ></ish-product-detail>
   </ng-container>
 

@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
+import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import {
   ProductView,
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { VariationOptionGroup } from 'ish-core/store/shopping/products';
 
 @Component({
   selector: 'ish-product-detail',
@@ -20,6 +21,7 @@ export class ProductDetailComponent implements OnInit {
   @Input() variationOptions: VariationOptionGroup[];
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
+  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; product: Product }>();
 
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';
@@ -47,5 +49,12 @@ export class ProductDetailComponent implements OnInit {
 
   hasVariations(product: ProductView | VariationProductView | VariationProductMasterView) {
     return ProductHelper.hasVariations(product);
+  }
+
+  variationSelected(selection: VariationSelection) {
+    this.selectVariation.emit({
+      selection,
+      product: this.product,
+    });
   }
 }
