@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { createPageletView } from 'ish-core/models/content-view/content-views';
+import { createContentPageletView } from 'ish-core/models/content-view/content-views';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { CMSCarouselComponent } from './cms-carousel.component';
@@ -48,7 +48,7 @@ describe('Cms Carousel Component', () => {
         },
       ],
     };
-    component.pagelet = createPageletView(pagelet.id, {
+    component.pagelet = createContentPageletView(pagelet.id, {
       [pagelet.id]: pagelet,
       [slide1.id]: slide1,
       [slide2.id]: slide2,

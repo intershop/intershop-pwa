@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { ContentSlotView, createSlotView } from 'ish-core/models/content-view/content-views';
+import { ContentSlotView, createContentSlotView } from 'ish-core/models/content-view/content-views';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { ContentSlotContainerComponent } from './content-slot.container';
@@ -23,7 +23,7 @@ describe('Content Slot Container', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentSlotContainerComponent);
     component = fixture.componentInstance;
-    slot = createSlotView(
+    slot = createContentSlotView(
       {
         definitionQualifiedName: 'test.slot',
       },
