@@ -3,9 +3,9 @@ import { ContentConfigurationParameters } from '../content-configuration-paramet
 import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
 
 import {
-  ConfigParameterView,
+  ContentConfigurationParameterView,
   ContentPageletEntryPointView,
-  createConfigParameterView,
+  createContentConfigurationParameterView,
   createContentPageletEntryPointView,
 } from './content-views';
 
@@ -91,15 +91,15 @@ describe('Content Views', () => {
   });
 
   it('should be able to create a view of configuration parameters', () => {
-    expect(() => createConfigParameterView(configurationParameters)).not.toThrow();
-    expect(createConfigParameterView(configurationParameters)).toMatchSnapshot();
+    expect(() => createContentConfigurationParameterView(configurationParameters)).not.toThrow();
+    expect(createContentConfigurationParameterView(configurationParameters)).toMatchSnapshot();
   });
 
   describe('parameter view created', () => {
-    let view: ConfigParameterView;
+    let view: ContentConfigurationParameterView;
 
     beforeEach(() => {
-      view = createConfigParameterView(configurationParameters);
+      view = createContentConfigurationParameterView(configurationParameters);
     });
 
     describe('hasParam', () => {

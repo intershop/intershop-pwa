@@ -1,7 +1,7 @@
-import { ConfigParameterView } from './content-views';
+import { ContentConfigurationParameterView } from './content-views';
 
 export class ContentViewHelper {
-  static getRouterLink(pagelet: ConfigParameterView, configParam: string): string {
+  static getRouterLink(pagelet: ContentConfigurationParameterView, configParam: string): string {
     const configParamValue = pagelet.stringParam(configParam);
     let routerLink = '/home';
     const linkPrefix =
