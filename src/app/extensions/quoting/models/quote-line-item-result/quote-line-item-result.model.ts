@@ -1,4 +1,5 @@
-export class QuoteLineItemResultModel {
+export class QuoteLineItemResult {
+  title: string;
   type: string;
   status: string;
   failedProductSKUs: string[];

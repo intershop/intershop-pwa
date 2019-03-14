@@ -25,7 +25,7 @@ import { LoadProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
@@ -331,7 +331,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
 
       when(quoteRequestServiceMock.createQuoteRequestFromQuoteRequest(anything())).thenReturn(
-        of({ type: 'test' } as QuoteLineItemResultModel)
+        of({ type: 'test' } as QuoteLineItemResult)
       );
     });
 
@@ -350,7 +350,7 @@ describe('Quote Request Effects', () => {
       const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({
         quoteLineItemResult: {
           type: 'test',
-        } as QuoteLineItemResultModel,
+        } as QuoteLineItemResult,
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -867,7 +867,7 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type LoadQuoteRequests if CreateQuoteRequestFromQuoteSuccess action triggered', () => {
       const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({
-        quoteLineItemResult: {} as QuoteLineItemResultModel,
+        quoteLineItemResult: {} as QuoteLineItemResult,
       });
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
