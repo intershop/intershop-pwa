@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -14,7 +15,7 @@ import { configurationReducer } from 'ish-core/store/configuration/configuration
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteData } from '../../models/quote/quote.interface';
 import { QuoteService } from '../../services/quote/quote.service';
@@ -38,6 +39,7 @@ describe('Quote Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
+        RouterTestingModule,
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
@@ -199,7 +201,7 @@ describe('Quote Effects', () => {
       store$.dispatch(new quoteActions.SelectQuote({ id: 'QID' }));
 
       when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
-        of({ type: 'test' } as QuoteLineItemResultModel)
+        of({ type: 'test' } as QuoteLineItemResult)
       );
     });
 
@@ -218,7 +220,7 @@ describe('Quote Effects', () => {
       const completion = new quoteActions.CreateQuoteRequestFromQuoteSuccess({
         quoteLineItemRequest: {
           type: 'test',
-        } as QuoteLineItemResultModel,
+        } as QuoteLineItemResult,
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
