@@ -1,15 +1,15 @@
 /* tslint:disable:project-structure */
-import { ApplicationRef, Inject, Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMapTo, take } from 'rxjs/operators';
 
 import { LoadContentInclude } from 'ish-core/store/content/includes';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { SfeMapper } from './sfe.mapper';
 import { DesignViewMessage } from './sfe.types';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SfeAdapterService {

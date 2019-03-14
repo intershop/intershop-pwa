@@ -1,8 +1,5 @@
 <div *ngIf="pagelet" [ngClass]="pagelet.stringParam('CSSClass')">
-  <ish-slot-wrapper
-    [pagelet]="pagelet"
-    slot="app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot"
-  >
+  <ish-slot-wrapper [pagelet]="pagelet" slot="app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot">
     <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
       <ngb-carousel
         [interval]="intervalValue"

@@ -5,7 +5,7 @@ exports[`Content Pagelet Container should be created 1`] = `
   id="root0"
   ng-version="7.1.4"
 >
-
+  
   <div />
 </div>
 `;
@@ -15,15 +15,7 @@ exports[`Content Pagelet Container should render assigned template if name match
   id="root1"
   ng-version="7.1.4"
 >
-
+  
   <div />
-  <ish-cms-text
-    data-sfe="{\\"id\\":\\"pagelet:domain:id\\",\\"displayName\\":\\"pagelet\\",\\"displayType\\":\\"defined\\",\\"renderObject\\":{\\"id\\":\\"id\\",\\"domainId\\":\\"domain\\",\\"type\\":\\"Pagelet\\"}}"
-  >
-
-    <span>
-      foo
-    </span>
-  </ish-cms-text>
 </div>
 `;

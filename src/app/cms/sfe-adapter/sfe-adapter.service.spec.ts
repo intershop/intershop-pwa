@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
-import { REST_ENDPOINT } from 'ish-core/utils/state-transfer/factories';
-
 import { SfeAdapterService } from './sfe-adapter.service';
 
 describe('Sfe Adapter Service', () => {
@@ -24,7 +22,6 @@ describe('Sfe Adapter Service', () => {
         { provide: Router, useValue: instance(routerMock) },
         { provide: Store, useValue: instance(storeMock$) },
         { provide: ApplicationRef, useValue: instance(apprefMock) },
-        { provide: REST_ENDPOINT, useValue: 'https://example.org' },
       ],
     });
 
