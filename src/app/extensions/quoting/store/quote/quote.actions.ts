@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../models/quote/quote.interface';
 
 export enum QuoteActionTypes {
@@ -79,7 +79,7 @@ export class CreateQuoteRequestFromQuoteFail implements Action {
 
 export class CreateQuoteRequestFromQuoteSuccess implements Action {
   readonly type = QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess;
-  constructor(public payload: { quoteLineItemRequest: QuoteLineItemResultModel }) {}
+  constructor(public payload: { quoteLineItemRequest: QuoteLineItemResult }) {}
 }
 
 export type QuoteAction =

@@ -5,7 +5,7 @@ import { concatMap, map, mapTo, take } from 'rxjs/operators';
 
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../models/quote-request-item/quote-request-item.mapper';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -91,7 +91,7 @@ export class QuoteService {
    * @param quote A quote containing quote line items
    * @returns     Information about successful and unsuccessful line item adds
    */
-  createQuoteRequestFromQuote(quoteRequest: Quote): Observable<QuoteLineItemResultModel> {
+  createQuoteRequestFromQuote(quoteRequest: Quote): Observable<QuoteLineItemResult> {
     const body = {
       elements: quoteRequest.items.map((item: QuoteRequestItem) => ({
         productSKU: item.productSKU,
@@ -106,11 +106,11 @@ export class QuoteService {
           .pipe(
             concatMap(quoteRequestId =>
               this.apiService
-                .put<QuoteLineItemResultModel>(
+                .put<QuoteLineItemResult>(
                   `customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`,
                   body
                 )
-                .pipe(map(quoteLineItemResultModel => ({ ...quoteLineItemResultModel, title: quoteRequestId })))
+                .pipe(map(quoteLineItemResult => ({ ...quoteLineItemResult, title: quoteRequestId })))
             )
           )
       )
