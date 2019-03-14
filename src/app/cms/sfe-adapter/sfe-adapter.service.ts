@@ -9,6 +9,7 @@ import { LoadContentInclude } from 'ish-core/store/content/includes';
 
 import { SfeMapper } from './sfe.mapper';
 import { DesignViewMessage } from './sfe.types';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SfeAdapterService {
@@ -68,7 +69,7 @@ export class SfeAdapterService {
     const stable$ = this.appRef.isStable.pipe(
       debounceTime(10),
       distinctUntilChanged(),
-      filter(stable => stable),
+      whenTruthy(),
       take(1)
     );
 
