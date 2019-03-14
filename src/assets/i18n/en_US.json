@@ -2558,7 +2558,7 @@
   "quote.edit.button.accept_contract.label": "Accept Contract",
   "quote.edit.invalid.text": "The quote contains at least one product, which is not available. Thus the quote request is invalid. Please create a new quote request.",
   "contract.items.table.heading": "Your Contract Items",
-  "quote.error.not_started": "Your quote request is pending.",
+  "quote.error.not_started": "Your quote is pending. The start date has not been reached yet.",
   "quote.error.expired": "Your quote has expired.",
   "quote.error.is_rejected": "Your quote request has been rejected.",
   "quote.error.invalid_items": "The quote request contains invalid items.",

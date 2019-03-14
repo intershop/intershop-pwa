@@ -136,6 +136,10 @@ export class QuoteEditComponent implements OnChanges {
   }
 
   get isQuoteValid(): boolean {
-    return Date.now() < this.validToDate;
+    return Date.now() < this.validToDate && Date.now() > this.validFromDate;
+  }
+
+  get isQuoteStarted(): boolean {
+    return Date.now() > this.validFromDate;
   }
 }

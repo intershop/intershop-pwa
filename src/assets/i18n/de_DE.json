@@ -2557,7 +2557,7 @@
   "quote.edit.button.accept_contract.label": "Vertrag akzeptieren",
   "quote.edit.invalid.text": "Das Preisangebot enthält mindestens ein Produkt, das nicht verfügbar ist. Die Preisanfrage ist daher ungültig. Bitte erstellen Sie eine neue Preisanfrage.",
   "contract.items.table.heading": "Ihre Vertragsartikel",
-  "quote.error.not_started": "Ihre Preisanfrage ist offen.",
+  "quote.error.not_started": "Ihr Preisangebot ist offen. Das Startdatum wurde noch nicht erreicht.",
   "quote.error.expired": "Ihr Preisangebot ist abgelaufen.",
   "quote.error.is_rejected": "Ihre Preisanfrage wurde abgelehnt.",
   "quote.error.invalid_items": "Die Preisanfrage enthält ungültige Artikel.",
