@@ -12,7 +12,7 @@ Object {
       "pagelet1",
       "pagelet2",
     ],
-    "resourceSetID": "resource-set-id",
+    "resourceSetId": "resource-set-id",
   },
   "pagelets": Array [
     Object {

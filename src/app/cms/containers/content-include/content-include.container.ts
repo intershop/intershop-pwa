@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
-import { ContentEntryPointView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
@@ -18,7 +18,7 @@ import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
 })
 export class ContentIncludeContainerComponent extends SfeMetadataWrapper implements OnInit, OnDestroy {
   @Input() includeId: string;
-  contentInclude$: Observable<ContentEntryPointView>;
+  contentInclude$: Observable<ContentPageletEntryPointView>;
   private destroy$ = new Subject();
 
   constructor(private store: Store<{}>, private cd: ChangeDetectorRef, private sfeAdapter: SfeAdapterService) {

@@ -84,29 +84,39 @@ export const createContentPageletView = (
     slot: !pagelet.slots
       ? () => undefined
       : memoize(qualifiedName =>
-          createContentSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
+          createContentSlotView(
+            pagelet,
+            pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName),
+            pagelets
+          )
         ),
     ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };
 };
 
 export const createContentEntryPointView = (
+  id: string,
+  domain: string,
   pageletIDs: string[],
   pagelets: { [id: string]: ContentPagelet }
 ): ContentEntryPointView => ({
-  id: '', // TODO
-  domain: '', // TODO
+  id,
+  domain,
   pagelets:
     pageletIDs && pageletIDs.length
-      ? once(() => pageletIDs.map(id => createContentPageletView(id, pagelets)))
+      ? once(() => pageletIDs.map(pId => createContentPageletView(pId, pagelets)))
       : () => [],
 });
 
-export const createContentSlotView = (slot: ContentSlot, pagelets: { [id: string]: ContentPagelet }): ContentSlotView =>
+export const createContentSlotView = (
+  pagelet: ContentPagelet,
+  slot: ContentSlot,
+  pagelets: { [id: string]: ContentPagelet }
+): ContentSlotView =>
   !slot
     ? undefined
     : {
-        ...createContentEntryPointView(slot.pageletIDs, pagelets),
+        ...createContentEntryPointView(slot.definitionQualifiedName, pagelet.domain, slot.pageletIDs, pagelets),
         ...createContentConfigurationParameterView(slot.configurationParameters || {}),
         displayName: slot.displayName,
       };
@@ -119,6 +129,11 @@ export const createContentPageletEntryPointView = (
   domain: pageletEntryPoint.domain,
   resourceSetId: pageletEntryPoint.resourceSetId,
   displayName: pageletEntryPoint.displayName,
-  ...createContentEntryPointView(pageletEntryPoint.pageletIDs, pagelets),
+  ...createContentEntryPointView(
+    pageletEntryPoint.id,
+    pageletEntryPoint.domain,
+    pageletEntryPoint.pageletIDs,
+    pagelets
+  ),
   ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
 });

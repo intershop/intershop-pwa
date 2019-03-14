@@ -36,7 +36,6 @@ describe('Content Pagelet Entry Point Mapper', () => {
           definitionQualifiedName: 'fq',
           domain: 'domain',
           displayName: 'name1',
-          domain: 'dom',
           configurationParameters: {
             key1: {
               definitionQualifiedName: 'fq',
@@ -47,14 +46,12 @@ describe('Content Pagelet Entry Point Mapper', () => {
             slot1: {
               displayName: 'slot1',
               definitionQualifiedName: 'fq',
-              displayName: 'dn',
               pagelets: [
                 {
                   id: 'pagelet11',
                   definitionQualifiedName: 'fq',
                   domain: 'Domain',
                   displayName: 'name11',
-                  domain: '',
                   configurationParameters: {
                     key11: {
                       definitionQualifiedName: 'fq',
@@ -69,9 +66,8 @@ describe('Content Pagelet Entry Point Mapper', () => {
         {
           id: 'pagelet2',
           definitionQualifiedName: 'fq',
-          domain: '',
-          displayName: 'name2',
           domain: 'domain',
+          displayName: 'name2',
         },
       ],
     };
