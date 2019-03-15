@@ -164,17 +164,6 @@
   </div>
 
   <div class="form-btn-group clearfix">
-    <div class="d-md-none form-group">
-      <div class="col-6 float-right text-right">
-        <!--
-        <isif condition="#LinkSource EQ "Shopping"#">
-          <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
-        <iselse>
-        -->
-        <a class="btn btn-link" routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
-      </div>
-    </div>
-
     <!--- here are the buttons -->
     <ng-container *ngIf="quote.items">
       <!-- IF STATE NEW -->
@@ -187,6 +176,7 @@
         >
           {{ 'quote.edit.button.submit.label' | translate }}
         </button>
+
         <button type="submit" class="btn btn-secondary float-right" (click)="update()">
           {{ 'quote.edit.button.save.label' | translate }}
         </button>
@@ -194,11 +184,6 @@
 
       <!-- IF STATE SUBMITTED -->
       <ng-container *ngIf="quote.state === 'Submitted'">
-        <!--
-          <isif condition="#LinkSource EQ "Shopping"#">
-            <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
-          <iselse>
-          -->
         <button
           class="btn btn-secondary"
           name="copy"
@@ -210,8 +195,7 @@
         </button>
       </ng-container>
 
-      <!-- ELSE ( if type === Quote )-->
-
+      <!-- ELSE ( if type === Quote ) -->
       <ng-container *ngIf="quote.type === 'Quote'">
         <ng-container *ngIf="quote.state === 'Responded' && isQuoteValid">
           <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">
@@ -227,7 +211,7 @@
           *ngIf="quote.state === 'Responded' && isQuoteValid"
           type="submit"
           id="button-reject"
-          class="btn btn-secondary"
+          class="btn btn-secondary float-right"
           name="refuse"
           (click)="reject()"
         >
@@ -237,12 +221,5 @@
     </ng-container>
   </div>
 
-  <div class="d-none d-md-block clearfix">
-    <!--
-    <isif condition="#LinkSource EQ "Shopping"#">
-      <a href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
-    <iselse>
-    -->
-    <a routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
-  </div>
+  <a class="btn btn-link" routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
 </form>
