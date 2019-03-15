@@ -6,14 +6,14 @@ import { concatMapTo, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService, BasketUpdateType } from '../../../services/basket/basket.service';
-import { getLoggedInCustomer } from '../../user';
 import {
   CreateCustomerAddressFail,
   DeleteCustomerAddressFail,
   DeleteCustomerAddressSuccess,
   UpdateCustomerAddressFail,
   UpdateCustomerAddressSuccess,
-} from '../addresses/addresses.actions';
+} from '../../addresses/addresses.actions';
+import { getLoggedInCustomer } from '../../user';
 
 import * as basketActions from './basket.actions';
 

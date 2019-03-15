@@ -1,11 +1,11 @@
 import { createSelector } from '@ngrx/store';
 
-import { getCheckoutState } from '../checkout-store';
+import { getCoreState } from '../core-store';
 
 import { addressAdapter } from './addresses.reducer';
 
 const getAddressesState = createSelector(
-  getCheckoutState,
+  getCoreState,
   state => state.addresses
 );
 

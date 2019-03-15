@@ -4,8 +4,8 @@ import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { AddressService } from '../../../services/address/address.service';
-import { UserActionTypes, getLoggedInCustomer } from '../../user';
+import { AddressService } from '../../services/address/address.service';
+import { UserActionTypes, getLoggedInCustomer } from '../user';
 
 import * as addressActions from './addresses.actions';
 

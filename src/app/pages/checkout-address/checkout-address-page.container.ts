@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/checkout/addresses';
-import { LoadAddresses } from 'ish-core/store/checkout/addresses/addresses.actions';
+import { getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/addresses';
+import { LoadAddresses } from 'ish-core/store/addresses/addresses.actions';
 import {
   AssignBasketAddress,
   CreateBasketAddress,

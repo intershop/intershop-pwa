@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Address } from '../../../models/address/address.model';
+import { Address } from '../../models/address/address.model';
 
 export enum AddressActionTypes {
   LoadAddresses = '[Address Internal] Load Addresses',

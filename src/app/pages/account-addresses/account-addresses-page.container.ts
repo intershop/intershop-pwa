@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { User } from 'ish-core/models/user/user.model';
+
 import {
   CreateCustomerAddress,
   DeleteCustomerAddress,
@@ -10,7 +11,7 @@ import {
   getAddressesError,
   getAddressesLoading,
   getAllAddresses,
-} from 'ish-core/store/checkout/addresses';
+} from 'ish-core/store/addresses';
 import { UpdateUser, getLoggedInUser, getUserError } from 'ish-core/store/user';
 
 /**
