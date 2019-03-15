@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { checkoutReducers } from '../checkout-store.module';
+import { coreReducers } from '../core-store.module';
 
 import { LoadAddresses, LoadAddressesFail, LoadAddressesSuccess } from './addresses.actions';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from './addresses.selectors';
@@ -16,9 +15,7 @@ describe('Addresses Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        checkout: combineReducers(checkoutReducers),
-      }),
+      imports: ngrxTesting(coreReducers),
     });
     store$ = TestBed.get(TestStore);
   });

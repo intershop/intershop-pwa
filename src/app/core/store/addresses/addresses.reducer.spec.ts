@@ -6,7 +6,7 @@ import {
   CreateBasketAddressSuccess,
   DeleteBasketShippingAddress,
   UpdateBasketAddress,
-} from '../basket/basket.actions';
+} from '../checkout/basket/basket.actions';
 
 import * as fromActions from './addresses.actions';
 import { addressesReducer, initialState } from './addresses.reducer';

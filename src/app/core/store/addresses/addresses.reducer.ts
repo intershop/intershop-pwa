@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { BasketAction, BasketActionTypes } from '../basket';
+import { BasketAction, BasketActionTypes } from '../checkout/basket';
 
 import { AddressAction, AddressActionTypes } from './addresses.actions';
 

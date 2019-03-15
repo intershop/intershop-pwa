@@ -16,13 +16,13 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';
-import { shoppingReducers } from '../../shopping/shopping-store.module';
 import {
   DeleteCustomerAddressFail,
   DeleteCustomerAddressSuccess,
   UpdateCustomerAddressFail,
   UpdateCustomerAddressSuccess,
-} from '../addresses/addresses.actions';
+} from '../../addresses/addresses.actions';
+import { shoppingReducers } from '../../shopping/shopping-store.module';
 import { checkoutReducers } from '../checkout-store.module';
 
 import { BasketAddressesEffects } from './basket-addresses.effects';

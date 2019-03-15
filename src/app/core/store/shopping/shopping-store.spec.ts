@@ -9,6 +9,7 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { AddressService } from 'ish-core/services/address/address.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
@@ -169,6 +170,7 @@ describe('Shopping Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: UserService, useFactory: () => instance(mock(UserService)) },
+        { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
