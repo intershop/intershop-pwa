@@ -24,12 +24,12 @@ server {
 
         rewrite ^/$ /home;
         if ($request_uri !~* ";lang=") {
-            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;lang=$LANG";
+            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(.*)$ "$1;lang=$LANG";
         }
         if (-f /etc/nginx/conf.d/icm.conf) {
-            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
+            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
         }
-        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
+        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
 
         proxy_pass $UPSTREAM_PWA;
     }
