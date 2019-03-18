@@ -1,3 +1,4 @@
+import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 
 export interface CategoryPathElement {
@@ -16,4 +17,5 @@ export interface CategoryData {
   images?: Image[];
   uri?: string;
   categoryPath: CategoryPathElement[];
+  attributes: Attribute[];
 }
