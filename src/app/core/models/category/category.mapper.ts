@@ -77,6 +77,10 @@ export class CategoryMapper {
       // images are not supplied with top level category call
       count++;
     }
+    if (categoryData.attributes) {
+      // attributes are not supplied for subcategories
+      count++;
+    }
     if (categoryData.categoryPath && categoryData.categoryPath.length === 1) {
       // root categories have no images but a single-entry categoryPath
       count++;
@@ -100,6 +104,7 @@ export class CategoryMapper {
         hasOnlineProducts: categoryData.hasOnlineProducts,
         description: categoryData.description,
         images: this.imageMapper.fromImages(categoryData.images),
+        attributes: categoryData.attributes,
         completenessLevel: this.computeCompleteness(categoryData),
       };
     } else {

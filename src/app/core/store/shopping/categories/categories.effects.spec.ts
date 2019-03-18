@@ -142,7 +142,7 @@ describe('Categories Effects', () => {
       });
 
       it('should do nothing if category is completely loaded', () => {
-        category.completenessLevel = 2;
+        category.completenessLevel = CategoryHelper.maxCompletenessLevel;
         store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
         actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
         expect(effects.selectedCategory$).toBeObservable(cold('-'));
@@ -185,7 +185,7 @@ describe('Categories Effects', () => {
       });
 
       it('should not trigger LoadCategory for categories that are completely loaded', () => {
-        category.completenessLevel = 2;
+        category.completenessLevel = CategoryHelper.maxCompletenessLevel;
         store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
         actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
 
