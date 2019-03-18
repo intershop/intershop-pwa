@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Product } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Compare List Component
@@ -44,7 +45,7 @@ export class ProductCompareListComponent implements OnChanges {
   visibleProducts: Product[] = [];
   currentPage = 1;
 
-  getAttributeByAttributeName = ProductHelper.getAttributeByAttributeName;
+  getAttributeByAttributeName = AttributeHelper.getAttributeByAttributeName;
 
   ngOnChanges() {
     this.commonAttributeNames = this.getCommonAttributeNames();
