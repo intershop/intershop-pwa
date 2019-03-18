@@ -53,19 +53,6 @@ export class ProductHelper {
   }
 
   /**
-   * Get a specific product attribute by attribute name.
-   * @param product       The Product for which to get the attribute
-   * @param attributeName The attribute name of the attribute to get
-   * @returns              The matching product attribute
-   */
-  static getAttributeByAttributeName(product: { attributes: Attribute[] }, attributeName: string): Attribute {
-    if (!(product && product.attributes)) {
-      return;
-    }
-    return product.attributes.find(attribute => attribute.name === attributeName);
-  }
-
-  /**
    * Get product attributes by attribute group id.
    * @param product           The Product for which to get the attributes
    * @param attributeGroupId  The attribute group id of the attributes to get
