@@ -25,6 +25,8 @@
       <li>{{ 'account.create.benefit5.text' | translate }}</li>
     </ul>
 
-    <a class="btn btn-primary" routerLink="/register">{{ 'account.create.button.label' | translate }}</a>
+    <a class="btn btn-primary" routerLink="/register" [queryParams]="{ returnUrl: '/account' }"
+      >{{ 'account.create.button.label' | translate }}
+    </a>
   </div>
 </div>

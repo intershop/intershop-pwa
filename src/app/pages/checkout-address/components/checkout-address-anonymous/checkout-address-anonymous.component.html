@@ -38,7 +38,10 @@
           <span class="required">*</span>{{ 'account.required_field.message' | translate }}
         </p>
         <!-- Invoice Address -->
-        <ish-address-form-container [parentForm]="invoiceAddressForm"></ish-address-form-container>
+        <ish-address-form-container
+          data-testing-id="invoiceAddressForm"
+          [parentForm]="invoiceAddressForm"
+        ></ish-address-form-container>
         <!-- Email address input field-->
         <ish-input
           [form]="form"
@@ -72,7 +75,10 @@
         </div>
         <div [ngbCollapse]="!isShippingAddressFormExpanded" data-testing-id="shipping-address-form">
           <!-- Shipping Address -->
-          <ish-address-form-container [parentForm]="shippingAddressForm"></ish-address-form-container>
+          <ish-address-form-container
+            data-testing-id="shippingAddressForm"
+            [parentForm]="shippingAddressForm"
+          ></ish-address-form-container>
         </div>
         <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
           <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">

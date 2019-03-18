@@ -33,16 +33,14 @@ class FormType {
  *
  * @example
  *<ish-checkout-address
-    [currentUser]="currentUser$ | async"
-    [basket]="basket$ | async"
-    [addresses]="addresses$ | async"
-    [error]="basketError$ | async"
-    (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
-    (updateShippingAddress)="updateBasketShippingAddress($event)"
-    (updateCustomerAddress)="updateBasketCustomerAddress($event)"
-    (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
-    (createShippingAddress)="createCustomerShippingAddress($event)"
-    (deleteShippingAddress)="deleteCustomerAddress($event)"
+     [currentUser]="currentUser$ | async"
+     [basket]="basket"
+     [addresses]="addresses$ | async"
+     [error]="(basketError$ | async) || (addressesError$ | async)"
+     (assignAddressToBasket)="assignAddressToBasket($event)"
+     (updateAddress)="updateAddress($event)"
+     (createAddress)="createAddress($event)"
+     (deleteShippingAddress)="deleteCustomerAddress($event)"
   ></ish-checkout-address>
  */
 @Component({
@@ -150,8 +148,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     // preset (empty) basket invoice address if there is only one invoice address available
-    if (this.invoice.form && this.invoice.addresses.length === 1 && this.basket && !this.basket.invoiceToAddress) {
-      this.invoice.form.get('id').setValue(this.invoice.addresses[0].id);
+    if (this.invoice.addresses.length === 1 && this.basket && !this.basket.invoiceToAddress) {
+      this.assignAddressToBasket.emit({ addressId: this.invoice.addresses[0].id, scope: 'invoice' });
     }
   }
 
@@ -172,8 +170,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     // preset (empty) basket shipping address if there is only one shipping address available
-    if (this.shipping.form && this.shipping.addresses.length === 1 && this.basket && !this.basket.commonShipToAddress) {
-      this.shipping.form.get('id').setValue(this.shipping.addresses[0].id);
+    if (this.shipping.addresses.length === 1 && this.basket && !this.basket.commonShipToAddress) {
+      this.assignAddressToBasket.emit({ addressId: this.shipping.addresses[0].id, scope: 'shipping' });
     }
   }
 
