@@ -32,6 +32,11 @@ export const getICMBaseURL = createSelector(
   state => state.baseURL
 );
 
+export const getICMChannel = createSelector(
+  getConfigurationState,
+  state => state.channel
+);
+
 export const getFeatures = createSelector(
   getConfigurationState,
   state => state.features
