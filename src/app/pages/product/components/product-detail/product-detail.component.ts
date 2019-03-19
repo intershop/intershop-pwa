@@ -16,7 +16,7 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit {
-  @Input() product: Product;
+  @Input() product: ProductView | VariationProductView | VariationProductMasterView;
   @Input() currentUrl: string;
   @Input() variationOptions: VariationOptionGroup[];
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
