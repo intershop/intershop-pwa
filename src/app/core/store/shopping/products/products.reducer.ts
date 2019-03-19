@@ -53,7 +53,7 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       return {
         ...state,
         loading: false,
-        // failed: addFailed(state.failed, action.payload.sku), // TODO
+        failed: addFailed(state.failed, action.payload.sku),
       };
     }
 

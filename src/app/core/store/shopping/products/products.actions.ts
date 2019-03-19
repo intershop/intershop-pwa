@@ -58,7 +58,7 @@ export class LoadProductVariations implements Action {
 
 export class LoadProductVariationsFail implements Action {
   readonly type = ProductsActionTypes.LoadProductVariationsFail;
-  constructor(public payload: { error: HttpError }) {}
+  constructor(public payload: { error: HttpError; sku: string }) {}
 }
 
 export class LoadProductVariationsSuccess implements Action {

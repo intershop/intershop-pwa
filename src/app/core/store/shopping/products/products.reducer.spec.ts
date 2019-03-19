@@ -135,7 +135,7 @@ describe('Products Reducer', () => {
     describe('LoadProductVariationsFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.LoadProductVariationsFail({ error });
+        const action = new fromActions.LoadProductVariationsFail({ error, sku: 'SKU' });
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
