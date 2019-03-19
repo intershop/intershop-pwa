@@ -1,6 +1,7 @@
 <ish-product-tile
   *ngIf="(product$ | async) as product; else loading"
   [product]="product"
+  [variationOptions]="productVariationOptions$ | async"
   [category]="category"
   [isInCompareList]="isInCompareList$ | async"
   (compareToggle)="toggleCompare()"
