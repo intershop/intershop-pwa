@@ -8,7 +8,7 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-detail',
@@ -45,10 +45,6 @@ export class ProductDetailComponent implements OnInit {
 
   get quantity(): number {
     return this.productDetailForm.get(this.quantityControlName).value;
-  }
-
-  hasVariations(product: ProductView | VariationProductView | VariationProductMasterView) {
-    return ProductHelper.hasVariations(product);
   }
 
   variationSelected(selection: VariationSelection) {
