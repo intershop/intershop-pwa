@@ -120,7 +120,7 @@ export class ProductsEffects {
     mergeMap(sku =>
       this.productsService.getProductVariations(sku).pipe(
         map(variations => new productsActions.LoadProductVariationsSuccess({ sku, variations })),
-        mapErrorToAction(productsActions.LoadProductVariationsFail)
+        mapErrorToAction(productsActions.LoadProductVariationsFail, { sku })
       )
     )
   );

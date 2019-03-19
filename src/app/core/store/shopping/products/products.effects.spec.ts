@@ -158,7 +158,7 @@ describe('Products Effects', () => {
 
   describe('loadProductVariations$', () => {
     beforeEach(() => {
-      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => of({ sku: 'MSKU', variations: [] }));
+      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => of([]));
     });
 
     it('should call the productsService for getProductVariations', done => {
@@ -183,7 +183,10 @@ describe('Products Effects', () => {
     it('should map invalid request to action of type LoadProductVariationsFail', () => {
       when(productsServiceMock.getProductVariations(anyString())).thenCall(() => throwError({ message: 'invalid' }));
       const action = new fromActions.LoadProductVariations({ sku: 'MSKU' });
-      const completion = new fromActions.LoadProductVariationsFail({ error: { message: 'invalid' } as HttpError });
+      const completion = new fromActions.LoadProductVariationsFail({
+        error: { message: 'invalid' } as HttpError,
+        sku: 'MSKU',
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -191,7 +194,7 @@ describe('Products Effects', () => {
     });
   });
 
-  describe('loastMasterProductForProduct$', () => {
+  describe('loadMasterProductForProduct$', () => {
     it('should trigger LoadProduct action if LoadProductSuccess contains productMasterSKU', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
