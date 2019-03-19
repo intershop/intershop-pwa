@@ -1,10 +1,11 @@
 /* tslint:disable:project-structure */
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMapTo, take } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMapTo, take, withLatestFrom } from 'rxjs/operators';
 
+import { getICMBaseURL } from 'ish-core/store/configuration';
 import { LoadContentInclude } from 'ish-core/store/content/includes';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -14,7 +15,6 @@ import { DesignViewMessage } from './sfe.types';
 @Injectable({ providedIn: 'root' })
 export class SfeAdapterService {
   private initialized = false;
-  private hostOrigin = 'https://localhost:8444'; // TODO: get from store
 
   private allowedHostMessageTypes = ['dv-designchange'];
   private initOnTopLevel = false; // for debug purposes. enables this feature even in top-level windows
@@ -36,7 +36,15 @@ export class SfeAdapterService {
 
     this.listenToHostMessages();
     this.listenToRouter();
-    this.messageToHost({ type: 'dv-pwaready' });
+
+    this.store
+      .pipe(
+        select(getICMBaseURL),
+        take(1)
+      )
+      .subscribe(icmBaseUrl => {
+        this.messageToHost({ type: 'dv-pwaready' }, icmBaseUrl);
+      });
   }
 
   private shouldInit() {
@@ -53,15 +61,16 @@ export class SfeAdapterService {
   }
 
   private listenToHostMessages() {
-    fromEvent(window, 'message')
+    fromEvent<MessageEvent>(window, 'message')
       .pipe(
+        withLatestFrom(this.store.pipe(select(getICMBaseURL))),
         filter(
-          (e: MessageEvent) =>
-            e.origin === this.hostOrigin &&
+          ([e, icmBaseUrl]) =>
+            e.origin === icmBaseUrl &&
             e.data.hasOwnProperty('type') &&
             this.allowedHostMessageTypes.includes(e.data.type)
         ),
-        map(message => message.data)
+        map(([message]) => message.data)
       )
       .subscribe(msg => this.handleHostMessage(msg));
   }
@@ -76,13 +85,18 @@ export class SfeAdapterService {
       take(1)
     );
 
-    navigation$.pipe(switchMapTo(stable$)).subscribe(() => {
-      const tree = this.analyzeTree();
-      this.messageToHost({ type: 'dv-pwastable', payload: { tree } });
-    });
+    navigation$
+      .pipe(
+        switchMapTo(stable$),
+        withLatestFrom(this.store.pipe(select(getICMBaseURL)))
+      )
+      .subscribe(([, icmBaseUrl]) => {
+        const tree = this.analyzeTree();
+        this.messageToHost({ type: 'dv-pwastable', payload: { tree } }, icmBaseUrl);
+      });
 
-    navigation$.subscribe(() => {
-      this.messageToHost({ type: 'dv-pwanavigation' });
+    navigation$.pipe(withLatestFrom(this.store.pipe(select(getICMBaseURL)))).subscribe(([, icmBaseUrl]) => {
+      this.messageToHost({ type: 'dv-pwanavigation' }, icmBaseUrl);
     });
   }
 
@@ -92,8 +106,8 @@ export class SfeAdapterService {
     return SfeMapper.reduceDomTree(tree);
   }
 
-  private messageToHost(msg: DesignViewMessage) {
-    window.parent.postMessage(msg, this.hostOrigin);
+  private messageToHost(msg: DesignViewMessage, hostOrigin: string) {
+    window.parent.postMessage(msg, hostOrigin);
   }
 
   private getBody() {
