@@ -8,11 +8,9 @@
     class="main-navigation-level{{ subCategoriesDepth }}-item"
     [ngClass]="{ open: isOpened(subcategory) }"
   >
-    <a
-      [routerLink]="['/category', subcategory.uniqueId]"
-      [ngStyle]="{ width: !subcategory.hasChildren() ? '100%' : '' }"
-      >{{ subcategory.name }}</a
-    >
+    <a [routerLink]="subcategory | ishCategoryRoute" [ngStyle]="{ width: !subcategory.hasChildren() ? '100%' : '' }">{{
+      subcategory.name
+    }}</a>
     <a
       *ngIf="subcategory.hasChildren()"
       class="dropdown-toggle"

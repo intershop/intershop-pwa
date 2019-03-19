@@ -6,6 +6,7 @@ import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys'
 import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -19,7 +20,7 @@ describe('Family Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
+      imports: [IconModule, NgbCollapseModule, PipesModule, TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
         MockComponent({
