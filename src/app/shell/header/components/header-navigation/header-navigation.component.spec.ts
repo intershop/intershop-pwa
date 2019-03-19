@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
@@ -14,6 +15,7 @@ describe('Header Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [PipesModule],
       declarations: [HeaderNavigationComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

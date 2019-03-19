@@ -5,6 +5,7 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configuration
 import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { SubCategoryNavigationComponent } from './sub-category-navigation.component';
@@ -16,7 +17,7 @@ describe('Sub Category Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, RouterTestingModule],
+      imports: [IconModule, PipesModule, RouterTestingModule],
       declarations: [SubCategoryNavigationComponent],
       providers: [{ provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 }],
     }).compileComponents();
