@@ -51,6 +51,7 @@ import { ProductQuantityComponent } from './product/components/product-quantity/
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
+import { ProductVariationsComponent } from './product/components/product-variations/product-variations.component';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
 import { ProductRowContainerComponent } from './product/containers/product-row/product-row.container';
 import { ProductTileContainerComponent } from './product/containers/product-tile/product-tile.container';
@@ -118,6 +119,7 @@ const exportedComponents = [
   ProductQuantityComponent,
   ProductShipmentComponent,
   ProductTileContainerComponent,
+  ProductVariationsComponent,
   PromotionDetailsComponent,
   RecentlyViewedContainerComponent,
 ];
