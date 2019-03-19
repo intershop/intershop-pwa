@@ -155,7 +155,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductVariationsFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(new LoadProductVariationsFail({ error: { message: 'error' } as HttpError, sku: 'SKU' }));
       });
 
       it('should not have loaded product variations on error', () => {
