@@ -15,10 +15,9 @@ import { DesignViewMessage } from './sfe.types';
 export class SfeAdapterService {
   private initialized = false;
   private hostOrigin = 'https://localhost:8444'; // TODO: get from store
-  private window: Window = window; // TODO: Get this from a service so we abstract this for SSR and testing
 
   private allowedHostMessageTypes = ['dv-designchange'];
-  private initOnTopLevel = true; // for debug purposes. enables this feature even in top-level windows
+  private initOnTopLevel = false; // for debug purposes. enables this feature even in top-level windows
 
   constructor(private router: Router, private store: Store<{}>, private appRef: ApplicationRef) {}
 
@@ -41,8 +40,12 @@ export class SfeAdapterService {
   }
 
   private shouldInit() {
-    // No initalization when application runs on top level window (i.e. not in design view iframe)
-    return (this.window.parent && this.window.parent !== this.window) || this.initOnTopLevel;
+    /* only initialize when
+     - there is a window (i.e. the application does not run in Universal)
+     - application does not run on top level window (i.e. is runs in the design view iframe)
+     - OR the debug mode is on (initOnTopLevel)
+     */
+    return typeof window !== 'undefined' && ((window.parent && window.parent !== window) || this.initOnTopLevel);
   }
 
   isInitialized() {
@@ -90,11 +93,11 @@ export class SfeAdapterService {
   }
 
   private messageToHost(msg: DesignViewMessage) {
-    this.window.parent.postMessage(msg, this.hostOrigin); // TODO: abstract parent as this points to the parent window
+    window.parent.postMessage(msg, this.hostOrigin);
   }
 
   private getBody() {
-    return document.querySelector('body'); // TODO: Abstract this for SSR and testing
+    return document.querySelector('body');
   }
 
   private handleHostMessage(message: DesignViewMessage) {
