@@ -1,21 +1,28 @@
 import { createSelector } from '@ngrx/store';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { VariationProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
+import {
+  ProductView,
+  VariationProductMasterView,
+  VariationProductView,
+  createProductView,
+} from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from '../categories';
 import { getShoppingState } from '../shopping-store';
 
 import { productAdapter } from './products.reducer';
 
-// all this is just placed here temporarily
-
-///////////////////////////
-
 const getProductsState = createSelector(
   getShoppingState,
   state => state.products
 );
+
+const productToVariationOptions = (product: ProductView | VariationProductView | VariationProductMasterView) => {
+  if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
+    return ProductVariationHelper.buildVariationOptionGroups(product as VariationProductView);
+  }
+};
 
 export const {
   selectEntities: getProductEntities,
@@ -38,13 +45,18 @@ export const getProductVariations = createSelector(
   products => products.variations
 );
 
-export const getSelectedProduct = createSelector(
+export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
-  getSelectedProductId,
   getProductVariations,
-  (tree, entities, id, variationsMap) => {
-    const product = createProductView(entities[id], tree);
+  getFailed,
+  (tree, entities, variationsMap, failed, props: { sku: string }) => {
+    if (failed.includes(props.sku)) {
+      // tslint:disable-next-line: ish-no-object-literal-type-assertion
+      return createProductView({ sku: props.sku } as Product, tree);
+    }
+
+    const product = createProductView(entities[props.sku], tree);
 
     // for master product, add variations
     if (ProductHelper.isMasterProduct(product)) {
@@ -79,24 +91,11 @@ export const getSelectedProduct = createSelector(
   }
 );
 
-export const getSelectedProductVariationOptions = createSelector(
-  getSelectedProduct,
-  product => {
-    if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
-      return ProductVariationHelper.buildVariationOptionGroups(product as VariationProductView);
-    }
-  }
-);
-
-export const getProduct = createSelector(
-  getCategoryTree,
-  getProductEntities,
+export const getSelectedProduct = createSelector(
+  state => state,
+  getSelectedProductId,
   getFailed,
-  (tree, products, failed, props: { sku: string }) =>
-    failed.includes(props.sku)
-      ? // tslint:disable-next-line:ish-no-object-literal-type-assertion
-        createProductView({ sku: props.sku } as Product, tree)
-      : createProductView(products[props.sku], tree)
+  (state, sku, failed) => (failed.includes(sku) ? undefined : getProduct(state, { sku }))
 );
 
 export const getSelectedProductVariations = createSelector(
@@ -113,6 +112,16 @@ export const getSelectedProductVariations = createSelector(
 
     return [];
   }
+);
+
+export const getProductVariationOptions = createSelector(
+  getProduct,
+  productToVariationOptions
+);
+
+export const getSelectedProductVariationOptions = createSelector(
+  getSelectedProduct,
+  productToVariationOptions
 );
 
 export const getProductLoading = createSelector(
