@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
 import {
@@ -16,7 +17,7 @@ import {
 } from 'rxjs/operators';
 
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
@@ -132,9 +133,10 @@ export class ProductsEffects {
   @Effect()
   loadMasterProductForProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
-    map(action => action.payload.product as VariationProduct),
+    mapToPayloadProperty('product'),
+    filter(product => ProductHelper.isVariationProduct(product)),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-    filter(([product, entities]) => product.productMasterSKU && !entities[product.productMasterSKU]),
+    filter(([product, entities]: [VariationProduct, Dictionary<Product>]) => !entities[product.productMasterSKU]),
     map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
   );
 
@@ -145,9 +147,10 @@ export class ProductsEffects {
   @Effect()
   loadProductVariationsForMasterProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
-    map(action => action.payload.product),
+    mapToPayloadProperty('product'),
+    filter(product => ProductHelper.isMasterProduct(product)),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductVariations))),
-    filter(([product, variations]) => ProductHelper.isMasterProduct(product) && !variations[product.sku]),
+    filter(([product, variations]) => !variations[product.sku]),
     map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
   );
 
