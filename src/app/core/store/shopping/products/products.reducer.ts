@@ -70,12 +70,12 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       const loadedVariations = action.payload.variations;
       const sku = action.payload.sku;
 
-      const variationEntries: ProductVariationLinksMap = {
+      const variations: ProductVariationLinksMap = {
         ...state.variations,
         [sku]: loadedVariations,
       };
 
-      return { ...state, variations: variationEntries, loading: false };
+      return { ...state, variations, loading: false };
     }
   }
 

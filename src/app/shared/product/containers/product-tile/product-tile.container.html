@@ -6,6 +6,7 @@
   [isInCompareList]="isInCompareList$ | async"
   (compareToggle)="toggleCompare()"
   (productToBasket)="addToBasket()"
+  (selectVariation)="variationSelected($event)"
 ></ish-product-tile>
 
 <ng-template #loading> <ish-loading></ish-loading> </ng-template>

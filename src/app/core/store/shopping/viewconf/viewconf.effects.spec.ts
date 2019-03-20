@@ -9,10 +9,10 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { Category } from '../../../models/category/category.model';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
-import { LoadProductsForCategory } from '../products';
+import { LoadProduct, LoadProductsForCategory } from '../products';
 import { shoppingReducers } from '../shopping-store.module';
 
-import { ChangeSortBy } from './viewconf.actions';
+import { ChangeSortBy, ReplaceVariationProduct } from './viewconf.actions';
 import { ViewconfEffects } from './viewconf.effects';
 
 describe('Viewconf Effects', () => {
@@ -64,6 +64,15 @@ describe('Viewconf Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.changeSortBy$).toBeObservable(expected$);
+    });
+
+    it('should dispatch LoadProduct for variation replacement', () => {
+      const action = new ReplaceVariationProduct({ oldSku: 'old', newSku: 'new' });
+      const completion = new LoadProduct({ sku: 'new' });
+      actions$ = hot('-a-a', { a: action });
+      const expected$ = cold('-c-c', { c: completion });
+
+      expect(effects.replaceVariationProduct$).toBeObservable(expected$);
     });
   });
 });

@@ -13,6 +13,7 @@
   [viewType]="viewType$ | async"
   [loadingMore]="loadingMore$ | async"
   (loadMore)="loadMoreProducts()"
+  (selectVariation)="replaceVariation($event)"
 ></ish-product-list>
 
 <ish-product-list-paging

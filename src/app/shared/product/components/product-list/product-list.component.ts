@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
+import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
+import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -13,6 +15,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
  *               [category]="category$ | async"
  *               [viewType]="viewType$ | async"
  *               (loadMore)="loadMoreProducts()"
+ *               (selectVariation)="variationSelected($event)"
  * ></ish-product-list>
  */
 @Component({
@@ -27,4 +30,9 @@ export class ProductListComponent {
   @Input() loadingMore: boolean;
 
   @Output() loadMore = new EventEmitter<void>();
+  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; product: VariationProductView }>();
+
+  variationSelected({ selection, product }: { selection: VariationSelection; product: VariationProductView }) {
+    this.selectVariation.emit({ selection, product });
+  }
 }

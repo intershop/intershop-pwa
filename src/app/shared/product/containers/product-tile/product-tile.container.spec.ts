@@ -28,7 +28,7 @@ describe('Product Tile Container', () => {
         MockComponent({
           selector: 'ish-product-tile',
           template: 'Product Tile Component',
-          inputs: ['product', 'category', 'isInCompareList'],
+          inputs: ['product', 'category', 'isInCompareList', 'variationOptions'],
         }),
         ProductTileContainerComponent,
       ],

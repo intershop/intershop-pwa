@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 
+import { ProductHelper } from 'ish-core/models/product/product.model';
 import { mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsActionTypes, SelectProduct } from '../products';
 import { getSelectedProduct } from '../products/products.selectors';
