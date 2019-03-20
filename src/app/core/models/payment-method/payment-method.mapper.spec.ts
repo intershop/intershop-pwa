@@ -18,7 +18,7 @@ describe('Payment Method Mapper', () => {
           currency: 'USD',
         },
       },
-      applicability: 'Applicable',
+      restricted: false,
     } as PaymentMethodData;
 
     it(`should return PaymentMethod when getting a PaymentMethodData`, () => {
@@ -32,9 +32,16 @@ describe('Payment Method Mapper', () => {
     });
 
     it(`should return a restricted PaymentMethod when getting restricted PaymentMethodData`, () => {
-      paymentMethodData.applicability = 'Restricted';
+      paymentMethodData.restricted = true;
+      paymentMethodData.restrictions = [
+        {
+          message: 'restricition message',
+          code: 'restricition code',
+        },
+      ];
       const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData);
       expect(paymentMethod.isRestricted).toBeTrue();
+      expect(paymentMethod.restrictionCauses).toHaveLength(1);
     });
   });
 });
