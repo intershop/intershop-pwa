@@ -11,7 +11,6 @@ export interface LineItemData {
     unit?: string;
   };
   product: string;
-  price: PriceItem;
 
   surcharges?: [
     {
@@ -21,13 +20,14 @@ export interface LineItemData {
     }
   ];
   discounts?: BasketRebateData[];
-  singleBasePrice: PriceItem;
-  totals: {
+  pricing: {
     salesTaxTotal?: Price;
     shippingTaxTotal?: Price;
     shippingTotal: PriceItem;
     total: PriceItem;
     valueRebatesTotal?: PriceItem;
+    price: PriceItem;
+    singleBasePrice: PriceItem;
   };
   hiddenGift: boolean;
   freeGift: boolean;

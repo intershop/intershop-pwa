@@ -3,8 +3,8 @@ import { Price } from '../price/price.model';
 
 export interface BasketTotalData {
   grandTotal: PriceItem;
+  undiscountedItemTotal?: PriceItem;
   itemTotal: PriceItem;
-  discountedItemTotal: PriceItem;
   shippingTotal?: PriceItem;
   basketShippingDiscountsTotal?: PriceItem;
   basketValueDiscountsTotal?: PriceItem;
