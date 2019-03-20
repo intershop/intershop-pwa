@@ -42,18 +42,7 @@ describe('Basket Mapper', () => {
                 currency: 'USD',
               },
             },
-            discountedItemTotal: {
-              gross: {
-                value: 141796.98,
-                currency: 'USD',
-              },
-              net: {
-                value: 141796.98,
-                currency: 'USD',
-              },
-            },
           },
-
           discounts: {
             valueBasedDiscounts: ['discount_1'],
           },
@@ -122,7 +111,7 @@ describe('Basket Mapper', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket).toBeTruthy();
 
-      expect(basket.totals.itemTotal.value).toBe(basketData.data.totals.discountedItemTotal.gross.value);
+      expect(basket.totals.itemTotal.value).toBe(basketData.data.totals.itemTotal.gross.value);
       expect(basket.totals.itemSurchargeTotalsByType[0].amount.value).toBe(
         basketData.data.surcharges.itemSurcharges[0].amount.gross.value
       );
