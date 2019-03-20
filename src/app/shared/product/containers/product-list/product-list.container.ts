@@ -4,10 +4,14 @@ import { combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
+import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
+import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import {
   ChangeSortBy,
   ChangeViewType,
+  ReplaceVariationProduct,
   canRequestMore,
   getPageIndices,
   getPagingLoading,
@@ -77,5 +81,14 @@ export class ProductListContainerComponent {
         filter(([moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling)
       )
       .subscribe(() => this.loadMore.emit());
+  }
+
+  replaceVariation({ selection, product }: { selection: VariationSelection; product: VariationProductView }) {
+    const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+    const oldSku = product.sku;
+    const newSku = variation && variation.uri.split('/').pop();
+    if (oldSku !== newSku) {
+      this.store.dispatch(new ReplaceVariationProduct({ oldSku: product.sku, newSku }));
+    }
   }
 }

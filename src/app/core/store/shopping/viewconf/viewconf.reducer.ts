@@ -102,6 +102,16 @@ export function viewconfReducer(
         loading: true,
       };
     }
+
+    case fromViewconf.ViewconfActionTypes.ReplaceVariationProduct: {
+      const { oldSku, newSku } = action.payload;
+      const products = state.products.map(sku => (sku === oldSku ? newSku : sku));
+
+      return {
+        ...state,
+        products,
+      };
+    }
   }
 
   return state;

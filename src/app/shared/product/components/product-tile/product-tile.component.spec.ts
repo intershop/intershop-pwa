@@ -4,6 +4,7 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -56,6 +57,11 @@ describe('Product Tile Component', () => {
           template: 'Product Price Component',
           inputs: ['product', 'showInformationalPrice'],
         }),
+        MockComponent({
+          selector: 'ish-product-variations',
+          template: 'Product Variations Component',
+          inputs: ['variationOptions'],
+        }),
         ProductTileComponent,
       ],
     }).compileComponents();
@@ -65,7 +71,7 @@ describe('Product Tile Component', () => {
     fixture = TestBed.createComponent(ProductTileComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = { sku: 'sku' } as Product;
+    component.product = { sku: 'sku' } as ProductView;
   });
 
   it('should be created', () => {
