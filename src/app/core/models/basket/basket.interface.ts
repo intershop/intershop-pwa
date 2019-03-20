@@ -2,6 +2,7 @@ import { AddressData } from '../address/address.interface';
 import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from '../basket-total/basket-total.interface';
 import { LineItemData } from '../line-item/line-item.interface';
+import { PaymentMethodData } from '../payment-method/payment-method.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { PriceData } from '../price/price.interface';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
@@ -48,5 +49,6 @@ export interface BasketData {
         totalAmount: { gross: PriceData };
       };
     };
+    payments_paymentMethod?: { [id: string]: PaymentMethodData };
   };
 }

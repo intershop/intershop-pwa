@@ -29,7 +29,8 @@ export declare type BasketIncludeType =
   | 'commonShippingMethod'
   | 'discounts'
   | 'lineItems'
-  | 'payments';
+  | 'payments'
+  | 'payments_paymentMethod';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -50,6 +51,7 @@ export class BasketService {
     'discounts',
     'lineItems',
     'payments',
+    'payments_paymentMethod',
   ];
 
   /**
