@@ -10,7 +10,8 @@ export class PaymentMethodMapper {
         id: data.id,
         displayName: data.displayName,
         description: data.description,
-        isRestricted: data.applicability === 'Restricted',
+        isRestricted: data.restricted,
+        restrictionCauses: data.restrictions,
         paymentCosts: PriceMapper.fromPriceItem(data.paymentCosts, 'net'),
         paymentCostsThreshold: PriceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
       };
