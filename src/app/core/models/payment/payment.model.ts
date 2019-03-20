@@ -3,4 +3,5 @@ export interface Payment {
   paymentInstrument: string;
   displayName?: string;
   status?: string;
+  description?: string;
 }
