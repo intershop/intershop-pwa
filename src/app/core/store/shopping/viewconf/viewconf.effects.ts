@@ -60,11 +60,4 @@ export class ViewconfEffects {
       )
     )
   );
-
-  @Effect()
-  replaceVariationProduct$ = this.actions$.pipe(
-    ofType<viewconfActions.ReplaceVariationProduct>(viewconfActions.ViewconfActionTypes.ReplaceVariationProduct),
-    mapToPayloadProperty('newSku'),
-    map(sku => new LoadProduct({ sku }))
-  );
 }

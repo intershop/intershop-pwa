@@ -11,7 +11,6 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import {
   ChangeSortBy,
   ChangeViewType,
-  ReplaceVariationProduct,
   canRequestMore,
   getPageIndices,
   getPagingLoading,
@@ -81,14 +80,5 @@ export class ProductListContainerComponent {
         filter(([moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling)
       )
       .subscribe(() => this.loadMore.emit());
-  }
-
-  replaceVariation({ selection, product }: { selection: VariationSelection; product: VariationProductView }) {
-    const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
-    const oldSku = product.sku;
-    const newSku = variation && variation.uri.split('/').pop();
-    if (oldSku !== newSku) {
-      this.store.dispatch(new ReplaceVariationProduct({ oldSku: product.sku, newSku }));
-    }
   }
 }

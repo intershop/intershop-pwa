@@ -36,7 +36,7 @@
       <ish-product-shipment [product]="product"></ish-product-shipment>
 
       <ish-product-variations
-        *ngIf="variationOptions"
+        *ngIf="isVariationProduct(product)"
         [variationOptions]="variationOptions"
         (selectVariation)="variationSelected($event)"
       ></ish-product-variations>

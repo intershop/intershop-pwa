@@ -6,7 +6,6 @@
         *ngIf="product; else loading"
         [productSku]="product.sku"
         [category]="category"
-        (selectVariation)="variationSelected($event)"
       ></ish-product-tile-container>
       <ng-template #loading> <ish-loading></ish-loading> </ng-template>
     </div>

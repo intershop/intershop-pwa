@@ -13,7 +13,7 @@ import { mapToProperty } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationsComponent implements OnChanges, OnDestroy {
-  @Input() variationOptions: VariationOptionGroup[];
+  @Input() variationOptions: VariationOptionGroup[] = [];
   @Output() selectVariation = new EventEmitter<VariationSelection>();
 
   form: FormGroup;
@@ -21,8 +21,10 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.initForm();
-    const variationsFormGroup = this.buildSelectForm(this.variationOptions);
-    this.form.setControl('variations', variationsFormGroup);
+    if (this.variationOptions) {
+      const variationsFormGroup = this.buildSelectForm(this.variationOptions);
+      this.form.setControl('variations', variationsFormGroup);
+    }
   }
 
   initForm() {

@@ -30,9 +30,4 @@ export class ProductListComponent {
   @Input() loadingMore: boolean;
 
   @Output() loadMore = new EventEmitter<void>();
-  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; product: VariationProductView }>();
-
-  variationSelected({ selection, product }: { selection: VariationSelection; product: VariationProductView }) {
-    this.selectVariation.emit({ selection, product });
-  }
 }
