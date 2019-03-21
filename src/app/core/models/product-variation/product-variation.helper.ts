@@ -62,6 +62,7 @@ export class ProductVariationHelper {
    * Build select value structure
    */
   static buildVariationOptionGroups(product: VariationProductView): VariationOptionGroup[] {
+    // transform currently selected variation attribute list to object with the attributeId as key
     const currentSettings = product.variableVariationAttributes.reduce(
       (acc, attr) => ({
         ...acc,
@@ -70,6 +71,8 @@ export class ProductVariationHelper {
       {}
     );
 
+    // transform all variation attribute values to selectOptions
+    // each with information about alternative combinations and active status (active status comes from currently selected variation)
     const options: VariationSelectOption[] = product.productMaster.variationAttributeValues
       .map(attr => ({
         label: attr.value,
@@ -82,9 +85,12 @@ export class ProductVariationHelper {
         alternativeCombination: ProductVariationHelper.alternativeCombinationCheck(option, product),
       }));
 
+    // group options list by attributeId
     const groupedOptions = groupBy(options, option => option.type);
 
+    // go through those groups and transform them to more complex objects
     return Object.keys(groupedOptions).map(attrId => {
+      // we need to get one of the original attributes again here, because we lost the attribute name
       const attribute = product.productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
       return {
         id: attribute.variationAttributeId,
