@@ -8,7 +8,6 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-tile',
@@ -21,20 +20,18 @@ export class ProductTileComponent {
   @Input() category: Category;
   @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
-  @Output() productToBasket = new EventEmitter<void>();
-  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; product: VariationProductView }>();
+  @Output() productToBasket = new EventEmitter<number>();
+  @Output() selectVariation = new EventEmitter<VariationSelection>();
+
+  addToBasket() {
+    this.productToBasket.emit(this.product.minOrderQuantity);
+  }
 
   toggleCompare() {
     this.compareToggle.emit();
   }
 
-  addToBasket() {
-    this.productToBasket.emit();
-  }
-
   variationSelected(selection: VariationSelection) {
-    if (ProductHelper.isVariationProduct(this.product)) {
-      this.selectVariation.emit({ selection, product: this.product });
-    }
+    this.selectVariation.emit(selection);
   }
 }

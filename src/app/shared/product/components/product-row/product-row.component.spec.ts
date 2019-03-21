@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
@@ -59,6 +59,11 @@ describe('Product Row Component', () => {
           template: 'Product Quantity Component',
           inputs: ['product', 'parentForm', 'controlName'],
         }),
+        MockComponent({
+          selector: 'ish-product-variations',
+          template: 'Product Variations Component',
+          inputs: ['variationOptions'],
+        }),
         ProductRowComponent,
       ],
     }).compileComponents();
@@ -68,7 +73,7 @@ describe('Product Row Component', () => {
     fixture = TestBed.createComponent(ProductRowComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = { sku: 'sku' } as Product;
+    component.product = { sku: 'sku' } as ProductView;
   });
 
   it('should be created', () => {

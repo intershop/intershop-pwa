@@ -9,10 +9,10 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { Category } from '../../../models/category/category.model';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
-import { LoadProduct, LoadProductsForCategory } from '../products';
+import { LoadProductsForCategory } from '../products';
 import { shoppingReducers } from '../shopping-store.module';
 
-import { ChangeSortBy, ReplaceVariationProduct } from './viewconf.actions';
+import { ChangeSortBy } from './viewconf.actions';
 import { ViewconfEffects } from './viewconf.effects';
 
 describe('Viewconf Effects', () => {
