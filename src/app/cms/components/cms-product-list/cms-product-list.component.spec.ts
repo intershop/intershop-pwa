@@ -14,7 +14,11 @@ describe('Cms Product List Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CMSProductListComponent,
-        MockComponent({ selector: 'ish-product-tile-container', template: 'Product Tile', inputs: ['productSku'] }),
+        MockComponent({
+          selector: 'ish-product-item-container',
+          template: 'Product Item',
+          inputs: ['productSku', 'type'],
+        }),
       ],
     }).compileComponents();
   }));

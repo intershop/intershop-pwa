@@ -51,6 +51,12 @@
             </div>
           </form>
         </div>
+
+        <ish-product-variations
+          *ngIf="variationOptions"
+          [variationOptions]="variationOptions"
+          (selectVariation)="variationSelected($event)"
+        ></ish-product-variations>
       </div>
     </div>
   </div>

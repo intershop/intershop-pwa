@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -30,4 +28,12 @@ export class ProductListComponent {
   @Input() loadingMore: boolean;
 
   @Output() loadMore = new EventEmitter<void>();
+
+  get isGrid() {
+    return this.viewType === 'grid';
+  }
+
+  get isList() {
+    return this.viewType === 'list';
+  }
 }

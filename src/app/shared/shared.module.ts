@@ -52,9 +52,8 @@ import { ProductRowComponent } from './product/components/product-row/product-ro
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
 import { ProductVariationsComponent } from './product/components/product-variations/product-variations.component';
+import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
-import { ProductRowContainerComponent } from './product/containers/product-row/product-row.container';
-import { ProductTileContainerComponent } from './product/containers/product-tile/product-tile.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
@@ -89,7 +88,6 @@ const declaredComponents = [
   ProductListPagingComponent,
   ProductListToolbarComponent,
   ProductRowComponent,
-  ProductRowContainerComponent,
   ProductTileComponent,
   RecentlyViewedComponent,
 ];
@@ -113,12 +111,12 @@ const exportedComponents = [
   ProductAddToCompareComponent,
   ProductAttributesComponent,
   ProductInventoryComponent,
+  ProductItemContainerComponent,
   ProductLabelComponent,
   ProductListContainerComponent,
   ProductPriceComponent,
   ProductQuantityComponent,
   ProductShipmentComponent,
-  ProductTileContainerComponent,
   ProductVariationsComponent,
   PromotionDetailsComponent,
   RecentlyViewedContainerComponent,

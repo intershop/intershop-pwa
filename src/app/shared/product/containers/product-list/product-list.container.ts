@@ -4,9 +4,6 @@ import { combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import {
   ChangeSortBy,
@@ -31,7 +28,6 @@ import {
 })
 export class ProductListContainerComponent {
   @Input() category?: Category;
-
   @Input() pageUrl: string;
 
   @Output() loadMore = new EventEmitter<void>();

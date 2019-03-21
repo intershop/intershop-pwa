@@ -24,16 +24,4 @@ describe('Viewconf Reducer', () => {
 
     expect(state.sortBy).toEqual('name-asc');
   });
-
-  it('should replace variation product SKU for ReplaceVariationProduct action', () => {
-    const action = new fromActions.ReplaceVariationProduct({ oldSku: 'old', newSku: 'new' });
-
-    const products = ['a', 'b', 'old', 'c'];
-    const expectedProducts = ['a', 'b', 'new', 'c'];
-
-    const oldState = { ...initialState, products };
-    const state = viewconfReducer(oldState, action);
-
-    expect(state.products).toEqual(expectedProducts);
-  });
 });
