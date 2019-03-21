@@ -65,14 +65,5 @@ describe('Viewconf Effects', () => {
 
       expect(effects.changeSortBy$).toBeObservable(expected$);
     });
-
-    it('should dispatch LoadProduct for variation replacement', () => {
-      const action = new ReplaceVariationProduct({ oldSku: 'old', newSku: 'new' });
-      const completion = new LoadProduct({ sku: 'new' });
-      actions$ = hot('-a-a', { a: action });
-      const expected$ = cold('-c-c', { c: completion });
-
-      expect(effects.replaceVariationProduct$).toBeObservable(expected$);
-    });
   });
 });

@@ -12,7 +12,6 @@ export enum ViewconfActionTypes {
   SetPage = '[Shopping Internal] Set Page',
   AppendProducts = '[Shopping Internal] Append Products',
   DisableEndlessScrolling = '[Shopping Internal] Disable Endless Scrolling',
-  ReplaceVariationProduct = '[Shopping Internal] Replace Variation Product',
 }
 
 export class SetEndlessScrollingPageSize implements Action {
@@ -53,11 +52,6 @@ export class DisableEndlessScrolling implements Action {
   readonly type = ViewconfActionTypes.DisableEndlessScrolling;
 }
 
-export class ReplaceVariationProduct implements Action {
-  readonly type = ViewconfActionTypes.ReplaceVariationProduct;
-  constructor(public payload: { oldSku: string; newSku: string }) {}
-}
-
 export type ViewconfAction =
   | SetEndlessScrollingPageSize
   | ChangeViewType
@@ -66,5 +60,4 @@ export type ViewconfAction =
   | SetPagingLoading
   | SetPagingInfo
   | SetPage
-  | DisableEndlessScrolling
-  | ReplaceVariationProduct;
+  | DisableEndlessScrolling;

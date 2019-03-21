@@ -8,7 +8,7 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-detail',
@@ -25,6 +25,8 @@ export class ProductDetailComponent implements OnInit {
 
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';
+
+  isVariationProduct = ProductHelper.isVariationProduct;
 
   ngOnInit() {
     this.productDetailForm = new FormGroup({
