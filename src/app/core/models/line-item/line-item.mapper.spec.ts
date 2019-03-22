@@ -25,7 +25,7 @@ describe('Line Item Mapper', () => {
           },
         },
       } as LineItemData;
-      const lineItem = LineItemMapper.fromData(lineItemData);
+      const lineItem = LineItemMapper.fromData(lineItemData, undefined);
 
       expect(lineItem).toBeTruthy();
       expect(lineItem.productSKU).toBe(lineItemData.product);
@@ -33,7 +33,7 @@ describe('Line Item Mapper', () => {
     });
 
     it(`should throw an error when getting no LineItemData`, () => {
-      expect(() => LineItemMapper.fromData(undefined)).toThrow();
+      expect(() => LineItemMapper.fromData(undefined, undefined)).toThrow();
     });
   });
 

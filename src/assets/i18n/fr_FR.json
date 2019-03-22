@@ -1958,6 +1958,7 @@
   "promotion.detaillist.title": "Promotion appliquée",
   "promotion.detailslink.label": "Détails de promotion",
   "promotion.status.applied": "appliqué",
+  "promotion.detailslink.text": "Détails",
   "promotion.status.notapplied": "non appliqué",
   "promotion.viewEligibleItemsLink": "Afficher les articles eligibles",
   "rest.account.product.notification.email.error": "erreur.e-mail.de.notification.de.produits.nonvalide",

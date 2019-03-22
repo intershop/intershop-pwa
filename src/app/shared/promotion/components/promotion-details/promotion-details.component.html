@@ -1,0 +1,11 @@
+<ng-container *ngIf="promotion">
+  <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{ 'promotion.detailslink.text' | translate }}</a>
+  <ish-modal-dialog #modalDialog [options]="{ titleText: 'promotion.detaillist.title' | translate }">
+    <h3 [innerHTML]="promotion.longTitle | safeHtml"></h3>
+    <p [innerHTML]="promotion.ruleDescription | safeHtml"></p>
+    <p [innerHTML]="promotion.legalContentMessage | safeHtml"></p>
+    <p *ngIf="promotion.useExternalUrl">
+      <a href="{{ promotion.externalUrl }}">{{ promotion.externalUrl }}</a>
+    </p>
+  </ish-modal-dialog>
+</ng-container>
