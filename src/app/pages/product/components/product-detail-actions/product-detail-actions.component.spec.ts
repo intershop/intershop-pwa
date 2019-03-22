@@ -6,7 +6,7 @@ import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
-import { Product, ProductType } from 'ish-core/models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
@@ -78,7 +78,7 @@ describe('Product Detail Actions Component', () => {
     });
 
     it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {
-      component.product.type = ProductType.VariationProductMaster;
+      component.product.type = 'VariationProductMaster';
       fixture.detectChanges();
       expect(element.querySelector("[data-testing-id='compare-sku']")).toBeFalsy();
     });

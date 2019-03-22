@@ -1,19 +1,19 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { ProductVariationLinksMap } from 'ish-core/models/variation-link/variation-link.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
-export const productAdapter = createEntityAdapter<Product>({
+export const productAdapter = createEntityAdapter<Product | VariationProduct | VariationProductMaster>({
   selectId: product => product.sku,
 });
 
-export interface ProductsState extends EntityState<Product> {
+export interface ProductsState extends EntityState<Product | VariationProduct | VariationProductMaster> {
   loading: boolean;
   selected: string;
   failed: string[];
-  variations: ProductVariationLinksMap;
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
@@ -67,15 +67,12 @@ export function productsReducer(state = initialState, action: ProductsAction): P
     }
 
     case ProductsActionTypes.LoadProductVariationsSuccess: {
-      const loadedVariations = action.payload.variations;
-      const sku = action.payload.sku;
-
-      const variations: ProductVariationLinksMap = {
-        ...state.variations,
-        [sku]: loadedVariations,
-      };
-
-      return { ...state, variations, loading: false };
+      return productAdapter.updateOne(
+        { id: action.payload.sku, changes: { variationSKUs: action.payload.variations } },
+        { ...state, loading: false }
+      );
+      // return productAdapter.upsertOne({...state.entities[action.payload.sku], variationSKUs: action.payload.variations},
+      //   { ...state, loading: false });
     }
   }
 

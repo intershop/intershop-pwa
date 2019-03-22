@@ -8,7 +8,7 @@ import { ProductVariationHelper } from 'ish-core/models/product-variation/produc
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
-import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
@@ -35,7 +35,12 @@ export class ProductPageContainerComponent implements OnInit {
     map(baseUrl => baseUrl + this.location.path())
   );
 
-  constructor(private store: Store<{}>, private location: Location, private router: Router) {}
+  constructor(
+    private store: Store<{}>,
+    private location: Location,
+    private router: Router,
+    private prodRoutePipe: ProductRoutePipe
+  ) {}
 
   ngOnInit() {
     this.product$
@@ -43,7 +48,7 @@ export class ProductPageContainerComponent implements OnInit {
         whenTruthy(),
         take(1)
       )
-      .subscribe((product: VariationProductMasterView) => {
+      .subscribe(product => {
         if (ProductHelper.isMasterProduct(product)) {
           this.redirectMasterToDefaultVariation(product);
         }
@@ -63,9 +68,10 @@ export class ProductPageContainerComponent implements OnInit {
     this.redirectToVariation(variation);
   }
 
-  redirectToVariation(variation: VariationLink) {
-    const sku = variation && variation.uri.split('/').pop();
-    return sku && this.router.navigate(['/product', sku]);
+  redirectToVariation(variation: VariationProductView) {
+    if (variation) {
+      this.router.navigateByUrl(this.prodRoutePipe.transform(variation));
+    }
   }
 
   /**

@@ -3,8 +3,6 @@ import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
 
-import { ProductType } from './product.types';
-
 export interface Product {
   name: string;
   shortDescription: string;
@@ -25,8 +23,7 @@ export interface Product {
   defaultCategoryId?: string;
 
   // properties added in model
-  type: ProductType;
+  type: 'Product' | 'VariationProduct' | 'VariationProductMaster';
 }
 
 export * from './product.helper';
-export * from './product.types';

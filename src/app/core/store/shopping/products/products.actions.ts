@@ -2,7 +2,6 @@ import { Action } from '@ngrx/store';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
-import { VariationLink } from '../../../models/variation-link/variation-link.model';
 
 export enum ProductsActionTypes {
   SelectProduct = '[Shopping] Select Product',
@@ -63,7 +62,7 @@ export class LoadProductVariationsFail implements Action {
 
 export class LoadProductVariationsSuccess implements Action {
   readonly type = ProductsActionTypes.LoadProductVariationsSuccess;
-  constructor(public payload: { sku: string; variations: VariationLink[] }) {}
+  constructor(public payload: { sku: string; variations: string[] }) {}
 }
 
 export type ProductsAction =

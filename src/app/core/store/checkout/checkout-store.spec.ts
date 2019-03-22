@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
+import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -79,8 +80,8 @@ describe('Checkout Store', () => {
     readyForShipmentMin: 1,
     readyForShipmentMax: 1,
     sku: 'test',
-    type: 0,
-  };
+    type: 'Product',
+  } as Product;
 
   const customer = {
     type: 'PrivateCustomer',

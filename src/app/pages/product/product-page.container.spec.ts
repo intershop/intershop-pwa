@@ -9,8 +9,7 @@ import { cold } from 'jest-marbles';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductType } from 'ish-core/models/product/product.model';
-import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import {
@@ -168,7 +167,7 @@ describe('Product Page Container', () => {
   it('should redirect to default variation for master product', fakeAsync(() => {
     const product = {
       sku: 'M111',
-      type: ProductType.VariationProductMaster,
+      type: 'VariationProductMaster',
     } as VariationProductMasterView;
 
     const variations = [

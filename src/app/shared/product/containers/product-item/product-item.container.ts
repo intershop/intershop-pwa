@@ -67,7 +67,7 @@ export class ProductItemContainerComponent implements OnInit {
       )
       .subscribe((product: VariationProductView) => {
         const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
-        const newSku = variation && variation.uri.split('/').pop();
+        const newSku = variation.sku;
 
         this.setUpStoreData(newSku);
       });

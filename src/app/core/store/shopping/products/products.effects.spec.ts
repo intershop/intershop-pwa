@@ -14,7 +14,7 @@ import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/inject
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { VariationProductMaster } from '../../../models/product/product-variation-master.model';
 import { VariationProduct } from '../../../models/product/product-variation.model';
-import { Product, ProductType } from '../../../models/product/product.model';
+import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
 import { shoppingReducers } from '../shopping-store.module';
@@ -199,7 +199,7 @@ describe('Products Effects', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
           productMasterSKU: 'MSKU',
-          type: ProductType.VariationProduct,
+          type: 'VariationProduct',
         } as VariationProduct,
       });
       const completion = new fromActions.LoadProduct({ sku: 'MSKU' });
@@ -215,7 +215,7 @@ describe('Products Effects', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
           productMasterSKU: 'MSKU',
-          type: ProductType.VariationProduct,
+          type: 'VariationProduct',
         } as VariationProduct,
       });
       actions$ = hot('-a', { a: action });
@@ -230,7 +230,7 @@ describe('Products Effects', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
           sku: 'MSKU',
-          type: ProductType.VariationProductMaster,
+          type: 'VariationProductMaster',
         } as VariationProductMaster,
       });
       const completion = new fromActions.LoadProductVariations({ sku: 'MSKU' });
@@ -246,7 +246,7 @@ describe('Products Effects', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
           sku: 'MSKU',
-          type: ProductType.VariationProductMaster,
+          type: 'VariationProductMaster',
         } as VariationProductMaster,
       });
       actions$ = hot('-a', { a: action });
@@ -259,7 +259,7 @@ describe('Products Effects', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
           sku: 'SKU',
-          type: ProductType.Product,
+          type: 'Product',
         } as Product,
       });
       actions$ = hot('-a', { a: action });
