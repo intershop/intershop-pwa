@@ -9,7 +9,7 @@ import { Price } from '../price/price.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { ProductData, ProductDataStub } from './product.interface';
-import { Product, ProductType } from './product.model';
+import { Product } from './product.model';
 
 function filterPrice(price: Price): Price {
   if (price && price.currency && price.currency !== 'N/A') {
@@ -82,7 +82,7 @@ export class ProductMapper {
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
-      type: ProductType.Product,
+      type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
     };
   }
@@ -92,7 +92,7 @@ export class ProductMapper {
    */
   fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
     const product: Product = {
-      type: ProductType.Product,
+      type: 'Product',
       name: data.productName,
       shortDescription: data.shortDescription,
       longDescription: data.longDescription,
@@ -118,14 +118,14 @@ export class ProductMapper {
       return {
         ...product,
         variationAttributeValues: data.variationAttributeValues,
-        type: ProductType.VariationProductMaster,
+        type: 'VariationProductMaster',
       };
     } else if (data.mastered) {
       return {
         ...product,
         productMasterSKU: data.productMasterSKU,
         variableVariationAttributes: data.variableVariationAttributes,
-        type: ProductType.VariationProduct,
+        type: 'VariationProduct',
       };
     } else {
       return product;

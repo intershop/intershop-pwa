@@ -120,7 +120,10 @@ export class ProductsEffects {
     mapToPayloadProperty('sku'),
     mergeMap(sku =>
       this.productsService.getProductVariations(sku).pipe(
-        map(variations => new productsActions.LoadProductVariationsSuccess({ sku, variations })),
+        mergeMap((variations: VariationProduct[]) => [
+          ...variations.map(product => new productsActions.LoadProductSuccess({ product })),
+          new productsActions.LoadProductVariationsSuccess({ sku, variations: variations.map(p => p.sku) }),
+        ]),
         mapErrorToAction(productsActions.LoadProductVariationsFail, { sku })
       )
     )
@@ -148,10 +151,8 @@ export class ProductsEffects {
   loadProductVariationsForMasterProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
-    filter(product => ProductHelper.isMasterProduct(product)),
-    withLatestFrom(this.store.pipe(select(productsSelectors.getProductVariations))),
-    filter(([product, variations]) => !variations[product.sku]),
-    map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+    filter(product => ProductHelper.isMasterProduct(product) && !product.variationSKUs),
+    map(product => new productsActions.LoadProductVariations({ sku: product.sku }))
   );
 
   @Effect()

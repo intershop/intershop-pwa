@@ -113,21 +113,21 @@ describe('Products Reducer', () => {
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
-        expect(state.variations).toBeEmpty();
       });
     });
 
     describe('LoadProductVariationsSuccess action', () => {
       it('should set product variation data and set loading to false', () => {
+        const product = { sku: 'SKU' } as Product;
+        let state = productsReducer(initialState, new fromActions.LoadProductSuccess({ product }));
+
         const payload = {
           sku: 'SKU',
-          variations: [],
+          variations: ['VAR'],
         };
+        state = productsReducer(initialState, new fromActions.LoadProductVariationsSuccess(payload));
 
-        const action = new fromActions.LoadProductVariationsSuccess(payload);
-        const state = productsReducer(initialState, action);
-
-        expect(state.variations[payload.sku]).toEqual(payload.variations);
+        expect(state.entities.SKU).toHaveProperty('variationSKUs', ['VAR']);
         expect(state.loading).toBeFalse();
       });
     });

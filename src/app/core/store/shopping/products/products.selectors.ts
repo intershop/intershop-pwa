@@ -1,11 +1,15 @@
 import { createSelector } from '@ngrx/store';
+import { memoize } from 'lodash-es';
 
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
   ProductView,
   VariationProductMasterView,
   VariationProductView,
   createProductView,
+  createVariationProductMasterView,
+  createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from '../categories';
@@ -20,7 +24,7 @@ const getProductsState = createSelector(
 
 const productToVariationOptions = (product: ProductView | VariationProductView | VariationProductMasterView) => {
   if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
-    return ProductVariationHelper.buildVariationOptionGroups(product as VariationProductView);
+    return ProductVariationHelper.buildVariationOptionGroups(product);
   }
 };
 
@@ -40,54 +44,39 @@ export const getFailed = createSelector(
   state => state.failed
 );
 
-export const getProductVariations = createSelector(
-  getProductsState,
-  products => products.variations
+const createView = memoize(
+  (product, entities, tree) => {
+    if (ProductHelper.isMasterProduct(product)) {
+      return createVariationProductMasterView(product, entities, tree);
+    } else if (ProductHelper.isVariationProduct(product)) {
+      return createVariationProductView(product, entities, tree);
+    } else {
+      return createProductView(product, tree);
+    }
+  },
+  // TODO: find a better way to return hash than stringify
+  (product, entities, tree: CategoryTree) => {
+    const defaultCategory = product ? tree.nodes[product.defaultCategoryId] : undefined;
+    // fire when master changed
+    if (ProductHelper.isVariationProduct(product)) {
+      return JSON.stringify([product, entities[product.productMasterSKU], defaultCategory]);
+    }
+    // fire when object changed
+    return JSON.stringify([product, defaultCategory]);
+  }
 );
 
 export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
-  getProductVariations,
   getFailed,
-  (tree, entities, variationsMap, failed, props: { sku: string }) => {
+  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView => {
     if (failed.includes(props.sku)) {
       // tslint:disable-next-line: ish-no-object-literal-type-assertion
       return createProductView({ sku: props.sku } as Product, tree);
     }
 
-    const product = createProductView(entities[props.sku], tree);
-
-    // for master product, add variations
-    if (ProductHelper.isMasterProduct(product)) {
-      const variations = variationsMap[product.sku];
-
-      if (!variationsMap || !variations) {
-        return;
-      }
-
-      return {
-        ...product,
-        variations: variationsMap[product.sku],
-      };
-    }
-
-    // for variation product, add master and master's variations
-    if (ProductHelper.isVariationProduct(product)) {
-      const productMaster = createProductView(entities[product.productMasterSKU], tree);
-
-      if (!productMaster || !variationsMap) {
-        return;
-      }
-
-      return {
-        ...product,
-        productMaster,
-        variations: variationsMap[productMaster.sku],
-      };
-    }
-
-    return product;
+    return createView(entities[props.sku], entities, tree);
   }
 );
 
@@ -95,23 +84,8 @@ export const getSelectedProduct = createSelector(
   state => state,
   getSelectedProductId,
   getFailed,
-  (state, sku, failed) => (failed.includes(sku) ? undefined : getProduct(state, { sku }))
-);
-
-export const getSelectedProductVariations = createSelector(
-  getSelectedProduct,
-  getProductVariations,
-  (product, variations) => {
-    if (ProductHelper.isMasterProduct(product)) {
-      return variations[product.sku] || [];
-    }
-
-    if (ProductHelper.isVariationProduct(product)) {
-      return variations[product.productMasterSKU] || [];
-    }
-
-    return [];
-  }
+  (state, sku, failed): ProductView | VariationProductView | VariationProductMasterView =>
+    failed.includes(sku) ? undefined : getProduct(state, { sku })
 );
 
 export const getProductVariationOptions = createSelector(

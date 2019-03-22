@@ -5,7 +5,6 @@ import { ProductView, VariationProductMasterView, VariationProductView } from '.
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
-import { ProductType } from './product.types';
 
 export class ProductHelper {
   /**
@@ -52,14 +51,14 @@ export class ProductHelper {
    * Check if product is a master product
    */
   static isMasterProduct(product: Product): product is VariationProductMaster | VariationProductMasterView {
-    return product && product.type === ProductType.VariationProductMaster;
+    return product && product.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a master product
    */
   static isVariationProduct(product: Product): product is VariationProduct | VariationProductView {
-    return product && product.type === ProductType.VariationProduct;
+    return product && product.type === 'VariationProduct';
   }
 
   static hasVariations(
@@ -67,8 +66,7 @@ export class ProductHelper {
   ): product is VariationProductView | VariationProductMasterView {
     return (
       (ProductHelper.isVariationProduct(product) || ProductHelper.isMasterProduct(product)) &&
-      product.variations &&
-      !!product.variations.length
+      !!product.variations().length
     );
   }
 

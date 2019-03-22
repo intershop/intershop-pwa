@@ -9,7 +9,7 @@ import { ImageMapper } from '../image/image.mapper';
 import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';
 import { ProductMapper } from './product.mapper';
-import { Product, ProductHelper, ProductType } from './product.model';
+import { Product, ProductHelper } from './product.model';
 
 describe('Product Mapper', () => {
   let productMapper: ProductMapper;
@@ -36,8 +36,8 @@ describe('Product Mapper', () => {
     it(`should return Product when getting a ProductData`, () => {
       const product: Product = productMapper.fromData({ sku: '1' } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === ProductType.Product).toBeTruthy();
-      expect(product.type === ProductType.VariationProduct).toBeFalsy();
+      expect(product.type === 'Product').toBeTruthy();
+      expect(product.type === 'VariationProduct').toBeFalsy();
       verify(imageMapper.fromImages(anything())).once();
     });
 
@@ -48,7 +48,7 @@ describe('Product Mapper', () => {
         productMasterSKU: '2',
       } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === ProductType.VariationProduct).toBeTruthy();
+      expect(product.type === 'VariationProduct').toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
       verify(imageMapper.fromImages(anything())).once();
     });
@@ -56,7 +56,7 @@ describe('Product Mapper', () => {
     it(`should return VariationProductMaster when getting a ProductData with productMaster = true`, () => {
       const product: Product = productMapper.fromData({ sku: '1', productMaster: true } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === ProductType.VariationProductMaster).toBeTruthy();
+      expect(product.type === 'VariationProductMaster').toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
     });
 
@@ -67,7 +67,7 @@ describe('Product Mapper', () => {
         variationAttributeValues: [],
       } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === ProductType.VariationProductMaster).toBeTruthy();
+      expect(product.type === 'VariationProductMaster').toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
       expect((product as VariationProductMaster).variationAttributeValues).toBeEmpty();
     });
@@ -79,8 +79,8 @@ describe('Product Mapper', () => {
         variableVariationAttributes: [],
       } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === ProductType.Product).toBeTruthy();
-      expect(product.type === ProductType.VariationProduct).toBeFalsy();
+      expect(product.type === 'Product').toBeTruthy();
+      expect(product.type === 'VariationProduct').toBeFalsy();
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
       expect((product as VariationProductMaster).variationAttributeValues).toBeFalsy();
     });

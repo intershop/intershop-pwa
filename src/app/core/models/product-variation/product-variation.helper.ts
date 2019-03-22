@@ -1,6 +1,5 @@
 import { groupBy, objectToArray } from 'ish-core/utils/functions';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
-import { VariationLink } from '../variation-link/variation-link.model';
 
 import { VariationAttribute } from './variation-attribute.model';
 import { VariationOptionGroup } from './variation-option-group.model';
@@ -28,11 +27,11 @@ export class ProductVariationHelper {
     // loop all selected product attributes ignoring the ones related to currently checked option.
     for (const selectedAttribute of selectedProductAttributes) {
       // loop all possible variations
-      for (const variation of product.variations) {
+      for (const variation of product.variations()) {
         quality = 0;
 
         // loop attributes of possible variation.
-        for (const attribute of variation.variableVariationAttributeValues) {
+        for (const attribute of variation.variableVariationAttributes) {
           // increment quality if variation attribute matches selected product attribute.
           if (
             attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
@@ -73,8 +72,9 @@ export class ProductVariationHelper {
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
-    const options: VariationSelectOption[] = product.productMaster.variationAttributeValues
-      .map(attr => ({
+    const options: VariationSelectOption[] = product
+      .productMaster()
+      .variationAttributeValues.map(attr => ({
         label: attr.value,
         value: attr.value,
         type: attr.variationAttributeId,
@@ -91,7 +91,7 @@ export class ProductVariationHelper {
     // go through those groups and transform them to more complex objects
     return Object.keys(groupedOptions).map(attrId => {
       // we need to get one of the original attributes again here, because we lost the attribute name
-      const attribute = product.productMaster.variationAttributeValues.find(a => a.variationAttributeId === attrId);
+      const attribute = product.productMaster().variationAttributeValues.find(a => a.variationAttributeId === attrId);
       return {
         id: attribute.variationAttributeId,
         label: attribute.name,
@@ -107,14 +107,14 @@ export class ProductVariationHelper {
   static findPossibleVariationForSelection(
     selection: VariationSelection,
     product: VariationProductView
-  ): VariationLink {
+  ): VariationProductView {
     const valueArray = objectToArray(selection);
-    let possibleVariation: VariationLink;
+    let possibleVariation: VariationProductView;
 
-    for (const variation of product.variations) {
+    for (const variation of product.variations()) {
       let quality = 0;
 
-      for (const variationAttribute of variation.variableVariationAttributeValues) {
+      for (const variationAttribute of variation.variableVariationAttributes) {
         // selected variant object loop
         for (const item of valueArray) {
           if (variationAttribute.variationAttributeId === item.key && variationAttribute.value === item.value) {
@@ -139,13 +139,15 @@ export class ProductVariationHelper {
     }
   }
 
-  static findDefaultVariationForMaster(product: VariationProductMasterView): VariationLink {
-    return product.variations.find(
-      variation =>
-        variation.attributes &&
-        variation.attributes[0] &&
-        variation.attributes[0].name === 'defaultVariation' &&
-        variation.attributes[0].value === true
-    );
+  static findDefaultVariationForMaster(product: VariationProductMasterView): VariationProductView {
+    return product
+      .variations()
+      .find(
+        variation =>
+          variation.attributes &&
+          variation.attributes[0] &&
+          variation.attributes[0].name === 'defaultVariation' &&
+          variation.attributes[0].value === true
+      );
   }
 }

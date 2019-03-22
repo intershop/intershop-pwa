@@ -3,10 +3,9 @@ import { combineReducers } from '@ngrx/store';
 
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product, ProductType } from '../../../models/product/product.model';
+import { Product } from '../../../models/product/product.model';
 import { shoppingReducers } from '../shopping-store.module';
 
 import {
@@ -22,7 +21,6 @@ import {
   getProduct,
   getProductEntities,
   getProductLoading,
-  getProductVariations,
   getProducts,
   getSelectedProduct,
   getSelectedProductId,
@@ -50,7 +48,6 @@ describe('Products Selectors', () => {
     it('should not select any products when used', () => {
       expect(getProducts(store$.state)).toBeEmpty();
       expect(getProductEntities(store$.state)).toBeEmpty();
-      expect(getProductVariations(store$.state)).toBeEmpty();
       expect(getProductLoading(store$.state)).toBeFalse();
     });
 
@@ -182,7 +179,7 @@ describe('Products Selectors', () => {
         new LoadProductSuccess({
           product: {
             sku: 'MSKU',
-            type: ProductType.VariationProductMaster,
+            type: 'VariationProductMaster',
           } as VariationProductMaster,
         })
       );
@@ -192,7 +189,7 @@ describe('Products Selectors', () => {
           product: {
             sku: 'SKU',
             productMasterSKU: 'MSKU',
-            type: ProductType.VariationProduct,
+            type: 'VariationProduct',
           } as VariationProduct,
         })
       );

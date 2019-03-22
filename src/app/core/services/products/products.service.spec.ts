@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 
@@ -75,7 +74,7 @@ describe('Products Service', () => {
   });
 
   it("should get product variations data when 'getProductVariations' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of([] as VariationLink[]));
+    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of([]));
     productsService.getProductVariations(productSku).subscribe(() => {
       verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
       done();
