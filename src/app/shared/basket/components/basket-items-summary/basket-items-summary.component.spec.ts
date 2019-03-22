@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -15,7 +16,14 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BasketItemsSummaryComponent],
+      declarations: [
+        BasketItemsSummaryComponent,
+        MockComponent({
+          selector: 'ish-promotion-details',
+          template: 'Promotion Details Component',
+          inputs: ['promotion'],
+        }),
+      ],
       imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));

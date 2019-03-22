@@ -5,10 +5,12 @@
     <dd class="col-6">{{ totals.itemTotal | ishPrice }}</dd>
 
     <!-- list all applied order level promotions -->
-    <!-- TODO: #IS-23184 : display rebate details -->
-    <ng-container *ngIf="totals.valueRebates">
+    <ng-container *ngIf="totals.valueRebates && totals.valueRebates.length > 0">
       <ng-container *ngFor="let rebate of totals.valueRebates">
-        <dt class="col-6">{{ 'checkout.widget.promotion.discount' | translate }}</dt>
+        <dt *ngIf="rebate.promotion" class="col-6">
+          <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
+          <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
+        </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
     </ng-container>
@@ -21,14 +23,14 @@
     <dd class="col-6">{{ totals.shippingTotal | ishPrice }}</dd>
 
     <!-- Shipping promotions -->
-    <ng-container *ngIf="totals.itemShippingRebatesTotal && totals.itemShippingRebatesTotal.value">
-      <dt class="col-6">{{ 'checkout.widget.promotion.discount' | translate }}</dt>
-      <dd class="col-6">{{ invert(totals.itemShippingRebatesTotal) | ishPrice }}</dd>
-    </ng-container>
-
-    <ng-container *ngIf="totals.shippingRebatesTotal && totals.shippingRebatesTotal.value">
-      <dt class="col-6">{{ 'checkout.widget.promotion.discount' | translate }}</dt>
-      <dd class="col-6">{{ invert(totals.shippingRebatesTotal) | ishPrice }}</dd>
+    <ng-container *ngIf="totals.shippingRebates && totals.shippingRebates.length > 0">
+      <ng-container *ngFor="let rebate of totals.shippingRebates">
+        <dt *ngIf="rebate.promotion" class="col-6">
+          <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
+          <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
+        </dt>
+        <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
+      </ng-container>
     </ng-container>
 
     <!-- Surcharges -->

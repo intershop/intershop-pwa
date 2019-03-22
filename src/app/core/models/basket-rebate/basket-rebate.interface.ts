@@ -6,4 +6,5 @@ export interface BasketRebateData {
   amount: PriceItem;
   description?: string;
   code?: string;
+  promotion?: string;
 }

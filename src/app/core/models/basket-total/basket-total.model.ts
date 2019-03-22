@@ -13,6 +13,7 @@ export interface BasketTotal {
   shippingTotal?: Price;
   taxTotal?: Price;
   valueRebates?: BasketRebate[];
+  shippingRebates?: BasketRebate[];
   itemSurchargeTotalsByType: {
     amount: Price;
     description: string;

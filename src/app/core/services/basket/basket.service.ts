@@ -28,6 +28,9 @@ export declare type BasketIncludeType =
   | 'commonShipToAddress'
   | 'commonShippingMethod'
   | 'discounts'
+  | 'discounts_promotion'
+  | 'lineItems_discounts'
+  | 'lineItems_discounts_promotion'
   | 'lineItems'
   | 'payments'
   | 'payments_paymentMethod';
@@ -49,6 +52,9 @@ export class BasketService {
     'commonShipToAddress',
     'commonShippingMethod',
     'discounts',
+    'discounts_promotion',
+    'lineItems_discounts',
+    'lineItems_discounts_promotion',
     'lineItems',
     'payments',
     'payments_paymentMethod',
