@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
@@ -24,7 +22,6 @@ import {
   getProducts,
   getSelectedProduct,
   getSelectedProductId,
-  getSelectedProductVariations,
 } from './products.selectors';
 
 describe('Products Selectors', () => {
@@ -131,6 +128,7 @@ describe('Products Selectors', () => {
 
   describe('loading product variations', () => {
     beforeEach(() => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU', type: 'VariationProductMaster' } as Product }));
       store$.dispatch(new LoadProductVariations({ sku: 'SKU' }));
     });
 
@@ -140,13 +138,14 @@ describe('Products Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductVariationsSuccess({ sku: 'SKU', variations: [] }));
+        store$.dispatch(new LoadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'] }));
       });
 
       it('should set variations data and set loading to false', () => {
-        const payload = { sku: 'SKU', variations: [] };
         expect(getProductLoading(store$.state)).toBeFalse();
-        expect(getProductVariations(store$.state)).toEqual({ [payload.sku]: payload.variations });
+        expect(getProducts(store$.state)).toEqual([
+          { sku: 'SKU', type: 'VariationProductMaster', variationSKUs: ['VAR'] },
+        ]);
       });
     });
 
@@ -157,67 +156,8 @@ describe('Products Selectors', () => {
 
       it('should not have loaded product variations on error', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
-        expect(getProductVariations(store$.state)).toBeEmpty();
+        expect(getProducts(store$.state)).toEqual([{ sku: 'SKU', type: 'VariationProductMaster' }]);
       });
-    });
-  });
-
-  describe('select product variations', () => {
-    let variations: VariationLink[];
-
-    beforeEach(() => {
-      variations = [
-        {
-          type: 'VariationLink',
-          title: 'title',
-          uri: 'u',
-          variableVariationAttributeValues: [{ variationAttributeId: 'a1', name: 'n', type: 't', value: 'v' }],
-        },
-      ];
-
-      store$.dispatch(
-        new LoadProductSuccess({
-          product: {
-            sku: 'MSKU',
-            type: 'VariationProductMaster',
-          } as VariationProductMaster,
-        })
-      );
-
-      store$.dispatch(
-        new LoadProductSuccess({
-          product: {
-            sku: 'SKU',
-            productMasterSKU: 'MSKU',
-            type: 'VariationProduct',
-          } as VariationProduct,
-        })
-      );
-
-      store$.dispatch(
-        new LoadProductVariationsSuccess({
-          sku: 'MSKU',
-          variations,
-        })
-      );
-    });
-
-    it('should get variations for variation product', () => {
-      store$.dispatch(new SelectProduct({ sku: 'SKU' }));
-
-      expect(getSelectedProductVariations(store$.state)).toEqual(variations);
-    });
-
-    it('should get variations for master product', () => {
-      store$.dispatch(new SelectProduct({ sku: 'MSKU' }));
-
-      expect(getSelectedProductVariations(store$.state)).toEqual(variations);
-    });
-
-    it('should not get variations for unknown product', () => {
-      store$.dispatch(new SelectProduct({ sku: 'USKU' }));
-
-      expect(getSelectedProductVariations(store$.state)).toBeEmpty();
     });
   });
 });

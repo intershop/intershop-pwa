@@ -125,7 +125,7 @@ describe('Products Reducer', () => {
           sku: 'SKU',
           variations: ['VAR'],
         };
-        state = productsReducer(initialState, new fromActions.LoadProductVariationsSuccess(payload));
+        state = productsReducer(state, new fromActions.LoadProductVariationsSuccess(payload));
 
         expect(state.entities.SKU).toHaveProperty('variationSKUs', ['VAR']);
         expect(state.loading).toBeFalse();

@@ -5,18 +5,18 @@ import { ProductVariationHelper } from './product-variation.helper';
 describe('Product Variation Helper', () => {
   it('should find default variation for master product', () => {
     const product = {
-      variations: [
-        { uri: '111' },
+      variations: () => [
+        { sku: '111' },
         {
           attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-          uri: '222',
+          sku: '222',
         },
-        { uri: '333' },
+        { sku: '333' },
       ],
     } as VariationProductMasterView;
 
     const result = ProductVariationHelper.findDefaultVariationForMaster(product);
-    expect(result.uri).toBe('222');
+    expect(result.sku).toBe('222');
   });
 
   it('should build variation option groups for variation product', () => {
@@ -27,7 +27,7 @@ describe('Product Variation Helper', () => {
         { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
         { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
       ],
-      productMaster: {
+      productMaster: () => ({
         sku: 'M111',
         variationAttributeValues: [
           { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
@@ -35,21 +35,19 @@ describe('Product Variation Helper', () => {
           { name: 'Attr 2', type: 'VariationAttribute', value: 'C', variationAttributeId: 'a2' },
           { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
         ],
-      },
-      variations: [
+      }),
+      variations: () => [
         {
-          type: 'VariationLink',
-          uri: '222',
-          variableVariationAttributeValues: [
+          sku: '222',
+          variableVariationAttributes: [
             { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
             { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
           ],
         },
         {
-          type: 'VariationLink',
+          sku: '333',
           attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-          uri: '333',
-          variableVariationAttributeValues: [
+          variableVariationAttributes: [
             { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
             { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
           ],

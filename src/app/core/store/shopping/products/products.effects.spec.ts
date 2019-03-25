@@ -226,7 +226,7 @@ describe('Products Effects', () => {
   });
 
   describe('loadProductVariationsForMasterProduct$', () => {
-    it('should trigger LoadProductVariants action if LoadProductSuccess triggered for master product', () => {
+    it('should trigger LoadProductVariations action if LoadProductSuccess triggered for master product', () => {
       const action = new fromActions.LoadProductSuccess({
         product: {
           sku: 'MSKU',
@@ -241,14 +241,15 @@ describe('Products Effects', () => {
     });
 
     it('should not trigger LoadProductVariations action if loaded product variations present', () => {
-      store$.dispatch(new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: [] }));
+      const product = {
+        sku: 'MSKU',
+        type: 'VariationProductMaster',
+      } as VariationProductMaster;
 
-      const action = new fromActions.LoadProductSuccess({
-        product: {
-          sku: 'MSKU',
-          type: 'VariationProductMaster',
-        } as VariationProductMaster,
-      });
+      store$.dispatch(new fromActions.LoadProductSuccess({ product }));
+      store$.dispatch(new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'] }));
+
+      const action = new fromActions.LoadProductSuccess({ product });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-');
 

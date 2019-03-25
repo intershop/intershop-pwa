@@ -8,7 +8,7 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-detail',
@@ -21,7 +21,7 @@ export class ProductDetailComponent implements OnInit {
   @Input() variationOptions: VariationOptionGroup[];
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
-  @Output() selectVariation = new EventEmitter<{ selection: VariationSelection; product: Product }>();
+  @Output() selectVariation = new EventEmitter<VariationSelection>();
 
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';
@@ -50,9 +50,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   variationSelected(selection: VariationSelection) {
-    this.selectVariation.emit({
-      selection,
-      product: this.product,
-    });
+    this.selectVariation.emit(selection);
   }
 }
