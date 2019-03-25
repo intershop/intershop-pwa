@@ -63,14 +63,15 @@ export class ProductPageContainerComponent implements OnInit {
     this.store.dispatch(new AddToCompare({ sku }));
   }
 
-  variationSelected({ selection, product }: { selection: VariationSelection; product: VariationProductView }) {
+  variationSelected(selection: VariationSelection, product: VariationProductView) {
     const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
     this.redirectToVariation(variation);
   }
 
   redirectToVariation(variation: VariationProductView) {
-    if (variation) {
-      this.router.navigateByUrl(this.prodRoutePipe.transform(variation));
+    const route = this.prodRoutePipe.transform(variation);
+    if (route) {
+      this.router.navigateByUrl(route);
     }
   }
 

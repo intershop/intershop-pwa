@@ -1,6 +1,7 @@
 import { groupBy } from 'lodash-es';
 
 import { objectToArray } from 'ish-core/utils/functions';
+import { AttributeHelper } from '../attribute/attribute.helper';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -14,6 +15,7 @@ export class ProductVariationHelper {
    * @param option  The select option to check.
    * @returns       Indicates if no perfect match is found.
    */
+  // TODO: Refactor this to a more functional style
   static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
     let quality: number;
     const selectedProductAttributes: VariationAttribute[] = [];
@@ -106,6 +108,7 @@ export class ProductVariationHelper {
    * Find possible variant match
    * @param selection The selected variant form values.
    */
+  // TODO: Refactor this to a more functional style
   static findPossibleVariationForSelection(
     selection: VariationSelection,
     product: VariationProductView
@@ -144,12 +147,8 @@ export class ProductVariationHelper {
   static findDefaultVariationForMaster(product: VariationProductMasterView): VariationProductView {
     return product
       .variations()
-      .find(
-        variation =>
-          variation.attributes &&
-          variation.attributes[0] &&
-          variation.attributes[0].name === 'defaultVariation' &&
-          variation.attributes[0].value === true
+      .find(variation =>
+        AttributeHelper.getAttributeValueByAttributeName<boolean>(variation.attributes, 'defaultVariation')
       );
   }
 }

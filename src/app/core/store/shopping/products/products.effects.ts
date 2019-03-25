@@ -151,8 +151,20 @@ export class ProductsEffects {
   loadProductVariationsForMasterProduct$ = this.actions$.pipe(
     ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
-    filter(product => ProductHelper.isMasterProduct(product) && !product.variationSKUs),
-    map(product => new productsActions.LoadProductVariations({ sku: product.sku }))
+    filter(product => ProductHelper.isMasterProduct(product)),
+    withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+    filter(([product, entities]) => {
+      const productFromStore = entities[product.sku];
+      if (!productFromStore) {
+        return true;
+      }
+
+      if (!ProductHelper.isMasterProduct(productFromStore)) {
+        return false;
+      }
+      return !productFromStore.variationSKUs;
+    }),
+    map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
   );
 
   @Effect()

@@ -8,8 +8,11 @@ import { cold } from 'jest-marbles';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import {
@@ -67,6 +70,7 @@ describe('Product Page Container', () => {
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         ProductPageContainerComponent,
       ],
+      providers: [ProductRoutePipe],
     }).compileComponents();
   }));
 
@@ -118,34 +122,22 @@ describe('Product Page Container', () => {
   it('should redirect to product page when variation is selected', fakeAsync(() => {
     const product = {
       sku: '222',
-      productMasterSKU: 'M111',
       variableVariationAttributes: [
         { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
         { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
       ],
-      productMaster: {
-        sku: 'M111',
-        variationAttributeValues: [
-          { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
-          { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
-          { name: 'Attr 2', type: 'VariationAttribute', value: 'C', variationAttributeId: 'a2' },
-          { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
-        ],
-      },
-      variations: [
+      variations: () => [
         {
-          type: 'VariationLink',
-          uri: 'ishtest/-/222',
-          variableVariationAttributeValues: [
+          sku: '222',
+          variableVariationAttributes: [
             { name: 'Attr 1', type: 'VariationAttribute', value: 'B', variationAttributeId: 'a1' },
             { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
           ],
         },
         {
-          type: 'VariationLink',
+          sku: '333',
           attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-          uri: 'ishtest/-/333',
-          variableVariationAttributeValues: [
+          variableVariationAttributes: [
             { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
             { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
           ],
@@ -158,7 +150,7 @@ describe('Product Page Container', () => {
       a2: 'D',
     };
 
-    component.variationSelected({ selection, product });
+    component.variationSelected(selection, product);
     tick(500);
 
     expect(location.path()).toEqual('/product/333');
@@ -168,18 +160,19 @@ describe('Product Page Container', () => {
     const product = {
       sku: 'M111',
       type: 'VariationProductMaster',
-    } as VariationProductMasterView;
+    } as VariationProductMaster;
 
-    const variations = [
-      { uri: 'ishtest/-/111' },
-      {
-        attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-        uri: 'ishtest/-/222',
-      },
-    ] as VariationLink[];
+    const variation1 = { sku: '111' } as VariationProduct;
+    const variation2 = {
+      sku: '222',
+      attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+    } as VariationProduct;
 
     store$.dispatch(new LoadProductSuccess({ product }));
-    store$.dispatch(new LoadProductVariationsSuccess({ sku: product.sku, variations }));
+    store$.dispatch(new LoadProductSuccess({ product: variation1 }));
+    store$.dispatch(new LoadProductSuccess({ product: variation2 }));
+
+    store$.dispatch(new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'] }));
     store$.dispatch(new SelectProduct({ sku: product.sku }));
 
     fixture.detectChanges();
