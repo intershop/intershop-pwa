@@ -154,6 +154,7 @@ export class ProductsEffects {
     filter(product => ProductHelper.isMasterProduct(product)),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
     filter(([product, entities]) => {
+      // TODO: Integrate this into loadProduct$ to avoid unnecessary filtering?
       const productFromStore = entities[product.sku];
       if (!productFromStore) {
         return true;
