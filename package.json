@@ -139,7 +139,7 @@
       ],
       "*.ts": [
         "npx tslint --project tsconfig.json --fix",
-        "npx jest --findRelatedTests",
+        "npx jest --findRelatedTests --bail",
         "git add"
       ]
     },
