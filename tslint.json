@@ -308,7 +308,10 @@
           "message": "use star imports only for aggregation of deeper lying imports"
         },
         { "starImport": true, "from": "lodash.*" },
-        { "import": "^(?!(range|uniq|memoize|once)$).*", "from": "lodash.*" },
+        {
+          "import": "^(?!(range|uniq|memoize|once|groupBy)$).*",
+          "from": "lodash.*"
+        },
         {
           "import": "CustomFormsModule",
           "from": "ng2-validation",
