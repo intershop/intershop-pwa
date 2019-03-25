@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Line Item Description Component displays detailed line item information.
@@ -18,4 +19,6 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 })
 export class LineItemDescriptionComponent {
   @Input() pli: LineItemView;
+
+  isVariationProduct = ProductHelper.isVariationProduct;
 }

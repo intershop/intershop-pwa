@@ -57,6 +57,7 @@ import { ProductListContainerComponent } from './product/containers/product-list
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
+import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
 
 const importExportModules = [
   CommonModule,
@@ -124,7 +125,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents],
+  declarations: [...declaredComponents, ...exportedComponents, ProductVariationDisplayComponent],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {}
