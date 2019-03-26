@@ -1,8 +1,9 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { filter, map, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -24,7 +25,7 @@ import {
   templateUrl: './product-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductPageContainerComponent implements OnInit {
+export class ProductPageContainerComponent implements OnInit, OnDestroy {
   product$ = this.store.pipe(select(getSelectedProduct));
   productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   category$ = this.store.pipe(select(getSelectedCategory));
@@ -34,6 +35,8 @@ export class ProductPageContainerComponent implements OnInit {
     map(baseUrl => baseUrl + this.location.path())
   );
 
+  private destroy$ = new Subject();
+
   constructor(
     private store: Store<{}>,
     private location: Location,
@@ -42,8 +45,7 @@ export class ProductPageContainerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // TODO: kill subscription with takeUntil()
-    this.product$.subscribe(product => {
+    this.product$.pipe(takeUntil(this.destroy$)).subscribe(product => {
       if (ProductHelper.isMasterProduct(product)) {
         this.redirectMasterToDefaultVariation(product);
       }
@@ -76,5 +78,9 @@ export class ProductPageContainerComponent implements OnInit {
   redirectMasterToDefaultVariation(product: VariationProductMasterView) {
     const defaultVariation = ProductVariationHelper.findDefaultVariationForMaster(product);
     this.redirectToVariation(defaultVariation);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }
