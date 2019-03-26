@@ -1,3 +1,4 @@
+import { PaymentRestriction } from '../payment-restriction/payment-restriction.model';
 import { Price } from '../price/price.model';
 
 export interface PaymentMethod {
@@ -7,5 +8,5 @@ export interface PaymentMethod {
   paymentCosts?: Price;
   paymentCostsThreshold?: Price;
   isRestricted?: boolean;
-  restrictionCode?: string;
+  restrictionCauses?: PaymentRestriction[];
 }

@@ -15,7 +15,7 @@ export class BasketMapper {
 
     const totals: BasketTotal = data.calculated
       ? {
-          itemTotal: PriceMapper.fromPriceItem(data.totals.discountedItemTotal),
+          itemTotal: PriceMapper.fromPriceItem(data.totals.itemTotal),
           total: PriceMapper.fromPriceItem(data.totals.grandTotal),
           shippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketShippingDiscountsTotal),
           valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketValueDiscountsTotal),
@@ -67,7 +67,17 @@ export class BasketMapper {
           ? {
               paymentInstrument: included.payments['open-tender'].paymentInstrument,
               id: included.payments['open-tender'].id,
-              displayName: undefined, // ToDo: REST request should provide displayName
+              displayName:
+                included &&
+                included.payments_paymentMethod &&
+                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].displayName
+                  : undefined,
+              description:
+                included.payments_paymentMethod &&
+                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].description
+                  : undefined,
             }
           : undefined,
       totals,
