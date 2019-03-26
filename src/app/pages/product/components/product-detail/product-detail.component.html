@@ -35,11 +35,11 @@
 
       <ish-product-shipment [product]="product"></ish-product-shipment>
 
-      <ish-product-variations
+      <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
         [variationOptions]="variationOptions"
         (selectVariation)="variationSelected($event)"
-      ></ish-product-variations>
+      ></ish-product-variation-select>
 
       <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
         <div class="row">

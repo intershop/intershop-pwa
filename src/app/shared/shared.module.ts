@@ -51,13 +51,13 @@ import { ProductQuantityComponent } from './product/components/product-quantity/
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
-import { ProductVariationsComponent } from './product/components/product-variations/product-variations.component';
+import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
-import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
 
 const importExportModules = [
   CommonModule,
@@ -118,14 +118,15 @@ const exportedComponents = [
   ProductPriceComponent,
   ProductQuantityComponent,
   ProductShipmentComponent,
-  ProductVariationsComponent,
+  ProductVariationDisplayComponent,
+  ProductVariationSelectComponent,
   PromotionDetailsComponent,
   RecentlyViewedContainerComponent,
 ];
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents, ProductVariationDisplayComponent],
+  declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {}

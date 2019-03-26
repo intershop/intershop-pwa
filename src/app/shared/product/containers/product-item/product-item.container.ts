@@ -12,7 +12,6 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
 import { LoadProduct, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
-import { whenFalsy } from 'ish-core/utils/operators';
 
 type ProductItemType = 'tile' | 'row';
 
@@ -35,14 +34,15 @@ export class ProductItemContainerComponent implements OnInit {
   private setUpStoreData(sku: string) {
     this.product$ = this.store.pipe(select(getProduct, { sku }));
     this.productVariationOptions$ = this.store.pipe(select(getProductVariationOptions, { sku }));
+    this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(sku)));
+
     // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
     this.product$
       .pipe(
         take(1),
-        whenFalsy()
+        filter(product => !ProductHelper.isProductCompletelyLoaded(product))
       )
       .subscribe(() => this.store.dispatch(new LoadProduct({ sku })));
-    this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(sku)));
   }
 
   ngOnInit() {
@@ -68,7 +68,6 @@ export class ProductItemContainerComponent implements OnInit {
       .subscribe((product: VariationProductView) => {
         const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
         const newSku = variation.sku;
-
         this.setUpStoreData(newSku);
       });
   }

@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ProductVariationsComponent } from './product-variations.component';
+import { ProductVariationSelectComponent } from './product-variation-select.component';
 
-describe('Product Variations Component', () => {
-  let component: ProductVariationsComponent;
-  let fixture: ComponentFixture<ProductVariationsComponent>;
+describe('Product Variation Select Component', () => {
+  let component: ProductVariationSelectComponent;
+  let fixture: ComponentFixture<ProductVariationSelectComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [ProductVariationsComponent],
+      declarations: [ProductVariationSelectComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductVariationsComponent);
+    fixture = TestBed.createComponent(ProductVariationSelectComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
@@ -80,10 +80,8 @@ describe('Product Variations Component', () => {
 
   it('should set active values for form', () => {
     expect(component.form.value).toEqual({
-      variations: {
-        a1: 'B',
-        a2: 'D',
-      },
+      a1: 'B',
+      a2: 'D',
     });
   });
 
@@ -96,6 +94,16 @@ describe('Product Variations Component', () => {
       done();
     });
 
-    component.form.get('variations').patchValue({ a1: 'A' });
+    component.form.patchValue({ a1: 'A' });
+  });
+
+  it('should apply value changes after data changed', () => {
+    component.variationOptions[0].options[0].value = 'BBB';
+    component.ngOnChanges();
+
+    expect(component.form.value).toEqual({
+      a1: 'BBB',
+      a2: 'D',
+    });
   });
 });

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { map, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -18,7 +18,6 @@ import {
   getSelectedProduct,
   getSelectedProductVariationOptions,
 } from 'ish-core/store/shopping/products';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-page-container',
@@ -43,16 +42,12 @@ export class ProductPageContainerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.product$
-      .pipe(
-        whenTruthy(),
-        take(1)
-      )
-      .subscribe(product => {
-        if (ProductHelper.isMasterProduct(product)) {
-          this.redirectMasterToDefaultVariation(product);
-        }
-      });
+    // TODO: kill subscription with takeUntil()
+    this.product$.subscribe(product => {
+      if (ProductHelper.isMasterProduct(product)) {
+        this.redirectMasterToDefaultVariation(product);
+      }
+    });
   }
 
   addToBasket({ sku, quantity }) {
@@ -69,7 +64,7 @@ export class ProductPageContainerComponent implements OnInit {
   }
 
   redirectToVariation(variation: VariationProductView) {
-    const route = this.prodRoutePipe.transform(variation);
+    const route = variation && this.prodRoutePipe.transform(variation);
     if (route) {
       this.router.navigateByUrl(route);
     }

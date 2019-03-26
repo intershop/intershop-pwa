@@ -57,8 +57,8 @@ describe('Product Tile Component', () => {
           inputs: ['product', 'showInformationalPrice'],
         }),
         MockComponent({
-          selector: 'ish-product-variations',
-          template: 'Product Variations Component',
+          selector: 'ish-product-variation-select',
+          template: 'Product Variation Select Component',
           inputs: ['variationOptions'],
         }),
         ProductTileComponent,

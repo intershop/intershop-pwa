@@ -5,14 +5,13 @@ import { takeUntil } from 'rxjs/operators';
 
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { mapToProperty } from 'ish-core/utils/operators';
 
 @Component({
-  selector: 'ish-product-variations',
-  templateUrl: './product-variations.component.html',
+  selector: 'ish-product-variation-select',
+  templateUrl: './product-variation-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductVariationsComponent implements OnChanges, OnDestroy {
+export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
   @Input() variationOptions: VariationOptionGroup[] = [];
   @Output() selectVariation = new EventEmitter<VariationSelection>();
 
@@ -21,24 +20,12 @@ export class ProductVariationsComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.initForm();
-    if (this.variationOptions) {
-      const variationsFormGroup = this.buildSelectForm(this.variationOptions);
-      this.form.setControl('variations', variationsFormGroup);
-    }
   }
 
   initForm() {
-    if (!this.form) {
-      this.form = new FormGroup({
-        variations: new FormGroup({}),
-      });
-
-      this.form.valueChanges
-        .pipe(
-          mapToProperty('variations'),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(this.selectVariation);
+    if (this.variationOptions) {
+      this.form = this.buildSelectForm(this.variationOptions);
+      this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.selectVariation);
     }
   }
 

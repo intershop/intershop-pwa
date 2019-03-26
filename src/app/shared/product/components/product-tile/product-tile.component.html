@@ -12,11 +12,11 @@
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
   </div>
 
-  <ish-product-variations
+  <ish-product-variation-select
     *ngIf="variationOptions"
     [variationOptions]="variationOptions"
     (selectVariation)="variationSelected($event)"
-  ></ish-product-variations>
+  ></ish-product-variation-select>
 
   <div class="product-tile-actions btn-group">
     <ish-lazy-product-add-to-quote
