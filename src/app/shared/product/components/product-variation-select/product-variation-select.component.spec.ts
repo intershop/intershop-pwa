@@ -98,7 +98,7 @@ describe('Product Variation Select Component', () => {
   });
 
   it('should apply value changes after data changed', () => {
-    component.variationOptions[0].options[0].value = 'BBB';
+    component.variationOptions[0].options[1].value = 'BBB';
     component.ngOnChanges();
 
     expect(component.form.value).toEqual({

@@ -158,7 +158,7 @@ export class ProductsEffects {
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
     filter(
       ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
-        !entities[product.sku].variationSKUs
+        !entities[product.sku] || !entities[product.sku].variationSKUs
     ),
     map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
   );

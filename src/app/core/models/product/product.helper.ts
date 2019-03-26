@@ -51,7 +51,7 @@ export class ProductHelper {
    * check if a given product has the maximum completeness level
    */
   static isProductCompletelyLoaded(product: Product): boolean {
-    return !!product && !!product.attributes; // TODO: implement completeness level – this is just a workaround to get things working
+    return !!product && !!product.listPrice && !!product.longDescription; // TODO: implement completeness level – this is just a workaround to get things working
   }
 
   /**
