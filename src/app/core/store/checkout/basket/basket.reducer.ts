@@ -24,8 +24,7 @@ export const initialState: BasketState = {
 export function basketReducer(state = initialState, action: BasketAction): BasketState {
   switch (action.type) {
     case BasketActionTypes.LoadBasket:
-    case BasketActionTypes.UpdateBasketInvoiceAddress:
-    case BasketActionTypes.UpdateBasketShippingAddress:
+    case BasketActionTypes.AssignBasketAddress:
     case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:

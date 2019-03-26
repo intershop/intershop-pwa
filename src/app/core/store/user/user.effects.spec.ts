@@ -158,17 +158,17 @@ describe('User Effects', () => {
     }));
   });
 
-  describe('goToAccountAfterLogin$', () => {
-    it('should navigate to /account after LoginUserSuccess', fakeAsync(() => {
+  describe('redirectAfterLogin$', () => {
+    it('should not navigate anywhere when no returnUrl is given', fakeAsync(() => {
       const action = new ua.LoginUserSuccess(loginResponseData);
 
       actions$ = of(action);
 
-      effects.goToAccountAfterLogin$.subscribe(noop, fail, noop);
+      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
       tick(500);
 
-      expect(location.path()).toEqual('/account');
+      expect(location.path()).toBeEmpty();
     }));
 
     it('should navigate to returnUrl after LoginUserSuccess when it is set', fakeAsync(() => {
@@ -180,7 +180,7 @@ describe('User Effects', () => {
 
       actions$ = of(action);
 
-      effects.goToAccountAfterLogin$.subscribe(noop, fail, noop);
+      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
       tick(500);
 

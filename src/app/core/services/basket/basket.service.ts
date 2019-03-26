@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { AddressMapper } from 'ish-core/models/address/address.mapper';
+import { Address } from 'ish-core/models/address/address.model';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -172,6 +174,57 @@ export class BasketService {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Create a basket address for the selected basket of an anonymous user.
+   * @param basketId  The basket id.
+   * @param address   The address which should be created
+   * @returns         The new basket address.
+   */
+  createBasketAddress(basketId: string, address: Address): Observable<Address> {
+    if (!basketId) {
+      return throwError('createBasketAddress() called without basketId');
+    }
+    if (!address) {
+      return throwError('createBasketAddress() called without address');
+    }
+
+    return this.apiService
+      .post(`baskets/${basketId}/addresses`, address, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(({ data }) => data),
+        map(AddressMapper.fromData)
+      );
+  }
+
+  /**
+   * Updates partly or completely an address for the selected basket of an anonymous user.
+   * @param basketId  The basket id.
+   * @param address   The address data which should be updated
+   * @returns         The new basket address.
+   */
+  updateBasketAddress(basketId: string, address: Address): Observable<Address> {
+    if (!basketId) {
+      return throwError('updateBasketAddress() called without basketId');
+    }
+    if (!address) {
+      return throwError('updateBasketAddress() called without address');
+    }
+    if (!address.id) {
+      return throwError('updateBasketAddress() called without addressId');
+    }
+
+    return this.apiService
+      .patch(`baskets/${basketId}/addresses/${address.id}`, address, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(({ data }) => data),
+        map(AddressMapper.fromData)
+      );
   }
 
   /**

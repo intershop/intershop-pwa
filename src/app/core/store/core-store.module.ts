@@ -29,8 +29,12 @@ import { userReducer } from './user/user.reducer';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
+import { AddressesEffects } from './addresses/addresses.effects';
+import { addressesReducer } from './addresses/addresses.reducer';
+
 export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,
+  addresses: addressesReducer,
   orders: ordersReducer,
   locale: localeReducer,
   countries: countriesReducer,
@@ -42,6 +46,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
 
 export const coreEffects = [
   UserEffects,
+  AddressesEffects,
   OrdersEffects,
   LocaleEffects,
   CountriesEffects,
