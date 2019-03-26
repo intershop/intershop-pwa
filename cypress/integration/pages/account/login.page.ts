@@ -6,7 +6,7 @@ export class LoginPage {
   readonly header = new HeaderModule();
 
   static navigateTo() {
-    cy.visit('/login');
+    cy.visit('/login?returnUrl=%2Faccount');
   }
 
   get content() {

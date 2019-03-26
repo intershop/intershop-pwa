@@ -1,0 +1,5 @@
+<ish-login-form
+  [loginType]="userRegistrationLoginType"
+  [error]="loginError$ | async"
+  (login)="loginUser($event)"
+></ish-login-form>

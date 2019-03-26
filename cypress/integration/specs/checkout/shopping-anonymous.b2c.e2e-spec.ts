@@ -1,7 +1,6 @@
+import { Address } from 'ish-core/models/address/address.model';
 import { at } from '../../framework';
-import { createUserViaREST } from '../../framework/users';
-import { LoginPage } from '../../pages/account/login.page';
-import { sensibleDefaults } from '../../pages/account/registration.page';
+
 import { AddressesPage } from '../../pages/checkout/addresses.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { PaymentPage } from '../../pages/checkout/payment.page';
@@ -14,10 +13,6 @@ import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
-  user: {
-    login: `test${new Date().getTime()}@testcity.de`,
-    ...sensibleDefaults,
-  },
   catalog: 'Cameras-Camcorders',
   category: {
     id: 'Cameras-Camcorders.584',
@@ -25,15 +20,21 @@ const _ = {
   },
   product: {
     sku: '3953312',
-    price: '303.62',
+    price: 303.62,
   },
+  address: {
+    countryCode: 'DE',
+    firstName: 'Pablo',
+    lastName: 'Parkes',
+    addressLine1: 'Marbacher Str. 87',
+    city: 'Stuttgart',
+    postalCode: '12345',
+    email: 'p.parkes@test.com',
+  } as Address,
 };
 
-describe('Shopping User', () => {
-  before(() => {
-    createUserViaREST(_.user);
-    HomePage.navigateTo();
-  });
+describe('Anonymous Checkout', () => {
+  before(() => HomePage.navigateTo());
 
   it('should navigate to a product', () => {
     at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
@@ -54,22 +55,14 @@ describe('Shopping User', () => {
     at(CartPage);
   });
 
-  it('should start checkout by logging in', () => {
+  it('should start guest checkout by filling out the address form', () => {
     at(CartPage, page => page.beginCheckout());
-    at(LoginPage, page => {
-      page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
-    });
-  });
-
-  it('should set first addresses automatically', () => {
     at(AddressesPage, page => {
-      cy.wait(1000);
+      page.guestCheckout();
+      page.fillInvoiceAddressForm(_.address);
       page.continueCheckout();
     });
+    at(ShippingPage);
   });
 
   it('should accept default shipping option', () => {
@@ -90,7 +83,9 @@ describe('Shopping User', () => {
     });
   });
 
-  it('should check the receipt and continue shopping', () => {
+  // enable this test if #IS-26395 has been fixed
+  // tslint:disable-tests:ban
+  xit('should check the receipt and continue shopping', () => {
     at(ReceiptPage, page => {
       page.continueShopping();
     });

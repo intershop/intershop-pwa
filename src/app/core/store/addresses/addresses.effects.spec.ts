@@ -8,10 +8,10 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { Address } from '../../../models/address/address.model';
-import { AddressService } from '../../../services/address/address.service';
-import { LoginUserSuccess, LogoutUser } from '../../user';
-import { checkoutReducers } from '../checkout-store.module';
+import { Address } from '../../models/address/address.model';
+import { AddressService } from '../../services/address/address.service';
+import { checkoutReducers } from '../checkout/checkout-store.module';
+import { LoginUserSuccess, LogoutUser } from '../user';
 
 import * as addressesActions from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';

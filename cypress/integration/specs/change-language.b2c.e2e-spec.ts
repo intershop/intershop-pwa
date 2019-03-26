@@ -20,9 +20,9 @@ const _ = {
     dollarPrice: '303.62',
     euroPrice: '227,05',
   },
-  myAccount: {
-    englishTitle: 'My Account',
-    germanTitle: 'Mein Konto',
+  loginForm: {
+    englishTitle: 'Sign In',
+    germanTitle: 'Anmelden',
   },
   searchTerm: 'canon legria',
   user: {
@@ -204,7 +204,7 @@ describe('Language Changing User', () => {
     before(() => MyAccountPage.navigateTo());
 
     it('should see english content on login page', () => {
-      at(LoginPage, page => page.content.should('contain', _.myAccount.englishTitle));
+      at(LoginPage, page => page.content.should('contain', _.loginForm.englishTitle));
     });
 
     it('when switching to german', () => {
@@ -212,7 +212,7 @@ describe('Language Changing User', () => {
     });
 
     it('should see german content on login page', () => {
-      at(LoginPage, page => page.content.should('contain', _.myAccount.germanTitle));
+      at(LoginPage, page => page.content.should('contain', _.loginForm.germanTitle));
     });
   });
 });

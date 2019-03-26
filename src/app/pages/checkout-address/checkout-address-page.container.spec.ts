@@ -1,10 +1,17 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { instance, mock } from 'ts-mockito';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { User } from 'ish-core/models/user/user.model';
+import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess } from 'ish-core/store/user';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
 
@@ -12,6 +19,7 @@ describe('Checkout Address Page Container', () => {
   let component: CheckoutAddressPageContainerComponent;
   let fixture: ComponentFixture<CheckoutAddressPageContainerComponent>;
   let element: HTMLElement;
+  let store$: TestStore;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,23 +30,32 @@ describe('Checkout Address Page Container', () => {
           template: 'Checkout Address Component',
           inputs: ['currentUser', 'basket', 'addresses', 'error'],
         }),
+        MockComponent({
+          selector: 'ish-checkout-address-anonymous',
+          template: 'Checkout Address Anonymous Component',
+          inputs: ['basket', 'error'],
+        }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
 
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          ...coreReducers,
+          checkout: combineReducers(checkoutReducers),
+          shopping: combineReducers(shoppingReducers),
+        }),
       ],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();
+    store$ = TestBed.get(TestStore);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutAddressPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
+    store$.dispatch(new LoadBasketSuccess({ basket: { lineItems: [] } as Basket }));
   });
 
   it('should be created', () => {
@@ -47,8 +64,14 @@ describe('Checkout Address Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render checkout address component on page', () => {
+  it('should render checkout address component if user is logged in', () => {
+    store$.dispatch(new LoginUserSuccess({ customer: { customerNo: '4711' } as Customer, user: {} as User }));
     fixture.detectChanges();
     expect(element.querySelector('ish-checkout-address')).toBeTruthy();
+  });
+
+  it('should render checkout address anonymous component if user is not logged in', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-checkout-address-anonymous')).toBeTruthy();
   });
 });

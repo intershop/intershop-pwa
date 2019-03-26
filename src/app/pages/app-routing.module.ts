@@ -34,7 +34,6 @@ const routes: Routes = [
     path: 'checkout',
     loadChildren: './checkout/checkout-page.module#CheckoutPageModule',
     data: { headerType: 'checkout' },
-    canActivate: [AuthGuard],
   },
   { path: 'page', loadChildren: './content/content-page.module#ContentPageModule' },
   {

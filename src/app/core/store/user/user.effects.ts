@@ -67,18 +67,22 @@ export class UserEffects {
     tap(() => this.router.navigate(['/home']))
   );
 
+  /*
+   * redirects to the returnUrl after successful login
+   * does not redirect at all, if no returnUrl is defined
+   */
   @Effect({ dispatch: false })
-  goToAccountAfterLogin$ = this.actions$.pipe(
+  redirectAfterLogin$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUserSuccess),
     tap(() => {
       const state = this.router.routerState;
       let navigateTo: string;
       if (state && state.snapshot && state.snapshot.root.queryParams.returnUrl) {
         navigateTo = state.snapshot.root.queryParams.returnUrl;
-      } else {
-        navigateTo = '/account';
       }
-      this.router.navigate([navigateTo]);
+      if (navigateTo) {
+        this.router.navigate([navigateTo]);
+      }
     })
   );
 

@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { FormsSharedModule } from 'app/shared/forms/forms.module';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
@@ -11,6 +10,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 

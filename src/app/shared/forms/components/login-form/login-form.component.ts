@@ -6,14 +6,26 @@ import { LoginCredentials } from 'ish-core/models/credentials/credentials.model'
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
 
+/**
+ * The Login Form Component displays a login form. See also {@link LoginFormContainerComponent}.
+ *
+ * @example
+ * <ish-login-form
+ *  [loginType]="userRegistrationLoginType"
+ *  [error]="loginError$ | async"
+ *  (login)="loginUser($event)"
+ * ></ish-login-form>
+ */
 @Component({
   selector: 'ish-login-form',
   templateUrl: './login-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit {
+  /**
+   * email or username
+   */
   @Input() loginType: string;
-  @Input() isLoggedIn: boolean;
   @Input() error: HttpError;
   @Output() login = new EventEmitter<LoginCredentials>();
 

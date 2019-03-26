@@ -1,5 +1,6 @@
 import { Selector } from '@ngrx/store';
 
+import { AddressesState } from './addresses/addresses.reducer';
 import { ConfigurationState } from './configuration/configuration.reducer';
 import { CountriesState } from './countries/countries.reducer';
 import { ErrorState } from './error/error.reducer';
@@ -11,6 +12,7 @@ import { ViewconfState } from './viewconf/viewconf.reducer';
 
 export interface CoreState {
   user: UserState;
+  addresses: AddressesState;
   orders: OrdersState;
   locale: LocaleState;
   countries: CountriesState;

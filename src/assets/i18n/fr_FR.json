@@ -2482,5 +2482,7 @@
   "account.quotes.widget.submitted.label": "Envoy\u00E9",
   "account.quotes.widget.accepted.label": "Accept\u00E9",
   "account.quotes.widget.rejected.label": "Rejet\u00E9",
-  "account.quotes.widget.view_all_quotes.link": "Afficher tous les devis"
+  "account.quotes.widget.view_all_quotes.link": "Afficher tous les devis",
+  "checkout.address.anonymous.guestcheckout.text": "Vous voulez faire des achats en tant qu’invit\u00E9 et ne voulez pas cr\u00E9er de profil ? Pas de problème.",
+  "account.login.signin.heading": "Se connecter"
 }

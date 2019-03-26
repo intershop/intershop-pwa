@@ -14,13 +14,10 @@ export enum BasketActionTypes {
   LoadBasket = '[Basket Internal] Load Basket',
   LoadBasketFail = '[Basket API] Load Basket Fail',
   LoadBasketSuccess = '[Basket API] Load Basket Success',
-  CreateBasketInvoiceAddress = '[Basket] Create Basket Invoice Address',
-  CreateBasketInvoiceAddressSuccess = '[Basket API] Create Basket Invoice Address Success',
-  UpdateBasketInvoiceAddress = '[Basket] Update Baskets Invoive Address',
-  CreateBasketShippingAddress = '[Basket] Create Basket Shipping Address',
-  CreateBasketShippingAddressSuccess = '[Basket Internal] Create Basket Shipping Address Success',
-  UpdateBasketShippingAddress = '[Basket] Update Baskets Shipping Address',
-  UpdateBasketCustomerAddress = '[Basket] Update Baskets Customer Address',
+  CreateBasketAddress = '[Basket] Create Basket Address',
+  CreateBasketAddressSuccess = '[Basket Internal] Create Basket Address Success',
+  AssignBasketAddress = '[Basket] Assign an Address to the Basket',
+  UpdateBasketAddress = '[Basket] Update an Address at Basket',
   UpdateBasketShippingMethod = '[Basket] Update Baskets Shipping Method',
   UpdateBasket = '[Basket Internal] Update Basket',
   UpdateBasketFail = '[Basket API] Update Basket Fail',
@@ -69,37 +66,23 @@ export class LoadBasketSuccess implements Action {
   constructor(public payload: { basket: Basket }) {}
 }
 
-export class CreateBasketInvoiceAddress implements Action {
-  readonly type = BasketActionTypes.CreateBasketInvoiceAddress;
-  constructor(public payload: { address: Address }) {}
+export class CreateBasketAddress implements Action {
+  readonly type = BasketActionTypes.CreateBasketAddress;
+  constructor(public payload: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {}
 }
 
-export class CreateBasketInvoiceAddressSuccess implements Action {
-  readonly type = BasketActionTypes.CreateBasketInvoiceAddressSuccess;
-  constructor(public payload: { address: Address }) {}
-}
-export class CreateBasketShippingAddress implements Action {
-  readonly type = BasketActionTypes.CreateBasketShippingAddress;
-  constructor(public payload: { address: Address }) {}
+export class CreateBasketAddressSuccess implements Action {
+  readonly type = BasketActionTypes.CreateBasketAddressSuccess;
+  constructor(public payload: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {}
 }
 
-export class CreateBasketShippingAddressSuccess implements Action {
-  readonly type = BasketActionTypes.CreateBasketShippingAddressSuccess;
-  constructor(public payload: { address: Address }) {}
+export class AssignBasketAddress implements Action {
+  readonly type = BasketActionTypes.AssignBasketAddress;
+  constructor(public payload: { addressId: string; scope: 'invoice' | 'shipping' | 'any' }) {}
 }
 
-export class UpdateBasketInvoiceAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketInvoiceAddress;
-  constructor(public payload: { addressId: string }) {}
-}
-
-export class UpdateBasketShippingAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketShippingAddress;
-  constructor(public payload: { addressId: string }) {}
-}
-
-export class UpdateBasketCustomerAddress implements Action {
-  readonly type = BasketActionTypes.UpdateBasketCustomerAddress;
+export class UpdateBasketAddress implements Action {
+  readonly type = BasketActionTypes.UpdateBasketAddress;
   constructor(public payload: { address: Address }) {}
 }
 
@@ -250,13 +233,10 @@ export type BasketAction =
   | LoadBasket
   | LoadBasketFail
   | LoadBasketSuccess
-  | CreateBasketInvoiceAddress
-  | CreateBasketInvoiceAddressSuccess
-  | CreateBasketShippingAddress
-  | CreateBasketShippingAddressSuccess
-  | UpdateBasketInvoiceAddress
-  | UpdateBasketShippingAddress
-  | UpdateBasketCustomerAddress
+  | CreateBasketAddress
+  | CreateBasketAddressSuccess
+  | AssignBasketAddress
+  | UpdateBasketAddress
   | UpdateBasketShippingMethod
   | UpdateBasket
   | UpdateBasketFail

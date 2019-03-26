@@ -2,7 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { BasketAction, BasketActionTypes } from '../basket';
+import { BasketAction, BasketActionTypes } from '../checkout/basket';
 
 import { AddressAction, AddressActionTypes } from './addresses.actions';
 
@@ -22,9 +22,8 @@ export function addressesReducer(state = initialState, action: AddressAction | B
   switch (action.type) {
     case AddressActionTypes.LoadAddresses:
     case AddressActionTypes.CreateCustomerAddress:
-    case BasketActionTypes.CreateBasketInvoiceAddress:
-    case BasketActionTypes.CreateBasketShippingAddress:
-    case BasketActionTypes.UpdateBasketCustomerAddress:
+    case BasketActionTypes.CreateBasketAddress:
+    case BasketActionTypes.UpdateBasketAddress:
     case AddressActionTypes.DeleteCustomerAddress:
     case BasketActionTypes.DeleteBasketShippingAddress: {
       return {
@@ -57,8 +56,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     }
 
     case AddressActionTypes.CreateCustomerAddressSuccess:
-    case BasketActionTypes.CreateBasketInvoiceAddressSuccess:
-    case BasketActionTypes.CreateBasketShippingAddressSuccess: {
+    case BasketActionTypes.CreateBasketAddressSuccess: {
       const { address } = action.payload;
 
       return {
