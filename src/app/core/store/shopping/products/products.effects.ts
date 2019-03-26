@@ -16,8 +16,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
@@ -139,7 +140,9 @@ export class ProductsEffects {
     mapToPayloadProperty('product'),
     filter(product => ProductHelper.isVariationProduct(product)),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-    filter(([product, entities]: [VariationProduct, Dictionary<Product>]) => !entities[product.productMasterSKU]),
+    filter(
+      ([product, entities]: [VariationProduct, Dictionary<VariationProduct>]) => !entities[product.productMasterSKU]
+    ),
     map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
   );
 
@@ -153,18 +156,10 @@ export class ProductsEffects {
     mapToPayloadProperty('product'),
     filter(product => ProductHelper.isMasterProduct(product)),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-    filter(([product, entities]) => {
-      // TODO: Integrate this into loadProduct$ to avoid unnecessary filtering?
-      const productFromStore = entities[product.sku];
-      if (!productFromStore) {
-        return true;
-      }
-
-      if (!ProductHelper.isMasterProduct(productFromStore)) {
-        return false;
-      }
-      return !productFromStore.variationSKUs;
-    }),
+    filter(
+      ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
+        !entities[product.sku].variationSKUs
+    ),
     map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
   );
 

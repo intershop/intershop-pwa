@@ -48,6 +48,13 @@ export class ProductHelper {
   }
 
   /**
+   * check if a given product has the maximum completeness level
+   */
+  static isProductCompletelyLoaded(product: Product): boolean {
+    return !!product && !!product.attributes; // TODO: implement completeness level – this is just a workaround to get things working
+  }
+
+  /**
    * Check if product is a master product
    */
   static isMasterProduct(product: Product): product is VariationProductMaster | VariationProductMasterView {

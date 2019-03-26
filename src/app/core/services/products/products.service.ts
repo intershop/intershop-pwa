@@ -133,6 +133,8 @@ export class ProductsService {
           name: link.title,
           productMasterSKU: sku,
           shortDescription: link.description,
+          type: 'VariationProduct',
+          attributes: link.attributes || [],
         }))
       ),
       defaultIfEmpty([])
