@@ -25,6 +25,8 @@ export class ProductRowComponent implements OnInit {
   @Output() productToBasket = new EventEmitter<number>();
   @Output() selectVariation = new EventEmitter<VariationSelection>();
 
+  isMasterProduct = ProductHelper.isMasterProduct;
+
   productItemForm: FormGroup;
   readonly quantityControlName = 'quantity';
 

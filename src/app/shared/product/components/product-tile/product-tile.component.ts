@@ -8,6 +8,7 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-tile',
@@ -22,6 +23,8 @@ export class ProductTileComponent {
   @Output() compareToggle = new EventEmitter<void>();
   @Output() productToBasket = new EventEmitter<number>();
   @Output() selectVariation = new EventEmitter<VariationSelection>();
+
+  isMasterProduct = ProductHelper.isMasterProduct;
 
   addToBasket() {
     this.productToBasket.emit(this.product.minOrderQuantity);

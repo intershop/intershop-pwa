@@ -20,6 +20,7 @@
 
   <div class="product-tile-actions btn-group">
     <ish-lazy-product-add-to-quote
+      *ngIf="!isMasterProduct(product)"
       [product]="product"
       displayType="icon"
       class="btn-link"
@@ -31,6 +32,7 @@
       (compareToggle)="toggleCompare()"
     ></ish-product-add-to-compare>
     <ish-product-add-to-basket
+      *ngIf="!isMasterProduct(product)"
       [product]="product"
       displayType="icon"
       class="btn-link"
