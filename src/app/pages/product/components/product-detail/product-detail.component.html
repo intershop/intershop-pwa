@@ -41,7 +41,7 @@
         (selectVariation)="variationSelected($event)"
       ></ish-product-variations>
 
-      <form [formGroup]="productDetailForm" class="product-form form-horizontal">
+      <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
         <div class="row">
           <div class="w-100">
             <ish-product-quantity

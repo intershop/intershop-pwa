@@ -27,6 +27,7 @@ export class ProductDetailComponent implements OnInit {
   readonly quantityControlName = 'quantity';
 
   isVariationProduct = ProductHelper.isVariationProduct;
+  isMasterProduct = ProductHelper.isMasterProduct;
 
   ngOnInit() {
     this.productDetailForm = new FormGroup({

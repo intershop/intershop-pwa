@@ -35,7 +35,7 @@
       <div class="col-12 col-md-5 text-md-right">
         <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
         <ish-product-inventory [product]="product"></ish-product-inventory>
-        <div class="product-list-actions-container">
+        <div *ngIf="!isMasterProduct(product)" class="product-list-actions-container">
           <form [formGroup]="productItemForm" class="product-form form-horizontal">
             <ish-product-quantity
               [product]="product"
