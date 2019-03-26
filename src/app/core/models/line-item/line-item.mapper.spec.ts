@@ -12,6 +12,18 @@ describe('Line Item Mapper', () => {
         quantity: {
           value: 3,
         },
+        pricing: {
+          price: {
+            gross: {
+              currency: 'USD',
+              value: 11.9,
+            },
+            net: {
+              value: 10.56,
+              currency: 'USD',
+            },
+          },
+        },
       } as LineItemData;
       const lineItem = LineItemMapper.fromData(lineItemData);
 

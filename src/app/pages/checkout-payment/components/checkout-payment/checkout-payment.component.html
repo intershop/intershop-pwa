@@ -45,19 +45,27 @@
                 }}
               </p>
               <ng-template #displayPaymentCosts>
-                <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts.value">
-                  {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
-                    paymentMethod.paymentCosts | ishPrice
-                  }}&nbsp;
-                  <span *ngIf="paymentMethod.paymentCostsThreshold" class=".form-text text-muted">
-                    <span class="hidden-xs">&nbsp;-&nbsp;</span
-                    >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
-                    <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
-                  </span>
+                <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
+                  <p *ngIf="paymentMethod.paymentCosts && paymentMethod.paymentCosts.value">
+                    {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
+                      paymentMethod.paymentCosts | ishPrice
+                    }}&nbsp;
+                    <span *ngIf="paymentMethod.paymentCostsThreshold" class=".form-text text-muted">
+                      <span class="hidden-xs">&nbsp;-&nbsp;</span
+                      >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
+                      <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
+                    </span>
+                  </p>
+                </div>
+              </ng-template>
+              <ng-template #displayRestrictions>
+                {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
+                  paymentMethod.paymentCosts | ishPrice
+                }}&nbsp;
+                <p *ngFor="let restriction of paymentMethod.restrictionCauses" class="text-info">
+                  {{ restriction.message }}
                 </p>
               </ng-template>
-              <!-- ToDo: Display restriction reason -->
-              <p *ngIf="paymentMethod.isRestricted"><i>Restricted use</i></p>
             </label>
           </div>
         </li>
