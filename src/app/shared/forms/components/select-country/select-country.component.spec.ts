@@ -44,7 +44,7 @@ describe('Select Country Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('countryCode');
-    expect(component.label).toEqual('Country');
+    expect(component.label).toEqual('account.address.country.label');
   });
 
   it('should display countries if component input changes', () => {

@@ -14,6 +14,7 @@ export interface Address {
   postalCode: string;
   city: string;
   mainDivision?: string;
+  mainDivisionCode?: string;
   country: string;
   countryCode: string;
   phoneHome: string;
