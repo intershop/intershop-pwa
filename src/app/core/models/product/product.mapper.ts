@@ -11,7 +11,7 @@ import { ProductData, ProductDataStub } from './product.interface';
 import { Product, ProductHelper, ProductType } from './product.model';
 
 function filterPrice(price: Price): Price {
-  if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
+  if (price && price.currency && price.currency !== 'N/A') {
     return price;
   }
   return;

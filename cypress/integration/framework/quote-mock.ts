@@ -41,13 +41,11 @@ export function mockQuotes() {
       originSinglePrice: {
         type: 'Money',
         value: 41.95,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       originTotalPrice: {
         type: 'Money',
         value: 83.9,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       quantity: {
@@ -58,13 +56,11 @@ export function mockQuotes() {
       singlePrice: {
         type: 'Money',
         value: 41.92,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       totalPrice: {
         type: 'Money',
         value: 83.84,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       productSKU: '4011592',
@@ -102,13 +98,11 @@ export function mockQuotes() {
       originTotal: {
         type: 'Money',
         value: 83.9,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       total: {
         type: 'Money',
         value: 83.84,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
     },
@@ -131,13 +125,11 @@ export function mockQuotes() {
       originTotal: {
         type: 'Money',
         value: 83.9,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       total: {
         type: 'Money',
         value: 83.84,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
     },
@@ -160,13 +152,11 @@ export function mockQuotes() {
       originTotal: {
         type: 'Money',
         value: 83.9,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       total: {
         type: 'Money',
         value: 83.84,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       rejected: true,
@@ -191,13 +181,11 @@ export function mockQuotes() {
       originTotal: {
         type: 'Money',
         value: 83.9,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       total: {
         type: 'Money',
         value: 83.84,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
     },
@@ -220,13 +208,11 @@ export function mockQuotes() {
       originTotal: {
         type: 'Money',
         value: 83.9,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
       total: {
         type: 'Money',
         value: 83.84,
-        currencyMnemonic: 'USD',
         currency: 'USD',
       },
     },
