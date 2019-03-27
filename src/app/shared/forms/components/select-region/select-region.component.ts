@@ -11,7 +11,7 @@ import { SelectComponent, SelectOption } from '../select/select.component';
 export class SelectRegionComponent extends SelectComponent implements OnChanges {
   @Input() regions: Region[];
   @Input() controlName = 'state';
-  @Input() label = 'State/Province';
+  @Input() label = 'account.default_address.state.label';
   @Input() errorMessages = { required: 'Please select a region' }; // ToDo: Translation key
 
   ngOnChanges(c: SimpleChanges) {
@@ -26,7 +26,7 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges 
     }
     return regions.map(r => ({
       label: r.name,
-      value: r.name,
+      value: r.regionCode,
     }));
   }
 }

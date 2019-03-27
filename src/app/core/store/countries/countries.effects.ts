@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { mapErrorToAction } from 'ish-core/utils/operators';
@@ -16,7 +15,7 @@ export class CountriesEffects {
 
   @Effect()
   loadCountries$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
+    ofType(countryActions.CountryActionTypes.LoadCountries),
     withLatestFrom(this.store.pipe(select(getAllCountries))),
     filter(([, countries]) => !countries.length),
     concatMap(() =>
