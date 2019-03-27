@@ -30,14 +30,14 @@ describe('Order Mapper', () => {
         totals: {
           itemTotal: {
             value: 141796.98,
-            currencyMnemonic: 'USD',
+            currency: 'USD',
           },
         },
         valueRebates: [
           {
             amount: {
               value: 11.9,
-              currencyMnemonic: 'USD',
+              currency: 'USD',
             },
             rebateType: 'OrderValueOffDiscount',
           } as BasketRebate,
@@ -47,7 +47,7 @@ describe('Order Mapper', () => {
             name: 'surcharge',
             amount: {
               value: 595,
-              currencyMnemonic: 'USD',
+              currency: 'USD',
             },
             description: 'Surcharge for battery deposit',
             displayName: 'Battery Deposit Surcharge',

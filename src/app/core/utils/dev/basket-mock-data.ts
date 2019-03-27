@@ -28,8 +28,8 @@ export class BasketMockData {
       quantity: { value: 10 },
       productSKU: '4713',
       product: { sku: '4713', availability: true, inStock: true },
-      singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
-      price: { value: 3, currencyMnemonic: 'USD' },
+      singleBasePrice: { value: 3, currency: 'USD' },
+      price: { value: 3, currency: 'USD' },
       itemSurcharges: [
         {
           amount: {},
@@ -105,45 +105,45 @@ export class BasketMockData {
     return {
       itemTotal: {
         value: 141796.98,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       itemRebatesTotal: {
         value: 4446,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       shippingTotal: {
         value: 87.06,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       itemShippingRebatesTotal: {
         value: 0,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       valueRebatesTotal: {
         value: 4457.9,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       shippingRebatesTotal: {
         value: 0,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       paymentCostsTotal: {
         value: 3.57,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       taxTotal: {
         value: 22747.55,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       total: {
         value: 142470.71,
-        currencyMnemonic: 'USD',
+        currency: 'USD',
       },
       valueRebates: [
         {
           amount: {
             value: 11.9,
-            currencyMnemonic: 'USD',
+            currency: 'USD',
           },
           rebateType: 'OrderValueOffDiscount',
         } as BasketRebate,
@@ -152,7 +152,7 @@ export class BasketMockData {
         {
           amount: {
             value: 595,
-            currencyMnemonic: 'USD',
+            currency: 'USD',
           },
           description: 'Surcharge for battery deposit',
           displayName: 'Battery Deposit Surcharge',

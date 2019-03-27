@@ -19,7 +19,7 @@ describe('Price Mapper', () => {
 
       expect(price).toBeTruthy();
       expect(price.value).toBe(priceItem[PriceMapper.defaultPriceType].value);
-      expect(price.currencyMnemonic).toBe('USD');
+      expect(price.currency).toBe('USD');
     });
   });
 });

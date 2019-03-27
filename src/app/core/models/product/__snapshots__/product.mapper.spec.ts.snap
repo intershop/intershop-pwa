@@ -30,7 +30,7 @@ Object {
   ],
   "inStock": false,
   "listPrice": Object {
-    "currencyMnemonic": "USD",
+    "currency": "USD",
     "type": "Money",
     "value": 132.24,
   },
@@ -41,7 +41,7 @@ Object {
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
   "salePrice": Object {
-    "currencyMnemonic": "USD",
+    "currency": "USD",
     "type": "Money",
     "value": 132.24,
   },

@@ -221,12 +221,12 @@ describe('Quote Request Service', () => {
         singlePrice: {
           type: 'test',
           value: 1,
-          currencyMnemonic: 'EUR',
+          currency: 'EUR',
         },
         totalPrice: {
           type: 'test',
           value: 1,
-          currencyMnemonic: 'EUR',
+          currency: 'EUR',
         },
       } as QuoteRequestItemData;
 

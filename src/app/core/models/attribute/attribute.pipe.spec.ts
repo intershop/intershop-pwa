@@ -109,7 +109,7 @@ describe('Attribute Pipe', () => {
           value: {
             type: 'Money',
             value: 391.98,
-            currencyMnemonic: 'USD',
+            currency: 'USD',
           },
         },
         en_US: '$391.98',
