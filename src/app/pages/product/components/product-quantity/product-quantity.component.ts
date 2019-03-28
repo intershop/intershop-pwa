@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
 
@@ -21,10 +29,8 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
-  @Input() type?: string;
+  @Input() type?: 'select' | 'input';
   @Input() class?: string;
-
-  readonly selectType = 'select';
 
   quantityOptions: SelectOption[];
 
@@ -33,7 +39,7 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
   }
 
   getValidations(): ValidatorFn {
-    if (this.type !== this.selectType) {
+    if (this.type !== 'select') {
       return Validators.compose([
         Validators.required,
         Validators.min(this.product.minOrderQuantity),
@@ -44,7 +50,13 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(change: SimpleChanges) {
-    if (change.product && change.product.currentValue) {
+    if (this.type === 'select') {
+      this.createSelectOptions(change.product);
+    }
+  }
+
+  private createSelectOptions(change: SimpleChange) {
+    if (change && change.currentValue) {
       this.quantityOptions = generateSelectOptionsForRange(
         this.product.minOrderQuantity,
         this.product.maxOrderQuantity
