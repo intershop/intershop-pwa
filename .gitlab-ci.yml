@@ -358,6 +358,23 @@ deploy_demo_b2b:
     name: demo-b2b
     url: http://jdevbuildslave01.rnd.j.intershop.de:4325
 
+deploy_demo_BO:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    refs:
+      - develop
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "done"
+  environment:
+    name: BackOffice
+    url: https://10.0.206.226:4323/INTERSHOP/web/BOS/SLDSystem
+
 deploy_reports:
   stage: deploy
   cache: {}
@@ -413,6 +430,40 @@ stop_review_b2c:
     - echo "done"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
+    action: stop
+
+deploy_review_BO:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    - merge_requests
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "done"
+  environment:
+    name: BO/$CI_COMMIT_REF_SLUG
+    url: https://10.0.206.226:4323/INTERSHOP/web/BOS/SLDSystem
+    on_stop: stop_review_BO
+
+stop_review_BO:
+  stage: e2e
+  cache: {}
+  dependencies: []
+  when: manual
+  tags:
+    - shell-executor
+  only:
+    - merge_requests
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "done"
+  environment:
+    name: BO/$CI_COMMIT_REF_SLUG
     action: stop
 
 deploy_review_b2b:
