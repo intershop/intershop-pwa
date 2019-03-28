@@ -1,5 +1,5 @@
 <div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity row">
-  <ng-container *ngIf="type === selectType; else inputType">
+  <ng-container *ngIf="type === 'select'; else inputType">
     <ish-select
       [options]="quantityOptions"
       [form]="parentForm"
