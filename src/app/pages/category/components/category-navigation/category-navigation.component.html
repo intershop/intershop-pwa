@@ -5,7 +5,7 @@
         <a
           class="filter-item-name"
           [ngClass]="{ 'filter-selected': categoryEquals(subCategory, category) }"
-          [routerLink]="['/category', subCategory.uniqueId]"
+          [routerLink]="subCategory | ishCategoryRoute"
         >
           {{ subCategory.name }}
         </a>

@@ -16,7 +16,7 @@
     (click)="subMenuHide(submenu)"
   >
     <a
-      [routerLink]="['/category', category.uniqueId]"
+      [routerLink]="category | ishCategoryRoute"
       [attr.data-testing-id]="category.uniqueId + '-link'"
       [ngStyle]="{ width: !category.hasChildren() ? '100%' : '' }"
     >

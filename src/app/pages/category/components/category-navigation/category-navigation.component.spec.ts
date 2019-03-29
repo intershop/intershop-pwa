@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryNavigationComponent } from './category-navigation.component';
@@ -14,7 +15,7 @@ describe('Category Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [PipesModule, RouterTestingModule],
       declarations: [CategoryNavigationComponent],
     })
       .compileComponents()

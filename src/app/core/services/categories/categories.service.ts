@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { CategoryTree, CategoryTreeHelper } from '../../models/category-tree/category-tree.model';
 import { CategoryData } from '../../models/category/category.interface';
@@ -26,9 +26,11 @@ export class CategoriesService {
       return throwError('getCategory() called without categoryUniqueId');
     }
 
-    return this.apiService
-      .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`)
-      .pipe(map(element => this.categoryMapper.fromData(element)));
+    return this.apiService.get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`).pipe(
+      map(element => this.categoryMapper.fromData(element)),
+      // bump up completeness level as it won't get any better than this
+      tap(tree => (tree.nodes[categoryUniqueId].completenessLevel = CategoryHelper.maxCompletenessLevel))
+    );
   }
 
   /**

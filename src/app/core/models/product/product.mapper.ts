@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from '../attribute/attribute.helper';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
@@ -8,7 +9,7 @@ import { Price } from '../price/price.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { ProductData, ProductDataStub } from './product.interface';
-import { Product, ProductHelper, ProductType } from './product.model';
+import { Product, ProductType } from './product.model';
 
 function filterPrice(price: Price): Price {
   if (price && price.currency && price.currency !== 'N/A') {
@@ -21,8 +22,7 @@ function filterPrice(price: Price): Price {
  * check if attribute is available and return value, otherwise undefined
  */
 function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: string) {
-  const attribute = ProductHelper.getAttributeByAttributeName(data, attributeName);
-  return attribute ? (attribute.value as T) : undefined;
+  return data ? AttributeHelper.getAttributeValueByAttributeName<T>(data.attributes, attributeName) : undefined;
 }
 
 /**

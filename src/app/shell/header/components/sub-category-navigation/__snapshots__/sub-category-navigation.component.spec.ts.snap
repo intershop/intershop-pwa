@@ -20,7 +20,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
       <a
         href="/category/A.1"
         ng-reflect-ng-style="[object Object]"
-        ng-reflect-router-link="/category,A.1"
+        ng-reflect-router-link="/category/A.1"
       >
         CAT_A1
       </a>
@@ -72,7 +72,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
             <a
               href="/category/A.1.a"
               ng-reflect-ng-style="[object Object]"
-              ng-reflect-router-link="/category,A.1.a"
+              ng-reflect-router-link="/category/A.1.a"
             >
               CAT_A1a
             </a>
@@ -117,7 +117,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
       <a
         href="/category/A.2"
         ng-reflect-ng-style="[object Object]"
-        ng-reflect-router-link="/category,A.2"
+        ng-reflect-router-link="/category/A.2"
         style="width: 100%;"
       >
         CAT_A2

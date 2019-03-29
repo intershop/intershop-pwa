@@ -89,8 +89,8 @@ describe('Category Mapper', () => {
     it('should return 2 for input from categories call', () => {
       expect(categoryMapper.computeCompleteness({ images: [{}], categoryPath: [{}, {}] } as CategoryData)).toEqual(2);
     });
-    it('should return 2 for input from categories call with root categories', () => {
-      expect(categoryMapper.computeCompleteness({ categoryPath: [{}] } as CategoryData)).toEqual(2);
+    it('should return 3 for input from categories call with root categories', () => {
+      expect(categoryMapper.computeCompleteness({ categoryPath: [{}], attributes: [] } as CategoryData)).toEqual(3);
     });
   });
 
