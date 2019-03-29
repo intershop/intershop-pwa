@@ -47,6 +47,7 @@ import { ProductListPagingComponent } from './product/components/product-list-pa
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
+import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
@@ -113,6 +114,7 @@ const exportedComponents = [
   ProductLabelComponent,
   ProductListContainerComponent,
   ProductPriceComponent,
+  ProductQuantityComponent,
   ProductShipmentComponent,
   ProductTileContainerComponent,
   RecentlyViewedContainerComponent,
