@@ -48,6 +48,9 @@
         </ng-template>
       </h1>
     </ng-template>
+    <div *ngIf="quote.state === 'Responded' && !isQuoteStarted" class="alert alert-info">
+      {{ 'quote.error.not_started' | translate }}
+    </div>
   </ng-container>
 
   <!--
@@ -208,7 +211,7 @@
         </button>
 
         <button
-          *ngIf="quote.state === 'Responded' && isQuoteValid"
+          *ngIf="quote.state === 'Responded'"
           type="submit"
           id="button-reject"
           class="btn btn-secondary float-right"
