@@ -2,6 +2,7 @@ import * as using from 'jasmine-data-provider';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { AttributeHelper } from '../attribute/attribute.helper';
 
 import { ProductDataStub } from './product.interface';
 import { Product, ProductHelper } from './product.model';
@@ -139,7 +140,7 @@ describe('Product Helper', () => {
         attributes: [{ name: 'sku', type: 'string', value: '01234567' }],
         description: '',
       } as ProductDataStub;
-      expect(ProductHelper.getAttributeByAttributeName(productData, 'sku').value).toBe('01234567');
+      expect(AttributeHelper.getAttributeValueByAttributeName<string>(productData.attributes, 'sku')).toBe('01234567');
     });
 
     it('should return attribute of attribute group when attribute group is defined', () => {
