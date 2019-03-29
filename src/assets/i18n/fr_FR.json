@@ -2449,6 +2449,7 @@
   "quote.edit.unsubmitted.contract_no.label": "N\u00B0 contrat\u00A0:",
   "quote.edit.button.accept_contract.label": "Accepter le contrat",
   "contract.items.table.heading": "Articles de votre contrat",
+  "quote.error.not_started": "Votre devis est en attente. La date de début n'est pas encore atteinte.",
   "account.navigation.quotes.link": "Devis",
   "quote.state.new": "Nouveau",
   "quote.state.submitted": "Envoy\u00E9",
