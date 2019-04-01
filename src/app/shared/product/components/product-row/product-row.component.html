@@ -7,9 +7,10 @@
       <ish-product-label [product]="product"></ish-product-label>
     </div>
   </div>
+
   <div class="col-9 col-md-10">
     <div class="row">
-      <div class="col-8 text-left">
+      <div class="col-7">
         <a class="product-title" [routerLink]="product | ishProductRoute: category">{{ product.name }}</a>
         <div class="product-description">{{ product.shortDescription }}</div>
         <div class="product-number">
@@ -30,16 +31,25 @@
           ></ish-product-add-to-compare>
         </div>
       </div>
-      <div class="col-12 col-md-4 text-right text-left-xs">
+
+      <div class="col-12 col-md-5 text-md-right">
         <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
         <ish-product-inventory [product]="product"></ish-product-inventory>
         <div class="product-list-actions-container">
-          <div class="addtocart-container">
-            <ish-product-add-to-basket
+          <form [formGroup]="productItemForm" class="product-form form-horizontal">
+            <ish-product-quantity
               [product]="product"
-              (productToBasket)="addToBasket()"
-            ></ish-product-add-to-basket>
-          </div>
+              [parentForm]="productItemForm"
+              [controlName]="quantityControlName"
+            ></ish-product-quantity>
+
+            <div class="addtocart-container">
+              <ish-product-add-to-basket
+                [product]="product"
+                (productToBasket)="addToBasket()"
+              ></ish-product-add-to-basket>
+            </div>
+          </form>
         </div>
       </div>
     </div>
