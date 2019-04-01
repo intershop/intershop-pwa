@@ -71,7 +71,9 @@ exports.addDeclarationToNgModule = addDeclarationToNgModule;
 function addProviderToNgModule(options) {
     return host => {
         const source = filesystem_1.readIntoSourceFile(host, options.module);
-        const relativePath = find_module_1.buildRelativePath(options.module, options.moduleImportPath);
+        const relativePath = options.moduleImportPath
+            ? find_module_1.buildRelativePath(options.module, options.moduleImportPath)
+            : undefined;
         const declarationChanges = ast_utils_1.addProviderToModule(source, options.module, options.artifactName, relativePath);
         const declarationRecorder = host.beginUpdate(options.module);
         for (const change of declarationChanges) {
