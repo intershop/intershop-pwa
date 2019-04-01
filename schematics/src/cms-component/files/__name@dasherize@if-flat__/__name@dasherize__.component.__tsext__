@@ -1,0 +1,13 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+
+@Component({
+  selector: '<%= selector %>',
+  templateUrl: './<%= dasherize(name) %>.component.html',<% if (!!styleFile) { %>
+  styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>'],<% } %>
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class <%= classify(name) %>Component {
+  @Input() pagelet: ContentPageletView;
+}
