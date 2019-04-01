@@ -6,7 +6,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { ProductDetailActionsComponent } from './components/product-detail-actions/product-detail-actions.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductImagesComponent } from './components/product-images/product-images.component';
-import { ProductQuantityComponent } from './components/product-quantity/product-quantity.component';
 import { ProductPageContainerComponent } from './product-page.container';
 
 const productPageRoutes: Routes = [
@@ -28,7 +27,6 @@ const productPageRoutes: Routes = [
     ProductDetailComponent,
     ProductImagesComponent,
     ProductPageContainerComponent,
-    ProductQuantityComponent,
   ],
 })
 export class ProductPageModule {}
