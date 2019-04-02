@@ -15,12 +15,16 @@ function createCMSComponent(options) {
         // tslint:disable:no-parameter-reassignment
         options = common_1.detectExtension('cms', host, options);
         options = common_1.applyNameAndPath('component', host, options);
+        if (!options.noCMSPrefixing) {
+            options.name = 'cms-' + options.name;
+        }
         options = common_1.determineArtifactName('component', host, options);
+        if (!options.noCMSPrefixing) {
+            options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
+        }
         options = common_1.generateSelector('component', host, options);
         options.module = 'cms/cms.module';
         options = common_1.findDeclaringModule(host, options);
-        // tslint:disable-next-line:no-string-literal
-        const artifactName = options['artifactName'];
         const operations = [];
         operations.push(registration_1.addDeclarationToNgModule(options));
         operations.push(registration_1.addEntryComponentToNgModule(options));
@@ -30,7 +34,7 @@ function createCMSComponent(options) {
       provide: CMS_COMPONENT,
       useValue: {
         definitionQualifiedName: '${options.definitionQualifiedName}',
-        class: ${artifactName},
+        class: ${options.artifactName},
       },
       multi: true,
     }`,

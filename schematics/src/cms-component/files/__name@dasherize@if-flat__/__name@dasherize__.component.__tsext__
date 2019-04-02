@@ -8,6 +8,6 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>'],<% } %>
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class <%= classify(name) %>Component {
+export class <%= artifactName %> {
   @Input() pagelet: ContentPageletView;
 }

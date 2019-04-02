@@ -55,8 +55,43 @@ describe('Component Schematic', () => {
       });
   });
 
-  it('should create a component in cms module', () => {
+  it('should create a component in cms module with added name prefix', () => {
     const options = { ...defaultOptions };
+    const tree = schematicRunner.runSchematic('cms-component', options, appTree);
+    expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
+Array [
+  "/projects/bar/src/app/cms/cms.module.ts",
+  "/projects/bar/src/app/cms/components/cms-foo/cms-foo.component.ts",
+  "/projects/bar/src/app/cms/components/cms-foo/cms-foo.component.html",
+  "/projects/bar/src/app/cms/components/cms-foo/cms-foo.component.spec.ts",
+]
+`);
+    const moduleContent = tree.readContent('/projects/bar/src/app/cms/cms.module.ts');
+    expect(moduleContent).toMatchInlineSnapshot(`
+"import { NgModule } from '@angular/core';
+import { CMSFooComponent } from './components/cms-foo/cms-foo.component';
+
+@NgModule({
+  imports: [],
+  declarations: [CMSFooComponent],
+  exports: [],
+  entryComponents: [CMSFooComponent],
+  providers: [{
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
+        class: CMSFooComponent,
+      },
+      multi: true,
+    }]
+})
+export class CmsModule { }
+"
+`);
+  });
+
+  it('should create a component in cms module without added name prefix if requested', () => {
+    const options = { ...defaultOptions, noCMSPrefixing: true };
     const tree = schematicRunner.runSchematic('cms-component', options, appTree);
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
 Array [
