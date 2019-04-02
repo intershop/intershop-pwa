@@ -11,7 +11,7 @@ import { VariationSelection } from 'ish-core/models/product-variation/variation-
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -106,7 +106,7 @@ describe('Product Page Container', () => {
   });
 
   it('should display product-detail when product is available', () => {
-    const product = { sku: 'dummy' } as Product;
+    const product = { sku: 'dummy', completenessLevel: ProductHelper.maxCompletenessLevel } as Product;
     store$.dispatch(new LoadProductSuccess({ product }));
     store$.dispatch(new SelectProduct({ sku: product.sku }));
 
@@ -117,6 +117,16 @@ describe('Product Page Container', () => {
       'ish-product-detail',
       'ish-recently-viewed-container',
     ]);
+  });
+
+  it('should not display product-detail when product is not completely loaded', () => {
+    const product = { sku: 'dummy' } as Product;
+    store$.dispatch(new LoadProductSuccess({ product }));
+    store$.dispatch(new SelectProduct({ sku: product.sku }));
+
+    fixture.detectChanges();
+
+    expect(findAllIshElements(element)).toEqual(['ish-recently-viewed-container']);
   });
 
   it('should redirect to product page when variation is selected', fakeAsync(() => {
@@ -160,12 +170,14 @@ describe('Product Page Container', () => {
     const product = {
       sku: 'M111',
       type: 'VariationProductMaster',
+      completenessLevel: ProductHelper.maxCompletenessLevel,
     } as VariationProductMaster;
 
     const variation1 = { sku: '111' } as VariationProduct;
     const variation2 = {
       sku: '222',
       attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+      completenessLevel: ProductHelper.maxCompletenessLevel,
     } as VariationProduct;
 
     store$.dispatch(new LoadProductSuccess({ product }));

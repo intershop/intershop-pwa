@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -26,7 +26,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageContainerComponent implements OnInit, OnDestroy {
-  product$ = this.store.pipe(select(getSelectedProduct));
+  product$ = this.store.pipe(
+    select(getSelectedProduct),
+    filter(ProductHelper.isProductCompletelyLoaded)
+  );
   productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   category$ = this.store.pipe(select(getSelectedCategory));
   productLoading$ = this.store.pipe(select(getProductLoading));
