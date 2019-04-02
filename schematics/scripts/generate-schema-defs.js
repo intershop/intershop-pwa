@@ -1,18 +1,13 @@
 // @ts-check
-const { resolve, extname, format } = require('path');
+const { resolve, extname } = require('path');
 const { writeFileSync } = require('fs');
 
 const { compileFromFile } = require('json-schema-to-typescript');
 const glob = require('glob');
-const { resolveConfig } = require('prettier');
 const { default: chalk } = require('chalk');
 
 const log = console.log;
 const rootPath = resolve(__dirname, '..');
-const srcPath = resolve(rootPath, 'src');
-const configFilePath = {
-  prettier: resolve(rootPath, '.prettierrc'),
-};
 const tsDefExtension = '.d.ts';
 
 /**
@@ -24,15 +19,13 @@ const tsDefExtension = '.d.ts';
 async function generate(filesGlob) {
   log(chalk.cyan.bold('creating schemas:\n'));
 
-  const prettierConfig = await resolveConfig(configFilePath.prettier);
-  const json2schemaConfig = { style: prettierConfig };
   const schemaFiles = glob.sync(filesGlob);
 
   return Promise.all(
     schemaFiles.map(async (schemaFile, idx) => {
       const definitionFile = schemaFile.replace(extname(schemaFile), tsDefExtension);
-      const output = await compileFromFile(schemaFile, json2schemaConfig)
-      
+      const output = await compileFromFile(schemaFile)
+
       const content = output.replace(new RegExp('.*any.*\n', 'g'), '')
       writeFileSync(definitionFile, content);
       return definitionFile;
