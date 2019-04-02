@@ -59,11 +59,15 @@ export function productsReducer(state = initialState, action: ProductsAction): P
 
     case ProductsActionTypes.LoadProductSuccess: {
       const product = action.payload.product;
-      return productAdapter.upsertOne(product, {
-        ...state,
-        loading: false,
-        failed: removeFailed(state.failed, product.sku),
-      });
+      const oldProduct = state.entities[product.sku];
+      if (!oldProduct || product.completenessLevel >= oldProduct.completenessLevel) {
+        return productAdapter.upsertOne(product, {
+          ...state,
+          loading: false,
+          failed: removeFailed(state.failed, product.sku),
+        });
+      }
+      break;
     }
 
     case ProductsActionTypes.LoadProductVariationsSuccess: {
@@ -71,8 +75,6 @@ export function productsReducer(state = initialState, action: ProductsAction): P
         { id: action.payload.sku, changes: { variationSKUs: action.payload.variations } },
         { ...state, loading: false }
       );
-      // return productAdapter.upsertOne({...state.entities[action.payload.sku], variationSKUs: action.payload.variations},
-      //   { ...state, loading: false });
     }
   }
 

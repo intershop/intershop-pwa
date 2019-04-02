@@ -5,10 +5,8 @@ import { defaultIfEmpty, map } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
-import { Link } from 'ish-core/models/link/link.model';
-import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { ProductData, ProductDataStub } from 'ish-core/models/product/product.interface';
+import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -125,18 +123,8 @@ export class ProductsService {
     }
 
     return this.apiService.get(`products/${sku}/variations`).pipe(
-      unpackEnvelope<Link & { variableVariationAttributeValues: VariationAttribute[] }>(),
-      map(links =>
-        links.map(link => ({
-          sku: link.uri.split('/products/')[1],
-          variableVariationAttributes: link.variableVariationAttributeValues,
-          name: link.title,
-          productMasterSKU: sku,
-          shortDescription: link.description,
-          type: 'VariationProduct',
-          attributes: link.attributes || [],
-        }))
-      ),
+      unpackEnvelope<ProductVariationLink>(),
+      map(links => links.map(link => this.productMapper.fromVariationLink(link, sku))),
       defaultIfEmpty([])
     );
   }

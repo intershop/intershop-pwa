@@ -71,6 +71,7 @@ describe('Products Reducer', () => {
           sku: '111',
           name: 'Test product',
           inStock: true,
+          completenessLevel: 2,
         } as Product;
       });
 
@@ -86,7 +87,7 @@ describe('Products Reducer', () => {
         const action1 = new fromActions.LoadProductSuccess({ product });
         const state1 = productsReducer(initialState, action1);
 
-        const updatedProduct = { sku: '111' } as Product;
+        const updatedProduct = { sku: '111', completenessLevel: 2 } as Product;
         updatedProduct.name = 'Updated product';
         updatedProduct.inStock = false;
 
@@ -95,6 +96,21 @@ describe('Products Reducer', () => {
 
         expect(state2.ids).toHaveLength(1);
         expect(state2.entities[product.sku]).toEqual(updatedProduct);
+      });
+
+      it('should not update product if already exists and has lower completeness', () => {
+        const action1 = new fromActions.LoadProductSuccess({ product });
+        const state1 = productsReducer(initialState, action1);
+
+        const updatedProduct = { sku: '111', completenessLevel: 1 } as Product;
+        updatedProduct.name = 'Updated product';
+        updatedProduct.inStock = false;
+
+        const action2 = new fromActions.LoadProductSuccess({ product: updatedProduct });
+        const state2 = productsReducer(state1, action2);
+
+        expect(state2.ids).toHaveLength(1);
+        expect(state2.entities[product.sku]).toEqual(product);
       });
 
       it('should set loading to false', () => {

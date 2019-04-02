@@ -57,11 +57,11 @@ const createView = memoize(
   // TODO: find a better way to return hash than stringify
   (product, entities, tree: CategoryTree) => {
     const defaultCategory = product ? tree.nodes[product.defaultCategoryId] : undefined;
-    // fire when master changed
+    // fire when self, master or default category changed
     if (ProductHelper.isVariationProduct(product)) {
       return JSON.stringify([product, entities[product.productMasterSKU], defaultCategory]);
     }
-    // fire when object changed
+    // fire when self or default category changed
     return JSON.stringify([product, defaultCategory]);
   }
 );
@@ -73,7 +73,7 @@ export const getProduct = createSelector(
   (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView => {
     if (failed.includes(props.sku)) {
       // tslint:disable-next-line: ish-no-object-literal-type-assertion
-      return createProductView({ sku: props.sku } as Product, tree);
+      return createProductView({ sku: props.sku, failed: true } as Product, tree);
     }
 
     return createView(entities[props.sku], entities, tree);
