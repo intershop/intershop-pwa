@@ -1,4 +1,4 @@
-<ng-container *ngIf="(product$ | async) as product">
+<ng-container *ngIf="(productForDisplay$ | async) as product; else loading">
   <ish-product-tile
     *ngIf="isTile"
     [product]="product"
@@ -21,3 +21,5 @@
     (selectVariation)="replaceVariation($event)"
   ></ish-product-row>
 </ng-container>
+
+<ng-template #loading><ish-loading></ish-loading></ng-template>

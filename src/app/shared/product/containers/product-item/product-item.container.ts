@@ -26,6 +26,7 @@ export class ProductItemContainerComponent implements OnInit {
   @Input() type: ProductItemType;
 
   product$: Observable<Product>;
+  productForDisplay$: Observable<Product>;
   productVariationOptions$: Observable<VariationOptionGroup[]>;
   isInCompareList$: Observable<boolean>;
 
@@ -33,6 +34,7 @@ export class ProductItemContainerComponent implements OnInit {
 
   private setUpStoreData(sku: string) {
     this.product$ = this.store.pipe(select(getProduct, { sku }));
+    this.productForDisplay$ = this.product$.pipe(filter(ProductHelper.isProductCompletelyLoaded));
     this.productVariationOptions$ = this.store.pipe(select(getProductVariationOptions, { sku }));
     this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(sku)));
 
