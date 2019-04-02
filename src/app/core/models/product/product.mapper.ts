@@ -8,7 +8,7 @@ import { Price } from '../price/price.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
-import { ProductData, ProductDataStub } from './product.interface';
+import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
 import { Product } from './product.model';
 
 function filterPrice(price: Price): Price {
@@ -31,6 +31,20 @@ function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: str
 @Injectable({ providedIn: 'root' })
 export class ProductMapper {
   constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
+
+  fromVariationLink(link: ProductVariationLink, productMasterSKU: string): Partial<VariationProduct> {
+    return {
+      sku: link.uri.split('/products/')[1],
+      variableVariationAttributes: link.variableVariationAttributeValues,
+      name: link.title,
+      productMasterSKU,
+      shortDescription: link.description,
+      type: 'VariationProduct',
+      attributes: link.attributes || [],
+      completenessLevel: 1,
+      failed: false,
+    };
+  }
 
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
@@ -84,6 +98,8 @@ export class ProductMapper {
       readyForShipmentMax: undefined,
       type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
+      completenessLevel: 2,
+      failed: false,
     };
   }
 
@@ -112,6 +128,8 @@ export class ProductMapper {
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
         : undefined,
+      completenessLevel: 3,
+      failed: false,
     };
 
     if (data.productMaster) {

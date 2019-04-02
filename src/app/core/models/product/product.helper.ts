@@ -8,6 +8,11 @@ import { Product } from './product.model';
 
 export class ProductHelper {
   /**
+   * the maximum level of completeness a category can achieve
+   */
+  static maxCompletenessLevel = 3;
+
+  /**
    * Get primary product image based on image type
    * @param product   The Product for which to get the primary image
    * @param imageType The wanted ImageType
@@ -51,7 +56,7 @@ export class ProductHelper {
    * check if a given product has the maximum completeness level
    */
   static isProductCompletelyLoaded(product: Product): boolean {
-    return !!product && !!product.listPrice && !!product.longDescription; // TODO: implement completeness level – this is just a workaround to get things working
+    return !!product && product.completenessLevel === ProductHelper.maxCompletenessLevel;
   }
 
   /**
