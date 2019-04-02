@@ -1,0 +1,27 @@
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+
+import { <%= artifactName %> } from './<%= dasherize(name) %>.component';
+
+describe('<%= artifactName %>', () => {
+  let component: <%= artifactName %>;
+  let fixture: ComponentFixture<<%= artifactName %>>;
+  let element: HTMLElement;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [<%= artifactName %>]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(<%= artifactName %>);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(() => fixture.detectChanges()).not.toThrow();
+  });
+});

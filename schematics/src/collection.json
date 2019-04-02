@@ -1,6 +1,12 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
+    "cms-component": {
+      "aliases": ["cms"],
+      "factory": "./cms-component/factory#createCMSComponent",
+      "description": "Create a CMS component.",
+      "schema": "./cms-component/schema.json"
+    },
     "component": {
       "aliases": ["c"],
       "factory": "./component/factory#createComponent",
