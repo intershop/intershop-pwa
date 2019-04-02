@@ -32,9 +32,8 @@ export function createProductView(product: Product, tree: CategoryTree): Product
 
   return {
     ...product,
-    defaultCategory: tree.nodes[product.defaultCategoryId]
-      ? once(() => createCategoryView(tree, product.defaultCategoryId))
-      : () => undefined,
+    defaultCategory: () =>
+      tree.nodes[product.defaultCategoryId] ? createCategoryView(tree, product.defaultCategoryId) : undefined,
   };
 }
 
