@@ -11,6 +11,7 @@ export interface PwaCmsComponentOptionsSchema {
   path?: string;
   tsext?: string;
   artifactFolder?: boolean;
+  artifactName?: string;
   project?: string;
   prefix?: string;
   styleext?: string;
@@ -36,4 +37,8 @@ export interface PwaCmsComponentOptionsSchema {
    * Flag to indicate if a dir is created.
    */
   flat?: boolean;
+  /**
+   * Flag to indicate if CMS prefixes should not be added.
+   */
+  noCMSPrefixing?: boolean;
 }

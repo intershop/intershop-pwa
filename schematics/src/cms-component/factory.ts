@@ -33,13 +33,16 @@ export function createCMSComponent(options: Options): Rule {
     // tslint:disable:no-parameter-reassignment
     options = detectExtension('cms', host, options);
     options = applyNameAndPath('component', host, options);
+    if (!options.noCMSPrefixing) {
+      options.name = 'cms-' + options.name;
+    }
     options = determineArtifactName('component', host, options);
+    if (!options.noCMSPrefixing) {
+      options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
+    }
     options = generateSelector('component', host, options);
     options.module = 'cms/cms.module';
     options = findDeclaringModule(host, options);
-
-    // tslint:disable-next-line:no-string-literal
-    const artifactName = options['artifactName'];
 
     const operations = [];
     operations.push(addDeclarationToNgModule(options));
@@ -51,7 +54,7 @@ export function createCMSComponent(options: Options): Rule {
       provide: CMS_COMPONENT,
       useValue: {
         definitionQualifiedName: '${options.definitionQualifiedName}',
-        class: ${artifactName},
+        class: ${options.artifactName},
       },
       multi: true,
     }`,
