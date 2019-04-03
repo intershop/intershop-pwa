@@ -1,17 +1,21 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
-import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
-import { LoadProduct, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
+import {
+  LoadProduct,
+  getProduct,
+  getProductEntities,
+  getProductVariationOptions,
+} from 'ish-core/store/shopping/products';
 
 type ProductItemType = 'tile' | 'row';
 
@@ -20,57 +24,64 @@ type ProductItemType = 'tile' | 'row';
   templateUrl: './product-item.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductItemContainerComponent implements OnInit {
+export class ProductItemContainerComponent implements OnInit, OnDestroy {
   @Input() productSku: string;
   @Input() category?: Category;
   @Input() type: ProductItemType;
 
-  product$: Observable<Product>;
-  productForDisplay$: Observable<Product>;
-  productVariationOptions$: Observable<VariationOptionGroup[]>;
-  isInCompareList$: Observable<boolean>;
+  /** holds the current SKU */
+  private sku$ = new ReplaySubject<string>(1);
+
+  private product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
+  /** display loading overlay while product is loading */
+  loading$ = this.product$.pipe(map(p => !(ProductHelper.isProductCompletelyLoaded(p) || (p && p.failed))));
+  /** display only completely loaded (or failed) products to prevent flickering */
+  productForDisplay$ = this.product$.pipe(filter(p => p && (p.failed || ProductHelper.isProductCompletelyLoaded(p))));
+  productVariationOptions$ = this.sku$.pipe(
+    switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku })))
+  );
+  isInCompareList$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(isInCompareProducts(sku)))));
+
+  private destroy$ = new Subject();
 
   constructor(private store: Store<{}>) {}
 
-  private setUpStoreData(sku: string) {
-    this.product$ = this.store.pipe(select(getProduct, { sku }));
-    this.productForDisplay$ = this.product$.pipe(filter(ProductHelper.isProductCompletelyLoaded));
-    this.productVariationOptions$ = this.store.pipe(select(getProductVariationOptions, { sku }));
-    this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(sku)));
-
+  ngOnInit() {
     // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
-    this.product$
+    this.sku$
       .pipe(
-        take(1),
-        filter(product => !ProductHelper.isProductCompletelyLoaded(product))
+        withLatestFrom(this.store.pipe(select(getProductEntities))),
+        map(([sku, entities]) => entities[sku]),
+        filter(product => !ProductHelper.isProductCompletelyLoaded(product)),
+        withLatestFrom(this.sku$),
+        takeUntil(this.destroy$)
       )
-      .subscribe(() => this.store.dispatch(new LoadProduct({ sku })));
+      .subscribe(([, sku]) => this.store.dispatch(new LoadProduct({ sku })));
+
+    this.sku$.next(this.productSku);
   }
 
-  ngOnInit() {
-    this.setUpStoreData(this.productSku);
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   toggleCompare() {
-    this.product$.pipe(take(1)).subscribe(product => this.store.dispatch(new ToggleCompare({ sku: product.sku })));
+    this.sku$.pipe(take(1)).subscribe(sku => this.store.dispatch(new ToggleCompare({ sku })));
   }
 
   addToBasket(quantity: number) {
-    this.product$
-      .pipe(take(1))
-      .subscribe(product => this.store.dispatch(new AddProductToBasket({ sku: product.sku, quantity })));
+    this.sku$.pipe(take(1)).subscribe(sku => this.store.dispatch(new AddProductToBasket({ sku, quantity })));
   }
 
   replaceVariation(selection: VariationSelection) {
     this.product$
       .pipe(
         take(1),
-        filter(product => ProductHelper.isVariationProduct(product))
+        filter<VariationProductView>(product => ProductHelper.isVariationProduct(product))
       )
-      .subscribe((product: VariationProductView) => {
-        const variation = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
-        const newSku = variation.sku;
-        this.setUpStoreData(newSku);
+      .subscribe(product => {
+        const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+        this.sku$.next(sku);
       });
   }
 
