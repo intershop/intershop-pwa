@@ -20,6 +20,9 @@ export const environment = {
   // To use the Google Tag Manager, insert a correct GTM-Token and uncomment the next line
   // gtmToken: 'GTM-XXXXXXX',
 
+  // log client-side-javascript-errors to sentry.io
+  sentryDSN: undefined, // 'https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@sentry.io/XXXXXXX',
+
   // configuration of the available locales - hard coded for now
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
@@ -52,6 +55,7 @@ export const environment = {
     // 'quoting',
     'stickyHeader',
     // 'tracking',
-    // 'businessCustomerRegistration'
+    // 'businessCustomerRegistration',
+    'sentry',
   ],
 };
