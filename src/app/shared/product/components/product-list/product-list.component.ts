@@ -36,4 +36,8 @@ export class ProductListComponent {
   get isList() {
     return this.viewType === 'list';
   }
+
+  trackByFn(_, item: Product) {
+    return item.sku;
+  }
 }

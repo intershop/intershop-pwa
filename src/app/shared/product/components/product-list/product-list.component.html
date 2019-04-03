@@ -1,5 +1,5 @@
 <div class="product-list row" infiniteScroll (scrolled)="loadMore.emit()">
-  <ng-container *ngFor="let product of products">
+  <ng-container *ngFor="let product of products; trackBy: trackByFn">
     <div *ngIf="isGrid" class="col-6 col-lg-4 product-list-item grid-view">
       <ish-product-item-container type="tile" [productSku]="product.sku" [category]="category">
       </ish-product-item-container>
