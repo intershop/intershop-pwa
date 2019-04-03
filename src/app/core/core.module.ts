@@ -8,6 +8,7 @@ import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 import { CookieLawModule } from 'angular2-cookie-law';
 
+import { SentryModule } from '../extensions/sentry/sentry.module';
 import { TrackingModule } from '../extensions/tracking/tracking.module';
 
 import { ConfigurationModule } from './configuration.module';
@@ -27,6 +28,7 @@ export function translateFactory(http: HttpClient) {
     HttpClientModule,
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
+    SentryModule,
     StateManagementModule,
     TrackingModule,
     TranslateModule.forRoot({
