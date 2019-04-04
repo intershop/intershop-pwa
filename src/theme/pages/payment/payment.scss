@@ -6,7 +6,7 @@
   margin-bottom: $space-default * 2;
 
   .panel {
-    margin-bottom: 0;
+    margin-bottom: $space-default;
 
     @include box-shadow(none);
 

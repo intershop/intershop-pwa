@@ -8,18 +8,21 @@
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
-    <form [formGroup]="paymentForm" class="form-horizontal">
-      <!-- ToDo: List of payment methods instead -->
+
+    <!-- display all payment methods -->
+    <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submit()">
       <ul
         *ngIf="paymentMethods && paymentMethods.length > 0"
         id="payment-accordion"
-        class="list-unstyled ml-4"
+        class="list-unstyled"
         role="tablist"
         aria-multiselectable="true"
       >
-        <li *ngFor="let paymentMethod of paymentMethods" class="panel">
-          <div class="form-check" role="tab">
+        <li *ngFor="let paymentMethod of paymentMethods; let i = index" class="panel">
+          <div class="form-check" [ngClass]="{ 'ml-4': !paymentMethod.parameters }" role="tab">
+            <!-- display radio buttons only for payment methods without parameters -->
             <input
+              *ngIf="!paymentMethod.parameters"
               class="form-check-input"
               type="radio"
               formControlName="name"
@@ -67,6 +70,33 @@
                 </p>
               </ng-template>
             </label>
+
+            <!-- Payment parameter form -->
+            <ng-container *ngIf="!!paymentMethod.parameters">
+              <p>
+                <a *ngIf="i !== openFormIndex" (click)="openPaymentParameterForm(i)"
+                  >{{ 'checkout.payment.addPayment.link' | translate }}
+                </a>
+              </p>
+
+              <div [ngbCollapse]="!(i === openFormIndex)">
+                <formly-form
+                  [form]="parameterForm"
+                  [options]="options"
+                  [model]="model"
+                  [fields]="paymentMethod.parameters"
+                >
+                  <div class="offset-md-4 col-md-8">
+                    <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
+                      {{ 'checkout.account.submit.button.label' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+                      {{ 'checkout.cancel.button.label' | translate }}
+                    </button>
+                  </div>
+                </formly-form>
+              </div>
+            </ng-container>
           </div>
         </li>
       </ul>

@@ -36,4 +36,9 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
   updateBasketPaymentMethod(paymentName: string) {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));
   }
+
+  createBasketPaymentInstrument(body: { paymentMethod: string; parameters: { name: string; value: string }[] }) {
+    // ToDo: call an action to create payment instrument and assign it to the basket
+    console.log(body);
+  }
 }
