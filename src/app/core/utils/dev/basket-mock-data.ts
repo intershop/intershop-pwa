@@ -86,9 +86,18 @@ export class BasketMockData {
 
   static getPaymentMethod(): PaymentMethod {
     return {
-      type: 'Payment',
-      id: 'ISH_INVOICE',
-      displayName: 'Invoice',
+      id: 'ISH_CreditCard',
+      displayName: 'Credit Card',
+      parameters: [
+        {
+          key: 'IBAN',
+          type: 'input',
+          templateOptions: {
+            type: 'text',
+            required: true,
+          },
+        },
+      ],
     } as PaymentMethod;
   }
 

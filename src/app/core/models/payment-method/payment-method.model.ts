@@ -1,3 +1,5 @@
+import { FormlyFieldConfig } from '@ngx-formly/core';
+
 import { PaymentRestriction } from '../payment-restriction/payment-restriction.model';
 import { Price } from '../price/price.model';
 
@@ -9,4 +11,6 @@ export interface PaymentMethod {
   paymentCostsThreshold?: Price;
   isRestricted?: boolean;
   restrictionCauses?: PaymentRestriction[];
+  paymentInstruments?: string[];
+  parameters?: FormlyFieldConfig[];
 }

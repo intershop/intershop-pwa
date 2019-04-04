@@ -282,12 +282,16 @@ export class BasketService {
       return throwError('getBasketEligiblePaymentMethods() called without basketId');
     }
 
+    const params = new HttpParams().set('include', 'paymentInstruments');
+
     /* ToDo: Replace this fix filter by a dynamic one */
-    const validPaymentMethods = 'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE';
+    const validPaymentMethods =
+      'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE|ISH_DEBIT_TRANSFER|ISH_CREDITCARD';
 
     return this.apiService
       .get(`baskets/${basketId}/eligible-payment-methods`, {
         headers: this.basketHeaders,
+        params,
       })
       .pipe(
         unpackEnvelope<PaymentMethodData>('data'),
