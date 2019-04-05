@@ -1,4 +1,3 @@
-import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { Price } from '../price/price.model';
 
@@ -19,7 +18,7 @@ export interface LineItemData {
       name?: string;
     }
   ];
-  discounts?: BasketRebateData[];
+  discounts?: string[];
   pricing: {
     salesTaxTotal?: Price;
     shippingTaxTotal?: Price;

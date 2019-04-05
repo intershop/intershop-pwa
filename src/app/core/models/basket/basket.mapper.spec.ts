@@ -96,6 +96,23 @@ describe('Basket Mapper', () => {
               code: 'INTERSHOP',
               description:
                 'For orders over 200 USD, a 10 USD Order discount is guaranteed for the Promo Code "INTERSHOP".',
+              promotion: 'FreeShippingOnLEDTVs',
+            },
+          },
+          discounts_promotion: {
+            FreeShippingOnLEDTVs: {
+              id: 'FreeShippingOnLEDTVs',
+              couponCodeRequired: false,
+              currency: 'USD',
+              description: 'For LED TVs the shipping is free.',
+              externalUrl: 'URL',
+              icon: 'ICON',
+              legalContentMessage: 'Legal Content Message',
+              name: 'Free Shipping on LED TVs',
+              promotionType: 'ShippingPercentageOffDiscount',
+              ruleDescription: 'Buy any LED TV and the order ships free.',
+              title: 'FREE SHIPPING',
+              useExternalUrl: true,
             },
           },
         },
@@ -122,6 +139,7 @@ describe('Basket Mapper', () => {
       basketData.data.commonShipToAddress = undefined;
       basketData.data.commonShippingMethod = undefined;
       basketData.data.discounts = undefined;
+
       basket = BasketMapper.fromData(basketData);
 
       expect(basket.invoiceToAddress.id).toEqual('invoiceToAddress_123');
@@ -132,6 +150,7 @@ describe('Basket Mapper', () => {
       basketData.data.invoiceToAddress = undefined;
       basketData.data.commonShippingMethod = undefined;
       basketData.data.discounts = undefined;
+
       basket = BasketMapper.fromData(basketData);
 
       expect(basket.commonShipToAddress.id).toEqual('commonShipToAddress_123');

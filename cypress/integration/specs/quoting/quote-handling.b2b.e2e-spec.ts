@@ -133,11 +133,26 @@ describe('check displayed data from Rest', () => {
     mockQuotes();
   });
 
-  it('check counter in my quotes table ', () => {
+  it('check counter for newQuotes in my quotes table ', () => {
     at(MyAccountPage, page => {
       page.newQuoteLabel.should('have.text', '1');
+    });
+  });
+
+  it('check counter for submittedQuotes in my quotes table ', () => {
+    at(MyAccountPage, page => {
       page.submittedQuoteLabel.should('have.text', '1');
+    });
+  });
+
+  it('check counter for acceptedQuotes in my quotes table ', () => {
+    at(MyAccountPage, page => {
       page.acceptedQuoteLabel.should('have.text', '2');
+    });
+  });
+
+  it('check counter for rejectedQuotes in my quotes table ', () => {
+    at(MyAccountPage, page => {
       page.rejectedQuoteLabel.should('have.text', '1');
     });
   });

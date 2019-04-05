@@ -2047,6 +2047,7 @@
   "promotion.detaillist.pagination.text": "Viewing",
   "promotion.detaillist.title": "Applied Promotion",
   "promotion.detailslink.label": "Promotion Details",
+  "promotion.detailslink.text": "Details",
   "promotion.status.applied": "applied",
   "promotion.status.notapplied": "not applied",
   "promotion.viewEligibleItemsLink": "View Eligible Items",

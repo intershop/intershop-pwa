@@ -32,6 +32,11 @@ describe('Line Item List Component', () => {
           template: 'Product Image Component',
           inputs: ['product'],
         }),
+        MockComponent({
+          selector: 'ish-promotion-details',
+          template: 'Promotion Details Component',
+          inputs: ['promotion'],
+        }),
       ],
       imports: [
         FormsSharedModule,
