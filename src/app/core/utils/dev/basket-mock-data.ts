@@ -104,7 +104,7 @@ export class BasketMockData {
   static getPayment(): Payment {
     return {
       displayName: 'Invoice',
-      paymentInstrument: 'ISH_INVOICE',
+      paymentInstrument: { id: 'ISH_INVOICE' },
       id: 'open-tender',
       status: 'Unprocessed',
     } as Payment;

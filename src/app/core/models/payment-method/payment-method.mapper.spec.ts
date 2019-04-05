@@ -4,21 +4,37 @@ import { PaymentMethodMapper } from './payment-method.mapper';
 describe('Payment Method Mapper', () => {
   describe('fromData', () => {
     const paymentMethodData = {
-      id: 'ISH_CreditCard',
-      displayName: 'Credit Card',
-      paymentCosts: {
-        net: {
-          value: 40.34,
-          currency: 'USD',
+      data: [
+        {
+          id: 'ISH_CreditCard',
+          displayName: 'Credit Card',
+          paymentCosts: {
+            net: {
+              value: 40.34,
+              currency: 'USD',
+            },
+            gross: {
+              value: 40.34,
+              currency: 'USD',
+            },
+          },
+          paymentInstruments: ['12345'],
+          paymentCostsThreshold: {
+            net: {
+              value: 40.34,
+              currency: 'USD',
+            },
+            gross: {
+              value: 40.34,
+              currency: 'USD',
+            },
+          },
+          restricted: false,
         },
+      ],
+      included: {
+        paymentInstruments: { 12345: { id: 'ISH_CreditCard' } },
       },
-      paymentCostsThreshold: {
-        net: {
-          value: 40.34,
-          currency: 'USD',
-        },
-      },
-      restricted: false,
     } as PaymentMethodData;
 
     const regexp = '^[A-Z]{2}[0-9]{2}([- ]{0,1}[0-9A-Z]{4}){4}[- 0-9A-Z]{0,4}';
@@ -67,7 +83,7 @@ describe('Payment Method Mapper', () => {
     ];
 
     it(`should return PaymentMethod when getting a PaymentMethodData`, () => {
-      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData);
+      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
 
       expect(paymentMethod).toBeTruthy();
       expect(paymentMethod.id).toEqual('ISH_CreditCard');
@@ -77,21 +93,21 @@ describe('Payment Method Mapper', () => {
     });
 
     it(`should return a restricted PaymentMethod when getting restricted PaymentMethodData`, () => {
-      paymentMethodData.restricted = true;
-      paymentMethodData.restrictions = [
+      paymentMethodData.data[0].restricted = true;
+      paymentMethodData.data[0].restrictions = [
         {
           message: 'restricition message',
           code: 'restricition code',
         },
       ];
-      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData);
+      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
       expect(paymentMethod.isRestricted).toBeTrue();
       expect(paymentMethod.restrictionCauses).toHaveLength(1);
     });
 
     it(`should return a payment method with parameter definitions if payment method has input parameters`, () => {
-      paymentMethodData.parameterDefinitions = parametersData;
-      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData);
+      paymentMethodData.data[0].parameterDefinitions = parametersData;
+      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
 
       expect(paymentMethod.parameters).toHaveLength(3);
       expect(paymentMethod.parameters[0].type).toEqual('input');

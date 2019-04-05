@@ -63,15 +63,15 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     this.paymentForm
       .get('name')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(paymentName => {
-        if (paymentName !== this.getBasketPayment()) {
-          this.updatePaymentMethod.emit(paymentName);
+      .subscribe(paymentInstrumentId => {
+        if (paymentInstrumentId !== this.getBasketPayment()) {
+          this.updatePaymentMethod.emit(paymentInstrumentId);
         }
       });
   }
 
   private getBasketPayment(): string {
-    return this.basket && this.basket.payment ? this.basket.payment.paymentInstrument : '';
+    return this.basket && this.basket.payment ? this.basket.payment.paymentInstrument.id : '';
   }
 
   /**
