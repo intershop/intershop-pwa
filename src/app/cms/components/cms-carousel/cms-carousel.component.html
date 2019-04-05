@@ -1,5 +1,5 @@
 <div *ngIf="pagelet" [ngClass]="pagelet.stringParam('CSSClass')">
-  <ish-slot-wrapper [pagelet]="pagelet" slot="app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot">
+  <ish-content-slot-wrapper [slot]="'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot'" [pagelet]="pagelet">
     <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
       <ngb-carousel
         [interval]="intervalValue"
@@ -8,14 +8,14 @@
       >
         <ng-template ngbSlide *ngFor="let slidePagelets of pageletSlides">
           <div class="row">
-            <ng-container *ngFor="let pagelet of slidePagelets">
+            <ng-container *ngFor="let slidePagelet of slidePagelets">
               <div [ngClass]="'col-sm-' + itemGridSize">
-                <ish-content-pagelet [pagelet]="pagelet"></ish-content-pagelet>
+                <ish-content-pagelet [pagelet]="slidePagelet"></ish-content-pagelet>
               </div>
             </ng-container>
           </div>
         </ng-template>
       </ngb-carousel>
     </div>
-  </ish-slot-wrapper>
+  </ish-content-slot-wrapper>
 </div>

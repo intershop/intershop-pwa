@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
 
 /**
  * The CMS Standard Page Component to render CMS content of the 'Standard Page' page variant model.
@@ -12,6 +13,6 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   templateUrl: './cms-standard-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSStandardPageComponent {
+export class CMSStandardPageComponent extends SfeMetadataWrapper {
   @Input() pagelet: ContentPageletView;
 }

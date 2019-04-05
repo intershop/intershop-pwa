@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 
-import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
+import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
 
-import { SlotWrapperComponent } from './slot-wrapper.component';
+import { ContentSlotWrapperContainerComponent } from './content-slot-wrapper.container';
 
-describe('Slot Wrapper Component', () => {
-  let component: SlotWrapperComponent;
-  let fixture: ComponentFixture<SlotWrapperComponent>;
+describe('Content Slot Wrapper Container', () => {
+  let component: ContentSlotWrapperContainerComponent;
+  let fixture: ComponentFixture<ContentSlotWrapperContainerComponent>;
   let element: HTMLElement;
   let sfeAdapterMock: SfeAdapterService;
 
@@ -15,13 +15,13 @@ describe('Slot Wrapper Component', () => {
     sfeAdapterMock = mock(SfeAdapterService);
 
     TestBed.configureTestingModule({
-      declarations: [SlotWrapperComponent],
+      declarations: [ContentSlotWrapperContainerComponent],
       providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SlotWrapperComponent);
+    fixture = TestBed.createComponent(ContentSlotWrapperContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

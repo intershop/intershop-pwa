@@ -20,7 +20,7 @@ describe('Cms Static Page Component', () => {
         MockComponent({
           selector: 'ish-content-slot',
           template: 'Content Slot Container',
-          inputs: ['slot'],
+          inputs: ['slot', 'pagelet'],
         }),
       ],
     }).compileComponents();

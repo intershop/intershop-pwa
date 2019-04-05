@@ -10,12 +10,12 @@ exports[`Cms Container Component should be created 1`] = `
     ng-reflect-klass="content-container"
     ng-reflect-ng-class="col-12 col-md-6 col-lg-4 float"
   >
-    <ish-slot-wrapper
+    <ish-content-slot-wrapper
       ng-reflect-pagelet="[object Object]"
-      slot="app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+      ng-reflect-slot="app_sf_responsive_cm:slot.cont"
     >
       outlet
-    </ish-slot-wrapper>
+    </ish-content-slot-wrapper>
   </div>
 </div>
 `;

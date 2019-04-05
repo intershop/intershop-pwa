@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChil
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
 
 /**
  * The CMS Video Component integrates a CMS managed video either via native video tag
@@ -13,7 +14,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   templateUrl: './cms-video.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSVideoComponent implements OnInit {
+export class CMSVideoComponent extends SfeMetadataWrapper implements OnInit {
   @Input() pagelet: ContentPageletView;
 
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
@@ -27,7 +28,9 @@ export class CMSVideoComponent implements OnInit {
   mute: boolean;
   playing: boolean;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer) {
+    super();
+  }
 
   ngOnInit() {
     this.video = this.pagelet.stringParam('Video');

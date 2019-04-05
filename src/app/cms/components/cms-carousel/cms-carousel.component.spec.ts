@@ -16,9 +16,9 @@ describe('Cms Carousel Component', () => {
       declarations: [
         CMSCarouselComponent,
         MockComponent({
-          selector: 'ish-slot-wrapper',
+          selector: 'ish-content-slot-wrapper',
           template: 'outlet',
-          inputs: ['pagelet', 'definitionQualifiedName'],
+          inputs: ['pagelet', 'slot'],
         }),
         MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
       ],

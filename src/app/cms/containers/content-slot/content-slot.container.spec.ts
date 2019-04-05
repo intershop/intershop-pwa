@@ -16,9 +16,9 @@ describe('Content Slot Container', () => {
       declarations: [
         ContentSlotContainerComponent,
         MockComponent({
-          selector: 'ish-slot-wrapper',
+          selector: 'ish-content-slot-wrapper',
           template: 'outlet',
-          inputs: ['pagelet', 'definitionQualifiedName'],
+          inputs: ['slot', 'pagelet'],
         }),
         MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
       ],
