@@ -1,4 +1,5 @@
 import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
+import { BasketData } from '../basket/basket.interface';
 import { OrderItemData } from '../order-item/order-item.interface';
 import { PriceMapper } from '../price/price.mapper';
 
@@ -6,7 +7,9 @@ import { LineItemData } from './line-item.interface';
 import { LineItem } from './line-item.model';
 
 export class LineItemMapper {
-  static fromData(data: LineItemData): LineItem {
+  static fromData(data: LineItemData, basketData: BasketData): LineItem {
+    const included = basketData && basketData.included ? basketData.included : undefined;
+
     if (data) {
       return {
         id: data.id,
@@ -21,9 +24,15 @@ export class LineItemMapper {
               displayName: surcharge.name,
             }))
           : undefined,
-        valueRebates: data.discounts
-          ? data.discounts.map(discount => BasketRebateMapper.fromData(discount))
-          : undefined,
+        valueRebates:
+          data.discounts && included && included.lineItems_discounts
+            ? data.discounts.map(discountId =>
+                BasketRebateMapper.fromData(
+                  included.lineItems_discounts[discountId],
+                  included.lineItems_discounts_promotion[included.lineItems_discounts[discountId].promotion]
+                )
+              )
+            : undefined,
         isHiddenGift: data.hiddenGift,
         isFreeGift: data.freeGift,
         totals: data.calculated
