@@ -15,8 +15,8 @@ import { CMSVideoComponent } from './components/cms-video/cms-video.component';
 import { CMS_COMPONENT } from './configurations/injection-keys';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
+import { ContentSlotWrapperContainerComponent } from './containers/content-slot-wrapper/content-slot-wrapper.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
-import { SlotWrapperComponent } from './containers/slot-wrapper/slot-wrapper.component';
 import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
 
 const exportedComponents = [ContentIncludeContainerComponent, ContentPageletContainerComponent];
@@ -41,7 +41,7 @@ const entryComponents = [
     ...exportedComponents,
     ContentPageletContainerComponent,
     ContentSlotContainerComponent,
-    SlotWrapperComponent,
+    ContentSlotWrapperContainerComponent,
   ],
   providers: [
     {

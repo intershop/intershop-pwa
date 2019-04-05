@@ -21,13 +21,13 @@ describe('Cms Container Component', () => {
         }),
         MockComponent({
           selector: 'ish-content-slot',
-          template: 'Slot',
-          inputs: ['pagelet', 'definitionQualifiedName'],
+          template: 'outlet',
+          inputs: ['pagelet', 'slot'],
         }),
         MockComponent({
-          selector: 'ish-slot-wrapper',
+          selector: 'ish-content-slot-wrapper',
           template: 'outlet',
-          inputs: ['pagelet', 'definitionQualifiedName'],
+          inputs: ['pagelet', 'slot'],
         }),
       ],
     }).compileComponents();
