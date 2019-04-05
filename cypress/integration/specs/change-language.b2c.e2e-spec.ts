@@ -170,7 +170,7 @@ describe('Language Changing User', () => {
     });
   });
 
-  describe('when logged in', () => {
+  xdescribe('when logged in', () => {
     before(() => LoginPage.navigateTo());
 
     it('should log in', () => {
@@ -193,7 +193,7 @@ describe('Language Changing User', () => {
       });
     });
 
-    xit('should still be logged in', () => {
+    it('should still be logged in', () => {
       at(MyAccountPage, page =>
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`)
       );
