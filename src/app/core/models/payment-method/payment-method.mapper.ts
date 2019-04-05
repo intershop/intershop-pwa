@@ -2,29 +2,61 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PriceMapper } from '../price/price.mapper';
 
-import { PaymentMethodData, PaymentMethodParameterType } from './payment-method.interface';
+import { PaymentMethodBaseData, PaymentMethodData, PaymentMethodParameterType } from './payment-method.interface';
 import { PaymentMethod } from './payment-method.model';
 
 export class PaymentMethodMapper {
-  static fromData(data: PaymentMethodData): PaymentMethod {
-    if (data) {
-      return {
+  static fromData(body: PaymentMethodData): PaymentMethod[] {
+    if (!body || !body.data) {
+      throw new Error(`'paymentMethodData' is required`);
+    }
+
+    const included = body.included;
+
+    if (!body.data.length) {
+      return [];
+    }
+
+    return body.data
+      .filter(data => PaymentMethodMapper.isPaymentMethodValid(data))
+      .map(data => ({
         id: data.id,
         displayName: data.displayName,
         description: data.description,
+        capabilities: data.capabilities,
         isRestricted: data.restricted,
         restrictionCauses: data.restrictions,
         paymentCosts: PriceMapper.fromPriceItem(data.paymentCosts, 'net'),
         paymentCostsThreshold: PriceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
-        paymentInstruments: data.paymentInstruments,
+        paymentInstruments:
+          included && included.paymentInstruments && data.paymentInstruments && data.paymentInstruments.length
+            ? data.paymentInstruments.map(id => included.paymentInstruments[id])
+            : [],
         parameters:
           data.parameterDefinitions && data.parameterDefinitions.length > 0
             ? PaymentMethodMapper.mapParameter(data.parameterDefinitions)
             : undefined,
-      };
-    }
+      }));
   }
 
+  /**
+   * determines if payment method is valid and is available
+   * valid: payment methods without capabilities or which have no capabilities given in the list below
+   */
+  private static isPaymentMethodValid(paymentData: PaymentMethodBaseData): boolean {
+    const invalidCapabilities = 'LimitedTender|FastCheckout';
+
+    // without capabilities
+    if (!paymentData.capabilities || !paymentData.capabilities.length) {
+      return true;
+    }
+    // excluded by the invalidCapabilities list
+    return !paymentData.capabilities.filter(data => invalidCapabilities.includes(data)).length;
+  }
+
+  /**
+   * maps form parameter if there are some (like credit card or direct debit)
+   */
   private static mapParameter(parametersData: PaymentMethodParameterType[]): FormlyFieldConfig[] {
     return parametersData.map(p => {
       const param: FormlyFieldConfig = {

@@ -76,7 +76,7 @@ describe('Basket Selectors', () => {
           basket: {
             id: 'test',
             lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
-            payment: { paymentInstrument: 'ISH_INVOICE' },
+            payment: { paymentInstrument: { id: 'ISH_INVOICE' } },
           } as BasketView,
         })
       );
@@ -89,7 +89,7 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
       expect(currentBasket.itemsCount).toEqual(5);
-      expect(currentBasket.payment.paymentInstrument).toEqual('ISH_INVOICE');
+      expect(currentBasket.payment.paymentInstrument.id).toEqual('ISH_INVOICE');
     });
 
     it('should change the product of the basket line item if the product is changing', () => {

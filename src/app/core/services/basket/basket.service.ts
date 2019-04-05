@@ -12,7 +12,6 @@ import { BasketBaseData, BasketData } from '../../models/basket/basket.interface
 import { BasketMapper } from '../../models/basket/basket.mapper';
 import { Basket } from '../../models/basket/basket.model';
 import { Link } from '../../models/link/link.model';
-import { PaymentMethodData } from '../../models/payment-method/payment-method.interface';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
@@ -33,7 +32,8 @@ export declare type BasketIncludeType =
   | 'lineItems_discounts_promotion'
   | 'lineItems'
   | 'payments'
-  | 'payments_paymentMethod';
+  | 'payments_paymentMethod'
+  | 'payments_paymentInstrument';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -58,6 +58,7 @@ export class BasketService {
     'lineItems',
     'payments',
     'payments_paymentMethod',
+    'payments_paymentInstrument',
   ];
 
   /**
@@ -284,19 +285,12 @@ export class BasketService {
 
     const params = new HttpParams().set('include', 'paymentInstruments');
 
-    /* ToDo: Replace this fix filter by a dynamic one */
-    const validPaymentMethods =
-      'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE|ISH_DEBIT_TRANSFER|ISH_CREDITCARD';
-
     return this.apiService
       .get(`baskets/${basketId}/eligible-payment-methods`, {
         headers: this.basketHeaders,
         params,
       })
-      .pipe(
-        unpackEnvelope<PaymentMethodData>('data'),
-        map(data => data.filter(payment => validPaymentMethods.includes(payment.id)).map(PaymentMethodMapper.fromData))
-      );
+      .pipe(map(PaymentMethodMapper.fromData));
   }
 
   /**
