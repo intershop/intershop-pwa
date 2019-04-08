@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { Category } from '../../models/category/category.model';
 import { FilterNavigationData } from '../../models/filter-navigation/filter-navigation.interface';
@@ -23,9 +23,12 @@ export class FilterService {
     const params = new HttpParams()
       .set('CategoryDomainName', categoryDomainName)
       .set('CategoryName', idList[idList.length - 1]);
-    return this.apiService
-      .get<FilterNavigationData>('filters', { params })
-      .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
+    return this.apiService.get<FilterNavigationData>('filters', { params, skipApiErrorHandling: true }).pipe(
+      map(filter => FilterNavigationMapper.fromData(filter)),
+      // TODO: temporary work-around to omit errors until Filter REST API 2.0 is used
+      // tslint:disable-next-line:ban
+      catchError(() => of(FilterNavigationMapper.fromData(undefined)))
+    );
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
