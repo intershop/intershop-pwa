@@ -5,11 +5,12 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store, UPDATE, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { getLoggedInUser } from 'ish-core/store/user';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { SetSentryConfig } from './sentry-config.actions';
@@ -50,5 +51,13 @@ export class SentryConfigEffects {
       const release = this.transferState.get<string>(DISPLAY_VERSION, 'development');
       Sentry.init({ dsn, release });
     })
+  );
+
+  @Effect({ dispatch: false })
+  trackUserLogin$ = this.store.pipe(
+    select(getLoggedInUser),
+    mapToProperty('email'),
+    distinctUntilChanged(),
+    tap(email => Sentry.configureScope(scope => scope.setUser(email ? { email } : undefined)))
   );
 }
