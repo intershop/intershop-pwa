@@ -16,7 +16,7 @@ export const environment = {
   // gtmToken: 'GTM-XXXXXXX',
 
   // log client-side-javascript-errors to sentry.io
-  sentryDSN: undefined, // 'https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@sentry.io/XXXXXXX',
+  // sentryDSN: 'https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@sentry.io/XXXXXXX',
 
   // configuration of the available locales - hard coded for now
   locales: [
