@@ -5,10 +5,11 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store, UPDATE, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
-import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { debounce, distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { getErrorState } from 'ish-core/store/error';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -67,5 +68,41 @@ export class SentryConfigEffects {
     map((action: RouteNavigation) => action.payload),
     map(payload => JSON.stringify(payload)),
     tap(message => Sentry.addBreadcrumb({ category: 'routing', message }))
+  );
+
+  @Effect({ dispatch: false })
+  trackErrorPageErrors$ = this.store.pipe(
+    debounce(() => this.actions$.pipe(ofRoute('error'))),
+    select(getErrorState),
+    mapToProperty('current'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    tap(error => {
+      Sentry.captureEvent({
+        level: Sentry.Severity.Error,
+        message: error.message,
+        extra: { error },
+        tags: { origin: 'Error Page' },
+      });
+    })
+  );
+
+  @Effect({ dispatch: false })
+  trackFailActions$ = this.actions$.pipe(
+    filter<{ payload: { error: Error } } & Action>(action => action.type.endsWith('Fail')),
+    tap(action => {
+      const err = action.payload.error;
+      Sentry.captureEvent({
+        level: Sentry.Severity.Error,
+        message: err.message,
+        extra: {
+          error: err,
+          action: action,
+        },
+        tags: {
+          origin: action.type,
+        },
+      });
+    })
   );
 }
