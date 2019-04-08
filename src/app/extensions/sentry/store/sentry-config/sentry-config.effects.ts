@@ -4,7 +4,7 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store, UPDATE, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
 import { distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
@@ -59,5 +59,13 @@ export class SentryConfigEffects {
     mapToProperty('email'),
     distinctUntilChanged(),
     tap(email => Sentry.configureScope(scope => scope.setUser(email ? { email } : undefined)))
+  );
+
+  @Effect({ dispatch: false })
+  trackRouting$ = this.actions$.pipe(
+    ofRoute(/.*/),
+    map((action: RouteNavigation) => action.payload),
+    map(payload => JSON.stringify(payload)),
+    tap(message => Sentry.addBreadcrumb({ category: 'routing', message }))
   );
 }
