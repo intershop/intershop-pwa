@@ -15,10 +15,12 @@ export class ApiServiceErrorHandler {
     const mappedError = HttpErrorMapper.fromError(error);
 
     if (error.status === 0) {
+      console.error(error);
       this.store.dispatch(new CommunicationTimeoutError({ error: mappedError }));
       return EMPTY;
     }
     if (error.status >= 500 && error.status < 600) {
+      console.error(error);
       this.store.dispatch(new ServerError({ error: mappedError }));
       return EMPTY;
     }
