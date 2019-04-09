@@ -13,9 +13,10 @@ import {
 } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
 import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
 import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
-import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
+import { CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 
 @Component({
   selector: 'ish-content-pagelet',
@@ -59,7 +60,7 @@ export class ContentPageletContainerComponent implements OnChanges {
     return this.cmsOutlet.createComponent(factory);
   }
 
-  private initializeComponent(instance: CMSComponentInterface) {
+  private initializeComponent(instance: CMSComponent) {
     instance.pagelet = this.pagelet;
 
     if (this.sfeAdapter.isInitialized()) {
