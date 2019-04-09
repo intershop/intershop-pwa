@@ -1,7 +1,4 @@
-import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -36,22 +33,13 @@ describe('Basket Addresses Effects', () => {
   let effects: BasketAddressesEffects;
   let store$: Store<{}>;
 
-  // tslint:disable-next-line:use-component-change-detection
-  @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
-  class DummyComponent {}
-
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
     orderServiceMock = mock(OrderService);
     addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
-        ]),
         StoreModule.forRoot({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
@@ -69,7 +57,6 @@ describe('Basket Addresses Effects', () => {
 
     effects = TestBed.get(BasketAddressesEffects);
     store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
   });
 
   describe('createAddressForBasket$ for a logged in user', () => {

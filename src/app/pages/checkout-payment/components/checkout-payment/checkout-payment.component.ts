@@ -35,6 +35,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     paymentMethod: string; // payment Method id
     parameters: { name: string; value: string }[];
   }>();
+  @Output() deletePaymentInstrument = new EventEmitter<string>();
 
   paymentForm: FormGroup;
   parameterForm = new FormGroup({});
@@ -128,6 +129,15 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.createPaymentInstrument.emit({ paymentMethod: this.paymentMethods[this.openFormIndex].id, parameters });
+  }
+
+  /**
+   * deletes a basket instrument and related payment
+   */
+  deleteBasketPayment(paymentInstrumentId) {
+    if (paymentInstrumentId) {
+      this.deletePaymentInstrument.emit(paymentInstrumentId);
+    }
   }
 
   /**

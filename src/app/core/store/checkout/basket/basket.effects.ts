@@ -81,21 +81,6 @@ export class BasketEffects {
   );
 
   /**
-   * The load basket eligible payment methods effect.
-   */
-  @Effect()
-  loadBasketEligiblePaymentMethods$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.LoadBasketEligiblePaymentMethods),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([, basket]) =>
-      this.basketService.getBasketEligiblePaymentMethods(basket.id).pipe(
-        map(result => new basketActions.LoadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
-        mapErrorToAction(basketActions.LoadBasketEligiblePaymentMethodsFail)
-      )
-    )
-  );
-
-  /**
    * Update basket effect.
    */
   @Effect()
@@ -120,22 +105,6 @@ export class BasketEffects {
     ofType<basketActions.UpdateBasketShippingMethod>(basketActions.BasketActionTypes.UpdateBasketShippingMethod),
     mapToPayloadProperty('shippingId'),
     map(commonShippingMethod => new basketActions.UpdateBasket({ update: { commonShippingMethod } }))
-  );
-
-  /**
-   * Sets a payment at the current basket.
-   */
-  @Effect()
-  setPaymentAtBasket$ = this.actions$.pipe(
-    ofType<basketActions.SetBasketPayment>(basketActions.BasketActionTypes.SetBasketPayment),
-    mapToPayloadProperty('id'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([paymentInstrument, basket]) =>
-      this.basketService.setBasketPayment(basket.id, paymentInstrument).pipe(
-        mapTo(new basketActions.SetBasketPaymentSuccess()),
-        mapErrorToAction(basketActions.SetBasketPaymentFail)
-      )
-    )
   );
 
   /**
@@ -215,18 +184,6 @@ export class BasketEffects {
     filter(
       ([newBaskets, currentBasket]) =>
         (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) && newBaskets.length > 0
-    ),
-    mapTo(new basketActions.LoadBasket())
-  );
-
-  /**
-   * Triggers a LoadBasket action after successful interaction with the Basket API.
-   */
-  @Effect()
-  loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
-    ofType(
-      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentFail
     ),
     mapTo(new basketActions.LoadBasket())
   );

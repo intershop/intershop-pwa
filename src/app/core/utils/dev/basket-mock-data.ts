@@ -98,6 +98,12 @@ export class BasketMockData {
           },
         },
       ],
+      paymentInstruments: [
+        {
+          id: 'instrumentId',
+          accountIdentifier: '*******4321',
+        },
+      ],
     } as PaymentMethod;
   }
 

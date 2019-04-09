@@ -45,6 +45,9 @@ export enum BasketActionTypes {
   SetBasketPayment = '[Basket] Set a Payment at Basket ',
   SetBasketPaymentFail = '[Basket API] Set a Payment at Basket Fail',
   SetBasketPaymentSuccess = '[Basket API] Set a Payment at Basket Success',
+  DeleteBasketPayment = '[Basket] Delete Basket Payment ',
+  DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
+  DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
 
   CreateOrder = '[Order] Create Order',
@@ -216,6 +219,20 @@ export class SetBasketPaymentSuccess implements Action {
   readonly type = BasketActionTypes.SetBasketPaymentSuccess;
 }
 
+export class DeleteBasketPayment implements Action {
+  readonly type = BasketActionTypes.DeleteBasketPayment;
+  constructor(public payload: { id: string }) {}
+}
+
+export class DeleteBasketPaymentFail implements Action {
+  readonly type = BasketActionTypes.DeleteBasketPaymentFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class DeleteBasketPaymentSuccess implements Action {
+  readonly type = BasketActionTypes.DeleteBasketPaymentSuccess;
+}
+
 export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
@@ -270,6 +287,9 @@ export type BasketAction =
   | SetBasketPayment
   | SetBasketPaymentFail
   | SetBasketPaymentSuccess
+  | DeleteBasketPayment
+  | DeleteBasketPaymentFail
+  | DeleteBasketPaymentSuccess
   | ResetBasket
   | CreateOrder
   | CreateOrderFail

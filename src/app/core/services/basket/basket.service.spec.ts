@@ -188,4 +188,15 @@ describe('Basket Service', () => {
       done();
     });
   });
+
+  it("should delete a payment instrument from basket when 'deleteBasketInstrument' is called", done => {
+    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
+
+    basketService.deleteBasketPaymentInstrument(basketMockData.data.id, 'paymentInstrumentId').subscribe(() => {
+      verify(
+        apiService.delete(`baskets/${basketMockData.data.id}/payment-instruments/paymentInstrumentId`, anything())
+      ).once();
+      done();
+    });
+  });
 });

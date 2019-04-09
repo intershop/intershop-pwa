@@ -74,9 +74,9 @@
             </div>
           </li>
           <!-- Payment parameter form -->
-          <div class="section" *ngIf="!!paymentMethod.parameters">
+          <div class="section" *ngIf="!!paymentMethod.parameters" data-testing-id="payment-parameter-form">
             <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel">
-              <div class="form-check ml-4" role="tab">
+              <div class="form-check ml-4 col-xl-4 col-md-5 col-sm-6 col-8" role="tab">
                 <input
                   class="form-check-input"
                   type="radio"
@@ -84,8 +84,11 @@
                   [id]="'paymentOption_' + paymentInstrument.id"
                   [value]="paymentInstrument.id"
                 />
-                <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
-                  <strong> {{ paymentInstrument.accountIdentifier }} </strong>
+                <label class="form-check-label " [for]="'paymentOption_' + paymentInstrument.id">
+                  <strong>{{ paymentInstrument.accountIdentifier }} </strong>
+                  <a class="float-right" (click)="deleteBasketPayment(paymentInstrument.id)">{{
+                    'checkout.payment.method.delete.link' | translate
+                  }}</a>
                 </label>
               </div>
             </li>

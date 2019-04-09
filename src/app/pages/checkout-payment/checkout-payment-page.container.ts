@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
 import {
+  DeleteBasketPayment,
   LoadBasketEligiblePaymentMethods,
   SetBasketPayment,
   getBasketEligiblePaymentMethods,
@@ -40,5 +41,9 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
   createBasketPaymentInstrument(body: { paymentMethod: string; parameters: { name: string; value: string }[] }) {
     // ToDo: call an action to create payment instrument and assign it to the basket
     console.log(body);
+  }
+
+  deletePaymentInstrument(paymentInstrumentId: string) {
+    this.store.dispatch(new DeleteBasketPayment({ id: paymentInstrumentId }));
   }
 }
