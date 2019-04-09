@@ -36,6 +36,7 @@ describe('Basket Rebate Mapper', () => {
         ruleDescription: 'Buy any LED TV and the order ships free.',
         title: 'FREE SHIPPING',
         useExternalUrl: true,
+        disableMessages: false,
       } as Promotion;
 
       const basketRebate = BasketRebateMapper.fromData(basketRebateData, promotionData);
