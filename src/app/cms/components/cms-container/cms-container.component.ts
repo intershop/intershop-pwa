@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
 
 // naming collision with container-component-pattern
 // tslint:disable-next-line:project-structure
@@ -10,7 +10,7 @@ import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrappe
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSContainerComponent extends SfeMetadataWrapper implements OnChanges {
+export class CMSContainerComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
   contentSlotPagelets: ContentPageletView[] = [];

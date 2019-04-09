@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
 
 /**
  * The CMS Static Page Component to render CMS managed static content pages.
@@ -12,6 +12,6 @@ import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrappe
   templateUrl: './cms-static-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSStaticPageComponent extends SfeMetadataWrapper {
+export class CMSStaticPageComponent implements CMSComponent {
   @Input() pagelet: ContentPageletView;
 }
