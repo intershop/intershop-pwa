@@ -5,14 +5,15 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
 import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
 import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
+
 @Component({
   selector: 'ish-content-slot-wrapper',
-  template: '<ng-content></ng-content>',
+  templateUrl: './content-slot-wrapper.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentSlotWrapperContainerComponent extends SfeMetadataWrapper implements OnChanges {
   @Input() slot: string;
-  @Input() pagelet?: ContentPageletView;
+  @Input() pagelet: ContentPageletView;
 
   constructor(private sfeAdapter: SfeAdapterService) {
     super();

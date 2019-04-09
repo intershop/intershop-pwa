@@ -7,9 +7,9 @@ import { filter, take, takeUntil } from 'rxjs/operators';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
-import { SfeMetadataWrapper } from '../../../cms/sfe-adapter/sfe-metadata-wrapper';
-import { SfeMapper } from '../../../cms/sfe-adapter/sfe.mapper';
+import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
 
 @Component({
   selector: 'ish-content-include',
