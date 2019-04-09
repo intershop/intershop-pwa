@@ -294,7 +294,7 @@ export class BasketService {
   }
 
   /**
-   * Add a payment at the selected basket.
+   * Adds a payment at the selected basket.
    * @param basketId          The basket id.
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
    */
@@ -315,5 +315,23 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(mapTo(paymentInstrument));
+  }
+
+  /**
+   * Deletes a payment instrument and the related payment from the selected basket.
+   * @param basketId          The basket id.
+   * @param paymentId         The (uu)id of the payment instrument
+   */
+  deleteBasketPaymentInstrument(basketId: string, paymentInstrumentId: string): Observable<void> {
+    if (!basketId) {
+      return throwError('deleteBasketPayment() called without basketId');
+    }
+    if (!paymentInstrumentId) {
+      return throwError('deleteBasketPayment() called without paymentInstrumentId');
+    }
+
+    return this.apiService.delete(`baskets/${basketId}/payment-instruments/${paymentInstrumentId}`, {
+      headers: this.basketHeaders,
+    });
   }
 }

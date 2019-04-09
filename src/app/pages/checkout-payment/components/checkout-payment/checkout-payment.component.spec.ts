@@ -164,4 +164,26 @@ describe('Checkout Payment Component', () => {
       expect(component.formSubmitted).toBeTrue();
     });
   });
+
+  describe('should display selectable and deleteable payment instruments for parametrized payment methods', () => {
+    it('should display payment instruments when parametrized payment methods are available', () => {
+      fixture.detectChanges();
+
+      expect(element.querySelector('div[data-testing-id=payment-parameter-form]')).toBeTruthy();
+      expect(element.querySelector('div[data-testing-id=payment-parameter-form] input[type=radio]')).toBeTruthy();
+      expect(element.querySelector('div[data-testing-id=payment-parameter-form] label a')).toBeTruthy();
+    });
+
+    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {
+      const id = 'paymentInstrumentId';
+
+      fixture.detectChanges();
+
+      component.deletePaymentInstrument.subscribe(paymentInstrumentId => {
+        expect(paymentInstrumentId).toEqual(id);
+        done();
+      });
+      component.deleteBasketPayment(id);
+    });
+  });
 });
