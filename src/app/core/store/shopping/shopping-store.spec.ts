@@ -9,25 +9,27 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import {
-  AVAILABLE_LOCALES,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from 'ish-core/configurations/injection-keys';
 import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import {
+  AVAILABLE_LOCALES,
+  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+} from '../../configurations/injection-keys';
 import { coreEffects, coreReducers } from '../core-store.module';
 
 import {
@@ -51,6 +53,7 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let promotionsServiceMock: PromotionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
   let locales: Locale[];
@@ -73,6 +76,20 @@ describe('Shopping Store', () => {
       hasOnlineProducts: true,
     } as Category;
     const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
+
+    const promotion = {
+      id: 'PROMO_UUID',
+      name: 'MyPromotion',
+      couponCodeRequired: false,
+      currency: 'EUR',
+      promotionType: 'MyPromotionType',
+      description: 'MyPromotionDescription',
+      legalContentMessage: 'MyPromotionContentMessage',
+      longTitle: 'MyPromotionLongTitle',
+      ruleDescription: 'MyPromotionRuleDescription',
+      title: 'MyPromotionTitle',
+      useExternalUrl: false,
+    } as Promotion;
 
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
@@ -125,6 +142,9 @@ describe('Shopping Store', () => {
     when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
       of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
+
+    promotionsServiceMock = mock(PromotionsService);
+    when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
@@ -179,6 +199,7 @@ describe('Shopping Store', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: UserService, useFactory: () => instance(mock(UserService)) },
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },

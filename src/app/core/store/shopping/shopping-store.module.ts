@@ -10,6 +10,8 @@ import { FilterEffects } from './filter/filter.effects';
 import { filterReducer } from './filter/filter.reducer';
 import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
+import { PromotionsEffects } from './promotions/promotions.effects';
+import { promotionsReducer } from './promotions/promotions.reducer';
 import { RecentlyEffects } from './recently/recently.effects';
 import { recentlyReducer } from './recently/recently.reducer';
 import { SearchEffects } from './search/search.effects';
@@ -26,6 +28,7 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   search: searchReducer,
   viewconf: viewconfReducer,
   filter: filterReducer,
+  promotions: promotionsReducer,
 };
 export const shoppingEffects = [
   CategoriesEffects,
@@ -35,6 +38,7 @@ export const shoppingEffects = [
   SearchEffects,
   ViewconfEffects,
   FilterEffects,
+  PromotionsEffects,
 ];
 
 @NgModule({
