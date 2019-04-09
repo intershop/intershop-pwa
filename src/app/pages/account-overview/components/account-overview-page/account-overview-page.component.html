@@ -1,7 +1,23 @@
-<h1
-  *ngIf="user"
-  [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName || user.credentials.login }"
-></h1>
+<ng-container *ngIf="customer.type === 'SMBCustomer'; else personalCustomerMessage">
+  <h1
+    data-testing-id="personal-message-b2b"
+    [innerHTML]="
+      'account.overview.personal_message_b2b.text'
+        | translate
+          : { '0': user.firstName + '&nbsp;' + user.lastName || user.credentials.login, '1': customer.companyName }
+    "
+  ></h1>
+</ng-container>
+<ng-template #personalCustomerMessage>
+  <h1
+    *ngIf="user"
+    data-testing-id="personal-message-default"
+    [innerHTML]="
+      'account.overview.personal_message.text' | translate: { '0': user.firstName || user.credentials.login }
+    "
+  ></h1>
+</ng-template>
+
 <p>{{ 'account.overview.message.text' | translate }}</p>
 
 <div class="row account-dashboard">

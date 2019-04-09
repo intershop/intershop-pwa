@@ -2604,5 +2604,6 @@
   "account.quotes.widget.rejected.label": "Rejected",
   "account.quotes.widget.view_all_quotes.link": "View all Quotes",
   "checkout.address.anonymous.guestcheckout.text": "You want to shop as a guest and do not want to create a profile? No problem.",
-  "account.login.signin.heading": "Sign In"
+  "account.login.signin.heading": "Sign In",
+  "account.overview.personal_message_b2b.text": "Hi, {{0}} ({{1}}).<br />Welcome back!"
 }
