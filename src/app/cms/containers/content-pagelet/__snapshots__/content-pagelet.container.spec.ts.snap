@@ -6,7 +6,7 @@ exports[`Content Pagelet Container should be created 1`] = `
   ng-version="7.1.4"
 >
   
-  <div />
+  
 </div>
 `;
 
@@ -16,6 +16,6 @@ exports[`Content Pagelet Container should render assigned template if name match
   ng-version="7.1.4"
 >
   
-  <div />
+  
 </div>
 `;
