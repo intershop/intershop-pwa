@@ -19,7 +19,7 @@ describe('Account Overview Page Container', () => {
         MockComponent({
           selector: 'ish-account-overview-page',
           template: 'Account Overview Page Component',
-          inputs: ['user', 'orders'],
+          inputs: ['user', 'customer', 'orders'],
         }),
         MockComponent({
           selector: 'ish-loading',
