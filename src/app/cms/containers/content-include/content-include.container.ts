@@ -11,13 +11,24 @@ import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
 import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
 import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
 
+/**
+ * The Content Include Container Component renders the content of the include with the given 'includeId'.
+ * For rendering is uses the {@link ContentPageletContainerComponent} for each sub pagelet.
+ *
+ * @example
+ * <ish-content-include includeId="pwa.include.homepage.pagelet2-Include"></ish-content-include>
+ */
 @Component({
   selector: 'ish-content-include',
   templateUrl: './content-include.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentIncludeContainerComponent extends SfeMetadataWrapper implements OnInit, OnDestroy {
+  /**
+   * The ID of the Include whoes content is to be rendered.
+   */
   @Input() includeId: string;
+
   contentInclude$: Observable<ContentPageletEntryPointView>;
   private destroy$ = new Subject();
 
