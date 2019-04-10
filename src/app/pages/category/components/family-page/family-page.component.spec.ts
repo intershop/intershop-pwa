@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
@@ -8,8 +9,9 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { FilterNavigationContainerComponent } from '../../../../shared/filter/containers/filter-navigation/filter-navigation.container';
+import { ProductListContainerComponent } from '../../../../shared/product/containers/product-list/product-list.container';
 
 import { FamilyPageComponent } from './family-page.component';
 
@@ -23,15 +25,8 @@ describe('Family Page Component', () => {
       imports: [IconModule, NgbCollapseModule, PipesModule, TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
-        MockComponent({
-          selector: 'ish-filter-navigation',
-          template: 'Filter Navigation',
-        }),
-        MockComponent({
-          selector: 'ish-product-list-container',
-          template: 'Products List Toolbar Component',
-          inputs: ['pageUrl', 'category'],
-        }),
+        MockComponent(FilterNavigationContainerComponent),
+        MockComponent(ProductListContainerComponent),
       ],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     }).compileComponents();

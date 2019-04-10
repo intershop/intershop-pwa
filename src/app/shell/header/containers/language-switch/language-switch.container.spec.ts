@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LanguageSwitchComponent } from '../../components/language-switch/language-switch.component';
 
 import { LanguageSwitchContainerComponent } from './language-switch.container';
 
@@ -13,14 +14,7 @@ describe('Language Switch Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LanguageSwitchContainerComponent,
-        MockComponent({
-          selector: 'ish-language-switch',
-          template: 'Language Switch',
-          inputs: ['locale', 'availableLocales', 'view'],
-        }),
-      ],
+      declarations: [LanguageSwitchContainerComponent, MockComponent(LanguageSwitchComponent)],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })
       .compileComponents()

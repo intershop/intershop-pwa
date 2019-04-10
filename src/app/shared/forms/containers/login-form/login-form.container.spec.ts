@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoginFormComponent } from '../../components/login-form/login-form.component';
 
 import { LoginFormContainerComponent } from './login-form.container';
 
@@ -18,14 +19,7 @@ describe('Login Form Container', () => {
     storeMock$ = mock(Store);
 
     TestBed.configureTestingModule({
-      declarations: [
-        LoginFormContainerComponent,
-        MockComponent({
-          selector: 'ish-login-form',
-          template: 'Login Form',
-          inputs: ['loginType', 'error', 'login'],
-        }),
-      ],
+      declarations: [LoginFormContainerComponent, MockComponent(LoginFormComponent)],
       imports: [TranslateModule.forRoot()],
       providers: [
         { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },

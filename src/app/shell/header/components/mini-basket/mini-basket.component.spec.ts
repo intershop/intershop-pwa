@@ -4,13 +4,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ProductImageComponent } from '../product-image/product-image.component';
 
 import { MiniBasketComponent } from './mini-basket.component';
 
@@ -33,10 +34,7 @@ describe('Mini Basket Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [
-        MiniBasketComponent,
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-      ],
+      declarations: [MiniBasketComponent, MockComponent(ProductImageComponent)],
     }).compileComponents();
   }));
 

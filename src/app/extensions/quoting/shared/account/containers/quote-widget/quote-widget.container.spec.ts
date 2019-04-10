@@ -1,13 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
 import { LoadQuotes } from '../../../../store/quote';
 import { LoadQuoteRequests } from '../../../../store/quote-request';
 import { quotingReducers } from '../../../../store/quoting-store.module';
+import { QuoteWidgetComponent } from '../../components/quote-widget/quote-widget.component';
 
 import { QuoteWidgetContainerComponent } from './quote-widget.container';
 
@@ -24,16 +26,8 @@ describe('Quote Widget Container', () => {
         TranslateModule.forRoot(),
       ],
       declarations: [
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading',
-          inputs: ['quoteLoading', 'quoteRequestLoading'],
-        }),
-        MockComponent({
-          selector: 'ish-quote-widget',
-          template: 'Quote Widget',
-          inputs: ['quoteRequests', 'quotes'],
-        }),
+        MockComponent(LoadingComponent),
+        MockComponent(QuoteWidgetComponent),
         QuoteWidgetContainerComponent,
       ],
     }).compileComponents();

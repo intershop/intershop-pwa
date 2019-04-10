@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -10,10 +11,12 @@ import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module'
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
+import { CheckoutAddressAnonymousComponent } from './components/checkout-address-anonymous/checkout-address-anonymous.component';
+import { CheckoutAddressComponent } from './components/checkout-address/checkout-address.component';
 
 describe('Checkout Address Page Container', () => {
   let component: CheckoutAddressPageContainerComponent;
@@ -25,17 +28,9 @@ describe('Checkout Address Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressPageContainerComponent,
-        MockComponent({
-          selector: 'ish-checkout-address',
-          template: 'Checkout Address Component',
-          inputs: ['currentUser', 'basket', 'addresses', 'error'],
-        }),
-        MockComponent({
-          selector: 'ish-checkout-address-anonymous',
-          template: 'Checkout Address Anonymous Component',
-          inputs: ['basket', 'error'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent(CheckoutAddressAnonymousComponent),
+        MockComponent(CheckoutAddressComponent),
+        MockComponent(LoadingComponent),
       ],
 
       imports: [

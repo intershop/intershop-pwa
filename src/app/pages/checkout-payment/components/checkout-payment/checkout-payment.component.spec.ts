@@ -3,11 +3,14 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
+import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
@@ -27,21 +30,9 @@ describe('Checkout Payment Component', () => {
       declarations: [
         CheckoutPaymentComponent,
         DummyComponent,
-        MockComponent({
-          selector: 'ish-basket-address-summary',
-          template: 'Basket Address Summary Component',
-          inputs: ['basket'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-cost-summary',
-          template: 'Basket Cost Summary Component',
-          inputs: ['totals'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-items-summary',
-          template: 'Basket Items Summary Component',
-          inputs: ['basket'],
-        }),
+        MockComponent(BasketAddressSummaryComponent),
+        MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketItemsSummaryComponent),
       ],
       imports: [
         FormsSharedModule,

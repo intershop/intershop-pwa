@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
+import { ProductItemContainerComponent } from '../../../shared/product/containers/product-item/product-item.container';
 
 import { CMSProductListComponent } from './cms-product-list.component';
 
@@ -12,14 +13,7 @@ describe('Cms Product List Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CMSProductListComponent,
-        MockComponent({
-          selector: 'ish-product-item-container',
-          template: 'Product Item',
-          inputs: ['productSku', 'type'],
-        }),
-      ],
+      declarations: [CMSProductListComponent, MockComponent(ProductItemContainerComponent)],
     }).compileComponents();
   }));
 

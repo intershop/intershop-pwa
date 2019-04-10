@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 
 import { PromotionDetailsComponent } from './promotion-details.component';
 
@@ -13,10 +14,7 @@ describe('Promotion Details Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
-        PromotionDetailsComponent,
-      ],
+      declarations: [MockComponent(ModalDialogComponent), PromotionDetailsComponent],
       imports: [PipesModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
@@ -47,7 +45,7 @@ describe('Promotion Details Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display the details link', () => {
+  it('should display the details link for a promotion', () => {
     expect(element.querySelector('.details-link')).toBeTruthy();
     expect(element.querySelector('a')).toBeTruthy();
   });

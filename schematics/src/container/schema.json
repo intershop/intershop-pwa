@@ -46,6 +46,19 @@
       "alias": "m",
       "visible": false
     },
+    "referenceSelector": {
+      "type": "string",
+      "format": "html-selector",
+      "visible": false
+    },
+    "referenceComponent": {
+      "type": "string",
+      "visible": false
+    },
+    "referenceComponentPath": {
+      "type": "string",
+      "visible": false
+    },
     "name": {
       "type": "string",
       "description": "The name of the container.",
@@ -70,11 +83,6 @@
       "type": "boolean",
       "description": "When true, does not import this container into the owning NgModule.",
       "default": false
-    },
-    "referenceSelector": {
-      "type": "string",
-      "format": "html-selector",
-      "description": "The HTML selector to reference in this containers HTML template."
     },
     "export": {
       "type": "boolean",

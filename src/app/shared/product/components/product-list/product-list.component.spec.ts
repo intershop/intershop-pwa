@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { ProductItemContainerComponent } from '../../containers/product-item/product-item.container';
 
 import { ProductListComponent } from './product-list.component';
 
@@ -15,12 +17,8 @@ describe('Product List Component', () => {
     TestBed.configureTestingModule({
       imports: [InfiniteScrollModule],
       declarations: [
-        MockComponent({
-          selector: 'ish-product-item-container',
-          template: 'Product Item Container',
-          inputs: ['productSku', 'category', 'type'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component', inputs: ['standalone'] }),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductItemContainerComponent),
         ProductListComponent,
       ],
     }).compileComponents();

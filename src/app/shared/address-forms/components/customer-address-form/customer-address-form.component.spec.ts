@@ -2,11 +2,12 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
 import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
+import { AddressFormContainerComponent } from '../../containers/address-form/address-form.container';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
 
@@ -18,14 +19,7 @@ describe('Customer Address Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CustomerAddressFormComponent,
-        MockComponent({
-          selector: 'ish-address-form-container',
-          template: 'Address Component',
-          inputs: ['parentForm'],
-        }),
-      ],
+      declarations: [CustomerAddressFormComponent, MockComponent(AddressFormContainerComponent)],
       imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [AddressFormFactoryProvider],
     }).compileComponents();

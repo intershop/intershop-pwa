@@ -2,10 +2,17 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { LARGE_BREAKPOINT_WIDTH, SMALL_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { HeaderNavigationContainerComponent } from '../../containers/header-navigation/header-navigation.container';
+import { LanguageSwitchContainerComponent } from '../../containers/language-switch/language-switch.container';
+import { LoginStatusContainerComponent } from '../../containers/login-status/login-status.container';
+import { MiniBasketContainerComponent } from '../../containers/mini-basket/mini-basket.container';
+import { ProductCompareStatusContainerComponent } from '../../containers/product-compare-status/product-compare-status.container';
+import { SearchBoxContainerComponent } from '../../containers/search-box/search-box.container';
+import { UserInformationMobileComponent } from '../user-information-mobile/user-information-mobile.component';
 
 import { HeaderStickyComponent } from './header-sticky.component';
 
@@ -19,22 +26,13 @@ describe('Header Sticky Component', () => {
       imports: [IconModule, NgbCollapseModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         HeaderStickyComponent,
-        MockComponent({
-          selector: 'ish-product-compare-status-container',
-          template: 'Product Compare Status Container',
-          inputs: ['views'],
-        }),
-        MockComponent({
-          selector: 'ish-search-box-container',
-          template: 'Search Box Container',
-          inputs: ['configuration'],
-        }),
-        MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
-        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
-        MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
-        MockComponent({ selector: 'ish-mobile-basket-container', template: 'Mobile Basket Container' }),
-        MockComponent({ selector: 'ish-user-information-mobile', template: 'Mobile User Information' }),
+        MockComponent(HeaderNavigationContainerComponent),
+        MockComponent(LanguageSwitchContainerComponent),
+        MockComponent(LoginStatusContainerComponent),
+        MockComponent(MiniBasketContainerComponent),
+        MockComponent(ProductCompareStatusContainerComponent),
+        MockComponent(SearchBoxContainerComponent),
+        MockComponent(UserInformationMobileComponent),
       ],
       providers: [
         { provide: SMALL_BREAKPOINT_WIDTH, useValue: 576 },

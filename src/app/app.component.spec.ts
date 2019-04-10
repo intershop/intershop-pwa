@@ -4,11 +4,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CookieLawModule } from 'angular2-cookie-law';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { AppComponent } from './app.component';
+import { FooterComponent } from './shell/footer/components/footer/footer.component';
+import { HeaderContainerComponent } from './shell/header/containers/header/header.container';
 
 let translate: TranslateService;
 
@@ -19,11 +22,7 @@ describe('App Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        MockComponent({ selector: 'ish-footer', template: 'Footer Component' }),
-        MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
-      ],
+      declarations: [AppComponent, MockComponent(FooterComponent), MockComponent(HeaderContainerComponent)],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [CookieLawModule, NoopAnimationsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
@@ -47,6 +46,6 @@ describe('App Component', () => {
   });
 
   it('should render header component on page', async(() => {
-    expect(element.querySelector('ish-header-container').textContent).toEqual('Header Component');
+    expect(findAllIshElements(element)).toContain('ish-header-container');
   }));
 });

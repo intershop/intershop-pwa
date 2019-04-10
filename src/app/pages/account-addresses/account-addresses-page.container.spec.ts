@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { AccountAddressesPageContainerComponent } from './account-addresses-page.container';
+import { AccountAddressesPageComponent } from './components/account-addresses-page/account-addresses-page.component';
 
 describe('Account Addresses Page Container', () => {
   let component: AccountAddressesPageContainerComponent;
@@ -16,15 +18,8 @@ describe('Account Addresses Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountAddressesPageContainerComponent,
-        MockComponent({
-          selector: 'ish-account-addresses-page',
-          template: 'Account Addresses Page Component',
-          inputs: ['user', 'addresses', 'error'],
-        }),
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
+        MockComponent(AccountAddressesPageComponent),
+        MockComponent(LoadingComponent),
       ],
       imports: [PipesModule],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],

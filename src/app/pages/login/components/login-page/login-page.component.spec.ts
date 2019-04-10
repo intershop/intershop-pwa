@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoginFormContainerComponent } from '../../../../shared/forms/containers/login-form/login-form.container';
 
 import { LoginPageComponent } from './login-page.component';
 
@@ -13,13 +14,7 @@ describe('Login Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LoginPageComponent,
-        MockComponent({
-          selector: 'ish-login-form-container',
-          template: 'Login Form',
-        }),
-      ],
+      declarations: [LoginPageComponent, MockComponent(LoginFormContainerComponent)],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));

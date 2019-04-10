@@ -2,11 +2,17 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
+import { ProductAttributesComponent } from '../../../../shared/product/components/product-attributes/product-attributes.component';
+import { ProductInventoryComponent } from '../../../../shared/product/components/product-inventory/product-inventory.component';
+import { ProductPriceComponent } from '../../../../shared/product/components/product-price/product-price.component';
+import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
+import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
 import { ProductCompareListComponent } from './product-compare-list.component';
 
@@ -21,32 +27,12 @@ describe('Product Compare List Component', () => {
     TestBed.configureTestingModule({
       imports: [IconModule, PipesModule, RouterTestingModule, StoreModule.forRoot({}), TranslateModule.forRoot()],
       declarations: [
-        MockComponent({
-          selector: 'ish-product-add-to-basket',
-          template: 'Product Add To Basket',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-attributes',
-          template: 'Product Attributes Component',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-compare-paging',
-          template: 'Product Compare Paging Component',
-          inputs: ['itemsPerPage', 'currentPage', 'totalItems'],
-        }),
-        MockComponent({
-          selector: 'ish-product-inventory',
-          template: 'Product Inventory Component',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-price',
-          template: 'Product Price Component',
-          inputs: ['product', 'showInformationalPrice'],
-        }),
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        MockComponent(ProductAddToBasketComponent),
+        MockComponent(ProductAttributesComponent),
+        MockComponent(ProductComparePagingComponent),
+        MockComponent(ProductImageComponent),
+        MockComponent(ProductInventoryComponent),
+        MockComponent(ProductPriceComponent),
         ProductCompareListComponent,
       ],
     }).compileComponents();

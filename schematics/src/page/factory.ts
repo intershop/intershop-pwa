@@ -128,6 +128,8 @@ export function createPage(options: Options): Rule {
         path: `${options.path}${options.name}`,
         flat: true,
         referenceSelector: `ish-${options.name}-page`,
+        referenceComponent: `${options.name}-page`,
+        referenceComponentPath: `./components/${options.name}-page/${options.name}-page.component`,
       })
     );
     operations.push(addRouteToRoutingModule(options));

@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { deepEqual, instance, mock, spy, verify } from 'ts-mockito';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { LoadContentInclude, LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
+import { ContentPageletContainerComponent } from '../content-pagelet/content-pagelet.container';
 
 import { ContentIncludeContainerComponent } from './content-include.container';
 
@@ -34,10 +35,7 @@ describe('Content Include Container', () => {
     sfeAdapterMock = mock(SfeAdapterService);
 
     TestBed.configureTestingModule({
-      declarations: [
-        ContentIncludeContainerComponent,
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
-      ],
+      declarations: [ContentIncludeContainerComponent, MockComponent(ContentPageletContainerComponent)],
       imports: ngrxTesting({
         content: combineReducers(contentReducers),
       }),

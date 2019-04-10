@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-views';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ContentSlotContainerComponent } from '../../containers/content-slot/content-slot.container';
 
 import { CMSStaticPageComponent } from './cms-static-page.component';
 
@@ -15,14 +16,7 @@ describe('Cms Static Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CMSStaticPageComponent,
-        MockComponent({
-          selector: 'ish-content-slot',
-          template: 'Content Slot Container',
-          inputs: ['slot', 'pagelet'],
-        }),
-      ],
+      declarations: [CMSStaticPageComponent, MockComponent(ContentSlotContainerComponent)],
     }).compileComponents();
   }));
 
