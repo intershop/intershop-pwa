@@ -10,12 +10,13 @@ exports[`Cms Carousel Component should be created 1`] = `
     class="foo-class"
     ng-reflect-ng-class="foo-class"
   >
-    <ish-content-slot-wrapper
+    <ish-content-slot
       ng-reflect-pagelet="[object Object]"
       ng-reflect-slot="app_sf_responsive_cm:slot.caro"
+      ng-reflect-wrapper="true"
     >
       outlet
-    </ish-content-slot-wrapper>
+    </ish-content-slot>
   </div>
 </div>
 `;
