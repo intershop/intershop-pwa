@@ -22,12 +22,7 @@ describe('Cms Container Component', () => {
         MockComponent({
           selector: 'ish-content-slot',
           template: 'outlet',
-          inputs: ['pagelet', 'slot'],
-        }),
-        MockComponent({
-          selector: 'ish-content-slot-wrapper',
-          template: 'outlet',
-          inputs: ['pagelet', 'slot'],
+          inputs: ['pagelet', 'slot', 'wrapper'],
         }),
       ],
     }).compileComponents();

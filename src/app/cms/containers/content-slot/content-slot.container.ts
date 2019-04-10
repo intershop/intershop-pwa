@@ -14,6 +14,7 @@ import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
 export class ContentSlotContainerComponent extends SfeMetadataWrapper implements OnChanges {
   @Input() slot: string;
   @Input() pagelet: ContentPageletView;
+  @Input() wrapper?: boolean;
 
   constructor(private sfeAdapter: SfeAdapterService) {
     super();
