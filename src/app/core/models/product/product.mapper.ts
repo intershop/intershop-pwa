@@ -5,6 +5,7 @@ import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
 import { Price } from '../price/price.model';
+import { ProductPromotion } from '../promotion/promotion.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
@@ -23,6 +24,20 @@ function filterPrice(price: Price): Price {
  */
 function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: string) {
   return data ? AttributeHelper.getAttributeValueByAttributeName<T>(data.attributes, attributeName) : undefined;
+}
+
+/**
+ * check if attribute is available and return value elements, otherwise undefined
+ */
+function retrieveStubAttributeValueElements<T>(data: ProductDataStub, attributeName: string) {
+  return data ? AttributeHelper.getAttributeValueElementsByAttributeName<T>(data.attributes, attributeName) : undefined;
+}
+
+/**
+ * check if attribute is available and return value elements, otherwise undefined
+ */
+function retrieveAttributeValueElements<T>(data: ProductData, attributeName: string) {
+  return data ? AttributeHelper.getAttributeValueElementsByAttributeName<T>(data.attributes, attributeName) : undefined;
 }
 
 /**
@@ -98,6 +113,7 @@ export class ProductMapper {
       readyForShipmentMax: undefined,
       type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
+      promotions: retrieveStubAttributeValueElements<ProductPromotion[]>(data, 'promotions'),
       completenessLevel: 2,
       failed: false,
     };
@@ -128,6 +144,7 @@ export class ProductMapper {
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
         : undefined,
+      promotions: retrieveAttributeValueElements<ProductPromotion[]>(data, 'promotions'),
       completenessLevel: 3,
       failed: false,
     };

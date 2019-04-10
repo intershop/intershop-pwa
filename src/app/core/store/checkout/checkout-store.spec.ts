@@ -83,6 +83,12 @@ describe('Checkout Store', () => {
     readyForShipmentMax: 1,
     sku: 'test',
     type: 'Product',
+    promotions: [
+      {
+        itemid: 'PROMO_UUID',
+        title: 'MyPromotionTitle',
+      },
+    ],
   } as Product;
 
   const customer = {
