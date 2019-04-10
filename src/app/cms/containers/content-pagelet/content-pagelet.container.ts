@@ -18,12 +18,23 @@ import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
 import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
 import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
 
+/**
+ * The Content Pagelet Container Component renders the given 'pagelet'.
+ * For the rendering an Angular component is used that has to be provided
+ * for the DefinitionQualifiedName of the pagelet.
+ *
+ * @example
+ * <ish-content-pagelet [pagelet]="pagelet"></ish-content-pagelet>
+ */
 @Component({
   selector: 'ish-content-pagelet',
   templateUrl: './content-pagelet.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentPageletContainerComponent extends SfeMetadataWrapper implements OnChanges {
+  /**
+   * The Pagelet that is to be rendered.
+   */
   @Input() pagelet: ContentPageletView;
 
   noMappingFound: boolean;
