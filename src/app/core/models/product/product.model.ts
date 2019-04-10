@@ -2,6 +2,7 @@ import { AttributeGroup } from '../attribute-group/attribute-group.model';
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
+import { ProductPromotion } from '../promotion/promotion.model';
 
 export interface Product {
   name: string;
@@ -24,6 +25,7 @@ export interface Product {
 
   // properties added in model
   type: 'Product' | 'VariationProduct' | 'VariationProductMaster';
+  promotions: ProductPromotion[];
   completenessLevel: number;
   failed: boolean;
 }
