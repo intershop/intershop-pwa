@@ -347,7 +347,7 @@ interface ImportDeclaration {
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
-  /* tslint:disable:object-literal-sort-keys */
+  // tslint:disable:object-literal-sort-keys
   static metadata: Lint.IRuleMetadata = {
     ruleName: 'ish-ordered-imports',
     description: 'Requires that import statements be alphabetized and grouped.',
@@ -369,7 +369,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     type: 'style',
     typescriptOnly: false,
   };
-  /* tslint:enable:object-literal-sort-keys */
+  // tslint:enable:object-literal-sort-keys
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new Walker(sourceFile, this.ruleName, parseOptions(/*ruleArguments*/)));

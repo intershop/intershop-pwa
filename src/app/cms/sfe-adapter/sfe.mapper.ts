@@ -1,8 +1,8 @@
+// tslint:disable:project-structure
 import { ContentEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 import { SfeDomNode, SfeMetadata, SfeMetadataNode } from './sfe.types';
 
-// tslint:disable:project-structure
 export class SfeMapper {
   static getDomTree(node: Node): SfeDomNode {
     const attributeName = 'data-sfe';
