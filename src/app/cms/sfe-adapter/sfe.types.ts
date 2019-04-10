@@ -1,6 +1,4 @@
-/* tslint:disable:project-structure */
-/* tslint:disable:no-any */
-
+// tslint:disable:project-structure no-any
 export interface SfeMetadata {
   id: string;
   displayName: string;

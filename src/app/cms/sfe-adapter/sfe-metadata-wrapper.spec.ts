@@ -1,11 +1,10 @@
+// tslint:disable:use-component-change-detection prefer-mocks-instead-of-stubs-in-tests
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { SfeMetadataWrapper } from './sfe-metadata-wrapper';
 import { SfeMetadata } from './sfe.types';
 
-// tslint:disable:use-component-change-detection
-// tslint:disable:prefer-mocks-instead-of-stubs-in-tests
 @Component({ template: '' })
 class SfeTestComponent extends SfeMetadataWrapper {}
 

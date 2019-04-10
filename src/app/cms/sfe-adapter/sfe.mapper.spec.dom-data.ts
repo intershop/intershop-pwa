@@ -1,3 +1,4 @@
+// tslint:disable:project-structure
 const html1 = `
 <ish-root>
     <div>
