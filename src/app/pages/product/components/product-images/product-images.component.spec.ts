@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ProductLabelComponent } from '../../../../shared/product/components/product-label/product-label.component';
+import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 
 import { ProductImagesComponent } from './product-images.component';
 
@@ -61,15 +63,8 @@ describe('Product Images Component', () => {
     TestBed.configureTestingModule({
       imports: [NgbCarouselModule, TranslateModule.forRoot()],
       declarations: [
-        MockComponent({
-          selector: 'ish-product-image',
-          template: 'Product Image Component',
-          inputs: ['product', 'imageView', 'imageType'],
-        }),
-        MockComponent({
-          selector: 'ish-product-label',
-          inputs: ['product'],
-        }),
+        MockComponent(ProductImageComponent),
+        MockComponent(ProductLabelComponent),
         ProductImagesComponent,
       ],
     }).compileComponents();

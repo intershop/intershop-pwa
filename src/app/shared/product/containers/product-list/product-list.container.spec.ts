@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { SetEndlessScrollingPageSize, SetPagingInfo } from 'ish-core/store/shopping/viewconf';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ProductListPagingComponent } from '../../components/product-list-paging/product-list-paging.component';
+import { ProductListToolbarComponent } from '../../components/product-list-toolbar/product-list-toolbar.component';
+import { ProductListComponent } from '../../components/product-list/product-list.component';
 
 import { ProductListContainerComponent } from './product-list.container';
 
@@ -23,21 +26,9 @@ describe('Product List Container', () => {
         }),
       ],
       declarations: [
-        MockComponent({
-          selector: 'ish-product-list',
-          template: 'Product List Component',
-          inputs: ['products', 'category', 'viewType', 'loadingMore'],
-        }),
-        MockComponent({
-          selector: 'ish-product-list-paging',
-          template: 'Product List Paging Component',
-          inputs: ['currentPage', 'pageIndices', 'pageUrl'],
-        }),
-        MockComponent({
-          selector: 'ish-product-list-toolbar',
-          template: 'Product List Toolbar Component',
-          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
-        }),
+        MockComponent(ProductListComponent),
+        MockComponent(ProductListPagingComponent),
+        MockComponent(ProductListToolbarComponent),
         ProductListContainerComponent,
       ],
     }).compileComponents();

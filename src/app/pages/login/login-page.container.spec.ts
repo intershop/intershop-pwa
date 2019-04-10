@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { MockComponent } from 'ng-mocks';
 
+import { LoginPageComponent } from './components/login-page/login-page.component';
 import { LoginPageContainerComponent } from './login-page.container';
 
 describe('Login Page Container', () => {
@@ -16,14 +17,7 @@ describe('Login Page Container', () => {
     storeMock$ = mock(Store);
 
     TestBed.configureTestingModule({
-      declarations: [
-        LoginPageContainerComponent,
-        MockComponent({
-          selector: 'ish-login-page',
-          template: 'Login Form',
-          inputs: ['isLoggedIn'],
-        }),
-      ],
+      declarations: [LoginPageContainerComponent, MockComponent(LoginPageComponent)],
       providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
     }).compileComponents();
   }));

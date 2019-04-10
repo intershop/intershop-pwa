@@ -19,7 +19,7 @@ function createContainerComponentPair(options) {
         };
         return schematics_1.chain([
             schematics_1.schematic('component', childOptions),
-            schematics_1.schematic('container', Object.assign({}, childOptions, { referenceSelector: common_1.generateSelector('component', host, childOptions).selector, export: true })),
+            schematics_1.schematic('container', Object.assign({}, childOptions, { referenceSelector: common_1.generateSelector('component', host, childOptions).selector, referenceComponent: options.name, referenceComponentPath: `../../components/${options.name}/${options.name}.component`, export: true })),
         ]);
     };
 }

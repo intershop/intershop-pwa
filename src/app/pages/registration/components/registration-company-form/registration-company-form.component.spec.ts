@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { InputComponent } from '../../../../shared/forms/components/input/input.component';
 
 import { RegistrationCompanyFormComponent } from './registration-company-form.component';
 
@@ -11,14 +12,7 @@ describe('Registration Company Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({
-          selector: 'ish-input',
-          template: 'Input component',
-          inputs: ['controlName', 'form', 'label', 'errorMessages'],
-        }),
-        RegistrationCompanyFormComponent,
-      ],
+      declarations: [MockComponent(InputComponent), RegistrationCompanyFormComponent],
     }).compileComponents();
   }));
 

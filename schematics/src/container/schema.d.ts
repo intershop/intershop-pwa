@@ -16,6 +16,9 @@ export interface PwaContainerOptionsSchema {
   styleext?: string;
   selector?: string;
   module?: string;
+  referenceSelector?: string;
+  referenceComponent?: string;
+  referenceComponentPath?: string;
   /**
    * The name of the container.
    */
@@ -32,10 +35,6 @@ export interface PwaContainerOptionsSchema {
    * When true, does not import this container into the owning NgModule.
    */
   skipImport?: boolean;
-  /**
-   * The HTML selector to reference in this containers HTML template.
-   */
-  referenceSelector?: string;
   /**
    * When true, the declaring NgModule exports this container.
    */

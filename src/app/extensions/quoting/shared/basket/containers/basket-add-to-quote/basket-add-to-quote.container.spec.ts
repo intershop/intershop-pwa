@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { quotingReducers } from '../../../../store/quoting-store.module';
+import { BasketAddToQuoteComponent } from '../../components/basket-add-to-quote/basket-add-to-quote.component';
 
 import { BasketAddToQuoteContainerComponent } from './basket-add-to-quote.container';
 
@@ -17,13 +18,7 @@ describe('Basket Add To Quote Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot({ ...coreReducers, quoting: combineReducers(quotingReducers) })],
-      declarations: [
-        BasketAddToQuoteContainerComponent,
-        MockComponent({
-          selector: 'ish-basket-add-to-quote',
-          template: 'Basket Add To Quote',
-        }),
-      ],
+      declarations: [BasketAddToQuoteContainerComponent, MockComponent(BasketAddToQuoteComponent)],
     })
       .compileComponents()
       .then(() => {

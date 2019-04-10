@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';<% if (referenceComponent) { %>
+import { MockComponent } from 'ng-mocks';<% } %>
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-<% if (referenceSelector) { %>import { MockComponent } from 'ish-core/utils/dev/mock.component';
-<% } %>
-import { <%= classify(name) %>ContainerComponent } from './<%= dasherize(name) %>.container';
+import { <%= classify(name) %>ContainerComponent } from './<%= dasherize(name) %>.container';<% if (referenceComponent) { %>
+import { <%= classify(referenceComponent) %>Component } from '<%= referenceComponentPath %>';<% } %>
 
 describe('<%= classify(name) %> Container', () => {
   let component: <%= classify(name) %>ContainerComponent;
@@ -14,7 +14,7 @@ describe('<%= classify(name) %> Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot(coreReducers)],
-      declarations: [<%= classify(name) %>ContainerComponent<% if (referenceSelector) { %>, MockComponent({ selector: '<%= referenceSelector %>', template: 'Mocked Component', inputs: [] })<% } %>],
+      declarations: [<%= classify(name) %>ContainerComponent<% if (referenceComponent) { %>, MockComponent(<%= classify(referenceComponent) %>Component)<% } %>],
     }).compileComponents();
   }));
 
