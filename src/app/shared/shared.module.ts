@@ -49,6 +49,7 @@ import { ProductListPagingComponent } from './product/components/product-list-pa
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
+import { ProductPromotionComponent } from './product/components/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
@@ -57,6 +58,7 @@ import { ProductVariationDisplayComponent } from './product/components/product-v
 import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
+import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
@@ -92,6 +94,7 @@ const declaredComponents = [
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
+  ProductPromotionComponent,
   ProductRowComponent,
   ProductTileComponent,
   RecentlyViewedComponent,
@@ -120,6 +123,7 @@ const exportedComponents = [
   ProductLabelComponent,
   ProductListContainerComponent,
   ProductPriceComponent,
+  ProductPromotionContainerComponent,
   ProductQuantityComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
