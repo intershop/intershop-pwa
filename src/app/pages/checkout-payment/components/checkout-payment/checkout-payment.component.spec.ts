@@ -169,9 +169,9 @@ describe('Checkout Payment Component', () => {
     it('should display payment instruments when parametrized payment methods are available', () => {
       fixture.detectChanges();
 
-      expect(element.querySelector('div[data-testing-id=payment-parameter-form]')).toBeTruthy();
-      expect(element.querySelector('div[data-testing-id=payment-parameter-form] input[type=radio]')).toBeTruthy();
-      expect(element.querySelector('div[data-testing-id=payment-parameter-form] label a')).toBeTruthy();
+      expect(element.querySelector('[data-testing-id=payment-parameter-form]')).toBeTruthy();
+      expect(element.querySelector('[data-testing-id=payment-parameter-form] input[type=radio]')).toBeTruthy();
+      expect(element.querySelector('[data-testing-id=payment-parameter-form] a')).toBeTruthy();
     });
 
     it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {

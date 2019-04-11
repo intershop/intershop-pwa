@@ -29,13 +29,10 @@ export class PaymentMethodMapper {
         paymentCosts: PriceMapper.fromPriceItem(data.paymentCosts, 'net'),
         paymentCostsThreshold: PriceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
         paymentInstruments:
-          included && included.paymentInstruments && data.paymentInstruments && data.paymentInstruments.length
+          included && included.paymentInstruments && data.paymentInstruments
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
-            : [],
-        parameters:
-          data.parameterDefinitions && data.parameterDefinitions.length > 0
-            ? PaymentMethodMapper.mapParameter(data.parameterDefinitions)
             : undefined,
+        parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
       }));
   }
 
@@ -44,14 +41,14 @@ export class PaymentMethodMapper {
    * valid: payment methods without capabilities or which have no capabilities given in the list below
    */
   private static isPaymentMethodValid(paymentData: PaymentMethodBaseData): boolean {
-    const invalidCapabilities = 'LimitedTender|FastCheckout';
+    const invalidCapabilities = 'LimitedTender|FastCheckout|RedirectBeforeCheckout|RedirectAfterCheckout';
 
     // without capabilities
     if (!paymentData.capabilities || !paymentData.capabilities.length) {
       return true;
     }
     // excluded by the invalidCapabilities list
-    return !paymentData.capabilities.filter(data => invalidCapabilities.includes(data)).length;
+    return !paymentData.capabilities.some(data => invalidCapabilities.includes(data));
   }
 
   /**
@@ -83,7 +80,8 @@ export class PaymentMethodMapper {
         if (p.constraints.size) {
           param.templateOptions.minLength = p.constraints.size.min;
           param.templateOptions.maxLength = p.constraints.size.max;
-          param.templateOptions.attributes.size = p.constraints.size.message;
+          param.templateOptions.attributes.minLength = p.constraints.size.message;
+          param.templateOptions.attributes.maxLength = p.constraints.size.message;
         }
         if (p.constraints.pattern) {
           param.templateOptions.pattern = p.constraints.pattern.regexp;

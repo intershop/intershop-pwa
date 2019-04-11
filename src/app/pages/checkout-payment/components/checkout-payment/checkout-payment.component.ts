@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
 
@@ -31,10 +32,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() error: HttpError;
 
   @Output() updatePaymentMethod = new EventEmitter<string>();
-  @Output() createPaymentInstrument = new EventEmitter<{
-    paymentMethod: string; // payment Method id
-    parameters: { name: string; value: string }[];
-  }>();
+  @Output() createPaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() deletePaymentInstrument = new EventEmitter<string>();
 
   paymentForm: FormGroup;
@@ -81,6 +79,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(c: SimpleChanges) {
     if (c.basket && this.paymentForm) {
       this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
+      this.openFormIndex = -1; // close parameter form after successfully basket changed
+      this.parameterForm.reset();
     }
   }
 
@@ -123,12 +123,16 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     const parameters = [];
     Object.keys(this.parameterForm.controls).forEach(key => {
-      if (this.parameterForm.controls[key].enabled) {
+      if (this.parameterForm.controls[key].enabled && this.parameterForm.controls[key].value !== null) {
         parameters.push({ name: key, value: this.parameterForm.controls[key].value });
       }
     });
 
-    this.createPaymentInstrument.emit({ paymentMethod: this.paymentMethods[this.openFormIndex].id, parameters });
+    this.createPaymentInstrument.emit({
+      id: undefined,
+      paymentMethod: this.paymentMethods[this.openFormIndex].id,
+      parameters,
+    });
   }
 
   /**

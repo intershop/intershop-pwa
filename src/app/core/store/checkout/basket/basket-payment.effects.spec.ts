@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -182,6 +182,80 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.setPaymentAtBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createBasketPaymentInstrument$', () => {
+    const paymentInstrument = {
+      id: undefined,
+      paymentMethod: 'ISH_DirectDebit',
+      parameters_: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
+        of({ id: 'newPaymentInstrumentId' } as PaymentInstrument)
+      );
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            payment: undefined,
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the basketService for createBasketPayment', done => {
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument });
+      actions$ = of(action);
+
+      effects.createBasketPaymentInstrument$.subscribe(() => {
+        verify(basketServiceMock.createBasketPayment('BID', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type SetBasketPayment and CreateBasketPaymentSuccess', () => {
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument });
+      const completion1 = new basketActions.SetBasketPayment({ id: 'newPaymentInstrumentId' });
+      const completion2 = new basketActions.CreateBasketPaymentSuccess();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.createBasketPaymentInstrument$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type CreateBasketPaymentFail', () => {
+      when(basketServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument });
+      const completion = new basketActions.CreateBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createBasketPaymentInstrument$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadEligibleBasketMethod in case of success', () => {
+      const action = new basketActions.CreateBasketPaymentSuccess();
+      const completion = new basketActions.LoadBasketEligiblePaymentMethods();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligiblePaymentMethodsAfterChange$).toBeObservable(expected$);
     });
   });
 

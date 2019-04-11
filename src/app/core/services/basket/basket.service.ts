@@ -5,6 +5,7 @@ import { catchError, map, mapTo } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -315,6 +316,30 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(mapTo(paymentInstrument));
+  }
+
+  /**
+   * Creates a payment instrument for the selected basket.
+   * @param basketId          The basket id.
+   * @param paymentInstrument The payment instrument with parameters, id=undefined, paymentMethod= required.
+   * @returns                 The created payment instrument.
+   */
+  createBasketPayment(basketId: string, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    if (!basketId) {
+      return throwError('createBasketPayment() called without basketId');
+    }
+    if (!paymentInstrument) {
+      return throwError('createBasketPayment() called without paymentInstrument');
+    }
+    if (!paymentInstrument.paymentMethod) {
+      return throwError('createBasketPayment() called without paymentMethodId');
+    }
+
+    return this.apiService
+      .post(`baskets/${basketId}/payment-instruments?include=paymentMethod`, paymentInstrument, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(({ data }) => data));
   }
 
   /**
