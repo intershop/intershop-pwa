@@ -1,0 +1,6 @@
+<ish-product-promotion
+  *ngIf="(promotion$ | async) as promotion; else loading"
+  [promotion]="promotion"
+></ish-product-promotion>
+
+<ng-template #loading> <ish-loading></ish-loading> </ng-template>

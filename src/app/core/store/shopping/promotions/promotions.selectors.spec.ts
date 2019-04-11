@@ -8,9 +8,11 @@ import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 
 import { LoadPromotion, LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
 import {
+  getPromotion,
   getPromotionEntities,
   getPromotionLoading,
   getPromotions,
+  getSelectedPromotion,
   getSelectedPromotionId,
 } from './promotions.selectors';
 
@@ -39,6 +41,7 @@ describe('Promotions Selectors', () => {
     });
 
     it('should not select a current promotion when used', () => {
+      expect(getSelectedPromotion(store$.state)).toBeUndefined();
       expect(getSelectedPromotionId(store$.state)).toBeUndefined();
     });
   });
@@ -72,6 +75,10 @@ describe('Promotions Selectors', () => {
         expect(getPromotionLoading(store$.state)).toBeFalse();
         expect(getPromotionEntities(store$.state)).toBeEmpty();
       });
+
+      it('should return a promotion stub if promotion is selected', () => {
+        expect(getPromotion(store$.state, { id: 'invalid' })).toBeTruthy();
+      });
     });
   });
 
@@ -89,6 +96,7 @@ describe('Promotions Selectors', () => {
     });
 
     it('should not select the irrelevant promotion when used', () => {
+      expect(getSelectedPromotion(store$.state)).toBeUndefined();
       expect(getSelectedPromotionId(store$.state)).toBeUndefined();
     });
   });
