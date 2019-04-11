@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { CookiesService } from '@ngx-utils/cookies';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
@@ -98,6 +99,7 @@ describe('Quoting Store', () => {
         { provide: QuoteService, useFactory: () => instance(quoteServiceMock) },
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: AVAILABLE_LOCALES, useValue: locales },
       ],
     });

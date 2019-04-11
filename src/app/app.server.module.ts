@@ -5,6 +5,7 @@ import { ServerModule, ServerTransferStateModule } from '@angular/platform-serve
 import { StoreModule } from '@ngrx/store';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ServerCookiesModule } from '@ngx-utils/cookies/server';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
@@ -45,6 +46,7 @@ export function translateLoaderFactory() {
   imports: [
     AppModule,
     ModuleMapLoaderModule,
+    ServerCookiesModule,
     ServerModule,
     ServerTransferStateModule,
     StoreModule.forRoot(coreReducers, {}),
