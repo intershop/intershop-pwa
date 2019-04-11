@@ -45,6 +45,25 @@ export class BasketPaymentEffects {
   );
 
   /**
+   * Creates a payment at the current basket.
+   */
+  @Effect()
+  createBasketPaymentInstrument$ = this.actions$.pipe(
+    ofType<basketActions.CreateBasketPayment>(basketActions.BasketActionTypes.CreateBasketPayment),
+    mapToPayloadProperty('paymentInstrument'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([paymentInstrument, basket]) =>
+      this.basketService.createBasketPayment(basket.id, paymentInstrument).pipe(
+        concatMap(payload => [
+          new basketActions.SetBasketPayment({ id: payload.id }),
+          new basketActions.CreateBasketPaymentSuccess(),
+        ]),
+        mapErrorToAction(basketActions.CreateBasketPaymentFail)
+      )
+    )
+  );
+
+  /**
    * Deletes a payment instrument and the related payment at the current basket.
    */
   @Effect()
@@ -78,7 +97,10 @@ export class BasketPaymentEffects {
    */
   @Effect()
   loadBasketEligiblePaymentMethodsAfterChange$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.DeleteBasketPaymentSuccess),
+    ofType(
+      basketActions.BasketActionTypes.DeleteBasketPaymentSuccess,
+      basketActions.BasketActionTypes.CreateBasketPaymentSuccess
+    ),
     mapTo(new basketActions.LoadBasketEligiblePaymentMethods())
   );
 }

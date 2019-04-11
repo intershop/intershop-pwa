@@ -8,4 +8,5 @@ export interface PaymentInstrument {
     name: string;
     value: string;
   }[];
+  paymentMethod?: string;
 }
