@@ -6,7 +6,7 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMapTo, take, withLatestFrom } from 'rxjs/operators';
 
 import { getICMBaseURL } from 'ish-core/store/configuration';
-import { LoadContentInclude } from 'ish-core/store/content/includes';
+import { LoadContentInclude, getContentIncludeLoading } from 'ish-core/store/content/includes';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { SfeMapper } from './sfe.mapper';
@@ -98,6 +98,16 @@ export class SfeAdapterService {
     navigation$.pipe(withLatestFrom(this.store.pipe(select(getICMBaseURL)))).subscribe(([, icmBaseUrl]) => {
       this.messageToHost({ type: 'dv-pwanavigation' }, icmBaseUrl);
     });
+    this.store
+      .pipe(
+        select(getContentIncludeLoading),
+        filter(loading => !loading),
+        withLatestFrom(this.store.pipe(select(getICMBaseURL)))
+      )
+      .subscribe(([, icmBaseUrl]) => {
+        const tree = this.analyzeTree();
+        this.messageToHost({ type: 'dv-pwastable', payload: { tree } }, icmBaseUrl);
+      });
   }
 
   private analyzeTree() {

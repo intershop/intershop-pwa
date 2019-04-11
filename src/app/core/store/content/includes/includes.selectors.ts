@@ -19,7 +19,11 @@ const getIncludesState = createSelector(
 
 const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelectors(getIncludesState);
 
-// TODO: maybe use a factory for memoization (https://blog.angularindepth.com/ngrx-parameterized-selector-e3f610529f8)
+export const getContentIncludeLoading = createSelector(
+  getIncludesState,
+  includes => includes.loading
+);
+
 export const getContentInclude = createSelector(
   getContentIncludeEntities,
   getContentPageletEntities,
