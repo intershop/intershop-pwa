@@ -25,6 +25,8 @@ describe('Cms Video Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     pagelet = {
+      domain: 'domain',
+      displayName: 'pagelet1',
       definitionQualifiedName: 'fq',
       id: 'id',
       configurationParameters: {

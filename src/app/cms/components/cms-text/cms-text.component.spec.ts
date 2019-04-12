@@ -33,6 +33,8 @@ describe('Cms Text Component', () => {
     const pagelet = {
       id: 'id',
       definitionQualifiedName: 'fq',
+      displayName: 'name',
+      domain: 'domain',
       configurationParameters: { HTMLText: 'foo' },
     };
     component.pagelet = createSimplePageletView(pagelet);

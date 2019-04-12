@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 import { arraySlices } from 'ish-core/utils/functions';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
 
 @Component({
   selector: 'ish-cms-carousel',
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSCarouselComponent implements OnChanges {
+export class CMSCarouselComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
   slideItems = 6;

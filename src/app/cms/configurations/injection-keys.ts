@@ -1,15 +1,10 @@
-import { InjectionToken, SimpleChange, Type } from '@angular/core';
+import { InjectionToken, Type } from '@angular/core';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-
-export interface CMSComponentInterface {
-  pagelet: ContentPageletView;
-  ngOnChanges?(changes?: { pagelet: SimpleChange }): void;
-}
+import { CMSComponent } from '../models/cms-component/cms-component.model';
 
 export interface CMSComponentProvider {
   definitionQualifiedName: string;
-  class: Type<CMSComponentInterface>;
+  class: Type<CMSComponent>;
 }
 
 export const CMS_COMPONENT = new InjectionToken<CMSComponentProvider>('InjectionToken');

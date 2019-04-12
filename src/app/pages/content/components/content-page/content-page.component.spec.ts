@@ -20,6 +20,7 @@ describe('Content Page Component', () => {
 
   beforeEach(async(() => {
     slot = {
+      displayName: 'slot1',
       configurationParameters: {},
       definitionQualifiedName: 'app_sf_responsive_cm:slot.pagevariant.content.pagelet2-Slot',
       pageletIDs: ['cmp'],
@@ -27,6 +28,8 @@ describe('Content Page Component', () => {
 
     pagelets = {
       pid: {
+        displayName: 'pid',
+        domain: 'domain',
         definitionQualifiedName: 'fq',
         id: 'pid',
         configurationParameters: {
@@ -35,6 +38,8 @@ describe('Content Page Component', () => {
         slots: [slot],
       },
       cmp: {
+        displayName: 'cmp',
+        domain: 'domain',
         definitionQualifiedName: 'component',
         id: 'cmp',
         configurationParameters: {
@@ -44,6 +49,8 @@ describe('Content Page Component', () => {
     };
 
     contentPage = {
+      resourceSetId: 'rid',
+      domain: 'domain',
       definitionQualifiedName: 'test',
       id: 'id',
       displayName: 'test',

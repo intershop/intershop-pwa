@@ -25,13 +25,16 @@ describe('Content Pagelet Entry Point Mapper', () => {
         uri: 'uri://test',
         type: 'ContentInclude',
       },
+      id: 'include-id',
+      domain: 'the-domain',
+      resourceSetId: 'resource-set-id',
       definitionQualifiedName: 'fq',
       displayName: 'name-include',
-      id: 'include-id',
       pagelets: [
         {
           id: 'pagelet1',
           definitionQualifiedName: 'fq',
+          domain: 'domain',
           displayName: 'name1',
           configurationParameters: {
             key1: {
@@ -41,11 +44,13 @@ describe('Content Pagelet Entry Point Mapper', () => {
           },
           slots: {
             slot1: {
+              displayName: 'slot1',
               definitionQualifiedName: 'fq',
               pagelets: [
                 {
                   id: 'pagelet11',
                   definitionQualifiedName: 'fq',
+                  domain: 'Domain',
                   displayName: 'name11',
                   configurationParameters: {
                     key11: {
@@ -61,6 +66,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
         {
           id: 'pagelet2',
           definitionQualifiedName: 'fq',
+          domain: 'domain',
           displayName: 'name2',
         },
       ],

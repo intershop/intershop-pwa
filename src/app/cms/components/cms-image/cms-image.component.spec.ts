@@ -24,6 +24,8 @@ describe('Cms Image Component', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      displayName: 'name',
+      domain: 'domain',
       configurationParameters: {
         Image: 'http://example.com/foo/bar.png',
         AlternateText: 'foo',

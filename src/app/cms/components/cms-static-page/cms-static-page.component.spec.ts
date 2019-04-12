@@ -20,7 +20,7 @@ describe('Cms Static Page Component', () => {
         MockComponent({
           selector: 'ish-content-slot',
           template: 'Content Slot Container',
-          inputs: ['slot'],
+          inputs: ['slot', 'pagelet'],
         }),
       ],
     }).compileComponents();
@@ -31,6 +31,8 @@ describe('Cms Static Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     pagelet = {
+      domain: 'domain',
+      displayName: 'pagelet1',
       definitionQualifiedName: 'fq',
       id: 'id',
       configurationParameters: {},

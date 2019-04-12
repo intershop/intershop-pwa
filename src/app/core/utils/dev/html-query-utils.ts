@@ -24,3 +24,8 @@ export function findAllIshElements(el: HTMLElement): string[] {
 
   return returnList.sort();
 }
+
+export function createDocumentFromHTML(html: string): HTMLDocument {
+  const parser = new DOMParser();
+  return parser.parseFromString(html, 'text/html');
+}

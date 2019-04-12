@@ -25,7 +25,9 @@ describe('Content Views', () => {
     pageletEntryPoint = {
       id: 'include',
       definitionQualifiedName: 'fq',
-      displayName: 'i1',
+      domain: 'domain',
+      resourceSetId: 'resId',
+      displayName: 'name',
       pageletIDs: ['p1', 'p2'],
       configurationParameters,
     };
@@ -33,6 +35,7 @@ describe('Content Views', () => {
     pagelets = [
       {
         id: 'p1',
+        domain: 'domain',
         displayName: 'p1',
         definitionQualifiedName: 'fq',
         configurationParameters: {
@@ -41,16 +44,19 @@ describe('Content Views', () => {
         slots: [
           {
             definitionQualifiedName: 'fq',
+            displayName: 'slot',
           },
         ],
       },
       {
         id: 'p2',
         displayName: 'p2',
+        domain: 'domain',
         definitionQualifiedName: 'fq',
         slots: [
           {
             definitionQualifiedName: 'fq',
+            displayName: 'slot',
             configurationParameters: {
               key5: 'test',
             },
@@ -61,10 +67,12 @@ describe('Content Views', () => {
       {
         id: 'p3',
         displayName: 'p3',
+        domain: 'domain',
         definitionQualifiedName: 'fq',
         slots: [
           {
             definitionQualifiedName: 'fq',
+            displayName: 'slot',
             configurationParameters: {
               key6: '3',
             },
@@ -75,6 +83,7 @@ describe('Content Views', () => {
       {
         id: 'p4',
         displayName: 'p4',
+        domain: 'domain',
         definitionQualifiedName: 'fq',
         configurationParameters: {
           key7: '4',
