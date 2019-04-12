@@ -6,6 +6,8 @@ export interface ContentPageletEntryPointData {
   id: string;
   definitionQualifiedName: string;
   displayName: string;
+  domain: string;
+  resourceSetId: string;
   pagelets: ContentPageletData[];
   configurationParameters?: { [name: string]: ContentConfigurationParameterData };
   link: Link;

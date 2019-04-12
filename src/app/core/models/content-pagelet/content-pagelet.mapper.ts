@@ -16,7 +16,7 @@ export class ContentPageletMapper {
       throw new Error('falsy input');
     }
 
-    const { definitionQualifiedName, id } = data;
+    const { definitionQualifiedName, id, domain, displayName } = data;
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
 
     let slots: ContentSlot[] = [];
@@ -33,6 +33,8 @@ export class ContentPageletMapper {
         definitionQualifiedName,
         id,
         slots,
+        domain,
+        displayName,
       },
       ...pagelets,
     ];
@@ -46,11 +48,13 @@ export class ContentPageletMapper {
     const definitionQualifiedName = data.definitionQualifiedName;
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
     const pageletIDs = !data.pagelets ? [] : data.pagelets.map(pagelet => pagelet.id);
+    const displayName = data.displayName;
 
     const slot: ContentSlot = {
       definitionQualifiedName,
       configurationParameters,
       pageletIDs,
+      displayName,
     };
 
     const pagelets = !data.pagelets

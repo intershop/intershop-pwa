@@ -15,6 +15,11 @@ describe('Cms Carousel Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CMSCarouselComponent,
+        MockComponent({
+          selector: 'ish-content-slot',
+          template: 'outlet',
+          inputs: ['pagelet', 'slot', 'wrapper'],
+        }),
         MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
       ],
       imports: [NgbCarouselModule],
@@ -27,16 +32,22 @@ describe('Cms Carousel Component', () => {
     element = fixture.nativeElement;
     const slide1 = {
       id: 'slide1',
+      domain: 'domain',
+      displayName: 'slide1',
       definitionQualifiedName: 'fq',
     };
     const slide2 = {
       id: 'slide2',
+      domain: 'domain',
+      displayName: 'slide2',
       definitionQualifiedName: 'fq',
     };
 
     const pagelet = {
       id: 'id',
       definitionQualifiedName: 'fq',
+      domain: 'domain',
+      displayName: 'pagelet',
       configurationParameters: {
         CSSClass: 'foo-class',
         SlideItems: 2,

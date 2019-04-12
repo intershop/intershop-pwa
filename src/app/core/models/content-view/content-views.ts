@@ -16,6 +16,9 @@ export interface ContentConfigurationParameterView {
 }
 
 export interface ContentEntryPointView {
+  id: string;
+  domain: string;
+  displayName?: string;
   pagelets(): ContentPageletView[];
 }
 
@@ -23,13 +26,18 @@ export interface ContentSlotView extends ContentEntryPointView, ContentConfigura
 
 export interface ContentPageletEntryPointView extends ContentEntryPointView, ContentConfigurationParameterView {
   id: string;
-  name: string;
+  domain: string;
+  displayName: string;
+  resourceSetId: string;
+  pagelets(): ContentPageletView[];
 }
 
 export interface ContentPageletView extends ContentConfigurationParameterView {
   definitionQualifiedName: string;
   configurationParameters: ContentConfigurationParameters;
   id: string;
+  domain: string;
+  displayName: string;
   slot(qualifiedName: string): ContentSlotView;
 }
 
@@ -71,31 +79,46 @@ export const createContentPageletView = (
     definitionQualifiedName: pagelet.definitionQualifiedName,
     configurationParameters: pagelet.configurationParameters,
     id: pagelet.id,
+    domain: pagelet.domain,
+    displayName: pagelet.displayName,
     slot: !pagelet.slots
       ? () => undefined
       : memoize(qualifiedName =>
-          createContentSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
+          createContentSlotView(
+            pagelet,
+            pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName),
+            pagelets
+          )
         ),
     ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };
 };
 
 export const createContentEntryPointView = (
+  id: string,
+  domain: string,
   pageletIDs: string[],
   pagelets: { [id: string]: ContentPagelet }
 ): ContentEntryPointView => ({
+  id,
+  domain,
   pagelets:
     pageletIDs && pageletIDs.length
-      ? once(() => pageletIDs.map(id => createContentPageletView(id, pagelets)))
+      ? once(() => pageletIDs.map(pId => createContentPageletView(pId, pagelets)))
       : () => [],
 });
 
-export const createContentSlotView = (slot: ContentSlot, pagelets: { [id: string]: ContentPagelet }): ContentSlotView =>
+export const createContentSlotView = (
+  pagelet: ContentPagelet,
+  slot: ContentSlot,
+  pagelets: { [id: string]: ContentPagelet }
+): ContentSlotView =>
   !slot
     ? undefined
     : {
-        ...createContentEntryPointView(slot.pageletIDs, pagelets),
+        ...createContentEntryPointView(slot.definitionQualifiedName, pagelet.domain, slot.pageletIDs, pagelets),
         ...createContentConfigurationParameterView(slot.configurationParameters || {}),
+        displayName: slot.displayName,
       };
 
 export const createContentPageletEntryPointView = (
@@ -103,7 +126,14 @@ export const createContentPageletEntryPointView = (
   pagelets: { [id: string]: ContentPagelet }
 ): ContentPageletEntryPointView => ({
   id: pageletEntryPoint.id,
-  name: pageletEntryPoint.displayName,
-  ...createContentEntryPointView(pageletEntryPoint.pageletIDs, pagelets),
+  domain: pageletEntryPoint.domain,
+  resourceSetId: pageletEntryPoint.resourceSetId,
+  displayName: pageletEntryPoint.displayName,
+  ...createContentEntryPointView(
+    pageletEntryPoint.id,
+    pageletEntryPoint.domain,
+    pageletEntryPoint.pageletIDs,
+    pagelets
+  ),
   ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
 });

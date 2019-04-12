@@ -26,6 +26,8 @@ describe('Cms Product List Component', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      displayName: 'name',
+      domain: 'domain',
       configurationParameters: {
         Products: ['1@Domain', '2@Domain'],
         Title: 'PageletTitle',
