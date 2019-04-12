@@ -124,7 +124,7 @@ export class UserEffects {
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
     ofType<userActions.LoginUserSuccess>(userActions.UserActionTypes.LoginUserSuccess),
     mapToPayload(),
-    filter(payload => payload.customer.type === 'SMBCustomer'),
+    filter(payload => payload.customer.isBusinessCustomer),
     mapTo(new userActions.LoadCompanyUser())
   );
 }

@@ -14,7 +14,7 @@ export const getLoggedInCustomer = createSelector(
 
 export const isBusinessCustomer = createSelector(
   getLoggedInCustomer,
-  customer => !!customer && customer.type === 'SMBCustomer'
+  customer => !!customer && customer.isBusinessCustomer
 );
 
 export const getLoggedInUser = createSelector(

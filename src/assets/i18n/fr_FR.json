@@ -2486,5 +2486,6 @@
   "account.quotes.widget.rejected.label": "Rejet\u00E9",
   "account.quotes.widget.view_all_quotes.link": "Afficher tous les devis",
   "checkout.address.anonymous.guestcheckout.text": "Vous voulez faire des achats en tant qu’invit\u00E9 et ne voulez pas cr\u00E9er de profil ? Pas de problème.",
-  "account.login.signin.heading": "Se connecter"
+  "account.login.signin.heading": "Se connecter",
+  "account.overview.personal_message_b2b.text": "Bonjour, {{0}} ({{1}}).<br />Bienvenue !"
 }
