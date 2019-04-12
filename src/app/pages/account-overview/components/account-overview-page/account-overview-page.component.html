@@ -1,20 +1,19 @@
-<ng-container *ngIf="customer.type === 'SMBCustomer'; else personalCustomerMessage">
+<ng-container *ngIf="customer && customer.isBusinessCustomer; else personalCustomerMessage">
   <h1
-    data-testing-id="personal-message-b2b"
     [innerHTML]="
       'account.overview.personal_message_b2b.text'
         | translate
           : { '0': user.firstName + '&nbsp;' + user.lastName || user.credentials.login, '1': customer.companyName }
     "
+    data-testing-id="personal-message-b2b"
   ></h1>
 </ng-container>
 <ng-template #personalCustomerMessage>
   <h1
-    *ngIf="user"
-    data-testing-id="personal-message-default"
     [innerHTML]="
       'account.overview.personal_message.text' | translate: { '0': user.firstName || user.credentials.login }
     "
+    data-testing-id="personal-message-default"
   ></h1>
 </ng-template>
 
