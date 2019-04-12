@@ -70,6 +70,7 @@ describe('User Selectors', () => {
         customer: {
           type: type,
           customerNo: customerNo,
+          isBusinessCustomer: false,
         },
         user: {
           firstName: firstName,
@@ -79,6 +80,7 @@ describe('User Selectors', () => {
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('type', type);
+    expect(getLoggedInCustomer(store$.state)).toHaveProperty('isBusinessCustomer', false);
     expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
     expect(getUserAuthorized(store$.state)).toBeTrue();
@@ -91,6 +93,7 @@ describe('User Selectors', () => {
         customer: {
           type: 'SMBCustomer',
           customerNo: 'PC',
+          isBusinessCustomer: true,
         },
       } as CustomerUserType)
     );

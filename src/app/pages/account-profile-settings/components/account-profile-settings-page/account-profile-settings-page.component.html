@@ -63,7 +63,7 @@
   </div>-->
 </div>
 <!--Company Profile -->
-<div class="row section" *ngIf="customer.type === 'SMBCustomer'">
+<div class="row section" *ngIf="customer.isBusinessCustomer">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.company_profile.detail.heading' | translate }}</h3>
     <div class="row">

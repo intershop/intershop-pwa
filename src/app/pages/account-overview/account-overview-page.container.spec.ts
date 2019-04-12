@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
+import { User } from 'ish-core/models/user/user.model';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountOverviewPageContainerComponent } from './account-overview-page.container';
@@ -19,7 +21,7 @@ describe('Account Overview Page Container', () => {
         MockComponent({
           selector: 'ish-account-overview-page',
           template: 'Account Overview Page Component',
-          inputs: ['user', 'orders'],
+          inputs: ['user', 'customer', 'orders'],
         }),
         MockComponent({
           selector: 'ish-loading',
@@ -44,6 +46,9 @@ describe('Account Overview Page Container', () => {
   });
 
   it('should render account overview component on page', () => {
+    const user$ = of({ firstName: 'Patricia' } as User);
+    component.user$ = user$;
+
     fixture.detectChanges();
     expect(element.querySelector('ish-account-overview-page')).toBeTruthy();
   });

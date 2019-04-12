@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
@@ -13,6 +14,7 @@ describe('Account Overview Page Component', () => {
   let element: HTMLElement;
   let translate: TranslateService;
   const user = { firstName: 'Patricia' } as User;
+  const customer = { isBusinessCustomer: false } as Customer;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,6 +42,7 @@ describe('Account Overview Page Component', () => {
     translate.use('en');
     translate.set('account.overview.personal_message.text', 'Hi, {{0}}.');
     component.user = user;
+    component.customer = customer;
   });
 
   it('should be created', () => {
@@ -48,9 +51,17 @@ describe('Account Overview Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display user name when displaying greeting text', () => {
+  it('should display user name when displaying personal text', () => {
     fixture.detectChanges();
+    expect(element.querySelector('h1[data-testing-id=personal-message-default]')).toBeTruthy();
     expect(element.querySelector('h1').textContent).toContain(user.firstName);
+  });
+
+  it('should display special personal text for b2b customer', () => {
+    const customerB2B = { isBusinessCustomer: true } as Customer;
+    component.customer = customerB2B;
+    fixture.detectChanges();
+    expect(element.querySelector('h1[data-testing-id=personal-message-b2b]')).toBeTruthy();
   });
 
   it('should display dashboard on page', () => {
