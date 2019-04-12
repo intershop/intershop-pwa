@@ -1,1 +1,10 @@
-<p>product-promotion works!</p>
+<!--div *ngIf="promotions && promotions.length > 0">
+  <span *ngFor="let promotion of promotions">
+-->
+<div *ngIf="promotion">
+  <span [innerHTML]="promotion.title | safeHtml"></span>
+  <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+</div>
+<!--  </span>
+</div>
+-->
