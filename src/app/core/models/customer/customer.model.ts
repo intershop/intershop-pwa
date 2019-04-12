@@ -7,6 +7,7 @@ export type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
 export interface Customer {
   type: CustomerType;
   customerNo: string;
+  isBusinessCustomer?: boolean;
 
   // Business Customer only
   companyName?: string;

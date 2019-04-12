@@ -1,1 +1,3 @@
-<ish-account-overview-page [user]="user$ | async" [customer]="customer$ | async"></ish-account-overview-page>
+<ng-container *ngIf="(user$ | async) as user">
+  <ish-account-overview-page [user]="user" [customer]="customer$ | async"></ish-account-overview-page>
+</ng-container>

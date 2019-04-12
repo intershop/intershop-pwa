@@ -14,7 +14,7 @@ describe('Account Overview Page Component', () => {
   let element: HTMLElement;
   let translate: TranslateService;
   const user = { firstName: 'Patricia' } as User;
-  const customer = { type: 'PrivateCustomer' } as Customer;
+  const customer = { isBusinessCustomer: false } as Customer;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('Account Overview Page Component', () => {
   });
 
   it('should display special personal text for b2b customer', () => {
-    const customerB2B = { type: 'SMBCustomer' } as Customer;
+    const customerB2B = { isBusinessCustomer: true } as Customer;
     component.customer = customerB2B;
     fixture.detectChanges();
     expect(element.querySelector('h1[data-testing-id=personal-message-b2b]')).toBeTruthy();

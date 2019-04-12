@@ -11,6 +11,7 @@ export class CustomerMapper {
           customer: {
             customerNo: data.customerNo,
             type: data.type,
+            isBusinessCustomer: true,
             companyName: data.companyName,
             companyName2: data.companyName2,
             taxationID: data.taxationID,
@@ -23,6 +24,7 @@ export class CustomerMapper {
           customer: {
             customerNo: data.customerNo,
             type: data.type,
+            isBusinessCustomer: false,
           },
           user: {
             title: data.title,
