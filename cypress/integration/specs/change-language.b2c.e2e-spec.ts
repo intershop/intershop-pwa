@@ -170,8 +170,11 @@ describe('Language Changing User', () => {
     });
   });
 
-  xdescribe('when logged in', () => {
-    before(() => LoginPage.navigateTo());
+  describe('when logged in', () => {
+    before(() => {
+      LoginPage.navigateTo();
+      Cypress.Cookies.preserveOnce('apiToken');
+    });
 
     it('should log in', () => {
       createUserViaREST(_.user);
