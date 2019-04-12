@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
+import { PipesModule } from 'ish-core/pipes.module';
+import { MockComponent } from 'ish-core/utils/dev/mock.component';
+
 import { ProductPromotionComponent } from './product-promotion.component';
 
 describe('Product Promotion Component', () => {
@@ -9,7 +12,15 @@ describe('Product Promotion Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProductPromotionComponent],
+      declarations: [
+        MockComponent({
+          selector: 'ish-promotion-details',
+          template: 'Promotion Details Component',
+          inputs: ['promotion'],
+        }),
+        ProductPromotionComponent,
+      ],
+      imports: [PipesModule],
     }).compileComponents();
   }));
 
@@ -17,6 +28,19 @@ describe('Product Promotion Component', () => {
     fixture = TestBed.createComponent(ProductPromotionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    component.promotion = {
+      id: 'PROMO_UUID',
+      name: 'MyPromotion',
+      couponCodeRequired: false,
+      currency: 'EUR',
+      promotionType: 'MyPromotionType',
+      description: 'MyPromotionDescription',
+      legalContentMessage: 'MyPromotionContentMessage',
+      longTitle: 'MyPromotionLongTitle',
+      ruleDescription: 'MyPromotionRuleDescription',
+      title: 'MyPromotionTitle',
+      useExternalUrl: false,
+    };
   });
 
   it('should be created', () => {

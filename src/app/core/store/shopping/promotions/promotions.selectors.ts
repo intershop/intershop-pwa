@@ -10,26 +10,13 @@ const getPromotionsState = createSelector(
   (state: ShoppingState) => state.promotions
 );
 
-export const {
-  selectEntities: getPromotionEntities,
-  selectAll: getPromotions,
-  selectIds: getPromotionIds,
-} = promotionAdapter.getSelectors(getPromotionsState);
-
-export const getSelectedPromotionId = createSelector(
-  getPromotionsState,
-  state => state.selected
+export const { selectEntities: getPromotionEntities, selectIds: getPromotionIds } = promotionAdapter.getSelectors(
+  getPromotionsState
 );
 
 export const getFailed = createSelector(
   getPromotionsState,
   state => state.failed
-);
-
-export const getSelectedPromotion = createSelector(
-  getPromotionEntities,
-  getSelectedPromotionId,
-  (entities, id) => entities[id]
 );
 
 export const getPromotionLoading = createSelector(
@@ -40,9 +27,22 @@ export const getPromotionLoading = createSelector(
 export const getPromotion = createSelector(
   getPromotionEntities,
   getFailed,
-  (promotions, failed, props: { id: string }) =>
-    failed.includes(props.id)
+  (entities, failed, props: { promoId: string }) =>
+    failed.includes(props.promoId)
       ? // tslint:disable-next-line:ish-no-object-literal-type-assertion
-        ({ id: props.id } as Promotion)
-      : promotions[props.id]
+        ({ id: props.promoId } as Promotion)
+      : entities[props.promoId]
 );
+
+// todo
+// export const getPromotions = createSelector(
+//  getPromotionEntities,
+//  (entities, props: { productPromotions: ProductPromotion[] }): Promotion[] =>
+//    entities.filter(e =>
+//      props.productPromotions.forEach(eachObj => {
+//        if (e.id === eachObj.itemid) {
+//          return e.id;
+//        }
+//      })
+//    )
+// );

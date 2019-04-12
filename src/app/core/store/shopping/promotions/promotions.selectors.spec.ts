@@ -7,14 +7,7 @@ import { shoppingReducers } from '../../../store/shopping/shopping-store.module'
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 
 import { LoadPromotion, LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
-import {
-  getPromotion,
-  getPromotionEntities,
-  getPromotionLoading,
-  getPromotions,
-  getSelectedPromotion,
-  getSelectedPromotionId,
-} from './promotions.selectors';
+import { getPromotion, getPromotionEntities, getPromotionLoading } from './promotions.selectors';
 
 describe('Promotions Selectors', () => {
   let store$: TestStore;
@@ -35,20 +28,14 @@ describe('Promotions Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any promotions when used', () => {
-      expect(getPromotions(store$.state)).toBeEmpty();
       expect(getPromotionEntities(store$.state)).toBeEmpty();
       expect(getPromotionLoading(store$.state)).toBeFalse();
-    });
-
-    it('should not select a current promotion when used', () => {
-      expect(getSelectedPromotion(store$.state)).toBeUndefined();
-      expect(getSelectedPromotionId(store$.state)).toBeUndefined();
     });
   });
 
   describe('loading a promotion', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadPromotion({ id: '' }));
+      store$.dispatch(new LoadPromotion({ promoId: '' }));
     });
 
     it('should set the state to loading', () => {
@@ -68,7 +55,7 @@ describe('Promotions Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadPromotionFail({ error: { message: 'error' } as HttpError, id: 'invalid' }));
+        store$.dispatch(new LoadPromotionFail({ error: { message: 'error' } as HttpError, promoId: 'invalid' }));
       });
 
       it('should not have loaded promotion on error', () => {
@@ -77,7 +64,7 @@ describe('Promotions Selectors', () => {
       });
 
       it('should return a promotion stub if promotion is selected', () => {
-        expect(getPromotion(store$.state, { id: 'invalid' })).toBeTruthy();
+        expect(getPromotion(store$.state, { promoId: 'invalid' })).toBeTruthy();
       });
     });
   });
@@ -89,15 +76,9 @@ describe('Promotions Selectors', () => {
 
     describe('but no current router state', () => {
       it('should return the promotion information when used', () => {
-        expect(getPromotions(store$.state)).toEqual([promo]);
         expect(getPromotionEntities(store$.state)).toEqual({ [promo.id]: promo });
         expect(getPromotionLoading(store$.state)).toBeFalse();
       });
-    });
-
-    it('should not select the irrelevant promotion when used', () => {
-      expect(getSelectedPromotion(store$.state)).toBeUndefined();
-      expect(getSelectedPromotionId(store$.state)).toBeUndefined();
     });
   });
 });
