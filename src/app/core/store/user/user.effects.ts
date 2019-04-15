@@ -83,7 +83,7 @@ export class UserEffects {
         navigateTo = state.snapshot.root.queryParams.returnUrl;
       }
       if (navigateTo) {
-        this.router.navigate([navigateTo]);
+        this.router.navigateByUrl(navigateTo);
       }
     })
   );
