@@ -8,6 +8,8 @@
 
   <a class="product-title" [routerLink]="product | ishProductRoute: category">{{ product.name }}</a>
 
+  <ish-product-promotion-container [product]="product"></ish-product-promotion-container>
+
   <div class="price-container">
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
   </div>
