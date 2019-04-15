@@ -8,9 +8,10 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Observable, race, timer } from 'rxjs';
+import { mapTo, take } from 'rxjs/operators';
 
+import { whenTruthy } from 'ish-core/utils/operators';
 import { getUserAuthorized } from '../store/user';
 
 /**
@@ -28,13 +29,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   private guardAccess(url: string): Observable<boolean | UrlTree> {
-    return this.store.pipe(
-      select(getUserAuthorized),
-      take(1),
-      // if not logged in redirect to login page with the return url
-      map(authorized =>
-        authorized ? true : this.router.createUrlTree(['/login'], { queryParams: { returnUrl: url } })
-      )
+    return race(
+      // wait till authorization can be aquired through cookie
+      this.store.pipe(
+        select(getUserAuthorized),
+        whenTruthy(),
+        take(1)
+      ),
+      // send to login after timeout
+      timer(4000).pipe(mapTo(this.router.createUrlTree(['/login'], { queryParams: { returnUrl: url } })))
     );
   }
 }
