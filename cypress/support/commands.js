@@ -26,6 +26,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
   cy.server();
   cy.route(/\/categories/).as('categories');
   cy.route('**/i18n/*.json').as('translations');
+  cy.wait(3000);
 
   let newUrl = url;
 
