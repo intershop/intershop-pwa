@@ -4,7 +4,7 @@ import { combineReducers } from '@ngrx/store';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadProductSuccess } from '../../shopping/products';
@@ -59,7 +59,11 @@ describe('Basket Selectors', () => {
   describe('loading a basket', () => {
     beforeEach(() => {
       store$.dispatch(new LoadBasket());
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku' } as Product }));
+      store$.dispatch(
+        new LoadProductSuccess({
+          product: { sku: 'sku', completenessLevel: ProductHelper.maxCompletenessLevel } as Product,
+        })
+      );
     });
 
     it('should set the state to loading', () => {
@@ -83,7 +87,7 @@ describe('Basket Selectors', () => {
       expect(currentBasket.id).toEqual('test');
       expect(currentBasket.lineItems).toHaveLength(1);
       expect(currentBasket.lineItems[0].id).toEqual('test');
-      expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
+      expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
       expect(currentBasket.itemsCount).toEqual(5);
       expect(currentBasket.payment.paymentInstrument).toEqual('ISH_INVOICE');
     });
@@ -95,12 +99,16 @@ describe('Basket Selectors', () => {
         })
       );
       let currentBasket = getCurrentBasket(store$.state);
-      expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
+      expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
 
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku', name: 'new name' } as Product }));
+      store$.dispatch(
+        new LoadProductSuccess({
+          product: { sku: 'sku', name: 'new name', completenessLevel: ProductHelper.maxCompletenessLevel } as Product,
+        })
+      );
 
       currentBasket = getCurrentBasket(store$.state);
-      expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku', name: 'new name' });
+      expect(currentBasket.lineItems[0].product).toHaveProperty('name', 'new name');
     });
 
     it('should set loading to false and set error state', () => {

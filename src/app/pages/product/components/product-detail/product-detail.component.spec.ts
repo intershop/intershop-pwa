@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductDetailComponent } from './product-detail.component';
 
@@ -14,7 +14,7 @@ describe('Product Detail Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const prod = { sku: 'sku' } as Product;
+    const prod = { sku: 'sku' } as ProductView;
 
     TestBed.configureTestingModule({
       imports: [FeatureToggleModule, ReactiveFormsModule, TranslateModule.forRoot()],

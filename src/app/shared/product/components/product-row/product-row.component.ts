@@ -2,7 +2,14 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
+import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
+import {
+  ProductView,
+  VariationProductMasterView,
+  VariationProductView,
+} from 'ish-core/models/product-view/product-view.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-row',
@@ -10,11 +17,15 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowComponent implements OnInit {
-  @Input() product: Product;
+  @Input() product: ProductView | VariationProductView | VariationProductMasterView;
+  @Input() variationOptions: VariationOptionGroup[];
   @Input() category?: Category;
-  @Input() isInCompareList?: boolean;
-  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
+  @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
+  @Output() productToBasket = new EventEmitter<number>();
+  @Output() selectVariation = new EventEmitter<VariationSelection>();
+
+  isMasterProduct = ProductHelper.isMasterProduct;
 
   productItemForm: FormGroup;
   readonly quantityControlName = 'quantity';
@@ -31,5 +42,11 @@ export class ProductRowComponent implements OnInit {
 
   toggleCompare() {
     this.compareToggle.emit();
+  }
+
+  variationSelected(selection: VariationSelection) {
+    if (ProductHelper.isVariationProduct(this.product)) {
+      this.selectVariation.emit(selection);
+    }
   }
 }

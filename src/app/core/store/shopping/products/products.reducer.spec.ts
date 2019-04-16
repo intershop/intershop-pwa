@@ -71,6 +71,7 @@ describe('Products Reducer', () => {
           sku: '111',
           name: 'Test product',
           inStock: true,
+          completenessLevel: 2,
         } as Product;
       });
 
@@ -86,7 +87,7 @@ describe('Products Reducer', () => {
         const action1 = new fromActions.LoadProductSuccess({ product });
         const state1 = productsReducer(initialState, action1);
 
-        const updatedProduct = { sku: '111' } as Product;
+        const updatedProduct = { sku: '111', completenessLevel: 2 } as Product;
         updatedProduct.name = 'Updated product';
         updatedProduct.inStock = false;
 
@@ -97,8 +98,60 @@ describe('Products Reducer', () => {
         expect(state2.entities[product.sku]).toEqual(updatedProduct);
       });
 
+      it('should not update product if already exists and has lower completeness', () => {
+        const action1 = new fromActions.LoadProductSuccess({ product });
+        const state1 = productsReducer(initialState, action1);
+
+        const updatedProduct = { sku: '111', completenessLevel: 1 } as Product;
+        updatedProduct.name = 'Updated product';
+        updatedProduct.inStock = false;
+
+        const action2 = new fromActions.LoadProductSuccess({ product: updatedProduct });
+        const state2 = productsReducer(state1, action2);
+
+        expect(state2.ids).toHaveLength(1);
+        expect(state2.entities[product.sku]).toEqual(product);
+      });
+
       it('should set loading to false', () => {
         const action = new fromActions.LoadProductSuccess({ product });
+        const state = productsReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('LoadProductVariations actions', () => {
+    describe('LoadProductVariations action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadProductVariations({ sku: '123' });
+        const state = productsReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('LoadProductVariationsSuccess action', () => {
+      it('should set product variation data and set loading to false', () => {
+        const product = { sku: 'SKU' } as Product;
+        let state = productsReducer(initialState, new fromActions.LoadProductSuccess({ product }));
+
+        const payload = {
+          sku: 'SKU',
+          variations: ['VAR'],
+        };
+        state = productsReducer(state, new fromActions.LoadProductVariationsSuccess(payload));
+
+        expect(state.entities.SKU).toHaveProperty('variationSKUs', ['VAR']);
+        expect(state.loading).toBeFalse();
+      });
+    });
+
+    describe('LoadProductVariationsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.LoadProductVariationsFail({ error, sku: 'SKU' });
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

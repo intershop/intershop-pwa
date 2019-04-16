@@ -13,6 +13,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
  *               [category]="category$ | async"
  *               [viewType]="viewType$ | async"
  *               (loadMore)="loadMoreProducts()"
+ *               (selectVariation)="variationSelected($event)"
  * ></ish-product-list>
  */
 @Component({
@@ -27,4 +28,16 @@ export class ProductListComponent {
   @Input() loadingMore: boolean;
 
   @Output() loadMore = new EventEmitter<void>();
+
+  get isGrid() {
+    return this.viewType === 'grid';
+  }
+
+  get isList() {
+    return this.viewType === 'list';
+  }
+
+  trackByFn(_, item: Product) {
+    return item.sku;
+  }
 }

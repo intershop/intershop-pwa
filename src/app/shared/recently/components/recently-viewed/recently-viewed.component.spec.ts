@@ -15,9 +15,9 @@ describe('Recently Viewed Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent({
-          selector: 'ish-product-tile-container',
-          template: 'Product Tile Container',
-          inputs: ['productSku'],
+          selector: 'ish-product-item-container',
+          template: 'Product Item Container',
+          inputs: ['productSku', 'type'],
         }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         RecentlyViewedComponent,
