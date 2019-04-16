@@ -1,14 +1,16 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { Product } from '../../../models/product/product.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
-export const productAdapter = createEntityAdapter<Product>({
+export const productAdapter = createEntityAdapter<Product | VariationProduct | VariationProductMaster>({
   selectId: product => product.sku,
 });
 
-export interface ProductsState extends EntityState<Product> {
+export interface ProductsState extends EntityState<Product | VariationProduct | VariationProductMaster> {
   loading: boolean;
   selected: string;
   failed: string[];
@@ -18,6 +20,7 @@ export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
   selected: undefined,
   failed: [],
+  variations: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -37,14 +40,16 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       };
     }
 
-    case ProductsActionTypes.LoadProduct: {
+    case ProductsActionTypes.LoadProduct:
+    case ProductsActionTypes.LoadProductVariations: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case ProductsActionTypes.LoadProductFail: {
+    case ProductsActionTypes.LoadProductFail:
+    case ProductsActionTypes.LoadProductVariationsFail: {
       return {
         ...state,
         loading: false,
@@ -54,11 +59,22 @@ export function productsReducer(state = initialState, action: ProductsAction): P
 
     case ProductsActionTypes.LoadProductSuccess: {
       const product = action.payload.product;
-      return productAdapter.upsertOne(product, {
-        ...state,
-        loading: false,
-        failed: removeFailed(state.failed, product.sku),
-      });
+      const oldProduct = state.entities[product.sku];
+      if (!oldProduct || product.completenessLevel >= oldProduct.completenessLevel) {
+        return productAdapter.upsertOne(product, {
+          ...state,
+          loading: false,
+          failed: removeFailed(state.failed, product.sku),
+        });
+      }
+      break;
+    }
+
+    case ProductsActionTypes.LoadProductVariationsSuccess: {
+      return productAdapter.updateOne(
+        { id: action.payload.sku, changes: { variationSKUs: action.payload.variations } },
+        { ...state, loading: false }
+      );
     }
   }
 

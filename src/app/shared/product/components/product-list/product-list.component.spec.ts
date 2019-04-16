@@ -16,14 +16,9 @@ describe('Product List Component', () => {
       imports: [InfiniteScrollModule],
       declarations: [
         MockComponent({
-          selector: 'ish-product-row-container',
-          template: 'Product Row Container',
-          inputs: ['product', 'category'],
-        }),
-        MockComponent({
-          selector: 'ish-product-tile-container',
-          template: 'Product Tile Container',
-          inputs: ['productSku', 'category'],
+          selector: 'ish-product-item-container',
+          template: 'Product Item Container',
+          inputs: ['productSku', 'category', 'type'],
         }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component', inputs: ['standalone'] }),
         ProductListComponent,
@@ -47,14 +42,14 @@ describe('Product List Component', () => {
   it('should render a product tile when viewType is grid', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-tile-container');
+    const thumbs = element.querySelectorAll('ish-product-item-container[type=tile]');
     expect(thumbs).toHaveLength(1);
   });
 
   it('should render a product row when viewType is list', () => {
     component.viewType = 'list';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-row-container');
+    const thumbs = element.querySelectorAll('ish-product-item-container[type=row]');
     expect(thumbs).toHaveLength(1);
   });
 });

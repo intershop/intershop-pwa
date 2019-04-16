@@ -6,7 +6,6 @@ import { AttributeHelper } from '../attribute/attribute.helper';
 
 import { ProductDataStub } from './product.interface';
 import { Product, ProductHelper } from './product.model';
-import { ProductType } from './product.types';
 
 describe('Product Helper', () => {
   describe('image', () => {
@@ -121,9 +120,9 @@ describe('Product Helper', () => {
   describe('isMasterProduct()', () => {
     function dataProvider() {
       return [
-        { product: { type: ProductType.Product }, expected: false },
-        { product: { type: ProductType.VariationProduct }, expected: false },
-        { product: { type: ProductType.VariationProductMaster }, expected: true },
+        { product: { type: 'Product' }, expected: false },
+        { product: { type: 'VariationProduct' }, expected: false },
+        { product: { type: 'VariationProductMaster' }, expected: true },
       ];
     }
 

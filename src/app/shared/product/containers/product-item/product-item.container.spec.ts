@@ -5,11 +5,11 @@ import { StoreModule, combineReducers } from '@ngrx/store';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
-import { ProductTileContainerComponent } from './product-tile.container';
+import { ProductItemContainerComponent } from './product-item.container';
 
-describe('Product Tile Container', () => {
-  let component: ProductTileContainerComponent;
-  let fixture: ComponentFixture<ProductTileContainerComponent>;
+describe('Product Item Container', () => {
+  let component: ProductItemContainerComponent;
+  let fixture: ComponentFixture<ProductItemContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -26,17 +26,22 @@ describe('Product Tile Container', () => {
           template: 'Loading Component',
         }),
         MockComponent({
+          selector: 'ish-product-row',
+          template: 'Product Row Component',
+          inputs: ['product', 'category', 'isInCompareList', 'variationOptions'],
+        }),
+        MockComponent({
           selector: 'ish-product-tile',
           template: 'Product Tile Component',
-          inputs: ['product', 'category', 'isInCompareList'],
+          inputs: ['product', 'category', 'isInCompareList', 'variationOptions'],
         }),
-        ProductTileContainerComponent,
+        ProductItemContainerComponent,
       ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductTileContainerComponent);
+    fixture = TestBed.createComponent(ProductItemContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.productSku = 'sku';

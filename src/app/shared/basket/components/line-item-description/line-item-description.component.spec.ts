@@ -24,6 +24,11 @@ describe('Line Item Description Component', () => {
           template: 'Product Shipment Component',
           inputs: ['product'],
         }),
+        MockComponent({
+          selector: 'ish-product-variation-display',
+          template: 'Product Variation Display Component',
+          inputs: ['product'],
+        }),
       ],
     }).compileComponents();
   }));

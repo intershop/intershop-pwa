@@ -1,0 +1,3 @@
+<ul *ngIf="product.variableVariationAttributes as attributes">
+  <li *ngFor="let attr of attributes">{{ attr.name }}: {{ attr.value }}</li>
+</ul>

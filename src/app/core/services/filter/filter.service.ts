@@ -43,12 +43,10 @@ export class FilterService {
   }
 
   getProductSkusForFilter(filterName: string, searchParameter: string): Observable<string[]> {
-    return this.apiService
-      .get<{ elements: Link[] }>(`filters/${filterName};SearchParameter=${searchParameter}/hits`)
-      .pipe(
-        unpackEnvelope(),
-        map((e: Link[]) => e.map(n => n.uri.split('/')[1]))
-      );
+    return this.apiService.get(`filters/${filterName};SearchParameter=${searchParameter}/hits`).pipe(
+      unpackEnvelope<Link>(),
+      map(e => e.map(n => n.uri.split('/')[1]))
+    );
   }
 
   private getDomainId(rootName: string) {

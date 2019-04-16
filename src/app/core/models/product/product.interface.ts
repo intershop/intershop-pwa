@@ -3,7 +3,9 @@ import { AttributeGroup } from '../attribute-group/attribute-group.model';
 import { Attribute } from '../attribute/attribute.model';
 import { CategoryData } from '../category/category.interface';
 import { Image } from '../image/image.model';
+import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
+import { VariationAttribute } from '../product-variation/variation-attribute.model';
 import { Warranty } from '../warranty/warranty.model';
 
 export interface ProductData {
@@ -70,4 +72,8 @@ export interface ProductDataStub {
   description: string;
   title: string;
   defaultCategory?: CategoryData;
+}
+
+export interface ProductVariationLink extends Link {
+  variableVariationAttributeValues: VariationAttribute[];
 }

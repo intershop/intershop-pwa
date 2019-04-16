@@ -1,10 +1,17 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
+import { ProductView, VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
+import { VariationProductMaster } from './product-variation-master.model';
+import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
-import { ProductType } from './product.types';
 
 export class ProductHelper {
+  /**
+   * the maximum level of completeness a category can achieve
+   */
+  static maxCompletenessLevel = 3;
+
   /**
    * Get primary product image based on image type
    * @param product   The Product for which to get the primary image
@@ -46,10 +53,33 @@ export class ProductHelper {
   }
 
   /**
+   * check if a given product has the maximum completeness level
+   */
+  static isProductCompletelyLoaded<T extends Product>(product: T): boolean {
+    return !!product && product.completenessLevel === ProductHelper.maxCompletenessLevel;
+  }
+
+  /**
    * Check if product is a master product
    */
-  static isMasterProduct(product: Product): boolean {
-    return product.type === ProductType.VariationProductMaster;
+  static isMasterProduct(product: Product): product is VariationProductMaster | VariationProductMasterView {
+    return product && product.type === 'VariationProductMaster';
+  }
+
+  /**
+   * Check if product is a master product
+   */
+  static isVariationProduct(product: Product): product is VariationProduct | VariationProductView {
+    return product && product.type === 'VariationProduct';
+  }
+
+  static hasVariations(
+    product: ProductView | VariationProductView | VariationProductMasterView
+  ): product is VariationProductView | VariationProductMasterView {
+    return (
+      (ProductHelper.isVariationProduct(product) || ProductHelper.isMasterProduct(product)) &&
+      !!product.variations().length
+    );
   }
 
   /**
