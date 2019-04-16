@@ -73,7 +73,8 @@ export class UserService {
     } else {
       newCustomer = {
         ...body.customer,
-        user: body.user,
+        // TODO: the addition of 'login: body.user.email' is a temporary fix for an ICM 7.10.7.3 API break
+        user: { ...body.user, login: body.user.email },
         address: body.address,
         credentials: body.credentials,
       };
