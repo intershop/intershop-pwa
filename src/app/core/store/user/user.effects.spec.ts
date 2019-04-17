@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
+import { CookiesService } from '@ngx-utils/cookies';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
@@ -64,6 +65,7 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
       ],
     });
 

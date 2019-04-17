@@ -62,6 +62,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@ngx-utils/cookies": "^3.0.2",
     "@schematics/angular": "^7.1.4",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.12.18",

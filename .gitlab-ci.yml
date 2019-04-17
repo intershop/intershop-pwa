@@ -566,7 +566,7 @@ cypress_remote:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - timeout 1200 node cypress-ci-e2e '**/*b2c*.e2e-spec.ts'
+    - node cypress-ci-e2e '**/*b2c*.e2e-spec.ts'
     - echo "E2E complete"
 
 cypress_remote_b2b:

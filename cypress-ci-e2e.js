@@ -7,7 +7,7 @@
 const _ = require('lodash');
 const cypress = require('cypress');
 
-const MAX_NUM_RUNS = 3;
+const MAX_NUM_RUNS = 6;
 
 const TEST_FILES = process.argv.length > 2 ? process.argv[2] : '**/*.e2e-spec.ts';
 
