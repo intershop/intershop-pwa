@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { OrderListComponent } from '../../components/order-list/order-list.component';
 
 import { OrderListContainerComponent } from './order-list.container';
 
@@ -14,18 +16,7 @@ describe('Order List Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
-        MockComponent({
-          selector: 'ish-order-list',
-          template: 'Order List Component',
-          inputs: ['orders', 'maxListItems', 'compact'],
-        }),
-        OrderListContainerComponent,
-      ],
+      declarations: [MockComponent(LoadingComponent), MockComponent(OrderListComponent), OrderListContainerComponent],
       imports: [PipesModule],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();

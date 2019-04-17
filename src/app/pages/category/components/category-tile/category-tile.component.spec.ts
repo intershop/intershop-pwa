@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { CategoryImageComponent } from '../category-image/category-image.component';
 
 import { CategoryTileComponent } from './category-tile.component';
 
@@ -15,14 +16,7 @@ describe('Category Tile Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [PipesModule, RouterTestingModule],
-      declarations: [
-        CategoryTileComponent,
-        MockComponent({
-          selector: 'ish-category-image',
-          template: 'Category Image Component',
-          inputs: ['category'],
-        }),
-      ],
+      declarations: [CategoryTileComponent, MockComponent(CategoryImageComponent)],
     }).compileComponents();
   }));
 

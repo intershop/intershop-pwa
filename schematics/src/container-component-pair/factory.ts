@@ -27,6 +27,8 @@ export function createContainerComponentPair(options: Options): Rule {
       schematic('container', {
         ...childOptions,
         referenceSelector: generateSelector('component', host, childOptions).selector,
+        referenceComponent: options.name,
+        referenceComponentPath: `../../components/${options.name}/${options.name}.component`,
         export: true,
       }),
     ]);

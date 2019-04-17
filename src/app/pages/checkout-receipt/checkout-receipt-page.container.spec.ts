@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { CheckoutReceiptPageContainerComponent } from './checkout-receipt-page.container';
+import { CheckoutReceiptComponent } from './components/checkout-receipt/checkout-receipt.component';
 
 describe('Checkout Receipt Page Container', () => {
   let component: CheckoutReceiptPageContainerComponent;
@@ -17,12 +19,8 @@ describe('Checkout Receipt Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutReceiptPageContainerComponent,
-        MockComponent({
-          selector: 'ish-checkout-receipt',
-          template: 'Checkout Receipt Component',
-          inputs: ['order', 'user'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent(CheckoutReceiptComponent),
+        MockComponent(LoadingComponent),
       ],
       imports: [
         StoreModule.forRoot({

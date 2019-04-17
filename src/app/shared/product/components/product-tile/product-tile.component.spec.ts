@@ -2,12 +2,19 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/components/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
+import { ProductAddToBasketComponent } from '../product-add-to-basket/product-add-to-basket.component';
+import { ProductAddToCompareComponent } from '../product-add-to-compare/product-add-to-compare.component';
+import { ProductLabelComponent } from '../product-label/product-label.component';
+import { ProductPriceComponent } from '../product-price/product-price.component';
+import { ProductVariationSelectComponent } from '../product-variation-select/product-variation-select.component';
 
 import { ProductTileComponent } from './product-tile.component';
 
@@ -26,41 +33,13 @@ describe('Product Tile Component', () => {
         TranslateModule.forRoot(),
       ],
       declarations: [
-        MockComponent({
-          selector: 'ish-lazy-product-add-to-quote',
-          template: 'Lazy Product Add To Quote',
-          inputs: ['displayType', 'disabled', 'class', 'product', 'quantity'],
-        }),
-        MockComponent({
-          selector: 'ish-product-add-to-basket',
-          template: 'Product Add To Basket',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-add-to-compare',
-          template: 'Product Add To Compare',
-          inputs: ['isInCompareList'],
-        }),
-        MockComponent({
-          selector: 'ish-product-image',
-          template: 'Product Image Component',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-label',
-          template: 'Product Label Component',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-price',
-          template: 'Product Price Component',
-          inputs: ['product', 'showInformationalPrice'],
-        }),
-        MockComponent({
-          selector: 'ish-product-variation-select',
-          template: 'Product Variation Select Component',
-          inputs: ['variationOptions'],
-        }),
+        MockComponent(LazyProductAddToQuoteComponent),
+        MockComponent(ProductAddToBasketComponent),
+        MockComponent(ProductAddToCompareComponent),
+        MockComponent(ProductImageComponent),
+        MockComponent(ProductLabelComponent),
+        MockComponent(ProductPriceComponent),
+        MockComponent(ProductVariationSelectComponent),
         ProductTileComponent,
       ],
     }).compileComponents();

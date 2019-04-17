@@ -3,13 +3,16 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { CustomerAddressFormComponent } from '../../../../shared/address-forms/components/customer-address-form/customer-address-form.component';
+import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
@@ -24,17 +27,9 @@ describe('Account Addresses Page Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountAddressesPageComponent,
-        MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
-        }),
-        MockComponent({
-          selector: 'ish-customer-address-form',
-          template: 'Customer Address Form Component',
-          inputs: ['address', 'resetForm'],
-        }),
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        MockComponent(AddressComponent),
+        MockComponent(CustomerAddressFormComponent),
+        MockComponent(ModalDialogComponent),
       ],
       imports: [FormsSharedModule, IconModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();

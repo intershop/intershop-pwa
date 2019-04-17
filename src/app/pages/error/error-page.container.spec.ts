@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { MockComponent } from 'ng-mocks';
 
+import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { ServerErrorPageComponent } from './components/server-error-page/server-error-page.component';
 import { ErrorPageContainerComponent } from './error-page.container';
 
 describe('Error Page Container', () => {
@@ -15,12 +17,8 @@ describe('Error Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         ErrorPageContainerComponent,
-        MockComponent({
-          selector: 'ish-server-error-page',
-          template: 'Server Error Page Component',
-          inputs: ['error'],
-        }),
-        MockComponent({ selector: 'ish-error-page', template: 'Error Page Component' }),
+        MockComponent(ErrorPageComponent),
+        MockComponent(ServerErrorPageComponent),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();

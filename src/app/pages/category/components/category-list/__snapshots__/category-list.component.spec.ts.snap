@@ -14,18 +14,14 @@ exports[`Category List Component should be created 1`] = `
     >
       <ish-category-tile
         ng-reflect-category="[object Object]"
-      >
-        Category Tile Component
-      </ish-category-tile>
+      />
     </li>
     <li
       class="category-list-item col-6 col-lg-4"
     >
       <ish-category-tile
         ng-reflect-category="[object Object]"
-      >
-        Category Tile Component
-      </ish-category-tile>
+      />
     </li>
   </ul>
 </div>

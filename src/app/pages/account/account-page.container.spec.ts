@@ -3,12 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
 
 import { AccountPageContainerComponent } from './account-page.container';
+import { AccountPageComponent } from './components/account-page/account-page.component';
 
 describe('Account Page Container', () => {
   let fixture: ComponentFixture<AccountPageContainerComponent>;
@@ -19,15 +21,8 @@ describe('Account Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountPageContainerComponent,
-        MockComponent({
-          selector: 'ish-account-page',
-          template: 'Account Page Component',
-        }),
-        MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trail'],
-        }),
+        MockComponent(AccountPageComponent),
+        MockComponent(BreadcrumbComponent),
       ],
       providers: [
         { provide: Store, useFactory: () => instance(mock(Store)) },

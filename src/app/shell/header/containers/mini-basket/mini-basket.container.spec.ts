@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { MiniBasketComponent } from '../../components/mini-basket/mini-basket.component';
 
 import { MiniBasketContainerComponent } from './mini-basket.container';
 
@@ -13,14 +14,7 @@ describe('Mini Basket Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MiniBasketContainerComponent,
-        MockComponent({
-          selector: 'ish-mini-basket',
-          template: 'Mini Basket',
-          inputs: ['basket', 'view', 'basketAnimation'],
-        }),
-      ],
+      declarations: [MiniBasketContainerComponent, MockComponent(MiniBasketComponent)],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })
       .compileComponents()

@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountProfileSettingsPageContainerComponent } from './account-profile-settings-page.container';
+import { AccountProfileSettingsPageComponent } from './components/account-profile-settings-page/account-profile-settings-page.component';
 
 describe('Account Profile Settings Page Container', () => {
   let component: AccountProfileSettingsPageContainerComponent;
@@ -26,14 +27,7 @@ describe('Account Profile Settings Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AccountProfileSettingsPageContainerComponent,
-        MockComponent({
-          selector: 'ish-account-profile-settings-page',
-          template: 'Profile Settings Component',
-          inputs: ['user', 'customer'],
-        }),
-      ],
+      declarations: [AccountProfileSettingsPageContainerComponent, MockComponent(AccountProfileSettingsPageComponent)],
       imports: [StoreModule.forRoot(coreReducers), TranslateModule.forRoot()],
     })
       .compileComponents()

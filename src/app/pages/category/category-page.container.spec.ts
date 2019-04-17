@@ -1,14 +1,18 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { LoadCategory, LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { CategoryPageContainerComponent } from './category-page.container';
+import { CategoryPageComponent } from './components/category-page/category-page.component';
+import { FamilyPageComponent } from './components/family-page/family-page.component';
 
 describe('Category Page Container', () => {
   let component: CategoryPageContainerComponent;
@@ -25,22 +29,10 @@ describe('Category Page Container', () => {
       ],
       declarations: [
         CategoryPageContainerComponent,
-        MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['category'],
-        }),
-        MockComponent({
-          selector: 'ish-category-page',
-          template: 'Category Page Component',
-          inputs: ['category'],
-        }),
-        MockComponent({
-          selector: 'ish-family-page',
-          template: 'Family Page Component',
-          inputs: ['category'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent(BreadcrumbComponent),
+        MockComponent(CategoryPageComponent),
+        MockComponent(FamilyPageComponent),
+        MockComponent(LoadingComponent),
       ],
     }).compileComponents();
   }));

@@ -1,13 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { CategoryListComponent } from '../category-list/category-list.component';
+import { CategoryNavigationComponent } from '../category-navigation/category-navigation.component';
 
 import { CategoryPageComponent } from './category-page.component';
 
@@ -21,12 +23,8 @@ describe('Category Page Component', () => {
       imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
       declarations: [
         CategoryPageComponent,
-        MockComponent({
-          selector: 'ish-category-navigation',
-          template: 'Category Navigation Component',
-          inputs: ['category', 'categoryPath', 'categoryNavigationLevel'],
-        }),
-        MockComponent({ selector: 'ish-category-list', template: 'Category List Component', inputs: ['categories'] }),
+        MockComponent(CategoryListComponent),
+        MockComponent(CategoryNavigationComponent),
       ],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     }).compileComponents();

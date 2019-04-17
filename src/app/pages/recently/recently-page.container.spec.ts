@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
 
+import { RecentlyViewedAllComponent } from './components/recently-viewed-all/recently-viewed-all.component';
 import { RecentlyPageContainerComponent } from './recently-page.container';
 
 describe('Recently Page Container', () => {
@@ -15,12 +17,8 @@ describe('Recently Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({
-          selector: 'ish-recently-viewed-all',
-          template: 'Recently Viewed All Component',
-          inputs: ['products'],
-        }),
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trail'] }),
+        MockComponent(BreadcrumbComponent),
+        MockComponent(RecentlyViewedAllComponent),
         RecentlyPageContainerComponent,
       ],
       imports: [TranslateModule.forRoot()],

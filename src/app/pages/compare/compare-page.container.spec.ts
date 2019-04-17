@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
@@ -8,10 +9,10 @@ import { AddToCompare } from 'ish-core/store/shopping/compare';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ComparePageContainerComponent } from './compare-page.container';
+import { ProductCompareListComponent } from './components/product-compare-list/product-compare-list.component';
 
 describe('Compare Page Container', () => {
   let fixture: ComponentFixture<ComparePageContainerComponent>;
@@ -21,14 +22,7 @@ describe('Compare Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ComparePageContainerComponent,
-        MockComponent({
-          selector: 'ish-product-compare-list',
-          template: 'Product Compare List Component',
-          inputs: ['compareProducts'],
-        }),
-      ],
+      declarations: [ComparePageContainerComponent, MockComponent(ProductCompareListComponent)],
       imports: [
         ...ngrxTesting({
           shopping: combineReducers(shoppingReducers),

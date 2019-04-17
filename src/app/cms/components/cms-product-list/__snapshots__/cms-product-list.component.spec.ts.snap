@@ -28,9 +28,7 @@ exports[`Cms Product List Component should be created 1`] = `
           ng-reflect-product-sku="1"
           ng-reflect-type="tile"
           type="tile"
-        >
-          Product Item
-        </ish-product-item-container>
+        />
       </div>
       <div
         class="product-list-item li-css-class"
@@ -41,9 +39,7 @@ exports[`Cms Product List Component should be created 1`] = `
           ng-reflect-product-sku="2"
           ng-reflect-type="tile"
           type="tile"
-        >
-          Product Item
-        </ish-product-item-container>
+        />
       </div>
     </div>
   </div>

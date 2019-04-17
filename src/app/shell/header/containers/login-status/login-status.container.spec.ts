@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoginStatusComponent } from '../../components/login-status/login-status.component';
+import { LogoutComponent } from '../../components/logout/logout.component';
 
 import { LoginStatusContainerComponent } from './login-status.container';
 
@@ -15,16 +17,8 @@ describe('Login Status Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         LoginStatusContainerComponent,
-        MockComponent({
-          selector: 'ish-login-status',
-          template: 'Login Status',
-          inputs: ['user', 'view'],
-        }),
-        MockComponent({
-          selector: 'ish-logout',
-          template: 'Logout',
-          inputs: ['user', 'view'],
-        }),
+        MockComponent(LoginStatusComponent),
+        MockComponent(LogoutComponent),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })

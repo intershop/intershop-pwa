@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
+import { AccountOrderHistoryPageComponent } from './components/account-order-history-page/account-order-history-page.component';
 
 describe('Account Order History Page Container', () => {
   let component: AccountOrderHistoryPageContainerComponent;
@@ -16,15 +18,8 @@ describe('Account Order History Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountOrderHistoryPageContainerComponent,
-        MockComponent({
-          selector: 'ish-account-order-history-page',
-          template: 'Order History Page Component',
-          inputs: ['orders'],
-        }),
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
+        MockComponent(AccountOrderHistoryPageComponent),
+        MockComponent(LoadingComponent),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [TranslateModule.forRoot()],

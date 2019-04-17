@@ -1,9 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { SelectComponent } from '../../../../shared/forms/components/select/select.component';
 
 import { ProductQuantityComponent } from './product-quantity.component';
 
@@ -16,32 +19,7 @@ describe('Product Quantity Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        MockComponent({
-          selector: 'ish-input',
-          template: '<input type="number" />',
-          inputs: [
-            'options',
-            'controlName',
-            'form',
-            'label',
-            'labelClass',
-            'inputClass',
-            'markRequiredLabel',
-            'min',
-            'max',
-            'value',
-            'errorMessages',
-            'type',
-          ],
-        }),
-        MockComponent({
-          selector: 'ish-select',
-          template: '<select> </select>',
-          inputs: ['options', 'controlName', 'form', 'label', 'labelClass', 'inputClass'],
-        }),
-        ProductQuantityComponent,
-      ],
+      declarations: [MockComponent(InputComponent), MockComponent(SelectComponent), ProductQuantityComponent],
     }).compileComponents();
   }));
 
@@ -71,11 +49,11 @@ describe('Product Quantity Component', () => {
   it('should not render when inStock = false', () => {
     product.inStock = false;
     fixture.detectChanges();
-    expect(element.querySelector('input[type="number"]')).toBeFalsy();
+    expect(findAllIshElements(element)).toBeEmpty();
   });
 
   it('should display number input when type is not select', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[type="number"]')).toBeTruthy();
+    expect(findAllIshElements(element)).toContain('ish-input');
   });
 });

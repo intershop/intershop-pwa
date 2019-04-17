@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { FilterNavigationContainerComponent } from '../../../../shared/filter/containers/filter-navigation/filter-navigation.container';
+import { ProductListContainerComponent } from '../../../../shared/product/containers/product-list/product-list.container';
 
 import { SearchResultComponent } from './search-result.component';
 
@@ -15,15 +17,8 @@ describe('Search Result Component', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        MockComponent({
-          selector: 'ish-filter-navigation',
-          template: 'Filter Navigation',
-        }),
-        MockComponent({
-          selector: 'ish-product-list-container',
-          template: 'Products List Toolbar Component',
-          inputs: ['pageUrl'],
-        }),
+        MockComponent(FilterNavigationContainerComponent),
+        MockComponent(ProductListContainerComponent),
         SearchResultComponent,
       ],
     }).compileComponents();

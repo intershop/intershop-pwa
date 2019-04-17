@@ -1,11 +1,16 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
 import { SearchProductsSuccess } from 'ish-core/store/shopping/search';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { SetPagingInfo } from 'ish-core/store/shopping/viewconf';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { ProductListPagingComponent } from '../../shared/product/components/product-list-paging/product-list-paging.component';
 
+import { SearchNoResultComponent } from './components/search-no-result/search-no-result.component';
+import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchPageContainerComponent } from './search-page.container';
 
 describe('Search Page Container', () => {
@@ -22,23 +27,11 @@ describe('Search Page Container', () => {
         }),
       ],
       declarations: [
-        MockComponent({
-          selector: 'ish-product-list-paging',
-          template: 'Product List Paging Component',
-          inputs: ['currentPage', 'canRequestMore', 'pageIndices', 'pageUrl'],
-        }),
-        MockComponent({
-          selector: 'ish-search-no-result',
-          template: 'Search No Result Component',
-          inputs: ['searchTerm'],
-        }),
-        MockComponent({
-          selector: 'ish-search-result',
-          template: 'Search Result Component',
-          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
-        }),
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['searchTerm'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent(BreadcrumbComponent),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductListPagingComponent),
+        MockComponent(SearchNoResultComponent),
+        MockComponent(SearchResultComponent),
         SearchPageContainerComponent,
       ],
     }).compileComponents();

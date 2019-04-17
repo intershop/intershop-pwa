@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { LoadFilterForCategorySuccess } from 'ish-core/store/shopping/filter';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { FilterCheckboxComponent } from '../../components/filter-checkbox/filter-checkbox.component';
+import { FilterDropdownComponent } from '../../components/filter-dropdown/filter-dropdown.component';
+import { FilterSwatchImagesComponent } from '../../components/filter-swatch-images/filter-swatch-images.component';
 
 import { FilterNavigationContainerComponent } from './filter-navigation.container';
 
@@ -25,13 +28,9 @@ describe('Filter Navigation Container', () => {
       ],
       declarations: [
         FilterNavigationContainerComponent,
-        MockComponent({
-          selector: 'ish-filter-swatch-images',
-          template: 'Swatch Images Filter',
-          inputs: ['filterElement'],
-        }),
-        MockComponent({ selector: 'ish-filter-checkbox', template: 'Checkbox Filter', inputs: ['filterElement'] }),
-        MockComponent({ selector: 'ish-filter-dropdown', template: 'Dropdown Filter', inputs: ['filterElement'] }),
+        MockComponent(FilterCheckboxComponent),
+        MockComponent(FilterDropdownComponent),
+        MockComponent(FilterSwatchImagesComponent),
       ],
     }).compileComponents();
   }));

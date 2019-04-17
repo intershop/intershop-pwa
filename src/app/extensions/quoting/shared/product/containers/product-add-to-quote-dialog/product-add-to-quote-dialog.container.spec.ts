@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { quotingReducers } from '../../../../store/quoting-store.module';
+import { ProductAddToQuoteDialogComponent } from '../../components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 
 import { ProductAddToQuoteDialogContainerComponent } from './product-add-to-quote-dialog.container';
 
@@ -19,14 +20,7 @@ describe('Product Add To Quote Dialog Container', () => {
           quoting: combineReducers(quotingReducers),
         }),
       ],
-      declarations: [
-        MockComponent({
-          selector: 'ish-product-add-to-quote-dialog',
-          template: 'Product Add To Quote Dialog',
-          inputs: ['ngbActiveModal', 'quote', 'quoteLoading'],
-        }),
-        ProductAddToQuoteDialogContainerComponent,
-      ],
+      declarations: [MockComponent(ProductAddToQuoteDialogComponent), ProductAddToQuoteDialogContainerComponent],
       providers: [NgbActiveModal],
     })
       .compileComponents()

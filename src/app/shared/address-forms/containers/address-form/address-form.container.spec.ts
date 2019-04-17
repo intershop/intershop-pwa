@@ -2,6 +2,7 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store, StoreModule } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -11,7 +12,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { AddressFormComponent } from '../../components/address-form/address-form.component';
 import { AddressFormFactory } from '../../components/address-form/address-form.factory';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 
@@ -30,14 +31,7 @@ describe('Address Form Container', () => {
     when(addressFormFactoryMock.countryCode).thenReturn('default');
 
     TestBed.configureTestingModule({
-      declarations: [
-        AddressFormContainerComponent,
-        MockComponent({
-          selector: 'ish-address-form',
-          template: 'Address Form Component',
-          inputs: ['parentForm', 'countryCode', 'countries', 'regions', 'titles'],
-        }),
-      ],
+      declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
       imports: [PipesModule, StoreModule.forRoot(coreReducers)],
       providers: [
         AddressFormFactoryProvider,

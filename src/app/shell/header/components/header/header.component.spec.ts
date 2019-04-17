@@ -3,12 +3,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { HeaderNavigationContainerComponent } from '../../containers/header-navigation/header-navigation.container';
+import { LanguageSwitchContainerComponent } from '../../containers/language-switch/language-switch.container';
+import { LoginStatusContainerComponent } from '../../containers/login-status/login-status.container';
+import { MiniBasketContainerComponent } from '../../containers/mini-basket/mini-basket.container';
+import { ProductCompareStatusContainerComponent } from '../../containers/product-compare-status/product-compare-status.container';
+import { SearchBoxContainerComponent } from '../../containers/search-box/search-box.container';
+import { UserInformationMobileComponent } from '../user-information-mobile/user-information-mobile.component';
 
 import { HeaderComponent } from './header.component';
 
@@ -32,20 +40,13 @@ describe('Header Component', () => {
       ],
       declarations: [
         HeaderComponent,
-        MockComponent({
-          selector: 'ish-product-compare-status-container',
-          template: 'Product Compare Status Container',
-        }),
-        MockComponent({
-          selector: 'ish-search-box-container',
-          template: 'Search Box Container',
-          inputs: ['configuration'],
-        }),
-        MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
-        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
-        MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
-        MockComponent({ selector: 'ish-user-information-mobile', template: 'Mobile User Information' }),
+        MockComponent(HeaderNavigationContainerComponent),
+        MockComponent(LanguageSwitchContainerComponent),
+        MockComponent(LoginStatusContainerComponent),
+        MockComponent(MiniBasketContainerComponent),
+        MockComponent(ProductCompareStatusContainerComponent),
+        MockComponent(SearchBoxContainerComponent),
+        MockComponent(UserInformationMobileComponent),
       ],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })
@@ -69,27 +70,21 @@ describe('Header Component', () => {
     });
 
     it('should render User Links on template', () => {
-      expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain(
-        'Login Status Container'
-      );
-      expect(element.getElementsByTagName('ish-product-compare-status-container')[0].textContent).toContain(
-        'Product Compare Status Container'
-      );
+      expect(findAllIshElements(element)).toIncludeAllMembers([
+        'ish-login-status-container',
+        'ish-product-compare-status-container',
+      ]);
     });
     it('should render Language Switch on template', () => {
-      expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain(
-        'Language Switch Container'
-      );
+      expect(findAllIshElements(element)).toContain('ish-language-switch-container');
     });
 
     it('should render Search Box on template', () => {
-      expect(element.getElementsByTagName('ish-search-box-container')[0].textContent).toContain('Search Box Container');
+      expect(findAllIshElements(element)).toContain('ish-search-box-container');
     });
 
     it('should render Header Navigation on template', () => {
-      expect(element.getElementsByTagName('ish-header-navigation-container')[0].textContent).toContain(
-        'Header Navigation Container'
-      );
+      expect(findAllIshElements(element)).toContain('ish-header-navigation-container');
     });
   });
 });

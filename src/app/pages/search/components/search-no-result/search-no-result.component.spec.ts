@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { SearchBoxContainerComponent } from '../../../../shell/header/containers/search-box/search-box.container';
 
 import { SearchNoResultComponent } from './search-no-result.component';
 
@@ -14,14 +15,7 @@ describe('Search No Result Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent({
-          selector: 'ish-search-box-container',
-          template: 'Search Box Container',
-          inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
-        }),
-        SearchNoResultComponent,
-      ],
+      declarations: [MockComponent(SearchBoxContainerComponent), SearchNoResultComponent],
     });
   }));
 
