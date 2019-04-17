@@ -31,69 +31,80 @@ const _ = {
 
 describe('Shopping User', () => {
   before(() => {
-    createUserViaREST(_.user);
     HomePage.navigateTo();
   });
 
-  it('should navigate to a product', () => {
-    at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
-    at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
-    at(ProductDetailPage, page => {
-      page.sku.should('have.text', _.product.sku);
-      page.price.should('contain', _.product.price);
+  describe('shopping anonymous', () => {
+    it('should navigate to a product', () => {
+      at(HomePage, page => page.header.gotoCategoryPage(_.catalog));
+      at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+      at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
+      at(ProductDetailPage, page => {
+        page.sku.should('have.text', _.product.sku);
+        page.price.should('contain', _.product.price);
+      });
+    });
+
+    it('should add the product to cart', () => {
+      at(ProductDetailPage, page => {
+        page
+          .addProductToCart()
+          .its('status')
+          .should('equal', 201);
+        page.header.miniCart.total.should('contain', _.product.price);
+        page.header.miniCart.goToCart();
+      });
+      at(CartPage);
     });
   });
 
-  it('should add the product to cart', () => {
-    at(ProductDetailPage, page => {
-      page.addProductToCart();
-      page.header.miniCart.total.should('contain', _.product.price);
-      page.header.miniCart.goToCart();
+  describe('continuing logged in', () => {
+    before(() => {
+      at(CartPage);
+      createUserViaREST(_.user);
     });
-    at(CartPage);
-  });
 
-  it('should start checkout by logging in', () => {
-    at(CartPage, page => page.beginCheckout());
-    at(LoginPage, page => {
-      page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
+    it('should start checkout by logging in', () => {
+      at(CartPage, page => page.beginCheckout());
+      at(LoginPage, page => {
+        page.fillForm(_.user.login, _.user.password);
+        page
+          .submit()
+          .its('status')
+          .should('equal', 200);
+      });
     });
-  });
 
-  it('should set first addresses automatically', () => {
-    at(AddressesPage, page => {
-      cy.wait(1000);
-      page.continueCheckout();
+    it('should set first addresses automatically', () => {
+      at(AddressesPage, page => {
+        cy.wait(1000);
+        page.continueCheckout();
+      });
     });
-  });
 
-  it('should accept default shipping option', () => {
-    at(ShippingPage, page => page.continueCheckout());
-  });
-
-  it('should select invoice payment', () => {
-    at(PaymentPage, page => {
-      page.selectPayment('INVOICE');
-      page.continueCheckout();
+    it('should accept default shipping option', () => {
+      at(ShippingPage, page => page.continueCheckout());
     });
-  });
 
-  it('should review order and submit', () => {
-    at(ReviewPage, page => {
-      page.acceptTAC();
-      page.submitOrder();
+    it('should select invoice payment', () => {
+      at(PaymentPage, page => {
+        page.selectPayment('INVOICE');
+        page.continueCheckout();
+      });
     });
-  });
 
-  it('should check the receipt and continue shopping', () => {
-    at(ReceiptPage, page => {
-      page.continueShopping();
+    it('should review order and submit', () => {
+      at(ReviewPage, page => {
+        page.acceptTAC();
+        page.submitOrder();
+      });
     });
-    at(HomePage);
+
+    it('should check the receipt and continue shopping', () => {
+      at(ReceiptPage, page => {
+        page.continueShopping();
+      });
+      at(HomePage);
+    });
   });
 });

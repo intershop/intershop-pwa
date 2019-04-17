@@ -37,8 +37,11 @@ export class ProductDetailPage {
   }
 
   addProductToCart() {
+    cy.server();
     cy.wait(1000);
+    cy.route('POST', '**/baskets/**/items').as('basket');
     this.addToCartButton().click();
+    return cy.wait('@basket');
   }
 
   addProductToQuoteRequest() {
