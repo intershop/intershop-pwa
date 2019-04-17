@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
 
@@ -37,8 +38,8 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
 export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpError }) => T, extras?: any) {
   return (source$: Observable<S | T>) =>
     source$.pipe(
-      // tslint:disable-next-line:ban
-      catchError(err => {
+      // tslint:disable-next-line:ban ban-types
+      catchError((err: HttpErrorResponse) => {
         /*
           display error in certain circumstances:
           typeof window === 'undefined' -- universal mode
