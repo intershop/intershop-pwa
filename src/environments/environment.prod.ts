@@ -1,29 +1,45 @@
 // tslint:disable:no-commented-out-code
 export const environment = {
   production: true,
-  // set to true if not working against a real ICM server
-  // mockServerAPI: false,
-  // array of REST path expressions that should always be mocked
-  // mustMockPaths: [],
 
-  // Intershop Commerce Management REST server configuration
+  /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
+
   icmBaseURL: 'http://192.168.99.100:8081',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmChannel: 'inSPIRED-inTRONICS-Site',
+  // icmApplication: 'pwa',
 
-  // To use the Google Tag Manager, insert a correct GTM-Token and uncomment the next line
+  // set 'mockServerAPI' to true if not working against a real ICM server
+  // mockServerAPI: false,
+  // array of REST path expressions that should always be mocked
+  // mustMockPaths: [],
+
+  /* FEATURE TOOGLES */
+
+  features: [
+    'compare',
+    'recently',
+    // 'stickyHeader',
+
+    /* B2B features */
+    // 'businessCustomerRegistration',
+    // 'quoting',
+
+    /* Third-party Integrations */
+    // 'tracking',
+    'sentry',
+  ],
+
+  /* ADDITIONAL FEATURE CONFIGURATIONS */
+
+  // track shop interaction via Google Tag Manager (to be used with 'tracking' feature)
   // gtmToken: 'GTM-XXXXXXX',
 
-  // log client-side-javascript-errors to sentry.io
+  // log client-side-javascript-errors to sentry.io (to be used with 'sentry' feature)
   // sentryDSN: 'https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@sentry.io/XXXXXXX',
 
-  // configuration of the available locales - hard coded for now
-  locales: [
-    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
-    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
-    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
-  ],
+  /* PROGRESSIVE WEB APP CONFIGURATIONS */
 
   // Bootstrap grid system breakpoint widths as defined in the variables-bootstrap-customized.scss for usage in Javascript logic
   smallBreakpointWidth: 576,
@@ -43,14 +59,10 @@ export const environment = {
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
 
-  // enable feature toggles for specific features
-  features: [
-    'compare',
-    'recently',
-    // 'quoting',
-    // 'stickyHeader',
-    // 'tracking',
-    // 'businessCustomerRegistration',
-    'sentry',
+  // configuration of the available locales - hard coded for now
+  locales: [
+    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
+    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
+    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
 };
