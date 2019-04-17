@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 import { CookieLawModule } from 'angular2-cookie-law';
 
@@ -20,6 +21,7 @@ export function translateFactory(http: HttpClient) {
 }
 @NgModule({
   imports: [
+    BrowserCookiesModule.forRoot(),
     ConfigurationModule,
     CookieLawModule,
     HttpClientModule,

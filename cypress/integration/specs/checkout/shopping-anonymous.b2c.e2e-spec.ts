@@ -48,7 +48,10 @@ describe('Anonymous Checkout', () => {
 
   it('should add the product to cart', () => {
     at(ProductDetailPage, page => {
-      page.addProductToCart();
+      page
+        .addProductToCart()
+        .its('status')
+        .should('equal', 201);
       page.header.miniCart.total.should('contain', _.product.price);
       page.header.miniCart.goToCart();
     });

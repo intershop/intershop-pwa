@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { CookiesService } from '@ngx-utils/cookies';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
@@ -183,6 +184,7 @@ describe('Shopping Store', () => {
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },

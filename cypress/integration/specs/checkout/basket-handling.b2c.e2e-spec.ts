@@ -43,7 +43,10 @@ describe('Basket Handling', () => {
     at(CategoryPage, page => page.gotoSubCategory(_.category.id));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
-      page.addProductToCart();
+      page
+        .addProductToCart()
+        .its('status')
+        .should('equal', 201);
       page.header.miniCart.total.should('contain', _.product.price);
       page.header.logout();
     });
@@ -55,7 +58,10 @@ describe('Basket Handling', () => {
     at(CategoryPage, page => page.gotoSubCategory(_.category.id));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
-      page.addProductToCart();
+      page
+        .addProductToCart()
+        .its('status')
+        .should('equal', 201);
       page.header.miniCart.total.should('contain', _.product.price);
     });
   });
@@ -77,7 +83,10 @@ describe('Basket Handling', () => {
     at(CategoryPage, page => page.gotoSubCategory(_.category.id));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
-      page.addProductToCart();
+      page
+        .addProductToCart()
+        .its('status')
+        .should('equal', 200);
       page.header.miniCart.total.should('contain', _.product.price * 3);
     });
   });

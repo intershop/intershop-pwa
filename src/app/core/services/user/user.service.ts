@@ -2,8 +2,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
@@ -46,6 +46,17 @@ export class UserService {
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
     return this.apiService.get<CustomerData>('customers/-', { headers }).pipe(map(CustomerMapper.mapLoginData));
+  }
+
+  signinUserByToken(apiToken: string): Observable<CustomerUserType> {
+    const headers = new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, apiToken);
+    return this.apiService
+      .get<CustomerData>('customers/-', { headers, skipApiErrorHandling: true, runExclusively: true })
+      .pipe(
+        map(CustomerMapper.mapLoginData),
+        // tslint:disable-next-line:ban
+        catchError(() => of(undefined))
+      );
   }
 
   /**

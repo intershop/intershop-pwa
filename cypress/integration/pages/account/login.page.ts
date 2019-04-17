@@ -6,6 +6,7 @@ export class LoginPage {
   readonly header = new HeaderModule();
 
   static navigateTo() {
+    cy.clearCookie('apiToken');
     cy.visit('/login?returnUrl=%2Faccount');
   }
 
