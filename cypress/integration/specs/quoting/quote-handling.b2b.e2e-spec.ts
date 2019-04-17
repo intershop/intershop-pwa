@@ -79,7 +79,10 @@ describe('Quote Handling', () => {
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.setQuantity(quantity);
-      page.addProductToCart();
+      page
+        .addProductToCart()
+        .its('status')
+        .should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {

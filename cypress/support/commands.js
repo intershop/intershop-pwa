@@ -23,6 +23,7 @@
 //
 // -- This is will overwrite an existing command --
 Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
+  cy.setCookie('cookieLawSeen', 'true');
   cy.server();
   cy.route(/\/categories/).as('categories');
   cy.route('**/i18n/*.json').as('translations');
@@ -60,4 +61,9 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
       expect(newUrl).to.match(oldUrlRegex);
     });
   });
+});
+
+Cypress.Cookies.debug(true);
+Cypress.Cookies.defaults({
+  whitelist: ['cookieLawSeen'],
 });
