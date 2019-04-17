@@ -4,6 +4,12 @@ import { ContentEntryPointView, ContentPageletView } from 'ish-core/models/conte
 import { SfeDomNode, SfeMetadata, SfeMetadataNode } from './sfe.types';
 
 export class SfeMapper {
+  /**
+   * Analyze the DOM tree and create a nested `SfeDomNode` that contains `SfeMetadata` information.
+   * Walk through the actual DOM recursively and only retain branches with SFE elements in them.
+   *
+   * @param node The actual DOM tree, represented by a root element, e.g. the `body`
+   */
   static getDomTree(node: Node): SfeDomNode {
     const attributeName = 'data-sfe';
 
@@ -33,6 +39,12 @@ export class SfeMapper {
     return output;
   }
 
+  /**
+   * Reduce the tree created by `getDomTree()`.
+   * Remove all nodes that are not SFE elements.
+   *
+   * @param node The abstracted tree created by `getDomTree()`
+   */
   static reduceDomTree(node: SfeDomNode): SfeMetadataNode {
     const children = node.children
       .map(child => SfeMapper.reduceDomTree(child))
@@ -45,6 +57,7 @@ export class SfeMapper {
     };
   }
 
+  /** Create SFE metadata from a an entrypoint/include */
   static mapIncludeViewToSfeMetadata(include: ContentEntryPointView): SfeMetadata {
     return {
       id: `include:${include.domain}:${include.id}`,
@@ -58,6 +71,7 @@ export class SfeMapper {
     };
   }
 
+  /** Create SFE metadata from a pagelet */
   static mapPageletViewToSfeMetadata(pagelet: ContentPageletView): SfeMetadata {
     const dqnSplit = pagelet.definitionQualifiedName.split('-');
     const displayType = dqnSplit[dqnSplit.length - 1];
@@ -73,6 +87,7 @@ export class SfeMapper {
     };
   }
 
+  /** Create SFE metadata from a slot */
   static mapSlotViewToSfeMetadata(pagelet: ContentPageletView, slot: string): SfeMetadata {
     return {
       id: `slot:${pagelet.domain}:${slot}:${pagelet.id}`, // TODO
