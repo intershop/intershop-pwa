@@ -1,15 +1,19 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { LoadBasket, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { RecentlyViewedContainerComponent } from '../../shared/recently/containers/recently-viewed/recently-viewed.container';
 
 import { BasketPageContainerComponent } from './basket-page.container';
+import { ShoppingBasketEmptyComponent } from './components/shopping-basket-empty/shopping-basket-empty.component';
+import { ShoppingBasketComponent } from './components/shopping-basket/shopping-basket.component';
 
 describe('Basket Page Container', () => {
   let component: BasketPageContainerComponent;
@@ -21,14 +25,10 @@ describe('Basket Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         BasketPageContainerComponent,
-        MockComponent({
-          selector: 'ish-shopping-basket',
-          template: 'Shopping Basket Component',
-          inputs: ['basket', 'error'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
-        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
+        MockComponent(LoadingComponent),
+        MockComponent(RecentlyViewedContainerComponent),
+        MockComponent(ShoppingBasketComponent),
+        MockComponent(ShoppingBasketEmptyComponent),
       ],
       imports: [
         StoreModule.forRoot({

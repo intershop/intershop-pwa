@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent } from 'ng-mocks';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-views';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ContentPageletContainerComponent } from '../../containers/content-pagelet/content-pagelet.container';
+import { ContentSlotContainerComponent } from '../../containers/content-slot/content-slot.container';
 
 import { CMSCarouselComponent } from './cms-carousel.component';
 
@@ -15,12 +17,8 @@ describe('Cms Carousel Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CMSCarouselComponent,
-        MockComponent({
-          selector: 'ish-content-slot',
-          template: 'outlet',
-          inputs: ['pagelet', 'slot', 'wrapper'],
-        }),
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
+        MockComponent(ContentPageletContainerComponent),
+        MockComponent(ContentSlotContainerComponent),
       ],
       imports: [NgbCarouselModule],
     }).compileComponents();

@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { MockComponent } from 'ng-mocks';
 
+import { HomePageComponent } from './components/home-page/home-page.component';
 import { HomePageContainerComponent } from './home-page.container';
 
 describe('Home Page Container', () => {
@@ -11,10 +12,7 @@ describe('Home Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        HomePageContainerComponent,
-        MockComponent({ selector: 'ish-home-page', template: 'Home Page Component' }),
-      ],
+      declarations: [HomePageContainerComponent, MockComponent(HomePageComponent)],
     }).compileComponents();
   }));
 

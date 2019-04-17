@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockComponent } from 'ng-mocks';
 
 import { contentReducers } from 'ish-core/store/content/content-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
+import { ContentPageComponent } from './components/content-page/content-page.component';
 import { ContentPageContainerComponent } from './content-page.container';
 
 describe('Content Page Container', () => {
@@ -16,9 +19,9 @@ describe('Content Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         ContentPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trail'] }),
-        MockComponent({ selector: 'ish-content-page', template: 'Content Page Component', inputs: ['contentPage'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent(BreadcrumbComponent),
+        MockComponent(ContentPageComponent),
+        MockComponent(LoadingComponent),
       ],
       imports: [
         RouterTestingModule,

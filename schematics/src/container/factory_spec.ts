@@ -123,12 +123,12 @@ Array [
   });
 
   it('should reference a selector in template if requested', () => {
-    const options = { ...defaultOptions, referenceSelector: 'ish-dummy-page' };
+    const options = { ...defaultOptions, referenceSelector: 'ish-dummy-page', referenceComponent: 'dummy-page' };
     const tree = schematicRunner.runSchematic('container', options, appTree);
     const containerTemplate = tree.readContent('/projects/bar/src/app/containers/foo/foo.container.html');
     expect(containerTemplate).toContain('ish-dummy-page');
     const containerTest = tree.readContent('/projects/bar/src/app/containers/foo/foo.container.spec.ts');
-    expect(containerTest).toContain('ish-dummy-page');
+    expect(containerTest).toContain('DummyPageComponent');
     expect(containerTest).toContain('MockComponent');
   });
 

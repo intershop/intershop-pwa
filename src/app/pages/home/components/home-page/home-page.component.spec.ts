@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ContentIncludeContainerComponent } from '../../../../cms/containers/content-include/content-include.container';
 
 import { HomePageComponent } from './home-page.component';
 
@@ -13,10 +14,7 @@ describe('Home Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbCarouselModule],
-      declarations: [
-        HomePageComponent,
-        MockComponent({ selector: 'ish-content-include', template: 'Content Include', inputs: ['includeId'] }),
-      ],
+      declarations: [HomePageComponent, MockComponent(ContentIncludeContainerComponent)],
     }).compileComponents();
   }));
 

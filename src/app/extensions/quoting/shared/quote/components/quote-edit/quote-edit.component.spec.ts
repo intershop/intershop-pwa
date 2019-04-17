@@ -2,14 +2,18 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
+import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
+import { RecentlyViewedContainerComponent } from '../../../../../../shared/recently/containers/recently-viewed/recently-viewed.container';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
+import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteEditComponent } from './quote-edit.component';
 
@@ -21,24 +25,10 @@ describe('Quote Edit Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({
-          selector: 'ish-line-item-list',
-          template: 'Line Item List Component',
-          inputs: ['lineItems', 'editable', 'total'],
-        }),
-        MockComponent({
-          selector: 'ish-quote-state',
-          template: 'Quote State Component',
-          inputs: ['quote'],
-        }),
-        MockComponent({
-          selector: 'ish-shopping-basket',
-          template: 'Shopping Basket Component',
-          inputs: ['basket', 'error'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
-        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
+        MockComponent(LineItemListComponent),
+        MockComponent(LoadingComponent),
+        MockComponent(QuoteStateComponent),
+        MockComponent(RecentlyViewedContainerComponent),
         QuoteEditComponent,
       ],
       imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],

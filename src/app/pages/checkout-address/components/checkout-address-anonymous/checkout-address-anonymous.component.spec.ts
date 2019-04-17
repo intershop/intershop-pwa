@@ -5,14 +5,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AddressFormContainerComponent } from '../../../../shared/address-forms/containers/address-form/address-form.container';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
@@ -30,15 +31,7 @@ describe('Checkout Address Anonymous Component', () => {
     class DummyComponent {}
 
     TestBed.configureTestingModule({
-      declarations: [
-        CheckoutAddressAnonymousComponent,
-        DummyComponent,
-        MockComponent({
-          selector: 'ish-address-form-container',
-          template: 'Address Component',
-          inputs: ['parentForm'],
-        }),
-      ],
+      declarations: [CheckoutAddressAnonymousComponent, DummyComponent, MockComponent(AddressFormContainerComponent)],
       imports: [
         FormsSharedModule,
         IconModule,

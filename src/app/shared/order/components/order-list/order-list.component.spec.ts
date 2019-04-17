@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { OrderView } from 'ish-core/models/order/order.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { AddressComponent } from '../../../../shared/address/components/address/address.component';
 
 import { OrderListComponent } from './order-list.component';
 
@@ -15,14 +16,7 @@ describe('Order List Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
-        }),
-        OrderListComponent,
-      ],
+      declarations: [MockComponent(AddressComponent), OrderListComponent],
       imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));

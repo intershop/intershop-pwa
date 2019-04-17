@@ -3,9 +3,11 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { QuoteEditComponent } from '../../shared/quote/components/quote-edit/quote-edit.component';
 import { LoadQuotes } from '../../store/quote';
 import { quotingReducers } from '../../store/quoting-store.module';
 
@@ -21,8 +23,8 @@ describe('Quote Edit Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote', 'user'] }),
+        MockComponent(LoadingComponent),
+        MockComponent(QuoteEditComponent),
         QuoteEditPageContainerComponent,
       ],
       imports: [

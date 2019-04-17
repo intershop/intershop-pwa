@@ -15,7 +15,13 @@ exports[`Cms Container Component should be created 1`] = `
       ng-reflect-slot="app_sf_responsive_cm:slot.cont"
       ng-reflect-wrapper="true"
     >
-      outlet
+      
+      <ish-content-pagelet
+        ng-reflect-pagelet="[object Object]"
+      />
+      <ish-content-pagelet
+        ng-reflect-pagelet="[object Object]"
+      />
     </ish-content-slot>
   </div>
 </div>

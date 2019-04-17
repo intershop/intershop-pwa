@@ -1,9 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { ProductRowComponent } from '../../components/product-row/product-row.component';
+import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
 
 import { ProductItemContainerComponent } from './product-item.container';
 
@@ -21,20 +24,9 @@ describe('Product Item Container', () => {
         }),
       ],
       declarations: [
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
-        MockComponent({
-          selector: 'ish-product-row',
-          template: 'Product Row Component',
-          inputs: ['product', 'category', 'isInCompareList', 'variationOptions'],
-        }),
-        MockComponent({
-          selector: 'ish-product-tile',
-          template: 'Product Tile Component',
-          inputs: ['product', 'category', 'isInCompareList', 'variationOptions'],
-        }),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductRowComponent),
+        MockComponent(ProductTileComponent),
         ProductItemContainerComponent,
       ],
     }).compileComponents();

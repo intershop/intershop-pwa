@@ -1,11 +1,17 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
+import { InfoBoxComponent } from '../../../../shared/common/components/info-box/info-box.component';
+import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
+import { CheckboxComponent } from '../../../../shared/forms/components/checkbox/checkbox.component';
 
 import { CheckoutReviewComponent } from './checkout-review.component';
 
@@ -18,32 +24,12 @@ describe('Checkout Review Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
-        MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-cost-summary',
-          template: 'Basket Cost Summary Component',
-          inputs: ['totals'],
-        }),
-        MockComponent({
-          selector: 'ish-checkbox',
-          template: 'Checkbox Component',
-          inputs: ['form', 'controlName', 'errorMessages'],
-        }),
-        MockComponent({
-          selector: 'ish-info-box',
-          template: 'Checkout Infobox Component',
-          inputs: ['heading', 'editRouterLink'],
-        }),
-        MockComponent({
-          selector: 'ish-line-item-list',
-          template: 'Line Item List Component',
-          inputs: ['lineItems', 'editable'],
-        }),
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        MockComponent(AddressComponent),
+        MockComponent(BasketCostSummaryComponent),
+        MockComponent(CheckboxComponent),
+        MockComponent(InfoBoxComponent),
+        MockComponent(LineItemListComponent),
+        MockComponent(ModalDialogComponent),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();

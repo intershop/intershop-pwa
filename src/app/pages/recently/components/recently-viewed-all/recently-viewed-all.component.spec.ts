@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
 
 import { RecentlyViewedAllComponent } from './recently-viewed-all.component';
 
@@ -14,12 +16,8 @@ describe('Recently Viewed All Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({
-          selector: 'ish-product-item-container',
-          template: 'Product Item Container',
-          inputs: ['productSku'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductItemContainerComponent),
         RecentlyViewedAllComponent,
       ],
       imports: [TranslateModule.forRoot()],

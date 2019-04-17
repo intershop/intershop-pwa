@@ -120,6 +120,17 @@ export class FooPageModule { }
 `);
   });
 
+  it('should create a correct test for the container', () => {
+    const options = { ...defaultOptions };
+
+    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const containerSpecContent = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.container.spec.ts');
+    expect(containerSpecContent).toContain(
+      `import { FooPageComponent } from './components/foo-page/foo-page.component'`
+    );
+    expect(containerSpecContent).toContain(`MockComponent(FooPageComponent)`);
+  });
+
   it('should register route in app routing module by default', () => {
     const options = { ...defaultOptions };
 

@@ -329,7 +329,7 @@
         },
         {
           "from": ".*/extensions/.*",
-          "filePattern": "^((?!module\\.ts).)*$",
+          "filePattern": "^((?!(module|spec)\\.ts).)*$",
           "message": "Imports from (other) extensions are not allowed here."
         },
         {

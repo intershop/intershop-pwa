@@ -164,4 +164,13 @@ import { FooContainerComponent } from './containers/foo/foo.container';
     const componentContent = tree.readContent('/projects/bar/src/app/app.module.ts');
     expect(componentContent).toMatch(/import { TestComponent } from '\.\/dir\/components\/test\/test.component'/);
   });
+
+  it('should create a correct test for the container', () => {
+    const options = { ...defaultOptions };
+
+    const tree = schematicRunner.runSchematic('ccp', options, appTree);
+    const containerSpecContent = tree.readContent('/projects/bar/src/app/containers/foo/foo.container.spec.ts');
+    expect(containerSpecContent).toContain(`import { FooComponent } from '../../components/foo/foo.component'`);
+    expect(containerSpecContent).toContain(`MockComponent(FooComponent)`);
+  });
 });

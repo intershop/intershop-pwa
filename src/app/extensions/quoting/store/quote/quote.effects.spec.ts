@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -36,10 +37,16 @@ describe('Quote Effects', () => {
   beforeEach(() => {
     quoteServiceMock = mock(QuoteService);
 
+    // tslint:disable-next-line:use-component-change-detection
+    @Component({ template: 'dummy' })
+    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
         FeatureToggleModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([{ path: 'account/quote-request/:quoteRequestId', component: DummyComponent }]),
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),

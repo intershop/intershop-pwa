@@ -2,14 +2,18 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
+import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
+import { LineItemDescriptionComponent } from '../line-item-description/line-item-description.component';
 
 import { LineItemListComponent } from './line-item-list.component';
 
@@ -22,21 +26,9 @@ describe('Line Item List Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         LineItemListComponent,
-        MockComponent({
-          selector: 'ish-line-item-description',
-          template: 'Line Item Description Component',
-          inputs: ['pli'],
-        }),
-        MockComponent({
-          selector: 'ish-product-image',
-          template: 'Product Image Component',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-promotion-details',
-          template: 'Promotion Details Component',
-          inputs: ['promotion'],
-        }),
+        MockComponent(LineItemDescriptionComponent),
+        MockComponent(ProductImageComponent),
+        MockComponent(PromotionDetailsComponent),
       ],
       imports: [
         FormsSharedModule,
@@ -84,10 +76,7 @@ describe('Line Item List Component', () => {
   it('should render sub components if basket changes', () => {
     component.ngOnChanges();
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')[0].textContent).toContain('Product Image Component');
-    expect(element.getElementsByTagName('ish-line-item-description')[0].textContent).toContain(
-      'Line Item Description Component'
-    );
+    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-line-item-description', 'ish-product-image']);
   });
 
   it('should throw updateItem event when form group item changes', fakeAsync(() => {

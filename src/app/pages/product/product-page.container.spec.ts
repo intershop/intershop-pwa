@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
+import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -23,8 +24,12 @@ import {
 } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ProductAddToQuoteDialogComponent } from '../../extensions/quoting/shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
+import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { RecentlyViewedContainerComponent } from '../../shared/recently/containers/recently-viewed/recently-viewed.container';
 
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductPageContainerComponent } from './product-page.container';
 
 describe('Product Page Container', () => {
@@ -51,23 +56,11 @@ describe('Product Page Container', () => {
       ],
       declarations: [
         DummyComponent,
-        MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['category', 'categoryPath', 'product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-add-to-quote-dialog',
-          template: 'Product Add To Quote Dialog',
-          inputs: ['quote', 'quoteLoading'],
-        }),
-        MockComponent({
-          selector: 'ish-product-detail',
-          template: 'Category Page Component',
-          inputs: ['product', 'currentUrl', 'variationOptions'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        MockComponent(BreadcrumbComponent),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductAddToQuoteDialogComponent),
+        MockComponent(ProductDetailComponent),
+        MockComponent(RecentlyViewedContainerComponent),
         ProductPageContainerComponent,
       ],
       providers: [ProductRoutePipe],
