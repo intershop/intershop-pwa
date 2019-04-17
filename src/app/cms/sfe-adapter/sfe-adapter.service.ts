@@ -2,7 +2,7 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { fromEvent } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMapTo, take, withLatestFrom } from 'rxjs/operators';
 
 import { getICMBaseURL } from 'ish-core/store/configuration';
@@ -57,7 +57,7 @@ export class SfeAdapterService {
     this.initialized = true;
 
     this.listenToHostMessages();
-    this.listenToRouter();
+    this.listenToApplication();
 
     // Initial startup message to the host
     this.store
@@ -111,15 +111,17 @@ export class SfeAdapterService {
   }
 
   /**
-   * listen to route changes and send message to host when
-   * - route has changed (`dv-pwanavigation`)
-   * - application is stable, i.e. all async tasks have been completed (`dv-pwastable`)
-   * - content include has been reloaded (`dv-pwastable`)
+   * Listen to events throughout the applicaton and send message to host when
+   * (1) route has changed (`dv-pwanavigation`),
+   * (2) application is stable, i.e. all async tasks have been completed (`dv-pwastable`) or
+   * (3) content include has been reloaded (`dv-pwastable`).
    *
    * The stable event is the notifier for the design view to rerender the component tree view.
-   * The contains the tree, created by `analyzeTree()`.
+   * The event contains the tree, created by `analyzeTree()`.
+   *
+   * Should only be called *once* during initialization.
    */
-  private listenToRouter() {
+  private listenToApplication() {
     const navigation$ = this.router.events.pipe(filter(e => e instanceof NavigationEnd));
 
     const stable$ = this.appRef.isStable.pipe(
@@ -129,25 +131,21 @@ export class SfeAdapterService {
       take(1)
     );
 
-    navigation$
-      .pipe(
-        switchMapTo(stable$),
-        withLatestFrom(this.store.pipe(select(getICMBaseURL)))
-      )
-      .subscribe(([, icmBaseUrl]) => {
-        const tree = this.analyzeTree();
-        this.messageToHost({ type: 'dv-pwastable', payload: { tree } }, icmBaseUrl);
-      });
+    const navigationStable$ = navigation$.pipe(switchMapTo(stable$));
 
+    const contentIncludeLoadingFinished$ = this.store.pipe(
+      select(getContentIncludeLoading),
+      filter(loading => !loading)
+    );
+
+    // send `dv-pwanavigation` event for each route change
     navigation$.pipe(withLatestFrom(this.store.pipe(select(getICMBaseURL)))).subscribe(([, icmBaseUrl]) => {
       this.messageToHost({ type: 'dv-pwanavigation' }, icmBaseUrl);
     });
-    this.store
-      .pipe(
-        select(getContentIncludeLoading),
-        filter(loading => !loading),
-        withLatestFrom(this.store.pipe(select(getICMBaseURL)))
-      )
+
+    // send `dv-pwastable` event when application is stable or loading of the content included finished
+    merge(navigationStable$, contentIncludeLoadingFinished$)
+      .pipe(withLatestFrom(this.store.pipe(select(getICMBaseURL))))
       .subscribe(([, icmBaseUrl]) => {
         const tree = this.analyzeTree();
         this.messageToHost({ type: 'dv-pwastable', payload: { tree } }, icmBaseUrl);
