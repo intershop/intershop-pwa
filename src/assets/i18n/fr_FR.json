@@ -2495,5 +2495,18 @@
   "checkout.address.anonymous.guestcheckout.text": "Vous voulez faire des achats en tant qu’invit\u00E9 et ne voulez pas cr\u00E9er de profil ? Pas de problème.",
   "account.login.signin.heading": "Se connecter",
   "account.overview.personal_message_b2b.text": "Bonjour, {{0}} ({{1}}).<br />Bienvenue !",
-  "checkout.payment.addPayment.link": "Ajouter une source de paiement"
+  "checkout.payment.addPayment.link": "Ajouter une source de paiement",
+  "checkout.credit_card.cvc.label": "Code de validation de la carte",
+  "checkout.credit_card.user.name": "Nom du détenteur de la carte",
+  "checkout.credit_card.user.name.missing.error": "Veuillez entrer le nom du détenteur de la carte.",
+  "checkout.credit_card.number.error.notNumber": "The card number should only contain numeric values. Please correct the credit card number.",
+  "checkout.credit_card.number.error.length": "The card number should have a length between 13-16 characters. Please correct the card number.",
+  "checkout.credit_card.number.error.invalid": "Your card number is invalid. Please correct the card number.",
+  "checkout.credit_card.cvc.error.default": "The card validation code is mandatory. Please enter a card validation code.",
+  "checkout.credit_card.cvc.error.notNumber": "The card validation code should only contain numeric values. Please correct the card validation code.",
+  "checkout.credit_card.cvc.error.length": "The length of your card validation code is invalid. Please correct the card validation code.",
+  "checkout.credit_card.cvc.error.invalid": "Your card validation code is invalid. Please correct the card validation code.",
+  "checkout.credit_card.merchantId.error.notFound": "Merchant Id not found.",
+  "checkout.credit_card.cardStyleId.error.notFound": "Credit card style Id not found.",
+  "checkout.credit_card.CVCStyleId.error.notFound": "CVC style Id not found."
 }

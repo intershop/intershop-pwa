@@ -7,6 +7,7 @@ import { Price } from '../price/price.model';
 export interface PaymentMethod {
   id: string;
   displayName: string;
+  serviceId: string;
   description?: string;
   capabilities?: string[];
   paymentCosts?: Price;
@@ -15,4 +16,5 @@ export interface PaymentMethod {
   restrictionCauses?: PaymentRestriction[];
   paymentInstruments?: PaymentInstrument[];
   parameters?: FormlyFieldConfig[];
+  extPageParams?: { name: string; value: string }[];
 }

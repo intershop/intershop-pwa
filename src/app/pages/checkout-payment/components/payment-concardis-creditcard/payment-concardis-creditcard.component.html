@@ -1,0 +1,70 @@
+<!-- error messages -->
+<p *ngIf="!!errorMessage.general.message" class="text-danger col-sm-offset-4">
+  {{ errorMessage.general.message | translate }}
+</p>
+
+<fieldset [formGroup]="parameterForm">
+  <!-- Credit card number -->
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cardNumber && !!errorMessage.cardNumber.message }">
+    <label class="col-form-label col-md-4" for="cardpanInput"
+      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
+    >
+    <div class=" col-sm-6">
+      <div id="a_credit_card_number_container" class="iframe-container"></div>
+      <small *ngIf="errorMessage.cardNumber && !!errorMessage.cardNumber.messageKey" class="form-text">{{
+        errorMessage.cardNumber.messageKey | translate
+      }}</small>
+    </div>
+  </div>
+
+  <!-- CVC -->
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc && !!errorMessage.cvc.message }">
+    <label class="col-form-label col-md-4" for="cvcInput"
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+    >
+    <div class=" col-sm-6">
+      <div id="a_verification_container" class="iframe-container"></div>
+      <small *ngIf="errorMessage.cvc && !!errorMessage.cvc.message" class="form-text">{{
+        errorMessage.cvc.messageKey | translate
+      }}</small>
+    </div>
+  </div>
+
+  <!-- Expiration date (month/Year)  -->
+  <ish-input
+    [form]="parameterForm"
+    controlName="expirationDate"
+    label="checkout.credit_card.expiration_date.label"
+    placeholder="MM/YY"
+    autocomplete="off"
+    inputClass="col-sm-2"
+    [errorMessages]="{
+      required: 'checkout.credit_card.expiry_date.invalid.error',
+      pattern: 'checkout.credit_card.expiry_date.invalid.error'
+    }"
+  ></ish-input>
+
+  <!-- card holder -->
+  <ish-input
+    [form]="parameterForm"
+    controlName="cardHolder"
+    label="checkout.credit_card.user.name"
+    inputClass="col-sm-6"
+    autocomplete="off"
+    [errorMessages]="{
+      required: 'checkout.credit_card.user.name.missing.error'
+    }"
+  ></ish-input>
+</fieldset>
+
+<div class="offset-md-4 col-md-8">
+  <input
+    type="button"
+    (click)="submitNewPaymentInstrument()"
+    class="btn btn-primary"
+    value="{{ 'checkout.account.submit.button.label' | translate }}"
+  />
+  <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+    {{ 'checkout.cancel.button.label' | translate }}
+  </button>
+</div>
