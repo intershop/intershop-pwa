@@ -28,7 +28,7 @@
     "docs:watch": "npm run docs -- -s -w",
     "build:client-and-server-bundles": "ng build --prod && ng run intershop-pwa:server:production --bundleDependencies all",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
-    "serve": "cd dist && node server",
+    "serve": "node dist/server",
     "build:watch": "npx ng build --aot --watch",
     "build": "npm run build:client-and-server-bundles && npm run webpack:server",
     "start": "npm run build && npm run serve"
