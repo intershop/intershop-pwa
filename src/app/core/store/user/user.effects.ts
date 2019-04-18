@@ -1,11 +1,23 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { CookiesService } from '@ngx-utils/cookies';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
-import { catchError, concatMap, filter, map, mapTo, mergeMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  take,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -37,7 +49,8 @@ export class UserEffects {
     private store$: Store<{}>,
     private userService: UserService,
     private router: Router,
-    private cookieService: CookiesService
+    private cookieService: CookiesService,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   @Effect()
@@ -132,6 +145,7 @@ export class UserEffects {
 
   @Effect({ dispatch: false })
   saveAPITokenToCookie$ = this.actions$.pipe(
+    takeWhile(() => isPlatformBrowser(this.platformId)),
     ofType<userActions.SetAPIToken>(userActions.UserActionTypes.SetAPIToken),
     mapToPayloadProperty('apiToken'),
     withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
@@ -144,6 +158,7 @@ export class UserEffects {
 
   @Effect({ dispatch: false })
   destroyTokenInCookieOnLogout$ = this.actions$.pipe(
+    takeWhile(() => isPlatformBrowser(this.platformId)),
     ofType(userActions.UserActionTypes.LogoutUser),
     tap(() => {
       this.cookieService.remove('apiToken');
@@ -152,6 +167,7 @@ export class UserEffects {
 
   @Effect()
   restoreUserByToken$ = this.router.events.pipe(
+    takeWhile(() => isPlatformBrowser(this.platformId)),
     filter(event => event instanceof NavigationStart),
     take(1),
     map(() => this.cookieService.get('apiToken')),
