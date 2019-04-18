@@ -16,7 +16,6 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private static ATTRS = 'promotions';
   private static STUB_ATTRS =
     'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions';
 
@@ -32,7 +31,7 @@ export class ProductsService {
       return throwError('getProduct() called without a sku');
     }
 
-    const params = new HttpParams().set('allImages', 'true').set('attrs', ProductsService.ATTRS);
+    const params = new HttpParams().set('allImages', 'true');
 
     return this.apiService
       .get<ProductData>(`products/${sku}`, { params })
