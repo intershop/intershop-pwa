@@ -14,6 +14,7 @@ import { BasketAddressSummaryComponent } from '../../../../shared/basket/compone
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 
@@ -36,6 +37,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(FormlyForm),
+        MockComponent(PaymentConcardisCreditcardComponent),
       ],
       imports: [
         FormsSharedModule,
@@ -56,7 +58,13 @@ describe('Checkout Payment Component', () => {
     component.paymentMethods = [
       {
         id: 'ISH_INVOICE',
+        serviceId: 'ISH_INVOICE',
         displayName: 'Invoice',
+      },
+      {
+        id: 'Concardis_CreditCard',
+        serviceId: 'Concardis_CreditCard',
+        displayName: 'Concardis Credit Card',
       },
       BasketMockData.getPaymentMethod(),
     ];
@@ -142,7 +150,7 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw createPaymentInstrument event when the user submits a valid parameter form', done => {
-      component.openPaymentParameterForm(1);
+      component.openPaymentParameterForm(2);
       fixture.detectChanges();
 
       component.createPaymentInstrument.subscribe(formValue => {
@@ -162,6 +170,14 @@ describe('Checkout Payment Component', () => {
       component.parameterForm.addControl('IBAN', new FormControl('', Validators.required));
       component.submit();
       expect(component.formSubmitted).toBeTrue();
+    });
+
+    it('should render standard parameter form for standard parametrized form', () => {
+      component.openPaymentParameterForm(2);
+
+      fixture.detectChanges();
+      expect(element.querySelector('formly-form')).toBeTruthy();
+      expect(element.querySelector('ish-payment-concardis-creditcard')).toBeFalsy();
     });
   });
 

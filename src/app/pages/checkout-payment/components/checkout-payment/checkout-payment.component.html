@@ -14,13 +14,13 @@
       <ul
         *ngIf="paymentMethods && paymentMethods.length > 0"
         id="payment-accordion"
-        class="list-unstyled"
+        class="list-unstyled ml-4"
         role="tablist"
         aria-multiselectable="true"
       >
         <ng-container *ngFor="let paymentMethod of paymentMethods; let i = index">
           <li class="panel">
-            <div [ngClass]="{ 'ml-4 form-check': !paymentMethod.parameters }" role="tab">
+            <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">
               <!-- display radio buttons only for payment methods without parameters -->
               <input
                 *ngIf="!paymentMethod.parameters"
@@ -80,7 +80,7 @@
             [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
           >
             <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel">
-              <div class="form-check ml-4 col-xl-4 col-md-5 col-sm-6 col-8" role="tab">
+              <div class="form-check col-xl-4 col-md-5 col-sm-6 col-8" role="tab">
                 <input
                   class="form-check-input"
                   type="radio"
@@ -104,21 +104,31 @@
             </p>
 
             <div [ngbCollapse]="!(i === openFormIndex)">
-              <formly-form
-                [form]="parameterForm"
-                [options]="options"
-                [model]="model"
-                [fields]="paymentMethod.parameters"
-              >
-                <div class="offset-md-4 col-md-8">
-                  <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
-                    {{ 'checkout.account.submit.button.label' | translate }}
-                  </button>
-                  <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
-                    {{ 'checkout.cancel.button.label' | translate }}
-                  </button>
-                </div>
-              </formly-form>
+              <ng-container *ngIf="paymentMethod.serviceId !== 'Concardis_CreditCard'; else ConcardisCreditCard">
+                <formly-form
+                  [form]="parameterForm"
+                  [options]="options"
+                  [model]="model"
+                  [fields]="paymentMethod.parameters"
+                >
+                  <div class="offset-md-4 col-md-8">
+                    <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
+                      {{ 'checkout.account.submit.button.label' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+                      {{ 'checkout.cancel.button.label' | translate }}
+                    </button>
+                  </div>
+                </formly-form>
+              </ng-container>
+              <ng-template #ConcardisCreditCard>
+                <ish-payment-concardis-creditcard
+                  [paymentMethod]="paymentMethod"
+                  [activated]="i === openFormIndex"
+                  (submit)="createNewPaymentInstrument($event)"
+                  (cancel)="cancelNewPaymentInstrument()"
+                ></ish-payment-concardis-creditcard>
+              </ng-template>
             </div>
           </div>
         </ng-container>

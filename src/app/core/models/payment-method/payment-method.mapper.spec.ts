@@ -7,6 +7,7 @@ describe('Payment Method Mapper', () => {
       data: [
         {
           id: 'ISH_CreditCard',
+          serviceID: 'ISH_CreditCard',
           displayName: 'Credit Card',
           paymentCosts: {
             net: {

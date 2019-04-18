@@ -2607,5 +2607,18 @@
   "checkout.address.anonymous.guestcheckout.text": "You want to shop as a guest and do not want to create a profile? No problem.",
   "account.login.signin.heading": "Sign In",
   "account.overview.personal_message_b2b.text": "Hi, {{0}} ({{1}}).<br />Welcome back!",
-  "checkout.payment.addPayment.link": "Add Source of Payment"
+  "checkout.payment.addPayment.link": "Add Source of Payment",
+  "checkout.credit_card.cvc.label": "Card Validation Code (CVC)",
+  "checkout.credit_card.user.name": "Cardholder Name",
+  "checkout.credit_card.user.name.missing.error": "Please enter a cardholder name",
+  "checkout.credit_card.number.error.notNumber": "The card number should only contain numeric values. Please correct the credit card number.",
+  "checkout.credit_card.number.error.length": "The card number should have a length between 13-16 characters. Please correct the card number.",
+  "checkout.credit_card.number.error.invalid": "Your card number is invalid. Please correct the card number.",
+  "checkout.credit_card.cvc.error.default": "The card validation code is mandatory. Please enter a card validation code.",
+  "checkout.credit_card.cvc.error.notNumber": "The card validation code should only contain numeric values. Please correct the card validation code.",
+  "checkout.credit_card.cvc.error.length": "The length of your card validation code is invalid. Please correct the card validation code.",
+  "checkout.credit_card.cvc.error.invalid": "Your card validation code is invalid. Please correct the card validation code.",
+  "checkout.credit_card.merchantId.error.notFound": "Merchant Id not found.",
+  "checkout.credit_card.cardStyleId.error.notFound": "Credit card style Id not found.",
+  "checkout.credit_card.CVCStyleId.error.notFound": "CVC style Id not found."
 }
