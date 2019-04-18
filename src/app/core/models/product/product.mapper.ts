@@ -34,13 +34,6 @@ function retrieveStubAttributeValueElements<T>(data: ProductDataStub, attributeN
 }
 
 /**
- * check if attribute is available and return value elements, otherwise undefined
- */
-function retrieveAttributeValueElements<T>(data: ProductData, attributeName: string) {
-  return data ? AttributeHelper.getAttributeValueElementsByAttributeName<T>(data.attributes, attributeName) : undefined;
-}
-
-/**
  * Product Mapper maps data of HTTP requests to model instances and vice versa.
  */
 @Injectable({ providedIn: 'root' })
@@ -144,7 +137,7 @@ export class ProductMapper {
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
         : undefined,
-      promotions: retrieveAttributeValueElements<ProductPromotion[]>(data, 'promotions'),
+      promotions: data.promotions,
       completenessLevel: 3,
       failed: false,
     };
