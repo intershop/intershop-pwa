@@ -9,6 +9,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
  * @example
  * <ish-product-promotion
  *   [promotion]="promotion"
+ *   displayType="list"
  * ></ish-product-promotion>
  */
 @Component({
@@ -18,4 +19,5 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
 })
 export class ProductPromotionComponent {
   @Input() promotion: Promotion;
+  @Input() displayType?: string;
 }

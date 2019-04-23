@@ -14,6 +14,7 @@ import { LoadPromotion, getPromotion } from 'ish-core/store/shopping/promotions'
 })
 export class ProductPromotionContainerComponent implements OnInit {
   @Input() product: Product;
+  @Input() displayType?: string;
 
   promotion$: Observable<Promotion>;
 

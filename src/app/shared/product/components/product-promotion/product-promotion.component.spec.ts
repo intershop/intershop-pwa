@@ -41,6 +41,7 @@ describe('Product Promotion Component', () => {
       title: 'MyPromotionTitle',
       useExternalUrl: false,
     };
+    component.displayType = 'list';
   });
 
   it('should be created', () => {

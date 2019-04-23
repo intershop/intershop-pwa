@@ -2,8 +2,22 @@
   <span *ngFor="let promotion of promotions">
 -->
 <div *ngIf="promotion">
-  <span [innerHTML]="promotion.title | safeHtml"></span>
-  <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+  <ng-container *ngIf="displayType === 'list'; else detail">
+    <div>
+      <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
+      <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+    </div>
+  </ng-container>
+  <ng-template #detail>
+    <div>
+      <div class="promotion-icon"><span [innerHTML]="promotion.icon | safeHtml"></span></div>
+      <div class="promotion-short-title"><span [innerHTML]="promotion.title | safeHtml"></span></div>
+      <div>
+        <span class="promotion-long-title" [innerHTML]="promotion.longTitle | safeHtml"></span>
+        <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+      </div>
+    </div>
+  </ng-template>
 </div>
 <!--  </span>
 </div>
