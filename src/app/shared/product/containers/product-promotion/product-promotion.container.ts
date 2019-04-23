@@ -20,7 +20,7 @@ export class ProductPromotionContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.promotion$ = this.store.pipe(select(getPromotion, { promoId: this.product.promotions[0].itemid }));
+    this.promotion$ = this.store.pipe(select(getPromotion, { promoId: this.product.promotions[0].itemId }));
 
     // Checks if the promotion is already in the store and only dispatches a LoadPromotion action if it is not
     this.promotion$
@@ -28,6 +28,6 @@ export class ProductPromotionContainerComponent implements OnInit {
         take(1),
         filter(x => !x)
       )
-      .subscribe(() => this.store.dispatch(new LoadPromotion({ promoId: this.product.promotions[0].itemid })));
+      .subscribe(() => this.store.dispatch(new LoadPromotion({ promoId: this.product.promotions[0].itemId })));
   }
 }
