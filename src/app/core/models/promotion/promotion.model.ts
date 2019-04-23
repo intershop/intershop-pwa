@@ -15,6 +15,6 @@ export interface Promotion {
 }
 
 export interface ProductPromotion {
-  itemid: string;
+  itemId: string;
   title: string;
 }

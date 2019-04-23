@@ -56,7 +56,7 @@ describe('Product Promotion Container', () => {
       type: 0,
       promotions: [
         {
-          itemid: 'PROMO_UUID',
+          itemId: 'PROMO_UUID',
           title: 'MyPromotionTitle',
         },
       ],
