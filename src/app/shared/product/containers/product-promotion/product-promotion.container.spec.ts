@@ -27,7 +27,7 @@ describe('Product Promotion Container', () => {
         MockComponent({
           selector: 'ish-product-promotion',
           template: 'Product Promotion Component',
-          inputs: ['promotion'],
+          inputs: ['promotion', 'displayType'],
         }),
         ProductPromotionContainerComponent,
       ],
