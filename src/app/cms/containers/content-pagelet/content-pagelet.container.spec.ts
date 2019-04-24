@@ -57,14 +57,20 @@ describe('Content Pagelet Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     component.pagelet = createSimplePageletView(pagelet);
+    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+<div class="content-pagelet" style="border: 1px solid rgb(255, 255, 0); padding: 10px;">
+  <div class="content-pagelet-info" title="id">id (fq)</div>
+</div>
+`);
   });
 
   it('should render assigned template if name matches', () => {
     pagelet.definitionQualifiedName = 'fq-defined';
     component.pagelet = createSimplePageletView(pagelet);
+    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`<ish-cms-text><span>foo</span></ish-cms-text>`);
   });
 });
