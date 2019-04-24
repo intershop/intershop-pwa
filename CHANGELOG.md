@@ -1,3 +1,31 @@
+# [0.11.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.11.0/) (2019-04-24)
+
+**required Intershop Commerce Management version: 7.10.7.3**
+
+### Features
+
+- schematic for CMS rendering components
+- integrate Sentry for client side (browser) error tracking
+- use ng-mocks for mocking components in tests
+- product variation handling (ISREST-166)
+- Design View support in PWA (preparation for future support in ICM)
+- display promotion messages on cart and checkout (ISREST-691)
+- remember user over page refreshes
+- introduce category route pipe to generate category routes and map category attributes to category model instances
+- display localized country names and region names on address (ISREST-677)
+- adapt basket and payment REST API changes (ISREST-669)
+- checkout for an unregistered user (ISREST-639)
+- enable the user to set preferred addresses on account addresses page (ISREST-634)
+
+### Bug Fixes
+
+- specific welcome message for b2b customers on account overview page added (ISREST-676)
+- product list view - quantity input missing (ISREST-656)
+- fix issue if quote start date is not reached but items can already be added to the cart (ISREST-670)
+- no redirect to new quote request page when creating new quote request from quote (ISREST-645)
+- compare explanation text styling (ISREST-638)
+- do not create select options if quantity selection is displayed as input
+
 # [0.10.5](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.10.5/) (2019-03-12)
 
 **required Intershop Commerce Management version: 7.10.5.5**
