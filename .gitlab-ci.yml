@@ -85,7 +85,6 @@ jest_test:
   dependencies: []
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
-    - sh .gitlab-ci-check-app-changes.sh || exit 0
     - npm ci --prefer-offline
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
@@ -107,7 +106,6 @@ compile:
     expire_in: 1 day
   dependencies: []
   script:
-    - sh .gitlab-ci-check-app-changes.sh || exit 0
     - npm ci --prefer-offline --production
     - npx ng build --progress false --prod --stats-json
     - npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle/index.html -m static
@@ -272,7 +270,7 @@ publish_nginx:
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - (sh .gitlab-ci-check-app-changes.sh '^nginx' || test 'develop' = "${CI_COMMIT_REF_SLUG}") && docker build -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} nginx || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
+    - docker build -t ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} nginx
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
 
 push_reports:
