@@ -10,15 +10,8 @@ const getPromotionsState = createSelector(
   (state: ShoppingState) => state.promotions
 );
 
-export const {
-  selectEntities: getPromotionEntities,
-  selectAll: getAllPromotions,
-  selectIds: getPromotionIds,
-} = promotionAdapter.getSelectors(getPromotionsState);
-
-export const getFailed = createSelector(
-  getPromotionsState,
-  state => state.failed
+export const { selectEntities: getPromotionEntities, selectAll: getAllPromotions } = promotionAdapter.getSelectors(
+  getPromotionsState
 );
 
 export const getPromotionLoading = createSelector(
@@ -28,12 +21,7 @@ export const getPromotionLoading = createSelector(
 
 export const getPromotion = createSelector(
   getPromotionEntities,
-  getFailed,
-  (entities, failed, props: { promoId: string }) =>
-    failed.includes(props.promoId)
-      ? // tslint:disable-next-line:ish-no-object-literal-type-assertion
-        ({ id: props.promoId } as Promotion)
-      : entities[props.promoId]
+  (entities, props: { promoId: string }) => entities[props.promoId]
 );
 
 export const getPromotions = createSelector(

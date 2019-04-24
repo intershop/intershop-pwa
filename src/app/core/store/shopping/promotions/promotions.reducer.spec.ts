@@ -33,10 +33,9 @@ describe('Promotions Reducer', () => {
         state = promotionsReducer(initialState, action);
       });
 
-      it('should set loading to false and add promotion to failed list', () => {
+      it('should set loading to false', () => {
         expect(state.loading).toBeFalse();
         expect(state.entities).toBeEmpty();
-        expect(state.failed).toIncludeAllMembers(['invalid']);
       });
 
       describe('followed by LoadPromotionSuccess', () => {
@@ -46,10 +45,9 @@ describe('Promotions Reducer', () => {
           state = promotionsReducer(initialState, action);
         });
 
-        it('should set loading to false and remove promotion from failed list', () => {
+        it('should set loading to false', () => {
           expect(state.loading).toBeFalse();
           expect(state.entities).toHaveProperty('invalid');
-          expect(state.failed).toBeEmpty();
         });
       });
     });

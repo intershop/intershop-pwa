@@ -62,10 +62,6 @@ describe('Promotions Selectors', () => {
         expect(getPromotionLoading(store$.state)).toBeFalse();
         expect(getPromotionEntities(store$.state)).toBeEmpty();
       });
-
-      it('should return a promotion stub if promotion is selected', () => {
-        expect(getPromotion(store$.state, { promoId: 'invalid' })).toBeTruthy();
-      });
     });
   });
 
@@ -78,6 +74,10 @@ describe('Promotions Selectors', () => {
       it('should return the promotion information when used', () => {
         expect(getPromotionEntities(store$.state)).toEqual({ [promo.id]: promo });
         expect(getPromotionLoading(store$.state)).toBeFalse();
+      });
+
+      it('should return a promotion stub if promotion is selected', () => {
+        expect(getPromotion(store$.state, { promoId: promo.id })).toBeTruthy();
       });
     });
   });
