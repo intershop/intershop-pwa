@@ -34,18 +34,18 @@ describe('Info Box Component', () => {
   it('should not display an edit link if no editRouterLink is given', () => {
     component.editRouterLink = undefined;
     fixture.detectChanges();
-    expect(element.querySelector('a.btn-tool')).toBeFalsy();
+    expect(element.querySelector('[title]')).toBeFalsy();
   });
 
   it('should display an edit link if editRouterLink is given', () => {
     component.editRouterLink = '/checkout/address';
     fixture.detectChanges();
-    expect(element.querySelector('a.btn-tool')).toBeTruthy();
+    expect(element.querySelector('[title]')).toBeTruthy();
   });
 
   it('should display a title for the given heading', () => {
     component.heading = 'Title';
     fixture.detectChanges();
-    expect(element.querySelector('h3').textContent).toEqual('Title');
+    expect(element.textContent).toEqual('Title');
   });
 });

@@ -52,12 +52,12 @@ describe('Line Item Description Component', () => {
 
   it('should hold itemSurcharges for the line item', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('a.details-tooltip')).toHaveLength(1);
+    expect(element.querySelectorAll('.details-tooltip')).toHaveLength(1);
   });
 
   it('should not display itemSurcharges for the line item if not available', () => {
     component.pli = { ...BasketMockData.getBasketItem(), itemSurcharges: undefined };
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelectorAll('a.details-tooltip')).toHaveLength(0);
+    expect(element.querySelectorAll('.details-tooltip')).toHaveLength(0);
   });
 });

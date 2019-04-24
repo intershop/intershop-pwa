@@ -36,9 +36,9 @@ describe('Login Form Component', () => {
 
   it('should render login form on Login page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[data-testing-id=login]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy();
-    expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=login]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=password]')).toBeTruthy();
+    expect(element.querySelector('[name="login"]')).toBeTruthy();
   });
 
   describe('error display', () => {

@@ -40,7 +40,7 @@ describe('Order List Component', () => {
   it('should display empty list text if there are no orders', () => {
     component.orders = [];
     fixture.detectChanges();
-    expect(element.querySelector('p[data-testing-id=emptyList]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=emptyList]')).toBeTruthy();
   });
 
   it('should display a list if there are orders', () => {

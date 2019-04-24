@@ -26,7 +26,7 @@ describe('Cms Freestyle Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should render content if available', () => {
@@ -39,6 +39,11 @@ describe('Cms Freestyle Component', () => {
     };
     component.pagelet = createSimplePageletView(pagelet);
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+<div>
+  <h3>foo</h3>
+  bar
+</div>
+`);
   });
 });

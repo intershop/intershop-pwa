@@ -42,12 +42,12 @@ describe('Product Label Component', () => {
     } as Product;
     component.ngOnChanges();
     fixture.detectChanges();
-    expect(element.querySelector('span[class^="product-label product-label-sale"]')).not.toBeNull();
+    expect(element.querySelector('[class^="product-label product-label-sale"]')).not.toBeNull();
   });
 
   it('should not create HTML tag span when component is created', () => {
     component.ngOnChanges();
     fixture.detectChanges();
-    expect(element.querySelector('span[class^="product-label product-label-sale"]')).toBeNull();
+    expect(element.querySelector('[class^="product-label product-label-sale"]')).toBeNull();
   });
 });
