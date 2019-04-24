@@ -8,7 +8,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
  *
  * @example
  * <ish-product-promotion
- *   [promotion]="promotion"
+ *   [promotions]="promotions"
  *   displayType="list"
  * ></ish-product-promotion>
  */
@@ -18,6 +18,6 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPromotionComponent {
-  @Input() promotion: Promotion;
+  @Input() promotions: Promotion[];
   @Input() displayType?: string;
 }

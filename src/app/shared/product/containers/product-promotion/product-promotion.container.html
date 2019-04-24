@@ -1,6 +1,6 @@
 <ish-product-promotion
-  *ngIf="(promotion$ | async) as promotion; else loading"
-  [promotion]="promotion"
+  *ngIf="(promotions$ | async) as promotions; else loading"
+  [promotions]="promotions"
   [displayType]="displayType"
 ></ish-product-promotion>
 
