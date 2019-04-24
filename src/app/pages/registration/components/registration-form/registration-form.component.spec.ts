@@ -137,7 +137,9 @@ describe('Registration Form Component', () => {
     component.ngOnChanges({ error: new SimpleChange(undefined, component.error, false) });
     fixture.detectChanges();
 
-    expect(element.querySelector('div.alert')).toBeTruthy();
-    expect(element.querySelector('div.alert').textContent).toContain('customer.credentials.login.not_unique.error');
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]').textContent).toContain(
+      'customer.credentials.login.not_unique.error'
+    );
   });
 });
