@@ -28,19 +28,21 @@ describe('Product Promotion Component', () => {
     fixture = TestBed.createComponent(ProductPromotionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.promotion = {
-      id: 'PROMO_UUID',
-      name: 'MyPromotion',
-      couponCodeRequired: false,
-      currency: 'EUR',
-      promotionType: 'MyPromotionType',
-      description: 'MyPromotionDescription',
-      legalContentMessage: 'MyPromotionContentMessage',
-      longTitle: 'MyPromotionLongTitle',
-      ruleDescription: 'MyPromotionRuleDescription',
-      title: 'MyPromotionTitle',
-      useExternalUrl: false,
-    };
+    component.promotions = [
+      {
+        id: 'PROMO_UUID',
+        name: 'MyPromotion',
+        couponCodeRequired: false,
+        currency: 'EUR',
+        promotionType: 'MyPromotionType',
+        description: 'MyPromotionDescription',
+        legalContentMessage: 'MyPromotionContentMessage',
+        longTitle: 'MyPromotionLongTitle',
+        ruleDescription: 'MyPromotionRuleDescription',
+        title: 'MyPromotionTitle',
+        useExternalUrl: false,
+      },
+    ];
     component.displayType = 'list';
   });
 

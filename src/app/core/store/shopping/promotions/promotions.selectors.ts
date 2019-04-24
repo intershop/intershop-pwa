@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { ProductPromotion, Promotion } from 'ish-core/models/promotion/promotion.model';
 import { ShoppingState, getShoppingState } from '../shopping-store';
 
 import { promotionAdapter } from './promotions.reducer';
@@ -10,9 +10,11 @@ const getPromotionsState = createSelector(
   (state: ShoppingState) => state.promotions
 );
 
-export const { selectEntities: getPromotionEntities, selectIds: getPromotionIds } = promotionAdapter.getSelectors(
-  getPromotionsState
-);
+export const {
+  selectEntities: getPromotionEntities,
+  selectAll: getAllPromotions,
+  selectIds: getPromotionIds,
+} = promotionAdapter.getSelectors(getPromotionsState);
 
 export const getFailed = createSelector(
   getPromotionsState,
@@ -34,15 +36,9 @@ export const getPromotion = createSelector(
       : entities[props.promoId]
 );
 
-// todo
-// export const getPromotions = createSelector(
-//  getPromotionEntities,
-//  (entities, props: { productPromotions: ProductPromotion[] }): Promotion[] =>
-//    entities.filter(e =>
-//      props.productPromotions.forEach(eachObj => {
-//        if (e.id === eachObj.itemid) {
-//          return e.id;
-//        }
-//      })
-//    )
-// );
+export const getPromotions = createSelector(
+  getAllPromotions,
+  (promotions, props: { productPromotions: ProductPromotion[] }): Promotion[] =>
+    promotions.filter(e => props.productPromotions.some(s => s.itemId === e.id))
+  // promotions.filter(e => props.productPromotions.includes(e.id))
+);

@@ -1,32 +1,30 @@
-<!--div *ngIf="promotions && promotions.length > 0">
+<div *ngIf="promotions && promotions.length > 0">
   <span *ngFor="let promotion of promotions">
--->
-<div *ngIf="promotion">
-  <ng-container *ngIf="displayType === 'list'; else detail">
-    <div>
-      <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
-      <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
-    </div>
-  </ng-container>
-  <ng-template #detail>
-    <table class="table-responsive">
-      <tr>
-        <td class="promotion-icon"><span [innerHTML]="promotion.icon | safeHtml"></span></td>
-        <td>
+    <div *ngIf="promotion">
+      <ng-container *ngIf="displayType === 'list'; else detail">
+        <div>
+          <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
+          <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+        </div>
+      </ng-container>
+      <ng-template #detail>
+        <table class="table-responsive">
           <tr>
-            <td><span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span></td>
-          </tr>
-          <tr>
+            <td *ngIf="promotion.icon"><span class="promotion-icon" [innerHTML]="promotion.icon | safeHtml"></span></td>
             <td>
-              <span class="promotion-long-title" [innerHTML]="promotion.longTitle | safeHtml"></span>
-              <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+              <tr>
+                <td><span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="promotion-long-title" [innerHTML]="promotion.longTitle | safeHtml"></span>
+                  <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+                </td>
+              </tr>
             </td>
           </tr>
-        </td>
-      </tr>
-    </table>
-  </ng-template>
+        </table>
+      </ng-template>
+    </div>
+  </span>
 </div>
-<!--  </span>
-</div>
--->
