@@ -4,6 +4,20 @@
   list-style: none;
 }
 
+.promotion-short-title {
+  display: inline;
+}
+
+.promotion-long-title {
+  display: inline;
+}
+
+.promotion-icon {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+}
+
 .modal-body {
   .product-info {
     .promotion-list {
