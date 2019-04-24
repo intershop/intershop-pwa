@@ -23,8 +23,7 @@ export class ProductPromotionContainerComponent implements OnInit {
     this.promotions$ = this.store.pipe(select(getPromotions, { productPromotions: this.product.promotions }));
 
     // Checks if the promotion is already in the store and only dispatches a LoadPromotion action if it is not
-    // loop + optimize
-
+    // optimize
     this.product.promotions.forEach(productPromotion => {
       this.store.dispatch(new LoadPromotion({ promoId: productPromotion.itemId }));
     });

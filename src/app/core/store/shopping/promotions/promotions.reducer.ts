@@ -10,21 +10,11 @@ export const promotionAdapter = createEntityAdapter<Promotion>({
 
 export interface PromotionsState extends EntityState<Promotion> {
   loading: boolean;
-  failed: string[];
 }
 
 export const initialState: PromotionsState = promotionAdapter.getInitialState({
   loading: false,
-  failed: [],
 });
-
-function addFailed(failed: string[], promoId: string): string[] {
-  return [...failed, promoId].filter((val, idx, arr) => arr.indexOf(val) === idx);
-}
-
-function removeFailed(failed: string[], promoId: string): string[] {
-  return failed.filter(val => val !== promoId);
-}
 
 export function promotionsReducer(state = initialState, action: PromotionsAction): PromotionsState {
   switch (action.type) {
@@ -39,7 +29,6 @@ export function promotionsReducer(state = initialState, action: PromotionsAction
       return {
         ...state,
         loading: false,
-        failed: addFailed(state.failed, action.payload.promoId),
       };
     }
 
@@ -48,7 +37,6 @@ export function promotionsReducer(state = initialState, action: PromotionsAction
       return promotionAdapter.upsertOne(promotion, {
         ...state,
         loading: false,
-        failed: removeFailed(state.failed, promotion.id),
       });
     }
   }
