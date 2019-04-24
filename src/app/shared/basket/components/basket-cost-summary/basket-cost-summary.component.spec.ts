@@ -37,11 +37,11 @@ describe('Basket Cost Summary Component', () => {
 
   it('should not display estimated prices if estimated flag is not set', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.order.total_cost.label');
+    expect(element.querySelector('.total-price').textContent).toEqual('checkout.order.total_cost.label');
   });
   it('should display estimated prices if estimated flag is set', () => {
     component.totals.isEstimated = true;
     fixture.detectChanges();
-    expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.cart.estimated_total.label');
+    expect(element.querySelector('.total-price').textContent).toEqual('checkout.cart.estimated_total.label');
   });
 });

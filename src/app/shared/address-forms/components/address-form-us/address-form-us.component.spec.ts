@@ -43,24 +43,24 @@ describe('Address Form Us Component', () => {
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[data-testing-id=firstName]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=lastName]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=addressLine1]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=addressLine2]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=postalCode]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=city]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=firstName]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=lastName]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=addressLine1]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=addressLine2]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=postalCode]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=city]')).toBeTruthy();
   });
 
   it('should display region select box if regions  input parameter is not empty', () => {
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=state]')).toBeFalsy();
 
     component.regions = [
       { countryCode: 'US', regionCode: 'AL', name: 'Alabama', id: 'USAL' },
       { countryCode: 'US', regionCode: 'FL', name: 'Florida', id: 'USFL' },
     ];
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=state]')).toBeFalsy();
   });
 
   it('should display an apo/fpo popover link on creation', () => {

@@ -54,6 +54,6 @@ describe('Select Region Component', () => {
 
     fixture.detectChanges();
     expect(component.options).toHaveLength(2);
-    expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=state]')).toBeTruthy();
   });
 });

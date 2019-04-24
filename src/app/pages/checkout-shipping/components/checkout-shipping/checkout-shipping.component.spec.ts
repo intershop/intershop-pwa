@@ -69,26 +69,26 @@ describe('Checkout Shipping Component', () => {
 
   it('should not render an error if no error occurs', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if the user clicks next and has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
     component.nextStep();
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should throw updateShippingMethod event when the user changes payment selection', done => {

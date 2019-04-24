@@ -73,14 +73,14 @@ describe('Checkout Address Anonymous Component', () => {
 
   it('should initially not show invoice address form on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('button[data-testing-id=guest-checkout-button]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeTruthy();
     expect(element.querySelector('div.collapse.show ish-address-form-container')).toBeFalsy();
   });
 
   it('should show invoice address form if checkout as guest button is clicked', () => {
     component.isAddressFormCollapsed = false;
     fixture.detectChanges();
-    expect(element.querySelector('button[data-testing-id=guest-checkout-button]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=guest-checkout-button]')).toBeFalsy();
     expect(element.querySelector('div.collapse.show ish-address-form-container')).toBeTruthy();
     expect(component.form.controls.shipOption.value).toEqual('shipToInvoiceAddress');
     expect(
@@ -101,7 +101,7 @@ describe('Checkout Address Anonymous Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.querySelector('div.alert')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should set submitted flag if submit is clicked and form is not valid', async(() => {

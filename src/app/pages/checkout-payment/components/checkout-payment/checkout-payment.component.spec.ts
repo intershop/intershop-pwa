@@ -60,31 +60,31 @@ describe('Checkout Payment Component', () => {
 
   it('should render available payment methods on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ul.list-unstyled')).toBeTruthy();
+    expect(element.querySelector('#payment-accordion')).toBeTruthy();
   });
 
   it('should not render an error if no error occurs', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no payment method selected', () => {
     component.basket.payment = undefined;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if the user clicks next and has currently no payment method selected', () => {
     component.basket.payment = undefined;
     component.nextStep();
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should throw updatePaymentMethod event when the user changes payment selection', done => {

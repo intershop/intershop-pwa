@@ -51,6 +51,6 @@ describe('Select Title Component', () => {
 
     fixture.detectChanges();
     expect(component.options).toHaveLength(3);
-    expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=title]')).toBeTruthy();
   });
 });

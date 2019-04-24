@@ -51,7 +51,7 @@ describe('Select Address Component', () => {
 
     fixture.detectChanges();
     expect(component.options).toHaveLength(2);
-    expect(element.querySelector('select[data-testing-id=id]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=id]')).toBeTruthy();
     expect(element.querySelector('option[value="4711"]')).toBeTruthy();
   });
 

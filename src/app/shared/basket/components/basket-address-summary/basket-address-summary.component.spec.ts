@@ -37,18 +37,18 @@ describe('Basket Address Summary Component', () => {
 
   it('should render invoiceTo address for the basket', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div[data-testing-id=address-summary-invoice-to-address] ish-address')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=address-summary-invoice-to-address] ish-address')).toBeTruthy();
   });
 
   it('should render same as text if invoiceTo address equals commonShipTo address', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div[data-testing-id=address-summary-ship-to-address] address')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=address-summary-ship-to-address] address')).toBeTruthy();
   });
 
   it('should render commonShipToAddress if invoiceTo address does not equal commonShipTo address', () => {
     const address = { firstName: 'John' } as Address;
     component.basket.commonShipToAddress = address;
     fixture.detectChanges();
-    expect(element.querySelector('div[data-testing-id=address-summary-ship-to-address] ish-address')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=address-summary-ship-to-address] ish-address')).toBeTruthy();
   });
 });

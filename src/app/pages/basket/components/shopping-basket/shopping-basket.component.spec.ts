@@ -68,12 +68,12 @@ describe('Shopping Basket Component', () => {
 
   it('should not render an error if no error occurs', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 });

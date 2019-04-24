@@ -49,15 +49,15 @@ describe('Account Overview Page Component', () => {
 
   it('should display user name when displaying personal text', () => {
     fixture.detectChanges();
-    expect(element.querySelector('h1[data-testing-id=personal-message-default]')).toBeTruthy();
-    expect(element.querySelector('h1').textContent).toContain(user.firstName);
+    expect(element.querySelector('[data-testing-id=personal-message-default]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=personal-message-default]').textContent).toContain(user.firstName);
   });
 
   it('should display special personal text for b2b customer', () => {
     const customerB2B = { isBusinessCustomer: true } as Customer;
     component.customer = customerB2B;
     fixture.detectChanges();
-    expect(element.querySelector('h1[data-testing-id=personal-message-b2b]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=personal-message-b2b]')).toBeTruthy();
   });
 
   it('should display dashboard on page', () => {

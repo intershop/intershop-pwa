@@ -37,14 +37,14 @@ describe('Basket Items Summary Component', () => {
 
   it('should render basket product line items if basket items are there', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.row')).toBeTruthy();
-    expect(element.querySelector('.row').innerHTML).toContain('pli name');
+    expect(element.querySelector('.cart-summary-checkout')).toBeTruthy();
+    expect(element.querySelector('.cart-summary-checkout').innerHTML).toContain('pli name');
   });
 
   it('should not show anything if there are no basket items', () => {
     component.basket.lineItems = undefined;
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('.row')).toBeFalsy();
+    expect(element.querySelector('.cart-summary-checkout')).toBeFalsy();
   });
 
   it('should not show showAll/HideAll links if there are less items than in collapsedItemsCount specified', () => {

@@ -51,7 +51,7 @@ describe('Account Order Page Component', () => {
   it('should render order details for the given order', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('div[data-testing-id=order-summary-info]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=order-summary-info]')).toBeTruthy();
     expect(element.querySelectorAll('ish-info-box')).toHaveLength(4);
     expect(element.querySelector('ish-line-item-list')).toBeTruthy();
     expect(element.querySelector('ish-basket-cost-summary')).toBeTruthy();
@@ -59,11 +59,11 @@ describe('Account Order Page Component', () => {
 
   it('should display the home link after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[data-testing-id="home-link"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="home-link"]')).toBeTruthy();
   });
 
   it('should display the order list link after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[data-testing-id="orders-link"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="orders-link"]')).toBeTruthy();
   });
 });
