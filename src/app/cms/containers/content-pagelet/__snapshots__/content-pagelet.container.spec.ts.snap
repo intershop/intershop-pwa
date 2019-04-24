@@ -3,7 +3,6 @@
 exports[`Content Pagelet Container should be created 1`] = `
 <div
   id="root0"
-  ng-version="7.1.4"
 >
   
   
@@ -13,7 +12,6 @@ exports[`Content Pagelet Container should be created 1`] = `
 exports[`Content Pagelet Container should render assigned template if name matches 1`] = `
 <div
   id="root1"
-  ng-version="7.1.4"
 >
   
   

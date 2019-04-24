@@ -3,7 +3,6 @@
 exports[`Cms Freestyle Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="7.1.4"
 >
   
 </div>
@@ -12,7 +11,6 @@ exports[`Cms Freestyle Component should be created 1`] = `
 exports[`Cms Freestyle Component should render content if available 1`] = `
 <div
   id="root1"
-  ng-version="7.1.4"
 >
   
   <div>

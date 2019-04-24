@@ -3,7 +3,6 @@
 exports[`Header Navigation Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="7.1.4"
 >
   <ul
     class="navbar-nav main-navigation-list d-md-none accordion"
