@@ -36,13 +36,13 @@ describe('Product Add To Quote Component', () => {
 
   it('should show button when display type is not icon ', () => {
     fixture.detectChanges();
-    expect(element.querySelector('button').className).toContain('btn-secondary');
+    expect(element.querySelector('button')).toBeTruthy();
   });
 
   it('should show icon button when display type is icon ', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon').className).toBeTruthy();
+    expect(element.querySelector('fa-icon')).toBeTruthy();
   });
 
   it('should show disable button when "disabled" is set to "false" ', () => {

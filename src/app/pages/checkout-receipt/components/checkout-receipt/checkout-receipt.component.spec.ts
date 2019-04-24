@@ -45,18 +45,16 @@ describe('Checkout Receipt Component', () => {
 
   it('should display the document number after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('strong[data-testing-id="order-document-number"]').innerHTML.trim()).toEqual(
-      '12345678'
-    );
+    expect(element.querySelector('[data-testing-id="order-document-number"]').innerHTML.trim()).toEqual('12345678');
   });
 
   it('should display the home link after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[data-testing-id="home-link"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="home-link"]')).toBeTruthy();
   });
 
   it('should display the my account link after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[data-testing-id="myaccount-link"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="myaccount-link"]')).toBeTruthy();
   });
 });

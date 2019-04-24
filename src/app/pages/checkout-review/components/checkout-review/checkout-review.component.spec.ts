@@ -69,6 +69,6 @@ describe('Checkout Review Component', () => {
   it('should display a message if an error occurs', () => {
     component.error = { status: 400, error: 'Bad request' } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 });

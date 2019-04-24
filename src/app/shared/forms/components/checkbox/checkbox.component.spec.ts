@@ -40,7 +40,7 @@ describe('Checkbox Component', () => {
 
   it('should be rendered on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[data-testing-id=requiredField]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=requiredField]')).toBeTruthy();
   });
 
   it('should set input type properly on creation', () => {

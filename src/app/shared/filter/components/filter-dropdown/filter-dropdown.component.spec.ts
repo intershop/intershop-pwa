@@ -53,7 +53,7 @@ describe('Filter Dropdown Component', () => {
     const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
     expect(selectedFilterFacet.textContent).toContain('Logitech');
 
-    const hiddenFilters = element.querySelector('div [data-testing-id=collapse-filter-Brands]');
+    const hiddenFilters = element.querySelector('[data-testing-id=collapse-filter-Brands]');
     expect(hiddenFilters.className).not.toContain('show');
   }));
 });

@@ -44,6 +44,6 @@ describe('Account Navigation Component', () => {
 
   it('should display link to quote list', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[href="/account/quote-list"]')).toBeTruthy();
+    expect(element.textContent).toContain('account.navigation.quotes.link');
   });
 });

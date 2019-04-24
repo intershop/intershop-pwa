@@ -53,11 +53,11 @@ describe('Registration Credentials Form Component', () => {
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[data-testing-id=login]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=loginConfirmation]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=passwordConfirmation]')).toBeTruthy();
-    expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=securityQuestionAnswer]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=login]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=loginConfirmation]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=password]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=passwordConfirmation]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=securityQuestion]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=securityQuestionAnswer]')).toBeTruthy();
   });
 });
