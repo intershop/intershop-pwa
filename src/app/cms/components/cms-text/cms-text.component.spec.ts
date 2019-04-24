@@ -26,7 +26,7 @@ describe('Cms Text Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should render html text pagelet if set', () => {
@@ -40,6 +40,6 @@ describe('Cms Text Component', () => {
     component.pagelet = createSimplePageletView(pagelet);
 
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`<span>foo</span>`);
   });
 });

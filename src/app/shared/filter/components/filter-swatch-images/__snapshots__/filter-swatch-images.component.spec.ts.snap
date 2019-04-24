@@ -1,78 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Filter Swatch Images Component should be created 1`] = `
-<div
-  id="root0"
->
-  <div
-    class="filter-group"
-  >
-    <h3
-      aria-controls="collapseFilter"
-      aria-expanded="true"
+<div class="filter-group">
+  <h3 aria-controls="collapseFilter" aria-expanded="true">
+    Color
+    <fa-icon class="float-right ng-fa-icon" ng-reflect-icon-prop="fas,angle-down"
+      ><svg
+        aria-hidden="true"
+        data-prefix="fas"
+        data-icon="angle-down"
+        class="svg-inline--fa fa-angle-down fa-w-10"
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 320 512"
+      >
+        <path
+          fill="currentColor"
+          d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
+        ></path></svg
+    ></fa-icon>
+  </h3>
+  <ul class="filter-list clearfix collapse show" id="collapseFilter" ng-reflect-collapsed="false">
+    <li
+      class="filter-item filter-colour"
+      ng-reflect-klass="filter-item filter-colour"
+      ng-reflect-ng-class="[object Object]"
     >
-       Color 
-      
-      <fa-icon
-        class="float-right ng-fa-icon"
-        ng-reflect-icon-prop="fas,angle-down"
-      >
-        <svg
-          aria-hidden="true"
-          class="svg-inline--fa fa-angle-down fa-w-10"
-          data-icon="angle-down"
-          data-prefix="fas"
-          role="img"
-          viewBox="0 0 320 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
-            fill="currentColor"
-          />
-        </svg>
-      </fa-icon>
-      
-    </h3>
-    <ul
-      class="filter-list clearfix collapse show"
-      id="collapseFilter"
-      ng-reflect-collapsed="false"
+      <a class="filter-swatch" title="Black" data-testing-id="filter-link-Black"
+        ><span style="background-color: black;"></span
+      ></a>
+    </li>
+    <li
+      class="filter-item filter-colour filter-selected"
+      ng-reflect-klass="filter-item filter-colour"
+      ng-reflect-ng-class="[object Object]"
     >
-      
-      
-      <li
-        class="filter-item filter-colour"
-        ng-reflect-klass="filter-item filter-colour"
-        ng-reflect-ng-class="[object Object]"
-      >
-        <a
-          class="filter-swatch"
-          data-testing-id="filter-link-Black"
-          title="Black"
-        >
-          <span
-            style="background-color: black;"
-          />
-        </a>
-      </li>
-      
-      <li
-        class="filter-item filter-colour filter-selected"
-        ng-reflect-klass="filter-item filter-colour"
-        ng-reflect-ng-class="[object Object]"
-      >
-        <a
-          class="filter-swatch"
-          data-testing-id="filter-link-Red"
-          title="Red"
-        >
-          <span
-            style="background-color: red;"
-          />
-        </a>
-      </li>
-    </ul>
-  </div>
+      <a class="filter-swatch" title="Red" data-testing-id="filter-link-Red"
+        ><span style="background-color: red;"></span
+      ></a>
+    </li>
+  </ul>
 </div>
 `;

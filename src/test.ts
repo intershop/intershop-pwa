@@ -1,18 +1,31 @@
 require('jest-preset-angular');
 require('jest-extended');
 import { getTestBed } from '@angular/core/testing';
+import * as prettier from 'prettier';
 
 import { IconModule } from './app/core/icon.module';
 
 beforeAll(() => IconModule.init());
 
 class AngularHTMLSerializer implements jest.SnapshotSerializerPlugin {
-  print(val: HTMLElement, serialize: (val: HTMLElement) => string): string {
-    val.removeAttribute('ng-version');
-    return serialize(val);
+  print(val: Element): string {
+    let source: string;
+    if (val.getAttribute('ng-version')) {
+      source = val.innerHTML;
+    } else {
+      const tmp = document.createElement('div');
+      tmp.appendChild(val);
+      source = tmp.innerHTML;
+    }
+    source = source.replace(/\n/g, '').replace(/<!\-\-.*?\-\->/g, '');
+    const result = prettier
+      .format(source, { parser: 'html', printWidth: 100 })
+      .replace(/^\s*$/g, '')
+      .trim();
+    return result || 'N/A';
   }
-  test(val: HTMLElement): boolean {
-    return val instanceof HTMLElement && !!val.getAttribute('ng-version');
+  test(val: Element): boolean {
+    return val instanceof Element;
   }
 }
 
