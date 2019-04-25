@@ -20,12 +20,13 @@ export class ProductPromotionContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.promotions$ = this.store.pipe(select(getPromotions, { productPromotions: this.product.promotions }));
+    this.promotions$ = this.store.pipe(select(getPromotions, { promotionIds: this.product.promotionIds }));
 
+    // Todo:
     // Checks if the promotion is already in the store and only dispatches a LoadPromotion action if it is not
-    // optimize
-    this.product.promotions.forEach(productPromotion => {
-      this.store.dispatch(new LoadPromotion({ promoId: productPromotion.itemId }));
+    // Optimize it!
+    this.product.promotionIds.forEach(promotionId => {
+      this.store.dispatch(new LoadPromotion({ promoId: promotionId }));
     });
   }
 }

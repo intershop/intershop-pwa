@@ -4,8 +4,8 @@ import { AttributeHelper } from '../attribute/attribute.helper';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
+import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
-import { ProductPromotion } from '../promotion/promotion.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
@@ -27,10 +27,10 @@ function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: str
 }
 
 /**
- * check if attribute is available and return value elements, otherwise undefined
+ * maps promotion links data to a string array of promotion ids
  */
-function retrieveStubAttributeValueElements<T>(data: ProductDataStub, attributeName: string) {
-  return data ? AttributeHelper.getAttributeValueElementsByAttributeName<T>(data.attributes, attributeName) : undefined;
+function mapPromotionIds(data: Link[]): string[] {
+  return data ? data.map(promotionLink => promotionLink.itemId) : [];
 }
 
 /**
@@ -66,6 +66,9 @@ export class ProductMapper {
 
     const minOrderQuantityValue = retrieveStubAttributeValue<{ value: number }>(data, 'minOrderQuantity');
     const minOrderQuantity = minOrderQuantityValue ? minOrderQuantityValue.value : undefined;
+
+    const promotionsValue = retrieveStubAttributeValue<{ elements: Link[] }>(data, 'promotions');
+    const promotionLinks = promotionsValue && promotionsValue.elements ? promotionsValue.elements : [];
 
     return {
       shortDescription: data.description,
@@ -106,7 +109,7 @@ export class ProductMapper {
       readyForShipmentMax: undefined,
       type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
-      promotions: retrieveStubAttributeValueElements<ProductPromotion[]>(data, 'promotions'),
+      promotionIds: mapPromotionIds(promotionLinks),
       completenessLevel: 2,
       failed: false,
     };
@@ -137,7 +140,7 @@ export class ProductMapper {
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
         : undefined,
-      promotions: data.promotions,
+      promotionIds: mapPromotionIds(data.promotions),
       completenessLevel: 3,
       failed: false,
     };

@@ -7,15 +7,17 @@ import { shoppingReducers } from '../../../store/shopping/shopping-store.module'
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 
 import { LoadPromotion, LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
-import { getPromotion, getPromotionEntities, getPromotionLoading } from './promotions.selectors';
+import { getPromotion, getPromotionEntities, getPromotionLoading, getPromotions } from './promotions.selectors';
 
 describe('Promotions Selectors', () => {
   let store$: TestStore;
 
   let promo: Promotion;
+  let promo1: Promotion;
 
   beforeEach(() => {
     promo = { id: 'id' } as Promotion;
+    promo1 = { id: 'id1' } as Promotion;
 
     TestBed.configureTestingModule({
       imports: ngrxTesting({
@@ -78,6 +80,7 @@ describe('Promotions Selectors', () => {
 
       it('should return a promotion stub if promotion is selected', () => {
         expect(getPromotion(store$.state, { promoId: promo.id })).toBeTruthy();
+        expect(getPromotions(store$.state, { promotionIds: [promo.id, promo1.id] })).toBeTruthy();
       });
     });
   });

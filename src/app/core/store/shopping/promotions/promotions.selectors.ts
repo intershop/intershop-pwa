@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { ProductPromotion, Promotion } from 'ish-core/models/promotion/promotion.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { ShoppingState, getShoppingState } from '../shopping-store';
 
 import { promotionAdapter } from './promotions.reducer';
@@ -26,7 +26,6 @@ export const getPromotion = createSelector(
 
 export const getPromotions = createSelector(
   getAllPromotions,
-  (promotions, props: { productPromotions: ProductPromotion[] }): Promotion[] =>
-    promotions.filter(e => props.productPromotions.some(s => s.itemId === e.id))
-  // promotions.filter(e => props.productPromotions.includes(e.id))
+  (promotions, props: { promotionIds: string[] }): Promotion[] =>
+    promotions.filter(e => props.promotionIds.includes(e.id))
 );
