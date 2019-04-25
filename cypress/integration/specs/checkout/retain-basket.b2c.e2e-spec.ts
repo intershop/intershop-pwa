@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
@@ -25,7 +25,7 @@ const _ = {
 };
 
 describe('Returning User with Basket', () => {
-  xdescribe('anonymous user', () => {
+  describe('anonymous user', () => {
     it('should add product to basket', () => {
       ProductDetailPage.navigateTo(_.product.sku);
       at(ProductDetailPage, page => {
@@ -34,6 +34,7 @@ describe('Returning User with Basket', () => {
           .its('status')
           .should('equal', 201);
         page.header.miniCart.total.should('contain', _.product.price);
+        waitLoadingEnd(1000);
       });
     });
 

@@ -5,30 +5,29 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { CookiesService } from '@ngx-utils/cookies';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { AddressService } from 'ish-core/services/address/address.service';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from '../../configurations/injection-keys';
-import { Category, CategoryHelper } from '../../models/category/category.model';
-import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
-import { Locale } from '../../models/locale/locale.model';
-import { Product } from '../../models/product/product.model';
-import { CategoriesService } from '../../services/categories/categories.service';
-import { CountryService } from '../../services/country/country.service';
-import { FilterService } from '../../services/filter/filter.service';
-import { OrderService } from '../../services/order/order.service';
-import { ProductsService } from '../../services/products/products.service';
-import { SuggestService } from '../../services/suggest/suggest.service';
-import { UserService } from '../../services/user/user.service';
+} from 'ish-core/configurations/injection-keys';
+import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { AddressService } from 'ish-core/services/address/address.service';
+import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { CountryService } from 'ish-core/services/country/country.service';
+import { FilterService } from 'ish-core/services/filter/filter.service';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { UserService } from 'ish-core/services/user/user.service';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { coreEffects, coreReducers } from '../core-store.module';
 
 import {
@@ -133,6 +132,7 @@ describe('Shopping Store', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
     when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
+
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
@@ -184,7 +184,6 @@ describe('Shopping Store', () => {
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },

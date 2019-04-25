@@ -39,6 +39,15 @@ export class BasketEffects {
     )
   );
 
+  @Effect()
+  loadBasketByAPIToken$ = this.actions$.pipe(
+    ofType<basketActions.LoadBasketByAPIToken>(basketActions.BasketActionTypes.LoadBasketByAPIToken),
+    mapToPayloadProperty('apiToken'),
+    concatMap(apiToken =>
+      this.basketService.getBasketByToken(apiToken).pipe(map(basket => new basketActions.LoadBasketSuccess({ basket })))
+    )
+  );
+
   /**
    * After successfully loading the basket, trigger a LoadProduct action
    * for each product that is missing in the current product entities state.

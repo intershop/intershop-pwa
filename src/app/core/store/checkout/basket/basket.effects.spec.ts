@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
@@ -108,6 +108,29 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketByAPIToken$', () => {
+    it('should call the basket service on LoadUserByAPIToken action and load user on success', done => {
+      when(basketServiceMock.getBasketByToken('dummy')).thenReturn(of({ id: 'basket' } as Basket));
+
+      actions$ = of(new basketActions.LoadBasketByAPIToken({ apiToken: 'dummy' }));
+
+      effects.loadBasketByAPIToken$.subscribe(action => {
+        verify(basketServiceMock.getBasketByToken('dummy')).once();
+        expect(action.type).toEqual(basketActions.BasketActionTypes.LoadBasketSuccess);
+        expect(action.payload).toHaveProperty('basket.id', 'basket');
+        done();
+      });
+    });
+
+    it('should call the basket service on LoadUserByAPIToken action and do nothing when failing', () => {
+      when(basketServiceMock.getBasketByToken('dummy')).thenReturn(EMPTY);
+
+      actions$ = hot('a-a-a-', { a: new basketActions.LoadBasketByAPIToken({ apiToken: 'dummy' }) });
+
+      expect(effects.loadBasketByAPIToken$).toBeObservable(cold('------'));
     });
   });
 

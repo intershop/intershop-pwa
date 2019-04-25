@@ -12,6 +12,7 @@ import { BasketUpdateType } from '../../../services/basket/basket.service';
 
 export enum BasketActionTypes {
   LoadBasket = '[Basket Internal] Load Basket',
+  LoadBasketByAPIToken = '[Basket Internal] Load Basket by API Token',
   LoadBasketFail = '[Basket API] Load Basket Fail',
   LoadBasketSuccess = '[Basket API] Load Basket Success',
   CreateBasketAddress = '[Basket] Create Basket Address',
@@ -54,6 +55,11 @@ export enum BasketActionTypes {
 export class LoadBasket implements Action {
   readonly type = BasketActionTypes.LoadBasket;
   constructor(public payload?: { id: string }) {}
+}
+
+export class LoadBasketByAPIToken implements Action {
+  readonly type = BasketActionTypes.LoadBasketByAPIToken;
+  constructor(public payload?: { apiToken: string }) {}
 }
 
 export class LoadBasketFail implements Action {
@@ -231,6 +237,7 @@ export class CreateOrderSuccess implements Action {
 
 export type BasketAction =
   | LoadBasket
+  | LoadBasketByAPIToken
   | LoadBasketFail
   | LoadBasketSuccess
   | CreateBasketAddress
