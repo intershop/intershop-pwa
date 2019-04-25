@@ -1,16 +1,17 @@
 import { CustomerData } from './customer.interface';
-import { CustomerLoginType } from './customer.model';
+import { CustomerUserType } from './customer.model';
 
 export class CustomerMapper {
   /**
    * Get User data for the logged in Business Customer.
    */
-  static mapLoginData(data: CustomerData): CustomerLoginType {
+  static mapLoginData(data: CustomerData): CustomerUserType {
     return data.type === 'SMBCustomer'
       ? {
           customer: {
             customerNo: data.customerNo,
             type: data.type,
+            isBusinessCustomer: true,
             companyName: data.companyName,
             companyName2: data.companyName2,
             taxationID: data.taxationID,
@@ -23,6 +24,7 @@ export class CustomerMapper {
           customer: {
             customerNo: data.customerNo,
             type: data.type,
+            isBusinessCustomer: false,
           },
           user: {
             title: data.title,

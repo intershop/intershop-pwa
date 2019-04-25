@@ -12,6 +12,8 @@ import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { VariationProductMaster } from '../../../models/product/product-variation-master.model';
+import { VariationProduct } from '../../../models/product/product-variation.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
@@ -151,6 +153,120 @@ describe('Products Effects', () => {
           }),
         })
       );
+    });
+  });
+
+  describe('loadProductVariations$', () => {
+    beforeEach(() => {
+      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => of([]));
+    });
+
+    it('should call the productsService for getProductVariations', done => {
+      const action = new fromActions.LoadProductVariations({ sku: 'MSKU' });
+      actions$ = of(action);
+
+      effects.loadProductVariations$.subscribe(() => {
+        verify(productsServiceMock.getProductVariations('MSKU')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type LoadProductVariationsSuccess', () => {
+      const action = new fromActions.LoadProductVariations({ sku: 'MSKU' });
+      const completion = new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: [] });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductVariations$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadProductVariationsFail', () => {
+      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => throwError({ message: 'invalid' }));
+      const action = new fromActions.LoadProductVariations({ sku: 'MSKU' });
+      const completion = new fromActions.LoadProductVariationsFail({
+        error: { message: 'invalid' } as HttpError,
+        sku: 'MSKU',
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductVariations$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadMasterProductForProduct$', () => {
+    it('should trigger LoadProduct action if LoadProductSuccess contains productMasterSKU', () => {
+      const action = new fromActions.LoadProductSuccess({
+        product: {
+          productMasterSKU: 'MSKU',
+          type: 'VariationProduct',
+        } as VariationProduct,
+      });
+      const completion = new fromActions.LoadProduct({ sku: 'MSKU' });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loadMasterProductForProduct$).toBeObservable(expected$);
+    });
+
+    it('should not trigger LoadProduct action if LoadProductSuccess contains productMasterSKU of loaded product', () => {
+      store$.dispatch(new fromActions.LoadProductSuccess({ product: { sku: 'MSKU' } as Product }));
+
+      const action = new fromActions.LoadProductSuccess({
+        product: {
+          productMasterSKU: 'MSKU',
+          type: 'VariationProduct',
+        } as VariationProduct,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-');
+
+      expect(effects.loadMasterProductForProduct$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadProductVariationsForMasterProduct$', () => {
+    it('should trigger LoadProductVariations action if LoadProductSuccess triggered for master product', () => {
+      const action = new fromActions.LoadProductSuccess({
+        product: {
+          sku: 'MSKU',
+          type: 'VariationProductMaster',
+        } as VariationProductMaster,
+      });
+      const completion = new fromActions.LoadProductVariations({ sku: 'MSKU' });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
+    });
+
+    it('should not trigger LoadProductVariations action if loaded product variations present', () => {
+      const product = {
+        sku: 'MSKU',
+        type: 'VariationProductMaster',
+      } as VariationProductMaster;
+
+      store$.dispatch(new fromActions.LoadProductSuccess({ product }));
+      store$.dispatch(new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'] }));
+
+      const action = new fromActions.LoadProductSuccess({ product });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-');
+
+      expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
+    });
+
+    it('should not trigger LoadProductVariants action if loaded product is not of type VariationProductMaster.', () => {
+      const action = new fromActions.LoadProductSuccess({
+        product: {
+          sku: 'SKU',
+          type: 'Product',
+        } as Product,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-');
+
+      expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
     });
   });
 

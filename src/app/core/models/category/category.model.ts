@@ -1,3 +1,4 @@
+import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 
 export interface Category {
@@ -8,6 +9,7 @@ export interface Category {
   hasOnlineProducts: boolean;
   description: string;
   images: Image[];
+  attributes: Attribute[];
 
   completenessLevel: number;
 }

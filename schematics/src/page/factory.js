@@ -80,7 +80,7 @@ function createPage(options) {
             schematics_1.move(options.path),
         ])));
         operations.push(schematics_1.schematic('component', Object.assign({}, options, { name: `${options.name}-page`, path: `${options.path}${options.name}` })));
-        operations.push(schematics_1.schematic('container', Object.assign({}, options, { name: `${options.name}-page`, path: `${options.path}${options.name}`, flat: true, referenceSelector: `ish-${options.name}-page` })));
+        operations.push(schematics_1.schematic('container', Object.assign({}, options, { name: `${options.name}-page`, path: `${options.path}${options.name}`, flat: true, referenceSelector: `ish-${options.name}-page`, referenceComponent: `${options.name}-page`, referenceComponentPath: `./components/${options.name}-page/${options.name}-page.component` })));
         operations.push(addRouteToRoutingModule(options));
         return schematics_1.chain(operations);
     };

@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
@@ -14,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Region } from 'ish-core/models/region/region.model';
-import { getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
+import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
 import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
 import { isBusinessCustomer } from 'ish-core/store/user';
 import { determineSalutations, updateValidatorsByDataLength } from '../../../forms/utils/form-utils';
@@ -32,7 +33,7 @@ import { AddressFormFactoryProvider } from '../../configurations/address-form-fa
   templateUrl: './address-form.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AddressFormContainerComponent implements OnChanges, OnDestroy {
+export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestroy {
   countries$ = this.store.pipe(select(getAllCountries));
   loading$ = this.store.pipe(select(getCountriesLoading));
 
@@ -66,6 +67,10 @@ export class AddressFormContainerComponent implements OnChanges, OnDestroy {
       .subscribe(
         data => (this.isBusinessCustomer = data || this.featureToggle.enabled('businessCustomerRegistration'))
       );
+  }
+
+  ngOnInit() {
+    this.store.dispatch(new LoadCountries());
   }
 
   ngOnChanges(c: SimpleChanges) {

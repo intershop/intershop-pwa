@@ -45,13 +45,13 @@ describe('Address Form Gb Component', () => {
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=firstName]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=lastName]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=addressLine1]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=addressLine2]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=addressLine3]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=postalCode]')).toBeTruthy();
-    expect(element.querySelector('input[data-testing-id=city]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=title]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=firstName]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=lastName]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=addressLine1]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=addressLine2]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=addressLine3]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=postalCode]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=city]')).toBeTruthy();
   });
 });

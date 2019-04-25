@@ -5,10 +5,12 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { CookiesService } from '@ngx-utils/cookies';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { AddressService } from 'ish-core/services/address/address.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
@@ -16,7 +18,7 @@ import {
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../configurations/injection-keys';
-import { Category } from '../../models/category/category.model';
+import { Category, CategoryHelper } from '../../models/category/category.model';
 import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
 import { Locale } from '../../models/locale/locale.model';
 import { Product } from '../../models/product/product.model';
@@ -80,13 +82,23 @@ describe('Shopping Store', () => {
     when(categoriesServiceMock.getCategory(anything())).thenCall(uniqueId => {
       switch (uniqueId) {
         case 'A':
-          return of(categoryTree([{ ...catA, completenessLevel: 2 }, { ...catA123, completenessLevel: 1 }]));
+          return of(
+            categoryTree([
+              { ...catA, completenessLevel: CategoryHelper.maxCompletenessLevel },
+              { ...catA123, completenessLevel: 1 },
+            ])
+          );
         case 'B':
-          return of(categoryTree([{ ...catB, completenessLevel: 2 }]));
+          return of(categoryTree([{ ...catB, completenessLevel: CategoryHelper.maxCompletenessLevel }]));
         case 'A.123':
-          return of(categoryTree([{ ...catA123, completenessLevel: 2 }, { ...catA123456, completenessLevel: 1 }]));
+          return of(
+            categoryTree([
+              { ...catA123, completenessLevel: CategoryHelper.maxCompletenessLevel },
+              { ...catA123456, completenessLevel: 1 },
+            ])
+          );
         case 'A.123.456':
-          return of(categoryTree([{ ...catA123456, completenessLevel: 2 }]));
+          return of(categoryTree([{ ...catA123456, completenessLevel: CategoryHelper.maxCompletenessLevel }]));
         default:
           return throwError({ message: `error loading category ${uniqueId}` });
       }
@@ -169,8 +181,10 @@ describe('Shopping Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: UserService, useFactory: () => instance(mock(UserService)) },
+        { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },

@@ -7,6 +7,7 @@ export type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
 export interface Customer {
   type: CustomerType;
   customerNo: string;
+  isBusinessCustomer?: boolean;
 
   // Business Customer only
   companyName?: string;
@@ -18,8 +19,9 @@ export interface Customer {
 
 /**
  * login result response data type, for business customers user data are missing and have to be fetched seperately
+ * update user request data type for both, business and private customers
  */
-export interface CustomerLoginType {
+export interface CustomerUserType {
   customer: Customer;
   user?: User;
 }
@@ -27,7 +29,7 @@ export interface CustomerLoginType {
 /**
  * registration request data type
  */
-export interface CustomerRegistrationType extends CustomerLoginType {
+export interface CustomerRegistrationType extends CustomerUserType {
   credentials: Credentials;
   address: Address;
 }

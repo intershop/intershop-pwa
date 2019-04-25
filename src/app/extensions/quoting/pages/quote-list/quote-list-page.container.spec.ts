@@ -1,13 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
 import { QuoteData } from '../../models/quote/quote.interface';
 import { LoadQuotes, LoadQuotesSuccess } from '../../store/quote';
 import { LoadQuoteRequests } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting-store.module';
 
+import { QuoteListComponent } from './components/quote-list/quote-list.component';
 import { QuoteListPageContainerComponent } from './quote-list-page.container';
 
 describe('Quote List Page Container', () => {
@@ -19,8 +21,8 @@ describe('Quote List Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-quote-list', template: 'Quote List Component', inputs: ['quotes'] }),
+        MockComponent(LoadingComponent),
+        MockComponent(QuoteListComponent),
         QuoteListPageContainerComponent,
       ],
       imports: [

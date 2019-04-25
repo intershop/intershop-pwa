@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { CustomerLoginType } from '../../models/customer/customer.model';
+import { CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { Product } from '../../models/product/product.model';
 import { User } from '../../models/user/user.model';
@@ -52,7 +52,7 @@ describe('User Selectors', () => {
           type: 'SMBCustomer',
           customerNo: customerNo,
         },
-      } as CustomerLoginType)
+      } as CustomerUserType)
     );
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
@@ -70,15 +70,17 @@ describe('User Selectors', () => {
         customer: {
           type: type,
           customerNo: customerNo,
+          isBusinessCustomer: false,
         },
         user: {
           firstName: firstName,
         },
-      } as CustomerLoginType)
+      } as CustomerUserType)
     );
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('type', type);
+    expect(getLoggedInCustomer(store$.state)).toHaveProperty('isBusinessCustomer', false);
     expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
     expect(getUserAuthorized(store$.state)).toBeTrue();
@@ -91,8 +93,9 @@ describe('User Selectors', () => {
         customer: {
           type: 'SMBCustomer',
           customerNo: 'PC',
+          isBusinessCustomer: true,
         },
-      } as CustomerLoginType)
+      } as CustomerUserType)
     );
 
     expect(getLoggedInCustomer(store$.state)).toBeTruthy();

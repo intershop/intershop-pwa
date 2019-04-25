@@ -1,16 +1,32 @@
 import { createSelector } from '@ngrx/store';
+import { memoize } from 'lodash-es';
 
-import { createProductView } from 'ish-core/models/product-view/product-view.model';
-import { Product } from '../../../models/product/product.model';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import {
+  ProductView,
+  VariationProductMasterView,
+  VariationProductView,
+  createProductView,
+  createVariationProductMasterView,
+  createVariationProductView,
+} from 'ish-core/models/product-view/product-view.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from '../categories';
-import { ShoppingState, getShoppingState } from '../shopping-store';
+import { getShoppingState } from '../shopping-store';
 
 import { productAdapter } from './products.reducer';
 
 const getProductsState = createSelector(
   getShoppingState,
-  (state: ShoppingState) => state.products
+  state => state.products
 );
+
+const productToVariationOptions = (product: ProductView | VariationProductView | VariationProductMasterView) => {
+  if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
+    return ProductVariationHelper.buildVariationOptionGroups(product);
+  }
+};
 
 export const {
   selectEntities: getProductEntities,
@@ -28,25 +44,61 @@ export const getFailed = createSelector(
   state => state.failed
 );
 
-export const getSelectedProduct = createSelector(
-  getCategoryTree,
-  getProductEntities,
-  getSelectedProductId,
-  (tree, entities, id) => createProductView(entities[id], tree)
-);
-
-export const getProductLoading = createSelector(
-  getProductsState,
-  products => products.loading
+const createView = memoize(
+  (product, entities, tree) => {
+    if (ProductHelper.isMasterProduct(product)) {
+      return createVariationProductMasterView(product, entities, tree);
+    } else if (ProductHelper.isVariationProduct(product)) {
+      return createVariationProductView(product, entities, tree);
+    } else {
+      return createProductView(product, tree);
+    }
+  },
+  // TODO: find a better way to return hash than stringify
+  (product, entities, tree: CategoryTree) => {
+    const defaultCategory = product ? tree.nodes[product.defaultCategoryId] : undefined;
+    // fire when self, master or default category changed
+    if (ProductHelper.isVariationProduct(product)) {
+      return JSON.stringify([product, entities[product.productMasterSKU], defaultCategory]);
+    }
+    // fire when self or default category changed
+    return JSON.stringify([product, defaultCategory]);
+  }
 );
 
 export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
   getFailed,
-  (tree, products, failed, props: { sku: string }) =>
-    failed.includes(props.sku)
-      ? // tslint:disable-next-line:ish-no-object-literal-type-assertion
-        createProductView({ sku: props.sku } as Product, tree)
-      : createProductView(products[props.sku], tree)
+  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView => {
+    if (failed.includes(props.sku)) {
+      // tslint:disable-next-line: ish-no-object-literal-type-assertion
+      return createProductView({ sku: props.sku, failed: true } as Product, tree);
+    }
+
+    return createView(entities[props.sku], entities, tree);
+  }
+);
+
+export const getSelectedProduct = createSelector(
+  state => state,
+  getSelectedProductId,
+  getFailed,
+  (state, sku, failed): ProductView | VariationProductView | VariationProductMasterView =>
+    failed.includes(sku) ? undefined : getProduct(state, { sku })
+);
+
+export const getProductVariationOptions = createSelector(
+  getProduct,
+  productToVariationOptions
+);
+
+export const getSelectedProductVariationOptions = createSelector(
+  getSelectedProduct,
+  productToVariationOptions
+);
+
+export const getProductLoading = createSelector(
+  getProductsState,
+  products => products.loading
 );

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from '../attribute/attribute.helper';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
@@ -7,11 +8,11 @@ import { Price } from '../price/price.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
-import { ProductData, ProductDataStub } from './product.interface';
-import { Product, ProductHelper, ProductType } from './product.model';
+import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
+import { Product } from './product.model';
 
 function filterPrice(price: Price): Price {
-  if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
+  if (price && price.currency && price.currency !== 'N/A') {
     return price;
   }
   return;
@@ -21,8 +22,7 @@ function filterPrice(price: Price): Price {
  * check if attribute is available and return value, otherwise undefined
  */
 function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: string) {
-  const attribute = ProductHelper.getAttributeByAttributeName(data, attributeName);
-  return attribute ? (attribute.value as T) : undefined;
+  return data ? AttributeHelper.getAttributeValueByAttributeName<T>(data.attributes, attributeName) : undefined;
 }
 
 /**
@@ -31,6 +31,20 @@ function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: str
 @Injectable({ providedIn: 'root' })
 export class ProductMapper {
   constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
+
+  fromVariationLink(link: ProductVariationLink, productMasterSKU: string): Partial<VariationProduct> {
+    return {
+      sku: link.uri.split('/products/')[1],
+      variableVariationAttributes: link.variableVariationAttributeValues,
+      name: link.title,
+      productMasterSKU,
+      shortDescription: link.description,
+      type: 'VariationProduct',
+      attributes: link.attributes || [],
+      completenessLevel: 1,
+      failed: false,
+    };
+  }
 
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
@@ -82,8 +96,10 @@ export class ProductMapper {
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
-      type: ProductType.Product,
+      type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
+      completenessLevel: 2,
+      failed: false,
     };
   }
 
@@ -92,7 +108,7 @@ export class ProductMapper {
    */
   fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
     const product: Product = {
-      type: ProductType.Product,
+      type: 'Product',
       name: data.productName,
       shortDescription: data.shortDescription,
       longDescription: data.longDescription,
@@ -112,19 +128,22 @@ export class ProductMapper {
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
         : undefined,
+      completenessLevel: 3,
+      failed: false,
     };
 
     if (data.productMaster) {
       return {
         ...product,
-        variationProducts: [],
-        type: ProductType.VariationProductMaster,
+        variationAttributeValues: data.variationAttributeValues,
+        type: 'VariationProductMaster',
       };
     } else if (data.mastered) {
       return {
         ...product,
         productMasterSKU: data.productMasterSKU,
-        type: ProductType.VariationProduct,
+        variableVariationAttributes: data.variableVariationAttributes,
+        type: 'VariationProduct',
       };
     } else {
       return product;

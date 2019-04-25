@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
@@ -15,8 +17,8 @@ describe('Basket Cost Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      declarations: [BasketCostSummaryComponent, MockComponent(PromotionDetailsComponent)],
       imports: [IconModule, NgbPopoverModule, PipesModule, TranslateModule.forRoot()],
-      declarations: [BasketCostSummaryComponent],
     }).compileComponents();
   }));
 
@@ -35,11 +37,11 @@ describe('Basket Cost Summary Component', () => {
 
   it('should not display estimated prices if estimated flag is not set', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.order.total_cost.label');
+    expect(element.querySelector('.total-price').textContent).toEqual('checkout.order.total_cost.label');
   });
   it('should display estimated prices if estimated flag is set', () => {
     component.totals.isEstimated = true;
     fixture.detectChanges();
-    expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.cart.estimated_total.label');
+    expect(element.querySelector('.total-price').textContent).toEqual('checkout.cart.estimated_total.label');
   });
 });

@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, OperatorFunction, forkJoin } from 'rxjs';
-import { catchError, defaultIfEmpty, filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
+import { Observable, OperatorFunction, Subject, forkJoin, of, throwError } from 'rxjs';
+import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 
 import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
 import { getAPIToken } from 'ish-core/store/user';
@@ -98,6 +98,13 @@ export function constructUrlForPath(
   }
 }
 
+export interface AvailableOptions {
+  params?: HttpParams;
+  headers?: HttpHeaders;
+  skipApiErrorHandling?: boolean;
+  runExclusively?: boolean;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   static TOKEN_HEADER_KEY = 'authentication-token';
@@ -107,6 +114,8 @@ export class ApiService {
   private restEndpoint: string;
   private apiToken: string;
   icmServerURL: string;
+
+  private executionBarrier$: Observable<void> | Subject<void> = of(undefined);
 
   constructor(
     private httpClient: HttpClient,
@@ -141,77 +150,117 @@ export class ApiService {
     return this.appendAPITokenToHeaders(newHeaders);
   }
 
-  /**
-   * http options request
-   */
-  options<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .options<T>(constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale), {
-        ...options,
-        headers: this.constructHeaders(options),
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  private wrapHttpCall<T>(httpCall: () => Observable<T>, options: AvailableOptions) {
+    const wrappedCall = () =>
+      options && options.skipApiErrorHandling
+        ? httpCall()
+        : httpCall().pipe(catchApiError(this.apiServiceErrorHandler));
+
+    if (options && options.runExclusively) {
+      // setup a barrier for other calls
+      const subject$ = new Subject<void>();
+      this.executionBarrier$ = subject$;
+      const releaseBarrier = () => {
+        subject$.next();
+        this.executionBarrier$ = of(undefined);
+      };
+
+      // release barrier on completion
+      return wrappedCall().pipe(
+        tap(releaseBarrier),
+        // tslint:disable-next-line:ban
+        catchError(err => {
+          releaseBarrier();
+          return throwError(err);
+        })
+      );
+    } else {
+      // respect barrier
+      return this.executionBarrier$.pipe(concatMap(wrappedCall));
+    }
   }
 
   /**
    * http get request
    */
-  get<T>(
-    path: string,
-    options?: { params?: HttpParams; headers?: HttpHeaders; skipApiErrorHandling?: boolean }
-  ): Observable<T> {
-    const obs$ = this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
-      ...options,
-      headers: this.constructHeaders(options),
-    });
-    return options && options.skipApiErrorHandling ? obs$ : obs$.pipe(catchApiError(this.apiServiceErrorHandler));
+  get<T>(path: string, options?: AvailableOptions): Observable<T> {
+    return this.wrapHttpCall(
+      () =>
+        this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
+          ...options,
+          headers: this.constructHeaders(options),
+        }),
+      options
+    );
+  }
+
+  /**
+   * http options request
+   */
+  options<T>(path: string, options?: AvailableOptions): Observable<T> {
+    return this.wrapHttpCall(
+      () =>
+        this.httpClient.options<T>(constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale), {
+          ...options,
+          headers: this.constructHeaders(options),
+        }),
+      options
+    );
   }
 
   /**
    * http put request
    */
-  put<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale), body, {
-        ...options,
-        headers: this.constructHeaders(options),
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  put<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
+    return this.wrapHttpCall(
+      () =>
+        this.httpClient.put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale), body, {
+          ...options,
+          headers: this.constructHeaders(options),
+        }),
+      options
+    );
   }
 
   /**
    * http patch request
    */
-  patch<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale), body, {
-        ...options,
-        headers: this.constructHeaders(options),
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  patch<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
+    return this.wrapHttpCall(
+      () =>
+        this.httpClient.patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale), body, {
+          ...options,
+          headers: this.constructHeaders(options),
+        }),
+      options
+    );
   }
 
   /**
    * http post request
    */
-  post<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale), body, {
-        ...options,
-        headers: this.constructHeaders(options),
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  post<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
+    return this.wrapHttpCall(
+      () =>
+        this.httpClient.post<T>(constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale), body, {
+          ...options,
+          headers: this.constructHeaders(options),
+        }),
+      options
+    );
   }
 
   /**
    * http delete request
    */
-  delete<T>(path, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    return this.httpClient
-      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale), {
-        ...options,
-        headers: this.constructHeaders(options),
-      })
-      .pipe(catchApiError(this.apiServiceErrorHandler));
+  delete<T>(path, options?: AvailableOptions): Observable<T> {
+    return this.wrapHttpCall(
+      () =>
+        this.httpClient.delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale), {
+          ...options,
+          headers: this.constructHeaders(options),
+        }),
+      options
+    );
   }
 }

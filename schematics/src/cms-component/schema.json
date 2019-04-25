@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAComponent",
+  "title": "PWA CMSComponent Options Schema",
+  "type": "object",
+  "description": "Creates a new CMS component.",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "visible": false
+    },
+    "tsext": {
+      "type": "string",
+      "default": "ts",
+      "visible": false
+    },
+    "artifactFolder": {
+      "type": "boolean",
+      "default": true,
+      "visible": false
+    },
+    "artifactName": {
+      "type": "string",
+      "default": "",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "prefix": {
+      "type": "string",
+      "visible": false
+    },
+    "styleext": {
+      "type": "string",
+      "default": "scss",
+      "visible": false
+    },
+    "selector": {
+      "type": "string",
+      "format": "html-selector",
+      "visible": false
+    },
+    "module": {
+      "type": "string",
+      "alias": "m",
+      "visible": false
+    },
+    "skipImport": {
+      "type": "boolean",
+      "default": false,
+      "visible": false
+    },
+    "export": {
+      "type": "boolean",
+      "default": false,
+      "visible": false
+    },
+    "entryComponent": {
+      "type": "boolean",
+      "default": true,
+      "visible": false
+    },
+    "restricted": {
+      "type": "boolean",
+      "default": true,
+      "visible": false
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the component?"
+    },
+    "definitionQualifiedName": {
+      "type": "string",
+      "description": "The name of the ICM model component.",
+      "alias": "d",
+      "x-prompt": "What CMS component from the ICM should be mapped?"
+    },
+    "styleFile": {
+      "description": "When true, generates and includes a style file for the component.",
+      "type": "boolean",
+      "default": false,
+      "alias": "s"
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "Flag to indicate if a dir is created.",
+      "default": false
+    },
+    "noCMSPrefixing": {
+      "type": "boolean",
+      "description": "Flag to indicate if CMS prefixes should not be added.",
+      "default": false
+    }
+  }
+}

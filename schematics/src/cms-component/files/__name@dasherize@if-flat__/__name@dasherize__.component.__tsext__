@@ -1,0 +1,14 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
+
+@Component({
+  selector: '<%= selector %>',
+  templateUrl: './<%= dasherize(name) %>.component.html',<% if (!!styleFile) { %>
+  styleUrls: ['./<%= dasherize(name) %>.component.<%= styleext %>'],<% } %>
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class <%= artifactName %> implements CMSComponent {
+  @Input() pagelet: ContentPageletView;
+}

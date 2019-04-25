@@ -5,6 +5,7 @@ import {
   addEntryComponentToModule,
   addExportToModule,
   addImportToModule,
+  addProviderToModule,
 } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath } from '@schematics/angular/utility/find-module';
@@ -101,6 +102,31 @@ export function addDeclarationToNgModule(options: {
 
     const relativePath = buildRelativePath(options.module, options.moduleImportPath);
     const declarationChanges = addDeclarationToModule(source, options.module, options.artifactName, relativePath);
+
+    const declarationRecorder = host.beginUpdate(options.module);
+    for (const change of declarationChanges) {
+      if (change instanceof InsertChange) {
+        declarationRecorder.insertLeft(change.pos, change.toAdd);
+      }
+    }
+    host.commitUpdate(declarationRecorder);
+
+    return host;
+  };
+}
+
+export function addProviderToNgModule(options: {
+  module?: string;
+  artifactName?: string;
+  moduleImportPath?: string;
+}): Rule {
+  return host => {
+    const source = readIntoSourceFile(host, options.module);
+
+    const relativePath = options.moduleImportPath
+      ? buildRelativePath(options.module, options.moduleImportPath)
+      : undefined;
+    const declarationChanges = addProviderToModule(source, options.module, options.artifactName, relativePath);
 
     const declarationRecorder = host.beginUpdate(options.module);
     for (const change of declarationChanges) {

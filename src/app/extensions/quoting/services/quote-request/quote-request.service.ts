@@ -7,7 +7,7 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../models/quote-request-item/quote-request-item.mapper';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -173,7 +173,7 @@ export class QuoteRequestService {
    * @param quoteRequest  A quote request containing quote line items
    * @returns             Information about successful and unsuccessful line item adds
    */
-  createQuoteRequestFromQuoteRequest(quoteRequest: QuoteRequest): Observable<QuoteLineItemResultModel> {
+  createQuoteRequestFromQuoteRequest(quoteRequest: QuoteRequest): Observable<QuoteLineItemResult> {
     if (!quoteRequest.submitted) {
       return throwError({ message: 'createQuoteRequestFromQuoteRequest() called with unsubmitted quote request' });
     }
@@ -189,10 +189,12 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.addQuoteRequest().pipe(
           concatMap(quoteRequestId =>
-            this.apiService.put<QuoteLineItemResultModel>(
-              `customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`,
-              body
-            )
+            this.apiService
+              .put<QuoteLineItemResult>(
+                `customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`,
+                body
+              )
+              .pipe(map(quoteLineItemResult => ({ ...quoteLineItemResult, title: quoteRequestId })))
           )
         )
       )

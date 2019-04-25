@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { ProductItemContainerComponent } from '../../containers/product-item/product-item.container';
 
 import { ProductListComponent } from './product-list.component';
 
@@ -15,17 +17,8 @@ describe('Product List Component', () => {
     TestBed.configureTestingModule({
       imports: [InfiniteScrollModule],
       declarations: [
-        MockComponent({
-          selector: 'ish-product-row-container',
-          template: 'Product Row Container',
-          inputs: ['product', 'category'],
-        }),
-        MockComponent({
-          selector: 'ish-product-tile-container',
-          template: 'Product Tile Container',
-          inputs: ['productSku', 'category'],
-        }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component', inputs: ['standalone'] }),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductItemContainerComponent),
         ProductListComponent,
       ],
     }).compileComponents();
@@ -47,14 +40,14 @@ describe('Product List Component', () => {
   it('should render a product tile when viewType is grid', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-tile-container');
+    const thumbs = element.querySelectorAll('ish-product-item-container[type=tile]');
     expect(thumbs).toHaveLength(1);
   });
 
   it('should render a product row when viewType is list', () => {
     component.viewType = 'list';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-row-container');
+    const thumbs = element.querySelectorAll('ish-product-item-container[type=row]');
     expect(thumbs).toHaveLength(1);
   });
 });

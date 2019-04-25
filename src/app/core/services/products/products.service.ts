@@ -1,14 +1,15 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { defaultIfEmpty, map } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
-import { ProductData, ProductDataStub } from 'ish-core/models/product/product.interface';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product } from 'ish-core/models/product/product.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -111,5 +112,20 @@ export class ProductsService {
           total: response.total ? response.total : response.elements.length,
         }))
       );
+  }
+
+  /**
+   * Get product variations for the given master product sku.
+   */
+  getProductVariations(sku: string): Observable<Partial<VariationProduct>[]> {
+    if (!sku) {
+      return throwError('getProductVariations() called without a sku');
+    }
+
+    return this.apiService.get(`products/${sku}/variations`).pipe(
+      unpackEnvelope<ProductVariationLink>(),
+      map(links => links.map(link => this.productMapper.fromVariationLink(link, sku))),
+      defaultIfEmpty([])
+    );
   }
 }

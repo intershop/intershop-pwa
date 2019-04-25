@@ -4,9 +4,11 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { CookiesService } from '@ngx-utils/cookies';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
+import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -79,8 +81,8 @@ describe('Checkout Store', () => {
     readyForShipmentMin: 1,
     readyForShipmentMax: 1,
     sku: 'test',
-    type: 0,
-  };
+    type: 'Product',
+  } as Product;
 
   const customer = {
     type: 'PrivateCustomer',
@@ -211,6 +213,7 @@ describe('Checkout Store', () => {
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },

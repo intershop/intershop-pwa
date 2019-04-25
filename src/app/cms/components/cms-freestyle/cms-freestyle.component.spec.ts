@@ -26,17 +26,24 @@ describe('Cms Freestyle Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`N/A`);
   });
 
   it('should render content if available', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      displayName: 'name',
+      domain: 'domain',
       configurationParameters: { HTML: '<h3>foo</h3>bar' },
     };
     component.pagelet = createSimplePageletView(pagelet);
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+<div>
+  <h3>foo</h3>
+  bar
+</div>
+`);
   });
 });

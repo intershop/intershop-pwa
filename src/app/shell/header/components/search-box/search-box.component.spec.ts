@@ -61,7 +61,7 @@ describe('Search Box Component', () => {
     });
 
     it('should show no results when no suggestions are found', () => {
-      const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-results');
 
       expect(ul).toBeFalsy();
     });
@@ -77,7 +77,7 @@ describe('Search Box Component', () => {
     });
 
     it('should show results when suggestions are available', () => {
-      const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
+      const ul = element.querySelector('.search-suggest-results');
 
       expect(ul.querySelectorAll('li')).toHaveLength(2);
     });
@@ -91,13 +91,13 @@ describe('Search Box Component', () => {
     it('should show button text when buttonText is set', () => {
       component.configuration = { buttonText: 'buttonTextInput' };
       fixture.detectChanges();
-      const button = element.querySelector<HTMLButtonElement>('.btn-search');
+      const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
     });
     it('should show placeholder text when placeholderText is set', () => {
       component.configuration = { placeholderText: 'placeholderTextInput' };
       fixture.detectChanges();
-      const inputElement = element.querySelector<HTMLInputElement>('.searchTerm');
+      const inputElement = element.querySelector('.searchTerm');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholderTextInput');
     });
   });

@@ -2,7 +2,7 @@ import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaringModule } from '../utils/common';
-import { addDeclarationToNgModule, addExportToNgModule } from '../utils/registration';
+import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
 
 import { PwaPipeOptionsSchema as Options } from './schema';
 
@@ -27,6 +27,7 @@ export function createPipe(options: Options): Rule {
     if (!options.skipImport) {
       operations.push(addDeclarationToNgModule(options));
       operations.push(addExportToNgModule(options));
+      operations.push(addProviderToNgModule(options));
     }
     operations.push(
       mergeWith(

@@ -3,11 +3,14 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
+import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
@@ -27,21 +30,9 @@ describe('Checkout Payment Component', () => {
       declarations: [
         CheckoutPaymentComponent,
         DummyComponent,
-        MockComponent({
-          selector: 'ish-basket-address-summary',
-          template: 'Basket Address Summary Component',
-          inputs: ['basket'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-cost-summary',
-          template: 'Basket Cost Summary Component',
-          inputs: ['totals'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-items-summary',
-          template: 'Basket Items Summary Component',
-          inputs: ['basket'],
-        }),
+        MockComponent(BasketAddressSummaryComponent),
+        MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketItemsSummaryComponent),
       ],
       imports: [
         FormsSharedModule,
@@ -69,31 +60,31 @@ describe('Checkout Payment Component', () => {
 
   it('should render available payment methods on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ul.list-unstyled')).toBeTruthy();
+    expect(element.querySelector('#payment-accordion')).toBeTruthy();
   });
 
   it('should not render an error if no error occurs', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no payment method selected', () => {
     component.basket.payment = undefined;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if the user clicks next and has currently no payment method selected', () => {
     component.basket.payment = undefined;
     component.nextStep();
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
   it('should throw updatePaymentMethod event when the user changes payment selection', done => {

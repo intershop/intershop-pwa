@@ -72,4 +72,12 @@ describe('Products Service', () => {
 
     verify(apiServiceMock.get(anything(), anything())).once();
   });
+
+  it("should get product variations data when 'getProductVariations' is called", done => {
+    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of([]));
+    productsService.getProductVariations(productSku).subscribe(() => {
+      verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
+      done();
+    });
+  });
 });

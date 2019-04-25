@@ -43,7 +43,7 @@ describe('Select Region Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('state');
-    expect(component.label).toEqual('State/Province');
+    expect(component.label).toEqual('account.default_address.state.label');
   });
 
   it('should get and display regions for a certain country', () => {
@@ -54,6 +54,6 @@ describe('Select Region Component', () => {
 
     fixture.detectChanges();
     expect(component.options).toHaveLength(2);
-    expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=state]')).toBeTruthy();
   });
 });

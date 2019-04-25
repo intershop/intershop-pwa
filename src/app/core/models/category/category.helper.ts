@@ -4,7 +4,7 @@ export class CategoryHelper {
   /**
    * the maximum level of completeness a category can achieve
    */
-  static maxCompletenessLevel = 2;
+  static maxCompletenessLevel = 3;
 
   static uniqueIdSeparator = '.';
 

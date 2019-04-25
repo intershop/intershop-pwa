@@ -28,7 +28,6 @@ import {
 })
 export class ProductListContainerComponent {
   @Input() category?: Category;
-
   @Input() pageUrl: string;
 
   @Output() loadMore = new EventEmitter<void>();

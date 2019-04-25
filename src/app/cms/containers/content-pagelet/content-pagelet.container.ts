@@ -1,4 +1,4 @@
-// tslint:disable:ccp-no-markup-in-containers
+// tslint:disable:ccp-no-intelligence-in-components ccp-no-markup-in-containers
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,14 +12,29 @@ import {
 } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
+import { CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
+import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
 
+/**
+ * The Content Pagelet Container Component renders the given 'pagelet'.
+ * For the rendering an Angular component is used that has to be provided
+ * for the DefinitionQualifiedName of the pagelet.
+ *
+ * @example
+ * <ish-content-pagelet [pagelet]="pagelet"></ish-content-pagelet>
+ */
 @Component({
   selector: 'ish-content-pagelet',
   templateUrl: './content-pagelet.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentPageletContainerComponent implements OnChanges {
+export class ContentPageletContainerComponent extends SfeMetadataWrapper implements OnChanges {
+  /**
+   * The Pagelet that is to be rendered.
+   */
   @Input() pagelet: ContentPageletView;
 
   noMappingFound: boolean;
@@ -29,11 +44,24 @@ export class ContentPageletContainerComponent implements OnChanges {
   @ViewChild('cmsOutlet', { read: ViewContainerRef })
   cmsOutlet: ViewContainerRef;
 
-  constructor(injector: Injector, private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(
+    injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private sfeAdapter: SfeAdapterService
+  ) {
+    super();
     this.components = injector.get<CMSComponentProvider[]>(CMS_COMPONENT, []);
   }
 
   ngOnChanges() {
+    this.mapComponent();
+
+    if (this.pagelet && this.sfeAdapter.isInitialized()) {
+      this.setSfeMetadata(SfeMapper.mapPageletViewToSfeMetadata(this.pagelet));
+    }
+  }
+
+  private mapComponent() {
     const mappedComponent = this.components.find(
       c => c.definitionQualifiedName === this.pagelet.definitionQualifiedName
     );
@@ -52,8 +80,9 @@ export class ContentPageletContainerComponent implements OnChanges {
     return this.cmsOutlet.createComponent(factory);
   }
 
-  private initializeComponent(instance: CMSComponentInterface) {
+  private initializeComponent(instance: CMSComponent) {
     instance.pagelet = this.pagelet;
+
     // OnChanges has to be manually invoked on dynamically created components
     if (instance.ngOnChanges) {
       instance.ngOnChanges({ pagelet: new SimpleChange(undefined, this.pagelet, true) });

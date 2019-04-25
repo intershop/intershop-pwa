@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
-import { deepEqual, spy, verify } from 'ts-mockito';
+import { MockComponent } from 'ng-mocks';
+import { deepEqual, instance, mock, spy, verify } from 'ts-mockito';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { LoadContentInclude, LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
+import { ContentPageletContainerComponent } from '../content-pagelet/content-pagelet.container';
 
 import { ContentIncludeContainerComponent } from './content-include.container';
 
@@ -14,27 +16,30 @@ describe('Content Include Container', () => {
   let component: ContentIncludeContainerComponent;
   let fixture: ComponentFixture<ContentIncludeContainerComponent>;
   let element: HTMLElement;
-  let include: ContentEntryPoint;
+  let include: ContentPageletEntryPoint;
   let store$: Store<{}>;
+  let sfeAdapterMock: SfeAdapterService;
 
   beforeEach(async(() => {
     include = {
       id: 'test.include',
       definitionQualifiedName: 'test.include-Include',
-      displayName: 'test include',
+      domain: 'domain',
+      displayName: 'displayName',
+      resourceSetId: 'resId',
       configurationParameters: {
         key: '1',
       },
     };
 
+    sfeAdapterMock = mock(SfeAdapterService);
+
     TestBed.configureTestingModule({
-      declarations: [
-        ContentIncludeContainerComponent,
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
-      ],
+      declarations: [ContentIncludeContainerComponent, MockComponent(ContentPageletContainerComponent)],
       imports: ngrxTesting({
         content: combineReducers(contentReducers),
       }),
+      providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
     }).compileComponents();
 
     store$ = TestBed.get(Store);

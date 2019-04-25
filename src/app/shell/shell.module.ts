@@ -48,7 +48,7 @@ const exportedComponents = [
     IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
-    PipesModule,
+    PipesModule.forRoot(),
     QuotingExportsModule,
     ReactiveFormsModule,
     RouterModule,

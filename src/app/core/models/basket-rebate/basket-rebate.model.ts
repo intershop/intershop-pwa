@@ -1,9 +1,11 @@
 import { Price } from '../price/price.model';
+import { Promotion } from '../promotion/promotion.model';
 
 export interface BasketRebate {
-  /* ToDo: see #IS-23184  */
+  id: string;
   amount: Price;
   description?: string;
   rebateType: string;
   code?: string;
+  promotion?: Promotion;
 }

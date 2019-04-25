@@ -5,8 +5,10 @@
     <ish-product-detail
       [product]="product"
       [currentUrl]="currentUrl$ | async"
+      [variationOptions]="productVariationOptions$ | async"
       (productToBasket)="addToBasket($event)"
       (productToCompare)="addToCompare($event)"
+      (selectVariation)="variationSelected($event, product)"
     ></ish-product-detail>
   </ng-container>
 

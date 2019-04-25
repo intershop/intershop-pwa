@@ -5,7 +5,7 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { CMSService } from '../../../services/cms/cms.service';
 
@@ -38,7 +38,7 @@ describe('Includes Effects', () => {
   describe('loadContentInclude$', () => {
     it('should send success action when loading action via service is successful', done => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(
-        of({ include: { id: 'dummy' } as ContentEntryPoint, pagelets: [] })
+        of({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
       actions$ = of(new LoadContentInclude({ includeId: 'dummy' }));

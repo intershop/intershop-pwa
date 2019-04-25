@@ -16,6 +16,7 @@ import { CMS_COMPONENT } from './configurations/injection-keys';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
+import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
 
 const exportedComponents = [ContentIncludeContainerComponent, ContentPageletContainerComponent];
 
@@ -34,7 +35,12 @@ const entryComponents = [
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [...entryComponents, ...exportedComponents, ContentSlotContainerComponent],
+  declarations: [
+    ...entryComponents,
+    ...exportedComponents,
+    ContentPageletContainerComponent,
+    ContentSlotContainerComponent,
+  ],
   providers: [
     {
       provide: CMS_COMPONENT,
@@ -120,4 +126,8 @@ const entryComponents = [
   exports: [...exportedComponents],
   entryComponents: [...entryComponents],
 })
-export class CMSModule {}
+export class CMSModule {
+  constructor(sfeAdapter: SfeAdapterService) {
+    sfeAdapter.init();
+  }
+}

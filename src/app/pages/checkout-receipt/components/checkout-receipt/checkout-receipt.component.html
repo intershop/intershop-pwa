@@ -10,7 +10,7 @@
         <span>{{ 'checkout.order.number.label' | translate }}</span>
         <strong data-testing-id="order-document-number"> {{ order.documentNo }}</strong>
       </p>
-      <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': user.email }"></p>
+      <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email }"></p>
     </div>
 
     <div class="row d-flex">
@@ -50,7 +50,7 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary></div>
-    <div class="cart-summary">
+    <div *ngIf="user" class="cart-summary">
       <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
       {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
       <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{

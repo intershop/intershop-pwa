@@ -308,7 +308,10 @@
           "message": "use star imports only for aggregation of deeper lying imports"
         },
         { "starImport": true, "from": "lodash.*" },
-        { "import": "^(?!(range|uniq|memoize|once)$).*", "from": "lodash.*" },
+        {
+          "import": "^(?!(range|uniq|memoize|once|groupBy)$).*",
+          "from": "lodash.*"
+        },
         {
           "import": "CustomFormsModule",
           "from": "ng2-validation",
@@ -326,7 +329,7 @@
         },
         {
           "from": ".*/extensions/.*",
-          "filePattern": "^((?!module\\.ts).)*$",
+          "filePattern": "^((?!(module|spec)\\.ts).)*$",
           "message": "Imports from (other) extensions are not allowed here."
         },
         {
@@ -427,7 +430,7 @@
           // models
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
           // ngrx
-          "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2\\.(action|effects|reducer|selectors)\\.ts",
+          "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(action|effects|reducer|selectors)\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+)/\\1-store(\\.module|)\\.ts",
           "^.*/([a-z][a-z0-9-]+)/store/\\1-store(\\.module|)\\.ts",
@@ -540,7 +543,7 @@
           // ngrx
           {
             "name": "^([A-Z].*)Effects$",
-            "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.effects\\.ts$"
+            "file": ".*/store/([a-z][a-z0-9-]+/|)[a-z][a-z0-9-]+/<kebab>\\.effects\\.ts$"
           },
           {
             "name": "^([a-z].*)Effects$",

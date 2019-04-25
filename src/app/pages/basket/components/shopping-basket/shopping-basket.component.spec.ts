@@ -2,11 +2,15 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LazyBasketAddToQuoteComponent } from '../../../../extensions/quoting/exports/basket/components/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
+import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
+import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -19,21 +23,10 @@ describe('Shopping Basket Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({
-          selector: 'ish-basket-cost-summary',
-          template: 'Basket Cost Summary Component',
-          inputs: ['totals'],
-        }),
-        MockComponent({
-          selector: 'ish-lazy-basket-add-to-quote',
-          template: 'Basket add To Quote Component',
-        }),
-        MockComponent({
-          selector: 'ish-line-item-list',
-          template: 'Line Item List Component',
-          inputs: ['lineItems'],
-        }),
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        MockComponent(BasketCostSummaryComponent),
+        MockComponent(LazyBasketAddToQuoteComponent),
+        MockComponent(LineItemListComponent),
+        MockComponent(ModalDialogComponent),
         ShoppingBasketComponent,
       ],
       imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
@@ -75,12 +68,12 @@ describe('Shopping Basket Component', () => {
 
   it('should not render an error if no error occurs', () => {
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 });

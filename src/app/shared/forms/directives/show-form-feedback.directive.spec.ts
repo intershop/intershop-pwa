@@ -11,7 +11,7 @@ import { ShowFormFeedbackDirective } from './show-form-feedback.directive';
   `,
   changeDetection: ChangeDetectionStrategy.Default,
 })
-/* tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests */
+// tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
 class TestComponent {
   control = new FormControl('', Validators.required);
 }

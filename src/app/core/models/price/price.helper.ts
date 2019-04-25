@@ -8,16 +8,16 @@ export class PriceHelper {
     if (!Number.isFinite(p1.value) || !Number.isFinite(p2.value)) {
       throw new Error('cannot handle undefined values');
     }
-    if (!p1.currencyMnemonic || !p2.currencyMnemonic) {
-      throw new Error('cannot handle undefined currencyMnemonic');
+    if (!p1.currency || !p2.currency) {
+      throw new Error('cannot handle undefined currency');
     }
-    if (p1.currencyMnemonic !== p2.currencyMnemonic) {
+    if (p1.currency !== p2.currency) {
       throw new Error('currency mispatch');
     }
 
     return {
       type: p1.type,
-      currencyMnemonic: p1.currencyMnemonic,
+      currency: p1.currency,
       value: Math.round((p1.value - p2.value) * 100) / 100,
     };
   }

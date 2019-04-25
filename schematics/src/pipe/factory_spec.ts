@@ -33,7 +33,21 @@ describe('Pipe Schematic', () => {
       } as ApplicationOptions,
       appTree
     );
-    appTree = schematicRunner.runSchematic('module', { name: 'core/pipes', flat: true, project: 'bar' }, appTree);
+    appTree.create(
+      '/projects/bar/src/app/core/pipes.module.ts',
+      `
+import { NgModule } from '@angular/core';
+
+const pipes = [];
+
+@NgModule({
+  declarations: [...pipes],
+  exports: [...pipes],
+  providers: [...pipes],
+})
+export class PipesModule { }
+`
+    );
     appTree = schematicRunner.runSchematic(
       'module',
       { name: 'extensions/feature/feature', flat: true, project: 'bar' },
@@ -57,6 +71,21 @@ describe('Pipe Schematic', () => {
     const content = tree.readContent('/projects/bar/src/app/core/pipes.module.ts');
     expect(content).toContain('FooPipe');
     expect(content).toContain('./pipes/foo.pipe');
+    expect(content).toMatchInlineSnapshot(`
+"
+import { NgModule } from '@angular/core';
+import { FooPipe } from './pipes/foo.pipe';
+
+const pipes = [];
+
+@NgModule({
+  declarations: [...pipes, FooPipe],
+  exports: [...pipes, FooPipe],
+  providers: [...pipes, FooPipe],
+})
+export class PipesModule { }
+"
+`);
   });
 
   it('should ignore folders in name', () => {

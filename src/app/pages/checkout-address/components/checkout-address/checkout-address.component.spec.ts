@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
@@ -11,7 +12,11 @@ import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { CustomerAddressFormComponent } from '../../../../shared/address-forms/components/customer-address-form/customer-address-form.component';
+import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { CheckoutAddressComponent } from './checkout-address.component';
@@ -31,27 +36,11 @@ describe('Checkout Address Component', () => {
       declarations: [
         CheckoutAddressComponent,
         DummyComponent,
-        MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-cost-summary',
-          template: 'Basket Cost Summary Component',
-          inputs: ['totals'],
-        }),
-        MockComponent({
-          selector: 'ish-basket-items-summary',
-          template: 'Basket Items Summary Component',
-          inputs: ['basket'],
-        }),
-        MockComponent({
-          selector: 'ish-customer-address-form',
-          template: 'Customer Address Form Component',
-          inputs: ['address', 'resetForm'],
-        }),
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        MockComponent(AddressComponent),
+        MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketItemsSummaryComponent),
+        MockComponent(CustomerAddressFormComponent),
+        MockComponent(ModalDialogComponent),
       ],
       imports: [
         FormsSharedModule,
@@ -167,8 +156,8 @@ describe('Checkout Address Component', () => {
   it('should throw updateInvoiceAddress event when invoice address form value id changes', done => {
     fixture.detectChanges();
 
-    component.updateInvoiceAddress.subscribe(formValue => {
-      expect(formValue).toBe('testId');
+    component.assignAddressToBasket.subscribe(formValue => {
+      expect(formValue.addressId).toBe('testId');
       done();
     });
 
@@ -178,8 +167,8 @@ describe('Checkout Address Component', () => {
   it('should throw updateshippingAddress event when shipping address form value id changes', done => {
     fixture.detectChanges();
 
-    component.updateShippingAddress.subscribe(x => {
-      expect(x).toBe('testId');
+    component.assignAddressToBasket.subscribe(formValue => {
+      expect(formValue.addressId).toBe('testId');
       done();
     });
 
@@ -258,8 +247,8 @@ describe('Checkout Address Component', () => {
   it('should throw createInvoiceAddress event when saveCustomerInvoiceAddress is triggered and invoice.address is undefined', done => {
     fixture.detectChanges();
 
-    component.createInvoiceAddress.subscribe(address => {
-      expect(address.id).toBe(BasketMockData.getAddress().id);
+    component.createAddress.subscribe(address => {
+      expect(address.address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
 
@@ -270,7 +259,7 @@ describe('Checkout Address Component', () => {
     fixture.detectChanges();
     component.invoice.address = component.basket.invoiceToAddress;
 
-    component.updateCustomerAddress.subscribe(address => {
+    component.updateAddress.subscribe(address => {
       expect(address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
@@ -281,8 +270,8 @@ describe('Checkout Address Component', () => {
   it('should throw createShippingAddress event when saveCustomerShippingAddress is triggered and shipping.address is undefined', done => {
     fixture.detectChanges();
 
-    component.createShippingAddress.subscribe(address => {
-      expect(address.id).toBe(BasketMockData.getAddress().id);
+    component.createAddress.subscribe(address => {
+      expect(address.address.id).toBe(BasketMockData.getAddress().id);
       done();
     });
 
@@ -293,7 +282,7 @@ describe('Checkout Address Component', () => {
     fixture.detectChanges();
     component.shipping.address = component.basket.commonShipToAddress;
 
-    component.updateCustomerAddress.subscribe(address => {
+    component.updateAddress.subscribe(address => {
       expect(address.id).toBe(BasketMockData.getAddress().id);
       done();
     });

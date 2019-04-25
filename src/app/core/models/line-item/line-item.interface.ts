@@ -1,4 +1,3 @@
-import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { Price } from '../price/price.model';
 
@@ -11,7 +10,6 @@ export interface LineItemData {
     unit?: string;
   };
   product: string;
-  price: PriceItem;
 
   surcharges?: [
     {
@@ -20,14 +18,15 @@ export interface LineItemData {
       name?: string;
     }
   ];
-  discounts?: BasketRebateData[];
-  singleBasePrice: PriceItem;
-  totals: {
+  discounts?: string[];
+  pricing: {
     salesTaxTotal?: Price;
     shippingTaxTotal?: Price;
     shippingTotal: PriceItem;
     total: PriceItem;
     valueRebatesTotal?: PriceItem;
+    price: PriceItem;
+    singleBasePrice: PriceItem;
   };
   hiddenGift: boolean;
   freeGift: boolean;

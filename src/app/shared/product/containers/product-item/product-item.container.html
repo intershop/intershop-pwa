@@ -1,0 +1,25 @@
+<ng-container *ngIf="(productForDisplay$ | async) as product">
+  <ish-product-tile
+    *ngIf="isTile"
+    [product]="product"
+    [category]="category"
+    [variationOptions]="productVariationOptions$ | async"
+    [isInCompareList]="isInCompareList$ | async"
+    (compareToggle)="toggleCompare()"
+    (productToBasket)="addToBasket($event)"
+    (selectVariation)="replaceVariation($event)"
+  ></ish-product-tile>
+
+  <ish-product-row
+    *ngIf="isRow"
+    [product]="product"
+    [category]="category"
+    [variationOptions]="productVariationOptions$ | async"
+    [isInCompareList]="isInCompareList$ | async"
+    (productToBasket)="addToBasket($event)"
+    (compareToggle)="toggleCompare()"
+    (selectVariation)="replaceVariation($event)"
+  ></ish-product-row>
+</ng-container>
+
+<ish-loading *ngIf="(loading$ | async)"></ish-loading>

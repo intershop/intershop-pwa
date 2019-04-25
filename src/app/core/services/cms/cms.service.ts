@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ContentEntryPointData } from 'ish-core/models/content-entry-point/content-entry-point.interface';
-import { ContentEntryPointMapper } from 'ish-core/models/content-entry-point/content-entry-point.mapper';
-import { ContentEntryPoint } from 'ish-core/models/content-entry-point/content-entry-point.model';
+import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
+import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
+import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from '../../models/content-pagelet/content-pagelet.model';
 import { ApiService } from '../api/api.service';
 
@@ -13,21 +13,21 @@ import { ApiService } from '../api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class CMSService {
-  constructor(private apiService: ApiService, private contentEntryPointMapper: ContentEntryPointMapper) {}
+  constructor(private apiService: ApiService, private contentPageletEntryPointMapper: ContentPageletEntryPointMapper) {}
 
   /**
    * Get the content for the given Content Include ID.
    * @param includeId The include ID.
    * @returns         The content data.
    */
-  getContentInclude(includeId: string): Observable<{ include: ContentEntryPoint; pagelets: ContentPagelet[] }> {
+  getContentInclude(includeId: string): Observable<{ include: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!includeId) {
       return throwError('getContentInclude() called without an includeId');
     }
 
-    return this.apiService.get<ContentEntryPointData>(`cms/includes/${includeId}`).pipe(
-      map(x => this.contentEntryPointMapper.fromData(x)),
-      map(({ contentEntryPoint, pagelets }) => ({ include: contentEntryPoint, pagelets }))
+    return this.apiService.get<ContentPageletEntryPointData>(`cms/includes/${includeId}`).pipe(
+      map(x => this.contentPageletEntryPointMapper.fromData(x)),
+      map(({ pageletEntryPoint, pagelets }) => ({ include: pageletEntryPoint, pagelets }))
     );
   }
 
@@ -36,14 +36,14 @@ export class CMSService {
    * @param includeId The page ID.
    * @returns         The content data.
    */
-  getContentPage(pageId: string): Observable<{ page: ContentEntryPoint; pagelets: ContentPagelet[] }> {
+  getContentPage(pageId: string): Observable<{ page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!pageId) {
       return throwError('getContentPage() called without an pageId');
     }
 
-    return this.apiService.get<ContentEntryPointData>(`cms/pages/${pageId}`).pipe(
-      map(x => this.contentEntryPointMapper.fromData(x)),
-      map(({ contentEntryPoint, pagelets }) => ({ page: contentEntryPoint, pagelets }))
+    return this.apiService.get<ContentPageletEntryPointData>(`cms/pages/${pageId}`).pipe(
+      map(x => this.contentPageletEntryPointMapper.fromData(x)),
+      map(({ pageletEntryPoint, pagelets }) => ({ page: pageletEntryPoint, pagelets }))
     );
   }
 }

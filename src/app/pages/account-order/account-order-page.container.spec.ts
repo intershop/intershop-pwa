@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
 
 import { AccountOrderPageContainerComponent } from './account-order-page.container';
+import { AccountOrderPageComponent } from './components/account-order-page/account-order-page.component';
 
 describe('Account Order Page Container', () => {
   let component: AccountOrderPageContainerComponent;
@@ -18,14 +19,7 @@ describe('Account Order Page Container', () => {
           ...coreReducers,
         }),
       ],
-      declarations: [
-        AccountOrderPageContainerComponent,
-        MockComponent({
-          selector: 'ish-account-order-page',
-          template: 'Account Order Detail Page Component',
-          inputs: ['order'],
-        }),
-      ],
+      declarations: [AccountOrderPageContainerComponent, MockComponent(AccountOrderPageComponent)],
     }).compileComponents();
   }));
 

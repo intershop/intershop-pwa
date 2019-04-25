@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { OrderListContainerComponent } from '../../containers/order-list/order-list.container';
 
 import { OrderWidgetComponent } from './order-widget.component';
 
@@ -13,14 +14,7 @@ describe('Order Widget Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [
-        MockComponent({
-          selector: 'ish-order-list-container',
-          template: 'Order List Container',
-          inputs: ['maxListItems', 'compact'],
-        }),
-        OrderWidgetComponent,
-      ],
+      declarations: [MockComponent(OrderListContainerComponent), OrderWidgetComponent],
     }).compileComponents();
   }));
 

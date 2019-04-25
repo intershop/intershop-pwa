@@ -6,8 +6,10 @@
 *.svg
 *.groovy
 *.woff
+*.ttf
 *.ico
 *.txt
+*.zip
 *.jar
 *.snap
 *.hbs
@@ -17,6 +19,7 @@
 .gitattributes
 .editorconfig
 .createMockdata.table
+package.json
 Dockerfile*
 /node_modules
 /build
@@ -32,3 +35,5 @@ Dockerfile*
 /templates/**/*.*
 /nginx/*.conf
 /nginx/*.tmpl
+*gradle*
+LICENSE

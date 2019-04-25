@@ -11,3 +11,11 @@ export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
         // cut array into slices
         .map(n => input.slice(n * sliceLength, (n + 1) * sliceLength))
     : undefined;
+
+/**
+ * Convert object to array containing objects with key and value
+ * @param values  The object
+ * @returns       The converted array
+ */
+export const objectToArray = (values: { [key: string]: string }) =>
+  Object.keys(values).map(key => ({ key, value: values[key] }));

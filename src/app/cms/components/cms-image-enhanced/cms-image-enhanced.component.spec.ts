@@ -24,6 +24,8 @@ describe('Cms Image Enhanced Component', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      displayName: 'name',
+      domain: 'domain',
       configurationParameters: {
         Image: 'http://example.net/foo/bar.png',
       },

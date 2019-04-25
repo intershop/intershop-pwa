@@ -3,6 +3,7 @@ import { ContentPageletData } from '../content-pagelet/content-pagelet.interface
 
 export interface ContentSlotData {
   definitionQualifiedName: string;
+  displayName: string;
   pagelets: ContentPageletData[];
   configurationParameters?: { [name: string]: ContentConfigurationParameterData };
 }

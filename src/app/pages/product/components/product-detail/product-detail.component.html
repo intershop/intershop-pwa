@@ -35,25 +35,36 @@
 
       <ish-product-shipment [product]="product"></ish-product-shipment>
 
-      <form [formGroup]="productDetailForm" class="product-form form-horizontal">
-        <ish-product-quantity
-          [product]="product"
-          [parentForm]="productDetailForm"
-          [controlName]="quantityControlName"
-        ></ish-product-quantity>
+      <ish-product-variation-select
+        *ngIf="isVariationProduct(product)"
+        [variationOptions]="variationOptions"
+        (selectVariation)="variationSelected($event)"
+      ></ish-product-variation-select>
+
+      <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
+        <div class="row">
+          <div class="w-100">
+            <ish-product-quantity
+              [product]="product"
+              [parentForm]="productDetailForm"
+              [controlName]="quantityControlName"
+              [type]="'input'"
+            ></ish-product-quantity>
+          </div>
+        </div>
 
         <ish-product-add-to-basket
           [product]="product"
-          [disabled]="!productDetailForm.valid"
+          [class]="'btn-lg btn-block'"
+          [disabled]="productDetailForm.invalid"
           (productToBasket)="addToBasket()"
-          class="btn-lg btn-block"
         ></ish-product-add-to-basket>
 
         <ish-lazy-product-add-to-quote
           [product]="product"
-          [disabled]="!productDetailForm.valid"
+          [disabled]="productDetailForm.invalid"
           [quantity]="quantity"
-          class="btn-block"
+          [class]="'btn-block'"
         ></ish-lazy-product-add-to-quote>
       </form>
     </div>

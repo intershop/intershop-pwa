@@ -12,14 +12,6 @@
     clear: both;
   }
 
-  & ~ .btn {
-    margin-left: $space-default/3;
-
-    @media (max-width: $screen-xs-max) {
-      margin-left: 0;
-    }
-  }
-
   & ~ .btn.btn-block {
     margin-left: 0;
   }
@@ -60,10 +52,23 @@
   }
 }
 
-//
-// RIGHT BUTTONS
-.btn.float-right ~ .btn.float-right {
-  margin-right: 2px;
+// multiple buttons margin handling
+.btn:not(:only-child) {
+  &:not(.float-right) {
+    margin-right: $space-default/3;
+
+    @media (max-width: $screen-xs-max) {
+      margin-right: 0;
+    }
+  }
+
+  &.float-right {
+    margin-left: $space-default/3;
+
+    @media (max-width: $screen-xs-max) {
+      margin-left: 0;
+    }
+  }
 }
 
 //

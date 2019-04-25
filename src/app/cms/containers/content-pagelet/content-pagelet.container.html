@@ -1,10 +1,11 @@
 <ng-container *ngIf="noMappingFound">
   <!-- default rendering for unknown pagelet definitions -->
-  <div class="content-pagelet" style="border: 1px solid yellow; padding: 10px;">
-    <div class="content-pagelet-info" [title]="pagelet.id">
-      {{ pagelet.id }} ({{ pagelet.definitionQualifiedName }})
-    </div>
+  <div class="content-pagelet" style="border: 1px solid rgb(255, 255, 0); padding: 10px;">
+    <!-- display: inline -->
+    <div class="content-pagelet-info" [title]="pagelet.id">{{
+      pagelet.id + ' (' + pagelet.definitionQualifiedName + ')'
+    }}</div>
   </div>
 </ng-container>
 
-<div #cmsOutlet></div>
+<ng-container #cmsOutlet></ng-container>

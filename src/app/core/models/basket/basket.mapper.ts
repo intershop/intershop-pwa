@@ -15,7 +15,7 @@ export class BasketMapper {
 
     const totals: BasketTotal = data.calculated
       ? {
-          itemTotal: PriceMapper.fromPriceItem(data.totals.discountedItemTotal),
+          itemTotal: PriceMapper.fromPriceItem(data.totals.itemTotal),
           total: PriceMapper.fromPriceItem(data.totals.grandTotal),
           shippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketShippingDiscountsTotal),
           valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketValueDiscountsTotal),
@@ -28,7 +28,19 @@ export class BasketMapper {
           valueRebates:
             data.discounts && data.discounts.valueBasedDiscounts && included.discounts
               ? data.discounts.valueBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(included.discounts[discountId])
+                  BasketRebateMapper.fromData(
+                    included.discounts[discountId],
+                    included.discounts_promotion[included.discounts[discountId].promotion]
+                  )
+                )
+              : undefined,
+          shippingRebates:
+            data.discounts && data.discounts.shippingBasedDiscounts && included.discounts
+              ? data.discounts.shippingBasedDiscounts.map(discountId =>
+                  BasketRebateMapper.fromData(
+                    included.discounts[discountId],
+                    included.discounts_promotion[included.discounts[discountId].promotion]
+                  )
                 )
               : undefined,
           itemSurchargeTotalsByType: data.surcharges
@@ -60,14 +72,24 @@ export class BasketMapper {
           : undefined,
       lineItems:
         included && included.lineItems && data.lineItems && data.lineItems.length
-          ? data.lineItems.map(lineItemId => LineItemMapper.fromData(included.lineItems[lineItemId]))
+          ? data.lineItems.map(lineItemId => LineItemMapper.fromData(included.lineItems[lineItemId], payload))
           : [],
       payment:
         included && included.payments && included.payments['open-tender']
           ? {
               paymentInstrument: included.payments['open-tender'].paymentInstrument,
               id: included.payments['open-tender'].id,
-              displayName: undefined, // ToDo: REST request should provide displayName
+              displayName:
+                included &&
+                included.payments_paymentMethod &&
+                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].displayName
+                  : undefined,
+              description:
+                included.payments_paymentMethod &&
+                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].description
+                  : undefined,
             }
           : undefined,
       totals,

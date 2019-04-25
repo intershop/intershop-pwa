@@ -32,12 +32,12 @@ describe('Product Price Component', () => {
     product.listPrice = {
       type: 'ProductPrice',
       value: 11,
-      currencyMnemonic: 'USD',
+      currency: 'USD',
     };
     product.salePrice = {
       type: 'ProductPrice',
       value: 10,
-      currencyMnemonic: 'USD',
+      currency: 'USD',
     };
     component.product = product;
     element = fixture.nativeElement;

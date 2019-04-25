@@ -5,9 +5,10 @@ import { Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { MockComponent } from 'ng-mocks';
 
 import { CheckoutPageContainerComponent } from './checkout-page.container';
+import { CheckoutProgressBarComponent } from './components/checkout-progress-bar/checkout-progress-bar.component';
 
 describe('Checkout Page Container', () => {
   let fixture: ComponentFixture<CheckoutPageContainerComponent>;
@@ -16,10 +17,7 @@ describe('Checkout Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CheckoutPageContainerComponent,
-        MockComponent({ selector: 'ish-checkout-progress-bar', inputs: ['step'], template: 'Checkout Progress Bar' }),
-      ],
+      declarations: [CheckoutPageContainerComponent, MockComponent(CheckoutProgressBarComponent)],
       imports: [RouterTestingModule],
       providers: [
         { provide: Store, useFactory: () => instance(mock(Store)) },

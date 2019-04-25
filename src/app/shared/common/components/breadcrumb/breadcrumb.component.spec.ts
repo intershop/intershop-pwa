@@ -6,6 +6,7 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { PipesModule } from 'ish-core/pipes.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { BreadcrumbComponent } from './breadcrumb.component';
@@ -19,7 +20,7 @@ describe('Breadcrumb Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [BreadcrumbComponent],
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [PipesModule.forRoot(), RouterTestingModule, TranslateModule.forRoot()],
     });
     fixture = TestBed.createComponent(BreadcrumbComponent);
     component = fixture.componentInstance;

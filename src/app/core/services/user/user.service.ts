@@ -2,15 +2,15 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Credentials, LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer, CustomerLoginType, CustomerRegistrationType } from '../../models/customer/customer.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { User } from '../../models/user/user.model';
 import { ApiService } from '../api/api.service';
 /**
@@ -40,12 +40,23 @@ export class UserService {
    *                          For private customers user data are also returned.
    *                          For business customers user data are returned by a separate call (getCompanyUserData).
    */
-  signinUser(loginCredentials: LoginCredentials): Observable<CustomerLoginType> {
+  signinUser(loginCredentials: LoginCredentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
       'Authorization',
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
     return this.apiService.get<CustomerData>('customers/-', { headers }).pipe(map(CustomerMapper.mapLoginData));
+  }
+
+  signinUserByToken(apiToken: string): Observable<CustomerUserType> {
+    const headers = new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, apiToken);
+    return this.apiService
+      .get<CustomerData>('customers/-', { headers, skipApiErrorHandling: true, runExclusively: true })
+      .pipe(
+        map(CustomerMapper.mapLoginData),
+        // tslint:disable-next-line:ban
+        catchError(() => of(undefined))
+      );
   }
 
   /**
@@ -73,13 +84,43 @@ export class UserService {
     } else {
       newCustomer = {
         ...body.customer,
-        user: body.user,
+        // TODO: the addition of 'login: body.user.email' is a temporary fix for an ICM 7.10.7.3 API break
+        user: { ...body.user, login: body.user.email },
         address: body.address,
         credentials: body.credentials,
       };
     }
 
     return this.apiService.post<void>('customers', newCustomer);
+  }
+
+  /**
+   * Updates the data of the currently logged in user.
+   * @param body  The user data (customer, user ) to update the user.
+   */
+  updateUser(body: CustomerUserType): Observable<User> {
+    if (!body || !body.customer || !body.user) {
+      return throwError('updateUser() called without required body data');
+    }
+
+    if (!body.customer.type) {
+      return throwError('updateUser() called without required customer type (PrivateCustomer/SMBCustomer)');
+    }
+
+    const changedUser = {
+      ...body.customer,
+      ...body.user,
+      preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
+      preferredShipToAddress: { urn: body.user.preferredShipToAddressUrn },
+      preferredInvoiceToAddressUrn: undefined,
+      preferredShipToAddressUrn: undefined,
+    };
+
+    if (body.customer.type === 'PrivateCustomer') {
+      return this.apiService.put<User>('customers/-', changedUser).pipe(map(UserMapper.fromData));
+    } else {
+      return this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData));
+    }
   }
 
   /**

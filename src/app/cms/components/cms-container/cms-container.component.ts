@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { CMSComponent } from '../../models/cms-component/cms-component.model';
 
 // naming collision with container-component-pattern
 // tslint:disable-next-line:project-structure
@@ -9,7 +10,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-views';
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSContainerComponent implements OnChanges {
+export class CMSContainerComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
   contentSlotPagelets: ContentPageletView[] = [];
@@ -29,7 +30,7 @@ export class CMSContainerComponent implements OnChanges {
   getGridCSS(grid: string): string {
     let gridCSS = '';
 
-    // transform an incomming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
+    // transform an incoming string like "ExtraSmall:12,Small:6,Medium:4,Large:0" to a grid object
     const gridObject = { ExtraSmall: 0, Small: 0, Medium: 0, Large: 0 };
     grid.split(',').forEach(element => {
       gridObject[element.split(':')[0]] = Number(element.split(':')[1]);

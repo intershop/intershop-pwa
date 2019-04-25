@@ -10,6 +10,9 @@ import {
   LoginUserFail,
   LoginUserSuccess,
   LogoutUser,
+  UpdateUser,
+  UpdateUserFail,
+  UpdateUserSuccess,
   UserAction,
   UserErrorReset,
 } from './user.actions';
@@ -37,6 +40,10 @@ describe('User Reducer', () => {
       expect(initialState.error).toBeFalsy();
     });
 
+    it('should not be in loading mode when unmodified', () => {
+      expect(initialState.loading).toBeFalse();
+    });
+
     it('should not be authorized when unmodified', () => {
       expect(initialState.authorized).toBeFalse();
     });
@@ -56,34 +63,11 @@ describe('User Reducer', () => {
     });
   });
 
-  describe('Actions', () => {
-    it('should set initial state when LoginUser action is reduced', () => {
-      const newState = userReducer(initialState, new LoginUser({ credentials: { login: 'dummy', password: 'dummy' } }));
-
-      expect(newState).toEqual(initialState);
-    });
-
+  describe('LoginUser actions', () => {
     it('should set initial when LoginUser action is reduced', () => {
       const newState = userReducer(initialState, new LoginUser({ credentials: { login: 'dummy', password: 'dummy' } }));
 
       expect(newState).toEqual(initialState);
-    });
-
-    it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
-      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
-      let newState = userReducer(initialState, new LoginUserFail({ error }));
-
-      expect(newState).toEqual({ ...initialState, error });
-
-      newState = userReducer(newState, new UserErrorReset());
-      expect(newState.error).toBeUndefined();
-    });
-
-    it('should set error when CreateUserFail action is reduced', () => {
-      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
-      const newState = userReducer(initialState, new LoginUserFail({ error }));
-
-      expect(newState).toEqual({ ...initialState, error });
     });
 
     it('should set customer and authorized when LoginUserSuccess action is reduced', () => {
@@ -100,34 +84,21 @@ describe('User Reducer', () => {
       expect(newState.authorized).toBeTrue();
     });
 
-    it('should set error when LoadCompanyUserFail action is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
-      const action = new LoadCompanyUserFail({ error });
-      const state = userReducer(initialState, action);
+    it('should set error when LoginUserFail action is reduced', () => {
+      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
+      const newState = userReducer(initialState, new LoginUserFail({ error }));
 
-      expect(state.error).toEqual(error);
+      expect(newState).toEqual({ ...initialState, error });
     });
 
-    it('should set error when CreateUserFail action is reduced', () => {
-      const error = { message: 'invalid' } as HttpError;
-      const action = new CreateUserFail({ error });
-      const state = userReducer(initialState, action);
+    it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
+      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
+      let newState = userReducer(initialState, new LoginUserFail({ error }));
 
-      expect(state.error).toEqual(error);
-    });
+      expect(newState).toEqual({ ...initialState, error });
 
-    it('should set user when LoadCompanyUserSuccess action is reduced', () => {
-      const newState = userReducer(initialState, new LoadCompanyUserSuccess({ user }));
-
-      expect(newState).toEqual({ ...initialState, user });
-    });
-
-    it('should unset authorized and customer when reducing LogoutUser', () => {
-      const oldState = { ...initialState, customer, authorized: true };
-
-      const newState = userReducer(oldState, new LogoutUser());
-
-      expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
+      newState = userReducer(newState, new UserErrorReset());
+      expect(newState.error).toBeUndefined();
     });
 
     it('should unset authorized and customer when reducing LoginUser', () => {
@@ -136,6 +107,72 @@ describe('User Reducer', () => {
       const newState = userReducer(oldState, new LoginUser({ credentials: { login: 'dummy', password: 'dummy' } }));
 
       expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
+    });
+  });
+
+  describe('Logout actions', () => {
+    it('should unset authorized and customer when reducing LogoutUser', () => {
+      const oldState = { ...initialState, customer, authorized: true };
+
+      const newState = userReducer(oldState, new LogoutUser());
+
+      expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
+    });
+  });
+
+  describe('LoadCompanyUser actions', () => {
+    it('should set user when LoadCompanyUserSuccess action is reduced', () => {
+      const newState = userReducer(initialState, new LoadCompanyUserSuccess({ user }));
+
+      expect(newState).toEqual({ ...initialState, user });
+    });
+
+    it('should set error when LoadCompanyUserFail action is reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new LoadCompanyUserFail({ error });
+      const state = userReducer(initialState, action);
+
+      expect(state.error).toEqual(error);
+    });
+  });
+
+  describe('Create user actions', () => {
+    it('should set error when CreateUserFail action is reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new CreateUserFail({ error });
+      const state = userReducer(initialState, action);
+
+      expect(state.error).toEqual(error);
+    });
+  });
+
+  describe('Update user actions', () => {
+    it('should loading to true when UpdateUser action is reduced', () => {
+      const action = new UpdateUser({ user: {} as User });
+      const state = userReducer(initialState, action);
+
+      expect(state.loading).toBeTrue();
+    });
+
+    it('should set user and set loading to false when UpdateUserSuccess is reduced', () => {
+      const changedUser = {
+        firstName: 'test',
+      } as User;
+
+      const action = new UpdateUserSuccess({ user: changedUser as User });
+      const state = userReducer(initialState, action);
+
+      expect(state.user).toEqual(changedUser);
+      expect(state.loading).toBeFalse();
+    });
+
+    it('should set error and set loading to false when UpdateUserFail is reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new UpdateUserFail({ error });
+      const state = userReducer(initialState, action);
+
+      expect(state.loading).toBeFalse();
+      expect(state.error).toEqual(error);
     });
   });
 });

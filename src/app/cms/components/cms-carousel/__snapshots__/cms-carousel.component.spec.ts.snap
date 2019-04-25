@@ -1,65 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Cms Carousel Component should be created 1`] = `
-<div
-  id="root0"
-  ng-version="7.1.4"
->
-  
-  <div
-    class="foo-class"
-    ng-reflect-ng-class="foo-class"
-  >
-    <div>
+<div class="foo-class" ng-reflect-ng-class="foo-class">
+  <ish-content-slot
+    ng-reflect-slot="app_sf_responsive_cm:slot.caro"
+    ng-reflect-pagelet="[object Object]"
+    ng-reflect-wrapper="true"
+    ><div>
       <ngb-carousel
         class="carousel slide"
+        tabindex="0"
         ng-reflect-interval="0"
         ng-reflect-show-navigation-arrows="false"
         style="display: block;"
-        tabindex="0"
-      >
-        
-        <div
-          class="carousel-inner"
-        >
-          
-          <div
-            class="carousel-item active"
-          >
-            
-            <div
-              class="row"
-            >
-              
-              
-              <div
-                class="col-sm-6"
-                ng-reflect-ng-class="col-sm-6"
-              >
-                <ish-content-pagelet
-                  ng-reflect-pagelet="[object Object]"
-                >
-                  Content Pagelet
-                </ish-content-pagelet>
+        ><div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row">
+              <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
+                <ish-content-pagelet ng-reflect-pagelet="[object Object]"></ish-content-pagelet>
               </div>
-              
-              <div
-                class="col-sm-6"
-                ng-reflect-ng-class="col-sm-6"
-              >
-                <ish-content-pagelet
-                  ng-reflect-pagelet="[object Object]"
-                >
-                  Content Pagelet
-                </ish-content-pagelet>
+              <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
+                <ish-content-pagelet ng-reflect-pagelet="[object Object]"></ish-content-pagelet>
               </div>
             </div>
-          </div>
-        </div>
-        
-        
-      </ngb-carousel>
-    </div>
-  </div>
+          </div></div
+      ></ngb-carousel></div
+  ></ish-content-slot>
 </div>
 `;

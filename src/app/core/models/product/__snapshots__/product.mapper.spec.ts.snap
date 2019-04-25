@@ -5,7 +5,9 @@ Object {
   "attributeGroups": undefined,
   "attributes": Array [],
   "availability": true,
+  "completenessLevel": 2,
   "defaultCategoryId": undefined,
+  "failed": false,
   "images": Array [
     Object {
       "effectiveUrl": "http://www.example.org/assets/product_img/a.jpg",
@@ -30,7 +32,7 @@ Object {
   ],
   "inStock": false,
   "listPrice": Object {
-    "currencyMnemonic": "USD",
+    "currency": "USD",
     "type": "Money",
     "value": 132.24,
   },
@@ -41,13 +43,13 @@ Object {
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
   "salePrice": Object {
-    "currencyMnemonic": "USD",
+    "currency": "USD",
     "type": "Money",
     "value": 132.24,
   },
   "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 \\") LCD, 4x, 28mm, HD 720p, Black",
   "sku": "7912057",
-  "type": 0,
+  "type": "Product",
 }
 `;
 

@@ -6,7 +6,15 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { shoppingReducers } from '../shopping-store.module';
 
-import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
+import {
+  LoadProduct,
+  LoadProductFail,
+  LoadProductSuccess,
+  LoadProductVariations,
+  LoadProductVariationsFail,
+  LoadProductVariationsSuccess,
+  SelectProduct,
+} from './products.actions';
 import {
   getProduct,
   getProductEntities,
@@ -41,7 +49,6 @@ describe('Products Selectors', () => {
     });
 
     it('should not select a current product when used', () => {
-      // TODO: shouldn't this be undefined?
       expect(getSelectedProduct(store$.state)).toBeUndefined();
       expect(getSelectedProductId(store$.state)).toBeUndefined();
     });
@@ -115,6 +122,41 @@ describe('Products Selectors', () => {
       it('should select the selected product when used', () => {
         expect(getSelectedProduct(store$.state)).toHaveProperty('sku', prod.sku);
         expect(getSelectedProductId(store$.state)).toEqual(prod.sku);
+      });
+    });
+  });
+
+  describe('loading product variations', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU', type: 'VariationProductMaster' } as Product }));
+      store$.dispatch(new LoadProductVariations({ sku: 'SKU' }));
+    });
+
+    it('should set the state to loading', () => {
+      expect(getProductLoading(store$.state)).toBeTrue();
+    });
+
+    describe('and reporting success', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'] }));
+      });
+
+      it('should set variations data and set loading to false', () => {
+        expect(getProductLoading(store$.state)).toBeFalse();
+        expect(getProducts(store$.state)).toEqual([
+          { sku: 'SKU', type: 'VariationProductMaster', variationSKUs: ['VAR'] },
+        ]);
+      });
+    });
+
+    describe('and reporting failure', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadProductVariationsFail({ error: { message: 'error' } as HttpError, sku: 'SKU' }));
+      });
+
+      it('should not have loaded product variations on error', () => {
+        expect(getProductLoading(store$.state)).toBeFalse();
+        expect(getProducts(store$.state)).toEqual([{ sku: 'SKU', type: 'VariationProductMaster' }]);
       });
     });
   });

@@ -3,12 +3,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
+import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
+import { QuoteStateComponent } from '../../../quote/components/quote-state/quote-state.component';
 
 import { ProductAddToQuoteDialogComponent } from './product-add-to-quote-dialog.component';
 
@@ -20,20 +23,9 @@ describe('Product Add To Quote Dialog Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({
-          selector: 'ish-line-item-list',
-          template: 'Line Item List Component',
-          inputs: ['lineItems', 'editable', 'total'],
-        }),
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
-        MockComponent({
-          selector: 'ish-quote-state',
-          template: 'Quote State Component',
-          inputs: ['quote'],
-        }),
+        MockComponent(LineItemListComponent),
+        MockComponent(LoadingComponent),
+        MockComponent(QuoteStateComponent),
         ProductAddToQuoteDialogComponent,
       ],
       imports: [FormsSharedModule, NgbModalModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],

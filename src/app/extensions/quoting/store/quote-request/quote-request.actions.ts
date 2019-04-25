@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 
@@ -131,7 +131,7 @@ export class CreateQuoteRequestFromQuoteRequestFail implements Action {
 
 export class CreateQuoteRequestFromQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess;
-  constructor(public payload: { quoteLineItemResult: QuoteLineItemResultModel }) {}
+  constructor(public payload: { quoteLineItemResult: QuoteLineItemResult }) {}
 }
 
 export class LoadQuoteRequestItems implements Action {

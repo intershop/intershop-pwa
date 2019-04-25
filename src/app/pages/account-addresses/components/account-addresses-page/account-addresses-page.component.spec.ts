@@ -1,14 +1,19 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { spy, verify } from 'ts-mockito';
+import { MockComponent } from 'ng-mocks';
+import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { CustomerAddressFormComponent } from '../../../../shared/address-forms/components/customer-address-form/customer-address-form.component';
+import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 
@@ -22,19 +27,11 @@ describe('Account Addresses Page Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountAddressesPageComponent,
-        MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
-        }),
-        MockComponent({
-          selector: 'ish-customer-address-form',
-          template: 'Customer Address Form Component',
-          inputs: ['address', 'resetForm'],
-        }),
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        MockComponent(AddressComponent),
+        MockComponent(CustomerAddressFormComponent),
+        MockComponent(ModalDialogComponent),
       ],
-      imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, IconModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -95,6 +92,11 @@ describe('Account Addresses Page Component', () => {
       preferredInvoiceToAddressUrn: component.addresses[0].urn,
     } as User;
 
+    component.preferredAddressForm = new FormGroup({
+      preferredInvoiceAddressUrn: new FormControl(''),
+      preferredShippingAddressUrn: new FormControl(''),
+    });
+
     addressChange = {
       addresses: new SimpleChange(undefined, component.addresses, false),
     };
@@ -114,6 +116,9 @@ describe('Account Addresses Page Component', () => {
 
     expect(component.preferredAddressesEqual).toBeTruthy();
     expect(element.querySelector('div[data-testing-id=preferred-invoice-and-shipping-address]')).toBeTruthy();
+    expect(
+      element.querySelectorAll('div[data-testing-id=preferred-invoice-and-shipping-address] ish-select-address')
+    ).toHaveLength(2);
     expect(element.querySelector('div[data-testing-id=preferred-invoice-address]')).toBeFalsy();
     expect(element.querySelector('div[data-testing-id=preferred-shipping-address]')).toBeFalsy();
   });
@@ -126,7 +131,13 @@ describe('Account Addresses Page Component', () => {
 
     expect(element.querySelector('div[data-testing-id=preferred-invoice-and-shipping-address]')).toBeFalsy();
     expect(element.querySelector('div[data-testing-id=preferred-invoice-address]')).toBeTruthy();
+    expect(element.querySelectorAll('div[data-testing-id=preferred-invoice-address] ish-select-address')).toHaveLength(
+      1
+    );
     expect(element.querySelector('div[data-testing-id=preferred-shipping-address]')).toBeTruthy();
+    expect(element.querySelectorAll('div[data-testing-id=preferred-shipping-address] ish-select-address')).toHaveLength(
+      1
+    );
   });
 
   it('should not display further addresses if only preferred invoice and shipping addresses are available', () => {
@@ -240,5 +251,23 @@ describe('Account Addresses Page Component', () => {
     component.deleteAddress(address);
 
     verify(emitter.emit(address.id)).once();
+  });
+
+  it('should emit updatePreferredAddress event when preferredInvoiceAddress has been changed ', () => {
+    fixture.detectChanges();
+    const emitter = spy(component.updateUserPreferredAddress);
+
+    component.preferredAddressForm.get('preferredInvoiceAddressUrn').setValue(component.addresses[1].urn);
+
+    verify(emitter.emit(anything())).once();
+  });
+
+  it('should emit updatePreferredAddress event when preferredShippingAddress has been changed ', () => {
+    fixture.detectChanges();
+    const emitter = spy(component.updateUserPreferredAddress);
+
+    component.preferredAddressForm.get('preferredShippingAddressUrn').setValue(component.addresses[1].urn);
+
+    verify(emitter.emit(anything())).once();
   });
 });

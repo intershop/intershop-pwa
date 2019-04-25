@@ -11,7 +11,7 @@
 </div>
 
 <!-- component that provides a banner to inform users about cookie usage -->
-<cookie-law #cookieLaw *ngIf="isBrowser">
+<cookie-law #cookieLaw *ngIf="isBrowser" expiration="365">
   <div class="row">
     <div class="col-12 col-md-10">
       <span [innerHTML]="'cookie_law.text' | translate: { '0': '/page/privacy.policy' }"></span>

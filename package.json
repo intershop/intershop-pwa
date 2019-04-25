@@ -1,9 +1,11 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "0.10.5",
+  "version": "0.11.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
-  "keywords": ["intershop"],
+  "keywords": [
+    "intershop"
+  ],
   "engines": {
     "node": ">=10.13.0",
     "npm": "~6.4.1"
@@ -15,11 +17,11 @@
     "test:watch": "jest --watch",
     "e2e": "node open-cypress",
     "lint": "npx ng lint",
-    "stylelint": "stylelint \"src/theme/**/*.scss\" --fix",
+    "stylelint": "stylelint \"src/**/*.scss\" --fix",
     "format": "npx prettier --loglevel warn --write \"**/*.*\"",
     "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npx tsc --project src/tsconfig.spec.json && npm run build && npm run test",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -t RELEASE_ -n intershop-changelog.js -i CHANGELOG.md -s",
-    "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json && npx license-checker --excludePrivatePackages --onlyAllow 'MIT;ISC;BSD;Apache;Apache-2.0;WTFPL;CC-BY-4.0;CC-BY-3.0;CC0-1.0;Unlicense' --summary",
+    "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
     "docs": "npx @compodoc/compodoc -p src/tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "docs:serve": "npm run docs -- -s",
@@ -60,7 +62,9 @@
     "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@ngx-utils/cookies": "^3.0.2",
     "@schematics/angular": "^7.1.4",
+    "@sentry/browser": "5.0.3",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.12.18",
     "@wishtack/reactive-component-loader": "^0.2.0",
@@ -90,7 +94,7 @@
     "@cypress/webpack-preprocessor": "^4.0.2",
     "codelyzer": "^4.5.0",
     "cpy-cli": "^2.0.0",
-    "cypress": "^3.1.4",
+    "cypress": "^3.1.5",
     "cypress-failed-log": "^2.4.1",
     "husky": "^1.3.1",
     "intershop-schematics": "file:schematics/src",
@@ -105,6 +109,7 @@
     "jest-marbles": "^2.2.0",
     "jest-preset-angular": "^6.0.2",
     "lint-staged": "^8.1.0",
+    "ng-mocks": "^7.7.0",
     "prettier": "^1.15.3",
     "reflect-metadata": "^0.1.12",
     "rxjs-compat": "^6.3.3",
@@ -131,10 +136,13 @@
   },
   "lint-staged": {
     "linters": {
-      "*": ["npx prettier --loglevel warn --write", "git add"],
+      "*": [
+        "npx prettier --loglevel warn --write",
+        "git add"
+      ],
       "*.ts": [
         "npx tslint --project tsconfig.json --fix",
-        "npx jest --findRelatedTests",
+        "npx jest --findRelatedTests --bail",
         "git add"
       ]
     },

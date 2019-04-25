@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent } from 'ng-mocks';
 
-import { createPageletView } from 'ish-core/models/content-view/content-views';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { createContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletContainerComponent } from '../../containers/content-pagelet/content-pagelet.container';
+import { ContentSlotContainerComponent } from '../../containers/content-slot/content-slot.container';
 
 import { CMSCarouselComponent } from './cms-carousel.component';
 
@@ -15,7 +17,8 @@ describe('Cms Carousel Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CMSCarouselComponent,
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
+        MockComponent(ContentPageletContainerComponent),
+        MockComponent(ContentSlotContainerComponent),
       ],
       imports: [NgbCarouselModule],
     }).compileComponents();
@@ -27,16 +30,22 @@ describe('Cms Carousel Component', () => {
     element = fixture.nativeElement;
     const slide1 = {
       id: 'slide1',
+      domain: 'domain',
+      displayName: 'slide1',
       definitionQualifiedName: 'fq',
     };
     const slide2 = {
       id: 'slide2',
+      domain: 'domain',
+      displayName: 'slide2',
       definitionQualifiedName: 'fq',
     };
 
     const pagelet = {
       id: 'id',
       definitionQualifiedName: 'fq',
+      domain: 'domain',
+      displayName: 'pagelet',
       configurationParameters: {
         CSSClass: 'foo-class',
         SlideItems: 2,
@@ -48,7 +57,7 @@ describe('Cms Carousel Component', () => {
         },
       ],
     };
-    component.pagelet = createPageletView(pagelet.id, {
+    component.pagelet = createContentPageletView(pagelet.id, {
       [pagelet.id]: pagelet,
       [slide1.id]: slide1,
       [slide2.id]: slide2,

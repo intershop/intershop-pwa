@@ -8,4 +8,24 @@ export class MyAccountPage {
   static navigateTo() {
     cy.visit('/account');
   }
+
+  navigateToQuoting() {
+    cy.get('a[data-testing-id="quoute-list-link"]').click();
+  }
+
+  get newQuoteLabel() {
+    return cy.get('[data-testing-id="new-counter"]');
+  }
+
+  get submittedQuoteLabel() {
+    return cy.get('[data-testing-id="submitted-counter"]');
+  }
+
+  get acceptedQuoteLabel() {
+    return cy.get('[data-testing-id="accepted-counter"]');
+  }
+
+  get rejectedQuoteLabel() {
+    return cy.get('[data-testing-id="rejected-counter"]');
+  }
 }

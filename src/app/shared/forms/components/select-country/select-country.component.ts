@@ -11,7 +11,7 @@ import { SelectComponent, SelectOption } from '../select/select.component';
 export class SelectCountryComponent extends SelectComponent implements OnChanges {
   @Input() countries: Country[];
   @Input() controlName = 'countryCode';
-  @Input() label = 'Country';
+  @Input() label = 'account.address.country.label';
   @Input() errorMessages = { required: 'account.address.country.error.default' };
 
   ngOnChanges(c: SimpleChanges) {

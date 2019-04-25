@@ -12,8 +12,20 @@ describe('Line Item Mapper', () => {
         quantity: {
           value: 3,
         },
+        pricing: {
+          price: {
+            gross: {
+              currency: 'USD',
+              value: 11.9,
+            },
+            net: {
+              value: 10.56,
+              currency: 'USD',
+            },
+          },
+        },
       } as LineItemData;
-      const lineItem = LineItemMapper.fromData(lineItemData);
+      const lineItem = LineItemMapper.fromData(lineItemData, undefined);
 
       expect(lineItem).toBeTruthy();
       expect(lineItem.productSKU).toBe(lineItemData.product);
@@ -21,7 +33,7 @@ describe('Line Item Mapper', () => {
     });
 
     it(`should throw an error when getting no LineItemData`, () => {
-      expect(() => LineItemMapper.fromData(undefined)).toThrow();
+      expect(() => LineItemMapper.fromData(undefined, undefined)).toThrow();
     });
   });
 

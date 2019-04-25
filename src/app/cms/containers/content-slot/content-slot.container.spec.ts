@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { ContentSlotView, createSlotView } from 'ish-core/models/content-view/content-views';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
+import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
+import { ContentPageletContainerComponent } from '../content-pagelet/content-pagelet.container';
 
 import { ContentSlotContainerComponent } from './content-slot.container';
 
@@ -9,27 +13,38 @@ describe('Content Slot Container', () => {
   let component: ContentSlotContainerComponent;
   let fixture: ComponentFixture<ContentSlotContainerComponent>;
   let element: HTMLElement;
-  let slot: ContentSlotView;
+  let sfeAdapterMock: SfeAdapterService;
 
   beforeEach(async(() => {
+    sfeAdapterMock = mock(SfeAdapterService);
+
     TestBed.configureTestingModule({
-      declarations: [
-        ContentSlotContainerComponent,
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
-      ],
+      declarations: [ContentSlotContainerComponent, MockComponent(ContentPageletContainerComponent)],
+      providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentSlotContainerComponent);
     component = fixture.componentInstance;
-    slot = createSlotView(
-      {
-        definitionQualifiedName: 'test.slot',
+    const pagelet = {
+      definitionQualifiedName: 'fq',
+      id: 'id',
+      displayName: 'pagelet',
+      domain: 'domain',
+      configurationParameters: {
+        HTMLText: 'foo',
       },
-      {}
-    );
-    component.slot = slot;
+      slots: [
+        {
+          definitionQualifiedName: 'slot123',
+          displayName: 'slot',
+          pageletIDs: [],
+        },
+      ],
+    } as ContentPagelet;
+    component.pagelet = createSimplePageletView(pagelet);
+    component.slot = 'slot123';
     element = fixture.nativeElement;
   });
 

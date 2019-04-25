@@ -2,8 +2,17 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
+import { MockComponent } from 'ng-mocks';
 
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { SelectCountryComponent } from '../../../../shared/forms/components/select-country/select-country.component';
+import { AddressFormBusinessComponent } from '../address-form-business/address-form-business.component';
+import { AddressFormDEComponent } from '../address-form-de/address-form-de.component';
+import { AddressFormDefaultComponent } from '../address-form-default/address-form-default.component';
+import { AddressFormFRComponent } from '../address-form-fr/address-form-fr.component';
+import { AddressFormGBComponent } from '../address-form-gb/address-form-gb.component';
+import { AddressFormUSComponent } from '../address-form-us/address-form-us.component';
 
 import { AddressFormComponent } from './address-form.component';
 
@@ -16,46 +25,14 @@ describe('Address Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         AddressFormComponent,
-        MockComponent({
-          selector: 'ish-address-form-business',
-          template: 'Business address form extension',
-          inputs: ['addressForm'],
-        }),
-        MockComponent({
-          selector: 'ish-address-form-de',
-          template: 'German address form extension',
-          inputs: ['addressForm', 'titles'],
-        }),
-        MockComponent({
-          selector: 'ish-address-form-default',
-          template: 'Default address form extension',
-          inputs: ['addressForm', 'regions'],
-        }),
-        MockComponent({
-          selector: 'ish-address-form-fr',
-          template: 'French address form extension',
-          inputs: ['addressForm', 'titles'],
-        }),
-        MockComponent({
-          selector: 'ish-address-form-gb',
-          template: 'British address form extension',
-          inputs: ['addressForm', 'titles'],
-        }),
-        MockComponent({
-          selector: 'ish-address-form-us',
-          template: 'US address form extension',
-          inputs: ['addressForm', 'regions'],
-        }),
-        MockComponent({
-          selector: 'ish-input',
-          template: 'Input component',
-          inputs: ['controlName', 'form', 'label'],
-        }),
-        MockComponent({
-          selector: 'ish-select-country',
-          template: 'Country Select',
-          inputs: ['countries', 'form', 'controlName'],
-        }),
+        MockComponent(AddressFormBusinessComponent),
+        MockComponent(AddressFormDEComponent),
+        MockComponent(AddressFormDefaultComponent),
+        MockComponent(AddressFormFRComponent),
+        MockComponent(AddressFormGBComponent),
+        MockComponent(AddressFormUSComponent),
+        MockComponent(InputComponent),
+        MockComponent(SelectCountryComponent),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
@@ -111,7 +88,7 @@ describe('Address Form Component', () => {
       it(`should render \'${dataSlice.cmp}\' if countryCode equals \'${dataSlice.countryCode}\'`, () => {
         component.countryCode = dataSlice.countryCode;
         fixture.detectChanges();
-        expect(element.querySelector(dataSlice.cmp)).toBeTruthy();
+        expect(findAllIshElements(element)).toContain(dataSlice.cmp);
       });
     });
   });

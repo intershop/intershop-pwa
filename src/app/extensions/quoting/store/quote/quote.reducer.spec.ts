@@ -1,5 +1,5 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../models/quote/quote.interface';
 
 import * as fromActions from './quote.actions';
@@ -143,7 +143,7 @@ describe('Quote Reducer', () => {
 
     describe('CreateQuoteRequestFromQuoteSuccess action', () => {
       it('should set loading to false', () => {
-        const quoteLineItemRequest = {} as QuoteLineItemResultModel;
+        const quoteLineItemRequest = {} as QuoteLineItemResult;
         const action = new fromActions.CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest });
         const state = quoteReducer(initialState, action);
 

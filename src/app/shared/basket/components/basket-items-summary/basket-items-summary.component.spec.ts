@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -15,7 +17,7 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BasketItemsSummaryComponent],
+      declarations: [BasketItemsSummaryComponent, MockComponent(PromotionDetailsComponent)],
       imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
@@ -35,14 +37,14 @@ describe('Basket Items Summary Component', () => {
 
   it('should render basket product line items if basket items are there', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.row')).toBeTruthy();
-    expect(element.querySelector('.row').innerHTML).toContain('pli name');
+    expect(element.querySelector('.cart-summary-checkout')).toBeTruthy();
+    expect(element.querySelector('.cart-summary-checkout').innerHTML).toContain('pli name');
   });
 
   it('should not show anything if there are no basket items', () => {
     component.basket.lineItems = undefined;
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('.row')).toBeFalsy();
+    expect(element.querySelector('.cart-summary-checkout')).toBeFalsy();
   });
 
   it('should not show showAll/HideAll links if there are less items than in collapsedItemsCount specified', () => {

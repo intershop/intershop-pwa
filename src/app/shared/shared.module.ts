@@ -47,12 +47,15 @@ import { ProductListPagingComponent } from './product/components/product-list-pa
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
+import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
+import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
+import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
-import { ProductRowContainerComponent } from './product/containers/product-row/product-row.container';
-import { ProductTileContainerComponent } from './product/containers/product-tile/product-tile.container';
+import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
@@ -86,7 +89,6 @@ const declaredComponents = [
   ProductListPagingComponent,
   ProductListToolbarComponent,
   ProductRowComponent,
-  ProductRowContainerComponent,
   ProductTileComponent,
   RecentlyViewedComponent,
 ];
@@ -110,11 +112,15 @@ const exportedComponents = [
   ProductAddToCompareComponent,
   ProductAttributesComponent,
   ProductInventoryComponent,
+  ProductItemContainerComponent,
   ProductLabelComponent,
   ProductListContainerComponent,
   ProductPriceComponent,
+  ProductQuantityComponent,
   ProductShipmentComponent,
-  ProductTileContainerComponent,
+  ProductVariationDisplayComponent,
+  ProductVariationSelectComponent,
+  PromotionDetailsComponent,
   RecentlyViewedContainerComponent,
 ];
 

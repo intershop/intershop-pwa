@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
-import { createPageletView } from 'ish-core/models/content-view/content-views';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { createContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletContainerComponent } from '../../containers/content-pagelet/content-pagelet.container';
+import { ContentSlotContainerComponent } from '../../containers/content-slot/content-slot.container';
 
 import { CMSContainerComponent } from './cms-container.component';
 
@@ -14,7 +16,8 @@ describe('Cms Container Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CMSContainerComponent,
-        MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
+        MockComponent(ContentPageletContainerComponent),
+        MockComponent(ContentSlotContainerComponent),
       ],
     }).compileComponents();
   }));
@@ -25,14 +28,20 @@ describe('Cms Container Component', () => {
     const slide1 = {
       definitionQualifiedName: 'fq',
       id: 'slide1',
+      domain: 'domain',
+      displayName: 'slide1',
     };
     const slide2 = {
       definitionQualifiedName: 'fq',
       id: 'slide2',
+      domain: 'domain',
+      displayName: 'slide2',
     };
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
+      domain: 'domain',
+      displayName: 'pagelet',
       configurationParameters: {
         CSSClass: 'foo-class',
         Grid: 'ExtraSmall:12,Small:6,Medium:4,Large:0',
@@ -44,7 +53,7 @@ describe('Cms Container Component', () => {
         },
       ],
     };
-    component.pagelet = createPageletView(pagelet.id, {
+    component.pagelet = createContentPageletView(pagelet.id, {
       [pagelet.id]: pagelet,
       [slide1.id]: slide1,
       [slide2.id]: slide2,

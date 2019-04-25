@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { IconModule } from 'ish-core/icon.module';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { ContentPageletView, createPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-views';
 
 import { CMSVideoComponent } from './cms-video.component';
 
@@ -25,6 +25,8 @@ describe('Cms Video Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     pagelet = {
+      domain: 'domain',
+      displayName: 'pagelet1',
       definitionQualifiedName: 'fq',
       id: 'id',
       configurationParameters: {
@@ -35,7 +37,7 @@ describe('Cms Video Component', () => {
         Mute: 'false',
       },
     };
-    pageletView = createPageletView(pagelet.id, { [pagelet.id]: pagelet });
+    pageletView = createContentPageletView(pagelet.id, { [pagelet.id]: pagelet });
   });
 
   it('should be created', () => {

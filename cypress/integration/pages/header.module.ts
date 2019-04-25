@@ -47,6 +47,10 @@ export class HeaderModule {
       .first();
   }
 
+  goToMyAccount() {
+    return this.myAccountLink.click({ force: true });
+  }
+
   get content() {
     return cy.get('ish-header');
   }
@@ -77,14 +81,9 @@ export class HeaderModule {
   }
 
   switchLanguage(lang: string) {
-    cy.get('ish-header span.language-switch-current-selection')
-      .should('be.visible')
-      .first()
-      .click();
-
     cy.get('ish-header div.language-switch-menu-container a')
       .should('contain', lang)
       .first()
-      .click();
+      .click({ force: true });
   }
 }
