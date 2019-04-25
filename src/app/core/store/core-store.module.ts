@@ -31,6 +31,7 @@ import { viewconfReducer } from './viewconf/viewconf.reducer';
 
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';
+import { RestoreStoreModule } from './restore/restore-store.module';
 
 export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,
@@ -68,6 +69,7 @@ export const metaReducers: MetaReducer<any>[] = [
     CheckoutStoreModule,
     ContentStoreModule,
     EffectsModule.forRoot(coreEffects),
+    RestoreStoreModule,
     ShoppingStoreModule,
     StoreModule.forRoot(coreReducers, { metaReducers }),
   ],

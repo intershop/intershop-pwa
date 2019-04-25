@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { map, mapTo } from 'rxjs/operators';
+import { EMPTY, Observable, throwError } from 'rxjs';
+import { catchError, map, mapTo } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
@@ -74,6 +74,23 @@ export class BasketService {
         params,
       })
       .pipe(map(BasketMapper.fromData));
+  }
+
+  getBasketByToken(apiToken: string): Observable<Basket> {
+    const params = new HttpParams().set('include', this.allBasketIncludes.join());
+
+    return this.apiService
+      .get<BasketData>(`baskets/current`, {
+        headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+        params,
+        skipApiErrorHandling: true,
+        runExclusively: true,
+      })
+      .pipe(
+        map(BasketMapper.fromData),
+        // tslint:disable-next-line:ban
+        catchError(() => EMPTY)
+      );
   }
 
   /**
