@@ -54,12 +54,7 @@ describe('Product Promotion Container', () => {
       readyForShipmentMax: 1,
       sku: 'test',
       type: 0,
-      promotions: [
-        {
-          itemId: 'PROMO_UUID',
-          title: 'MyPromotionTitle',
-        },
-      ],
+      promotionIds: ['PROMO_UUID'],
     };
   });
 

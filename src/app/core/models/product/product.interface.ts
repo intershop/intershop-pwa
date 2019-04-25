@@ -5,7 +5,6 @@ import { CategoryData } from '../category/category.interface';
 import { Image } from '../image/image.model';
 import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
-import { ProductPromotion } from '../promotion/promotion.model';
 import { VariationAttribute } from '../product-variation/variation-attribute.model';
 import { Warranty } from '../warranty/warranty.model';
 
@@ -66,7 +65,7 @@ export interface ProductData {
   attributeGroups?: { [id: string]: AttributeGroup };
   defaultCategory?: CategoryData;
 
-  promotions?: ProductPromotion[];
+  promotions?: Link[];
 }
 
 export interface ProductDataStub {

@@ -13,8 +13,3 @@ export interface Promotion {
   useExternalUrl?: boolean;
   externalUrl?: string;
 }
-
-export interface ProductPromotion {
-  itemId: string;
-  title: string;
-}

@@ -40,7 +40,7 @@ Object {
   "manufacturer": "Kodak",
   "minOrderQuantity": 5,
   "name": "Kodak M series EasyShare M552",
-  "promotions": undefined,
+  "promotionIds": Array [],
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
   "salePrice": Object {

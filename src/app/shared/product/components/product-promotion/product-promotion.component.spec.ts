@@ -44,11 +44,16 @@ describe('Product Promotion Component', () => {
       },
     ];
     component.displayType = 'list';
+    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display the promotion title', () => {
+    expect(element.querySelector('.promotion-short-title').textContent).toContain(component.promotions[0].title);
   });
 });
