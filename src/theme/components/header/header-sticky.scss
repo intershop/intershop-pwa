@@ -1,3 +1,25 @@
+.homepage.sticky-header .wrapper {
+  margin-top: 185px;
+}
+
+.sticky-header {
+  .top-header {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+  }
+
+  .wrapper {
+    margin-top: 185px;
+  }
+
+  .mid-header,
+  .bottom-header {
+    display: none;
+  }
+}
+
 .header-sticky,
 .header-sticky-mobile {
   .main-navigation-list li {
