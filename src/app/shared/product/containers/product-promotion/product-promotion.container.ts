@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { LoadPromotion, getPromotions } from 'ish-core/store/shopping/promotions
   templateUrl: './product-promotion.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductPromotionContainerComponent implements OnInit {
+export class ProductPromotionContainerComponent implements OnChanges {
   @Input() product: Product;
   @Input() displayType?: string;
 
@@ -19,7 +19,7 @@ export class ProductPromotionContainerComponent implements OnInit {
 
   constructor(private store: Store<{}>) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.promotions$ = this.store.pipe(select(getPromotions, { promotionIds: this.product.promotionIds }));
 
     // Todo:
