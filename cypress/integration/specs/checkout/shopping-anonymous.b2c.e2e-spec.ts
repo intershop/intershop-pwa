@@ -51,7 +51,7 @@ describe('Anonymous Checkout', () => {
       page
         .addProductToCart()
         .its('status')
-        .should('equal', 201);
+        .should('equal', 200);
       page.header.miniCart.total.should('contain', _.product.price);
       page.header.miniCart.goToCart();
     });
