@@ -35,7 +35,8 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     const split = url.split('?');
     newUrl = split[0];
     if (/.*\.b2b\..*/.test(Cypress.spec.name)) {
-      newUrl += ';channel=inSPIRED-inTRONICS_Business-Site';
+      newUrl +=
+        ';channel=inSPIRED-inTRONICS_Business-Site;features=quoting,compare,recently,businessCustomerRegistration';
     } else if (/.*\.b2c\..*/.test(Cypress.spec.name)) {
       newUrl += ';channel=inSPIRED-inTRONICS-Site';
     }
