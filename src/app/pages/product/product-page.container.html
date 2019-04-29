@@ -1,18 +1,20 @@
 <div class="clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
-  <ng-container *ngIf="product$ | async as product">
-    <ish-breadcrumb [product]="product" [category]="category$ | async"></ish-breadcrumb>
+  <ish-loading *ngIf="productLoading$ | async; else productDetail"></ish-loading>
 
-    <ish-product-detail
-      [product]="product"
-      [currentUrl]="currentUrl$ | async"
-      [variationOptions]="productVariationOptions$ | async"
-      (productToBasket)="addToBasket($event)"
-      (productToCompare)="addToCompare($event)"
-      (selectVariation)="variationSelected($event, product)"
-    ></ish-product-detail>
-  </ng-container>
+  <ng-template #productDetail>
+    <ng-container *ngIf="product$ | async as product">
+      <ish-breadcrumb [product]="product" [category]="category$ | async"></ish-breadcrumb>
 
-  <ish-loading *ngIf="productLoading$ | async"></ish-loading>
+      <ish-product-detail
+        [product]="product"
+        [currentUrl]="currentUrl$ | async"
+        [variationOptions]="productVariationOptions$ | async"
+        (productToBasket)="addToBasket($event)"
+        (productToCompare)="addToCompare($event)"
+        (selectVariation)="variationSelected($event, product)"
+      ></ish-product-detail>
+    </ng-container>
+  </ng-template>
 </div>
 
 <ng-container *ishFeature="'recently'"> <ish-recently-viewed-container></ish-recently-viewed-container> </ng-container>

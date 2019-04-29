@@ -2,29 +2,29 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
- * The Line Item Description Component displays detailed line item information.
+ * The Line Item Edit Component displays an edit-link and edit-dialog.
  * It prodives optional edit functionality
  *
  * @example
- * <ish-line-item-description
- *   [pli]="lineItem"
+ * <ish-line-item-edit
+ *   [lineItem]="lineItem"
  *   [editable]="editable"
- *   lineItemViewType="simple"
  *   (updateItem)="onUpdateItem($event)"
- * ></ish-line-item-description>
+ * ></ish-line-item-edit>
  */
 @Component({
-  selector: 'ish-line-item-description',
-  templateUrl: './line-item-description.component.html',
+  selector: 'ish-line-item-edit',
+  templateUrl: './line-item-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LineItemDescriptionComponent {
-  @Input() pli: LineItemView;
+export class LineItemEditComponent {
+  @Input() lineItem: LineItemView;
   @Input() editable = true;
-  @Input() lineItemViewType?: 'simple';
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
+  isVariationProduct = ProductHelper.isVariationProduct;
 
   onUpdateItem(event: LineItemUpdate) {
     this.updateItem.emit(event);

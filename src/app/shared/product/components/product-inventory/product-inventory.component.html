@@ -1,8 +1,12 @@
 <div class="product-availability">
-  <ng-container *ngIf="product.inStock; else outOfStock">
-    {{ 'product.instock.text' | translate }} <link itemprop="availability" href="http://schema.org/InStock" />
+  <ng-container *ngIf="product.inStock && product.availability; else outOfStock">
+    <span class="product-in-stock">
+      {{ 'product.instock.text' | translate }} <link itemprop="availability" href="http://schema.org/InStock" />
+    </span>
   </ng-container>
   <ng-template #outOfStock>
-    {{ 'product.out_of_stock.text' | translate }} <link itemprop="availability" href="http://schema.org/OutOfStock" />
+    <span class="product-out-of-stock">
+      {{ 'product.out_of_stock.text' | translate }} <link itemprop="availability" href="http://schema.org/OutOfStock" />
+    </span>
   </ng-template>
 </div>

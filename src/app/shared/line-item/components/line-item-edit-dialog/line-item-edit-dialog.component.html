@@ -1,0 +1,54 @@
+<div class="container line-item-edit-dialog">
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+
+  <div *ngIf="variation$ | async as variation" class="row">
+    <!-- right box -->
+    <div class="col">
+      <div class="text-center"><ish-product-image [product]="variation" imageType="M"></ish-product-image></div>
+    </div>
+
+    <!-- left box -->
+    <div class="col product-info">
+      <!-- sku -->
+      <div class="product-number">
+        <label>{{ 'checkout.pli.item.text.id' | translate }}</label
+        ><span itemprop="sku">{{ variation.sku }}</span>
+      </div>
+
+      <!-- price -->
+      <div class="current-price">{{ variation.salePrice | ishPrice }}</div>
+
+      <!-- Availability -->
+      <ish-product-inventory [product]="variation"></ish-product-inventory>
+
+      <!-- select (variation) -->
+      <ish-product-variation-select
+        *ngIf="variationOptions$ | async as variationOptions"
+        [variationOptions]="variationOptions"
+        (selectVariation)="variationSelected($event)"
+      ></ish-product-variation-select>
+
+      <!-- input (quantity) -->
+      <form [formGroup]="form">
+        <div class="form-group">
+          <ish-input
+            [form]="form.get(['items', 0])"
+            controlName="quantity"
+            type="number"
+            labelClass="col-form-label col"
+            label="product.quantity.label"
+            inputClass="col"
+            min="0"
+            markRequiredLabel="off"
+            [max]="variation.maxOrderQuantity"
+            [errorMessages]="{
+              required: 'shopping_cart.quantity.invalid.error',
+              max: 'shopping_cart.quantity.invalid.error.maxvalue',
+              integer: 'shopping_cart.quantity.invalid.error'
+            }"
+          ></ish-input>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

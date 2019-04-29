@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { ReplaySubject, Subject } from 'rxjs';
-import { filter, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
@@ -10,12 +10,7 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
-import {
-  LoadProduct,
-  getProduct,
-  getProductEntities,
-  getProductVariationOptions,
-} from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
 
 type DisplayType = 'tile' | 'row';
 
@@ -65,15 +60,9 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
-    this.sku$
-      .pipe(
-        withLatestFrom(this.store.pipe(select(getProductEntities))),
-        map(([sku, entities]) => entities[sku]),
-        filter(product => !ProductHelper.isProductCompletelyLoaded(product)),
-        withLatestFrom(this.sku$),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(([, sku]) => this.store.dispatch(new LoadProduct({ sku })));
+    this.sku$.pipe(takeUntil(this.destroy$)).subscribe(sku => {
+      this.store.dispatch(new LoadProductIfNotLoaded({ sku }));
+    });
 
     this.sku$.next(this.productSku);
   }

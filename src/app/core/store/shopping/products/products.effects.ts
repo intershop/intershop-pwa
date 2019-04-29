@@ -63,6 +63,15 @@ export class ProductsEffects {
   );
 
   @Effect()
+  loadProductIfNotLoaded$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductIfNotLoaded>(productsActions.ProductsActionTypes.LoadProductIfNotLoaded),
+    mapToPayloadProperty('sku'),
+    withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+    filter(([sku, entities]) => !ProductHelper.isProductCompletelyLoaded(entities[sku])),
+    map(([sku]) => new productsActions.LoadProduct({ sku }))
+  );
+
+  @Effect()
   loadMoreProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadMoreProductsForCategory>(
       productsActions.ProductsActionTypes.LoadMoreProductsForCategory

@@ -180,8 +180,8 @@ describe('Filter Effects', () => {
       const completion = new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['123', '234'] });
       const loadProducts1 = new LoadProduct({ sku: '123' });
       const loadProducts2 = new LoadProduct({ sku: '234' });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(bcd)', { b: loadProducts1, c: loadProducts2, d: completion });
+      actions$ = hot('-a-----|', { a: action });
+      const expected$ = cold('-(bcd)-|', { b: loadProducts1, c: loadProducts2, d: completion });
       expect(effects.loadFilteredProducts$).toBeObservable(expected$);
     });
   });
