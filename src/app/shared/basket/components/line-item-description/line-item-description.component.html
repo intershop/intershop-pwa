@@ -11,7 +11,7 @@
   <!-- Availability -->
   <p class="availability">
     <span *ngIf="!pli.product.availability" class="product-out-of-stock">
-      {{ 'checkout.pli.not_accessible.text' | translate }}
+      {{ 'checkout.pli.out_of_stock.text' | translate }}
     </span>
     <span *ngIf="pli.product.availability && pli.product.inStock" class="product-in-stock">
       {{ 'checkout.pli.instock.text' | translate }}
