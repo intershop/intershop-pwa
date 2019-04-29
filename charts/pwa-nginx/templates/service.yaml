@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pwa-nginx.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "pwa-nginx.name" . }}
+    helm.sh/chart: {{ include "pwa-nginx.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "pwa-nginx.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
