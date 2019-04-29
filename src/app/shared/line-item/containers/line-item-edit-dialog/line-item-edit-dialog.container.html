@@ -1,0 +1,9 @@
+<ish-line-item-edit-dialog
+  [lineItem]="lineItem"
+  [variation$]="variation$"
+  [variationOptions$]="variationOptions$"
+  [loading$]="loading$"
+  [editable]="editable"
+  (selectVariation)="variationSelected($event)"
+  (selectQuantity)="quantitySelected($event)"
+></ish-line-item-edit-dialog>

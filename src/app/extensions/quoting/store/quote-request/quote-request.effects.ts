@@ -7,12 +7,15 @@ import { combineLatest, concat, forkJoin } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import {
+  LineItemUpdateHelper,
+  LineItemUpdateHelperItem,
+} from 'ish-core/models/line-item-update/line-item-update.helper';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
-import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProduct, LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
@@ -139,7 +142,10 @@ export class QuoteRequestEffects {
         quoteRequest.items.map(item => this.quoteRequestService.getQuoteRequestItem(quoteRequest.id, item['title']))
       ).pipe(
         defaultIfEmpty([]),
-        map(quoteRequestItems => new actions.LoadQuoteRequestItemsSuccess({ quoteRequestItems })),
+        mergeMap(quoteRequestItems => [
+          ...quoteRequestItems.map(item => new LoadProductIfNotLoaded({ sku: item.productSKU })),
+          new actions.LoadQuoteRequestItemsSuccess({ quoteRequestItems }),
+        ]),
         mapErrorToAction(actions.LoadQuoteRequestItemsFail)
       )
     )
@@ -208,18 +214,18 @@ export class QuoteRequestEffects {
   @Effect()
   updateQuoteRequestItems$ = this.actions$.pipe(
     ofType<actions.UpdateQuoteRequestItems>(actions.QuoteRequestActionTypes.UpdateQuoteRequestItems),
-    mapToPayloadProperty('lineItemQuantities'),
+    mapToPayloadProperty('lineItemUpdates'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
-    map(([lineItemQuantities, selectedQuoteRequest]) => ({
+    map(([lineItemUpdates, selectedQuoteRequest]) => ({
       quoteRequestId: selectedQuoteRequest.id,
-      updatedItems: this.filterQuoteRequestsForQuantityChanges(lineItemQuantities, selectedQuoteRequest),
+      updatedItems: this.filterQuoteRequestsForChanges(lineItemUpdates, selectedQuoteRequest),
     })),
     concatMap(payload =>
       forkJoin(
         payload.updatedItems.map(item =>
-          item.quantity > 0
-            ? this.quoteRequestService.updateQuoteRequestItem(payload.quoteRequestId, item)
-            : this.quoteRequestService.removeItemFromQuoteRequest(payload.quoteRequestId, item.itemId)
+          item.quantity === 0
+            ? this.quoteRequestService.removeItemFromQuoteRequest(payload.quoteRequestId, item.itemId)
+            : this.quoteRequestService.updateQuoteRequestItem(payload.quoteRequestId, item)
         )
       ).pipe(
         defaultIfEmpty(),
@@ -318,26 +324,21 @@ export class QuoteRequestEffects {
   );
 
   /**
-   * Filter for itemId and quantity pairs with actual quantity changes.
+   * Filter for itemId and update pairs with actual quantity or sku changes.
    * @param payloadItems          The items of the action payload, containing items to update.
    * @param selectedQuoteRequest  The selected quote request item.
    * @returns                     An array of filtered itemId and quantity pairs.
    */
-  filterQuoteRequestsForQuantityChanges(
-    payloadItems: LineItemQuantity[],
+  filterQuoteRequestsForChanges(
+    lineItemUpdates: LineItemUpdate[],
     selectedQuoteRequest: QuoteRequest
-  ): LineItemQuantity[] {
+  ): LineItemUpdate[] {
     const quoteRequestItems = selectedQuoteRequest.items;
-    const updatedItems: LineItemQuantity[] = [];
-    if (quoteRequestItems) {
-      for (const quoteRequestItem of quoteRequestItems as QuoteRequestItem[]) {
-        for (const item of payloadItems) {
-          if (quoteRequestItem.id === item.itemId && quoteRequestItem.quantity.value !== item.quantity) {
-            updatedItems.push(item);
-          }
-        }
-      }
+
+    if (!quoteRequestItems) {
+      return [];
     }
-    return updatedItems;
+
+    return LineItemUpdateHelper.filterUpdatesByItems(lineItemUpdates, quoteRequestItems as LineItemUpdateHelperItem[]);
   }
 }

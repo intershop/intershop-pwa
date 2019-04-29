@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -14,11 +14,7 @@ import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
-import {
-  getProductLoading,
-  getSelectedProduct,
-  getSelectedProductVariationOptions,
-} from 'ish-core/store/shopping/products';
+import { getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
 
 @Component({
   selector: 'ish-product-page-container',
@@ -26,13 +22,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageContainerComponent implements OnInit, OnDestroy {
-  product$ = this.store.pipe(
-    select(getSelectedProduct),
-    filter(ProductHelper.isProductCompletelyLoaded)
-  );
+  product$ = this.store.pipe(select(getSelectedProduct));
   productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   category$ = this.store.pipe(select(getSelectedCategory));
-  productLoading$ = this.store.pipe(select(getProductLoading));
+  productLoading$ = this.product$.pipe(map(p => !(ProductHelper.isProductCompletelyLoaded(p) || (p && p.failed))));
+
   currentUrl$ = this.store.pipe(
     select(getICMBaseURL),
     map(baseUrl => baseUrl + this.location.path())

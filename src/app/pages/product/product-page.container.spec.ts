@@ -16,12 +16,7 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import {
-  LoadProduct,
-  LoadProductSuccess,
-  LoadProductVariationsSuccess,
-  SelectProduct,
-} from 'ish-core/store/shopping/products';
+import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToQuoteDialogComponent } from '../../extensions/quoting/shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
@@ -83,14 +78,8 @@ describe('Product Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should not display anything when neither product nor loading is set (only the recently viewed container)', () => {
-    fixture.detectChanges();
-
-    expect(findAllIshElements(element)).toEqual(['ish-recently-viewed-container']);
-  });
-
   it('should display loading when product is loading', () => {
-    store$.dispatch(new LoadProduct({ sku: 'dummy' }));
+    store$.dispatch(new LoadProductSuccess({ product: { sku: 'dummy', completenessLevel: 0 } as Product }));
 
     fixture.detectChanges();
 
@@ -119,7 +108,7 @@ describe('Product Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-recently-viewed-container']);
+    expect(findAllIshElements(element)).toEqual(['ish-loading', 'ish-recently-viewed-container']);
   });
 
   it('should redirect to product page when variation is selected', fakeAsync(() => {

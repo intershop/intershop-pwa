@@ -21,7 +21,7 @@ import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { LoadProduct } from 'ish-core/store/shopping/products';
+import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
@@ -411,11 +411,20 @@ describe('Quote Request Effects', () => {
     it('should map to action of type LoadQuoteRequestItemsSuccess', () => {
       const id = 'QRID';
       const action = new quoteRequestActions.LoadQuoteRequestItems({ id });
-      const completion = new quoteRequestActions.LoadQuoteRequestItemsSuccess({
+
+      const completionLoadProductIfNotLoaded = new LoadProductIfNotLoaded({
+        sku: 'SKU',
+      });
+
+      const completionLoadQuoteRequestItemsSuccess = new quoteRequestActions.LoadQuoteRequestItemsSuccess({
         quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
       });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+
+      actions$ = hot('-a----a----a----|', { a: action });
+      const expected$ = cold('-(dc)-(dc)-(dc)-|', {
+        c: completionLoadQuoteRequestItemsSuccess,
+        d: completionLoadProductIfNotLoaded,
+      });
 
       expect(effects.loadQuoteRequestItems$).toBeObservable(expected$);
     });
@@ -634,7 +643,7 @@ describe('Quote Request Effects', () => {
 
     it('should call the quoteService for updateQuoteRequestItems if quantity > 0', done => {
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'IID',
             quantity: 2,
@@ -645,14 +654,14 @@ describe('Quote Request Effects', () => {
       actions$ = of(action);
 
       effects.updateQuoteRequestItems$.subscribe(() => {
-        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload.lineItemQuantities[0])).once();
+        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload.lineItemUpdates[0])).once();
         done();
       });
     });
 
     it('should not call the quoteService for updateQuoteRequestItems if quantity is identical', done => {
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'IID',
             quantity: 1,
@@ -663,7 +672,7 @@ describe('Quote Request Effects', () => {
       actions$ = of(action);
 
       effects.updateQuoteRequestItems$.subscribe(() => {
-        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload.lineItemQuantities[0])).never();
+        verify(quoteRequestServiceMock.updateQuoteRequestItem('QRID', payload.lineItemUpdates[0])).never();
         done();
       });
     });
@@ -672,7 +681,7 @@ describe('Quote Request Effects', () => {
       when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(of('QRID'));
 
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'IID',
             quantity: 0,
@@ -691,7 +700,7 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type UpdateQuoteRequestItemsSuccess', () => {
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'IID',
             quantity: 2,
@@ -712,7 +721,7 @@ describe('Quote Request Effects', () => {
       );
 
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'IID',
             quantity: 2,

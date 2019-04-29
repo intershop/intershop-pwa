@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { User } from 'ish-core/models/user/user.model';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
@@ -39,7 +39,7 @@ export class QuoteEditComponent implements OnChanges {
 
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
-  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
   @Output() deleteQuoteRequest = new EventEmitter<string>();
   @Output() copyQuote = new EventEmitter<void>();
@@ -84,7 +84,7 @@ export class QuoteEditComponent implements OnChanges {
    * Throws deleteQuoteRequest event when last items quantity is changed to '0'.
    * @param item Item id and quantity pair that should be changed
    */
-  onUpdateItem(item: LineItemQuantity) {
+  onUpdateItem(item: LineItemUpdate) {
     if (this.quote.items.length === 1 && item.quantity === 0) {
       this.deleteQuoteRequest.emit(this.quote.id);
       this.router.navigate(['/account/quote-list']);

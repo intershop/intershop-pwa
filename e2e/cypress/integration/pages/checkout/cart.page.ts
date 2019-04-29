@@ -41,6 +41,17 @@ export class CartPage {
           .find('svg[data-icon="trash-alt"]')
           .eq(idx)
           .click(),
+      sku: cy
+        .get(this.tag)
+        .find('.product-id')
+        .eq(idx),
+      openVariationEditDialog: () =>
+        cy
+          .get(this.tag)
+          .find('ish-line-item-edit')
+          .eq(idx)
+          .find('a.line-item-edit-link')
+          .click(),
     };
   }
 

@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -209,7 +209,7 @@ describe('Basket Items Effects', () => {
 
     it('should call the basketService for updateBasketItem if quantity > 0', done => {
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'BIID',
             quantity: 2,
@@ -228,14 +228,43 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem('BID', payload.lineItemQuantities[1].itemId, anything())).thrice();
-        verify(
-          basketServiceMock.updateBasketItem(
-            'BID',
-            payload.lineItemQuantities[1].itemId,
-            deepEqual({ quantity: { value: 2 } })
-          )
-        ).once();
+        verify(basketServiceMock.updateBasketItem('BID', payload.lineItemUpdates[1].itemId, anything())).thrice();
+        expect(capture(basketServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
+Array [
+  "BID",
+  "BIID",
+  Object {
+    "product": undefined,
+    "quantity": Object {
+      "value": 2,
+    },
+  },
+]
+`);
+        expect(capture(basketServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
+Array [
+  "BID",
+  "BIID",
+  Object {
+    "product": undefined,
+    "quantity": Object {
+      "value": 3,
+    },
+  },
+]
+`);
+        expect(capture(basketServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
+Array [
+  "BID",
+  "BIID",
+  Object {
+    "product": undefined,
+    "quantity": Object {
+      "value": 4,
+    },
+  },
+]
+`);
         done();
       });
     });
@@ -244,7 +273,7 @@ describe('Basket Items Effects', () => {
       when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of());
 
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'BIID',
             quantity: 0,
@@ -255,14 +284,14 @@ describe('Basket Items Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketItem('BID', payload.lineItemQuantities[0].itemId)).once();
+        verify(basketServiceMock.deleteBasketItem('BID', payload.lineItemUpdates[0].itemId)).once();
         done();
       });
     });
 
     it('should map to action of type UpdateBasketItemsSuccess', () => {
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'IID',
             quantity: 2,
@@ -283,7 +312,7 @@ describe('Basket Items Effects', () => {
       );
 
       const payload = {
-        lineItemQuantities: [
+        lineItemUpdates: [
           {
             itemId: 'BIID',
             quantity: 2,
