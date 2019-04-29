@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { PromotionDetailsComponent } from '../../../promotion/components/promotion-details/promotion-details.component';
 
 import { ProductPromotionComponent } from './product-promotion.component';
 
@@ -12,14 +13,7 @@ describe('Product Promotion Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({
-          selector: 'ish-promotion-details',
-          template: 'Promotion Details Component',
-          inputs: ['promotion'],
-        }),
-        ProductPromotionComponent,
-      ],
+      declarations: [MockComponent(PromotionDetailsComponent), ProductPromotionComponent],
       imports: [PipesModule],
     }).compileComponents();
   }));
@@ -53,7 +47,7 @@ describe('Product Promotion Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display the promotion title', () => {
+  it('should display the promotion title for the given promotion', () => {
     expect(element.querySelector('.promotion-short-title').textContent).toContain(component.promotions[0].title);
   });
 });
