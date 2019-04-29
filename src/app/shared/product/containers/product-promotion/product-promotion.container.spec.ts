@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
+import { MockComponent } from 'ng-mocks';
 
-import { Price } from 'ish-core/models/price/price.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { MockComponent } from 'ish-core/utils/dev/mock.component';
+import { LoadingComponent } from '../../../common/components/loading/loading.component';
+import { ProductPromotionComponent } from '../../components/product-promotion/product-promotion.component';
 
 import { ProductPromotionContainerComponent } from './product-promotion.container';
 
@@ -20,15 +22,8 @@ describe('Product Promotion Container', () => {
         }),
       ],
       declarations: [
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
-        MockComponent({
-          selector: 'ish-product-promotion',
-          template: 'Product Promotion Component',
-          inputs: ['promotions', 'displayType'],
-        }),
+        MockComponent(LoadingComponent),
+        MockComponent(ProductPromotionComponent),
         ProductPromotionContainerComponent,
       ],
     }).compileComponents();
@@ -40,22 +35,9 @@ describe('Product Promotion Container', () => {
     element = fixture.nativeElement;
     component.product = {
       name: 'test',
-      shortDescription: 'test',
-      longDescription: 'test',
-      availability: true,
-      inStock: true,
-      minOrderQuantity: 1,
-      attributes: [],
-      images: [],
-      listPrice: {} as Price,
-      salePrice: {} as Price,
-      manufacturer: 'test',
-      readyForShipmentMin: 1,
-      readyForShipmentMax: 1,
       sku: 'test',
-      type: 0,
       promotionIds: ['PROMO_UUID'],
-    };
+    } as Product;
   });
 
   it('should be created', () => {
