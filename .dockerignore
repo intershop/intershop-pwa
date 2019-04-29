@@ -1,4 +1,5 @@
 .gradle
+azure
 build
 charts
 cypress
