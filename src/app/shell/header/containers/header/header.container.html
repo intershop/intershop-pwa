@@ -2,5 +2,5 @@
   <ish-header-simple *ngSwitchCase="'simple'"></ish-header-simple>
   <ish-header-checkout *ngSwitchCase="'checkout'"></ish-header-checkout>
 
-  <ng-container *ngSwitchDefault> <ish-header [ngClass]="{ sticky: isSticky }"></ish-header> </ng-container>
+  <ng-container *ngSwitchDefault> <ish-header [isSticky]="isSticky"></ish-header> </ng-container>
 </ng-container>

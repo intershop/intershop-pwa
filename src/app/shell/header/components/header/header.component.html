@@ -1,26 +1,48 @@
-<div class="top-header">
-  <!--- Tablet/Pc Top Header-->
-  <nav class="container d-none d-md-block">
-    <div class="row justify-content-between align-items-center">
-      <div class="col">
-        <ul class="user-links">
-          <li><ish-login-status-container></ish-login-status-container></li>
-          <li *ishFeature="'compare'"><ish-product-compare-status-container></ish-product-compare-status-container></li>
-        </ul>
+<!--- ***STICKY HEADER*** -->
+<ng-container *ngIf="isSticky; else fullHeader">
+  <nav class="header-sticky navbar-expand-md d-none d-lg-block container">
+    <div class="row justify-content-between">
+      <div class="col d-flex">
+        <div class="logo-wrapper">
+          <a rel="home" routerLink="/home"> <img class="logo" src="assets/img/logo.png" alt="Logo" /> </a>
+        </div>
+        <div class="main-navigation" role="navigation">
+          <ish-header-navigation-container></ish-header-navigation-container>
+        </div>
+
         <div class="header-utility">
-          <ish-language-switch-container></ish-language-switch-container>
+          <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+            <fa-icon [icon]="['fas', 'search']" class="header-icon" (click)="toggleSearch()"></fa-icon>
+            <div class="search-container header-search-container" [ngbCollapse]="!showSearch">
+              <ish-search-box-container
+                [configuration]="{
+                  placeholderText: 'search.searchbox.instructional_text' | translate,
+                  autoSuggest: true,
+                  maxAutoSuggests: 10,
+                  icon: 'angle-right'
+                }"
+              ></ish-search-box-container>
+            </div>
+          </a>
+          <ish-login-status-container view="small"></ish-login-status-container>
           <ish-mini-basket-container></ish-mini-basket-container>
         </div>
       </div>
     </div>
   </nav>
-  <!--- Mobile Top Header-->
-  <nav class="container d-md-none">
+
+  <!--- Mobile/Tablet Version -->
+  <nav class="header-sticky-mobile container d-lg-none">
     <div class="row justify-content-between">
-      <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
-        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
-      </a>
+      <div class="logo-wrapper">
+        <a rel="home" routerLink="/home" class="mobile-logo">
+          <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
+        </a>
+      </div>
       <div class="header-utility">
+        <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+          <fa-icon [icon]="['fas', 'search']" class="header-icon" (click)="toggleSearch()"></fa-icon>
+        </a>
         <ish-login-status-container view="small"></ish-login-status-container>
         <ish-mini-basket-container view="small"></ish-mini-basket-container>
       </div>
@@ -32,37 +54,99 @@
       </button>
     </div>
   </nav>
-</div>
 
-<div class="mid-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3 logo-wrapper d-none d-md-block">
-        <a rel="home" routerLink="/home"> <img src="assets/img/logo.png" alt="Logo" /> </a>
-      </div>
-      <div class="col-md-5 header-info-wrapper d-none d-md-block"></div>
-      <div class="col-md-4 search-container header-search-container">
-        <ish-search-box-container
-          [configuration]="{
-            placeholderText: 'search.searchbox.instructional_text' | translate,
-            autoSuggest: true,
-            maxAutoSuggests: 10
-          }"
-        ></ish-search-box-container>
-      </div>
-    </div>
+  <div
+    class="search-container sticky-header-search-container d-lg-none header-search-container"
+    [ngbCollapse]="!showSearch"
+  >
+    <ish-search-box-container
+      [configuration]="{
+        placeholderText: 'search.searchbox.instructional_text' | translate,
+        autoSuggest: true,
+        maxAutoSuggests: 10,
+        icon: 'angle-right'
+      }"
+    ></ish-search-box-container>
   </div>
-</div>
+  <div
+    class="main-navigation d-block d-lg-none"
+    role="navigation"
+    [style.max-height]="navbarCollapsed ? '0px' : screenHeight + 'px'"
+  >
+    <ish-header-navigation-container view="small"></ish-header-navigation-container>
+    <ish-user-information-mobile></ish-user-information-mobile>
+  </div>
+</ng-container>
 
-<div class="bottom-header">
-  <nav class="global-nav navbar-expand-md" [ngbCollapse]="navbarCollapsed">
+<!--- ***FULL HEADER*** -->
+<ng-template #fullHeader>
+  <div class="top-header">
+    <nav class="container d-none d-md-block">
+      <div class="row justify-content-between align-items-center">
+        <div class="col">
+          <ul class="user-links">
+            <li><ish-login-status-container></ish-login-status-container></li>
+            <li *ishFeature="'compare'">
+              <ish-product-compare-status-container></ish-product-compare-status-container>
+            </li>
+          </ul>
+          <div class="header-utility">
+            <ish-language-switch-container></ish-language-switch-container>
+            <ish-mini-basket-container></ish-mini-basket-container>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!--- Mobile Version Top Header-->
+    <nav class="container d-md-none">
+      <div class="row justify-content-between">
+        <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
+          <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
+        </a>
+        <div class="header-utility">
+          <ish-login-status-container view="small"></ish-login-status-container>
+          <ish-mini-basket-container view="small"></ish-mini-basket-container>
+        </div>
+        <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
+          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
+          <div class="hamburger-menu" [ngClass]="{ open: !navbarCollapsed }">
+            <span></span> <span></span> <span></span>
+          </div>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="mid-header">
     <div class="container">
       <div class="row">
-        <div class="main-navigation col-12" role="navigation">
-          <ish-header-navigation-container></ish-header-navigation-container>
-          <ish-user-information-mobile class="d-md-none"></ish-user-information-mobile>
+        <div class="col-md-3 logo-wrapper d-none d-md-block">
+          <a rel="home" routerLink="/home"> <img src="assets/img/logo.png" alt="Logo" /> </a>
+        </div>
+        <div class="col-md-5 header-info-wrapper d-none d-md-block"></div>
+        <div class="col-md-4 search-container header-search-container">
+          <ish-search-box-container
+            [configuration]="{
+              placeholderText: 'search.searchbox.instructional_text' | translate,
+              autoSuggest: true,
+              maxAutoSuggests: 10
+            }"
+          ></ish-search-box-container>
         </div>
       </div>
     </div>
-  </nav>
-</div>
+  </div>
+
+  <div class="bottom-header">
+    <nav class="global-nav navbar-expand-md" [ngbCollapse]="navbarCollapsed">
+      <div class="container">
+        <div class="row">
+          <div class="main-navigation col-12" role="navigation">
+            <ish-header-navigation-container></ish-header-navigation-container>
+            <ish-user-information-mobile class="d-md-none"></ish-user-information-mobile>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</ng-template>
