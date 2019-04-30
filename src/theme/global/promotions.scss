@@ -1,21 +1,30 @@
 .promotion-list {
+  display: table;
+  width: 100%;
   padding-left: 0;
   font-family: $font-family-regular;
   list-style: none;
-}
 
-.promotion-short-title {
-  display: inline;
-}
+  .promotion-list-item {
+    display: table-row;
+  }
 
-.promotion-long-title {
-  display: inline;
-}
+  .promotion-icon {
+    float: left;
+    margin-right: 10px;
+  }
 
-.promotion-icon {
-  display: inline;
-  float: left;
-  margin-right: 10px;
+  .promotion-short-title {
+    display: inline;
+  }
+
+  .promotion-long-title {
+    display: inline;
+  }
+
+  .promotion-details-link {
+    display: inline;
+  }
 }
 
 .modal-body {

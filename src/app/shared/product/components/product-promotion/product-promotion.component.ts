@@ -9,7 +9,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
  * @example
  * <ish-product-promotion
  *   [promotions]="promotions"
- *   displayType="list"
+ *   displayType="simple"
  * ></ish-product-promotion>
  */
 @Component({

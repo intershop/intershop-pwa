@@ -1,26 +1,20 @@
-<ng-container *ngIf="promotions">
+<ul *ngIf="promotions.length" class="promotion-list">
   <ng-container *ngFor="let promotion of promotions">
-    <div *ngIf="displayType === 'list'; else detail">
-      <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
-      <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
-    </div>
-    <ng-template #detail>
-      <table class="table-responsive">
-        <tr>
-          <td *ngIf="promotion.icon"><span class="promotion-icon" [innerHTML]="promotion.icon | safeHtml"></span></td>
-          <td>
-            <tr>
-              <td><span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span></td>
-            </tr>
-            <tr>
-              <td>
-                <span class="promotion-long-title" [innerHTML]="promotion.longTitle | safeHtml"></span>
-                <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
-              </td>
-            </tr>
-          </td>
-        </tr>
-      </table>
-    </ng-template>
+    <!-- TODO: <isif condition="#NOT(Promotion:DisableMessages)#">-->
+    <li class="promotion-list-item">
+      <ng-container *ngIf="displayType === 'simple'; else default">
+        <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
+      </ng-container>
+
+      <ng-template #default>
+        <div *ngIf="promotion.icon" class="promotion-icon" [innerHTML]="promotion.icon | safeHtml"></div>
+        <div *ngIf="promotion.title" class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></div>
+        <br />
+        <div class="promotion-long-title">
+          <span *ngIf="promotion.longTitle" [innerHTML]="promotion.longTitle | safeHtml"></span>
+          <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+        </div>
+      </ng-template>
+    </li>
   </ng-container>
-</ng-container>
+</ul>
