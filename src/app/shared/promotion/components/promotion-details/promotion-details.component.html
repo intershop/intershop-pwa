@@ -1,11 +1,40 @@
-<ng-container *ngIf="promotion">
-  <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{ 'promotion.detailslink.text' | translate }}</a>
+<ng-container
+  *ngIf="promotion && (promotion.ruleDescription || promotion.legalContentMessage || promotion.externalUrl)"
+>
+  <ng-container *ngIf="promotion.externalUrl && promotion.useExternalUrl; else modalLink">
+    <a
+      class="details-link"
+      [href]="promotion.externalUrl"
+      target="_blank"
+      rel="nofollow"
+      [title]="'promotion.detailslink.label' | translate"
+      >{{ 'promotion.detailslink.text' | translate }}</a
+    >
+  </ng-container>
+  <ng-template #modalLink>
+    <a
+      class="details-link"
+      (click)="modalDialog.show()"
+      rel="nofollow"
+      [title]="'promotion.detailslink.label' | translate"
+      >{{ 'promotion.detailslink.text' | translate }}</a
+    >
+  </ng-template>
+
   <ish-modal-dialog #modalDialog [options]="{ titleText: 'promotion.detaillist.title' | translate }">
-    <h3 [innerHTML]="promotion.longTitle | safeHtml"></h3>
-    <p [innerHTML]="promotion.ruleDescription | safeHtml"></p>
-    <p [innerHTML]="promotion.legalContentMessage | safeHtml"></p>
-    <p *ngIf="promotion.useExternalUrl">
-      <a href="{{ promotion.externalUrl }}">{{ promotion.externalUrl }}</a>
+    <ng-container *ngIf="promotion.longTitle; else title">
+      <h3 [innerHTML]="promotion.longTitle | safeHtml"></h3>
+    </ng-container>
+    <ng-template #title> <h3 [innerHTML]="promotion.title | safeHtml"></h3> </ng-template>
+
+    <p *ngIf="promotion.ruleDescription" [innerHTML]="promotion.ruleDescription | safeHtml"></p>
+    <p
+      *ngIf="promotion.legalContentMessage"
+      class="help-block"
+      [innerHTML]="promotion.legalContentMessage | safeHtml"
+    ></p>
+    <p *ngIf="promotion.externalUrl">
+      <a [href]="promotion.externalUrl" target="_blank">{{ promotion.externalUrl }}</a>
     </p>
   </ish-modal-dialog>
 </ng-container>
