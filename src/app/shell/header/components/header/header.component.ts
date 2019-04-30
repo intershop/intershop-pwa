@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnDestroy,
   OnInit,
   PLATFORM_ID,
@@ -34,7 +35,12 @@ import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() isSticky = false;
+
   navbarCollapsed = false;
+  showSearch = false;
+  screenHeight: number;
+  mobileStickyHeaderHeight = 40;
 
   private destroy$ = new Subject();
 
@@ -70,5 +76,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   mobileViewHandler(event) {
     this.navbarCollapsed = event.target.innerWidth < this.mediumBreakpointWidth;
+    this.screenHeight = event.target.innerHeight - this.mobileStickyHeaderHeight;
+  }
+
+  toggleSearch(): void {
+    this.showSearch = !this.showSearch;
   }
 }

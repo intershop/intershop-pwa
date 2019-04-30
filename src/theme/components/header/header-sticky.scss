@@ -3,11 +3,14 @@
 }
 
 .sticky-header {
-  .top-header {
+  header {
     position: fixed;
     top: 0;
     z-index: 100;
+    display: block;
     width: 100%;
+    background-color: $color-inverse;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
   }
 
   .wrapper {
@@ -20,7 +23,7 @@
   }
 }
 
-.header-sticky,
+.sticky-header,
 .header-sticky-mobile {
   .main-navigation-list li {
     @media (max-width: $screen-md-max) {
