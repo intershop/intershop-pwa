@@ -8,8 +8,11 @@
     <ng-container *ngIf="totals.valueRebates && totals.valueRebates.length > 0">
       <ng-container *ngFor="let rebate of totals.valueRebates">
         <dt *ngIf="rebate.promotion" class="col-6">
-          <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
-          <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
+          <ng-container *ngIf="!rebate.promotion.disableMessages; else default">
+            <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
+            <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
+          </ng-container>
+          <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
         </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
@@ -26,8 +29,11 @@
     <ng-container *ngIf="totals.shippingRebates && totals.shippingRebates.length > 0">
       <ng-container *ngFor="let rebate of totals.shippingRebates">
         <dt *ngIf="rebate.promotion" class="col-6">
-          <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
-          <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
+          <ng-container *ngIf="!rebate.promotion.disableMessages; else default">
+            <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
+            <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
+          </ng-container>
+          <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
         </dt>
         <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
       </ng-container>
