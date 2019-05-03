@@ -16,15 +16,27 @@
 
   .promotion-short-title {
     display: inline;
+    padding-right: $space-default/2;
   }
 
   .promotion-long-title {
     display: inline;
+    padding-right: $space-default/2;
   }
+}
 
-  .promotion-details-link {
-    display: inline;
-  }
+.promotion-title {
+  display: inline;
+  padding-right: $space-default/2;
+}
+
+.promotion-details-link {
+  display: inline-block;
+  padding-left: 0;
+  font-family: $font-family-regular;
+  font-size: 90%;
+  text-transform: none;
+  white-space: nowrap;
 }
 
 .modal-body {
