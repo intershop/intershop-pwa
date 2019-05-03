@@ -1,9 +1,11 @@
 <ul *ngIf="promotions.length" class="promotion-list">
   <ng-container *ngFor="let promotion of promotions">
-    <!-- TODO: <isif condition="#NOT(Promotion:DisableMessages)#">-->
-    <li class="promotion-list-item">
-      <ng-container *ngIf="displayType === 'simple'; else default">
+    <li *ngIf="!promotion.disableMessages" class="promotion-list-item">
+      <ng-container *ngIf="displayType === 'simple' || displayType === 'simpleWithDetail'; else default">
         <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
+        <ng-container *ngIf="displayType === 'simpleWithDetail'">
+          <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+        </ng-container>
       </ng-container>
 
       <ng-template #default>

@@ -35,6 +35,7 @@ describe('Product Promotion Component', () => {
         ruleDescription: 'MyPromotionRuleDescription',
         title: 'MyPromotionTitle',
         useExternalUrl: false,
+        disableMessages: false,
       },
     ];
     component.displayType = 'list';
