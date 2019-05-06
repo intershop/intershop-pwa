@@ -28,6 +28,7 @@ const DEFAULT_CONFIG = {
   config: {
     baseUrl: process.env.PWA_BASE_URL,
     testFiles: TEST_FILES,
+    numTestsKeptInMemory: 1,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
