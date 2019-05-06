@@ -3,7 +3,7 @@
 >
   <ng-container *ngIf="promotion.externalUrl && promotion.useExternalUrl; else modalLink">
     <a
-      class="promotion-details-link"
+      class="details-link promotion-details-link"
       [href]="promotion.externalUrl"
       target="_blank"
       rel="nofollow"
@@ -13,7 +13,7 @@
   </ng-container>
   <ng-template #modalLink>
     <a
-      class="promotion-details-link"
+      class="details-link promotion-details-link"
       (click)="modalDialog.show()"
       rel="nofollow"
       [title]="'promotion.detailslink.label' | translate"
