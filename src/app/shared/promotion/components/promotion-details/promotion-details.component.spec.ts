@@ -47,6 +47,7 @@ describe('Promotion Details Component', () => {
   });
 
   it('should display the details link for a promotion', () => {
+    expect(element.querySelector('.details-link')).toBeTruthy();
     expect(element.querySelector('.promotion-details-link')).toBeTruthy();
     expect(element.querySelector('a')).toBeTruthy();
   });
