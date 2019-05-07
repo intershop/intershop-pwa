@@ -9,8 +9,8 @@ image:
   tag: stable
   pullPolicy: Always
 
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
 
 upstream:
   icm: https://www.example.com
@@ -22,19 +22,19 @@ service:
 ingress:
   enabled: true
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-body-size: '0'
     # traefik.ingress.kubernetes.io/frontend-entry-points: https,http
     # kubernetes.io/tls-acme: "true"
-  paths: ["/"]
+  paths: ['/']
   hosts:
-  - pwa-main.example.com
-  tls: []
+    - pwa-main.example.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following

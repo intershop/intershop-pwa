@@ -8,9 +8,9 @@ variables:
   # K8S namespace for helm deployments
   Namespace: default
   # version for tagging pwa_main
-  version_pwa-main: "1.0.0"
+  version_pwa-main: '1.0.0'
   # version for tagging pwa_nginx
-  version_pwa-nginx: "1.0.0"
+  version_pwa-nginx: '1.0.0'
   # ServiceConnection (Azure Resource Manager)
   AzureSubscription: AzureSubscription
   # Hostname of your ICM installation
@@ -21,120 +21,118 @@ variables:
   PWANginxHost: pwa-nginx.example.com
 
 jobs:
-- job: 'BuildAndInstallPWA'
-  timeoutInMinutes: 60
-  condition: true
-
-  pool:
-    vmImage: ubuntu-16.04
-
-  steps:
-
-  - task: Docker@0
+  - job: 'BuildAndInstallPWA'
+    timeoutInMinutes: 60
     condition: true
-    displayName: 'Build pwa-main'
-    inputs:
-      azureSubscription: AzureSubscription
 
-      azureContainerRegistry: '$(RegistryName).azurecr.io'
+    pool:
+      vmImage: ubuntu-16.04
 
-      dockerFile: '$(Build.Repository.LocalPath)/Dockerfile'
+    steps:
+      - task: Docker@0
+        condition: true
+        displayName: 'Build pwa-main'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      imageName: 'pwa-main:$(version_pwa-main)'
+          azureContainerRegistry: '$(RegistryName).azurecr.io'
 
-  - task: Docker@0
-    condition: true
-    displayName: 'Push pwa-main'
-    inputs:
-      azureSubscription: AzureSubscription
+          dockerFile: '$(Build.Repository.LocalPath)/Dockerfile'
 
-      azureContainerRegistry: '$(RegistryName).azurecr.io'
+          imageName: 'pwa-main:$(version_pwa-main)'
 
-      action: 'Push an image'
+      - task: Docker@0
+        condition: true
+        displayName: 'Push pwa-main'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      imageName: 'pwa-main:$(version_pwa-main)'
+          azureContainerRegistry: '$(RegistryName).azurecr.io'
 
-  - task: Docker@0
-    condition: true
-    displayName: 'Build pwa-nginx'
-    inputs:
-      azureSubscription: AzureSubscription
+          action: 'Push an image'
 
-      azureContainerRegistry: '$(RegistryName).azurecr.io'
+          imageName: 'pwa-main:$(version_pwa-main)'
 
-      dockerFile: '**/nginx/Dockerfile'
+      - task: Docker@0
+        condition: true
+        displayName: 'Build pwa-nginx'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      imageName: 'pwa-nginx:$(version_pwa-nginx)'
+          azureContainerRegistry: '$(RegistryName).azurecr.io'
 
-  - task: Docker@0
-    condition: true
-    displayName: 'Push pwa-nginx'
-    inputs:
-      azureSubscription: AzureSubscription
+          dockerFile: '**/nginx/Dockerfile'
 
-      azureContainerRegistry: '$(RegistryName).azurecr.io'
+          imageName: 'pwa-nginx:$(version_pwa-nginx)'
 
-      action: 'Push an image'
+      - task: Docker@0
+        condition: true
+        displayName: 'Push pwa-nginx'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      imageName: 'pwa-nginx:$(version_pwa-nginx)'
+          azureContainerRegistry: '$(RegistryName).azurecr.io'
 
-  - task: HelmInstaller@0
-    displayName: 'Install Helm'
+          action: 'Push an image'
 
-  - task: HelmDeploy@0
-    displayName: 'helm init'
-    inputs:
-      azureSubscription: AzureSubscription
+          imageName: 'pwa-nginx:$(version_pwa-nginx)'
 
-      azureResourceGroup: '$(ResourceGroupName)'
+      - task: HelmInstaller@0
+        displayName: 'Install Helm'
 
-      kubernetesCluster: $(ClusterName)
+      - task: HelmDeploy@0
+        displayName: 'helm init'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      command: init
+          azureResourceGroup: '$(ResourceGroupName)'
 
-      arguments: '--service-account tiller'
+          kubernetesCluster: $(ClusterName)
 
+          command: init
 
-  - task: HelmDeploy@0
-    condition: true
-    displayName: 'Install pwa-main'
-    inputs:
-      azureSubscription: AzureSubscription
+          arguments: '--service-account tiller'
 
-      azureResourceGroup: '$(ResourceGroupName)'
+      - task: HelmDeploy@0
+        condition: true
+        displayName: 'Install pwa-main'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      kubernetesCluster: $(ClusterName)
+          azureResourceGroup: '$(ResourceGroupName)'
 
-      namespace: '$(Namespace)'
+          kubernetesCluster: $(ClusterName)
 
-      command: upgrade
+          namespace: '$(Namespace)'
 
-      chartType: FilePath
+          command: upgrade
 
-      chartPath: '**/charts/pwa-main'
+          chartType: FilePath
 
-      releaseName: 'pwa-main'
+          chartPath: '**/charts/pwa-main'
 
-      overrideValues: 'image.repository=$(RegistryName).azurecr.io/pwa-main,image.tag=$(version_pwa-main),upstream.icm=https://$(UpstreamICMHost),ingress.hosts[0]=$(PWAMainHost)'
+          releaseName: 'pwa-main'
 
-  - task: HelmDeploy@0
-    condition: true
-    displayName: 'Install pwa-nginx'
-    inputs:
-      azureSubscription: AzureSubscription
+          overrideValues: 'image.repository=$(RegistryName).azurecr.io/pwa-main,image.tag=$(version_pwa-main),upstream.icm=https://$(UpstreamICMHost),ingress.hosts[0]=$(PWAMainHost)'
 
-      azureResourceGroup: '$(ResourceGroupName)'
+      - task: HelmDeploy@0
+        condition: true
+        displayName: 'Install pwa-nginx'
+        inputs:
+          azureSubscription: AzureSubscription
 
-      kubernetesCluster: $(ClusterName)
+          azureResourceGroup: '$(ResourceGroupName)'
 
-      namespace: '$(Namespace)'
+          kubernetesCluster: $(ClusterName)
 
-      command: upgrade
+          namespace: '$(Namespace)'
 
-      chartType: FilePath
+          command: upgrade
 
-      chartPath: '**/charts/pwa-nginx'
+          chartType: FilePath
 
-      releaseName: 'pwa-nginx'
+          chartPath: '**/charts/pwa-nginx'
 
-      overrideValues: 'image.repository=$(RegistryName).azurecr.io/pwa-nginx,image.tag=$(version_pwa-nginx),upstream.icm=http://$(UpstreamICMHost),upstream.pwa=http://pwa-main:4200,ingress.hosts[0]=$(PWANginxHost)'
+          releaseName: 'pwa-nginx'
+
+          overrideValues: 'image.repository=$(RegistryName).azurecr.io/pwa-nginx,image.tag=$(version_pwa-nginx),upstream.icm=http://$(UpstreamICMHost),upstream.pwa=http://pwa-main:4200,ingress.hosts[0]=$(PWANginxHost)'
