@@ -29,6 +29,7 @@ const DEFAULT_CONFIG = {
     baseUrl: process.env.PWA_BASE_URL,
     testFiles: TEST_FILES,
     numTestsKeptInMemory: 1,
+    pageLoadTimeout: 180000,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
