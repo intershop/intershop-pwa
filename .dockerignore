@@ -1,7 +1,5 @@
 .gradle
-azure
 build
-charts
 cypress
 nginx
 node_modules
