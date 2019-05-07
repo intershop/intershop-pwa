@@ -37,5 +37,5 @@ Dockerfile*
 /nginx/*.tmpl
 *gradle*
 LICENSE
-/charts/**/templates/*
+/k8s/charts/**/templates/*
 *~
