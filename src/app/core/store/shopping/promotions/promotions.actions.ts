@@ -4,9 +4,9 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Promotion } from '../../../models/promotion/promotion.model';
 
 export enum PromotionsActionTypes {
-  LoadPromotion = '[Shopping] Load Promotion',
-  LoadPromotionFail = '[Shopping] Load Promotion Fail',
-  LoadPromotionSuccess = '[Shopping] Load Promotion Success',
+  LoadPromotion = '[Promotions Internal] Load Promotion',
+  LoadPromotionFail = '[Promotions API] Load Promotion Fail',
+  LoadPromotionSuccess = '[Promotions API] Load Promotion Success',
 }
 
 export class LoadPromotion implements Action {
