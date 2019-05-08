@@ -16,6 +16,7 @@ export interface Registration {
   city: string;
   mainDivision: string;
   phoneHome: string;
+  companyName1: string;
 }
 
 export const sensibleDefaults: Partial<Registration> = {
