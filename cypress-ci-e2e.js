@@ -8,7 +8,7 @@ const _ = require('lodash');
 const cypress = require('cypress');
 
 const MAX_NUM_RUNS = 6;
-
+const BROWSER = process.env.BROWSER || 'chrome';
 const TEST_FILES = process.argv.length > 2 ? process.argv[2] : '**/*.e2e-spec.ts';
 
 if (!process.env.PWA_BASE_URL) {
@@ -22,7 +22,7 @@ if (!process.env.ICM_BASE_URL) {
 }
 
 const DEFAULT_CONFIG = {
-  browser: 'chrome',
+  browser: BROWSER,
   reporter: 'junit',
   reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
   config: {
@@ -30,6 +30,7 @@ const DEFAULT_CONFIG = {
     testFiles: TEST_FILES,
     numTestsKeptInMemory: 1,
     pageLoadTimeout: 180000,
+    trashAssetsBeforeRuns: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };

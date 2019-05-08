@@ -160,7 +160,6 @@ schematics:
 cypress_mocked:
   image: cypress/browsers:chrome69
   stage: integration
-  retry: 2
   only:
     - merge_requests
   except:
@@ -180,11 +179,11 @@ cypress_mocked:
   script:
     - node --version && npm --version
     - npm i
-    - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
+    - export ICM_BASE_URL=http://localhost:4200 PWA_BASE_URL=http://localhost:4200 DISPLAY=:5
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c 'baseUrl=http://localhost:4200,testFiles=**/*mock*.e2e-spec.ts' -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
+    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 publish_pwa:
@@ -466,6 +465,7 @@ stop_review_BO:
 
 deploy_review_b2b:
   stage: deploy
+  retry: 2
   cache: {}
   dependencies: []
   tags:
@@ -511,6 +511,9 @@ deploy_review_b2b:
       -e PWA_4_FEATURES=quoting
       -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+    - sleep 10
+    - docker run --rm --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3 mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
+    - docker run --rm --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3 mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     url: http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
@@ -539,7 +542,6 @@ stop_review_b2b:
 cypress_remote:
   image: cypress/browsers:chrome69
   stage: e2e
-  retry: 2
   only:
     - merge_requests
     - triggers
@@ -565,13 +567,12 @@ cypress_remote:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2c*.e2e-spec.ts' | xargs -rl node cypress-ci-e2e
+    - find $PWD -name '*b2c*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 cypress_remote_b2b:
   image: cypress/browsers:chrome69
   stage: e2e
-  retry: 2
   only:
     - merge_requests
     - triggers
@@ -597,5 +598,5 @@ cypress_remote_b2b:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -rl node cypress-ci-e2e
+    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
