@@ -29,6 +29,7 @@
     "build:client-and-server-bundles": "npx ng build --prod --progress=false && npx ng run intershop-pwa:server:production --progress=false",
     "webpack:server": "webpack --config webpack.server.config.js --progress=false --colors",
     "serve": "cd dist && node server",
+    "build:watch": "npx ng build --aot --watch",
     "build": "npm run build:client-and-server-bundles && npm run webpack:server",
     "start": "npm run build && npm run serve"
   },
