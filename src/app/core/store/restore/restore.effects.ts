@@ -4,12 +4,12 @@ import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { CookiesService } from '@ngx-utils/cookies';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, take, takeWhile, tap } from 'rxjs/operators';
+import { combineLatest, interval } from 'rxjs';
+import { distinctUntilChanged, filter, map, mapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LoadBasketByAPIToken, getCurrentBasket } from '../checkout/basket';
-import { LoadUserByAPIToken, UserActionTypes, getAPIToken, getLoggedInUser } from '../user';
+import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from '../user';
 
 export class RestoreEffects {
   constructor(
@@ -58,6 +58,15 @@ export class RestoreEffects {
         ? new LoadBasketByAPIToken({ apiToken: cookie.apiToken })
         : new LoadUserByAPIToken({ apiToken: cookie.apiToken })
     )
+  );
+
+  @Effect()
+  logOutUserIfTokenVanishes$ = interval(1000).pipe(
+    takeWhile(() => isPlatformBrowser(this.platformId)),
+    withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
+    map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
+    filter(({ user, apiToken }) => user && !apiToken),
+    mapTo(new LogoutUser())
   );
 
   private makeCookie(apiToken: string, type: 'user' | 'basket'): string {
