@@ -180,11 +180,11 @@ cypress_mocked:
   script:
     - node --version && npm --version
     - npm i
-    - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
+    - export ICM_BASE_URL=http://localhost:4200 PWA_BASE_URL=http://localhost:4200 DISPLAY=:5
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c 'baseUrl=http://localhost:4200,testFiles=**/*mock*.e2e-spec.ts' -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,includePending=true'
+    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 publish_pwa:
