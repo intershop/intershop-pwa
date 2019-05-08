@@ -18,8 +18,6 @@ describe('Returning User', () => {
   describe('when logged in', () => {
     before(() => LoginPage.navigateTo());
 
-    beforeEach(() => Cypress.Cookies.preserveOnce('apiToken'));
-
     it('should log in', () => {
       createUserViaREST(_.user);
       at(LoginPage, page =>
