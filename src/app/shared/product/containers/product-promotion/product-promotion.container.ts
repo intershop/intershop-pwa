@@ -20,11 +20,10 @@ export class ProductPromotionContainerComponent implements OnChanges {
   constructor(private store: Store<{}>) {}
 
   ngOnChanges() {
+    // select the promotion information from the state for the given product promotion ids
     this.promotions$ = this.store.pipe(select(getPromotions, { promotionIds: this.product.promotionIds }));
 
-    // Todo:
-    // Checks if the promotion is already in the store and only dispatches a LoadPromotion action if it is not
-    // Optimize it!
+    // trigger a LoadPromotion action for each referenced product promotion
     this.product.promotionIds.forEach(promotionId => {
       this.store.dispatch(new LoadPromotion({ promoId: promotionId }));
     });

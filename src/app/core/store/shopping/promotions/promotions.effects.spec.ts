@@ -69,23 +69,23 @@ describe('Promotions Effects', () => {
       });
     });
 
-    it('should map to action of type LoadPromotionSuccess', () => {
+    it('should map to action of type LoadPromotionSuccess only once', () => {
       const id = 'P123';
       const promoId = 'P123';
       const action = new fromActions.LoadPromotion({ promoId });
       const completion = new fromActions.LoadPromotionSuccess({ promotion: { id } as Promotion });
       actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const expected$ = cold('-c----', { c: completion });
 
       expect(effects.loadPromotion$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type LoadPromotionFail', () => {
+    it('should map invalid request to action of type LoadPromotionFail only once', () => {
       const promoId = 'invalid';
       const action = new fromActions.LoadPromotion({ promoId });
       const completion = new fromActions.LoadPromotionFail({ error: { message: 'invalid' } as HttpError, promoId });
       actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const expected$ = cold('-c----', { c: completion });
 
       expect(effects.loadPromotion$).toBeObservable(expected$);
     });
