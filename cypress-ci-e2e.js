@@ -30,6 +30,7 @@ const DEFAULT_CONFIG = {
     testFiles: TEST_FILES,
     numTestsKeptInMemory: 1,
     pageLoadTimeout: 180000,
+    trashAssetsBeforeRuns: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
