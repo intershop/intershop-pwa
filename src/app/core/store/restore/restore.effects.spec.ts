@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, combineReducers } from '@ngrx/store';
 import { CookiesService } from '@ngx-utils/cookies';
 import { cold } from 'jest-marbles';
 import { Observable, of } from 'rxjs';
@@ -11,11 +11,12 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { User } from 'ish-core/models/user/user.model';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketActionTypes, LoadBasketSuccess } from '../checkout/basket';
 import { checkoutReducers } from '../checkout/checkout-store.module';
 import { coreReducers } from '../core-store.module';
 import { shoppingReducers } from '../shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes } from '../user';
+import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes, getLoggedInUser } from '../user';
 
 import { RestoreEffects } from './restore.effects';
 
@@ -24,19 +25,19 @@ describe('Restore Effects', () => {
   let router: Router;
   let actions$: Observable<Action>;
   let cookiesServiceMock: CookiesService;
-  let store$: Store<{}>;
+  let store$: TestStore;
 
   beforeEach(() => {
     cookiesServiceMock = mock(CookiesService);
 
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([]),
-        StoreModule.forRoot({
+        ...ngrxTesting({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
           checkout: combineReducers(checkoutReducers),
         }),
+        RouterTestingModule.withRoutes([]),
       ],
       providers: [
         RestoreEffects,
@@ -48,7 +49,7 @@ describe('Restore Effects', () => {
 
     restoreEffects = TestBed.get(RestoreEffects);
     router = TestBed.get(Router);
-    store$ = TestBed.get(Store);
+    store$ = TestBed.get(TestStore);
   });
 
   it('should be created', () => {
@@ -144,6 +145,22 @@ describe('Restore Effects', () => {
           verify(cookiesServiceMock.put('apiToken', anyString(), anything())).once();
           const [, cookie] = capture(cookiesServiceMock.put).last();
           expect(cookie).toMatchInlineSnapshot(`"{\\"apiToken\\":\\"dummy\\",\\"type\\":\\"user\\"}"`);
+          done();
+        },
+        fail,
+        fail
+      );
+    });
+  });
+
+  describe('logOutUserIfTokenVanishes$', () => {
+    it('should log out user when token is not available', done => {
+      store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
+      expect(getLoggedInUser(store$.state)).toBeTruthy();
+
+      restoreEffects.logOutUserIfTokenVanishes$.subscribe(
+        action => {
+          expect(action.type).toEqual(UserActionTypes.LogoutUser);
           done();
         },
         fail,
