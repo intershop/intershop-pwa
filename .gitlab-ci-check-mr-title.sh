@@ -5,13 +5,12 @@ set -e
 response="$(curl -s --header "PRIVATE-TOKEN: $PRIVATE_API_TOKEN" https://gitlab.intershop.de/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID)"
 title="$(echo "$response" | jq -Mrc .title)"
 
-topic="$(echo "$title" | grep -Eo '^[^:]*')"
+topic="$(echo "$title" | sed -e 's/^WIP: //' | grep -Eo '^[^:]*')"
 
 echo "title='$title'"
 echo "topic='$topic'"
 
 case "$topic" in
-  WIP) exit 0 ;;
   feat) exit 0 ;;
   fix) exit 0 ;;
   perf) exit 0 ;;
