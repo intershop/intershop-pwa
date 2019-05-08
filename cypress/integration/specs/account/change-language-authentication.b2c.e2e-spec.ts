@@ -19,10 +19,7 @@ const _ = {
 
 describe('Language Changing User', () => {
   describe('when logged in', () => {
-    before(() => {
-      LoginPage.navigateTo();
-      Cypress.Cookies.preserveOnce('apiToken');
-    });
+    before(() => LoginPage.navigateTo());
 
     it('should log in', () => {
       createUserViaREST(_.user);
@@ -51,8 +48,11 @@ describe('Language Changing User', () => {
     });
   });
 
-  describe('when accessing protected content', () => {
-    before(() => MyAccountPage.navigateTo());
+  describe('when accessing protected content without cookie', () => {
+    before(() => {
+      cy.clearCookie('apiToken');
+      MyAccountPage.navigateTo();
+    });
 
     it('should see english content on login page', () => {
       at(LoginPage, page => page.content.should('contain', _.loginForm.englishTitle));

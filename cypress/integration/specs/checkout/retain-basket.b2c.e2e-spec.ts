@@ -39,7 +39,6 @@ describe('Returning User with Basket', () => {
     });
 
     it('should refresh page and still have basket', () => {
-      Cypress.Cookies.preserveOnce('apiToken');
       HomePage.navigateTo();
       at(HomePage, page => page.header.miniCart.total.should('contain', _.product.price));
     });
@@ -50,8 +49,6 @@ describe('Returning User with Basket', () => {
       createUserViaREST(_.user);
       LoginPage.navigateTo();
     });
-
-    beforeEach(() => Cypress.Cookies.preserveOnce('apiToken'));
 
     it('should log in', () => {
       at(LoginPage, page => {
