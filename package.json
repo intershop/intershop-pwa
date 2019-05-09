@@ -142,6 +142,7 @@
         "git add"
       ],
       "*.ts": [
+        "npx tslint --project tsconfig.json --fix --force",
         "npx tslint --project tsconfig.json --fix",
         "npx jest --findRelatedTests --bail",
         "git add"

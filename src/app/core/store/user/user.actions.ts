@@ -20,6 +20,7 @@ export enum UserActionTypes {
   UpdateUserSuccess = '[Account API] Update User Succeeded',
   UpdateUserFail = '[Account API] Update User Failed',
   UserErrorReset = '[Account Internal] Reset User Error',
+  LoadUserByAPIToken = '[Account] Load User by API Token',
 }
 
 export class LoginUser implements Action {
@@ -89,6 +90,11 @@ export class UserErrorReset implements Action {
   readonly type = UserActionTypes.UserErrorReset;
 }
 
+export class LoadUserByAPIToken implements Action {
+  readonly type = UserActionTypes.LoadUserByAPIToken;
+  constructor(public payload: { apiToken: string }) {}
+}
+
 export type UserAction =
   | LoginUser
   | LoginUserFail
@@ -103,4 +109,5 @@ export type UserAction =
   | UpdateUser
   | UpdateUserSuccess
   | UpdateUserFail
-  | UserErrorReset;
+  | UserErrorReset
+  | LoadUserByAPIToken;
