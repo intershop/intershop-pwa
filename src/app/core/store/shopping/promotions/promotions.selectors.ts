@@ -14,11 +14,6 @@ export const { selectEntities: getPromotionEntities, selectAll: getAllPromotions
   getPromotionsState
 );
 
-export const getPromotionLoading = createSelector(
-  getPromotionsState,
-  promotions => promotions.loading
-);
-
 export const getPromotion = createSelector(
   getPromotionEntities,
   (entities, props: { promoId: string }) => entities[props.promoId]

@@ -15,39 +15,27 @@ describe('Promotions Reducer', () => {
   });
 
   describe('LoadPromotion actions', () => {
-    describe('LoadPromotion action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.LoadPromotion({ promoId: '123' });
-        const state = promotionsReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-        expect(state.entities).toBeEmpty();
-      });
-    });
-
     describe('LoadPromotionFail action', () => {
       let state: PromotionsState;
 
       beforeEach(() => {
-        const action = new fromActions.LoadPromotionFail({ error: {} as HttpError, promoId: 'invalid' });
+        const action = new fromActions.LoadPromotionFail({ error: {} as HttpError, promoId: 'erroneous_promo' });
         state = promotionsReducer(initialState, action);
       });
 
-      it('should set loading to false', () => {
-        expect(state.loading).toBeFalse();
+      it('should lead to an empty entities set', () => {
         expect(state.entities).toBeEmpty();
       });
 
       describe('followed by LoadPromotionSuccess', () => {
         beforeEach(() => {
-          const promotion = { id: 'invalid' } as Promotion;
+          const promotion = { id: 'successfull_promo' } as Promotion;
           const action = new fromActions.LoadPromotionSuccess({ promotion });
           state = promotionsReducer(initialState, action);
         });
 
-        it('should set loading to false', () => {
-          expect(state.loading).toBeFalse();
-          expect(state.entities).toHaveProperty('invalid');
+        it('should always put the promotion in the entities set', () => {
+          expect(state.entities).toHaveProperty('successfull_promo');
         });
       });
     });
@@ -84,13 +72,6 @@ describe('Promotions Reducer', () => {
 
         expect(state2.ids).toHaveLength(1);
         expect(state2.entities[promotion.id]).toEqual(updatedPromotion);
-      });
-
-      it('should set loading to false', () => {
-        const action = new fromActions.LoadPromotionSuccess({ promotion });
-        const state = promotionsReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
       });
     });
   });
