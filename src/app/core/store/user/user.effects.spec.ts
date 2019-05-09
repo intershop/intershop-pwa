@@ -6,10 +6,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
-import { CookiesService } from '@ngx-utils/cookies';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
@@ -65,7 +64,6 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
       ],
     });
 
@@ -301,6 +299,31 @@ describe('User Effects', () => {
       actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
 
       expect(effects.resetUserError$).toBeObservable(cold('a', { a: new ua.UserErrorReset() }));
+    });
+  });
+
+  describe('loadUserByAPIToken$', () => {
+    it('should call the user service on LoadUserByAPIToken action and load user on success', done => {
+      when(userServiceMock.signinUserByToken('dummy')).thenReturn(
+        of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
+      );
+
+      actions$ = of(new ua.LoadUserByAPIToken({ apiToken: 'dummy' }));
+
+      effects.loadUserByAPIToken$.subscribe(action => {
+        verify(userServiceMock.signinUserByToken('dummy')).once();
+        expect(action.type).toEqual(ua.UserActionTypes.LoginUserSuccess);
+        expect(action.payload).toHaveProperty('user.email', 'test@intershop.de');
+        done();
+      });
+    });
+
+    it('should call the user service on LoadUserByAPIToken action and do nothing when failing', () => {
+      when(userServiceMock.signinUserByToken('dummy')).thenReturn(EMPTY);
+
+      actions$ = hot('a-a-a-', { a: new ua.LoadUserByAPIToken({ apiToken: 'dummy' }) });
+
+      expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
     });
   });
 });

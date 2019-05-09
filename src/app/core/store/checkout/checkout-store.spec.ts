@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { CookiesService } from '@ngx-utils/cookies';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
@@ -213,7 +212,6 @@ describe('Checkout Store', () => {
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },

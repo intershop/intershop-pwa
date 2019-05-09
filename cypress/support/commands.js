@@ -23,7 +23,6 @@
 //
 // -- This is will overwrite an existing command --
 Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
-  cy.setCookie('cookieLawSeen', 'true');
   cy.server();
   cy.route(/\/categories/).as('categories');
   cy.route('**/i18n/*.json').as('translations');
@@ -64,7 +63,15 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
   });
 });
 
+// reset cookies for each spec
+before(() => {
+  cy.clearCookie('apiToken');
+  cy.setCookie('cookieLawSeen', 'true');
+});
+
 Cypress.Cookies.debug(true);
+
+// keep certain cookies
 Cypress.Cookies.defaults({
-  whitelist: ['cookieLawSeen'],
+  whitelist: ['cookieLawSeen', 'apiToken'],
 });

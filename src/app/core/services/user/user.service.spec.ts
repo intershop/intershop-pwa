@@ -4,6 +4,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
+import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { User } from '../../models/user/user.model';
 import { ApiService } from '../api/api.service';
@@ -12,9 +13,10 @@ import { UserService } from './user.service';
 
 describe('User Service', () => {
   let userService: UserService;
-  const apiServiceMock = mock(ApiService);
+  let apiServiceMock: ApiService;
 
   beforeEach(() => {
+    apiServiceMock = mock(ApiService);
     userService = new UserService(instance(apiServiceMock));
   });
 
@@ -43,6 +45,25 @@ describe('User Service', () => {
         expect(error.message).toBe(errorMessage);
         done();
       });
+    });
+
+    it('should login a user by token when requested and successful', done => {
+      when(apiServiceMock.get(anything(), anything())).thenReturn(of({ email: 'test@intershop.de' } as CustomerData));
+
+      userService.signinUserByToken('dummy').subscribe(data => {
+        verify(apiServiceMock.get(anything(), anything())).once();
+        const [path, options] = capture<string, { headers: HttpHeaders }>(apiServiceMock.get).last();
+        expect(path).toEqual('customers/-');
+        expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('dummy');
+        expect(data).toHaveProperty('user.email', 'test@intershop.de');
+        done();
+      });
+    });
+
+    it('should not throw errors when logging in a user by token is unsuccessful', done => {
+      when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error()));
+
+      userService.signinUserByToken('dummy').subscribe(fail, fail, done);
     });
   });
 

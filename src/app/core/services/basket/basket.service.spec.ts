@@ -1,5 +1,6 @@
-import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { HttpHeaders } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -57,6 +58,25 @@ describe('Basket Service', () => {
       verify(apiService.get(`baskets/${basketMockData.data.id}`, anything())).once();
       done();
     });
+  });
+
+  it('should load a basket by token when requested and successful', done => {
+    when(apiService.get(anything(), anything())).thenReturn(of(basketMockData));
+
+    basketService.getBasketByToken('dummy').subscribe(data => {
+      verify(apiService.get(anything(), anything())).once();
+      const [path, options] = capture<string, { headers: HttpHeaders }>(apiService.get).last();
+      expect(path).toEqual('baskets/current');
+      expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('dummy');
+      expect(data).toHaveProperty('id', 'test');
+      done();
+    });
+  });
+
+  it('should not throw errors when getting a basket by token is unsuccessful', done => {
+    when(apiService.get(anything(), anything())).thenReturn(throwError(new Error()));
+
+    basketService.getBasketByToken('dummy').subscribe(fail, fail, done);
   });
 
   it("should create a basket data when 'createBasket' is called", done => {
