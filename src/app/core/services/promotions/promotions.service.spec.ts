@@ -1,6 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { instance, mock } from 'ts-mockito';
+import { TestBed, async } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { instance, mock, verify, when } from 'ts-mockito';
 
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { ApiService } from '../api/api.service';
 
 import { PromotionsService } from './promotions.service';
@@ -9,15 +11,39 @@ describe('Promotions Service', () => {
   let apiServiceMock: ApiService;
   let promotionsService: PromotionsService;
 
-  beforeEach(() => {
+  const promotionMockData = {
+    id: 'PROMO_UUID',
+    name: 'MyPromotion',
+    couponCodeRequired: false,
+    currency: 'EUR',
+    promotionType: 'MyPromotionType',
+    description: 'MyPromotionDescription',
+    legalContentMessage: 'MyPromotionContentMessage',
+    longTitle: 'MyPromotionLongTitle',
+    ruleDescription: 'MyPromotionRuleDescription',
+    title: 'MyPromotionTitle',
+    useExternalUrl: false,
+    disableMessages: false,
+  } as Promotion;
+
+  beforeEach(async(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
     promotionsService = TestBed.get(PromotionsService);
-  });
+  }));
 
   it('should be created', () => {
     expect(promotionsService).toBeTruthy();
+  });
+
+  it("should get Promotion data when 'getPromotion' is called", done => {
+    when(apiServiceMock.get(`promotions/PROMO_UUID`)).thenReturn(of(promotionMockData));
+    promotionsService.getPromotion('PROMO_UUID').subscribe(data => {
+      expect(data.id).toEqual('PROMO_UUID');
+      verify(apiServiceMock.get(`promotions/PROMO_UUID`)).once();
+      done();
+    });
   });
 });
