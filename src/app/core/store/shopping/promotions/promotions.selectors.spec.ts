@@ -6,8 +6,8 @@ import { Promotion } from '../../../models/promotion/promotion.model';
 import { shoppingReducers } from '../../../store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 
-import { LoadPromotion, LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
-import { getPromotion, getPromotionEntities, getPromotionLoading, getPromotions } from './promotions.selectors';
+import { LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
+import { getPromotion, getPromotionEntities, getPromotions } from './promotions.selectors';
 
 describe('Promotions Selectors', () => {
   let store$: TestStore;
@@ -31,37 +31,28 @@ describe('Promotions Selectors', () => {
   describe('with empty state', () => {
     it('should not select any promotions when used', () => {
       expect(getPromotionEntities(store$.state)).toBeEmpty();
-      expect(getPromotionLoading(store$.state)).toBeFalse();
     });
   });
 
   describe('loading a promotion', () => {
-    beforeEach(() => {
-      store$.dispatch(new LoadPromotion({ promoId: '' }));
-    });
-
-    it('should set the state to loading', () => {
-      expect(getPromotionLoading(store$.state)).toBeTrue();
-    });
-
     describe('and reporting success', () => {
       beforeEach(() => {
         store$.dispatch(new LoadPromotionSuccess({ promotion: promo }));
       });
 
-      it('should set loading to false', () => {
-        expect(getPromotionLoading(store$.state)).toBeFalse();
+      it('should put the promotion to the state', () => {
         expect(getPromotionEntities(store$.state)).toEqual({ [promo.id]: promo });
       });
     });
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadPromotionFail({ error: { message: 'error' } as HttpError, promoId: 'invalid' }));
+        store$.dispatch(
+          new LoadPromotionFail({ error: { message: 'error' } as HttpError, promoId: 'erroneous_promo' })
+        );
       });
 
       it('should not have loaded promotion on error', () => {
-        expect(getPromotionLoading(store$.state)).toBeFalse();
         expect(getPromotionEntities(store$.state)).toBeEmpty();
       });
     });
@@ -75,7 +66,6 @@ describe('Promotions Selectors', () => {
     describe('but no current router state', () => {
       it('should return the promotion information when used', () => {
         expect(getPromotionEntities(store$.state)).toEqual({ [promo.id]: promo });
-        expect(getPromotionLoading(store$.state)).toBeFalse();
       });
 
       it('should return a promotion stub if promotion is selected', () => {
