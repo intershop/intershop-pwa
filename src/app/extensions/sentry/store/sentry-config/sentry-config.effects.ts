@@ -5,10 +5,21 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store, UPDATE, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
-import { debounce, distinctUntilChanged, filter, map, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  debounce,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMapTo,
+  take,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getErrorState } from 'ish-core/store/error';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -25,7 +36,8 @@ export class SentryConfigEffects {
     private stateProperties: StatePropertiesService,
     private transferState: TransferState,
     private store: Store<{}>,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private cookiesService: CookiesService
   ) {}
 
   @Effect()
@@ -41,17 +53,22 @@ export class SentryConfigEffects {
   );
 
   @Effect({ dispatch: false })
-  configureSentry$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
-    take(1),
-    filter(() => this.featureToggleService.enabled('sentry')),
-    withLatestFrom(this.store.pipe(select(getSentryDSN))),
-    map(([, sentryDSN]) => sentryDSN),
+  configureSentry$ = this.cookiesService.cookieLawSeen$.pipe(
     whenTruthy(),
-    tap(dsn => {
-      const release = this.transferState.get<string>(DISPLAY_VERSION, 'development');
-      Sentry.init({ dsn, release });
-    })
+    switchMapTo(
+      this.actions$.pipe(
+        ofType(ROUTER_NAVIGATION_TYPE),
+        take(1),
+        filter(() => this.featureToggleService.enabled('sentry')),
+        withLatestFrom(this.store.pipe(select(getSentryDSN))),
+        map(([, sentryDSN]) => sentryDSN),
+        whenTruthy(),
+        tap(dsn => {
+          const release = this.transferState.get<string>(DISPLAY_VERSION, 'development');
+          Sentry.init({ dsn, release });
+        })
+      )
+    )
   );
 
   @Effect({ dispatch: false })
