@@ -3,10 +3,10 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { CookiesService } from '@ngx-utils/cookies';
 import { combineLatest, interval } from 'rxjs';
 import { distinctUntilChanged, filter, map, mapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
+import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LoadBasketByAPIToken, getCurrentBasket } from '../checkout/basket';
 import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from '../user';
@@ -26,7 +26,6 @@ export class RestoreEffects {
     this.store$.pipe(select(getCurrentBasket)),
     this.store$.pipe(select(getAPIToken))
   ).pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
     filter(([user, basket]) => !!user || !!basket),
     map(([user, , apiToken]) => this.makeCookie(apiToken, user ? 'user' : 'basket')),
     distinctUntilChanged(),
@@ -38,7 +37,6 @@ export class RestoreEffects {
 
   @Effect({ dispatch: false })
   destroyTokenInCookieOnLogout$ = this.actions$.pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
     ofType(UserActionTypes.LogoutUser),
     tap(() => {
       this.cookieService.remove('apiToken');
@@ -47,7 +45,6 @@ export class RestoreEffects {
 
   @Effect()
   restoreUserOrBasketByToken$ = this.router.events.pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
     filter(event => event instanceof NavigationStart),
     take(1),
     map(() => this.cookieService.get('apiToken')),
