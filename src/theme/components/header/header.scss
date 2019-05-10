@@ -1,6 +1,33 @@
 /************************  Global Header ******************************/
 header {
   margin-bottom: $space-default;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: $top-header-height;
+    content: '';
+    background-color: $color-primary;
+  }
+
+  .logo-wrapper {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding-top: ($space-default * 2);
+    padding-bottom: ($space-default / 3 * 2);
+  }
+
+  .global-nav-container {
+    display: flex;
+  }
+
+  .main-navigation {
+    position: relative;
+  }
 
   &.homepage {
     margin-bottom: 0;
@@ -15,48 +42,29 @@ header {
   }
 }
 
-.top-header {
-  min-height: $top-header-height;
-  background: $color-primary;
-
+.header {
   a span:hover {
     color: $text-color-quarternary;
   }
 
   @media (max-width: $screen-xs-max) {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
     background: $color-inverse;
-  }
-}
 
-.mid-header {
-  padding-top: ($space-default * 2);
-  padding-bottom: 20px;
-  background: $color-inverse;
+    :nth-child(1) {
+      order: 3;
+    }
 
-  @media (max-width: $screen-xs-max) {
-    padding: 0;
-    margin: 0;
-  }
+    :nth-child(2) {
+      order: 2;
+    }
 
-  .ng-fa-icon.header-icon {
-    margin-right: 4px;
-    font-size: 20px;
-    color: $text-color-secondary;
-  }
-}
-
-.header-info-wrapper {
-  padding-top: $space-default;
-}
-
-.header-info {
-  margin-right: $space-default;
-  font-size: 13px;
-}
-
-.header-sticky-mobile {
-  .header-utility {
-    line-height: 51px;
+    :nth-child(3) {
+      order: 1;
+    }
   }
 }
 
@@ -79,7 +87,7 @@ header {
 
   li {
     float: left;
-    margin-right: ($space-default * 2);
+    padding-right: ($space-default * 2);
     font-family: $font-family-bold;
     font-size: 12px;
     color: $text-color-quarternary;
@@ -98,10 +106,6 @@ header {
     .compare-status {
       position: relative;
     }
-
-    &:first-child .ng-fa-icon.header-icon {
-      padding-left: 0;
-    }
   }
 }
 
@@ -119,11 +123,6 @@ header {
   @media (max-width: $screen-xs-max) {
     color: $text-color-primary;
   }
-}
-
-.bottom-header {
-  background-color: $white;
-  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .mobile-logo {
