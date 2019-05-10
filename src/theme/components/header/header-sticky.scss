@@ -11,6 +11,50 @@
     width: 100%;
     background-color: $color-inverse;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+
+    .header {
+      position: relative;
+      display: flex;
+
+      :nth-child(1) {
+        order: 3;
+      }
+
+      :nth-child(2) {
+        order: 1;
+      }
+
+      :nth-child(3) {
+        order: 2;
+      }
+
+      .logo-wrapper {
+        flex: unset;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .logo {
+          height: 25px;
+          padding-right: $space-default * 2;
+        }
+      }
+
+      .main-navigation {
+        position: unset;
+
+        .main-navigation-list:not(.accordion) .category-level1 {
+          left: 15px;
+        }
+      }
+
+      .header-utility {
+        background: $color-inverse;
+      }
+    }
+  }
+
+  header::before {
+    background-color: $color-inverse;
   }
 
   .wrapper {
