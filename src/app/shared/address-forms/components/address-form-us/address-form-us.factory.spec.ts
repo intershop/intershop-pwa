@@ -26,7 +26,7 @@ describe('Address Form Us Factory', () => {
       expect(fg.get('addressLine2')).toBeTruthy();
       expect(fg.get('postalCode')).toBeTruthy();
       expect(fg.get('city')).toBeTruthy();
-      expect(fg.get('mainDivision')).toBeTruthy();
+      expect(fg.get('mainDivisionCode')).toBeTruthy();
       expect(fg.get('phoneHome')).toBeTruthy();
     });
   });

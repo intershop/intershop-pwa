@@ -82,6 +82,6 @@ describe('Address Form Container', () => {
 
     expect(component.parentForm.get('address').get('countryCode').value).toEqual(newCountry);
     verify(storeSpy$.dispatch(deepEqual(new LoadRegions({ countryCode: newCountry })))).once();
-    expect(parentForm.get('address').get('mainDivision').validator).not.toBeNull();
+    expect(parentForm.get('address').get('mainDivisionCode').validator).not.toBeNull();
   });
 });

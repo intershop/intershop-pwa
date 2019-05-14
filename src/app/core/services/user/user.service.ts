@@ -72,13 +72,17 @@ export class UserService {
       return throwError('createUser() called without required customer type (PrivateCustomer/SMBCustomer)');
     }
 
+    const customerAddress = {
+      ...body.address,
+      mainDivision: body.address.mainDivisionCode,
+    };
     let newCustomer: CreatePrivateCustomerType | CreateBusinessCustomerType;
 
     if (body.customer.type === 'PrivateCustomer') {
       newCustomer = {
         ...body.customer,
         ...body.user,
-        address: body.address,
+        address: customerAddress,
         credentials: body.credentials,
       };
     } else {
@@ -86,7 +90,7 @@ export class UserService {
         ...body.customer,
         // TODO: the addition of 'login: body.user.email' is a temporary fix for an ICM 7.10.7.3 API break
         user: { ...body.user, login: body.user.email },
-        address: body.address,
+        address: customerAddress,
         credentials: body.credentials,
       };
     }
