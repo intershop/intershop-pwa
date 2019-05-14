@@ -252,7 +252,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger suggest actions when suggest feature is used', () => {
-        const i = store.actionsIterator([/Shopping/]);
+        const i = store.actionsIterator(['Shopping']);
 
         expect(i.next()).toEqual(new SuggestSearchSuccess({ suggests: [{ term: 'something' }] }));
         expect(i.next()).toBeUndefined();
@@ -271,7 +271,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger required actions when searching', fakeAsync(() => {
-        const i = store.actionsIterator([/Shopping/]);
+        const i = store.actionsIterator(['Shopping']);
 
         expect(i.next().type).toEqual(SearchActionTypes.PrepareNewSearch);
         expect(i.next()).toEqual(new SearchProducts({ searchTerm: 'something' }));
@@ -292,7 +292,7 @@ describe('Shopping Store', () => {
         }));
 
         it('should reload the product data when selected', fakeAsync(() => {
-          const i = store.actionsIterator([/Shopping/]);
+          const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
 
           expect(i.next()).toEqual(new SelectProduct({ sku: 'P2' }));
           expect(i.next()).toEqual(new LoadProduct({ sku: 'P2' }));
@@ -405,7 +405,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should reload the product when selected', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
+        const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
         expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
         expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
@@ -471,7 +471,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
+      const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
       expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.456' }));
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
       expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
@@ -563,7 +563,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
+      const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
       expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);

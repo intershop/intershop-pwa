@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 
 export enum RecentlyActionTypes {
-  AddToRecently = '[Shopping] Add Product to Recently',
-  ClearRecently = '[Shopping] Clear Recently',
+  AddToRecently = '[Recently Viewed] Add Product to Recently',
+  ClearRecently = '[Recently Viewed] Clear Recently',
 }
 
 export class AddToRecently implements Action {
