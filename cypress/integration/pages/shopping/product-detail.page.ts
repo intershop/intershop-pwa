@@ -48,16 +48,20 @@ export class ProductDetailPage {
     this.addToQuoteRequestButton().click();
   }
 
-  get recentlyViewedItems() {
-    return cy.get('ish-recently-viewed div.product-tile');
-  }
-
   setQuantity(quantity: number) {
     this.quantityInput().clear();
     this.quantityInput().type(quantity.toString());
   }
 
+  get recentlyViewedItems() {
+    return cy.get('ish-recently-viewed ish-product-tile');
+  }
+
   recentlyViewedItem(sku: string) {
-    return this.recentlyViewedItems.filter(`[data-testing-sku="${sku}"]`).first();
+    return this.recentlyViewedItems.find(`[data-testing-sku="${sku}"]`).first();
+  }
+
+  gotoRecentlyViewedViewAll() {
+    cy.get('ish-recently-viewed [data-testing-id=view-all]').click();
   }
 }
