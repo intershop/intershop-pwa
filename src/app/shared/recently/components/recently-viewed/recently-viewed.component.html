@@ -3,8 +3,8 @@
 
   <!-- TODO: carousel or better clearing after 4 elements with intended CSS classes -->
   <div class="product-list row">
-    <div *ngFor="let product of products" class="col-6 col-lg-3 product-list-item">
-      <ish-product-item-container [productSku]="product.sku"></ish-product-item-container>
+    <div *ngFor="let productSku of products" class="col-6 col-lg-3 product-list-item">
+      <ish-product-item-container [productSku]="productSku"></ish-product-item-container>
     </div>
   </div>
 

@@ -40,7 +40,7 @@ import {
 } from './categories';
 import { FilterActionTypes } from './filter';
 import { LoadProduct, ProductsActionTypes, SelectProduct, getProductIds, getSelectedProduct } from './products';
-import { RecentlyActionTypes, getRecentlyProducts } from './recently';
+import { RecentlyActionTypes, getRecentlyViewedProducts } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 import { ViewconfActionTypes } from './viewconf';
@@ -394,7 +394,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should not put anything in recently viewed products when going to a family page', fakeAsync(() => {
-      expect(getRecentlyProducts(store.state)).toBeEmpty();
+      expect(getRecentlyViewedProducts(store.state)).toBeEmpty();
     }));
 
     describe('and clicking a product', () => {
@@ -414,7 +414,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should add the product to recently viewed products when going to product detail page', fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual(['P1']);
+        expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
       }));
 
       describe('and and going back to the family page', () => {
@@ -492,7 +492,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should put the product to recently viewed products when going to product detail page', fakeAsync(() => {
-      expect(getRecentlyProducts(store.state)).toEqual(['P1']);
+      expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
     }));
 
     describe('and and going back to the family page', () => {
@@ -519,7 +519,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should not put anything additionally to recently viewed products when going back', fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual(['P1']);
+        expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
       }));
     });
 
@@ -650,7 +650,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should not put anything to recently viewed products when invalid product was selected', fakeAsync(() => {
-      expect(getRecentlyProducts(store.state)).toBeEmpty();
+      expect(getRecentlyViewedProducts(store.state)).toBeEmpty();
     }));
   });
 

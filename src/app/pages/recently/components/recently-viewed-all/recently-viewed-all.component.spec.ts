@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { Product } from 'ish-core/models/product/product.model';
 import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
 import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
 
@@ -28,7 +27,7 @@ describe('Recently Viewed All Component', () => {
     fixture = TestBed.createComponent(RecentlyViewedAllComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.products = [{ sku: 'sku' } as Product];
+    component.products = ['sku'];
   });
 
   it('should be created', () => {
