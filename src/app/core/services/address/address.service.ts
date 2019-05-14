@@ -34,7 +34,12 @@ export class AddressService {
    * @returns           The new customer's address.
    */
   createCustomerAddress(customerId: string = '-', address: Address): Observable<Address> {
-    return this.apiService.post(`customers/${customerId}/addresses`, address).pipe(
+    const customerAddress = {
+      ...address,
+      mainDivision: address.mainDivisionCode,
+    };
+
+    return this.apiService.post(`customers/${customerId}/addresses`, customerAddress).pipe(
       resolveLink<Address>(this.apiService),
       map(AddressMapper.fromData)
     );
@@ -46,8 +51,13 @@ export class AddressService {
    * @param address     The address
    */
   updateCustomerAddress(customerId: string = '-', address: Address): Observable<Address> {
+    const customerAddress = {
+      ...address,
+      mainDivision: address.mainDivisionCode,
+    };
+
     return this.apiService
-      .put(`customers/${customerId}/addresses/${address.id}`, address)
+      .put(`customers/${customerId}/addresses/${address.id}`, customerAddress)
       .pipe(map(AddressMapper.fromData));
   }
 

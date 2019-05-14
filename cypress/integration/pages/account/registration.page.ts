@@ -14,7 +14,7 @@ export interface Registration {
   addressLine3: string;
   postalCode: string;
   city: string;
-  mainDivision: string;
+  mainDivisionCode: string;
   phoneHome: string;
   companyName1: string;
 }
@@ -30,7 +30,7 @@ export const sensibleDefaults: Partial<Registration> = {
   addressLine1: 'Testroad 1',
   postalCode: '12345',
   city: 'Testcity',
-  mainDivision: 'Wien',
+  mainDivisionCode: 'Wien',
 };
 
 export class RegistrationPage {

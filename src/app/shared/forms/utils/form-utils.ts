@@ -42,7 +42,11 @@ export function updateValidatorsByDataLength(
   } else {
     control.clearValidators();
   }
-  control.setValue('');
+  // clear value for empty array
+  if (array && !array.length) {
+    control.setValue('');
+  }
+
   control.updateValueAndValidity();
 }
 
