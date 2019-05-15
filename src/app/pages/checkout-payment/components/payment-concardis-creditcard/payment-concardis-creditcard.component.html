@@ -17,33 +17,6 @@
     </div>
   </div>
 
-  <!-- CVC -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc && !!errorMessage.cvc.message }">
-    <label class="col-form-label col-md-4" for="cvcInput"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
-    >
-    <div class=" col-sm-6">
-      <div id="a_verification_container" class="iframe-container"></div>
-      <small *ngIf="errorMessage.cvc && !!errorMessage.cvc.message" class="form-text">{{
-        errorMessage.cvc.messageKey | translate
-      }}</small>
-    </div>
-  </div>
-
-  <!-- Expiration date (month/Year)  -->
-  <ish-input
-    [form]="parameterForm"
-    controlName="expirationDate"
-    label="checkout.credit_card.expiration_date.label"
-    placeholder="MM/YY"
-    autocomplete="off"
-    inputClass="col-sm-2"
-    [errorMessages]="{
-      required: 'checkout.credit_card.expiry_date.invalid.error',
-      pattern: 'checkout.credit_card.expiry_date.invalid.error'
-    }"
-  ></ish-input>
-
   <!-- card holder -->
   <ish-input
     [form]="parameterForm"
@@ -55,6 +28,35 @@
       required: 'checkout.credit_card.user.name.missing.error'
     }"
   ></ish-input>
+
+  <!-- Expiration date (month/Year)  -->
+  <ish-select-year-month
+    [form]="parameterForm"
+    label="checkout.credit_card.expiration_date.label"
+    [controlName]="['expirationMonth', 'expirationYear']"
+    inputClass="col-sm-6"
+  ></ish-select-year-month>
+
+  <!-- CVC -->
+  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc && !!errorMessage.cvc.message }">
+    <label class="col-form-label col-md-4" for="cvcInput"
+      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required">*</span></label
+    >
+    <div class="col-xs-10 col-sm-3 col-md-2">
+      <div id="a_verification_container" class="iframe-container"></div>
+      <small *ngIf="errorMessage.cvc && !!errorMessage.cvc.message" class="form-text">{{
+        errorMessage.cvc.messageKey | translate
+      }}</small>
+    </div>
+    <div class="col-xs-2 col-sm-3">
+      <ng-template #CVCHelp>
+        <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
+      </ng-template>
+      <a [ngbPopover]="CVCHelp" [popoverTitle]="'checkout.credit_card.cvc.popover.title' | translate" placement="auto"
+        ><fa-icon [icon]="['fas', 'question-circle']"></fa-icon>
+      </a>
+    </div>
+  </div>
 </fieldset>
 
 <div class="offset-md-4 col-md-8">

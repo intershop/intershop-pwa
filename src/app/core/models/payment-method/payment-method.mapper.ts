@@ -34,7 +34,7 @@ export class PaymentMethodMapper {
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
             : undefined,
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
-        extPageParams: data.hostedPaymentPageParameters,
+        hostedPaymentPageParameters: data.hostedPaymentPageParameters,
       }));
   }
 
