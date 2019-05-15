@@ -1,6 +1,7 @@
 import { at, back } from '../../framework';
 import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+import { RecentlyViewedPage } from '../../pages/shopping/recently-viewed.page';
 
 const _ = {
   category: {
@@ -66,6 +67,22 @@ describe('Browsing User', () => {
       });
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.product2.sku);
+      });
+    });
+
+    it('should see "View All" link and follow the link to the browsing history page', () => {
+      at(ProductDetailPage, page => {
+        page.gotoRecentlyViewedViewAll();
+      });
+      at(RecentlyViewedPage, page => {
+        page.recentlyViewedItems.should('have.length', 2);
+      });
+    });
+
+    it('should see "Clear My History" link and use it to clear the browsing history', () => {
+      at(RecentlyViewedPage, page => {
+        page.clearAllRecentlyViewedItems();
+        page.recentlyViewedItems.should('have.length', 0);
       });
     });
   });

@@ -1,17 +1,13 @@
 <div class="row">
   <ng-container *ngIf="products.length; else empty">
     <div class="col-md-3">
-      <a (click)="clearAll()">{{ 'application.recentlyViewed.clear' | translate }}</a>
+      <a (click)="clearAll()" data-testing-id="clear-all">{{ 'application.recentlyViewed.clear' | translate }}</a>
     </div>
     <div class="col-md-9">
       <h1>{{ 'application.recentlyViewed.product.heading' | translate }}</h1>
       <div class="product-list row">
-        <div *ngFor="let product of products" class="col-6 col-lg-4 product-list-item grid-view">
-          <ish-product-item-container
-            *ngIf="product; else loading"
-            [productSku]="product.sku"
-          ></ish-product-item-container>
-          <ng-template #loading> <ish-loading></ish-loading> </ng-template>
+        <div *ngFor="let productSku of products" class="col-6 col-lg-4 product-list-item grid-view">
+          <ish-product-item-container [productSku]="productSku"></ish-product-item-container>
         </div>
       </div>
     </div>

@@ -40,14 +40,14 @@ describe('Product List Component', () => {
   it('should render a product tile when viewType is grid', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-item-container[type=tile]');
+    const thumbs = element.querySelectorAll('ish-product-item-container[displayType=tile]');
     expect(thumbs).toHaveLength(1);
   });
 
   it('should render a product row when viewType is list', () => {
     component.viewType = 'list';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-item-container[type=row]');
+    const thumbs = element.querySelectorAll('ish-product-item-container[displayType=row]');
     expect(thumbs).toHaveLength(1);
   });
 });
