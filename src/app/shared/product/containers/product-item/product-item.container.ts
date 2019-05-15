@@ -17,17 +17,34 @@ import {
   getProductVariationOptions,
 } from 'ish-core/store/shopping/products';
 
-type ProductItemType = 'tile' | 'row';
+type DisplayType = 'tile' | 'row';
 
+/**
+ * The Product Item Container Component fetches the product data for a given product sku
+ * and renders the product either as 'tile' or 'row'.
+ * The 'tile' rendering is the default if no value is provided for the displayType.
+ *
+ * @example
+ * <ish-product-item-container [productSku]="product.sku"></ish-product-item-container>
+ */
 @Component({
   selector: 'ish-product-item-container',
   templateUrl: './product-item.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemContainerComponent implements OnInit, OnDestroy {
+  /**
+   * The Product SKU to render a product item for.
+   */
   @Input() productSku: string;
+  /**
+   * The Display Type of the product item, 'tile' - the default - or 'row'.
+   */
+  @Input() displayType?: DisplayType = 'tile';
+  /**
+   * The optional Category context.
+   */
   @Input() category?: Category;
-  @Input() type: ProductItemType;
 
   /** holds the current SKU */
   private sku$ = new ReplaySubject<string>(1);
@@ -86,10 +103,10 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
   }
 
   get isTile() {
-    return this.type === 'tile';
+    return this.displayType === 'tile';
   }
 
   get isRow() {
-    return this.type === 'row';
+    return this.displayType === 'row';
   }
 }

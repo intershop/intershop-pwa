@@ -3,15 +3,10 @@
 
   <!-- TODO: carousel or better clearing after 4 elements with intended CSS classes -->
   <div class="product-list row">
-    <div *ngFor="let product of products" class="col-6 col-lg-3 product-list-item">
-      <ish-product-item-container
-        *ngIf="product; else loading"
-        [productSku]="product.sku"
-        type="tile"
-      ></ish-product-item-container>
-      <ng-template #loading> <ish-loading></ish-loading> </ng-template>
+    <div *ngFor="let productSku of products" class="col-6 col-lg-3 product-list-item">
+      <ish-product-item-container [productSku]="productSku"></ish-product-item-container>
     </div>
   </div>
 
-  <a class="view-all" routerLink="/recently">{{ 'common.view_all.link' | translate }}</a>
+  <a routerLink="/recently" class="view-all" data-testing-id="view-all">{{ 'common.view_all.link' | translate }}</a>
 </div>
