@@ -74,7 +74,11 @@
             </div>
           </li>
           <!-- Payment parameter form -->
-          <div *ngIf="!!paymentMethod.parameters" class="section" data-testing-id="payment-parameter-form">
+          <div
+            *ngIf="!!paymentMethod.parameters"
+            class="section"
+            [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
+          >
             <li *ngFor="let paymentInstrument of paymentMethod.paymentInstruments" class="panel">
               <div class="form-check ml-4 col-xl-4 col-md-5 col-sm-6 col-8" role="tab">
                 <input

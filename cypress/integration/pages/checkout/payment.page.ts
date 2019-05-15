@@ -1,7 +1,11 @@
-import { waitLoadingEnd } from '../../framework';
+import { fillInput, waitLoadingEnd } from '../../framework';
 
 export class PaymentPage {
   readonly tag = 'ish-checkout-payment-page-container';
+
+  get content() {
+    return cy.get(this.tag);
+  }
 
   selectPayment(payment: 'INVOICE' | 'CASH_ON_DELIVERY' | 'CASH_IN_ADVANCE') {
     cy.get(this.tag)
@@ -15,5 +19,30 @@ export class PaymentPage {
     cy.get('button')
       .contains('Continue Checkout')
       .click();
+  }
+
+  addPaymentInstrument(method: string) {
+    cy.get(`[data-testing-id=payment-parameter-form-${method}] a`).click();
+  }
+
+  paymentInstrument(method: string) {
+    return {
+      fillForm(params: { [key: string]: string }) {
+        Object.keys(params).forEach(key => fillInput(key, params[key]));
+      },
+
+      submit() {
+        cy.get(`[data-testing-id=payment-parameter-form-${method}]`)
+          .find('[type="submit"]')
+          .click();
+      },
+
+      formError(key: string) {
+        return cy
+          .get(`[data-testing-id=payment-parameter-form-${method}]`)
+          .find(`[data-testing-id='${key}']`)
+          .next();
+      },
+    };
   }
 }
