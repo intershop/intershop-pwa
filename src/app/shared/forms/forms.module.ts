@@ -18,6 +18,7 @@ import { SelectLanguageComponent } from './components/select-language/select-lan
 import { SelectRegionComponent } from './components/select-region/select-region.component';
 import { SelectSecurityQuestionComponent } from './components/select-security-question/select-security-question.component';
 import { SelectTitleComponent } from './components/select-title/select-title.component';
+import { SelectYearMonthComponent } from './components/select-year-month/select-year-month.component';
 import { SelectComponent } from './components/select/select.component';
 import { LoginFormContainerComponent } from './containers/login-form/login-form.container';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
@@ -38,6 +39,7 @@ const exportedComponents = [
   SelectRegionComponent,
   SelectSecurityQuestionComponent,
   SelectTitleComponent,
+  SelectYearMonthComponent,
   ShowFormFeedbackDirective,
 ];
 @NgModule({

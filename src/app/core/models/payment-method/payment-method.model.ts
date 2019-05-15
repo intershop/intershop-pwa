@@ -16,5 +16,5 @@ export interface PaymentMethod {
   restrictionCauses?: PaymentRestriction[];
   paymentInstruments?: PaymentInstrument[];
   parameters?: FormlyFieldConfig[];
-  extPageParams?: { name: string; value: string }[];
+  hostedPaymentPageParameters?: { name: string; value: string }[];
 }

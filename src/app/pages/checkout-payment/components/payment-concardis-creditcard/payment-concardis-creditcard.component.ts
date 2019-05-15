@@ -80,7 +80,8 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
   ngOnInit() {
     this.parameterForm = new FormGroup({
       cardHolder: new FormControl('', Validators.required),
-      expirationDate: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}/[0-9]{2}')]),
+      expirationMonth: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
+      expirationYear: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
     });
   }
 
@@ -145,7 +146,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
    * sets the general error message (key) if the parameter is not available
    */
   private getParamValue(name: string, errorMessage: string): string {
-    const parameter = this.paymentMethod.extPageParams.find(param => param.name === name);
+    const parameter = this.paymentMethod.hostedPaymentPageParameters.find(param => param.name === name);
     if (!parameter || !parameter.value) {
       this.errorMessage.general.message = errorMessage;
       return;
@@ -290,12 +291,8 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
    */
   submitNewPaymentInstrument() {
     const paymentData = {
-      expiryMonth: this.parameterForm.controls.expirationDate.value
-        ? this.parameterForm.controls.expirationDate.value.slice(0, -3)
-        : undefined, // first 2 signs
-      expiryYear: this.parameterForm.controls.expirationDate.value
-        ? this.parameterForm.controls.expirationDate.value.slice(3)
-        : undefined, // last 2 signs
+      expiryMonth: this.parameterForm.controls.expirationMonth.value,
+      expiryYear: this.parameterForm.controls.expirationYear.value,
       cardHolder: this.parameterForm.controls.cardHolder.value,
     };
     // tslint:disable-next-line:no-null-keyword

@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { PaymentConcardisCreditcardComponent } from './payment-concardis-creditcard.component';
@@ -15,7 +17,7 @@ describe('Payment Concardis Creditcard Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PaymentConcardisCreditcardComponent],
-      imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, IconModule, NgbPopoverModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -57,7 +59,8 @@ describe('Payment Concardis Creditcard Component', () => {
     const emitter = spy(component.submit);
 
     component.parameterForm.controls.cardHolder.setValue('John Doe');
-    component.parameterForm.controls.expirationDate.setValue('12/25');
+    component.parameterForm.controls.expirationMonth.setValue('12');
+    component.parameterForm.controls.expirationYear.setValue('20');
     component.submitCallback(undefined, {
       paymentInstrumentId: '4711',
       attributes: {
