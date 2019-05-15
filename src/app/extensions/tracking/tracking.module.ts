@@ -1,11 +1,11 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
-import { filter, takeWhile } from 'rxjs/operators';
+import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getGTMToken } from 'ish-core/store/configuration';
 
 @NgModule({
@@ -28,15 +28,16 @@ export class TrackingModule {
 
   constructor(
     angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
-    @Inject(PLATFORM_ID) platformId: string,
     featureToggleService: FeatureToggleService,
-    store: Store<{}>
+    store: Store<{}>,
+    cookiesService: CookiesService
   ) {
-    store
+    cookiesService.cookieLawSeen$
       .pipe(
-        takeWhile(() => isPlatformBrowser(platformId)),
-        select(getGTMToken),
-        filter(gtmToken => !!gtmToken && featureToggleService.enabled('tracking'))
+        withLatestFrom(store.pipe(select(getGTMToken))),
+        filter(([accepted, gtmToken]) => accepted && !!gtmToken && featureToggleService.enabled('tracking')),
+        take(1),
+        map(([, gtmToken]) => gtmToken)
       )
       .subscribe(gtmToken => {
         this.gtm(window, 'dataLayer', gtmToken);
