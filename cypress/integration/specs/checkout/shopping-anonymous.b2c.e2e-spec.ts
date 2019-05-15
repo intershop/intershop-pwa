@@ -86,9 +86,7 @@ describe('Anonymous Checkout', () => {
     });
   });
 
-  // enable this test if #IS-26395 has been fixed
-  // tslint:disable-tests:ban
-  xit('should check the receipt and continue shopping', () => {
+  it('should check the receipt and continue shopping', () => {
     at(ReceiptPage, page => {
       page.continueShopping();
     });
