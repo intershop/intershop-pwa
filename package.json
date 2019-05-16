@@ -65,7 +65,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@ngx-utils/cookies": "^3.0.2",
     "@schematics/angular": "^7.1.4",
-    "@sentry/browser": "5.0.3",
+    "@sentry/browser": "5.2.1",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.12.18",
     "@wishtack/reactive-component-loader": "^0.2.0",
