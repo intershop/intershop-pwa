@@ -26,3 +26,10 @@ export function at<T extends Page>(type: new () => T, callback?: (page: T) => vo
 export function back() {
   cy.go('back');
 }
+
+export function fillInput(key: string, value: string) {
+  cy.get(`[data-testing-id="${key}"]`)
+    .clear()
+    .type(value)
+    .blur();
+}
