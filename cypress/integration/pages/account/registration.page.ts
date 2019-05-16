@@ -1,3 +1,5 @@
+import { fillInput } from '../../framework';
+
 export interface Registration {
   login: string;
   loginConfirmation: string;
@@ -57,22 +59,15 @@ export class RegistrationPage {
     };
   }
 
-  private fillInput(key: keyof Registration, value: string) {
-    cy.get(`[data-testing-id="${key}"]`)
-      .clear()
-      .type(value)
-      .blur();
-  }
-
   fillForm(register: Partial<Registration>) {
     Object.keys(register).forEach((key: keyof Registration) => {
       cy.get(this.tag).then(form => {
         if (form.find(`input[data-testing-id="${key}"]`).length) {
-          this.fillInput(key, register[key].toString());
+          fillInput(key, register[key].toString());
           if (key === 'login' && !register.loginConfirmation) {
-            this.fillInput('loginConfirmation', register.login);
+            fillInput('loginConfirmation', register.login);
           } else if (key === 'password' && !register.passwordConfirmation) {
-            this.fillInput('passwordConfirmation', register.password);
+            fillInput('passwordConfirmation', register.password);
           }
         } else if (form.find(`select[data-testing-id="${key}"]`).length) {
           if (typeof register[key] === 'number') {
