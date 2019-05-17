@@ -7,6 +7,7 @@ stages:
   - distribute
   - deploy
   - e2e
+  - verify
 
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/cache/.npm'
@@ -17,19 +18,6 @@ cache:
   untracked: false
   paths:
     - cache
-
-check_mr_title:
-  cache: {}
-  dependencies: []
-  image: endeveit/docker-jq
-  stage: mrconfig
-  only:
-    - merge_requests
-  tags:
-    - docker-executor
-  script:
-    - sh .gitlab-ci-check-mr-title.sh
-    - echo "check complete"
 
 cancel_old_pipelines:
   cache: {}
@@ -616,3 +604,16 @@ cypress_remote_b2b:
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
+
+check_mr_title:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: verify
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-check-mr-title.sh
+    - echo "check complete"
