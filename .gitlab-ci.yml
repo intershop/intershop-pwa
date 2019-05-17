@@ -477,6 +477,7 @@ deploy_review_b2b:
   variables:
     GIT_STRATEGY: none
   script:
+    - set -x
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
@@ -484,10 +485,10 @@ deploy_review_b2b:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=http://10.0.206.226:4322
-      --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
-      --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
-      --add-host de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
-      --add-host smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3
+      --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
+      --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
+      --add-host de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
+      --add-host smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
@@ -512,8 +513,8 @@ deploy_review_b2b:
       -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
-    - docker run --rm --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3 mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
-    - docker run --rm --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:10.0.29.3 mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
+    - docker run --rm --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
+    - docker run --rm --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     url: http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
@@ -556,6 +557,9 @@ cypress_remote:
       - cypress/screenshots
   dependencies: []
   script:
+    - set -x
+    - apt-get update || true
+    - apt-get -y install dnsutils
     - node --version && npm --version
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
@@ -563,7 +567,7 @@ cypress_remote:
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - test $CI_PIPELINE_SOURCE = trigger || echo "10.0.29.3 b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
@@ -587,6 +591,9 @@ cypress_remote_b2b:
       - cypress/screenshots
   dependencies: []
   script:
+    - set -x
+    - apt-get update || true
+    - apt-get -y install dnsutils
     - node --version && npm --version
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
@@ -594,7 +601,7 @@ cypress_remote_b2b:
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - test $CI_PIPELINE_SOURCE = trigger || echo "10.0.29.3 b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
