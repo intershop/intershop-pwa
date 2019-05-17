@@ -245,7 +245,7 @@ start_nginx_proxy:
     - docker
     - demoserver
   script:
-    - docker run --restart always -d -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
+    - docker run --restart always --detach -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
 
 publish_nginx:
   cache: {}
@@ -293,8 +293,8 @@ push_reports:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker push ${CI_REGISTRY_IMAGE}:reports
 
-pull_images:
-  stage: distribute
+deploy_demo:
+  stage: deploy
   cache: {}
   dependencies: []
   only:
@@ -306,29 +306,20 @@ pull_images:
     - demoserver
   variables:
     GIT_STRATEGY: none
-  script:
-    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker pull "${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}"
-    - docker pull "${CI_REGISTRY_IMAGE}:reports" || true
-
-deploy_demo:
-  stage: deploy
-  cache: {}
-  dependencies: []
-  only:
-    refs:
-      - develop
-  tags:
-    - shell-executor
-    - docker
-    - chuck-norris-swarm-manager
-  variables:
-    GIT_STRATEGY: none
     SERVICE: 'intershop-pwa'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env SENTRY_DSN=${SENTRY_DSN} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add SENTRY_DSN=${SENTRY_DSN} --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+    - docker rm -f ${SERVICE} || true
+    - docker run
+      --detach
+      --restart always
+      --publish target=4200,published=4321
+      --name ${SERVICE}
+      --env ICM_BASE_URL=$ICM_BASE_URL
+      --env LOGGING=true
+      --env SENTRY_DSN=${SENTRY_DSN}
+      ${IMAGE}
   environment:
     name: demo
     url: http://$DEMO_SERVER_NAME:4321
@@ -343,14 +334,25 @@ deploy_demo_b2b:
   tags:
     - shell-executor
     - docker
-    - chuck-norris-swarm-manager
+    - demoserver
   variables:
     GIT_STRATEGY: none
     SERVICE: 'intershop-pwa-b2b'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env FEATURES=quoting,compare,recently,businessCustomerRegistration,sentry --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --env SENTRY_DSN=${SENTRY_DSN} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently,businessCustomerRegistration,sentry --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --env-add SENTRY_DSN=${SENTRY_DSN} --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
+    - docker rm -f ${SERVICE} || true
+    - docker run
+      --detach
+      --restart always
+      --publish target=4200,published=4325
+      --name ${SERVICE}
+      --env ICM_BASE_URL=$ICM_BASE_URL
+      --env LOGGING=true
+      --env FEATURES=quoting,compare,recently,businessCustomerRegistration,sentry
+      --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
+      --env SENTRY_DSN=${SENTRY_DSN}
+      ${IMAGE}
   environment:
     name: demo-b2b
     url: http://$DEMO_SERVER_NAME:4325
@@ -383,14 +385,20 @@ deploy_reports:
   tags:
     - shell-executor
     - docker
-    - chuck-norris-swarm-manager
+    - demoserver
   variables:
     GIT_STRATEGY: none
     SERVICE: 'intershop-pwa-reports'
     IMAGE: '${CI_REGISTRY_IMAGE}:reports'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker service create --with-registry-auth --constraint node.hostname==$DEMO_SERVER_NAME --publish target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
+    - docker rm -f ${SERVICE} || true
+    - docker run
+      --detach
+      --restart always
+      --publish target=8080,published=4324
+      --name ${SERVICE}
+      ${IMAGE}
   environment:
     name: reports
     url: http://$DEMO_SERVER_NAME:4324
@@ -481,7 +489,9 @@ deploy_review_b2b:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-    - docker run -d --name "${CI_COMMIT_REF_SLUG}-pwa"
+    - docker run
+      --detach
+      --name "${CI_COMMIT_REF_SLUG}-pwa"
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
@@ -492,8 +502,9 @@ deploy_review_b2b:
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
-    - docker run -d --name "${CI_COMMIT_REF_SLUG}-nginx"
-      --restart always
+    - docker run
+      --detach
+      --name "${CI_COMMIT_REF_SLUG}-nginx"
       -e UPSTREAM_ICM=${ICM_BASE_URL}
       --link $CI_COMMIT_REF_SLUG-pwa
       -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa:4200
