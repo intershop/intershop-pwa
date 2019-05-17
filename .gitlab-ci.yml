@@ -331,7 +331,7 @@ deploy_demo:
     - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env SENTRY_DSN=${SENTRY_DSN} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add SENTRY_DSN=${SENTRY_DSN} --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo
-    url: http://jdevbuildslave01.rnd.j.intershop.de:4321
+    url: http://$DEMO_SERVER_NAME:4321
 
 deploy_demo_b2b:
   stage: deploy
@@ -353,7 +353,7 @@ deploy_demo_b2b:
     - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish target=4200,published=4325 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true --env FEATURES=quoting,compare,recently,businessCustomerRegistration,sentry --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --env SENTRY_DSN=${SENTRY_DSN} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --env-add FEATURES=quoting,compare,recently,businessCustomerRegistration,sentry --env-add ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site --env-add SENTRY_DSN=${SENTRY_DSN} --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo-b2b
-    url: http://jdevbuildslave01.rnd.j.intershop.de:4325
+    url: http://$DEMO_SERVER_NAME:4325
 
 deploy_demo_BO:
   stage: deploy
@@ -390,10 +390,10 @@ deploy_reports:
     IMAGE: '${CI_REGISTRY_IMAGE}:reports'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
+    - docker service create --with-registry-auth --constraint node.hostname==$DEMO_SERVER_NAME --publish target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
   environment:
     name: reports
-    url: http://jdevbuildslave01.rnd.j.intershop.de:4324
+    url: http://$DEMO_SERVER_NAME:4324
 
 deploy_review_b2c:
   stage: deploy
@@ -409,7 +409,7 @@ deploy_review_b2c:
     - echo "done"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
-    url: http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    url: http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
     on_stop: stop_review_b2c
 
 stop_review_b2c:
@@ -485,10 +485,10 @@ deploy_review_b2b:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=http://10.0.206.226:4322
-      --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
-      --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
-      --add-host de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
-      --add-host smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de)
+      --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
@@ -510,14 +510,14 @@ deploy_review_b2b:
       -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_4_APPLICATION=smb-responsive
       -e PWA_4_FEATURES=quoting
-      -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,de.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de,smb.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de
+      -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
-    - docker run --rm --add-host b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
-    - docker run --rm --add-host b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199"
+    - docker run --rm --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199"
+    - docker run --rm --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
-    url: http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    url: http://b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
     on_stop: stop_review_b2b
 
 stop_review_b2b:
@@ -563,11 +563,11 @@ cypress_remote:
     - node --version && npm --version
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://10.0.206.226:4321 || export PWA_BASE_URL=http://b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) b2c.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
@@ -597,11 +597,11 @@ cypress_remote_b2b:
     - node --version && npm --version
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export ICM_BASE_URL=http://10.0.206.226:4322 || export ICM_BASE_URL=http://10.0.206.226:4322
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://10.0.206.226:4325 || export PWA_BASE_URL=http://b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de:4199
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short jdevbuildslave01.rnd.j.intershop.de) b2b.$CI_COMMIT_REF_SLUG.jdevbuildslave01.rnd.j.intershop.de" >> /etc/hosts
+    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
