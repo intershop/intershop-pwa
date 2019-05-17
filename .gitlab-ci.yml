@@ -409,7 +409,7 @@ deploy_review_b2c:
     on_stop: stop_review_b2c
 
 stop_review_b2c:
-  stage: e2e
+  stage: deploy
   cache: {}
   dependencies: []
   when: manual
@@ -486,7 +486,7 @@ deploy_review_b2b:
     on_stop: stop_review_b2b
 
 stop_review_b2b:
-  stage: e2e
+  stage: deploy
   cache: {}
   dependencies: []
   when: manual
