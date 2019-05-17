@@ -352,8 +352,8 @@ deploy_demo_BO:
   tags:
     - shell-executor
   only:
-    refs:
-      - develop
+    - merge_requests
+    - branches
   variables:
     GIT_STRATEGY: none
   script:
@@ -423,40 +423,6 @@ stop_review_b2c:
     - echo "done"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
-    action: stop
-
-deploy_review_BO:
-  stage: deploy
-  cache: {}
-  dependencies: []
-  tags:
-    - shell-executor
-  only:
-    - merge_requests
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - echo "done"
-  environment:
-    name: BO/$CI_COMMIT_REF_SLUG
-    url: $BO_URL
-    on_stop: stop_review_BO
-
-stop_review_BO:
-  stage: e2e
-  cache: {}
-  dependencies: []
-  when: manual
-  tags:
-    - shell-executor
-  only:
-    - merge_requests
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - echo "done"
-  environment:
-    name: BO/$CI_COMMIT_REF_SLUG
     action: stop
 
 deploy_review_b2b:
