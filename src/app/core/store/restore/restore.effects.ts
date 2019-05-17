@@ -4,7 +4,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, interval } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -24,11 +24,11 @@ export class RestoreEffects {
   saveAPITokenToCookie$ = combineLatest(
     this.store$.pipe(select(getLoggedInUser)),
     this.store$.pipe(select(getCurrentBasket)),
-    this.store$.pipe(select(getAPIToken))
+    this.store$.pipe(select(getAPIToken)),
+    this.cookieService.cookieLawSeen$
   ).pipe(
     filter(([user, basket]) => !!user || !!basket),
     map(([user, , apiToken]) => this.makeCookie(apiToken, user ? 'user' : 'basket')),
-    distinctUntilChanged(),
     tap(cookie => {
       const options = { expires: new Date(Date.now() + 3600000) };
       this.cookieService.put('apiToken', cookie, options);
@@ -60,7 +60,8 @@ export class RestoreEffects {
   @Effect()
   logOutUserIfTokenVanishes$ = interval(1000).pipe(
     takeWhile(() => isPlatformBrowser(this.platformId)),
-    withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
+    withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.cookieService.cookieLawSeen$),
+    filter(([, , cookieLawAccepted]) => cookieLawAccepted),
     map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
     filter(({ user, apiToken }) => user && !apiToken),
     mapTo(new LogoutUser())
