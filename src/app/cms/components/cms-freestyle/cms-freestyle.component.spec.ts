@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 
-import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 
 import { CMSFreestyleComponent } from './cms-freestyle.component';
@@ -12,7 +14,8 @@ describe('Cms Freestyle Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CMSFreestyleComponent, SafeHtmlPipe],
+      imports: [RouterTestingModule, StoreModule.forRoot({})],
+      declarations: [CMSFreestyleComponent, ServerHtmlDirective],
     }).compileComponents();
   }));
 
@@ -40,10 +43,10 @@ describe('Cms Freestyle Component', () => {
     component.pagelet = createSimplePageletView(pagelet);
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
-<div>
-  <h3>foo</h3>
-  bar
-</div>
-`);
+      <div>
+        <h3>foo</h3>
+        bar
+      </div>
+    `);
   });
 });
