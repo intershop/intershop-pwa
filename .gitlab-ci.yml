@@ -370,7 +370,7 @@ deploy_demo_BO:
     - echo "done"
   environment:
     name: BackOffice
-    url: https://10.0.206.226:4323/INTERSHOP/web/BOS/SLDSystem
+    url: $BO_URL
 
 deploy_reports:
   stage: deploy
@@ -443,7 +443,7 @@ deploy_review_BO:
     - echo "done"
   environment:
     name: BO/$CI_COMMIT_REF_SLUG
-    url: https://10.0.206.226:4323/INTERSHOP/web/BOS/SLDSystem
+    url: $BO_URL
     on_stop: stop_review_BO
 
 stop_review_BO:
