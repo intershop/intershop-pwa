@@ -6,6 +6,7 @@ import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -39,6 +40,7 @@ const exportedComponents = [
   HeaderContainerComponent,
   ProductImageComponent,
   SearchBoxContainerComponent,
+  ServerHtmlDirective,
 ];
 
 @NgModule({
