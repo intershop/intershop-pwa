@@ -489,6 +489,7 @@ stop_review_b2b:
 schematics:
   image: node:10
   stage: e2e
+  retry: 1
   only:
     - merge_requests
   except:
