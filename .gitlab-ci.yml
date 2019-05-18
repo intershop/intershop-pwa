@@ -302,7 +302,7 @@ deploy_demo:
     - docker run
       --detach
       --restart always
-      --publish target=4200,published=4321
+      --publish 4321:4200
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
@@ -333,7 +333,7 @@ deploy_demo_b2b:
     - docker run
       --detach
       --restart always
-      --publish target=4200,published=4325
+      --publish 4325:4200
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
@@ -353,7 +353,7 @@ deploy_demo_BO:
     - shell-executor
   only:
     - merge_requests
-    - branches
+    - develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -384,7 +384,7 @@ deploy_reports:
     - docker run
       --detach
       --restart always
-      --publish target=8080,published=4324
+      --publish 4324:8080
       --name ${SERVICE}
       ${IMAGE}
   environment:
