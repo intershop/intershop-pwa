@@ -353,7 +353,7 @@ deploy_demo_BO:
     - shell-executor
   only:
     - merge_requests
-    - branches
+    - develop
   variables:
     GIT_STRATEGY: none
   script:
