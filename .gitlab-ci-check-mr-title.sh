@@ -11,15 +11,15 @@ echo "title='$title'"
 echo "topic='$topic'"
 
 case "$topic" in
-  feat) exit 0 ;;
-  fix) exit 0 ;;
-  perf) exit 0 ;;
-  docs) exit 0 ;;
-  style) exit 0 ;;
-  refactor) exit 0 ;;
-  revert) exit 0 ;;
-  test) exit 0 ;;
-  chore) exit 0 ;;
+  feat) ;;
+  fix) ;;
+  perf) ;;
+  docs) ;;
+  style) ;;
+  refactor) ;;
+  revert) ;;
+  test) ;;
+  chore) ;;
   *)
     cat <<EOF
 
@@ -36,3 +36,9 @@ EOF
     exit 1
     ;;
 esac
+
+ticket="$(echo "$title" | grep -Eo 'ISREST-[0-9]*' || true)"
+echo "ticket='$ticket'"
+[ -z "$ticket" ] && exit 0
+
+echo "$title" | grep -Eq "\($ticket\)$" || (echo "'$ticket' must be in parentheses at the end of the first line of the topic" && exit 1)
