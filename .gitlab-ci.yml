@@ -2,9 +2,7 @@ stages:
   - mrconfig
   - setup
   - build
-  - integration
   - publish
-  - distribute
   - deploy
   - e2e
   - verify
@@ -128,26 +126,9 @@ codestyle:
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
     - echo "build complete"
 
-schematics:
-  image: node:10
-  stage: integration
-  only:
-    - merge_requests
-  except:
-    refs:
-      - develop
-      - master
-  tags:
-    - docker-executor
-  dependencies: []
-  script:
-    - npm install
-    - bash .gitlab-ci-test-schematics.sh
-    - echo "schematics complete"
-
 cypress_mocked:
   image: cypress/browsers:chrome69
-  stage: integration
+  stage: build
   only:
     - merge_requests
   except:
@@ -178,7 +159,7 @@ publish_pwa:
   cache: {}
   dependencies: []
   image: docker:stable
-  stage: integration
+  stage: build
   only:
     refs:
       - develop
@@ -504,6 +485,23 @@ stop_review_b2b:
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
+
+schematics:
+  image: node:10
+  stage: e2e
+  only:
+    - merge_requests
+  except:
+    refs:
+      - develop
+      - master
+  tags:
+    - docker-executor
+  dependencies: []
+  script:
+    - npm install
+    - bash .gitlab-ci-test-schematics.sh
+    - echo "schematics complete"
 
 cypress_remote:
   image: cypress/browsers:chrome69
