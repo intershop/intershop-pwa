@@ -34,7 +34,7 @@ beforeEach(() => {
   getTestBed().configureCompiler({ preserveWhitespaces: false } as any);
 
   jest.spyOn(global.console, 'warn').mockImplementation(arg => {
-    if (arg && !arg.startsWith('Navigation triggered outside Angular zone')) {
+    if (typeof arg !== 'string' || !arg.startsWith('Navigation triggered outside Angular zone')) {
       // tslint:disable-next-line:no-console
       console.log(arg);
     }
