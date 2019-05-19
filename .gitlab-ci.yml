@@ -653,7 +653,6 @@ cypress_remote:
       - cypress/screenshots
   dependencies: []
   script:
-    - set -x
     - apt-get update || true
     - apt-get -y install dnsutils
     - node --version && npm --version
@@ -687,7 +686,6 @@ cypress_remote_b2b:
       - cypress/screenshots
   dependencies: []
   script:
-    - set -x
     - apt-get update || true
     - apt-get -y install dnsutils
     - node --version && npm --version
