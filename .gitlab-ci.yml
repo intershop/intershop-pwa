@@ -660,7 +660,7 @@ cypress_remote:
     - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
     - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
-    - npm i
+    - npm ci
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
@@ -693,7 +693,7 @@ cypress_remote_b2b:
     - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
     - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
-    - npm i
+    - npm ci
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
