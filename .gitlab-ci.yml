@@ -611,6 +611,7 @@ schematics:
 cypress_remote:
   image: cypress/browsers:chrome69
   stage: e2e
+  parallel: 2
   only:
     - merge_requests
     - triggers
@@ -639,7 +640,7 @@ cypress_remote:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2c*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 cypress_remote_b2b:
