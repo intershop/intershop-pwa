@@ -608,6 +608,24 @@ schematics:
     - bash .gitlab-ci-test-schematics.sh
     - echo "schematics complete"
 
+universal_b2c:
+  image: node:10
+  stage: e2e
+  only:
+    - merge_requests
+    - triggers
+  tags:
+    - docker-executor
+  dependencies: []
+  cache: {}
+  script:
+    - apt-get update || true
+    - apt-get -y install dnsutils
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
+    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - sh .gitlab-ci-test-universal.sh
+
 cypress_remote:
   image: cypress/browsers:chrome69
   stage: e2e
@@ -638,7 +656,6 @@ cypress_remote:
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
-    - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
