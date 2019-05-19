@@ -41,6 +41,7 @@ setup:
       - master
   tags:
     - docker-executor
+    - performance
   script:
     - node --version && npm --version
     - bash -c "cd tslint-rules ; npm --silent run build"
@@ -62,6 +63,7 @@ jest_test:
       - master
   tags:
     - docker-executor
+    - performance
   artifacts:
     paths:
       - reports/coverage
@@ -86,6 +88,7 @@ compile:
       - master
   tags:
     - docker-executor
+    - performance
   artifacts:
     paths:
       - reports/bundle
@@ -110,6 +113,7 @@ codestyle:
       - master
   tags:
     - docker-executor
+    - performance
   artifacts:
     expire_in: 1 day
     paths:
@@ -137,6 +141,7 @@ cypress_mocked:
       - master
   tags:
     - docker-executor
+    - performance
   artifacts:
     reports:
       junit: reports/e2e-*.xml
@@ -194,6 +199,7 @@ publish_pwa_latest:
     - tags
   tags:
     - docker-executor
+    - performance
   services:
     - docker:dind
   script:
@@ -602,6 +608,7 @@ schematics:
       - master
   tags:
     - docker-executor
+    - performance
   dependencies: []
   script:
     - npm install
@@ -616,6 +623,7 @@ universal_b2c:
     - triggers
   tags:
     - docker-executor
+    - e2e
   dependencies: []
   cache: {}
   script:
@@ -635,6 +643,7 @@ cypress_remote:
     - triggers
   tags:
     - docker-executor
+    - e2e
   artifacts:
     reports:
       junit: reports/e2e-*.xml
@@ -668,6 +677,7 @@ cypress_remote_b2b:
     - triggers
   tags:
     - docker-executor
+    - e2e
   artifacts:
     reports:
       junit: reports/e2e-*.xml
