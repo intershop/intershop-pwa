@@ -1,0 +1,11 @@
+<ish-select
+  *ngIf="!!field && !!field.templateOptions"
+  [form]="form"
+  [controlName]="field.key"
+  [label]="field.templateOptions.label"
+  [options]="field.templateOptions.options"
+  labelClass="col-form-label col-md-4"
+  inputClass="col-sm-6"
+  [errorMessages]="field.templateOptions.attributes"
+  [translateOptionLabels]="false"
+></ish-select>

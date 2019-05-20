@@ -188,4 +188,51 @@ describe('Basket Service', () => {
       done();
     });
   });
+
+  it("should create a payment instrument for the basket when 'createBasketPayment' is called", done => {
+    when(
+      apiService.post(
+        `baskets/${basketMockData.data.id}/payment-instruments?include=paymentMethod`,
+        anything(),
+        anything()
+      )
+    ).thenReturn(of([]));
+
+    const paymentInstrument = {
+      id: undefined,
+      paymentMethod: 'ISH_DirectDebit',
+      parameters_: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+
+    basketService.createBasketPayment(basketMockData.data.id, paymentInstrument).subscribe(() => {
+      verify(
+        apiService.post(
+          `baskets/${basketMockData.data.id}/payment-instruments?include=paymentMethod`,
+          anything(),
+          anything()
+        )
+      ).once();
+      done();
+    });
+  });
+
+  it("should delete a payment instrument from basket when 'deleteBasketInstrument' is called", done => {
+    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
+
+    basketService.deleteBasketPaymentInstrument(basketMockData.data.id, 'paymentInstrumentId').subscribe(() => {
+      verify(
+        apiService.delete(`baskets/${basketMockData.data.id}/payment-instruments/paymentInstrumentId`, anything())
+      ).once();
+      done();
+    });
+  });
 });

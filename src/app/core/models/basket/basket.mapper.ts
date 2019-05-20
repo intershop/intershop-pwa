@@ -77,18 +77,20 @@ export class BasketMapper {
       payment:
         included && included.payments && included.payments['open-tender']
           ? {
-              paymentInstrument: included.payments['open-tender'].paymentInstrument,
+              paymentInstrument:
+                included.payments['open-tender'].paymentInstrument && included.payments_paymentInstrument
+                  ? included.payments_paymentInstrument[included.payments['open-tender'].paymentInstrument]
+                  : { id: included.payments['open-tender'].paymentInstrument },
               id: included.payments['open-tender'].id,
               displayName:
-                included &&
                 included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].displayName
+                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].displayName
                   : undefined,
               description:
                 included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].description
+                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].description
                   : undefined,
             }
           : undefined,

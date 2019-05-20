@@ -42,7 +42,7 @@
     </ish-info-box>
     <!-- Payment -->
     <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
-      <p>{{ order.payment.displayName }}</p>
+      <p>{{ order.payment.displayName }}<br />{{ order.payment.number }}</p>
       <p class="badge badge-info">{{ order.payment.status }}</p>
     </ish-info-box>
   </div>

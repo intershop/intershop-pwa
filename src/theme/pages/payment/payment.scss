@@ -6,6 +6,7 @@
   margin-bottom: $space-default * 2;
 
   .panel {
+    margin-top: $space-default / 2;
     margin-bottom: 0;
 
     @include box-shadow(none);
@@ -14,12 +15,13 @@
       padding-left: 20px; // like radio buttons
     }
 
-    .form-check {
+    .form-check > label {
+      display: inline-block;
       margin-bottom: $space-default;
     }
 
-    .form-check > label {
-      display: block;
+    p {
+      margin-bottom: $space-default / 2;
     }
   }
 

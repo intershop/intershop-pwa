@@ -6,6 +6,8 @@
     [paymentMethods]="paymentMethods$ | async"
     [error]="basketError$ | async"
     (updatePaymentMethod)="updateBasketPaymentMethod($event)"
+    (createPaymentInstrument)="createBasketPaymentInstrument($event)"
+    (deletePaymentInstrument)="deletePaymentInstrument($event)"
   ></ish-checkout-payment>
 
   <ish-loading *ngIf="(loading$ | async)"></ish-loading>

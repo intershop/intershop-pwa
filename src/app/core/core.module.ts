@@ -2,6 +2,7 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyModule } from '@ngx-formly/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
@@ -24,6 +25,7 @@ export function translateFactory(http: HttpClient) {
     ConfigurationModule,
     CookieLawModule,
     ExtrasModule,
+    FormlyModule.forRoot(),
     HttpClientModule,
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,

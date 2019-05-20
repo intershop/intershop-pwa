@@ -86,16 +86,31 @@ export class BasketMockData {
 
   static getPaymentMethod(): PaymentMethod {
     return {
-      type: 'Payment',
-      id: 'ISH_INVOICE',
-      displayName: 'Invoice',
+      id: 'ISH_CreditCard',
+      displayName: 'Credit Card',
+      parameters: [
+        {
+          key: 'IBAN',
+          type: 'input',
+          templateOptions: {
+            type: 'text',
+            required: true,
+          },
+        },
+      ],
+      paymentInstruments: [
+        {
+          id: 'instrumentId',
+          accountIdentifier: '*******4321',
+        },
+      ],
     } as PaymentMethod;
   }
 
   static getPayment(): Payment {
     return {
       displayName: 'Invoice',
-      paymentInstrument: 'ISH_INVOICE',
+      paymentInstrument: { id: 'ISH_INVOICE' },
       id: 'open-tender',
       status: 'Unprocessed',
     } as Payment;

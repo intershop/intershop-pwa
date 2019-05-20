@@ -9,6 +9,7 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
@@ -34,6 +35,7 @@ import { FilterCheckboxComponent } from './filter/components/filter-checkbox/fil
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
+import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
 import { OrderListComponent } from './order/components/order-list/order-list.component';
 import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
@@ -62,6 +64,8 @@ import { RecentlyViewedContainerComponent } from './recently/containers/recently
 const importExportModules = [
   CommonModule,
   FeatureToggleModule,
+  FormlyModule,
+  FormsDynamicModule,
   FormsSharedModule,
   IconModule,
   InfiniteScrollModule,

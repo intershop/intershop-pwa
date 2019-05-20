@@ -338,6 +338,84 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('CreateBasketPayment actions', () => {
+    const paymentInstrument = {
+      id: undefined,
+      paymentMethod: 'ISH_DirectDebit',
+      parameters_: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+    describe('CreateBasketPayment action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.CreateBasketPayment({ paymentInstrument });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('CreateBasketPaymentFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.CreateBasketPaymentFail({ error });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('CreateBasketPaymentSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.CreateBasketPaymentSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+  });
+
+  describe('DeleteBasketPayment actions', () => {
+    describe('DeleteBasketPayment action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.DeleteBasketPayment({ id: 'testPayment' });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('DeleteBasketPaymentFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.DeleteBasketPaymentFail({ error });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('DeleteBasketPaymentSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.DeleteBasketPaymentSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+  });
+
   describe('CreateOrder actions', () => {
     describe('CreateOrder action', () => {
       it('should set loading to true', () => {
