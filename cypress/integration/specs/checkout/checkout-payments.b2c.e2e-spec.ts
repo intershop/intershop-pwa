@@ -57,11 +57,10 @@ describe('Shopping User', () => {
         BIC: 'A',
       });
       page.paymentInstrument('ISH_DEBIT_TRANSFER').submit();
-      /* TODO: formly does not update form when untouched
       page
         .paymentInstrument('ISH_DEBIT_TRANSFER')
         .formError('holder')
-        .should('contain', 'missing'); */
+        .should('contain', 'missing');
       /* TODO: size validator does not display message correctly
       page
         .paymentInstrument('ISH_DEBIT_TRANSFER')
