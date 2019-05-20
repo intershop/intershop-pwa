@@ -5,15 +5,17 @@ import {
   HostListener,
   Inject,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   PLATFORM_ID,
+  SimpleChanges,
 } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 
 /**
  * The Header Component displays the page header.
@@ -34,7 +36,7 @@ import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys'
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isSticky = false;
 
   navbarCollapsed = false;
@@ -42,17 +44,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   screenHeight: number;
   mobileStickyHeaderHeight = 40;
 
+  viewStatus: 'mobile' | 'tablet' | 'pc';
+
   private destroy$ = new Subject();
 
   constructor(
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router
   ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.navbarCollapsed = window.innerWidth < this.mediumBreakpointWidth;
+      this.determineDevice();
+      this.navbarCollapsed = this.viewStatus === 'mobile';
     }
 
     // collapse mobile menu on router navigation start event
@@ -73,13 +79,39 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.viewStatus === 'tablet' && changes.isSticky.previousValue !== changes.isSticky.currentValue) {
+      this.navbarCollapsed = changes.isSticky.currentValue;
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   mobileViewHandler(event) {
-    this.navbarCollapsed = event.target.innerWidth < this.mediumBreakpointWidth;
+    this.determineDevice();
+
+    if (this.isSticky) {
+      this.collapseIf(['mobile', 'tablet']);
+    } else {
+      this.collapseIf(['mobile']);
+    }
     this.screenHeight = event.target.innerHeight - this.mobileStickyHeaderHeight;
+  }
+
+  collapseIf(viewTypes: string[]): void {
+    this.navbarCollapsed = viewTypes.includes(this.viewStatus);
   }
 
   toggleSearch(): void {
     this.showSearch = !this.showSearch;
+  }
+
+  determineDevice() {
+    if (window.innerWidth < this.mediumBreakpointWidth) {
+      this.viewStatus = 'mobile';
+    } else if (window.innerWidth < this.largeBreakpointWidth) {
+      this.viewStatus = 'tablet';
+    } else {
+      this.viewStatus = 'pc';
+    }
   }
 }

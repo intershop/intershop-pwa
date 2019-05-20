@@ -12,17 +12,40 @@ header {
     height: $top-header-height;
     content: '';
     background-color: $color-primary;
+
+    @media (max-width: $screen-xs-max) {
+      background-color: $color-inverse;
+    }
   }
 
   .logo-wrapper {
-    flex: 0 0 25%;
     max-width: 25%;
     padding-top: ($space-default * 2);
     padding-bottom: ($space-default / 3 * 2);
+
+    @media (max-width: $screen-xs-max) {
+      align-self: center;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 
   .global-nav-container {
     display: flex;
+
+    @media (max-width: $screen-xs-max) {
+      position: absolute;
+      top: 55px;
+      left: 0;
+      display: block;
+      width: 100%;
+      padding-right: 0;
+      padding-left: 0;
+
+      .global-nav {
+        width: 100%;
+      }
+    }
   }
 
   .main-navigation {
@@ -50,21 +73,16 @@ header {
   @media (max-width: $screen-xs-max) {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+    min-height: 55px;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
     background: $color-inverse;
+  }
 
-    :nth-child(1) {
-      order: 3;
-    }
-
-    :nth-child(2) {
-      order: 2;
-    }
-
-    :nth-child(3) {
-      order: 1;
-    }
+  .navbar-toggler {
+    order: 20;
   }
 }
 
@@ -76,6 +94,7 @@ header {
   line-height: $top-header-height;
 
   @media (max-width: $screen-xs-max) {
+    order: 10;
     line-height: 55px;
   }
 }
@@ -85,6 +104,10 @@ header {
   margin: 0;
   line-height: $top-header-height;
 
+  @media (max-width: $screen-xs-max) {
+    align-self: center;
+  }
+
   li {
     float: left;
     padding-right: ($space-default * 2);
@@ -93,6 +116,10 @@ header {
     color: $text-color-quarternary;
     text-transform: uppercase;
     list-style: none;
+
+    &:first-child .ng-fa-icon.header-icon {
+      padding-left: 0;
+    }
 
     a {
       color: $text-color-quinary;
@@ -126,6 +153,5 @@ header {
 }
 
 .mobile-logo {
-  align-self: center;
   padding: 0 $space-default * 2 0 $space-default;
 }
