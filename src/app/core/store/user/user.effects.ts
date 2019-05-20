@@ -2,18 +2,24 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { Observable, of } from 'rxjs';
-import { catchError, concatMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { Observable, merge, of } from 'rxjs';
+import { catchError, concatMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { UserService } from '../../services/user/user.service';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
-import { getLoggedInCustomer, getUserError } from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
   return (source$: Observable<T>) =>
@@ -72,18 +78,28 @@ export class UserEffects {
    * does not redirect at all, if no returnUrl is defined
    */
   @Effect({ dispatch: false })
-  redirectAfterLogin$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUserSuccess),
-    tap(() => {
-      const state = this.router.routerState;
-      let navigateTo: string;
-      if (state && state.snapshot && state.snapshot.root.queryParams.returnUrl) {
-        navigateTo = state.snapshot.root.queryParams.returnUrl;
-      }
-      if (navigateTo) {
-        this.router.navigateByUrl(navigateTo);
-      }
-    })
+  redirectAfterLogin$ = merge(
+    this.actions$.pipe(
+      ofType(userActions.UserActionTypes.LoginUserSuccess),
+      map(() => this.router.routerState),
+      mapToProperty('snapshot'),
+      whenTruthy(),
+      map(snapshot => snapshot.root.queryParams.returnUrl as string)
+    ),
+    this.actions$.pipe(
+      ofRoute('login'),
+      map<RouteNavigation, string>(action => action.payload.queryParams.returnUrl || '/account'),
+      switchMap(returnUrl =>
+        this.store$.pipe(
+          select(getLoggedInUser),
+          whenTruthy(),
+          mapTo(returnUrl)
+        )
+      )
+    )
+  ).pipe(
+    whenTruthy(),
+    tap(navigateTo => this.router.navigateByUrl(navigateTo))
   );
 
   @Effect()
