@@ -30,10 +30,6 @@
   }
 }
 
-.main-navigation-right {
-  z-index: 3;
-}
-
 .dropdown-menu {
   left: ($grid-gutter-width / 2);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -72,6 +68,7 @@
         padding: $space-default ($grid-gutter-width / 2) !important;
         font-size: $font-size-menu-item-mobile;
         line-height: 1.3125rem;
+        background-color: $color-inverse;
       }
     }
 
@@ -130,7 +127,7 @@
       line-height: 40px;
 
       &.dropdown {
-        position: static;
+        position: unset;
         padding: 0 10px;
         margin: 0;
         background: url('/assets/img/header/active_catalog.png') -2000px bottom no-repeat;

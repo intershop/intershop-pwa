@@ -1,8 +1,16 @@
 .homepage.sticky-header .wrapper {
-  margin-top: 185px;
+  margin-top: 175px;
+
+  @media (max-width: $screen-xs-max) {
+    margin-top: 55px;
+  }
 }
 
 .sticky-header {
+  .wrapper {
+    margin-top: 185px;
+  }
+
   header {
     position: fixed;
     top: 0;
@@ -12,24 +20,15 @@
     background-color: $color-inverse;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 
+    &::before {
+      background-color: $color-inverse;
+    }
+
     .header {
       position: relative;
       display: flex;
 
-      :nth-child(1) {
-        order: 3;
-      }
-
-      :nth-child(2) {
-        order: 1;
-      }
-
-      :nth-child(3) {
-        order: 2;
-      }
-
       .logo-wrapper {
-        flex: unset;
         padding-top: 0;
         padding-bottom: 0;
 
@@ -48,29 +47,14 @@
       }
 
       .header-utility {
+        order: 10;
         background: $color-inverse;
       }
     }
   }
 
-  header::before {
-    background-color: $color-inverse;
-  }
-
-  .wrapper {
-    margin-top: 185px;
-  }
-
-  .mid-header,
-  .bottom-header {
-    display: none;
-  }
-}
-
-.sticky-header,
-.header-sticky-mobile {
   .main-navigation-list li {
-    @media (max-width: $screen-md-max) {
+    @media (min-width: $screen-xs-max) and (max-width: $screen-md-max) {
       a {
         font-size: $font-size-corporate;
       }
@@ -112,14 +96,6 @@
   .navbar-toggler {
     padding: 13px 21px;
   }
-
-  .main-navigation-right {
-    float: right;
-  }
-}
-
-.header-sticky-mobile.container {
-  max-width: none;
 }
 
 .sticky-header-search-container {
@@ -134,32 +110,5 @@
   &:not(.show) {
     display: block; //required for animation
     height: 0;
-  }
-}
-
-.showed-on-scroll {
-  display: block;
-  background-color: $color-inverse;
-  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
-
-  &.hidden {
-    z-index: -99;
-    margin-top: -50px;
-    opacity: 0;
-  }
-
-  &:not(.hidden) {
-    z-index: 999;
-    opacity: 1;
-    transition: opacity 500ms ease-in-out;
-
-    > .main-navigation {
-      display: block;
-      overflow: scroll;
-
-      .navbar-nav {
-        margin-top: 0;
-      }
-    }
   }
 }
