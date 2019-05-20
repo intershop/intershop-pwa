@@ -112,7 +112,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   submit() {
     if (this.paymentForm.invalid) {
       this.formSubmitted = true;
-      markAsDirtyRecursive(this.parameterForm); // ToDo: does not work  for unknown reason
+      markAsDirtyRecursive(this.parameterForm);
       return;
     }
 
