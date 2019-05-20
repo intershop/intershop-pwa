@@ -257,6 +257,8 @@ publish_nginx:
       - master
       - tags
       - merge_requests
+    changes:
+      - nginx/**/*
   tags:
     - shell-executor
     - docker
@@ -490,7 +492,7 @@ deploy_review_b2c:
       --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
-    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
     - docker run
       --detach
       --publish-all
