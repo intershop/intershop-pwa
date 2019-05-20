@@ -6,6 +6,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from '../../../services/basket/basket.service';
@@ -45,6 +46,12 @@ export enum BasketActionTypes {
   SetBasketPayment = '[Basket] Set a Payment at Basket ',
   SetBasketPaymentFail = '[Basket API] Set a Payment at Basket Fail',
   SetBasketPaymentSuccess = '[Basket API] Set a Payment at Basket Success',
+  CreateBasketPayment = '[Basket] Create a Basket Payment',
+  CreateBasketPaymentFail = '[Basket API] Create a Basket Payment Fail',
+  CreateBasketPaymentSuccess = '[Basket API] Create a Basket Payment Success',
+  DeleteBasketPayment = '[Basket] Delete Basket Payment ',
+  DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
+  DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
 
   CreateOrder = '[Order] Create Order',
@@ -216,6 +223,34 @@ export class SetBasketPaymentSuccess implements Action {
   readonly type = BasketActionTypes.SetBasketPaymentSuccess;
 }
 
+export class CreateBasketPayment implements Action {
+  readonly type = BasketActionTypes.CreateBasketPayment;
+  constructor(public payload: { paymentInstrument: PaymentInstrument }) {}
+}
+
+export class CreateBasketPaymentFail implements Action {
+  readonly type = BasketActionTypes.CreateBasketPaymentFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class CreateBasketPaymentSuccess implements Action {
+  readonly type = BasketActionTypes.CreateBasketPaymentSuccess;
+}
+
+export class DeleteBasketPayment implements Action {
+  readonly type = BasketActionTypes.DeleteBasketPayment;
+  constructor(public payload: { id: string }) {}
+}
+
+export class DeleteBasketPaymentFail implements Action {
+  readonly type = BasketActionTypes.DeleteBasketPaymentFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class DeleteBasketPaymentSuccess implements Action {
+  readonly type = BasketActionTypes.DeleteBasketPaymentSuccess;
+}
+
 export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
@@ -270,6 +305,12 @@ export type BasketAction =
   | SetBasketPayment
   | SetBasketPaymentFail
   | SetBasketPaymentSuccess
+  | CreateBasketPayment
+  | CreateBasketPaymentFail
+  | CreateBasketPaymentSuccess
+  | DeleteBasketPayment
+  | DeleteBasketPaymentFail
+  | DeleteBasketPaymentSuccess
   | ResetBasket
   | CreateOrder
   | CreateOrderFail

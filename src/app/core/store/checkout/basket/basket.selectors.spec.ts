@@ -28,6 +28,7 @@ import {
   getBasketError,
   getBasketLoading,
   getCurrentBasket,
+  getCurrentBasketId,
 } from './basket.selectors';
 
 describe('Basket Selectors', () => {
@@ -47,6 +48,7 @@ describe('Basket Selectors', () => {
   describe('with empty state', () => {
     it('should be present if no basket is present', () => {
       expect(getCurrentBasket(store$.state)).toBeUndefined();
+      expect(getCurrentBasketId(store$.state)).toBeUndefined();
     });
 
     it('should not select any shipping methods if it is in initial state', () => {
@@ -76,7 +78,7 @@ describe('Basket Selectors', () => {
           basket: {
             id: 'test',
             lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as LineItem],
-            payment: { paymentInstrument: 'ISH_INVOICE' },
+            payment: { paymentInstrument: { id: 'ISH_INVOICE' } },
           } as BasketView,
         })
       );
@@ -89,7 +91,9 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
       expect(currentBasket.itemsCount).toEqual(5);
-      expect(currentBasket.payment.paymentInstrument).toEqual('ISH_INVOICE');
+      expect(currentBasket.payment.paymentInstrument.id).toEqual('ISH_INVOICE');
+
+      expect(getCurrentBasketId(store$.state)).toEqual('test');
     });
 
     it('should change the product of the basket line item if the product is changing', () => {
@@ -115,6 +119,7 @@ describe('Basket Selectors', () => {
       store$.dispatch(new LoadBasketFail({ error: { message: 'invalid' } as HttpError }));
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getCurrentBasket(store$.state)).toBeUndefined();
+      expect(getCurrentBasketId(store$.state)).toBeUndefined();
       expect(getBasketError(store$.state)).toEqual({ message: 'invalid' });
     });
   });

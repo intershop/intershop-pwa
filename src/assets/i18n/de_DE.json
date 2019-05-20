@@ -2604,5 +2604,6 @@
   "account.quotes.widget.view_all_quotes.link": "Alle Preisangebote anzeigen",
   "checkout.address.anonymous.guestcheckout.text": "Sie m\u00F6chten als Gast einkaufen und kein Profil erstellen? Kein Problem.",
   "account.login.signin.heading": "Anmelden",
-  "account.overview.personal_message_b2b.text": "Hallo, {{0}} ({{1}}).<br />Willkommen zurück!"
+  "account.overview.personal_message_b2b.text": "Hallo, {{0}} ({{1}}).<br />Willkommen zurück!",
+  "checkout.payment.addPayment.link": "Zahlungsquelle hinzufügen"
 }
