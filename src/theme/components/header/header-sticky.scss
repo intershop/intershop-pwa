@@ -49,6 +49,10 @@
       .header-utility {
         order: 10;
         background: $color-inverse;
+
+        .my-account-link {
+          display: block;
+        }
       }
     }
   }

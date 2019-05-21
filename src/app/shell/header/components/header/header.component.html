@@ -10,13 +10,27 @@
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container *ngIf="!isSticky"></ish-language-switch-container>
     </div>
-    <ng-container *ngIf="isSticky; else loginMobile">
-      <ish-login-status-container view="small"></ish-login-status-container>
-    </ng-container>
-    <ng-template #loginMobile>
-      <ish-login-status-container class="d-md-none"></ish-login-status-container>
-    </ng-template>
-    <ish-mini-basket-container></ish-mini-basket-container>
+    <ish-login-status-container view="small"></ish-login-status-container>
+
+    <ish-mini-basket-container
+      view="full"
+      class="d-none"
+      [ngClass]="isSticky ? 'd-lg-block' : 'd-md-block'"
+    ></ish-mini-basket-container>
+    <ish-mini-basket-container
+      view="small"
+      [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
+    ></ish-mini-basket-container>
+  </div>
+
+  <div *ngIf="!isSticky" class="search-container header-search-container d-none d-md-block">
+    <ish-search-box-container
+      [configuration]="{
+        placeholderText: 'search.searchbox.instructional_text' | translate,
+        autoSuggest: true,
+        maxAutoSuggests: 10
+      }"
+    ></ish-search-box-container>
   </div>
 
   <div class="logo-wrapper">
