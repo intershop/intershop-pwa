@@ -97,6 +97,14 @@ header {
     order: 10;
     line-height: 55px;
   }
+
+  .my-account-link {
+    display: none;
+
+    @media (max-width: $screen-xs-max) {
+      display: block;
+    }
+  }
 }
 
 .user-links {
