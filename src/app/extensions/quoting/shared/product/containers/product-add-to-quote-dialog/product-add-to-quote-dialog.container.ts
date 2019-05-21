@@ -7,6 +7,7 @@ import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import {
   DeleteItemFromQuoteRequest,
+  DeleteQuoteRequest,
   SelectQuoteRequest,
   SubmitQuoteRequest,
   UpdateQuoteRequest,
@@ -40,6 +41,10 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
 
   deleteQuoteRequestItem(payload: string) {
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
+  }
+
+  deleteQuoteRequest(payload: string) {
+    this.store.dispatch(new DeleteQuoteRequest({ id: payload }));
   }
 
   updateQuoteRequestItem(payload: LineItemQuantity) {

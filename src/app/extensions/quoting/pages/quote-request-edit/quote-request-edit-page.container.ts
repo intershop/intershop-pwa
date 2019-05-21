@@ -6,6 +6,7 @@ import { getLoggedInUser } from 'ish-core/store/user';
 import {
   CreateQuoteRequestFromQuoteRequest,
   DeleteItemFromQuoteRequest,
+  DeleteQuoteRequest,
   SubmitQuoteRequest,
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
@@ -31,6 +32,10 @@ export class QuoteRequestEditPageContainerComponent {
 
   deleteQuoteRequestItem(payload: string) {
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
+  }
+
+  deleteQuoteRequest(payload: string) {
+    this.store.dispatch(new DeleteQuoteRequest({ id: payload }));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {

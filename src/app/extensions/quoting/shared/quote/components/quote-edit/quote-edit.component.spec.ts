@@ -60,6 +60,18 @@ describe('Quote Edit Component', () => {
         displayName: 'DNAME',
         description: 'DESC',
         state: 'New',
+        items: [
+          {
+            type: 'Link',
+            uri: 'testItem:test',
+            title: 'TestItem2',
+          },
+          {
+            type: 'Link',
+            uri: 'testItem:test2',
+            title: 'TestItem2',
+          },
+        ],
       } as QuoteRequest;
       component.user = {} as User;
     });
