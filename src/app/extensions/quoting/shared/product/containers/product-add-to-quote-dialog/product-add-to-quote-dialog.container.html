@@ -3,6 +3,7 @@
   [quote]="activeQuoteRequest$ | async"
   [quoteLoading]="quoteRequestLoading$ | async"
   (deleteItem)="deleteQuoteRequestItem($event)"
+  (deleteQuoteRequest)="deleteQuoteRequest($event)"
   (updateItem)="updateQuoteRequestItem($event)"
   (updateQuoteRequest)="updateQuoteRequest($event)"
   (submitQuoteRequest)="submitQuoteRequest()"
