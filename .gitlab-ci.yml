@@ -603,6 +603,7 @@ cypress_remote:
     - node --version && npm --version
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
@@ -636,6 +637,7 @@ cypress_remote_b2b:
     - node --version && npm --version
     - export DISPLAY=:5
     - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx-b2b
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
