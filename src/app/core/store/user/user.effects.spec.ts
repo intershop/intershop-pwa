@@ -35,6 +35,7 @@ describe('User Effects', () => {
       type: 'SMBCustomer',
       customerNo: 'PC',
     },
+    user: {},
   } as CustomerUserType;
 
   // tslint:disable-next-line:use-component-change-detection
@@ -185,6 +186,38 @@ describe('User Effects', () => {
       tick(500);
 
       expect(location.path()).toEqual('/foobar');
+    }));
+
+    it('should navigate to /account after LoginUserSuccess when no returnUrl is set and user is at login', fakeAsync(() => {
+      router.navigate(['/login']);
+      tick(500);
+      expect(location.path()).toEqual('/login');
+
+      store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
+
+      actions$ = of(new RouteNavigation({ path: 'login', queryParams: {} }));
+
+      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/account');
+    }));
+
+    it('should not navigate after LoginUserSuccess when user is logged in and somewhere else', fakeAsync(() => {
+      router.navigate(['/home']);
+      tick(500);
+      expect(location.path()).toEqual('/home');
+
+      store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
+
+      actions$ = of(new RouteNavigation({ path: 'home', queryParams: {} }));
+
+      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/home');
     }));
   });
 
