@@ -47,8 +47,8 @@ setup:
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
     - bash -c "cd schematics ; npm --silent run build"
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
-    - npm ci --prefer-offline
-    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
+    - npm i && npm i
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
     - echo "setup complete"
 
 jest_test:
@@ -581,4 +581,18 @@ check_mr_title:
     - docker-executor
   script:
     - sh .gitlab-ci-check-mr-title.sh
+    - echo "check complete"
+
+check_tslint_no_warnings:
+  cache: {}
+  dependencies: []
+  image: node:10
+  stage: verify
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - npm ci
+    - sh .gitlab-ci-check-no-additional-warnings.sh
     - echo "check complete"
