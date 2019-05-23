@@ -50,6 +50,13 @@ header {
 
   .main-navigation {
     position: relative;
+
+    .navbar-nav {
+      @media (max-width: $screen-xs-max) {
+        display: flex;
+        background-color: $color-inverse;
+      }
+    }
   }
 
   &.homepage {
