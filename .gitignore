@@ -8,6 +8,7 @@
 /out-tsc
 /bin
 /cache
+/tslint*hard*
 
 # unsupported yarn files
 /yarn.lock
