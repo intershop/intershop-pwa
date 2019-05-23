@@ -41,7 +41,7 @@
       .main-navigation {
         position: unset;
 
-        .main-navigation-list:not(.accordion) .category-level1 {
+        .main-navigation-list .category-level1 {
           left: 15px;
         }
       }
