@@ -216,6 +216,30 @@ start_nginx_proxy:
   script:
     - docker run --restart always --detach -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
 
+start_review_server:
+  cache: {}
+  dependencies: []
+  stage: publish
+  only:
+    - merge_requests
+  tags:
+    - shell-executor
+    - docker
+    - demoserver
+  script:
+    - docker build -t review-server templates/review-server
+    - docker rm -f review-server || true
+    - docker run
+      --name review-server
+      --detach
+      --restart always
+      -v /var/run/docker.sock:/var/run/docker.sock:ro
+      --publish 3000:3000
+      review-server /usr/bin/node /review-proxy
+  environment:
+    name: review-server
+    url: http://$DEMO_SERVER_NAME:3000
+
 publish_nginx:
   cache: {}
   dependencies: []
@@ -280,6 +304,7 @@ deploy_demo:
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f ${SERVICE} || true
+    - test -z "${CI_JOB_TOKEN}" || docker pull ${IMAGE}
     - docker run
       --detach
       --restart always
@@ -288,6 +313,11 @@ deploy_demo:
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
       --env SENTRY_DSN=${SENTRY_DSN}
+      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2b.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2c.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${IMAGE}
   environment:
     name: demo
@@ -311,6 +341,7 @@ deploy_demo_b2b:
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f ${SERVICE} || true
+    - test -z "${CI_JOB_TOKEN}" || docker pull ${IMAGE}
     - docker run
       --detach
       --restart always
@@ -325,6 +356,51 @@ deploy_demo_b2b:
   environment:
     name: demo-b2b
     url: http://$DEMO_SERVER_NAME:4325
+
+deploy_demo_nginx:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  only:
+    refs:
+      - develop
+  tags:
+    - shell-executor
+    - docker
+    - demoserver
+  variables:
+    GIT_STRATEGY: none
+    SERVICE: 'intershop-pwa-nginx'
+    IMAGE: '${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}'
+  script:
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker rm -f "${SERVICE}" || true
+    - docker pull ${IMAGE}
+    - docker run
+      --detach
+      --publish 4326:80
+      --name "${CI_COMMIT_REF_SLUG}-nginx"
+      -e UPSTREAM_ICM=${ICM_BASE_URL}
+      -e UPSTREAM_PWA=http://$DEMO_SERVER_NAME:4321
+      -e PWA_1_SUBDOMAIN=b2c
+      -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_2_SUBDOMAIN=b2b
+      -e PWA_2_CHANNEL=inSPIRED-inTRONICS_Business-Site
+      -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      -e PWA_3_SUBDOMAIN=de
+      -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_3_LANG=de_DE
+      -e PWA_3_FEATURES=none
+      -e PWA_4_SUBDOMAIN=smb
+      -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_4_APPLICATION=smb-responsive
+      -e PWA_4_FEATURES=quoting
+      -e VIRTUAL_HOST=b2c.$DEMO_SERVER_NAME,b2b.$DEMO_SERVER_NAME,de.$DEMO_SERVER_NAME,smb.$DEMO_SERVER_NAME
+      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      ${IMAGE}
+  environment:
+    name: demo-nginx
+    url: http://$DEMO_SERVER_NAME:4326
 
 deploy_demo_BO:
   stage: deploy
@@ -374,19 +450,69 @@ deploy_reports:
 
 deploy_review_b2c:
   stage: deploy
+  retry: 2
   cache: {}
   dependencies: []
   tags:
     - shell-executor
+    - docker
+    - demoserver
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
-    - echo "done"
+    - set -x
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker run
+      --detach
+      --publish-all
+      --name "${CI_COMMIT_REF_SLUG}-pwa-b2c"
+      -e LOGGING=true
+      -e SENTRY_DSN=${SENTRY_DSN}
+      -e ICM_BASE_URL=${ICM_BASE_URL}
+      --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2b.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2c.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
+    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+    - docker run
+      --detach
+      --publish-all
+      --name "${CI_COMMIT_REF_SLUG}-nginx"
+      -e UPSTREAM_ICM=${ICM_BASE_URL}
+      --link $CI_COMMIT_REF_SLUG-pwa-b2c
+      -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa-b2c:4200
+      -e PWA_1_SUBDOMAIN=b2c
+      -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_2_SUBDOMAIN=b2b
+      -e PWA_2_CHANNEL=inSPIRED-inTRONICS_Business-Site
+      -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      -e PWA_3_SUBDOMAIN=de
+      -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_3_LANG=de_DE
+      -e PWA_3_FEATURES=none
+      -e PWA_4_SUBDOMAIN=smb
+      -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
+      -e PWA_4_APPLICATION=smb-responsive
+      -e PWA_4_FEATURES=quoting
+      -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME
+      ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+    - sleep 10
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
-    url: http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
+    url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
     on_stop: stop_review_b2c
 
 stop_review_b2c:
@@ -396,12 +522,15 @@ stop_review_b2c:
   when: manual
   tags:
     - shell-executor
+    - docker
+    - demoserver
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
   script:
-    - echo "done"
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
     action: stop
@@ -422,48 +551,24 @@ deploy_review_b2b:
   script:
     - set -x
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker run
       --detach
-      --name "${CI_COMMIT_REF_SLUG}-pwa"
+      --publish-all
+      --name "${CI_COMMIT_REF_SLUG}-pwa-b2b"
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
-      --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
+      -e FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-    - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
-    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
-    - docker run
-      --detach
-      --name "${CI_COMMIT_REF_SLUG}-nginx"
-      -e UPSTREAM_ICM=${ICM_BASE_URL}
-      --link $CI_COMMIT_REF_SLUG-pwa
-      -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa:4200
-      -e PWA_1_SUBDOMAIN=b2b
-      -e PWA_1_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_1_FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
-      -e PWA_2_SUBDOMAIN=b2c
-      -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_3_SUBDOMAIN=de
-      -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_3_LANG=de_DE
-      -e PWA_3_FEATURES=none
-      -e PWA_4_SUBDOMAIN=smb
-      -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
-      -e PWA_4_APPLICATION=smb-responsive
-      -e PWA_4_FEATURES=quoting
-      -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME
-      ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
-    - docker run --rm --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199"
-    - docker run --rm --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
-    url: http://b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
+    url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
     on_stop: stop_review_b2b
 
 stop_review_b2b:
@@ -480,8 +585,7 @@ stop_review_b2b:
   variables:
     GIT_STRATEGY: none
   script:
-    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa" || true
-    - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
@@ -526,7 +630,8 @@ cypress_remote:
     - apt-get -y install dnsutils
     - node --version && npm --version
     - export DISPLAY=:5
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
@@ -559,11 +664,11 @@ cypress_remote_b2b:
     - apt-get -y install dnsutils
     - node --version && npm --version
     - export DISPLAY=:5
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:4199
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - npm i
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
