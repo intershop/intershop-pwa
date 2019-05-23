@@ -411,7 +411,7 @@
           "<ul",
           "<li",
           "<table",
-          "<(?![^>]*(clearfix|loading-container|-panel))[^>]*class"
+          "<(?![^>]*(clearfix|loading-container|-panel))[^>]*\\ class"
         ]
       }
     },
