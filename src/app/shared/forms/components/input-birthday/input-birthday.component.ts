@@ -66,9 +66,9 @@ export class InputBirthdayComponent extends FormElementComponent implements OnIn
       year: ['', [Validators.min(this.minYear), Validators.max(this.maxYear)]],
     });
 
-    // Add form group temporarily to the parent form to prevent a form submit with an invalid birth date
-    // FM: commented out because child components don't change parent components' stuff
-    // this.form.addControl('birthday-form', this.dateForm);
+    /* Add form group temporarily to the parent form to prevent a form submit with an invalid birth date
+    FM: commented out because child components don't change parent components' stuff
+    this.form.addControl('birthday-form', this.dateForm); */
   }
 
   /*
