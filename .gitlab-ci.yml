@@ -582,3 +582,17 @@ check_mr_title:
   script:
     - sh .gitlab-ci-check-mr-title.sh
     - echo "check complete"
+
+check_tslint_no_warnings:
+  cache: {}
+  dependencies: []
+  image: node:10
+  stage: verify
+  only:
+    - merge_requests
+  tags:
+    - docker-executor
+  script:
+    - npm ci
+    - sh .gitlab-ci-check-no-additional-warnings.sh
+    - echo "check complete"
