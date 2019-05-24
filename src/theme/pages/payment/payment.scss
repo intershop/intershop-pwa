@@ -25,6 +25,12 @@
     }
   }
 
+  .has-feedback {
+    .form-control-feedback {
+      display: none;
+    }
+  }
+
   .propertygroup-property-noneditable {
     margin: 0;
 
@@ -33,6 +39,10 @@
         padding-left: 0;
       }
     }
+  }
+
+  .iframe-container {
+    height: 35px;
   }
 
   .creditcards {
