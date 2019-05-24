@@ -379,7 +379,7 @@ deploy_demo_nginx:
     - docker run
       --detach
       --publish 4326:80
-      --name "${CI_COMMIT_REF_SLUG}-nginx"
+      --name "${SERVICE}"
       -e UPSTREAM_ICM=${ICM_BASE_URL}
       -e UPSTREAM_PWA=http://$DEMO_SERVER_NAME:4321
       -e PWA_1_SUBDOMAIN=b2c
