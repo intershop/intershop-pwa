@@ -21,6 +21,7 @@ export class PaymentMethodMapper {
       .filter(data => PaymentMethodMapper.isPaymentMethodValid(data))
       .map(data => ({
         id: data.id,
+        serviceId: data.serviceID,
         displayName: data.displayName,
         description: data.description,
         capabilities: data.capabilities,
@@ -33,6 +34,7 @@ export class PaymentMethodMapper {
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])
             : undefined,
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
+        hostedPaymentPageParameters: data.hostedPaymentPageParameters,
       }));
   }
 

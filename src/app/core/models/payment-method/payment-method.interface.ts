@@ -19,6 +19,7 @@ export interface PaymentMethodParameterType {
 // tslint:disable-next-line:project-structure
 export interface PaymentMethodBaseData {
   id: string;
+  serviceID: string;
   displayName: string;
   description?: string;
   capabilities?: string[];
@@ -28,6 +29,7 @@ export interface PaymentMethodBaseData {
   paymentCostsThreshold?: PriceItem;
   paymentInstruments?: string[];
   parameterDefinitions?: PaymentMethodParameterType[];
+  hostedPaymentPageParameters?: { name: string; value: string }[];
 }
 
 export interface PaymentMethodData {

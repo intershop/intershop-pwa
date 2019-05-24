@@ -21,6 +21,19 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
 
+/**
+ * The Checkout Payment Component renders the checkout payment page. On this page the user can select a payment method. Some payment methods require the user to enter some additional data, like credit card data. For some payment methods there is special javascript functionality necessary provided by an external payment host. See also {@link CheckoutPaymentPageContainerComponent}
+ *
+ * @example
+ * <ish-checkout-payment
+ [basket]="basket$ | async"
+ [paymentMethods]="paymentMethods$ | async"
+ [error]="basketError$ | async"
+ (updatePaymentMethod)="updateBasketPaymentMethod($event)"
+ (createPaymentInstrument)="createBasketPaymentInstrument($event)"
+ (deletePaymentInstrument)="deletePaymentInstrument($event)"
+></ish-checkout-payment>
+ */
 @Component({
   selector: 'ish-checkout-payment',
   templateUrl: './checkout-payment.component.html',
@@ -100,10 +113,21 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * cancel new payment instrument hides to parameter form
+   * cancel new payment instrument, hides parameter form
    */
   cancelNewPaymentInstrument() {
     this.openFormIndex = -1;
+  }
+
+  /**
+   * creates a new payment instrument
+   */
+  createNewPaymentInstrument(parameters: { name: string; value: string }[]) {
+    this.createPaymentInstrument.emit({
+      id: undefined,
+      paymentMethod: this.paymentMethods[this.openFormIndex].id,
+      parameters,
+    });
   }
 
   /**
@@ -128,11 +152,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    this.createPaymentInstrument.emit({
-      id: undefined,
-      paymentMethod: this.paymentMethods[this.openFormIndex].id,
-      parameters,
-    });
+    this.createNewPaymentInstrument(parameters);
   }
 
   /**

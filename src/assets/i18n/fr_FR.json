@@ -2495,5 +2495,22 @@
   "checkout.address.anonymous.guestcheckout.text": "Vous voulez faire des achats en tant qu’invit\u00E9 et ne voulez pas cr\u00E9er de profil ? Pas de problème.",
   "account.login.signin.heading": "Se connecter",
   "account.overview.personal_message_b2b.text": "Bonjour, {{0}} ({{1}}).<br />Bienvenue !",
-  "checkout.payment.addPayment.link": "Ajouter une source de paiement"
+  "checkout.payment.addPayment.link": "Ajouter une source de paiement",
+  "checkout.credit_card.cvc.label": "Code de validation de la carte",
+  "checkout.credit_card.user.name": "Nom du détenteur de la carte",
+  "checkout.credit_card.user.name.missing.error": "Veuillez entrer le nom du détenteur de la carte.",
+  "checkout.credit_card.number.error.notNumber": "Le numéro de carte de crédit ne doit contenir que des valeurs numériques. Veuillez corriger le numéro de carte de crédit.",
+  "checkout.credit_card.number.error.length": "Le numéro de carte de crédit doit contenir entre 13 et 16 caractères. Veuillez corriger le numéro de carte de crédit.",
+  "checkout.credit_card.number.error.invalid": "Votre numéro de carte de crédit n’est pas valide. Veuillez corriger le numéro de carte de crédit.",
+  "checkout.credit_card.cvc.error.default": "Veuillez entrer un code de validation de carte.",
+  "checkout.credit_card.cvc.error.notNumber": "Le code de validation de carte ne doit contenir que des valeurs numériques. Veuillez corriger le code de validation de carte.",
+  "checkout.credit_card.cvc.error.length": "La longueur de votre code de validation de carte n’est pas valide. Veuillez corriger le code de validation de carte.",
+  "checkout.credit_card.cvc.error.invalid": "Votre code de validation de carte n’est pas valide. Veuillez corriger le code de validation de carte.",
+  "checkout.credit_card.cvc.popover.title": "Où puis-je trouver le code de validation de carte ?",
+  "checkout.credit_card.cvc.popover.content": "Le code de sécurité à trois ou quatre chiffres se trouve au verso de votre carte de crédit.",
+  "checkout.credit_card.merchantId.error.notFound": "ID marchand introuvable.",
+  "checkout.credit_card.cardStyleId.error.notFound": "ID de style de la carte de crédit introuvable.",
+  "checkout.credit_card.CVCStyleId.error.notFound": "ID de style du code de validation de carte introuvable.",
+  "account.date.year.error.required": "Veuillez sélectionner une année.",
+  "account.date.month.error.required": "Veuillez sélectionner un mois."
 }
