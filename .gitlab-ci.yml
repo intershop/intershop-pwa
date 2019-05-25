@@ -669,7 +669,7 @@ universal_b2c:
 cypress_remote:
   image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
-  parallel: 2
+  parallel: 4
   only:
     - merge_requests
     - triggers
@@ -694,7 +694,7 @@ cypress_remote:
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 cypress_remote_b2b:
@@ -725,7 +725,7 @@ cypress_remote_b2b:
     - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 cypress_mocked:
@@ -754,7 +754,7 @@ cypress_mocked:
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
-    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 check_mr_title:

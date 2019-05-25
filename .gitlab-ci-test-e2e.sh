@@ -3,5 +3,7 @@
 set -e
 
 [ -z "$1" ] && echo "test file required" && exit 1
+files="$(echo "$*" | tr ' ' ',')"
 
-timeout 7m node cypress-ci-e2e "$1" || ([ "$?" -eq "124" ] && timeout 7m node cypress-ci-e2e "$1") || ([ "$?" -eq "124" ] && timeout 7m node cypress-ci-e2e "$1")
+TIMEOUT="20m"
+timeout $TIMEOUT node cypress-ci-e2e "$files" || ([ "$?" -eq "124" ] && timeout $TIMEOUT node cypress-ci-e2e "$files") || ([ "$?" -eq "124" ] && timeout $TIMEOUT node cypress-ci-e2e "$files")
