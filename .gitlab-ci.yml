@@ -316,7 +316,7 @@ deploy_demo:
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'intershop-pwa'
+    SERVICE: 'develop-pwa-b2c'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -353,7 +353,7 @@ deploy_demo_b2b:
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'intershop-pwa-b2b'
+    SERVICE: 'develop-pwa-b2b'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -387,7 +387,7 @@ deploy_demo_nginx:
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'intershop-pwa-nginx'
+    SERVICE: 'develop-nginx'
     IMAGE: '${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -687,8 +687,7 @@ cypress_remote:
   script:
     - node --version && npm --version
     - export DISPLAY=:5
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
@@ -717,8 +716,7 @@ cypress_remote_b2b:
   script:
     - node --version && npm --version
     - export DISPLAY=:5
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b)"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
