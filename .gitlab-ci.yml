@@ -88,15 +88,8 @@ compile:
   tags:
     - docker-executor
     - performance
-  artifacts:
-    paths:
-      - reports/bundle
-    expire_in: 1 day
   dependencies: []
   script:
-    - npm ci --prefer-offline --production
-    - npx ng build --progress false --prod --stats-json
-    - npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle/index.html -m static
     - npm ci --prefer-offline
     - npx tsc -p src/tsconfig.spec.json
     - echo "build complete"
@@ -129,35 +122,52 @@ codestyle:
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
     - echo "build complete"
 
-cypress_mocked:
-  image: cypress/browsers:chrome69
+deploy_review_mock:
+  cache: {}
+  dependencies: []
   stage: build
   only:
-    - merge_requests
-  except:
     refs:
-      - develop
-      - master
+      - merge_requests
   tags:
-    - docker-executor
+    - shell-executor
+    - docker
     - performance
-  artifacts:
-    reports:
-      junit: reports/e2e-*.xml
-    when: on_failure
-    expire_in: 2 weeks
-    paths:
-      - cypress/screenshots
-  dependencies: []
+    - demoserver
   script:
-    - node --version && npm --version
-    - npm i
-    - export ICM_BASE_URL=http://localhost:4200 PWA_BASE_URL=http://localhost:4200 DISPLAY=:5
-    - nohup bash -c "Xvfb ${DISPLAY} &"
-    - nohup bash -c "npx ng serve &"
-    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
-    - echo "E2E complete"
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - docker build -t ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
+      --file=templates/Dockerfile_dev
+      .
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
+    - docker run
+      --detach
+      --publish-all
+      --name "${CI_COMMIT_REF_SLUG}-mock"
+      ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
+  environment:
+    name: review/mock-$CI_COMMIT_REF_SLUG
+    url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
+    on_stop: stop_review_mock
+
+stop_review_mock:
+  stage: build
+  cache: {}
+  dependencies: []
+  when: manual
+  tags:
+    - shell-executor
+    - docker
+    - demoserver
+  only:
+    - merge_requests
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
+  environment:
+    name: review/mock-$CI_COMMIT_REF_SLUG
+    action: stop
 
 publish_pwa:
   cache: {}
@@ -716,6 +726,35 @@ cypress_remote_b2b:
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - echo "E2E complete"
+
+cypress_mocked:
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  stage: e2e
+  only:
+    - merge_requests
+  except:
+    refs:
+      - develop
+      - master
+  tags:
+    - docker-executor
+    - e2e
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  dependencies: []
+  script:
+    - node --version && npm --version
+    - export ICM_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock DISPLAY=:5
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - wget -q --wait 10 --tries 10 --retry-connrefused http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
+    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 check_mr_title:
