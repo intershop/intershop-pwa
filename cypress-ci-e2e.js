@@ -46,6 +46,8 @@ const run = (num, spec, retryGroup) => {
   if (spec) config.spec = spec;
   if (retryGroup) config.group = retryGroup;
 
+  console.log(config);
+
   return cypress.run(config).then(results => {
     if (results.totalFailed) {
       totalFailuresIncludingRetries += results.totalFailed;
@@ -57,6 +59,14 @@ const run = (num, spec, retryGroup) => {
         .value();
 
       console.log(`Run #${num} failed.`);
+      console.log(
+        _(results.runs)
+          .filter('stats.failures')
+          .map('tests')
+          .flatten()
+          .filter('error')
+          .value()
+      );
 
       // if this is the 3rd total run (2nd retry)
       // and we've still got failures then just exit

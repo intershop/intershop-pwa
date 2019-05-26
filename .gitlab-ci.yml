@@ -683,11 +683,13 @@ cypress_remote:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+      - cypress/videos
   dependencies: []
   script:
     - node --version && npm --version
     - export DISPLAY=:5
     - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c)"
+    - echo "#### $PWA_BASE_URL"
     - export CYPRESS_NO_CHANNEL_REDIRECT=1
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
@@ -712,6 +714,7 @@ cypress_remote_b2b:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+      - cypress/videos
   dependencies: []
   script:
     - node --version && npm --version
@@ -745,6 +748,7 @@ cypress_mocked:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+      - cypress/videos
   dependencies: []
   script:
     - node --version && npm --version
