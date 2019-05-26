@@ -4,5 +4,6 @@
   "viewportWidth": 1024,
   "viewportHeight": 1500,
   "video": false,
+  "videoUploadOnPasses": false,
   "testFiles": "**/*.e2e-spec.ts"
 }
