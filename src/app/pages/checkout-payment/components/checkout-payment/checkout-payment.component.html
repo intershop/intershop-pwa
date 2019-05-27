@@ -18,7 +18,7 @@
         role="tablist"
         aria-multiselectable="true"
       >
-        <ng-container *ngFor="let paymentMethod of paymentMethods; let i = index">
+        <ng-container *ngFor="let paymentMethod of filteredPaymentMethods; let i = index">
           <li class="panel">
             <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">
               <!-- display radio buttons only for payment methods without parameters -->
