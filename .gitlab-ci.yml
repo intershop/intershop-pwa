@@ -688,12 +688,9 @@ cypress_remote:
   script:
     - node --version && npm --version
     - export DISPLAY=:5
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c)"
-    - echo "#### $PWA_BASE_URL"
-    - export CYPRESS_NO_CHANNEL_REDIRECT=1
+    - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
@@ -719,11 +716,9 @@ cypress_remote_b2b:
   script:
     - node --version && npm --version
     - export DISPLAY=:5
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b)"
-    - export CYPRESS_NO_CHANNEL_REDIRECT=1
+    - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
@@ -755,7 +750,6 @@ cypress_mocked:
     - export ICM_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock DISPLAY=:5
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - wget -q --wait 10 --tries 10 --retry-connrefused http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
     - find $PWD -name '*mock*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
