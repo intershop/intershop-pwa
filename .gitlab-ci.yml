@@ -9,7 +9,6 @@ stages:
 
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/cache/.npm'
-  CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -41,6 +40,7 @@ setup:
       - master
   tags:
     - docker-executor
+    - performance
   script:
     - node --version && npm --version
     - bash -c "cd tslint-rules ; npm --silent run build"
@@ -62,6 +62,7 @@ jest_test:
       - master
   tags:
     - docker-executor
+    - performance
   artifacts:
     paths:
       - reports/coverage
@@ -86,15 +87,9 @@ compile:
       - master
   tags:
     - docker-executor
-  artifacts:
-    paths:
-      - reports/bundle
-    expire_in: 1 day
+    - performance
   dependencies: []
   script:
-    - npm ci --prefer-offline --production
-    - npx ng build --progress false --prod --stats-json
-    - npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle/index.html -m static
     - npm ci --prefer-offline
     - npx tsc -p src/tsconfig.spec.json
     - echo "build complete"
@@ -110,6 +105,7 @@ codestyle:
       - master
   tags:
     - docker-executor
+    - performance
   artifacts:
     expire_in: 1 day
     paths:
@@ -126,34 +122,52 @@ codestyle:
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
     - echo "build complete"
 
-cypress_mocked:
-  image: cypress/browsers:chrome69
+deploy_review_mock:
+  cache: {}
+  dependencies: []
   stage: build
   only:
-    - merge_requests
-  except:
     refs:
-      - develop
-      - master
+      - merge_requests
   tags:
-    - docker-executor
-  artifacts:
-    reports:
-      junit: reports/e2e-*.xml
-    when: on_failure
-    expire_in: 2 weeks
-    paths:
-      - cypress/screenshots
-  dependencies: []
+    - shell-executor
+    - docker
+    - performance
+    - demoserver
   script:
-    - node --version && npm --version
-    - npm i
-    - export ICM_BASE_URL=http://localhost:4200 PWA_BASE_URL=http://localhost:4200 DISPLAY=:5
-    - nohup bash -c "Xvfb ${DISPLAY} &"
-    - nohup bash -c "npx ng serve &"
-    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
-    - echo "E2E complete"
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - docker build -t ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
+      --file=templates/Dockerfile_dev
+      .
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
+    - docker run
+      --detach
+      --publish-all
+      --name "${CI_COMMIT_REF_SLUG}-mock"
+      ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
+  environment:
+    name: review/mock-$CI_COMMIT_REF_SLUG
+    url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
+    on_stop: stop_review_mock
+
+stop_review_mock:
+  stage: build
+  cache: {}
+  dependencies: []
+  when: manual
+  tags:
+    - shell-executor
+    - docker
+    - demoserver
+  only:
+    - merge_requests
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
+  environment:
+    name: review/mock-$CI_COMMIT_REF_SLUG
+    action: stop
 
 publish_pwa:
   cache: {}
@@ -194,6 +208,7 @@ publish_pwa_latest:
     - tags
   tags:
     - docker-executor
+    - performance
   services:
     - docker:dind
   script:
@@ -251,6 +266,8 @@ publish_nginx:
       - master
       - tags
       - merge_requests
+    changes:
+      - nginx/**/*
   tags:
     - shell-executor
     - docker
@@ -299,7 +316,7 @@ deploy_demo:
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'intershop-pwa'
+    SERVICE: 'develop-pwa-b2c'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -336,7 +353,7 @@ deploy_demo_b2b:
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'intershop-pwa-b2b'
+    SERVICE: 'develop-pwa-b2b'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -370,7 +387,7 @@ deploy_demo_nginx:
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'intershop-pwa-nginx'
+    SERVICE: 'develop-nginx'
     IMAGE: '${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -484,7 +501,7 @@ deploy_review_b2c:
       --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
-    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
+    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
     - docker run
       --detach
       --publish-all
@@ -590,6 +607,29 @@ stop_review_b2b:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
 
+build_e2e_image:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  image: docker:stable
+  only:
+    refs:
+      - develop
+      - master
+      - tags
+      - merge_requests
+  tags:
+    - shell-executor
+    - docker
+    - performance
+  services:
+    - docker:dind
+  script:
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} --file=templates/Dockerfile_e2e .
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+
 schematics:
   image: node:10
   stage: e2e
@@ -602,20 +642,40 @@ schematics:
       - master
   tags:
     - docker-executor
+    - performance
   dependencies: []
   script:
     - npm install
     - bash .gitlab-ci-test-schematics.sh
     - echo "schematics complete"
 
-cypress_remote:
-  image: cypress/browsers:chrome69
+universal_b2c:
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   only:
     - merge_requests
     - triggers
   tags:
     - docker-executor
+    - e2e
+  dependencies: []
+  cache: {}
+  script:
+    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - sh .gitlab-ci-test-universal.sh
+
+cypress_remote:
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  stage: e2e
+  parallel: 4
+  only:
+    - merge_requests
+    - triggers
+  tags:
+    - docker-executor
+    - e2e
   artifacts:
     reports:
       junit: reports/e2e-*.xml
@@ -623,33 +683,27 @@ cypress_remote:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+      - cypress/videos
   dependencies: []
   script:
-    - set -x
-    - apt-get update || true
-    - apt-get -y install dnsutils
     - node --version && npm --version
     - export DISPLAY=:5
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
-    - export CYPRESS_NO_CHANNEL_REDIRECT=1
-    - npm i
+    - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - test $CI_PIPELINE_SOURCE = trigger || echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME" >> /etc/hosts
-    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
-    - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2c*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 cypress_remote_b2b:
-  image: cypress/browsers:chrome69
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   only:
     - merge_requests
     - triggers
   tags:
     - docker-executor
+    - e2e
   artifacts:
     reports:
       junit: reports/e2e-*.xml
@@ -657,22 +711,46 @@ cypress_remote_b2b:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+      - cypress/videos
   dependencies: []
   script:
-    - set -x
-    - apt-get update || true
-    - apt-get -y install dnsutils
     - node --version && npm --version
     - export DISPLAY=:5
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4325 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
-    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
-    - export CYPRESS_NO_CHANNEL_REDIRECT=1
-    - npm i
+    - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - wget --wait 10 --tries 10 --retry-connrefused ${PWA_BASE_URL}
     - sh .gitlab-ci-test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -rl sh .gitlab-ci-test-e2e.sh
+    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
+    - echo "E2E complete"
+
+cypress_mocked:
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  stage: e2e
+  only:
+    - merge_requests
+  except:
+    refs:
+      - develop
+      - master
+  tags:
+    - docker-executor
+    - e2e
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+      - cypress/videos
+  dependencies: []
+  script:
+    - node --version && npm --version
+    - export ICM_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock DISPLAY=:5
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
     - echo "E2E complete"
 
 check_mr_title:
