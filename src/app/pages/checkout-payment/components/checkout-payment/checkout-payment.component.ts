@@ -15,6 +15,7 @@ import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -53,19 +54,25 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   model = {};
   options: FormlyFormOptions = {};
 
+  filteredPaymentMethods: PaymentMethod[] = [];
+
   nextSubmitted = false;
   formSubmitted = false;
+  experimental = false;
 
   openFormIndex = -1; // index of the open parameter form
 
   private destroy$ = new Subject();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private featureToggle: FeatureToggleService) {}
 
   /**
    * create payment form
    */
   ngOnInit() {
+    // if experimental feature is on, payment redirect payment method is allowed
+    this.experimental = this.featureToggle.enabled('experimental');
+
     this.paymentForm = new FormGroup({
       name: new FormControl(this.getBasketPayment()),
       parameters: this.parameterForm,
@@ -94,6 +101,21 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
       this.openFormIndex = -1; // close parameter form after successfully basket changed
       this.parameterForm.reset();
+    }
+
+    this.filterPaymentMethods(c);
+  }
+
+  /**
+   * filters payment methods with capability RedirectBeforeCheckout, if experimental feature toggle is not set
+   */
+  filterPaymentMethods(c: SimpleChanges) {
+    if (c.paymentMethods) {
+      this.filteredPaymentMethods = !this.experimental
+        ? this.paymentMethods.filter(
+            pm => !pm.capabilities || !pm.capabilities.some(cap => cap === 'RedirectBeforeCheckout')
+          )
+        : this.paymentMethods;
     }
   }
 
@@ -170,14 +192,21 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   nextStep() {
     this.nextSubmitted = true;
     if (!this.nextDisabled) {
+      if (
+        this.basket.payment.capabilities &&
+        this.basket.payment.capabilities.includes('RedirectBeforeCheckout') &&
+        this.basket.payment.redirectUrl &&
+        this.basket.payment.redirectRequired
+      ) {
+        document.location.href = this.basket.payment.redirectUrl;
+      }
+
       this.router.navigate(['/checkout/review']);
     }
   }
-
   get nextDisabled() {
     return (!this.basket || !this.basket.payment) && this.nextSubmitted;
   }
-
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
   }

@@ -86,6 +86,17 @@ export class BasketMapper {
                 included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
                   ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].description
                   : undefined,
+              capabilities:
+                included.payments_paymentMethod &&
+                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].capabilities
+                  : undefined,
+              redirectUrl: included.payments['open-tender'].redirect
+                ? included.payments['open-tender'].redirect.redirectUrl
+                : undefined,
+              redirectRequired: included.payments['open-tender'].redirect
+                ? included.payments['open-tender'].redirectRequired
+                : undefined,
             }
           : undefined,
       totals,

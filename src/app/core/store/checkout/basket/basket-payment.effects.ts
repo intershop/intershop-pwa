@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { RouteNavigation, ofRoute } from 'ngrx-router';
+import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasketId } from './basket.selectors';
@@ -64,6 +65,40 @@ export class BasketPaymentEffects {
   );
 
   /**
+   * Checks, if the page is called with redirect query params and sends them to the server
+   */
+  @Effect()
+  sendPaymentRedirectData$ = this.actions$.pipe(
+    ofRoute(['checkout/payment', 'checkout/review']),
+    map((action: RouteNavigation) => action.payload.queryParams),
+    filter(queryParams => queryParams && queryParams.redirect),
+    switchMap(queryParams =>
+      this.store.pipe(
+        select(getCurrentBasketId),
+        whenTruthy(),
+        take(1),
+        mapTo(new basketActions.UpdateBasketPayment({ params: queryParams }))
+      )
+    )
+  );
+
+  /**
+   * Updates a basket payment concerning redirect data.
+   */
+  @Effect()
+  updateBasketPayment$ = this.actions$.pipe(
+    ofType<basketActions.UpdateBasketPayment>(basketActions.BasketActionTypes.UpdateBasketPayment),
+    mapToPayloadProperty('params'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    concatMap(([params, basketid]) =>
+      this.basketService.updateBasketPayment(basketid, params).pipe(
+        mapTo(new basketActions.UpdateBasketPaymentSuccess()),
+        mapErrorToAction(basketActions.UpdateBasketPaymentFail)
+      )
+    )
+  );
+
+  /**
    * Deletes a payment instrument and the related payment at the current basket.
    */
   @Effect()
@@ -87,6 +122,7 @@ export class BasketPaymentEffects {
     ofType(
       basketActions.BasketActionTypes.SetBasketPaymentSuccess,
       basketActions.BasketActionTypes.SetBasketPaymentFail,
+      basketActions.BasketActionTypes.UpdateBasketPaymentSuccess,
       basketActions.BasketActionTypes.DeleteBasketPaymentSuccess
     ),
     mapTo(new basketActions.LoadBasket())

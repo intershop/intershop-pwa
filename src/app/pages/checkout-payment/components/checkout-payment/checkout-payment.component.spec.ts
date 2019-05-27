@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
@@ -22,6 +24,7 @@ describe('Checkout Payment Component', () => {
   let component: CheckoutPaymentComponent;
   let fixture: ComponentFixture<CheckoutPaymentComponent>;
   let element: HTMLElement;
+  let paymentMethodChange: SimpleChanges;
 
   beforeEach(async(() => {
     // tslint:disable-next-line:use-component-change-detection
@@ -45,6 +48,10 @@ describe('Checkout Payment Component', () => {
         PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
+        StoreModule.forRoot(
+          { configuration: configurationReducer },
+          { initialState: { configuration: { features: ['experimental'] } } }
+        ),
         TranslateModule.forRoot(),
       ],
     }).compileComponents();
@@ -68,6 +75,9 @@ describe('Checkout Payment Component', () => {
       },
       BasketMockData.getPaymentMethod(),
     ];
+    paymentMethodChange = {
+      paymentMethods: new SimpleChange(undefined, component.paymentMethods, false),
+    };
   });
 
   it('should be created', () => {
@@ -175,6 +185,7 @@ describe('Checkout Payment Component', () => {
     it('should render standard parameter form for standard parametrized form', () => {
       component.openPaymentParameterForm(2);
 
+      component.ngOnChanges(paymentMethodChange);
       fixture.detectChanges();
       expect(element.querySelector('formly-form')).toBeTruthy();
       expect(element.querySelector('ish-payment-concardis-creditcard')).toBeFalsy();
@@ -183,6 +194,7 @@ describe('Checkout Payment Component', () => {
 
   describe('should display selectable and deleteable payment instruments for parametrized payment methods', () => {
     it('should display payment instruments when parametrized payment methods are available', () => {
+      component.ngOnChanges(paymentMethodChange);
       fixture.detectChanges();
 
       expect(element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard]')).toBeTruthy();
