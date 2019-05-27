@@ -48,48 +48,54 @@ const run = (num, spec, retryGroup) => {
 
   console.log(config);
 
-  return cypress.run(config).then(results => {
-    if (results.totalFailed) {
-      totalFailuresIncludingRetries += results.totalFailed;
+  return cypress
+    .run(config)
+    .then(results => {
+      if (results.totalFailed) {
+        totalFailuresIncludingRetries += results.totalFailed;
 
-      // rerun again with only the failed tests
-      const specs = _(results.runs)
-        .filter('stats.failures')
-        .map('spec.relative')
-        .value();
-
-      console.log(`Run #${num} failed.`);
-      console.log(
-        _(results.runs)
+        // rerun again with only the failed tests
+        const specs = _(results.runs)
           .filter('stats.failures')
-          .map('tests')
-          .flatten()
-          .filter('error')
-          .value()
-      );
+          .map('spec.relative')
+          .value();
 
-      // if this is the 3rd total run (2nd retry)
-      // and we've still got failures then just exit
-      if (num >= MAX_NUM_RUNS) {
-        console.log(`Ran a total of '${MAX_NUM_RUNS}' times but still have failures. Exiting...`);
-        return process.exit(totalFailuresIncludingRetries);
+        console.log(`Run #${num} failed.`);
+        console.log(
+          _(results.runs)
+            .filter('stats.failures')
+            .map('tests')
+            .flatten()
+            .filter('error')
+            .value()
+        );
+
+        // if this is the 3rd total run (2nd retry)
+        // and we've still got failures then just exit
+        if (num >= MAX_NUM_RUNS) {
+          console.log(`Ran a total of '${MAX_NUM_RUNS}' times but still have failures. Exiting...`);
+          return process.exit(totalFailuresIncludingRetries);
+        }
+
+        console.log(`Retrying '${specs.length}' specs...`);
+        console.log(specs);
+
+        // If we're using parallelization, set a new group name
+        let retryGroupName;
+        if (DEFAULT_CONFIG.group) {
+          retryGroupName = `${DEFAULT_CONFIG.group}: retry #${num}  (${specs.length} spec${
+            specs.length === 1 ? '' : 's'
+          } on ${uniqueId})`;
+        }
+
+        // kick off a new suite run
+        return run(num, specs, retryGroupName);
       }
-
-      console.log(`Retrying '${specs.length}' specs...`);
-      console.log(specs);
-
-      // If we're using parallelization, set a new group name
-      let retryGroupName;
-      if (DEFAULT_CONFIG.group) {
-        retryGroupName = `${DEFAULT_CONFIG.group}: retry #${num}  (${specs.length} spec${
-          specs.length === 1 ? '' : 's'
-        } on ${uniqueId})`;
-      }
-
-      // kick off a new suite run
-      return run(num, specs, retryGroupName);
-    }
-  });
+    })
+    .catch(err => {
+      console.error(err);
+      return run(num);
+    });
 };
 
 // kick off the run with the default specs
