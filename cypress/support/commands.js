@@ -50,17 +50,19 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     .get('body', { timeout: 40000 })
     .should('have.descendants', 'ish-root')
     .then(body => {
-      cy.wait('@translations');
+      let chain = cy.wait('@translations');
       if (!body.find('#intershop-pwa-state').length) {
-        cy.wait('@categories').log('page ready -- top level categories loaded');
+        chain = chain.wait('@categories').log('page ready -- top level categories loaded');
       } else {
-        cy.log('page ready -- found transferred state');
+        chain = chain.log('page ready -- found transferred state');
       }
-      return cy.url().should(newUrl => {
-        const simplifiedUrl = url.replace(/[\/\?]/g, '.+').replace(' ', '.+');
-        const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
-        expect(newUrl).to.match(oldUrlRegex);
-      });
+      return chain.then(() =>
+        cy.url().should(newUrl => {
+          const simplifiedUrl = url.replace(/[\/\?]/g, '.+').replace(' ', '.+');
+          const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
+          expect(newUrl).to.match(oldUrlRegex);
+        })
+      );
     });
 });
 
