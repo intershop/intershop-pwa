@@ -28,19 +28,13 @@ export class BasketMapper {
           valueRebates:
             data.discounts && data.discounts.valueBasedDiscounts && included.discounts
               ? data.discounts.valueBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(
-                    included.discounts[discountId],
-                    included.discounts_promotion[included.discounts[discountId].promotion]
-                  )
+                  BasketRebateMapper.fromData(included.discounts[discountId])
                 )
               : undefined,
           shippingRebates:
             data.discounts && data.discounts.shippingBasedDiscounts && included.discounts
               ? data.discounts.shippingBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(
-                    included.discounts[discountId],
-                    included.discounts_promotion[included.discounts[discountId].promotion]
-                  )
+                  BasketRebateMapper.fromData(included.discounts[discountId])
                 )
               : undefined,
           itemSurchargeTotalsByType: data.surcharges

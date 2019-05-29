@@ -23,8 +23,10 @@ import { AddressComponent } from './address/components/address/address.component
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketPromotionComponent } from './basket/components/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
+import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
@@ -85,6 +87,7 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
+  BasketPromotionComponent,
   FilterCheckboxComponent,
   FilterDropdownComponent,
   FilterSwatchImagesComponent,
@@ -107,6 +110,7 @@ const exportedComponents = [
   BasketAddressSummaryComponent,
   BasketCostSummaryComponent,
   BasketItemsSummaryComponent,
+  BasketPromotionContainerComponent,
   BreadcrumbComponent,
   FilterNavigationContainerComponent,
   InfoBoxComponent,
