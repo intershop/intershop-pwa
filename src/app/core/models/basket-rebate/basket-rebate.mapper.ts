@@ -1,11 +1,10 @@
 import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { PriceMapper } from '../price/price.mapper';
-import { Promotion } from '../promotion/promotion.model';
 
 import { BasketRebate } from './basket-rebate.model';
 
 export class BasketRebateMapper {
-  static fromData(data: BasketRebateData, promotion: Promotion): BasketRebate {
+  static fromData(data: BasketRebateData): BasketRebate {
     if (data) {
       return {
         id: data.id,
@@ -13,7 +12,7 @@ export class BasketRebateMapper {
         description: data.description,
         rebateType: data.promotionType,
         code: data.code,
-        promotion,
+        promotionId: data.promotion,
       };
     }
   }

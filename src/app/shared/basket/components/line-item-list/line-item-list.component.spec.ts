@@ -13,6 +13,7 @@ import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
+import { BasketPromotionContainerComponent } from '../../containers/basket-promotion/basket-promotion.container';
 import { LineItemDescriptionComponent } from '../line-item-description/line-item-description.component';
 
 import { LineItemListComponent } from './line-item-list.component';
@@ -26,6 +27,7 @@ describe('Line Item List Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         LineItemListComponent,
+        MockComponent(BasketPromotionContainerComponent),
         MockComponent(LineItemDescriptionComponent),
         MockComponent(ProductImageComponent),
         MockComponent(PromotionDetailsComponent),

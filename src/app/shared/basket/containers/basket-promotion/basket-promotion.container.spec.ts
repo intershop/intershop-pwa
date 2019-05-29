@@ -2,15 +2,15 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ProductPromotionComponent } from '../../components/product-promotion/product-promotion.component';
+import { BasketPromotionComponent } from '../../components/basket-promotion/basket-promotion.component';
 
-import { ProductPromotionContainerComponent } from './product-promotion.container';
+import { BasketPromotionContainerComponent } from './basket-promotion.container';
 
-describe('Product Promotion Container', () => {
-  let component: ProductPromotionContainerComponent;
-  let fixture: ComponentFixture<ProductPromotionContainerComponent>;
+describe('Basket Promotion Container', () => {
+  let component: BasketPromotionContainerComponent;
+  let fixture: ComponentFixture<BasketPromotionContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -20,19 +20,18 @@ describe('Product Promotion Container', () => {
           shopping: combineReducers(shoppingReducers),
         }),
       ],
-      declarations: [MockComponent(ProductPromotionComponent), ProductPromotionContainerComponent],
+      declarations: [BasketPromotionContainerComponent, MockComponent(BasketPromotionComponent)],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductPromotionContainerComponent);
+    fixture = TestBed.createComponent(BasketPromotionContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = {
-      name: 'test',
-      sku: 'test',
-      promotionIds: ['PROMO_UUID'],
-    } as Product;
+    component.rebate = {
+      id: 'test',
+      promotionId: 'PROMO_UUID',
+    } as BasketRebate;
   });
 
   it('should be created', () => {

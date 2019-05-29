@@ -19,10 +19,7 @@
       <!-- promotions -->
       <div *ngIf="pli.valueRebates && pli.valueRebates.length" class="col-12">
         <ng-container *ngFor="let rebate of pli.valueRebates">
-          <ng-container *ngIf="rebate.promotion && !rebate.promotion.disableMessages">
-            <div class="promotion-title" [innerHTML]="rebate.promotion.title | safeHtml"></div>
-            <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
-          </ng-container>
+          <ish-basket-promotion-container [rebate]="rebate"></ish-basket-promotion-container>
         </ng-container>
       </div>
     </ng-container>
