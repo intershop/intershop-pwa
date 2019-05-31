@@ -12,7 +12,7 @@ describe('Account Profile Settings Page Component', () => {
   let component: AccountProfileSettingsPageComponent;
   let fixture: ComponentFixture<AccountProfileSettingsPageComponent>;
   let element: HTMLElement;
-  const user = { firstName: 'Patricia', lastName: 'Miller' } as User;
+  const user = { firstName: 'Patricia', lastName: 'Miller', email: 'patricia@test.intershop.de' } as User;
   const customer = { type: 'PrivateCustomer' } as Customer;
 
   beforeEach(async(() => {
@@ -34,5 +34,17 @@ describe('Account Profile Settings Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display customer data and edit links after creation ', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="success-message"]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id="email-field"]').innerHTML).toBe('patricia@test.intershop.de');
+    expect(element.querySelector('[data-testing-id="edit-password"]')).toBeTruthy();
+  });
+  it('should show a success message if the input parameter successMessage is set', () => {
+    component.successMessage = 'success';
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="success-message"]')).toBeTruthy();
   });
 });

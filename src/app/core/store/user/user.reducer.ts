@@ -10,6 +10,7 @@ export interface UserState {
   authorized: boolean;
   _authToken: string;
   loading: boolean;
+  successMessage: string;
   error: HttpError;
 }
 
@@ -19,11 +20,19 @@ export const initialState: UserState = {
   authorized: false,
   _authToken: undefined,
   loading: false,
+  successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
 };
 
 export function userReducer(state = initialState, action: UserAction): UserState {
   switch (action.type) {
+    case UserActionTypes.UserSuccessMessageReset: {
+      return {
+        ...state,
+        successMessage: undefined,
+      };
+    }
+
     case UserActionTypes.UserErrorReset: {
       return {
         ...state,
@@ -45,10 +54,12 @@ export function userReducer(state = initialState, action: UserAction): UserState
 
     case UserActionTypes.LoadCompanyUser:
     case UserActionTypes.CreateUser:
-    case UserActionTypes.UpdateUser: {
+    case UserActionTypes.UpdateUser:
+    case UserActionTypes.UpdateUserPassword: {
       return {
         ...state,
         loading: true,
+        successMessage: undefined,
       };
     }
 
@@ -64,7 +75,8 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
-    case UserActionTypes.UpdateUserFail: {
+    case UserActionTypes.UpdateUserFail:
+    case UserActionTypes.UpdateUserPasswordFail: {
       const error = action.payload.error;
 
       return {
@@ -97,6 +109,17 @@ export function userReducer(state = initialState, action: UserAction): UserState
         user,
         loading: false,
         error: undefined,
+      };
+    }
+
+    case UserActionTypes.UpdateUserPasswordSuccess: {
+      const successMessage = action.payload.successMessage;
+
+      return {
+        ...state,
+        loading: false,
+        error: undefined,
+        successMessage,
       };
     }
   }

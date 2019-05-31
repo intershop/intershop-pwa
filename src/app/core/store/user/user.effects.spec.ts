@@ -9,7 +9,7 @@ import { Action, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
@@ -48,6 +48,7 @@ describe('User Effects', () => {
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
+    when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(of(undefined));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
 
     TestBed.configureTestingModule({
@@ -316,6 +317,57 @@ describe('User Effects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.updateUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateUserPassword$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer: {
+            customerNo: '4711',
+            type: 'PrivateCustomer',
+          } as Customer,
+          user: {} as User,
+        })
+      );
+    });
+    it('should call the api service when UpdateUserPassword is called', done => {
+      const action = new ua.UpdateUserPassword({ password: '123' });
+
+      actions$ = of(action);
+
+      effects.updateUserPassword$.subscribe(() => {
+        verify(userServiceMock.updateUserPassword(anything(), anyString())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a UpdateUserPasswordSuccess action on successful user password update', () => {
+      const password = '123';
+
+      const action = new ua.UpdateUserPassword({ password });
+      const completion = new ua.UpdateUserPasswordSuccess({
+        successMessage: 'account.profile.update_password.message',
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateUserPassword$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateUserPasswordFail action on failed user password update', () => {
+      when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+
+      const password = '123';
+      const action = new ua.UpdateUserPassword({ password });
+      const completion = new ua.UpdateUserPasswordFail({ error: { message: 'invalid' } as HttpError });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateUserPassword$).toBeObservable(expected$);
     });
   });
 
