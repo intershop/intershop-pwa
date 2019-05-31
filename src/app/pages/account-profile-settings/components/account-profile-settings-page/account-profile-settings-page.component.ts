@@ -11,6 +11,5 @@ import { User } from 'ish-core/models/user/user.model';
 export class AccountProfileSettingsPageComponent {
   @Input() user: User;
   @Input() customer: Customer;
-
-  showSuccessMessage: string;
+  @Input() successMessage: string;
 }

@@ -12,6 +12,9 @@ import {
   LogoutUser,
   UpdateUser,
   UpdateUserFail,
+  UpdateUserPassword,
+  UpdateUserPasswordFail,
+  UpdateUserPasswordSuccess,
   UpdateUserSuccess,
   UserAction,
   UserErrorReset,
@@ -38,6 +41,10 @@ describe('User Reducer', () => {
 
     it('should not have an error when unmodified', () => {
       expect(initialState.error).toBeFalsy();
+    });
+
+    it('should not have a success message when unmodified', () => {
+      expect(initialState.successMessage).toBeUndefined();
     });
 
     it('should not be in loading mode when unmodified', () => {
@@ -169,6 +176,32 @@ describe('User Reducer', () => {
     it('should set error and set loading to false when UpdateUserFail is reduced', () => {
       const error = { message: 'invalid' } as HttpError;
       const action = new UpdateUserFail({ error });
+      const state = userReducer(initialState, action);
+
+      expect(state.loading).toBeFalse();
+      expect(state.error).toEqual(error);
+    });
+  });
+
+  describe('Update user password actions', () => {
+    it('should loading to true when UpdateUserPassword action is reduced', () => {
+      const action = new UpdateUserPassword({ password: '123' });
+      const state = userReducer(initialState, action);
+
+      expect(state.loading).toBeTrue();
+    });
+
+    it('should set successMessage and reset loading when UpdateUserPasswordSuccess is reduced', () => {
+      const action = new UpdateUserPasswordSuccess({ successMessage: 'success' });
+      const state = userReducer(initialState, action);
+
+      expect(state.successMessage).toEqual('success');
+      expect(state.loading).toBeFalse();
+    });
+
+    it('should set error and set loading to false when UpdateUserPasswordFail is reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new UpdateUserPasswordFail({ error });
       const state = userReducer(initialState, action);
 
       expect(state.loading).toBeFalse();

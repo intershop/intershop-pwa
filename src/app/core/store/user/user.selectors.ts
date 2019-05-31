@@ -25,6 +25,14 @@ export const getUserAuthorized = createSelector(
   getUserState,
   state => state.authorized
 );
+export const getUserLoading = createSelector(
+  getUserState,
+  state => state.loading
+);
+export const getUserSuccessMessage = createSelector(
+  getUserState,
+  state => state.successMessage
+);
 export const getUserError = createSelector(
   getUserState,
   state => state.error

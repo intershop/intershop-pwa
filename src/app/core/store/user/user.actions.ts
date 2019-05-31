@@ -19,6 +19,10 @@ export enum UserActionTypes {
   UpdateUser = '[Account] Update User',
   UpdateUserSuccess = '[Account API] Update User Succeeded',
   UpdateUserFail = '[Account API] Update User Failed',
+  UpdateUserPassword = '[Account] Update User Password',
+  UpdateUserPasswordSuccess = '[Account API] Update User Password Succeeded',
+  UpdateUserPasswordFail = '[Account API] Update User Password Failed',
+  UserSuccessMessageReset = '[Account Internal] Reset Update Success Message',
   UserErrorReset = '[Account Internal] Reset User Error',
   LoadUserByAPIToken = '[Account] Load User by API Token',
 }
@@ -86,6 +90,25 @@ export class UpdateUserFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
+export class UpdateUserPassword implements Action {
+  readonly type = UserActionTypes.UpdateUserPassword;
+  constructor(public payload: { password: string; successMessage?: string }) {}
+}
+
+export class UpdateUserPasswordSuccess implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordSuccess;
+  constructor(public payload: { successMessage?: string }) {}
+}
+
+export class UpdateUserPasswordFail implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class UserSuccessMessageReset implements Action {
+  readonly type = UserActionTypes.UserSuccessMessageReset;
+}
+
 export class UserErrorReset implements Action {
   readonly type = UserActionTypes.UserErrorReset;
 }
@@ -109,5 +132,9 @@ export type UserAction =
   | UpdateUser
   | UpdateUserSuccess
   | UpdateUserFail
+  | UpdateUserPassword
+  | UpdateUserPasswordSuccess
+  | UpdateUserPasswordFail
+  | UserSuccessMessageReset
   | UserErrorReset
   | LoadUserByAPIToken;

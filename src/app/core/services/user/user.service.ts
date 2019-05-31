@@ -128,6 +128,26 @@ export class UserService {
   }
 
   /**
+   * Updates the password of the currently logged in user.
+   * @param customer  The current customer.
+   * @param body      The user password to update.
+   */
+  updateUserPassword(customer: Customer, password: string): Observable<void> {
+    if (!customer) {
+      return throwError('updateUserPassword() called without customer');
+    }
+    if (!password) {
+      return throwError('updateUserPassword() called without password');
+    }
+
+    if (customer.type === 'PrivateCustomer') {
+      return this.apiService.put('customers/-/credentials/password', { password });
+    } else {
+      return this.apiService.put('customers/-/users/-/credentials/password', { password });
+    }
+  }
+
+  /**
    * Get User data for the logged in Business Customer.
    * @returns The related customer user data.
    */

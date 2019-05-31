@@ -740,7 +740,7 @@
   "account.update_new_password_success.message": "Your password has been changed. For security reasons please close this window.",
   "account.update_password.answer.text": "Your new password takes effect immediately. Use it the next time you place an order or update your account information.",
   "account.update_password.breadcrumb": "Edit Password",
-  "account.update_password.change.message": "To change your password, enter your current and new password in the fields below.",
+  "account.update_password.change.message": "To change your password, enter your new password in the fields below.",
   "account.update_password.change_your_password.heading": "Change your password!",
   "account.update_password.confirm_password.error.required": "Please confirm the new password.",
   "account.update_password.confirm_password.error.stringcompare": "Your passwords do not match.",
