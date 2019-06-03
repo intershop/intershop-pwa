@@ -1,8 +1,8 @@
 .homepage.sticky-header .wrapper {
-  margin-top: 175px;
+  margin-top: 172px;
 
-  @media (max-width: $screen-xs-max) {
-    margin-top: 55px;
+  @include media-breakpoint-down(sm) {
+    margin-top: 52px;
   }
 }
 
@@ -28,21 +28,46 @@
       position: relative;
       display: flex;
 
+      @include media-breakpoint-down(md) {
+        max-width: 100%;
+        min-height: 55px;
+        padding-right: 0;
+        padding-left: 0;
+        margin-right: 0;
+        margin-left: 0;
+      }
+
       .logo-wrapper {
+        display: flex;
+        align-self: center;
         padding-top: 0;
         padding-bottom: 0;
 
-        .logo {
+        .logo img {
           height: 25px;
           padding-right: $space-default * 2;
+        }
+      }
+
+      @include media-breakpoint-down(md) {
+        .navbar-toggler {
+          display: block;
         }
       }
 
       .main-navigation {
         position: unset;
 
-        .main-navigation-list .category-level1 {
-          left: 15px;
+        .main-navigation-list {
+          .category-level1 {
+            left: 15px;
+          }
+
+          li a {
+            @include media-breakpoint-only(lg) {
+              font-size: $font-size-corporate;
+            }
+          }
         }
       }
 
@@ -50,66 +75,18 @@
         order: 10;
         background: $color-inverse;
 
-        .my-account-link {
-          display: block;
+
+
+        @include media-breakpoint-down(md) {
+          line-height: $header-height-mobile;
         }
-      }
-    }
-  }
 
-  .main-navigation-list li {
-    @media (min-width: $screen-xs-max) and (max-width: $screen-md-max) {
-      a {
-        font-size: $font-size-corporate;
-      }
-    }
-  }
-
-  .logo-wrapper {
-    display: flex;
-    align-self: center;
-
-    .logo {
-      height: 25px;
-      padding-right: $space-default * 2;
-    }
-  }
-
-  .search-toggler {
-    position: relative;
-
-    &.active-search {
-      background-color: $color-primary;
-
-      .ng-fa-icon {
-        color: $text-color-inverse;
-      }
-    }
-  }
-
-  .search-container {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    z-index: 999999;
-    width: 400px;
-    background: $color-inverse;
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
-  }
-
-  .navbar-toggler {
-    padding: 13px 21px;
-  }
-}
-
-.sticky-header-search-container {
-  display: block;
-  overflow: hidden;
-  transition: height 500ms ease-in-out;
-
-  &.show {
-    height: 38px;
-  }
+        
+        .header-search-container {
+          &.show {
+            height: $search-container-height;
+            transition: height 500ms ease-in-out;
+          }
 
   &:not(.show) {
     display: block; //required for animation
