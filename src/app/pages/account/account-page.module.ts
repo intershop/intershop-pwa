@@ -45,6 +45,16 @@ const accountPageRoutes: Routes = [
           '../account-profile-settings/account-profile-settings-page.module#AccountProfileSettingsPageModule',
       },
       {
+        path: 'profile/email',
+        data: {
+          breadcrumbData: [
+            { key: 'account.profile.link', link: '/account/profile' },
+            { key: 'account.update_email.breadcrumb' },
+          ],
+        },
+        loadChildren: '../account-profile-email/account-profile-email-page.module#AccountProfileEmailPageModule',
+      },
+      {
         path: 'profile/password',
         data: {
           breadcrumbData: [

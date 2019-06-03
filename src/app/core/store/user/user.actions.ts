@@ -77,12 +77,12 @@ export class CreateUserFail implements Action {
 
 export class UpdateUser implements Action {
   readonly type = UserActionTypes.UpdateUser;
-  constructor(public payload: { user: User }) {}
+  constructor(public payload: { user: User; successMessage?: string }) {}
 }
 
 export class UpdateUserSuccess implements Action {
   readonly type = UserActionTypes.UpdateUserSuccess;
-  constructor(public payload: { user: User }) {}
+  constructor(public payload: { user: User; successMessage?: string }) {}
 }
 
 export class UpdateUserFail implements Action {

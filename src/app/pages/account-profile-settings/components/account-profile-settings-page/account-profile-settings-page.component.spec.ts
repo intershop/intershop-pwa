@@ -40,6 +40,7 @@ describe('Account Profile Settings Page Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="success-message"]')).toBeFalsy();
     expect(element.querySelector('[data-testing-id="email-field"]').innerHTML).toBe('patricia@test.intershop.de');
+    expect(element.querySelector('[data-testing-id="edit-email"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="edit-password"]')).toBeTruthy();
   });
   it('should show a success message if the input parameter successMessage is set', () => {

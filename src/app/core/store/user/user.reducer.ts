@@ -100,8 +100,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
-    case UserActionTypes.LoadCompanyUserSuccess:
-    case UserActionTypes.UpdateUserSuccess: {
+    case UserActionTypes.LoadCompanyUserSuccess: {
       const user = action.payload.user;
 
       return {
@@ -109,6 +108,19 @@ export function userReducer(state = initialState, action: UserAction): UserState
         user,
         loading: false,
         error: undefined,
+      };
+    }
+
+    case UserActionTypes.UpdateUserSuccess: {
+      const user = action.payload.user;
+      const successMessage = action.payload.successMessage;
+
+      return {
+        ...state,
+        user,
+        loading: false,
+        error: undefined,
+        successMessage,
       };
     }
 

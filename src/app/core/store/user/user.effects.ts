@@ -129,11 +129,14 @@ export class UserEffects {
   @Effect()
   updateUser$ = this.actions$.pipe(
     ofType<userActions.UpdateUser>(userActions.UserActionTypes.UpdateUser),
-    mapToPayloadProperty('user'),
+    mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-    concatMap(([user, customer]) =>
-      this.userService.updateUser({ user, customer }).pipe(
-        map(changedUser => new userActions.UpdateUserSuccess({ user: changedUser })),
+    concatMap(([payload, customer]) =>
+      this.userService.updateUser({ user: payload.user, customer }).pipe(
+        map(
+          changedUser =>
+            new userActions.UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })
+        ),
         mapErrorToAction(userActions.UpdateUserFail)
       )
     )
@@ -160,7 +163,7 @@ export class UserEffects {
   /* Navigates the user to the Accouont Profile page and deletes the update user success message from store after 5 sec */
   @Effect()
   resetUpdateUserSuccessMessage$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.UpdateUserPasswordSuccess),
+    ofType(userActions.UserActionTypes.UpdateUserPasswordSuccess, userActions.UserActionTypes.UpdateUserSuccess),
     withLatestFrom(this.store$.pipe(select(getUserSuccessMessage))),
     filter(([, successMessage]) => !!successMessage),
     tap(() => this.router.navigateByUrl('/account/profile')),
