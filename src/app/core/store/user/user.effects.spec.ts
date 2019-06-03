@@ -296,8 +296,8 @@ describe('User Effects', () => {
     it('should dispatch a UpdateUserSuccess action on successful user update', () => {
       const user = { firstName: 'Patricia' } as User;
 
-      const action = new ua.UpdateUser({ user });
-      const completion = new ua.UpdateUserSuccess({ user });
+      const action = new ua.UpdateUser({ user, successMessage: 'success' });
+      const completion = new ua.UpdateUserSuccess({ user, successMessage: 'success' });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -343,12 +343,26 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a UpdateUserPasswordSuccess action on successful user password update', () => {
+    it('should dispatch an UpdateUserPasswordSuccess action on successful user password update with the default success message', () => {
       const password = '123';
 
       const action = new ua.UpdateUserPassword({ password });
       const completion = new ua.UpdateUserPasswordSuccess({
         successMessage: 'account.profile.update_password.message',
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateUserPassword$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateUserPasswordSuccess action on successful user password update with a given success message', () => {
+      const password = '123';
+
+      const action = new ua.UpdateUserPassword({ password, successMessage: 'success' });
+      const completion = new ua.UpdateUserPasswordSuccess({
+        successMessage: 'success',
       });
 
       actions$ = hot('-a-a-a', { a: action });

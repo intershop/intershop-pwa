@@ -166,10 +166,11 @@ describe('User Reducer', () => {
         firstName: 'test',
       } as User;
 
-      const action = new UpdateUserSuccess({ user: changedUser as User });
+      const action = new UpdateUserSuccess({ user: changedUser as User, successMessage: 'success' });
       const state = userReducer(initialState, action);
 
       expect(state.user).toEqual(changedUser);
+      expect(state.successMessage).toEqual('success');
       expect(state.loading).toBeFalse();
     });
 
