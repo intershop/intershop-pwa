@@ -1,6 +1,8 @@
 <div class="header container">
   <ul *ngIf="!isSticky" class="user-links">
-    <li class="d-none d-md-block"><ish-login-status-container></ish-login-status-container></li>
+    <li *ngIf="!isSticky && deviceType !== 'mobile'">
+      <ish-login-status-container data-testing-id="user-status-desktop"></ish-login-status-container>
+    </li>
     <li *ishFeature="'compare'" class="d-none d-md-block">
       <ish-product-compare-status-container></ish-product-compare-status-container>
     </li>
@@ -10,7 +12,7 @@
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container *ngIf="!isSticky"></ish-language-switch-container>
     </div>
-    <ish-login-status-container view="small"></ish-login-status-container>
+    <ish-login-status-container *ngIf="isSticky || deviceType === 'mobile'" view="small"></ish-login-status-container>
 
     <ish-mini-basket-container
       view="full"
@@ -34,17 +36,31 @@
   </div>
 
   <div class="logo-wrapper">
-    <a rel="home" routerLink="/home" class="d-none d-md-block">
-      <img src="assets/img/logo.png" class="logo" alt="Logo" />
+    <a
+      *ngIf="(!isSticky && deviceType === 'tablet') || deviceType === 'pc'"
+      rel="home"
+      routerLink="/home"
+      class="logo"
+      data-testing-id="header-home-link-desktop"
+    >
+      <img src="assets/img/logo.png" alt="Logo" />
     </a>
-    <a rel="home" routerLink="/home" class="mobile-logo d-md-none"
+    <a
+      *ngIf="(isSticky && deviceType !== 'pc') || deviceType === 'mobile'"
+      rel="home"
+      routerLink="/home"
+      class="mobile-logo"
+      data-testing-id="header-home-link-mobile"
       ><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"
     /></a>
   </div>
 
-  <button class="navbar-toggler d-md-none" type="button" (click)="navbarCollapsed = !navbarCollapsed">
+  <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
     <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-    <div class="hamburger-menu" [ngClass]="{ open: !navbarCollapsed }"><span></span> <span></span> <span></span></div>
+    <div class="hamburger-menu" [ngClass]="{ open: showNavBar }">
+      <!--- strokes of the hamburger menu -->
+      <span></span> <span></span> <span></span>
+    </div>
   </button>
 
   <div class="global-nav-container">
