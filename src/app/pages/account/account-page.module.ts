@@ -66,6 +66,16 @@ const accountPageRoutes: Routes = [
           '../account-profile-password/account-profile-password-page.module#AccountProfilePasswordPageModule',
       },
       {
+        path: 'profile/user',
+        data: {
+          breadcrumbData: [
+            { key: 'account.profile.link', link: '/account/profile' },
+            { key: 'account.update_profile.breadcrumb' },
+          ],
+        },
+        loadChildren: '../account-profile-user/account-profile-user-page.module#AccountProfileUserPageModule',
+      },
+      {
         path: 'quote-list',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
         loadChildren: 'app/extensions/quoting/pages/quote-list/quote-list-page.module#QuoteListPageModule',
