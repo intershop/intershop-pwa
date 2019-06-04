@@ -73,6 +73,11 @@
       "factory": "./kubernetes-deployment/factory#createKubernetesDeployment",
       "description": "Create Kubernetes Charts.",
       "schema": "./kubernetes-deployment/schema.json"
+    },
+    "azure-pipeline": {
+      "factory": "./azure-pipeline/factory#createAzurePipeline",
+      "description": "Create Azure Pipeline.",
+      "schema": "./azure-pipeline/schema.json"
     }
   }
 }
