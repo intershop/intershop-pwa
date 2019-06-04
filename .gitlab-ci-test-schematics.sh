@@ -98,3 +98,6 @@ nohup bash -c "npm run serve &"
 wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
 
 wget -O - -q "http://localhost:4200/warehouses" | grep -q "warehouses-page works"
+
+npx ng g kubernetes-deployment
+find charts
