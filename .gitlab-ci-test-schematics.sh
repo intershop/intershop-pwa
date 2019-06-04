@@ -101,3 +101,6 @@ wget -O - -q "http://localhost:4200/warehouses" | grep -q "warehouses-page works
 
 npx ng g kubernetes-deployment
 find charts
+
+npx ng g azure-pipeline
+stat azure-pipelines.yml
