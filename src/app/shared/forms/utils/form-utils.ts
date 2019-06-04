@@ -92,6 +92,10 @@ export function determineSalutations(countryCode: string): string[] {
       salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
       break;
     }
+    case 'US': {
+      salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+      break;
+    }
     case 'GB': {
       salutationlabels = [
         'account.salutation.ms.text',

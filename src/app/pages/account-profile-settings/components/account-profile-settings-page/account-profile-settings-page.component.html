@@ -100,29 +100,30 @@
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.profile.name.label' | translate }}</dt>
           <dd class="col-md-8">{{ user.title ? user.title + ' ' : '' }}{{ user.firstName + ' ' + user.lastName }}</dd>
-          <!-- Phone Template -->
+          <!-- Phone -->
           <dt class="col-md-4">{{ 'account.profile.phone.label' | translate }}</dt>
           <dd class="col-md-8">{{ user.phoneHome }}</dd>
-          <dt class="col-md-4">{{ 'account.profile.fax.label' | translate }}</dt>
-          <dd class="col-md-8">{{ user.fax }}</dd>
+          <!-- Birthday -->
           <dt class="col-md-4">{{ 'account.profile.birthday.label' | translate }}</dt>
           <dd class="col-md-8">
             {{ user.birthday ? (user.birthday | ishDate) : ('account.profile.birthday.not_available' | translate) }}
           </dd>
           <dt class="col-md-4">{{ 'account.profile.language.label' | translate }}</dt>
-          <dd class="col-md-8">
-            <!-- TODO: get information for <isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
-          </dd>
+          <dd class="col-md-8">{{ preferredLanguageName }}</dd>
         </dl>
       </div>
     </div>
   </div>
-  <!-- TODO: ISREST-578 edit functional not implemented jet
   <div class="col-2 col-lg-4">
-    <a class="btn-tool" title="{{ 'account.profile.update.link' | translate }}">
+    <a
+      routerLink="/account/profile/user"
+      class="btn-tool"
+      title="{{ 'account.profile.update.link' | translate }}"
+      data-testing-id="edit-user"
+    >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
-  </div>-->
+  </div>
 </div>
 
 <!-- Newsletter Template -->
