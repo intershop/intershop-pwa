@@ -65,3 +65,6 @@ Thumbs.db
 # batch file for personal development purposes
 /dev.bat
 .angulardoc.json
+
+# nvm
+.nvmrc
