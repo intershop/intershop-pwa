@@ -21,12 +21,12 @@ export class RestoreEffects {
   ) {}
 
   @Effect({ dispatch: false })
-  saveAPITokenToCookie$ = combineLatest(
+  saveAPITokenToCookie$ = combineLatest([
     this.store$.pipe(select(getLoggedInUser)),
     this.store$.pipe(select(getCurrentBasket)),
     this.store$.pipe(select(getAPIToken)),
-    this.cookieService.cookieLawSeen$
-  ).pipe(
+    this.cookieService.cookieLawSeen$,
+  ]).pipe(
     filter(([user, basket]) => !!user || !!basket),
     map(([user, , apiToken]) => this.makeCookie(apiToken, user ? 'user' : 'basket')),
     tap(cookie => {

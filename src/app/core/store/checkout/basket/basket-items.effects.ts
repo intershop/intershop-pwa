@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concat, forkJoin, of } from 'rxjs';
+import { concat } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
 
 import * as basketActions from './basket.actions';
@@ -56,8 +56,12 @@ export class BasketItemsEffects {
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([payload, basketId]) => !basketId && !payload.basketId),
-    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
-    map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
+    mergeMap(([{ items }]) =>
+      this.basketService.createBasket().pipe(
+        mapToProperty('id'),
+        map(basketId => new basketActions.AddItemsToBasket({ items, basketId }))
+      )
+    )
   );
 
   /**

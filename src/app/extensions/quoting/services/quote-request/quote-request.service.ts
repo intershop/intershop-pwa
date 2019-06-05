@@ -33,7 +33,7 @@ export class QuoteRequestService {
   private quoteRequest$: Observable<string>;
 
   constructor(private apiService: ApiService, private store: Store<{}>) {
-    this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
+    this.ids$ = combineLatest([store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))]).pipe(
       take(1),
       concatMap(([user, customer]) =>
         !!user && !!user.email && !!customer && !!customer.customerNo
@@ -159,7 +159,7 @@ export class QuoteRequestService {
       },
     };
 
-    return combineLatest(this.ids$, this.quoteRequest$).pipe(
+    return combineLatest([this.ids$, this.quoteRequest$]).pipe(
       concatMap(([{ userId, customerId }, quoteRequestId]) =>
         this.apiService
           .post(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`, body)

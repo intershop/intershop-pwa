@@ -306,13 +306,13 @@ export class QuoteRequestEffects {
    * Triggers a LoadQuoteRequestItems action if a quote request gets selected and LoadQuoteRequestsSuccess action triggered
    */
   @Effect()
-  loadQuoteRequestItemsAfterSelectQuoteRequest$ = combineLatest(
+  loadQuoteRequestItemsAfterSelectQuoteRequest$ = combineLatest([
     this.actions$.pipe(
       ofType<actions.SelectQuoteRequest>(actions.QuoteRequestActionTypes.SelectQuoteRequest),
       mapToPayloadProperty('id')
     ),
-    this.actions$.pipe(ofType(actions.QuoteRequestActionTypes.LoadQuoteRequestsSuccess))
-  ).pipe(
+    this.actions$.pipe(ofType(actions.QuoteRequestActionTypes.LoadQuoteRequestsSuccess)),
+  ]).pipe(
     filter(([quoteId]) => !!quoteId),
     map(([quoteId]) => new actions.LoadQuoteRequestItems({ id: quoteId }))
   );

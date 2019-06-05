@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { forkJoin, of } from 'rxjs';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../../shopping/products';
@@ -132,11 +131,12 @@ export class BasketEffects {
   @Effect()
   getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayload(),
+    mapToPayloadProperty('quoteId'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([, basketId]) => !basketId),
-    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
-    map(([payload]) => new basketActions.AddQuoteToBasket(payload))
+    mergeMap(([quoteId]) =>
+      this.basketService.createBasket().pipe(mapTo(new basketActions.AddQuoteToBasket({ quoteId })))
+    )
   );
 
   /**
