@@ -120,7 +120,7 @@ export class QuoteEffects {
    * for each product that is missing in the current product entities state.
    */
   @Effect()
-  loadProductsForSelectedQuote$ = combineLatest(
+  loadProductsForSelectedQuote$ = combineLatest([
     this.actions$.pipe(
       ofType<actions.SelectQuote>(actions.QuoteActionTypes.SelectQuote),
       mapToPayloadProperty('id')
@@ -128,8 +128,8 @@ export class QuoteEffects {
     this.actions$.pipe(
       ofType<actions.LoadQuotesSuccess>(actions.QuoteActionTypes.LoadQuotesSuccess),
       mapToPayloadProperty('quotes')
-    )
-  ).pipe(
+    ),
+  ]).pipe(
     map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),
     whenTruthy(),
     withLatestFrom(this.store.pipe(select(getProductEntities))),
