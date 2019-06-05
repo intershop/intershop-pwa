@@ -23,6 +23,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
       ><fa-icon class="ng-fa-icon" ng-reflect-icon-prop="fas,plus"
         ><svg
           aria-hidden="true"
+          focusable="false"
           data-prefix="fas"
           data-icon="plus"
           class="svg-inline--fa fa-plus fa-w-14"
@@ -59,6 +60,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
             ><fa-icon class="ng-fa-icon" ng-reflect-icon-prop="fas,plus"
               ><svg
                 aria-hidden="true"
+                focusable="false"
                 data-prefix="fas"
                 data-icon="plus"
                 class="svg-inline--fa fa-plus fa-w-14"
