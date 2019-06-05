@@ -9,6 +9,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { LazyBasketAddToQuoteComponent } from '../../../../extensions/quoting/exports/basket/components/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketPromotionCodeComponent } from '../../../../shared/basket/components/basket-promotion-code/basket-promotion-code.component';
 import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
 import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
@@ -26,6 +27,7 @@ describe('Shopping Basket Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketPromotionCodeComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
@@ -57,6 +59,15 @@ describe('Shopping Basket Component', () => {
     });
 
     component.onDeleteItem('4712');
+  });
+
+  it('should throw addPromotionCodeToBasket event when onAddPromotionCode is triggered.', done => {
+    component.addPromotionCode.subscribe(firedItem => {
+      expect(firedItem).toBe('4712');
+      done();
+    });
+
+    component.onAddPromotionCode('4712');
   });
 
   it('should throw update item event when onUpdateItem is triggered.', done => {

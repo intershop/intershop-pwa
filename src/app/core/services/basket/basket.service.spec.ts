@@ -171,11 +171,20 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should remove line item from spefic basket when 'deleteBasketItem' is called", done => {
+  it("should remove line item from specific basket when 'deleteBasketItem' is called", done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
     basketService.deleteBasketItem(basketMockData.data.id, lineItemData.id).subscribe(() => {
       verify(apiService.delete(`baskets/${basketMockData.data.id}/items/${lineItemData.id}`, anything())).once();
+      done();
+    });
+  });
+
+  it("should add promotion code to specific basket when 'addPromotionCodeToBasket' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
+
+    basketService.addPromotionCodeToBasket('code', basketMockData.data.id).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.data.id}/promotioncodes`, anything(), anything())).once();
       done();
     });
   });

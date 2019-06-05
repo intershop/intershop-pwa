@@ -23,6 +23,7 @@ export interface BasketBaseData {
   buckets?: string[];
   lineItems?: string[];
   payments?: string[];
+  promotionCodes?: string[];
   totals: BasketTotalData;
   totalProductQuantity?: number;
   surcharges?: {

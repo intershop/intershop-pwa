@@ -1,0 +1,17 @@
+<form [formGroup]="form" class="cart-summary" (ngSubmit)="submitPromotionCode()">
+  <a (click)="isCollapsed = !isCollapsed">{{ 'shopping_cart.promotional_code.heading' | translate }}</a>
+  <div id="promoentry" class="form-inline" [ngbCollapse]="isCollapsed">
+    <input
+      formControlName="codeInput"
+      id="code"
+      name="code"
+      class="form-control"
+      type="text"
+      maxlength="128"
+      placeholder="{{ 'shopping_cart.promotional_code.label' | translate }}"
+    />
+    <button id="applyPromotion" name="applyPromotion" type="submit" class="btn btn-link">
+      {{ 'shopping_cart.promotion.apply.button.label' | translate }}
+    </button>
+  </div>
+</form>

@@ -136,6 +136,14 @@
   <!-- basket summary -->
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
+    <div>
+      <ish-basket-promotion-code
+        *ngIf="basket"
+        (addPromotionCode)="onAddPromotionCode($event)"
+      ></ish-basket-promotion-code>
+    </div>
+
     <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
     <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
 

@@ -2638,5 +2638,8 @@
   "product.product_links.replacement.title": "Replacement",
   "product.product_links.spareparts.title": "Spare Parts",
   "product.product_links.upselling.title": "Alternatives",
-  "product.product_links.quantity.label": "Quantity"
+  "product.product_links.quantity.label": "Quantity",
+  "basket.not_found.error": "The basket could not be found.",
+  "basket.promotioncode.not_found.error": "The promotion code could not be found.",
+  "basket.promotioncode.adding.error": "The promotion code could not be added."
 }

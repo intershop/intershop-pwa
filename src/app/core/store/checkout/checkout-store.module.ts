@@ -7,6 +7,7 @@ import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { BasketAddressesEffects } from './basket/basket-addresses.effects';
 import { BasketItemsEffects } from './basket/basket-items.effects';
 import { BasketPaymentEffects } from './basket/basket-payment.effects';
+import { BasketPromotionCodeEffects } from './basket/basket-promotion-code.effects';
 import { BasketEffects } from './basket/basket.effects';
 import { basketReducer } from './basket/basket.reducer';
 import { CheckoutState } from './checkout-store';
@@ -22,6 +23,7 @@ export const checkoutEffects = [
   BasketAddressesEffects,
   BasketItemsEffects,
   BasketPaymentEffects,
+  BasketPromotionCodeEffects,
   ViewconfEffects,
 ];
 
