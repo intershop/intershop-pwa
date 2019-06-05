@@ -33,6 +33,7 @@ import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils'
  (updatePaymentMethod)="updateBasketPaymentMethod($event)"
  (createPaymentInstrument)="createBasketPaymentInstrument($event)"
  (deletePaymentInstrument)="deletePaymentInstrument($event)"
+ (addPromotionCode)="addPromotionCode($event)"
 ></ish-checkout-payment>
  */
 @Component({
@@ -48,6 +49,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() updatePaymentMethod = new EventEmitter<string>();
   @Output() createPaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() deletePaymentInstrument = new EventEmitter<string>();
+  @Output() addPromotionCode = new EventEmitter<string>();
 
   paymentForm: FormGroup;
   model = {};
@@ -263,6 +265,13 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   get submitDisabled() {
     return this.paymentForm.invalid && this.formSubmitted;
+  }
+
+  /**
+   * Throws addPromotionCode event when add promotion code was clicked.
+   */
+  onAddPromotionCode(code) {
+    this.addPromotionCode.emit(code);
   }
 
   ngOnDestroy() {

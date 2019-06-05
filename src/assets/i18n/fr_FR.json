@@ -2528,5 +2528,8 @@
   "product.product_links.replacement.title": "Produit de substitution",
   "product.product_links.spareparts.title": "Pièces de rechange",
   "product.product_links.upselling.title": "Alternatives",
-  "product.product_links.quantity.label": "Quantité"
+  "product.product_links.quantity.label": "Quantité",
+  "basket.not_found.error": "Le panier est introuvable.",
+  "basket.promotioncode.not_found.error": "Le code promotionnel n\u2019a pas pu \u00EAtre trouv\u00E9",
+  "basket.promotioncode.adding.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9."
 }

@@ -31,6 +31,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:
+    case BasketActionTypes.AddPromotionCodeToBasket:
     case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.MergeBasket:
@@ -52,6 +53,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.LoadBasketFail:
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
+    case BasketActionTypes.AddPromotionCodeToBasketFail:
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
@@ -70,6 +72,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
+    case BasketActionTypes.AddPromotionCodeToBasketSuccess:
     case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess:

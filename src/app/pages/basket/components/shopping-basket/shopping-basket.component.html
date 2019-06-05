@@ -37,6 +37,13 @@
       <div class="col-md-12 col-lg-4 order-summary">
         <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
+        <div>
+          <ish-basket-promotion-code
+            *ngIf="basket"
+            (addPromotionCode)="onAddPromotionCode($event)"
+          ></ish-basket-promotion-code>
+        </div>
+
         <div class="cost-summary">
           <!-- Cost Summary Component -->
           <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>

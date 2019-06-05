@@ -2636,5 +2636,8 @@
   "product.product_links.replacement.title": "Ersatzartikel",
   "product.product_links.spareparts.title": "Ersatzteile",
   "product.product_links.upselling.title": "Alternatives",
-  "product.product_links.quantity.label": "Anzahl"
+  "product.product_links.quantity.label": "Anzahl",
+  "basket.not_found.error": "Der Warenkorb konnte nicht gefunden werden.",
+  "basket.promotioncode.not_found.error": "Der Aktionscode wurde nicht gefunden.",
+  "basket.promotioncode.adding.error": "Der Aktionscode wurde nicht hinzugefügt."
 }
