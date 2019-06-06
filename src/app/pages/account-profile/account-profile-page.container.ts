@@ -4,10 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { getLoggedInCustomer, getLoggedInUser, getUserSuccessMessage } from 'ish-core/store/user';
 
 @Component({
-  templateUrl: './account-profile-settings-page.container.html',
+  templateUrl: './account-profile-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileSettingsPageContainerComponent {
+export class AccountProfilePageContainerComponent {
   user$ = this.store.pipe(select(getLoggedInUser));
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   userSuccessMessage$ = this.store.pipe(select(getUserSuccessMessage));
