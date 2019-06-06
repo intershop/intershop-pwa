@@ -8,12 +8,12 @@ import { User } from 'ish-core/models/user/user.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 
-import { AccountProfileSettingsPageContainerComponent } from './account-profile-settings-page.container';
-import { AccountProfileSettingsPageComponent } from './components/account-profile-settings-page/account-profile-settings-page.component';
+import { AccountProfilePageContainerComponent } from './account-profile-page.container';
+import { AccountProfilePageComponent } from './components/account-profile-page/account-profile-page.component';
 
-describe('Account Profile Settings Page Container', () => {
-  let component: AccountProfileSettingsPageContainerComponent;
-  let fixture: ComponentFixture<AccountProfileSettingsPageContainerComponent>;
+describe('Account Profile Page Container', () => {
+  let component: AccountProfilePageContainerComponent;
+  let fixture: ComponentFixture<AccountProfilePageContainerComponent>;
   let element: HTMLElement;
   const customer = {
     type: 'PrivateCustomer',
@@ -27,7 +27,7 @@ describe('Account Profile Settings Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountProfileSettingsPageContainerComponent, MockComponent(AccountProfileSettingsPageComponent)],
+      declarations: [AccountProfilePageContainerComponent, MockComponent(AccountProfilePageComponent)],
       imports: [StoreModule.forRoot(coreReducers), TranslateModule.forRoot()],
     })
       .compileComponents()
@@ -37,7 +37,7 @@ describe('Account Profile Settings Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfileSettingsPageContainerComponent);
+    fixture = TestBed.createComponent(AccountProfilePageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

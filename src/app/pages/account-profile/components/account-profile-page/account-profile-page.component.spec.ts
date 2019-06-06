@@ -8,11 +8,11 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
-import { AccountProfileSettingsPageComponent } from './account-profile-settings-page.component';
+import { AccountProfilePageComponent } from './account-profile-page.component';
 
-describe('Account Profile Settings Page Component', () => {
-  let component: AccountProfileSettingsPageComponent;
-  let fixture: ComponentFixture<AccountProfileSettingsPageComponent>;
+describe('Account Profile Page Component', () => {
+  let component: AccountProfilePageComponent;
+  let fixture: ComponentFixture<AccountProfilePageComponent>;
   let element: HTMLElement;
   let locales: Locale[];
 
@@ -26,14 +26,14 @@ describe('Account Profile Settings Page Component', () => {
     ] as Locale[];
 
     TestBed.configureTestingModule({
-      declarations: [AccountProfileSettingsPageComponent],
+      declarations: [AccountProfilePageComponent],
       imports: [IconModule, PipesModule, TranslateModule.forRoot()],
       providers: [{ provide: AVAILABLE_LOCALES, useValue: locales }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfileSettingsPageComponent);
+    fixture = TestBed.createComponent(AccountProfilePageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.user = user;

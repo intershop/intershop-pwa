@@ -6,11 +6,11 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 
 @Component({
-  selector: 'ish-account-profile-settings-page',
-  templateUrl: './account-profile-settings-page.component.html',
+  selector: 'ish-account-profile-page',
+  templateUrl: './account-profile-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileSettingsPageComponent {
+export class AccountProfilePageComponent {
   @Input() user: User;
   @Input() customer: Customer;
   @Input() successMessage: string;

@@ -41,39 +41,7 @@ const accountPageRoutes: Routes = [
       {
         path: 'profile',
         data: { breadcrumbData: [{ key: 'account.profile.link' }] },
-        loadChildren:
-          '../account-profile-settings/account-profile-settings-page.module#AccountProfileSettingsPageModule',
-      },
-      {
-        path: 'profile/email',
-        data: {
-          breadcrumbData: [
-            { key: 'account.profile.link', link: '/account/profile' },
-            { key: 'account.update_email.breadcrumb' },
-          ],
-        },
-        loadChildren: '../account-profile-email/account-profile-email-page.module#AccountProfileEmailPageModule',
-      },
-      {
-        path: 'profile/password',
-        data: {
-          breadcrumbData: [
-            { key: 'account.profile.link', link: '/account/profile' },
-            { key: 'account.update_password.breadcrumb' },
-          ],
-        },
-        loadChildren:
-          '../account-profile-password/account-profile-password-page.module#AccountProfilePasswordPageModule',
-      },
-      {
-        path: 'profile/user',
-        data: {
-          breadcrumbData: [
-            { key: 'account.profile.link', link: '/account/profile' },
-            { key: 'account.update_profile.breadcrumb' },
-          ],
-        },
-        loadChildren: '../account-profile-user/account-profile-user-page.module#AccountProfileUserPageModule',
+        loadChildren: '../account-profile/account-profile-page.module#AccountProfilePageModule',
       },
       {
         path: 'quote-list',
