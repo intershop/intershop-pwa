@@ -31,12 +31,12 @@
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/test.js"
   },
-  "dependencies": {
-    "@schematics/angular": "^7.1.0"
+  "peerDependencies": {
+    "@schematics/angular": "^7.3.9"
   },
   "devDependencies": {
-    "@angular-devkit/core": "^7.1.0",
-    "@angular-devkit/schematics": "^7.1.0",
+    "@angular-devkit/core": "^7.3.9",
+    "@angular-devkit/schematics": "^7.3.9",
     "@types/jest": "^23.3.10",
     "@types/node": "^10.12.11",
     "jest": "^23.6.0",
@@ -45,6 +45,9 @@
     "rimraf": "^2.6.2",
     "ts-jest": "^23.10.1",
     "tsutils": "^3.5.2",
-    "typescript": "3.1.6"
+    "typescript": "~3.2.2"
+  },
+  "dependencies": {
+    "@schematics/angular": "^7.3.9"
   }
 }
