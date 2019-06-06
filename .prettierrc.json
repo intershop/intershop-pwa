@@ -42,7 +42,7 @@
       }
     },
     {
-      "files": ["*.yml", ".*.yml"],
+      "files": ["*.yml", "*.yaml", ".*.yml"],
       "options": {
         "parser": "yaml"
       }

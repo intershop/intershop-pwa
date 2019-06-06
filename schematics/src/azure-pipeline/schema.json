@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsPWAAzurePipeline",
+  "title": "PWA Azure Pipeline Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    }
+  }
+}
