@@ -7,7 +7,7 @@
     "module": "commonjs",
     "types": ["node"]
   },
-  "exclude": ["test.ts", "**/*.spec.ts", "**/dev/**/*.ts"],
+  "exclude": ["setupJest.ts", "**/*.spec.ts", "**/dev/**/*.ts"],
   // Add "angularCompilerOptions" with the AppServerModule you wrote
   // set as the "entryModule".
   "angularCompilerOptions": {
