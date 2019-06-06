@@ -1,4 +1,4 @@
-<ng-container *ngIf="(basket$ | async) as basket; else emptyBasket">
+<ng-container *ngIf="basket$ | async as basket; else emptyBasket">
   <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
     <ish-shopping-basket
       [basket]="basket"
@@ -11,6 +11,6 @@
 
 <ng-template #emptyBasket> <ish-shopping-basket-empty></ish-shopping-basket-empty> </ng-template>
 
-<ish-loading *ngIf="(basketLoading$ | async)"></ish-loading>
+<ish-loading *ngIf="basketLoading$ | async"></ish-loading>
 
 <ish-recently-viewed-container></ish-recently-viewed-container>
