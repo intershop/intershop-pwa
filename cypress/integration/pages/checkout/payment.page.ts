@@ -1,4 +1,4 @@
-import { fillInput, waitLoadingEnd } from '../../framework';
+import { fillFormField, waitLoadingEnd } from '../../framework';
 
 export class PaymentPage {
   readonly tag = 'ish-checkout-payment-page-container';
@@ -28,7 +28,9 @@ export class PaymentPage {
   paymentInstrument(method: string) {
     return {
       fillForm(params: { [key: string]: string }) {
-        Object.keys(params).forEach(key => fillInput(key, params[key]));
+        Object.keys(params).forEach(key =>
+          fillFormField(`[data-testing-id=payment-parameter-form-${method}]`, key, params[key])
+        );
       },
 
       submit() {

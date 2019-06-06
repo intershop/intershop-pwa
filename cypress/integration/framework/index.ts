@@ -27,9 +27,34 @@ export function back() {
   cy.go('back');
 }
 
-export function fillInput(key: string, value: string) {
-  cy.get(`[data-testing-id="${key}"]`)
-    .clear()
-    .type(value)
-    .blur();
+export function fillFormField(parent: string, key: string, value: number | string) {
+  cy.get(parent).then(form => {
+    const field = form.find(`[data-testing-id="${key}"]`);
+    expect(field.length).to.equal(1, `expected to find one form field "${key}" in "${parent}"`);
+    const tagName = field.prop('tagName');
+    expect(tagName).to.match(/^(INPUT|SELECT)$/);
+
+    cy.get(parent).within(() => {
+      if (tagName === 'INPUT') {
+        const inputField = cy.get(`[data-testing-id="${key}"]`);
+        inputField.clear();
+        if (value) {
+          inputField.type(value.toString());
+        }
+        inputField.blur();
+      } else if (tagName === 'SELECT') {
+        if (typeof value === 'number') {
+          cy.get(`[data-testing-id="${key}"]`)
+            .find('option')
+            .eq(value as number)
+            .then(option => option.attr('value'))
+            // tslint:disable-next-line:ban
+            .then(val => cy.get(`[data-testing-id="${key}"]`).select(val));
+        } else {
+          // tslint:disable-next-line:ban
+          cy.get(`[data-testing-id="${key}"]`).select(value);
+        }
+      }
+    });
+  });
 }
