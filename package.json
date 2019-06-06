@@ -91,13 +91,13 @@
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
-    "@cypress/webpack-preprocessor": "^4.0.2",
+    "@cypress/webpack-preprocessor": "^4.1.0",
     "@schematics/angular": "^7.3.9",
     "@types/jest": "^24.0.13",
     "codelyzer": "^4.5.0",
     "cpy-cli": "^2.0.0",
-    "cypress": "^3.1.5",
-    "cypress-failed-log": "^2.4.1",
+    "cypress": "^3.3.1",
+    "cypress-failed-log": "^2.5.0",
     "husky": "^1.3.1",
     "intershop-schematics": "file:schematics/src",
     "intershop-tslint-rules": "file:tslint-rules",
