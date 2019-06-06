@@ -65,7 +65,6 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@ngx-utils/cookies": "^3.0.2",
-    "@schematics/angular": "^7.1.4",
     "@sentry/browser": "5.4.0",
     "@types/lodash-es": "^4.17.3",
     "@types/node": "^10.12.18",
@@ -93,6 +92,7 @@
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^4.0.2",
+    "@schematics/angular": "^7.3.9",
     "@types/jest": "^24.0.13",
     "codelyzer": "^4.5.0",
     "cpy-cli": "^2.0.0",
