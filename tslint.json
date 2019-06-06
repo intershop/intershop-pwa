@@ -96,7 +96,6 @@
     "no-unused-declaration": true,
     "no-parameter-reassignment": true,
     "throw-error": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "object-literal-key-quotes": [true, "as-needed"],
