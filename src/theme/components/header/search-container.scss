@@ -16,7 +16,7 @@
 
     &.btn-search {
       position: absolute;
-      right: $space-default;
+      right: 0;
       width: auto;
       font-size: $font-size-lg;
       background: 0;
@@ -98,15 +98,25 @@
 }
 
 .header-search-container {
-  @media (max-width: $screen-xs-max) {
-    padding: 0;
+  @include media-breakpoint-up(sm) {
+    float: right;
+    width: 33%;
+    margin-top: $space-default * 2;
+  }
+
+  @include media-breakpoint-only(xs) {
+    height: $search-container-height;
+  }
+
+  @include media-breakpoint-only(md) {
+    height: 0;
   }
 
   input {
     &.form-control {
       float: right;
-      height: 38px;
-      padding-left: (38 / 2);
+      height: $search-container-height;
+      padding-left: ($search-container-height / 2);
       font-size: 14px;
       color: $white;
       background: $color-primary;
@@ -116,7 +126,7 @@
         display: none;
       }
 
-      @media (max-width: $screen-xs-max) {
+      @include media-breakpoint-down(sm) {
         border: $border-width-default solid $border-color-default;
 
         &:focus {
@@ -144,6 +154,58 @@
 
   ul.search-suggest-results {
     width: 92.5%;
+  }
+}
+
+.header-utility {
+  .search-container {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    z-index: 999999;
+    width: 400px;
+    margin-top: 0;
+    background: $color-inverse;
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
+
+    .btn-search {
+      @include media-breakpoint-down(md) {
+        right: $space-default * 2/3;
+        margin-right: 0;
+      }
+    }
+
+    @include media-breakpoint-up(lg) {
+      height: 0;
+      overflow: hidden;
+    }
+  }
+
+  .search-toggler {
+    position: relative;
+
+    &.active-search {
+      background-color: $color-primary;
+
+      .ng-fa-icon {
+        color: $text-color-inverse;
+      }
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    .search-container.header-search-container {
+      top: $header-height-mobile;
+      display: block;
+      width: 100%;
+      padding: 0;
+      overflow: hidden;
+      transition: height 500ms ease-in-out;
+    }
+
+    .search-toggler {
+      position: static;
+    }
   }
 }
 

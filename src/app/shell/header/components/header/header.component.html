@@ -1,3 +1,14 @@
+<ng-template #searchBoxTemplate let-icon="icon">
+  <ish-search-box-container
+    [configuration]="{
+      placeholderText: 'search.searchbox.instructional_text' | translate,
+      autoSuggest: true,
+      maxAutoSuggests: 10,
+      icon: icon
+    }"
+  ></ish-search-box-container>
+</ng-template>
+
 <div class="header container">
   <ul *ngIf="!isSticky" class="user-links">
     <li *ngIf="!isSticky && deviceType !== 'mobile'">
@@ -9,6 +20,16 @@
   </ul>
 
   <div class="header-utility">
+    <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggleSearch()"></fa-icon>
+      <div
+        *ngIf="isSticky || deviceType === 'mobile'"
+        class="search-container header-search-container"
+        [ngbCollapse]="!showSearch"
+      >
+        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }"></ng-container>
+      </div>
+    </a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container *ngIf="!isSticky"></ish-language-switch-container>
     </div>
@@ -25,14 +46,8 @@
     ></ish-mini-basket-container>
   </div>
 
-  <div *ngIf="!isSticky" class="search-container header-search-container d-none d-md-block">
-    <ish-search-box-container
-      [configuration]="{
-        placeholderText: 'search.searchbox.instructional_text' | translate,
-        autoSuggest: true,
-        maxAutoSuggests: 10
-      }"
-    ></ish-search-box-container>
+  <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
+    <ng-container *ngTemplateOutlet="searchBoxTemplate"></ng-container>
   </div>
 
   <div class="logo-wrapper">
