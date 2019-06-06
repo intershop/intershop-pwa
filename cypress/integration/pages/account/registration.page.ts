@@ -1,5 +1,7 @@
 import { fillFormField } from '../../framework';
 
+export declare type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
+
 export interface Registration {
   login: string;
   loginConfirmation: string;
@@ -19,6 +21,7 @@ export interface Registration {
   mainDivisionCode: string;
   phoneHome: string;
   companyName1: string;
+  preferredLanguage: SupportedLanguage;
 }
 
 export const sensibleDefaults: Partial<Registration> = {

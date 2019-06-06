@@ -1,9 +1,9 @@
 import { at } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
-import { ProfileEditDetailsPage } from '../../pages/account/profile-edit-details.page';
+import { ProfileEditDetailsPage, ProfileEditDetailsTypes } from '../../pages/account/profile-edit-details.page';
 import { ProfilePage } from '../../pages/account/profile.page';
-import { Registration, sensibleDefaults } from '../../pages/account/registration.page';
+import { sensibleDefaults } from '../../pages/account/registration.page';
 
 const _ = {
   user: { login: `testuser${new Date().getTime()}@test.intershop.de`, ...sensibleDefaults },
@@ -12,7 +12,7 @@ const _ = {
     firstName: 'Maria',
     lastName: 'Mustermann',
     phoneHome: '99999999',
-  } as Partial<Registration>,
+  } as ProfileEditDetailsTypes,
 };
 
 describe('Changing User', () => {

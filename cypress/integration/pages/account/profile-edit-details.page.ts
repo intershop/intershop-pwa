@@ -1,9 +1,15 @@
 import { fillFormField } from '../../framework';
 
+import { Registration } from './registration.page';
+
+export declare type ProfileEditDetailsTypes = Partial<
+  Pick<Registration, 'title' | 'firstName' | 'lastName' | 'phoneHome' | 'preferredLanguage'>
+>;
+
 export class ProfileEditDetailsPage {
   readonly tag = 'ish-account-profile-user-page';
 
-  fillForm(data: { firstName?: string; lastName?: string; phoneHome?: string; preferredLanguage?: string }) {
+  fillForm(data: ProfileEditDetailsTypes) {
     Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));
     return this;
   }
