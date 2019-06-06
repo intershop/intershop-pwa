@@ -1,4 +1,4 @@
-<ng-container *ngIf="(category$ | async) as category">
+<ng-container *ngIf="category$ | async as category">
   <ish-breadcrumb [category]="category"></ish-breadcrumb>
 
   <!-- category with subcategories -->
@@ -20,4 +20,4 @@
   </ng-container>
 </ng-container>
 
-<ish-loading *ngIf="(categoryLoading$ | async)"></ish-loading>
+<ish-loading *ngIf="categoryLoading$ | async"></ish-loading>

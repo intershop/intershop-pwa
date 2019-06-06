@@ -1,4 +1,4 @@
-<ng-container *ngIf="(generalError$ | async) as generalError; else businessError">
+<ng-container *ngIf="generalError$ | async as generalError; else businessError">
   <ish-server-error-page [error]="generalError"></ish-server-error-page>
 </ng-container>
 

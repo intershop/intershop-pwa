@@ -1,5 +1,5 @@
 <ish-quote-edit
-  *ngIf="(quote$ | async) as quote"
+  *ngIf="quote$ | async as quote"
   [quote]="quote"
   [user]="user$ | async"
   (deleteItem)="deleteQuoteRequestItem($event)"
@@ -10,4 +10,4 @@
   (copyQuote)="copyQuote()"
 ></ish-quote-edit>
 
-<ish-loading *ngIf="(quoteRequestLoading$ | async)"></ish-loading>
+<ish-loading *ngIf="quoteRequestLoading$ | async"></ish-loading>

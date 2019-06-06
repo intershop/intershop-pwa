@@ -16,7 +16,7 @@
 ></ish-product-list>
 
 <ish-product-list-paging
-  *ngIf="(displayPaging$ | async)"
+  *ngIf="displayPaging$ | async"
   [currentPage]="currentPage$ | async"
   [pageIndices]="pageIndices$ | async"
   [pageUrl]="pageUrl"
