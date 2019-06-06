@@ -28,4 +28,12 @@ export class ProfilePage {
   get phone() {
     return cy.get(this.tag).find('[data-testing-id="phone-field"]');
   }
+
+  get preferredLanguage() {
+    return cy.get(this.tag).find('[data-testing-id="preferred-language-field"]');
+  }
+
+  get title() {
+    return cy.get(this.tag).find('h1');
+  }
 }

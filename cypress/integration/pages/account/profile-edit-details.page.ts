@@ -3,7 +3,7 @@ import { fillFormField } from '../../framework';
 export class ProfileEditDetailsPage {
   readonly tag = 'ish-account-profile-user-page';
 
-  fillForm(data: { firstName?: string; lastName?: string; phoneHome?: string }) {
+  fillForm(data: { firstName?: string; lastName?: string; phoneHome?: string; preferredLanguage?: string }) {
     Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));
     return this;
   }
