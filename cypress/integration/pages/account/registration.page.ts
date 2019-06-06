@@ -8,7 +8,7 @@ export interface Registration {
   securityQuestion: number;
   securityQuestionAnswer: string;
   countryCodeSwitch: string;
-  title: number;
+  title: string;
   firstName: string;
   lastName: string;
   addressLine1: string;
@@ -26,12 +26,12 @@ export const sensibleDefaults: Partial<Registration> = {
   securityQuestion: 1,
   securityQuestionAnswer: 'something',
   countryCodeSwitch: 'AT',
-  title: 1,
   firstName: 'Test',
   lastName: 'User',
   addressLine1: 'Testroad 1',
   postalCode: '12345',
   city: 'Testcity',
+  phoneHome: '123456789',
   mainDivisionCode: 'Wien',
 };
 
@@ -66,9 +66,11 @@ export class RegistrationPage {
     if (register.passwordConfirmation === undefined) {
       register.passwordConfirmation = register.password;
     }
-    Object.keys(register).forEach((key: keyof Registration) => {
-      fillFormField(this.tag, key, register[key]);
-    });
+    Object.keys(register)
+      .filter(key => register[key] !== undefined)
+      .forEach((key: keyof Registration) => {
+        fillFormField(this.tag, key, register[key]);
+      });
     return this;
   }
 
