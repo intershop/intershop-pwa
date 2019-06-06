@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
+import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -66,7 +67,9 @@ describe('Api Service', () => {
       apiService.options('data').subscribe(fail, fail);
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
 
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
       req.flush('err', { status: 500, statusText });
+      consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
       const [action] = capture(storeSpy$.dispatch).last();
@@ -91,7 +94,9 @@ describe('Api Service', () => {
       apiService.get('data').subscribe(fail, fail);
       const req = httpTestingController.expectOne(`${REST_URL}/data`);
 
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
       req.flush('err', { status: 500, statusText });
+      consoleSpy.mockRestore();
 
       verify(storeSpy$.dispatch(anything())).once();
       const [action] = capture(storeSpy$.dispatch).last();
