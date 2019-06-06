@@ -31,7 +31,7 @@
 
     input {
       &.form-control {
-        height: 38px;
+        height: $search-container-height;
         color: $white;
         background: $color-primary;
         border: $border-width-default solid $border-color-default;

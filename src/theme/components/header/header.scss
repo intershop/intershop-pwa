@@ -13,7 +13,7 @@ header {
     content: '';
     background-color: $color-primary;
 
-    @media (max-width: $screen-xs-max) {
+    @include media-breakpoint-down(sm) {
       background-color: $color-inverse;
     }
   }
@@ -37,7 +37,7 @@ header {
   .navbar-toggler {
     display: none;
 
-    @media (max-width: $screen-xs-max) {
+    @include media-breakpoint-down(sm) {
       display: block;
     }
   }
@@ -48,7 +48,7 @@ header {
       display: none;
     }
 
-    @media (max-width: $screen-xs-max) {
+    @include media-breakpoint-down(sm) {
       &.small {
         display: block;
       }
@@ -59,29 +59,11 @@ header {
     }
   }
 
-  .global-nav-container {
-    display: flex;
-
-    @media (max-width: $screen-xs-max) {
-      position: absolute;
-      top: 55px;
-      left: 0;
-      display: block;
-      width: 100%;
-      padding-right: 0;
-      padding-left: 0;
-
-      .global-nav {
-        width: 100%;
-      }
-    }
-  }
-
   .main-navigation {
     position: relative;
 
     .navbar-nav {
-      @media (max-width: $screen-xs-max) {
+      @include media-breakpoint-down(sm) {
         display: flex;
         background-color: $color-inverse;
       }
@@ -92,7 +74,7 @@ header {
     margin-bottom: 0;
   }
 
-  @media (max-width: $screen-xs-max) {
+  @include media-breakpoint-down(sm) {
     margin-bottom: 0;
 
     .mid-header-checkout {
@@ -102,19 +84,18 @@ header {
 }
 
 .header {
-  a span:hover {
-    color: $text-color-quarternary;
-  }
-
   @include media-breakpoint-down(sm) {
     display: flex;
     flex-wrap: wrap;
-    min-height: 55px;
     padding-right: 0;
     padding-left: 0;
     margin-right: 0;
     margin-left: 0;
     background: $color-inverse;
+  }
+
+  a span:hover {
+    color: $text-color-quarternary;
   }
 
   .navbar-toggler {
@@ -140,7 +121,7 @@ header {
   margin: 0;
   line-height: $top-header-height;
 
-  @media (max-width: $screen-xs-max) {
+  @include media-breakpoint-down(sm) {
     align-self: center;
   }
 
@@ -183,7 +164,7 @@ header {
   font-size: 17px;
   color: $text-color-quarternary;
 
-  @media (max-width: $screen-xs-max) {
+  @include media-breakpoint-down(sm) {
     color: $text-color-primary;
   }
 }
