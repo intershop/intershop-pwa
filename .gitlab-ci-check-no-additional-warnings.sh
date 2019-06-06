@@ -10,7 +10,7 @@ var contents = fs.readFile('tslint.hard.json', 'utf8', function(err, contents) {
   const config = JSON.parse(contents);
 
   Object.keys(config.rules).filter(key => key !== 'no-disabled-tests').forEach(key => {
-    if (config.rules[key].severity ==='warning') {
+    if (config.rules[key].severity && config.rules[key].severity.startsWith('warn')) {
       config.rules[key].severity = 'error';
     }
   });
@@ -24,4 +24,5 @@ cat tslint.json | grep -Ev '^\s*//' > tslint.hard.json
 
 node tslint-hard
 
-npx tslint --project tsconfig.json -c tslint.hard.json
+npx tslint --project src/tsconfig.spec.json -c tslint.hard.json
+npx tslint --project cypress/tsconfig.json -c tslint.hard.json
