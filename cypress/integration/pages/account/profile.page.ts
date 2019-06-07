@@ -17,6 +17,10 @@ export class ProfilePage {
     cy.get('[data-testing-id="edit-user"]').click();
   }
 
+  editCompanyDetails() {
+    cy.get('[data-testing-id="edit-company"]').click();
+  }
+
   get email() {
     return cy.get(this.tag).find('[data-testing-id="email-field"]');
   }
@@ -31,6 +35,14 @@ export class ProfilePage {
 
   get preferredLanguage() {
     return cy.get(this.tag).find('[data-testing-id="preferred-language-field"]');
+  }
+
+  get companyName() {
+    return cy.get(this.tag).find('[data-testing-id="company-field"]');
+  }
+
+  get taxationId() {
+    return cy.get(this.tag).find('[data-testing-id="taxation-id-field"]');
   }
 
   get title() {
