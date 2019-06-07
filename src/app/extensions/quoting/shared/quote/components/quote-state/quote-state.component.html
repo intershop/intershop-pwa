@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="quote.state" *ngIf="(currentDateTime$ | async) as currentDateTime">
+<ng-container [ngSwitch]="quote.state" *ngIf="currentDateTime$ | async as currentDateTime">
   <ng-template [ngSwitchCase]="'New'">{{ 'quote.state.new' | translate }}</ng-template>
   <ng-template [ngSwitchCase]="'Submitted'">{{ 'quote.state.submitted' | translate }}</ng-template>
   <ng-template [ngSwitchCase]="'Responded'">

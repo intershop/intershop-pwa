@@ -4,10 +4,13 @@
   "description": "Intershop specific tslint rules",
   "main": "index.js",
   "private": true,
-  "keywords": ["tslint", "intershop"],
+  "keywords": [
+    "tslint",
+    "intershop"
+  ],
   "devDependencies": {
-    "@angular/compiler": "^7.1.0",
-    "@angular/core": "^7.1.0",
+    "@angular/compiler": "^7.2.15",
+    "@angular/core": "^7.2.15",
     "@types/jest": "^23.0.0",
     "@types/node": "^10.0.0",
     "codelyzer": "^4.5.0",
@@ -16,14 +19,14 @@
     "rxjs": "^6.3.3",
     "ts-jest": "^23.10.1",
     "tslint": "~5.12.0",
-    "typescript": "~3.1.6",
+    "typescript": "~3.2.2",
     "zone.js": "^0.8.26"
   },
   "peerDependencies": {
     "@angular/compiler": ">6.0.0 <8.0.0",
     "@angular/core": ">6.0.0 <8.0.0",
     "tslint": "^5.0.0",
-    "typescript": "~3.1.6"
+    "typescript": "~3.2.2"
   },
   "scripts": {
     "prebuild": "npm ci",

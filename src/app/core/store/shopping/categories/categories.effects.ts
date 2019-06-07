@@ -72,7 +72,7 @@ export class CategoriesEffects {
    * fires {@link SelectedCategoryAvailable} when the requested {@link Category} is completely loaded
    */
   @Effect()
-  selectedCategoryAvailable$ = combineLatest(
+  selectedCategoryAvailable$ = combineLatest([
     this.actions$.pipe(
       ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
       mapToPayloadProperty('categoryId')
@@ -80,8 +80,8 @@ export class CategoriesEffects {
     this.store.pipe(
       select(selectors.getSelectedCategory),
       filter(CategoryHelper.isCategoryCompletelyLoaded)
-    )
-  ).pipe(
+    ),
+  ]).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
     map(([categoryId]) => new actions.SelectedCategoryAvailable({ categoryId }))
@@ -145,7 +145,7 @@ export class CategoriesEffects {
    * and the corresponding products were not yet loaded.
    */
   @Effect()
-  productOrCategoryChanged$ = combineLatest(
+  productOrCategoryChanged$ = combineLatest([
     this.store.pipe(
       select(selectors.getSelectedCategory),
       whenTruthy(),
@@ -154,8 +154,8 @@ export class CategoriesEffects {
     this.actions$.pipe(
       ofRoute('category/:categoryUniqueId'),
       distinctUntilChanged<RouteNavigation>()
-    )
-  ).pipe(
+    ),
+  ]).pipe(
     filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
     withLatestFrom(this.store.pipe(select(getVisibleProducts))),
     filter(([[category], skus]) => category && category.hasOnlineProducts && !skus.length),
