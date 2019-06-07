@@ -53,7 +53,19 @@ describe('Account Profile Page Component', () => {
     expect(element.querySelector('[data-testing-id="edit-email"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="edit-password"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="edit-user"]')).toBeTruthy();
+
+    expect(element.querySelector('[data-testing-id="company-info"]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id="edit-company"]')).toBeFalsy();
   });
+
+  it('should display company section and link for a business customer ', () => {
+    component.customer = { type: 'SMBCustomer', isBusinessCustomer: true } as Customer;
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id="company-info"]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id="edit-company"]')).toBeTruthy();
+  });
+
   it('should show a success message if the input parameter successMessage is set', () => {
     component.successMessage = 'success';
     fixture.detectChanges();

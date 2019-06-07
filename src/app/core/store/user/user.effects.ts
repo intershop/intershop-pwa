@@ -159,11 +159,32 @@ export class UserEffects {
     )
   );
 
+  @Effect()
+  updateCustomer$ = this.actions$.pipe(
+    ofType<userActions.UpdateCustomer>(userActions.UserActionTypes.UpdateCustomer),
+    mapToPayload(),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
+    concatMap(([payload]) =>
+      this.userService.updateCustomer(payload.customer).pipe(
+        map(
+          changedCustomer =>
+            new userActions.UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
+        ),
+        mapErrorToAction(userActions.UpdateCustomerFail)
+      )
+    )
+  );
+
   /* ToDo: should be partly replaced by the toast implementation */
   /* Navigates the user to the Accouont Profile page and deletes the update user success message from store after 5 sec */
   @Effect()
   resetUpdateUserSuccessMessage$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.UpdateUserPasswordSuccess, userActions.UserActionTypes.UpdateUserSuccess),
+    ofType(
+      userActions.UserActionTypes.UpdateUserPasswordSuccess,
+      userActions.UserActionTypes.UpdateUserSuccess,
+      userActions.UserActionTypes.UpdateCustomerSuccess
+    ),
     withLatestFrom(this.store$.pipe(select(getUserSuccessMessage))),
     filter(([, successMessage]) => !!successMessage),
     tap(() => this.router.navigateByUrl('/account/profile')),

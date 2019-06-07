@@ -1,0 +1,44 @@
+<h1>{{ 'account.company_profile.heading' | translate }}</h1>
+<div *ngIf="error && error.status" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+<p>{{ 'account.company_profile.heading.text' | translate }}</p>
+
+<div class="section">
+  <p class="indicates-required"><span class="required">*</span>{{ 'account.required_field.message' | translate }}</p>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
+    <ish-input
+      [form]="form"
+      controlName="companyName"
+      label="account.address.company_name.label"
+      labelClass="col-md-3"
+      inputClass="col-md-5 col-xl-4"
+      [errorMessages]="{
+        required: 'account.address.company_name.error.required'
+      }"
+    ></ish-input>
+
+    <ish-input
+      [form]="form"
+      controlName="companyName2"
+      label="account.address.company_name_2.label"
+      labelClass="col-md-3"
+      inputClass="col-md-5 col-xl-4"
+    ></ish-input>
+
+    <ish-input
+      [form]="form"
+      controlName="taxationID"
+      label="account.companyprofile.taxationid.label"
+      labelClass="col-md-3"
+      inputClass="col-md-5 col-xl-4"
+    ></ish-input>
+
+    <div class="row">
+      <div class="offset-md-3 col-md-6">
+        <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
+          {{ 'account.update.button.label' | translate }}
+        </button>
+        <a routerLink="/account/profile" class="btn btn-secondary btn-link">{{ 'account.cancel.link' | translate }}</a>
+      </div>
+    </div>
+  </form>
+</div>
