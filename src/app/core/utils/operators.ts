@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction, of } from 'rxjs';
-import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -8,17 +8,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 export interface Partition<T> {
   isTrue: Observable<T>;
   isFalse: Observable<T>;
-}
-
-/**
- * partition a stream by a given predicate
- */
-export function partitionBy<T>(predicate: (value: T) => boolean): OperatorFunction<T, Partition<T>> {
-  return (source$: Observable<T>) =>
-    source$.pipe(
-      inp => of(partition(predicate)(inp)),
-      map(([a, b]) => ({ isTrue: a, isFalse: b }))
-    );
 }
 
 /**

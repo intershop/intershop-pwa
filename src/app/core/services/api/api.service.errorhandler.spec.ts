@@ -4,6 +4,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { cold } from 'jest-marbles';
+import { noop } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { ErrorActionTypes } from '../../store/error';
@@ -52,7 +53,10 @@ describe('Api Service Errorhandler', () => {
     } is handled`, () => {
       const header = new HttpHeaders();
       dataSlice.error.headers = header;
+
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(noop);
       apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
+      consoleSpy.mockRestore();
 
       verify(storeMock$.dispatch(anything())).called();
       const [arg] = capture(storeMock$.dispatch).last();

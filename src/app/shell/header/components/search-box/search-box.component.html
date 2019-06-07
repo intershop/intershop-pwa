@@ -38,7 +38,7 @@
 
   <ul *ngIf="results && !isHidden" class="search-suggest-results">
     <li
-      *ngFor="let result of (results | slice: 0:configuration?.maxAutoSuggests); let liIndex = index"
+      *ngFor="let result of results | slice: 0:configuration?.maxAutoSuggests; let liIndex = index"
       [class.active-suggestion]="isActiveSuggestedTerm(liIndex)"
       (mousedown)="submitSuggestedTerm(result.term)"
     >

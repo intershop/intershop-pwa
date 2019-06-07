@@ -1,5 +1,5 @@
 <div data-testing-id="checkout-address-page">
-  <ng-container *ngIf="(basket$ | async) as basket">
+  <ng-container *ngIf="basket$ | async as basket">
     <ng-container *ngIf="(currentUser$ | async) || validBasketAddresses; else anonymousCheckoutStart">
       <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
       <ish-checkout-address
