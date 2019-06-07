@@ -1,7 +1,7 @@
 const cypress = require('cypress/lib/cli');
 var readFileSync = require('fs').readFileSync;
 
-const data = readFileSync('./src/environments/environment.local.ts', 'UTF-8');
+const data = readFileSync('../src/environments/environment.local.ts', 'UTF-8');
 
 const regex = /^ *icmBaseURL: '(.*?)',/m;
 const match = data.match(regex)[1];
