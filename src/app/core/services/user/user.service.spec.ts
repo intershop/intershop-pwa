@@ -138,13 +138,19 @@ describe('User Service', () => {
   });
 
   describe('Update a user password', () => {
-    it('should return an error when called and a parameter is missing', done => {
+    it('should return an error when called and the customer parameter is missing', done => {
       when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
       userService.updateUserPassword(undefined, '123').subscribe(fail, err => {
         expect(err).toMatchInlineSnapshot(`"updateUserPassword() called without customer"`);
         done();
       });
+
+      verify(apiServiceMock.put(anything(), anything())).never();
+    });
+
+    it('should return an error when called and the password parameter is missing', done => {
+      when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
       userService.updateUserPassword({} as Customer, '').subscribe(fail, err => {
         expect(err).toMatchInlineSnapshot(`"updateUserPassword() called without password"`);
@@ -172,6 +178,46 @@ describe('User Service', () => {
 
       userService.updateUserPassword(customer, '123').subscribe(() => {
         verify(apiServiceMock.put('customers/-/users/-/credentials/password', anything())).once();
+        done();
+      });
+    });
+  });
+
+  describe('Updates a customer', () => {
+    it('should return an error when called and the customer parameter is missing', done => {
+      when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
+
+      userService.updateCustomer(undefined).subscribe(fail, err => {
+        expect(err).toMatchInlineSnapshot(`"updateCustomer() called without customer"`);
+        done();
+      });
+
+      verify(apiServiceMock.put(anything(), anything())).never();
+    });
+
+    it('should return an error when called for a private customer', done => {
+      when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
+
+      userService.updateCustomer({ isBusinessCustomer: false } as Customer).subscribe(fail, err => {
+        expect(err).toMatchInlineSnapshot(`"updateCustomer() cannot be called for a private customer)"`);
+        done();
+      });
+
+      verify(apiServiceMock.put(anything(), anything())).never();
+    });
+
+    it("should update the business customer when 'updateCustomer' is called with type 'SMBCustomer'", done => {
+      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
+
+      const customer = {
+        customerNo: '4711',
+        companyName: 'xyz',
+        type: 'SMBCustomer',
+        isBusinessCustomer: true,
+      } as Customer;
+
+      userService.updateCustomer(customer).subscribe(() => {
+        verify(apiServiceMock.put('customers/-', anything())).once();
         done();
       });
     });

@@ -42,6 +42,11 @@ describe('User Effects', () => {
   @Component({ template: 'dummy' })
   // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
+  const customer = {
+    customerNo: '4711',
+    type: 'SMBCustomer',
+    isBusinessCustomer: true,
+  } as Customer;
 
   beforeEach(() => {
     userServiceMock = mock(UserService);
@@ -49,6 +54,7 @@ describe('User Effects', () => {
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(of(undefined));
+    when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
 
     TestBed.configureTestingModule({
@@ -382,6 +388,71 @@ describe('User Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateUserPassword$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateCustomer$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+    it('should call the api service when UpdateCustomer is called for a business customer', done => {
+      customer.companyName = 'OilCorp';
+      const action = new ua.UpdateCustomer({ customer, successMessage: 'success' });
+
+      actions$ = of(action);
+
+      effects.updateCustomer$.subscribe(() => {
+        verify(userServiceMock.updateCustomer(anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch an UpdateCustomerSuccess action on successful customer update', () => {
+      const action = new ua.UpdateCustomer({ customer, successMessage: 'success' });
+      const completion = new ua.UpdateCustomerSuccess({ customer, successMessage: 'success' });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateCustomer$).toBeObservable(expected$);
+    });
+
+    it('should not trigger any action if the customer is a private customer', () => {
+      const privateCustomer = {
+        customerNo: '4712',
+        isBusinessCustomer: false,
+        type: 'PrivateCustomer',
+      } as Customer;
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer: privateCustomer,
+          user: {} as User,
+        })
+      );
+
+      const action = new ua.UpdateCustomer({ customer: privateCustomer, successMessage: 'success' });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('----');
+
+      expect(effects.updateCustomer$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateCustomerFail action on failed company update', () => {
+      when(userServiceMock.updateCustomer(anything())).thenReturn(throwError({ message: 'invalid' }));
+
+      const action = new ua.UpdateCustomer({ customer });
+      const completion = new ua.UpdateCustomerFail({ error: { message: 'invalid' } as HttpError });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateCustomer$).toBeObservable(expected$);
     });
   });
 

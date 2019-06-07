@@ -55,7 +55,8 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.LoadCompanyUser:
     case UserActionTypes.CreateUser:
     case UserActionTypes.UpdateUser:
-    case UserActionTypes.UpdateUserPassword: {
+    case UserActionTypes.UpdateUserPassword:
+    case UserActionTypes.UpdateCustomer: {
       return {
         ...state,
         loading: true,
@@ -76,7 +77,8 @@ export function userReducer(state = initialState, action: UserAction): UserState
     }
 
     case UserActionTypes.UpdateUserFail:
-    case UserActionTypes.UpdateUserPasswordFail: {
+    case UserActionTypes.UpdateUserPasswordFail:
+    case UserActionTypes.UpdateCustomerFail: {
       const error = action.payload.error;
 
       return {
@@ -129,6 +131,19 @@ export function userReducer(state = initialState, action: UserAction): UserState
 
       return {
         ...state,
+        loading: false,
+        error: undefined,
+        successMessage,
+      };
+    }
+
+    case UserActionTypes.UpdateCustomerSuccess: {
+      const customer = action.payload.customer;
+      const successMessage = action.payload.successMessage;
+
+      return {
+        ...state,
+        customer,
         loading: false,
         error: undefined,
         successMessage,

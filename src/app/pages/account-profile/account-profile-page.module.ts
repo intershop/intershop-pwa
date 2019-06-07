@@ -38,6 +38,16 @@ const routes: Routes = [
     },
     loadChildren: '../account-profile-user/account-profile-user-page.module#AccountProfileUserPageModule',
   },
+  {
+    path: 'company',
+    data: {
+      breadcrumbData: [
+        { key: 'account.profile.link', link: '/account/profile' },
+        { key: 'account.company_profile.heading' },
+      ],
+    },
+    loadChildren: '../account-profile-company/account-profile-company-page.module#AccountProfileCompanyPageModule',
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],

@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 
@@ -22,6 +22,9 @@ export enum UserActionTypes {
   UpdateUserPassword = '[Account] Update User Password',
   UpdateUserPasswordSuccess = '[Account API] Update User Password Succeeded',
   UpdateUserPasswordFail = '[Account API] Update User Password Failed',
+  UpdateCustomer = '[Account] Update Customer',
+  UpdateCustomerSuccess = '[Account API] Update Customer Succeeded',
+  UpdateCustomerFail = '[Account API] Update Customer Failed',
   UserSuccessMessageReset = '[Account Internal] Reset Update Success Message',
   UserErrorReset = '[Account Internal] Reset User Error',
   LoadUserByAPIToken = '[Account] Load User by API Token',
@@ -105,6 +108,21 @@ export class UpdateUserPasswordFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
+export class UpdateCustomer implements Action {
+  readonly type = UserActionTypes.UpdateCustomer;
+  constructor(public payload: { customer: Customer; successMessage?: string }) {}
+}
+
+export class UpdateCustomerSuccess implements Action {
+  readonly type = UserActionTypes.UpdateCustomerSuccess;
+  constructor(public payload: { customer: Customer; successMessage?: string }) {}
+}
+
+export class UpdateCustomerFail implements Action {
+  readonly type = UserActionTypes.UpdateCustomerFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
 export class UserSuccessMessageReset implements Action {
   readonly type = UserActionTypes.UserSuccessMessageReset;
 }
@@ -135,6 +153,9 @@ export type UserAction =
   | UpdateUserPassword
   | UpdateUserPasswordSuccess
   | UpdateUserPasswordFail
+  | UpdateCustomer
+  | UpdateCustomerSuccess
+  | UpdateCustomerFail
   | UserSuccessMessageReset
   | UserErrorReset
   | LoadUserByAPIToken;

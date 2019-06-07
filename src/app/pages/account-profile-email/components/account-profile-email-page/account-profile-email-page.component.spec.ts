@@ -60,8 +60,8 @@ describe('Account Profile Email Page Component', () => {
   it('should disable submit button when the user submits an invalid form', () => {
     fixture.detectChanges();
 
-    expect(component.submitted).toBeFalse();
+    expect(component.buttonDisabled).toBeFalse();
     component.submit();
-    expect(component.submitted).toBeTrue();
+    expect(component.buttonDisabled).toBeTrue();
   });
 });

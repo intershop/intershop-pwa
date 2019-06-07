@@ -10,6 +10,9 @@ import {
   LoginUserFail,
   LoginUserSuccess,
   LogoutUser,
+  UpdateCustomer,
+  UpdateCustomerFail,
+  UpdateCustomerSuccess,
   UpdateUser,
   UpdateUserFail,
   UpdateUserPassword,
@@ -203,6 +206,37 @@ describe('User Reducer', () => {
     it('should set error and set loading to false when UpdateUserPasswordFail is reduced', () => {
       const error = { message: 'invalid' } as HttpError;
       const action = new UpdateUserPasswordFail({ error });
+      const state = userReducer(initialState, action);
+
+      expect(state.loading).toBeFalse();
+      expect(state.error).toEqual(error);
+    });
+  });
+
+  describe('Update customer actions', () => {
+    it('should loading to true when UpdateCustomer action is reduced', () => {
+      const action = new UpdateCustomer({ customer: {} as Customer });
+      const state = userReducer(initialState, action);
+
+      expect(state.loading).toBeTrue();
+    });
+
+    it('should set customer and set loading to false when UpdateCustomerSuccess is reduced', () => {
+      const changedCustomer = {
+        companyName: 'test',
+      } as Customer;
+
+      const action = new UpdateCustomerSuccess({ customer: changedCustomer, successMessage: 'success' });
+      const state = userReducer(initialState, action);
+
+      expect(state.customer).toEqual(changedCustomer);
+      expect(state.successMessage).toEqual('success');
+      expect(state.loading).toBeFalse();
+    });
+
+    it('should set error and set loading to false when UpdateCustomerFail is reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new UpdateCustomerFail({ error });
       const state = userReducer(initialState, action);
 
       expect(state.loading).toBeFalse();
