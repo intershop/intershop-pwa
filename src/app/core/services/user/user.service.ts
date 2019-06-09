@@ -128,6 +128,42 @@ export class UserService {
   }
 
   /**
+   * Updates the password of the currently logged in user.
+   * @param customer  The current customer.
+   * @param body      The user password to update.
+   */
+  updateUserPassword(customer: Customer, password: string): Observable<void> {
+    if (!customer) {
+      return throwError('updateUserPassword() called without customer');
+    }
+    if (!password) {
+      return throwError('updateUserPassword() called without password');
+    }
+
+    if (customer.type === 'PrivateCustomer') {
+      return this.apiService.put('customers/-/credentials/password', { password });
+    } else {
+      return this.apiService.put('customers/-/users/-/credentials/password', { password });
+    }
+  }
+
+  /**
+   * Updates the customer data of the (currently loggedin) b2b customer.
+   * @param customer  The customer data to update the customer.
+   */
+  updateCustomer(customer: Customer): Observable<Customer> {
+    if (!customer) {
+      return throwError('updateCustomer() called without customer');
+    }
+
+    if (!customer.isBusinessCustomer) {
+      return throwError('updateCustomer() cannot be called for a private customer)');
+    }
+
+    return this.apiService.put('customers/-', customer).pipe(map(CustomerMapper.fromData));
+  }
+
+  /**
    * Get User data for the logged in Business Customer.
    * @returns The related customer user data.
    */

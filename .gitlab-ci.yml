@@ -92,6 +92,7 @@ compile:
   script:
     - npm ci --prefer-offline
     - npx tsc -p src/tsconfig.spec.json
+    - npx tsc -p cypress/tsconfig.json
     - echo "build complete"
 
 codestyle:

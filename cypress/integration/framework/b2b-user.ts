@@ -2,10 +2,10 @@ import { Registration } from '../pages/account/registration.page';
 
 export function createB2BUserViaREST(user: Partial<Registration>) {
   const customer = {
-    name: 'Test Company',
+    name: user.companyName1 || 'Test Company',
     type: 'SMBCustomer',
     customerNo: new Date().getTime().toString(),
-    companyName: 'AgroNet',
+    companyName: user.companyName1 || 'AgroNet',
     description: 'AgroNet description',
     credentials: {
       name: user.lastName,

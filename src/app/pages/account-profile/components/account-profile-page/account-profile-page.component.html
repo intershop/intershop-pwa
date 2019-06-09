@@ -1,12 +1,8 @@
 <h1>{{ 'account.profile.heading' | translate }}</h1>
 
 <!-- SuccessMessage Template -->
-<!-- TODO: implement showSuccessMessage handling -->
-<div *ngIf="showSuccessMessage" class="alert alert-success alert-fade">
-  <p *ngIf="showSuccessMessage === 'UpdateEmail'">{{ 'account.profile.update_email.message' | translate }}</p>
-  <p *ngIf="showSuccessMessage === 'UpdateProfile'">{{ 'account.profile.update_profile.message' | translate }}</p>
-  <p *ngIf="showSuccessMessage === 'UpdatePassword'">{{ 'account.profile.update_password.message' | translate }}</p>
-  <p *ngIf="showSuccessMessage === 'UpdateNewsletter'">{{ 'account.profile.update_newsletter.message' | translate }}</p>
+<div *ngIf="!!successMessage" data-testing-id="success-message" class="alert alert-success alert-fade">
+  {{ successMessage | translate }}
 </div>
 
 <!-- Email Template -->
@@ -34,12 +30,16 @@
       </div>
     </div>
   </div>
-  <!-- TODO: ISREST-578 edit functional not implemented jet
   <div class="col-2 col-lg-4">
-    <a class="btn-tool" [title]="'account.profile.update.link' | translate">
+    <a
+      routerLink="/account/profile/email"
+      class="btn-tool"
+      [title]="'account.profile.update.link' | translate"
+      data-testing-id="edit-email"
+    >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
-  </div>-->
+  </div>
 </div>
 
 <!-- Password Template -->
@@ -55,36 +55,47 @@
       </div>
     </div>
   </div>
-  <!-- TODO: ISREST-578 edit functional not implemented jet
   <div class="col-2 col-lg-4">
-    <a class="btn-tool" title="{{ 'account.profile.update.link' | translate }}">
+    <a
+      routerLink="/account/profile/password"
+      class="btn-tool"
+      title="{{ 'account.profile.update.link' | translate }}"
+      data-testing-id="edit-password"
+    >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
-  </div>-->
+  </div>
 </div>
 <!--Company Profile -->
-<div class="row section" *ngIf="customer.isBusinessCustomer">
+<div *ngIf="customer.isBusinessCustomer" class="row section" data-testing-id="company-info">
   <div class="col-10 col-lg-8">
     <h3>{{ 'account.company_profile.detail.heading' | translate }}</h3>
     <div class="row">
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.company_profile.name.label' | translate }}</dt>
-          <dd class="col-md-8">{{ customer.companyName }}</dd>
+          <!-- display: inline -->
+          <dd class="col-md-8" data-testing-id="company-field"
+            >{{ customer.companyName }}<br />{{ customer.companyName2 }}</dd
+          >
           <dt class="col-md-4" *ngIf="customer.industry">{{ 'account.company_profile.industry.label' | translate }}</dt>
           <dd class="col-md-8" *ngIf="customer.industry">{{ customer.industry }}</dd>
           <dt class="col-md-4">{{ 'account.company_profile.taxation_id.label' | translate }}</dt>
-          <dd class="col-md-8">{{ customer.taxationID }}</dd>
+          <dd class="col-md-8" data-testing-id="taxation-id-field">{{ customer.taxationID }}</dd>
         </dl>
       </div>
     </div>
   </div>
-  <!-- TODO: ISREST-578 edit functional not implemented jet
   <div class="col-2 col-lg-4">
-    <a class="btn-tool" title="{{ 'account.profile.update.link' | translate }}">
+    <a
+      routerLink="/account/profile/company"
+      class="btn-tool"
+      title="{{ 'account.profile.update.link' | translate }}"
+      data-testing-id="edit-company"
+    >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
-  </div>-->
+  </div>
 </div>
 
 <!-- Profile Template -->
@@ -95,30 +106,35 @@
       <div class="col-md-12">
         <dl class="row dl-horizontal dl-separator">
           <dt class="col-md-4">{{ 'account.profile.name.label' | translate }}</dt>
-          <dd class="col-md-8">{{ user.title ? user.title + ' ' : '' }}{{ user.firstName + ' ' + user.lastName }}</dd>
-          <!-- Phone Template -->
+          <!-- display: inline -->
+          <dd class="col-md-8" data-testing-id="name-field"
+            >{{ user.title ? user.title + ' ' : '' }}{{ user.firstName }} {{ user.lastName }}</dd
+          >
+          <!-- Phone -->
           <dt class="col-md-4">{{ 'account.profile.phone.label' | translate }}</dt>
-          <dd class="col-md-8">{{ user.phoneHome }}</dd>
-          <dt class="col-md-4">{{ 'account.profile.fax.label' | translate }}</dt>
-          <dd class="col-md-8">{{ user.fax }}</dd>
+          <dd class="col-md-8" data-testing-id="phone-field">{{ user.phoneHome }}</dd>
+          <!-- Birthday -->
           <dt class="col-md-4">{{ 'account.profile.birthday.label' | translate }}</dt>
-          <dd class="col-md-8">
-            {{ user.birthday ? (user.birthday | ishDate) : ('account.profile.birthday.not_available' | translate) }}
-          </dd>
+          <!-- display: inline -->
+          <dd class="col-md-8" data-testing-id="birthday-field">{{
+            user.birthday ? (user.birthday | ishDate) : ('account.profile.birthday.not_available' | translate)
+          }}</dd>
           <dt class="col-md-4">{{ 'account.profile.language.label' | translate }}</dt>
-          <dd class="col-md-8">
-            <!-- TODO: get information for <isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
-          </dd>
+          <dd class="col-md-8" data-testing-id="preferred-language-field">{{ preferredLanguageName }}</dd>
         </dl>
       </div>
     </div>
   </div>
-  <!-- TODO: ISREST-578 edit functional not implemented jet
   <div class="col-2 col-lg-4">
-    <a class="btn-tool" title="{{ 'account.profile.update.link' | translate }}">
+    <a
+      routerLink="/account/profile/user"
+      class="btn-tool"
+      title="{{ 'account.profile.update.link' | translate }}"
+      data-testing-id="edit-user"
+    >
       <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
-  </div>-->
+  </div>
 </div>
 
 <!-- Newsletter Template -->

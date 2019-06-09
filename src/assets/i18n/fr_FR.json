@@ -740,7 +740,7 @@
   "account.update_new_password_success.message": "Votre mot de passe a été modifié. Pour des raisons de sécurité, veuillez fermer cette fenêtre.",
   "account.update_password.answer.text": "Votre nouveau mot de passe devient immédiatement effectif. Utilisez-le la prochaine fois que vous passerez une commande ou mettez à jour vos informations de compte.",
   "account.update_password.breadcrumb": "Modifier le mot de passe",
-  "account.update_password.change.message": "Pour modifier votre mot de passe, saisissez votre mot de passe actuel, puis votre nouveau mot de passe dans les champs ci-dessous.",
+  "account.update_password.change.message": "Pour modifier votre mot de passe, saisissez votre nouveau mot de passe dans les champs ci-dessous.",
   "account.update_password.change_your_password.heading": "Modifiez votre mot de passe !",
   "account.update_password.confirm_password.error.required": "Veuillez confirmer le nouveau mot de passe.",
   "account.update_password.confirm_password.error.stringcompare": "Les mots de passe ne sont pas identiques.",
