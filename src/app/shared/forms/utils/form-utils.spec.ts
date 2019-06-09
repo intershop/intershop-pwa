@@ -122,6 +122,10 @@ describe('Form Utils', () => {
       expect(determineSalutations('GB')).toHaveLength(5);
     });
 
+    it('should return salutations if countryCode is US', () => {
+      expect(determineSalutations('US')).toHaveLength(3);
+    });
+
     it('should return salutations if countryCode is DE', () => {
       expect(determineSalutations('DE')).toHaveLength(3);
     });

@@ -41,8 +41,7 @@ const accountPageRoutes: Routes = [
       {
         path: 'profile',
         data: { breadcrumbData: [{ key: 'account.profile.link' }] },
-        loadChildren:
-          '../account-profile-settings/account-profile-settings-page.module#AccountProfileSettingsPageModule',
+        loadChildren: '../account-profile/account-profile-page.module#AccountProfilePageModule',
       },
       {
         path: 'quote-list',

@@ -11,12 +11,20 @@ import { coreReducers } from '../core-store.module';
 import { LoadProductSuccess } from '../shopping/products';
 import { shoppingReducers } from '../shopping/shopping-store.module';
 
-import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
+import {
+  LoadCompanyUserSuccess,
+  LoginUserFail,
+  LoginUserSuccess,
+  UpdateUserPassword,
+  UpdateUserPasswordSuccess,
+} from './user.actions';
 import {
   getLoggedInCustomer,
   getLoggedInUser,
   getUserAuthorized,
   getUserError,
+  getUserLoading,
+  getUserSuccessMessage,
   isBusinessCustomer,
 } from './user.selectors';
 
@@ -42,6 +50,8 @@ describe('User Selectors', () => {
     expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
+    expect(getUserLoading(store$.state)).toBeFalsy();
+    expect(getUserSuccessMessage(store$.state)).toBeUndefined();
   });
 
   it('should select the customer when logging in successfully', () => {
@@ -59,6 +69,8 @@ describe('User Selectors', () => {
     expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeTrue();
     expect(getUserError(store$.state)).toBeFalsy();
+    expect(getUserLoading(store$.state)).toBeFalsy();
+    expect(getUserSuccessMessage(store$.state)).toBeUndefined();
   });
 
   it('should select the user when logging in as private customer successfully', () => {
@@ -126,5 +138,18 @@ describe('User Selectors', () => {
     const err = getUserError(store$.state);
     expect(err).toBeTruthy();
     expect(err.status).toEqual(401);
+  });
+
+  it('should select loading when the user starts to update his password', () => {
+    store$.dispatch(new UpdateUserPassword({ password: '123' }));
+
+    expect(getUserLoading(store$.state)).toBeTrue();
+  });
+
+  it('should select update success message when the user updated his password', () => {
+    store$.dispatch(new UpdateUserPasswordSuccess({ successMessage: 'success' }));
+
+    expect(getUserSuccessMessage(store$.state)).toBe('success');
+    expect(getUserLoading(store$.state)).toBeFalse();
   });
 });

@@ -4,7 +4,18 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
 import { Observable, merge, of } from 'rxjs';
-import { catchError, concatMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  delay,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import {
@@ -19,7 +30,7 @@ import { UserService } from '../../services/user/user.service';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
-import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getUserError, getUserSuccessMessage } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
   return (source$: Observable<T>) =>
@@ -118,14 +129,67 @@ export class UserEffects {
   @Effect()
   updateUser$ = this.actions$.pipe(
     ofType<userActions.UpdateUser>(userActions.UserActionTypes.UpdateUser),
-    mapToPayloadProperty('user'),
+    mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-    concatMap(([user, customer]) =>
-      this.userService.updateUser({ user, customer }).pipe(
-        map(changedUser => new userActions.UpdateUserSuccess({ user: changedUser })),
+    concatMap(([payload, customer]) =>
+      this.userService.updateUser({ user: payload.user, customer }).pipe(
+        map(
+          changedUser =>
+            new userActions.UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })
+        ),
         mapErrorToAction(userActions.UpdateUserFail)
       )
     )
+  );
+
+  @Effect()
+  updateUserPassword$ = this.actions$.pipe(
+    ofType<userActions.UpdateUserPassword>(userActions.UserActionTypes.UpdateUserPassword),
+    mapToPayload(),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    concatMap(([payload, customer]) =>
+      this.userService.updateUserPassword(customer, payload.password).pipe(
+        mapTo(
+          new userActions.UpdateUserPasswordSuccess({
+            successMessage: payload.successMessage || 'account.profile.update_password.message',
+          })
+        ),
+        mapErrorToAction(userActions.UpdateUserPasswordFail)
+      )
+    )
+  );
+
+  @Effect()
+  updateCustomer$ = this.actions$.pipe(
+    ofType<userActions.UpdateCustomer>(userActions.UserActionTypes.UpdateCustomer),
+    mapToPayload(),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
+    concatMap(([payload]) =>
+      this.userService.updateCustomer(payload.customer).pipe(
+        map(
+          changedCustomer =>
+            new userActions.UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
+        ),
+        mapErrorToAction(userActions.UpdateCustomerFail)
+      )
+    )
+  );
+
+  /* ToDo: should be partly replaced by the toast implementation */
+  /* Navigates the user to the Accouont Profile page and deletes the update user success message from store after 5 sec */
+  @Effect()
+  resetUpdateUserSuccessMessage$ = this.actions$.pipe(
+    ofType(
+      userActions.UserActionTypes.UpdateUserPasswordSuccess,
+      userActions.UserActionTypes.UpdateUserSuccess,
+      userActions.UserActionTypes.UpdateCustomerSuccess
+    ),
+    withLatestFrom(this.store$.pipe(select(getUserSuccessMessage))),
+    filter(([, successMessage]) => !!successMessage),
+    tap(() => this.router.navigateByUrl('/account/profile')),
+    delay(5000),
+    mapTo(new userActions.UserSuccessMessageReset())
   );
 
   @Effect()

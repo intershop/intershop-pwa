@@ -1,5 +1,5 @@
 import { CustomerData } from './customer.interface';
-import { CustomerUserType } from './customer.model';
+import { Customer, CustomerUserType } from './customer.model';
 
 export class CustomerMapper {
   /**
@@ -8,24 +8,11 @@ export class CustomerMapper {
   static mapLoginData(data: CustomerData): CustomerUserType {
     return data.type === 'SMBCustomer'
       ? {
-          customer: {
-            customerNo: data.customerNo,
-            type: data.type,
-            isBusinessCustomer: true,
-            companyName: data.companyName,
-            companyName2: data.companyName2,
-            taxationID: data.taxationID,
-            industry: data.industry,
-            description: data.description,
-          },
+          customer: CustomerMapper.fromData(data),
           user: undefined,
         }
       : {
-          customer: {
-            customerNo: data.customerNo,
-            type: data.type,
-            isBusinessCustomer: false,
-          },
+          customer: CustomerMapper.fromData(data),
           user: {
             title: data.title,
             firstName: data.firstName,
@@ -42,6 +29,28 @@ export class CustomerMapper {
             preferredShipToAddressUrn: data.preferredShipToAddress ? data.preferredShipToAddress.urn : undefined,
             birthday: data.birthday,
           },
+        };
+  }
+
+  /**
+   * Map customer data in dependence of the customer type (PrivateCustomer/SMBCustomer)
+   */
+  static fromData(data: CustomerData): Customer {
+    return data.type === 'SMBCustomer'
+      ? {
+          customerNo: data.customerNo,
+          type: data.type,
+          isBusinessCustomer: true,
+          companyName: data.companyName,
+          companyName2: data.companyName2,
+          taxationID: data.taxationID,
+          industry: data.industry,
+          description: data.description,
+        }
+      : {
+          customerNo: data.customerNo,
+          type: data.type,
+          isBusinessCustomer: false,
         };
   }
 }

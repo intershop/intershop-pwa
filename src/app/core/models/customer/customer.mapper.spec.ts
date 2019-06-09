@@ -48,4 +48,37 @@ describe('Customer Mapper', () => {
       expect(loginData.user).toBeUndefined();
     });
   });
+
+  describe('fromData', () => {
+    it(`should return Customer when getting CustomerData of a private Customer`, () => {
+      const customerData = {
+        type: 'PrivateCustomer',
+        customerNo: 'test',
+      } as CustomerData;
+      const customer = CustomerMapper.fromData(customerData);
+
+      expect(customer).toBeTruthy();
+      expect(customer.type).toEqual(customerData.type);
+      expect(customer.customerNo).toEqual(customerData.customerNo);
+      expect(customer.isBusinessCustomer).toBeFalse();
+    });
+
+    it(`should return Customer when getting CustomerData of a business Customer`, () => {
+      const customerData = {
+        type: 'SMBCustomer',
+        customerNo: 'test',
+        companyName: 'test Enterprise',
+        taxationID: '54711',
+      } as CustomerData;
+
+      const customer = CustomerMapper.fromData(customerData);
+
+      expect(customer).toBeTruthy();
+      expect(customer.type).toEqual(customerData.type);
+      expect(customer.customerNo).toEqual(customerData.customerNo);
+      expect(customer.companyName).toEqual(customerData.companyName);
+      expect(customer.taxationID).toEqual(customerData.taxationID);
+      expect(customer.isBusinessCustomer).toBeTrue();
+    });
+  });
 });

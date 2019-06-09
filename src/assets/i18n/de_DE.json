@@ -740,7 +740,7 @@
   "account.update_new_password_success.message": "Ihr Kennwort wurde geändert. Bitte schließen Sie aus Sicherheitsgründen dieses Fenster.",
   "account.update_password.answer.text": "Das neue Kennwort ist sofort aktiv. Verwenden Sie es bei der nächsten Bestellung oder aktualisieren Sie Ihre Kontoinformationen.",
   "account.update_password.breadcrumb": "Kennwort ändern",
-  "account.update_password.change.message": "Um Ihr Kennwort zu ändern, geben Sie das aktuelle und das neue Kennwort unten in die Felder ein.",
+  "account.update_password.change.message": "Um Ihr Kennwort zu ändern, geben Sie das neue Kennwort unten in die Felder ein.",
   "account.update_password.change_your_password.heading": "Ändern Sie Ihr Kennwort!",
   "account.update_password.confirm_password.error.required": "Bitte bestätigen Sie das neue Kennwort.",
   "account.update_password.confirm_password.error.stringcompare": "Ihre Kennwörter sind nicht identisch.",

@@ -1,4 +1,6 @@
-import { fillInput } from '../../framework';
+import { fillFormField } from '../../framework';
+
+export declare type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
 
 export interface Registration {
   login: string;
@@ -8,7 +10,7 @@ export interface Registration {
   securityQuestion: number;
   securityQuestionAnswer: string;
   countryCodeSwitch: string;
-  title: number;
+  title: string;
   firstName: string;
   lastName: string;
   addressLine1: string;
@@ -19,6 +21,7 @@ export interface Registration {
   mainDivisionCode: string;
   phoneHome: string;
   companyName1: string;
+  preferredLanguage: SupportedLanguage;
 }
 
 export const sensibleDefaults: Partial<Registration> = {
@@ -26,12 +29,12 @@ export const sensibleDefaults: Partial<Registration> = {
   securityQuestion: 1,
   securityQuestionAnswer: 'something',
   countryCodeSwitch: 'AT',
-  title: 1,
   firstName: 'Test',
   lastName: 'User',
   addressLine1: 'Testroad 1',
   postalCode: '12345',
   city: 'Testcity',
+  phoneHome: '123456789',
   mainDivisionCode: 'Wien',
 };
 
@@ -60,32 +63,17 @@ export class RegistrationPage {
   }
 
   fillForm(register: Partial<Registration>) {
-    Object.keys(register).forEach((key: keyof Registration) => {
-      cy.get(this.tag).then(form => {
-        if (form.find(`input[data-testing-id="${key}"]`).length) {
-          fillInput(key, register[key].toString());
-          if (key === 'login' && !register.loginConfirmation) {
-            fillInput('loginConfirmation', register.login);
-          } else if (key === 'password' && !register.passwordConfirmation) {
-            fillInput('passwordConfirmation', register.password);
-          }
-        } else if (form.find(`select[data-testing-id="${key}"]`).length) {
-          if (typeof register[key] === 'number') {
-            cy.get(`[data-testing-id="${key}"]`)
-              .find('option')
-              .eq(register[key] as number)
-              .then(option => {
-                const val = option.attr('value');
-                // tslint:disable-next-line:ban
-                cy.get(`[data-testing-id="${key}"]`).select(val);
-              });
-          } else {
-            // tslint:disable-next-line:ban
-            cy.get(`[data-testing-id="${key}"]`).select(register[key].toString());
-          }
-        }
+    if (register.loginConfirmation === undefined) {
+      register.loginConfirmation = register.login;
+    }
+    if (register.passwordConfirmation === undefined) {
+      register.passwordConfirmation = register.password;
+    }
+    Object.keys(register)
+      .filter(key => register[key] !== undefined)
+      .forEach((key: keyof Registration) => {
+        fillFormField(this.tag, key, register[key]);
       });
-    });
     return this;
   }
 
