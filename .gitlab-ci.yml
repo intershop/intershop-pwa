@@ -191,16 +191,14 @@ publish_pwa:
   script:
     - VERSION="$(grep "version" package.json | grep -Eo '[0-9][^"]*')"
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
       --build-arg displayVersion="$VERSION ($CI_COMMIT_REF_NAME @ $CI_COMMIT_SHA)"
       --label environment="production"
       --label revision="${CI_BUILD_REF}"
       --label project="${CI_PROJECT_URL}"
       .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
 
 publish_pwa_latest:
   cache: {}
@@ -217,8 +215,8 @@ publish_pwa_latest:
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
-    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:latest
+    - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:latest
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:latest
 
 start_nginx_proxy:
@@ -320,7 +318,7 @@ deploy_demo:
   variables:
     GIT_STRATEGY: none
     SERVICE: 'develop-pwa-b2c'
-    IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
+    IMAGE: '${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f ${SERVICE} || true
@@ -357,7 +355,7 @@ deploy_demo_b2b:
   variables:
     GIT_STRATEGY: none
     SERVICE: 'develop-pwa-b2b'
-    IMAGE: '${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}'
+    IMAGE: '${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f ${SERVICE} || true
@@ -485,7 +483,7 @@ deploy_review_b2c:
     - set -x
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
-    - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker run
       --detach
       --publish-all
@@ -502,7 +500,7 @@ deploy_review_b2c:
       --add-host b2c.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+      ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
     - docker run
@@ -572,7 +570,7 @@ deploy_review_b2b:
     - set -x
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
-    - docker pull ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker run
       --detach
       --publish-all
@@ -583,7 +581,7 @@ deploy_review_b2b:
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
       --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF}
+      ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - sleep 10
     - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
   environment:
