@@ -653,7 +653,7 @@ schematics:
     - bash .gitlab-ci-test-schematics.sh
     - echo "schematics complete"
 
-universal_b2c:
+.universal_template: &universal_definition
   image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
   stage: e2e
   only:
@@ -664,19 +664,26 @@ universal_b2c:
     - e2e
   dependencies: []
   cache: {}
+  variables:
+    GIT_STRATEGY: none
   script:
-    - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - sh /test-universal.sh
 
-cypress_remote:
+universal_b2c:
+  <<: *universal_definition
+  variables:
+    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c
+
+universal_b2b:
+  <<: *universal_definition
+  variables:
+    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
+
+.cypress_template: &cypress_definition
   image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
   stage: e2e
-  parallel: 4
-  only:
-    - merge_requests
-    - triggers
   tags:
     - docker-executor
     - e2e
@@ -689,73 +696,49 @@ cypress_remote:
       - cypress/screenshots
       - cypress/videos
   dependencies: []
+  cache: {}
   script:
     - node --version && npm --version
     - export DISPLAY=:5
-    - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - sh /e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -r sh /test-e2e.sh
+    - sh /e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX $TESTS | xargs -r sh /test-e2e.sh
     - echo "E2E complete"
 
-cypress_remote_b2b:
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
-  stage: e2e
+cypress_remote:
+  <<: *cypress_definition
+  parallel: 4
   only:
     - merge_requests
     - triggers
-  tags:
-    - docker-executor
-    - e2e
-  artifacts:
-    reports:
-      junit: reports/e2e-*.xml
-    when: on_failure
-    expire_in: 2 weeks
-    paths:
-      - cypress/screenshots
-      - cypress/videos
-  dependencies: []
-  script:
-    - node --version && npm --version
-    - export DISPLAY=:5
-    - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
-    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
-    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - sh /test-universal.sh
-    - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -r sh /test-e2e.sh
-    - echo "E2E complete"
+  variables:
+    GIT_STRATEGY: none
+    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c
+    TESTS: '*b2c*.e2e-spec.ts'
 
-cypress_mocked:
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
-  stage: e2e
+cypress_remote_b2b:
+  <<: *cypress_definition
   only:
     - merge_requests
-  except:
-    refs:
-      - develop
-      - master
-  tags:
-    - docker-executor
-    - e2e
-  artifacts:
-    reports:
-      junit: reports/e2e-*.xml
-    when: on_failure
-    expire_in: 2 weeks
-    paths:
-      - cypress/screenshots
-      - cypress/videos
-  dependencies: []
-  script:
-    - node --version && npm --version
-    - export ICM_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock DISPLAY=:5
-    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
-    - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -r sh /test-e2e.sh
-    - echo "E2E complete"
+    - triggers
+  variables:
+    GIT_STRATEGY: none
+    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
+    CI_NODE_TOTAL: 1
+    CI_NODE_INDEX: 1
+    TESTS: '*b2b*.e2e-spec.ts'
+
+cypress_mocked:
+  <<: *cypress_definition
+  only:
+    - merge_requests
+  variables:
+    GIT_STRATEGY: none
+    PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-mock
+    CI_NODE_TOTAL: 1
+    CI_NODE_INDEX: 1
+    TESTS: '*mock*.e2e-spec.ts'
 
 check_mr_title:
   cache: {}
