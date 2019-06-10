@@ -1,5 +1,9 @@
-import { Address } from 'ish-core/models/address/address.model';
-import { waitLoadingEnd } from '../../framework';
+import { fillFormField, waitLoadingEnd } from '../../framework';
+import { Registration } from '../account/registration.page';
+
+export declare type AddressDetailsTypes = Partial<
+  Pick<Registration, 'countryCodeSwitch' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
+>;
 
 export class AddressesPage {
   readonly tag = 'ish-checkout-address-page-container';
@@ -9,35 +13,9 @@ export class AddressesPage {
     cy.get('button[data-testing-id="guest-checkout-button"]').click();
   }
 
-  fillInvoiceAddressForm(address: Address) {
-    // tslint:disable-next-line:ban
-    cy.get('[data-testing-id="invoiceAddressForm"] select[data-testing-id="countryCodeSwitch"]')
-      .select(address.countryCode)
-      .blur();
-    cy.get('[data-testing-id="invoiceAddressForm"] input[data-testing-id="firstName"]')
-      .clear()
-      .type(address.firstName)
-      .blur();
-    cy.get('[data-testing-id="invoiceAddressForm"] input[data-testing-id="lastName"]')
-      .clear()
-      .type(address.lastName)
-      .blur();
-    cy.get('[data-testing-id="invoiceAddressForm"] input[data-testing-id="addressLine1"]')
-      .clear()
-      .type(address.addressLine1)
-      .blur();
-    cy.get('[data-testing-id="invoiceAddressForm"] input[data-testing-id="postalCode"]')
-      .clear()
-      .type(address.postalCode)
-      .blur();
-    cy.get('[data-testing-id="invoiceAddressForm"] input[data-testing-id="city"]')
-      .clear()
-      .type(address.city)
-      .blur();
-    cy.get('input[data-testing-id="email"]')
-      .clear()
-      .type(address.email)
-      .blur();
+  fillInvoiceAddressForm(address: AddressDetailsTypes, email: string) {
+    Object.keys(address).forEach(key => fillFormField('[data-testing-id="invoiceAddressForm"]', key, address[key]));
+    fillFormField(this.tag, 'email', email);
     return this;
   }
 
