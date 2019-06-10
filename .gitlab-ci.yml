@@ -707,7 +707,7 @@ universal_b2b:
 
 cypress_remote:
   <<: *cypress_definition
-  parallel: 4
+  parallel: 5
   only:
     - merge_requests
     - triggers
@@ -718,25 +718,23 @@ cypress_remote:
 
 cypress_remote_b2b:
   <<: *cypress_definition
+  parallel: 2
   only:
     - merge_requests
     - triggers
   variables:
     GIT_STRATEGY: none
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
-    CI_NODE_TOTAL: 1
-    CI_NODE_INDEX: 1
     TESTS: '*b2b*.e2e-spec.ts'
 
 cypress_mocked:
   <<: *cypress_definition
+  parallel: 2
   only:
     - merge_requests
   variables:
     GIT_STRATEGY: none
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-mock
-    CI_NODE_TOTAL: 1
-    CI_NODE_INDEX: 1
     TESTS: '*mock*.e2e-spec.ts'
 
 check_mr_title:
