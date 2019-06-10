@@ -275,8 +275,6 @@ publish_nginx:
     - performance
   services:
     - docker:dind
-  variables:
-    CI_DEBUG_TRACE: 'true'
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -604,7 +602,7 @@ stop_review_b2b:
     GIT_STRATEGY: none
   script:
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
-    - sh .gitlab-ci-cleanup-mr-images.sh
+    - curl --request DELETE --data "name_regex=.*$CI_COMMIT_REF_SLUG.*" --header "PRIVATE-TOKEN:$PRIVATE_API_TOKEN" "https://gitlab.intershop.de/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/registry/repositories/51/tags"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
@@ -629,9 +627,9 @@ build_e2e_image:
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - cd e2e
-    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} .
+    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
 
 schematics:
   image: node:10
@@ -653,7 +651,7 @@ schematics:
     - echo "schematics complete"
 
 .universal_template: &universal_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   only:
     - merge_requests
@@ -681,7 +679,7 @@ universal_b2b:
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
 
 .cypress_template: &cypress_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   tags:
     - docker-executor
@@ -763,3 +761,17 @@ check_tslint_no_warnings:
     - npm ci
     - sh .gitlab-ci-check-no-additional-warnings.sh
     - echo "check complete"
+
+housekeeping:
+  stage: verify
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    refs:
+      - develop
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - curl --request DELETE --data "name_regex=.*" --data 'older_than=2month' --header "PRIVATE-TOKEN:$PRIVATE_API_TOKEN" "https://gitlab.intershop.de/api/v4/projects/$CI_PROJECT_ID/registry/repositories/51/tags"
