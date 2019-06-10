@@ -1,7 +1,6 @@
-import { Address } from 'ish-core/models/address/address.model';
 import { at } from '../../framework';
 
-import { AddressesPage } from '../../pages/checkout/addresses.page';
+import { AddressDetailsTypes, AddressesPage } from '../../pages/checkout/addresses.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { PaymentPage } from '../../pages/checkout/payment.page';
 import { ReceiptPage } from '../../pages/checkout/receipt.page';
@@ -23,14 +22,14 @@ const _ = {
     price: 303.62,
   },
   address: {
-    countryCode: 'DE',
+    countryCodeSwitch: 'DE',
     firstName: 'Pablo',
     lastName: 'Parkes',
     addressLine1: 'Marbacher Str. 87',
     city: 'Stuttgart',
     postalCode: '12345',
-    email: 'p.parkes@test.com',
-  } as Address,
+  } as AddressDetailsTypes,
+  email: 'p.parkes@test.com',
 };
 
 describe('Anonymous Checkout', () => {
@@ -62,7 +61,7 @@ describe('Anonymous Checkout', () => {
     at(CartPage, page => page.beginCheckout());
     at(AddressesPage, page => {
       page.guestCheckout();
-      page.fillInvoiceAddressForm(_.address);
+      page.fillInvoiceAddressForm(_.address, _.email);
       page.continueCheckout();
     });
     at(ShippingPage);
