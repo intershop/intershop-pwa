@@ -7,7 +7,7 @@ export class HeaderModule {
     return cy
       .get('ish-header .compare-status .badge')
       .first()
-      .then(el => Number.parseInt(el.text(), 10));
+      .then(el => parseInt(el.text(), 10));
   }
 
   gotoHomePage() {
