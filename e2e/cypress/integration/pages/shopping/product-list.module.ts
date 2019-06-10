@@ -33,7 +33,7 @@ export class ProductListModule {
       .get('.pagination-total')
       .then(el => el.text())
       .then(text => text.match(new RegExp('([0-9]+)')))
-      .then(num => Number.parseInt(num[1], 10));
+      .then(num => parseInt(num[1], 10));
   }
 
   get pagingBar() {
@@ -41,7 +41,7 @@ export class ProductListModule {
   }
 
   get currentPage() {
-    return this.pagingBar.find('a.active').then(el => Number.parseInt(el.text(), 10));
+    return this.pagingBar.find('a.active').then(el => parseInt(el.text(), 10));
   }
 
   makeAllProductsVisible() {
