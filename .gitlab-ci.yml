@@ -629,9 +629,9 @@ build_e2e_image:
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - cd e2e
-    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} .
+    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
 
 schematics:
   image: node:10
@@ -653,7 +653,7 @@ schematics:
     - echo "schematics complete"
 
 .universal_template: &universal_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   only:
     - merge_requests
@@ -681,7 +681,7 @@ universal_b2b:
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
 
 .cypress_template: &cypress_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   tags:
     - docker-executor
