@@ -604,7 +604,7 @@ stop_review_b2b:
     GIT_STRATEGY: none
   script:
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
-    - sh .gitlab-ci-cleanup-mr-images.sh
+    - curl --request DELETE --data "name_regex=.*$CI_COMMIT_REF_SLUG.*" --header "PRIVATE-TOKEN:$PRIVATE_API_TOKEN" "https://gitlab.intershop.de/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/registry/repositories/51/tags"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
@@ -763,3 +763,17 @@ check_tslint_no_warnings:
     - npm ci
     - sh .gitlab-ci-check-no-additional-warnings.sh
     - echo "check complete"
+
+housekeeping:
+  stage: verify
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    refs:
+      - develop
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - curl --request DELETE --data "name_regex=.*" --data 'older_than=2month' --header "PRIVATE-TOKEN:$PRIVATE_API_TOKEN" "https://gitlab.intershop.de/api/v4/projects/$CI_PROJECT_ID/registry/repositories/51/tags"
