@@ -6,7 +6,7 @@ set -e
 [ -z "$2" ] && echo "partition number required" && exit 1
 [ -z "$3" ] && echo "test file expression required" && exit 1
 
-tests="$(find $PWD -name $3 | sort)"
+tests="$(find "$(dirname "$(readlink -f "$0")")" -name $3 | sort)"
 no="$(echo "$tests" | wc -l)"
 psize="$(($no / $1 + 1))"
 

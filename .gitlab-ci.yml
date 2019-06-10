@@ -629,9 +629,10 @@ build_e2e_image:
     - docker:dind
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} --file=templates/Dockerfile_e2e .
+    - cd e2e
+    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
 
 schematics:
   image: node:10
@@ -653,7 +654,7 @@ schematics:
     - echo "schematics complete"
 
 universal_b2c:
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
   stage: e2e
   only:
     - merge_requests
@@ -667,10 +668,10 @@ universal_b2c:
     - test $CI_PIPELINE_SOURCE = trigger && export PWA_BASE_URL=http://$DEMO_SERVER_NAME:4321 || export PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - sh .gitlab-ci-test-universal.sh
+    - sh /test-universal.sh
 
 cypress_remote:
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
   stage: e2e
   parallel: 4
   only:
@@ -681,7 +682,7 @@ cypress_remote:
     - e2e
   artifacts:
     reports:
-      junit: reports/e2e-*.xml
+      junit: /reports/e2e-*.xml
     when: on_failure
     expire_in: 2 weeks
     paths:
@@ -695,11 +696,11 @@ cypress_remote:
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - sh .gitlab-ci-test-e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
+    - sh /e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX '*b2c*.e2e-spec.ts' | xargs -r sh /test-e2e.sh
     - echo "E2E complete"
 
 cypress_remote_b2b:
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
   stage: e2e
   only:
     - merge_requests
@@ -722,13 +723,13 @@ cypress_remote_b2b:
     - export PWA_BASE_URL="http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS_Business-Site/-
-    - sh .gitlab-ci-test-universal.sh
+    - sh /test-universal.sh
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
+    - find $PWD -name '*b2b*.e2e-spec.ts' | xargs -r sh /test-e2e.sh
     - echo "E2E complete"
 
 cypress_mocked:
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
   stage: e2e
   only:
     - merge_requests
@@ -753,7 +754,7 @@ cypress_mocked:
     - export ICM_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock PWA_BASE_URL=http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock DISPLAY=:5
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -r sh .gitlab-ci-test-e2e.sh
+    - find $PWD -name '*mock*.e2e-spec.ts' | xargs -r sh /test-e2e.sh
     - echo "E2E complete"
 
 check_mr_title:

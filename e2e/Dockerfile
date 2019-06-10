@@ -2,8 +2,6 @@ FROM cypress/browsers:chrome69
 RUN apt-get update || true
 RUN apt-get -y install dnsutils
 WORKDIR /
-COPY package.json package-lock.json /
-COPY tslint-rules /tslint-rules/
-COPY schematics /schematics/
+COPY . .
 ENV CI=true
 RUN npm ci
