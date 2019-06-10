@@ -606,6 +606,7 @@ stop_review_b2b:
     GIT_STRATEGY: none
   script:
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
+    - sh .gitlab-ci-cleanup-mr-images.sh
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     action: stop
