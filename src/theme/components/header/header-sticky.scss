@@ -96,6 +96,12 @@
     }
   }
 
+  .user-info-box {
+    @include media-breakpoint-only(md) {
+      display: block;
+    }
+  }
+
   @include media-breakpoint-down(md) {
     @include mobile-navigation;
   }
