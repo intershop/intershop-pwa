@@ -145,7 +145,7 @@ describe('Basket Reducer', () => {
     describe('UpdateBasketItems action', () => {
       it('should set loading to true', () => {
         const action = new fromActions.UpdateBasketItems({
-          lineItemQuantities: [
+          lineItemUpdates: [
             {
               quantity: 2,
               itemId: 'test',

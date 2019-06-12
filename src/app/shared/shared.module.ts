@@ -39,6 +39,9 @@ import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-i
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
+import { LineItemEditDialogComponent } from './line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
+import { LineItemEditComponent } from './line-item/components/line-item-edit/line-item-edit.component';
+import { LineItemEditDialogContainerComponent } from './line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
 import { OrderListComponent } from './order/components/order-list/order-list.component';
 import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
@@ -92,6 +95,9 @@ const declaredComponents = [
   FilterDropdownComponent,
   FilterSwatchImagesComponent,
   LineItemDescriptionComponent,
+  LineItemEditComponent,
+  LineItemEditDialogComponent,
+  LineItemEditDialogContainerComponent,
   OrderListComponent,
   ProductLabelComponent,
   ProductListComponent,

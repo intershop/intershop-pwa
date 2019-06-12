@@ -22,7 +22,9 @@ export declare type BasketUpdateType =
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculationState: string };
-export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
+export declare type BasketItemUpdateType =
+  | { quantity?: { value: number }; product?: string }
+  | { shippingMethod: { id: string } };
 export declare type BasketIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'

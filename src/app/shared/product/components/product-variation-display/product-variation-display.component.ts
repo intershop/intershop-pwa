@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-variation-display',
@@ -8,5 +8,6 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationDisplayComponent {
-  @Input() product: VariationProductView;
+  @Input() product: Product;
+  isVariationProduct = ProductHelper.isVariationProduct;
 }

@@ -16,6 +16,10 @@ export interface ModalOptions {
    */
   confirmText?: string;
   /**
+   * Optional modal confirm button disabled.
+   */
+  confirmDisabled?: boolean;
+  /**
    * Optional modal reject button text.
    */
   rejectText?: string;
@@ -42,6 +46,9 @@ export class ModalDialogComponent {
 
   @Output() // tslint:disable-next-line:no-any
   confirmed = new EventEmitter<any>();
+
+  @Output() // tslint:disable-next-line:no-any
+  onClosed = new EventEmitter<any>();
 
   @ViewChild('template')
   // tslint:disable-next-line:no-any
@@ -73,6 +80,7 @@ export class ModalDialogComponent {
    */
   hide() {
     this.ngbModalRef.close();
+    this.onClosed.emit(this.data);
   }
 
   /**

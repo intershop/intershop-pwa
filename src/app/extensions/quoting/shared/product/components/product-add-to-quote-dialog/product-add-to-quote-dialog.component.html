@@ -71,6 +71,7 @@
         <ish-line-item-list
           *ngIf="quote.items"
           [lineItems]="quote.items"
+          lineItemViewType="simple"
           [editable]="quote.state === 'New'"
           [total]="quote.total"
           (updateItem)="onUpdateItem($event)"
