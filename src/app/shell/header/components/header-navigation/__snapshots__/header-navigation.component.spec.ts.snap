@@ -1,32 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Header Navigation Component should be created 1`] = `
-<ul
-  class="navbar-nav main-navigation-list d-md-none accordion"
-  ng-reflect-klass="navbar-nav main-navigation-lis"
-  ng-reflect-ng-class="[object Object]"
->
-  <li class="dropdown" ng-reflect-klass="dropdown" ng-reflect-ng-class="[object Object]">
-    <a style="width: 100%;" ng-reflect-ng-style="[object Object]" data-testing-id="A-link">
-      CAT_A </a
-    ><ish-sub-category-navigation></ish-sub-category-navigation>
-  </li>
-  <li class="dropdown" ng-reflect-klass="dropdown" ng-reflect-ng-class="[object Object]">
-    <a style="width: 100%;" ng-reflect-ng-style="[object Object]" data-testing-id="B-link">
-      CAT_B </a
-    ><ish-sub-category-navigation></ish-sub-category-navigation>
-  </li>
-  <li class="dropdown" ng-reflect-klass="dropdown" ng-reflect-ng-class="[object Object]">
-    <a style="width: 100%;" ng-reflect-ng-style="[object Object]" data-testing-id="C-link">
-      CAT_C </a
-    ><ish-sub-category-navigation></ish-sub-category-navigation>
-  </li>
-</ul>
-<ul
-  class="navbar-nav main-navigation-list d-none d-md-block"
-  ng-reflect-klass="navbar-nav main-navigation-lis"
-  ng-reflect-ng-class="[object Object]"
->
+<ul class="navbar-nav main-navigation-list">
   <li class="dropdown" ng-reflect-klass="dropdown" ng-reflect-ng-class="[object Object]">
     <a style="width: 100%;" ng-reflect-ng-style="[object Object]" data-testing-id="A-link">
       CAT_A </a
