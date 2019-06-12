@@ -17,7 +17,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
       href="/category/A.1"
       >CAT_A1</a
     ><a
-      class="dropdown-toggle d-md-none"
+      class="dropdown-toggle"
       ng-reflect-klass="dropdown-toggle"
       ng-reflect-ng-class="[object Object]"
       ><fa-icon class="ng-fa-icon" ng-reflect-icon-prop="fas,plus"
@@ -54,7 +54,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
             href="/category/A.1.a"
             >CAT_A1a</a
           ><a
-            class="dropdown-toggle d-md-none"
+            class="dropdown-toggle"
             ng-reflect-klass="dropdown-toggle"
             ng-reflect-ng-class="[object Object]"
             ><fa-icon class="ng-fa-icon" ng-reflect-icon-prop="fas,plus"
