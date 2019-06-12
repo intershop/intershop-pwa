@@ -327,8 +327,8 @@ describe('Quote Request Reducer', () => {
   describe('UpdateQuoteRequestItems actions', () => {
     describe('UpdateQuoteRequestItems action', () => {
       it('should set loading to true', () => {
-        const lineItemQuantities = [{ itemId: 'test', quantity: 1 }];
-        const action = new fromActions.UpdateQuoteRequestItems({ lineItemQuantities });
+        const lineItemUpdates = [{ itemId: 'test', quantity: 1 }];
+        const action = new fromActions.UpdateQuoteRequestItems({ lineItemUpdates });
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

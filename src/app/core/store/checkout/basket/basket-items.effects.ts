@@ -4,6 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/operators';
 
+import {
+  LineItemUpdateHelper,
+  LineItemUpdateHelperItem,
+} from 'ish-core/models/line-item-update/line-item-update.helper';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
 
@@ -72,34 +76,25 @@ export class BasketItemsEffects {
   @Effect()
   updateBasketItems$ = this.actions$.pipe(
     ofType<basketActions.UpdateBasketItems>(basketActions.BasketActionTypes.UpdateBasketItems),
-    mapToPayloadProperty('lineItemQuantities'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    map(([items, basket]) => {
-      const basketItems = basket.lineItems;
-      const updatedItems = [];
-      if (basketItems) {
-        for (const basketItem of basketItems) {
-          for (const item of items) {
-            if (basketItem.id === item.itemId && basketItem.quantity.value !== item.quantity) {
-              updatedItems.push(item);
-            }
-          }
-        }
-      }
-      return { updatedItems, basket };
-    }),
+    filter(([payload, basket]) => !!basket.lineItems && !!payload.lineItemUpdates),
+    map(([{ lineItemUpdates }, { lineItems }]) =>
+      LineItemUpdateHelper.filterUpdatesByItems(lineItemUpdates, lineItems as LineItemUpdateHelperItem[])
+    ),
 
-    concatMap(({ updatedItems, basket }) =>
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    concatMap(([updates, basketId]) =>
       concat(
-        ...updatedItems.map(item => {
-          if (item.quantity > 0) {
-            return this.basketService.updateBasketItem(basket.id, item.itemId, {
-              quantity: {
-                value: item.quantity,
-              },
+        ...updates.map(update => {
+          if (update.quantity === 0) {
+            return this.basketService.deleteBasketItem(basketId, update.itemId);
+          } else {
+            return this.basketService.updateBasketItem(basketId, update.itemId, {
+              quantity: update.quantity > 0 ? { value: update.quantity } : undefined,
+              product: update.sku,
             });
           }
-          return this.basketService.deleteBasketItem(basket.id, item.itemId);
         })
       ).pipe(
         defaultIfEmpty(),

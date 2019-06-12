@@ -44,6 +44,7 @@ describe('Product Inventory Component', () => {
   it('should show In Stock when inStock = true', () => {
     translate.set('product.instock.text', 'In Stock');
     product.inStock = true;
+    product.availability = true;
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('In Stock');
     expect(

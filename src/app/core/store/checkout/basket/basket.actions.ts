@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -156,7 +156,7 @@ export class AddQuoteToBasketSuccess implements Action {
 
 export class UpdateBasketItems implements Action {
   readonly type = BasketActionTypes.UpdateBasketItems;
-  constructor(public payload: { lineItemQuantities: LineItemQuantity[] }) {}
+  constructor(public payload: { lineItemUpdates: LineItemUpdate[] }) {}
 }
 
 export class UpdateBasketItemsFail implements Action {

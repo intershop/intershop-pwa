@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
 /**
  * The Shopping Basket Component displays the users basket items and cost summary.
@@ -30,7 +30,7 @@ export class ShoppingBasketComponent {
   @Input() basket: BasketView;
   @Input() error: HttpError;
 
-  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
@@ -54,7 +54,7 @@ export class ShoppingBasketComponent {
    * Throws updateItem event when onUpdateItem event trigggerd.
    * @param item Item id and quantity pair that should be changed
    */
-  onUpdateItem(item: LineItemQuantity) {
+  onUpdateItem(item: LineItemUpdate) {
     this.updateItem.emit(item);
   }
 

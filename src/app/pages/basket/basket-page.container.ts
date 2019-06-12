@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import {
   DeleteBasketItem,
   UpdateBasketItems,
@@ -26,7 +26,7 @@ export class BasketPageContainerComponent {
     this.store.dispatch(new DeleteBasketItem({ itemId }));
   }
 
-  updateBasketItem(formValue: LineItemQuantity) {
-    this.store.dispatch(new UpdateBasketItems({ lineItemQuantities: [formValue] }));
+  updateBasketItem(formValue: LineItemUpdate) {
+    this.store.dispatch(new UpdateBasketItems({ lineItemUpdates: [formValue] }));
   }
 }

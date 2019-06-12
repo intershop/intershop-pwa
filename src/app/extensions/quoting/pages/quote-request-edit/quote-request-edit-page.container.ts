@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { getLoggedInUser } from 'ish-core/store/user';
 import {
   CreateQuoteRequestFromQuoteRequest,
@@ -26,8 +26,8 @@ export class QuoteRequestEditPageContainerComponent {
 
   constructor(private store: Store<{}>) {}
 
-  updateQuoteRequestItem(payload: LineItemQuantity) {
-    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemQuantities: [payload] }));
+  updateQuoteRequestItem(payload: LineItemUpdate) {
+    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemUpdates: [payload] }));
   }
 
   deleteQuoteRequestItem(payload: string) {
