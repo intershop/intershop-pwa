@@ -23,8 +23,10 @@ import { AddressComponent } from './address/components/address/address.component
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketPromotionComponent } from './basket/components/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
+import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
@@ -49,6 +51,7 @@ import { ProductListPagingComponent } from './product/components/product-list-pa
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
+import { ProductPromotionComponent } from './product/components/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
@@ -57,6 +60,7 @@ import { ProductVariationDisplayComponent } from './product/components/product-v
 import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
+import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
@@ -83,6 +87,7 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
+  BasketPromotionComponent,
   FilterCheckboxComponent,
   FilterDropdownComponent,
   FilterSwatchImagesComponent,
@@ -92,6 +97,7 @@ const declaredComponents = [
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
+  ProductPromotionComponent,
   ProductRowComponent,
   ProductTileComponent,
   RecentlyViewedComponent,
@@ -104,6 +110,7 @@ const exportedComponents = [
   BasketAddressSummaryComponent,
   BasketCostSummaryComponent,
   BasketItemsSummaryComponent,
+  BasketPromotionContainerComponent,
   BreadcrumbComponent,
   FilterNavigationContainerComponent,
   InfoBoxComponent,
@@ -120,6 +127,7 @@ const exportedComponents = [
   ProductLabelComponent,
   ProductListContainerComponent,
   ProductPriceComponent,
+  ProductPromotionContainerComponent,
   ProductQuantityComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,

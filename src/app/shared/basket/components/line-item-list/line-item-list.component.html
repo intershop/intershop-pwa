@@ -27,13 +27,14 @@
 
             <ish-line-item-description [pli]="pli"></ish-line-item-description>
 
-            <div *ngIf="pli.valueRebates && pli.valueRebates.length > 0">
-              <span *ngFor="let rebate of pli.valueRebates">
-                <div class="list-item-promo" *ngIf="rebate.promotion">
-                  <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
-                  <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
-                </div>
-              </span>
+            <!-- promotions -->
+            <div *ngIf="pli.valueRebates && pli.valueRebates.length">
+              <ng-container *ngFor="let rebate of pli.valueRebates">
+                <ish-basket-promotion-container
+                  [rebate]="rebate"
+                  class="list-item-promo"
+                ></ish-basket-promotion-container>
+              </ng-container>
             </div>
 
             <a

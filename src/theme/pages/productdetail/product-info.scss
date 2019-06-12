@@ -109,20 +109,8 @@
   }
 
   .promotion-list {
-    padding-top: $space-default;
-    padding-bottom: $space-default;
-
-    .promotion-icon {
-      display: none;
-    }
-
-    .promotion-long-title {
-      display: none;
-    }
-
-    .promotion-details-link {
-      display: inline;
-    }
+    border-spacing: 0 $space-default;
+    border-collapse: separate;
   }
 }
 

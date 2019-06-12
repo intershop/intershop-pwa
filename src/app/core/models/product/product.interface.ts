@@ -64,6 +64,8 @@ export interface ProductData {
   attributes?: Attribute[];
   attributeGroups?: { [id: string]: AttributeGroup };
   defaultCategory?: CategoryData;
+
+  promotions?: Link[];
 }
 
 export interface ProductDataStub {

@@ -26,12 +26,7 @@ export class LineItemMapper {
           : undefined,
         valueRebates:
           data.discounts && included && included.lineItems_discounts
-            ? data.discounts.map(discountId =>
-                BasketRebateMapper.fromData(
-                  included.lineItems_discounts[discountId],
-                  included.lineItems_discounts_promotion[included.lineItems_discounts[discountId].promotion]
-                )
-              )
+            ? data.discounts.map(discountId => BasketRebateMapper.fromData(included.lineItems_discounts[discountId]))
             : undefined,
         isHiddenGift: data.hiddenGift,
         isFreeGift: data.freeGift,
