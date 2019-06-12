@@ -61,7 +61,7 @@ export const canRequestMore = createSelector(
 export const getVisibleProducts = createSelector(
   getProductEntities,
   getProducts,
-  (entities, skus) => skus.map(sku => entities[sku])
+  (entities, skus) => skus.map(sku => entities[sku]).filter(x => !!x)
 );
 
 export const isEveryProductDisplayed = createSelector(
