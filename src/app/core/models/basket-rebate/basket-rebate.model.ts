@@ -1,5 +1,4 @@
 import { Price } from '../price/price.model';
-import { Promotion } from '../promotion/promotion.model';
 
 export interface BasketRebate {
   id: string;
@@ -7,5 +6,5 @@ export interface BasketRebate {
   description?: string;
   rebateType: string;
   code?: string;
-  promotion?: Promotion;
+  promotionId?: string;
 }

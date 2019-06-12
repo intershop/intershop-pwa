@@ -8,7 +8,9 @@ import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
@@ -81,6 +83,7 @@ describe('Checkout Store', () => {
     readyForShipmentMax: 1,
     sku: 'test',
     type: 'Product',
+    promotionIds: ['PROMO_UUID'],
   } as Product;
 
   const customer = {
@@ -100,6 +103,20 @@ describe('Checkout Store', () => {
     preferredLanguage: 'en_US',
     birthday: 'test',
   } as User;
+
+  const promotion = {
+    id: 'PROMO_UUID',
+    name: 'MyPromotion',
+    couponCodeRequired: false,
+    currency: 'EUR',
+    promotionType: 'MyPromotionType',
+    description: 'MyPromotionDescription',
+    legalContentMessage: 'MyPromotionContentMessage',
+    longTitle: 'MyPromotionLongTitle',
+    ruleDescription: 'MyPromotionRuleDescription',
+    title: 'MyPromotionTitle',
+    useExternalUrl: false,
+  } as Promotion;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -182,6 +199,9 @@ describe('Checkout Store', () => {
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
 
+    const promotionsServiceMock = mock(PromotionsService);
+    when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
+
     const userServiceMock = mock(UserService);
     when(userServiceMock.signinUser(anything())).thenReturn(of({ customer, user }));
 
@@ -214,6 +234,7 @@ describe('Checkout Store', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },

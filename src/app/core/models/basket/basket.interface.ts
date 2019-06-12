@@ -6,7 +6,6 @@ import { PaymentInstrument } from '../payment-instrument/payment-instrument.mode
 import { PaymentMethodBaseData } from '../payment-method/payment-method.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { PriceData } from '../price/price.interface';
-import { Promotion } from '../promotion/promotion.model';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 // ToDo: Find a general way to handle base data
@@ -41,9 +40,7 @@ export interface BasketData {
     invoiceToAddress?: { [urn: string]: AddressData };
     lineItems?: { [id: string]: LineItemData };
     discounts?: { [id: string]: BasketRebateData };
-    discounts_promotion?: { [id: string]: Promotion };
     lineItems_discounts?: { [id: string]: BasketRebateData };
-    lineItems_discounts_promotion?: { [id: string]: Promotion };
     commonShipToAddress?: { [urn: string]: AddressData };
     commonShippingMethod?: { [id: string]: ShippingMethodData };
     payments?: {

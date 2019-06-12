@@ -6,4 +6,5 @@ export interface Link {
   uri: string;
   description?: string;
   attributes?: Attribute[];
+  itemId?: string;
 }

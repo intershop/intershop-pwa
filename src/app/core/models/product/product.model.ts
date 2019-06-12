@@ -24,6 +24,7 @@ export interface Product {
 
   // properties added in model
   type: 'Product' | 'VariationProduct' | 'VariationProductMaster';
+  promotionIds: string[];
   completenessLevel: number;
   failed: boolean;
 }

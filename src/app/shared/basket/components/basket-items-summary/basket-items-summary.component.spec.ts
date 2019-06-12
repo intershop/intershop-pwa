@@ -7,6 +7,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
+import { BasketPromotionContainerComponent } from '../../containers/basket-promotion/basket-promotion.container';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
@@ -17,7 +18,11 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BasketItemsSummaryComponent, MockComponent(PromotionDetailsComponent)],
+      declarations: [
+        BasketItemsSummaryComponent,
+        MockComponent(BasketPromotionContainerComponent),
+        MockComponent(PromotionDetailsComponent),
+      ],
       imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
