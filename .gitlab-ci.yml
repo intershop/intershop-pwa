@@ -757,6 +757,7 @@ check_tslint_no_warnings:
     - merge_requests
   tags:
     - docker-executor
+    - performance
   script:
     - npm ci
     - sh .gitlab-ci-check-no-additional-warnings.sh
