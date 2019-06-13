@@ -3,13 +3,17 @@
 
   <!-- category with subcategories -->
   <ng-container *ngIf="category.hasChildren(); else productListing">
-    <ish-category-page [category]="category"></ish-category-page>
+    <ish-category-page [category]="category" [deviceType]="deviceType$ | async"></ish-category-page>
   </ng-container>
 
   <!-- category with products -->
   <ng-template #productListing>
     <ng-container *ngIf="category.hasOnlineProducts">
-      <ish-family-page [category]="category" (loadMore)="loadMore.emit()"></ish-family-page>
+      <ish-family-page
+        [category]="category"
+        [deviceType]="deviceType$ | async"
+        (loadMore)="loadMore.emit()"
+      ></ish-family-page>
     </ng-container>
   </ng-template>
 

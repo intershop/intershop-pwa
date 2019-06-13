@@ -1,32 +1,24 @@
-import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-category-page',
   templateUrl: './category-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryPageComponent implements OnInit {
+export class CategoryPageComponent implements OnInit, OnChanges {
   @Input() category: CategoryView;
+  @Input() deviceType: DeviceType;
 
   isCollapsed = false;
 
-  constructor(
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(PLATFORM_ID) private platformId: string
-  ) {}
-
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isCollapsed = window.innerWidth < this.mediumBreakpointWidth;
-    }
+    this.isCollapsed = this.deviceType === 'mobile';
   }
 
-  @HostListener('window:resize', ['$event'])
-  mobileViewHandler(event) {
-    this.isCollapsed = event.target.innerWidth < this.mediumBreakpointWidth;
+  ngOnChanges() {
+    this.isCollapsed = this.deviceType === 'mobile';
   }
 }

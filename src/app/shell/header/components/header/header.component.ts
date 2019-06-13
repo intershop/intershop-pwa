@@ -1,21 +1,8 @@
-import { isPlatformBrowser } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-  Inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  PLATFORM_ID,
-  SimpleChanges,
-} from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+
+declare type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 
 /**
  * The Header Component displays the page header.
@@ -36,82 +23,51 @@ import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/config
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnChanges, OnDestroy {
+export class HeaderComponent implements OnChanges {
   @Input() isSticky = false;
+  @Input() deviceType: DeviceType;
 
-  navbarCollapsed = false;
-  showSearch = false;
-  screenHeight: number;
-  mobileStickyHeaderHeight = 40;
+  activeComponent: CollapsibleComponent = 'search';
 
-  viewStatus: 'mobile' | 'tablet' | 'pc';
+  get showSearch() {
+    return (
+      this.activeComponent === 'search' &&
+      // always show for sticky header
+      (this.deviceType === 'mobile' || this.isSticky)
+    );
+  }
 
-  private destroy$ = new Subject();
+  get showNavBar() {
+    return (
+      this.activeComponent === 'navbar' ||
+      // always show for pc
+      this.deviceType === 'pc' ||
+      // always show for tablet on top
+      (this.deviceType === 'tablet' && !this.isSticky)
+    );
+  }
 
-  constructor(
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
-    @Inject(PLATFORM_ID) private platformId: string,
-    private router: Router
-  ) {}
+  ngOnChanges(): void {
+    this.toggleSpecialStatusOfSearch();
+  }
 
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.determineDevice();
-      this.navbarCollapsed = this.viewStatus === 'mobile';
+  private toggleSpecialStatusOfSearch() {
+    // deactivate search when switching to sticky header
+    if (this.isSticky && this.activeComponent === 'search') {
+      this.activeComponent = undefined;
     }
-
-    // collapse mobile menu on router navigation start event
-    // TODO: check testing and router subscription vs. ngrx state handling
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationStart),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        if (isPlatformBrowser(this.platformId) && window.innerWidth < this.mediumBreakpointWidth) {
-          this.navbarCollapsed = true;
-        }
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.viewStatus === 'tablet' && changes.isSticky.previousValue !== changes.isSticky.currentValue) {
-      this.navbarCollapsed = changes.isSticky.currentValue;
+    // activate search when scrolling to top and no other is active
+    if (!this.isSticky && !this.activeComponent) {
+      this.activeComponent = 'search';
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  mobileViewHandler(event) {
-    this.determineDevice();
-
-    if (this.isSticky) {
-      this.collapseIf(['mobile', 'tablet']);
+  toggle(component: CollapsibleComponent) {
+    if (this.activeComponent === component) {
+      // activate search bar when on top and no other is active
+      this.activeComponent = !this.isSticky ? 'search' : undefined;
     } else {
-      this.collapseIf(['mobile']);
-    }
-    this.screenHeight = event.target.innerHeight - this.mobileStickyHeaderHeight;
-  }
-
-  collapseIf(viewTypes: string[]): void {
-    this.navbarCollapsed = viewTypes.includes(this.viewStatus);
-  }
-
-  toggleSearch(): void {
-    this.showSearch = !this.showSearch;
-  }
-
-  determineDevice() {
-    if (window.innerWidth < this.mediumBreakpointWidth) {
-      this.viewStatus = 'mobile';
-    } else if (window.innerWidth < this.largeBreakpointWidth) {
-      this.viewStatus = 'tablet';
-    } else {
-      this.viewStatus = 'pc';
+      this.activeComponent = component;
     }
   }
 }

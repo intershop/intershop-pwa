@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getHeaderType } from 'ish-core/store/viewconf';
+import { getDeviceType, getHeaderType } from 'ish-core/store/viewconf';
 
 @Component({
   selector: 'ish-header-container',
@@ -10,6 +10,7 @@ import { getHeaderType } from 'ish-core/store/viewconf';
 })
 export class HeaderContainerComponent {
   headerType$ = this.store.pipe(select(getHeaderType));
+  deviceType$ = this.store.pipe(select(getDeviceType));
   headerType = '';
   isSticky = false;
 

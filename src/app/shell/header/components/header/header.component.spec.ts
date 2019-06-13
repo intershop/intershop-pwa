@@ -5,7 +5,6 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -47,10 +46,6 @@ describe('Header Component', () => {
         MockComponent(ProductCompareStatusContainerComponent),
         MockComponent(SearchBoxContainerComponent),
         MockComponent(UserInformationMobileComponent),
-      ],
-      providers: [
-        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
-        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     })
       .compileComponents()
