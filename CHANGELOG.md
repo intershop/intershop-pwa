@@ -1,3 +1,33 @@
+# [0.12.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.12.0/) (2019-06-13)
+
+**required Intershop Commerce Management version: 7.10.9.0**
+
+**required node version 10.16.0 LTS with npm 6.9.0**
+
+### Features
+
+- variation selection in cart (ISREST-680)
+- integrate promotion information at product detail and product listing (ISREST-695)
+- edit user profile (ISREST-758)
+- upgrade to latest Angular 7, upgrade support dependencies
+- schematics for Helm charts and Azure DevOps pipeline
+- checkout - payment with concardis credit card (ISREST-622)
+- support of payment instruments with parameters in checkout (ISREST-668)
+- retain anonymous basket
+
+### Bug Fixes
+
+- filter undefined entities in getVisibleProducts-selector (ISREST-782)
+- prevent authenticated user from going to login
+- remove quote request if there is no item left in the quote request (ISREST-613)
+- centered, repeated error page background-image (IS-26892)
+- logout user depending on token only if cookie law was accepted
+- recently viewed rework after product item container changes (ISREST-751)
+- check cookie acceptance before writing cookies (ISREST-743)
+- display address region when an address is edited (ISREST-596)
+- change out of stock text in line item description (ISREST-675)
+- improved english and german localization texts and added french localization for addresses (ISREST-727)
+
 # [0.11.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.11.0/) (2019-04-24)
 
 **required Intershop Commerce Management version: 7.10.7.3**
