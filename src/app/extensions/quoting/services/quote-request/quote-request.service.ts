@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, filter, map, mapTo, shareReplay, take } from 'rxjs/operators';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
@@ -33,7 +33,7 @@ export class QuoteRequestService {
   private quoteRequest$: Observable<string>;
 
   constructor(private apiService: ApiService, private store: Store<{}>) {
-    this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
+    this.ids$ = combineLatest([store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))]).pipe(
       take(1),
       concatMap(([user, customer]) =>
         !!user && !!user.email && !!customer && !!customer.customerNo
@@ -159,7 +159,7 @@ export class QuoteRequestService {
       },
     };
 
-    return combineLatest(this.ids$, this.quoteRequest$).pipe(
+    return combineLatest([this.ids$, this.quoteRequest$]).pipe(
       concatMap(([{ userId, customerId }, quoteRequestId]) =>
         this.apiService
           .post(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`, body)
@@ -207,12 +207,19 @@ export class QuoteRequestService {
    * @param item            The item id and quantity pair to be updated
    * @returns               The id of the updated quote request
    */
-  updateQuoteRequestItem(quoteRequestId: string, item: LineItemQuantity): Observable<string> {
-    const body = {
-      quantity: {
+  updateQuoteRequestItem(quoteRequestId: string, item: LineItemUpdate): Observable<string> {
+    // tslint:disable-next-line:no-any
+    const body: any = {};
+
+    if (item.quantity >= 0) {
+      body.quantity = {
         value: item.quantity,
-      },
-    };
+      };
+    }
+
+    if (item.sku) {
+      body.product = item.sku;
+    }
 
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>

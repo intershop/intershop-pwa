@@ -1,0 +1,17 @@
+{
+  "include": [
+    "pages/**/*.ts",
+    "framework/*.ts",
+    "support/*.ts",
+    "integration/**/*.ts",
+    "../node_modules/cypress"
+  ],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "outDir": "../out-tsc",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "types": ["node", "cypress"]
+  }
+}

@@ -1,10 +1,11 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { map, mapTo } from 'rxjs/operators';
+import { EMPTY, Observable, throwError } from 'rxjs';
+import { catchError, map, mapTo } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -12,7 +13,6 @@ import { BasketBaseData, BasketData } from '../../models/basket/basket.interface
 import { BasketMapper } from '../../models/basket/basket.mapper';
 import { Basket } from '../../models/basket/basket.model';
 import { Link } from '../../models/link/link.model';
-import { PaymentMethodData } from '../../models/payment-method/payment-method.interface';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
@@ -22,18 +22,19 @@ export declare type BasketUpdateType =
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculationState: string };
-export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
+export declare type BasketItemUpdateType =
+  | { quantity?: { value: number }; product?: string }
+  | { shippingMethod: { id: string } };
 export declare type BasketIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'
   | 'commonShippingMethod'
   | 'discounts'
-  | 'discounts_promotion'
   | 'lineItems_discounts'
-  | 'lineItems_discounts_promotion'
   | 'lineItems'
   | 'payments'
-  | 'payments_paymentMethod';
+  | 'payments_paymentMethod'
+  | 'payments_paymentInstrument';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -52,12 +53,11 @@ export class BasketService {
     'commonShipToAddress',
     'commonShippingMethod',
     'discounts',
-    'discounts_promotion',
     'lineItems_discounts',
-    'lineItems_discounts_promotion',
     'lineItems',
     'payments',
     'payments_paymentMethod',
+    'payments_paymentInstrument',
   ];
 
   /**
@@ -74,6 +74,23 @@ export class BasketService {
         params,
       })
       .pipe(map(BasketMapper.fromData));
+  }
+
+  getBasketByToken(apiToken: string): Observable<Basket> {
+    const params = new HttpParams().set('include', this.allBasketIncludes.join());
+
+    return this.apiService
+      .get<BasketData>(`baskets/current`, {
+        headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+        params,
+        skipApiErrorHandling: true,
+        runExclusively: true,
+      })
+      .pipe(
+        map(BasketMapper.fromData),
+        // tslint:disable-next-line:ban
+        catchError(() => EMPTY)
+      );
   }
 
   /**
@@ -265,21 +282,18 @@ export class BasketService {
       return throwError('getBasketEligiblePaymentMethods() called without basketId');
     }
 
-    /* ToDo: Replace this fix filter by a dynamic one */
-    const validPaymentMethods = 'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE';
+    const params = new HttpParams().set('include', 'paymentInstruments');
 
     return this.apiService
       .get(`baskets/${basketId}/eligible-payment-methods`, {
         headers: this.basketHeaders,
+        params,
       })
-      .pipe(
-        unpackEnvelope<PaymentMethodData>('data'),
-        map(data => data.filter(payment => validPaymentMethods.includes(payment.id)).map(PaymentMethodMapper.fromData))
-      );
+      .pipe(map(PaymentMethodMapper.fromData));
   }
 
   /**
-   * Add a payment at the selected basket.
+   * Adds a payment at the selected basket.
    * @param basketId          The basket id.
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
    */
@@ -300,5 +314,47 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(mapTo(paymentInstrument));
+  }
+
+  /**
+   * Creates a payment instrument for the selected basket.
+   * @param basketId          The basket id.
+   * @param paymentInstrument The payment instrument with parameters, id=undefined, paymentMethod= required.
+   * @returns                 The created payment instrument.
+   */
+  createBasketPayment(basketId: string, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    if (!basketId) {
+      return throwError('createBasketPayment() called without basketId');
+    }
+    if (!paymentInstrument) {
+      return throwError('createBasketPayment() called without paymentInstrument');
+    }
+    if (!paymentInstrument.paymentMethod) {
+      return throwError('createBasketPayment() called without paymentMethodId');
+    }
+
+    return this.apiService
+      .post(`baskets/${basketId}/payment-instruments?include=paymentMethod`, paymentInstrument, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(({ data }) => data));
+  }
+
+  /**
+   * Deletes a payment instrument and the related payment from the selected basket.
+   * @param basketId          The basket id.
+   * @param paymentId         The (uu)id of the payment instrument
+   */
+  deleteBasketPaymentInstrument(basketId: string, paymentInstrumentId: string): Observable<void> {
+    if (!basketId) {
+      return throwError('deleteBasketPayment() called without basketId');
+    }
+    if (!paymentInstrumentId) {
+      return throwError('deleteBasketPayment() called without paymentInstrumentId');
+    }
+
+    return this.apiService.delete(`baskets/${basketId}/payment-instruments/${paymentInstrumentId}`, {
+      headers: this.basketHeaders,
+    });
   }
 }

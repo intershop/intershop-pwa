@@ -7,7 +7,7 @@ import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping-store.module';
 
 import { RecentlyEffects } from './recently.effects';
-import { getMostRecentlyViewedProducts, getRecentlyProducts, getRecentlyViewedProducts } from './recently.selectors';
+import { getMostRecentlyViewedProducts, getRecentlyViewedProducts } from './recently.selectors';
 
 describe('Recently Selectors', () => {
   let store$: TestStore;
@@ -26,7 +26,6 @@ describe('Recently Selectors', () => {
   });
 
   it('should select nothing for an empty state', () => {
-    expect(getRecentlyProducts(store$.state)).toBeEmpty();
     expect(getRecentlyViewedProducts(store$.state)).toBeEmpty();
     expect(getMostRecentlyViewedProducts(store$.state)).toBeEmpty();
   });
@@ -43,9 +42,8 @@ describe('Recently Selectors', () => {
 
     it('should have collected data for display on pages', () => {
       const viewed = ['A', 'B', 'D', 'E', 'C', 'F'];
-      expect(getRecentlyProducts(store$.state)).toEqual(viewed);
-      expect(getRecentlyViewedProducts(store$.state)).toEqual(viewed.map(sku => ({ sku } as Product)));
-      const filtered = ['B', 'D', 'E', 'C'].map(sku => ({ sku } as Product));
+      expect(getRecentlyViewedProducts(store$.state)).toEqual(viewed);
+      const filtered = ['B', 'D', 'E', 'C'];
       expect(getMostRecentlyViewedProducts(store$.state)).toEqual(filtered);
     });
   });

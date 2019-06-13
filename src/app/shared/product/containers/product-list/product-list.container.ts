@@ -70,7 +70,7 @@ export class ProductListContainerComponent {
    * Emits the event for loading more products.
    */
   loadMoreProducts() {
-    combineLatest(this.store.pipe(select(canRequestMore)), this.store.pipe(select(isEndlessScrollingEnabled)))
+    combineLatest([this.store.pipe(select(canRequestMore)), this.store.pipe(select(isEndlessScrollingEnabled))])
       .pipe(
         take(1),
         filter(([moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling)

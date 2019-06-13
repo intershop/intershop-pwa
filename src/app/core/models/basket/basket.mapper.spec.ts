@@ -113,6 +113,7 @@ describe('Basket Mapper', () => {
               ruleDescription: 'Buy any LED TV and the order ships free.',
               title: 'FREE SHIPPING',
               useExternalUrl: true,
+              disableMessages: false,
             },
           },
         },

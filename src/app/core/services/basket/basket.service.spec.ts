@@ -1,5 +1,6 @@
-import { of } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { HttpHeaders } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -57,6 +58,25 @@ describe('Basket Service', () => {
       verify(apiService.get(`baskets/${basketMockData.data.id}`, anything())).once();
       done();
     });
+  });
+
+  it('should load a basket by token when requested and successful', done => {
+    when(apiService.get(anything(), anything())).thenReturn(of(basketMockData));
+
+    basketService.getBasketByToken('dummy').subscribe(data => {
+      verify(apiService.get(anything(), anything())).once();
+      const [path, options] = capture<string, { headers: HttpHeaders }>(apiService.get).last();
+      expect(path).toEqual('baskets/current');
+      expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('dummy');
+      expect(data).toHaveProperty('id', 'test');
+      done();
+    });
+  });
+
+  it('should not throw errors when getting a basket by token is unsuccessful', done => {
+    when(apiService.get(anything(), anything())).thenReturn(throwError(new Error()));
+
+    basketService.getBasketByToken('dummy').subscribe(fail, fail, done);
   });
 
   it("should create a basket data when 'createBasket' is called", done => {
@@ -165,6 +185,53 @@ describe('Basket Service', () => {
 
     basketService.setBasketPayment(basketMockData.data.id, basketMockData.data.payment.name).subscribe(() => {
       verify(apiService.put(`baskets/${basketMockData.data.id}/payments/open-tender`, anything(), anything())).once();
+      done();
+    });
+  });
+
+  it("should create a payment instrument for the basket when 'createBasketPayment' is called", done => {
+    when(
+      apiService.post(
+        `baskets/${basketMockData.data.id}/payment-instruments?include=paymentMethod`,
+        anything(),
+        anything()
+      )
+    ).thenReturn(of([]));
+
+    const paymentInstrument = {
+      id: undefined,
+      paymentMethod: 'ISH_DirectDebit',
+      parameters_: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+
+    basketService.createBasketPayment(basketMockData.data.id, paymentInstrument).subscribe(() => {
+      verify(
+        apiService.post(
+          `baskets/${basketMockData.data.id}/payment-instruments?include=paymentMethod`,
+          anything(),
+          anything()
+        )
+      ).once();
+      done();
+    });
+  });
+
+  it("should delete a payment instrument from basket when 'deleteBasketInstrument' is called", done => {
+    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
+
+    basketService.deleteBasketPaymentInstrument(basketMockData.data.id, 'paymentInstrumentId').subscribe(() => {
+      verify(
+        apiService.delete(`baskets/${basketMockData.data.id}/payment-instruments/paymentInstrumentId`, anything())
+      ).once();
       done();
     });
   });

@@ -16,7 +16,8 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
  */
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  private static STUB_ATTRS = 'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock';
+  private static STUB_ATTRS =
+    'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions';
 
   constructor(private apiService: ApiService, private productMapper: ProductMapper) {}
 

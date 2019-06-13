@@ -5,12 +5,24 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { CookiesService } from '@ngx-utils/cookies';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { AddressService } from 'ish-core/services/address/address.service';
+import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { CountryService } from 'ish-core/services/country/country.service';
+import { FilterService } from 'ish-core/services/filter/filter.service';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { UserService } from 'ish-core/services/user/user.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
@@ -18,17 +30,6 @@ import {
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../configurations/injection-keys';
-import { Category, CategoryHelper } from '../../models/category/category.model';
-import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
-import { Locale } from '../../models/locale/locale.model';
-import { Product } from '../../models/product/product.model';
-import { CategoriesService } from '../../services/categories/categories.service';
-import { CountryService } from '../../services/country/country.service';
-import { FilterService } from '../../services/filter/filter.service';
-import { OrderService } from '../../services/order/order.service';
-import { ProductsService } from '../../services/products/products.service';
-import { SuggestService } from '../../services/suggest/suggest.service';
-import { UserService } from '../../services/user/user.service';
 import { coreEffects, coreReducers } from '../core-store.module';
 
 import {
@@ -41,7 +42,7 @@ import {
 } from './categories';
 import { FilterActionTypes } from './filter';
 import { LoadProduct, ProductsActionTypes, SelectProduct, getProductIds, getSelectedProduct } from './products';
-import { RecentlyActionTypes, getRecentlyProducts } from './recently';
+import { RecentlyActionTypes, getRecentlyViewedProducts } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 import { ViewconfActionTypes } from './viewconf';
@@ -52,6 +53,7 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let promotionsServiceMock: PromotionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
   let locales: Locale[];
@@ -74,6 +76,20 @@ describe('Shopping Store', () => {
       hasOnlineProducts: true,
     } as Category;
     const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
+
+    const promotion = {
+      id: 'PROMO_UUID',
+      name: 'MyPromotion',
+      couponCodeRequired: false,
+      currency: 'EUR',
+      promotionType: 'MyPromotionType',
+      description: 'MyPromotionDescription',
+      legalContentMessage: 'MyPromotionContentMessage',
+      longTitle: 'MyPromotionLongTitle',
+      ruleDescription: 'MyPromotionRuleDescription',
+      title: 'MyPromotionTitle',
+      useExternalUrl: false,
+    } as Promotion;
 
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
@@ -127,12 +143,16 @@ describe('Shopping Store', () => {
       of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
 
+    promotionsServiceMock = mock(PromotionsService);
+    when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
+
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
     when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
+
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
@@ -179,12 +199,12 @@ describe('Shopping Store', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: UserService, useFactory: () => instance(mock(UserService)) },
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
@@ -253,7 +273,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger suggest actions when suggest feature is used', () => {
-        const i = store.actionsIterator([/Shopping/]);
+        const i = store.actionsIterator(['Shopping']);
 
         expect(i.next()).toEqual(new SuggestSearchSuccess({ suggests: [{ term: 'something' }] }));
         expect(i.next()).toBeUndefined();
@@ -272,7 +292,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger required actions when searching', fakeAsync(() => {
-        const i = store.actionsIterator([/Shopping/]);
+        const i = store.actionsIterator(['Shopping']);
 
         expect(i.next().type).toEqual(SearchActionTypes.PrepareNewSearch);
         expect(i.next()).toEqual(new SearchProducts({ searchTerm: 'something' }));
@@ -293,7 +313,7 @@ describe('Shopping Store', () => {
         }));
 
         it('should reload the product data when selected', fakeAsync(() => {
-          const i = store.actionsIterator([/Shopping/]);
+          const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
 
           expect(i.next()).toEqual(new SelectProduct({ sku: 'P2' }));
           expect(i.next()).toEqual(new LoadProduct({ sku: 'P2' }));
@@ -395,7 +415,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should not put anything in recently viewed products when going to a family page', fakeAsync(() => {
-      expect(getRecentlyProducts(store.state)).toBeEmpty();
+      expect(getRecentlyViewedProducts(store.state)).toBeEmpty();
     }));
 
     describe('and clicking a product', () => {
@@ -406,7 +426,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should reload the product when selected', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
+        const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
         expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
         expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
@@ -415,7 +435,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should add the product to recently viewed products when going to product detail page', fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual(['P1']);
+        expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
       }));
 
       describe('and and going back to the family page', () => {
@@ -472,7 +492,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
+      const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
       expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.456' }));
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
       expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
@@ -493,7 +513,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should put the product to recently viewed products when going to product detail page', fakeAsync(() => {
-      expect(getRecentlyProducts(store.state)).toEqual(['P1']);
+      expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
     }));
 
     describe('and and going back to the family page', () => {
@@ -520,7 +540,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should not put anything additionally to recently viewed products when going back', fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual(['P1']);
+        expect(getRecentlyViewedProducts(store.state)).toEqual(['P1']);
       }));
     });
 
@@ -564,7 +584,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
+      const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
       expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
@@ -651,7 +671,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should not put anything to recently viewed products when invalid product was selected', fakeAsync(() => {
-      expect(getRecentlyProducts(store.state)).toBeEmpty();
+      expect(getRecentlyViewedProducts(store.state)).toBeEmpty();
     }));
   });
 

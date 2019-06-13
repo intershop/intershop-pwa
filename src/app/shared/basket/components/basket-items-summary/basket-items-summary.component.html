@@ -16,13 +16,11 @@
         <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
       </div>
 
-      <div *ngIf="pli.valueRebates && pli.valueRebates.length > 0" class="col-12">
-        <span *ngFor="let rebate of pli.valueRebates">
-          <div *ngIf="rebate.promotion">
-            <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
-            <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
-          </div>
-        </span>
+      <!-- promotions -->
+      <div *ngIf="pli.valueRebates && pli.valueRebates.length" class="col-12">
+        <ng-container *ngFor="let rebate of pli.valueRebates">
+          <ish-basket-promotion-container [rebate]="rebate"></ish-basket-promotion-container>
+        </ng-container>
       </div>
     </ng-container>
   </div>

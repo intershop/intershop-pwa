@@ -22,7 +22,7 @@
     <ng-container *ngIf="address.countryCode === 'GB'"><br /></ng-container>
     <ng-container *ngIf="address.countryCode === 'US'"
       >,
-      <ng-container *ngIf="address.mainDivision">{{ address.mainDivision }}&nbsp;</ng-container>
+      <ng-container *ngIf="address.mainDivisionCode">{{ address.mainDivisionCode }}&nbsp;</ng-container>
     </ng-container>
     <ng-container *ngIf="address.postalCode">{{ address.postalCode }}</ng-container>
     <br />

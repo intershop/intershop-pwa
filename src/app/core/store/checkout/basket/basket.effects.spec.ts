@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
@@ -111,6 +111,29 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('loadBasketByAPIToken$', () => {
+    it('should call the basket service on LoadUserByAPIToken action and load user on success', done => {
+      when(basketServiceMock.getBasketByToken('dummy')).thenReturn(of({ id: 'basket' } as Basket));
+
+      actions$ = of(new basketActions.LoadBasketByAPIToken({ apiToken: 'dummy' }));
+
+      effects.loadBasketByAPIToken$.subscribe(action => {
+        verify(basketServiceMock.getBasketByToken('dummy')).once();
+        expect(action.type).toEqual(basketActions.BasketActionTypes.LoadBasketSuccess);
+        expect(action.payload).toHaveProperty('basket.id', 'basket');
+        done();
+      });
+    });
+
+    it('should call the basket service on LoadUserByAPIToken action and do nothing when failing', () => {
+      when(basketServiceMock.getBasketByToken('dummy')).thenReturn(EMPTY);
+
+      actions$ = hot('a-a-a-', { a: new basketActions.LoadBasketByAPIToken({ apiToken: 'dummy' }) });
+
+      expect(effects.loadBasketByAPIToken$).toBeObservable(cold('------'));
+    });
+  });
+
   describe('loadProductsForBasket$', () => {
     it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
       when(basketServiceMock.getBasket(anything())).thenReturn(of());
@@ -194,59 +217,6 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('loadBasketEligiblePaymentMethods$', () => {
-    beforeEach(() => {
-      when(basketServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
-        of([BasketMockData.getPaymentMethod()])
-      );
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-    });
-    it('should call the basketService for loadBasketPaymentOptions', done => {
-      const action = new basketActions.LoadBasketEligiblePaymentMethods();
-      actions$ = of(action);
-
-      effects.loadBasketEligiblePaymentMethods$.subscribe(() => {
-        verify(basketServiceMock.getBasketEligiblePaymentMethods('BID')).once();
-        done();
-      });
-    });
-
-    it('should map to action of type loadBasketEligiblePaymentMethodsSuccess', () => {
-      const action = new basketActions.LoadBasketEligiblePaymentMethods();
-      const completion = new basketActions.LoadBasketEligiblePaymentMethodsSuccess({
-        paymentMethods: [BasketMockData.getPaymentMethod()],
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadBasketEligiblePaymentMethods$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type LoadBasketEligiblePaymentMethodsFail', () => {
-      when(basketServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
-        throwError({ message: 'invalid' })
-      );
-      const action = new basketActions.LoadBasketEligiblePaymentMethods();
-      const completion = new basketActions.LoadBasketEligiblePaymentMethodsFail({
-        error: {
-          message: 'invalid',
-        } as HttpError,
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadBasketEligiblePaymentMethods$).toBeObservable(expected$);
-    });
-  });
-
   describe('updateBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
@@ -307,92 +277,6 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
-    });
-  });
-
-  describe('setPaymentAtBasket$ - set payment at basket for the first time', () => {
-    beforeEach(() => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-            payment: undefined,
-          } as Basket,
-        })
-      );
-    });
-
-    it('should call the basketService for setPaymentAtBasket', done => {
-      const id = 'newPayment';
-      const action = new basketActions.SetBasketPayment({ id });
-      actions$ = of(action);
-
-      effects.setPaymentAtBasket$.subscribe(() => {
-        verify(basketServiceMock.setBasketPayment('BID', id)).once();
-        done();
-      });
-    });
-
-    it('should map to action of type SetBasketPaymentSuccess', () => {
-      const id = 'newPayment';
-      const action = new basketActions.SetBasketPayment({ id });
-      const completion = new basketActions.SetBasketPaymentSuccess();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.setPaymentAtBasket$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type SetPaymentFail', () => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
-      const action = new basketActions.SetBasketPayment({ id: 'newPayment' });
-      const completion = new basketActions.SetBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.setPaymentAtBasket$).toBeObservable(expected$);
-    });
-  });
-
-  describe('setPaymentAtBasket$ - change payment method at basket', () => {
-    beforeEach(() => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
-
-      store$.dispatch(new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
-    });
-
-    it('should call the basketService for setPaymentAtBasket', done => {
-      const id = 'newPayment';
-      const action = new basketActions.SetBasketPayment({ id });
-      actions$ = of(action);
-
-      effects.setPaymentAtBasket$.subscribe(() => {
-        verify(basketServiceMock.setBasketPayment('4711', id)).once();
-        done();
-      });
-    });
-
-    it('should map to action of type SetBasketPaymentSuccess', () => {
-      const id = 'newPayment';
-      const action = new basketActions.SetBasketPayment({ id });
-      const completion = new basketActions.SetBasketPaymentSuccess();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.setPaymentAtBasket$).toBeObservable(expected$);
-    });
-
-    it('should map invalid addBasketPayment request to action of type SetPaymentFail', () => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
-      const action = new basketActions.SetBasketPayment({ id: 'newPayment' });
-      const completion = new basketActions.SetBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.setPaymentAtBasket$).toBeObservable(expected$);
     });
   });
 

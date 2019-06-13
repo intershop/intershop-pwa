@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 
-import { Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -55,7 +55,7 @@ export class UserService {
       .pipe(
         map(CustomerMapper.mapLoginData),
         // tslint:disable-next-line:ban
-        catchError(() => of(undefined))
+        catchError(() => EMPTY)
       );
   }
 
@@ -72,13 +72,17 @@ export class UserService {
       return throwError('createUser() called without required customer type (PrivateCustomer/SMBCustomer)');
     }
 
+    const customerAddress = {
+      ...body.address,
+      mainDivision: body.address.mainDivisionCode,
+    };
     let newCustomer: CreatePrivateCustomerType | CreateBusinessCustomerType;
 
     if (body.customer.type === 'PrivateCustomer') {
       newCustomer = {
         ...body.customer,
         ...body.user,
-        address: body.address,
+        address: customerAddress,
         credentials: body.credentials,
       };
     } else {
@@ -86,7 +90,7 @@ export class UserService {
         ...body.customer,
         // TODO: the addition of 'login: body.user.email' is a temporary fix for an ICM 7.10.7.3 API break
         user: { ...body.user, login: body.user.email },
-        address: body.address,
+        address: customerAddress,
         credentials: body.credentials,
       };
     }
@@ -121,6 +125,42 @@ export class UserService {
     } else {
       return this.apiService.put<User>('customers/-/users/-', changedUser).pipe(map(UserMapper.fromData));
     }
+  }
+
+  /**
+   * Updates the password of the currently logged in user.
+   * @param customer  The current customer.
+   * @param body      The user password to update.
+   */
+  updateUserPassword(customer: Customer, password: string): Observable<void> {
+    if (!customer) {
+      return throwError('updateUserPassword() called without customer');
+    }
+    if (!password) {
+      return throwError('updateUserPassword() called without password');
+    }
+
+    if (customer.type === 'PrivateCustomer') {
+      return this.apiService.put('customers/-/credentials/password', { password });
+    } else {
+      return this.apiService.put('customers/-/users/-/credentials/password', { password });
+    }
+  }
+
+  /**
+   * Updates the customer data of the (currently loggedin) b2b customer.
+   * @param customer  The customer data to update the customer.
+   */
+  updateCustomer(customer: Customer): Observable<Customer> {
+    if (!customer) {
+      return throwError('updateCustomer() called without customer');
+    }
+
+    if (!customer.isBusinessCustomer) {
+      return throwError('updateCustomer() cannot be called for a private customer)');
+    }
+
+    return this.apiService.put('customers/-', customer).pipe(map(CustomerMapper.fromData));
   }
 
   /**

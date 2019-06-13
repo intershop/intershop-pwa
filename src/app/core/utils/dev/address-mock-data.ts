@@ -12,7 +12,7 @@ export class AddressMockData {
       addressLine3: new FormControl(''),
       postalCode: new FormControl(''),
       city: new FormControl(''),
-      mainDivision: new FormControl(''),
+      mainDivisionCode: new FormControl(''),
     });
   }
 }

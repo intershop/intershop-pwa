@@ -19,14 +19,14 @@
       true,
       "^((?!(/dev/|/tslint-rules/|spec\\.ts$)).)*$"
     ],
-    "no-collapsible-if": { "severity": "warning" },
+    "no-collapsible-if": true,
     "no-unused": true,
     "no-var-before-return": true,
     "no-return-undefined": true,
     "arrow-return-shorthand": [true, "multiline"],
     "only-arrow-functions": [true, "allow-named-functions"],
     "arrow-parens": [true, "ban-single-arg-parens"],
-    "no-unnecessary-callback-wrapper": { "severity": "warning" },
+    "no-unnecessary-callback-wrapper": true,
     "no-unsafe-callback-scope": false,
     "no-commented-out-code": { "severity": "warning" },
     "no-consecutive-blank-lines": true,
@@ -96,7 +96,6 @@
     "no-unused-declaration": true,
     "no-parameter-reassignment": true,
     "throw-error": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "object-literal-key-quotes": [true, "as-needed"],
@@ -127,7 +126,7 @@
       "severity": "error"
     },
     "rxjs-no-create": true,
-    "rxjs-no-ignored-subscribe": { "severity": "warning" },
+    "rxjs-no-ignored-subscribe": true,
     "rxjs-no-patched": true,
     "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
@@ -318,6 +317,11 @@
           "message": "This module is for the template-driven approach which we don't use."
         },
         {
+          "import": "CookiesService",
+          "from": "@ngx-utils/cookies",
+          "message": "Use CookiesService from ish-core instead."
+        },
+        {
           "import": "^FormsModule$",
           "from": "@angular/forms",
           "message": "This module is for the template-driven approach which we don't use."
@@ -406,7 +410,7 @@
           "<ul",
           "<li",
           "<table",
-          "<(?![^>]*(clearfix|loading-container|-panel))[^>]*class"
+          "<(?![^>]*(clearfix|loading-container|-panel))[^>]*\\ class"
         ]
       }
     },

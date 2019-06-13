@@ -51,8 +51,7 @@ export class MockInterceptor implements HttpInterceptor {
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
-      // TODO: maybe re-visit type
-      flatMap<{}, any>(event => {
+      flatMap(event => {
         if (event instanceof HttpResponse) {
           if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
             return throwError(

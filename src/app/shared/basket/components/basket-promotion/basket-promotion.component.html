@@ -1,0 +1,4 @@
+<div *ngIf="promotion && !promotion.disableMessages">
+  <div class="promotion-title" [innerHTML]="promotion.title | safeHtml"></div>
+  <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+</div>

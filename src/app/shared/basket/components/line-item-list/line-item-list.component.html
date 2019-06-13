@@ -11,7 +11,7 @@
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
   <div *ngIf="form.get('items')" class="list-body" formArrayName="items">
-    <ng-container *ngFor="let pli of lineItems; index as i">
+    <ng-container *ngFor="let pli of lineItems; index as i; trackBy: trackByFn">
       <div *ngIf="pli.product" class="row list-item-row list-item-row-big">
         <!-- Product Image -->
         <div class="col-2 list-item">
@@ -25,15 +25,21 @@
           <div class="pli-description">
             <a class="product-title" [routerLink]="pli.product | ishProductRoute"> {{ pli.product.name }} </a>
 
-            <ish-line-item-description [pli]="pli"></ish-line-item-description>
+            <ish-line-item-description
+              [pli]="pli"
+              [editable]="editable"
+              [lineItemViewType]="lineItemViewType"
+              (updateItem)="onUpdateItem($event)"
+            ></ish-line-item-description>
 
-            <div *ngIf="pli.valueRebates && pli.valueRebates.length > 0">
-              <span *ngFor="let rebate of pli.valueRebates">
-                <div class="list-item-promo" *ngIf="rebate.promotion">
-                  <span [innerHTML]="rebate.promotion.title | safeHtml"></span>
-                  <ish-promotion-details [promotion]="rebate.promotion"></ish-promotion-details>
-                </div>
-              </span>
+            <!-- promotions -->
+            <div *ngIf="pli.valueRebates && pli.valueRebates.length">
+              <ng-container *ngFor="let rebate of pli.valueRebates">
+                <ish-basket-promotion-container
+                  [rebate]="rebate"
+                  class="list-item-promo"
+                ></ish-basket-promotion-container>
+              </ng-container>
             </div>
 
             <a
@@ -51,55 +57,35 @@
           <!-- mobile quantity -->
           <div class="quantity d-xl-none" [formGroupName]="i">
             <div class="form-group">
-              <ish-input
-                *ngIf="!pli.isFreeGift && editable"
-                [form]="form.get(['items', i])"
-                controlName="quantity"
-                type="number"
-                label="shopping_cart.pli.qty.label"
-                labelClass="d-xl-none col-form-label"
-                inputClass="w-100"
-                min="0"
-                markRequiredLabel="off"
-                [max]="pli.product.maxOrderQuantity"
-                [errorMessages]="{
-                  required: 'shopping_cart.quantity.invalid.error',
-                  max: 'shopping_cart.quantity.invalid.error.maxvalue',
-                  integer: 'shopping_cart.quantity.invalid.error'
-                }"
-              ></ish-input>
-              <ng-container *ngIf="(pli.isFreeGift && editable) || !editable">
-                <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
-                {{ pli.quantity.value | number }}
-              </ng-container>
+              <ng-container
+                *ngTemplateOutlet="
+                  quantityInputTemplate;
+                  context: {
+                    pli: pli,
+                    editable: editable,
+                    form: form,
+                    i: i
+                  }
+                "
+              ></ng-container>
             </div>
           </div>
         </div>
 
         <!-- desktop quantity -->
         <div class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
-          <div class="form-group w-100">
-            <ish-input
-              *ngIf="!pli.isFreeGift && editable"
-              [form]="form.get(['items', i])"
-              controlName="quantity"
-              type="number"
-              label="shopping_cart.pli.qty.label"
-              labelClass="d-xl-none col-form-label"
-              inputClass="w-100"
-              min="0"
-              markRequiredLabel="off"
-              [max]="pli.product.maxOrderQuantity"
-              [errorMessages]="{
-                required: 'shopping_cart.quantity.invalid.error',
-                max: 'shopping_cart.quantity.invalid.error.maxvalue',
-                integer: 'shopping_cart.quantity.invalid.error'
-              }"
-            ></ish-input>
-            <ng-container *ngIf="(pli.isFreeGift && editable) || !editable">
-              <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
-              {{ pli.quantity.value | number }}
-            </ng-container>
+          <div class="form-group w-100 text-right">
+            <ng-container
+              *ngTemplateOutlet="
+                quantityInputTemplate;
+                context: {
+                  pli: pli,
+                  editable: editable,
+                  form: form,
+                  i: i
+                }
+              "
+            ></ng-container>
           </div>
         </div>
 
@@ -147,3 +133,29 @@
     </div>
   </div>
 </form>
+
+<!-- template (ngTemplateOutlet) for quantity-input -->
+<ng-template #quantityInputTemplate let-pli="pli" let-editable="editable" let-form="form" let-i="i">
+  <ng-container *ngIf="!pli.isFreeGift && editable; else readonlyQuantity">
+    <ish-input
+      [form]="form.get(['items', i])"
+      controlName="quantity"
+      type="number"
+      label="shopping_cart.pli.qty.label"
+      labelClass="d-xl-none col-form-label"
+      inputClass="w-100"
+      min="0"
+      markRequiredLabel="off"
+      [max]="pli.product.maxOrderQuantity"
+      [errorMessages]="{
+        required: 'shopping_cart.quantity.invalid.error',
+        max: 'shopping_cart.quantity.invalid.error.maxvalue',
+        integer: 'shopping_cart.quantity.invalid.error'
+      }"
+    ></ish-input>
+  </ng-container>
+  <ng-template #readonlyQuantity>
+    <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+    {{ pli.quantity.value | number }}
+  </ng-template>
+</ng-template>

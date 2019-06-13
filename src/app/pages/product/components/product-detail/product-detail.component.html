@@ -23,6 +23,8 @@
         <label>{{ 'product.itemNumber.label' | translate }}</label> <span itemprop="sku">{{ product.sku }}</span>
       </div>
 
+      <ish-product-promotion-container [product]="product"></ish-product-promotion-container>
+
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price
           [product]="product"

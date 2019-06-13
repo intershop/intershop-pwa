@@ -11,7 +11,7 @@ import {
 import { FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Region } from 'ish-core/models/region/region.model';
@@ -110,8 +110,12 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
   private fetchDataAfterCountryChange(countryCode: string) {
     if (countryCode) {
       this.store.dispatch(new LoadRegions({ countryCode }));
-      this.regions$ = this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
-      this.regions$.pipe(takeUntil(this.destroy$)).subscribe(regions => this.updateRegions(regions));
+
+      this.regions$ = this.store.pipe(
+        select(getRegionsByCountryCode, { countryCode }),
+        tap(regions => this.updateRegions(regions))
+      );
+
       this.titles = determineSalutations(countryCode);
       this.cd.detectChanges(); // necessary to show titles/regions while editing an existing address
     }
@@ -121,10 +125,19 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
    * update validators for "state (mainDivision)" control in address form according to regions
    */
   private updateRegions(regions: Region[]) {
-    if (this.parentForm && this.parentForm.get(this.controlName)) {
-      const stateControl = this.parentForm.get(this.controlName).get('mainDivision');
+    const addressForm = this.parentForm.get(this.controlName);
+
+    if (this.parentForm && addressForm) {
+      const stateControl = addressForm.get('mainDivisionCode');
       if (regions && stateControl) {
         updateValidatorsByDataLength(stateControl, regions, Validators.required, false);
+      }
+
+      const selectedRegionExists = regions && !!regions.find(region => region.regionCode === stateControl.value);
+
+      // clear old value if region doesn't exist in new list
+      if (regions && !selectedRegionExists) {
+        stateControl.setValue('');
       }
     }
   }

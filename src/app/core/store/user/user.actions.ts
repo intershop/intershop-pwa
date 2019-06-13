@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 
@@ -19,7 +19,15 @@ export enum UserActionTypes {
   UpdateUser = '[Account] Update User',
   UpdateUserSuccess = '[Account API] Update User Succeeded',
   UpdateUserFail = '[Account API] Update User Failed',
+  UpdateUserPassword = '[Account] Update User Password',
+  UpdateUserPasswordSuccess = '[Account API] Update User Password Succeeded',
+  UpdateUserPasswordFail = '[Account API] Update User Password Failed',
+  UpdateCustomer = '[Account] Update Customer',
+  UpdateCustomerSuccess = '[Account API] Update Customer Succeeded',
+  UpdateCustomerFail = '[Account API] Update Customer Failed',
+  UserSuccessMessageReset = '[Account Internal] Reset Update Success Message',
   UserErrorReset = '[Account Internal] Reset User Error',
+  LoadUserByAPIToken = '[Account] Load User by API Token',
 }
 
 export class LoginUser implements Action {
@@ -72,12 +80,12 @@ export class CreateUserFail implements Action {
 
 export class UpdateUser implements Action {
   readonly type = UserActionTypes.UpdateUser;
-  constructor(public payload: { user: User }) {}
+  constructor(public payload: { user: User; successMessage?: string }) {}
 }
 
 export class UpdateUserSuccess implements Action {
   readonly type = UserActionTypes.UpdateUserSuccess;
-  constructor(public payload: { user: User }) {}
+  constructor(public payload: { user: User; successMessage?: string }) {}
 }
 
 export class UpdateUserFail implements Action {
@@ -85,8 +93,47 @@ export class UpdateUserFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
+export class UpdateUserPassword implements Action {
+  readonly type = UserActionTypes.UpdateUserPassword;
+  constructor(public payload: { password: string; successMessage?: string }) {}
+}
+
+export class UpdateUserPasswordSuccess implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordSuccess;
+  constructor(public payload: { successMessage?: string }) {}
+}
+
+export class UpdateUserPasswordFail implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class UpdateCustomer implements Action {
+  readonly type = UserActionTypes.UpdateCustomer;
+  constructor(public payload: { customer: Customer; successMessage?: string }) {}
+}
+
+export class UpdateCustomerSuccess implements Action {
+  readonly type = UserActionTypes.UpdateCustomerSuccess;
+  constructor(public payload: { customer: Customer; successMessage?: string }) {}
+}
+
+export class UpdateCustomerFail implements Action {
+  readonly type = UserActionTypes.UpdateCustomerFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class UserSuccessMessageReset implements Action {
+  readonly type = UserActionTypes.UserSuccessMessageReset;
+}
+
 export class UserErrorReset implements Action {
   readonly type = UserActionTypes.UserErrorReset;
+}
+
+export class LoadUserByAPIToken implements Action {
+  readonly type = UserActionTypes.LoadUserByAPIToken;
+  constructor(public payload: { apiToken: string }) {}
 }
 
 export type UserAction =
@@ -103,4 +150,12 @@ export type UserAction =
   | UpdateUser
   | UpdateUserSuccess
   | UpdateUserFail
-  | UserErrorReset;
+  | UpdateUserPassword
+  | UpdateUserPasswordSuccess
+  | UpdateUserPasswordFail
+  | UpdateCustomer
+  | UpdateCustomerSuccess
+  | UpdateCustomerFail
+  | UserSuccessMessageReset
+  | UserErrorReset
+  | LoadUserByAPIToken;

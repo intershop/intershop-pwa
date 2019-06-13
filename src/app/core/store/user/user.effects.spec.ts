@@ -6,11 +6,10 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
-import { CookiesService } from '@ngx-utils/cookies';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable, noop, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
@@ -36,18 +35,26 @@ describe('User Effects', () => {
       type: 'SMBCustomer',
       customerNo: 'PC',
     },
+    user: {},
   } as CustomerUserType;
 
   // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
+  const customer = {
+    customerNo: '4711',
+    type: 'SMBCustomer',
+    isBusinessCustomer: true,
+  } as Customer;
 
   beforeEach(() => {
     userServiceMock = mock(UserService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
+    when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(of(undefined));
+    when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
 
     TestBed.configureTestingModule({
@@ -65,7 +72,6 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
-        { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
       ],
     });
 
@@ -188,6 +194,38 @@ describe('User Effects', () => {
 
       expect(location.path()).toEqual('/foobar');
     }));
+
+    it('should navigate to /account after LoginUserSuccess when no returnUrl is set and user is at login', fakeAsync(() => {
+      router.navigate(['/login']);
+      tick(500);
+      expect(location.path()).toEqual('/login');
+
+      store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
+
+      actions$ = of(new RouteNavigation({ path: 'login', queryParams: {} }));
+
+      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/account');
+    }));
+
+    it('should not navigate after LoginUserSuccess when user is logged in and somewhere else', fakeAsync(() => {
+      router.navigate(['/home']);
+      tick(500);
+      expect(location.path()).toEqual('/home');
+
+      store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
+
+      actions$ = of(new RouteNavigation({ path: 'home', queryParams: {} }));
+
+      effects.redirectAfterLogin$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/home');
+    }));
   });
 
   describe('createUser$', () => {
@@ -264,8 +302,8 @@ describe('User Effects', () => {
     it('should dispatch a UpdateUserSuccess action on successful user update', () => {
       const user = { firstName: 'Patricia' } as User;
 
-      const action = new ua.UpdateUser({ user });
-      const completion = new ua.UpdateUserSuccess({ user });
+      const action = new ua.UpdateUser({ user, successMessage: 'success' });
+      const completion = new ua.UpdateUserSuccess({ user, successMessage: 'success' });
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -288,6 +326,136 @@ describe('User Effects', () => {
     });
   });
 
+  describe('updateUserPassword$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer: {
+            customerNo: '4711',
+            type: 'PrivateCustomer',
+          } as Customer,
+          user: {} as User,
+        })
+      );
+    });
+    it('should call the api service when UpdateUserPassword is called', done => {
+      const action = new ua.UpdateUserPassword({ password: '123' });
+
+      actions$ = of(action);
+
+      effects.updateUserPassword$.subscribe(() => {
+        verify(userServiceMock.updateUserPassword(anything(), anyString())).once();
+        done();
+      });
+    });
+
+    it('should dispatch an UpdateUserPasswordSuccess action on successful user password update with the default success message', () => {
+      const password = '123';
+
+      const action = new ua.UpdateUserPassword({ password });
+      const completion = new ua.UpdateUserPasswordSuccess({
+        successMessage: 'account.profile.update_password.message',
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateUserPassword$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateUserPasswordSuccess action on successful user password update with a given success message', () => {
+      const password = '123';
+
+      const action = new ua.UpdateUserPassword({ password, successMessage: 'success' });
+      const completion = new ua.UpdateUserPasswordSuccess({
+        successMessage: 'success',
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateUserPassword$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateUserPasswordFail action on failed user password update', () => {
+      when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+
+      const password = '123';
+      const action = new ua.UpdateUserPassword({ password });
+      const completion = new ua.UpdateUserPasswordFail({ error: { message: 'invalid' } as HttpError });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateUserPassword$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateCustomer$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+    it('should call the api service when UpdateCustomer is called for a business customer', done => {
+      customer.companyName = 'OilCorp';
+      const action = new ua.UpdateCustomer({ customer, successMessage: 'success' });
+
+      actions$ = of(action);
+
+      effects.updateCustomer$.subscribe(() => {
+        verify(userServiceMock.updateCustomer(anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch an UpdateCustomerSuccess action on successful customer update', () => {
+      const action = new ua.UpdateCustomer({ customer, successMessage: 'success' });
+      const completion = new ua.UpdateCustomerSuccess({ customer, successMessage: 'success' });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateCustomer$).toBeObservable(expected$);
+    });
+
+    it('should not trigger any action if the customer is a private customer', () => {
+      const privateCustomer = {
+        customerNo: '4712',
+        isBusinessCustomer: false,
+        type: 'PrivateCustomer',
+      } as Customer;
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer: privateCustomer,
+          user: {} as User,
+        })
+      );
+
+      const action = new ua.UpdateCustomer({ customer: privateCustomer, successMessage: 'success' });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('----');
+
+      expect(effects.updateCustomer$).toBeObservable(expected$);
+    });
+
+    it('should dispatch an UpdateCustomerFail action on failed company update', () => {
+      when(userServiceMock.updateCustomer(anything())).thenReturn(throwError({ message: 'invalid' }));
+
+      const action = new ua.UpdateCustomer({ customer });
+      const completion = new ua.UpdateCustomerFail({ error: { message: 'invalid' } as HttpError });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateCustomer$).toBeObservable(expected$);
+    });
+  });
+
   describe('resetUserError$', () => {
     it('should not dispatch UserErrorReset action on router navigation if error is not set', () => {
       actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
@@ -301,6 +469,31 @@ describe('User Effects', () => {
       actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
 
       expect(effects.resetUserError$).toBeObservable(cold('a', { a: new ua.UserErrorReset() }));
+    });
+  });
+
+  describe('loadUserByAPIToken$', () => {
+    it('should call the user service on LoadUserByAPIToken action and load user on success', done => {
+      when(userServiceMock.signinUserByToken('dummy')).thenReturn(
+        of({ user: { email: 'test@intershop.de' } } as CustomerUserType)
+      );
+
+      actions$ = of(new ua.LoadUserByAPIToken({ apiToken: 'dummy' }));
+
+      effects.loadUserByAPIToken$.subscribe(action => {
+        verify(userServiceMock.signinUserByToken('dummy')).once();
+        expect(action.type).toEqual(ua.UserActionTypes.LoginUserSuccess);
+        expect(action.payload).toHaveProperty('user.email', 'test@intershop.de');
+        done();
+      });
+    });
+
+    it('should call the user service on LoadUserByAPIToken action and do nothing when failing', () => {
+      when(userServiceMock.signinUserByToken('dummy')).thenReturn(EMPTY);
+
+      actions$ = hot('a-a-a-', { a: new ua.LoadUserByAPIToken({ apiToken: 'dummy' }) });
+
+      expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
     });
   });
 });

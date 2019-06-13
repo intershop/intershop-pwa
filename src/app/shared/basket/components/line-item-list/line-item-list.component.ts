@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { SpecialValidators } from '../../../forms/validators/special-validators';
@@ -11,6 +11,7 @@ import { SpecialValidators } from '../../../forms/validators/special-validators'
 /**
  * The Line Item List Component displays a line items.
  * It prodives optional delete and edit functionality
+ * It prodives optional lineItemView (string 'simple')
  * It provides optional total cost output
  *
  * @example
@@ -18,6 +19,7 @@ import { SpecialValidators } from '../../../forms/validators/special-validators'
  *   [lineItems]="lineItems"
  *   [editable]="editable"
  *   [total]="total"
+ *   lineItemViewType="simple"  // simple = no edit-button, inventory, shipment
  *   (updateItem)="onUpdateItem($event)"
  *   (deleteItem)="onDeleteItem($event)"
  * ></ish-line-item-list>
@@ -31,8 +33,9 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   @Input() lineItems: LineItemView[];
   @Input() editable = true;
   @Input() total: Price;
+  @Input() lineItemViewType?: 'simple';
 
-  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
@@ -81,7 +84,8 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
           )
           .subscribe(item => {
             if (formGroup.valid) {
-              this.onUpdateItem(item);
+              // TODO: figure out why quantity is returned as string by the valueChanges instead of number (the '+item.quantity' fixes that for now) - see ISREST-755
+              this.onUpdateItem({ ...item, quantity: +item.quantity });
             }
           });
 
@@ -96,7 +100,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
    * Throws updateItem event when item quantity was changed.
    * @param item ItemId and quantity pair that should be updated
    */
-  onUpdateItem(item: LineItemQuantity) {
+  onUpdateItem(item: LineItemUpdate) {
     this.updateItem.emit(item);
   }
 
@@ -104,7 +108,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
    * Throws deleteItem event when delete button was clicked.
    * @param itemId The id of the item that should be deleted.
    */
-  onDeleteItem(itemId) {
+  onDeleteItem(itemId: string) {
     this.deleteItem.emit(itemId);
   }
 
@@ -113,5 +117,9 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
    */
   ngOnDestroy() {
     this.destroy$.next();
+  }
+
+  trackByFn(_, item: LineItemView) {
+    return item.productSKU;
   }
 }

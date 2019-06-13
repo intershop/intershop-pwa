@@ -2,10 +2,10 @@ import { AddressData } from '../address/address.interface';
 import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { BasketTotalData } from '../basket-total/basket-total.interface';
 import { LineItemData } from '../line-item/line-item.interface';
-import { PaymentMethodData } from '../payment-method/payment-method.interface';
+import { PaymentInstrument } from '../payment-instrument/payment-instrument.model';
+import { PaymentMethodBaseData } from '../payment-method/payment-method.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { PriceData } from '../price/price.interface';
-import { Promotion } from '../promotion/promotion.model';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 // ToDo: Find a general way to handle base data
@@ -40,19 +40,19 @@ export interface BasketData {
     invoiceToAddress?: { [urn: string]: AddressData };
     lineItems?: { [id: string]: LineItemData };
     discounts?: { [id: string]: BasketRebateData };
-    discounts_promotion?: { [id: string]: Promotion };
     lineItems_discounts?: { [id: string]: BasketRebateData };
-    lineItems_discounts_promotion?: { [id: string]: Promotion };
     commonShipToAddress?: { [urn: string]: AddressData };
     commonShippingMethod?: { [id: string]: ShippingMethodData };
     payments?: {
       [id: string]: {
         id: string;
         paymentInstrument: string;
+        paymentMethod: string;
         paymentCost?: PriceItem;
         totalAmount: { gross: PriceData };
       };
     };
-    payments_paymentMethod?: { [id: string]: PaymentMethodData };
+    payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
+    payments_paymentInstrument?: { [id: string]: PaymentInstrument };
   };
 }

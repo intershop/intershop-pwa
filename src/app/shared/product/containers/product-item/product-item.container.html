@@ -1,4 +1,4 @@
-<ng-container *ngIf="(productForDisplay$ | async) as product">
+<ng-container *ngIf="productForDisplay$ | async as product">
   <ish-product-tile
     *ngIf="isTile"
     [product]="product"
@@ -22,4 +22,4 @@
   ></ish-product-row>
 </ng-container>
 
-<ish-loading *ngIf="(loading$ | async)"></ish-loading>
+<ish-loading *ngIf="loading$ | async"></ish-loading>

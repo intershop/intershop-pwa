@@ -53,7 +53,7 @@ export class OrdersEffects {
    * for each product that is missing in the current product entities state.
    */
   @Effect()
-  loadProductsForSelectedOrder$ = combineLatest(
+  loadProductsForSelectedOrder$ = combineLatest([
     this.actions$.pipe(
       ofType<ordersActions.SelectOrder>(ordersActions.OrdersActionTypes.SelectOrder),
       mapToPayloadProperty('orderId')
@@ -61,8 +61,8 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType<ordersActions.LoadOrdersSuccess>(ordersActions.OrdersActionTypes.LoadOrdersSuccess),
       mapToPayloadProperty('orders')
-    )
-  ).pipe(
+    ),
+  ]).pipe(
     map(([orderId, orders]) => orders.filter(order => order.id === orderId).pop()),
     whenTruthy(),
     withLatestFrom(this.store.pipe(select(getProductEntities))),

@@ -42,7 +42,11 @@ export function updateValidatorsByDataLength(
   } else {
     control.clearValidators();
   }
-  control.setValue('');
+  // clear value for empty array
+  if (array && !array.length) {
+    control.setValue('');
+  }
+
   control.updateValueAndValidity();
 }
 
@@ -85,6 +89,10 @@ export function determineSalutations(countryCode: string): string[] {
       break;
     }
     case 'FR': {
+      salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+      break;
+    }
+    case 'US': {
       salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
       break;
     }

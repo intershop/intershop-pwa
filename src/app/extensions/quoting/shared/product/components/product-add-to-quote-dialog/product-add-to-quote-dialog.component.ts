@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 
 /**
@@ -34,9 +34,10 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   @Input() quote: QuoteRequest;
   @Input() quoteLoading = false;
 
+  @Output() deleteQuoteRequest = new EventEmitter<string>();
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
-  @Output() updateItem = new EventEmitter<LineItemQuantity>();
+  @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
@@ -65,17 +66,29 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
 
   /**
    * Throws updateItem event when onUpdateItem event trigggerd.
+   * Throws deleteQuoteRequest event when last items quantity is changed to '0'.
    * @param item Item id and quantity pair that should be changed
    */
-  onUpdateItem(item: LineItemQuantity) {
-    this.updateItem.emit(item);
+  onUpdateItem(item: LineItemUpdate) {
+    if (this.quote.items.length === 1 && item.quantity === 0) {
+      this.deleteQuoteRequest.emit(this.quote.id);
+      this.hide();
+    } else {
+      this.updateItem.emit(item);
+    }
   }
 
   /**
    * Throws deleteItem event when delete button was clicked.
+   * Throws deleteQuoteRequest event when last item will be deleted.
    */
-  onDeleteItem(itemId) {
-    this.deleteItem.emit(itemId);
+  onDeleteItem(itemId: string) {
+    if (this.quote.items.length === 1) {
+      this.deleteQuoteRequest.emit(this.quote.id);
+      this.hide();
+    } else {
+      this.deleteItem.emit(itemId);
+    }
   }
 
   /**

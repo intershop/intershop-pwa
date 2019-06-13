@@ -12,4 +12,5 @@ export interface Promotion {
   title?: string;
   useExternalUrl?: boolean;
   externalUrl?: string;
+  disableMessages: boolean;
 }

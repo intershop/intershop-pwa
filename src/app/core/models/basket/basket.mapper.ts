@@ -28,19 +28,13 @@ export class BasketMapper {
           valueRebates:
             data.discounts && data.discounts.valueBasedDiscounts && included.discounts
               ? data.discounts.valueBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(
-                    included.discounts[discountId],
-                    included.discounts_promotion[included.discounts[discountId].promotion]
-                  )
+                  BasketRebateMapper.fromData(included.discounts[discountId])
                 )
               : undefined,
           shippingRebates:
             data.discounts && data.discounts.shippingBasedDiscounts && included.discounts
               ? data.discounts.shippingBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(
-                    included.discounts[discountId],
-                    included.discounts_promotion[included.discounts[discountId].promotion]
-                  )
+                  BasketRebateMapper.fromData(included.discounts[discountId])
                 )
               : undefined,
           itemSurchargeTotalsByType: data.surcharges
@@ -77,18 +71,20 @@ export class BasketMapper {
       payment:
         included && included.payments && included.payments['open-tender']
           ? {
-              paymentInstrument: included.payments['open-tender'].paymentInstrument,
+              paymentInstrument:
+                included.payments['open-tender'].paymentInstrument && included.payments_paymentInstrument
+                  ? included.payments_paymentInstrument[included.payments['open-tender'].paymentInstrument]
+                  : { id: included.payments['open-tender'].paymentInstrument },
               id: included.payments['open-tender'].id,
               displayName:
-                included &&
                 included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].displayName
+                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].displayName
                   : undefined,
               description:
                 included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentInstrument].description
+                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
+                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].description
                   : undefined,
             }
           : undefined,

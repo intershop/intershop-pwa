@@ -7,6 +7,7 @@ exports[`Filter Checkbox Component should be created 1`] = `
     <fa-icon class="float-right ng-fa-icon" ng-reflect-icon-prop="fas,angle-down"
       ><svg
         aria-hidden="true"
+        focusable="false"
         data-prefix="fas"
         data-icon="angle-down"
         class="svg-inline--fa fa-angle-down fa-w-10"
@@ -27,6 +28,7 @@ exports[`Filter Checkbox Component should be created 1`] = `
         ><fa-icon class="float-right ng-fa-icon" ng-reflect-icon-prop="fas,minus"
           ><svg
             aria-hidden="true"
+            focusable="false"
             data-prefix="fas"
             data-icon="minus"
             class="svg-inline--fa fa-minus fa-w-14"

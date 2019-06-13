@@ -4,9 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 
-import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import {
   DeleteItemFromQuoteRequest,
+  DeleteQuoteRequest,
   SelectQuoteRequest,
   SubmitQuoteRequest,
   UpdateQuoteRequest,
@@ -42,8 +43,12 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
-  updateQuoteRequestItem(payload: LineItemQuantity) {
-    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemQuantities: [payload] }));
+  deleteQuoteRequest(payload: string) {
+    this.store.dispatch(new DeleteQuoteRequest({ id: payload }));
+  }
+
+  updateQuoteRequestItem(payload: LineItemUpdate) {
+    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemUpdates: [payload] }));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {

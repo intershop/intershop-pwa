@@ -2,7 +2,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import {
+  CreateBasketPayment,
+  DeleteBasketPayment,
   LoadBasketEligiblePaymentMethods,
   SetBasketPayment,
   getBasketEligiblePaymentMethods,
@@ -35,5 +38,13 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
 
   updateBasketPaymentMethod(paymentName: string) {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));
+  }
+
+  createBasketPaymentInstrument(body: PaymentInstrument) {
+    this.store.dispatch(new CreateBasketPayment({ paymentInstrument: body }));
+  }
+
+  deletePaymentInstrument(paymentInstrumentId: string) {
+    this.store.dispatch(new DeleteBasketPayment({ id: paymentInstrumentId }));
   }
 }

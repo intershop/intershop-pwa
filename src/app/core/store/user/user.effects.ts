@@ -1,32 +1,36 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { CookiesService } from '@ngx-utils/cookies';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { Observable, of } from 'rxjs';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { Observable, merge, of } from 'rxjs';
 import {
   catchError,
   concatMap,
+  delay,
   filter,
   map,
   mapTo,
   mergeMap,
-  take,
-  takeWhile,
+  switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { UserService } from '../../services/user/user.service';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
-import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getUserError, getUserSuccessMessage } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
   return (source$: Observable<T>) =>
@@ -48,9 +52,7 @@ export class UserEffects {
     private actions$: Actions,
     private store$: Store<{}>,
     private userService: UserService,
-    private router: Router,
-    private cookieService: CookiesService,
-    @Inject(PLATFORM_ID) private platformId: string
+    private router: Router
   ) {}
 
   @Effect()
@@ -87,18 +89,28 @@ export class UserEffects {
    * does not redirect at all, if no returnUrl is defined
    */
   @Effect({ dispatch: false })
-  redirectAfterLogin$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUserSuccess),
-    tap(() => {
-      const state = this.router.routerState;
-      let navigateTo: string;
-      if (state && state.snapshot && state.snapshot.root.queryParams.returnUrl) {
-        navigateTo = state.snapshot.root.queryParams.returnUrl;
-      }
-      if (navigateTo) {
-        this.router.navigateByUrl(navigateTo);
-      }
-    })
+  redirectAfterLogin$ = merge(
+    this.actions$.pipe(
+      ofType(userActions.UserActionTypes.LoginUserSuccess),
+      map(() => this.router.routerState),
+      mapToProperty('snapshot'),
+      whenTruthy(),
+      map(snapshot => snapshot.root.queryParams.returnUrl as string)
+    ),
+    this.actions$.pipe(
+      ofRoute('login'),
+      map<RouteNavigation, string>(action => action.payload.queryParams.returnUrl || '/account'),
+      switchMap(returnUrl =>
+        this.store$.pipe(
+          select(getLoggedInUser),
+          whenTruthy(),
+          mapTo(returnUrl)
+        )
+      )
+    )
+  ).pipe(
+    whenTruthy(),
+    tap(navigateTo => this.router.navigateByUrl(navigateTo))
   );
 
   @Effect()
@@ -117,14 +129,67 @@ export class UserEffects {
   @Effect()
   updateUser$ = this.actions$.pipe(
     ofType<userActions.UpdateUser>(userActions.UserActionTypes.UpdateUser),
-    mapToPayloadProperty('user'),
+    mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-    concatMap(([user, customer]) =>
-      this.userService.updateUser({ user, customer }).pipe(
-        map(changedUser => new userActions.UpdateUserSuccess({ user: changedUser })),
+    concatMap(([payload, customer]) =>
+      this.userService.updateUser({ user: payload.user, customer }).pipe(
+        map(
+          changedUser =>
+            new userActions.UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })
+        ),
         mapErrorToAction(userActions.UpdateUserFail)
       )
     )
+  );
+
+  @Effect()
+  updateUserPassword$ = this.actions$.pipe(
+    ofType<userActions.UpdateUserPassword>(userActions.UserActionTypes.UpdateUserPassword),
+    mapToPayload(),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    concatMap(([payload, customer]) =>
+      this.userService.updateUserPassword(customer, payload.password).pipe(
+        mapTo(
+          new userActions.UpdateUserPasswordSuccess({
+            successMessage: payload.successMessage || 'account.profile.update_password.message',
+          })
+        ),
+        mapErrorToAction(userActions.UpdateUserPasswordFail)
+      )
+    )
+  );
+
+  @Effect()
+  updateCustomer$ = this.actions$.pipe(
+    ofType<userActions.UpdateCustomer>(userActions.UserActionTypes.UpdateCustomer),
+    mapToPayload(),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
+    concatMap(([payload]) =>
+      this.userService.updateCustomer(payload.customer).pipe(
+        map(
+          changedCustomer =>
+            new userActions.UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
+        ),
+        mapErrorToAction(userActions.UpdateCustomerFail)
+      )
+    )
+  );
+
+  /* ToDo: should be partly replaced by the toast implementation */
+  /* Navigates the user to the Accouont Profile page and deletes the update user success message from store after 5 sec */
+  @Effect()
+  resetUpdateUserSuccessMessage$ = this.actions$.pipe(
+    ofType(
+      userActions.UserActionTypes.UpdateUserPasswordSuccess,
+      userActions.UserActionTypes.UpdateUserSuccess,
+      userActions.UserActionTypes.UpdateCustomerSuccess
+    ),
+    withLatestFrom(this.store$.pipe(select(getUserSuccessMessage))),
+    filter(([, successMessage]) => !!successMessage),
+    tap(() => this.router.navigateByUrl('/account/profile')),
+    delay(5000),
+    mapTo(new userActions.UserSuccessMessageReset())
   );
 
   @Effect()
@@ -143,40 +208,12 @@ export class UserEffects {
     mapTo(new userActions.LoadCompanyUser())
   );
 
-  @Effect({ dispatch: false })
-  saveAPITokenToCookie$ = this.actions$.pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
-    ofType<userActions.SetAPIToken>(userActions.UserActionTypes.SetAPIToken),
-    mapToPayloadProperty('apiToken'),
-    withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
-    filter(([, user]) => !!user),
-    tap(([apiToken]) => {
-      const cookieExpirationTime = Date.now() + 3600000;
-      this.cookieService.put('apiToken', apiToken, { expires: new Date(cookieExpirationTime) });
-    })
-  );
-
-  @Effect({ dispatch: false })
-  destroyTokenInCookieOnLogout$ = this.actions$.pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
-    ofType(userActions.UserActionTypes.LogoutUser),
-    tap(() => {
-      this.cookieService.remove('apiToken');
-    })
-  );
-
   @Effect()
-  restoreUserByToken$ = this.router.events.pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
-    filter(event => event instanceof NavigationStart),
-    take(1),
-    map(() => this.cookieService.get('apiToken')),
-    whenTruthy(),
+  loadUserByAPIToken$ = this.actions$.pipe(
+    ofType<userActions.LoadUserByAPIToken>(userActions.UserActionTypes.LoadUserByAPIToken),
+    mapToPayloadProperty('apiToken'),
     concatMap(apiToken =>
-      this.userService.signinUserByToken(apiToken).pipe(
-        whenTruthy(),
-        map(data => new userActions.LoginUserSuccess(data))
-      )
+      this.userService.signinUserByToken(apiToken).pipe(map(user => new userActions.LoginUserSuccess(user)))
     )
   );
 }
