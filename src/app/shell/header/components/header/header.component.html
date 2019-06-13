@@ -21,11 +21,12 @@
 
   <div class="header-utility">
     <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
-      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggleSearch()"></fa-icon>
+      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')"></fa-icon>
       <div
-        *ngIf="isSticky || deviceType === 'mobile'"
+        *ngIf="isSticky || showSearch"
         class="search-container header-search-container"
         [ngbCollapse]="!showSearch"
+        [ngClass]="{ show: !isSticky }"
       >
         <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }"></ng-container>
       </div>
@@ -70,7 +71,7 @@
     /></a>
   </div>
 
-  <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
+  <button class="navbar-toggler" type="button" (click)="toggle('navbar')">
     <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
     <div class="hamburger-menu" [ngClass]="{ open: showNavBar }">
       <!--- strokes of the hamburger menu -->
@@ -79,7 +80,7 @@
   </button>
 
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md" [ngbCollapse]="navbarCollapsed">
+    <nav class="global-nav navbar-expand-md" [ngbCollapse]="!showNavBar">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container>
         <ish-user-information-mobile></ish-user-information-mobile>

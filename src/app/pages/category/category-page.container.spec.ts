@@ -3,6 +3,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadCategory, LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
@@ -24,6 +25,7 @@ describe('Category Page Container', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
+          ...coreReducers,
           shopping: combineReducers(shoppingReducers),
         }),
       ],

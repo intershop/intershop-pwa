@@ -6,6 +6,7 @@ import { takeUntil, withLatestFrom } from 'rxjs/operators';
 import { getCategoryLoading, getSelectedCategory, getSelectedCategoryId } from 'ish-core/store/shopping/categories';
 import { LoadMoreProductsForCategory } from 'ish-core/store/shopping/products';
 import { getPagingLoading } from 'ish-core/store/shopping/viewconf';
+import { getDeviceType } from 'ish-core/store/viewconf';
 
 const loading = createSelector(
   getCategoryLoading,
@@ -21,6 +22,7 @@ const loading = createSelector(
 export class CategoryPageContainerComponent implements OnInit, OnDestroy {
   category$ = this.store.pipe(select(getSelectedCategory));
   categoryLoading$ = this.store.pipe(select(loading));
+  deviceType$ = this.store.pipe(select(getDeviceType));
 
   loadMore = new EventEmitter<void>();
 

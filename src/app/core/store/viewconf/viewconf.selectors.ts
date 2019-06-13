@@ -19,3 +19,7 @@ export const getBreadcrumbData = createSelector(
   getViewconfState,
   state => state.breadcrumbData
 );
+export const getDeviceType = createSelector(
+  getViewconfState,
+  state => state.deviceType
+);
