@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 
 import { ServerHtmlDirective } from './server-html.directive';
 
@@ -25,7 +28,7 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, StoreModule.forRoot({ configuration: configurationReducer })],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -37,10 +40,88 @@ describe('Server Html Directive', () => {
       expect(element).toMatchInlineSnapshot(`
         <div>
           <div><a href="/product/8182790134362">Produkt</a></div>
-          <div><a href="http://google.de/">Google</a></div>
+          <div><a href="http://google.de">Google</a></div>
           <div><a href="/basket">Basket</a></div>
         </div>
       `);
+    });
+  });
+
+  describe('transforming media objects', () => {
+    let element: HTMLElement;
+
+    beforeEach(() => {
+      @Component({
+        template: `
+          <div [ishServerHtml]="html"></div>
+        `,
+        changeDetection: ChangeDetectionStrategy.OnPush,
+      })
+      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+      class TestComponent {
+        html = `<img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`;
+      }
+
+      TestBed.configureTestingModule({
+        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [
+          RouterTestingModule,
+          StoreModule.forRoot(
+            { configuration: configurationReducer },
+            {
+              initialState: { configuration: { baseURL: 'http://example.org' } },
+            }
+          ),
+        ],
+      }).compileComponents();
+
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      element = fixture.nativeElement;
+    });
+
+    it('should transform the given media object source to the correct source', () => {
+      expect(element).toMatchInlineSnapshot(`
+                <div>
+                  <img
+                    src="http://example.org/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png"
+                    alt=""
+                    width="92"
+                    height="92"
+                    style="width: unset;"
+                  />
+                </div>
+            `);
+    });
+  });
+
+  describe('transforming normal content', () => {
+    let element: HTMLElement;
+
+    beforeEach(() => {
+      @Component({
+        template: `
+          <div [ishServerHtml]="html"></div>
+        `,
+        changeDetection: ChangeDetectionStrategy.OnPush,
+      })
+      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+      class TestComponent {
+        html = `<img src="https://google.de/logo.png" alt="LOGO" />`;
+      }
+
+      TestBed.configureTestingModule({
+        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [RouterTestingModule, StoreModule.forRoot({ configuration: configurationReducer })],
+      }).compileComponents();
+
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      element = fixture.nativeElement;
+    });
+
+    it('should transform the given media object source to the correct source', () => {
+      expect(element).toMatchInlineSnapshot(`<div><img src="https://google.de/logo.png" alt="LOGO" /></div>`);
     });
   });
 
@@ -59,7 +140,11 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule, TranslateModule.forRoot()],
+        imports: [
+          RouterTestingModule,
+          StoreModule.forRoot({ configuration: configurationReducer }),
+          TranslateModule.forRoot(),
+        ],
       }).compileComponents();
 
       const translate: TranslateService = TestBed.get(TranslateService);
