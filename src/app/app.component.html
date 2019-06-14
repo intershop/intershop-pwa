@@ -14,7 +14,7 @@
 <cookie-law #cookieLaw *ngIf="isBrowser" expiration="365">
   <div class="row">
     <div class="col-12 col-md-10">
-      <span [innerHTML]="'cookie_law.text' | translate: { '0': '/page/privacy.policy' }"></span>
+      <span [ishServerHtml]="'cookie_law.text' | translate: { '0': 'page://privacy.policy' }"></span>
     </div>
     <div class="col-12 col-md-2 button-container">
       <button class="btn" type="button" (click)="dismiss()">{{ 'cookie_law.button' | translate }}</button>
