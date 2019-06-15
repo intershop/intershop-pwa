@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivationEnd, NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { ofRoute } from 'ngrx-router';
 import { filter, map, mapTo, mergeMap, switchMapTo, take, withLatestFrom } from 'rxjs/operators';
 
 import { distinctCompareWith } from 'ish-core/utils/operators';
@@ -24,7 +24,7 @@ export class ViewconfEffects {
 
   @Effect()
   setEndlessScrollingParameters$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
+    ofRoute(),
     take(1),
     withLatestFrom(this.store.pipe(select(getItemsPerPage))),
     filter(([, itemsPerPage]) => itemsPerPage !== this.itemsPerPage),
