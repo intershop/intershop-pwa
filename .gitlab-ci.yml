@@ -142,10 +142,11 @@ deploy_review_mock:
     - docker build -t ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
       --file=templates/Dockerfile_dev
       .
+    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-mock" 8080)
     - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-mock"
       ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
   environment:
@@ -199,6 +200,8 @@ publish_pwa:
       .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
 
 publish_pwa_latest:
   cache: {}
@@ -218,19 +221,6 @@ publish_pwa_latest:
     - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:latest
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:latest
-
-start_nginx_proxy:
-  cache: {}
-  dependencies: []
-  stage: publish
-  only:
-    - merge_requests
-  tags:
-    - shell-executor
-    - docker
-    - demoserver
-  script:
-    - docker run --restart always --detach -p 4199:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy || true
 
 start_review_server:
   cache: {}
@@ -411,7 +401,6 @@ deploy_demo_nginx:
       -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_4_APPLICATION=smb-responsive
       -e PWA_4_FEATURES=quoting
-      -e VIRTUAL_HOST=b2c.$DEMO_SERVER_NAME,b2b.$DEMO_SERVER_NAME,de.$DEMO_SERVER_NAME,smb.$DEMO_SERVER_NAME
       --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${IMAGE}
   environment:
@@ -479,12 +468,13 @@ deploy_review_b2c:
     GIT_STRATEGY: none
   script:
     - set -x
+    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2c")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-pwa-b2c"
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
@@ -499,11 +489,12 @@ deploy_review_b2c:
       --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - PUBLISH_NGINX=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-nginx" 80)
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_NGINX
       --name "${CI_COMMIT_REF_SLUG}-nginx"
       -e UPSTREAM_ICM=${ICM_BASE_URL}
       --link $CI_COMMIT_REF_SLUG-pwa-b2c
@@ -521,7 +512,6 @@ deploy_review_b2c:
       -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_4_APPLICATION=smb-responsive
       -e PWA_4_FEATURES=quoting
-      -e VIRTUAL_HOST=b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME,smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
     - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
@@ -566,12 +556,13 @@ deploy_review_b2b:
     GIT_STRATEGY: none
   script:
     - set -x
+    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2b")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-pwa-b2b"
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
@@ -647,7 +638,7 @@ schematics:
   dependencies: []
   script:
     - npm install
-    - bash .gitlab-ci-test-schematics.sh
+    - bash e2e/test-schematics.sh
     - echo "schematics complete"
 
 .universal_template: &universal_definition
@@ -763,7 +754,7 @@ check_tslint_no_warnings:
     - sh .gitlab-ci-check-no-additional-warnings.sh
     - echo "check complete"
 
-housekeeping:
+housekeeping_images:
   stage: verify
   cache: {}
   dependencies: []
@@ -776,3 +767,17 @@ housekeeping:
     GIT_STRATEGY: none
   script:
     - curl --request DELETE --data "name_regex=.*" --data 'older_than=2month' --header "PRIVATE-TOKEN:$PRIVATE_API_TOKEN" "https://gitlab.intershop.de/api/v4/projects/$CI_PROJECT_ID/registry/repositories/51/tags"
+    - echo "housekeeping complete"
+
+housekeeping_environments:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: verify
+  only:
+    - develop
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-housekeeping-environments.sh
+    - echo "housekeeping complete"
