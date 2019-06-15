@@ -61,16 +61,6 @@ The operator `ofRoute` supports the following syntax:
 - a match against a regular expression `ofRoute(/pizza|burger/)`
 - filter for all routing actions `ofRoute()`
 
-### Actions
-
-You can also do navigation events with this library.
-
-```javascript
-this.store.dispatch(new RouterGo({ path: ['pizza'] }));
-this.store.dispatch(new RouterBack());
-this.store.dispatch(new RouterForward());
-```
-
 ### Data
 
 The `RouteNavigation` event also contains data which is defined in the `Routes`:
