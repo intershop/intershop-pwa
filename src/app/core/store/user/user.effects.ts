@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToQueryParam, ofRoute } from 'ngrx-router';
 import { Observable, merge, of } from 'rxjs';
 import {
   catchError,
@@ -99,7 +99,8 @@ export class UserEffects {
     ),
     this.actions$.pipe(
       ofRoute('login'),
-      map<RouteNavigation, string>(action => action.payload.queryParams.returnUrl || '/account'),
+      mapToQueryParam<string>('returnUrl'),
+      map(returnUrl => returnUrl || '/account'),
       switchMap(returnUrl =>
         this.store$.pipe(
           select(getLoggedInUser),
@@ -194,7 +195,7 @@ export class UserEffects {
 
   @Effect()
   resetUserError$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
+    ofRoute(),
     withLatestFrom(this.store$.pipe(select(getUserError))),
     filter(([, error]) => !!error),
     mapTo(new userActions.UserErrorReset())

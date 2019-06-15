@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
@@ -28,8 +28,8 @@ export class PagesEffects {
 
   @Effect()
   routeListenerForSelectingContentPages$ = this.actions$.pipe(
-    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params.contentPageId),
+    ofRoute(),
+    mapToParam<string>('contentPageId'),
     withLatestFrom(this.store.pipe(select(pagesSelectors.getSelectedContentPageId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
     map(([contentPageId]) => new pagesActions.SelectContentPage({ contentPageId }))

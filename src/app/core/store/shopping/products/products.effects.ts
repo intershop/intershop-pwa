@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import {
   concatMap,
   distinctUntilChanged,
@@ -174,8 +174,8 @@ export class ProductsEffects {
 
   @Effect()
   routeListenerForSelectingProducts$ = this.actions$.pipe(
-    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params.sku),
+    ofRoute(),
+    mapToParam<string>('sku'),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
     map(([sku]) => new productsActions.SelectProduct({ sku }))
@@ -201,7 +201,7 @@ export class ProductsEffects {
         whenTruthy(),
         distinctUntilChanged(),
         map(categoryId => new LoadCategory({ categoryId })),
-        takeUntil(this.actions$.pipe(ofRoute(/.*/)))
+        takeUntil(this.actions$.pipe(ofRoute()))
       )
     )
   );

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { ofRoute } from 'ngrx-router';
 import { filter, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
 
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -34,7 +34,7 @@ export class LocaleEffects {
    */
   @Effect()
   loadAllLocales$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
+    ofRoute(),
     take(1),
     mergeMapTo(
       this.store.pipe(

@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
@@ -57,7 +57,7 @@ describe('Locale Effects', () => {
 
   describe('loadAllLocales$', () => {
     it('should load all locales on first routing action', () => {
-      const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
+      const action = new RouteNavigation({ path: 'any' });
       const expected = new SetAvailableLocales({ locales: defaultLocales });
 
       actions$ = hot('-a--a-----a', { a: action });
