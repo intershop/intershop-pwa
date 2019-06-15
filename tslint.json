@@ -421,6 +421,7 @@
         "pathPatterns": [
           "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
+          "^.*/src/ngrx-router/.*$",
           // cms
           "^.*/src/app/cms/components/(cms-[a-z-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/cms/containers/(content-[a-z-]+)/\\1\\.container\\.ts$",
@@ -461,6 +462,15 @@
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$"
         ],
         "patterns": [
+          // ngrx-router
+          {
+            "name": "RouterEffects",
+            "file": ".*/src/ngrx-router/effects.ts"
+          },
+          {
+            "name": "isRoute",
+            "file": ".*/src/ngrx-router/operator.ts"
+          },
           // root components
           {
             "name": "^(AppComponent)$",
