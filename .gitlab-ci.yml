@@ -769,7 +769,7 @@ check_tslint_no_warnings:
     - sh .gitlab-ci-check-no-additional-warnings.sh
     - echo "check complete"
 
-housekeeping:
+housekeeping_images:
   stage: verify
   cache: {}
   dependencies: []
@@ -782,3 +782,17 @@ housekeeping:
     GIT_STRATEGY: none
   script:
     - curl --request DELETE --data "name_regex=.*" --data 'older_than=2month' --header "PRIVATE-TOKEN:$PRIVATE_API_TOKEN" "https://gitlab.intershop.de/api/v4/projects/$CI_PROJECT_ID/registry/repositories/51/tags"
+    - echo "housekeeping complete"
+
+housekeeping_environments:
+  cache: {}
+  dependencies: []
+  image: endeveit/docker-jq
+  stage: verify
+  only:
+    - develop
+  tags:
+    - docker-executor
+  script:
+    - sh .gitlab-ci-housekeeping-environments.sh
+    - echo "housekeeping complete"
