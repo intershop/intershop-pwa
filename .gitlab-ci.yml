@@ -142,10 +142,11 @@ deploy_review_mock:
     - docker build -t ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
       --file=templates/Dockerfile_dev
       .
+    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-mock" 8080)
     - docker rm -f "${CI_COMMIT_REF_SLUG}-mock" || true
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-mock"
       ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
   environment:
@@ -481,12 +482,13 @@ deploy_review_b2c:
     GIT_STRATEGY: none
   script:
     - set -x
+    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2c")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-pwa-b2c"
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
@@ -501,11 +503,12 @@ deploy_review_b2c:
       --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - PUBLISH_NGINX=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-nginx" 80)
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
     - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_NGINX
       --name "${CI_COMMIT_REF_SLUG}-nginx"
       -e UPSTREAM_ICM=${ICM_BASE_URL}
       --link $CI_COMMIT_REF_SLUG-pwa-b2c
@@ -568,12 +571,13 @@ deploy_review_b2b:
     GIT_STRATEGY: none
   script:
     - set -x
+    - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2b")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
     - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - docker run
       --detach
-      --publish-all
+      $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-pwa-b2b"
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
