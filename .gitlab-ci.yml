@@ -199,6 +199,8 @@ publish_pwa:
       .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
 
 publish_pwa_latest:
   cache: {}
