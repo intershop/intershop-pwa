@@ -244,6 +244,11 @@
           "message": "Most likely you would've wanted to import the model instead."
         },
         {
+          "import": "ROUTER_NAVIGATION_TYPE",
+          "from": "ngrx-router",
+          "message": "Don't use ROUTER_NAVIGATION_TYPE, try to do it with ofRoute() in effects and new RouteNavigation in specs."
+        },
+        {
           "from": "^[\\./]*/core/(.*)$",
           "message": "Use import alias ish-core",
           "fix": "ish-core/$1"
