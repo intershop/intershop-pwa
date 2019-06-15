@@ -649,7 +649,7 @@ schematics:
   dependencies: []
   script:
     - npm install
-    - bash .gitlab-ci-test-schematics.sh
+    - bash e2e/test-schematics.sh
     - echo "schematics complete"
 
 .universal_template: &universal_definition
