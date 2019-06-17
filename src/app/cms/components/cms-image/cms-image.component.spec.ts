@@ -30,7 +30,7 @@ describe('Cms Image Component', () => {
         Image: 'http://example.com/foo/bar.png',
         AlternateText: 'foo',
         CSSClass: 'foo',
-        Link: 'link://foo',
+        Link: 'http://example.com',
         LinkTitle: 'bar',
       },
     };

@@ -29,4 +29,31 @@ describe('Content View Helper', () => {
       }
     );
   });
+
+  describe('isRouterLink', () => {
+    using(
+      [
+        { input: 'route://category/Computers', expected: true },
+        { input: 'product://201807195@inSPIRED-inTRONICS', expected: true },
+        { input: 'page://page.aboutus', expected: true },
+        { input: 'http://example.com', expected: false },
+        { input: 'https://example.com', expected: false },
+      ],
+      ({ input, expected }) => {
+        it(`should evalute ${input} to ${expected}`, () => {
+          const pagelet = createSimplePageletView({
+            definitionQualifiedName: 'fq',
+            id: 'id',
+            domain: 'domain',
+            displayName: 'name',
+            configurationParameters: {
+              Link: input,
+            },
+          });
+
+          expect(ContentViewHelper.isRouterLink(pagelet, 'Link')).toEqual(expected);
+        });
+      }
+    );
+  });
 });

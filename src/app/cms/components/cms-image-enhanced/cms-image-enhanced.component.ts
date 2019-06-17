@@ -12,5 +12,6 @@ import { CMSComponent } from '../../models/cms-component/cms-component.model';
 export class CMSImageEnhancedComponent implements CMSComponent {
   @Input() pagelet: ContentPageletView;
 
+  isRouterLink = ContentViewHelper.isRouterLink;
   routerLink = ContentViewHelper.getRouterLink;
 }
