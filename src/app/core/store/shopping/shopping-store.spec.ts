@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
@@ -339,7 +339,7 @@ describe('Shopping Store', () => {
 
     it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
       const i = store.actionsIterator(['[Shopping]', '[Router]']);
-      expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(i.next().type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123' }));
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
       expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
@@ -636,7 +636,7 @@ describe('Shopping Store', () => {
       const i = store.actionsIterator(['[Shopping]', '[Router]']);
 
       const productPageRouting = i.next() as RouteNavigation;
-      expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(productPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(productPageRouting.payload.params.sku).toEqual('P3');
       expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.456');
 
@@ -657,7 +657,7 @@ describe('Shopping Store', () => {
       expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
 
       const errorPageRouting = i.next() as RouteNavigation;
-      expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(errorPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(errorPageRouting.payload.path).toEqual('error');
 
       expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
@@ -691,7 +691,7 @@ describe('Shopping Store', () => {
       const i = store.actionsIterator(['[Shopping]', '[Router]']);
 
       const productPageRouting = i.next() as RouteNavigation;
-      expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(productPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.XXX');
 
       expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.XXX' }));
@@ -701,7 +701,7 @@ describe('Shopping Store', () => {
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategoryFail);
 
       const errorPageRouting = i.next() as RouteNavigation;
-      expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(errorPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(errorPageRouting.payload.path).toEqual('error');
 
       expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);

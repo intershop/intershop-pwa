@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest, concat, forkJoin } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -301,8 +301,8 @@ export class QuoteRequestEffects {
    */
   @Effect()
   routeListenerForSelectingQuote$ = this.actions$.pipe(
-    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params.quoteRequestId),
+    ofRoute(),
+    mapToParam<string>('quoteRequestId'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
     map(([itemId]) => new actions.SelectQuoteRequest({ id: itemId }))
