@@ -57,22 +57,23 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
   }
 
   @HostListener('click', ['$event'])
-  onClick(event) {
-    // anchors only
-    if (event.target.tagName === 'A') {
-      const href = event.target.getAttribute('href');
+  onClick(event: MouseEvent) {
+    // go along path of click but not further up than self
+    for (let el = event.target as HTMLElement; el && el !== this.elementRef.nativeElement; el = el.parentElement) {
+      // anchors only
+      if (el.tagName === 'A') {
+        const href = el.getAttribute('href');
 
-      // apply default link handling for empty href, external links & target _blank
-      if (!href || href.startsWith('http') || event.target.target === '_blank') {
-        return;
+        // apply default link handling for empty href, external links & target _blank
+        if (!href || href.startsWith('http') || el.getAttribute('target') === '_blank') {
+          return;
+        }
+
+        // otherwise handle as routerLink
+        this.router.navigateByUrl(href);
+        event.preventDefault();
+        return false;
       }
-
-      // otherwise handle as routerLink
-      this.router.navigateByUrl(href);
-      event.preventDefault();
-      return false;
-    } else {
-      return;
     }
   }
 }
