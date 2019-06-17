@@ -57,7 +57,7 @@ export class ProductMapper {
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
-  fromStubData(data: ProductDataStub): Product {
+  fromStubData(data: ProductDataStub): Product | VariationProductMaster | VariationProduct {
     const sku = retrieveStubAttributeValue<string>(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
@@ -70,7 +70,11 @@ export class ProductMapper {
     const promotionsValue = retrieveStubAttributeValue<{ elements: Link[] }>(data, 'promotions');
     const promotionLinks = promotionsValue && promotionsValue.elements ? promotionsValue.elements : [];
 
-    return {
+    const mastered = retrieveStubAttributeValue<boolean>(data, 'mastered');
+    const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
+    const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
+
+    const product: Product = {
       shortDescription: data.description,
       name: data.title,
       sku,
@@ -113,6 +117,21 @@ export class ProductMapper {
       completenessLevel: 2,
       failed: false,
     };
+
+    if (productMaster) {
+      return {
+        ...product,
+        type: 'VariationProductMaster',
+      };
+    } else if (mastered) {
+      return {
+        ...product,
+        productMasterSKU,
+        type: 'VariationProduct',
+      };
+    } else {
+      return product;
+    }
   }
 
   /**
