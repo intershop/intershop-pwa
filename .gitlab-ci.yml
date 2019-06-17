@@ -464,10 +464,9 @@ deploy_review_b2c:
     - demoserver
   only:
     - merge_requests
-  variables:
-    GIT_STRATEGY: none
   script:
     - set -x
+    - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2c")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
@@ -496,7 +495,6 @@ deploy_review_b2c:
       --detach
       $PUBLISH_NGINX
       --name "${CI_COMMIT_REF_SLUG}-nginx"
-      -e UPSTREAM_ICM=${ICM_BASE_URL}
       --link $CI_COMMIT_REF_SLUG-pwa-b2c
       -e UPSTREAM_PWA=http://$CI_COMMIT_REF_SLUG-pwa-b2c:4200
       -e PWA_1_SUBDOMAIN=b2c
@@ -552,10 +550,9 @@ deploy_review_b2b:
     - demoserver
   only:
     - merge_requests
-  variables:
-    GIT_STRATEGY: none
   script:
     - set -x
+    - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2b")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
