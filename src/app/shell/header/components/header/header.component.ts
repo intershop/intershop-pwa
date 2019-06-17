@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -26,6 +26,7 @@ declare type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 export class HeaderComponent implements OnChanges {
   @Input() isSticky = false;
   @Input() deviceType: DeviceType;
+  @Input() reset: void;
 
   activeComponent: CollapsibleComponent = 'search';
 
@@ -47,8 +48,11 @@ export class HeaderComponent implements OnChanges {
     );
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.toggleSpecialStatusOfSearch();
+    if (changes.reset) {
+      this.activeComponent = 'search';
+    }
   }
 
   private toggleSpecialStatusOfSearch() {

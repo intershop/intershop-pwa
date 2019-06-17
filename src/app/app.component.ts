@@ -3,6 +3,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { CookieLawContainerComponent } from 'angular2-cookie-law';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/viewconf';
 
@@ -19,8 +21,6 @@ import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/v
 export class AppComponent {
   @ViewChild('cookieLaw')
   private cookieLaw: CookieLawContainerComponent;
-
-  wrapperClass$ = this.store.pipe(select(getWrapperClass));
   isBrowser: boolean;
 
   wrapperClasses$ = combineLatest([

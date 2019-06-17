@@ -8,6 +8,7 @@ export enum ViewconfActionTypes {
   SetHeaderType = '[Viewconf Internal] Set Header Type',
   SetBreadcrumbData = '[Viewconf Internal] Set Breadcrumb Data',
   SetDeviceType = '[Viewconf Internal] Set Device Type',
+  SetStickyHeader = '[Viewconf Internal] Set Sticky Header',
 }
 
 export class SetWrapperClass implements Action {
@@ -30,4 +31,14 @@ export class SetDeviceType implements Action {
   constructor(public payload: { deviceType: DeviceType }) {}
 }
 
-export declare type ViewconfActions = SetWrapperClass | SetHeaderType | SetBreadcrumbData | SetDeviceType;
+export class SetStickyHeader implements Action {
+  readonly type = ViewconfActionTypes.SetStickyHeader;
+  constructor(public payload: { sticky: boolean }) {}
+}
+
+export declare type ViewconfActions =
+  | SetWrapperClass
+  | SetHeaderType
+  | SetBreadcrumbData
+  | SetDeviceType
+  | SetStickyHeader;
