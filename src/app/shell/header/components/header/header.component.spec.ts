@@ -84,5 +84,50 @@ describe('Header Component', () => {
     it('should render Header Navigation on template', () => {
       expect(findAllIshElements(element)).toContain('ish-header-navigation-container');
     });
+
+    it('should render normal header adequately for mobile devices', () => {
+      component.deviceType = 'mobile';
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render sticky header adequately for mobile devices', () => {
+      component.deviceType = 'mobile';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render normal header adequately for tablet devices', () => {
+      component.deviceType = 'tablet';
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render sticky header adequately for tablet devices', () => {
+      component.deviceType = 'tablet';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render normal header adequately for desktop', () => {
+      component.deviceType = 'pc';
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render sticky header adequately for desktop', () => {
+      component.deviceType = 'pc';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
   });
 });
