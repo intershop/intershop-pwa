@@ -8,6 +8,7 @@ export interface ViewconfState {
   headerType: string;
   deviceType: DeviceType;
   breadcrumbData: BreadcrumbItem[];
+  stickyHeader: boolean;
 }
 
 export const initialState: ViewconfState = {
@@ -15,6 +16,7 @@ export const initialState: ViewconfState = {
   headerType: undefined,
   deviceType: undefined,
   breadcrumbData: [],
+  stickyHeader: false,
 };
 
 export function viewconfReducer(state: ViewconfState = initialState, action: ViewconfActions) {
@@ -34,12 +36,16 @@ export function viewconfReducer(state: ViewconfState = initialState, action: Vie
         ...state,
         breadcrumbData: action.payload.breadcrumbData,
       };
-    case ViewconfActionTypes.SetDeviceType: {
+    case ViewconfActionTypes.SetDeviceType:
       return {
         ...state,
         deviceType: action.payload.deviceType,
       };
-    }
+    case ViewconfActionTypes.SetStickyHeader:
+      return {
+        ...state,
+        stickyHeader: action.payload.sticky,
+      };
   }
 
   return state;

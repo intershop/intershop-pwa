@@ -4,14 +4,14 @@ import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToData, ofRoute } from 'ngrx-router';
 import { fromEvent } from 'rxjs';
-import { map, switchMap, takeWhile } from 'rxjs/operators';
+import { map, startWith, switchMap, takeWhile } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { distinctCompareWith } from 'ish-core/utils/operators';
 import { DeviceType } from '../../models/viewtype/viewtype.types';
 
-import { SetBreadcrumbData, SetDeviceType, SetHeaderType, SetWrapperClass } from './viewconf.actions';
-import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
+import { SetBreadcrumbData, SetDeviceType, SetHeaderType, SetStickyHeader, SetWrapperClass } from './viewconf.actions';
+import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
@@ -29,6 +29,8 @@ export class ViewconfEffects {
     takeWhile(() => isPlatformBrowser(this.platformId)),
     switchMap(() =>
       fromEvent(window, 'resize').pipe(
+        // tslint:disable-next-line: deprecation
+        startWith(undefined),
         map(() => {
           if (window.innerWidth < this.mediumBreakpointWidth) {
             return 'mobile';
@@ -40,6 +42,19 @@ export class ViewconfEffects {
         }),
         distinctCompareWith(this.store.pipe(select(getHeaderType))),
         map((deviceType: DeviceType) => new SetDeviceType({ deviceType }))
+      )
+    )
+  );
+
+  @Effect()
+  toggleStickyHeader$ = this.actions$.pipe(
+    ofType(ROOT_EFFECTS_INIT),
+    takeWhile(() => isPlatformBrowser(this.platformId)),
+    switchMap(() =>
+      fromEvent(window, 'scroll').pipe(
+        map(() => window.pageYOffset >= 170),
+        distinctCompareWith(this.store.pipe(select(isStickyHeader))),
+        map(sticky => new SetStickyHeader({ sticky }))
       )
     )
   );
