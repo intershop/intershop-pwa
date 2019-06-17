@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToData, ofRoute } from 'ngrx-router';
 import { map } from 'rxjs/operators';
 
 import { SetCheckoutStep } from './viewconf.actions';
@@ -13,7 +13,7 @@ export class ViewconfEffects {
   @Effect()
   retrieveCheckoutStepFromRouting$ = this.actions$.pipe(
     ofRoute(/^checkout.*/),
-    map((action: RouteNavigation) => action.payload.data.checkoutStep),
+    mapToData<number>('checkoutStep'),
     map(step => new SetCheckoutStep({ step }))
   );
 }

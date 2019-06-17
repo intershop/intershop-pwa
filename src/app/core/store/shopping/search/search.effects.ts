@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
@@ -67,9 +67,9 @@ export class SearchEffects {
         filter(x => x > 0)
       )
     ),
-    map((action: RouteNavigation) => action.payload.params.searchTerm),
+    mapToParam<string>('searchTerm'),
     whenTruthy(),
-    distinctUntilChanged<string>(),
+    distinctUntilChanged(),
     mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
   );
 

@@ -7,5 +7,6 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^ish-core(.*)$': '<rootDir>/src/app/core$1',
+    '^ngrx-router$': '<rootDir>/src/ngrx-router',
   },
 };

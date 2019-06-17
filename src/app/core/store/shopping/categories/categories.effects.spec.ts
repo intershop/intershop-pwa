@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -247,7 +247,7 @@ describe('Categories Effects', () => {
       const completion = new fromActions.LoadTopLevelCategories({ depth });
       store$.dispatch(action);
 
-      actions$ = hot('----a---a--a', { a: { type: ROUTER_NAVIGATION_TYPE } });
+      actions$ = hot('----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
 
       const expected$ = cold('----a-------', { a: completion });
 
