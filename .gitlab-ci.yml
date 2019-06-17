@@ -649,8 +649,10 @@ schematics:
   dependencies: []
   cache: {}
   script:
+    - set -x
+    - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
-    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - sh e2e/test-universal.sh
 
 universal_b2c:
@@ -680,12 +682,14 @@ universal_b2b:
   dependencies: []
   cache: {}
   script:
+    - set -x
     - node --version && npm --version
     - cd e2e && npm ci
     - export DISPLAY=:5
-    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
-    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
+    - export ICM_BASE_URL=$(sh get-icmbaseurl.sh)
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
+    - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - sh e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX $TESTS | xargs -r sh test-e2e.sh
     - echo "E2E complete"
 
