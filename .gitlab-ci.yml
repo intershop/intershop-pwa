@@ -617,8 +617,7 @@ build_e2e_image:
     - docker:dind
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - cd e2e
-    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} .
+    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} e2e
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
 
@@ -652,12 +651,10 @@ schematics:
     - e2e
   dependencies: []
   cache: {}
-  variables:
-    GIT_STRATEGY: none
   script:
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - sh /test-universal.sh
+    - sh e2e/test-universal.sh
 
 universal_b2c:
   <<: *universal_definition
@@ -677,21 +674,22 @@ universal_b2b:
     - e2e
   artifacts:
     reports:
-      junit: /reports/e2e-*.xml
+      junit: e2e/reports/e2e-*.xml
     when: on_failure
     expire_in: 2 weeks
     paths:
-      - cypress/screenshots
-      - cypress/videos
+      - e2e/cypress/screenshots
+      - e2e/cypress/videos
   dependencies: []
   cache: {}
   script:
     - node --version && npm --version
+    - cd e2e && npm ci
     - export DISPLAY=:5
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - sh /e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX $TESTS | xargs -r sh /test-e2e.sh
+    - sh e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX $TESTS | xargs -r sh test-e2e.sh
     - echo "E2E complete"
 
 cypress_remote:
@@ -701,7 +699,6 @@ cypress_remote:
     - merge_requests
     - triggers
   variables:
-    GIT_STRATEGY: none
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c
     TESTS: '*b2c*.e2e-spec.ts'
 
@@ -712,7 +709,6 @@ cypress_remote_b2b:
     - merge_requests
     - triggers
   variables:
-    GIT_STRATEGY: none
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
     TESTS: '*b2b*.e2e-spec.ts'
 
@@ -722,7 +718,6 @@ cypress_mocked:
   only:
     - merge_requests
   variables:
-    GIT_STRATEGY: none
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-mock
     TESTS: '*mock*.e2e-spec.ts'
 

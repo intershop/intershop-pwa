@@ -1,7 +1,6 @@
 FROM cypress/browsers:chrome69
 RUN apt-get update || true
 RUN apt-get -y install dnsutils
-WORKDIR /
-COPY . .
+COPY package.json package-lock.json /tmp/
 ENV CI=true
-RUN npm ci
+RUN cd /tmp && npm i
