@@ -1,1 +1,1 @@
-<div *ngIf="pagelet && pagelet.hasParam('HTML')" [innerHTML]="pagelet.stringParam('HTML') | safeHtml"></div>
+<div *ngIf="pagelet && pagelet.hasParam('HTML')" [ishServerHtml]="pagelet.stringParam('HTML')"></div>

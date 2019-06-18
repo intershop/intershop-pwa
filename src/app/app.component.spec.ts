@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CookieLawModule } from 'angular2-cookie-law';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { AppComponent } from './app.component';
@@ -22,9 +23,19 @@ describe('App Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, MockComponent(FooterComponent), MockComponent(HeaderContainerComponent)],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      imports: [CookieLawModule, NoopAnimationsModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        AppComponent,
+        MockComponent(FooterComponent),
+        MockComponent(HeaderContainerComponent),
+        ServerHtmlDirective,
+      ],
+      imports: [
+        CookieLawModule,
+        NoopAnimationsModule,
+        RouterTestingModule,
+        StoreModule.forRoot(coreReducers),
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   }));
 

@@ -2,7 +2,7 @@
   <ng-container *ngFor="let promotion of promotions">
     <li *ngIf="!promotion.disableMessages" class="promotion-list-item">
       <ng-container *ngIf="displayType === 'simple' || displayType === 'simpleWithDetail'; else default">
-        <span class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></span>
+        <span class="promotion-short-title" [ishServerHtml]="promotion.title"></span>
         <ish-promotion-details
           *ngIf="displayType === 'simpleWithDetail'"
           [promotion]="promotion"
@@ -10,15 +10,11 @@
       </ng-container>
 
       <ng-template #default>
-        <div *ngIf="promotion.icon" class="promotion-icon" [innerHTML]="promotion.icon | safeHtml"></div>
-        <div *ngIf="promotion.title" class="promotion-short-title" [innerHTML]="promotion.title | safeHtml"></div>
+        <div *ngIf="promotion.icon" class="promotion-icon" [ishServerHtml]="promotion.icon"></div>
+        <div *ngIf="promotion.title" class="promotion-short-title" [ishServerHtml]="promotion.title"></div>
         <br />
         <div>
-          <span
-            *ngIf="promotion.longTitle"
-            class="promotion-long-title"
-            [innerHTML]="promotion.longTitle | safeHtml"
-          ></span>
+          <span *ngIf="promotion.longTitle" class="promotion-long-title" [ishServerHtml]="promotion.longTitle"></span>
           <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
         </div>
       </ng-template>
