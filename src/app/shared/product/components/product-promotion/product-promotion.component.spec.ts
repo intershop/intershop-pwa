@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { PromotionDetailsComponent } from '../../../promotion/components/promotion-details/promotion-details.component';
 
 import { ProductPromotionComponent } from './product-promotion.component';
@@ -13,8 +16,8 @@ describe('Product Promotion Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(PromotionDetailsComponent), ProductPromotionComponent],
-      imports: [PipesModule],
+      declarations: [MockComponent(PromotionDetailsComponent), ProductPromotionComponent, ServerHtmlDirective],
+      imports: [RouterTestingModule, StoreModule.forRoot({ configuration: configurationReducer })],
     }).compileComponents();
   }));
 
