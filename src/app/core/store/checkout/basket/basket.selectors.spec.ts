@@ -4,7 +4,7 @@ import { combineReducers } from '@ngrx/store';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadProductSuccess } from '../../shopping/products';
@@ -63,7 +63,7 @@ describe('Basket Selectors', () => {
       store$.dispatch(new LoadBasket());
       store$.dispatch(
         new LoadProductSuccess({
-          product: { sku: 'sku', completenessLevel: ProductHelper.maxCompletenessLevel } as Product,
+          product: { sku: 'sku', completenessLevel: ProductCompletenessLevel.Detail } as Product,
         })
       );
     });
@@ -107,7 +107,7 @@ describe('Basket Selectors', () => {
 
       store$.dispatch(
         new LoadProductSuccess({
-          product: { sku: 'sku', name: 'new name', completenessLevel: ProductHelper.maxCompletenessLevel } as Product,
+          product: { sku: 'sku', name: 'new name', completenessLevel: ProductCompletenessLevel.Detail } as Product,
         })
       );
 

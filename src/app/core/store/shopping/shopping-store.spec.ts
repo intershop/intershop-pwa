@@ -10,7 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -101,21 +101,21 @@ describe('Shopping Store', () => {
         case 'A':
           return of(
             categoryTree([
-              { ...catA, completenessLevel: CategoryHelper.maxCompletenessLevel },
+              { ...catA, completenessLevel: CategoryCompletenessLevel.Max },
               { ...catA123, completenessLevel: 1 },
             ])
           );
         case 'B':
-          return of(categoryTree([{ ...catB, completenessLevel: CategoryHelper.maxCompletenessLevel }]));
+          return of(categoryTree([{ ...catB, completenessLevel: CategoryCompletenessLevel.Max }]));
         case 'A.123':
           return of(
             categoryTree([
-              { ...catA123, completenessLevel: CategoryHelper.maxCompletenessLevel },
+              { ...catA123, completenessLevel: CategoryCompletenessLevel.Max },
               { ...catA123456, completenessLevel: 1 },
             ])
           );
         case 'A.123.456':
-          return of(categoryTree([{ ...catA123456, completenessLevel: CategoryHelper.maxCompletenessLevel }]));
+          return of(categoryTree([{ ...catA123456, completenessLevel: CategoryCompletenessLevel.Max }]));
         default:
           return throwError({ message: `error loading category ${uniqueId}` });
       }
