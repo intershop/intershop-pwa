@@ -5,16 +5,17 @@ if (!process.env['ICM_BASE_URL']) {
 
 var http = require('http');
 
-const icmBase = process.env['ICM_BASE_URL'].split('//')[1];
-const icmHost = icmBase.split(':')[0];
-const icmPort = icmBase.split(':')[1];
+const [icmProtocol, icmBase] = process.env['ICM_BASE_URL'].split('://');
+const [, icmHost, icmPort] = /^(.*?):?([0-9]+)?$/.exec(icmBase);
 
 var optionsICMRest = {
   host: icmHost,
-  port: icmPort,
+  port: icmPort || (icmProtocol === 'http' ? '80' : '443'),
+  protocol: icmProtocol,
   path: '/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD/categories',
   timeout: 10000,
 };
+
 var optionsAngularUniversal = {
   host: 'localhost',
   port: '4200',
