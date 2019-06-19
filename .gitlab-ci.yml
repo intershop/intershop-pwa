@@ -308,6 +308,7 @@ deploy_demo:
     SERVICE: 'develop-pwa-b2c'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}'
   script:
+    - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f ${SERVICE} || true
     - test -z "${CI_JOB_TOKEN}" || docker pull ${IMAGE}
@@ -319,11 +320,11 @@ deploy_demo:
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
       --env SENTRY_DSN=${SENTRY_DSN}
-      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host b2b.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host b2c.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host b2b.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host b2c.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host de.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host smb.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${IMAGE}
   environment:
     name: demo
@@ -466,6 +467,7 @@ deploy_review_b2c:
     - merge_requests
   script:
     - set -x
+    - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
     - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2c")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -478,15 +480,15 @@ deploy_review_b2c:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
-      --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host b2b.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host b2c.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host de.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-      --add-host smb.$DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host smb.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host b2b.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host b2c.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host de.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
+      --add-host smb.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - PUBLISH_NGINX=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-nginx" 80)
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
@@ -512,8 +514,8 @@ deploy_review_b2c:
       -e PWA_4_FEATURES=quoting
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
-    - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
-    - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx"
   environment:
     name: review/b2c-$CI_COMMIT_REF_SLUG
     url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-nginx
@@ -552,6 +554,7 @@ deploy_review_b2b:
     - merge_requests
   script:
     - set -x
+    - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
     - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2b")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -566,10 +569,10 @@ deploy_review_b2b:
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
-      --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+      --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - sleep 10
-    - docker run --rm --add-host $DEMO_SERVER_NAME:$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b"
   environment:
     name: review/b2b-$CI_COMMIT_REF_SLUG
     url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
