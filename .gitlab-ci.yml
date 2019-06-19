@@ -469,6 +469,8 @@ deploy_review_b2c:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
     - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
+    - ICM_HOST=$(expr match "$ICM_BASE_URL" '.*://\([^:]*\).*')
+    - ICM_IP=$(dig ${DNS_SERVER} +short $ICM_HOST | tail -n 1)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2c")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2c" || true
@@ -480,6 +482,7 @@ deploy_review_b2c:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
+      --add-host $ICM_HOST:$ICM_IP
       --add-host b2b.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
       --add-host b2c.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
       --add-host de.$CI_COMMIT_REF_SLUG.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
@@ -556,6 +559,8 @@ deploy_review_b2b:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
     - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
+    - ICM_HOST=$(expr match "$ICM_BASE_URL" '.*://\([^:]*\).*')
+    - ICM_IP=$(dig ${DNS_SERVER} +short $ICM_HOST | tail -n 1)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2b")
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker rm -f "${CI_COMMIT_REF_SLUG}-pwa-b2b" || true
@@ -569,6 +574,7 @@ deploy_review_b2b:
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      --add-host $ICM_HOST:$ICM_IP
       --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - sleep 10
