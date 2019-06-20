@@ -1,27 +1,17 @@
 export class MiniCartModule {
   get total() {
-    return cy
-      .get('ish-mini-basket')
-      .get('span.mini-cart-price')
-      .should('be.visible')
-      .last();
+    return cy.get('ish-mini-basket').get('.mini-cart-price');
   }
 
   goToCart() {
     cy.get('ish-mini-basket')
-      .get('div.quick-cart-link')
-      .first()
-      .click({ force: true });
+      .get('.quick-cart-link')
+      .click();
 
-    cy.get('a.view-cart', { timeout: 2000 })
-      .first()
-      .click({ force: true });
+    cy.get('a.view-cart', { timeout: 2000 }).click();
   }
 
   get text() {
-    return cy
-      .get('ish-mini-basket')
-      .get('div.quick-cart-link')
-      .first();
+    return cy.get('ish-mini-basket').get('.quick-cart-link');
   }
 }

@@ -4,51 +4,35 @@ export class HeaderModule {
   miniCart = new MiniCartModule();
 
   get numberOfCompareItems() {
-    return cy
-      .get('ish-header .compare-status .badge')
-      .first()
-      .then(el => parseInt(el.text(), 10));
+    return cy.get('.compare-status .badge').then(el => parseInt(el.text(), 10));
   }
 
   gotoHomePage() {
-    cy.get('img[alt="Logo"]')
-      .last()
-      .click();
+    cy.get('img[alt="Logo"]').click();
   }
 
   gotoLoginPage() {
-    cy.get('ish-header a.my-account-login')
-      .first()
-      .click();
+    cy.get('.my-account-login').click();
   }
 
   gotoRegistrationPage() {
-    cy.get('ish-header a.my-account-register')
-      .first()
-      .click();
+    cy.get('.my-account-register').click();
   }
 
   gotoCategoryPage(categoryUniqueId: string) {
-    cy.get(`ish-header [data-testing-id="${categoryUniqueId}-link"]`)
-      .last()
-      .click();
+    cy.get(`[data-testing-id="${categoryUniqueId}-link"]`).click();
   }
 
   logout() {
-    cy.get('ish-header a.my-account-logout')
-      .first()
-      .click();
+    cy.get('a.my-account-logout').click();
   }
 
   get myAccountLink() {
-    return cy
-      .get('a[data-testing-id="link-myaccount"]')
-      .should('be.visible')
-      .first();
+    return cy.get('[data-testing-id="link-myaccount"]');
   }
 
   goToMyAccount() {
-    return this.myAccountLink.click({ force: true });
+    return this.myAccountLink.click();
   }
 
   get content() {
@@ -56,34 +40,25 @@ export class HeaderModule {
   }
 
   getSearchSuggestions(searchTerm: string) {
-    cy.get('ish-header input.searchTerm')
-      .clear()
-      .type(searchTerm);
+    cy.get('input.searchTerm').type(searchTerm);
     cy.get('ul.search-suggest-results').should('be.visible');
-    return cy
-      .get('ul.search-suggest-results')
-      .last()
-      .get('span.searchTerm');
+    return cy.get('ul.search-suggest-results').get('span.searchTerm');
   }
 
   doProductSearch(searchTerm: string) {
-    cy.get('ish-header input.searchTerm')
+    cy.get('input.searchTerm')
       .clear()
       .type(searchTerm)
       .type('{enter}');
   }
 
   topLevelCategoryLink(id: string) {
-    return cy
-      .get(`ish-header a[data-testing-id="${id}-link"]`)
-      .should('be.visible')
-      .first();
+    return cy.get(`[data-testing-id="${id}-link"]`).first();
   }
 
   switchLanguage(lang: string) {
-    cy.get('ish-header div.language-switch-menu-container a')
+    cy.get('.language-switch-menu-container a')
       .should('contain', lang)
-      .first()
-      .click({ force: true });
+      .click();
   }
 }
