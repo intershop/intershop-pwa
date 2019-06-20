@@ -5,8 +5,8 @@ import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import {
-  concatMap,
   distinctUntilChanged,
+  exhaustMap,
   filter,
   groupBy,
   map,
@@ -88,15 +88,12 @@ export class ProductsEffects {
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
-      this.store.pipe(
-        select(getPagingPage),
-        map(n => n + 1)
-      )
+      this.store.pipe(select(getPagingPage))
     ),
-    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
+    filter(([, endlessScrollingEnabled, moreProductsAvailable]) => endlessScrollingEnabled && moreProductsAvailable),
     mergeMap(([categoryId, , , pageNumber]) => [
       new SetPagingLoading(),
-      new SetPage({ pageNumber }),
+      new SetPage({ pageNumber: pageNumber + 1 }),
       new productsActions.LoadProductsForCategory({ categoryId }),
     ])
   );
@@ -114,7 +111,7 @@ export class ProductsEffects {
       this.store.pipe(select(getItemsPerPage))
     ),
     distinctUntilChanged(),
-    concatMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
+    exhaustMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
       this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
         switchMap(({ total: totalItems, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
