@@ -9,7 +9,9 @@ exports[`Header Component rendering should render normal header adequately for d
       ></ish-login-status-container>
     </li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
   <div class="header-utility">
@@ -19,16 +21,20 @@ exports[`Header Component rendering should render normal header adequately for d
       ng-reflect-ng-class="[object Object]"
     ></a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container></ish-language-switch-container>
+      <ish-language-switch-container
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-mini-basket-container
       class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
       view="full"
       ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
     ><ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       class="d-md-none"
       ng-reflect-ng-class="d-md-none"
@@ -36,7 +42,10 @@ exports[`Header Component rendering should render normal header adequately for d
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container ng-reflect-configuration="[object Object]"></ish-search-box-container>
+    <ish-search-box-container
+      data-testing-id="search-box-desktop"
+      ng-reflect-configuration="[object Object]"
+    ></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
@@ -69,7 +78,9 @@ exports[`Header Component rendering should render normal header adequately for m
       ></ish-login-status-container>
     </li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
   <div class="header-utility">
@@ -79,16 +90,20 @@ exports[`Header Component rendering should render normal header adequately for m
       ng-reflect-ng-class="[object Object]"
     ></a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container></ish-language-switch-container>
+      <ish-language-switch-container
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-mini-basket-container
       class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
       view="full"
       ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
     ><ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       class="d-md-none"
       ng-reflect-ng-class="d-md-none"
@@ -96,7 +111,10 @@ exports[`Header Component rendering should render normal header adequately for m
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container ng-reflect-configuration="[object Object]"></ish-search-box-container>
+    <ish-search-box-container
+      data-testing-id="search-box-desktop"
+      ng-reflect-configuration="[object Object]"
+    ></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
@@ -129,7 +147,9 @@ exports[`Header Component rendering should render normal header adequately for t
       ></ish-login-status-container>
     </li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
   <div class="header-utility">
@@ -139,16 +159,20 @@ exports[`Header Component rendering should render normal header adequately for t
       ng-reflect-ng-class="[object Object]"
     ></a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container></ish-language-switch-container>
+      <ish-language-switch-container
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-mini-basket-container
       class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
       view="full"
       ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
     ><ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       class="d-md-none"
       ng-reflect-ng-class="d-md-none"
@@ -156,7 +180,10 @@ exports[`Header Component rendering should render normal header adequately for t
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container ng-reflect-configuration="[object Object]"></ish-search-box-container>
+    <ish-search-box-container
+      data-testing-id="search-box-desktop"
+      ng-reflect-configuration="[object Object]"
+    ></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
@@ -189,7 +216,9 @@ exports[`Header Component rendering should render sticky header adequately for d
       ></ish-login-status-container>
     </li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
   <div class="header-utility">
@@ -199,16 +228,20 @@ exports[`Header Component rendering should render sticky header adequately for d
       ng-reflect-ng-class="[object Object]"
     ></a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container></ish-language-switch-container>
+      <ish-language-switch-container
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-mini-basket-container
       class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
       view="full"
       ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
     ><ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       class="d-md-none"
       ng-reflect-ng-class="d-md-none"
@@ -216,7 +249,10 @@ exports[`Header Component rendering should render sticky header adequately for d
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container ng-reflect-configuration="[object Object]"></ish-search-box-container>
+    <ish-search-box-container
+      data-testing-id="search-box-desktop"
+      ng-reflect-configuration="[object Object]"
+    ></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
@@ -249,7 +285,9 @@ exports[`Header Component rendering should render sticky header adequately for m
       ></ish-login-status-container>
     </li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
   <div class="header-utility">
@@ -259,16 +297,20 @@ exports[`Header Component rendering should render sticky header adequately for m
       ng-reflect-ng-class="[object Object]"
     ></a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container></ish-language-switch-container>
+      <ish-language-switch-container
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-mini-basket-container
       class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
       view="full"
       ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
     ><ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       class="d-md-none"
       ng-reflect-ng-class="d-md-none"
@@ -276,7 +318,10 @@ exports[`Header Component rendering should render sticky header adequately for m
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container ng-reflect-configuration="[object Object]"></ish-search-box-container>
+    <ish-search-box-container
+      data-testing-id="search-box-desktop"
+      ng-reflect-configuration="[object Object]"
+    ></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
@@ -309,7 +354,9 @@ exports[`Header Component rendering should render sticky header adequately for t
       ></ish-login-status-container>
     </li>
     <li class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
   <div class="header-utility">
@@ -319,16 +366,20 @@ exports[`Header Component rendering should render sticky header adequately for t
       ng-reflect-ng-class="[object Object]"
     ></a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container></ish-language-switch-container>
+      <ish-language-switch-container
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-mini-basket-container
       class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
       view="full"
       ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
     ><ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       class="d-md-none"
       ng-reflect-ng-class="d-md-none"
@@ -336,7 +387,10 @@ exports[`Header Component rendering should render sticky header adequately for t
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container ng-reflect-configuration="[object Object]"></ish-search-box-container>
+    <ish-search-box-container
+      data-testing-id="search-box-desktop"
+      ng-reflect-configuration="[object Object]"
+    ></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">

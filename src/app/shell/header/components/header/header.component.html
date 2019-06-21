@@ -1,5 +1,6 @@
 <ng-template #searchBoxTemplate let-icon="icon">
   <ish-search-box-container
+    data-testing-id="search-box-desktop"
     [configuration]="{
       placeholderText: 'search.searchbox.instructional_text' | translate,
       autoSuggest: true,
@@ -15,7 +16,9 @@
       <ish-login-status-container data-testing-id="user-status-desktop"></ish-login-status-container>
     </li>
     <li *ishFeature="'compare'" class="d-none d-md-block">
-      <ish-product-compare-status-container></ish-product-compare-status-container>
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
     </li>
   </ul>
 
@@ -32,16 +35,21 @@
       </div>
     </a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch-container *ngIf="!isSticky"></ish-language-switch-container>
+      <ish-language-switch-container
+        *ngIf="!isSticky"
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
     <ish-login-status-container *ngIf="isSticky || deviceType === 'mobile'" view="small"></ish-login-status-container>
 
     <ish-mini-basket-container
+      data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none"
       [ngClass]="isSticky ? 'd-lg-block' : 'd-md-block'"
     ></ish-mini-basket-container>
     <ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
       view="small"
       [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
     ></ish-mini-basket-container>
