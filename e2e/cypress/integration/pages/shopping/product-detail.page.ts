@@ -16,7 +16,7 @@ export class ProductDetailPage {
   }
 
   private addToCartButton = () => cy.get('[data-testing-id="addToCartButton"]');
-  private addToCompareButton = () => cy.get('[data-testing-id*="compare"]');
+  private addToCompareButton = () => cy.get('ish-product-detail-actions [data-testing-id*="compare"]');
   private addToQuoteRequestButton = () => cy.get('[data-testing-id="addToQuoteButton"]');
   private quantityInput = () => cy.get('[data-testing-id="quantity"]');
 
