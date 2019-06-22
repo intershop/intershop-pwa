@@ -365,7 +365,7 @@ describe('Basket Effects', () => {
               {
                 id: 'BIID',
                 name: 'NAME',
-                quantity: { value: 1 },
+                quantity: { value: 1, unit: 'pcs.' },
                 productSKU: 'SKU',
                 price: undefined,
               } as LineItem,
