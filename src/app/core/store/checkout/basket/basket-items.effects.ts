@@ -20,6 +20,7 @@ import {
   LineItemUpdateHelper,
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
+import { getProductEntities } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
 
@@ -47,13 +48,14 @@ export class BasketItemsEffects {
     ),
     mergeMap(window$ =>
       window$.pipe(
+        withLatestFrom(this.store.pipe(select(getProductEntities))),
         // accumulate changes
-        reduce((acc, val) => {
+        reduce((acc, [val, entities]) => {
           const element = acc.find(x => x.sku === val.sku);
           if (element) {
             element.quantity += val.quantity;
           } else {
-            acc.push({ ...val });
+            acc.push({ ...val, unit: entities[val.sku].packingUnit });
           }
           return acc;
         }, []),
@@ -124,7 +126,7 @@ export class BasketItemsEffects {
             return this.basketService.deleteBasketItem(basketId, update.itemId);
           } else {
             return this.basketService.updateBasketItem(basketId, update.itemId, {
-              quantity: update.quantity > 0 ? { value: update.quantity } : undefined,
+              quantity: update.quantity > 0 ? { value: update.quantity, unit: update.unit } : undefined,
               product: update.sku,
             });
           }

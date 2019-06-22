@@ -43,6 +43,7 @@ describe('Basket Service', () => {
   const itemMockData = {
     sku: 'test',
     quantity: 10,
+    unit: 'pcs.',
   };
 
   const sourceBasket = '012345';

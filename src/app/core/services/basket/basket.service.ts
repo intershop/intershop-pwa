@@ -27,9 +27,8 @@ export type BasketUpdateType =
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculationState: string };
-
 export type BasketItemUpdateType =
-  | { quantity?: { value: number }; product?: string }
+  | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod: { id: string } };
 type BasketIncludeType =
   | 'invoiceToAddress'
@@ -206,7 +205,10 @@ export class BasketService {
    * @param basketId  The id of the basket to add the items to.
    * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(basketId: string = 'current', items: { sku: string; quantity: number }[]): Observable<void> {
+  addItemsToBasket(
+    basketId: string = 'current',
+    items: { sku: string; quantity: number; unit: string }[]
+  ): Observable<void> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -215,6 +217,7 @@ export class BasketService {
       product: item.sku,
       quantity: {
         value: item.quantity,
+        unit: item.unit,
       },
     }));
 
