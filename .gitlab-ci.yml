@@ -779,5 +779,7 @@ housekeeping_environments:
   tags:
     - docker-executor
   script:
+    - apk add --no-cache bind-tools
+    - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - sh .gitlab-ci-housekeeping-environments.sh
     - echo "housekeeping complete"
