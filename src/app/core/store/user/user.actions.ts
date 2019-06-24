@@ -28,6 +28,7 @@ export enum UserActionTypes {
   UserSuccessMessageReset = '[Account Internal] Reset Update Success Message',
   UserErrorReset = '[Account Internal] Reset User Error',
   LoadUserByAPIToken = '[Account] Load User by API Token',
+  SetPGID = '[Personalization Internal] Set PGID',
 }
 
 export class LoginUser implements Action {
@@ -136,6 +137,11 @@ export class LoadUserByAPIToken implements Action {
   constructor(public payload: { apiToken: string }) {}
 }
 
+export class SetPGID implements Action {
+  readonly type = UserActionTypes.SetPGID;
+  constructor(public payload: { pgid: string }) {}
+}
+
 export type UserAction =
   | LoginUser
   | LoginUserFail
@@ -158,4 +164,5 @@ export type UserAction =
   | UpdateCustomerFail
   | UserSuccessMessageReset
   | UserErrorReset
-  | LoadUserByAPIToken;
+  | LoadUserByAPIToken
+  | SetPGID;
