@@ -61,6 +61,15 @@ export class ProductMapper {
     };
   }
 
+  fromRetailSetLink(link: Link): Partial<Product> {
+    return {
+      sku: link.uri.split('/products/')[1],
+      name: link.title,
+      shortDescription: link.description,
+      completenessLevel: 1,
+    };
+  }
+
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
@@ -188,6 +197,16 @@ export class ProductMapper {
       return {
         ...product,
         type: 'Bundle',
+      };
+    } else if (data.retailSet) {
+      return {
+        ...product,
+        type: 'RetailSet',
+        minListPrice: filterPrice(data.minListPrice),
+        minSalePrice: filterPrice(data.minSalePrice),
+        summedUpListPrice: filterPrice(data.summedUpListPrice),
+        summedUpSalePrice: filterPrice(data.summedUpSalePrice),
+        partSKUs: [],
       };
     } else {
       return product;

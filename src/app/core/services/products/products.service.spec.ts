@@ -88,4 +88,12 @@ describe('Products Service', () => {
       done();
     });
   });
+
+  it("should get retail set parts data when 'getRetailSetParts' is called", done => {
+    when(apiServiceMock.get(`products/${productSku}/partOfRetailSet`)).thenReturn(of([]));
+    productsService.getRetailSetParts(productSku).subscribe(() => {
+      verify(apiServiceMock.get(`products/${productSku}/partOfRetailSet`)).once();
+      done();
+    });
+  });
 });

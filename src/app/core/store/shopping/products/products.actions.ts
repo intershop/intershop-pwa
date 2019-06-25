@@ -16,6 +16,7 @@ export enum ProductsActionTypes {
   LoadProductVariations = '[Shopping] Load Product Variations',
   LoadProductVariationsFail = '[Shopping] Load Product Variations Fail',
   LoadProductVariationsSuccess = '[Shopping] Load Product Variations Success',
+  LoadRetailSetSuccess = '[Shopping] Load Retail Set Success',
 }
 
 export class SelectProduct implements Action {
@@ -77,6 +78,11 @@ export class LoadProductBundlesSuccess implements Action {
   constructor(public payload: { sku: string; bundledProducts: SkuQuantityType[] }) {}
 }
 
+export class LoadRetailSetSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadRetailSetSuccess;
+  constructor(public payload: { sku: string; parts: string[] }) {}
+}
+
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
@@ -88,4 +94,5 @@ export type ProductsAction =
   | LoadMoreProductsForCategory
   | LoadProductVariations
   | LoadProductVariationsFail
-  | LoadProductVariationsSuccess;
+  | LoadProductVariationsSuccess
+  | LoadRetailSetSuccess;
