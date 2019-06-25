@@ -37,17 +37,17 @@ export interface ProductData {
   minOrderQuantity: number;
   maxOrderQuantity?: number;
   // If Variation Master and Retail Set {
-  minListPrice?: number;
-  maxListPrice?: number;
-  minSalePrice?: number;
-  maxSalePrice?: number;
+  minListPrice?: Price;
+  maxListPrice?: Price;
+  minSalePrice?: Price;
+  maxSalePrice?: Price;
   // }
   variationAttributeValues?: VariationAttribute[];
   variableVariationAttributes?: VariationAttribute[];
   partOfRetailSet: boolean;
   // If  Retail Set {
-  summedUpListPrice?: number;
-  summedUpSalePrice?: number;
+  summedUpListPrice?: Price;
+  summedUpSalePrice?: Price;
   // }
 
   attachments?: any;

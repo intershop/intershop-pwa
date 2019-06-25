@@ -105,6 +105,16 @@ describe('Product Mapper', () => {
     });
   });
 
+  it('should return ProductRetailSet when getting a ProductData with retailSet = true', () => {
+    const product: Product = productMapper.fromData({
+      sku: '1',
+      retailSet: true,
+    } as ProductData);
+    expect(product).toBeTruthy();
+    expect(product.type).toEqual('RetailSet');
+    expect(ProductHelper.isRetailSet(product)).toBeTrue();
+  });
+
   describe('fromStubData', () => {
     it('should throw an error when stub data has no sku attribute', () => {
       expect(() => productMapper.fromStubData({} as ProductDataStub)).toThrowErrorMatchingInlineSnapshot(

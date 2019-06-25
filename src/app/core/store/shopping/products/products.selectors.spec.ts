@@ -14,6 +14,7 @@ import {
   LoadProductVariations,
   LoadProductVariationsFail,
   LoadProductVariationsSuccess,
+  LoadRetailSetSuccess,
   SelectProduct,
 } from './products.actions';
 import {
@@ -148,6 +149,28 @@ describe('Products Selectors', () => {
               "quantity": 2,
               "sku": "B",
             },
+          ],
+          "sku": "ABC",
+        }
+      `);
+    });
+  });
+
+  describe('when loading retail sets', () => {
+    it('should contain the product retail set information on the product', () => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'ABC' } as Product }));
+      store$.dispatch(
+        new LoadRetailSetSuccess({
+          sku: 'ABC',
+          parts: ['A', 'B'],
+        })
+      );
+
+      expect(getProductEntities(store$.state).ABC).toMatchInlineSnapshot(`
+        Object {
+          "partSKUs": Array [
+            "A",
+            "B",
           ],
           "sku": "ABC",
         }

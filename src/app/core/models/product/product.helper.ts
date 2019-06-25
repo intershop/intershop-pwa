@@ -3,6 +3,7 @@ import { Image } from '../image/image.model';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { ProductBundle } from './product-bundle.model';
+import { ProductRetailSet } from './product-retail-set.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
@@ -17,7 +18,7 @@ export enum ProductCompletenessLevel {
   List = 2,
 }
 
-export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle;
+export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
 
 export class ProductHelper {
   /**
@@ -61,7 +62,7 @@ export class ProductHelper {
   }
 
   /**
-   * check if a given product has the maximum completeness level
+   * check if a given product has a sufficient completeness level
    */
   static isSufficientlyLoaded(product: Product, completenessLevel: ProductCompletenessLevel): boolean {
     return !!product && product.completenessLevel >= completenessLevel;
@@ -76,6 +77,13 @@ export class ProductHelper {
   }
 
   /**
+   * Check if product is a retail set
+   */
+  static isRetailSet(product: Product): product is ProductRetailSet {
+    return product && product.type === 'RetailSet';
+  }
+
+  /**
    * Check if product is a master product
    */
   static isMasterProduct(product: Product): product is VariationProductMaster & VariationProductMasterView {
@@ -83,7 +91,7 @@ export class ProductHelper {
   }
 
   /**
-   * Check if product is a master product
+   * Check if product is a variation product
    */
   static isVariationProduct(product: Product): product is VariationProduct & VariationProductView {
     return product && product.type === 'VariationProduct';
