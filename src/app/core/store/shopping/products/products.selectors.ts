@@ -3,6 +3,8 @@ import { createSelector } from '@ngrx/store';
 import { memoize } from 'lodash-es';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ProductLinks, ProductLinksView } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
   ProductView,
@@ -133,4 +135,24 @@ export const getProductBundleParts = createSelector(
 export const getProductLoading = createSelector(
   getProductsState,
   products => products.loading
+);
+
+export const getProductLinks = createSelector(
+  getCategoryTree,
+  getProductEntities,
+  (categories, products, props: { sku: string }): ProductLinksView =>
+    !products[props.sku] || !products[props.sku].links
+      ? {}
+      : Object.keys(products[props.sku].links).reduce((acc, val) => {
+          const links: ProductLinks = products[props.sku].links;
+          acc[val] = {
+            products: () =>
+              links[val].products.map(sku => createProductView(products[sku], categories)).filter(x => !!x),
+            productSKUs: links[val].products || [],
+            categories: () =>
+              links[val].categories.map(uniqueId => createCategoryView(categories, uniqueId)).filter(x => !!x),
+            categoryIds: links[val].categories || [],
+          };
+          return acc;
+        }, {})
 );

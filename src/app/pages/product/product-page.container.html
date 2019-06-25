@@ -27,6 +27,7 @@
         (partsChange)="retailSetParts$.next($event)"
         (productToBasket)="addToBasket()"
       ></ish-retail-set-parts>
+      <ish-product-links-container [sku]="product.sku"></ish-product-links-container>
     </ng-container>
   </ng-template>
 </div>
