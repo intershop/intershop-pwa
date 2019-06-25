@@ -27,7 +27,7 @@
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price
-          [product]="product"
+          [product]="price || product"
           [showInformationalPrice]="true"
           [showPriceSavings]="true"
         ></ish-product-price>
