@@ -19,6 +19,7 @@
         [product]="product"
         (productToBasket)="addToBasket()"
       ></ish-product-bundle-parts>
+      <ish-retail-set-parts *ngIf="isRetailSet(product)" [product]="product"></ish-retail-set-parts>
     </ng-container>
   </ng-template>
 </div>
