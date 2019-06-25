@@ -35,6 +35,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   );
 
   isProductBundle = ProductHelper.isProductBundle;
+  isRetailSet = ProductHelper.isRetailSet;
 
   private destroy$ = new Subject();
 
