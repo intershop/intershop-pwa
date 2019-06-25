@@ -2,19 +2,24 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductCompletenessLevel, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
+import {
+  ProductCompletenessLevel,
+  ProductHelper,
+  ProductPrices,
+  SkuQuantityType,
+} from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
-import { getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
+import { getProducts, getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -25,7 +30,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export class ProductPageContainerComponent implements OnInit, OnDestroy {
   product$ = this.store.pipe(select(getSelectedProduct));
   quantity: number;
-  retailSetParts: SkuQuantityType[];
+  price$: Observable<ProductPrices>;
   productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   category$ = this.store.pipe(select(getSelectedCategory));
   productLoading$ = this.product$.pipe(map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail)));
@@ -39,6 +44,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   isRetailSet = ProductHelper.isRetailSet;
 
   private destroy$ = new Subject();
+  retailSetParts$ = new ReplaySubject<SkuQuantityType[]>(1);
 
   constructor(
     private store: Store<{}>,
@@ -59,9 +65,20 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
           this.redirectMasterToDefaultVariation(product);
         }
         if (ProductHelper.isRetailSet(product)) {
-          this.retailSetParts = product.partSKUs.map(sku => ({ sku, quantity: 1 }));
+          this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));
         }
       });
+
+    this.price$ = this.retailSetParts$.pipe(
+      filter(parts => !!parts && !!parts.length),
+      switchMap(parts =>
+        this.store.pipe(
+          select(getProducts, { skus: parts.map(part => part.sku) }),
+          filter(products => products.every(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.List))),
+          map(ProductHelper.calculatePriceRange)
+        )
+      )
+    );
   }
 
   addToBasket() {
@@ -72,11 +89,13 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
       )
       .subscribe(product => {
         if (ProductHelper.isRetailSet(product)) {
-          this.retailSetParts
-            .filter(({ quantity }) => !!quantity)
-            .forEach(({ sku, quantity }) => {
-              this.store.dispatch(new AddProductToBasket({ sku, quantity }));
-            });
+          this.retailSetParts$.pipe(take(1)).subscribe(parts =>
+            parts
+              .filter(({ quantity }) => !!quantity)
+              .forEach(({ sku, quantity }) => {
+                this.store.dispatch(new AddProductToBasket({ sku, quantity }));
+              })
+          );
         } else {
           this.store.dispatch(new AddProductToBasket({ sku: product.sku, quantity: this.quantity }));
         }
