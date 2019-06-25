@@ -8,6 +8,7 @@ import { ProductDetailActionsComponent } from './components/product-detail-actio
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductImagesComponent } from './components/product-images/product-images.component';
 import { RetailSetPartsComponent } from './components/retail-set-parts/retail-set-parts.component';
+import { ProductLinksContainerComponent } from './containers/product-links/product-links.container';
 import { ProductPageContainerComponent } from './product-page.container';
 
 const productPageRoutes: Routes = [
@@ -29,6 +30,7 @@ const productPageRoutes: Routes = [
     ProductDetailActionsComponent,
     ProductDetailComponent,
     ProductImagesComponent,
+    ProductLinksContainerComponent,
     ProductPageContainerComponent,
     RetailSetPartsComponent,
   ],

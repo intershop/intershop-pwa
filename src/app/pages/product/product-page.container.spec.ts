@@ -29,6 +29,7 @@ import { RecentlyViewedContainerComponent } from '../../shared/recently/containe
 import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { RetailSetPartsComponent } from './components/retail-set-parts/retail-set-parts.component';
+import { ProductLinksContainerComponent } from './containers/product-links/product-links.container';
 import { ProductPageContainerComponent } from './product-page.container';
 
 describe('Product Page Container', () => {
@@ -60,6 +61,7 @@ describe('Product Page Container', () => {
         MockComponent(ProductAddToQuoteDialogComponent),
         MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
+        MockComponent(ProductLinksContainerComponent),
         MockComponent(RecentlyViewedContainerComponent),
         MockComponent(RetailSetPartsComponent),
         ProductPageContainerComponent,
@@ -103,6 +105,7 @@ describe('Product Page Container', () => {
     expect(findAllIshElements(element)).toEqual([
       'ish-breadcrumb',
       'ish-product-detail',
+      'ish-product-links-container',
       'ish-recently-viewed-container',
     ]);
   });
