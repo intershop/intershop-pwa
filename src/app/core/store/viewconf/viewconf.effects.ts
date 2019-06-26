@@ -1,10 +1,10 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToData, ofRoute } from 'ngrx-router';
 import { fromEvent } from 'rxjs';
-import { map, startWith, switchMap, takeWhile } from 'rxjs/operators';
+import { map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { distinctCompareWith } from 'ish-core/utils/operators';
@@ -25,7 +25,8 @@ export class ViewconfEffects {
 
   @Effect()
   setDeviceType$ = this.actions$.pipe(
-    ofType(ROOT_EFFECTS_INIT),
+    ofRoute(),
+    take(1),
     takeWhile(() => isPlatformBrowser(this.platformId)),
     switchMap(() =>
       fromEvent(window, 'resize').pipe(
@@ -44,6 +45,14 @@ export class ViewconfEffects {
         map((deviceType: DeviceType) => new SetDeviceType({ deviceType }))
       )
     )
+  );
+
+  @Effect()
+  setDeviceTypeOnServer$ = this.actions$.pipe(
+    ofRoute(),
+    take(1),
+    takeWhile(() => isPlatformServer(this.platformId)),
+    mapTo(new SetDeviceType({ deviceType: 'mobile' }))
   );
 
   @Effect()
