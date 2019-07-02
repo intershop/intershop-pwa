@@ -4,6 +4,14 @@
   <p class="no-search-result-title" [innerHTML]="'search.noResult.message' | translate: { '0': searchTerm }"></p>
 </div>
 
-<div class="search-container main-search-container"><ish-search-box-container></ish-search-box-container></div>
+<div class="search-container main-search-container">
+  <ish-search-box-container
+    [configuration]="{
+      placeholderText: 'search.searchbox.instructional_text' | translate,
+      autoSuggest: true,
+      maxAutoSuggests: 10
+    }"
+  ></ish-search-box-container>
+</div>
 
 <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>
