@@ -817,7 +817,7 @@ describe('Quote Request Effects', () => {
 
       tick(500);
 
-      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar');
+      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar&messageKey=quotes');
     }));
   });
 

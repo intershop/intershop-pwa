@@ -2624,5 +2624,6 @@
   "checkout.credit_card.cardStyleId.error.notFound": "Credit card style ID not found.",
   "checkout.credit_card.CVCStyleId.error.notFound": "CVC style ID not found.",
   "account.date.year.error.required": "Please select a year.",
-  "account.date.month.error.required": "Please select a month."
+  "account.date.month.error.required": "Please select a month.",
+  "account.login.quotes.message": "Please log in to your account to use quotes."
 }

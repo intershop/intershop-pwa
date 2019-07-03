@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 /**
  * The Login Page Component displays a login page with a login form. See also {@link LoginPageContainerComponent}.
@@ -11,6 +13,17 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   templateUrl: './login-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit {
   @Input() isLoggedIn: boolean;
+
+  loginMessageKey: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.queryParamMap.pipe(take(1)).subscribe(params => {
+      const messageKey = params.get('messageKey');
+      this.loginMessageKey = messageKey ? `account.login.${messageKey}.message` : undefined;
+    });
+  }
 }
