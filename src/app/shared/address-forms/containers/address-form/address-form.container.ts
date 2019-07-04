@@ -127,17 +127,17 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
   private updateRegions(regions: Region[]) {
     const addressForm = this.parentForm.get(this.controlName);
 
-    if (this.parentForm && addressForm) {
+    if (addressForm) {
       const stateControl = addressForm.get('mainDivisionCode');
-      if (regions && stateControl) {
+      if (regions && regions.length && stateControl) {
         updateValidatorsByDataLength(stateControl, regions, Validators.required, false);
-      }
 
-      const selectedRegionExists = regions && !!regions.find(region => region.regionCode === stateControl.value);
+        const selectedRegionExists = regions.find(region => region.regionCode === stateControl.value);
 
-      // clear old value if region doesn't exist in new list
-      if (regions && !selectedRegionExists) {
-        stateControl.setValue('');
+        // clear old value if region doesn't exist in new list
+        if (!selectedRegionExists) {
+          stateControl.setValue('');
+        }
       }
     }
   }
