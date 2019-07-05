@@ -260,7 +260,7 @@ export class QuoteRequestEffects {
     mergeMap(() => this.store.pipe(select(getUserAuthorized))),
     whenFalsy(),
     tap(() => {
-      const queryParams = { returnUrl: this.router.routerState.snapshot.url };
+      const queryParams = { returnUrl: this.router.routerState.snapshot.url, messageKey: 'quotes' };
       this.router.navigate(['/login'], { queryParams });
     })
   );
