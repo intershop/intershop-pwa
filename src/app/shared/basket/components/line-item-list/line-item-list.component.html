@@ -74,7 +74,7 @@
 
         <!-- desktop quantity -->
         <div class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
-          <div class="form-group w-100 text-right">
+          <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
             <ng-container
               *ngTemplateOutlet="
                 quantityInputTemplate;

@@ -10,8 +10,8 @@ import { SpecialValidators } from '../../../forms/validators/special-validators'
 
 /**
  * The Line Item List Component displays a line items.
- * It prodives optional delete and edit functionality
- * It prodives optional lineItemView (string 'simple')
+ * It provides optional delete and edit functionality
+ * It provides optional lineItemView (string 'simple')
  * It provides optional total cost output
  *
  * @example
