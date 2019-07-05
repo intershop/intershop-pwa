@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
@@ -91,6 +92,7 @@ describe('Quoting Store', () => {
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
         ]),
+        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [

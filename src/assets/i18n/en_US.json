@@ -2625,5 +2625,8 @@
   "checkout.credit_card.CVCStyleId.error.notFound": "CVC style ID not found.",
   "account.date.year.error.required": "Please select a year.",
   "account.date.month.error.required": "Please select a month.",
-  "account.login.quotes.message": "Please log in to your account to use quotes."
+  "account.login.quotes.message": "Please log in to your account to use quotes.",
+  "compare.message.add.text": "{{0}} has been added to the compare list.",
+  "compare.message.delete.text": "{{0}} has been deleted from the compare list.",
+  "product.add_to_basket.message.add.text": "{{0}} has been added to the shopping cart."
 }

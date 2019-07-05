@@ -3,6 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import * as messagesActions from 'ish-core/store/messages/messages.actions';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { AddressService } from '../../services/address/address.service';
 import { UserActionTypes, getLoggedInCustomer } from '../user';
@@ -36,7 +37,12 @@ export class AddressesEffects {
     filter(([address, customer]) => !!address || !!customer),
     concatMap(([address, customer]) =>
       this.addressService.createCustomerAddress(customer.customerNo, address).pipe(
-        map(newAddress => new addressActions.CreateCustomerAddressSuccess({ address: newAddress })),
+        mergeMap(newAddress => [
+          new addressActions.CreateCustomerAddressSuccess({ address: newAddress }),
+          new messagesActions.SuccessMessage({
+            message: 'account.addresses.new_address_created.message',
+          }),
+        ]),
         mapErrorToAction(addressActions.CreateCustomerAddressFail)
       )
     )
