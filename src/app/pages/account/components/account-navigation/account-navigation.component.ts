@@ -11,7 +11,6 @@ import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 })
 export class AccountNavigationComponent implements OnInit {
   isMobileView = false;
-  currentPath: string;
 
   /**
    * Manages the Account Navigation items.
@@ -35,12 +34,15 @@ export class AccountNavigationComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.isMobileView = window.innerWidth < this.largeBreakpointWidth;
     }
-    this.currentPath = location.pathname;
   }
 
   @HostListener('window:resize', ['$event'])
   mobileViewHandler(event) {
     this.isMobileView = event.target.innerWidth < this.largeBreakpointWidth;
+  }
+
+  get currentPath() {
+    return location.pathname;
   }
 
   navigateTo(link) {
