@@ -13,7 +13,7 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
  * uses {@link SearchBoxComponent} to display search box
  *
  * @example
- * <ish-search-box-container [placeholderText]="'search.searchbox.instructional_text' | translate"></ish-search-box-container>
+ * <ish-search-box-container [configuration]="{placeholderText: 'search.searchbox.instructional_text' | translate}"></ish-search-box-container>
  */
 @Component({
   selector: 'ish-search-box-container',
