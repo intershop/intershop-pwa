@@ -5,10 +5,8 @@
     <div class="section">
       <div *ngIf="!isLoggedIn">
         <h2>{{ 'account.login.signin.heading' | translate }}</h2>
+        <p *ngIf="loginMessageKey" class="alert alert-info">{{ loginMessageKey | translate }}</p>
 
-        <!--- TODO: handle LoginToUse redirects from protected pages to login first
-        <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.returning_user.heading' | translate}}</p>
-        -->
         <ish-login-form-container></ish-login-form-container>
       </div>
     </div>

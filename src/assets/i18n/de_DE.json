@@ -2622,5 +2622,6 @@
   "checkout.credit_card.cardStyleId.error.notFound": "Kreditkartenstil-ID nicht gefunden.",
   "checkout.credit_card.CVCStyleId.error.notFound": "Kartenprüfnummerstil-ID nicht gefunden.",
   "account.date.year.error.required": "Bitte wählen Sie ein Jahr aus.",
-  "account.date.month.error.required": "Bitte wählen Sie einen Monat aus."
+  "account.date.month.error.required": "Bitte wählen Sie einen Monat aus.",
+  "account.login.quotes.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Preisangebote zu benutzen."
 }
