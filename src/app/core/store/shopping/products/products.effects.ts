@@ -116,13 +116,10 @@ export class ProductsEffects {
     distinctUntilChanged(),
     concatMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
       this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
-        withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-        switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
+        switchMap(({ total: totalItems, products, sortKeys }) => [
+          ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
           new SetSortKeys({ sortKeys }),
-          ...products
-            .filter(stub => !entities[stub.sku])
-            .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )

@@ -130,10 +130,10 @@ describe('Products Effects', () => {
         a: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       });
       const expectedValues = {
-        b: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
-        c: new SetSortKeys({ sortKeys: ['name-asc', 'name-desc'] }),
-        d: new fromActions.LoadProductSuccess({ product: { sku: 'P222' } as Product }),
-        e: new fromActions.LoadProductSuccess({ product: { sku: 'P333' } as Product }),
+        b: new fromActions.LoadProductSuccess({ product: { sku: 'P222' } as Product }),
+        c: new fromActions.LoadProductSuccess({ product: { sku: 'P333' } as Product }),
+        d: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
+        e: new SetSortKeys({ sortKeys: ['name-asc', 'name-desc'] }),
       };
       expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcde)', expectedValues));
     });
