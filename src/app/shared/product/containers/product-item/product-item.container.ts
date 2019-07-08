@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ReplaySubject, Subject, combineLatest } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
@@ -48,14 +48,12 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
   private product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
   /** display only completely loaded (or failed) products to prevent flickering */
   productForDisplay$ = this.product$.pipe(
-    filter(
-      p =>
-        (p && p.failed) ||
-        ProductHelper.isProductCompletelyLoaded(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL)
-    )
+    filter(p => ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
   );
   /** display loading overlay while product is loading */
-  loading$ = combineLatest([this.product$, this.productForDisplay$]).pipe(map(([p1, p2]) => p1 !== p2));
+  loading$ = this.product$.pipe(
+    map(p => !ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
+  );
   productVariationOptions$ = this.sku$.pipe(
     switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku })))
   );

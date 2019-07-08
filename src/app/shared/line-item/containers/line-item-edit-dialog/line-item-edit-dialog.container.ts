@@ -44,9 +44,11 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
   private product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
   variationOptions$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku }))));
   variation$ = this.product$.pipe(
-    filter(p => p && ProductHelper.isVariationProduct(p) && (p.failed || ProductHelper.isProductCompletelyLoaded(p)))
+    filter(
+      p => ProductHelper.isVariationProduct(p) && ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.List)
+    )
   );
-  loading$ = this.product$.pipe(map(p => !(ProductHelper.isProductCompletelyLoaded(p) || (p && p.failed))));
+  loading$ = this.product$.pipe(map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.List)));
   private destroy$ = new Subject();
 
   constructor(private store: Store<{}>) {}
