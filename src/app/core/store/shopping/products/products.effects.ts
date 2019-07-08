@@ -8,11 +8,13 @@ import {
   concatMap,
   distinctUntilChanged,
   filter,
+  groupBy,
   map,
   mergeMap,
   switchMap,
   takeUntil,
   tap,
+  throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -158,7 +160,13 @@ export class ProductsEffects {
     filter(
       ([product, entities]: [VariationProduct, Dictionary<VariationProduct>]) => !entities[product.productMasterSKU]
     ),
-    map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+    groupBy(([product]) => product.productMasterSKU),
+    mergeMap(groups =>
+      groups.pipe(
+        throttleTime(10000),
+        map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+      )
+    )
   );
 
   /**
@@ -175,7 +183,13 @@ export class ProductsEffects {
       ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
         !entities[product.sku] || !entities[product.sku].variationSKUs
     ),
-    map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+    groupBy(([product]) => product.sku),
+    mergeMap(groups =>
+      groups.pipe(
+        throttleTime(10000),
+        map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+      )
+    )
   );
 
   @Effect()
