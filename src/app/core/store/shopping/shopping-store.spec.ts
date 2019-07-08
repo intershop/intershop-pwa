@@ -406,10 +406,10 @@ describe('Shopping Store', () => {
       expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
       expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
       expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
       expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
       expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
       expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
@@ -535,9 +535,10 @@ describe('Shopping Store', () => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
         expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
       }));
 
