@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
+import { Product, ProductCompletenessLevel } from '../../../models/product/product.model';
 
 export enum ProductsActionTypes {
   SelectProduct = '[Shopping] Select Product',
@@ -33,7 +33,7 @@ export class LoadProductFail implements Action {
 
 export class LoadProductIfNotLoaded implements Action {
   readonly type = ProductsActionTypes.LoadProductIfNotLoaded;
-  constructor(public payload: { sku: string }) {}
+  constructor(public payload: { sku: string; level: ProductCompletenessLevel }) {}
 }
 
 export class LoadProductSuccess implements Action {

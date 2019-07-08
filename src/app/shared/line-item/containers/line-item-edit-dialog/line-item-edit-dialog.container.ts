@@ -8,7 +8,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products/products.selectors';
 import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
@@ -54,7 +54,7 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
     this.sku$.pipe(takeUntil(this.destroy$)).subscribe(sku => {
-      this.store.dispatch(new LoadProductIfNotLoaded({ sku }));
+      this.store.dispatch(new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List }));
     });
 
     this.variation$.pipe(takeUntil(this.destroy$)).subscribe(product => {
