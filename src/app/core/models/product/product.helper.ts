@@ -55,11 +55,16 @@ export class ProductHelper {
   /**
    * check if a given product has the maximum completeness level
    */
-  static isProductCompletelyLoaded<T extends Product>(
-    product: T,
-    completenessLevel: ProductCompletenessLevel = ProductCompletenessLevel.Detail
-  ): boolean {
+  static isSufficientlyLoaded(product: Product, completenessLevel: ProductCompletenessLevel): boolean {
     return !!product && product.completenessLevel >= completenessLevel;
+  }
+
+  static isFailedLoading(product: Product): boolean {
+    return !!product && !!product.failed;
+  }
+
+  static isReadyForDisplay(product: Product, completenessLevel: ProductCompletenessLevel) {
+    return ProductHelper.isSufficientlyLoaded(product, completenessLevel) || ProductHelper.isFailedLoading(product);
   }
 
   /**

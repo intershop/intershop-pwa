@@ -8,7 +8,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
@@ -25,7 +25,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   product$ = this.store.pipe(select(getSelectedProduct));
   productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   category$ = this.store.pipe(select(getSelectedCategory));
-  productLoading$ = this.product$.pipe(map(p => !(ProductHelper.isProductCompletelyLoaded(p) || (p && p.failed))));
+  productLoading$ = this.product$.pipe(map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail)));
 
   currentUrl$ = this.store.pipe(
     select(getICMBaseURL),

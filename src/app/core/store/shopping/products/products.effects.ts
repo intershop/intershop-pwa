@@ -75,7 +75,7 @@ export class ProductsEffects {
     ofType<productsActions.LoadProductIfNotLoaded>(productsActions.ProductsActionTypes.LoadProductIfNotLoaded),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-    filter(([{ sku, level }, entities]) => !ProductHelper.isProductCompletelyLoaded(entities[sku], level)),
+    filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
     map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
   );
 
