@@ -6,6 +6,7 @@ import { deepEqual, instance, mock, spy, verify } from 'ts-mockito';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { LoadContentInclude, LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { SfeAdapterService } from '../../../cms/sfe-adapter/sfe-adapter.service';
 import { ContentPageletContainerComponent } from '../content-pagelet/content-pagelet.container';
@@ -37,6 +38,7 @@ describe('Content Include Container', () => {
     TestBed.configureTestingModule({
       declarations: [ContentIncludeContainerComponent, MockComponent(ContentPageletContainerComponent)],
       imports: ngrxTesting({
+        ...coreReducers,
         content: combineReducers(contentReducers),
       }),
       providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
