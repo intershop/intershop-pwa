@@ -40,8 +40,8 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));
   }
 
-  createBasketPaymentInstrument(body: PaymentInstrument) {
-    this.store.dispatch(new CreateBasketPayment({ paymentInstrument: body }));
+  createBasketPaymentInstrument(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(new CreateBasketPayment({ paymentInstrument }));
   }
 
   deletePaymentInstrument(paymentInstrumentId: string) {

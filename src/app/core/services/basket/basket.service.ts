@@ -43,8 +43,6 @@ export declare type BasketIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  icmServerURL: string;
-
   constructor(private apiService: ApiService) {}
 
   // declare http header for Basket API v1
@@ -369,12 +367,12 @@ export class BasketService {
       return throwError('updateBasketPayment() called without redirect parameter data');
     }
 
-    const redirect = { status: params.redirect.toUpperCase(), parameters: [] };
-    Object.keys(params).forEach(key => {
-      if (key !== 'redirect') {
-        redirect.parameters.push({ name: key, value: params[key] });
-      }
-    });
+    const redirect = {
+      status: params.redirect.toUpperCase(),
+      parameters: Object.entries(params)
+        .filter(([name]) => name !== 'redirect')
+        .map(([name, value]) => ({ name, value })),
+    };
 
     return this.apiService
       .patch(
