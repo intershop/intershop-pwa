@@ -45,6 +45,35 @@ describe('Basket Service', () => {
     quantity: 10,
   };
 
+  const sourceBasket = '012345';
+
+  const basketMergeResponseData = {
+    data: {
+      sourceBasket: sourceBasket,
+      targetBasket: '345678abc',
+    },
+    included: {
+      targetBasket: {
+        '345678abc': {
+          id: 'test',
+          calculationState: 'UNCALCULATED',
+          buckets: [
+            {
+              lineItems: [],
+              shippingMethod: {},
+              shipToAddress: {},
+            },
+          ],
+          payment: {
+            name: 'testPayment',
+            id: 'paymentId',
+          },
+          totals: {},
+        },
+      },
+    },
+  };
+
   beforeEach(() => {
     apiService = mock(ApiService);
     basketService = new BasketService(instance(apiService));
@@ -113,6 +142,17 @@ describe('Basket Service', () => {
 
     basketService.addItemsToBasket(basketMockData.data.id, [itemMockData]).subscribe(() => {
       verify(apiService.post(`baskets/${basketMockData.data.id}/items`, anything(), anything())).once();
+      done();
+    });
+  });
+
+  it("should post source basket to basket when 'mergeBasket' is called", done => {
+    when(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).thenReturn(
+      of(basketMergeResponseData)
+    );
+
+    basketService.mergeBasket(basketMockData.data.id, sourceBasket).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).once();
       done();
     });
   });
