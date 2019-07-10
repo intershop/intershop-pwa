@@ -1,4 +1,4 @@
-import { Component, SimpleChange, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -54,7 +54,11 @@ describe('Checkout Payment Component', () => {
         ),
         TranslateModule.forRoot(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutPaymentComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -78,6 +82,8 @@ describe('Checkout Payment Component', () => {
     paymentMethodChange = {
       paymentMethods: new SimpleChange(undefined, component.paymentMethods, false),
     };
+
+    fixture.detectChanges();
   });
 
   it('should be created', () => {
@@ -87,6 +93,7 @@ describe('Checkout Payment Component', () => {
   });
 
   it('should render available payment methods on page', () => {
+    component.ngOnChanges(paymentMethodChange);
     fixture.detectChanges();
     expect(element.querySelector('#payment-accordion')).toBeTruthy();
   });
@@ -151,17 +158,17 @@ describe('Checkout Payment Component', () => {
 
   describe('parameter forms', () => {
     it('should open and close payment form if open/cancel form is triggered', () => {
-      expect(component.openFormIndex).toBeNegative();
+      expect(component.formIsOpen(-1)).toBeTrue();
       component.openPaymentParameterForm(2);
-      expect(component.openFormIndex).toBe(2);
+      expect(component.formIsOpen(2)).toBeTrue();
 
       component.cancelNewPaymentInstrument();
-      expect(component.openFormIndex).toBeNegative();
+      expect(component.formIsOpen(-1)).toBeTrue();
     });
 
     it('should throw createPaymentInstrument event when the user submits a valid parameter form', done => {
+      component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(2);
-      fixture.detectChanges();
 
       component.createPaymentInstrument.subscribe(formValue => {
         expect(formValue).toEqual({ paymentMethod: 'ISH_CreditCard', parameters: [{ name: 'IBAN', value: 'DE123' }] });
@@ -169,7 +176,7 @@ describe('Checkout Payment Component', () => {
       });
 
       component.parameterForm.addControl('IBAN', new FormControl('DE123', Validators.required));
-      component.submit();
+      component.submitParameterForm();
     });
 
     it('should disable submit button when the user submits an invalid parameter form', () => {
@@ -178,7 +185,7 @@ describe('Checkout Payment Component', () => {
 
       expect(component.formSubmitted).toBeFalse();
       component.parameterForm.addControl('IBAN', new FormControl('', Validators.required));
-      component.submit();
+      component.submitParameterForm();
       expect(component.formSubmitted).toBeTrue();
     });
 
