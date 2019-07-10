@@ -41,7 +41,7 @@ import { LoadProduct } from '../shopping/products';
 import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUser } from '../user';
 
-import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
+import { AddItemsToBasket, AddProductToBasket, BasketActionTypes, MergeBasket, MergeBasketSuccess } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout-store.module';
 
 let basketId: string;
@@ -195,6 +195,13 @@ describe('Checkout Store', () => {
       return of(newBaskets);
     });
 
+    when(basketServiceMock.mergeBasket(anything(), anything())).thenCall(() => {
+      const newBasket = {
+        ...basket,
+      };
+      return of(newBasket);
+    });
+
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
 
     const productsServiceMock = mock(ProductsService);
@@ -291,10 +298,8 @@ describe('Checkout Store', () => {
 
         store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
         expect(i.next().type).toEqual(BasketActionTypes.ResetBasket);
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'newTest' }));
-        expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
+        expect(i.next()).toEqual(new MergeBasket({ targetBasket: basketId, sourceBasket: 'test' }));
+        expect(i.next()).toEqual(new MergeBasketSuccess({ basket }));
         expect(i.next()).toBeUndefined();
       }));
     });
