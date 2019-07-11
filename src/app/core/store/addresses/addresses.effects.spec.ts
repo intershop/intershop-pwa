@@ -7,6 +7,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import * as messagesActions from 'ish-core/store/messages/messages.actions';
 import { userReducer } from 'ish-core/store/user/user.reducer';
 import { Address } from '../../models/address/address.model';
 import { AddressService } from '../../services/address/address.service';
@@ -86,8 +87,12 @@ describe('Addresses Effects', () => {
       const address = { urn: '123' } as Address;
       const action = new addressesActions.CreateCustomerAddress({ address });
       const completion = new addressesActions.CreateCustomerAddressSuccess({ address: { urn: 'test' } as Address });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion2 = new messagesActions.SuccessMessage({
+        message: 'account.addresses.new_address_created.message',
+      });
+
+      actions$ = hot('-a----a----a----|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion, d: completion2 });
 
       expect(effects.createCustomerAddress$).toBeObservable(expected$);
     });

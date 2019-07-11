@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
@@ -225,6 +226,7 @@ describe('Checkout Store', () => {
             component: DummyComponent,
           },
         ]),
+        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [

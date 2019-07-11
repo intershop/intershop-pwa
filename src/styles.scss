@@ -15,5 +15,8 @@
 // import breakpoint wrapper to match older bootstrap 3 implementation
 @import 'theme/breakpoints';
 
+// import bootstrap styles for toasts
+@import 'node_modules/ngx-toastr/toastr-bs4-alert';
+
 // import theme customizations
 @import 'theme/main';

@@ -1,0 +1,57 @@
+$viewBox: '0 0 16 16';
+$error-icon: '<path d="M7.5,0A7.5,7.5,0,1,0,15,7.5,7.508,7.508,0,0,0,7.5,0Zm0,14A6.5,6.5,0,1,1,14,7.5,6.508,6.508,0,0,1,7.5,14Z"/><path d="M10.854,4.146a.5.5,0,0,0-.708,0L7.5,6.793,4.854,4.146a.5.5,0,0,0-.708.708L6.793,7.5,4.146,10.146a.5.5,0,0,0,.708.708L7.5,8.207l2.646,2.647a.5.5,0,0,0,.708-.708L8.207,7.5l2.647-2.646A.5.5,0,0,0,10.854,4.146Z"/>';
+$error-color: rgba(114, 28, 36, 0.999999);
+$warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.476,0,0,0,7.5,14.967Zm0-14A6.533,6.533,0,1,1,.967,7.5,6.54,6.54,0,0,1,7.5.967Z"/><circle cx="7.5" cy="11.5" r="0.5"/><path d="M8,8V3.5a.5.5,0,0,0-1,0V10H8Z"/>';
+$warning-color: rgba(133, 100, 4, 0.999999);
+$success-icon: '<path d="M13.851,4.149a.5.5,0,0,0-.7,0L6.5,10.8,3.851,8.149a.5.5,0,0,0-.7.7l3,3a.5.5,0,0,0,.7,0l7-7A.5.5,0,0,0,13.851,4.149Z"/>';
+$success-color: rgba(21, 87, 36, 0.999999);
+
+.toast-container .toast .toast-close-button {
+  top: 0;
+  background-color: inherit;
+  border: none;
+  opacity: 1;
+}
+
+.toast-container {
+  line-height: 1;
+}
+
+.toast-error {
+  width: 1.25rem;
+  background-color: theme-color-level('danger', $alert-border-level);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$viewBox}" fill="#{$error-color}">#{$error-icon}</svg>');
+  fill: #ff0;
+}
+
+.toast-warning {
+  background-color: theme-color-level('warning', $alert-border-level);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$viewBox}" fill="#{$warning-color}">#{$warning-icon}</svg>');
+}
+
+.toast-success {
+  width: 100%;
+  background-color: theme-color-level('success', $alert-border-level);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="#{$viewBox}" fill="#{$success-color}">#{$success-icon}</svg>');
+}
+
+.toast-container.toast-top-full-width > div {
+  width: 100%;
+  max-width: 540px;
+  margin-top: 50px;
+  font-size: $font-size-base * 1.25;
+  opacity: 1;
+
+  @media (min-width: $screen-sm-min) {
+    max-width: calc(#{$screen-sm-min} - 1.5 * #{$grid-gutter-width});
+    margin-top: 40px;
+  }
+
+  @media (min-width: $screen-md-min) {
+    max-width: calc(#{$screen-md-min} - 2 * #{$grid-gutter-width});
+  }
+
+  @media (min-width: $screen-lg-min) {
+    max-width: calc(1170px - #{$grid-gutter-width});
+  }
+}

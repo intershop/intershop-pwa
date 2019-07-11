@@ -8,6 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 import { CookieLawModule } from 'angular2-cookie-law';
+import { ToastrModule } from 'ngx-toastr';
 
 import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
@@ -30,6 +31,12 @@ export function translateFactory(http: HttpClient) {
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      timeOut: 3000,
+      positionClass: 'toast-top-full-width', // toast-top-center
+      preventDuplicates: true,
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
