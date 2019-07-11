@@ -57,8 +57,8 @@ describe('Basket Items Effects', () => {
       const payload = { sku: 'SKU', quantity: 1 };
       const action = new basketActions.AddProductToBasket(payload);
       const completion = new basketActions.AddItemsToBasket({ items: [payload] });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('-a-a-a-|', { a: action });
+      const expected$ = cold('-c-c-c-|', { c: completion });
 
       expect(effects.addProductToBasket$).toBeObservable(expected$);
     });

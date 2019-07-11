@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastrModule } from 'ngx-toastr';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
@@ -15,7 +16,7 @@ describe('Product Add To Basket Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, TranslateModule.forRoot()],
+      imports: [IconModule, ToastrModule.forRoot(), TranslateModule.forRoot()],
       declarations: [ProductAddToBasketComponent],
     }).compileComponents();
   }));
