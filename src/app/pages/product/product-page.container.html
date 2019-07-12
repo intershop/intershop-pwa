@@ -13,6 +13,7 @@
         (productToCompare)="addToCompare($event)"
         (selectVariation)="variationSelected($event, product)"
       ></ish-product-detail>
+      <ish-product-bundle-parts *ngIf="isProductBundle(product)" [product]="product"></ish-product-bundle-parts>
     </ng-container>
   </ng-template>
 </div>

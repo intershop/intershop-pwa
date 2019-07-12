@@ -48,6 +48,7 @@ import { OrderListContainerComponent } from './order/containers/order-list/order
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
+import { ProductBundleDisplayComponent } from './product/components/product-bundle-display/product-bundle-display.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
 import { ProductLabelComponent } from './product/components/product-label/product-label.component';
 import { ProductListPagingComponent } from './product/components/product-list-paging/product-list-paging.component';
@@ -61,6 +62,7 @@ import { ProductShipmentComponent } from './product/components/product-shipment/
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
 import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
+import { ProductBundleDisplayContainerComponent } from './product/containers/product-bundle-display/product-bundle-display.container';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
 import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
@@ -99,6 +101,7 @@ const declaredComponents = [
   LineItemEditDialogComponent,
   LineItemEditDialogContainerComponent,
   OrderListComponent,
+  ProductBundleDisplayComponent,
   ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
@@ -128,6 +131,7 @@ const exportedComponents = [
   ProductAddToBasketComponent,
   ProductAddToCompareComponent,
   ProductAttributesComponent,
+  ProductBundleDisplayContainerComponent,
   ProductInventoryComponent,
   ProductItemContainerComponent,
   ProductLabelComponent,
