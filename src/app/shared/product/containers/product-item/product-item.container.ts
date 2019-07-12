@@ -34,6 +34,10 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
    */
   @Input() productSku: string;
   /**
+   * The quantity which should be set for this. Default is minOrderQuantity.
+   */
+  @Input() quantity: number;
+  /**
    * The Display Type of the product item, 'tile' - the default - or 'row'.
    */
   @Input() displayType?: DisplayType = 'tile';

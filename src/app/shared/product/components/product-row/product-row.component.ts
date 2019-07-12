@@ -18,6 +18,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 })
 export class ProductRowComponent implements OnInit {
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
+  @Input() quantity: number;
   @Input() variationOptions: VariationOptionGroup[];
   @Input() category?: Category;
   @Input() isInCompareList: boolean;
@@ -32,7 +33,7 @@ export class ProductRowComponent implements OnInit {
 
   ngOnInit() {
     this.productItemForm = new FormGroup({
-      [this.quantityControlName]: new FormControl(this.product.minOrderQuantity),
+      [this.quantityControlName]: new FormControl(this.quantity || this.product.minOrderQuantity),
     });
   }
 

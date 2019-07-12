@@ -17,6 +17,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 })
 export class ProductTileComponent {
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
+  @Input() quantity: number;
   @Input() variationOptions: VariationOptionGroup[];
   @Input() category: Category;
   @Input() isInCompareList: boolean;
@@ -27,7 +28,7 @@ export class ProductTileComponent {
   isMasterProduct = ProductHelper.isMasterProduct;
 
   addToBasket() {
-    this.productToBasket.emit(this.product.minOrderQuantity);
+    this.productToBasket.emit(this.quantity || this.product.minOrderQuantity);
   }
 
   toggleCompare() {
