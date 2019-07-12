@@ -1,11 +1,10 @@
 import { Category } from './category.model';
 
-export class CategoryHelper {
-  /**
-   * the maximum level of completeness a category can achieve
-   */
-  static maxCompletenessLevel = 3;
+export enum CategoryCompletenessLevel {
+  Max = 3,
+}
 
+export class CategoryHelper {
   static uniqueIdSeparator = '.';
 
   /**
@@ -35,6 +34,6 @@ export class CategoryHelper {
    * check if a given category has the maximum completeness level
    */
   static isCategoryCompletelyLoaded(category: Category): boolean {
-    return !!category && category.completenessLevel >= CategoryHelper.maxCompletenessLevel;
+    return !!category && category.completenessLevel >= CategoryCompletenessLevel.Max;
   }
 }

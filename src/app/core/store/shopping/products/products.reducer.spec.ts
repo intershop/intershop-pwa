@@ -72,6 +72,7 @@ describe('Products Reducer', () => {
           name: 'Test product',
           inStock: true,
           completenessLevel: 2,
+          longDescription: 'some description',
         } as Product;
       });
 
@@ -83,34 +84,32 @@ describe('Products Reducer', () => {
         expect(state.entities[product.sku]).toEqual(product);
       });
 
-      it('should update product if already exists', () => {
+      it('should merge product updates when new info is available', () => {
         const action1 = new fromActions.LoadProductSuccess({ product });
         const state1 = productsReducer(initialState, action1);
 
-        const updatedProduct = { sku: '111', completenessLevel: 2 } as Product;
-        updatedProduct.name = 'Updated product';
-        updatedProduct.inStock = false;
+        const updatedProduct = {
+          sku: '111',
+          completenessLevel: 1,
+          manufacturer: 'Microsoft',
+          name: 'Updated product',
+          inStock: false,
+        } as Product;
 
         const action2 = new fromActions.LoadProductSuccess({ product: updatedProduct });
         const state2 = productsReducer(state1, action2);
 
         expect(state2.ids).toHaveLength(1);
-        expect(state2.entities[product.sku]).toEqual(updatedProduct);
-      });
-
-      it('should not update product if already exists and has lower completeness', () => {
-        const action1 = new fromActions.LoadProductSuccess({ product });
-        const state1 = productsReducer(initialState, action1);
-
-        const updatedProduct = { sku: '111', completenessLevel: 1 } as Product;
-        updatedProduct.name = 'Updated product';
-        updatedProduct.inStock = false;
-
-        const action2 = new fromActions.LoadProductSuccess({ product: updatedProduct });
-        const state2 = productsReducer(state1, action2);
-
-        expect(state2.ids).toHaveLength(1);
-        expect(state2.entities[product.sku]).toEqual(product);
+        expect(state2.entities[product.sku]).toMatchInlineSnapshot(`
+          Object {
+            "completenessLevel": 2,
+            "inStock": false,
+            "longDescription": "some description",
+            "manufacturer": "Microsoft",
+            "name": "Updated product",
+            "sku": "111",
+          }
+        `);
       });
 
       it('should set loading to false', () => {

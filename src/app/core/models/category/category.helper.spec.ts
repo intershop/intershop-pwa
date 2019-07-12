@@ -1,6 +1,6 @@
 import * as using from 'jasmine-data-provider';
 
-import { CategoryHelper } from './category.helper';
+import { CategoryCompletenessLevel, CategoryHelper } from './category.helper';
 import { Category } from './category.model';
 
 describe('Category Helper', () => {
@@ -61,8 +61,8 @@ describe('Category Helper', () => {
         { category: {} as Category, result: false },
         { category: { completenessLevel: undefined } as Category, result: false },
         { category: { completenessLevel: 0 } as Category, result: false },
-        { category: { completenessLevel: CategoryHelper.maxCompletenessLevel } as Category, result: true },
-        { category: { completenessLevel: CategoryHelper.maxCompletenessLevel + 1 } as Category, result: true },
+        { category: { completenessLevel: CategoryCompletenessLevel.Max } as Category, result: true },
+        { category: { completenessLevel: CategoryCompletenessLevel.Max + 1 } as Category, result: true },
       ];
     }
 

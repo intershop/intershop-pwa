@@ -7,7 +7,7 @@ import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
 import { LoadProductIfNotLoaded, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
@@ -28,6 +28,7 @@ type DisplayType = 'tile' | 'row';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemContainerComponent implements OnInit, OnDestroy {
+  private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   /**
    * The Product SKU to render a product item for.
    */
@@ -45,10 +46,14 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
   private sku$ = new ReplaySubject<string>(1);
 
   private product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
-  /** display loading overlay while product is loading */
-  loading$ = this.product$.pipe(map(p => !(ProductHelper.isProductCompletelyLoaded(p) || (p && p.failed))));
   /** display only completely loaded (or failed) products to prevent flickering */
-  productForDisplay$ = this.product$.pipe(filter(p => p && (p.failed || ProductHelper.isProductCompletelyLoaded(p))));
+  productForDisplay$ = this.product$.pipe(
+    filter(p => ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
+  );
+  /** display loading overlay while product is loading */
+  loading$ = this.product$.pipe(
+    map(p => !ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
+  );
   productVariationOptions$ = this.sku$.pipe(
     switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku })))
   );
@@ -61,7 +66,9 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
     this.sku$.pipe(takeUntil(this.destroy$)).subscribe(sku => {
-      this.store.dispatch(new LoadProductIfNotLoaded({ sku }));
+      this.store.dispatch(
+        new LoadProductIfNotLoaded({ sku, level: ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL })
+      );
     });
 
     this.sku$.next(this.productSku);

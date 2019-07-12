@@ -22,6 +22,16 @@
           "value": true
         },
         {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
           "name": "image",
           "type": "String",
           "value": "assets/mock-img/product/a.jpg"
@@ -31,6 +41,7 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
+            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 337.35
           }
@@ -40,6 +51,7 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
+            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 303.62
           }
@@ -57,7 +69,6 @@
       ],
       "description": "LEGRIA HF R16 - 8GB, SDHC, 1/ 13.97 cm (5.5 \") CMOS, 20x opt., dig. 400x",
       "title": "Canon LEGRIA HF R16",
-      "type": "Link",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/3953312"
     },
     {
@@ -82,6 +93,16 @@
           "value": true
         },
         {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
           "name": "image",
           "type": "String",
           "value": "assets/mock-img/product/a.jpg"
@@ -91,6 +112,7 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
+            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 129.85
           }
@@ -100,6 +122,7 @@
           "type": "ResourceAttribute",
           "value": {
             "currency": "USD",
+            "currencyMnemonic": "USD",
             "type": "Money",
             "value": 129.85
           }
@@ -117,7 +140,6 @@
       ],
       "description": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
       "title": "Kodak PlayFull Ze1",
-      "type": "Link",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/7912061"
     }
   ],

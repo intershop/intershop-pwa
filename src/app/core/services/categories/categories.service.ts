@@ -6,7 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { CategoryTree, CategoryTreeHelper } from '../../models/category-tree/category-tree.model';
 import { CategoryData } from '../../models/category/category.interface';
 import { CategoryMapper } from '../../models/category/category.mapper';
-import { CategoryHelper } from '../../models/category/category.model';
+import { CategoryCompletenessLevel, CategoryHelper } from '../../models/category/category.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
 
 /**
@@ -29,7 +29,7 @@ export class CategoriesService {
     return this.apiService.get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`).pipe(
       map(element => this.categoryMapper.fromData(element)),
       // bump up completeness level as it won't get any better than this
-      tap(tree => (tree.nodes[categoryUniqueId].completenessLevel = CategoryHelper.maxCompletenessLevel))
+      tap(tree => (tree.nodes[categoryUniqueId].completenessLevel = CategoryCompletenessLevel.Max))
     );
   }
 
