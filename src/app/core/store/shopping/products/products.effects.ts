@@ -8,11 +8,13 @@ import {
   concatMap,
   distinctUntilChanged,
   filter,
+  groupBy,
   map,
   mergeMap,
   switchMap,
   takeUntil,
   tap,
+  throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -20,7 +22,13 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
 import {
@@ -65,10 +73,10 @@ export class ProductsEffects {
   @Effect()
   loadProductIfNotLoaded$ = this.actions$.pipe(
     ofType<productsActions.LoadProductIfNotLoaded>(productsActions.ProductsActionTypes.LoadProductIfNotLoaded),
-    mapToPayloadProperty('sku'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-    filter(([sku, entities]) => !ProductHelper.isProductCompletelyLoaded(entities[sku])),
-    map(([sku]) => new productsActions.LoadProduct({ sku }))
+    filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
+    map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
   );
 
   @Effect()
@@ -108,13 +116,10 @@ export class ProductsEffects {
     distinctUntilChanged(),
     concatMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
       this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
-        withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-        switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
+        switchMap(({ total: totalItems, products, sortKeys }) => [
+          ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
           new SetSortKeys({ sortKeys }),
-          ...products
-            .filter(stub => !entities[stub.sku])
-            .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
@@ -152,7 +157,13 @@ export class ProductsEffects {
     filter(
       ([product, entities]: [VariationProduct, Dictionary<VariationProduct>]) => !entities[product.productMasterSKU]
     ),
-    map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+    groupBy(([product]) => product.productMasterSKU),
+    mergeMap(groups =>
+      groups.pipe(
+        throttleTime(10000),
+        map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+      )
+    )
   );
 
   /**
@@ -169,7 +180,13 @@ export class ProductsEffects {
       ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
         !entities[product.sku] || !entities[product.sku].variationSKUs
     ),
-    map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+    groupBy(([product]) => product.sku),
+    mergeMap(groups =>
+      groups.pipe(
+        throttleTime(10000),
+        map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+      )
+    )
   );
 
   @Effect()

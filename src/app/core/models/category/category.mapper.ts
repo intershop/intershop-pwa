@@ -66,7 +66,7 @@ export class CategoryMapper {
       return -1;
     }
 
-    // adjust CategoryHelper.maxCompletenessLevel accordingly
+    // adjust CategoryCompletenessLevel.Max accordingly
     let count = 0;
 
     if (!categoryData.uri) {

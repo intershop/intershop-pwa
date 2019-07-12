@@ -16,6 +16,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
@@ -414,6 +415,7 @@ describe('Quote Request Effects', () => {
 
       const completionLoadProductIfNotLoaded = new LoadProductIfNotLoaded({
         sku: 'SKU',
+        level: ProductCompletenessLevel.List,
       });
 
       const completionLoadQuoteRequestItemsSuccess = new quoteRequestActions.LoadQuoteRequestItemsSuccess({

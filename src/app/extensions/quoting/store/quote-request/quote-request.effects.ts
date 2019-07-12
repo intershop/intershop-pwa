@@ -12,6 +12,7 @@ import {
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadProduct, LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
@@ -143,7 +144,9 @@ export class QuoteRequestEffects {
       ).pipe(
         defaultIfEmpty([]),
         mergeMap(quoteRequestItems => [
-          ...quoteRequestItems.map(item => new LoadProductIfNotLoaded({ sku: item.productSKU })),
+          ...quoteRequestItems.map(
+            item => new LoadProductIfNotLoaded({ sku: item.productSKU, level: ProductCompletenessLevel.List })
+          ),
           new actions.LoadQuoteRequestItemsSuccess({ quoteRequestItems }),
         ]),
         mapErrorToAction(actions.LoadQuoteRequestItemsFail)

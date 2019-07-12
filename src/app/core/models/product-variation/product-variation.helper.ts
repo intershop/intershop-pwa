@@ -35,7 +35,7 @@ export class ProductVariationHelper {
         quality = 0;
 
         // loop attributes of possible variation.
-        for (const attribute of variation.variableVariationAttributes) {
+        for (const attribute of variation.variableVariationAttributes || []) {
           // increment quality if variation attribute matches selected product attribute.
           if (
             attribute.variationAttributeId === selectedAttribute.variationAttributeId &&
@@ -119,7 +119,7 @@ export class ProductVariationHelper {
     for (const variation of product.variations()) {
       let quality = 0;
 
-      for (const variationAttribute of variation.variableVariationAttributes) {
+      for (const variationAttribute of variation.variableVariationAttributes || []) {
         // selected variant object loop
         for (const item of valueArray) {
           if (variationAttribute.variationAttributeId === item.key && variationAttribute.value === item.value) {

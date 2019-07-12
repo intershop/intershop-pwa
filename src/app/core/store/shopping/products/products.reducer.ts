@@ -59,15 +59,18 @@ export function productsReducer(state = initialState, action: ProductsAction): P
 
     case ProductsActionTypes.LoadProductSuccess: {
       const product = action.payload.product;
-      const oldProduct = state.entities[product.sku];
-      if (!oldProduct || product.completenessLevel >= oldProduct.completenessLevel) {
-        return productAdapter.upsertOne(product, {
-          ...state,
-          loading: false,
-          failed: removeFailed(state.failed, product.sku),
-        });
+      const oldProduct = state.entities[product.sku] || { completenessLevel: 0 };
+
+      const newProduct = { ...product };
+      if (product.completenessLevel || (oldProduct && oldProduct.completenessLevel)) {
+        newProduct.completenessLevel = Math.max(product.completenessLevel, oldProduct.completenessLevel);
       }
-      break;
+
+      return productAdapter.upsertOne(newProduct, {
+        ...state,
+        loading: false,
+        failed: removeFailed(state.failed, product.sku),
+      });
     }
 
     case ProductsActionTypes.LoadProductVariationsSuccess: {
