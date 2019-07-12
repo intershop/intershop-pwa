@@ -5,10 +5,11 @@ import { defaultIfEmpty, map } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
@@ -127,6 +128,23 @@ export class ProductsService {
       unpackEnvelope<ProductVariationLink>(),
       map(links => links.map(link => this.productMapper.fromVariationLink(link, sku))),
       defaultIfEmpty([])
+    );
+  }
+
+  /**
+   * get product bundle information for the given bundle sku.
+   */
+  getProductBundles(sku: string): Observable<{ stubs: Partial<Product>[]; bundledProducts: SkuQuantityType[] }> {
+    if (!sku) {
+      return throwError('getProductBundles() called without a sku');
+    }
+
+    return this.apiService.get(`products/${sku}/bundles`).pipe(
+      unpackEnvelope<Link>(),
+      map(links => ({
+        stubs: links.map(link => this.productMapper.fromLink(link)),
+        bundledProducts: this.productMapper.fromProductBundleData(links),
+      }))
     );
   }
 }

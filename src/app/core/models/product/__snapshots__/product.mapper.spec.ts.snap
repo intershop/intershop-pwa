@@ -53,5 +53,3 @@ Object {
   "type": "Product",
 }
 `;
-
-exports[`Product Mapper fromStubData should throw an error when stub data has no sku attribute 1`] = `"cannot construct product stub without SKU"`;
