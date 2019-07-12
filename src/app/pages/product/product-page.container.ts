@@ -32,6 +32,8 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
     map(baseUrl => baseUrl + this.location.path())
   );
 
+  isProductBundle = ProductHelper.isProductBundle;
+
   private destroy$ = new Subject();
 
   constructor(

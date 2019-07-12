@@ -24,6 +24,7 @@ import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/b
 import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 import { RecentlyViewedContainerComponent } from '../../shared/recently/containers/recently-viewed/recently-viewed.container';
 
+import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductPageContainerComponent } from './product-page.container';
 
@@ -54,6 +55,7 @@ describe('Product Page Container', () => {
         MockComponent(BreadcrumbComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductAddToQuoteDialogComponent),
+        MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
         MockComponent(RecentlyViewedContainerComponent),
         ProductPageContainerComponent,
