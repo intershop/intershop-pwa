@@ -1,3 +1,4 @@
+import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 import { memoize } from 'lodash-es';
 
@@ -11,6 +12,7 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
+import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from '../categories';
 import { getShoppingState } from '../shopping-store';
@@ -100,6 +102,19 @@ export const getProductVariationOptions = createSelector(
 export const getSelectedProductVariationOptions = createSelector(
   getSelectedProduct,
   productToVariationOptions
+);
+
+export const getProductBundleParts = createSelector(
+  getProductEntities,
+  (entities: Dictionary<ProductBundle>, props: { sku: string }) =>
+    !ProductHelper.isProductBundle(entities[props.sku])
+      ? []
+      : entities[props.sku].bundledProducts
+          .filter(({ sku }) => !!entities[sku])
+          .map(({ sku, quantity }) => ({
+            product: entities[sku],
+            quantity,
+          }))
 );
 
 export const getProductLoading = createSelector(

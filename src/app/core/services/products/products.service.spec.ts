@@ -80,4 +80,12 @@ describe('Products Service', () => {
       done();
     });
   });
+
+  it("should get product bundles data when 'getProductBundles' is called", done => {
+    when(apiServiceMock.get(`products/${productSku}/bundles`)).thenReturn(of([]));
+    productsService.getProductBundles(productSku).subscribe(() => {
+      verify(apiServiceMock.get(`products/${productSku}/bundles`)).once();
+      done();
+    });
+  });
 });

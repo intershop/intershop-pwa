@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { AttributeHelper } from '../attribute/attribute.helper';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
-import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 
 import { VariationProduct } from './product-variation.model';
-import { AllProductTypes } from './product.helper';
+import { AllProductTypes, SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
 import { Product } from './product.model';
 
@@ -40,16 +40,23 @@ function mapPromotionIds(data: Link[]): string[] {
 export class ProductMapper {
   constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
 
-  fromVariationLink(link: ProductVariationLink, productMasterSKU: string): Partial<VariationProduct> {
+  fromLink(link: Link): Partial<Product> {
     return {
       sku: link.uri.split('/products/')[1],
-      variableVariationAttributes: link.variableVariationAttributeValues,
       name: link.title,
-      productMasterSKU,
       shortDescription: link.description,
+      type: 'Product',
+      completenessLevel: 1,
+    };
+  }
+
+  fromVariationLink(link: ProductVariationLink, productMasterSKU: string): Partial<VariationProduct> {
+    return {
+      ...this.fromLink(link),
+      variableVariationAttributes: link.variableVariationAttributeValues,
+      productMasterSKU,
       type: 'VariationProduct',
       attributes: link.attributes || [],
-      completenessLevel: 1,
       failed: false,
     };
   }
@@ -177,8 +184,20 @@ export class ProductMapper {
         variableVariationAttributes: data.variableVariationAttributes,
         type: 'VariationProduct',
       };
+    } else if ((data.productTypes && data.productTypes.includes('BUNDLE')) || data.productBundle) {
+      return {
+        ...product,
+        type: 'Bundle',
+      };
     } else {
       return product;
     }
+  }
+
+  fromProductBundleData(links: Link[]): SkuQuantityType[] {
+    return links.map(link => ({
+      sku: link.uri.split('/products/')[1],
+      quantity: AttributeHelper.getAttributeValueByAttributeName<{ value: number }>(link.attributes, 'quantity').value,
+    }));
   }
 }
