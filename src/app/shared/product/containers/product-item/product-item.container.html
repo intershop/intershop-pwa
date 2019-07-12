@@ -2,6 +2,7 @@
   <ish-product-tile
     *ngIf="isTile"
     [product]="product"
+    [quantity]="quantity"
     [category]="category"
     [variationOptions]="productVariationOptions$ | async"
     [isInCompareList]="isInCompareList$ | async"
@@ -13,6 +14,7 @@
   <ish-product-row
     *ngIf="isRow"
     [product]="product"
+    [quantity]="quantity"
     [category]="category"
     [variationOptions]="productVariationOptions$ | async"
     [isInCompareList]="isInCompareList$ | async"
