@@ -26,6 +26,7 @@ function generateSelectOptionsForRange(min: number, max: number): SelectOption[]
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit, OnChanges {
+  @Input() readOnly = false;
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
@@ -36,6 +37,10 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.parentForm.get(this.controlName).setValidators(this.getValidations());
+  }
+
+  get quantity() {
+    return this.parentForm.get(this.controlName) && this.parentForm.get(this.controlName).value;
   }
 
   getValidations(): ValidatorFn {

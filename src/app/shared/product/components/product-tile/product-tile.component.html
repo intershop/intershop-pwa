@@ -22,6 +22,7 @@
 
   <ish-product-variation-select
     *ngIf="variationOptions && configuration.displayVariations"
+    [readOnly]="configuration.readOnly"
     [variationOptions]="variationOptions"
     (selectVariation)="variationSelected($event)"
   ></ish-product-variation-select>

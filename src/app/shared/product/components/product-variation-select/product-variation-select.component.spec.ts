@@ -63,9 +63,6 @@ describe('Product Variation Select Component', () => {
         ],
       },
     ];
-
-    component.ngOnChanges();
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
@@ -75,10 +72,16 @@ describe('Product Variation Select Component', () => {
   });
 
   it('should initialize form of option groups', () => {
+    component.ngOnChanges();
+    fixture.detectChanges();
+
     expect(component.form).toBeTruthy();
   });
 
   it('should set active values for form', () => {
+    component.ngOnChanges();
+    fixture.detectChanges();
+
     expect(component.form.value).toEqual({
       a1: 'B',
       a2: 'D',
@@ -86,6 +89,9 @@ describe('Product Variation Select Component', () => {
   });
 
   it('should throw event when form values change', done => {
+    component.ngOnChanges();
+    fixture.detectChanges();
+
     component.selectVariation.subscribe(selection => {
       expect(selection).toEqual({
         a1: 'A',
@@ -105,5 +111,12 @@ describe('Product Variation Select Component', () => {
       a1: 'BBB',
       a2: 'D',
     });
+  });
+
+  it('should render read-only data when configured', () => {
+    component.readOnly = true;
+    component.ngOnChanges();
+    fixture.detectChanges();
+    expect(element.textContent).toMatchInlineSnapshot(`"Attr 1: BAttr 2: D"`);
   });
 });
