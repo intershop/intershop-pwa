@@ -56,4 +56,10 @@ describe('Product Quantity Component', () => {
     fixture.detectChanges();
     expect(findAllIshElements(element)).toContain('ish-input');
   });
+
+  it('should be read-only when configured that way', () => {
+    component.readOnly = true;
+    fixture.detectChanges();
+    expect(element.textContent).toMatchInlineSnapshot(`"product.quantity.label: 1"`);
+  });
 });

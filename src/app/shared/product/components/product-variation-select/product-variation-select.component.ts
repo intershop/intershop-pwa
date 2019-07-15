@@ -12,6 +12,7 @@ import { VariationSelection } from 'ish-core/models/product-variation/variation-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
+  @Input() readOnly = false;
   @Input() variationOptions: VariationOptionGroup[] = [];
   @Output() selectVariation = new EventEmitter<VariationSelection>();
 
@@ -29,13 +30,17 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
     }
   }
 
+  getActiveOption(group: VariationOptionGroup) {
+    return group.options.find(o => o.active);
+  }
+
   /**
    * Build the product variations select form
    */
   buildSelectForm(optionGroups: VariationOptionGroup[]): FormGroup {
     return new FormGroup(
       optionGroups.reduce((acc, group) => {
-        const activeOption = group.options.find(o => o.active);
+        const activeOption = this.getActiveOption(group);
 
         return {
           ...acc,

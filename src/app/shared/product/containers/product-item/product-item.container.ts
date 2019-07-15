@@ -29,6 +29,7 @@ declare type ProductItemContainerConfiguration = ProductTileComponentConfigurati
   ProductRowComponentConfiguration & { displayType: 'tile' | 'row' };
 
 export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> = {
+  readOnly: false,
   displayName: true,
   displayDescription: true,
   displaySKU: true,

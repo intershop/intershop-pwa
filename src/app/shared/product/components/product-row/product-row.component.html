@@ -54,6 +54,7 @@
 
         <ish-product-variation-select
           *ngIf="variationOptions && configuration.displayVariations"
+          [readOnly]="configuration.readOnly"
           [variationOptions]="variationOptions"
           (selectVariation)="variationSelected($event)"
         ></ish-product-variation-select>
@@ -62,6 +63,7 @@
           <form [formGroup]="productItemForm" class="product-form form-horizontal">
             <ish-product-quantity
               *ngIf="configuration.displayQuantity"
+              [readOnly]="configuration.readOnly"
               [product]="product"
               [parentForm]="productItemForm"
               [controlName]="quantityControlName"

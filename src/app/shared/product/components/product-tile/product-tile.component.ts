@@ -11,6 +11,7 @@ import {
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
 export interface ProductTileComponentConfiguration {
+  readOnly: boolean;
   displayName: boolean;
   displayVariations: boolean;
   displayPrice: boolean;
