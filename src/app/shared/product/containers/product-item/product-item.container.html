@@ -17,6 +17,7 @@
     [configuration]="configuration"
     [product]="product"
     [quantity]="quantity"
+    (quantityChange)="quantityChange.emit($event)"
     [category]="category"
     [variationOptions]="productVariationOptions$ | async"
     [isInCompareList]="isInCompareList$ | async"
