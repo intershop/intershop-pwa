@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
@@ -31,10 +33,11 @@ export interface ProductRowComponentConfiguration {
   templateUrl: './product-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductRowComponent implements OnInit {
+export class ProductRowComponent implements OnInit, OnDestroy {
   @Input() configuration: Partial<ProductRowComponentConfiguration> = {};
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
   @Input() quantity: number;
+  @Output() quantityChange = new EventEmitter<number>();
   @Input() variationOptions: VariationOptionGroup[];
   @Input() category?: Category;
   @Input() isInCompareList: boolean;
@@ -47,10 +50,23 @@ export class ProductRowComponent implements OnInit {
   productItemForm: FormGroup;
   readonly quantityControlName = 'quantity';
 
+  private destroy$ = new Subject();
+
   ngOnInit() {
     this.productItemForm = new FormGroup({
       [this.quantityControlName]: new FormControl(this.quantity || this.product.minOrderQuantity),
     });
+    this.productItemForm
+      .get(this.quantityControlName)
+      .valueChanges.pipe(
+        map(val => +val),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(this.quantityChange);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 
   addToBasket() {

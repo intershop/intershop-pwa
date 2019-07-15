@@ -1,12 +1,23 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ReplaySubject, Subject } from 'rxjs';
-import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
@@ -52,10 +63,12 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChang
    * The Product SKU to render a product item for.
    */
   @Input() productSku: string;
+  @Output() productSkuChange = new EventEmitter<string>();
   /**
    * The quantity which should be set for this. Default is minOrderQuantity.
    */
   @Input() quantity: number;
+  @Output() quantityChange = new EventEmitter<number>();
   /**
    * The optional Category context.
    */
@@ -65,36 +78,40 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChang
    */
   @Input() configuration: ProductItemContainerConfiguration = DEFAULT_CONFIGURATION;
 
-  /** holds the current SKU */
-  private sku$ = new ReplaySubject<string>(1);
-
-  private product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
-  /** display only completely loaded (or failed) products to prevent flickering */
-  productForDisplay$ = this.product$.pipe(
-    filter(p => ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
-  );
-  /** display loading overlay while product is loading */
-  loading$ = this.product$.pipe(
-    map(p => !ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
-  );
-  productVariationOptions$ = this.sku$.pipe(
-    switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku })))
-  );
-  isInCompareList$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(isInCompareProducts(sku)))));
+  productForDisplay$: Observable<ProductView>;
+  loading$: Observable<boolean>;
+  productVariationOptions$: Observable<VariationOptionGroup[]>;
+  isInCompareList$: Observable<boolean>;
 
   private destroy$ = new Subject();
+  private sku$: Observable<string>;
+  private product$: Observable<ProductView>;
 
   constructor(private store: Store<{}>) {}
 
+  // tslint:disable:initialize-observables-in-declaration
   ngOnInit() {
+    this.sku$ = this.productSkuChange.pipe(startWith(this.productSku));
+    this.product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
+
+    this.productForDisplay$ = this.product$.pipe(
+      filter(p => ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
+    );
+    this.loading$ = this.product$.pipe(
+      map(p => !ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
+    );
+
+    this.productVariationOptions$ = this.sku$.pipe(
+      switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku })))
+    );
+    this.isInCompareList$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(isInCompareProducts(sku)))));
+
     // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
     this.sku$.pipe(takeUntil(this.destroy$)).subscribe(sku => {
       this.store.dispatch(
         new LoadProductIfNotLoaded({ sku, level: ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL })
       );
     });
-
-    this.sku$.next(this.productSku);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -129,7 +146,7 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChang
       )
       .subscribe(product => {
         const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
-        this.sku$.next(sku);
+        this.productSkuChange.emit(sku);
       });
   }
 
