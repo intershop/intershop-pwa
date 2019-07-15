@@ -1,17 +1,72 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToData, ofRoute } from 'ngrx-router';
-import { map } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
 
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { distinctCompareWith } from 'ish-core/utils/operators';
+import { DeviceType } from '../../models/viewtype/viewtype.types';
 
-import { SetBreadcrumbData, SetHeaderType, SetWrapperClass } from './viewconf.actions';
-import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
+import { SetBreadcrumbData, SetDeviceType, SetHeaderType, SetStickyHeader, SetWrapperClass } from './viewconf.actions';
+import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private actions$: Actions, private store: Store<{}>) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store<{}>,
+    @Inject(PLATFORM_ID) private platformId: string,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number
+  ) {}
+
+  @Effect()
+  setDeviceType$ = this.actions$.pipe(
+    ofRoute(),
+    take(1),
+    takeWhile(() => isPlatformBrowser(this.platformId)),
+    switchMap(() =>
+      fromEvent(window, 'resize').pipe(
+        // tslint:disable-next-line: deprecation
+        startWith(undefined),
+        map(() => {
+          if (window.innerWidth < this.mediumBreakpointWidth) {
+            return 'mobile';
+          } else if (window.innerWidth < this.largeBreakpointWidth) {
+            return 'tablet';
+          } else {
+            return 'pc';
+          }
+        }),
+        distinctCompareWith(this.store.pipe(select(getHeaderType))),
+        map((deviceType: DeviceType) => new SetDeviceType({ deviceType }))
+      )
+    )
+  );
+
+  @Effect()
+  setDeviceTypeOnServer$ = this.actions$.pipe(
+    ofRoute(),
+    take(1),
+    takeWhile(() => isPlatformServer(this.platformId)),
+    mapTo(new SetDeviceType({ deviceType: 'mobile' }))
+  );
+
+  @Effect()
+  toggleStickyHeader$ = this.actions$.pipe(
+    ofType(ROOT_EFFECTS_INIT),
+    takeWhile(() => isPlatformBrowser(this.platformId)),
+    switchMap(() =>
+      fromEvent(window, 'scroll').pipe(
+        map(() => window.pageYOffset >= 170),
+        distinctCompareWith(this.store.pipe(select(isStickyHeader))),
+        map(sticky => new SetStickyHeader({ sticky }))
+      )
+    )
+  );
 
   @Effect()
   retrieveWrapperClassFromRouting$ = this.actions$.pipe(

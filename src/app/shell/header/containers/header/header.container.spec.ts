@@ -8,7 +8,6 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { HeaderCheckoutComponent } from '../../components/header-checkout/header-checkout.component';
 import { HeaderSimpleComponent } from '../../components/header-simple/header-simple.component';
-import { HeaderStickyComponent } from '../../components/header-sticky/header-sticky.component';
 import { HeaderComponent } from '../../components/header/header.component';
 
 import { HeaderContainerComponent } from './header.container';
@@ -26,7 +25,6 @@ describe('Header Container', () => {
         MockComponent(HeaderCheckoutComponent),
         MockComponent(HeaderComponent),
         MockComponent(HeaderSimpleComponent),
-        MockComponent(HeaderStickyComponent),
       ],
     }).compileComponents();
   }));

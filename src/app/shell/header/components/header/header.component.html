@@ -1,68 +1,98 @@
-<div class="top-header">
-  <!--- Tablet/Pc Top Header-->
-  <nav class="container d-none d-md-block">
-    <div class="row justify-content-between align-items-center">
-      <div class="col">
-        <ul class="user-links">
-          <li><ish-login-status-container></ish-login-status-container></li>
-          <li *ishFeature="'compare'"><ish-product-compare-status-container></ish-product-compare-status-container></li>
-        </ul>
-        <div class="header-utility">
-          <ish-language-switch-container></ish-language-switch-container>
-          <ish-mini-basket-container></ish-mini-basket-container>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <!--- Mobile Top Header-->
-  <nav class="container d-md-none">
-    <div class="row justify-content-between">
-      <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
-        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
-      </a>
-      <div class="header-utility">
-        <ish-login-status-container view="small"></ish-login-status-container>
-        <ish-mini-basket-container view="small"></ish-mini-basket-container>
-      </div>
-      <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
-        <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-        <div class="hamburger-menu" [ngClass]="{ open: !navbarCollapsed }">
-          <span></span> <span></span> <span></span>
-        </div>
-      </button>
-    </div>
-  </nav>
-</div>
+<ng-template #searchBoxTemplate let-icon="icon">
+  <ish-search-box-container
+    data-testing-id="search-box-desktop"
+    [configuration]="{
+      placeholderText: 'search.searchbox.instructional_text' | translate,
+      autoSuggest: true,
+      maxAutoSuggests: 10,
+      icon: icon
+    }"
+  ></ish-search-box-container>
+</ng-template>
 
-<div class="mid-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3 logo-wrapper d-none d-md-block">
-        <a rel="home" routerLink="/home"> <img src="assets/img/logo.png" alt="Logo" /> </a>
+<div class="header container">
+  <ul *ngIf="!isSticky" class="user-links">
+    <li *ngIf="!isSticky && deviceType !== 'mobile'">
+      <ish-login-status-container data-testing-id="user-status-desktop"></ish-login-status-container>
+    </li>
+    <li *ishFeature="'compare'" class="d-none d-md-block">
+      <ish-product-compare-status-container
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status-container>
+    </li>
+  </ul>
+
+  <div class="header-utility">
+    <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')"></fa-icon>
+      <div
+        *ngIf="isSticky || showSearch"
+        class="search-container header-search-container"
+        [ngbCollapse]="!showSearch"
+        [ngClass]="{ show: !isSticky }"
+      >
+        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }"></ng-container>
       </div>
-      <div class="col-md-5 header-info-wrapper d-none d-md-block"></div>
-      <div class="col-md-4 search-container header-search-container">
-        <ish-search-box-container
-          [configuration]="{
-            placeholderText: 'search.searchbox.instructional_text' | translate,
-            autoSuggest: true,
-            maxAutoSuggests: 10
-          }"
-        ></ish-search-box-container>
-      </div>
+    </a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch-container
+        *ngIf="!isSticky"
+        data-testing-id="language-switch-desktop"
+      ></ish-language-switch-container>
     </div>
+    <ish-login-status-container *ngIf="isSticky || deviceType === 'mobile'" view="small"></ish-login-status-container>
+
+    <ish-mini-basket-container
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      class="d-none"
+      [ngClass]="isSticky ? 'd-lg-block' : 'd-md-block'"
+    ></ish-mini-basket-container>
+    <ish-mini-basket-container
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
+    ></ish-mini-basket-container>
   </div>
-</div>
 
-<div class="bottom-header">
-  <nav class="global-nav navbar-expand-md" [ngbCollapse]="navbarCollapsed">
-    <div class="container">
-      <div class="row">
-        <div class="main-navigation col-12" role="navigation">
-          <ish-header-navigation-container></ish-header-navigation-container>
-          <ish-user-information-mobile class="d-md-none"></ish-user-information-mobile>
-        </div>
-      </div>
+  <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
+    <ng-container *ngTemplateOutlet="searchBoxTemplate"></ng-container>
+  </div>
+
+  <div class="logo-wrapper">
+    <a
+      *ngIf="(!isSticky && deviceType === 'tablet') || deviceType === 'pc'"
+      rel="home"
+      routerLink="/home"
+      class="logo"
+      data-testing-id="header-home-link-desktop"
+    >
+      <img src="assets/img/logo.png" alt="Logo" />
+    </a>
+    <a
+      *ngIf="(isSticky && deviceType !== 'pc') || deviceType === 'mobile'"
+      rel="home"
+      routerLink="/home"
+      class="mobile-logo"
+      data-testing-id="header-home-link-mobile"
+      ><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"
+    /></a>
+  </div>
+
+  <button class="navbar-toggler" type="button" (click)="toggle('navbar')">
+    <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
+    <div class="hamburger-menu" [ngClass]="{ open: showNavBar }">
+      <!--- strokes of the hamburger menu -->
+      <span></span> <span></span> <span></span>
     </div>
-  </nav>
+  </button>
+
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" [ngbCollapse]="!showNavBar">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation-container></ish-header-navigation-container>
+        <ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
 </div>

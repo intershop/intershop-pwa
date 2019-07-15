@@ -4,7 +4,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
 
 import { FooterComponent } from './footer.component';
@@ -24,7 +23,6 @@ describe('Footer Component', () => {
         TranslateModule.forRoot(),
       ],
       declarations: [FooterComponent],
-      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })
       .compileComponents()
       .then(() => {
