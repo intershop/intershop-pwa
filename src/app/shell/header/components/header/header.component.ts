@@ -1,18 +1,8 @@
-import { isPlatformBrowser } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-  Inject,
-  OnDestroy,
-  OnInit,
-  PLATFORM_ID,
-} from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+
+declare type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 
 /**
  * The Header Component displays the page header.
@@ -33,42 +23,55 @@ import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys'
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  navbarCollapsed = false;
+export class HeaderComponent implements OnChanges {
+  @Input() isSticky = false;
+  @Input() deviceType: DeviceType;
+  @Input() reset: void;
 
-  private destroy$ = new Subject();
+  activeComponent: CollapsibleComponent = 'search';
 
-  constructor(
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(PLATFORM_ID) private platformId: string,
-    private router: Router
-  ) {}
+  get showSearch() {
+    return (
+      this.activeComponent === 'search' &&
+      // always show for sticky header
+      (this.deviceType === 'mobile' || this.isSticky)
+    );
+  }
 
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.navbarCollapsed = window.innerWidth < this.mediumBreakpointWidth;
+  get showNavBar() {
+    return (
+      this.activeComponent === 'navbar' ||
+      // always show for pc
+      this.deviceType === 'pc' ||
+      // always show for tablet on top
+      (this.deviceType === 'tablet' && !this.isSticky)
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.toggleSpecialStatusOfSearch();
+    if (changes.reset) {
+      this.activeComponent = 'search';
     }
-
-    // collapse mobile menu on router navigation start event
-    // TODO: check testing and router subscription vs. ngrx state handling
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationStart),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        if (isPlatformBrowser(this.platformId) && window.innerWidth < this.mediumBreakpointWidth) {
-          this.navbarCollapsed = true;
-        }
-      });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
+  private toggleSpecialStatusOfSearch() {
+    // deactivate search when switching to sticky header
+    if (this.isSticky && this.activeComponent === 'search') {
+      this.activeComponent = undefined;
+    }
+    // activate search when scrolling to top and no other is active
+    if (!this.isSticky && !this.activeComponent) {
+      this.activeComponent = 'search';
+    }
   }
 
-  @HostListener('window:resize', ['$event'])
-  mobileViewHandler(event) {
-    this.navbarCollapsed = event.target.innerWidth < this.mediumBreakpointWidth;
+  toggle(component: CollapsibleComponent) {
+    if (this.activeComponent === component) {
+      // activate search bar when on top and no other is active
+      this.activeComponent = !this.isSticky ? 'search' : undefined;
+    } else {
+      this.activeComponent = component;
+    }
   }
 }

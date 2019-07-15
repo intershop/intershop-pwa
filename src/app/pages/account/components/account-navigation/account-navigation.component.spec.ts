@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 
@@ -26,7 +25,6 @@ describe('Account Navigation Component', () => {
         ),
         TranslateModule.forRoot(),
       ],
-      providers: [{ provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 }],
     }).compileComponents();
   }));
 

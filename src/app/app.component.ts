@@ -3,8 +3,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { CookieLawContainerComponent } from 'angular2-cookie-law';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { getWrapperClass } from 'ish-core/store/viewconf';
+import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/viewconf';
 
 /**
  * The App Component provides the application frame for the single page application.
@@ -19,9 +21,21 @@ import { getWrapperClass } from 'ish-core/store/viewconf';
 export class AppComponent {
   @ViewChild('cookieLaw')
   private cookieLaw: CookieLawContainerComponent;
-
-  wrapperClass$ = this.store.pipe(select(getWrapperClass));
   isBrowser: boolean;
+
+  wrapperClasses$ = combineLatest([
+    this.store.pipe(select(getWrapperClass)),
+    this.store.pipe(
+      select(isStickyHeader),
+      map(isSticky => (isSticky ? 'sticky-header' : ''))
+    ),
+    this.store.pipe(
+      select(getDeviceType),
+      map(deviceType => (deviceType === 'mobile' ? 'sticky-header' : ''))
+    ),
+  ]).pipe(map(arr => arr.join(' ')));
+
+  deviceType$ = this.store.pipe(select(getDeviceType));
 
   constructor(private store: Store<{}>, @Inject(PLATFORM_ID) platformId: string) {
     this.isBrowser = isPlatformBrowser(platformId);

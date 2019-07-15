@@ -10,6 +10,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import {
+  AVAILABLE_LOCALES,
+  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  LARGE_BREAKPOINT_WIDTH,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+  MEDIUM_BREAKPOINT_WIDTH,
+} from 'ish-core/configurations/injection-keys';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
@@ -26,11 +33,6 @@ import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import {
-  AVAILABLE_LOCALES,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from '../../configurations/injection-keys';
 import { coreEffects, coreReducers } from '../core-store.module';
 
 import {
@@ -210,6 +212,8 @@ describe('Shopping Store', () => {
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 

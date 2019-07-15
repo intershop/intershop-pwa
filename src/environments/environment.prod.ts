@@ -20,7 +20,6 @@ export const environment = {
   features: [
     'compare',
     'recently',
-    // 'stickyHeader',
 
     /* B2B features */
     // 'businessCustomerRegistration',

@@ -3,7 +3,6 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
@@ -26,7 +25,6 @@ describe('Category Page Component', () => {
         MockComponent(CategoryListComponent),
         MockComponent(CategoryNavigationComponent),
       ],
-      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     }).compileComponents();
   }));
 
