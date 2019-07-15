@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
 
 import { ProductBundlePartsComponent } from './product-bundle-parts.component';
@@ -13,7 +16,12 @@ describe('Product Bundle Parts Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ProductItemContainerComponent), ProductBundlePartsComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(ProductAddToBasketComponent),
+        MockComponent(ProductItemContainerComponent),
+        ProductBundlePartsComponent,
+      ],
     }).compileComponents();
   }));
 
@@ -31,28 +39,12 @@ describe('Product Bundle Parts Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchInlineSnapshot(`
-      <div class="col-xs-12 bundled-product-list">
-        <h3 translate="">product.productBundle.products.heading</h3>
-        <div class="product-list row">
-          <div class="col-lg-12 product-list-item list-view">
-            <ish-product-item-container
-              displaytype="row"
-              ng-reflect-product-sku="1"
-              ng-reflect-quantity="3"
-              ng-reflect-display-type="row"
-            ></ish-product-item-container>
-          </div>
-          <div class="col-lg-12 product-list-item list-view">
-            <ish-product-item-container
-              displaytype="row"
-              ng-reflect-product-sku="2"
-              ng-reflect-quantity="1"
-              ng-reflect-display-type="row"
-            ></ish-product-item-container>
-          </div>
-        </div>
-      </div>
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-product-add-to-basket",
+        "ish-product-item-container",
+        "ish-product-item-container",
+      ]
     `);
   });
 });
