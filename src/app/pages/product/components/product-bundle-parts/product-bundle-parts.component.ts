@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
 
@@ -9,4 +9,6 @@ import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
 })
 export class ProductBundlePartsComponent {
   @Input() product: ProductBundle;
+
+  @Output() productToBasket = new EventEmitter();
 }
