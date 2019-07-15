@@ -1,51 +1,70 @@
-import { BasketTotal } from '../basket-total/basket-total.model';
+import { AddressMapper } from '../address/address.mapper';
+import { BasketMapper } from '../basket/basket.mapper';
 import { LineItemMapper } from '../line-item/line-item.mapper';
-import { OrderItemData } from '../order-item/order-item.interface';
+import { PaymentMapper } from '../payment/payment.mapper';
+import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
 
-import { OrderData } from './order.interface';
+import { OrderBaseData, OrderData } from './order.interface';
 import { Order } from './order.model';
 
 export class OrderMapper {
-  static fromData(data: OrderData) {
-    const totals: BasketTotal = {
-      shippingRebatesTotal: data.totals.orderShippingRebatesTotal,
-      total: data.totals.orderTotal,
-      valueRebatesTotal: data.totals.orderValueRebatesTotal,
-      dutiesAndSurchargesTotal: data.totals.dutiesAndSurchargesTotal,
-      itemRebatesTotal: data.totals.itemRebatesTotal,
-      itemShippingRebatesTotal: data.totals.itemShippingRebatesTotal,
-      itemTotal: data.totals.itemTotal,
-      paymentCostsTotal: data.totals.paymentCostsTotal,
-      shippingTotal: data.totals.shippingTotal,
-      taxTotal: data.totals.taxTotal,
-      valueRebates: data.valueRebates,
-      itemSurchargeTotalsByType: data.itemSurchargeTotalsByType,
-      isEstimated: false,
-    };
+  static fromData(payload: OrderData): Order {
+    if (!Array.isArray(payload.data)) {
+      const data = payload.data as OrderBaseData;
+      const included = payload.included;
 
-    const order: Order = {
-      id: data.id,
-      documentNo: data.documentNo,
-      creationDate: new Date(data.creationDate),
-      status: data.status,
-      purchaseCurrency: data.purchaseCurrency,
-      dynamicMessages: data.dynamicMessages,
-      invoiceToAddress: data.invoiceToAddress,
-      totals,
-    };
+      const totals = BasketMapper.getTotals(data, included ? included.discounts : undefined);
 
-    if (data.shippingBuckets && data.shippingBuckets.length > 0) {
-      const shippingBucket = data.shippingBuckets[0];
+      return {
+        id: data.id,
+        documentNo: data.documentNumber,
+        creationDate: new Date(data.creationDate),
+        statusCode: data.statusCode,
+        status: data.status,
 
-      order.commonShippingMethod = shippingBucket.shippingMethod;
-      order.commonShipToAddress = shippingBucket.shipToAddress;
-      order.lineItems = shippingBucket.lineItems.map(pli => LineItemMapper.fromOrderItemData(pli as OrderItemData));
+        purchaseCurrency: data.purchaseCurrency,
+        dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
+        invoiceToAddress:
+          included && included.invoiceToAddress && data.invoiceToAddress
+            ? AddressMapper.fromData(included.invoiceToAddress[data.invoiceToAddress])
+            : undefined,
+        commonShipToAddress:
+          included && included.commonShipToAddress && data.commonShipToAddress
+            ? AddressMapper.fromData(included.commonShipToAddress[data.commonShipToAddress])
+            : undefined,
+        commonShippingMethod:
+          included && included.commonShippingMethod && data.commonShippingMethod
+            ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
+            : undefined,
+        lineItems:
+          included && included.lineItems && data.lineItems && data.lineItems.length
+            ? data.lineItems.map(lineItemId =>
+                LineItemMapper.fromOrderItemData(included.lineItems[lineItemId], included.lineItems_discounts)
+              )
+            : [],
+        totalProductQuantity: data.totalProductQuantity,
+        payment:
+          included && included.payments && data.payments && data.payments.length && included.payments[data.payments[0]]
+            ? PaymentMapper.fromIncludeData(
+                included.payments[data.payments[0]],
+                included.payments_paymentMethod &&
+                  included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
+                  ? included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
+                  : undefined,
+                included.payments[data.payments[0]].paymentInstrument && included.payments_paymentInstrument
+                  ? included.payments_paymentInstrument[included.payments[data.payments[0]].paymentInstrument]
+                  : undefined
+              )
+            : undefined,
+        totals,
+      };
     }
+  }
 
-    if (data.payments && data.payments.length > 0) {
-      order.payment = data.payments[0];
+  static fromListData(payload: OrderData): Order[] {
+    if (Array.isArray(payload.data)) {
+      const data = payload.data as OrderBaseData[];
+      return data.map(order => OrderMapper.fromData({ ...payload, data: order }));
     }
-
-    return order;
   }
 }

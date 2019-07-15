@@ -61,8 +61,6 @@ describe('Checkout Store', () => {
     singleBasePrice: undefined,
     isHiddenGift: false,
     isFreeGift: false,
-    inStock: false,
-    availability: false,
   } as LineItem;
 
   const basket = {
