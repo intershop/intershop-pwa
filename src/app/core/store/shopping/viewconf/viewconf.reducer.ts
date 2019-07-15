@@ -52,10 +52,7 @@ export function viewconfReducer(
 
     case fromViewconf.ViewconfActionTypes.SetSortKeys: {
       const sortKeys = action.payload.sortKeys;
-      return {
-        ...state,
-        sortKeys: [...sortKeys],
-      };
+      return { ...state, sortKeys };
     }
 
     case fromViewconf.ViewconfActionTypes.SetPagingLoading: {
