@@ -11,12 +11,28 @@ import {
 } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
+export interface ProductRowComponentConfiguration {
+  displayName: boolean;
+  displayDescription: boolean;
+  displaySKU: boolean;
+  displayInventory: boolean;
+  displayPrice: boolean;
+  displayPromotions: boolean;
+  displayQuantity: boolean;
+  displayVariations: boolean;
+  displayShipment: boolean;
+  displayAddToBasket: boolean;
+  displayAddToCompare: boolean;
+  displayAddToQuote: boolean;
+}
+
 @Component({
   selector: 'ish-product-row',
   templateUrl: './product-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowComponent implements OnInit {
+  @Input() configuration: Partial<ProductRowComponentConfiguration> = {};
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
   @Input() quantity: number;
   @Input() variationOptions: VariationOptionGroup[];

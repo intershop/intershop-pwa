@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { ReplaySubject, Subject } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -11,8 +11,27 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
 import { LoadProductIfNotLoaded, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
+import { ProductRowComponentConfiguration } from '../../components/product-row/product-row.component';
+import { ProductTileComponentConfiguration } from '../../components/product-tile/product-tile.component';
 
-type DisplayType = 'tile' | 'row';
+declare type ProductItemContainerConfiguration = ProductTileComponentConfiguration &
+  ProductRowComponentConfiguration & { displayType: 'tile' | 'row' };
+
+export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> = {
+  displayName: true,
+  displayDescription: true,
+  displaySKU: true,
+  displayInventory: true,
+  displayQuantity: true,
+  displayPrice: true,
+  displayPromotions: true,
+  displayVariations: true,
+  displayShipment: false,
+  displayAddToBasket: true,
+  displayAddToCompare: true,
+  displayAddToQuote: true,
+  displayType: 'tile',
+};
 
 /**
  * The Product Item Container Component fetches the product data for a given product sku
@@ -27,7 +46,7 @@ type DisplayType = 'tile' | 'row';
   templateUrl: './product-item.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductItemContainerComponent implements OnInit, OnDestroy {
+export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChanges {
   private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   /**
    * The Product SKU to render a product item for.
@@ -38,13 +57,13 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
    */
   @Input() quantity: number;
   /**
-   * The Display Type of the product item, 'tile' - the default - or 'row'.
-   */
-  @Input() displayType?: DisplayType = 'tile';
-  /**
    * The optional Category context.
    */
   @Input() category?: Category;
+  /**
+   * configuration
+   */
+  @Input() configuration: ProductItemContainerConfiguration = DEFAULT_CONFIGURATION;
 
   /** holds the current SKU */
   private sku$ = new ReplaySubject<string>(1);
@@ -78,6 +97,18 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
     this.sku$.next(this.productSku);
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.mergeConfiguration(changes);
+  }
+
+  private mergeConfiguration(changes: SimpleChanges) {
+    if (changes.configuration && changes.configuration.firstChange) {
+      const oldConfig = this.configuration || {};
+      // tslint:disable-next-line:no-assignement-to-inputs
+      this.configuration = { ...DEFAULT_CONFIGURATION, ...oldConfig };
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
   }
@@ -103,10 +134,10 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy {
   }
 
   get isTile() {
-    return this.displayType === 'tile';
+    return !!this.configuration && this.configuration.displayType === 'tile';
   }
 
   get isRow() {
-    return this.displayType === 'row';
+    return !this.isTile;
   }
 }

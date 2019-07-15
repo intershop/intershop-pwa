@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
@@ -40,14 +41,16 @@ describe('Product List Component', () => {
   it('should render a product tile when viewType is grid', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-item-container[displayType=tile]');
-    expect(thumbs).toHaveLength(1);
+    const productItemContainer = fixture.debugElement.query(By.css('ish-product-item-container'))
+      .componentInstance as ProductItemContainerComponent;
+    expect(productItemContainer.configuration.displayType).toEqual('tile');
   });
 
   it('should render a product row when viewType is list', () => {
     component.viewType = 'list';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-item-container[displayType=row]');
-    expect(thumbs).toHaveLength(1);
+    const productItemContainer = fixture.debugElement.query(By.css('ish-product-item-container'))
+      .componentInstance as ProductItemContainerComponent;
+    expect(productItemContainer.configuration.displayType).toEqual('row');
   });
 });
