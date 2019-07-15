@@ -35,8 +35,8 @@ export interface LineItem {
 
   // attributes needed for order line items
   name?: string;
-  inStock?: boolean;
-  availability?: boolean;
+  description?: string;
+  fulfillmentStatus?: string;
 
   // attributes needed for quote feature
   originSingleBasePrice?: Price;

@@ -33,7 +33,12 @@
 
       <!-- Payment Method -->
       <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
-        <p>{{ order.payment.displayName }}<br />{{ order.payment.number }}</p>
+        <p>
+          {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
+          <ng-container *ngIf="!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier">
+            {{ order.payment.paymentInstrument }}
+          </ng-container>
+        </p>
       </ish-info-box>
     </div>
 
@@ -45,7 +50,7 @@
     ></ish-line-item-list>
   </div>
 
-  <!-- basket summary -->
+  <!-- order summary -->
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 

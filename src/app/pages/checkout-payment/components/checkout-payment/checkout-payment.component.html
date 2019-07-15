@@ -11,13 +11,7 @@
 
     <!-- display all payment methods -->
     <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
-      <ul
-        *ngIf="hasPaymentMethods"
-        id="payment-accordion"
-        class="list-unstyled ml-4"
-        role="tablist"
-        aria-multiselectable="true"
-      >
+      <ul *ngIf="hasPaymentMethods" id="payment-accordion" class="list-unstyled ml-4">
         <ng-container *ngFor="let paymentMethod of filteredPaymentMethods; index as i">
           <li class="panel">
             <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">
