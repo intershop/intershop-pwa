@@ -32,6 +32,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   isVariationProduct = ProductHelper.isVariationProduct;
   isMasterProduct = ProductHelper.isMasterProduct;
+  isRetailSet = ProductHelper.isRetailSet;
 
   private destroy$ = new Subject();
 
