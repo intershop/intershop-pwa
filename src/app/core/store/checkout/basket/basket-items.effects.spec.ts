@@ -53,12 +53,14 @@ describe('Basket Items Effects', () => {
   });
 
   describe('addProductToBasket$', () => {
-    it('should map an AddProductToBasket to an AddItemsToBasket action', () => {
-      const payload = { sku: 'SKU', quantity: 1 };
-      const action = new basketActions.AddProductToBasket(payload);
-      const completion = new basketActions.AddItemsToBasket({ items: [payload] });
-      actions$ = hot('-a-a-a-|', { a: action });
-      const expected$ = cold('-c-c-c-|', { c: completion });
+    it('should accumulate AddProductToBasket to a single AddItemsToBasket action', () => {
+      const action1 = new basketActions.AddProductToBasket({ sku: 'SKU1', quantity: 1 });
+      const action2 = new basketActions.AddProductToBasket({ sku: 'SKU2', quantity: 1 });
+      const completion = new basketActions.AddItemsToBasket({
+        items: [{ sku: 'SKU2', quantity: 2 }, { sku: 'SKU1', quantity: 2 }],
+      });
+      actions$ = hot('        -b-a-b-a--|', { a: action1, b: action2 });
+      const expected$ = cold('----------(c|)', { c: completion });
 
       expect(effects.addProductToBasket$).toBeObservable(expected$);
     });
