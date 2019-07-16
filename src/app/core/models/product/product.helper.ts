@@ -1,6 +1,6 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
-import { ProductView, VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
+import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
@@ -10,6 +10,8 @@ export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
 }
+
+export type AllProductTypes = Product | VariationProduct | VariationProductMaster;
 
 export class ProductHelper {
   /**
@@ -81,9 +83,7 @@ export class ProductHelper {
     return product && product.type === 'VariationProduct';
   }
 
-  static hasVariations(
-    product: ProductView | VariationProductView | VariationProductMasterView
-  ): product is VariationProductView | VariationProductMasterView {
+  static hasVariations(product: Product): product is VariationProductView | VariationProductMasterView {
     return (
       (ProductHelper.isVariationProduct(product) || ProductHelper.isMasterProduct(product)) &&
       !!product.variations().length

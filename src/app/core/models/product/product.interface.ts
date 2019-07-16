@@ -42,8 +42,8 @@ export interface ProductData {
   minSalePrice?: number;
   maxSalePrice?: number;
   // }
-  variationAttributeValues?: Attribute[];
-  variableVariationAttributes?: Attribute[];
+  variationAttributeValues?: VariationAttribute[];
+  variableVariationAttributes?: VariationAttribute[];
   partOfRetailSet: boolean;
   // If  Retail Set {
   summedUpListPrice?: number;

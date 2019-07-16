@@ -7,8 +7,8 @@ import { ImageMapper } from '../image/image.mapper';
 import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 
-import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
+import { AllProductTypes } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
 import { Product } from './product.model';
 
@@ -57,7 +57,7 @@ export class ProductMapper {
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
-  fromStubData(data: ProductDataStub): Product | VariationProductMaster | VariationProduct {
+  fromStubData(data: ProductDataStub): AllProductTypes {
     const sku = retrieveStubAttributeValue<string>(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
@@ -137,7 +137,7 @@ export class ProductMapper {
   /**
    * map API Response to fully qualified {@link Product}s
    */
-  fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
+  fromData(data: ProductData): AllProductTypes {
     const product: Product = {
       type: 'Product',
       name: data.productName,
