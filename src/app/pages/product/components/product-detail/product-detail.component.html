@@ -32,10 +32,10 @@
           [showPriceSavings]="true"
         ></ish-product-price>
 
-        <ish-product-inventory [product]="product"></ish-product-inventory>
+        <ish-product-inventory *ngIf="!isRetailSet(product)" [product]="product"></ish-product-inventory>
       </div>
 
-      <ish-product-shipment [product]="product"></ish-product-shipment>
+      <ish-product-shipment *ngIf="!isRetailSet(product)" [product]="product"></ish-product-shipment>
 
       <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
@@ -47,6 +47,7 @@
         <div class="row">
           <div class="w-100">
             <ish-product-quantity
+              *ngIf="!isRetailSet(product)"
               [product]="product"
               [parentForm]="productDetailForm"
               [controlName]="quantityControlName"
