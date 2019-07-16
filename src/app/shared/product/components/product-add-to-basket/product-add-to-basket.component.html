@@ -6,7 +6,7 @@
     [ngClass]="class"
     [class.btn-primary]="!(displayType === 'icon')"
     [disabled]="disabled"
-    [attr.title]="'product.add_to_cart.link' | translate"
+    [attr.title]="translationKey | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
   >
@@ -14,6 +14,6 @@
       <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>
     </ng-container>
 
-    <ng-template #defaultButton> {{ 'product.add_to_cart.link' | translate }} </ng-template>
+    <ng-template #defaultButton>{{ translationKey | translate }}</ng-template>
   </button>
 </div>
