@@ -1,6 +1,6 @@
 // tslint:disable use-component-change-detection prefer-mocks-instead-of-stubs-in-tests
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -264,13 +264,14 @@ describe('Checkout Store', () => {
   describe('with anonymous user', () => {
     const payload = { sku: 'test', quantity: 1 };
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       store.dispatch(new LoadProduct({ sku: 'test' }));
       store.dispatch(new AddProductToBasket(payload));
-    });
+      tick(5000);
+    }));
 
     describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', () => {
+      it('should initially load basket and basketItems on product add.', fakeAsync(() => {
         const i = store.actionsIterator([/Basket/]);
         expect(i.next().type).toEqual(BasketActionTypes.AddProductToBasket);
         expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload] }));
@@ -279,11 +280,11 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
         expect(i.next()).toBeUndefined();
-      });
+      }));
     });
 
     describe('and with basket', () => {
-      it('should merge basket on user login.', () => {
+      it('should merge basket on user login.', fakeAsync(() => {
         const i = store.actionsIterator([/Basket/]);
         basketId = 'newTest';
         store.reset();
@@ -295,7 +296,7 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
         expect(i.next()).toBeUndefined();
-      });
+      }));
     });
 
     afterEach(() => {

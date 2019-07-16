@@ -2,7 +2,19 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
-import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  debounceTime,
+  defaultIfEmpty,
+  filter,
+  last,
+  map,
+  mapTo,
+  mergeMap,
+  reduce,
+  window,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import {
   LineItemUpdateHelper,
@@ -26,7 +38,28 @@ export class BasketItemsEffects {
   addProductToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddProductToBasket>(basketActions.BasketActionTypes.AddProductToBasket),
     mapToPayload(),
-    map(item => new basketActions.AddItemsToBasket({ items: [item] }))
+    // accumulate all actions
+    window(
+      this.actions$.pipe(
+        ofType<basketActions.AddProductToBasket>(basketActions.BasketActionTypes.AddProductToBasket),
+        debounceTime(1000)
+      )
+    ),
+    mergeMap(window$ =>
+      window$.pipe(
+        // accumulate changes
+        reduce((acc, val) => {
+          const element = acc.find(x => x.sku === val.sku);
+          if (element) {
+            element.quantity += val.quantity;
+          } else {
+            acc.push({ ...val });
+          }
+          return acc;
+        }, []),
+        map(items => new basketActions.AddItemsToBasket({ items }))
+      )
+    )
   );
 
   /**
