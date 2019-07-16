@@ -68,4 +68,15 @@ describe('Product Add To Basket Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });
+
+  it('should use default translation when nothing is configured', () => {
+    fixture.detectChanges();
+    expect(element.textContent).toMatchInlineSnapshot(`"product.add_to_cart.link"`);
+  });
+
+  it('should use configured translation when it is configured', () => {
+    component.translationKey = 'abc';
+    fixture.detectChanges();
+    expect(element.textContent).toMatchInlineSnapshot(`"abc"`);
+  });
 });
