@@ -2,14 +2,38 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Warranty",
+      "name": "Power consumption",
       "type": "String",
-      "value": "2 years"
+      "value": "250 mA max"
+    },
+    {
+      "name": "Max. number of bulbs",
+      "type": "String",
+      "value": "50"
+    },
+    {
+      "name": "Frequency band",
+      "type": "String",
+      "value": "2400-2483.5 MHz"
+    },
+    {
+      "name": "Power adapter",
+      "type": "String",
+      "value": "100-240V AC / 50-60Hz"
+    },
+    {
+      "name": "Height",
+      "type": "String",
+      "value": "26mm"
+    },
+    {
+      "name": "Diameter",
+      "type": "String",
+      "value": "88mm"
     }
   ],
   "availability": true,
   "availableStock": 0,
-  "bundles": "inSPIRED-inTRONICS-Site/-/products/201807194/bundles",
   "defaultCategory": {
     "categoryPath": [
       {
@@ -97,29 +121,28 @@
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 105.99
+    "value": 63.59
   },
-  "longDescription": "Philips Hue apps for iOS and Android let you remotely control your lamps wherever you are. Check if you have left the light on before leaving and switch it on if you come home later.",
+  "longDescription": "The Philips Hue bridge is all you need to set up your personal Philips Hue system. This is actually the brain of the operation that enables you to control all of your Philips Hue products via the Philips Hue app. Once you have installed the Philips Hue bridge and downloaded the Philips Hue app on your smart device, you can set your imagination free and build your very own system.",
   "manufacturer": "Philips",
   "mastered": false,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Philips Hue White Starter Kit",
+  "name": "Philips Hue Bridge",
   "packingUnit": "",
-  "productBundle": true,
+  "productBundle": false,
   "productMaster": false,
-  "productName": "Philips Hue White Starter Kit",
-  "productTypes": ["BUNDLE"],
+  "productName": "Philips Hue Bridge",
+  "productTypes": ["ITEM", "BUNDLED_PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807194/reviews",
-  "roundedAverageRating": "4.5",
+  "roundedAverageRating": "0.0",
   "salePrice": {
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 105.99
+    "value": 63.59
   },
   "shippingMethods": [
     {
@@ -151,8 +174,8 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "Automate your lamps for easy control and convenience",
-  "sku": "201807194",
+  "shortDescription": "The heart of your Philips Hue system",
+  "sku": "201807191",
   "stepOrderQuantity": 1,
   "type": "Product"
 }
