@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
 
 import { RetailSetPartsComponent } from './retail-set-parts.component';
@@ -16,7 +16,11 @@ describe('Retail Set Parts Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(ProductItemContainerComponent), RetailSetPartsComponent],
+      declarations: [
+        MockComponent(ProductAddToBasketComponent),
+        MockComponent(ProductItemContainerComponent),
+        RetailSetPartsComponent,
+      ],
     }).compileComponents();
   }));
 
@@ -24,9 +28,7 @@ describe('Retail Set Parts Component', () => {
     fixture = TestBed.createComponent(RetailSetPartsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = {
-      parts: ['1', '2', '3'],
-    } as ProductRetailSet;
+    component.parts = [{ sku: '1', quantity: 2 }, { sku: '2', quantity: 2 }, { sku: '3', quantity: 2 }];
   });
 
   it('should be created', () => {
@@ -37,6 +39,13 @@ describe('Retail Set Parts Component', () => {
 
   it('should display elements for each part', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toHaveLength(3);
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-product-add-to-basket",
+        "ish-product-item-container",
+        "ish-product-item-container",
+        "ish-product-item-container",
+      ]
+    `);
   });
 });

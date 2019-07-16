@@ -2,10 +2,13 @@
   <h3>{{ 'product.retailSet.products.heading' | translate }}</h3>
 
   <div class="product-list row">
-    <ng-container *ngFor="let part of product.parts">
+    <ng-container *ngFor="let part of parts; index as i; trackBy: trackByFn">
       <div *ngIf="displayType === 'tile'" class="col-6 col-lg-4 product-list-item grid-view">
         <ish-product-item-container
-          [productSku]="part"
+          [productSku]="part.sku"
+          [quantity]="part.quantity"
+          (productSkuChange)="productChange(i, $event)"
+          (quantityChange)="productChange(i, part.sku, $event)"
           [configuration]="{
             displayType: 'tile',
             displayAddToBasket: false,
@@ -17,8 +20,12 @@
 
       <div *ngIf="displayType === 'row'" class="col-lg-12 product-list-item list-view">
         <ish-product-item-container
-          [productSku]="part"
+          [productSku]="part.sku"
+          [quantity]="part.quantity"
+          (productSkuChange)="productChange(i, $event)"
+          (quantityChange)="productChange(i, part.sku, $event)"
           [configuration]="{
+            allowZeroQuantity: true,
             displayType: 'row',
             displayAddToBasket: false,
             displayAddToCompare: false,
@@ -28,5 +35,14 @@
         ></ish-product-item-container>
       </div>
     </ng-container>
+  </div>
+  <div class="row product-info">
+    <div class="col align-self-start no-gutters">
+      <ish-product-add-to-basket
+        [product]="product"
+        translationKey="product.add_to_cart.retailset.link"
+        (productToBasket)="productToBasket.emit()"
+      ></ish-product-add-to-basket>
+    </div>
   </div>
 </div>
