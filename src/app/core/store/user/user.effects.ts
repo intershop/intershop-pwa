@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToQueryParam, ofRoute } from 'ngrx-router';
-import { Observable, merge, of } from 'rxjs';
+import { EMPTY, Observable, merge, of } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -18,6 +18,7 @@ import {
 } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -52,6 +53,7 @@ export class UserEffects {
     private actions$: Actions,
     private store$: Store<{}>,
     private userService: UserService,
+    private personalizationService: PersonalizationService,
     private router: Router
   ) {}
 
@@ -215,6 +217,18 @@ export class UserEffects {
     mapToPayloadProperty('apiToken'),
     concatMap(apiToken =>
       this.userService.signinUserByToken(apiToken).pipe(map(user => new userActions.LoginUserSuccess(user)))
+    )
+  );
+
+  @Effect()
+  fetchPGID$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.LoginUserSuccess),
+    switchMap(() =>
+      this.personalizationService.getPGID().pipe(
+        map(pgid => new userActions.SetPGID({ pgid })),
+        // tslint:disable-next-line:ban
+        catchError(() => EMPTY)
+      )
     )
   );
 }

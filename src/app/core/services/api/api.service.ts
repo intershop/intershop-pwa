@@ -5,7 +5,7 @@ import { Observable, OperatorFunction, Subject, forkJoin, of, throwError } from 
 import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 
 import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
-import { getAPIToken } from 'ish-core/store/user';
+import { getAPIToken, getPGID } from 'ish-core/store/user';
 import { Link } from '../../models/link/link.model';
 import { Locale } from '../../models/locale/locale.model';
 import { getCurrentLocale } from '../../store/locale';
@@ -76,7 +76,8 @@ export function constructUrlForPath(
   path: string,
   method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   restEndpoint: string,
-  currentLocale?: Locale
+  currentLocale: Locale,
+  pgid: string
 ): string {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
@@ -92,7 +93,9 @@ export function constructUrlForPath(
       if (currentLocale) {
         localeAndCurrency = `;loc=${currentLocale.lang};cur=${currentLocale.currency}`;
       }
-      return `${restEndpoint}${localeAndCurrency}/${path}`;
+      // restrict to calls for cms api
+      const pgidP = pgid && path.startsWith('cms/') ? `;pgid=${pgid}` : '';
+      return `${restEndpoint}${localeAndCurrency}${pgidP}/${path}`;
     default:
       throw new Error(`unhandled method '${method}'`);
   }
@@ -113,6 +116,7 @@ export class ApiService {
   private currentLocale: Locale;
   private restEndpoint: string;
   private apiToken: string;
+  private pgid: string;
   icmServerURL: string;
 
   private executionBarrier$: Observable<void> | Subject<void> = of(undefined);
@@ -126,6 +130,7 @@ export class ApiService {
     store.pipe(select(getICMServerURL)).subscribe(url => (this.icmServerURL = url));
     store.pipe(select(getRestEndpoint)).subscribe(url => (this.restEndpoint = url));
     store.pipe(select(getAPIToken)).subscribe(token => (this.apiToken = token));
+    store.pipe(select(getPGID)).subscribe(pgid => (this.pgid = pgid));
   }
 
   /**
@@ -186,7 +191,7 @@ export class ApiService {
   get<T>(path: string, options?: AvailableOptions): Observable<T> {
     return this.wrapHttpCall(
       () =>
-        this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
+        this.httpClient.get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale, this.pgid), {
           ...options,
           headers: this.constructHeaders(options),
         }),
@@ -200,10 +205,13 @@ export class ApiService {
   options<T>(path: string, options?: AvailableOptions): Observable<T> {
     return this.wrapHttpCall(
       () =>
-        this.httpClient.options<T>(constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale), {
-          ...options,
-          headers: this.constructHeaders(options),
-        }),
+        this.httpClient.options<T>(
+          constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale, this.pgid),
+          {
+            ...options,
+            headers: this.constructHeaders(options),
+          }
+        ),
       options
     );
   }
@@ -214,10 +222,14 @@ export class ApiService {
   put<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
     return this.wrapHttpCall(
       () =>
-        this.httpClient.put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale), body, {
-          ...options,
-          headers: this.constructHeaders(options),
-        }),
+        this.httpClient.put<T>(
+          constructUrlForPath(path, 'PUT', this.restEndpoint, this.currentLocale, this.pgid),
+          body,
+          {
+            ...options,
+            headers: this.constructHeaders(options),
+          }
+        ),
       options
     );
   }
@@ -228,10 +240,14 @@ export class ApiService {
   patch<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
     return this.wrapHttpCall(
       () =>
-        this.httpClient.patch<T>(constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale), body, {
-          ...options,
-          headers: this.constructHeaders(options),
-        }),
+        this.httpClient.patch<T>(
+          constructUrlForPath(path, 'PATCH', this.restEndpoint, this.currentLocale, this.pgid),
+          body,
+          {
+            ...options,
+            headers: this.constructHeaders(options),
+          }
+        ),
       options
     );
   }
@@ -242,10 +258,14 @@ export class ApiService {
   post<T>(path: string, body = {}, options?: AvailableOptions): Observable<T> {
     return this.wrapHttpCall(
       () =>
-        this.httpClient.post<T>(constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale), body, {
-          ...options,
-          headers: this.constructHeaders(options),
-        }),
+        this.httpClient.post<T>(
+          constructUrlForPath(path, 'POST', this.restEndpoint, this.currentLocale, this.pgid),
+          body,
+          {
+            ...options,
+            headers: this.constructHeaders(options),
+          }
+        ),
       options
     );
   }
@@ -256,10 +276,13 @@ export class ApiService {
   delete<T>(path, options?: AvailableOptions): Observable<T> {
     return this.wrapHttpCall(
       () =>
-        this.httpClient.delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale), {
-          ...options,
-          headers: this.constructHeaders(options),
-        }),
+        this.httpClient.delete<T>(
+          constructUrlForPath(path, 'DELETE', this.restEndpoint, this.currentLocale, this.pgid),
+          {
+            ...options,
+            headers: this.constructHeaders(options),
+          }
+        ),
       options
     );
   }

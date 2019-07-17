@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
+import { identity } from 'rxjs';
+import { groupBy, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { CMSService } from '../../../services/cms/cms.service';
@@ -15,10 +16,15 @@ export class IncludesEffects {
   loadContentInclude$ = this.actions$.pipe(
     ofType<includesActions.LoadContentInclude>(includesActions.IncludesActionTypes.LoadContentInclude),
     mapToPayloadProperty('includeId'),
-    mergeMap(includeId =>
-      this.cmsService.getContentInclude(includeId).pipe(
-        map(contentInclude => new includesActions.LoadContentIncludeSuccess(contentInclude)),
-        mapErrorToAction(includesActions.LoadContentIncludeFail)
+    groupBy(identity),
+    mergeMap(group$ =>
+      group$.pipe(
+        switchMap(includeId =>
+          this.cmsService.getContentInclude(includeId).pipe(
+            map(contentInclude => new includesActions.LoadContentIncludeSuccess(contentInclude)),
+            mapErrorToAction(includesActions.LoadContentIncludeFail)
+          )
+        )
       )
     )
   );

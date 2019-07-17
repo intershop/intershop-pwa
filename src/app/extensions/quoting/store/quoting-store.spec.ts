@@ -72,6 +72,7 @@ describe('Quoting Store', () => {
 
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.icmServerURL).thenReturn('http://example.org');
+    when(apiServiceMock.get(anything())).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
