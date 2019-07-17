@@ -12,6 +12,7 @@ export interface UserState {
   loading: boolean;
   successMessage: string;
   error: HttpError;
+  pgid: string;
 }
 
 export const initialState: UserState = {
@@ -22,6 +23,7 @@ export const initialState: UserState = {
   loading: false,
   successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
+  pgid: undefined,
 };
 
 export function userReducer(state = initialState, action: UserAction): UserState {
@@ -147,6 +149,13 @@ export function userReducer(state = initialState, action: UserAction): UserState
         loading: false,
         error: undefined,
         successMessage,
+      };
+    }
+
+    case UserActionTypes.SetPGID: {
+      return {
+        ...state,
+        pgid: action.payload.pgid,
       };
     }
   }

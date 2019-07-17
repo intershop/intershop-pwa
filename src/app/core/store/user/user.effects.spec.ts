@@ -12,6 +12,7 @@ import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { HttpError } from '../../models/http-error/http-error.model';
@@ -72,6 +73,7 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
       ],
     });
 
