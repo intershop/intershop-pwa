@@ -111,7 +111,7 @@ jobs:
 
           chartPath: '**/charts/pwa-main'
 
-          releaseName: 'pwa-main'
+          releaseName: 'pwa-main-$(Namespace)'
 
           overrideValues: 'image.repository=$(RegistryName).azurecr.io/pwa-main,image.tag=$(version_pwa-main),upstream.icm=https://$(UpstreamICMHost),ingress.hosts[0]=$(PWAMainHost)'
 
@@ -133,6 +133,6 @@ jobs:
 
           chartPath: '**/charts/pwa-nginx'
 
-          releaseName: 'pwa-nginx'
+          releaseName: 'pwa-nginx-$(Namespace)'
 
           overrideValues: 'image.repository=$(RegistryName).azurecr.io/pwa-nginx,image.tag=$(version_pwa-nginx),upstream.icm=http://$(UpstreamICMHost),upstream.pwa=http://pwa-main:4200,ingress.hosts[0]=$(PWANginxHost)'
