@@ -7,7 +7,7 @@ export class FamilyPage {
 
   readonly header = new HeaderModule();
 
-  readonly productList = new ProductListModule();
+  readonly productList = new ProductListModule('ish-product-list-container');
 
   static navigateTo(categoryUniqueId: string, page?: number) {
     cy.visit(`/category/${categoryUniqueId}${page ? `?page=${page}` : ''}`);
