@@ -10,6 +10,7 @@ export class ProductDetailPage {
   readonly breadcrumb = new BreadcrumbModule();
 
   readonly bundleParts = new ProductListModule('ish-product-bundle-parts');
+  readonly retailSetParts = new ProductListModule('ish-retail-set-parts');
 
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
