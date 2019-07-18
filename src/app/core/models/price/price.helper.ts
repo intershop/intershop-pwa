@@ -1,7 +1,7 @@
 import { Price } from './price.model';
 
 export class PriceHelper {
-  static diff(p1: Price, p2: Price): Price {
+  private static sanityChecks(p1: Price, p2: Price) {
     if (!p1 || !p2) {
       throw new Error('cannot handle undefined inputs');
     }
@@ -14,7 +14,10 @@ export class PriceHelper {
     if (p1.currency !== p2.currency) {
       throw new Error('currency mispatch');
     }
+  }
 
+  static diff(p1: Price, p2: Price): Price {
+    PriceHelper.sanityChecks(p1, p2);
     return {
       type: p1.type,
       currency: p1.currency,
@@ -29,5 +32,23 @@ export class PriceHelper {
    */
   static invert(price: Price): Price {
     return { ...price, value: price.value * -1 };
+  }
+
+  static min(p1: Price, p2: Price): Price {
+    PriceHelper.sanityChecks(p1, p2);
+    return {
+      type: p1.type,
+      currency: p1.currency,
+      value: Math.round(Math.min(p1.value, p2.value) * 100) / 100,
+    };
+  }
+
+  static sum(p1: Price, p2: Price): Price {
+    PriceHelper.sanityChecks(p1, p2);
+    return {
+      type: p1.type,
+      currency: p1.currency,
+      value: Math.round((p1.value + p2.value) * 100) / 100,
+    };
   }
 }
