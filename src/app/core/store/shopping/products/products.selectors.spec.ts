@@ -45,7 +45,6 @@ describe('Products Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any products when used', () => {
-      expect(getProducts(store$.state)).toBeEmpty();
       expect(getProductEntities(store$.state)).toBeEmpty();
       expect(getProductLoading(store$.state)).toBeFalse();
     });
@@ -99,7 +98,6 @@ describe('Products Selectors', () => {
 
     describe('but no current router state', () => {
       it('should return the product information when used', () => {
-        expect(getProducts(store$.state)).toEqual([prod]);
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
         expect(getProductLoading(store$.state)).toBeFalse();
       });
@@ -116,7 +114,6 @@ describe('Products Selectors', () => {
       });
 
       it('should return the product information when used', () => {
-        expect(getProducts(store$.state)).toEqual([prod]);
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
         expect(getProductLoading(store$.state)).toBeFalse();
       });
@@ -195,9 +192,11 @@ describe('Products Selectors', () => {
 
       it('should set variations data and set loading to false', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
-        expect(getProducts(store$.state)).toEqual([
-          { sku: 'SKU', type: 'VariationProductMaster', variationSKUs: ['VAR'] },
-        ]);
+        expect(getProductEntities(store$.state).SKU).toEqual({
+          sku: 'SKU',
+          type: 'VariationProductMaster',
+          variationSKUs: ['VAR'],
+        });
       });
     });
 
@@ -208,8 +207,34 @@ describe('Products Selectors', () => {
 
       it('should not have loaded product variations on error', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
-        expect(getProducts(store$.state)).toEqual([{ sku: 'SKU', type: 'VariationProductMaster' }]);
+        expect(getProductEntities(store$.state).SKU).toEqual({ sku: 'SKU', type: 'VariationProductMaster' });
       });
+    });
+  });
+
+  describe('state with multiple products', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU1', name: 'sku1' } as Product }));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU2', name: 'sku2' } as Product }));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU3', name: 'sku3' } as Product }));
+    });
+
+    it('should select various products on entites selector', () => {
+      expect(getProductEntities(store$.state)).toHaveProperty('SKU1');
+      expect(getProductEntities(store$.state)).toHaveProperty('SKU2');
+      expect(getProductEntities(store$.state)).toHaveProperty('SKU3');
+    });
+
+    it('should select various products on single product selector', () => {
+      expect(getProduct(store$.state, { sku: 'SKU1' })).toHaveProperty('name', 'sku1');
+      expect(getProduct(store$.state, { sku: 'SKU2' })).toHaveProperty('name', 'sku2');
+      expect(getProduct(store$.state, { sku: 'SKU3' })).toHaveProperty('name', 'sku3');
+    });
+
+    it('should select various products on multiple products selector', () => {
+      const products = getProducts(store$.state, { skus: ['SKU1', 'SKU2', 'SKU3'] });
+      expect(products).toHaveLength(3);
+      expect(products.map(p => p.name)).toEqual(['sku1', 'sku2', 'sku3']);
     });
   });
 });
