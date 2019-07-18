@@ -4,9 +4,8 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from '../attribute/attribute.helper';
 
-import { ProductCompletenessLevel } from './product.helper';
 import { ProductDataStub } from './product.interface';
-import { Product, ProductHelper } from './product.model';
+import { Product, ProductCompletenessLevel, ProductHelper } from './product.model';
 
 describe('Product Helper', () => {
   describe('image', () => {
@@ -206,5 +205,56 @@ describe('Product Helper', () => {
         });
       }
     );
+  });
+
+  describe('calculatePriceRange()', () => {
+    it('should return empty object when no products are supplied', () => {
+      expect(ProductHelper.calculatePriceRange(undefined)).toBeEmpty();
+      expect(ProductHelper.calculatePriceRange([])).toBeEmpty();
+    });
+
+    it('should return the single object if only one element is supplied', () => {
+      const product = { salePrice: { value: 1 } } as Product;
+      expect(ProductHelper.calculatePriceRange([product])).toEqual(product);
+    });
+
+    it('should calculate a range when multiple elements are supplied', () => {
+      const product1 = {
+        salePrice: { value: 1, currency: 'EUR' },
+        listPrice: { value: 2, currency: 'EUR' },
+      } as Product;
+      const product2 = {
+        salePrice: { value: 3, currency: 'EUR' },
+        listPrice: { value: 4, currency: 'EUR' },
+      } as Product;
+      const product3 = {
+        salePrice: { value: 5, currency: 'EUR' },
+        listPrice: { value: 6, currency: 'EUR' },
+      } as Product;
+      expect(ProductHelper.calculatePriceRange([product1, product2, product3])).toMatchInlineSnapshot(`
+        Object {
+          "minListPrice": Object {
+            "currency": "EUR",
+            "type": undefined,
+            "value": 2,
+          },
+          "minSalePrice": Object {
+            "currency": "EUR",
+            "type": undefined,
+            "value": 1,
+          },
+          "summedUpListPrice": Object {
+            "currency": "EUR",
+            "type": undefined,
+            "value": 12,
+          },
+          "summedUpSalePrice": Object {
+            "currency": "EUR",
+            "type": undefined,
+            "value": 9,
+          },
+        }
+      `);
+    });
   });
 });

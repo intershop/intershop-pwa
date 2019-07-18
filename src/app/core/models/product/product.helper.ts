@@ -1,5 +1,6 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
+import { PriceHelper } from '../price/price.model';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { ProductBundle } from './product-bundle.model';
@@ -19,6 +20,10 @@ export enum ProductCompletenessLevel {
 }
 
 export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
+
+export type ProductPrices =
+  | Partial<Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>>
+  | Partial<Pick<Product, 'salePrice' | 'listPrice'>>;
 
 export class ProductHelper {
   /**
@@ -128,5 +133,20 @@ export class ProductHelper {
       return product.attributeGroups[attributeGroupId].attributes;
     }
     return;
+  }
+
+  static calculatePriceRange(products: Product[]): ProductPrices {
+    if (!products || !products.length) {
+      return {};
+    } else if (products.length === 1) {
+      return products[0];
+    } else {
+      return {
+        minListPrice: products.map(p => p.listPrice).reduce(PriceHelper.min),
+        minSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.min),
+        summedUpListPrice: products.map(p => p.listPrice).reduce(PriceHelper.sum),
+        summedUpSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.sum),
+      };
+    }
   }
 }
