@@ -34,11 +34,9 @@ const productToVariationOptions = memoize(
     `${product && product.sku}#${ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)}`
 );
 
-export const {
-  selectEntities: getProductEntities,
-  selectAll: getProducts,
-  selectIds: getProductIds,
-} = productAdapter.getSelectors(getProductsState);
+export const { selectEntities: getProductEntities, selectIds: getProductIds } = productAdapter.getSelectors(
+  getProductsState
+);
 
 export const getSelectedProductId = createSelector(
   getProductsState,
@@ -72,18 +70,33 @@ const createView = memoize(
   }
 );
 
+function createFailedOrProductView(sku: string, failed, entities, tree) {
+  if (failed.includes(sku)) {
+    // tslint:disable-next-line: ish-no-object-literal-type-assertion
+    return createProductView({ sku, failed: true } as Product, tree);
+  }
+  return createView(entities[sku], entities, tree);
+}
+
 export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
   getFailed,
-  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView => {
-    if (failed.includes(props.sku)) {
-      // tslint:disable-next-line: ish-no-object-literal-type-assertion
-      return createProductView({ sku: props.sku, failed: true } as Product, tree);
-    }
+  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView =>
+    createFailedOrProductView(props.sku, failed, entities, tree)
+);
 
-    return createView(entities[props.sku], entities, tree);
-  }
+export const getProducts = createSelector(
+  getCategoryTree,
+  getProductEntities,
+  getFailed,
+  (
+    tree,
+    entities,
+    failed,
+    props: { skus: string[] }
+  ): (ProductView | VariationProductView | VariationProductMasterView)[] =>
+    props.skus.map(sku => createFailedOrProductView(sku, failed, entities, tree)).filter(x => !!x)
 );
 
 export const getSelectedProduct = createSelector(
