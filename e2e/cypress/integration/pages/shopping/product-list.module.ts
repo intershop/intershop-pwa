@@ -1,8 +1,24 @@
 import { waitLoadingEnd } from '../../framework';
 
 export class ProductListModule {
+  constructor(private contextSelector: string) {}
+
   get visibleProducts() {
-    return cy.get('ish-product-tile');
+    return cy.get(this.contextSelector).find('ish-product-item-container');
+  }
+
+  get visibleProductSKUs() {
+    return cy
+      .get(this.contextSelector)
+      .find('ish-product-item-container [data-testing-sku]')
+      .then(array => {
+        const skus = [];
+        for (let index = 0; index < array.length; index++) {
+          const element = array[index];
+          skus.push(element.getAttribute('data-testing-sku'));
+        }
+        return skus;
+      });
   }
 
   get firstVisibleProductSKU() {
@@ -13,19 +29,25 @@ export class ProductListModule {
   }
 
   productTile(sku: string) {
-    return cy.get(`ish-product-tile div[data-testing-sku="${sku}"]`);
+    return cy.get(this.contextSelector).find(`ish-product-item-container div[data-testing-sku="${sku}"]`);
   }
 
   gotoProductDetailPageBySku(sku: string) {
-    cy.get(`ish-product-tile div[data-testing-sku="${sku}"]`).click();
+    cy.get(this.contextSelector)
+      .find(`ish-product-item-container div[data-testing-sku="${sku}"]`)
+      .click();
   }
 
   addProductToCompareBySku(sku: string) {
-    cy.get(`ish-product-tile div[data-testing-sku="${sku}"] button.add-to-compare`).click();
+    cy.get(this.contextSelector)
+      .find(`ish-product-item-container div[data-testing-sku="${sku}"] button.add-to-compare`)
+      .click();
   }
 
   addProductToQuoteRequest(sku: string) {
-    cy.get(`ish-product-tile div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`).click();
+    cy.get(this.contextSelector)
+      .find(`ish-product-item-container div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`)
+      .click();
   }
 
   get numberOfItems() {
