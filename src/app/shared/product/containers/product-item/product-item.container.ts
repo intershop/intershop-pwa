@@ -30,6 +30,7 @@ declare type ProductItemContainerConfiguration = ProductTileComponentConfigurati
 
 export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> = {
   readOnly: false,
+  allowZeroQuantity: false,
   displayName: true,
   displayDescription: true,
   displaySKU: true,

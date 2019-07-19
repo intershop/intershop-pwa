@@ -64,6 +64,7 @@
             <ish-product-quantity
               *ngIf="configuration.displayQuantity"
               [readOnly]="configuration.readOnly"
+              [allowZeroQuantity]="configuration.allowZeroQuantity"
               [product]="product"
               [parentForm]="productItemForm"
               [controlName]="quantityControlName"
