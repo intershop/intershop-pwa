@@ -15,6 +15,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 
 export interface ProductRowComponentConfiguration {
   readOnly: boolean;
+  allowZeroQuantity: boolean;
   displayName: boolean;
   displayDescription: boolean;
   displaySKU: boolean;

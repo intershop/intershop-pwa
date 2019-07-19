@@ -27,6 +27,7 @@ function generateSelectOptionsForRange(min: number, max: number): SelectOption[]
 })
 export class ProductQuantityComponent implements OnInit, OnChanges {
   @Input() readOnly = false;
+  @Input() allowZeroQuantity = false;
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
@@ -47,7 +48,7 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
     if (this.type !== 'select') {
       return Validators.compose([
         Validators.required,
-        Validators.min(this.product.minOrderQuantity),
+        Validators.min(this.allowZeroQuantity ? 0 : this.product.minOrderQuantity),
         Validators.max(this.product.maxOrderQuantity),
         SpecialValidators.integer,
       ]);

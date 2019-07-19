@@ -20,7 +20,7 @@
         [labelClass]="'label-quantity col-6'"
         [inputClass]="'col-6 ' + (class || '')"
         [markRequiredLabel]="'off'"
-        [min]="product.minOrderQuantity"
+        [min]="allowZeroQuantity ? 0 : product.minOrderQuantity"
         [max]="product.maxOrderQuantity"
         [errorMessages]="{
           required: 'product.quantity.notempty.text',
