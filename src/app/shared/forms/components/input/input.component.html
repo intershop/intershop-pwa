@@ -11,7 +11,7 @@
       [attr.data-testing-id]="controlName"
       [maxlength]="maxlength"
       [attr.autocomplete]="calculatedAutocomplete"
-      [min]="min || ''"
+      [min]="min || (min === 0 ? 0 : '')"
       [max]="max || ''"
       [placeholder]="placeholderText ? (placeholderText | translate) : ''"
     />
