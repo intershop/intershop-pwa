@@ -1,9 +1,11 @@
 // tslint:disable:ban-specific-imports
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CookiesOptions, CookiesService as ForeignCookiesService } from '@ngx-utils/cookies';
 import { ReplaySubject, timer } from 'rxjs';
-import { distinct, map, tap } from 'rxjs/operators';
+import { distinct, map, switchMap, take, tap } from 'rxjs/operators';
+
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CookiesService {
@@ -11,13 +13,23 @@ export class CookiesService {
 
   cookieLawSeen$ = new ReplaySubject<boolean>(1);
 
-  constructor(private cookiesService: ForeignCookiesService, @Inject(PLATFORM_ID) private platformId: string) {
+  constructor(
+    private cookiesService: ForeignCookiesService,
+    @Inject(PLATFORM_ID) private platformId: string,
+    appRef: ApplicationRef
+  ) {
     if (isPlatformBrowser(this.platformId)) {
-      timer(0, 1000)
+      appRef.isStable
         .pipe(
-          map(() => this.cookiesService.get('cookieLawSeen') === 'true'),
-          distinct(),
-          tap(cookieLawSeen => (this.cookieLawSeen = cookieLawSeen))
+          whenTruthy(),
+          take(1),
+          switchMap(() =>
+            timer(0, 1000).pipe(
+              map(() => this.cookiesService.get('cookieLawSeen') === 'true'),
+              distinct(),
+              tap(cookieLawSeen => (this.cookieLawSeen = cookieLawSeen))
+            )
+          )
         )
         .subscribe(this.cookieLawSeen$);
     } else {
