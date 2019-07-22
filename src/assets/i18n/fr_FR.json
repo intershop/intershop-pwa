@@ -2515,5 +2515,14 @@
   "account.date.year.error.required": "Veuillez sélectionner une année.",
   "account.date.month.error.required": "Veuillez sélectionner un mois.",
   "account.login.quotes.message": "Veuillez vous connecter à votre compte pour utiliser les devis.",
-  "common.button.spinning.label": "En train d\u2019ajouter..."
+  "common.button.spinning.label": "En train d\u2019ajouter...",
+  "product.product_links.accessory.title": "Accessoires",
+  "product.product_links.crossselling.title": "Vous pouvez également aimer",
+  "product.product_links.differentorderunit.title": "Autre unité de commande",
+  "product.product_links.followup.title": "Nouvelle version",
+  "product.product_links.other.title": "En vedette",
+  "product.product_links.replacement.title": "Produit de substitution",
+  "product.product_links.spareparts.title": "Pièces de rechange",
+  "product.product_links.upselling.title": "Alternatives",
+  "product.product_links.quantity.label": "Quantité"
 }
