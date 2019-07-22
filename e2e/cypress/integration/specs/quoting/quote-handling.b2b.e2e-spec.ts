@@ -132,7 +132,6 @@ describe('check displayed data from Rest', () => {
     });
   });
   beforeEach(() => {
-    cy.server();
     mockQuotes();
   });
 

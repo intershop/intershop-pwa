@@ -14,15 +14,11 @@ const _ = {
 };
 
 describe('Missing Data', () => {
-  beforeEach(() => {
-    cy.server();
-  });
-
   describe('server error when getting CMS managed content', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.route({
+      cy.server().route({
         method: 'GET',
         url: '**/cms/**',
         status: 500,
@@ -43,7 +39,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.route({
+      cy.server().route({
         method: 'GET',
         url: '**/cms/**',
         status: 404,
@@ -64,7 +60,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.route({
+      cy.server().route({
         method: 'GET',
         url: '**/products/201807194*',
         status: 404,
@@ -85,7 +81,7 @@ describe('Missing Data', () => {
     before(() => {
       HomePage.navigateTo();
 
-      cy.route({
+      cy.server().route({
         method: 'GET',
         url: '**/products/3957279*',
         status: 404,
@@ -119,7 +115,7 @@ describe('Missing Data', () => {
     before(() => {
       HomePage.navigateTo();
 
-      cy.route({
+      cy.server().route({
         method: 'GET',
         url: '**/products*',
         status: 404,

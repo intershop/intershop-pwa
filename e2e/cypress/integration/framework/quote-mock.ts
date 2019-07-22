@@ -67,6 +67,8 @@ export function mockQuotes() {
     },
   ];
 
+  cy.server();
+
   cy.route({
     method: 'GET',
     url: '**/quotes',
