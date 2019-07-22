@@ -157,7 +157,7 @@ export class ProductsEffects {
     groupBy(([product]) => product.productMasterSKU),
     mergeMap(groups =>
       groups.pipe(
-        throttleTime(10000),
+        throttleTime(3000),
         map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
       )
     )
@@ -180,7 +180,7 @@ export class ProductsEffects {
     groupBy(([product]) => product.sku),
     mergeMap(groups =>
       groups.pipe(
-        throttleTime(10000),
+        throttleTime(3000),
         map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
       )
     )
