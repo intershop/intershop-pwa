@@ -9,10 +9,12 @@ export interface ProductLinks {
 }
 
 export interface ProductLinksView {
-  [id: string]: {
-    productSKUs: string[];
-    categoryIds: string[];
-    products(): ProductView[];
-    categories(): CategoryView[];
-  };
+  [id: string]: ProductLinkView;
+}
+
+export interface ProductLinkView {
+  productSKUs: string[];
+  categoryIds: string[];
+  products(): ProductView[];
+  categories(): CategoryView[];
 }
