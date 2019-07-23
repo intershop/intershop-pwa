@@ -1,10 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, PLATFORM_ID } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, interval } from 'rxjs';
-import { filter, map, mapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, switchMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -17,7 +17,8 @@ export class RestoreEffects {
     private store$: Store<{}>,
     private router: Router,
     private cookieService: CookiesService,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private appRef: ApplicationRef
   ) {}
 
   @Effect({ dispatch: false })
@@ -58,13 +59,19 @@ export class RestoreEffects {
   );
 
   @Effect()
-  logOutUserIfTokenVanishes$ = interval(1000).pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
-    withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.cookieService.cookieLawSeen$),
-    filter(([, , cookieLawAccepted]) => cookieLawAccepted),
-    map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
-    filter(({ user, apiToken }) => user && !apiToken),
-    mapTo(new LogoutUser())
+  logOutUserIfTokenVanishes$ = this.appRef.isStable.pipe(
+    whenTruthy(),
+    take(1),
+    switchMap(() =>
+      interval(1000).pipe(
+        takeWhile(() => isPlatformBrowser(this.platformId)),
+        withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.cookieService.cookieLawSeen$),
+        filter(([, , cookieLawAccepted]) => cookieLawAccepted),
+        map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
+        filter(({ user, apiToken }) => user && !apiToken),
+        mapTo(new LogoutUser())
+      )
+    )
   );
 
   private makeCookie(apiToken: string, type: 'user' | 'basket'): string {

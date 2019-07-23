@@ -15,7 +15,7 @@ describe('Server Html', () => {
   beforeEach(() => {
     LoginPage.navigateTo();
 
-    cy.route({
+    cy.server().route({
       method: 'GET',
       url: '**/cms/**',
       status: 200,
