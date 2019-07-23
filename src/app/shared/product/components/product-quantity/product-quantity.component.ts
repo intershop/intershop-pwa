@@ -28,6 +28,7 @@ function generateSelectOptionsForRange(min: number, max: number): SelectOption[]
 export class ProductQuantityComponent implements OnInit, OnChanges {
   @Input() readOnly = false;
   @Input() allowZeroQuantity = false;
+  @Input() quantityLabel = 'product.quantity.label';
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;

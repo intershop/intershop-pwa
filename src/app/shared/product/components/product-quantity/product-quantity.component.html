@@ -5,7 +5,7 @@
         [options]="quantityOptions"
         [form]="parentForm"
         [controlName]="controlName"
-        [label]="'product.quantity.label'"
+        [label]="quantityLabel"
         [labelClass]="'label-quantity col-6'"
         [inputClass]="'col-6 ' + (class || '')"
       ></ish-select>
@@ -16,7 +16,7 @@
         [type]="'number'"
         [form]="parentForm"
         [controlName]="controlName"
-        [label]="'product.quantity.label'"
+        [label]="quantityLabel"
         [labelClass]="'label-quantity col-6'"
         [inputClass]="'col-6 ' + (class || '')"
         [markRequiredLabel]="'off'"
@@ -32,6 +32,6 @@
     </ng-template>
   </ng-container>
   <ng-container *ngIf="readOnly">
-    <span>{{ 'product.quantity.label' | translate }}: {{ quantity }}</span>
+    <span>{{ quantityLabel | translate }}: {{ quantity }}</span>
   </ng-container>
 </div>
