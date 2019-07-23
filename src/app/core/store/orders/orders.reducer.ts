@@ -2,7 +2,6 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { HttpError } from '../../models/http-error/http-error.model';
 import { Order } from '../../models/order/order.model';
-import { BasketAction, BasketActionTypes } from '../checkout/basket';
 
 import { OrdersAction, OrdersActionTypes } from './orders.actions';
 
@@ -22,7 +21,7 @@ export const initialState: OrdersState = orderAdapter.getInitialState({
   error: undefined,
 });
 
-export function ordersReducer(state = initialState, action: OrdersAction | BasketAction): OrdersState {
+export function ordersReducer(state = initialState, action: OrdersAction): OrdersState {
   switch (action.type) {
     case OrdersActionTypes.SelectOrder: {
       return {
@@ -31,7 +30,17 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
       };
     }
 
-    case BasketActionTypes.CreateOrderSuccess: {
+    case OrdersActionTypes.LoadOrders:
+    case OrdersActionTypes.LoadOrder:
+    case OrdersActionTypes.CreateOrder: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case OrdersActionTypes.CreateOrderSuccess:
+    case OrdersActionTypes.LoadOrderSuccess: {
       const { order } = action.payload;
 
       return {
@@ -40,26 +49,21 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
       };
     }
 
-    case OrdersActionTypes.LoadOrders: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
-    case OrdersActionTypes.LoadOrdersFail: {
-      const { error } = action.payload;
-      return {
-        ...state,
-        error,
-        loading: false,
-      };
-    }
-
     case OrdersActionTypes.LoadOrdersSuccess: {
       const { orders } = action.payload;
       return {
         ...orderAdapter.addAll(orders, state),
+        loading: false,
+      };
+    }
+
+    case OrdersActionTypes.LoadOrdersFail:
+    case OrdersActionTypes.LoadOrderFail:
+    case OrdersActionTypes.CreateOrderFail: {
+      const { error } = action.payload;
+      return {
+        ...state,
+        error,
         loading: false,
       };
     }

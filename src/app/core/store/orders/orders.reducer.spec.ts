@@ -1,6 +1,6 @@
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { Order } from '../../models/order/order.model';
-import { CreateOrderSuccess } from '../checkout/basket/basket.actions';
 
 import * as fromActions from './orders.actions';
 import { initialState, ordersReducer } from './orders.reducer';
@@ -12,6 +12,39 @@ describe('Orders Reducer', () => {
       const state = ordersReducer(undefined, action);
 
       expect(state).toBe(initialState);
+    });
+  });
+
+  describe('CreateOrder actions', () => {
+    describe('CreateOrder action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.CreateOrder({ basket: BasketMockData.getBasket() });
+        const state = ordersReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('CreateOrderSuccess action', () => {
+      it('should add new order to initial state and select it', () => {
+        const order = { id: 'orderid' } as Order;
+        const action = new fromActions.CreateOrderSuccess({ order });
+        const state = ordersReducer(initialState, action);
+
+        expect(state.entities[order.id]).toEqual(order);
+        expect(state.selected).toEqual(order.id);
+      });
+    });
+
+    describe('CreateOrderFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.CreateOrderFail({ error });
+        const state = ordersReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
     });
   });
 
@@ -37,6 +70,53 @@ describe('Orders Reducer', () => {
     });
 
     describe('LoadOrdersSuccess action', () => {
+      let orders: Order[];
+
+      beforeEach(() => {
+        orders = [
+          {
+            id: '1',
+            documentNo: '0000001',
+          } as Order,
+          {
+            id: '2',
+            documentNo: '0000002',
+          } as Order,
+        ];
+      });
+
+      it('should insert orders if not exist', () => {
+        const action = new fromActions.LoadOrdersSuccess({ orders });
+        const state = ordersReducer(initialState, action);
+
+        expect(state.ids).toHaveLength(2);
+        expect(state.entities[orders[0].id].id).toEqual(orders[0].id);
+      });
+    });
+  });
+
+  describe('LoadOrder actions', () => {
+    describe('LoadOrder action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadOrder({ orderId: '12345' });
+        const state = ordersReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+        expect(state.entities).toBeEmpty();
+      });
+    });
+
+    describe('LoadOrderFail action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.LoadOrdersFail({ error: {} as HttpError });
+        const state = ordersReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.entities).toBeEmpty();
+      });
+    });
+
+    describe('LoadOrderSuccess action', () => {
       let order: Order;
 
       beforeEach(() => {
@@ -46,24 +126,13 @@ describe('Orders Reducer', () => {
         } as Order;
       });
 
-      it('should insert orders if not exist', () => {
-        const action = new fromActions.LoadOrdersSuccess({ orders: [order] });
+      it('should insert order if not exist', () => {
+        const action = new fromActions.LoadOrderSuccess({ order });
         const state = ordersReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
         expect(state.entities[order.id]).toEqual(order);
       });
-    });
-  });
-
-  describe('CreateOrdersSuccess action', () => {
-    it('should add new order to initial state and select it', () => {
-      const order = { id: 'orderid' } as Order;
-      const action = new CreateOrderSuccess({ order });
-      const state = ordersReducer(initialState, action);
-
-      expect(state.entities[order.id]).toEqual(order);
-      expect(state.selected).toEqual(order.id);
     });
   });
 

@@ -2,6 +2,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
+import { OrdersAction, OrdersActionTypes } from 'ish-core/store/orders';
 
 import { BasketAction, BasketActionTypes } from './basket.actions';
 
@@ -21,7 +22,7 @@ export const initialState: BasketState = {
   error: undefined,
 };
 
-export function basketReducer(state = initialState, action: BasketAction): BasketState {
+export function basketReducer(state = initialState, action: BasketAction | OrdersAction): BasketState {
   switch (action.type) {
     case BasketActionTypes.LoadBasket:
     case BasketActionTypes.AssignBasketAddress:
@@ -37,8 +38,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.SetBasketPayment:
     case BasketActionTypes.CreateBasketPayment:
     case BasketActionTypes.UpdateBasketPayment:
-    case BasketActionTypes.DeleteBasketPayment:
-    case BasketActionTypes.CreateOrder: {
+    case BasketActionTypes.DeleteBasketPayment: {
       return {
         ...state,
         loading: true,
@@ -46,7 +46,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketFail:
-    case BasketActionTypes.CreateOrderFail:
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
     case BasketActionTypes.AddQuoteToBasketFail:
@@ -114,7 +113,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.ResetBasket:
-    case BasketActionTypes.CreateOrderSuccess: {
+    case OrdersActionTypes.CreateOrderSuccess: {
       return initialState;
     }
   }

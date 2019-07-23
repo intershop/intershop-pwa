@@ -19,6 +19,7 @@ export class OrderMapper {
         id: data.id,
         documentNo: data.documentNumber,
         creationDate: new Date(data.creationDate),
+        orderCreation: data.orderCreation,
         statusCode: data.statusCode,
         status: data.status,
 

@@ -42,22 +42,49 @@ describe('Order Service', () => {
     });
   });
 
-  it("should get orders when 'getOrders' is called without amount", done => {
-    when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
+  describe('getOrders', () => {
+    it("should get orders when 'getOrders' is called without amount", done => {
+      when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-    orderService.getOrders().subscribe(() => {
-      verify(apiService.get(`orders?page[limit]=30`, anything())).once();
+      orderService.getOrders().subscribe(() => {
+        verify(apiService.get(`orders?page[limit]=30`, anything())).once();
+        done();
+      });
+    });
+
+    it("should get orders when 'getOrders' is called with amount", done => {
+      when(apiService.get(anything(), anything())).thenReturn(of([]));
+
+      const amount = 10;
+      orderService.getOrders(amount).subscribe(() => {
+        verify(apiService.get(`orders?page[limit]=10`, anything())).once();
+        done();
+      });
+    });
+  });
+
+  it("should get an order when 'getOrder' is called t", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({ data: {} }));
+
+    const orderId = '123454';
+
+    orderService.getOrder(orderId).subscribe(() => {
+      verify(apiService.get(`orders/${orderId}`, anything())).once();
       done();
     });
   });
 
-  it("should get orders when 'getOrders' is called with amount", done => {
-    when(apiService.get(anything(), anything())).thenReturn(of([]));
+  describe('updatePayment', () => {
+    it('should update payment data when it is called', done => {
+      when(apiService.patch(anything(), anything(), anything())).thenReturn(of({ undefined }));
 
-    const amount = 10;
-    orderService.getOrders(amount).subscribe(() => {
-      verify(apiService.get(`orders?page[limit]=10`, anything())).once();
-      done();
+      const orderId = '123454';
+      const params = { redirect: 'success', param1: 123, orderId };
+
+      orderService.updateOrderPayment(orderId, params).subscribe(() => {
+        verify(apiService.patch(`orders/${orderId}`, anything(), anything())).once();
+        done();
+      });
     });
   });
 });
