@@ -10,7 +10,7 @@
 
   <div class="col-9 col-md-10">
     <div class="row">
-      <div class="col-7">
+      <div class="col-md-7 col-xs-12">
         <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
           product.name
         }}</a>
@@ -65,6 +65,7 @@
               *ngIf="configuration.displayQuantity"
               [readOnly]="configuration.readOnly"
               [allowZeroQuantity]="configuration.allowZeroQuantity"
+              [quantityLabel]="configuration.quantityLabel"
               [product]="product"
               [parentForm]="productItemForm"
               [controlName]="quantityControlName"
