@@ -10,8 +10,9 @@ export class ProfileEditPasswordPage {
   }
 
   submit() {
-    cy.server();
-    cy.route('PUT', '**/customers/**').as('customers');
+    cy.server()
+      .route('PUT', '**/customers/**')
+      .as('customers');
     cy.wait(500);
 
     cy.get(this.tag)

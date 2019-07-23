@@ -109,20 +109,3 @@ export function determineSalutations(countryCode: string): string[] {
   }
   return salutationlabels;
 }
-
-/**
- * Calls a function asynchronously
- * @param fn The function to be called asynchronously
- */
-export function asyncify(fn: Function) {
-  setTimeout(fn, 0);
-  return;
-}
-
-export function arrayDiff<T>(a: T[], b: T[]): T[] {
-  return a.filter(i => !b.includes(i));
-}
-
-export function arrayIntersect<T>(a: T[], b: T[]): T[] {
-  return a.filter(i => b.includes(i));
-}
