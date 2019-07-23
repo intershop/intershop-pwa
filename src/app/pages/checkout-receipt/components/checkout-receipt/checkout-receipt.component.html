@@ -1,6 +1,6 @@
 <div *ngIf="order" class="row">
   <div class="col-md-12 col-lg-8">
-    <p *ngIf="order.status === 'PENDING'" class="alert alert-info">
+    <p *ngIf="order.statusCode === 'PENDING'" class="alert alert-info">
       {{ 'checkout.receipt.order_pending.message' | translate }}
     </p>
 

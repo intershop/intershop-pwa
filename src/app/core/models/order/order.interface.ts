@@ -11,6 +11,14 @@ import { ShippingMethodData } from '../shipping-method/shipping-method.interface
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;
   creationDate: Date;
+  orderCreation: {
+    status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+    stopAction?: {
+      type: 'Redirect' | 'Workflow';
+      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required';
+      redirectUrl?: string;
+    };
+  };
   statusCode: string;
   status: string;
 }

@@ -10,10 +10,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -59,11 +59,13 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   formSubmitted = false;
   experimental = false;
 
+  redirectStatus: string;
+
   private openFormIndex = -1; // index of the open parameter form
 
   private destroy$ = new Subject();
 
-  constructor(private router: Router, private featureToggle: FeatureToggleService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private featureToggle: FeatureToggleService) {}
 
   /**
    * create payment form
@@ -85,6 +87,12 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(id => this.updatePaymentMethod.emit(id));
+
+    // if page is shown after cancelled/faulty redirect determine error message variable
+    this.route.queryParamMap.pipe(take(1)).subscribe(params => {
+      const redirect = params.get('redirect');
+      this.redirectStatus = redirect ? redirect : undefined;
+    });
   }
 
   get parameterForm(): FormGroup {
@@ -128,7 +136,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       this.filteredPaymentMethods = this.paymentMethods;
     } else {
       this.filteredPaymentMethods = this.paymentMethods.filter(
-        pm => !pm.capabilities || !pm.capabilities.some(cap => cap === 'RedirectBeforeCheckout')
+        pm => !pm.capabilities || !pm.capabilities.some(cap => cap.startsWith('Redirect') && pm.id.startsWith('ISH'))
       );
     }
   }

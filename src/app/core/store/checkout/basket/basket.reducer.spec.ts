@@ -3,6 +3,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { CreateOrderSuccess } from 'ish-core/store/orders';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import * as fromActions from './basket.actions';
@@ -454,39 +455,17 @@ describe('Basket Reducer', () => {
     });
   });
 
-  describe('CreateOrder actions', () => {
-    describe('CreateOrder action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.CreateOrder({ basket: BasketMockData.getBasket() });
-        const state = basketReducer(initialState, action);
+  describe('CreateOrderSuccess action', () => {
+    it('should reset the checkout state if called', () => {
+      const oldState = {
+        ...initialState,
+        loading: true,
+        lineItems: [{ id: 'test' } as LineItem],
+      };
+      const action = new CreateOrderSuccess({ order: { id: '123' } as Order });
+      const state = basketReducer(oldState, action);
 
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('CreateOrderFail action', () => {
-      it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.CreateOrderFail({ error });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toEqual(error);
-      });
-    });
-
-    describe('CreateOrderSuccess action', () => {
-      it('should reset the checkout state if called', () => {
-        const oldState = {
-          ...initialState,
-          loading: true,
-          lineItems: [{ id: 'test' } as LineItem],
-        };
-        const action = new fromActions.CreateOrderSuccess({ order: { id: '123' } as Order });
-        const state = basketReducer(oldState, action);
-
-        expect(state).toEqual(initialState);
-      });
+      expect(state).toEqual(initialState);
     });
   });
 });

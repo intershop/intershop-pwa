@@ -71,7 +71,7 @@ export class BasketPaymentEffects {
   sendPaymentRedirectData$ = this.actions$.pipe(
     ofRoute(['checkout/payment', 'checkout/review']),
     map((action: RouteNavigation) => action.payload.queryParams),
-    filter(queryParams => queryParams && queryParams.redirect),
+    filter(queryParams => queryParams && queryParams.redirect && !queryParams.orderId),
     switchMap(queryParams =>
       this.store.pipe(
         select(getCurrentBasketId),

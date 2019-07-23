@@ -7,6 +7,13 @@
     <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
+    <div *ngIf="redirectStatus" role="alert" class="alert alert-danger">
+      {{ 'checkout.payment.sorry_message.text' | translate }}
+      <ng-container *ngIf="redirectStatus === 'cancel'">{{
+        'checkout.payment.canceled.text' | translate
+      }}</ng-container>
+      <ng-container *ngIf="redirectStatus === 'failure'">{{ 'checkout.payment.failed.text' | translate }}</ng-container>
+    </div>
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
 
     <!-- display all payment methods -->

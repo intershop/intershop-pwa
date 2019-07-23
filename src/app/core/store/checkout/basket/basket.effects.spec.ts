@@ -1,11 +1,9 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
@@ -14,7 +12,6 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Order } from 'ish-core/models/order/order.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user/user.actions';
@@ -36,7 +33,6 @@ describe('Basket Effects', () => {
   let addressServiceMock: AddressService;
   let effects: BasketEffects;
   let store$: Store<{}>;
-  let location: Location;
 
   // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
@@ -51,9 +47,6 @@ describe('Basket Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
-        ]),
         StoreModule.forRoot({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
@@ -71,7 +64,6 @@ describe('Basket Effects', () => {
 
     effects = TestBed.get(BasketEffects);
     store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
   });
 
   describe('loadBasket$', () => {
@@ -419,57 +411,5 @@ describe('Basket Effects', () => {
 
       expect(effects.resetBasketAfterLogout$).toBeObservable(expected$);
     });
-  });
-
-  describe('createOrder$', () => {
-    it('should call the orderService for createOrder', done => {
-      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(undefined));
-      const payload = BasketMockData.getBasket();
-      const action = new basketActions.CreateOrder({ basket: payload });
-      actions$ = of(action);
-
-      effects.createOrder$.subscribe(() => {
-        verify(orderServiceMock.createOrder(payload, true)).once();
-        done();
-      });
-    });
-
-    it('should map a valid request to action of type CreateOrderSuccess', () => {
-      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
-        of({ id: BasketMockData.getBasket().id } as Order)
-      );
-      const basket = BasketMockData.getBasket();
-      const order = { id: basket.id } as Order;
-      const action = new basketActions.CreateOrder({ basket });
-      const completion = new basketActions.CreateOrderSuccess({ order });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.createOrder$).toBeObservable(expected$);
-    });
-
-    it('should map an invalid request to action of type CreateOrderFail', () => {
-      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(throwError({ message: 'invalid' }));
-      const basket = BasketMockData.getBasket();
-      const action = new basketActions.CreateOrder({ basket });
-      const completion = new basketActions.CreateOrderFail({ error: { message: 'invalid' } as HttpError });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.createOrder$).toBeObservable(expected$);
-    });
-  });
-
-  describe('goToCheckoutReceiptPageAfterOrderCreation', () => {
-    it('should navigate to /checkout/receipt after CreateOrderSuccess', fakeAsync(() => {
-      const action = new basketActions.CreateOrderSuccess({ order: { id: '123' } as Order });
-      actions$ = of(action);
-
-      effects.goToCheckoutReceiptPageAfterOrderCreation$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/checkout/receipt');
-    }));
   });
 });
