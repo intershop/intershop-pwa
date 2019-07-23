@@ -10,15 +10,15 @@
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
 
     <!-- display all payment methods -->
-    <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submit()">
+    <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
       <ul
-        *ngIf="paymentMethods && paymentMethods.length > 0"
+        *ngIf="hasPaymentMethods"
         id="payment-accordion"
         class="list-unstyled ml-4"
         role="tablist"
         aria-multiselectable="true"
       >
-        <ng-container *ngFor="let paymentMethod of paymentMethods; let i = index">
+        <ng-container *ngFor="let paymentMethod of filteredPaymentMethods; index as i">
           <li class="panel">
             <div [ngClass]="{ 'form-check': !paymentMethod.parameters }" role="tab">
               <!-- display radio buttons only for payment methods without parameters -->
@@ -33,20 +33,14 @@
               />
               <label class="form-check-label" [for]="'paymentOption_' + paymentMethod.id">
                 <strong>
-                  {{ paymentMethod.displayName
-                  }}<ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
+                  {{ paymentMethod.displayName }}
+                  <ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.id }}</ng-container>
                 </strong>
                 <p *ngIf="paymentMethod.description">{{ paymentMethod.description }}</p>
-                <p
-                  *ngIf="
-                    paymentMethod.paymentCostsThreshold &&
-                      paymentMethod.paymentCostsThreshold.value <= basket.totals.total.value;
-                    else displayPaymentCosts
-                  "
-                >
-                  {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}&nbsp;{{
-                    basket.totals.total | ishPrice
-                  }}
+                <p *ngIf="paymentCostThresholdReached(paymentMethod); else displayPaymentCosts">
+                  {{ 'checkout.payment.payment_cost_threshold.amount_reached' | translate }}
+                  &nbsp;
+                  {{ basket.totals.total | ishPrice }}
                 </p>
                 <ng-template #displayPaymentCosts>
                   <div *ngIf="!paymentMethod.isRestricted; else displayRestrictions">
@@ -54,7 +48,7 @@
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;
-                      <span *ngIf="paymentMethod.paymentCostsThreshold" class=".form-text text-muted">
+                      <span *ngIf="paymentMethod.paymentCostsThreshold" class="form-text text-muted">
                         <span class="hidden-xs">&nbsp;-&nbsp;</span
                         >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
                         <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
@@ -63,9 +57,10 @@
                   </div>
                 </ng-template>
                 <ng-template #displayRestrictions>
-                  {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
-                    paymentMethod.paymentCosts | ishPrice
-                  }}&nbsp;
+                  {{ 'checkout.payment.method.charges.text' | translate }}
+                  &nbsp;
+                  {{ paymentMethod.paymentCosts | ishPrice }}
+                  &nbsp;
                   <p *ngFor="let restriction of paymentMethod.restrictionCauses" class="text-info">
                     {{ restriction.message }}
                   </p>
@@ -98,12 +93,15 @@
             </li>
 
             <p>
-              <a *ngIf="i !== openFormIndex" (click)="openPaymentParameterForm(i)"
+              <a *ngIf="!formIsOpen(i)" (click)="openPaymentParameterForm(i)"
                 >{{ 'checkout.payment.addPayment.link' | translate }}
               </a>
             </p>
 
-            <div [ngbCollapse]="!(i === openFormIndex)">
+            <div [ngbCollapse]="!formIsOpen(i)">
+              <p class="indicates-required">
+                <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+              </p>
               <ng-container *ngIf="paymentMethod.serviceId !== 'Concardis_CreditCard'; else ConcardisCreditCard">
                 <formly-form
                   [form]="parameterForm"
@@ -124,7 +122,7 @@
               <ng-template #ConcardisCreditCard>
                 <ish-payment-concardis-creditcard
                   [paymentMethod]="paymentMethod"
-                  [activated]="i === openFormIndex"
+                  [activated]="formIsOpen(i)"
                   (submit)="createNewPaymentInstrument($event)"
                   (cancel)="cancelNewPaymentInstrument()"
                 ></ish-payment-concardis-creditcard>

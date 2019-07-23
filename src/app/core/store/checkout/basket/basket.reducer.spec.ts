@@ -384,6 +384,44 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('UpdateBasketPayment actions', () => {
+    const params = {
+      redirect: 'success',
+      param1: '123',
+      param2: '456',
+    };
+
+    describe('UpdateBasketPayment action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasketPayment({ params });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('UpdateBasketPaymentFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.UpdateBasketPaymentFail({ error });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('UpdateBasketPaymentSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.UpdateBasketPaymentSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+  });
+
   describe('DeleteBasketPayment actions', () => {
     describe('DeleteBasketPayment action', () => {
       it('should set loading to true', () => {

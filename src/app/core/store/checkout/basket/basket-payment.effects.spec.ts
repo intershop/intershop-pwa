@@ -2,12 +2,15 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -256,6 +259,118 @@ describe('Basket Payment Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketEligiblePaymentMethodsAfterChange$).toBeObservable(expected$);
+    });
+  });
+
+  describe('sendPaymentRedirectData$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+    });
+
+    it('should trigger updateBasketPayment action if checkout payment/review page is called with query param "redirect"', () => {
+      const params = { redirect: 'success', param1: 123 };
+
+      const action = new RouteNavigation({
+        path: 'checkout/review',
+        queryParams: { redirect: 'success', param1: 123 },
+      });
+      actions$ = hot('-a', { a: action });
+
+      expect(effects.sendPaymentRedirectData$).toBeObservable(
+        cold('-c', { c: new basketActions.UpdateBasketPayment({ params }) })
+      );
+    });
+  });
+
+  describe('updateBasketPayment$', () => {
+    const paymentInstrument = {
+      id: '456',
+      paymentMethod: 'ISH_DirectDebit',
+      parameters_: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+
+    const params = {
+      redirect: 'success',
+      param1: '123',
+      param2: '456',
+    };
+
+    const payment = {
+      id: '123',
+      paymentInstrument,
+      paymentMethod: { id: 'ISH_DirectDebit' } as PaymentMethod,
+      redirectRequired: false,
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(of(payment));
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+            payment: payment as Payment,
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the basketService for updateBasketPayment', done => {
+      const action = new basketActions.UpdateBasketPayment({ params });
+      actions$ = of(action);
+
+      effects.updateBasketPayment$.subscribe(() => {
+        verify(basketServiceMock.updateBasketPayment('BID', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type UpdateBasketPaymentSuccess', () => {
+      const action = new basketActions.UpdateBasketPayment({ params });
+      const completion = new basketActions.UpdateBasketPaymentSuccess();
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketPayment$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type UpdateBasketPaymentFail', () => {
+      when(basketServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+      const action = new basketActions.UpdateBasketPayment({ params });
+      const completion = new basketActions.UpdateBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketPayment$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadBasket in case of success', () => {
+      const action = new basketActions.UpdateBasketPaymentSuccess();
+      const completion = new basketActions.LoadBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
     });
   });
 

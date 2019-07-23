@@ -225,6 +225,23 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should update a basket payment when 'updateBasketPayment' is called", done => {
+    when(apiService.patch(`baskets/${basketMockData.data.id}/payments/open-tender`, anything(), anything())).thenReturn(
+      of({})
+    );
+
+    const params = {
+      redirect: 'success',
+      param1: '123',
+      param2: '456',
+    };
+
+    basketService.updateBasketPayment(basketMockData.data.id, params).subscribe(() => {
+      verify(apiService.patch(`baskets/${basketMockData.data.id}/payments/open-tender`, anything(), anything())).once();
+      done();
+    });
+  });
+
   it("should delete a payment instrument from basket when 'deleteBasketInstrument' is called", done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
