@@ -9,6 +9,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from '../../../../shared/product/components/product-attributes/product-attributes.component';
+import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from '../../../../shared/product/components/product-inventory/product-inventory.component';
 import { ProductPriceComponent } from '../../../../shared/product/components/product-price/product-price.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
@@ -30,6 +31,7 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductComparePagingComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductPriceComponent),
