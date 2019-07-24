@@ -44,6 +44,7 @@ describe('Line Item Edit Dialog Container', () => {
         LineItemEditDialogComponent,
         LineItemEditDialogContainerComponent,
         MockComponent(LoadingComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductRowComponent),
@@ -81,7 +82,7 @@ describe('Line Item Edit Dialog Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display sku of variation', () => {
+  it('should give correct product id of variation to product id component', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(
       `<ish-product-id ng-reflect-product="[object Object]"></ish-product-id>`

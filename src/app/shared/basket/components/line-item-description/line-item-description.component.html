@@ -1,6 +1,6 @@
 <ng-container *ngIf="pli && pli.product">
   <!-- Product ID -->
-  <p class="product-id">{{ 'checkout.pli.item.text.id' | translate }} {{ pli.productSKU }}</p>
+  <ish-product-id [product]="pli.product"></ish-product-id>
 
   <!-- Product Variations -->
   <ish-product-variation-display
