@@ -16,10 +16,7 @@ export function promotionsReducer(state = initialState, action: PromotionsAction
   switch (action.type) {
     case PromotionsActionTypes.LoadPromotionSuccess: {
       const promotion = action.payload.promotion;
-      return promotionAdapter.upsertOne(promotion, {
-        ...state,
-        loading: false,
-      });
+      return promotionAdapter.upsertOne(promotion, state);
     }
   }
 
