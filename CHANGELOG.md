@@ -1,3 +1,28 @@
+# [0.13.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.13.0/) (2019-07-23)
+
+**required Intershop Commerce Management version: 7.10.12.2**
+
+### Features
+
+- support for payment method 'ISH_DEMO_Creditcard' as example for the redirect before checkout payment capability (ISREST-694)
+- personalization handling for CMS
+- sticky header ui and code improvements (ISREST-509)
+- support ICM means to link to different objects - ishServerHtml directive (IS-24899)
+- feedback with toast messages (ISREST-444)
+
+### Bug Fixes
+
+- synchronize product list paging order (ISREST-740)
+- prevent call for individual products on product list if enough data is available (ISREST-752)
+- display info message on login form if the user is redirected to the login page (ISREST-762)
+- display short line item description on order detail page (ISREST-785)
+- myAccount navigation minor ui issues (ISREST-488)
+- improve address form region update handling
+- handle undefined user on account-profile-page
+- search box configuration handling to be more robust without any configuration
+- set Bootstrap default body color to our themes color-primary
+- wait till app is stable before starting timers
+
 # [0.12.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.12.0/) (2019-06-13)
 
 **required Intershop Commerce Management version: 7.10.9.0**
