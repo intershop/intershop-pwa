@@ -49,6 +49,7 @@ import { ProductAddToBasketComponent } from './product/components/product-add-to
 import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './product/components/product-bundle-display/product-bundle-display.component';
+import { ProductIdComponent } from './product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
 import { ProductLabelComponent } from './product/components/product-label/product-label.component';
 import { ProductListPagingComponent } from './product/components/product-list-paging/product-list-paging.component';
@@ -102,6 +103,7 @@ const declaredComponents = [
   LineItemEditDialogContainerComponent,
   OrderListComponent,
   ProductBundleDisplayComponent,
+  ProductIdComponent,
   ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
@@ -132,6 +134,7 @@ const exportedComponents = [
   ProductAddToCompareComponent,
   ProductAttributesComponent,
   ProductBundleDisplayContainerComponent,
+  ProductIdComponent,
   ProductInventoryComponent,
   ProductItemContainerComponent,
   ProductLabelComponent,
