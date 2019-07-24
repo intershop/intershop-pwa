@@ -19,9 +19,7 @@
         </a>
       </div>
 
-      <div class="product-number">
-        <label>{{ 'product.itemNumber.label' | translate }}</label> <span itemprop="sku">{{ product.sku }}</span>
-      </div>
+      <ish-product-id [product]="product"></ish-product-id>
 
       <ish-product-promotion-container [product]="product"></ish-product-promotion-container>
 
