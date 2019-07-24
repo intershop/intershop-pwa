@@ -19,3 +19,11 @@ export const getBreadcrumbData = createSelector(
   getViewconfState,
   state => state.breadcrumbData
 );
+export const getDeviceType = createSelector(
+  getViewconfState,
+  state => state.deviceType
+);
+export const isStickyHeader = createSelector(
+  getViewconfState,
+  state => state.stickyHeader && !state.headerType
+);

@@ -6,6 +6,7 @@ import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -15,7 +16,6 @@ import { FooterComponent } from './footer/components/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
 import { HeaderNavigationComponent } from './header/components/header-navigation/header-navigation.component';
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
-import { HeaderStickyComponent } from './header/components/header-sticky/header-sticky.component';
 import { HeaderComponent } from './header/components/header/header.component';
 import { LanguageSwitchComponent } from './header/components/language-switch/language-switch.component';
 import { LoginStatusComponent } from './header/components/login-status/login-status.component';
@@ -39,6 +39,7 @@ const exportedComponents = [
   HeaderContainerComponent,
   ProductImageComponent,
   SearchBoxContainerComponent,
+  ServerHtmlDirective,
 ];
 
 @NgModule({
@@ -62,7 +63,6 @@ const exportedComponents = [
     HeaderNavigationComponent,
     HeaderNavigationContainerComponent,
     HeaderSimpleComponent,
-    HeaderStickyComponent,
     LanguageSwitchComponent,
     LanguageSwitchContainerComponent,
     LoginStatusComponent,

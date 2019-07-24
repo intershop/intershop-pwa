@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { Action } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { RouteNavigation } from 'ngrx-router';
 
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { coreReducers } from '../core-store.module';
 
@@ -14,50 +14,39 @@ describe('Viewconf Integration', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting(coreReducers, [ViewconfEffects]),
+      providers: [
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
+      ],
     });
 
     store$ = TestBed.get(TestStore);
   });
 
   it('should extract wrapperClass from routing to state', () => {
-    store$.dispatch({
-      type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: { wrapperClass: 'something' } },
-    } as Action);
+    store$.dispatch(new RouteNavigation({ path: 'any', data: { wrapperClass: 'something' } }));
 
     expect(getWrapperClass(store$.state)).toEqual('something');
   });
 
   it('should extract headerType from routing to state', () => {
-    store$.dispatch({
-      type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: { headerType: 'something' } },
-    } as Action);
+    store$.dispatch(new RouteNavigation({ path: 'any', data: { headerType: 'something' } }));
 
     expect(getHeaderType(store$.state)).toEqual('something');
   });
 
   it('should extract breadcrumbData from routing to state', () => {
-    store$.dispatch({
-      type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: { breadcrumbData: [{ text: 'TEXT' }] } },
-    } as Action);
+    store$.dispatch(new RouteNavigation({ path: 'any', data: { breadcrumbData: [{ text: 'TEXT' }] } }));
 
     expect(getBreadcrumbData(store$.state)).toEqual([{ text: 'TEXT' }]);
   });
 
   it('should reset wrapperClass when no longer available in routing data', () => {
-    store$.dispatch({
-      type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: { wrapperClass: 'something' } },
-    } as Action);
+    store$.dispatch(new RouteNavigation({ path: 'any', data: { wrapperClass: 'something' } }));
 
     expect(getWrapperClass(store$.state)).toEqual('something');
 
-    store$.dispatch({
-      type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: {} },
-    } as Action);
+    store$.dispatch(new RouteNavigation({ path: 'any', data: {} }));
 
     expect(getWrapperClass(store$.state)).toBeUndefined();
   });

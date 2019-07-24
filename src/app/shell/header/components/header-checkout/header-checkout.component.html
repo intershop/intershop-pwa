@@ -1,24 +1,22 @@
-<div class="top-header">
-  <nav class="container">
-    <div class="row">
-      <div class="col-lg-10">
+<div class="top-header header-checkout">
+  <div class="row">
+    <div class="container">
+      <div class="header-utility col-3 col-md-12">
         <ul class="user-links">
           <li><ish-login-status-container [logoutOnly]="true"></ish-login-status-container></li>
         </ul>
       </div>
-    </div>
-  </nav>
-</div>
-<div class="mid-header mid-header-checkout">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 logo-wrapper d-md-none">
-        <a rel="home" routerLink="/home" class="mobile-logo" data-testing-id="link-home">
-          <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
-        </a>
-      </div>
-      <div class="col-md-3 logo-wrapper d-none d-md-block">
-        <a rel="home" routerLink="/home" data-testing-id="link-home"> <img src="assets/img/logo.png" alt="Logo" /> </a>
+      <div class="mid-header col-9 col-md-12">
+        <div class="logo-wrapper d-md-none">
+          <a rel="home" routerLink="/home" class="mobile-logo" data-testing-id="link-home">
+            <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
+          </a>
+        </div>
+        <div class="logo-wrapper d-none d-md-block">
+          <a rel="home" routerLink="/home" data-testing-id="link-home">
+            <img src="assets/img/logo.png" alt="Logo" />
+          </a>
+        </div>
       </div>
     </div>
   </div>

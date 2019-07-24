@@ -2108,7 +2108,7 @@
   "search.searchbox.button.label": "RECHERCHER",
   "search.searchbox.button.label.alternative": "Recherche",
   "search.searchbox.button.title": "Lancer la recherche.",
-  "search.searchbox.instructional_text": "Rechercher un mot clé, un ID de produit ou catégorie...",
+  "search.searchbox.instructional_text": "Rechercher",
   "search.searchbox.label": "Recherche",
   "search.searchbox.label.alternative": "Nouvelle recherche :",
   "search.searchlist.heading": "Recherches",
@@ -2484,6 +2484,9 @@
   "checkout.termsandconditions.details.title": "Terms & Conditions",
   "checkout.termsandconditions.details.text": "<div><h3>1. Other Documents</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>2. Payment Terms; Orders; Quotes; Interest</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>3. Shipping Charges; Taxes; Title; Risk of Loss</h3><p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p></div>",
   "header.welcome.text": "Welcome to inSPIRED",
+  "compare.message.add.text": "{{0}} has been added to the compare list.",
+  "compare.message.delete.text": "{{0}} has been deleted from the compare list.",
+  "product.add_to_basket.message.add.text": "{{0}} has been added to the shopping cart.",
   "cookie_law.text": "Ce site Web utilise des cookies pour am\u00E9liorer votre exp\u00E9rience sur notre site. Vous trouverez des informations plus d\u00E9taill\u00E9es dans notre <a href=\"{{0}}\">politique de confidentialit\u00E9</a>.",
   "cookie_law.button": "Accepter",
   "account.quotes.widget.my_quotes.heading": "Mes devis",
@@ -2512,5 +2515,6 @@
   "checkout.credit_card.cardStyleId.error.notFound": "ID de style de la carte de crédit introuvable.",
   "checkout.credit_card.CVCStyleId.error.notFound": "ID de style du code de validation de carte introuvable.",
   "account.date.year.error.required": "Veuillez sélectionner une année.",
-  "account.date.month.error.required": "Veuillez sélectionner un mois."
+  "account.date.month.error.required": "Veuillez sélectionner un mois.",
+  "account.login.quotes.message": "Veuillez vous connecter à votre compte pour utiliser les devis."
 }

@@ -16,7 +16,7 @@ export class ProductDetailPage {
   }
 
   private addToCartButton = () => cy.get('[data-testing-id="addToCartButton"]');
-  private addToCompareButton = () => cy.get('[data-testing-id*="compare"]');
+  private addToCompareButton = () => cy.get('ish-product-detail-actions [data-testing-id*="compare"]');
   private addToQuoteRequestButton = () => cy.get('[data-testing-id="addToQuoteButton"]');
   private quantityInput = () => cy.get('[data-testing-id="quantity"]');
 
@@ -37,9 +37,10 @@ export class ProductDetailPage {
   }
 
   addProductToCart() {
-    cy.server();
     cy.wait(1000);
-    cy.route('GET', '**/baskets/current*').as('basket');
+    cy.server()
+      .route('GET', '**/baskets/current*')
+      .as('basket');
     this.addToCartButton().click();
     return cy.wait('@basket');
   }

@@ -3,16 +3,18 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import {
-  concatMap,
   distinctUntilChanged,
+  exhaustMap,
   filter,
+  groupBy,
   map,
   mergeMap,
   switchMap,
   takeUntil,
   tap,
+  throttleTime,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -20,7 +22,13 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
 import {
@@ -65,10 +73,10 @@ export class ProductsEffects {
   @Effect()
   loadProductIfNotLoaded$ = this.actions$.pipe(
     ofType<productsActions.LoadProductIfNotLoaded>(productsActions.ProductsActionTypes.LoadProductIfNotLoaded),
-    mapToPayloadProperty('sku'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-    filter(([sku, entities]) => !ProductHelper.isProductCompletelyLoaded(entities[sku])),
-    map(([sku]) => new productsActions.LoadProduct({ sku }))
+    filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
+    map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
   );
 
   @Effect()
@@ -80,15 +88,12 @@ export class ProductsEffects {
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
-      this.store.pipe(
-        select(getPagingPage),
-        map(n => n + 1)
-      )
+      this.store.pipe(select(getPagingPage))
     ),
-    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
+    filter(([, endlessScrollingEnabled, moreProductsAvailable]) => endlessScrollingEnabled && moreProductsAvailable),
     mergeMap(([categoryId, , , pageNumber]) => [
       new SetPagingLoading(),
-      new SetPage({ pageNumber }),
+      new SetPage({ pageNumber: pageNumber + 1 }),
       new productsActions.LoadProductsForCategory({ categoryId }),
     ])
   );
@@ -106,15 +111,12 @@ export class ProductsEffects {
       this.store.pipe(select(getItemsPerPage))
     ),
     distinctUntilChanged(),
-    concatMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
+    exhaustMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
       this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
-        withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-        switchMap(([{ total: totalItems, products, sortKeys }, entities]) => [
+        switchMap(({ total: totalItems, products, sortKeys }) => [
+          ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
           new SetSortKeys({ sortKeys }),
-          ...products
-            .filter(stub => !entities[stub.sku])
-            .map(product => new productsActions.LoadProductSuccess({ product })),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
@@ -152,7 +154,13 @@ export class ProductsEffects {
     filter(
       ([product, entities]: [VariationProduct, Dictionary<VariationProduct>]) => !entities[product.productMasterSKU]
     ),
-    map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+    groupBy(([product]) => product.productMasterSKU),
+    mergeMap(groups =>
+      groups.pipe(
+        throttleTime(3000),
+        map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+      )
+    )
   );
 
   /**
@@ -169,13 +177,19 @@ export class ProductsEffects {
       ([product, entities]: [VariationProductMaster, Dictionary<VariationProductMaster>]) =>
         !entities[product.sku] || !entities[product.sku].variationSKUs
     ),
-    map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+    groupBy(([product]) => product.sku),
+    mergeMap(groups =>
+      groups.pipe(
+        throttleTime(3000),
+        map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
+      )
+    )
   );
 
   @Effect()
   routeListenerForSelectingProducts$ = this.actions$.pipe(
-    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params.sku),
+    ofRoute(),
+    mapToParam<string>('sku'),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
     map(([sku]) => new productsActions.SelectProduct({ sku }))
@@ -201,7 +215,7 @@ export class ProductsEffects {
         whenTruthy(),
         distinctUntilChanged(),
         map(categoryId => new LoadCategory({ categoryId })),
-        takeUntil(this.actions$.pipe(ofRoute(/.*/)))
+        takeUntil(this.actions$.pipe(ofRoute()))
       )
     )
   );

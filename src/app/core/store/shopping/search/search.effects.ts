@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
-  concatMap,
   debounce,
   debounceTime,
   distinctUntilChanged,
+  exhaustMap,
   filter,
   map,
   mergeMap,
@@ -67,9 +67,9 @@ export class SearchEffects {
         filter(x => x > 0)
       )
     ),
-    map((action: RouteNavigation) => action.payload.params.searchTerm),
+    mapToParam<string>('searchTerm'),
     whenTruthy(),
-    distinctUntilChanged<string>(),
+    distinctUntilChanged(),
     mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
   );
 
@@ -80,15 +80,12 @@ export class SearchEffects {
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
-      this.store.pipe(
-        select(getPagingPage),
-        map(n => n + 1)
-      )
+      this.store.pipe(select(getPagingPage))
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
     mergeMap(([searchTerm, , , pageNumber]) => [
       new SetPagingLoading(),
-      new SetPage({ pageNumber }),
+      new SetPage({ pageNumber: pageNumber + 1 }),
       new SearchProducts({ searchTerm }),
     ])
   );
@@ -102,7 +99,7 @@ export class SearchEffects {
     mapToPayloadProperty('searchTerm'),
     withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
     distinctUntilChanged(),
-    concatMap(([searchTerm, currentPage, itemsPerPage]) =>
+    exhaustMap(([searchTerm, currentPage, itemsPerPage]) =>
       this.productsService.searchProducts(searchTerm, currentPage, itemsPerPage).pipe(
         mergeMap(({ total: totalItems, products, sortKeys }) => [
           // dispatch action with search result

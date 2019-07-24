@@ -50,16 +50,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject();
 
   ngOnInit() {
-    this.searchForm = new FormGroup({
-      search: new FormControl(''),
-    });
-
-    if (this.configuration.autoSuggest) {
-      this.searchForm
-        .get('search')
-        .valueChanges.pipe(takeUntil(this.destroy$))
-        .subscribe(this.searchTermChange);
-    }
+    this.initSearchForm();
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -134,6 +125,19 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
         },
         { emitEvent: false }
       );
+    }
+  }
+
+  private initSearchForm(): void {
+    this.searchForm = new FormGroup({
+      search: new FormControl(''),
+    });
+
+    if (this.configuration && this.configuration.autoSuggest) {
+      this.searchForm
+        .get('search')
+        .valueChanges.pipe(takeUntil(this.destroy$))
+        .subscribe(this.searchTermChange);
     }
   }
 }

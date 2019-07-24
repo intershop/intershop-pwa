@@ -41,6 +41,6 @@ ticket="$(echo "$title" | grep -Eoi 'IS(REST|)-[0-9]*' || true)"
 echo "ticket='$ticket'"
 [ -z "$ticket" ] && exit 0
 
-echo "$ticket" | grep -Eq 'ISREST-[0-9]*' || (echo "'$ticket' is not in caps or not a PWA ticket" && exit 2)
+echo "$ticket" | grep -Eq 'ISREST-[0-9]*' || (echo "'$ticket' is not in caps or not a PWA ticket" && exit 1)
 
 echo "$title" | grep -Eq "\($ticket\)$" || (echo "'$ticket' must be in parentheses at the end of the first line of the topic" && exit 1)

@@ -1,3 +1,4 @@
+import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -49,6 +50,9 @@ export enum BasketActionTypes {
   CreateBasketPayment = '[Basket] Create a Basket Payment',
   CreateBasketPaymentFail = '[Basket API] Create a Basket Payment Fail',
   CreateBasketPaymentSuccess = '[Basket API] Create a Basket Payment Success',
+  UpdateBasketPayment = '[Basket] Update a Basket Payment with Redirect Data',
+  UpdateBasketPaymentFail = '[Basket API] Update a Basket Payment Fail',
+  UpdateBasketPaymentSuccess = '[Basket API] Update a Basket Payment Success',
   DeleteBasketPayment = '[Basket] Delete Basket Payment ',
   DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
   DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
@@ -237,6 +241,20 @@ export class CreateBasketPaymentSuccess implements Action {
   readonly type = BasketActionTypes.CreateBasketPaymentSuccess;
 }
 
+export class UpdateBasketPayment implements Action {
+  readonly type = BasketActionTypes.UpdateBasketPayment;
+  constructor(public payload: { params: Params }) {}
+}
+
+export class UpdateBasketPaymentFail implements Action {
+  readonly type = BasketActionTypes.UpdateBasketPaymentFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class UpdateBasketPaymentSuccess implements Action {
+  readonly type = BasketActionTypes.UpdateBasketPaymentSuccess;
+}
+
 export class DeleteBasketPayment implements Action {
   readonly type = BasketActionTypes.DeleteBasketPayment;
   constructor(public payload: { id: string }) {}
@@ -308,6 +326,9 @@ export type BasketAction =
   | CreateBasketPayment
   | CreateBasketPaymentFail
   | CreateBasketPaymentSuccess
+  | UpdateBasketPayment
+  | UpdateBasketPaymentFail
+  | UpdateBasketPaymentSuccess
   | DeleteBasketPayment
   | DeleteBasketPaymentFail
   | DeleteBasketPaymentSuccess

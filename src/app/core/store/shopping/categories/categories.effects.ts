@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -49,8 +49,8 @@ export class CategoriesEffects {
    */
   @Effect()
   routeListenerForSelectingCategory$ = this.actions$.pipe(
-    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params.categoryUniqueId),
+    ofRoute(),
+    mapToParam<string>('categoryUniqueId'),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
     map(categoryId => (categoryId ? new actions.SelectCategory({ categoryId }) : new actions.DeselectCategory()))
   );
@@ -117,7 +117,7 @@ export class CategoriesEffects {
 
   @Effect()
   loadTopLevelWhenUnavailable$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
+    ofRoute(),
     take(1),
     switchMapTo(
       this.store.pipe(
@@ -153,10 +153,10 @@ export class CategoriesEffects {
     ),
     this.actions$.pipe(
       ofRoute('category/:categoryUniqueId'),
-      distinctUntilChanged<RouteNavigation>()
+      mapToParam('categoryUniqueId')
     ),
   ]).pipe(
-    filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
+    filter(([category, categoryUniqueId]) => category.uniqueId === categoryUniqueId),
     withLatestFrom(this.store.pipe(select(getVisibleProducts))),
     filter(([[category], skus]) => category && category.hasOnlineProducts && !skus.length),
     map(([[category]]) => new LoadProductsForCategory({ categoryId: category.uniqueId }))

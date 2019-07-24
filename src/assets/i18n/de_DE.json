@@ -2192,7 +2192,7 @@
   "search.searchbox.button.label": "Los",
   "search.searchbox.button.label.alternative": "Suchen",
   "search.searchbox.button.title": "Suche starten",
-  "search.searchbox.instructional_text": "Suchen Sie nach Schlagwort, Produkt-ID oder Kategorie.",
+  "search.searchbox.instructional_text": "Suchen",
   "search.searchbox.label": "Suchen",
   "search.searchbox.label.alternative": "Suchen Sie erneut:",
   "search.searchlist.heading": "Suchen",
@@ -2594,6 +2594,9 @@
   "servererror.page.title": "Etwas ist schiefgegangen.",
   "servererror.page.text": "<h3>Es tut uns leid ...</h3><h4>Gehen Sie zurück zur <a href=\"/home\">Startseite</a> und versuchen Sie es erneut.</h4>",
   "header.welcome.text": "Willkommen bei inSPIRED",
+  "compare.message.add.text": "{{0}} wurde dem Produktvergleich hinzugefügt.",
+  "compare.message.delete.text": "{{0}} wurde vom Produktvergleich entfernt.",
+  "product.add_to_basket.message.add.text": "{{0}} wurde dem Warenkorb hinzugefügt.",
   "cookie_law.text": "Diese Website verwendet Cookies, um Ihre Nutzung unserer Website zu verbessern. Detailliertere Informationen finden Sie in unserer <a href=\"{{0}}\">Datenschutzerklärung</a>.",
   "cookie_law.button": "Akzeptieren",
   "account.quotes.widget.my_quotes.heading": "Meine Preisangebote",
@@ -2622,5 +2625,6 @@
   "checkout.credit_card.cardStyleId.error.notFound": "Kreditkartenstil-ID nicht gefunden.",
   "checkout.credit_card.CVCStyleId.error.notFound": "Kartenprüfnummerstil-ID nicht gefunden.",
   "account.date.year.error.required": "Bitte wählen Sie ein Jahr aus.",
-  "account.date.month.error.required": "Bitte wählen Sie einen Monat aus."
+  "account.date.month.error.required": "Bitte wählen Sie einen Monat aus.",
+  "account.login.quotes.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Preisangebote zu benutzen."
 }

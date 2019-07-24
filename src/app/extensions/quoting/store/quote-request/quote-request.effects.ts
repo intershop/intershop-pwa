@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest, concat, forkJoin } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -12,6 +12,7 @@ import {
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadProduct, LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
@@ -143,7 +144,9 @@ export class QuoteRequestEffects {
       ).pipe(
         defaultIfEmpty([]),
         mergeMap(quoteRequestItems => [
-          ...quoteRequestItems.map(item => new LoadProductIfNotLoaded({ sku: item.productSKU })),
+          ...quoteRequestItems.map(
+            item => new LoadProductIfNotLoaded({ sku: item.productSKU, level: ProductCompletenessLevel.List })
+          ),
           new actions.LoadQuoteRequestItemsSuccess({ quoteRequestItems }),
         ]),
         mapErrorToAction(actions.LoadQuoteRequestItemsFail)
@@ -260,7 +263,7 @@ export class QuoteRequestEffects {
     mergeMap(() => this.store.pipe(select(getUserAuthorized))),
     whenFalsy(),
     tap(() => {
-      const queryParams = { returnUrl: this.router.routerState.snapshot.url };
+      const queryParams = { returnUrl: this.router.routerState.snapshot.url, messageKey: 'quotes' };
       this.router.navigate(['/login'], { queryParams });
     })
   );
@@ -301,8 +304,8 @@ export class QuoteRequestEffects {
    */
   @Effect()
   routeListenerForSelectingQuote$ = this.actions$.pipe(
-    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params.quoteRequestId),
+    ofRoute(),
+    mapToParam<string>('quoteRequestId'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
     map(([itemId]) => new actions.SelectQuoteRequest({ id: itemId }))

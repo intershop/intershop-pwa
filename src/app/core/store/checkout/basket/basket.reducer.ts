@@ -36,6 +36,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketEligiblePaymentMethods:
     case BasketActionTypes.SetBasketPayment:
     case BasketActionTypes.CreateBasketPayment:
+    case BasketActionTypes.UpdateBasketPayment:
     case BasketActionTypes.DeleteBasketPayment:
     case BasketActionTypes.CreateOrder: {
       return {
@@ -55,6 +56,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketEligiblePaymentMethodsFail:
     case BasketActionTypes.SetBasketPaymentFail:
     case BasketActionTypes.CreateBasketPaymentFail:
+    case BasketActionTypes.UpdateBasketPaymentFail:
     case BasketActionTypes.DeleteBasketPaymentFail: {
       const { error } = action.payload;
 
@@ -71,6 +73,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.DeleteBasketItemSuccess:
     case BasketActionTypes.SetBasketPaymentSuccess:
     case BasketActionTypes.CreateBasketPaymentSuccess:
+    case BasketActionTypes.UpdateBasketPaymentSuccess:
     case BasketActionTypes.DeleteBasketPaymentSuccess: {
       return {
         ...state,

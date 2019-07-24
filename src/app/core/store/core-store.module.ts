@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
 import { ngrxStateTransferMeta } from '../configurations/ngrx-state-transfer';
 import { localStorageSyncReducer } from '../utils/local-storage-sync/local-storage-sync.reducer';
 
+import { AddressesEffects } from './addresses/addresses.effects';
+import { addressesReducer } from './addresses/addresses.reducer';
 import { CheckoutStoreModule } from './checkout/checkout-store.module';
 import { ConfigurationEffects } from './configuration/configuration.effects';
 import { configurationReducer } from './configuration/configuration.reducer';
@@ -19,19 +21,17 @@ import { ErrorEffects } from './error/error.effects';
 import { errorReducer } from './error/error.reducer';
 import { LocaleEffects } from './locale/locale.effects';
 import { localeReducer } from './locale/locale.reducer';
+import { MessagesEffects } from './messages/messages.effects';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
 import { RegionsEffects } from './regions/regions.effects';
 import { regionsReducer } from './regions/regions.reducer';
+import { RestoreStoreModule } from './restore/restore-store.module';
 import { ShoppingStoreModule } from './shopping/shopping-store.module';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
-
-import { AddressesEffects } from './addresses/addresses.effects';
-import { addressesReducer } from './addresses/addresses.reducer';
-import { RestoreStoreModule } from './restore/restore-store.module';
 
 export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,
@@ -56,6 +56,7 @@ export const coreEffects = [
   RouterEffects,
   ViewconfEffects,
   ConfigurationEffects,
+  MessagesEffects,
 ];
 
 // tslint:disable-next-line: no-any

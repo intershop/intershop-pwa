@@ -4,7 +4,7 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store, UPDATE, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { ofRoute } from 'ngrx-router';
 import {
   debounce,
   distinctUntilChanged,
@@ -22,7 +22,7 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getErrorState } from 'ish-core/store/error';
 import { getLoggedInUser } from 'ish-core/store/user';
-import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { SetSentryConfig } from './sentry-config.actions';
@@ -57,7 +57,7 @@ export class SentryConfigEffects {
     whenTruthy(),
     switchMapTo(
       this.actions$.pipe(
-        ofType(ROUTER_NAVIGATION_TYPE),
+        ofRoute(),
         take(1),
         filter(() => this.featureToggleService.enabled('sentry')),
         withLatestFrom(this.store.pipe(select(getSentryDSN))),
@@ -81,8 +81,8 @@ export class SentryConfigEffects {
 
   @Effect({ dispatch: false })
   trackRouting$ = this.actions$.pipe(
-    ofRoute(/.*/),
-    map((action: RouteNavigation) => action.payload),
+    ofRoute(),
+    mapToPayload(),
     map(payload => JSON.stringify(payload)),
     tap(message => Sentry.addBreadcrumb({ category: 'routing', message }))
   );

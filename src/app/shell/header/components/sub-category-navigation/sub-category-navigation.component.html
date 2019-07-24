@@ -14,7 +14,7 @@
     <a
       *ngIf="subcategory.hasChildren()"
       class="dropdown-toggle"
-      [ngClass]="{ 'd-none': view === 'full', 'd-md-none': view === 'auto' }"
+      [ngClass]="{ 'd-none': view === 'full' }"
       (click)="toggleOpen(subcategory)"
     >
       <fa-icon *ngIf="isOpened(subcategory); else closed" [icon]="['fas', 'minus']"></fa-icon>

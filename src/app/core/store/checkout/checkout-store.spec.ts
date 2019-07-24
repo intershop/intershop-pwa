@@ -4,12 +4,15 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { ToastrModule } from 'ngx-toastr';
+import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
+import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -205,6 +208,9 @@ describe('Checkout Store', () => {
     const userServiceMock = mock(UserService);
     when(userServiceMock.signinUser(anything())).thenReturn(of({ customer, user }));
 
+    const personalizationServiceMock = mock(PersonalizationService);
+    when(personalizationServiceMock.getPGID()).thenReturn(EMPTY);
+
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
 
@@ -225,6 +231,7 @@ describe('Checkout Store', () => {
             component: DummyComponent,
           },
         ]),
+        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [
@@ -236,11 +243,14 @@ describe('Checkout Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: PersonalizationService, useFactory: () => instance(personalizationServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 

@@ -1,0 +1,102 @@
+import { at } from '../../framework';
+import { LoginPage } from '../../pages/account/login.page';
+import { HomePage } from '../../pages/home.page';
+import { CategoryPage } from '../../pages/shopping/category.page';
+import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+
+const _ = {
+  productSku: '8182790134362',
+  categoryId: 'Computers',
+  pageId: 'page.aboutus',
+  route: 'login',
+};
+
+describe('Server Html', () => {
+  beforeEach(() => {
+    LoginPage.navigateTo();
+
+    cy.server().route({
+      method: 'GET',
+      url: '**/cms/**',
+      status: 200,
+      response: {
+        definitionQualifiedName: 'app_sf_responsive_cm:pwa.include.homepage.pagelet2-Include',
+        displayName: 'PWA Homepage Content',
+        link: {
+          title: 'pwa.include.homepage.pagelet2-Include',
+          type: 'Link',
+          uri: 'inSPIRED-inTRONICS-Site/-/cms/includes/pwa.include.homepage.pagelet2-Include',
+        },
+        pagelets: [
+          {
+            definitionQualifiedName: 'app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component',
+            link: {
+              type: 'Link',
+              uri: 'inSPIRED-inTRONICS-Site/-/cms/pagelets/test_foo_bar',
+              title: 'test_foo_bar',
+            },
+            displayName: 'test',
+            id: 'test_foo_bar',
+            configurationParameters: {
+              HTML: {
+                value: `
+                  <div><a href="product://${_.productSku}@inSPIRED-inTRONICS">product</a></div>
+                  <div><a href="category://${_.categoryId}@inSPIRED-Computers">category</a></div>
+                  <div><a href="page://${_.pageId}">page</a></div>
+                  <div><a href="route://${_.route}">route</a></div>
+                  <img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`,
+                definitionQualifiedName: 'app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component-HTML',
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    at(LoginPage, page => page.header.gotoHomePage());
+  });
+
+  it('user should be able to follow product link', () => {
+    at(HomePage, () => {
+      cy.get('a')
+        .contains('product')
+        .click();
+
+      at(ProductDetailPage, page => page.sku.should('have.text', _.productSku));
+    });
+  });
+
+  it('user should be able to follow category link', () => {
+    at(HomePage, () => {
+      cy.get('a')
+        .contains('category')
+        .click();
+
+      at(CategoryPage, page => page.categoryId.should('equal', _.categoryId));
+    });
+  });
+
+  it('user should be able to follow page link', () => {
+    at(HomePage, () => {
+      cy.get('a')
+        .contains('page')
+        .click();
+
+      cy.location()
+        .its('pathname')
+        .should('equal', '/page/' + _.pageId);
+    });
+  });
+
+  it('user should be able to follow route link', () => {
+    at(HomePage, () => {
+      cy.get('a')
+        .contains('route')
+        .click();
+
+      cy.location()
+        .its('pathname')
+        .should('equal', '/' + _.route);
+    });
+  });
+});

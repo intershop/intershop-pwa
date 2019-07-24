@@ -1,5 +1,6 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Params } from '@angular/router';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map, mapTo } from 'rxjs/operators';
 
@@ -7,6 +8,7 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
+import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { BasketBaseData, BasketData } from '../../models/basket/basket.interface';
@@ -307,6 +309,12 @@ export class BasketService {
 
     const body = {
       paymentInstrument,
+      // if there is no redirect required, these urls will be ignored by the server
+      redirect: {
+        successUrl: `${location.origin}/checkout/review?redirect=success`,
+        cancelUrl: `${location.origin}/checkout/payment?redirect=cancel`,
+        failureUrl: `${location.origin}/checkout/payment?redirect=failure`,
+      },
     };
 
     return this.apiService
@@ -337,6 +345,43 @@ export class BasketService {
       .post(`baskets/${basketId}/payment-instruments?include=paymentMethod`, paymentInstrument, {
         headers: this.basketHeaders,
       })
+      .pipe(map(({ data }) => data));
+  }
+
+  /**
+   * Updates a payment for the selected basket. Used to set redirect query parameters and status after redirect.
+   * @param basketId          The basket id.
+   * @param redirect          The payment redirect information (parameters and status).
+   * @returns                 The updated payment.
+   */
+  updateBasketPayment(basketId: string, params: Params): Observable<Payment> {
+    if (!basketId) {
+      return throwError('createBasketPayment() called without basketId');
+    }
+
+    if (!params) {
+      return throwError('updateBasketPayment() called without parameter data');
+    }
+
+    if (!params.redirect) {
+      return throwError('updateBasketPayment() called without redirect parameter data');
+    }
+
+    const redirect = {
+      status: params.redirect.toUpperCase(),
+      parameters: Object.entries(params)
+        .filter(([name]) => name !== 'redirect')
+        .map(([name, value]) => ({ name, value })),
+    };
+
+    return this.apiService
+      .patch(
+        `baskets/${basketId}/payments/open-tender`,
+        { redirect },
+        {
+          headers: this.basketHeaders,
+        }
+      )
       .pipe(map(({ data }) => data));
   }
 

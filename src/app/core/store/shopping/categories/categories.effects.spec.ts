@@ -5,14 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryView } from '../../../models/category-view/category-view.model';
-import { Category, CategoryHelper } from '../../../models/category/category.model';
+import { Category, CategoryCompletenessLevel } from '../../../models/category/category.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
@@ -142,7 +142,7 @@ describe('Categories Effects', () => {
       });
 
       it('should do nothing if category is completely loaded', () => {
-        category.completenessLevel = CategoryHelper.maxCompletenessLevel;
+        category.completenessLevel = CategoryCompletenessLevel.Max;
         store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
         actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
         expect(effects.selectedCategory$).toBeObservable(cold('-'));
@@ -185,7 +185,7 @@ describe('Categories Effects', () => {
       });
 
       it('should not trigger LoadCategory for categories that are completely loaded', () => {
-        category.completenessLevel = CategoryHelper.maxCompletenessLevel;
+        category.completenessLevel = CategoryCompletenessLevel.Max;
         store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
         actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
 
@@ -247,7 +247,7 @@ describe('Categories Effects', () => {
       const completion = new fromActions.LoadTopLevelCategories({ depth });
       store$.dispatch(action);
 
-      actions$ = hot('----a---a--a', { a: { type: ROUTER_NAVIGATION_TYPE } });
+      actions$ = hot('----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
 
       const expected$ = cold('----a-------', { a: completion });
 
@@ -398,9 +398,7 @@ describe('Categories Effects', () => {
     it('should fire when selected category is available and completely loaded', () => {
       store$.dispatch(
         new fromActions.LoadCategorySuccess({
-          categories: categoryTree([
-            { uniqueId: 'A', completenessLevel: CategoryHelper.maxCompletenessLevel },
-          ] as Category[]),
+          categories: categoryTree([{ uniqueId: 'A', completenessLevel: CategoryCompletenessLevel.Max }] as Category[]),
         })
       );
       store$.dispatch(new fromActions.SelectCategory({ categoryId: 'A' }));
@@ -415,9 +413,7 @@ describe('Categories Effects', () => {
     it('should not fire twice when category is selected multiple times', () => {
       store$.dispatch(
         new fromActions.LoadCategorySuccess({
-          categories: categoryTree([
-            { uniqueId: 'A', completenessLevel: CategoryHelper.maxCompletenessLevel },
-          ] as Category[]),
+          categories: categoryTree([{ uniqueId: 'A', completenessLevel: CategoryCompletenessLevel.Max }] as Category[]),
         })
       );
       store$.dispatch(new fromActions.SelectCategory({ categoryId: 'A' }));

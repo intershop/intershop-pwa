@@ -3,11 +3,16 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
-import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import {
+  AVAILABLE_LOCALES,
+  LARGE_BREAKPOINT_WIDTH,
+  MEDIUM_BREAKPOINT_WIDTH,
+} from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
@@ -67,6 +72,7 @@ describe('Quoting Store', () => {
 
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.icmServerURL).thenReturn('http://example.org');
+    when(apiServiceMock.get(anything())).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
@@ -91,6 +97,7 @@ describe('Quoting Store', () => {
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
         ]),
+        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [
@@ -99,6 +106,8 @@ describe('Quoting Store', () => {
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: AVAILABLE_LOCALES, useValue: locales },
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 

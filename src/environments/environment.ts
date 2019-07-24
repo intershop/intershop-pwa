@@ -25,7 +25,6 @@ export const environment = {
   features: [
     'compare',
     'recently',
-    'stickyHeader',
 
     /* B2B features */
     // 'businessCustomerRegistration',
@@ -34,6 +33,9 @@ export const environment = {
     /* Third-party Integrations */
     // 'tracking',
     // 'sentry',
+
+    /* features which have not the degree of maturity to use them in production */
+    'experimental',
   ],
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */

@@ -5,7 +5,6 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -48,7 +47,6 @@ describe('Header Component', () => {
         MockComponent(SearchBoxContainerComponent),
         MockComponent(UserInformationMobileComponent),
       ],
-      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })
       .compileComponents()
       .then(() => {
@@ -85,6 +83,51 @@ describe('Header Component', () => {
 
     it('should render Header Navigation on template', () => {
       expect(findAllIshElements(element)).toContain('ish-header-navigation-container');
+    });
+
+    it('should render normal header adequately for mobile devices', () => {
+      component.deviceType = 'mobile';
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render sticky header adequately for mobile devices', () => {
+      component.deviceType = 'mobile';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render normal header adequately for tablet devices', () => {
+      component.deviceType = 'tablet';
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render sticky header adequately for tablet devices', () => {
+      component.deviceType = 'tablet';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render normal header adequately for desktop', () => {
+      component.deviceType = 'pc';
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
+    });
+
+    it('should render sticky header adequately for desktop', () => {
+      component.deviceType = 'pc';
+      component.isSticky = true;
+      fixture.detectChanges();
+
+      expect(element).toMatchSnapshot();
     });
   });
 });

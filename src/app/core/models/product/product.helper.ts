@@ -6,12 +6,12 @@ import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
 
-export class ProductHelper {
-  /**
-   * the maximum level of completeness a category can achieve
-   */
-  static maxCompletenessLevel = 3;
+export enum ProductCompletenessLevel {
+  Detail = 3,
+  List = 2,
+}
 
+export class ProductHelper {
   /**
    * Get primary product image based on image type
    * @param product   The Product for which to get the primary image
@@ -55,8 +55,16 @@ export class ProductHelper {
   /**
    * check if a given product has the maximum completeness level
    */
-  static isProductCompletelyLoaded<T extends Product>(product: T): boolean {
-    return !!product && product.completenessLevel === ProductHelper.maxCompletenessLevel;
+  static isSufficientlyLoaded(product: Product, completenessLevel: ProductCompletenessLevel): boolean {
+    return !!product && product.completenessLevel >= completenessLevel;
+  }
+
+  static isFailedLoading(product: Product): boolean {
+    return !!product && !!product.failed;
+  }
+
+  static isReadyForDisplay(product: Product, completenessLevel: ProductCompletenessLevel) {
+    return ProductHelper.isSufficientlyLoaded(product, completenessLevel) || ProductHelper.isFailedLoading(product);
   }
 
   /**

@@ -4,6 +4,7 @@ import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from '../attribute/attribute.helper';
 
+import { ProductCompletenessLevel } from './product.helper';
 import { ProductDataStub } from './product.interface';
 import { Product, ProductHelper } from './product.model';
 
@@ -157,5 +158,53 @@ describe('Product Helper', () => {
       expect(attributes).not.toBeEmpty();
       expect(attributes[0].name).toBe('sale');
     });
+  });
+
+  describe('isFailedLoading()', () => {
+    using(
+      [
+        { product: undefined, expected: false },
+        { product: {}, expected: false },
+        { product: { failed: false }, expected: false },
+        { product: { failed: true }, expected: true },
+      ],
+      ({ product, expected }) => {
+        it(`should return ${expected} when supplying product '${JSON.stringify(product)}'`, () => {
+          expect(ProductHelper.isFailedLoading(product)).toEqual(expected);
+        });
+      }
+    );
+  });
+
+  describe('isSufficientlyLoaded()', () => {
+    using(
+      [
+        { product: undefined, expected: false },
+        { product: { completenessLevel: 0 }, expected: false },
+        { product: { completenessLevel: ProductCompletenessLevel.List }, expected: true },
+        { product: { completenessLevel: ProductCompletenessLevel.Detail }, expected: true },
+      ],
+      ({ product, expected }) => {
+        it(`should return ${expected} when supplying product '${JSON.stringify(product)}'`, () => {
+          expect(ProductHelper.isSufficientlyLoaded(product, ProductCompletenessLevel.List)).toEqual(expected);
+        });
+      }
+    );
+  });
+
+  describe('isReadyForDisplay()', () => {
+    using(
+      [
+        { product: undefined, expected: false },
+        { product: { completenessLevel: ProductCompletenessLevel.List }, expected: true },
+        { product: { completenessLevel: ProductCompletenessLevel.Detail }, expected: true },
+        { product: { failed: true }, expected: true },
+      ],
+      ({ product, expected }) => {
+        it(`should return ${expected} when supplying product '${JSON.stringify(product)}'`, () => {
+          expect(ProductHelper.isReadyForDisplay(product, ProductCompletenessLevel.List)).toEqual(expected);
+        });
+      }
+    );
   });
 });

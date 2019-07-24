@@ -50,6 +50,10 @@ export interface BasketData {
         paymentMethod: string;
         paymentCost?: PriceItem;
         totalAmount: { gross: PriceData };
+        redirect: {
+          redirectUrl: string;
+        };
+        redirectRequired: boolean;
       };
     };
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };

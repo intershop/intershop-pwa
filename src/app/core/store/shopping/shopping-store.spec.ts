@@ -5,11 +5,19 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { RouteNavigation } from 'ngrx-router';
+import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import {
+  AVAILABLE_LOCALES,
+  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  LARGE_BREAKPOINT_WIDTH,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+  MEDIUM_BREAKPOINT_WIDTH,
+} from 'ish-core/configurations/injection-keys';
+import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -19,17 +27,13 @@ import { CategoriesService } from 'ish-core/services/categories/categories.servi
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import {
-  AVAILABLE_LOCALES,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from '../../configurations/injection-keys';
 import { coreEffects, coreReducers } from '../core-store.module';
 
 import {
@@ -100,21 +104,21 @@ describe('Shopping Store', () => {
         case 'A':
           return of(
             categoryTree([
-              { ...catA, completenessLevel: CategoryHelper.maxCompletenessLevel },
+              { ...catA, completenessLevel: CategoryCompletenessLevel.Max },
               { ...catA123, completenessLevel: 1 },
             ])
           );
         case 'B':
-          return of(categoryTree([{ ...catB, completenessLevel: CategoryHelper.maxCompletenessLevel }]));
+          return of(categoryTree([{ ...catB, completenessLevel: CategoryCompletenessLevel.Max }]));
         case 'A.123':
           return of(
             categoryTree([
-              { ...catA123, completenessLevel: CategoryHelper.maxCompletenessLevel },
+              { ...catA123, completenessLevel: CategoryCompletenessLevel.Max },
               { ...catA123456, completenessLevel: 1 },
             ])
           );
         case 'A.123.456':
-          return of(categoryTree([{ ...catA123456, completenessLevel: CategoryHelper.maxCompletenessLevel }]));
+          return of(categoryTree([{ ...catA123456, completenessLevel: CategoryCompletenessLevel.Max }]));
         default:
           return throwError({ message: `error loading category ${uniqueId}` });
       }
@@ -193,6 +197,7 @@ describe('Shopping Store', () => {
             component: DummyComponent,
           },
         ]),
+        ToastrModule.forRoot(),
         TranslateModule.forRoot(),
       ],
       providers: [
@@ -202,12 +207,15 @@ describe('Shopping Store', () => {
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: UserService, useFactory: () => instance(mock(UserService)) },
+        { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 
@@ -339,7 +347,7 @@ describe('Shopping Store', () => {
 
     it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
       const i = store.actionsIterator(['[Shopping]', '[Router]']);
-      expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(i.next().type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123' }));
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
       expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
@@ -404,10 +412,10 @@ describe('Shopping Store', () => {
       expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
       expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
       expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
       expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
       expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
       expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
@@ -533,9 +541,10 @@ describe('Shopping Store', () => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
         expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
       }));
 
@@ -636,7 +645,7 @@ describe('Shopping Store', () => {
       const i = store.actionsIterator(['[Shopping]', '[Router]']);
 
       const productPageRouting = i.next() as RouteNavigation;
-      expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(productPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(productPageRouting.payload.params.sku).toEqual('P3');
       expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.456');
 
@@ -657,7 +666,7 @@ describe('Shopping Store', () => {
       expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
 
       const errorPageRouting = i.next() as RouteNavigation;
-      expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(errorPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(errorPageRouting.payload.path).toEqual('error');
 
       expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
@@ -691,7 +700,7 @@ describe('Shopping Store', () => {
       const i = store.actionsIterator(['[Shopping]', '[Router]']);
 
       const productPageRouting = i.next() as RouteNavigation;
-      expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(productPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.XXX');
 
       expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.XXX' }));
@@ -701,7 +710,7 @@ describe('Shopping Store', () => {
       expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategoryFail);
 
       const errorPageRouting = i.next() as RouteNavigation;
-      expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+      expect(errorPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
       expect(errorPageRouting.payload.path).toEqual('error');
 
       expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);

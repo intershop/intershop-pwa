@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="basket" class="row">
   <div class="col-md-12 col-lg-8">
     <div *ngIf="error as error" role="alert" class="alert alert-danger">
       <ng-container *ngIf="error.status === 406; else generalError">

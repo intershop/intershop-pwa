@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -81,9 +81,9 @@
     "lodash-es": "^4.17.11",
     "ng-recaptcha": "^4.2.1",
     "ng2-validation": "^4.2.0",
-    "ngrx-router": "^2.0.1",
     "ngrx-store-localstorage": "^5.1.1",
     "ngx-infinite-scroll": "^7.0.1",
+    "ngx-toastr": "^10.0.4",
     "rxjs": "^6.5.2",
     "ts-loader": "5.3.2",
     "typescript": "~3.2.2",
@@ -143,7 +143,7 @@
         "npx tslint --project tsconfig.json --fix --force",
         "npx tslint --project tsconfig.json --fix",
         "npx prettier --loglevel warn --write",
-        "npx jest --bail --findRelatedTests",
+        "npx jest --ci --bail --findRelatedTests",
         "git add"
       ]
     },

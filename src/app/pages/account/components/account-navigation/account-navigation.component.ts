@@ -1,17 +1,17 @@
-import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-account-navigation',
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountNavigationComponent implements OnInit {
+export class AccountNavigationComponent implements OnInit, OnChanges {
+  @Input() deviceType: DeviceType;
+
   isMobileView = false;
-  currentPath: string;
 
   /**
    * Manages the Account Navigation items.
@@ -25,22 +25,18 @@ export class AccountNavigationComponent implements OnInit {
     { link: '/logout', localizationKey: 'account.navigation.logout.link' },
   ];
 
-  constructor(
-    private router: Router,
-    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
-    @Inject(PLATFORM_ID) private platformId: string
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isMobileView = window.innerWidth < this.largeBreakpointWidth;
-    }
-    this.currentPath = location.pathname;
+    this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
   }
 
-  @HostListener('window:resize', ['$event'])
-  mobileViewHandler(event) {
-    this.isMobileView = event.target.innerWidth < this.largeBreakpointWidth;
+  ngOnChanges() {
+    this.isMobileView = this.deviceType === 'tablet' || this.deviceType === 'mobile';
+  }
+
+  get currentPath() {
+    return location.pathname;
   }
 
   navigateTo(link) {

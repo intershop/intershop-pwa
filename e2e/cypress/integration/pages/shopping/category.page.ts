@@ -12,4 +12,8 @@ export class CategoryPage {
   get content() {
     return cy.get(this.tag);
   }
+
+  get categoryId() {
+    return cy.get(`${this.tag} .category-page`).invoke('attr', 'data-testing-id');
+  }
 }

@@ -1,5 +1,5 @@
-import { isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { filter, map, mergeMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
@@ -17,8 +17,16 @@ export class ConfigurationEffects {
     private actions$: Actions,
     private stateProperties: StatePropertiesService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private appRef: ApplicationRef
   ) {}
+
+  @Effect({ dispatch: false })
+  $stable = this.appRef.isStable.pipe(
+    takeWhile(() => isPlatformBrowser(this.platformId)),
+    // tslint:disable-next-line:no-any
+    tap(stable => ((window as any).angularStable = stable))
+  );
 
   @Effect()
   routerWatch$ = this.router.events.pipe(

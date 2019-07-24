@@ -4,51 +4,43 @@ export class HeaderModule {
   miniCart = new MiniCartModule();
 
   get numberOfCompareItems() {
+    cy.get('header').then(header => {
+      if (!header.find('[data-testing-id="compare-status-desktop"]').length) {
+        return cy.scrollTo('top');
+      }
+    });
     return cy
-      .get('ish-header .compare-status .badge')
-      .first()
+      .get('[data-testing-id="compare-status-desktop"]')
+      .find('.badge')
       .then(el => parseInt(el.text(), 10));
   }
 
   gotoHomePage() {
-    cy.get('img[alt="Logo"]')
-      .last()
-      .click();
+    cy.get('[data-testing-id="header-home-link-desktop"]').click();
   }
 
   gotoLoginPage() {
-    cy.get('ish-header a.my-account-login')
-      .first()
-      .click();
+    cy.get('[data-testing-id="user-status-desktop"] .my-account-login').click();
   }
 
   gotoRegistrationPage() {
-    cy.get('ish-header a.my-account-register')
-      .first()
-      .click();
+    cy.get('[data-testing-id="user-status-desktop"] .my-account-register').click();
   }
 
   gotoCategoryPage(categoryUniqueId: string) {
-    cy.get(`ish-header [data-testing-id="${categoryUniqueId}-link"]`)
-      .last()
-      .click();
+    cy.get(`[data-testing-id="${categoryUniqueId}-link"]`).click();
   }
 
   logout() {
-    cy.get('ish-header a.my-account-logout')
-      .first()
-      .click();
+    cy.get('[data-testing-id="user-status-desktop"] .my-account-logout').click();
   }
 
   get myAccountLink() {
-    return cy
-      .get('a[data-testing-id="link-myaccount"]')
-      .should('be.visible')
-      .first();
+    return cy.get('[data-testing-id="user-status-desktop"] [data-testing-id="link-myaccount"]');
   }
 
   goToMyAccount() {
-    return this.myAccountLink.click({ force: true });
+    return this.myAccountLink.click();
   }
 
   get content() {
@@ -56,34 +48,26 @@ export class HeaderModule {
   }
 
   getSearchSuggestions(searchTerm: string) {
-    cy.get('ish-header input.searchTerm')
-      .clear()
-      .type(searchTerm);
+    cy.get('[data-testing-id="search-box-desktop"] input.searchTerm').type(searchTerm);
     cy.get('ul.search-suggest-results').should('be.visible');
-    return cy
-      .get('ul.search-suggest-results')
-      .last()
-      .get('span.searchTerm');
+    return cy.get('ul.search-suggest-results').get('span.searchTerm');
   }
 
   doProductSearch(searchTerm: string) {
-    cy.get('ish-header input.searchTerm')
+    cy.get('[data-testing-id="search-box-desktop"] input.searchTerm')
       .clear()
       .type(searchTerm)
       .type('{enter}');
   }
 
   topLevelCategoryLink(id: string) {
-    return cy
-      .get(`ish-header a[data-testing-id="${id}-link"]`)
-      .should('be.visible')
-      .first();
+    return cy.get(`[data-testing-id="${id}-link"]`).first();
   }
 
   switchLanguage(lang: string) {
-    cy.get('ish-header div.language-switch-menu-container a')
-      .should('contain', lang)
-      .first()
+    // expanding and click is not stable, so force click
+    cy.get('[data-testing-id="language-switch-desktop"] .language-switch-menu-container a')
+      .contains(lang)
       .click({ force: true });
   }
 }

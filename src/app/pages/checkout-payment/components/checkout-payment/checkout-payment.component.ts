@@ -13,8 +13,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -49,52 +50,113 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() deletePaymentInstrument = new EventEmitter<string>();
 
   paymentForm: FormGroup;
-  parameterForm = new FormGroup({});
   model = {};
   options: FormlyFormOptions = {};
 
+  filteredPaymentMethods: PaymentMethod[] = [];
+
   nextSubmitted = false;
   formSubmitted = false;
+  experimental = false;
 
-  openFormIndex = -1; // index of the open parameter form
+  private openFormIndex = -1; // index of the open parameter form
 
   private destroy$ = new Subject();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private featureToggle: FeatureToggleService) {}
 
   /**
    * create payment form
    */
   ngOnInit() {
+    // if experimental feature is on, payment redirect payment method is allowed
+    this.experimental = this.featureToggle.enabled('experimental');
+
     this.paymentForm = new FormGroup({
       name: new FormControl(this.getBasketPayment()),
-      parameters: this.parameterForm,
+      parameters: new FormGroup({}),
     });
 
     // trigger update payment method if payment selection changes and there are no form parameters
     this.paymentForm
       .get('name')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(paymentInstrumentId => {
-        if (paymentInstrumentId !== this.getBasketPayment()) {
-          this.updatePaymentMethod.emit(paymentInstrumentId);
-        }
-      });
+      .valueChanges.pipe(
+        filter(paymentInstrumentId => paymentInstrumentId !== this.getBasketPayment()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(id => this.updatePaymentMethod.emit(id));
+  }
+
+  get parameterForm(): FormGroup {
+    return this.paymentForm.get('parameters') as FormGroup;
   }
 
   private getBasketPayment(): string {
     return this.basket && this.basket.payment ? this.basket.payment.paymentInstrument.id : '';
   }
 
-  /**
-   * set payment selection to the corresponding basket value (important in case of an error)
-   */
   ngOnChanges(c: SimpleChanges) {
-    if (c.basket && this.paymentForm) {
-      this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
-      this.openFormIndex = -1; // close parameter form after successfully basket changed
-      this.parameterForm.reset();
+    if (c.basket) {
+      this.setPaymentSelectionFromBasket();
     }
+
+    if (c.paymentMethods) {
+      this.filterPaymentMethods();
+    }
+  }
+
+  /**
+   * Reset payment selection with current values from basket
+   * Should be used for initialization when basket data is changed
+   * invoked by `ngOnChanges()`, important in case of an error
+   */
+  private setPaymentSelectionFromBasket() {
+    if (!this.paymentForm) {
+      return;
+    }
+
+    this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
+    this.openFormIndex = -1; // close parameter form after successfully basket changed
+    this.parameterForm.reset();
+  }
+
+  /**
+   * filter out payment methods with capability `RedirectBeforeCheckout`, if experimental features are not enabled
+   */
+  private filterPaymentMethods() {
+    if (this.experimental) {
+      this.filteredPaymentMethods = this.paymentMethods;
+    } else {
+      this.filteredPaymentMethods = this.paymentMethods.filter(
+        pm => !pm.capabilities || !pm.capabilities.some(cap => cap === 'RedirectBeforeCheckout')
+      );
+    }
+  }
+
+  /**
+   * Determine whether payment parameter form for a payment method is opened or not
+   * @param index Numerical index of the parameter form to get info from
+   */
+  formIsOpen(index: number): boolean {
+    return index === this.openFormIndex;
+  }
+
+  /**
+   * Determine whether payment cost threshold has been reached
+   * for usage in template
+   */
+  paymentCostThresholdReached(paymentMethod: PaymentMethod) {
+    return (
+      paymentMethod.paymentCostsThreshold && paymentMethod.paymentCostsThreshold.value <= this.basket.totals.total.value
+    );
+  }
+
+  /**
+   * Determine whether there are payment methods present
+   * for usage in template
+   */
+  get hasPaymentMethods() {
+    return this.filteredPaymentMethods && this.filteredPaymentMethods.length > 0;
   }
 
   /**
@@ -106,7 +168,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     // enable / disable the appropriate parameter form controls
     Object.keys(this.parameterForm.controls).forEach(key => {
-      this.paymentMethods[index].parameters.find(para => para.key === key)
+      this.filteredPaymentMethods[index].parameters.find(param => param.key === key)
         ? this.parameterForm.controls[key].enable()
         : this.parameterForm.controls[key].disable();
     });
@@ -125,7 +187,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   createNewPaymentInstrument(parameters: { name: string; value: string }[]) {
     this.createPaymentInstrument.emit({
       id: undefined,
-      paymentMethod: this.paymentMethods[this.openFormIndex].id,
+      paymentMethod: this.filteredPaymentMethods[this.openFormIndex].id,
       parameters,
     });
   }
@@ -133,7 +195,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * submits a payment parameter form
    */
-  submit() {
+  submitParameterForm() {
     if (this.paymentForm.invalid) {
       this.formSubmitted = true;
       markAsDirtyRecursive(this.parameterForm);
@@ -145,12 +207,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    const parameters = [];
-    Object.keys(this.parameterForm.controls).forEach(key => {
-      if (this.parameterForm.controls[key].enabled && this.parameterForm.controls[key].value !== null) {
-        parameters.push({ name: key, value: this.parameterForm.controls[key].value });
-      }
-    });
+    const parameters = Object.entries(this.parameterForm.controls)
+      .filter(([, control]) => control.enabled && control.value)
+      .map(([key, control]) => ({ name: key, value: control.value }));
 
     this.createNewPaymentInstrument(parameters);
   }
@@ -158,7 +217,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * deletes a basket instrument and related payment
    */
-  deleteBasketPayment(paymentInstrumentId) {
+  deleteBasketPayment(paymentInstrumentId: string) {
     if (paymentInstrumentId) {
       this.deletePaymentInstrument.emit(paymentInstrumentId);
     }
@@ -169,9 +228,25 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    */
   nextStep() {
     this.nextSubmitted = true;
-    if (!this.nextDisabled) {
+    if (this.nextDisabled) {
+      return;
+    }
+
+    if (this.paymentRedirectRequired) {
+      // do a hard redirect to payment redirect URL
+      document.location.href = this.basket.payment.redirectUrl;
+    } else {
       this.router.navigate(['/checkout/review']);
     }
+  }
+
+  get paymentRedirectRequired() {
+    return (
+      this.basket.payment.capabilities &&
+      this.basket.payment.capabilities.includes('RedirectBeforeCheckout') &&
+      this.basket.payment.redirectUrl &&
+      this.basket.payment.redirectRequired
+    );
   }
 
   get nextDisabled() {
