@@ -14,10 +14,7 @@
         <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
           product.name
         }}</a>
-        <div *ngIf="configuration.displaySKU" class="product-number">
-          <span class="product-number-label">{{ 'product.itemNumber.label' | translate }}</span>
-          <span itemprop="sku">{{ product.sku }}</span>
-        </div>
+        <ish-product-id *ngIf="configuration.displaySKU" [product]="product"></ish-product-id>
         <div *ngIf="configuration.displayDescription" class="product-description">{{ product.shortDescription }}</div>
 
         <ish-product-promotion-container
