@@ -11,6 +11,7 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
@@ -82,7 +83,9 @@ describe('Line Item Edit Dialog Container', () => {
 
   it('should display sku of variation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[itemprop="sku"]').innerHTML).toBe('SKU');
+    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(
+      `<ish-product-id ng-reflect-product="[object Object]"></ish-product-id>`
+    );
   });
 
   it('should display ish-components on the container', () => {

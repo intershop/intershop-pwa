@@ -10,10 +10,7 @@
     <!-- left box -->
     <div class="col-12 col-md product-info">
       <!-- sku -->
-      <div class="product-number">
-        <label>{{ 'checkout.pli.item.text.id' | translate }}</label
-        ><span itemprop="sku">{{ variation.sku }}</span>
-      </div>
+      <ish-product-id [product]="variation"></ish-product-id>
 
       <!-- price -->
       <div class="current-price">{{ variation.salePrice | ishPrice }}</div>
