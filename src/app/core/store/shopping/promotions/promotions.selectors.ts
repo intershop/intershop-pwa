@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+import { memoize } from 'lodash-es';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { ShoppingState, getShoppingState } from '../shopping-store';
@@ -21,6 +22,10 @@ export const getPromotion = createSelector(
 
 export const getPromotions = createSelector(
   getAllPromotions,
-  (promotions, props: { promotionIds: string[] }): Promotion[] =>
-    promotions.filter(e => props.promotionIds.includes(e.id))
+  memoize(
+    (promotions, props): Promotion[] =>
+      props.promotionIds.map(id => promotions.find(p => p.id === id)).filter(x => !!x),
+    (promotions: Promotion[], props: { promotionIds: string[] }) =>
+      `${props.promotionIds.join()}#${promotions.map(p => p.id).join()}`
+  )
 );
