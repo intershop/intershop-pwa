@@ -44,8 +44,9 @@ export function ordersReducer(state = initialState, action: OrdersAction): Order
       const { order } = action.payload;
 
       return {
-        ...orderAdapter.addOne(order, state),
+        ...orderAdapter.upsertOne(order, state),
         selected: order.id,
+        loading: false,
       };
     }
 

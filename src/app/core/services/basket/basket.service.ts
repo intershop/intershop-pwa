@@ -325,7 +325,7 @@ export class BasketService {
           if (
             !pm ||
             !pm.capabilities ||
-            !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data)) // RedirectAfterCheckout
+            !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data)) // ToDo: set URLs for RedirectAfterCheckout here, if placeholders are supported by the ICM server
           ) {
             return of(paymentInstrument);
             // send redirect urls if there is a redirect required
