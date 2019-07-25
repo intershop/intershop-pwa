@@ -22,11 +22,15 @@ const getProductsState = createSelector(
   state => state.products
 );
 
-const productToVariationOptions = (product: ProductView | VariationProductView | VariationProductMasterView) => {
-  if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
-    return ProductVariationHelper.buildVariationOptionGroups(product);
-  }
-};
+const productToVariationOptions = memoize(
+  product => {
+    if (ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)) {
+      return ProductVariationHelper.buildVariationOptionGroups(product);
+    }
+  },
+  product =>
+    `${product && product.sku}#${ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)}`
+);
 
 export const {
   selectEntities: getProductEntities,
