@@ -130,19 +130,6 @@
       }
     }
   }
-
-  .product-number {
-    font-family: $font-family-condensedregular;
-    color: $text-color-quarternary;
-
-    .product-number-label {
-      text-transform: uppercase;
-    }
-
-    @media (max-width: $screen-xs-max) {
-      margin-bottom: $space-default;
-    }
-  }
 }
 
 .filtered-products {
