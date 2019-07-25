@@ -4,6 +4,7 @@ stages:
   - build
   - publish
   - deploy
+  - universal
   - e2e
   - verify
 
@@ -648,7 +649,8 @@ schematics:
 
 .universal_template: &universal_definition
   image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
-  stage: e2e
+  stage: universal
+  retry: 1
   only:
     - merge_requests
     - triggers
