@@ -58,14 +58,12 @@ describe('Payment Concardis Creditcard Component', () => {
 
     const emitter = spy(component.submit);
 
-    component.parameterForm.controls.cardHolder.setValue('John Doe');
     component.parameterForm.controls.expirationMonth.setValue('12');
     component.parameterForm.controls.expirationYear.setValue('20');
     component.submitCallback(undefined, {
       paymentInstrumentId: '4711',
       attributes: {
         brand: 'Visa',
-        cardHolder: 'John Doe',
         cardNumber: '*********123',
         expiryMonth: '12',
         expiryYear: '20',
@@ -84,7 +82,6 @@ describe('Payment Concardis Creditcard Component', () => {
       paymentInstrumentId: '4711',
       attributes: {
         brand: 'Visa',
-        cardHolder: 'John Doe',
         cardNumber: '*********123',
         expiryMonth: '12',
         expiryYear: '20',

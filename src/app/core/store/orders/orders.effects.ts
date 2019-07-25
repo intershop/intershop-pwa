@@ -3,16 +3,17 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { RouteNavigation, mapToParam, ofRoute } from 'ngrx-router';
+import { race } from 'rxjs';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { OrderService } from '../../services/order/order.service';
 import { LoadBasket } from '../checkout/basket';
 import { LoadProduct, getProductEntities } from '../shopping/products';
 import { UserActionTypes, getLoggedInUser } from '../user';
 
 import * as ordersActions from './orders.actions';
-import { getSelectedOrderId } from './orders.selectors';
+import { getOrder, getSelectedOrderId } from './orders.selectors';
 
 @Injectable()
 export class OrdersEffects {
@@ -83,6 +84,21 @@ export class OrdersEffects {
   );
 
   /**
+   * Loads an anonymous user`s order using the given api token and orderId.
+   */
+  @Effect()
+  loadOrderByAPIToken$ = this.actions$.pipe(
+    ofType(ordersActions.OrdersActionTypes.LoadOrderByAPIToken),
+    mapToPayload(),
+    concatMap((payload: { orderId: string; apiToken: string }) =>
+      this.orderService.getOrderByToken(payload.orderId, payload.apiToken).pipe(
+        map(order => new ordersActions.LoadOrderSuccess({ order })),
+        mapErrorToAction(ordersActions.LoadOrderFail)
+      )
+    )
+  );
+
+  /**
    * Selects and loads an order.
    */
   @Effect()
@@ -124,7 +140,7 @@ export class OrdersEffects {
 
   /**
    * Returning from redirect after checkout (before customer is logged in).
-   * Waits until the customer is logged in and triggers the handleOrderAfterRedirect action afterwards
+   * Waits until the customer is logged in and triggers the handleOrderAfterRedirect action afterwards.
    */
   @Effect()
   returnFromRedirectAfterOrderCreation$ = this.actions$.pipe(
@@ -132,12 +148,18 @@ export class OrdersEffects {
     map((action: RouteNavigation) => action.payload.queryParams),
     filter(queryParams => queryParams && queryParams.redirect && queryParams.orderId),
     switchMap(queryParams =>
-      this.store.pipe(
-        select(getLoggedInUser),
-        whenTruthy(),
-        take(1),
-        mapTo(new ordersActions.SelectOrderAfterRedirect({ params: queryParams }))
-      )
+      race([
+        this.store.pipe(
+          select(getLoggedInUser),
+          whenTruthy(),
+          take(1)
+        ),
+        this.store.pipe(
+          select(getOrder, { orderId: queryParams.orderId }),
+          whenTruthy(),
+          take(1)
+        ),
+      ]).pipe(mapTo(new ordersActions.SelectOrderAfterRedirect({ params: queryParams })))
     )
   );
 

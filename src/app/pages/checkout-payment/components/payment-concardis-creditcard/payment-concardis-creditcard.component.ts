@@ -79,7 +79,6 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
    */
   ngOnInit() {
     this.parameterForm = new FormGroup({
-      cardHolder: new FormControl('', Validators.required),
       expirationMonth: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
       expirationYear: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
     });
@@ -175,7 +174,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
     error: { message: { properties: { key: string; code: number; message: string; messageKey: string }[] } },
     result: {
       paymentInstrumentId: string;
-      attributes: { brand: string; cardHolder: string; cardNumber: string; expiryMonth: string; expiryYear: string };
+      attributes: { brand: string; cardNumber: string; expiryMonth: string; expiryYear: string };
     }
   ) {
     if (this.parameterForm.invalid) {
@@ -209,7 +208,6 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
         { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
         { name: 'maskedCardNumber', value: result.attributes.cardNumber },
         { name: 'cardType', value: result.attributes.brand },
-        { name: 'cardHolder', value: result.attributes.cardHolder },
         { name: 'expirationDate', value: `${result.attributes.expiryMonth}/${result.attributes.expiryYear}` },
       ]);
     }
@@ -293,7 +291,6 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
     const paymentData = {
       expiryMonth: this.parameterForm.controls.expirationMonth.value,
       expiryYear: this.parameterForm.controls.expirationYear.value,
-      cardHolder: this.parameterForm.controls.cardHolder.value,
     };
     // tslint:disable-next-line:no-null-keyword
     PayEngine.iframesCreatePaymentInstrument(this.iframesReference, paymentData, null, (err, val) =>

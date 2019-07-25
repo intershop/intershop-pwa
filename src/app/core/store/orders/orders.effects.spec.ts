@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
@@ -17,6 +17,7 @@ import { Order } from '../../models/order/order.model';
 import { OrderService } from '../../services/order/order.service';
 import { LoadBasket } from '../checkout/basket';
 import { coreReducers } from '../core-store.module';
+import { shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from '../user';
 
 import * as orderActions from './orders.actions';
@@ -34,13 +35,14 @@ describe('Orders Effects', () => {
   // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
-  const order = { id: '1', documentNo: '00000001' } as Order;
+  const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
   const orders = [order, { id: '2', documentNo: '00000002' }] as Order[];
 
   beforeEach(() => {
     orderServiceMock = mock(OrderService);
     when(orderServiceMock.getOrders()).thenReturn(of(orders));
     when(orderServiceMock.getOrder(anyString())).thenReturn(of(order));
+    when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -48,7 +50,10 @@ describe('Orders Effects', () => {
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
         ]),
-        StoreModule.forRoot(coreReducers),
+        StoreModule.forRoot({
+          ...coreReducers,
+          shopping: combineReducers(shoppingReducers),
+        }),
       ],
       providers: [
         OrdersEffects,
@@ -198,6 +203,38 @@ describe('Orders Effects', () => {
     });
   });
 
+  describe('loadOrderByApiToken$', () => {
+    it('should call the orderService for LoadOrderByAPIToken', done => {
+      const action = new orderActions.LoadOrderByAPIToken({ apiToken: 'dummy', orderId: order.id });
+      actions$ = of(action);
+
+      effects.loadOrderByAPIToken$.subscribe(() => {
+        verify(orderServiceMock.getOrderByToken(order.id, 'dummy')).once();
+        done();
+      });
+    });
+
+    it('should load an order of a user and dispatch a LoadOrderSuccess action', () => {
+      const action = new orderActions.LoadOrderByAPIToken({ apiToken: 'dummy', orderId: order.id });
+      const completion = new orderActions.LoadOrderSuccess({ order });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadOrderByAPIToken$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a LoadOrderFail action if a load error occurs', () => {
+      when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(throwError({ message: 'error' }));
+
+      const action = new orderActions.LoadOrderByAPIToken({ apiToken: 'dummy', orderId: order.id });
+      const completion = new orderActions.LoadOrderFail({ error: { message: 'error' } as HttpError });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadOrderByAPIToken$).toBeObservable(expected$);
+    });
+  });
+
   describe('loadOrderForSelectedOrder$', () => {
     it('should fire LoadOrder if an order is selected that is not yet loaded', () => {
       const orderId = '123';
@@ -233,10 +270,36 @@ describe('Orders Effects', () => {
   });
 
   describe('returnFromRedirectAfterOrderCreation$', () => {
-    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect"', () => {
+    it('should not trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and there is no logged in user and no order', () => {
+      const action = new RouteNavigation({
+        path: 'checkout/receipt',
+        queryParams: { redirect: 'success', param1: 123, orderId: order.id },
+      });
+      actions$ = hot('-a', { a: action });
+
+      expect(effects.returnFromRedirectAfterOrderCreation$).toBeObservable(cold('-'));
+    });
+
+    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and a user is logged in', () => {
       const customer = { customerNo: 'patricia' } as Customer;
       const user = { firstName: 'patricia' } as User;
       store$.dispatch(new LoginUserSuccess({ customer, user }));
+      const params = { redirect: 'success', param1: 123, orderId: order.id };
+
+      const action = new RouteNavigation({
+        path: 'checkout/receipt',
+        queryParams: { redirect: 'success', param1: 123, orderId: order.id },
+      });
+      actions$ = hot('-a', { a: action });
+
+      expect(effects.returnFromRedirectAfterOrderCreation$).toBeObservable(
+        cold('-c', { c: new orderActions.SelectOrderAfterRedirect({ params }) })
+      );
+    });
+
+    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and an order is available', () => {
+      store$.dispatch(new orderActions.CreateOrderSuccess({ order }));
+
       const params = { redirect: 'success', param1: 123, orderId: order.id };
 
       const action = new RouteNavigation({

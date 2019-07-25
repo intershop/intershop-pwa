@@ -1,8 +1,8 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
-import { concatMap, map, mapTo } from 'rxjs/operators';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, map, mapTo } from 'rxjs/operators';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
@@ -46,13 +46,17 @@ export class OrderService {
   ];
 
   /**
-   * Creates an order based on the given basket.
+   * Creates an order based on the given basket. If a redirect is necessary for payment, the return URLs will be sent after order creation in case they are required.
    * @param basket                      The (current) basket.
    * @param termsAndConditionsAccepted  indicates whether the user has accepted terms and conditions
    * @returns                           The order.
    */
   createOrder(basket: Basket, termsAndConditionsAccepted: boolean = false): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
+
+    if (!basket) {
+      return throwError('createOrder() called without basket');
+    }
 
     return this.apiService
       .post<OrderData>(
@@ -114,7 +118,7 @@ export class OrderService {
   }
 
   /**
-   * Get a logged-in user's order with the given id
+   * Gets a logged-in user's order with the given id
    * @param orderId The (uuid) of the order.
    * @returns       The order
    */
@@ -131,6 +135,37 @@ export class OrderService {
         params,
       })
       .pipe(map(OrderMapper.fromData));
+  }
+
+  /**
+   * Gets an anonymous user's order with the given id using the provided apiToken.
+   * @param orderId  The (uuid) of the order.
+   * @param apiToken The api token of the user's most recent request.
+   * @returns        The order
+   */
+  getOrderByToken(orderId: string, apiToken: string): Observable<Order> {
+    const params = new HttpParams().set('include', this.allOrderIncludes.join());
+
+    if (!orderId) {
+      return throwError('getOrderByToken() called without orderId');
+    }
+
+    if (!apiToken) {
+      return throwError('getOrderByToken() called without apiToken');
+    }
+
+    return this.apiService
+      .get<OrderData>(`orders/${orderId}`, {
+        headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+        params,
+        skipApiErrorHandling: true,
+        runExclusively: true,
+      })
+      .pipe(
+        map(OrderMapper.fromData),
+        // tslint:disable-next-line:ban
+        catchError(() => EMPTY)
+      );
   }
 
   /**

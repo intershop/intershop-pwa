@@ -14,6 +14,7 @@ export enum OrdersActionTypes {
   LoadOrdersFail = '[Order API] Load Orders Fail',
   LoadOrdersSuccess = '[Order API] Load Orders Success',
   LoadOrder = '[Order] Load Order',
+  LoadOrderByAPIToken = '[Order Internal] Load Order using given API Token',
   LoadOrderFail = '[Order API] Load Order Fail',
   LoadOrderSuccess = '[Order API] Load Order Success',
   SelectOrderAfterRedirect = '[Order Internal] Select Order After Checkout Redirect',
@@ -55,6 +56,11 @@ export class LoadOrder implements Action {
   constructor(public payload: { orderId: string }) {}
 }
 
+export class LoadOrderByAPIToken implements Action {
+  readonly type = OrdersActionTypes.LoadOrderByAPIToken;
+  constructor(public payload: { apiToken: string; orderId: string }) {}
+}
+
 export class LoadOrderFail implements Action {
   readonly type = OrdersActionTypes.LoadOrderFail;
   constructor(public payload: { error: HttpError }) {}
@@ -92,6 +98,7 @@ export type OrdersAction =
   | LoadOrdersFail
   | LoadOrdersSuccess
   | LoadOrder
+  | LoadOrderByAPIToken
   | LoadOrderFail
   | LoadOrderSuccess
   | SelectOrder
