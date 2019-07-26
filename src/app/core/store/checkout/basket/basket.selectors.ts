@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketView } from 'ish-core/models/basket/basket.model';
+import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
 import { getProductEntities } from '../../shopping/products';
 import { getCheckoutState } from '../checkout-store';
 
@@ -15,21 +15,7 @@ const getBasketState = createSelector(
 export const getCurrentBasket = createSelector(
   getBasketState,
   getProductEntities,
-  (basket, products): BasketView =>
-    !basket.basket
-      ? undefined
-      : {
-          ...basket.basket,
-          lineItems: basket.basket.lineItems
-            ? basket.basket.lineItems.map(li => ({
-                ...li,
-                product: products[li.productSKU],
-                name: products[li.productSKU] ? products[li.productSKU].name : undefined,
-                inStock: products[li.productSKU] ? products[li.productSKU].inStock : undefined,
-                availability: products[li.productSKU] ? products[li.productSKU].availability : undefined,
-              }))
-            : [],
-        }
+  (basket, products): BasketView => createBasketView(basket.basket, products)
 );
 
 export const getCurrentBasketId = createSelector(
