@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketHelper, BasketView } from 'ish-core/models/basket/basket.model';
+import { BasketView } from 'ish-core/models/basket/basket.model';
 import { getProductEntities } from '../../shopping/products';
 import { getCheckoutState } from '../checkout-store';
 
@@ -29,7 +29,6 @@ export const getCurrentBasket = createSelector(
                 availability: products[li.productSKU] ? products[li.productSKU].availability : undefined,
               }))
             : [],
-          itemsCount: BasketHelper.getBasketItemsCount(basket.basket.lineItems),
         }
 );
 

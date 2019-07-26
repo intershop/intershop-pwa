@@ -90,7 +90,6 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems).toHaveLength(1);
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
-      expect(currentBasket.itemsCount).toEqual(5);
       expect(currentBasket.payment.paymentInstrument.id).toEqual('ISH_INVOICE');
 
       expect(getCurrentBasketId(store$.state)).toEqual('test');

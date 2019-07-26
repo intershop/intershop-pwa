@@ -3,7 +3,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable, concat, of, timer } from 'rxjs';
 import { distinctUntilChanged, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
-import { BasketHelper } from 'ish-core/models/basket/basket.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 
 @Component({
@@ -21,9 +20,9 @@ export class MiniBasketContainerComponent implements OnInit {
   ngOnInit() {
     this.basketAnimation$ = this.store.pipe(
       select(getCurrentBasket),
-      map(a => (a && a.lineItems ? BasketHelper.getBasketItemsCount(a.lineItems) : 0)),
+      map(basket => (basket && basket.lineItems ? basket.totalProductQuantity : 0)),
       distinctUntilChanged(),
-      filter(a => a !== 0),
+      filter(count => count !== 0),
       switchMap(() => concat(of('tada'), timer(2000).pipe(mapTo(''))))
     );
   }

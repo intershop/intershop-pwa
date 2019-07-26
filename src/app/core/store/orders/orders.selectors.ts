@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketHelper } from '../../models/basket/basket.model';
 import { OrderView } from '../../models/order/order.model';
 import { getCoreState } from '../core-store';
 import { getProductEntities } from '../shopping/products';
@@ -32,7 +31,6 @@ export const getSelectedOrder = createSelector(
       ? undefined
       : {
           ...entities[id],
-          itemsCount: BasketHelper.getBasketItemsCount(entities[id].lineItems),
           lineItems: entities[id].lineItems.map(li => ({
             ...li,
             product: products[li.productSKU],
@@ -53,7 +51,6 @@ export const getOrders = createSelector(
       ? []
       : orders.map(e => ({
           ...e,
-          itemsCount: BasketHelper.getBasketItemsCount(e.lineItems),
           lineItems: e.lineItems.map(li => ({
             ...li,
             product: products[li.productSKU],
@@ -72,7 +69,6 @@ export const getOrder = createSelector(
     }
     return {
       ...order,
-      itemsCount: BasketHelper.getBasketItemsCount(order.lineItems),
       lineItems: order.lineItems.map(li => ({
         ...li,
         product: products[li.productSKU],
