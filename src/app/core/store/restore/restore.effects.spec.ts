@@ -8,10 +8,10 @@ import { cold } from 'jest-marbles';
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketActionTypes, LoadBasketSuccess } from '../checkout/basket';
 import { checkoutReducers } from '../checkout/checkout-store.module';
@@ -128,7 +128,7 @@ describe('Restore Effects', () => {
 
     it('should save basket token when basket is available', done => {
       store$.dispatch(new SetAPIToken({ apiToken: 'dummy' }));
-      store$.dispatch(new LoadBasketSuccess({ basket: { id: 'basket' } as Basket }));
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
 
       restoreEffects.saveAPITokenToCookie$.subscribe(
         () => {
@@ -160,7 +160,7 @@ describe('Restore Effects', () => {
 
     it('should save user token when basket and user are available', done => {
       store$.dispatch(new SetAPIToken({ apiToken: 'dummy' }));
-      store$.dispatch(new LoadBasketSuccess({ basket: { id: 'basket' } as Basket }));
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
 
       restoreEffects.saveAPITokenToCookie$.subscribe(
