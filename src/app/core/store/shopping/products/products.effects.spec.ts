@@ -196,7 +196,11 @@ describe('Products Effects', () => {
 
     it('should map to action of type LoadProductVariationsSuccess', () => {
       const action = new fromActions.LoadProductVariations({ sku: 'MSKU' });
-      const completion = new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: [] });
+      const completion = new fromActions.LoadProductVariationsSuccess({
+        sku: 'MSKU',
+        variations: [],
+        defaultVariation: undefined,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -270,7 +274,9 @@ describe('Products Effects', () => {
       } as VariationProductMaster;
 
       store$.dispatch(new fromActions.LoadProductSuccess({ product }));
-      store$.dispatch(new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'] }));
+      store$.dispatch(
+        new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'], defaultVariation: 'VAR' })
+      );
 
       const action = new fromActions.LoadProductSuccess({ product });
       actions$ = hot('-a', { a: action });

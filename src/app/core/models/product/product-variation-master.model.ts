@@ -5,4 +5,5 @@ import { Product } from './product.model';
 export interface VariationProductMaster extends Product {
   variationAttributeValues?: VariationAttribute[];
   variationSKUs?: string[];
+  defaultVariationSKU?: string;
 }
