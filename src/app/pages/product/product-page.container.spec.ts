@@ -175,7 +175,9 @@ describe('Product Page Container', () => {
     store$.dispatch(new LoadProductSuccess({ product: variation1 }));
     store$.dispatch(new LoadProductSuccess({ product: variation2 }));
 
-    store$.dispatch(new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'] }));
+    store$.dispatch(
+      new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'], defaultVariation: '222' })
+    );
     store$.dispatch(new SelectProduct({ sku: product.sku }));
 
     fixture.detectChanges();

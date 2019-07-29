@@ -136,11 +136,14 @@ describe('Products Reducer', () => {
         const product = { sku: 'SKU' } as Product;
         let state = productsReducer(initialState, new fromActions.LoadProductSuccess({ product }));
 
-        const payload = {
-          sku: 'SKU',
-          variations: ['VAR'],
-        };
-        state = productsReducer(state, new fromActions.LoadProductVariationsSuccess(payload));
+        state = productsReducer(
+          state,
+          new fromActions.LoadProductVariationsSuccess({
+            sku: 'SKU',
+            variations: ['VAR'],
+            defaultVariation: 'VAR',
+          })
+        );
 
         expect(state.entities.SKU).toHaveProperty('variationSKUs', ['VAR']);
         expect(state.loading).toBeFalse();

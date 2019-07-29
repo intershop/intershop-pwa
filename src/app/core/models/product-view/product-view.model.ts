@@ -23,6 +23,7 @@ export interface VariationProductView extends VariationProduct {
 
 export interface VariationProductMasterView extends VariationProductMaster {
   variations(): VariationProductView[];
+  defaultVariation(): VariationProductView;
   defaultCategory(): CategoryView;
 }
 
@@ -54,6 +55,9 @@ export function createVariationProductMasterView(
           product.variationSKUs.map(variationSKU => createVariationProductView(entities[variationSKU], entities, tree))
         )
       : () => [],
+    defaultVariation: product.defaultVariationSKU
+      ? once(() => createVariationProductView(entities[product.defaultVariationSKU], entities, tree))
+      : undefined,
   };
 }
 

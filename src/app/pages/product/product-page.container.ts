@@ -132,8 +132,9 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
    * Redirect to default variation product if master product is selected.
    */
   redirectMasterToDefaultVariation(product: VariationProductMasterView) {
-    const defaultVariation = ProductVariationHelper.findDefaultVariationForMaster(product);
-    this.redirectToVariation(defaultVariation);
+    if (ProductVariationHelper.hasDefaultVariation(product)) {
+      this.redirectToVariation(product.defaultVariation());
+    }
   }
 
   ngOnDestroy() {
