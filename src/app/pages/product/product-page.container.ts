@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
@@ -50,7 +51,8 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
     private store: Store<{}>,
     private location: Location,
     private router: Router,
-    private prodRoutePipe: ProductRoutePipe
+    private prodRoutePipe: ProductRoutePipe,
+    private featureToggleService: FeatureToggleService
   ) {}
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
       )
       .subscribe(product => {
         this.quantity = product.minOrderQuantity;
-        if (ProductHelper.isMasterProduct(product)) {
+        if (ProductHelper.isMasterProduct(product) && !this.featureToggleService.enabled('advancedVariationHandling')) {
           this.redirectMasterToDefaultVariation(product);
         }
         if (ProductHelper.isRetailSet(product)) {
