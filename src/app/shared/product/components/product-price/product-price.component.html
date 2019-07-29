@@ -1,5 +1,5 @@
 <ng-container
-  *ngIf="product.minSalePrice && product.summedUpSalePrice; then priceRange; else singlePrice"
+  *ngIf="product.minSalePrice && (product.summedUpSalePrice || product.maxSalePrice); then priceRange; else singlePrice"
 ></ng-container>
 
 <ng-template #singlePrice>
@@ -34,6 +34,6 @@
 
 <ng-template #priceRange>
   <div class="current-price" data-testing-id="current-price">
-    {{ product.minSalePrice | ishPrice }} - {{ product.summedUpSalePrice | ishPrice }}
+    {{ product.minSalePrice | ishPrice }} - {{ product.summedUpSalePrice || product.maxSalePrice | ishPrice }}
   </div>
 </ng-template>
