@@ -24,6 +24,7 @@ export type AnyProductType = Product & VariationProduct & VariationProductMaster
 
 export type ProductPrices =
   | Partial<Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>>
+  | Partial<Pick<VariationProductMaster, 'minListPrice' | 'minSalePrice' | 'maxListPrice' | 'maxSalePrice'>>
   | Partial<Pick<Product, 'salePrice' | 'listPrice'>>;
 
 export class ProductHelper {
