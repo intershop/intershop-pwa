@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
@@ -38,6 +39,7 @@ describe('Product Page Container', () => {
   let element: HTMLElement;
   let store$: TestStore;
   let location: Location;
+  let router: Router;
 
   beforeEach(async(() => {
     @Component({ template: 'dummy', changeDetection: ChangeDetectionStrategy.OnPush })
@@ -76,6 +78,7 @@ describe('Product Page Container', () => {
     element = fixture.nativeElement;
 
     location = TestBed.get(Location);
+    router = TestBed.get(Router);
     store$ = TestBed.get(TestStore);
     store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
   });
@@ -157,34 +160,50 @@ describe('Product Page Container', () => {
     expect(location.path()).toEqual('/product/333');
   }));
 
-  it('should redirect to default variation for master product', fakeAsync(() => {
+  describe('redirecting to default variation', () => {
     const product = {
       sku: 'M111',
       type: 'VariationProductMaster',
       completenessLevel: ProductCompletenessLevel.Detail,
     } as VariationProductMaster;
 
-    const variation1 = { sku: '111' } as VariationProduct;
-    const variation2 = {
-      sku: '222',
-      attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-      completenessLevel: ProductCompletenessLevel.Detail,
-    } as VariationProduct;
+    beforeEach(() => {
+      const variation1 = { sku: '111' } as VariationProduct;
+      const variation2 = {
+        sku: '222',
+        attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+        completenessLevel: ProductCompletenessLevel.Detail,
+      } as VariationProduct;
 
-    store$.dispatch(new LoadProductSuccess({ product }));
-    store$.dispatch(new LoadProductSuccess({ product: variation1 }));
-    store$.dispatch(new LoadProductSuccess({ product: variation2 }));
+      store$.dispatch(new LoadProductSuccess({ product }));
+      store$.dispatch(new LoadProductSuccess({ product: variation1 }));
+      store$.dispatch(new LoadProductSuccess({ product: variation2 }));
 
-    store$.dispatch(
-      new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'], defaultVariation: '222' })
-    );
-    store$.dispatch(new SelectProduct({ sku: product.sku }));
+      store$.dispatch(
+        new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'], defaultVariation: '222' })
+      );
+      store$.dispatch(new SelectProduct(product));
+    });
 
-    fixture.detectChanges();
-    tick(500);
+    it('should redirect to default variation for master product', fakeAsync(() => {
+      router.navigateByUrl(`/product/${product.sku}`);
 
-    expect(location.path()).toEqual('/product/222');
-  }));
+      fixture.detectChanges();
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/product/222"`);
+    }));
+
+    it('should not redirect to default variation for master product if advanced variation handling is activated', fakeAsync(() => {
+      store$.dispatch(new ApplyConfiguration({ features: ['advancedVariationHandling'] }));
+      router.navigateByUrl(`/product/${product.sku}`);
+
+      fixture.detectChanges();
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/product/M111"`);
+    }));
+  });
 
   it('should only dispatch retail set products when quantities are greater than 0', () => {
     const product = {
