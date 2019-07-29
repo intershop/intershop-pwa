@@ -27,7 +27,7 @@ describe('Line Item Edit Dialog Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
-        ProductVariationSelectComponent,
+        MockComponent(ProductVariationSelectComponent),
       ],
     }).compileComponents();
   }));
