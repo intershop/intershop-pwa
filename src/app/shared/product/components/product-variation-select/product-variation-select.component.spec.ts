@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { ProductVariationSelectComponent } from './product-variation-select.component';
 
@@ -11,7 +16,13 @@ describe('Product Variation Select Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        StoreModule.forRoot(coreReducers),
+        TranslateModule.forRoot(),
+      ],
       declarations: [ProductVariationSelectComponent],
     }).compileComponents();
   }));

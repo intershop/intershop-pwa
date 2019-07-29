@@ -22,6 +22,10 @@
         width: 60%;
         text-align: left;
 
+        &.read-only {
+          text-align: center;
+        }
+
         .form-group {
           margin-bottom: $space-default / 3;
         }
@@ -305,6 +309,12 @@
 
     @media (-moz-touch-enabled) {
       opacity: 1;
+    }
+  }
+
+  .product-variation {
+    &.read-only {
+      color: $text-color-quarternary;
     }
   }
 
