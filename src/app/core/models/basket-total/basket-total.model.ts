@@ -2,18 +2,23 @@ import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { Price } from '../price/price.model';
 
 export interface BasketTotal {
-  shippingRebatesTotal?: Price;
-  total: Price;
-  valueRebatesTotal?: Price;
-  dutiesAndSurchargesTotal?: Price;
-  itemRebatesTotal?: Price;
-  itemShippingRebatesTotal?: Price;
   itemTotal: Price;
-  paymentCostsTotal?: Price;
+  undiscountedItemTotal?: Price;
   shippingTotal?: Price;
+  undiscountedShippingTotal?: Price;
+  paymentCostsTotal?: Price;
+  dutiesAndSurchargesTotal?: Price;
   taxTotal?: Price;
+  total: Price;
+
+  itemRebatesTotal?: Price;
+  valueRebatesTotal?: Price;
   valueRebates?: BasketRebate[];
+
+  itemShippingRebatesTotal?: Price;
+  shippingRebatesTotal?: Price;
   shippingRebates?: BasketRebate[];
+
   itemSurchargeTotalsByType: {
     amount: Price;
     description: string;

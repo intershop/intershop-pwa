@@ -26,6 +26,7 @@ export interface LineItemData {
     total: PriceItem;
     valueRebatesTotal?: PriceItem;
     price: PriceItem;
+    undiscountedPrice: PriceItem;
     singleBasePrice: PriceItem;
   };
   hiddenGift: boolean;

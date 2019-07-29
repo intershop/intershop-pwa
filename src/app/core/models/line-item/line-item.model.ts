@@ -25,6 +25,7 @@ export interface LineItem {
     shippingTaxTotal?: Price;
     shippingTotal: Price;
     total: Price;
+    undiscountedTotal;
     valueRebatesTotal?: Price;
 
     // attributes needed for quote feature
