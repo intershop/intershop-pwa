@@ -22,6 +22,7 @@ export interface Environment {
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'quoting'
+    | 'advancedVariationHandling'
     /* Third-party Integrations */
     | 'tracking'
     | 'sentry'
