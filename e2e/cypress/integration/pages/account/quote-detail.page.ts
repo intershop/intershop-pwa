@@ -20,7 +20,7 @@ export class QuoteDetailPage {
   }
 
   get totalPrice() {
-    return cy.get('p[data-testing-id="total-price"]');
+    return cy.get('[data-testing-id="total-price"]');
   }
 
   get quoteState() {

@@ -49,8 +49,8 @@
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;
-                      <span *ngIf="paymentMethod.paymentCostsThreshold" class="form-text text-muted">
-                        <span class="hidden-xs">&nbsp;-&nbsp;</span
+                      <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
+                        <span class="hidden-xs">-&nbsp;</span
                         >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
                         <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
                       </span>

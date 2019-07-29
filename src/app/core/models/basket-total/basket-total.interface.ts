@@ -2,20 +2,25 @@ import { PriceItem } from '../price-item/price-item.interface';
 import { Price } from '../price/price.model';
 
 export interface BasketTotalData {
-  grandTotal: PriceItem;
-  undiscountedItemTotal?: PriceItem;
   itemTotal: PriceItem;
+  undiscountedItemTotal?: PriceItem;
   shippingTotal?: PriceItem;
-  basketShippingDiscountsTotal?: PriceItem;
-  basketValueDiscountsTotal?: PriceItem;
-  itemShippingDiscountsTotal?: PriceItem;
-  itemValueDiscountsTotal?: PriceItem;
-  paymentCostTotal?: PriceItem;
+  undiscountedShippingTotal: PriceItem;
+  paymentCostsTotal?: PriceItem;
   surchargeTotal?: PriceItem;
+  grandTotal: PriceItem;
+
+  itemValueDiscountsTotal?: PriceItem;
+  basketValueDiscountsTotal?: PriceItem;
+
+  itemShippingDiscountsTotal?: PriceItem;
+  basketShippingDiscountsTotal?: PriceItem;
+
+  shippingDiscountsTotal?: PriceItem;
+  valueDiscountsTotal: PriceItem;
+  discountTotal?: PriceItem;
+
   taxTotalsByTaxRate?: {
     calculatedTax: Price;
   }[];
-
-  /* is currently not available */
-  taxTotal?: PriceItem;
 }
