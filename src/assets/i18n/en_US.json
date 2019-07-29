@@ -1906,6 +1906,7 @@
   "product.can_not_be_ordered.message": "Sorry, this product cannot longer be ordered.",
   "product.cancel.button.label": "Cancel",
   "product.choose_variation.link": "Choose Variation",
+  "product.choose_another_variation.link": "Choose Another Variation",
   "product.compare.link": "Compare",
   "product.compare.next.button.label": "Next Page",
   "product.compare.no_product_selected.message": "No products to compare. Please select some products.",

@@ -1906,6 +1906,7 @@
   "product.can_not_be_ordered.message": "Dieses Produkt kann leider nicht mehr bestellt werden.",
   "product.cancel.button.label": "Abbrechen",
   "product.choose_variation.link": "Variation auswählen",
+  "product.choose_another_variation.link": "Wählen Sie eine andere Variante",
   "product.compare.link": "Vergleichen",
   "product.compare.next.button.label": "Nächste Seite",
   "product.compare.no_product_selected.message": "Keine Produkte zum Vergleich ausgewählt. Markieren Sie bitte einige Produkte.",

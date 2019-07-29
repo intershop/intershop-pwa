@@ -38,6 +38,7 @@
 
       <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
+        [productMasterSKU]="product.productMasterSKU"
         [variationOptions]="variationOptions"
         (selectVariation)="variationSelected($event)"
       ></ish-product-variation-select>
