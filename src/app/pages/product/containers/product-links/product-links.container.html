@@ -1,7 +1,15 @@
+<pre>{{ links$ | async | json }}</pre>
 <ng-container *ngIf="links$ | async as links">
-  <ish-product-links-list
-    [links]="links.upselling"
-    [productLinkTitle]="'product.product_links.upselling.title' | translate"
-  ></ish-product-links-list>
-  <!---<ish-product-links-carousel [links]="links.crossselling"></ish-product-links-carousel>-->
+  <ng-container *ngIf="links.upselling.productSKUs.length > 0">
+    <ish-product-links-list
+      [links]="links.upselling"
+      [productLinkTitle]="'product.product_links.upselling.title' | translate"
+    ></ish-product-links-list>
+  </ng-container>
+  <ng-container *ngIf="links.crossselling.productSKUs.length > 0">
+    <ish-product-links-carousel
+      [links]="links.crossselling"
+      [productLinkTitle]="'product.product_links.crossselling.title' | translate"
+    ></ish-product-links-carousel>
+  </ng-container>
 </ng-container>

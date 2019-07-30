@@ -7,6 +7,7 @@ import { ProductBundlePartsComponent } from './components/product-bundle-parts/p
 import { ProductDetailActionsComponent } from './components/product-detail-actions/product-detail-actions.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductImagesComponent } from './components/product-images/product-images.component';
+import { ProductLinksCarouselComponent } from './components/product-links-carousel/product-links-carousel.component';
 import { ProductLinksListComponent } from './components/product-links-list/product-links-list.component';
 import { RetailSetPartsComponent } from './components/retail-set-parts/retail-set-parts.component';
 import { ProductLinksContainerComponent } from './containers/product-links/product-links.container';
@@ -31,6 +32,7 @@ const productPageRoutes: Routes = [
     ProductDetailActionsComponent,
     ProductDetailComponent,
     ProductImagesComponent,
+    ProductLinksCarouselComponent,
     ProductLinksContainerComponent,
     ProductLinksListComponent,
     ProductPageContainerComponent,
