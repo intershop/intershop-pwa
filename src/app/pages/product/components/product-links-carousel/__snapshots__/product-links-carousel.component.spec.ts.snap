@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product Links Carousel Component should be created 1`] = `
+<div class="product-list-container">
+  <h2></h2>
+  <div class="product-list">
+    <div class="product-list-item list-view">
+      <ish-product-item-container
+        displaytype="tile"
+        ng-reflect-product-sku="sku"
+        ng-reflect-display-type="tile"
+      ></ish-product-item-container>
+    </div>
+  </div>
+</div>
+`;
