@@ -91,7 +91,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.route.queryParamMap.pipe(take(1)).subscribe(params => {
       const redirect = params.get('redirect');
-      this.redirectStatus = redirect ? redirect : undefined;
+      this.redirectStatus = redirect;
     });
   }
 
@@ -242,7 +242,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.paymentRedirectRequired) {
       // do a hard redirect to payment redirect URL
-      document.location.href = this.basket.payment.redirectUrl;
+      document.location.assign(this.basket.payment.redirectUrl);
     } else {
       this.router.navigate(['/checkout/review']);
     }

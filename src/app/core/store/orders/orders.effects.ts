@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { RouteNavigation, mapToParam, ofRoute } from 'ngrx-router';
+import { mapToParam, ofRoute } from 'ngrx-router';
 import { race } from 'rxjs';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -88,9 +88,9 @@ export class OrdersEffects {
    */
   @Effect()
   loadOrderByAPIToken$ = this.actions$.pipe(
-    ofType(ordersActions.OrdersActionTypes.LoadOrderByAPIToken),
+    ofType<ordersActions.LoadOrderByAPIToken>(ordersActions.OrdersActionTypes.LoadOrderByAPIToken),
     mapToPayload(),
-    concatMap((payload: { orderId: string; apiToken: string }) =>
+    concatMap(payload =>
       this.orderService.getOrderByToken(payload.orderId, payload.apiToken).pipe(
         map(order => new ordersActions.LoadOrderSuccess({ order })),
         mapErrorToAction(ordersActions.LoadOrderFail)
@@ -114,7 +114,7 @@ export class OrdersEffects {
    */
   @Effect()
   routeListenerForSelectingOrder$ = this.actions$.pipe(
-    ofRoute(),
+    ofRoute(/^(account\/orders.*|checkout\/receipt)/),
     mapToParam<string>('orderId'),
     withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
     filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
@@ -145,9 +145,10 @@ export class OrdersEffects {
   @Effect()
   returnFromRedirectAfterOrderCreation$ = this.actions$.pipe(
     ofRoute(['checkout/receipt', 'checkout/payment']),
-    map((action: RouteNavigation) => action.payload.queryParams),
+    mapToPayloadProperty('queryParams'),
     filter(queryParams => queryParams && queryParams.redirect && queryParams.orderId),
     switchMap(queryParams =>
+      // SelectOrderAfterRedirect will be triggered either after a user is logged in or after the paid order is loaded (anonymous user)
       race([
         this.store.pipe(
           select(getLoggedInUser),
@@ -171,19 +172,18 @@ export class OrdersEffects {
   selectOrderAfterRedirect$ = this.actions$.pipe(
     ofType(ordersActions.OrdersActionTypes.SelectOrderAfterRedirect),
     mapToPayloadProperty('params'),
-    concatMap(params => {
-      if (params.redirect === 'success') {
-        return this.orderService.updateOrderPayment(params.orderId, params).pipe(
-          map(orderId => new ordersActions.SelectOrder({ orderId })),
-          mapErrorToAction(ordersActions.SelectOrderAfterRedirectFail) // ToDo: display error message on receipt page
-        );
-      } else {
-        return this.orderService.updateOrderPayment(params.orderId, params).pipe(
-          map(() => new LoadBasket()),
-          mapErrorToAction(ordersActions.SelectOrderAfterRedirectFail) // ToDo: display error message on payment page
-        );
-      }
-    })
+    concatMap(params =>
+      this.orderService.updateOrderPayment(params.orderId, params).pipe(
+        map(orderId => {
+          if (params.redirect === 'success') {
+            return new ordersActions.SelectOrder({ orderId });
+          } else {
+            return new LoadBasket();
+          }
+        }),
+        mapErrorToAction(ordersActions.SelectOrderAfterRedirectFail) // ToDo: display error message on receipt page
+      )
+    )
   );
 
   /**

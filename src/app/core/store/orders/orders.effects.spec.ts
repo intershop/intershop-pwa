@@ -251,7 +251,7 @@ describe('Orders Effects', () => {
     it('should fire SelectOrder when route account/order/XXX is navigated', () => {
       const orderId = '123';
       const action = new RouteNavigation({
-        path: 'order/:orderId',
+        path: 'account/orders/:orderId',
         params: { orderId: orderId },
         queryParams: {},
       });

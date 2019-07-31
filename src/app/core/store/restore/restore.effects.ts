@@ -12,6 +12,12 @@ import { LoadBasketByAPIToken, getCurrentBasket } from '../checkout/basket';
 import { LoadOrderByAPIToken, getSelectedOrderId } from '../orders';
 import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from '../user';
 
+interface CookieType {
+  apiToken: string;
+  type: 'user' | 'basket' | 'order';
+  orderId?: string;
+}
+
 export class RestoreEffects {
   constructor(
     private actions$: Actions,
@@ -38,7 +44,7 @@ export class RestoreEffects {
   ]).pipe(
     filter(([user, basket, orderId]) => !!user || !!basket || !!orderId),
     map(([user, basket, orderId, apiToken]) =>
-      this.makeCookie(apiToken, user ? 'user' : basket ? 'basket' : 'order', orderId ? orderId : undefined)
+      this.makeCookie({ apiToken, type: user ? 'user' : basket ? 'basket' : 'order', orderId })
     ),
     tap(cookie => {
       const options = { expires: new Date(Date.now() + 3600000) };
@@ -95,11 +101,13 @@ export class RestoreEffects {
     )
   );
 
-  private makeCookie(apiToken: string, type: 'user' | 'basket' | 'order', orderId?: string): string {
-    return apiToken ? JSON.stringify({ apiToken, type, orderId }) : undefined;
+  private makeCookie(cookie: CookieType): string {
+    return cookie && cookie.apiToken
+      ? JSON.stringify({ apiToken: cookie.apiToken, type: cookie.type, orderId: cookie.orderId })
+      : undefined;
   }
 
   private parseCookie(cookie: string) {
-    return JSON.parse(cookie) as { apiToken: string; type: 'user' | 'basket' | 'order'; orderId?: string };
+    return JSON.parse(cookie) as CookieType;
   }
 }

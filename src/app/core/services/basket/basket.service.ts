@@ -47,9 +47,10 @@ export class BasketService {
   constructor(private apiService: ApiService) {}
 
   // declare http header for Basket API v1
-  private basketHeaders = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Accept', 'application/vnd.intershop.basket.v1+json');
+  private basketHeaders = new HttpHeaders({
+    'content-type': 'application/json',
+    Accept: 'application/vnd.intershop.basket.v1+json',
+  });
 
   private allBasketIncludes: BasketIncludeType[] = [
     'invoiceToAddress',
@@ -325,22 +326,23 @@ export class BasketService {
           if (
             !pm ||
             !pm.capabilities ||
-            !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data)) // ToDo: set URLs for RedirectAfterCheckout here, if placeholders are supported by the ICM server
+            !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data)) // ToDo: add RedirectAfterCheckout here, if placeholders are supported by the ICM server
           ) {
             return of(paymentInstrument);
             // send redirect urls if there is a redirect required
           } else {
             const redirect = {
-              cancelUrl: `${location.origin}/checkout/payment?redirect=cancel&orderId=*orderID*`,
-              failureUrl: `${location.origin}/checkout/payment?redirect=failure&orderId=*orderID*`,
-              successUrl: '',
+              successUrl: `${location.origin}/checkout/review?redirect=success`,
+              cancelUrl: `${location.origin}/checkout/payment?redirect=cancel`,
+              failureUrl: `${location.origin}/checkout/payment?redirect=failure`,
             };
 
-            if (pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data))) {
-              redirect.successUrl = `${location.origin}/checkout/review?redirect=success`;
-            } else {
-              redirect.successUrl = `${location.origin}/checkout/receipt?redirect=success&orderId=*orderID*`;
+            if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {
+              redirect.successUrl = `${location.origin}/checkout/receipt?redirect=success&orderId=*orderID*`; // *OrderID* will be replaced by the ICM server
+              redirect.cancelUrl = `${location.origin}/checkout/payment?redirect=cancel&orderId=*orderID*`;
+              redirect.failureUrl = `${location.origin}/checkout/payment?redirect=failure&orderId=*orderID*`;
             }
+
             const body = {
               paymentInstrument,
               redirect,

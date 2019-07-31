@@ -4,15 +4,13 @@ import { LineItemMapper } from '../line-item/line-item.mapper';
 import { PaymentMapper } from '../payment/payment.mapper';
 import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
 
-import { OrderBaseData, OrderData } from './order.interface';
+import { OrderData } from './order.interface';
 import { Order } from './order.model';
 
 export class OrderMapper {
   static fromData(payload: OrderData): Order {
     if (!Array.isArray(payload.data)) {
-      const data = payload.data as OrderBaseData;
-      const included = payload.included;
-
+      const { data, included } = payload;
       const totals = BasketMapper.getTotals(data, included ? included.discounts : undefined);
 
       return {
@@ -64,8 +62,7 @@ export class OrderMapper {
 
   static fromListData(payload: OrderData): Order[] {
     if (Array.isArray(payload.data)) {
-      const data = payload.data as OrderBaseData[];
-      return data.map(order => OrderMapper.fromData({ ...payload, data: order }));
+      return payload.data.map(data => OrderMapper.fromData({ ...payload, data }));
     }
   }
 }
