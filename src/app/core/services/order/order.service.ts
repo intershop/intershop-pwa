@@ -29,9 +29,10 @@ export class OrderService {
   constructor(private apiService: ApiService) {}
 
   // declare http header for Order API v1
-  private orderHeaders = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Accept', 'application/vnd.intershop.order.v1+json');
+  private orderHeaders = new HttpHeaders({
+    'content-type': 'application/json',
+    Accept: 'application/vnd.intershop.order.v1+json',
+  });
 
   private allOrderIncludes: OrderIncludeType[] = [
     'invoiceToAddress',
@@ -72,33 +73,40 @@ export class OrderService {
       )
       .pipe(
         map(OrderMapper.fromData),
-        concatMap(order => {
-          if (
-            order.orderCreation &&
-            order.orderCreation.status === 'STOPPED' &&
-            order.orderCreation.stopAction.type === 'Workflow' &&
-            order.orderCreation.stopAction.exitReason === 'redirect_urls_required'
-          ) {
-            const body = {
-              orderCreation: {
-                redirect: {
-                  cancelUrl: `${location.origin}/checkout/payment?redirect=cancel&orderId=${order.id}`,
-                  failureUrl: `${location.origin}/checkout/payment?redirect=failure&orderId=${order.id}`,
-                  successUrl: `${location.origin}/checkout/receipt?redirect=success&orderId=${order.id}`,
-                },
-                status: 'CONTINUE',
-              },
-            };
-            return this.apiService
-              .patch(`orders/${order.id}`, body, {
-                headers: this.orderHeaders,
-              })
-              .pipe(map(OrderMapper.fromData));
-          } else {
-            return of(order);
-          }
-        })
+        concatMap(order => this.sendRedirectUrlsIfRequired(order))
       );
+  }
+
+  /**
+   *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
+   * @param order       The order.
+   * @returns           The (updated) order.
+   */
+  private sendRedirectUrlsIfRequired(order: Order): Observable<Order> {
+    if (
+      order.orderCreation &&
+      order.orderCreation.status === 'STOPPED' &&
+      order.orderCreation.stopAction.type === 'Workflow' &&
+      order.orderCreation.stopAction.exitReason === 'redirect_urls_required'
+    ) {
+      const body = {
+        orderCreation: {
+          redirect: {
+            cancelUrl: `${location.origin}/checkout/payment?redirect=cancel&orderId=${order.id}`,
+            failureUrl: `${location.origin}/checkout/payment?redirect=failure&orderId=${order.id}`,
+            successUrl: `${location.origin}/checkout/receipt?redirect=success&orderId=${order.id}`,
+          },
+          status: 'CONTINUE',
+        },
+      };
+      return this.apiService
+        .patch(`orders/${order.id}`, body, {
+          headers: this.orderHeaders,
+        })
+        .pipe(map(OrderMapper.fromData));
+    } else {
+      return of(order);
+    }
   }
 
   /**

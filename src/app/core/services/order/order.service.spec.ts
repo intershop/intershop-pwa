@@ -112,7 +112,7 @@ describe('Order Service', () => {
 
   describe('updatePayment', () => {
     it('should update payment data when it is called', done => {
-      when(apiService.patch(anything(), anything(), anything())).thenReturn(of({ undefined }));
+      when(apiService.patch(anything(), anything(), anything())).thenReturn(of(undefined));
 
       const orderId = '123454';
       const params = { redirect: 'success', param1: 123, orderId };
