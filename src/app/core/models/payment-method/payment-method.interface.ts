@@ -16,7 +16,6 @@ export interface PaymentMethodParameterType {
   };
 }
 
-// tslint:disable-next-line:project-structure
 export interface PaymentMethodBaseData {
   id: string;
   serviceID: string;
