@@ -17,18 +17,6 @@
     </div>
   </div>
 
-  <!-- card holder -->
-  <ish-input
-    [form]="parameterForm"
-    controlName="cardHolder"
-    label="checkout.credit_card.user.name"
-    inputClass="col-sm-6"
-    autocomplete="off"
-    [errorMessages]="{
-      required: 'checkout.credit_card.user.name.missing.error'
-    }"
-  ></ish-input>
-
   <!-- Expiration date (month/Year)  -->
   <ish-select-year-month
     [form]="parameterForm"

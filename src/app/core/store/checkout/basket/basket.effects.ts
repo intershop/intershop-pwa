@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
-import { OrderService } from '../../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../../shopping/products';
 import { UserActionTypes } from '../../user';
 
@@ -15,13 +13,7 @@ import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
-  constructor(
-    private actions$: Actions,
-    private store: Store<{}>,
-    private basketService: BasketService,
-    private orderService: OrderService,
-    private router: Router
-  ) {}
+  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
 
   /**
    * The load basket effect.
@@ -196,26 +188,5 @@ export class BasketEffects {
     ofType(UserActionTypes.LogoutUser),
 
     mapTo(new basketActions.ResetBasket())
-  );
-
-  /**
-   * Creates an order based on the given basket.
-   */
-  @Effect()
-  createOrder$ = this.actions$.pipe(
-    ofType<basketActions.CreateOrder>(basketActions.BasketActionTypes.CreateOrder),
-    mapToPayloadProperty('basket'),
-    mergeMap(basket =>
-      this.orderService.createOrder(basket, true).pipe(
-        map(order => new basketActions.CreateOrderSuccess({ order })),
-        mapErrorToAction(basketActions.CreateOrderFail)
-      )
-    )
-  );
-
-  @Effect({ dispatch: false })
-  goToCheckoutReceiptPageAfterOrderCreation$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.CreateOrderSuccess),
-    tap(() => this.router.navigate(['/checkout/receipt']))
   );
 }

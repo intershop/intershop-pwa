@@ -6,11 +6,10 @@ import { PaymentInstrument } from '../payment-instrument/payment-instrument.mode
 
 export interface Payment {
   id: string;
-  paymentInstrument: PaymentInstrument;
   capabilities?: string[];
-  displayName?: string;
-  status?: string;
   description?: string;
+  displayName?: string;
+  paymentInstrument: PaymentInstrument;
   redirectUrl?: string;
   redirect?: {
     parameters?: {
@@ -20,7 +19,5 @@ export interface Payment {
     status: 'SUCCESS' | 'FAILURE' | 'CANCEL';
   };
   redirectRequired?: boolean;
-
-  // obsolete with order REST api V1
-  number?: string; // account identifier
+  status?: string;
 }

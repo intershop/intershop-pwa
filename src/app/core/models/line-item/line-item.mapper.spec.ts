@@ -41,20 +41,27 @@ describe('Line Item Mapper', () => {
     it(`should return BasketItem when getting OrderItemData with a product.sku reference`, () => {
       const orderItemData = {
         id: 'orderItemId',
-        product: {
-          type: 'Link',
-          description: 'Product Name',
-          title: 'SKU',
-          uri: 'some-shop/products/SKU',
-        },
+        product: 'SKU',
         quantity: {
           value: 3,
         },
+        pricing: {
+          price: {
+            gross: {
+              currency: 'USD',
+              value: 11.9,
+            },
+            net: {
+              value: 10.56,
+              currency: 'USD',
+            },
+          },
+        },
       } as OrderItemData;
-      const basketItem = LineItemMapper.fromOrderItemData(orderItemData);
+      const basketItem = LineItemMapper.fromOrderItemData(orderItemData, undefined);
 
       expect(basketItem).toBeTruthy();
-      expect(basketItem.productSKU).toBe(orderItemData.product.title);
+      expect(basketItem.productSKU).toBe(orderItemData.product);
       expect(basketItem.quantity.value).toBe(3);
     });
 

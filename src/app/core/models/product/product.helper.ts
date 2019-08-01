@@ -70,14 +70,14 @@ export class ProductHelper {
   /**
    * Check if product is a master product
    */
-  static isMasterProduct(product: Product): product is VariationProductMaster | VariationProductMasterView {
+  static isMasterProduct(product: Product): product is VariationProductMaster & VariationProductMasterView {
     return product && product.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a master product
    */
-  static isVariationProduct(product: Product): product is VariationProduct | VariationProductView {
+  static isVariationProduct(product: Product): product is VariationProduct & VariationProductView {
     return product && product.type === 'VariationProduct';
   }
 

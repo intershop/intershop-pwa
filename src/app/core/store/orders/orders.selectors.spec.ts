@@ -10,8 +10,15 @@ import { coreReducers } from '../core-store.module';
 import { LoadProductSuccess } from '../shopping/products';
 import { shoppingReducers } from '../shopping/shopping-store.module';
 
-import { LoadOrders, LoadOrdersFail, LoadOrdersSuccess, SelectOrder } from './orders.actions';
-import { getOrders, getOrdersLoading, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
+import {
+  LoadOrder,
+  LoadOrderSuccess,
+  LoadOrders,
+  LoadOrdersFail,
+  LoadOrdersSuccess,
+  SelectOrder,
+} from './orders.actions';
+import { getOrder, getOrders, getOrdersLoading, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
 
 describe('Orders Selectors', () => {
   let store$: TestStore;
@@ -20,12 +27,12 @@ describe('Orders Selectors', () => {
     {
       id: '1',
       documentNo: '00000001',
-      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
+      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 3 } }] as LineItem[],
     },
     {
       id: '2',
       documentNo: '00000002',
-      lineItems: [{ id: 'test', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
+      lineItems: [{ id: 'test2', productSKU: 'sku', quantity: { value: 5 } }] as LineItem[],
     },
   ] as OrderView[];
 
@@ -52,6 +59,21 @@ describe('Orders Selectors', () => {
     });
   });
 
+  describe('select order', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadOrdersSuccess({ orders }));
+      store$.dispatch(new SelectOrder({ orderId: orders[1].id }));
+    });
+    it('should get a certain order if they are loaded orders', () => {
+      expect(getSelectedOrder(store$.state).id).toEqual(orders[1].id);
+    });
+
+    it('should not get any order if the previously selected order was not found', () => {
+      store$.dispatch(new SelectOrder({ orderId: 'invalid' }));
+      expect(getSelectedOrder(store$.state)).toBeUndefined();
+    });
+  });
+
   describe('loading orders', () => {
     beforeEach(() => {
       store$.dispatch(new LoadOrders());
@@ -73,7 +95,7 @@ describe('Orders Selectors', () => {
         const loadedOrders = getOrders(store$.state);
         expect(loadedOrders[1].documentNo).toEqual(orders[1].documentNo);
         expect(loadedOrders[1].lineItems).toHaveLength(1);
-        expect(loadedOrders[1].lineItems[0].id).toEqual('test');
+        expect(loadedOrders[1].lineItems[0].id).toEqual('test2');
         expect(loadedOrders[1].lineItems[0].product).toEqual({ sku: 'sku' });
         expect(loadedOrders[1].itemsCount).toEqual(5);
       });
@@ -90,18 +112,43 @@ describe('Orders Selectors', () => {
       });
     });
   });
-  describe('select order', () => {
+
+  describe('loading order', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadOrdersSuccess({ orders }));
-      store$.dispatch(new SelectOrder({ orderId: orders[1].id }));
-    });
-    it('should get a certain order if they are loaded orders', () => {
-      expect(getSelectedOrder(store$.state).id).toEqual(orders[1].id);
+      store$.dispatch(new LoadOrder({ orderId: orders[0].id }));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku' } as Product }));
     });
 
-    it('should not get any order if the previously selected order was not found', () => {
-      store$.dispatch(new SelectOrder({ orderId: 'invalid' }));
-      expect(getSelectedOrder(store$.state)).toBeUndefined();
+    it('should set the state to loading', () => {
+      expect(getOrdersLoading(store$.state)).toBeTrue();
+    });
+
+    describe('and reporting success', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadOrderSuccess({ order: orders[0] }));
+      });
+
+      it('should set loading to false', () => {
+        expect(getOrdersLoading(store$.state)).toBeFalse();
+
+        const loadedOrder = getOrder(store$.state, { orderId: orders[0].id });
+        expect(loadedOrder.documentNo).toEqual(orders[0].documentNo);
+        expect(loadedOrder.lineItems).toHaveLength(1);
+        expect(loadedOrder.lineItems[0].id).toEqual('test');
+        expect(loadedOrder.lineItems[0].product).toEqual({ sku: 'sku' });
+        expect(loadedOrder.itemsCount).toEqual(3);
+      });
+    });
+
+    describe('and reporting failure', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadOrdersFail({ error: { message: 'error' } as HttpError }));
+      });
+
+      it('should not have loaded orders on error', () => {
+        expect(getOrdersLoading(store$.state)).toBeFalse();
+        expect(getOrders(store$.state)).toBeEmpty();
+      });
     });
   });
 });

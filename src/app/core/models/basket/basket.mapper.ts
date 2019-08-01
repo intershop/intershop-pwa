@@ -1,8 +1,10 @@
 import { AddressMapper } from '../address/address.mapper';
+import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
-import { BasketData } from '../basket/basket.interface';
+import { BasketBaseData, BasketData } from '../basket/basket.interface';
 import { LineItemMapper } from '../line-item/line-item.mapper';
+import { PaymentMapper } from '../payment/payment.mapper';
 import { PriceMapper } from '../price/price.mapper';
 import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
 
@@ -13,44 +15,16 @@ export class BasketMapper {
     const data = payload.data;
     const included = payload.included;
 
-    const totals: BasketTotal = data.calculated
-      ? {
-          itemTotal: PriceMapper.fromPriceItem(data.totals.itemTotal),
-          total: PriceMapper.fromPriceItem(data.totals.grandTotal),
-          shippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketShippingDiscountsTotal),
-          valueRebatesTotal: PriceMapper.fromPriceItem(data.totals.basketValueDiscountsTotal),
-          dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(data.totals.surchargeTotal),
-          itemRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemValueDiscountsTotal),
-          itemShippingRebatesTotal: PriceMapper.fromPriceItem(data.totals.itemShippingDiscountsTotal),
-          paymentCostsTotal: PriceMapper.fromPriceItem(data.totals.paymentCostTotal),
-          shippingTotal: PriceMapper.fromPriceItem(data.totals.shippingTotal),
-          taxTotal: { ...data.totals.grandTotal.tax, type: 'Money' },
-          valueRebates:
-            data.discounts && data.discounts.valueBasedDiscounts && included.discounts
-              ? data.discounts.valueBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(included.discounts[discountId])
-                )
-              : undefined,
-          shippingRebates:
-            data.discounts && data.discounts.shippingBasedDiscounts && included.discounts
-              ? data.discounts.shippingBasedDiscounts.map(discountId =>
-                  BasketRebateMapper.fromData(included.discounts[discountId])
-                )
-              : undefined,
-          itemSurchargeTotalsByType: data.surcharges
-            ? data.surcharges.itemSurcharges.map(surcharge => ({
-                amount: PriceMapper.fromPriceItem(surcharge.amount),
-                displayName: surcharge.name,
-                description: surcharge.description,
-              }))
-            : undefined,
-          isEstimated: !data.invoiceToAddress || !data.commonShipToAddress || !data.commonShippingMethod,
-        }
+    const totals = data.calculated
+      ? BasketMapper.getTotals(data, included ? included.discounts : undefined)
       : undefined;
+    if (totals) {
+      totals.isEstimated = !data.invoiceToAddress || !data.commonShipToAddress || !data.commonShippingMethod;
+    }
 
     return {
       id: data.id,
-      purchaseCurrency: undefined, // ToDo
+      purchaseCurrency: data.purchaseCurrency, // ToDo: adapt name if fields exists in REST
       dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
       invoiceToAddress:
         included && included.invoiceToAddress && data.invoiceToAddress
@@ -66,40 +40,66 @@ export class BasketMapper {
           : undefined,
       lineItems:
         included && included.lineItems && data.lineItems && data.lineItems.length
-          ? data.lineItems.map(lineItemId => LineItemMapper.fromData(included.lineItems[lineItemId], payload))
+          ? data.lineItems.map(lineItemId =>
+              LineItemMapper.fromData(included.lineItems[lineItemId], included.lineItems_discounts)
+            )
           : [],
+      totalProductQuantity: data.totalProductQuantity,
       payment:
-        included && included.payments && included.payments['open-tender']
-          ? {
-              paymentInstrument:
-                included.payments['open-tender'].paymentInstrument && included.payments_paymentInstrument
-                  ? included.payments_paymentInstrument[included.payments['open-tender'].paymentInstrument]
-                  : { id: included.payments['open-tender'].paymentInstrument },
-              id: included.payments['open-tender'].id,
-              displayName:
-                included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].displayName
-                  : undefined,
-              description:
-                included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].description
-                  : undefined,
-              capabilities:
-                included.payments_paymentMethod &&
-                included.payments_paymentMethod[included.payments['open-tender'].paymentMethod]
-                  ? included.payments_paymentMethod[included.payments['open-tender'].paymentMethod].capabilities
-                  : undefined,
-              redirectUrl: included.payments['open-tender'].redirect
-                ? included.payments['open-tender'].redirect.redirectUrl
+        included && included.payments && data.payments && data.payments.length && included.payments[data.payments[0]]
+          ? PaymentMapper.fromIncludeData(
+              included.payments[data.payments[0]],
+              included.payments_paymentMethod &&
+                included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
+                ? included.payments_paymentMethod[included.payments[data.payments[0]].paymentMethod]
                 : undefined,
-              redirectRequired: included.payments['open-tender'].redirect
-                ? included.payments['open-tender'].redirectRequired
-                : undefined,
-            }
+              included.payments[data.payments[0]].paymentInstrument && included.payments_paymentInstrument
+                ? included.payments_paymentInstrument[included.payments[data.payments[0]].paymentInstrument]
+                : undefined
+            )
           : undefined,
       totals,
     };
+  }
+
+  /**
+   * Helper method to determine a basket(order) total on the base of row data.
+   * @returns         The basket total.
+   */
+  static getTotals(data: BasketBaseData, discounts?: { [id: string]: BasketRebateData }): BasketTotal {
+    const totalsData = data.totals;
+
+    return totalsData
+      ? {
+          itemTotal: PriceMapper.fromPriceItem(totalsData.itemTotal),
+          total: PriceMapper.fromPriceItem(totalsData.grandTotal),
+          shippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketShippingDiscountsTotal),
+          valueRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),
+          dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(totalsData.surchargeTotal),
+          itemRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
+          itemShippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemShippingDiscountsTotal),
+          paymentCostsTotal: PriceMapper.fromPriceItem(totalsData.paymentCostTotal),
+          shippingTotal: PriceMapper.fromPriceItem(totalsData.shippingTotal),
+          taxTotal: { ...totalsData.grandTotal.tax, type: 'Money' },
+          valueRebates:
+            data.discounts && data.discounts.valueBasedDiscounts && discounts
+              ? data.discounts.valueBasedDiscounts.map(discountId => BasketRebateMapper.fromData(discounts[discountId]))
+              : undefined,
+          shippingRebates:
+            data.discounts && data.discounts.shippingBasedDiscounts && discounts
+              ? data.discounts.shippingBasedDiscounts.map(discountId =>
+                  BasketRebateMapper.fromData(discounts[discountId])
+                )
+              : undefined,
+          itemSurchargeTotalsByType: data.surcharges
+            ? data.surcharges.itemSurcharges.map(surcharge => ({
+                amount: PriceMapper.fromPriceItem(surcharge.amount),
+                displayName: surcharge.name,
+                description: surcharge.description,
+              }))
+            : undefined,
+          isEstimated: false,
+        }
+      : undefined;
   }
 }
