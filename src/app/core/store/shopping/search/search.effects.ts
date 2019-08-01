@@ -5,38 +5,31 @@ import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
+  concatMap,
   debounce,
   debounceTime,
   distinctUntilChanged,
-  exhaustMap,
   filter,
   map,
-  mergeMap,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
-import { LoadProductSuccess } from '../products';
 import {
-  SetPage,
-  SetPagingInfo,
-  SetPagingLoading,
-  SetSortKeys,
-  canRequestMore,
-  getItemsPerPage,
-  getPagingPage,
-  isEndlessScrollingEnabled,
-} from '../viewconf';
+  LoadMoreProducts,
+  ProductListingActionTypes,
+  SetProductListingPages,
+  getProductListingItemsPerPage,
+} from '../product-listing';
+import { LoadProductSuccess } from '../products';
 
 import {
-  PrepareNewSearch,
   SearchActionTypes,
-  SearchMoreProducts,
   SearchProducts,
   SearchProductsFail,
   SearchProductsSuccess,
@@ -60,60 +53,47 @@ export class SearchEffects {
   @Effect()
   triggerSearch$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
-    // wait until config parameter is set
-    debounce(() =>
-      this.store.pipe(
-        select(getItemsPerPage),
-        filter(x => x > 0)
-      )
-    ),
     mapToParam<string>('searchTerm'),
     whenTruthy(),
     distinctUntilChanged(),
-    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
+    map(searchTerm => new SearchProducts({ searchTerm }))
   );
 
-  @Effect()
-  searchMoreProducts$ = this.actions$.pipe(
-    ofType<SearchMoreProducts>(SearchActionTypes.SearchMoreProducts),
-    mapToPayloadProperty('searchTerm'),
-    withLatestFrom(
-      this.store.pipe(select(isEndlessScrollingEnabled)),
-      this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage))
-    ),
-    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([searchTerm, , , pageNumber]) => [
-      new SetPagingLoading(),
-      new SetPage({ pageNumber: pageNumber + 1 }),
-      new SearchProducts({ searchTerm }),
-    ])
-  );
-
-  /**
-   * execute a product search respecting pagination
-   */
   @Effect()
   searchProducts$ = this.actions$.pipe(
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    mapToPayloadProperty('searchTerm'),
-    withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
-    distinctUntilChanged(),
-    exhaustMap(([searchTerm, currentPage, itemsPerPage]) =>
-      this.productsService.searchProducts(searchTerm, currentPage, itemsPerPage).pipe(
-        mergeMap(({ total: totalItems, products, sortKeys }) => [
-          // dispatch action with search result
-          new SearchProductsSuccess({ searchTerm }),
-          // dispatch viewconf action
-          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
-          // dispatch actions to load the product information of the found products
+    debounce(() =>
+      this.store.pipe(
+        select(getProductListingItemsPerPage),
+        whenTruthy()
+      )
+    ),
+    mapToPayload(),
+    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+    withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
+    concatMap(([{ searchTerm, page, sortBy }, itemsPerPage]) =>
+      this.productsService.searchProducts(searchTerm, page, itemsPerPage, sortBy).pipe(
+        switchMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
-          // dispatch action to store the returned sorting options
-          new SetSortKeys({ sortKeys }),
+          new SearchProductsSuccess({ searchTerm }),
+          new SetProductListingPages({
+            id: { type: 'search', value: searchTerm },
+            itemCount: total,
+            [page]: products.map(p => p.sku),
+            sortKeys,
+          }),
         ]),
         mapErrorToAction(SearchProductsFail)
       )
     )
+  );
+
+  @Effect()
+  searchMoreProducts$ = this.actions$.pipe(
+    ofType<LoadMoreProducts>(ProductListingActionTypes.LoadMoreProducts),
+    mapToPayload(),
+    filter(payload => payload.id.type === 'search'),
+    map(({ id, page }) => new SearchProducts({ searchTerm: id.value, page }))
   );
 
   @Effect()

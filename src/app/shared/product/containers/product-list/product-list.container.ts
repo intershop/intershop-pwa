@@ -1,61 +1,62 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import {
-  ChangeSortBy,
-  ChangeViewType,
-  canRequestMore,
-  getPageIndices,
-  getPagingLoading,
-  getPagingPage,
-  getSortBy,
-  getSortKeys,
-  getTotalItems,
-  getViewType,
-  getVisibleProducts,
-  isEndlessScrollingEnabled,
-  isEveryProductDisplayed,
-} from 'ish-core/store/shopping/viewconf';
+  LoadMoreProducts,
+  ProductListingView,
+  getProductListingLoading,
+  getProductListingView,
+} from 'ish-core/store/shopping/product-listing';
+import { ProductListingID } from 'ish-core/store/shopping/product-listing/product-listing.reducer';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-list-container',
   templateUrl: './product-list.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListContainerComponent {
+export class ProductListContainerComponent implements OnChanges, OnDestroy {
   @Input() category?: Category;
   @Input() pageUrl: string;
+  @Input() id: ProductListingID;
 
-  @Output() loadMore = new EventEmitter<void>();
+  productListingView$: Observable<ProductListingView>;
+  viewType$ = this.activatedRoute.queryParams.pipe(map(params => params.view));
+  listingLoading$ = this.store.pipe(select(getProductListingLoading));
 
-  products$ = this.store.pipe(select(getVisibleProducts));
-  totalItems$ = this.store.pipe(select(getTotalItems));
-  viewType$ = this.store.pipe(select(getViewType));
-  sortBy$ = this.store.pipe(select(getSortBy));
-  sortKeys$ = this.store.pipe(select(getSortKeys));
-  loadingMore$ = this.store.pipe(select(getPagingLoading));
-  pageIndices$ = this.store.pipe(select(getPageIndices));
-  currentPage$ = this.store.pipe(
-    select(getPagingPage),
-    map(x => x + 1)
-  );
-  displayPaging$ = this.store.pipe(
-    select(isEveryProductDisplayed),
-    map(b => !b)
-  );
+  private destroy$ = new Subject();
 
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store<{}>, private router: Router, private activatedRoute: ActivatedRoute) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.id) {
+      this.productListingView$ = this.store.pipe(
+        select(getProductListingView, this.id),
+        takeUntil(this.destroy$)
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+  }
 
   /**
    * Emits the event for switching the view type of the product list.
-   * @param viewType The new view type.
+   * @param view The new view type.
    */
-  changeViewType(viewType: ViewType) {
-    this.store.dispatch(new ChangeViewType({ viewType }));
+  changeViewType(view: ViewType) {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      replaceUrl: true,
+      queryParamsHandling: 'merge',
+      queryParams: { view },
+    });
   }
 
   /**
@@ -63,18 +64,21 @@ export class ProductListContainerComponent {
    * @param sorting The new sorting value.
    */
   changeSortBy(sorting: string) {
-    this.store.dispatch(new ChangeSortBy({ sorting }));
+    console.log('changeSortBy', sorting);
   }
 
   /**
    * Emits the event for loading more products.
    */
-  loadMoreProducts() {
-    combineLatest([this.store.pipe(select(canRequestMore)), this.store.pipe(select(isEndlessScrollingEnabled))])
+  loadMoreProducts(direction: 'up' | 'down') {
+    this.productListingView$
       .pipe(
         take(1),
-        filter(([moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling)
+        map(view => (direction === 'down' ? view.nextPage() : view.previousPage())),
+        whenTruthy()
       )
-      .subscribe(() => this.loadMore.emit());
+      .subscribe(page => {
+        this.store.dispatch(new LoadMoreProducts({ id: this.id, page }));
+      });
   }
 }

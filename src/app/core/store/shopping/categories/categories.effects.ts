@@ -10,6 +10,7 @@ import {
   map,
   mapTo,
   mergeMap,
+  switchMap,
   switchMapTo,
   take,
   tap,
@@ -20,6 +21,7 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 import {
   distinctCompareWith,
   mapErrorToAction,
+  mapToPayload,
   mapToPayloadProperty,
   whenFalsy,
   whenTruthy,
@@ -27,8 +29,8 @@ import {
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
+import { getProductListingView } from '../product-listing';
 import { LoadProductsForCategory } from '../products';
-import { getVisibleProducts } from '../viewconf';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
@@ -153,13 +155,19 @@ export class CategoriesEffects {
     ),
     this.actions$.pipe(
       ofRoute('category/:categoryUniqueId'),
-      mapToParam('categoryUniqueId')
+      mapToPayload()
     ),
   ]).pipe(
-    filter(([category, categoryUniqueId]) => category.uniqueId === categoryUniqueId),
-    withLatestFrom(this.store.pipe(select(getVisibleProducts))),
-    filter(([[category], skus]) => category && category.hasOnlineProducts && !skus.length),
-    map(([[category]]) => new LoadProductsForCategory({ categoryId: category.uniqueId }))
+    filter(([category, routing]) => category.uniqueId === routing.params.categoryUniqueId),
+    filter(([category]) => category && category.hasOnlineProducts),
+    map(([, routing]) => ({ categoryId: routing.params.categoryUniqueId, page: routing.queryParams.page })),
+    switchMap(({ categoryId, page }) =>
+      this.store.pipe(
+        select(getProductListingView, { type: 'category', value: categoryId }),
+        filter(view => view.empty()),
+        mapTo(new LoadProductsForCategory({ categoryId, page }))
+      )
+    )
   );
 
   @Effect({ dispatch: false })
