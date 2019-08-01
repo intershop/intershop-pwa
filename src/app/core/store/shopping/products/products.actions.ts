@@ -1,11 +1,12 @@
 import { Action } from '@ngrx/store';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product, ProductCompletenessLevel } from '../../../models/product/product.model';
+import { Product, ProductCompletenessLevel, SkuQuantityType } from '../../../models/product/product.model';
 
 export enum ProductsActionTypes {
   SelectProduct = '[Shopping] Select Product',
   LoadProduct = '[Shopping] Load Product',
+  LoadProductBundlesSuccess = '[Shopping] Load Product Bundles Success',
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductIfNotLoaded = '[Shopping] Load Product if not Loaded',
   LoadProductSuccess = '[Shopping] Load Product Success',
@@ -71,9 +72,15 @@ export class LoadProductVariationsSuccess implements Action {
   constructor(public payload: { sku: string; variations: string[] }) {}
 }
 
+export class LoadProductBundlesSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadProductBundlesSuccess;
+  constructor(public payload: { sku: string; bundledProducts: SkuQuantityType[] }) {}
+}
+
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
+  | LoadProductBundlesSuccess
   | LoadProductFail
   | LoadProductIfNotLoaded
   | LoadProductSuccess

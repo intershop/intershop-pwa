@@ -8,6 +8,7 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
@@ -46,6 +47,14 @@ describe('Products Effects', () => {
       }
     });
 
+    when(productsServiceMock.getProductBundles(anything())).thenCall((sku: string) => {
+      if (!sku) {
+        return throwError({ message: 'invalid' });
+      } else {
+        return of({ product: { sku }, stubs: [] });
+      }
+    });
+
     when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).thenReturn(
       of({
         categoryUniqueId: '123',
@@ -76,6 +85,19 @@ describe('Products Effects', () => {
     store$ = TestBed.get(Store);
     router = spy(TestBed.get(Router));
     location = TestBed.get(Location);
+  });
+
+  describe('loadProductBundles$', () => {
+    it('should call the productsService for LoadProductBundles action', done => {
+      const sku = 'P123';
+      const action = new fromActions.LoadProductSuccess({ product: { sku, type: 'Bundle' } as Product });
+      actions$ = of(action);
+
+      effects.loadProductBundles$.subscribe(() => {
+        verify(productsServiceMock.getProductBundles(sku)).once();
+        done();
+      });
+    });
   });
 
   describe('loadProduct$', () => {
@@ -373,5 +395,58 @@ describe('Products Effects', () => {
 
       expect(location.path()).toEqual('/error');
     }));
+  });
+
+  describe('loadProductBundles$', () => {
+    it('should load stubs and bundle reference when queried', done => {
+      when(productsServiceMock.getProductBundles('ABC')).thenReturn(
+        of({
+          stubs: [{ sku: 'A' }, { sku: 'B' }],
+          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 1 }],
+        })
+      );
+
+      actions$ = of(new fromActions.LoadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
+
+      effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          Array [
+            LoadProductSuccess {
+              "payload": Object {
+                "product": Object {
+                  "sku": "A",
+                },
+              },
+              "type": "[Shopping] Load Product Success",
+            },
+            LoadProductSuccess {
+              "payload": Object {
+                "product": Object {
+                  "sku": "B",
+                },
+              },
+              "type": "[Shopping] Load Product Success",
+            },
+            LoadProductBundlesSuccess {
+              "payload": Object {
+                "bundledProducts": Array [
+                  Object {
+                    "quantity": 1,
+                    "sku": "A",
+                  },
+                  Object {
+                    "quantity": 1,
+                    "sku": "B",
+                  },
+                ],
+                "sku": "ABC",
+              },
+              "type": "[Shopping] Load Product Bundles Success",
+            },
+          ]
+        `);
+        done();
+      });
+    });
   });
 });

@@ -20,7 +20,7 @@ import {
 
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   mapErrorToAction,
@@ -119,6 +119,22 @@ export class ProductsEffects {
           new SetSortKeys({ sortKeys }),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
+      )
+    )
+  );
+
+  @Effect()
+  loadProductBundles$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    mapToPayloadProperty('product'),
+    filter(product => ProductHelper.isProductBundle(product)),
+    mergeMap(({ sku }) =>
+      this.productsService.getProductBundles(sku).pipe(
+        mergeMap(({ stubs, bundledProducts }) => [
+          ...stubs.map((product: Product) => new productsActions.LoadProductSuccess({ product })),
+          new productsActions.LoadProductBundlesSuccess({ sku, bundledProducts }),
+        ]),
+        mapErrorToAction(productsActions.LoadProductFail, { sku })
       )
     )
   );

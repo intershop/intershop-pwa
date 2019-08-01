@@ -54,14 +54,15 @@ export interface ProductData {
   variations?: any;
   crosssells?: any;
   productMaster: boolean;
-  listPrice: Price;
   productBundle: boolean;
+  listPrice: Price;
   salePrice: Price;
   manufacturer: string;
   mastered: boolean;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   attributes?: Attribute[];
+  productTypes: string[];
   attributeGroups?: { [id: string]: AttributeGroup };
   defaultCategory?: CategoryData;
 

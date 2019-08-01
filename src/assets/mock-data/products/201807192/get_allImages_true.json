@@ -2,14 +2,43 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Warranty",
+      "name": "Input voltage",
       "type": "String",
-      "value": "2 years"
+      "value": "220-240 V"
+    },
+    {
+      "name": "Lifetime",
+      "type": "String",
+      "value": "25000 hours"
+    },
+    {
+      "name": "Fitting",
+      "type": "String",
+      "value": "E27"
+    },
+    {
+      "name": "Size",
+      "type": "String",
+      "value": "110mm*61mm"
+    },
+    {
+      "name": "Wattage",
+      "type": "String",
+      "value": "9 W"
+    },
+    {
+      "name": "Color temperature",
+      "type": "String",
+      "value": "2700K"
+    },
+    {
+      "name": "Diameter",
+      "type": "String",
+      "value": "62mm"
     }
   ],
   "availability": true,
   "availableStock": 0,
-  "bundles": "inSPIRED-inTRONICS-Site/-/products/201807194/bundles",
   "defaultCategory": {
     "categoryPath": [
       {
@@ -60,36 +89,6 @@
       "type": "Image",
       "typeID": "S",
       "viewID": "front"
-    },
-    {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
-      "imageActualHeight": 500,
-      "imageActualWidth": 500,
-      "name": "side L",
-      "primaryImage": false,
-      "type": "Image",
-      "typeID": "L",
-      "viewID": "side"
-    },
-    {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
-      "imageActualHeight": 270,
-      "imageActualWidth": 270,
-      "name": "side M",
-      "primaryImage": false,
-      "type": "Image",
-      "typeID": "M",
-      "viewID": "side"
-    },
-    {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "name": "side S",
-      "primaryImage": false,
-      "type": "Image",
-      "typeID": "S",
-      "viewID": "side"
     }
   ],
   "inStock": true,
@@ -97,29 +96,28 @@
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 105.99
+    "value": 52.99
   },
-  "longDescription": "Philips Hue apps for iOS and Android let you remotely control your lamps wherever you are. Check if you have left the light on before leaving and switch it on if you come home later.",
+  "longDescription": "Add a Philips Hue white bulb to your system and enhance your home with soft white lighting that you can dim and control remotely. Automate your lights to make it seem like you’re home when you’re not or set timers.",
   "manufacturer": "Philips",
   "mastered": false,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Philips Hue White Starter Kit",
+  "name": "Philips Hue 3x White LED",
   "packingUnit": "",
-  "productBundle": true,
+  "productBundle": false,
   "productMaster": false,
-  "productName": "Philips Hue White Starter Kit",
-  "productTypes": ["BUNDLE"],
+  "productName": "Philips Hue 3x White LED",
+  "productTypes": ["ITEM", "BUNDLED_PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807194/reviews",
-  "roundedAverageRating": "4.5",
+  "roundedAverageRating": "0.0",
   "salePrice": {
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 105.99
+    "value": 52.99
   },
   "shippingMethods": [
     {
@@ -151,8 +149,8 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "Automate your lamps for easy control and convenience",
-  "sku": "201807194",
+  "shortDescription": "Automate your lights",
+  "sku": "201807192",
   "stepOrderQuantity": 1,
   "type": "Product"
 }

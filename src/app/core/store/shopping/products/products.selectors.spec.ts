@@ -8,6 +8,7 @@ import { shoppingReducers } from '../shopping-store.module';
 
 import {
   LoadProduct,
+  LoadProductBundlesSuccess,
   LoadProductFail,
   LoadProductSuccess,
   LoadProductVariations,
@@ -123,6 +124,34 @@ describe('Products Selectors', () => {
         expect(getSelectedProduct(store$.state)).toHaveProperty('sku', prod.sku);
         expect(getSelectedProductId(store$.state)).toEqual(prod.sku);
       });
+    });
+  });
+
+  describe('when loading bundles', () => {
+    it('should contain the product bundle information on the product', () => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'ABC' } as Product }));
+      store$.dispatch(
+        new LoadProductBundlesSuccess({
+          sku: 'ABC',
+          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 2 }],
+        })
+      );
+
+      expect(getProductEntities(store$.state).ABC).toMatchInlineSnapshot(`
+        Object {
+          "bundledProducts": Array [
+            Object {
+              "quantity": 1,
+              "sku": "A",
+            },
+            Object {
+              "quantity": 2,
+              "sku": "B",
+            },
+          ],
+          "sku": "ABC",
+        }
+      `);
     });
   });
 

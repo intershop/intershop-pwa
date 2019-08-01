@@ -1,4 +1,4 @@
-<div class="product-tile-list row">
+<div class="product-tile-list row" [attr.data-testing-sku]="product.sku">
   <div class="col-3 col-md-2">
     <div class="product-image-container">
       <a [routerLink]="product | ishProductRoute: category">

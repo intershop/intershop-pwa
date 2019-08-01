@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -15,6 +15,7 @@ import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
 import { getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-page-container',
@@ -23,6 +24,7 @@ import { getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core
 })
 export class ProductPageContainerComponent implements OnInit, OnDestroy {
   product$ = this.store.pipe(select(getSelectedProduct));
+  quantity: number;
   productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
   category$ = this.store.pipe(select(getSelectedCategory));
   productLoading$ = this.product$.pipe(map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail)));
@@ -31,6 +33,8 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
     select(getICMBaseURL),
     map(baseUrl => baseUrl + this.location.path())
   );
+
+  isProductBundle = ProductHelper.isProductBundle;
 
   private destroy$ = new Subject();
 
@@ -42,15 +46,29 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.product$.pipe(takeUntil(this.destroy$)).subscribe(product => {
-      if (ProductHelper.isMasterProduct(product)) {
-        this.redirectMasterToDefaultVariation(product);
-      }
-    });
+    this.product$
+      .pipe(
+        whenTruthy(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(product => {
+        this.quantity = product.minOrderQuantity;
+        if (ProductHelper.isMasterProduct(product)) {
+          this.redirectMasterToDefaultVariation(product);
+        }
+      });
   }
 
-  addToBasket({ sku, quantity }) {
-    this.store.dispatch(new AddProductToBasket({ sku, quantity }));
+  addToBasket() {
+    this.product$
+      .pipe(
+        take(1),
+        whenTruthy(),
+        mapToProperty('sku')
+      )
+      .subscribe(sku => {
+        this.store.dispatch(new AddProductToBasket({ sku, quantity: this.quantity }));
+      });
   }
 
   addToCompare(sku: string) {

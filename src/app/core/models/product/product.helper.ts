@@ -2,16 +2,22 @@ import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
+import { ProductBundle } from './product-bundle.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
+
+export interface SkuQuantityType {
+  sku: string;
+  quantity: number;
+}
 
 export enum ProductCompletenessLevel {
   Detail = 3,
   List = 2,
 }
 
-export type AllProductTypes = Product | VariationProduct | VariationProductMaster;
+export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle;
 
 export class ProductHelper {
   /**
@@ -88,6 +94,13 @@ export class ProductHelper {
       (ProductHelper.isVariationProduct(product) || ProductHelper.isMasterProduct(product)) &&
       !!product.variations().length
     );
+  }
+
+  /**
+   * Check if product is a product bundle
+   */
+  static isProductBundle(product: Product): product is ProductBundle {
+    return product && product.type === 'Bundle';
   }
 
   /**

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from '../../shared/shared.module';
 
+import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailActionsComponent } from './components/product-detail-actions/product-detail-actions.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductImagesComponent } from './components/product-images/product-images.component';
@@ -23,6 +24,7 @@ const productPageRoutes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(productPageRoutes), SharedModule],
   declarations: [
+    ProductBundlePartsComponent,
     ProductDetailActionsComponent,
     ProductDetailComponent,
     ProductImagesComponent,

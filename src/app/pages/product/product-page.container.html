@@ -7,12 +7,18 @@
 
       <ish-product-detail
         [product]="product"
+        [(quantity)]="quantity"
         [currentUrl]="currentUrl$ | async"
         [variationOptions]="productVariationOptions$ | async"
-        (productToBasket)="addToBasket($event)"
+        (productToBasket)="addToBasket()"
         (productToCompare)="addToCompare($event)"
         (selectVariation)="variationSelected($event, product)"
       ></ish-product-detail>
+      <ish-product-bundle-parts
+        *ngIf="isProductBundle(product)"
+        [product]="product"
+        (productToBasket)="addToBasket()"
+      ></ish-product-bundle-parts>
     </ng-container>
   </ng-template>
 </div>
