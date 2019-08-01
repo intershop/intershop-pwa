@@ -7,6 +7,7 @@ import { ProductBundlePartsComponent } from './components/product-bundle-parts/p
 import { ProductDetailActionsComponent } from './components/product-detail-actions/product-detail-actions.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductImagesComponent } from './components/product-images/product-images.component';
+import { RetailSetPartsComponent } from './components/retail-set-parts/retail-set-parts.component';
 import { ProductPageContainerComponent } from './product-page.container';
 
 const productPageRoutes: Routes = [
@@ -29,6 +30,7 @@ const productPageRoutes: Routes = [
     ProductDetailComponent,
     ProductImagesComponent,
     ProductPageContainerComponent,
+    RetailSetPartsComponent,
   ],
 })
 export class ProductPageModule {}

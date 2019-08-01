@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Price, PriceHelper } from 'ish-core/models/price/price.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { AnyProductType, Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
@@ -9,7 +9,7 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPriceComponent implements OnChanges {
-  @Input() product: Product;
+  @Input() product: AnyProductType;
   @Input() showInformationalPrice: boolean;
   @Input() showPriceSavings: boolean;
 

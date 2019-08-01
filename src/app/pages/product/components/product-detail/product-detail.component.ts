@@ -10,7 +10,7 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductHelper, ProductPrices } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-detail',
@@ -20,6 +20,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 export class ProductDetailComponent implements OnInit, OnDestroy {
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
   @Input() quantity: number;
+  @Input() price: ProductPrices;
   @Input() currentUrl: string;
   @Input() variationOptions: VariationOptionGroup[];
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
@@ -32,6 +33,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   isVariationProduct = ProductHelper.isVariationProduct;
   isMasterProduct = ProductHelper.isMasterProduct;
+  isRetailSet = ProductHelper.isRetailSet;
 
   private destroy$ = new Subject();
 

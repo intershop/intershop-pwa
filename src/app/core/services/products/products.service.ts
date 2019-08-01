@@ -147,4 +147,19 @@ export class ProductsService {
       }))
     );
   }
+
+  /**
+   * get product retail set information for the given retail set sku.
+   */
+  getRetailSetParts(sku: string): Observable<Partial<Product>[]> {
+    if (!sku) {
+      return throwError('getRetailSetParts() called without a sku');
+    }
+
+    return this.apiService.get(`products/${sku}/partOfRetailSet`).pipe(
+      unpackEnvelope<Link>(),
+      map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
+      defaultIfEmpty([])
+    );
+  }
 }

@@ -1,8 +1,10 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
+import { PriceHelper } from '../price/price.model';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { ProductBundle } from './product-bundle.model';
+import { ProductRetailSet } from './product-retail-set.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { Product } from './product.model';
@@ -17,7 +19,12 @@ export enum ProductCompletenessLevel {
   List = 2,
 }
 
-export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle;
+export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
+export type AnyProductType = Product & VariationProduct & VariationProductMaster & ProductBundle & ProductRetailSet;
+
+export type ProductPrices =
+  | Partial<Pick<ProductRetailSet, 'minListPrice' | 'minSalePrice' | 'summedUpListPrice' | 'summedUpSalePrice'>>
+  | Partial<Pick<Product, 'salePrice' | 'listPrice'>>;
 
 export class ProductHelper {
   /**
@@ -61,7 +68,7 @@ export class ProductHelper {
   }
 
   /**
-   * check if a given product has the maximum completeness level
+   * check if a given product has a sufficient completeness level
    */
   static isSufficientlyLoaded(product: Product, completenessLevel: ProductCompletenessLevel): boolean {
     return !!product && product.completenessLevel >= completenessLevel;
@@ -76,6 +83,13 @@ export class ProductHelper {
   }
 
   /**
+   * Check if product is a retail set
+   */
+  static isRetailSet(product: Product): product is ProductRetailSet {
+    return product && product.type === 'RetailSet';
+  }
+
+  /**
    * Check if product is a master product
    */
   static isMasterProduct(product: Product): product is VariationProductMaster & VariationProductMasterView {
@@ -83,7 +97,7 @@ export class ProductHelper {
   }
 
   /**
-   * Check if product is a master product
+   * Check if product is a variation product
    */
   static isVariationProduct(product: Product): product is VariationProduct & VariationProductView {
     return product && product.type === 'VariationProduct';
@@ -120,5 +134,20 @@ export class ProductHelper {
       return product.attributeGroups[attributeGroupId].attributes;
     }
     return;
+  }
+
+  static calculatePriceRange(products: Product[]): ProductPrices {
+    if (!products || !products.length) {
+      return {};
+    } else if (products.length === 1) {
+      return products[0];
+    } else {
+      return {
+        minListPrice: products.map(p => p.listPrice).reduce(PriceHelper.min),
+        minSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.min),
+        summedUpListPrice: products.map(p => p.listPrice).reduce(PriceHelper.sum),
+        summedUpSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.sum),
+      };
+    }
   }
 }
