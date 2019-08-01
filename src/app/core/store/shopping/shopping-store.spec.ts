@@ -127,7 +127,6 @@ describe('Shopping Store', () => {
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anyString())).thenReturn(
       of({
-        categoryUniqueId: 'A.123.456',
         sortKeys: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
         total: 2,
