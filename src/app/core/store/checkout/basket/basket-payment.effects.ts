@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { RouteNavigation, ofRoute } from 'ngrx-router';
+import { ofRoute } from 'ngrx-router';
 import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -65,13 +65,14 @@ export class BasketPaymentEffects {
   );
 
   /**
-   * Checks, if the page is called with redirect query params and sends them to the server
+   * Checks, if the page is called with redirect query params and sends them to the server ( only RedirectBeforeCheckout)
    */
   @Effect()
   sendPaymentRedirectData$ = this.actions$.pipe(
     ofRoute(['checkout/payment', 'checkout/review']),
-    map((action: RouteNavigation) => action.payload.queryParams),
-    filter(queryParams => queryParams && queryParams.redirect),
+    mapToPayloadProperty('queryParams'),
+    // don't do anything in case of RedirectAfterCheckout
+    filter(queryParams => queryParams && queryParams.redirect && !queryParams.orderId),
     switchMap(queryParams =>
       this.store.pipe(
         select(getCurrentBasketId),

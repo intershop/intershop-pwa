@@ -1,5 +1,5 @@
+import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
 import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
-import { BasketData } from '../basket/basket.interface';
 import { OrderItemData } from '../order-item/order-item.interface';
 import { PriceMapper } from '../price/price.mapper';
 
@@ -7,16 +7,14 @@ import { LineItemData } from './line-item.interface';
 import { LineItem } from './line-item.model';
 
 export class LineItemMapper {
-  static fromData(data: LineItemData, basketData: BasketData): LineItem {
-    const included = basketData && basketData.included ? basketData.included : undefined;
-
+  static fromData(data: LineItemData, rebateData?: { [id: string]: BasketRebateData }): LineItem {
     if (data) {
       return {
         id: data.id,
         position: data.position,
         quantity: data.quantity,
-        price: PriceMapper.fromPriceItem(data.pricing.price),
-        singleBasePrice: PriceMapper.fromPriceItem(data.pricing.singleBasePrice),
+        price: data.pricing ? PriceMapper.fromPriceItem(data.pricing.price) : undefined,
+        singleBasePrice: data.pricing ? PriceMapper.fromPriceItem(data.pricing.singleBasePrice) : undefined,
         itemSurcharges: data.surcharges
           ? data.surcharges.map(surcharge => ({
               amount: PriceMapper.fromPriceItem(surcharge.amount),
@@ -25,20 +23,21 @@ export class LineItemMapper {
             }))
           : undefined,
         valueRebates:
-          data.discounts && included && included.lineItems_discounts
-            ? data.discounts.map(discountId => BasketRebateMapper.fromData(included.lineItems_discounts[discountId]))
+          data.discounts && rebateData
+            ? data.discounts.map(discountId => BasketRebateMapper.fromData(rebateData[discountId]))
             : undefined,
         isHiddenGift: data.hiddenGift,
         isFreeGift: data.freeGift,
-        totals: data.calculated
-          ? {
-              salesTaxTotal: data.pricing.salesTaxTotal,
-              shippingTaxTotal: data.pricing.shippingTaxTotal,
-              shippingTotal: PriceMapper.fromPriceItem(data.pricing.shippingTotal),
-              total: PriceMapper.fromPriceItem(data.pricing.price),
-              valueRebatesTotal: PriceMapper.fromPriceItem(data.pricing.valueRebatesTotal),
-            }
-          : undefined,
+        totals:
+          data.calculated || data.calculated === undefined
+            ? {
+                salesTaxTotal: data.pricing.salesTaxTotal,
+                shippingTaxTotal: data.pricing.shippingTaxTotal,
+                shippingTotal: PriceMapper.fromPriceItem(data.pricing.shippingTotal),
+                total: PriceMapper.fromPriceItem(data.pricing.price),
+                valueRebatesTotal: PriceMapper.fromPriceItem(data.pricing.valueRebatesTotal),
+              }
+            : undefined,
 
         productSKU: data.product,
       };
@@ -47,23 +46,15 @@ export class LineItemMapper {
     }
   }
 
-  static fromOrderItemData(data: OrderItemData): LineItem {
+  static fromOrderItemData(data: OrderItemData, rebateData?: { [id: string]: BasketRebateData }): LineItem {
     if (data) {
+      const orderItem = LineItemMapper.fromData(data, rebateData);
+
       return {
-        id: data.id,
-        name: data.name,
-        position: data.position,
-        quantity: data.quantity,
-        price: data.price,
-        singleBasePrice: data.singleBasePrice,
-        itemSurcharges: data.itemSurcharges,
-        valueRebates: data.valueRebates,
-        isHiddenGift: data.isHiddenGift,
-        isFreeGift: data.isFreeGift,
-        inStock: data.inStock,
-        availability: data.availability,
-        totals: data.totals,
-        productSKU: data.product ? data.product.title : undefined,
+        ...orderItem,
+        description: data.description,
+        name: data.displayName,
+        fulfillmentStatus: data.fulfillmentStatus,
       };
     } else {
       throw new Error(`'OrderItemData' is required for the mapping`);

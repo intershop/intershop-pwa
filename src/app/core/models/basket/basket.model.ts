@@ -6,7 +6,7 @@ import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
 interface AbstractBasket<T> {
   id: string;
-  purchaseCurrency: string;
+  purchaseCurrency?: string;
   dynamicMessages?: string[];
   invoiceToAddress?: Address;
   commonShipToAddress?: Address;
@@ -14,6 +14,7 @@ interface AbstractBasket<T> {
   payment?: Payment;
   lineItems?: T[];
   totals: BasketTotal;
+  totalProductQuantity?: number;
 }
 
 export interface Basket extends AbstractBasket<LineItem> {}

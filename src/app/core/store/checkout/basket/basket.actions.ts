@@ -6,7 +6,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Order } from 'ish-core/models/order/order.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -57,10 +56,6 @@ export enum BasketActionTypes {
   DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
   DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
-
-  CreateOrder = '[Order] Create Order',
-  CreateOrderFail = '[Order API] Create Order Fail',
-  CreateOrderSuccess = '[Order API] Create Order Success',
 }
 
 export class LoadBasket implements Action {
@@ -273,21 +268,6 @@ export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
 
-export class CreateOrder implements Action {
-  readonly type = BasketActionTypes.CreateOrder;
-  constructor(public payload: { basket: Basket }) {}
-}
-
-export class CreateOrderFail implements Action {
-  readonly type = BasketActionTypes.CreateOrderFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class CreateOrderSuccess implements Action {
-  readonly type = BasketActionTypes.CreateOrderSuccess;
-  constructor(public payload: { order: Order }) {}
-}
-
 export type BasketAction =
   | LoadBasket
   | LoadBasketByAPIToken
@@ -332,7 +312,4 @@ export type BasketAction =
   | DeleteBasketPayment
   | DeleteBasketPaymentFail
   | DeleteBasketPaymentSuccess
-  | ResetBasket
-  | CreateOrder
-  | CreateOrderFail
-  | CreateOrderSuccess;
+  | ResetBasket;

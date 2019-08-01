@@ -9,12 +9,14 @@ import { Observable, ReplaySubject, of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketActionTypes, LoadBasketSuccess } from '../checkout/basket';
 import { checkoutReducers } from '../checkout/checkout-store.module';
 import { coreReducers } from '../core-store.module';
+import { LoadOrderSuccess, OrdersActionTypes } from '../orders';
 import { shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes, getLoggedInUser } from '../user';
 
@@ -72,14 +74,14 @@ describe('Restore Effects', () => {
 
   describe('restoreUserOrBasketByToken$', () => {
     it('should do nothing when no cookie is available', done => {
-      restoreEffects.restoreUserOrBasketByToken$.subscribe(fail, fail, done);
+      restoreEffects.restoreUserOrBasketOrOrderByToken$.subscribe(fail, fail, done);
       router.initialNavigation();
     });
 
     it('should trigger action for loading basket if basket token could be retrieved', done => {
       when(cookiesServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: 'dummy', type: 'basket' }));
 
-      restoreEffects.restoreUserOrBasketByToken$.subscribe(action => {
+      restoreEffects.restoreUserOrBasketOrOrderByToken$.subscribe(action => {
         expect(action).toHaveProperty('type', BasketActionTypes.LoadBasketByAPIToken);
         expect(action).toHaveProperty('payload.apiToken', 'dummy');
         done();
@@ -90,9 +92,23 @@ describe('Restore Effects', () => {
     it('should trigger action for loading user if user token could be retrieved', done => {
       when(cookiesServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: 'dummy', type: 'user' }));
 
-      restoreEffects.restoreUserOrBasketByToken$.subscribe(action => {
+      restoreEffects.restoreUserOrBasketOrOrderByToken$.subscribe(action => {
         expect(action).toHaveProperty('type', UserActionTypes.LoadUserByAPIToken);
         expect(action).toHaveProperty('payload.apiToken', 'dummy');
+        done();
+      }, fail);
+      router.initialNavigation();
+    });
+
+    it('should trigger action for loading order if order token could be retrieved', done => {
+      when(cookiesServiceMock.get('apiToken')).thenReturn(
+        JSON.stringify({ apiToken: 'dummy', type: 'order', orderId: '12345' })
+      );
+
+      restoreEffects.restoreUserOrBasketOrOrderByToken$.subscribe(action => {
+        expect(action).toHaveProperty('type', OrdersActionTypes.LoadOrderByAPIToken);
+        expect(action).toHaveProperty('payload.apiToken', 'dummy');
+        expect(action).toHaveProperty('payload.orderId', '12345');
         done();
       }, fail);
       router.initialNavigation();
@@ -104,7 +120,7 @@ describe('Restore Effects', () => {
       cookieLawSubject$.next(true);
     });
 
-    it('should not save token when neither basket nor user are available', () => {
+    it('should not save token when neither basket nor user nor order is available', () => {
       store$.dispatch(new SetAPIToken({ apiToken: 'dummy' }));
 
       expect(restoreEffects.saveAPITokenToCookie$).toBeObservable(cold('-'));
@@ -152,6 +168,24 @@ describe('Restore Effects', () => {
           verify(cookiesServiceMock.put('apiToken', anyString(), anything())).once();
           const [, cookie] = capture(cookiesServiceMock.put).last();
           expect(cookie).toMatchInlineSnapshot(`"{\\"apiToken\\":\\"dummy\\",\\"type\\":\\"user\\"}"`);
+          done();
+        },
+        fail,
+        fail
+      );
+    });
+
+    it('should save order token when order is available', done => {
+      store$.dispatch(new SetAPIToken({ apiToken: 'dummy' }));
+      store$.dispatch(new LoadOrderSuccess({ order: { id: '12345' } as Order }));
+
+      restoreEffects.saveAPITokenToCookie$.subscribe(
+        () => {
+          verify(cookiesServiceMock.put('apiToken', anyString(), anything())).once();
+          const [, cookie] = capture(cookiesServiceMock.put).last();
+          expect(cookie).toMatchInlineSnapshot(
+            `"{\\"apiToken\\":\\"dummy\\",\\"type\\":\\"order\\",\\"orderId\\":\\"12345\\"}"`
+          );
           done();
         },
         fail,
