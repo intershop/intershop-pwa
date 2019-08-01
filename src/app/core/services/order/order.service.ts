@@ -10,7 +10,7 @@ import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
-export declare type OrderIncludeType =
+type OrderIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'
   | 'commonShippingMethod'
@@ -28,7 +28,7 @@ export declare type OrderIncludeType =
 export class OrderService {
   constructor(private apiService: ApiService) {}
 
-  // declare http header for Order API v1
+  // http header for Order API v1
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.order.v1+json',

@@ -1,6 +1,6 @@
 import { fillFormField } from '../../framework';
 
-export declare type ProfileEditCompanyTypes = Partial<Record<'companyName' | 'companyName2' | 'taxationID', string>>;
+export type ProfileEditCompanyTypes = Partial<Record<'companyName' | 'companyName2' | 'taxationID', string>>;
 
 export class ProfileEditCompanyPage {
   readonly tag = 'ish-account-profile-company-page';
