@@ -60,3 +60,23 @@ export const getOrders = createSelector(
           })),
         }))
 );
+
+export const getOrder = createSelector(
+  getOrdersInternal,
+  getProductEntities,
+  (entities, products, props: { orderId: string }): OrderView => {
+    const order = entities.find(e => e.id === props.orderId);
+
+    if (!order) {
+      return;
+    }
+    return {
+      ...order,
+      itemsCount: BasketHelper.getBasketItemsCount(order.lineItems),
+      lineItems: order.lineItems.map(li => ({
+        ...li,
+        product: products[li.productSKU],
+      })),
+    };
+  }
+);

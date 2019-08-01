@@ -1,12 +1,13 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
-import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, map, mapTo } from 'rxjs/operators';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, map, mapTo } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
@@ -46,9 +47,10 @@ export class BasketService {
   constructor(private apiService: ApiService) {}
 
   // declare http header for Basket API v1
-  private basketHeaders = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Accept', 'application/vnd.intershop.basket.v1+json');
+  private basketHeaders = new HttpHeaders({
+    'content-type': 'application/json',
+    Accept: 'application/vnd.intershop.basket.v1+json',
+  });
 
   private allBasketIncludes: BasketIncludeType[] = [
     'invoiceToAddress',
@@ -295,9 +297,10 @@ export class BasketService {
   }
 
   /**
-   * Adds a payment at the selected basket.
+   * Adds a payment at the selected basket. If redirect is required the redirect urls are saved at basket in dependence of the payment instrument capabilities (redirectBeforeCheckout/RedirectAfterCheckout).
    * @param basketId          The basket id.
    * @param paymentInstrument The unique name of the payment method, e.g. ISH_INVOICE
+   * @returns                 The payment instrument.
    */
   setBasketPayment(basketId: string, paymentInstrument: string): Observable<string> {
     if (!basketId) {
@@ -307,21 +310,52 @@ export class BasketService {
       return throwError('setBasketPayment() called without paymentInstrument');
     }
 
-    const body = {
-      paymentInstrument,
-      // if there is no redirect required, these urls will be ignored by the server
-      redirect: {
-        successUrl: `${location.origin}/checkout/review?redirect=success`,
-        cancelUrl: `${location.origin}/checkout/payment?redirect=cancel`,
-        failureUrl: `${location.origin}/checkout/payment?redirect=failure`,
-      },
-    };
-
     return this.apiService
-      .put(`baskets/${basketId}/payments/open-tender`, body, {
-        headers: this.basketHeaders,
-      })
-      .pipe(mapTo(paymentInstrument));
+      .put<{ data: PaymentInstrument; included: { paymentMethod: { [id: string]: PaymentMethodBaseData } } }>(
+        `baskets/${basketId}/payments/open-tender?include=paymentMethod`,
+        { paymentInstrument },
+        {
+          headers: this.basketHeaders,
+        }
+      )
+      .pipe(
+        map(({ data, included }) =>
+          data && data.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
+        ),
+        concatMap(pm => {
+          if (
+            !pm ||
+            !pm.capabilities ||
+            !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data)) // ToDo: add RedirectAfterCheckout here, if placeholders are supported by the ICM server
+          ) {
+            return of(paymentInstrument);
+            // send redirect urls if there is a redirect required
+          } else {
+            const redirect = {
+              successUrl: `${location.origin}/checkout/review?redirect=success`,
+              cancelUrl: `${location.origin}/checkout/payment?redirect=cancel`,
+              failureUrl: `${location.origin}/checkout/payment?redirect=failure`,
+            };
+
+            if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {
+              redirect.successUrl = `${location.origin}/checkout/receipt?redirect=success&orderId=*orderID*`; // *OrderID* will be replaced by the ICM server
+              redirect.cancelUrl = `${location.origin}/checkout/payment?redirect=cancel&orderId=*orderID*`;
+              redirect.failureUrl = `${location.origin}/checkout/payment?redirect=failure&orderId=*orderID*`;
+            }
+
+            const body = {
+              paymentInstrument,
+              redirect,
+            };
+
+            return this.apiService
+              .put(`baskets/${basketId}/payments/open-tender`, body, {
+                headers: this.basketHeaders,
+              })
+              .pipe(mapTo(paymentInstrument));
+          }
+        })
+      );
   }
 
   /**

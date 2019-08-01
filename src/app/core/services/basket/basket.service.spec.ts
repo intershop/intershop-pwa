@@ -179,12 +179,22 @@ describe('Basket Service', () => {
   });
 
   it("should set a payment to the basket when 'setBasketPayment' is called", done => {
-    when(apiService.put(`baskets/${basketMockData.data.id}/payments/open-tender`, anything(), anything())).thenReturn(
-      of([])
-    );
+    when(
+      apiService.put(
+        `baskets/${basketMockData.data.id}/payments/open-tender?include=paymentMethod`,
+        anything(),
+        anything()
+      )
+    ).thenReturn(of([]));
 
     basketService.setBasketPayment(basketMockData.data.id, basketMockData.data.payment.name).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.data.id}/payments/open-tender`, anything(), anything())).once();
+      verify(
+        apiService.put(
+          `baskets/${basketMockData.data.id}/payments/open-tender?include=paymentMethod`,
+          anything(),
+          anything()
+        )
+      ).once();
       done();
     });
   });

@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { CreateOrder, getBasketError, getBasketLoading, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { getBasketError, getBasketLoading, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { CreateOrder } from 'ish-core/store/orders';
 
 @Component({
   selector: 'ish-checkout-review-page-container',
