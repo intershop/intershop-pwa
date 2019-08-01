@@ -76,7 +76,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   get gridView() {
-    return this.viewType === 'grid';
+    return !this.listView;
   }
 
   setViewType(mode: ViewType) {

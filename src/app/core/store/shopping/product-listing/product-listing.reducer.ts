@@ -1,5 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductsAction, ProductsActionTypes } from '../products';
 import { SearchAction, SearchActionTypes } from '../search';
 
@@ -43,11 +44,13 @@ export const adapter = createEntityAdapter<ProductListingType>({
 export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
   itemsPerPage: number;
+  viewType: ViewType;
 }
 
 export const initialState: ProductListingState = adapter.getInitialState({
   loading: false,
   itemsPerPage: undefined,
+  viewType: undefined,
 });
 
 /**
@@ -71,6 +74,9 @@ export function productListingReducer(
   switch (action.type) {
     case ProductListingActionTypes.SetEndlessScrollingPageSize:
       return { ...state, itemsPerPage: action.payload.itemsPerPage };
+
+    case ProductListingActionTypes.SetViewType:
+      return { ...state, viewType: action.payload.viewType };
 
     case ProductListingActionTypes.LoadMoreProducts:
     case ProductsActionTypes.LoadProductsForCategory:

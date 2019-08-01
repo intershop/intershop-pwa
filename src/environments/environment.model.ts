@@ -61,6 +61,9 @@ export interface Environment {
   // global definition of the product listing page size
   endlessScrollingItemsPerPage: number;
 
+  // default viewType used for product listings
+  defaultProductListingViewType: 'grid' | 'list';
+
   // enable or disable service worker
   serviceWorker: boolean;
 

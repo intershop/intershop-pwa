@@ -28,11 +28,11 @@ export class ProductListComponent {
 
   @Output() loadMore = new EventEmitter<'up' | 'down'>();
 
-  get isGrid() {
-    return this.viewType === 'grid';
-  }
-
   get isList() {
     return this.viewType === 'list';
+  }
+
+  get isGrid() {
+    return !this.isList;
   }
 }

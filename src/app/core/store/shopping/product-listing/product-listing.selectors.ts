@@ -21,6 +21,11 @@ export const getProductListingItemsPerPage = createSelector(
   state => state.itemsPerPage
 );
 
+export const getProductListingViewType = createSelector(
+  getProductListingState,
+  state => state.viewType
+);
+
 const { selectEntities: getProductListingEntites } = adapter.getSelectors(getProductListingState);
 
 export interface ProductListingView {
