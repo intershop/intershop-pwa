@@ -57,7 +57,6 @@ describe('Products Service', () => {
     when(apiServiceMock.get(`categories/${categoryId}/products`, anything())).thenReturn(of(productsMockData));
     productsService.getCategoryProducts(categoryId, 0, 3).subscribe(data => {
       expect(data.products.map(p => p.sku)).toEqual(['ProductA', 'ProductB']);
-      expect(data.categoryUniqueId).toEqual(categoryId);
       expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
       verify(apiServiceMock.get(`categories/${categoryId}/products`, anything())).once();
       done();

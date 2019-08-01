@@ -53,7 +53,7 @@ export class ProductsService {
     page: number,
     itemsPerPage: number,
     sortKey = ''
-  ): Observable<{ products: Product[]; categoryUniqueId: string; sortKeys: string[]; total: number }> {
+  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
@@ -77,7 +77,6 @@ export class ProductsService {
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
-          categoryUniqueId,
           total: response.total ? response.total : response.elements.length,
         }))
       );

@@ -58,7 +58,6 @@ describe('Products Effects', () => {
 
     when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).thenReturn(
       of({
-        categoryUniqueId: '123',
         sortKeys: ['name-asc', 'name-desc'],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
         total: 2,
