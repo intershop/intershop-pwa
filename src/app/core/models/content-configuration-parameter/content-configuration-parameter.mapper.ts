@@ -7,7 +7,7 @@ import { mapToProperty } from 'ish-core/utils/operators';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
-export declare interface ContentConfigurationParameters {
+export interface ContentConfigurationParameters {
   [key: string]: string | object;
 }
 
