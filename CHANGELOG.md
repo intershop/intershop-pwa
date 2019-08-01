@@ -1,3 +1,16 @@
+# 0.13.1 (2019-08-01)
+
+**required Intershop Commerce Management version: 7.10.13.1**
+
+### Features
+
+- support of the Concardis credit card as a redirect after checkout payment method (ISREST-694)
+
+### Bug Fixes
+
+- fix responsive design of edit modal for variation products in the cart (ISREST-792)
+- expression changed after it has been checked error for quoting with recently viewed products on product detail page (ISREST-765)
+
 # [0.13.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.13.0/) (2019-07-23)
 
 **required Intershop Commerce Management version: 7.10.12.2**
