@@ -410,6 +410,54 @@ describe('Products Effects', () => {
 
       effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
+                              Array [
+                                LoadProductSuccess {
+                                  "payload": Object {
+                                    "product": Object {
+                                      "sku": "A",
+                                    },
+                                  },
+                                  "type": "[Shopping] Load Product Success",
+                                },
+                                LoadProductSuccess {
+                                  "payload": Object {
+                                    "product": Object {
+                                      "sku": "B",
+                                    },
+                                  },
+                                  "type": "[Shopping] Load Product Success",
+                                },
+                                LoadProductBundlesSuccess {
+                                  "payload": Object {
+                                    "bundledProducts": Array [
+                                      Object {
+                                        "quantity": 1,
+                                        "sku": "A",
+                                      },
+                                      Object {
+                                        "quantity": 1,
+                                        "sku": "B",
+                                      },
+                                    ],
+                                    "sku": "ABC",
+                                  },
+                                  "type": "[Shopping] Load Product Bundles Success",
+                                },
+                              ]
+                        `);
+        done();
+      });
+    });
+  });
+
+  describe('loadPartsOfRetailSet$', () => {
+    it('should load stubs and retail set reference when queried', done => {
+      when(productsServiceMock.getRetailSetParts('ABC')).thenReturn(of([{ sku: 'A' }, { sku: 'B' }]));
+
+      actions$ = of(new fromActions.LoadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
+
+      effects.loadPartsOfRetailSet$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
           Array [
             LoadProductSuccess {
               "payload": Object {
@@ -427,21 +475,15 @@ describe('Products Effects', () => {
               },
               "type": "[Shopping] Load Product Success",
             },
-            LoadProductBundlesSuccess {
+            LoadRetailSetSuccess {
               "payload": Object {
-                "bundledProducts": Array [
-                  Object {
-                    "quantity": 1,
-                    "sku": "A",
-                  },
-                  Object {
-                    "quantity": 1,
-                    "sku": "B",
-                  },
+                "parts": Array [
+                  "A",
+                  "B",
                 ],
                 "sku": "ABC",
               },
-              "type": "[Shopping] Load Product Bundles Success",
+              "type": "[Shopping] Load Retail Set Success",
             },
           ]
         `);

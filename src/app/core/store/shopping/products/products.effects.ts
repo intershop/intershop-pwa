@@ -236,6 +236,24 @@ export class ProductsEffects {
     )
   );
 
+  @Effect()
+  loadPartsOfRetailSet$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    mapToPayloadProperty('product'),
+    filter(ProductHelper.isRetailSet),
+    mapToProperty('sku'),
+    mergeMap(sku =>
+      this.productsService
+        .getRetailSetParts(sku)
+        .pipe(
+          mergeMap(stubs => [
+            ...stubs.map((product: Product) => new productsActions.LoadProductSuccess({ product })),
+            new productsActions.LoadRetailSetSuccess({ sku, parts: stubs.map(p => p.sku) }),
+          ])
+        )
+    )
+  );
+
   @Effect({ dispatch: false })
   redirectIfErrorInProducts$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductFail),

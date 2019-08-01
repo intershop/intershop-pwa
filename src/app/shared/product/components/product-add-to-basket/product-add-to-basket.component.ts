@@ -12,6 +12,7 @@ export class ProductAddToBasketComponent {
   @Input() disabled = false;
   @Input() displayType?: string;
   @Input() class?: string;
+  @Input() translationKey = 'product.add_to_cart.link';
   @Output() productToBasket = new EventEmitter<void>();
 
   addToBasket() {

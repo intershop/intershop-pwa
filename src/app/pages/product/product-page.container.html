@@ -7,6 +7,7 @@
 
       <ish-product-detail
         [product]="product"
+        [price]="(price$ | async) || product"
         [(quantity)]="quantity"
         [currentUrl]="currentUrl$ | async"
         [variationOptions]="productVariationOptions$ | async"
@@ -19,6 +20,13 @@
         [product]="product"
         (productToBasket)="addToBasket()"
       ></ish-product-bundle-parts>
+      <ish-retail-set-parts
+        *ngIf="isRetailSet(product)"
+        [product]="product"
+        [parts]="retailSetParts$ | async"
+        (partsChange)="retailSetParts$.next($event)"
+        (productToBasket)="addToBasket()"
+      ></ish-retail-set-parts>
     </ng-container>
   </ng-template>
 </div>

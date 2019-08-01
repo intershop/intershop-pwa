@@ -27,15 +27,15 @@
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price
-          [product]="product"
+          [product]="price || product"
           [showInformationalPrice]="true"
           [showPriceSavings]="true"
         ></ish-product-price>
 
-        <ish-product-inventory [product]="product"></ish-product-inventory>
+        <ish-product-inventory *ngIf="!isRetailSet(product)" [product]="product"></ish-product-inventory>
       </div>
 
-      <ish-product-shipment [product]="product"></ish-product-shipment>
+      <ish-product-shipment *ngIf="!isRetailSet(product)" [product]="product"></ish-product-shipment>
 
       <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
@@ -47,6 +47,7 @@
         <div class="row">
           <div class="w-100">
             <ish-product-quantity
+              *ngIf="!isRetailSet(product)"
               [product]="product"
               [parentForm]="productDetailForm"
               [controlName]="quantityControlName"
@@ -59,6 +60,7 @@
           [product]="product"
           [class]="'btn-lg btn-block'"
           [disabled]="productDetailForm.invalid"
+          [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
           (productToBasket)="addToBasket()"
         ></ish-product-add-to-basket>
 

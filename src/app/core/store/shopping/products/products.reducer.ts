@@ -83,6 +83,10 @@ export function productsReducer(state = initialState, action: ProductsAction): P
         { ...state, loading: false }
       );
     }
+
+    case ProductsActionTypes.LoadRetailSetSuccess: {
+      return productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state);
+    }
   }
 
   return state;
