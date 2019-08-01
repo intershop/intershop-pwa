@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Line Item Description Component displays detailed line item information.
@@ -25,6 +26,9 @@ export class LineItemDescriptionComponent {
   @Input() editable = true;
   @Input() lineItemViewType?: 'simple';
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
+
+  isVariationProduct = ProductHelper.isVariationProduct;
+  isBundleProduct = ProductHelper.isProductBundle;
 
   onUpdateItem(event: LineItemUpdate) {
     this.updateItem.emit(event);

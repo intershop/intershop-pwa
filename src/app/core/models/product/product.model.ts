@@ -23,7 +23,7 @@ export interface Product {
   defaultCategoryId?: string;
 
   // properties added in model
-  type: 'Product' | 'VariationProduct' | 'VariationProductMaster';
+  type: 'Product' | 'VariationProduct' | 'VariationProductMaster' | 'Bundle';
   promotionIds: string[];
   completenessLevel: number;
   failed: boolean;

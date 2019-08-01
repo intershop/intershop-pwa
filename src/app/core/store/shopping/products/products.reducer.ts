@@ -18,7 +18,6 @@ export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
   selected: undefined,
   failed: [],
-  variations: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -74,6 +73,13 @@ export function productsReducer(state = initialState, action: ProductsAction): P
     case ProductsActionTypes.LoadProductVariationsSuccess: {
       return productAdapter.updateOne(
         { id: action.payload.sku, changes: { variationSKUs: action.payload.variations } },
+        { ...state, loading: false }
+      );
+    }
+
+    case ProductsActionTypes.LoadProductBundlesSuccess: {
+      return productAdapter.updateOne(
+        { id: action.payload.sku, changes: { bundledProducts: action.payload.bundledProducts } },
         { ...state, loading: false }
       );
     }

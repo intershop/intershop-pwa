@@ -20,6 +20,7 @@ import { ProductInventoryComponent } from '../../../product/components/product-i
 import { ProductShipmentComponent } from '../../../product/components/product-shipment/product-shipment.component';
 import { ProductVariationDisplayComponent } from '../../../product/components/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from '../../../product/components/product-variation-select/product-variation-select.component';
+import { ProductBundleDisplayContainerComponent } from '../../../product/containers/product-bundle-display/product-bundle-display.container';
 
 import { LineItemDescriptionComponent } from './line-item-description.component';
 
@@ -48,6 +49,7 @@ describe('Line Item Description Component', () => {
         LineItemEditDialogContainerComponent,
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(ProductBundleDisplayContainerComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductShipmentComponent),
