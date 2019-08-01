@@ -1,7 +1,9 @@
 <ng-container *ngIf="productForDisplay$ | async as product">
   <ish-product-tile
     *ngIf="isTile"
+    [configuration]="configuration"
     [product]="product"
+    [quantity]="quantity"
     [category]="category"
     [variationOptions]="productVariationOptions$ | async"
     [isInCompareList]="isInCompareList$ | async"
@@ -12,7 +14,10 @@
 
   <ish-product-row
     *ngIf="isRow"
+    [configuration]="configuration"
     [product]="product"
+    [quantity]="quantity"
+    (quantityChange)="quantityChange.emit($event)"
     [category]="category"
     [variationOptions]="productVariationOptions$ | async"
     [isInCompareList]="isInCompareList$ | async"
