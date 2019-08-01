@@ -10,13 +10,26 @@ import {
 } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
+export interface ProductTileComponentConfiguration {
+  readOnly: boolean;
+  displayName: boolean;
+  displayVariations: boolean;
+  displayPrice: boolean;
+  displayPromotions: boolean;
+  displayAddToBasket: boolean;
+  displayAddToCompare: boolean;
+  displayAddToQuote: boolean;
+}
+
 @Component({
   selector: 'ish-product-tile',
   templateUrl: './product-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductTileComponent {
+  @Input() configuration: Partial<ProductTileComponentConfiguration> = {};
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
+  @Input() quantity: number;
   @Input() variationOptions: VariationOptionGroup[];
   @Input() category: Category;
   @Input() isInCompareList: boolean;
@@ -27,7 +40,7 @@ export class ProductTileComponent {
   isMasterProduct = ProductHelper.isMasterProduct;
 
   addToBasket() {
-    this.productToBasket.emit(this.product.minOrderQuantity);
+    this.productToBasket.emit(this.quantity || this.product.minOrderQuantity);
   }
 
   toggleCompare() {

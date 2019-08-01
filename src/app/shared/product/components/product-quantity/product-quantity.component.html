@@ -1,32 +1,37 @@
 <div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity">
-  <ng-container *ngIf="type === 'select'; else inputType">
-    <ish-select
-      [options]="quantityOptions"
-      [form]="parentForm"
-      [controlName]="controlName"
-      [label]="'product.quantity.label'"
-      [labelClass]="'label-quantity col-6'"
-      [inputClass]="'col-6 ' + (class || '')"
-    ></ish-select>
-  </ng-container>
+  <ng-container *ngIf="!readOnly">
+    <ng-container *ngIf="type === 'select'; else inputType">
+      <ish-select
+        [options]="quantityOptions"
+        [form]="parentForm"
+        [controlName]="controlName"
+        [label]="quantityLabel"
+        [labelClass]="'label-quantity col-6'"
+        [inputClass]="'col-6 ' + (class || '')"
+      ></ish-select>
+    </ng-container>
 
-  <ng-template #inputType>
-    <ish-input
-      [type]="'number'"
-      [form]="parentForm"
-      [controlName]="controlName"
-      [label]="'product.quantity.label'"
-      [labelClass]="'label-quantity col-6'"
-      [inputClass]="'col-6 ' + (class || '')"
-      [markRequiredLabel]="'off'"
-      [min]="product.minOrderQuantity"
-      [max]="product.maxOrderQuantity"
-      [errorMessages]="{
-        required: 'product.quantity.notempty.text',
-        integer: 'product.quantity.integer.text',
-        min: 'product.quantity.greaterthan.text' | translate: { '0': product.minOrderQuantity },
-        max: 'product.quantity.lessthan.text' | translate: { '0': product.maxOrderQuantity }
-      }"
-    ></ish-input>
-  </ng-template>
+    <ng-template #inputType>
+      <ish-input
+        [type]="'number'"
+        [form]="parentForm"
+        [controlName]="controlName"
+        [label]="quantityLabel"
+        [labelClass]="'label-quantity col-6'"
+        [inputClass]="'col-6 ' + (class || '')"
+        [markRequiredLabel]="'off'"
+        [min]="allowZeroQuantity ? 0 : product.minOrderQuantity"
+        [max]="product.maxOrderQuantity"
+        [errorMessages]="{
+          required: 'product.quantity.notempty.text',
+          integer: 'product.quantity.integer.text',
+          min: 'product.quantity.greaterthan.text' | translate: { '0': product.minOrderQuantity },
+          max: 'product.quantity.lessthan.text' | translate: { '0': product.maxOrderQuantity }
+        }"
+      ></ish-input>
+    </ng-template>
+  </ng-container>
+  <ng-container *ngIf="readOnly">
+    <span>{{ quantityLabel | translate }}: {{ quantity }}</span>
+  </ng-container>
 </div>

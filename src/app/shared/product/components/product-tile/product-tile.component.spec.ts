@@ -8,8 +8,10 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/components/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
+import { DEFAULT_CONFIGURATION } from '../../containers/product-item/product-item.container';
 import { ProductPromotionContainerComponent } from '../../containers/product-promotion/product-promotion.container';
 import { ProductAddToBasketComponent } from '../product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from '../product-add-to-compare/product-add-to-compare.component';
@@ -58,5 +60,32 @@ describe('Product Tile Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render default elements when not specifically configured', () => {
+    component.configuration = DEFAULT_CONFIGURATION;
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-lazy-product-add-to-quote",
+        "ish-product-add-to-basket",
+        "ish-product-add-to-compare",
+        "ish-product-image",
+        "ish-product-label",
+        "ish-product-price",
+        "ish-product-promotion-container",
+      ]
+    `);
+  });
+
+  it('should render almost no elements when configured with empty configuration', () => {
+    component.configuration = {};
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-product-image",
+        "ish-product-label",
+      ]
+    `);
   });
 });

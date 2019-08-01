@@ -1,16 +1,14 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { AllProductTypes } from 'ish-core/models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
-export const productAdapter = createEntityAdapter<Product | VariationProduct | VariationProductMaster>({
+export const productAdapter = createEntityAdapter<AllProductTypes>({
   selectId: product => product.sku,
 });
 
-export interface ProductsState extends EntityState<Product | VariationProduct | VariationProductMaster> {
+export interface ProductsState extends EntityState<AllProductTypes> {
   loading: boolean;
   selected: string;
   failed: string[];
