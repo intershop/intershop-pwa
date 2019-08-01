@@ -19,8 +19,8 @@ import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
 import { LoadCategory } from '../categories';
+import { LoadMoreProducts, SetEndlessScrollingPageSize, SetProductListingPages } from '../product-listing';
 import { shoppingReducers } from '../shopping-store.module';
-import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
 
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
@@ -56,7 +56,7 @@ describe('Products Effects', () => {
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).thenReturn(
+    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), anything())).thenReturn(
       of({
         sortKeys: ['name-asc', 'name-desc'],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
@@ -85,6 +85,7 @@ describe('Products Effects', () => {
     store$ = TestBed.get(Store);
     router = spy(TestBed.get(Router));
     location = TestBed.get(Location);
+    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadProductBundles$', () => {
@@ -134,12 +135,8 @@ describe('Products Effects', () => {
   });
 
   describe('loadProductsForCategory$', () => {
-    beforeEach(() => {
-      store$.dispatch(new ChangeSortBy({ sorting: 'name-asc' }));
-    });
-
     it('should call service for SKU list', done => {
-      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123' }));
+      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123', sortBy: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).once();
@@ -154,14 +151,18 @@ describe('Products Effects', () => {
       const expectedValues = {
         b: new fromActions.LoadProductSuccess({ product: { sku: 'P222' } as Product }),
         c: new fromActions.LoadProductSuccess({ product: { sku: 'P333' } as Product }),
-        d: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
-        e: new SetSortKeys({ sortKeys: ['name-asc', 'name-desc'] }),
+        d: new SetProductListingPages({
+          id: { type: 'category', value: '123' },
+          itemCount: 2,
+          sortKeys: ['name-asc', 'name-desc'],
+          1: ['P222', 'P333'],
+        }),
       };
-      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcde)', expectedValues));
+      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcd)', expectedValues));
     });
 
     it('should not die if repeating errors are encountered', () => {
-      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anyNumber(), anyString())).thenReturn(
+      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anyNumber(), anything())).thenReturn(
         throwError({ message: 'ERROR' })
       );
       actions$ = hot('-a-a-a', {
@@ -294,15 +295,14 @@ describe('Products Effects', () => {
 
   describe('loadMoreProductsForCategory$', () => {
     it('should trigger if more products are available', () => {
-      actions$ = hot('a', {
-        a: new fromActions.LoadMoreProductsForCategory({ categoryId: '123' }),
+      actions$ = hot('a-a-a', {
+        a: new LoadMoreProducts({ id: { type: 'category', value: '123' }, page: 2 }),
       });
-      const expectedValues = {
-        a: new SetPagingLoading(),
-        b: new SetPage({ pageNumber: 1 }),
-        c: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
-      };
-      expect(effects.loadMoreProductsForCategory$).toBeObservable(cold('(abc)', expectedValues));
+      expect(effects.loadMoreProductsForCategory$).toBeObservable(
+        cold('a-a-a', {
+          a: new fromActions.LoadProductsForCategory({ categoryId: '123', page: 2 }),
+        })
+      );
     });
   });
 

@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { range } from 'lodash-es';
+import { ofRoute } from 'ngrx-router';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { FilterService } from '../../../services/filter/filter.service';
 import { CategoriesActionTypes, getSelectedCategory } from '../categories';
-import { LoadProduct } from '../products/products.actions';
+import { SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
+import { ProductListingID, ProductListingType } from '../product-listing/product-listing.reducer';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
-import { SetPagingInfo } from '../viewconf';
 
 import * as filterActions from './filter.actions';
 
 @Injectable()
 export class FilterEffects {
-  constructor(private actions$: Actions, private store$: Store<{}>, private filterService: FilterService) {}
+  constructor(private actions$: Actions, private store: Store<{}>, private filterService: FilterService) {}
 
   @Effect()
   loadAvailableFilterForCategories$ = this.actions$.pipe(
@@ -43,7 +45,7 @@ export class FilterEffects {
   @Effect()
   loadFilterIfCategoryWasSelected$ = this.actions$.pipe(
     ofType(CategoriesActionTypes.SelectedCategoryAvailable),
-    withLatestFrom(this.store$.pipe(select(getSelectedCategory))),
+    withLatestFrom(this.store.pipe(select(getSelectedCategory))),
     map(([, category]) => new filterActions.LoadFilterForCategory({ category }))
   );
 
@@ -68,17 +70,39 @@ export class FilterEffects {
 
   @Effect()
   loadFilteredProducts$ = this.actions$.pipe(
-    ofType<filterActions.ApplyFilterSuccess>(filterActions.FilterActionTypes.ApplyFilterSuccess),
+    ofRoute(/.*(search|category).*/),
     mapToPayload(),
-    switchMap(({ filterName, searchParameter }) =>
-      this.filterService
-        .getProductSkusForFilter(filterName, searchParameter)
-        .pipe(
-          mergeMap((newProducts: string[]) => [
-            ...newProducts.map(sku => new LoadProduct({ sku })),
-            new SetPagingInfo({ currentPage: 0, totalItems: newProducts.length, newProducts }),
-          ])
+    map(payload =>
+      payload.params.searchTerm
+        ? { type: 'search', value: payload.params.searchTerm }
+        : { type: 'category', value: payload.params.categoryUniqueId }
+    ),
+    switchMap(id =>
+      this.actions$.pipe(
+        ofType<filterActions.ApplyFilterSuccess>(filterActions.FilterActionTypes.ApplyFilterSuccess),
+        mapToPayload(),
+        withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
+        switchMap(([{ filterName, searchParameter }, itemsPerPage]) =>
+          this.filterService
+            .getProductSkusForFilter(filterName, searchParameter)
+            .pipe(
+              mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))])
+            )
         )
+      )
     )
   );
+
+  constructPages(products: string[], id: ProductListingID, itemsPerPage: number): ProductListingType {
+    const pages = range(0, Math.ceil(products.length / itemsPerPage)).map(n =>
+      products.slice(n * itemsPerPage, (n + 1) * itemsPerPage)
+    );
+    return {
+      id,
+      itemCount: products.length,
+      sortKeys: [],
+      ...pages.reduce((acc, val, idx) => ({ ...acc, [idx + 1]: val }), {}),
+      pages: pages.map((_, idx) => idx + 1),
+    };
+  }
 }

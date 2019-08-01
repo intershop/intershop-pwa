@@ -14,7 +14,7 @@
       <ish-product-list-container
         [pageUrl]="category | ishCategoryRoute"
         [category]="category"
-        (loadMore)="loadMore.emit()"
+        [id]="{ type: 'category', value: category.uniqueId }"
       ></ish-product-list-container>
     </div>
   </div>

@@ -9,11 +9,7 @@
   <!-- category with products -->
   <ng-template #productListing>
     <ng-container *ngIf="category.hasOnlineProducts">
-      <ish-family-page
-        [category]="category"
-        [deviceType]="deviceType$ | async"
-        (loadMore)="loadMore.emit()"
-      ></ish-family-page>
+      <ish-family-page [category]="category" [deviceType]="deviceType$ | async"></ish-family-page>
     </ng-container>
   </ng-template>
 

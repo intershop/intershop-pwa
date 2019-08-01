@@ -5,9 +5,10 @@ import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import {
+  concatMap,
+  debounce,
   distinct,
   distinctUntilChanged,
-  exhaustMap,
   filter,
   groupBy,
   map,
@@ -33,16 +34,11 @@ import {
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
 import {
-  SetPage,
-  SetPagingInfo,
-  SetPagingLoading,
-  SetSortKeys,
-  canRequestMore,
-  getItemsPerPage,
-  getPagingPage,
-  getSortBy,
-  isEndlessScrollingEnabled,
-} from '../viewconf';
+  LoadMoreProducts,
+  ProductListingActionTypes,
+  SetProductListingPages,
+  getProductListingItemsPerPage,
+} from '../product-listing';
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
@@ -78,48 +74,43 @@ export class ProductsEffects {
     map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
   );
 
-  @Effect()
-  loadMoreProductsForCategory$ = this.actions$.pipe(
-    ofType<productsActions.LoadMoreProductsForCategory>(
-      productsActions.ProductsActionTypes.LoadMoreProductsForCategory
-    ),
-    mapToPayloadProperty('categoryId'),
-    withLatestFrom(
-      this.store.pipe(select(isEndlessScrollingEnabled)),
-      this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage))
-    ),
-    filter(([, endlessScrollingEnabled, moreProductsAvailable]) => endlessScrollingEnabled && moreProductsAvailable),
-    mergeMap(([categoryId, , , pageNumber]) => [
-      new SetPagingLoading(),
-      new SetPage({ pageNumber: pageNumber + 1 }),
-      new productsActions.LoadProductsForCategory({ categoryId }),
-    ])
-  );
-
   /**
    * retrieve products for category incremental respecting paging
    */
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    mapToPayloadProperty('categoryId'),
-    withLatestFrom(
-      this.store.pipe(select(getPagingPage)),
-      this.store.pipe(select(getSortBy)),
-      this.store.pipe(select(getItemsPerPage))
+    debounce(() =>
+      this.store.pipe(
+        select(getProductListingItemsPerPage),
+        whenTruthy()
+      )
     ),
-    distinctUntilChanged(),
-    exhaustMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
-        switchMap(({ total: totalItems, products, sortKeys }) => [
+    mapToPayload(),
+    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+    withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
+    concatMap(([{ categoryId, page, sortBy }, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryId, page, itemsPerPage, sortBy).pipe(
+        switchMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
-          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
-          new SetSortKeys({ sortKeys }),
+          new SetProductListingPages({
+            id: { type: 'category', value: categoryId },
+            itemCount: total,
+            [page]: products.map(p => p.sku),
+            sortKeys,
+          }),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
     )
+  );
+
+  @Effect()
+  loadMoreProductsForCategory$ = this.actions$.pipe(
+    ofType<LoadMoreProducts>(ProductListingActionTypes.LoadMoreProducts),
+    mapToPayload(),
+    filter(payload => payload.id.type === 'category'),
+    map(({ id, page }) => new productsActions.LoadProductsForCategory({ categoryId: id.value, page }))
   );
 
   @Effect()

@@ -7,7 +7,7 @@ import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
@@ -16,16 +16,10 @@ import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { ApiService } from '../../../services/api/api.service';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
+import { LoadMoreProducts, SetEndlessScrollingPageSize } from '../product-listing';
 import { shoppingReducers } from '../shopping-store.module';
-import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading } from '../viewconf';
 
-import {
-  PrepareNewSearch,
-  SearchMoreProducts,
-  SearchProducts,
-  SearchProductsFail,
-  SuggestSearch,
-} from './search.actions';
+import { SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -38,7 +32,7 @@ describe('Search Effects', () => {
     when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
     productsServiceMock = mock(ProductsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).thenCall(
+    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber(), anything())).thenCall(
       (searchTerm: string, page: number, itemsPerPage: number) => {
         if (!searchTerm) {
           return throwError({ message: 'ERROR' });
@@ -91,9 +85,7 @@ describe('Search Effects', () => {
         });
         actions$ = hot('a', { a: action });
 
-        expect(effects.triggerSearch$).toBeObservable(
-          cold('(ab)', { a: new PrepareNewSearch(), b: new SearchProducts({ searchTerm: 'dummy' }) })
-        );
+        expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts({ searchTerm: 'dummy' }) }));
       });
     });
 
@@ -104,11 +96,7 @@ describe('Search Effects', () => {
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).once();
-          const [term, page, itemsPerPage] = capture(productsServiceMock.searchProducts).last();
-          expect(term).toEqual('123');
-          expect(page).toEqual(0);
-          expect(itemsPerPage).toEqual(3);
+          verify(productsServiceMock.searchProducts(searchTerm, 1, 3, anything())).once();
           done();
         });
       });
@@ -117,14 +105,12 @@ describe('Search Effects', () => {
     describe('searchMoreProducts$', () => {
       it('should perform a continued search with given search term when search is requested', () => {
         const searchTerm = '123';
-        const action = new SearchMoreProducts({ searchTerm });
+        const action = new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 });
         actions$ = hot('a', { a: action });
 
         expect(effects.searchMoreProducts$).toBeObservable(
-          cold('(abc)', {
-            a: new SetPagingLoading(),
-            b: new SetPage({ pageNumber: 1 }),
-            c: new SearchProducts({ searchTerm: '123' }),
+          cold('a', {
+            a: new SearchProducts({ searchTerm: '123', page: 2 }),
           })
         );
       });
@@ -228,14 +214,6 @@ describe('Search Effects', () => {
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
 
-        expect(store$.actionsArray()).toMatchInlineSnapshot(`
-          @ngrx/effects/init
-          [Shopping Internal] Set Endless Scrolling Page Size:
-            itemsPerPage: 3
-          [Shopping] Suggest Search:
-            searchTerm: "good"
-        `);
-
         verify(suggestServiceMock.search(anyString())).once();
       }));
     });
@@ -253,20 +231,17 @@ describe('Search Effects', () => {
     });
 
     describe('searchProducts$', () => {
-      it('should perform an additional search with given search term and trigger actions until maximum pages is reached', fakeAsync(() => {
+      it('should perform an additional search for given search term and trigger actions', fakeAsync(() => {
         const searchTerm = '123';
 
         store$.dispatch(new SearchProducts({ searchTerm }));
-        verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+        verify(productsServiceMock.searchProducts(searchTerm, 1, 3, anything())).once();
 
-        store$.dispatch(new SearchMoreProducts({ searchTerm }));
-        verify(productsServiceMock.searchProducts(searchTerm, 1, 3)).once();
+        store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
+        verify(productsServiceMock.searchProducts(searchTerm, 2, 3, anything())).once();
 
-        store$.dispatch(new SearchMoreProducts({ searchTerm }));
-        verify(productsServiceMock.searchProducts(searchTerm, 2, 3)).once();
-
-        store$.dispatch(new SearchMoreProducts({ searchTerm }));
-        verify(productsServiceMock.searchProducts(searchTerm, 3, 3)).never();
+        store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
+        verify(productsServiceMock.searchProducts(searchTerm, 3, 3, anything())).once();
       }));
     });
   });

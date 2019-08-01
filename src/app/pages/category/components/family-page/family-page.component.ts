@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -14,11 +14,6 @@ export class FamilyPageComponent implements OnInit, OnChanges {
    */
   @Input() category: CategoryView;
   @Input() deviceType: DeviceType;
-
-  /**
-   * Request from the product-list to retrieve more products.
-   */
-  @Output() loadMore = new EventEmitter<void>();
 
   isCollapsed = false;
 

@@ -3,19 +3,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { FilterService } from '../../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
-import { LoadProduct } from '../products';
+import { SetEndlessScrollingPageSize, SetProductListingPages } from '../product-listing';
 import { SearchProductsSuccess } from '../search';
 import { shoppingReducers } from '../shopping-store.module';
-import { SetPagingInfo } from '../viewconf';
 
 import * as fromActions from './filter.actions';
 import { FilterEffects } from './filter.effects';
@@ -72,11 +73,13 @@ describe('Filter Effects', () => {
         FilterEffects,
         provideMockActions(() => actions$),
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 2 },
       ],
     });
 
     effects = TestBed.get(FilterEffects);
     store$ = TestBed.get(Store);
+    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadAvailableFilterForCategories$', () => {
@@ -172,18 +175,25 @@ describe('Filter Effects', () => {
   });
 
   describe('loadFilteredProducts$', () => {
-    it('should trigger SetFilteredProducts and LoadProduct for ApplyFilterSuccess action', () => {
+    it('should trigger product actions for ApplyFilterSuccess action', () => {
+      const routing = new RouteNavigation({ path: 'search', params: { searchTerm: 'test' } });
       const action = new fromActions.ApplyFilterSuccess({
         availableFilter: filterNav,
         filterName: 'a',
         searchParameter: 'b',
       });
-      store$.dispatch(action);
-      const completion = new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['123', '234'] });
-      const loadProducts1 = new LoadProduct({ sku: '123' });
-      const loadProducts2 = new LoadProduct({ sku: '234' });
-      actions$ = hot('-a-----|', { a: action });
-      const expected$ = cold('-(bcd)-|', { b: loadProducts1, c: loadProducts2, d: completion });
+      const completion = new SetProductListingPages({
+        id: {
+          type: 'search',
+          value: 'test',
+        },
+        1: ['123', '234'],
+        itemCount: 2,
+        sortKeys: [],
+        pages: [1],
+      });
+      actions$ = hot('        -a-b-|', { a: routing, b: action });
+      const expected$ = cold('---c-|', { c: completion });
       expect(effects.loadFilteredProducts$).toBeObservable(expected$);
     });
   });

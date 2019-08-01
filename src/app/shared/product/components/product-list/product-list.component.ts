@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { Product } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
@@ -22,12 +21,12 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
-  @Input() products: Product[];
+  @Input() products: string[];
   @Input() category?: Category;
   @Input() viewType?: ViewType = 'grid';
   @Input() loadingMore: boolean;
 
-  @Output() loadMore = new EventEmitter<void>();
+  @Output() loadMore = new EventEmitter<'up' | 'down'>();
 
   get isGrid() {
     return this.viewType === 'grid';
@@ -35,9 +34,5 @@ export class ProductListComponent {
 
   get isList() {
     return this.viewType === 'list';
-  }
-
-  trackByFn(_, item: Product) {
-    return item.sku;
   }
 }

@@ -125,14 +125,14 @@ describe('Shopping Store', () => {
         return throwError({ message: `error loading product ${sku}` });
       }
     });
-    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anyString())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anything())).thenReturn(
       of({
         sortKeys: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
+    when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber(), anything())).thenReturn(
       of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
 
@@ -240,8 +240,6 @@ describe('Shopping Store', () => {
           breadcrumbData: undefined
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
@@ -326,19 +324,18 @@ describe('Shopping Store', () => {
             queryParams: {}
             data: {}
             path: "search/:searchTerm"
-          [Shopping] Prepare Search For Products
           [Shopping] Search Products:
             searchTerm: "something"
-          [Shopping] Search Products Success:
-            searchTerm: "something"
-          [Shopping] Set Paging Info:
-            currentPage: 0
-            totalItems: 1
-            newProducts: ["P2"]
           [Shopping] Load Product Success:
             product: {"sku":"P2"}
-          [Shopping] Set SortKey List:
+          [Shopping] Search Products Success:
+            searchTerm: "something"
+          [ProductListing] Set Product Listing Pages:
+            1: ["P2"]
+            id: {"type":"search","value":"something"}
+            itemCount: 1
             sortKeys: []
+            pages: [1]
           [Shopping] Load Filter for Search:
             searchTerm: "something"
           [Shopping] Load Filter for Search Success:
@@ -403,8 +400,6 @@ describe('Shopping Store', () => {
           categoryId: "A.123"
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123"
         [Shopping] Load top level categories success:
@@ -484,8 +479,6 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories success:
@@ -496,6 +489,7 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Shopping] Load Products for Category:
           categoryId: "A.123.456"
+          page: undefined
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -506,12 +500,12 @@ describe('Shopping Store', () => {
           product: {"sku":"P1"}
         [Shopping] Load Product Success:
           product: {"sku":"P2"}
-        [Shopping] Set Paging Info:
-          currentPage: 0
-          totalItems: 2
-          newProducts: ["P1","P2"]
-        [Shopping] Set SortKey List:
+        [ProductListing] Set Product Listing Pages:
+          1: ["P1","P2"]
+          id: {"type":"category","value":"A.123.456"}
+          itemCount: 2
           sortKeys: []
+          pages: [1]
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
@@ -637,8 +631,6 @@ describe('Shopping Store', () => {
           depth: 1
         [Shopping] Select Product:
           sku: "P1"
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories success:
@@ -694,18 +686,19 @@ describe('Shopping Store', () => {
             path: "category/:categoryUniqueId"
           [Shopping] Load Products for Category:
             categoryId: "A.123.456"
+            page: undefined
           [Shopping] Select Product:
             sku: undefined
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
           [Shopping] Load Product Success:
             product: {"sku":"P2"}
-          [Shopping] Set Paging Info:
-            currentPage: 0
-            totalItems: 2
-            newProducts: ["P1","P2"]
-          [Shopping] Set SortKey List:
+          [ProductListing] Set Product Listing Pages:
+            1: ["P1","P2"]
+            id: {"type":"category","value":"A.123.456"}
+            itemCount: 2
             sortKeys: []
+            pages: [1]
         `);
       }));
 
@@ -776,8 +769,6 @@ describe('Shopping Store', () => {
           depth: 1
         [Shopping] Select Product:
           sku: "P1"
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
         [Shopping] Load Product:
@@ -852,8 +843,6 @@ describe('Shopping Store', () => {
           depth: 1
         [Shopping] Select Product:
           sku: "P3"
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories success:
@@ -929,8 +918,6 @@ describe('Shopping Store', () => {
           categoryId: "A.123.XXX"
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.XXX"
         [Shopping] Load top level categories success:
@@ -977,23 +964,20 @@ describe('Shopping Store', () => {
           breadcrumbData: undefined
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
-        [Shopping] Prepare Search For Products
         [Shopping] Search Products:
           searchTerm: "something"
-        [Shopping] Search Products Success:
-          searchTerm: "something"
-        [Shopping] Set Paging Info:
-          currentPage: 0
-          totalItems: 1
-          newProducts: ["P2"]
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
         [Shopping] Load Product Success:
           product: {"sku":"P2"}
-        [Shopping] Set SortKey List:
+        [Shopping] Search Products Success:
+          searchTerm: "something"
+        [ProductListing] Set Product Listing Pages:
+          1: ["P2"]
+          id: {"type":"search","value":"something"}
+          itemCount: 1
           sortKeys: []
+          pages: [1]
         [Shopping] Load Filter for Search:
           searchTerm: "something"
         [Shopping] Load Filter for Search Success:

@@ -43,7 +43,7 @@ export class ProductsService {
   /**
    * Get a sorted list of all products (as SKU list) assigned to a given Category respecting pagination.
    * @param categoryUniqueId  The unique Category ID.
-   * @param page              The page to request (0-based numbering)
+   * @param page              The page to request (1-based numbering)
    * @param itemsPerPage      The number of items on each page.
    * @param sortKey           The sortKey to sort the list, default value is ''.
    * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sortings [sortKeys].
@@ -52,7 +52,7 @@ export class ProductsService {
     categoryUniqueId: string,
     page: number,
     itemsPerPage: number,
-    sortKey = ''
+    sortKey?: string
   ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
@@ -62,7 +62,7 @@ export class ProductsService {
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attrsGroups', AttributeGroupTypes.ProductLabelAttributes) // TODO: validate if this is working once ISREST-523 is implemented
       .set('amount', itemsPerPage.toString())
-      .set('offset', (page * itemsPerPage).toString())
+      .set('offset', ((page - 1) * itemsPerPage).toString())
       .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
@@ -85,25 +85,29 @@ export class ProductsService {
   /**
    * Get products for a given search term respecting pagination.
    * @param searchTerm    The search term to look for matching products.
-   * @param page          The page to request (0-based numbering)
+   * @param page          The page to request (1-based numbering)
    * @param itemsPerPage  The number of items on each page.
    * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
    */
   searchProducts(
     searchTerm: string,
     page: number,
-    itemsPerPage: number
+    itemsPerPage: number,
+    sortKey?: string
   ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('searchTerm', searchTerm)
       .set('amount', itemsPerPage.toString())
-      .set('offset', (page * itemsPerPage).toString())
+      .set('offset', ((page - 1) * itemsPerPage).toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
 
     return this.apiService
       .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })

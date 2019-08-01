@@ -13,7 +13,7 @@
 
     <ish-product-list-container
       [pageUrl]="'/search/' + searchTerm"
-      (loadMore)="loadMore.emit()"
+      [id]="{ type: 'search', value: searchTerm }"
     ></ish-product-list-container>
   </div>
 </div>
