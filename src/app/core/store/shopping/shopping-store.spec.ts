@@ -11,6 +11,7 @@ import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito
 
 import {
   AVAILABLE_LOCALES,
+  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
@@ -205,6 +206,7 @@ describe('Shopping Store', () => {
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
+        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
 

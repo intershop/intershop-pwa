@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { concatMap, map, take, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
@@ -11,27 +11,45 @@ import {
   ProductListingView,
   getProductListingLoading,
   getProductListingView,
+  getProductListingViewType,
 } from 'ish-core/store/shopping/product-listing';
 import { ProductListingID } from 'ish-core/store/shopping/product-listing/product-listing.reducer';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-list-container',
   templateUrl: './product-list.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListContainerComponent implements OnChanges, OnDestroy {
+export class ProductListContainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() category?: Category;
   @Input() pageUrl: string;
   @Input() id: ProductListingID;
 
   productListingView$: Observable<ProductListingView>;
-  viewType$ = this.activatedRoute.queryParams.pipe(map(params => params.view));
+  viewType$ = this.store.pipe(select(getProductListingViewType));
   listingLoading$ = this.store.pipe(select(getProductListingLoading));
 
   private destroy$ = new Subject();
 
   constructor(private store: Store<{}>, private router: Router, private activatedRoute: ActivatedRoute) {}
+
+  ngOnInit() {
+    // append view queryParam to URL if none is set
+    this.activatedRoute.queryParamMap
+      .pipe(
+        map(params => params.has('view')),
+        take(1),
+        whenFalsy(),
+        concatMap(() =>
+          this.viewType$.pipe(
+            whenTruthy(),
+            take(1)
+          )
+        )
+      )
+      .subscribe(view => this.changeViewType(view));
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.id) {

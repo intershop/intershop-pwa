@@ -21,6 +21,7 @@ import { FeatureToggleModule } from './feature-toggle.module';
       useValue: environment.mainNavigationMaxSubCategoriesDepth,
     },
     { provide: injectionKeys.ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: environment.endlessScrollingItemsPerPage },
+    { provide: injectionKeys.DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: environment.defaultProductListingViewType },
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
