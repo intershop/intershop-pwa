@@ -34,10 +34,33 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="product-list-paging">
-        <a class="active" ng-reflect-router-link="" href="/?page=1">1</a
-        ><a ng-reflect-router-link="" href="/?page=2">2</a
-        ><a ng-reflect-router-link="" href="/?page=3">3</a
-        ><a ng-reflect-router-link="" href="/?page=2">»</a>
+        <a class="inactive">«</a
+        ><a
+          queryparamshandling="merge"
+          class="active"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=1"
+          >1</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >2</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=3"
+          >3</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >»</a
+        >
       </div>
     `);
   });
@@ -48,11 +71,38 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="product-list-paging">
-        <a ng-reflect-router-link="" href="/?page=1">«</a
-        ><a ng-reflect-router-link="" href="/?page=1">1</a
-        ><a class="active" ng-reflect-router-link="" href="/?page=2">2</a
-        ><a ng-reflect-router-link="" href="/?page=3">3</a
-        ><a ng-reflect-router-link="" href="/?page=3">»</a>
+        <a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=1"
+          >«</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=1"
+          >1</a
+        ><a
+          queryparamshandling="merge"
+          class="active"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >2</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=3"
+          >3</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=3"
+          >»</a
+        >
       </div>
     `);
   });
@@ -63,10 +113,32 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <div class="product-list-paging">
-        <a ng-reflect-router-link="" href="/?page=2">«</a
-        ><a ng-reflect-router-link="" href="/?page=1">1</a
-        ><a ng-reflect-router-link="" href="/?page=2">2</a
-        ><a class="active" ng-reflect-router-link="" href="/?page=3">3</a>
+        <a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >«</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=1"
+          >1</a
+        ><a
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >2</a
+        ><a
+          queryparamshandling="merge"
+          class="active"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=3"
+          >3</a
+        ><a class="inactive">»</a>
       </div>
     `);
   });

@@ -2,13 +2,13 @@ import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
-import { LoadingComponent } from 'app/shared/common/components/loading/loading.component';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SetEndlessScrollingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
 import { ProductListPagingComponent } from '../../components/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from '../../components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from '../../components/product-list/product-list.component';
@@ -64,17 +64,38 @@ describe('Product List Container', () => {
     expect(findAllIshElements(element)).toIncludeAllMembers(['ish-product-list', 'ish-product-list-toolbar']);
   });
 
-  it('should display components with paging on the page if available', () => {
-    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
-    store$.dispatch(new SetProductListingPages({ id: TEST_ID, itemCount: 30, sortKeys: [] }));
+  describe('display modes', () => {
+    beforeEach(() => {
+      store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
+      store$.dispatch(new SetProductListingPages({ id: TEST_ID, itemCount: 30, sortKeys: [] }));
 
-    component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
-    fixture.detectChanges();
+      component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
+    });
 
-    expect(findAllIshElements(element)).toIncludeAllMembers([
-      'ish-product-list',
-      'ish-product-list-toolbar',
-      'ish-product-list-paging',
-    ]);
+    it('should display components with paging on the page if available and mode is endless-scrolling', () => {
+      component.mode = 'endless-scrolling';
+      fixture.detectChanges();
+
+      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+        Array [
+          "ish-product-list",
+          "ish-product-list-paging",
+          "ish-product-list-toolbar",
+        ]
+      `);
+    });
+
+    it('should display components with paging on the page if available and mode is paging', () => {
+      component.mode = 'paging';
+      fixture.detectChanges();
+
+      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+        Array [
+          "ish-product-list",
+          "ish-product-list-toolbar",
+          "ish-product-list-toolbar",
+        ]
+      `);
+    });
   });
 });

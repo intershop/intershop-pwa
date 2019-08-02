@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
+import { ProductListPagingComponent } from '../product-list-paging/product-list-paging.component';
 
 import { ProductListToolbarComponent } from './product-list-toolbar.component';
 
@@ -13,7 +15,7 @@ describe('Product List Toolbar Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProductListToolbarComponent],
+      declarations: [MockComponent(ProductListPagingComponent), ProductListToolbarComponent],
       imports: [IconModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
