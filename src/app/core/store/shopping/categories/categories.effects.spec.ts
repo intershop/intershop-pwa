@@ -338,7 +338,7 @@ describe('Categories Effects', () => {
           }),
         });
 
-        const action = new LoadProductsForCategory({ categoryId: category.uniqueId });
+        const action = new LoadProductsForCategory({ categoryId: category.uniqueId, page: undefined });
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('--a', { a: action }));
       });
 

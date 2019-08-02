@@ -23,7 +23,6 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 })
 export class ProductListContainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() category?: Category;
-  @Input() pageUrl: string;
   @Input() id: ProductListingID;
 
   productListingView$: Observable<ProductListingView>;

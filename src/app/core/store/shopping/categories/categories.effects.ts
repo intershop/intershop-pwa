@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
@@ -21,7 +22,6 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 import {
   distinctCompareWith,
   mapErrorToAction,
-  mapToPayload,
   mapToPayloadProperty,
   whenFalsy,
   whenTruthy,
@@ -42,7 +42,8 @@ export class CategoriesEffects {
     private store: Store<{}>,
     private categoryService: CategoriesService,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   /**
@@ -155,17 +156,23 @@ export class CategoriesEffects {
     ),
     this.actions$.pipe(
       ofRoute('category/:categoryUniqueId'),
-      mapToPayload()
+      mapToParam<string>('categoryUniqueId')
     ),
   ]).pipe(
-    filter(([category, routing]) => category.uniqueId === routing.params.categoryUniqueId),
+    filter(([category, categoryUniqueId]) => category.uniqueId === categoryUniqueId),
     filter(([category]) => category && category.hasOnlineProducts),
-    map(([, routing]) => ({ categoryId: routing.params.categoryUniqueId, page: routing.queryParams.page })),
-    switchMap(({ categoryId, page }) =>
-      this.store.pipe(
-        select(getProductListingView, { type: 'category', value: categoryId }),
-        filter(view => view.empty()),
-        mapTo(new LoadProductsForCategory({ categoryId, page }))
+    map(([, categoryId]) => categoryId),
+    switchMap(categoryId =>
+      this.activatedRoute.queryParamMap.pipe(
+        map(params => +params.get('page') || undefined),
+        distinctUntilChanged(),
+        switchMap(page =>
+          this.store.pipe(
+            select(getProductListingView, { type: 'category', value: categoryId }),
+            filter(view => !view.productsOfPage(page).length),
+            mapTo(new LoadProductsForCategory({ categoryId, page }))
+          )
+        )
       )
     )
   );
