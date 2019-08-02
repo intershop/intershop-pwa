@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
+import { range } from 'lodash-es';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -26,6 +27,7 @@ describe('Product Listing Selectors', () => {
           lastPage: val.lastPage,
           'nextPage()': val.nextPage(),
           'previousPage()': val.previousPage(),
+          ...range(1, 4).reduce((acc, page) => ({ ...acc, [`productsOfPage(${page})`]: val.productsOfPage(page) }), {}),
         }),
     });
 
@@ -56,6 +58,9 @@ describe('Product Listing Selectors', () => {
           "nextPage()": 1,
           "previousPage()": undefined,
           "products()": Array [],
+          "productsOfPage(1)": Array [],
+          "productsOfPage(2)": Array [],
+          "productsOfPage(3)": Array [],
           "sortKeys": Array [],
         }
       `);
@@ -93,6 +98,12 @@ describe('Product Listing Selectors', () => {
             "A",
             "B",
           ],
+          "productsOfPage(1)": Array [
+            "A",
+            "B",
+          ],
+          "productsOfPage(2)": Array [],
+          "productsOfPage(3)": Array [],
           "sortKeys": Array [
             "by-name",
             "by-date",
@@ -133,6 +144,15 @@ describe('Product Listing Selectors', () => {
               "C",
               "D",
             ],
+            "productsOfPage(1)": Array [
+              "A",
+              "B",
+            ],
+            "productsOfPage(2)": Array [
+              "C",
+              "D",
+            ],
+            "productsOfPage(3)": Array [],
             "sortKeys": Array [
               "by-name",
               "by-date",
@@ -175,6 +195,12 @@ describe('Product Listing Selectors', () => {
             "C",
             "D",
           ],
+          "productsOfPage(1)": Array [],
+          "productsOfPage(2)": Array [
+            "C",
+            "D",
+          ],
+          "productsOfPage(3)": Array [],
           "sortKeys": Array [
             "by-name",
             "by-date",
