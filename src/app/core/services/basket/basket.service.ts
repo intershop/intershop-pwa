@@ -6,6 +6,8 @@ import { catchError, concatMap, map, mapTo } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
+import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
@@ -25,6 +27,7 @@ export declare type BasketUpdateType =
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculationState: string };
+
 export declare type BasketItemUpdateType =
   | { quantity?: { value: number }; product?: string }
   | { shippingMethod: { id: string } };
@@ -38,6 +41,18 @@ export declare type BasketIncludeType =
   | 'payments'
   | 'payments_paymentMethod'
   | 'payments_paymentInstrument';
+
+export declare type MergeBasketIncludeType =
+  | 'targetBasket'
+  | 'targetBasket_invoiceToAddress'
+  | 'targetBasket_commonShipToAddress'
+  | 'targetBasket_commonShippingMethod'
+  | 'targetBasket_discounts'
+  | 'targetBasket_lineItems_discounts'
+  | 'targetBasket_lineItems'
+  | 'targetBasket_payments'
+  | 'targetBasket_payments_paymentMethod'
+  | 'targetBasket_payments_paymentInstrument';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -62,6 +77,19 @@ export class BasketService {
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
+  ];
+
+  private allTargetBasketIncludes: MergeBasketIncludeType[] = [
+    'targetBasket',
+    'targetBasket_invoiceToAddress',
+    'targetBasket_commonShipToAddress',
+    'targetBasket_commonShippingMethod',
+    'targetBasket_discounts',
+    'targetBasket_lineItems_discounts',
+    'targetBasket_lineItems',
+    'targetBasket_payments',
+    'targetBasket_payments_paymentMethod',
+    'targetBasket_payments_paymentInstrument',
   ];
 
   /**
@@ -114,6 +142,30 @@ export class BasketService {
   }
 
   /**
+   * Merge the source basket (named in payload) into the target basket.
+   * @param targetBasketId  The id of the target basket (default = current).
+   * @param sourceBasketId  The id of the source basket.
+   * @returns               The merged basket.
+   */
+  mergeBasket(targetBasketId: string = 'current', sourceBasketId: string): Observable<Basket> {
+    if (!sourceBasketId) {
+      return throwError('mergeBasket() called without sourceBasketId');
+    }
+
+    const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
+    return this.apiService
+      .post<BasketMergeData>(
+        `baskets/${targetBasketId}/merges`,
+        { sourceBasket: sourceBasketId },
+        {
+          headers: this.basketHeaders,
+          params,
+        }
+      )
+      .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))));
+  }
+
+  /**
    * Updates the basket for the given basket id or fallback to 'current' as basket id.
    * @param basketId  The basket id.
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
@@ -126,7 +178,7 @@ export class BasketService {
 
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
     return this.apiService
-      .patch(`baskets/${basketId}`, body, {
+      .patch<BasketData>(`baskets/${basketId}`, body, {
         headers: this.basketHeaders,
         params,
       })

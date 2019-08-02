@@ -46,6 +46,42 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('MergeBasket actions', () => {
+    describe('MergeBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.MergeBasket({ targetBasket: '4321', sourceBasket: '1234' });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('MergeBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+
+        const action = new fromActions.MergeBasketSuccess({ basket });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+
+    describe('MergeBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.MergeBasketFail({ error });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+  });
+
   describe('UpdateBasket actions', () => {
     describe('UpdateBasket action', () => {
       it('should set loading to true', () => {
