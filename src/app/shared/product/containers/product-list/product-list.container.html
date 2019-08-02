@@ -1,24 +1,33 @@
 <ng-container *ngIf="productListingView$ | async as listing">
-  <ish-product-list-toolbar
-    [itemCount]="listing.itemCount"
-    [sortKeys]="listing.sortKeys"
-    [viewType]="viewType$ | async"
-    (viewTypeChange)="changeViewType($event)"
-    (sortByChange)="changeSortBy($event)"
-  ></ish-product-list-toolbar>
-  <!-- [sortBy]="sortBy$ | async" -->
+  <div
+    class="infinite-scroll"
+    infiniteScroll
+    (scrolled)="loadMoreProducts('down')"
+    (scrolledUp)="loadMoreProducts('up')"
+    alwaysCallback="true"
+    immediateCheck="true"
+  >
+    <ish-product-list-toolbar
+      [itemCount]="listing.itemCount"
+      [sortKeys]="listing.sortKeys"
+      [viewType]="viewType$ | async"
+      (viewTypeChange)="changeViewType($event)"
+      (sortByChange)="changeSortBy($event)"
+    ></ish-product-list-toolbar>
+    <!-- [sortBy]="sortBy$ | async" -->
 
-  <ish-product-list
-    [products]="listing.products()"
-    [category]="category"
-    [viewType]="viewType$ | async"
-    [loadingMore]="listingLoading$ | async"
-    (loadMore)="loadMoreProducts($event)"
-  ></ish-product-list>
+    <ish-product-list
+      [products]="listing.products()"
+      [category]="category"
+      [viewType]="viewType$ | async"
+    ></ish-product-list>
 
-  <ish-product-list-paging
-    *ngIf="!listing.allPagesAvailable()"
-    [currentPage]="listing.lastPage"
-    [pageIndices]="listing.allPages()"
-  ></ish-product-list-paging>
+    <ish-loading *ngIf="listingLoading$ | async" [standalone]="true"></ish-loading>
+
+    <ish-product-list-paging
+      *ngIf="!listing.allPagesAvailable()"
+      [currentPage]="listing.lastPage"
+      [pageIndices]="listing.allPages()"
+    ></ish-product-list-paging>
+  </div>
 </ng-container>

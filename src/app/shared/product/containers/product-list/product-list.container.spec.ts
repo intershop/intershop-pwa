@@ -2,7 +2,9 @@ import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { LoadingComponent } from 'app/shared/common/components/loading/loading.component';
 import { MockComponent } from 'ng-mocks';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SetEndlessScrollingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -23,12 +25,14 @@ describe('Product List Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        InfiniteScrollModule,
         RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
       ],
       declarations: [
+        MockComponent(LoadingComponent),
         MockComponent(ProductListComponent),
         MockComponent(ProductListPagingComponent),
         MockComponent(ProductListToolbarComponent),

@@ -1,11 +1,4 @@
-<div
-  class="product-list row"
-  infiniteScroll
-  (scrolled)="loadMore.emit('down')"
-  (scrolledUp)="loadMore.emit('up')"
-  alwaysCallback="true"
-  immediateCheck="true"
->
+<div class="product-list row">
   <ng-container *ngFor="let sku of products">
     <div *ngIf="isGrid" class="col-6 col-lg-4 product-list-item grid-view">
       <ish-product-item-container [configuration]="{ displayType: 'tile' }" [productSku]="sku" [category]="category">
@@ -18,5 +11,3 @@
     </div>
   </ng-container>
 </div>
-
-<ish-loading *ngIf="loadingMore" [standalone]="true"></ish-loading>
