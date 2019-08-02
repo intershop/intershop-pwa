@@ -1,10 +1,22 @@
 <ng-container *ngIf="currentPage">
   <div class="product-list-paging">
-    <a *ngIf="currentPage > 1" [href]="generatePagingUrl(currentPage - 1)">&laquo;</a>
+    <a *ngIf="currentPage > 1" [routerLink]="[]" [queryParamsHandling]="merge" [queryParams]="{ page: currentPage - 1 }"
+      >&laquo;</a
+    >
     <ng-container *ngFor="let p of pageIndices">
-      <a [ngClass]="{ active: p === currentPage }" [href]="generatePagingUrl(p)">{{ p }}</a>
+      <a
+        [ngClass]="{ active: p === currentPage }"
+        [routerLink]="[]"
+        [queryParamsHandling]="merge"
+        [queryParams]="{ page: p }"
+        >{{ p }}</a
+      >
     </ng-container>
-    <a *ngIf="pageIndices[pageIndices.length - 1] !== currentPage" [href]="generatePagingUrl(currentPage + 1)"
+    <a
+      *ngIf="pageIndices[pageIndices.length - 1] !== currentPage"
+      [routerLink]="[]"
+      [queryParamsHandling]="merge"
+      [queryParams]="{ page: currentPage + 1 }"
       >&raquo;</a
     >
   </div>

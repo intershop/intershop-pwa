@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
@@ -11,6 +12,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  mapTo,
   switchMap,
   tap,
   withLatestFrom,
@@ -25,6 +27,7 @@ import {
   ProductListingActionTypes,
   SetProductListingPages,
   getProductListingItemsPerPage,
+  getProductListingView,
 } from '../product-listing';
 import { LoadProductSuccess } from '../products';
 
@@ -44,7 +47,8 @@ export class SearchEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   /**
@@ -56,7 +60,19 @@ export class SearchEffects {
     mapToParam<string>('searchTerm'),
     whenTruthy(),
     distinctUntilChanged(),
-    map(searchTerm => new SearchProducts({ searchTerm }))
+    switchMap(searchTerm =>
+      this.activatedRoute.queryParamMap.pipe(
+        map(params => +params.get('page') || undefined),
+        distinctUntilChanged(),
+        switchMap(page =>
+          this.store.pipe(
+            select(getProductListingView, { type: 'search', value: searchTerm }),
+            filter(view => !view.productsOfPage(page).length),
+            mapTo(new SearchProducts({ searchTerm, page }))
+          )
+        )
+      )
+    )
   );
 
   @Effect()
