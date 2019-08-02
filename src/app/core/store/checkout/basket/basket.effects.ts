@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
 import { LoadProduct, getProductEntities } from '../../shopping/products';
 import { UserActionTypes } from '../../user';
@@ -145,7 +145,7 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger an AddItemsToBasket action after LoginUserSuccess, if basket items are present from pre login state.
+   * After a user logged in the current basket items are either merged into the user's existing basket or a new basket is created and the items are added to this basket.
    */
   @Effect()
   mergeBasketAfterLogin$ = this.actions$.pipe(
@@ -156,13 +156,33 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     tap(() => this.store.dispatch(new basketActions.ResetBasket())),
     map(([newBaskets, currentBasket]) => {
-      const items = currentBasket.lineItems.map(lineItem => ({
-        sku: lineItem.productSKU,
-        quantity: lineItem.quantity.value,
-      }));
+      const items = currentBasket.lineItems
+        .filter(lineItem => !lineItem.isFreeGift)
+        .map(lineItem => ({
+          sku: lineItem.productSKU,
+          quantity: lineItem.quantity.value,
+        }));
 
-      return new basketActions.AddItemsToBasket({ items, basketId: newBaskets.length ? newBaskets[0].id : undefined });
+      return newBaskets.length
+        ? new basketActions.MergeBasket({ targetBasket: newBaskets[0].id, sourceBasket: currentBasket.id })
+        : new basketActions.AddItemsToBasket({ items, basketId: undefined });
     })
+  );
+
+  /**
+   * Merge anonymous basket into current basket of registered user.
+   * Only triggers after user login and user already owns another basket.
+   */
+  @Effect()
+  mergeBasket$ = this.actions$.pipe(
+    ofType<basketActions.MergeBasket>(basketActions.BasketActionTypes.MergeBasket),
+    mapToPayload(),
+    concatMap(payload =>
+      this.basketService.mergeBasket(payload.targetBasket, payload.sourceBasket).pipe(
+        map(basket => new basketActions.MergeBasketSuccess({ basket })),
+        mapErrorToAction(basketActions.MergeBasketFail)
+      )
+    )
   );
 
   /**

@@ -373,19 +373,50 @@ describe('Basket Effects', () => {
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
 
       const action = new LoginUserSuccess({ customer: {} as Customer });
-      const completion = new basketActions.AddItemsToBasket({
-        items: [
-          {
-            sku: 'SKU',
-            quantity: 1,
-          },
-        ],
-        basketId: 'BIDNEW',
-      });
+      const completion = new basketActions.MergeBasket({ targetBasket: 'BIDNEW', sourceBasket: 'BID' });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.mergeBasketAfterLogin$).toBeObservable(expected$);
+    });
+  });
+
+  describe('mergeBasket$', () => {
+    const basketID = 'BID';
+    const merge = { targetBasket: basketID, sourceBasket: 'SBID' };
+
+    beforeEach(() => {
+      when(basketServiceMock.mergeBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
+    });
+
+    it('should call the basketService for mergeBasket', done => {
+      const action = new basketActions.MergeBasket(merge);
+      actions$ = of(action);
+
+      effects.mergeBasket$.subscribe(() => {
+        verify(basketServiceMock.mergeBasket(basketID, anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type MergeBasketSuccess', () => {
+      const action = new basketActions.MergeBasket(merge);
+      const completion = new basketActions.MergeBasketSuccess({ basket: BasketMockData.getBasket() });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.mergeBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type MergeBasketFail', () => {
+      when(basketServiceMock.mergeBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+
+      const action = new basketActions.MergeBasket(merge);
+      const completion = new basketActions.MergeBasketFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.mergeBasket$).toBeObservable(expected$);
     });
   });
 
@@ -395,8 +426,8 @@ describe('Basket Effects', () => {
 
       const action = new LoginUserSuccess({ customer: {} as Customer });
       const completion = new basketActions.LoadBasket();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
 
       expect(effects.loadBasketAfterLogin$).toBeObservable(expected$);
     });

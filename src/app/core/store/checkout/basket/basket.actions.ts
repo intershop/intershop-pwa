@@ -28,6 +28,9 @@ export enum BasketActionTypes {
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
   AddItemsToBasketFail = '[Basket API] Add Items To Basket Fail',
   AddItemsToBasketSuccess = '[Basket API] Add Items To Basket Success',
+  MergeBasket = '[Basket Internal] Merge two baskets',
+  MergeBasketFail = '[Basket API] Merge two baskets Fail',
+  MergeBasketSuccess = '[Basket API] Merge two baskets Success',
   AddQuoteToBasket = '[Basket] Add Quote To Basket',
   AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
   AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
@@ -136,6 +139,21 @@ export class AddItemsToBasketFail implements Action {
 
 export class AddItemsToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketSuccess;
+}
+
+export class MergeBasket implements Action {
+  readonly type = BasketActionTypes.MergeBasket;
+  constructor(public payload: { targetBasket: string; sourceBasket: string }) {}
+}
+
+export class MergeBasketFail implements Action {
+  readonly type = BasketActionTypes.MergeBasketFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class MergeBasketSuccess implements Action {
+  readonly type = BasketActionTypes.MergeBasketSuccess;
+  constructor(public payload: { basket: Basket }) {}
 }
 
 export class AddQuoteToBasket implements Action {
@@ -285,6 +303,9 @@ export type BasketAction =
   | AddItemsToBasket
   | AddItemsToBasketFail
   | AddItemsToBasketSuccess
+  | MergeBasket
+  | MergeBasketFail
+  | MergeBasketSuccess
   | AddQuoteToBasket
   | AddQuoteToBasketFail
   | AddQuoteToBasketSuccess
