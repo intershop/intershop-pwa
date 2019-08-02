@@ -1,6 +1,6 @@
 <ng-container *ngIf="productListingView$ | async as listing">
   <div
-    class="infinite-scroll"
+    *ngIf="isEndlessScrolling"
     infiniteScroll
     (scrolled)="loadMoreProducts('down')"
     (scrolledUp)="loadMoreProducts('up')"
@@ -29,5 +29,34 @@
       [currentPage]="listing.lastPage"
       [pageIndices]="listing.allPages()"
     ></ish-product-list-paging>
+  </div>
+
+  <div *ngIf="isPaging">
+    <ng-container *ngIf="currentPage$ | async as currentPage">
+      <ng-template #pagingToolbar>
+        <ish-product-list-toolbar
+          [itemCount]="listing.itemCount"
+          [sortKeys]="listing.sortKeys"
+          [viewType]="viewType$ | async"
+          [currentPage]="currentPage"
+          [pageIndices]="listing.allPages()"
+          (viewTypeChange)="changeViewType($event)"
+          (sortByChange)="changeSortBy($event)"
+        ></ish-product-list-toolbar>
+        <!-- [sortBy]="sortBy$ | async" -->
+      </ng-template>
+
+      <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>
+
+      <ish-product-list
+        [products]="listing.productsOfPage(currentPage)"
+        [category]="category"
+        [viewType]="viewType$ | async"
+      ></ish-product-list>
+
+      <ish-loading *ngIf="listingLoading$ | async" [standalone]="true"></ish-loading>
+
+      <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>
+    </ng-container>
   </div>
 </ng-container>

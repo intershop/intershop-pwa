@@ -1,23 +1,27 @@
 <ng-container *ngIf="currentPage">
   <div class="product-list-paging">
-    <a *ngIf="currentPage > 1" [routerLink]="[]" [queryParamsHandling]="merge" [queryParams]="{ page: currentPage - 1 }"
-      >&laquo;</a
-    >
+    <ng-container *ngIf="currentPage > 1; else inactiveFirstLink">
+      <a [routerLink]="[]" queryParamsHandling="merge" [queryParams]="{ page: currentPage - 1 }">&laquo;</a>
+    </ng-container>
+    <ng-template #inactiveFirstLink>
+      <a class="inactive">&laquo;</a>
+    </ng-template>
+
     <ng-container *ngFor="let p of pageIndices">
       <a
         [ngClass]="{ active: p === currentPage }"
         [routerLink]="[]"
-        [queryParamsHandling]="merge"
+        queryParamsHandling="merge"
         [queryParams]="{ page: p }"
         >{{ p }}</a
       >
     </ng-container>
-    <a
-      *ngIf="pageIndices[pageIndices.length - 1] !== currentPage"
-      [routerLink]="[]"
-      [queryParamsHandling]="merge"
-      [queryParams]="{ page: currentPage + 1 }"
-      >&raquo;</a
-    >
+
+    <ng-container *ngIf="pageIndices[pageIndices.length - 1] !== currentPage; else inactiveLastLink">
+      <a [routerLink]="[]" queryParamsHandling="merge" [queryParams]="{ page: currentPage + 1 }">&raquo;</a>
+    </ng-container>
+    <ng-template #inactiveLastLink>
+      <a class="inactive">&raquo;</a>
+    </ng-template>
   </div>
 </ng-container>

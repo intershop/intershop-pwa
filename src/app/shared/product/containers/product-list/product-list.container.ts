@@ -24,10 +24,12 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 export class ProductListContainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() category?: Category;
   @Input() id: ProductListingID;
+  @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
 
   productListingView$: Observable<ProductListingView>;
   viewType$ = this.store.pipe(select(getProductListingViewType));
   listingLoading$ = this.store.pipe(select(getProductListingLoading));
+  currentPage$ = this.activatedRoute.queryParamMap.pipe(map(params => +params.get('page') || 1));
 
   private destroy$ = new Subject();
 
@@ -97,5 +99,13 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
       .subscribe(page => {
         this.store.dispatch(new LoadMoreProducts({ id: this.id, page }));
       });
+  }
+
+  get isEndlessScrolling() {
+    return this.mode === 'endless-scrolling';
+  }
+
+  get isPaging() {
+    return !this.isEndlessScrolling;
   }
 }

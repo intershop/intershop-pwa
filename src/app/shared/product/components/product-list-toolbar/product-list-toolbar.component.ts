@@ -27,6 +27,8 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() viewType: ViewType = 'grid';
   @Input() sortBy = 'default';
   @Input() sortKeys: string[];
+  @Input() currentPage: number;
+  @Input() pageIndices: number[];
   @Output() viewTypeChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<string>();
 
