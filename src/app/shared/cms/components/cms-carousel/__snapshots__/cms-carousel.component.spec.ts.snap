@@ -2,10 +2,7 @@
 
 exports[`Cms Carousel Component should be created 1`] = `
 <div class="foo-class" ng-reflect-ng-class="foo-class">
-  <ish-content-slot
-    ng-reflect-slot="app_sf_responsive_cm:slot.caro"
-    ng-reflect-pagelet="[object Object]"
-    ng-reflect-wrapper="true"
+  <ish-content-slot ng-reflect-slot="app_sf_responsive_cm:slot.caro" ng-reflect-wrapper="true"
     ><div>
       <ngb-carousel
         class="carousel slide"
@@ -17,10 +14,10 @@ exports[`Cms Carousel Component should be created 1`] = `
           <div class="carousel-item active">
             <div class="row">
               <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
-                <ish-content-pagelet ng-reflect-pagelet="[object Object]"></ish-content-pagelet>
+                <ish-content-pagelet></ish-content-pagelet>
               </div>
               <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
-                <ish-content-pagelet ng-reflect-pagelet="[object Object]"></ish-content-pagelet>
+                <ish-content-pagelet></ish-content-pagelet>
               </div>
             </div>
           </div></div

@@ -22,20 +22,12 @@ exports[`Filter Swatch Images Component should be created 1`] = `
     ></fa-icon>
   </h3>
   <ul class="filter-list clearfix collapse show" id="collapseFilter" ng-reflect-collapsed="false">
-    <li
-      class="filter-item filter-colour"
-      ng-reflect-klass="filter-item filter-colour"
-      ng-reflect-ng-class="[object Object]"
-    >
+    <li class="filter-item filter-colour">
       <a class="filter-swatch" title="Black" data-testing-id="filter-link-Black"
         ><span style="background-color: black;"></span
       ></a>
     </li>
-    <li
-      class="filter-item filter-colour filter-selected"
-      ng-reflect-klass="filter-item filter-colour"
-      ng-reflect-ng-class="[object Object]"
-    >
+    <li class="filter-item filter-colour filter-selected">
       <a class="filter-swatch" title="Red" data-testing-id="filter-link-Red"
         ><span style="background-color: red;"></span
       ></a>

@@ -60,10 +60,16 @@ describe('Content Configuration Parameter Mapper', () => {
 
     const result = contentConfigurationParameterMapper.fromData(input);
     expect(result).not.toBeEmpty();
-    expect(result).toHaveProperty('key1', '1');
-    expect(result).toHaveProperty('key2', 'hello');
-    expect(result).toHaveProperty('key3', ['hello', 'world']);
-    expect(result).toMatchSnapshot();
+    expect(result).toMatchInlineSnapshot(`
+      Object {
+        "key1": "1",
+        "key2": "hello",
+        "key3": Array [
+          "hello",
+          "world",
+        ],
+      }
+    `);
   });
 
   describe('postProcessFileReferences', () => {

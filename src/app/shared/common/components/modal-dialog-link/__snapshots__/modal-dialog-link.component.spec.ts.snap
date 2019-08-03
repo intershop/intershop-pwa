@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-exports[`Modal Dialog Link Component should render a link and a dialog after creation 1`] = `
-<a rel="nofollow">testLink</a
-><ish-modal-dialog ng-reflect-options="[object Object]"></ish-modal-dialog>
-`;

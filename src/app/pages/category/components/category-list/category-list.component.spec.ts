@@ -33,6 +33,11 @@ describe('Category List Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <ul class="category-list row">
+        <li class="category-list-item col-6 col-lg-4"><ish-category-tile></ish-category-tile></li>
+        <li class="category-list-item col-6 col-lg-4"><ish-category-tile></ish-category-tile></li>
+      </ul>
+    `);
   });
 });

@@ -15,11 +15,7 @@ exports[`Header Component rendering should render normal header adequately for d
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      class="search-toggler"
-      ng-reflect-klass="search-toggler"
-      ng-reflect-ng-class="[object Object]"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container
         data-testing-id="language-switch-desktop"
@@ -29,7 +25,6 @@ exports[`Header Component rendering should render normal header adequately for d
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
@@ -42,21 +37,12 @@ exports[`Header Component rendering should render normal header adequately for d
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container
-      data-testing-id="search-box-desktop"
-      ng-reflect-configuration="[object Object]"
-    ></ish-search-box-container>
+    <ish-search-box-container data-testing-id="search-box-desktop"></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
-    <div
-      class="hamburger-menu"
-      ng-reflect-klass="hamburger-menu"
-      ng-reflect-ng-class="[object Object]"
-    >
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
@@ -84,11 +70,7 @@ exports[`Header Component rendering should render normal header adequately for m
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      class="search-toggler"
-      ng-reflect-klass="search-toggler"
-      ng-reflect-ng-class="[object Object]"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container
         data-testing-id="language-switch-desktop"
@@ -98,7 +80,6 @@ exports[`Header Component rendering should render normal header adequately for m
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
@@ -111,21 +92,12 @@ exports[`Header Component rendering should render normal header adequately for m
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container
-      data-testing-id="search-box-desktop"
-      ng-reflect-configuration="[object Object]"
-    ></ish-search-box-container>
+    <ish-search-box-container data-testing-id="search-box-desktop"></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
-    <div
-      class="hamburger-menu"
-      ng-reflect-klass="hamburger-menu"
-      ng-reflect-ng-class="[object Object]"
-    >
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
@@ -153,11 +125,7 @@ exports[`Header Component rendering should render normal header adequately for t
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      class="search-toggler"
-      ng-reflect-klass="search-toggler"
-      ng-reflect-ng-class="[object Object]"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container
         data-testing-id="language-switch-desktop"
@@ -167,7 +135,6 @@ exports[`Header Component rendering should render normal header adequately for t
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
@@ -180,21 +147,12 @@ exports[`Header Component rendering should render normal header adequately for t
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container
-      data-testing-id="search-box-desktop"
-      ng-reflect-configuration="[object Object]"
-    ></ish-search-box-container>
+    <ish-search-box-container data-testing-id="search-box-desktop"></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
-    <div
-      class="hamburger-menu"
-      ng-reflect-klass="hamburger-menu"
-      ng-reflect-ng-class="[object Object]"
-    >
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
@@ -222,11 +180,7 @@ exports[`Header Component rendering should render sticky header adequately for d
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      class="search-toggler"
-      ng-reflect-klass="search-toggler"
-      ng-reflect-ng-class="[object Object]"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container
         data-testing-id="language-switch-desktop"
@@ -236,7 +190,6 @@ exports[`Header Component rendering should render sticky header adequately for d
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
@@ -249,21 +202,12 @@ exports[`Header Component rendering should render sticky header adequately for d
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container
-      data-testing-id="search-box-desktop"
-      ng-reflect-configuration="[object Object]"
-    ></ish-search-box-container>
+    <ish-search-box-container data-testing-id="search-box-desktop"></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
-    <div
-      class="hamburger-menu"
-      ng-reflect-klass="hamburger-menu"
-      ng-reflect-ng-class="[object Object]"
-    >
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
@@ -291,11 +235,7 @@ exports[`Header Component rendering should render sticky header adequately for m
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      class="search-toggler"
-      ng-reflect-klass="search-toggler"
-      ng-reflect-ng-class="[object Object]"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container
         data-testing-id="language-switch-desktop"
@@ -305,7 +245,6 @@ exports[`Header Component rendering should render sticky header adequately for m
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
@@ -318,21 +257,12 @@ exports[`Header Component rendering should render sticky header adequately for m
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container
-      data-testing-id="search-box-desktop"
-      ng-reflect-configuration="[object Object]"
-    ></ish-search-box-container>
+    <ish-search-box-container data-testing-id="search-box-desktop"></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
-    <div
-      class="hamburger-menu"
-      ng-reflect-klass="hamburger-menu"
-      ng-reflect-ng-class="[object Object]"
-    >
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
@@ -360,11 +290,7 @@ exports[`Header Component rendering should render sticky header adequately for t
     </li>
   </ul>
   <div class="header-utility">
-    <a
-      class="search-toggler"
-      ng-reflect-klass="search-toggler"
-      ng-reflect-ng-class="[object Object]"
-    ></a>
+    <a class="search-toggler"></a>
     <div class="language-switch-container d-none d-md-block">
       <ish-language-switch-container
         data-testing-id="language-switch-desktop"
@@ -374,7 +300,6 @@ exports[`Header Component rendering should render sticky header adequately for t
       class="d-none d-md-block"
       data-testing-id="mini-basket-desktop"
       view="full"
-      ng-reflect-klass="d-none"
       ng-reflect-ng-class="d-md-block"
       ng-reflect-view="full"
     ></ish-mini-basket-container
@@ -387,21 +312,12 @@ exports[`Header Component rendering should render sticky header adequately for t
     ></ish-mini-basket-container>
   </div>
   <div class="search-container header-search-container">
-    <ish-search-box-container
-      data-testing-id="search-box-desktop"
-      ng-reflect-configuration="[object Object]"
-    ></ish-search-box-container>
+    <ish-search-box-container data-testing-id="search-box-desktop"></ish-search-box-container>
   </div>
   <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
-    <div
-      class="hamburger-menu"
-      ng-reflect-klass="hamburger-menu"
-      ng-reflect-ng-class="[object Object]"
-    >
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
     <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">

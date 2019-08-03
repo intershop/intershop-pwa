@@ -66,6 +66,15 @@ describe('Cms Container Component', () => {
     expect(element).toBeTruthy();
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <div
+        class="content-container col-12 col-md-6 col-lg-4 float-left foo-class"
+        ng-reflect-ng-class="col-12 col-md-6 col-lg-4 float"
+      >
+        <ish-content-slot ng-reflect-slot="app_sf_responsive_cm:slot.cont" ng-reflect-wrapper="true"
+          ><ish-content-pagelet></ish-content-pagelet><ish-content-pagelet></ish-content-pagelet
+        ></ish-content-slot>
+      </div>
+    `);
   });
 });

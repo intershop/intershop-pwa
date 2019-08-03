@@ -41,6 +41,18 @@ describe('Cms Product List Component', () => {
     expect(element).toBeTruthy();
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <div class="product-list-container css-class" ng-reflect-ng-class="css-class">
+        <h2>PageletTitle</h2>
+        <div class="product-list row">
+          <div class="product-list-item li-css-class" ng-reflect-ng-class="li-css-class">
+            <ish-product-item-container ng-reflect-product-sku="1"></ish-product-item-container>
+          </div>
+          <div class="product-list-item li-css-class" ng-reflect-ng-class="li-css-class">
+            <ish-product-item-container ng-reflect-product-sku="2"></ish-product-item-container>
+          </div>
+        </div>
+      </div>
+    `);
   });
 });
