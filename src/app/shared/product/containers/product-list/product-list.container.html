@@ -27,7 +27,7 @@
     <ish-product-list-paging
       *ngIf="!listing.allPagesAvailable()"
       [currentPage]="listing.lastPage"
-      [pageIndices]="listing.allPages()"
+      [pageIndices]="listing.pageIndices()"
     ></ish-product-list-paging>
   </div>
 
@@ -39,7 +39,7 @@
           [sortKeys]="listing.sortKeys"
           [viewType]="viewType$ | async"
           [currentPage]="currentPage"
-          [pageIndices]="listing.allPages()"
+          [pageIndices]="listing.pageIndices(currentPage)"
           (viewTypeChange)="changeViewType($event)"
           (sortByChange)="changeSortBy($event)"
         ></ish-product-list-toolbar>
