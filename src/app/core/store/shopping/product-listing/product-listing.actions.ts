@@ -10,6 +10,7 @@ export enum ProductListingActionTypes {
   SetEndlessScrollingPageSize = '[ProductListing] Set Endless Scrolling Page Size',
   SetViewType = '[ProductListing] Set View Type',
   SetSorting = '[ProductListing] Set Sorting',
+  SetFilters = '[ProductListing] Set Filters',
 }
 
 export class SetProductListingPages implements Action {
@@ -37,9 +38,15 @@ export class SetSorting implements Action {
   constructor(public payload: { id: ProductListingID; sorting: string }) {}
 }
 
+export class SetFilters implements Action {
+  readonly type = ProductListingActionTypes.SetFilters;
+  constructor(public payload: { id: ProductListingID; filters: string }) {}
+}
+
 export type ProductListingAction =
   | SetProductListingPages
   | LoadMoreProducts
   | SetEndlessScrollingPageSize
   | SetViewType
-  | SetSorting;
+  | SetSorting
+  | SetFilters;

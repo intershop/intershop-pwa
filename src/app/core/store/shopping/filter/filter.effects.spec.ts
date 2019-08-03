@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -64,7 +63,6 @@ describe('Filter Effects', () => {
     });
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
@@ -177,15 +175,18 @@ describe('Filter Effects', () => {
   describe('loadFilteredProducts$', () => {
     it('should trigger product actions for ApplyFilterSuccess action', () => {
       const routing = new RouteNavigation({ path: 'search', params: { searchTerm: 'test' } });
-      const action = new fromActions.ApplyFilterSuccess({
-        availableFilter: filterNav,
-        filterName: 'a',
-        searchParameter: 'b',
+      const action = new fromActions.LoadProductsForFilter({
+        id: {
+          type: 'search',
+          value: 'test',
+          filters: 'b',
+        },
       });
       const completion = new SetProductListingPages({
         id: {
           type: 'search',
           value: 'test',
+          filters: 'b',
         },
         1: ['123', '234'],
         itemCount: 2,
