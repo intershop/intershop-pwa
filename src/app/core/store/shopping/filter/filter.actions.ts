@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { ProductListingID } from '../product-listing/product-listing.reducer';
 
 export enum FilterActionTypes {
   LoadFilterForCategory = '[Shopping] Load Filter For Category',
@@ -14,6 +15,7 @@ export enum FilterActionTypes {
   LoadFilterForSearch = '[Shopping] Load Filter for Search',
   LoadFilterForSearchSuccess = '[Shopping] Load Filter for Search Success',
   LoadFilterForSearchFail = '[Shopping] Load Filter for Search Fail',
+  LoadProductsForFilter = '[Shopping] Load Products For Filter',
 }
 
 export class LoadFilterForCategory implements Action {
@@ -61,6 +63,11 @@ export class ApplyFilterFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
+export class LoadProductsForFilter implements Action {
+  readonly type = FilterActionTypes.LoadProductsForFilter;
+  constructor(public payload: { id: ProductListingID }) {}
+}
+
 export type FilterActions =
   | LoadFilterForCategory
   | LoadFilterForCategorySuccess
@@ -70,4 +77,5 @@ export type FilterActions =
   | ApplyFilterFail
   | LoadFilterForSearch
   | LoadFilterForSearchSuccess
-  | LoadFilterForSearchFail;
+  | LoadFilterForSearchFail
+  | LoadProductsForFilter;

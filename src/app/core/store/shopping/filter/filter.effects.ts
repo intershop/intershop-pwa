@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { range } from 'lodash-es';
-import { ofRoute } from 'ngrx-router';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -70,26 +69,13 @@ export class FilterEffects {
 
   @Effect()
   loadFilteredProducts$ = this.actions$.pipe(
-    ofRoute(/.*(search|category).*/),
+    ofType<filterActions.LoadProductsForFilter>(filterActions.FilterActionTypes.LoadProductsForFilter),
     mapToPayload(),
-    map(payload =>
-      payload.params.searchTerm
-        ? { type: 'search', value: payload.params.searchTerm }
-        : { type: 'category', value: payload.params.categoryUniqueId }
-    ),
-    switchMap(id =>
-      this.actions$.pipe(
-        ofType<filterActions.ApplyFilterSuccess>(filterActions.FilterActionTypes.ApplyFilterSuccess),
-        mapToPayload(),
-        withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
-        switchMap(([{ filterName, searchParameter }, itemsPerPage]) =>
-          this.filterService
-            .getProductSkusForFilter(filterName, searchParameter)
-            .pipe(
-              mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))])
-            )
-        )
-      )
+    withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
+    switchMap(([{ id }, itemsPerPage]) =>
+      this.filterService
+        .getProductSkusForFilter('default', id.filters)
+        .pipe(mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))]))
     )
   );
 

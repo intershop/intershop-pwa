@@ -1,8 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { ProductsAction, ProductsActionTypes } from '../products';
-import { SearchAction, SearchActionTypes } from '../search';
 
 import { ProductListingAction, ProductListingActionTypes } from './product-listing.actions';
 
@@ -10,6 +8,7 @@ export interface ProductListingID {
   type: string;
   value: string;
   sorting?: string;
+  filters?: string;
 }
 
 /**
@@ -35,7 +34,7 @@ export interface ProductListingType {
 }
 
 export function serializeProductListingID(id: ProductListingID) {
-  return `${id.type}@${id.value}@${id.sorting}`;
+  return `${id.type}@${id.value}@${id.filters || id.sorting}`;
 }
 
 export const adapter = createEntityAdapter<ProductListingType>({
@@ -46,7 +45,7 @@ export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
   itemsPerPage: number;
   viewType: ViewType;
-  currentSettings: { [id: string]: { sorting: string } };
+  currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> };
 }
 
 export const initialState: ProductListingState = adapter.getInitialState({
@@ -71,19 +70,16 @@ function calculatePages(entry: ProductListingType) {
 }
 
 function mergeCurrentSettings(
-  currentSettings: { [id: string]: { sorting: string } },
+  currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> },
   id: ProductListingID,
-  newSettings
+  newSettings: Pick<ProductListingID, 'filters' | 'sorting'>
 ) {
   const serializedId = serializeProductListingID(id);
   const oldSettings = currentSettings[serializedId] || {};
   return { ...currentSettings, [serializedId]: { ...oldSettings, ...newSettings } };
 }
 
-export function productListingReducer(
-  state = initialState,
-  action: ProductListingAction | ProductsAction | SearchAction
-): ProductListingState {
+export function productListingReducer(state = initialState, action: ProductListingAction): ProductListingState {
   switch (action.type) {
     case ProductListingActionTypes.SetEndlessScrollingPageSize:
       return { ...state, itemsPerPage: action.payload.itemsPerPage };
@@ -99,9 +95,15 @@ export function productListingReducer(
         }),
       };
 
+    case ProductListingActionTypes.SetFilters:
+      return {
+        ...state,
+        currentSettings: mergeCurrentSettings(state.currentSettings, action.payload.id, {
+          filters: action.payload.filters,
+        }),
+      };
+
     case ProductListingActionTypes.LoadMoreProducts:
-    case ProductsActionTypes.LoadProductsForCategory:
-    case SearchActionTypes.SearchProducts:
       return { ...state, loading: true };
 
     case ProductListingActionTypes.SetProductListingPages: {

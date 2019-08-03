@@ -12,7 +12,7 @@
     ></ish-product-list-paging>
   </div>
   <div class="sort-by col-12 col-md-3 col-lg-4">
-    <div class="row">
+    <div class="row justify-content-end">
       <div class="col-xs-12 col-sm-3 col-md-12 col-lg-5">
         <a
           class="list-view-link"
@@ -37,7 +37,7 @@
           <fa-icon [icon]="['fas', 'th']"></fa-icon>
         </a>
       </div>
-      <div class="align-self-center col-xs-12 col-sm-9 col-md-12 col-lg-7">
+      <div *ngIf="sortOptions.length" class="align-self-center col-xs-12 col-sm-9 col-md-12 col-lg-7">
         <form class="sort-by-filter" name="sortByForm" novalidate="" [formGroup]="sortForm">
           <!-- TODO: Remove form tag, it's not needed -->
           <select class="form-control" formControlName="sortDropdown" id="SortingAttribute" name="SortingAttribute">
