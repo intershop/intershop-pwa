@@ -49,13 +49,7 @@ exports[`Filter Dropdown Component should be created 1`] = `
     data-testing-id="collapse-filter-Brands"
     class="collapse show"
   >
-    <form
-      name="Filter"
-      novalidate=""
-      role="filter"
-      ng-reflect-form="[object Object]"
-      class="ng-untouched ng-pristine ng-valid"
-    >
+    <form name="Filter" novalidate="" role="filter" class="ng-untouched ng-pristine ng-valid">
       <select
         class="ws-submit-search-param form-control ng-untouched ng-pristine ng-valid"
         formcontrolname="filterDropdown"

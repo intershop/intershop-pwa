@@ -71,6 +71,8 @@ describe('Cms Dialog Component', () => {
     });
 
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(
+      `<ish-content-slot ng-reflect-slot="app_sf_responsive_cm:slot.dial"></ish-content-slot>`
+    );
   });
 });

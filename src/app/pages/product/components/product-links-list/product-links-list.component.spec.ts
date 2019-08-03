@@ -32,6 +32,15 @@ describe('Product Links List Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <div class="product-list-container">
+        <h2></h2>
+        <div class="product-list">
+          <div class="product-list-item list-view">
+            <ish-product-item-container ng-reflect-product-sku="sku"></ish-product-item-container>
+          </div>
+        </div>
+      </div>
+    `);
   });
 });

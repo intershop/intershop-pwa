@@ -84,9 +84,7 @@ describe('Line Item Edit Dialog Container', () => {
 
   it('should give correct product id of variation to product id component', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(
-      `<ish-product-id ng-reflect-product="[object Object]"></ish-product-id>`
-    );
+    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(`<ish-product-id></ish-product-id>`);
   });
 
   it('should display ish-components on the container', () => {
