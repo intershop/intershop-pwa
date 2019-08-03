@@ -36,13 +36,49 @@ export interface ProductListingView {
   productsOfPage(page: number): string[];
   nextPage(): number;
   previousPage(): number;
-  allPages(): number[];
+  pageIndices(currentPage?: number): { value: number; display: string }[];
   allPagesAvailable(): boolean;
   empty(): boolean;
 }
 
 function mergeAllPages(data: ProductListingType) {
   return flatten(data.pages.map(page => data[page]));
+}
+
+function calculatePageIndices(currentPage: number, itemCount: number, itemsPerPage: number) {
+  const lastPage = Math.ceil(itemCount / itemsPerPage);
+  const currentWindowStart = Math.floor(currentPage / 10) * 10 || 1;
+  const currentWindowEnd = Math.min(Math.floor(currentPage / 10) * 10 + 9, lastPage);
+
+  const before = [];
+
+  if (currentWindowEnd - 30 > 0) {
+    const prevWindowStart = Math.min(1, currentWindowStart - 29);
+    before.push({ value: prevWindowStart, display: `${prevWindowStart}-${currentWindowEnd - 30}` });
+  }
+
+  if (currentWindowEnd - 20 > 0) {
+    const prevWindowStart = Math.max(1, currentWindowStart - 20);
+    before.push({ value: prevWindowStart, display: `${prevWindowStart}-${currentWindowEnd - 20}` });
+  }
+  if (currentWindowEnd - 10 > 0) {
+    const prevWindowStart = Math.max(1, currentWindowStart - 10);
+    before.push({ value: prevWindowStart, display: `${prevWindowStart}-${currentWindowEnd - 10}` });
+  }
+
+  const after = [];
+  if (currentWindowEnd + 1 === lastPage) {
+    after.push({ value: currentWindowEnd + 1, display: `${currentWindowEnd + 1}` });
+  }
+  if (currentWindowEnd + 1 < lastPage) {
+    after.push({ value: currentWindowEnd + 1, display: `${currentWindowEnd + 1}-${lastPage}` });
+  }
+
+  return [
+    ...before,
+    ...range(currentWindowStart, currentWindowEnd + 1).map(idx => ({ value: idx, display: `${idx}` })),
+    ...after,
+  ];
 }
 
 const createView = memoize(
@@ -57,7 +93,10 @@ const createView = memoize(
       lastPage,
       itemCount: data ? data.itemCount : 0,
       sortKeys: data ? data.sortKeys : [],
-      allPages: once(() => (data ? range(1, Math.ceil(data.itemCount / itemsPerPage) + 1) : [])),
+      pageIndices: memoize(
+        (currentPage?) => (data ? calculatePageIndices(currentPage || lastPage, data.itemCount, itemsPerPage) : []),
+        identity
+      ),
       allPagesAvailable: once(() =>
         !data ? false : range(1, Math.ceil(data.itemCount / itemsPerPage) + 1).every(idx => !!data[idx])
       ),
