@@ -40,9 +40,19 @@ function mapPromotionIds(data: Link[]): string[] {
 export class ProductMapper {
   constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
 
+  static parseSKUfromURI(uri: string): string {
+    const match = /products[^\/]*\/([^\?]*)/.exec(uri);
+    if (match) {
+      return match[1];
+    } else {
+      console.warn(`could not find sku in uri '${uri}'`);
+      return;
+    }
+  }
+
   fromLink(link: Link): Partial<Product> {
     return {
-      sku: link.uri.split('/products/')[1],
+      sku: ProductMapper.parseSKUfromURI(link.uri),
       name: link.title,
       shortDescription: link.description,
       type: 'Product',
@@ -63,7 +73,7 @@ export class ProductMapper {
 
   fromRetailSetLink(link: Link): Partial<Product> {
     return {
-      sku: link.uri.split('/products/')[1],
+      sku: ProductMapper.parseSKUfromURI(link.uri),
       name: link.title,
       shortDescription: link.description,
       completenessLevel: 1,
@@ -215,7 +225,7 @@ export class ProductMapper {
 
   fromProductBundleData(links: Link[]): SkuQuantityType[] {
     return links.map(link => ({
-      sku: link.uri.split('/products/')[1],
+      sku: ProductMapper.parseSKUfromURI(link.uri),
       quantity: AttributeHelper.getAttributeValueByAttributeName<{ value: number }>(link.attributes, 'quantity').value,
     }));
   }

@@ -1,5 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
+import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -103,16 +104,16 @@ describe('Product Mapper', () => {
       expect(product.type).toEqual('Bundle');
       expect(ProductHelper.isProductBundle(product)).toBeTrue();
     });
-  });
 
-  it('should return ProductRetailSet when getting a ProductData with retailSet = true', () => {
-    const product: Product = productMapper.fromData({
-      sku: '1',
-      retailSet: true,
-    } as ProductData);
-    expect(product).toBeTruthy();
-    expect(product.type).toEqual('RetailSet');
-    expect(ProductHelper.isRetailSet(product)).toBeTrue();
+    it('should return ProductRetailSet when getting a ProductData with retailSet = true', () => {
+      const product: Product = productMapper.fromData({
+        sku: '1',
+        retailSet: true,
+      } as ProductData);
+      expect(product).toBeTruthy();
+      expect(product.type).toEqual('RetailSet');
+      expect(ProductHelper.isRetailSet(product)).toBeTrue();
+    });
   });
 
   describe('fromStubData', () => {
@@ -195,5 +196,27 @@ describe('Product Mapper', () => {
         ]
       `);
     });
+  });
+
+  describe('parseSKUfromURI()', () => {
+    using(
+      [
+        'site/products/123',
+        'products/123',
+        'site/products/123?test=dummy',
+        'products/123?test=dummy',
+        'site/products;spgid=dfds/123',
+        'products;spgid=dfds/123',
+        'site/products;spgid=dfds/123?test=dummy',
+        'products;spgid=dfds/123?test=dummy',
+        'site/products;spgid=dfds/123?test=dummy&test2=dummy',
+        'products;spgid=dfds/123?test=dummy&test2=dummy',
+      ],
+      uri => {
+        it(`should parse correct sku when given '${uri}'`, () => {
+          expect(ProductMapper.parseSKUfromURI(uri)).toEqual('123');
+        });
+      }
+    );
   });
 });
