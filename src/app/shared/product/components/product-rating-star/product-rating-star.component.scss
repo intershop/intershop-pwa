@@ -1,0 +1,20 @@
+$star-font-size: 1.125rem;
+$star-margin: 0.125rem;
+$empty-star-opacity: 0.3;
+
+.star {
+  font-size: $star-font-size;
+}
+
+.star-half-right {
+  margin-left: (-1 * $star-font-size - $star-margin);
+  opacity: $empty-star-opacity;
+}
+
+.star-empty {
+  opacity: $empty-star-opacity;
+}
+
+.star-margin {
+  margin-right: $star-margin;
+}
