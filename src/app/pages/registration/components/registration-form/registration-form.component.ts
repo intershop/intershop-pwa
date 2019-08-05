@@ -36,7 +36,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   @Output() cancel = new EventEmitter<void>();
 
   /* switch for business customer registration */
-  businessCustomerRegistration;
+  businessCustomerRegistration: boolean;
+  captchaRegistration: boolean;
 
   form: FormGroup;
   submitted = false;
@@ -50,6 +51,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     // toggles business / private customer registration
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
+    this.captchaRegistration = this.featureToggle.enabled('captcha');
 
     this.createRegistrationForm();
   }
@@ -72,7 +74,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
-      captcha: [false, [Validators.required]],
+      captcha: this.captchaRegistration ? ['', [Validators.required]] : [''],
       address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
     });
 
@@ -144,7 +146,12 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       user.businessPartnerNo = 'U' + customer.customerNo;
     }
 
-    this.create.emit({ customer, user, credentials, address });
+    const registration: CustomerRegistrationType = { customer, user, credentials, address };
+    if (this.captchaRegistration) {
+      registration.captchaResponse = this.form.get('captcha').value;
+    }
+
+    this.create.emit(registration);
   }
 
   get formDisabled() {
