@@ -32,4 +32,5 @@ export interface CustomerUserType {
 export interface CustomerRegistrationType extends CustomerUserType {
   credentials: Credentials;
   address: Address;
+  captchaResponse?: string;
 }
