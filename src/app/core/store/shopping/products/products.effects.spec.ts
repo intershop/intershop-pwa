@@ -19,7 +19,7 @@ import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
 import { LoadCategory } from '../categories';
-import { LoadMoreProducts, SetEndlessScrollingPageSize, SetProductListingPages } from '../product-listing';
+import { SetEndlessScrollingPageSize, SetProductListingPages } from '../product-listing';
 import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './products.actions';
@@ -136,7 +136,7 @@ describe('Products Effects', () => {
 
   describe('loadProductsForCategory$', () => {
     it('should call service for SKU list', done => {
-      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123', sortBy: 'name-asc' }));
+      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).once();
@@ -290,19 +290,6 @@ describe('Products Effects', () => {
       const expected$ = cold('-');
 
       expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadMoreProductsForCategory$', () => {
-    it('should trigger if more products are available', () => {
-      actions$ = hot('a-a-a', {
-        a: new LoadMoreProducts({ id: { type: 'category', value: '123' }, page: 2 }),
-      });
-      expect(effects.loadMoreProductsForCategory$).toBeObservable(
-        cold('a-a-a', {
-          a: new fromActions.LoadProductsForCategory({ categoryId: '123', page: 2 }),
-        })
-      );
     });
   });
 

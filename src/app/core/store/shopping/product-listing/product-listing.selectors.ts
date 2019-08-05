@@ -26,6 +26,11 @@ export const getProductListingViewType = createSelector(
   state => state.viewType
 );
 
+export const getProductListingSettings = createSelector(
+  getProductListingState,
+  state => state.currentSettings
+);
+
 const { selectEntities: getProductListingEntites } = adapter.getSelectors(getProductListingState);
 
 export interface ProductListingView {
@@ -109,6 +114,10 @@ const createView = memoize(
 export const getProductListingView = createSelector(
   getProductListingEntites,
   getProductListingItemsPerPage,
-  (entities, itemsPerPage, id: ProductListingID) =>
-    entities && createView(entities[serializeProductListingID(id)], itemsPerPage)
+  getProductListingSettings,
+  (entities, itemsPerPage, settings, id: ProductListingID) => {
+    const currentSettings = settings[serializeProductListingID(id)] || {};
+    const serializedId = serializeProductListingID({ ...currentSettings, ...id });
+    return entities && createView(entities[serializedId], itemsPerPage);
+  }
 );

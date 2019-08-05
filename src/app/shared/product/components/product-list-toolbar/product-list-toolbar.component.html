@@ -18,7 +18,10 @@
           class="list-view-link"
           [ngClass]="{ 'list-active': listView }"
           data-testing-id="list-view-link"
-          (click)="setViewType('list')"
+          [routerLink]="[]"
+          queryParamsHandling="merge"
+          [queryParams]="{ view: 'list' }"
+          replaceUrl
         >
           <fa-icon [icon]="['fas', 'list']"></fa-icon>
         </a>
@@ -26,7 +29,10 @@
           class="grid-view-link"
           [ngClass]="{ 'grid-active': gridView }"
           data-testing-id="grid-view-link"
-          (click)="setViewType('grid')"
+          [routerLink]="[]"
+          queryParamsHandling="merge"
+          [queryParams]="{ view: 'grid' }"
+          replaceUrl
         >
           <fa-icon [icon]="['fas', 'th']"></fa-icon>
         </a>

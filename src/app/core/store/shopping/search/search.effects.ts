@@ -24,7 +24,6 @@ import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import {
   LoadMoreProducts,
-  ProductListingActionTypes,
   SetProductListingPages,
   getProductListingItemsPerPage,
   getProductListingView,
@@ -68,7 +67,7 @@ export class SearchEffects {
           this.store.pipe(
             select(getProductListingView, { type: 'search', value: searchTerm }),
             filter(view => !view.productsOfPage(page).length),
-            mapTo(new SearchProducts({ searchTerm, page }))
+            mapTo(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page }))
           )
         )
       )
@@ -87,13 +86,13 @@ export class SearchEffects {
     mapToPayload(),
     map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
     withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
-    concatMap(([{ searchTerm, page, sortBy }, itemsPerPage]) =>
-      this.productsService.searchProducts(searchTerm, page, itemsPerPage, sortBy).pipe(
+    concatMap(([{ searchTerm, page, sorting }, itemsPerPage]) =>
+      this.productsService.searchProducts(searchTerm, page, itemsPerPage, sorting).pipe(
         switchMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
           new SearchProductsSuccess({ searchTerm }),
           new SetProductListingPages({
-            id: { type: 'search', value: searchTerm },
+            id: { type: 'search', value: searchTerm, sorting },
             itemCount: total,
             [page]: products.map(p => p.sku),
             sortKeys,
@@ -102,14 +101,6 @@ export class SearchEffects {
         mapErrorToAction(SearchProductsFail)
       )
     )
-  );
-
-  @Effect()
-  searchMoreProducts$ = this.actions$.pipe(
-    ofType<LoadMoreProducts>(ProductListingActionTypes.LoadMoreProducts),
-    mapToPayload(),
-    filter(payload => payload.id.type === 'search'),
-    map(({ id, page }) => new SearchProducts({ searchTerm: id.value, page }))
   );
 
   @Effect()

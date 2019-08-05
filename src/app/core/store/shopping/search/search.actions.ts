@@ -13,7 +13,7 @@ export enum SearchActionTypes {
 
 export class SearchProducts implements Action {
   readonly type = SearchActionTypes.SearchProducts;
-  constructor(public payload: { searchTerm: string; page?: number; sortBy?: string }) {}
+  constructor(public payload: { searchTerm: string; page?: number; sorting?: string }) {}
 }
 
 export class SearchProductsSuccess implements Action {
