@@ -316,7 +316,7 @@
         },
         { "starImport": true, "from": "lodash.*" },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|flatten)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|flatten|isEqual)$).*",
           "from": "lodash.*"
         },
         {

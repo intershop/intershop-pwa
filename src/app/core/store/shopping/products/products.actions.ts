@@ -48,7 +48,7 @@ export class LoadProductSuccess implements Action {
 
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: { categoryId: string; page?: number; sortBy?: string }) {}
+  constructor(public payload: { categoryId: string; page?: number; sorting?: string }) {}
 }
 
 export class LoadProductsForCategoryFail implements Action {

@@ -10,13 +10,17 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
+import {
+  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
+  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+} from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { ApiService } from '../../../services/api/api.service';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import { LoadMoreProducts, SetEndlessScrollingPageSize } from '../product-listing';
+import { ProductListingEffects } from '../product-listing/product-listing.effects';
 import { shoppingReducers } from '../shopping-store.module';
 
 import { SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
@@ -77,7 +81,7 @@ describe('Search Effects', () => {
     });
 
     describe('triggerSearch$', () => {
-      it('should trigger SearchProducts action if search URL is matched', () => {
+      it('should trigger action if search URL is matched', () => {
         const action = new RouteNavigation({
           path: 'search/:searchTerm',
           params: { searchTerm: 'dummy' },
@@ -85,7 +89,9 @@ describe('Search Effects', () => {
         });
         actions$ = hot('a', { a: action });
 
-        expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts({ searchTerm: 'dummy' }) }));
+        expect(effects.triggerSearch$).toBeObservable(
+          cold('a', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
+        );
       });
     });
 
@@ -99,20 +105,6 @@ describe('Search Effects', () => {
           verify(productsServiceMock.searchProducts(searchTerm, 1, 3, anything())).once();
           done();
         });
-      });
-    });
-
-    describe('searchMoreProducts$', () => {
-      it('should perform a continued search with given search term when search is requested', () => {
-        const searchTerm = '123';
-        const action = new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 });
-        actions$ = hot('a', { a: action });
-
-        expect(effects.searchMoreProducts$).toBeObservable(
-          cold('a', {
-            a: new SearchProducts({ searchTerm: '123', page: 2 }),
-          })
-        );
       });
     });
   });
@@ -135,7 +127,7 @@ describe('Search Effects', () => {
             {
               shopping: combineReducers(shoppingReducers),
             },
-            [SearchEffects]
+            [SearchEffects, ProductListingEffects]
           ),
           RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
         ],
@@ -144,6 +136,7 @@ describe('Search Effects', () => {
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
           { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+          { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'grid' },
         ],
       });
 

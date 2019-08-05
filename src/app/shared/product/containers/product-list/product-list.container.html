@@ -11,10 +11,8 @@
       [itemCount]="listing.itemCount"
       [sortKeys]="listing.sortKeys"
       [viewType]="viewType$ | async"
-      (viewTypeChange)="changeViewType($event)"
-      (sortByChange)="changeSortBy($event)"
+      [sortBy]="sortBy$ | async"
     ></ish-product-list-toolbar>
-    <!-- [sortBy]="sortBy$ | async" -->
 
     <ish-product-list
       [products]="listing.products()"
@@ -38,12 +36,10 @@
           [itemCount]="listing.itemCount"
           [sortKeys]="listing.sortKeys"
           [viewType]="viewType$ | async"
+          [sortBy]="sortBy$ | async"
           [currentPage]="currentPage"
           [pageIndices]="listing.pageIndices(currentPage)"
-          (viewTypeChange)="changeViewType($event)"
-          (sortByChange)="changeSortBy($event)"
         ></ish-product-list-toolbar>
-        <!-- [sortBy]="sortBy$ | async" -->
       </ng-template>
 
       <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>

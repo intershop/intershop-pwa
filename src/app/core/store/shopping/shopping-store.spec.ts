@@ -326,8 +326,16 @@ describe('Shopping Store', () => {
             queryParams: {}
             data: {}
             path: "search/:searchTerm"
+          [ProductListing] Load More Products:
+            id: {"type":"search","value":"something"}
+            page: undefined
+          [ProductListing] Set Sorting:
+            id: {"type":"search","value":"something"}
+            sorting: undefined
           [Shopping] Search Products:
             searchTerm: "something"
+            page: undefined
+            sorting: undefined
           [Shopping] Load Product Success:
             product: {"sku":"P2"}
           [Shopping] Search Products Success:
@@ -489,8 +497,8 @@ describe('Shopping Store', () => {
           categories: tree(A.123.456)
         [Shopping] Selected Category Available:
           categoryId: "A.123.456"
-        [Shopping] Load Products for Category:
-          categoryId: "A.123.456"
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"A.123.456"}
           page: undefined
         [Shopping] Load Category:
           categoryId: "A"
@@ -498,6 +506,19 @@ describe('Shopping Store', () => {
           categoryId: "A.123"
         [Shopping] Load Filter For Category:
           category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
+        [ProductListing] Set Sorting:
+          id: {"type":"category","value":"A.123.456"}
+          sorting: undefined
+        [Shopping] Load Products for Category:
+          categoryId: "A.123.456"
+          page: undefined
+          sorting: undefined
+        [Shopping] Load Category Success:
+          categories: tree(A,A.123)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Load Filter For Category Success:
+          filterNavigation: {}
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
         [Shopping] Load Product Success:
@@ -508,12 +529,6 @@ describe('Shopping Store', () => {
           itemCount: 2
           sortKeys: []
           pages: [1]
-        [Shopping] Load Category Success:
-          categories: tree(A,A.123)
-        [Shopping] Load Category Success:
-          categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
-          filterNavigation: {}
       `);
     }));
 
@@ -686,11 +701,18 @@ describe('Shopping Store', () => {
             queryParams: {}
             data: {}
             path: "category/:categoryUniqueId"
-          [Shopping] Load Products for Category:
-            categoryId: "A.123.456"
+          [ProductListing] Load More Products:
+            id: {"type":"category","value":"A.123.456"}
             page: undefined
           [Shopping] Select Product:
             sku: undefined
+          [ProductListing] Set Sorting:
+            id: {"type":"category","value":"A.123.456"}
+            sorting: undefined
+          [Shopping] Load Products for Category:
+            categoryId: "A.123.456"
+            page: undefined
+            sorting: undefined
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
           [Shopping] Load Product Success:
@@ -966,10 +988,18 @@ describe('Shopping Store', () => {
           breadcrumbData: undefined
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping] Search Products:
-          searchTerm: "something"
+        [ProductListing] Load More Products:
+          id: {"type":"search","value":"something"}
+          page: undefined
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
+        [ProductListing] Set Sorting:
+          id: {"type":"search","value":"something"}
+          sorting: undefined
+        [Shopping] Search Products:
+          searchTerm: "something"
+          page: undefined
+          sorting: undefined
         [Shopping] Load Product Success:
           product: {"sku":"P2"}
         [Shopping] Search Products Success:

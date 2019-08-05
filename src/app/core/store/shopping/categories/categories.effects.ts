@@ -29,8 +29,7 @@ import {
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
-import { getProductListingView } from '../product-listing';
-import { LoadProductsForCategory } from '../products';
+import { LoadMoreProducts, getProductListingView } from '../product-listing';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
@@ -170,7 +169,7 @@ export class CategoriesEffects {
           this.store.pipe(
             select(getProductListingView, { type: 'category', value: categoryId }),
             filter(view => !view.productsOfPage(page).length),
-            mapTo(new LoadProductsForCategory({ categoryId, page }))
+            mapTo(new LoadMoreProducts({ id: { type: 'category', value: categoryId }, page }))
           )
         )
       )

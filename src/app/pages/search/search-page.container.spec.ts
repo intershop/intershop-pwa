@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
@@ -22,6 +24,7 @@ describe('Search Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
@@ -43,6 +46,8 @@ describe('Search Page Container', () => {
     element = fixture.nativeElement;
 
     store$ = TestBed.get(Store);
+    const router: Router = TestBed.get(Router);
+    router.initialNavigation();
   });
 
   it('should be created', () => {
@@ -79,7 +84,7 @@ describe('Search Page Container', () => {
       })
     );
     fixture.detectChanges();
-    expect(element.querySelector('ish-search-result')).toBeTruthy();
     expect(element.querySelector('ish-search-no-result')).toBeFalsy();
+    expect(element.querySelector('ish-search-result')).toBeTruthy();
   });
 });

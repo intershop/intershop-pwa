@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
 
@@ -16,10 +17,15 @@ export class SearchPageContainerComponent {
   numberOfItems$ = this.searchTerm$.pipe(
     whenTruthy(),
     switchMap(term =>
-      this.store.pipe(
-        select(getProductListingView, { type: 'search', value: term }),
-        whenTruthy(),
-        map(view => view.itemCount)
+      this.activatedRoute.queryParamMap.pipe(
+        map(params => params && { sorting: params.get('sorting') || undefined }),
+        switchMap(({ sorting }) =>
+          this.store.pipe(
+            select(getProductListingView, { type: 'search', value: term, sorting }),
+            whenTruthy(),
+            map(view => view.itemCount)
+          )
+        )
       )
     )
   );
@@ -28,5 +34,5 @@ export class SearchPageContainerComponent {
     debounceTime(500)
   );
 
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store<{}>, private activatedRoute: ActivatedRoute) {}
 }

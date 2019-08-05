@@ -1,16 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -29,22 +28,27 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() sortKeys: string[];
   @Input() currentPage: number;
   @Input() pageIndices: number[];
-  @Output() viewTypeChange = new EventEmitter<string>();
-  @Output() sortByChange = new EventEmitter<string>();
 
-  sortForm: FormGroup;
+  sortForm = new FormGroup({
+    sortDropdown: new FormControl(''),
+  });
   sortOptions: SelectOption[] = [];
 
   private destroy$ = new Subject();
 
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+
   ngOnInit() {
-    this.sortForm = new FormGroup({
-      sortDropdown: new FormControl(''),
-    });
     this.sortForm
       .get('sortDropdown')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(this.sortByChange);
+      .subscribe(sorting => {
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParamsHandling: 'merge',
+          queryParams: { sorting, page: 1 },
+        });
+      });
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -79,9 +83,5 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
 
   get gridView() {
     return !this.listView;
-  }
-
-  setViewType(mode: ViewType) {
-    this.viewTypeChange.emit(mode);
   }
 }

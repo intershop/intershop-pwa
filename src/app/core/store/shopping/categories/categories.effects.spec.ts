@@ -18,7 +18,8 @@ import { Locale } from '../../../models/locale/locale.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { SelectLocale, SetAvailableLocales } from '../../locale';
 import { localeReducer } from '../../locale/locale.reducer';
-import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
+import { LoadMoreProducts } from '../product-listing';
+import { SelectProduct } from '../products/products.actions';
 import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './categories.actions';
@@ -338,7 +339,7 @@ describe('Categories Effects', () => {
           }),
         });
 
-        const action = new LoadProductsForCategory({ categoryId: category.uniqueId, page: undefined });
+        const action = new LoadMoreProducts({ id: { type: 'category', value: category.uniqueId }, page: undefined });
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('--a', { a: action }));
       });
 

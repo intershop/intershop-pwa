@@ -9,6 +9,7 @@ import { ProductListingAction, ProductListingActionTypes } from './product-listi
 export interface ProductListingID {
   type: string;
   value: string;
+  sorting?: string;
 }
 
 /**
@@ -34,7 +35,7 @@ export interface ProductListingType {
 }
 
 export function serializeProductListingID(id: ProductListingID) {
-  return `${id.type}@${id.value}`;
+  return `${id.type}@${id.value}@${id.sorting}`;
 }
 
 export const adapter = createEntityAdapter<ProductListingType>({
@@ -45,12 +46,14 @@ export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
   itemsPerPage: number;
   viewType: ViewType;
+  currentSettings: { [id: string]: { sorting: string } };
 }
 
 export const initialState: ProductListingState = adapter.getInitialState({
   loading: false,
   itemsPerPage: undefined,
   viewType: undefined,
+  currentSettings: {},
 });
 
 /**
@@ -67,6 +70,16 @@ function calculatePages(entry: ProductListingType) {
   );
 }
 
+function mergeCurrentSettings(
+  currentSettings: { [id: string]: { sorting: string } },
+  id: ProductListingID,
+  newSettings
+) {
+  const serializedId = serializeProductListingID(id);
+  const oldSettings = currentSettings[serializedId] || {};
+  return { ...currentSettings, [serializedId]: { ...oldSettings, ...newSettings } };
+}
+
 export function productListingReducer(
   state = initialState,
   action: ProductListingAction | ProductsAction | SearchAction
@@ -77,6 +90,14 @@ export function productListingReducer(
 
     case ProductListingActionTypes.SetViewType:
       return { ...state, viewType: action.payload.viewType };
+
+    case ProductListingActionTypes.SetSorting:
+      return {
+        ...state,
+        currentSettings: mergeCurrentSettings(state.currentSettings, action.payload.id, {
+          sorting: action.payload.sorting,
+        }),
+      };
 
     case ProductListingActionTypes.LoadMoreProducts:
     case ProductsActionTypes.LoadProductsForCategory:

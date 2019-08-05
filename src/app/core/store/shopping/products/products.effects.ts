@@ -33,12 +33,7 @@ import {
 } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
-import {
-  LoadMoreProducts,
-  ProductListingActionTypes,
-  SetProductListingPages,
-  getProductListingItemsPerPage,
-} from '../product-listing';
+import { SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
@@ -89,12 +84,12 @@ export class ProductsEffects {
     mapToPayload(),
     map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
     withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
-    concatMap(([{ categoryId, page, sortBy }, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryId, page, itemsPerPage, sortBy).pipe(
+    concatMap(([{ categoryId, page, sorting }, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryId, page, itemsPerPage, sorting).pipe(
         switchMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetProductListingPages({
-            id: { type: 'category', value: categoryId },
+            id: { type: 'category', value: categoryId, sorting },
             itemCount: total,
             [page]: products.map(p => p.sku),
             sortKeys,
@@ -103,14 +98,6 @@ export class ProductsEffects {
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
     )
-  );
-
-  @Effect()
-  loadMoreProductsForCategory$ = this.actions$.pipe(
-    ofType<LoadMoreProducts>(ProductListingActionTypes.LoadMoreProducts),
-    mapToPayload(),
-    filter(payload => payload.id.type === 'category'),
-    map(({ id, page }) => new productsActions.LoadProductsForCategory({ categoryId: id.value, page }))
   );
 
   @Effect()

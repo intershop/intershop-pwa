@@ -30,6 +30,7 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
   viewType$ = this.store.pipe(select(getProductListingViewType));
   listingLoading$ = this.store.pipe(select(getProductListingLoading));
   currentPage$ = this.activatedRoute.queryParamMap.pipe(map(params => +params.get('page') || 1));
+  sortBy$ = this.activatedRoute.queryParamMap.pipe(map(params => params.get('sorting')));
 
   private destroy$ = new Subject();
 
@@ -76,14 +77,6 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
       queryParamsHandling: 'merge',
       queryParams: { view },
     });
-  }
-
-  /**
-   * Emits the event for changing the sorting of the product list.
-   * @param sorting The new sorting value.
-   */
-  changeSortBy(sorting: string) {
-    console.log('changeSortBy', sorting);
   }
 
   /**
