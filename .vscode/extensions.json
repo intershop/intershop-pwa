@@ -20,7 +20,7 @@
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "shinnn.stylelint",
-    "eg2.tslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
     // testing
     "orta.vscode-jest",
     "andys8.jest-snippets",
