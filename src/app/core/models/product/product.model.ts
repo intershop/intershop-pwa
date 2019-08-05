@@ -18,6 +18,7 @@ export interface Product {
   listPrice: Price;
   salePrice: Price;
   manufacturer: string;
+  roundedAverageRating?: string;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   sku: string;

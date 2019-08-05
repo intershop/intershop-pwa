@@ -75,6 +75,7 @@ export interface ProductDataStub {
   description: string;
   title: string;
   defaultCategory?: CategoryData;
+  roundedAverageRating?: string;
 }
 
 export interface ProductVariationLink extends Link {
