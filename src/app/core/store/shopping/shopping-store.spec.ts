@@ -12,10 +12,10 @@ import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito
 import {
   AVAILABLE_LOCALES,
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
   MEDIUM_BREAKPOINT_WIDTH,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -203,7 +203,7 @@ describe('Shopping Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },

@@ -8,7 +8,7 @@ import { distinctUntilChanged, map, mapTo, mergeMap, switchMap, take } from 'rxj
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -22,7 +22,7 @@ import { getProductListingViewType } from './product-listing.selectors';
 @Injectable()
 export class ProductListingEffects {
   constructor(
-    @Inject(ENDLESS_SCROLLING_ITEMS_PER_PAGE) private itemsPerPage: number,
+    @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE) private defaultViewType: ViewType,
     private actions$: Actions,
     private activatedRoute: ActivatedRoute,
@@ -33,7 +33,7 @@ export class ProductListingEffects {
   @Effect()
   initializePageSize$ = this.actions$.pipe(
     take(1),
-    mapTo(new actions.SetEndlessScrollingPageSize({ itemsPerPage: this.itemsPerPage }))
+    mapTo(new actions.SetProductListingPageSize({ itemsPerPage: this.itemsPerPage }))
   );
 
   @Effect()

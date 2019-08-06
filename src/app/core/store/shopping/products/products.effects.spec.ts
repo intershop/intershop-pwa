@@ -11,7 +11,7 @@ import { Observable, noop, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { VariationProductMaster } from '../../../models/product/product-variation-master.model';
 import { VariationProduct } from '../../../models/product/product-variation.model';
@@ -19,7 +19,7 @@ import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
 import { LoadCategory } from '../categories';
-import { SetEndlessScrollingPageSize, SetProductListingPages } from '../product-listing';
+import { SetProductListingPageSize, SetProductListingPages } from '../product-listing';
 import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './products.actions';
@@ -77,7 +77,7 @@ describe('Products Effects', () => {
         ProductsEffects,
         provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
@@ -85,7 +85,7 @@ describe('Products Effects', () => {
     store$ = TestBed.get(Store);
     router = spy(TestBed.get(Router));
     location = TestBed.get(Location);
-    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
+    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadProductBundles$', () => {

@@ -5,7 +5,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { SetEndlessScrollingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
@@ -66,7 +66,7 @@ describe('Product List Container', () => {
 
   describe('display modes', () => {
     beforeEach(() => {
-      store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
+      store$.dispatch(new SetProductListingPageSize({ itemsPerPage: 1 }));
       store$.dispatch(new SetProductListingPages({ id: TEST_ID, itemCount: 30, sortKeys: [] }));
 
       component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });

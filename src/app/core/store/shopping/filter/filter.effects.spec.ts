@@ -6,14 +6,14 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { FilterService } from '../../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
-import { SetEndlessScrollingPageSize, SetProductListingPages } from '../product-listing';
+import { SetProductListingPageSize, SetProductListingPages } from '../product-listing';
 import { SearchProductsSuccess } from '../search';
 import { shoppingReducers } from '../shopping-store.module';
 
@@ -71,13 +71,13 @@ describe('Filter Effects', () => {
         FilterEffects,
         provideMockActions(() => actions$),
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 2 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 2 },
       ],
     });
 
     effects = TestBed.get(FilterEffects);
     store$ = TestBed.get(Store);
-    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
+    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadAvailableFilterForCategories$', () => {

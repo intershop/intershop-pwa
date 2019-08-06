@@ -25,7 +25,7 @@ export const environment: Environment = {
   largeBreakpointWidth: 992,
   extralargeBreakpointWidth: 1200,
   mainNavigationMaxSubCategoriesDepth: 2,
-  endlessScrollingItemsPerPage: 9,
+  productListingItemsPerPage: 9,
   defaultProductListingViewType: 'grid',
   serviceWorker: false,
   syncLocalStorage: false,
