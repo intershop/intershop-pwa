@@ -1,20 +1,22 @@
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { isEqual } from 'lodash-es';
 import { EMPTY, of } from 'rxjs';
-import { distinctUntilChanged, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { ApplyFilter, LoadFilterForCategory, LoadFilterForSearch, LoadProductsForFilter } from '../filter';
-import { LoadProductsForCategory } from '../products';
+import { LoadProductsForCategory, getProduct } from '../products';
 import { SearchProducts } from '../search';
 
 import * as actions from './product-listing.actions';
@@ -28,7 +30,7 @@ export class ProductListingEffects {
     private actions$: Actions,
     private activatedRoute: ActivatedRoute,
     private store: Store<{}>,
-    private router: Router
+    private productListingMapper: ProductListingMapper
   ) {}
 
   @Effect()
@@ -84,7 +86,11 @@ export class ProductListingEffects {
       if (viewAvailable) {
         return of(new actions.SetProductListingPages({ id: { sorting, filters, ...id } }));
       }
-      if (filters) {
+      if (
+        filters &&
+        // TODO: work-around for client side computation of master variations
+        ['search', 'category'].includes(id.type)
+      ) {
         const searchParameter = b64u.toBase64(b64u.encode(filters));
         return of(new LoadProductsForFilter({ id: { ...id, filters }, searchParameter }));
       } else {
@@ -93,6 +99,8 @@ export class ProductListingEffects {
             return of(new LoadProductsForCategory({ categoryId: id.value, page, sorting }));
           case 'search':
             return of(new SearchProducts({ searchTerm: id.value, page, sorting }));
+          case 'master':
+            return of(new actions.LoadPagesForMaster({ id, sorting, filters }));
           default:
             return EMPTY;
         }
@@ -121,5 +129,25 @@ export class ProductListingEffects {
         }
       }
     })
+  );
+
+  @Effect()
+  loadPagesForMaster$ = this.actions$.pipe(
+    ofType<actions.LoadPagesForMaster>(actions.ProductListingActionTypes.LoadPagesForMaster),
+    mapToPayload(),
+    switchMap(({ id }) =>
+      this.store.pipe(
+        select(getProduct, { sku: id.value }),
+        filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
+        filter(ProductHelper.hasVariations),
+        filter(ProductHelper.isMasterProduct),
+        map(
+          product =>
+            new actions.SetProductListingPages(
+              this.productListingMapper.createPages(product.variationSKUs, id.type, id.value)
+            )
+        )
+      )
+    )
   );
 }

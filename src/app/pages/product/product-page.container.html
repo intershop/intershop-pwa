@@ -16,6 +16,12 @@
         (selectVariation)="variationSelected($event, product)"
       ></ish-product-detail>
 
+      <ish-product-master-variations
+        *ngIf="isMasterProduct(product)"
+        [product]="product"
+        [category]="category$ | async"
+      ></ish-product-master-variations>
+
       <ish-product-bundle-parts
         *ngIf="isProductBundle(product)"
         [product]="product"

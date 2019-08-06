@@ -9,6 +9,7 @@ export enum ProductListingActionTypes {
   LoadMoreProductsForParams = '[ProductListing Internal] Load More Products For Params',
   SetProductListingPageSize = '[ProductListing] Set Product Listing Page Size',
   SetViewType = '[ProductListing] Set View Type',
+  LoadPagesForMaster = '[ProductListing] Load Pages For Master',
 }
 
 export class SetProductListingPages implements Action {
@@ -36,9 +37,15 @@ export class SetViewType implements Action {
   constructor(public payload: { viewType: ViewType }) {}
 }
 
+export class LoadPagesForMaster implements Action {
+  readonly type = ProductListingActionTypes.LoadPagesForMaster;
+  constructor(public payload: { id: ProductListingID; filters: string; sorting: string }) {}
+}
+
 export type ProductListingAction =
   | SetProductListingPages
   | LoadMoreProducts
   | LoadMoreProductsForParams
   | SetProductListingPageSize
-  | SetViewType;
+  | SetViewType
+  | LoadPagesForMaster;
