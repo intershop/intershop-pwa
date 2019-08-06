@@ -2,7 +2,7 @@ import { fillFormField } from '../../framework';
 
 import { Registration } from './registration.page';
 
-export declare type ProfileEditDetailsTypes = Partial<
+export type ProfileEditDetailsTypes = Partial<
   Pick<Registration, 'title' | 'firstName' | 'lastName' | 'phoneHome' | 'preferredLanguage'>
 >;
 

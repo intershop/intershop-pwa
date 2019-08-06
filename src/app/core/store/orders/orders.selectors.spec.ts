@@ -97,7 +97,6 @@ describe('Orders Selectors', () => {
         expect(loadedOrders[1].lineItems).toHaveLength(1);
         expect(loadedOrders[1].lineItems[0].id).toEqual('test2');
         expect(loadedOrders[1].lineItems[0].product).toEqual({ sku: 'sku' });
-        expect(loadedOrders[1].itemsCount).toEqual(5);
       });
     });
 
@@ -136,7 +135,6 @@ describe('Orders Selectors', () => {
         expect(loadedOrder.lineItems).toHaveLength(1);
         expect(loadedOrder.lineItems[0].id).toEqual('test');
         expect(loadedOrder.lineItems[0].product).toEqual({ sku: 'sku' });
-        expect(loadedOrder.itemsCount).toEqual(3);
       });
     });
 

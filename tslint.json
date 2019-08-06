@@ -551,6 +551,10 @@
             "file": ".*/models/<kebab>/<kebab>\\.mapper\\.ts$"
           },
           {
+            "name": "^([A-Z].*)BaseData$",
+            "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
+          },
+          {
             "name": "^([A-Z].*)Data$",
             "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
           },

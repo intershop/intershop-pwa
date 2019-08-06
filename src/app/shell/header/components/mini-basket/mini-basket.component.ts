@@ -36,7 +36,7 @@ export class MiniBasketComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.basket) {
-      this.itemCount = this.basket.itemsCount;
+      this.itemCount = this.basket.totalProductQuantity;
     } else {
       this.resetScroller();
       this.itemCount = 0;

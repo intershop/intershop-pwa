@@ -7,7 +7,6 @@ import { PaymentMethodBaseData } from '../payment-method/payment-method.interfac
 import { PaymentData } from '../payment/payment.interface';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
-// tslint:disable-next-line:project-structure
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;
   creationDate: Date;

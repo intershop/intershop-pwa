@@ -22,16 +22,16 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
 
-export declare type BasketUpdateType =
+export type BasketUpdateType =
   | { invoiceToAddress: string }
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculationState: string };
 
-export declare type BasketItemUpdateType =
+export type BasketItemUpdateType =
   | { quantity?: { value: number }; product?: string }
   | { shippingMethod: { id: string } };
-export declare type BasketIncludeType =
+type BasketIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'
   | 'commonShippingMethod'
@@ -42,7 +42,7 @@ export declare type BasketIncludeType =
   | 'payments_paymentMethod'
   | 'payments_paymentInstrument';
 
-export declare type MergeBasketIncludeType =
+type MergeBasketIncludeType =
   | 'targetBasket'
   | 'targetBasket_invoiceToAddress'
   | 'targetBasket_commonShipToAddress'
@@ -61,7 +61,7 @@ export declare type MergeBasketIncludeType =
 export class BasketService {
   constructor(private apiService: ApiService) {}
 
-  // declare http header for Basket API v1
+  // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.basket.v1+json',

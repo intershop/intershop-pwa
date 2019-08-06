@@ -1,6 +1,6 @@
 import { fillFormField } from '../../framework';
 
-export declare type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
+export type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
 
 export interface Registration {
   login: string;

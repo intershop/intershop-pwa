@@ -7,14 +7,13 @@ import { PaymentMethodBaseData } from '../payment-method/payment-method.interfac
 import { PaymentData } from '../payment/payment.interface';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
-// tslint:disable-next-line:project-structure
-export interface MergeBaseData {
+interface BasketMergeBaseData {
   sourceBasket: string;
   targetBasket: string;
 }
 
 export interface BasketMergeData {
-  data: MergeBaseData;
+  data: BasketMergeBaseData;
   included?: {
     targetBasket: { [id: string]: BasketBaseData };
     targetBasket_invoiceToAddress?: { [urn: string]: AddressData };
