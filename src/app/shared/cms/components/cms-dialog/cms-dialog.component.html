@@ -1,0 +1,11 @@
+<!-- dialog content can either be in the content parameter or in the slot -->
+<div
+  *ngIf="!!pagelet && !!pagelet.stringParam('Content')"
+  [innerHTML]="pagelet.stringParam('Content')"
+  data-testing-id="dialog-content"
+></div>
+
+<ish-content-slot
+  [slot]="'app_sf_responsive_cm:slot.dialog.content.pagelet2-Slot'"
+  [pagelet]="pagelet"
+></ish-content-slot>
