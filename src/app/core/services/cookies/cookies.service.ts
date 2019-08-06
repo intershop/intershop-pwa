@@ -42,9 +42,7 @@ export class CookiesService {
   }
 
   remove(key: string) {
-    if (this.cookieLawSeen) {
-      this.cookiesService.remove(key);
-    }
+    this.cookiesService.remove(key);
   }
 
   put(key: string, value: string, options?: CookiesOptions) {
