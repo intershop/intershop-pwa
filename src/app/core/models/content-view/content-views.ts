@@ -67,9 +67,6 @@ export const createContentConfigurationParameterView = (
   configParam: <T extends object>(key) => params[key] as T,
 });
 
-// tslint:disable no-use-before-declare
-// due to cyclic dependencies of slot and pagelets
-
 export const createContentPageletView = (
   id: string,
   pagelets: { [id: string]: ContentPagelet }

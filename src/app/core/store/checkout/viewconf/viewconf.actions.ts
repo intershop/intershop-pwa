@@ -9,4 +9,4 @@ export class SetCheckoutStep implements Action {
   constructor(public payload: { step: number }) {}
 }
 
-export declare type ViewconfActions = SetCheckoutStep;
+export type ViewconfActions = SetCheckoutStep;

@@ -18,12 +18,12 @@ import { ApiService } from '../api/api.service';
  */
 
 // request data type for create user
-declare interface CreatePrivateCustomerType extends CustomerData {
+interface CreatePrivateCustomerType extends CustomerData {
   address: Address;
   credentials: Credentials;
 }
 
-declare interface CreateBusinessCustomerType extends Customer {
+interface CreateBusinessCustomerType extends Customer {
   address: Address;
   credentials: Credentials;
   user: User;

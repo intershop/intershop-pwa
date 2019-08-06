@@ -24,7 +24,7 @@ export class BasketMapper {
 
     return {
       id: data.id,
-      purchaseCurrency: data.purchaseCurrency, // ToDo: adapt name if fields exists in REST
+      purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
       invoiceToAddress:
         included && included.invoiceToAddress && data.invoiceToAddress
@@ -72,25 +72,30 @@ export class BasketMapper {
     return totalsData
       ? {
           itemTotal: PriceMapper.fromPriceItem(totalsData.itemTotal),
-          total: PriceMapper.fromPriceItem(totalsData.grandTotal),
-          shippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketShippingDiscountsTotal),
-          valueRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),
-          dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(totalsData.surchargeTotal),
-          itemRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
-          itemShippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemShippingDiscountsTotal),
-          paymentCostsTotal: PriceMapper.fromPriceItem(totalsData.paymentCostTotal),
+          undiscountedItemTotal: PriceMapper.fromPriceItem(totalsData.undiscountedItemTotal),
           shippingTotal: PriceMapper.fromPriceItem(totalsData.shippingTotal),
+          undiscountedShippingTotal: PriceMapper.fromPriceItem(totalsData.undiscountedShippingTotal),
+          paymentCostsTotal: PriceMapper.fromPriceItem(totalsData.paymentCostsTotal),
+          dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(totalsData.surchargeTotal),
           taxTotal: { ...totalsData.grandTotal.tax, type: 'Money' },
+          total: PriceMapper.fromPriceItem(totalsData.grandTotal),
+
+          itemRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
+          valueRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),
           valueRebates:
             data.discounts && data.discounts.valueBasedDiscounts && discounts
               ? data.discounts.valueBasedDiscounts.map(discountId => BasketRebateMapper.fromData(discounts[discountId]))
               : undefined,
+
+          itemShippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemShippingDiscountsTotal),
+          shippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketShippingDiscountsTotal),
           shippingRebates:
             data.discounts && data.discounts.shippingBasedDiscounts && discounts
               ? data.discounts.shippingBasedDiscounts.map(discountId =>
                   BasketRebateMapper.fromData(discounts[discountId])
                 )
               : undefined,
+
           itemSurchargeTotalsByType: data.surcharges
             ? data.surcharges.itemSurcharges.map(surcharge => ({
                 amount: PriceMapper.fromPriceItem(surcharge.amount),

@@ -36,9 +36,4 @@ export class SetStickyHeader implements Action {
   constructor(public payload: { sticky: boolean }) {}
 }
 
-export declare type ViewconfActions =
-  | SetWrapperClass
-  | SetHeaderType
-  | SetBreadcrumbData
-  | SetDeviceType
-  | SetStickyHeader;
+export type ViewconfActions = SetWrapperClass | SetHeaderType | SetBreadcrumbData | SetDeviceType | SetStickyHeader;

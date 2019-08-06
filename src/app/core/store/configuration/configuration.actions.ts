@@ -7,7 +7,7 @@ export enum ConfigurationActionTypes {
   SetGTMToken = '[Configuration] Set Google Tag Manager Token',
 }
 
-declare type ConfigurationType = Partial<ConfigurationState>;
+type ConfigurationType = Partial<ConfigurationState>;
 
 export class ApplyConfiguration implements Action {
   readonly type = ConfigurationActionTypes.ApplyConfiguration;
