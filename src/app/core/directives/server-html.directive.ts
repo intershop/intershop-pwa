@@ -28,7 +28,11 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
   }
 
   @Input() set ishServerHtml(val: string) {
-    this.elementRef.nativeElement.insertAdjacentHTML('afterbegin', val);
+    const element = this.elementRef.nativeElement;
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+    element.insertAdjacentHTML('afterbegin', val);
   }
 
   ngAfterContentInit() {
