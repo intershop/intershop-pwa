@@ -7,7 +7,7 @@ import { ProductListingID, ProductListingType } from './product-listing.reducer'
 export enum ProductListingActionTypes {
   SetProductListingPages = '[ProductListing] Set Product Listing Pages',
   LoadMoreProducts = '[ProductListing] Load More Products',
-  SetEndlessScrollingPageSize = '[ProductListing] Set Endless Scrolling Page Size',
+  SetProductListingPageSize = '[ProductListing] Set Product Listing Page Size',
   SetViewType = '[ProductListing] Set View Type',
   SetSorting = '[ProductListing] Set Sorting',
   SetFilters = '[ProductListing] Set Filters',
@@ -18,8 +18,8 @@ export class SetProductListingPages implements Action {
   constructor(public payload: ProductListingType) {}
 }
 
-export class SetEndlessScrollingPageSize implements Action {
-  readonly type = ProductListingActionTypes.SetEndlessScrollingPageSize;
+export class SetProductListingPageSize implements Action {
+  readonly type = ProductListingActionTypes.SetProductListingPageSize;
   constructor(public payload: { itemsPerPage: number }) {}
 }
 
@@ -46,7 +46,7 @@ export class SetFilters implements Action {
 export type ProductListingAction =
   | SetProductListingPages
   | LoadMoreProducts
-  | SetEndlessScrollingPageSize
+  | SetProductListingPageSize
   | SetViewType
   | SetSorting
   | SetFilters;

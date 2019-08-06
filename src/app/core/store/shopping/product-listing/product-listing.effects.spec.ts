@@ -6,7 +6,7 @@ import { combineReducers } from '@ngrx/store';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -38,7 +38,7 @@ describe('Product Listing Effects', () => {
         RouterTestingModule.withRoutes([{ path: 'some', component: DummyComponent }]),
       ],
       providers: [
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 7 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });

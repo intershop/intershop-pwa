@@ -74,7 +74,7 @@ describe('Product Listing Selectors', () => {
 
   describe('when first page was added', () => {
     beforeEach(() => {
-      store$.dispatch(new actions.SetEndlessScrollingPageSize({ itemsPerPage: 2 }));
+      store$.dispatch(new actions.SetProductListingPageSize({ itemsPerPage: 2 }));
       store$.dispatch(
         new actions.SetProductListingPages({
           id: TEST_ID,
@@ -170,7 +170,7 @@ describe('Product Listing Selectors', () => {
 
   describe('when any page was added', () => {
     beforeEach(() => {
-      store$.dispatch(new actions.SetEndlessScrollingPageSize({ itemsPerPage: 2 }));
+      store$.dispatch(new actions.SetProductListingPageSize({ itemsPerPage: 2 }));
       store$.dispatch(
         new actions.SetProductListingPages({
           id: TEST_ID,
@@ -219,7 +219,7 @@ describe('Product Listing Selectors', () => {
     let view: ProductListingView;
 
     beforeEach(() => {
-      store$.dispatch(new actions.SetEndlessScrollingPageSize({ itemsPerPage: 2 }));
+      store$.dispatch(new actions.SetProductListingPageSize({ itemsPerPage: 2 }));
       store$.dispatch(
         new actions.SetProductListingPages({
           id: TEST_ID,
@@ -292,7 +292,7 @@ describe('Product Listing Selectors', () => {
     let view: ProductListingView;
 
     beforeEach(() => {
-      store$.dispatch(new actions.SetEndlessScrollingPageSize({ itemsPerPage: 2 }));
+      store$.dispatch(new actions.SetProductListingPageSize({ itemsPerPage: 2 }));
       store$.dispatch(
         new actions.SetProductListingPages({
           id: TEST_ID,

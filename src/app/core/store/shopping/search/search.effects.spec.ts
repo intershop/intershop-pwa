@@ -12,14 +12,14 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { ApiService } from '../../../services/api/api.service';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
-import { LoadMoreProducts, SetEndlessScrollingPageSize } from '../product-listing';
+import { LoadMoreProducts, SetProductListingPageSize } from '../product-listing';
 import { ProductListingEffects } from '../product-listing/product-listing.effects';
 import { shoppingReducers } from '../shopping-store.module';
 
@@ -70,14 +70,14 @@ describe('Search Effects', () => {
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-          { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+          { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         ],
       });
 
       effects = TestBed.get(SearchEffects);
 
       const store = TestBed.get(Store);
-      store.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
+      store.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
     });
 
     describe('triggerSearch$', () => {
@@ -135,7 +135,7 @@ describe('Search Effects', () => {
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-          { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+          { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
           { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'grid' },
         ],
       });
@@ -144,7 +144,7 @@ describe('Search Effects', () => {
       store$ = TestBed.get(TestStore);
       location = TestBed.get(Location);
 
-      store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE) }));
+      store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
     });
 
     describe('suggestSearch$', () => {

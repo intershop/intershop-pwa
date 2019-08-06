@@ -81,7 +81,7 @@ function mergeCurrentSettings(
 
 export function productListingReducer(state = initialState, action: ProductListingAction): ProductListingState {
   switch (action.type) {
-    case ProductListingActionTypes.SetEndlessScrollingPageSize:
+    case ProductListingActionTypes.SetProductListingPageSize:
       return { ...state, itemsPerPage: action.payload.itemsPerPage };
 
     case ProductListingActionTypes.SetViewType:

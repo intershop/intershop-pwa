@@ -22,8 +22,8 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
   AVAILABLE_LOCALES,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from '../../configurations/injection-keys';
 import { Basket } from '../../models/basket/basket.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
@@ -257,7 +257,7 @@ describe('Checkout Store', () => {
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
