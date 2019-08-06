@@ -7,6 +7,7 @@
     <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
       <ngb-carousel
         #ngbCarousel
+        [interval]="0"
         [showNavigationArrows]="pageletSlides.length > 1"
         [showNavigationIndicators]="pagelet.booleanParam('ShowIndicators')"
       >
