@@ -188,6 +188,7 @@ const exportedComponents = [
   entryComponents: [
     CMSCarouselComponent,
     CMSContainerComponent,
+    CMSDialogComponent,
     CMSFreestyleComponent,
     CMSImageComponent,
     CMSImageEnhancedComponent,
