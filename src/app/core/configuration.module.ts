@@ -25,7 +25,7 @@ import { FeatureToggleModule } from './feature-toggle.module';
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
     // tslint:disable-next-line:no-string-literal
-    { provide: injectionKeys.CAPTCHA_SITE_KEY, useValue: environment.captchaSiteKey },
+    { provide: injectionKeys.CAPTCHA_SITE_KEY, useValue: environment['captchaSiteKey'] },
     { provide: injectionKeys.SMALL_BREAKPOINT_WIDTH, useValue: environment.smallBreakpointWidth },
     { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },

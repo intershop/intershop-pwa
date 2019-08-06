@@ -42,6 +42,16 @@ export const environment = {
   // log client-side-javascript-errors to sentry.io (to be used with 'sentry' feature)
   // sentryDSN: 'https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@sentry.io/XXXXXXX',
 
+  // protect form submission with captchas (to be used with 'captcha' feature)
+  /** For production systems the captcha site key needs to match the one configured in the ICM ReCaptcha service configuration.
+   * For development we use the development keys provided by Google (https://developers.google.com/recaptcha/docs/faq)
+   * that don't require real verification and are used in the ICM as well.
+     Site key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+     Secret key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+   */
+  // TODO: get captcha site key, when Configuration Response in REST API is available
+  // captchaSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 
   // Bootstrap grid system breakpoint widths as defined in the variables-bootstrap-customized.scss for usage in Javascript logic
@@ -68,12 +78,4 @@ export const environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
-  /** For production systems the captcha site key needs to match the one configured in the ICM ReCaptcha service configuration.
-   * For development we use the development keys provided by Google (https://developers.google.com/recaptcha/docs/faq)
-   * that don't require real verification and are used in the ICM as well.
-     Site key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-     Secret key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-   */
-  // TODO: get captcha site key, when Configuration Response in REST API is available
-  captchaSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
 };
