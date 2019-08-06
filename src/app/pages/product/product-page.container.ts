@@ -20,6 +20,7 @@ import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
+import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { getProducts, getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -43,6 +44,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
 
   isProductBundle = ProductHelper.isProductBundle;
   isRetailSet = ProductHelper.isRetailSet;
+  isMasterProduct = ProductHelper.isMasterProduct;
 
   private destroy$ = new Subject();
   retailSetParts$ = new ReplaySubject<SkuQuantityType[]>(1);
@@ -65,6 +67,9 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
         this.quantity = product.minOrderQuantity;
         if (ProductHelper.isMasterProduct(product) && !this.featureToggleService.enabled('advancedVariationHandling')) {
           this.redirectMasterToDefaultVariation(product);
+        }
+        if (ProductHelper.isMasterProduct(product) && this.featureToggleService.enabled('advancedVariationHandling')) {
+          this.store.dispatch(new LoadMoreProducts({ id: { type: 'master', value: product.sku }, page: 1 }));
         }
         if (ProductHelper.isRetailSet(product)) {
           this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));
