@@ -10,6 +10,7 @@ exports[`Cms Carousel Component should be created 1`] = `
       <ngb-carousel
         class="carousel slide"
         tabindex="0"
+        ng-reflect-interval="0"
         ng-reflect-show-navigation-arrows="false"
         style="display: block;"
         ><div class="carousel-inner">
