@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -16,7 +17,7 @@ describe('Search Box Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchBoxComponent],
-      imports: [IconModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [IconModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .overrideComponent(SearchBoxComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
