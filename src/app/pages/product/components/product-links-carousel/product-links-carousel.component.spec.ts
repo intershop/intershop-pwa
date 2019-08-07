@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { SwiperModule } from 'ngx-swiper-wrapper';
 
 import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
 import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
@@ -13,6 +14,7 @@ describe('Product Links Carousel Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SwiperModule],
       declarations: [MockComponent(ProductItemContainerComponent), ProductLinksCarouselComponent],
     }).compileComponents();
   }));
