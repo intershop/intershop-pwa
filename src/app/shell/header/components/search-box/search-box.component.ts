@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
@@ -46,6 +46,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   searchForm: FormGroup;
   isHidden = true;
   activeIndex = -1;
+  currentSearchTerm = '';
 
   private destroy$ = new Subject();
 
@@ -54,13 +55,13 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    this.updatePopupStatus(c);
     this.updateSearchTerm(c.searchTerm);
+    this.updatePopupStatus(c);
   }
 
   private updatePopupStatus(c: SimpleChanges) {
     if (c.results) {
-      const resultsAvailable = !!this.results && this.results.length > 0;
+      const resultsAvailable = !!this.results && this.results.length > 0 && !!this.currentSearchTerm;
       this.isHidden = !resultsAvailable;
     }
   }
@@ -126,6 +127,8 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
         { emitEvent: false }
       );
     }
+
+    this.currentSearchTerm = value;
   }
 
   private initSearchForm(): void {
@@ -136,7 +139,12 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
     if (this.configuration && this.configuration.autoSuggest) {
       this.searchForm
         .get('search')
-        .valueChanges.pipe(takeUntil(this.destroy$))
+        .valueChanges.pipe(
+          tap(x => {
+            this.currentSearchTerm = x;
+          }),
+          takeUntil(this.destroy$)
+        )
         .subscribe(this.searchTermChange);
     }
   }

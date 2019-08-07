@@ -36,15 +36,17 @@
     <ng-template #textBlock> {{ configuration.buttonText }} </ng-template>
   </button>
 
-  <ul *ngIf="results?.length && !isHidden" class="search-suggest-results">
+  <ul *ngIf="!isHidden && currentSearchTerm && results?.length" class="search-suggest-results">
     <li
       *ngFor="let result of results | slice: 0:configuration?.maxAutoSuggests; let liIndex = index"
       [class.active-suggestion]="isActiveSuggestedTerm(liIndex)"
       (mousedown)="submitSuggestedTerm(result.term)"
     >
-      <button type="button" class="search-result">
-        <span class="searchTerm">{{ result.term }}</span>
-      </button>
+      <button
+        type="button"
+        class="search-result"
+        [innerHTML]="result.term | titlecase | ishHighlight: currentSearchTerm"
+      ></button>
     </li>
   </ul>
 </form>
