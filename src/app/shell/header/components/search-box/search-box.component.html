@@ -36,7 +36,7 @@
     <ng-template #textBlock> {{ configuration.buttonText }} </ng-template>
   </button>
 
-  <ul *ngIf="results && !isHidden" class="search-suggest-results">
+  <ul *ngIf="results?.length && !isHidden" class="search-suggest-results">
     <li
       *ngFor="let result of results | slice: 0:configuration?.maxAutoSuggests; let liIndex = index"
       [class.active-suggestion]="isActiveSuggestedTerm(liIndex)"
