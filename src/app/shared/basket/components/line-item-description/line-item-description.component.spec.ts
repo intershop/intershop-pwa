@@ -9,6 +9,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
@@ -50,6 +51,7 @@ describe('Line Item Description Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ProductBundleDisplayContainerComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductShipmentComponent),
@@ -72,9 +74,11 @@ describe('Line Item Description Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display sku for the line item', () => {
+  it('should give correct sku to productIdComponent', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.product-id').textContent).toContain('4713');
+    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(
+      `<ish-product-id ng-reflect-product="[object Object]"></ish-product-id>`
+    );
   });
 
   it('should hold itemSurcharges for the line item', () => {

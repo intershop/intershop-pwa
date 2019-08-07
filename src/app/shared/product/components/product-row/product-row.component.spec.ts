@@ -14,6 +14,7 @@ import { DEFAULT_CONFIGURATION } from '../../containers/product-item/product-ite
 import { ProductPromotionContainerComponent } from '../../containers/product-promotion/product-promotion.container';
 import { ProductAddToBasketComponent } from '../product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from '../product-add-to-compare/product-add-to-compare.component';
+import { ProductIdComponent } from '../product-id/product-id.component';
 import { ProductInventoryComponent } from '../product-inventory/product-inventory.component';
 import { ProductLabelComponent } from '../product-label/product-label.component';
 import { ProductPriceComponent } from '../product-price/product-price.component';
@@ -35,6 +36,7 @@ describe('Product Row Component', () => {
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAddToCompareComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductLabelComponent),
@@ -69,6 +71,7 @@ describe('Product Row Component', () => {
         "ish-lazy-product-add-to-quote",
         "ish-product-add-to-basket",
         "ish-product-add-to-compare",
+        "ish-product-id",
         "ish-product-image",
         "ish-product-inventory",
         "ish-product-label",

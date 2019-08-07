@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
+import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
@@ -23,6 +24,7 @@ describe('Line Item Edit Dialog Component', () => {
       declarations: [
         LineItemEditDialogComponent,
         MockComponent(LoadingComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         ProductVariationSelectComponent,
