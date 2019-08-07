@@ -12,6 +12,7 @@ import {
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SwiperModule } from 'ngx-swiper-wrapper';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
@@ -106,6 +107,7 @@ const importExportModules = [
   ReactiveFormsModule,
   RouterModule,
   ShellModule,
+  SwiperModule,
   TranslateModule,
 ];
 
