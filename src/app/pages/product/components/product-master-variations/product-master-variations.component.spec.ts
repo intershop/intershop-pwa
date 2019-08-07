@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 
 import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
+import { FilterNavigationContainerComponent } from '../../../../shared/filter/containers/filter-navigation/filter-navigation.container';
 import { ProductListContainerComponent } from '../../../../shared/product/containers/product-list/product-list.container';
 
 import { ProductMasterVariationsComponent } from './product-master-variations.component';
@@ -14,7 +15,11 @@ describe('Product Master Variations Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ProductListContainerComponent), ProductMasterVariationsComponent],
+      declarations: [
+        MockComponent(FilterNavigationContainerComponent),
+        MockComponent(ProductListContainerComponent),
+        ProductMasterVariationsComponent,
+      ],
     }).compileComponents();
   }));
 
@@ -32,7 +37,12 @@ describe('Product Master Variations Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a id="variation-list-top"></a
+      ><ish-filter-navigation
+        fragmentonrouting="variation-list-top"
+        ng-reflect-fragment-on-routing="variation-list-top"
+      ></ish-filter-navigation
       ><ish-product-list-container
+        fragmentonrouting="variation-list-top"
         mode="paging"
         ng-reflect-mode="paging"
         ng-reflect-fragment-on-routing="variation-list-top"

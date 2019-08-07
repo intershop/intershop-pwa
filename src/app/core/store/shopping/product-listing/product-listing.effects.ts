@@ -14,8 +14,15 @@ import {
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { ApplyFilter, LoadFilterForCategory, LoadFilterForSearch, LoadProductsForFilter } from '../filter';
+import {
+  ApplyFilter,
+  LoadFilterForCategory,
+  LoadFilterForSearch,
+  LoadFilterSuccess,
+  LoadProductsForFilter,
+} from '../filter';
 import { LoadProductsForCategory, getProduct } from '../products';
 import { SearchProducts } from '../search';
 
@@ -30,7 +37,8 @@ export class ProductListingEffects {
     private actions$: Actions,
     private activatedRoute: ActivatedRoute,
     private store: Store<{}>,
-    private productListingMapper: ProductListingMapper
+    private productListingMapper: ProductListingMapper,
+    private productMasterVariationsService: ProductMasterVariationsService
   ) {}
 
   @Effect()
@@ -115,7 +123,11 @@ export class ProductListingEffects {
     map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
     distinctUntilChanged(isEqual),
     mergeMap(({ type, value, filters }) => {
-      if (filters) {
+      if (
+        filters &&
+        // TODO: work-around for client side computation of master variations
+        ['search', 'category'].includes(type)
+      ) {
         const searchParameter = b64u.toBase64(b64u.encode(filters));
         return of(new ApplyFilter({ searchParameter }));
       } else {
@@ -124,6 +136,8 @@ export class ProductListingEffects {
             return of(new LoadFilterForCategory({ uniqueId: value }));
           case 'search':
             return of(new LoadFilterForSearch({ searchTerm: value }));
+          case 'master':
+            return of(new actions.LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters }));
           default:
             return EMPTY;
         }
@@ -131,22 +145,32 @@ export class ProductListingEffects {
     })
   );
 
+  // TODO: work-around for client side computation of master variations
   @Effect()
   loadPagesForMaster$ = this.actions$.pipe(
     ofType<actions.LoadPagesForMaster>(actions.ProductListingActionTypes.LoadPagesForMaster),
     mapToPayload(),
-    switchMap(({ id }) =>
+    switchMap(({ id, filters }) =>
       this.store.pipe(
         select(getProduct, { sku: id.value }),
         filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
         filter(ProductHelper.hasVariations),
         filter(ProductHelper.isMasterProduct),
-        map(
-          product =>
+        mergeMap(product => {
+          const {
+            filterNavigation,
+            products,
+          } = this.productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(product, filters);
+
+          return [
             new actions.SetProductListingPages(
-              this.productListingMapper.createPages(product.variationSKUs, id.type, id.value)
-            )
-        )
+              this.productListingMapper.createPages(products, id.type, id.value, {
+                filters: filters ? b64u.toBase64(b64u.encode(filters)) : undefined,
+              })
+            ),
+            new LoadFilterSuccess({ filterNavigation }),
+          ];
+        })
       )
     )
   );
