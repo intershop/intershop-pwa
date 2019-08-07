@@ -1,7 +1,12 @@
 <ng-container *ngIf="currentPage">
   <div class="product-list-paging row justify-content-center">
     <ng-container *ngIf="currentPage > 1; else inactiveFirstLink">
-      <a class="col-1" [routerLink]="[]" queryParamsHandling="merge" [queryParams]="{ page: currentPage - 1 }"
+      <a
+        class="col-1"
+        [routerLink]="[]"
+        queryParamsHandling="merge"
+        [queryParams]="{ page: currentPage - 1 }"
+        [fragment]="fragmentOnRouting"
         >&laquo;</a
       >
     </ng-container>
@@ -16,12 +21,18 @@
         [routerLink]="[]"
         queryParamsHandling="merge"
         [queryParams]="{ page: p.value }"
+        [fragment]="fragmentOnRouting"
         >{{ p.display }}</a
       >
     </div>
 
     <ng-container *ngIf="pageIndices[pageIndices.length - 1].value !== currentPage; else inactiveLastLink">
-      <a class="col-1" [routerLink]="[]" queryParamsHandling="merge" [queryParams]="{ page: currentPage + 1 }"
+      <a
+        class="col-1"
+        [routerLink]="[]"
+        queryParamsHandling="merge"
+        [queryParams]="{ page: currentPage + 1 }"
+        [fragment]="fragmentOnRouting"
         >&raquo;</a
       >
     </ng-container>

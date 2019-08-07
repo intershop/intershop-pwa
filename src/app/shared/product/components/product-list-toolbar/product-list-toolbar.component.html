@@ -9,6 +9,7 @@
       *ngIf="pageIndices && pageIndices.length && currentPage"
       [currentPage]="currentPage"
       [pageIndices]="pageIndices"
+      [fragmentOnRouting]="fragmentOnRouting"
     ></ish-product-list-paging>
   </div>
   <div class="sort-by col-12 col-md-3 col-lg-4">
@@ -22,6 +23,7 @@
           queryParamsHandling="merge"
           [queryParams]="{ view: 'list' }"
           replaceUrl
+          [fragment]="fragmentOnRouting"
         >
           <fa-icon [icon]="['fas', 'list']"></fa-icon>
         </a>
@@ -33,6 +35,7 @@
           queryParamsHandling="merge"
           [queryParams]="{ view: 'grid' }"
           replaceUrl
+          [fragment]="fragmentOnRouting"
         >
           <fa-icon [icon]="['fas', 'th']"></fa-icon>
         </a>

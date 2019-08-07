@@ -1,3 +1,4 @@
+<a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top"></a>
 <ng-container *ngIf="productListingView$ | async as listing">
   <div
     *ngIf="isEndlessScrolling"
@@ -12,6 +13,7 @@
       [sortKeys]="listing.sortKeys"
       [viewType]="viewType$ | async"
       [sortBy]="sortBy$ | async"
+      [fragmentOnRouting]="fragmentOnRouting"
     ></ish-product-list-toolbar>
 
     <ish-product-list
@@ -26,6 +28,7 @@
       *ngIf="!listing.allPagesAvailable()"
       [currentPage]="listing.lastPage"
       [pageIndices]="listing.pageIndices()"
+      [fragmentOnRouting]="fragmentOnRouting"
     ></ish-product-list-paging>
   </div>
 
@@ -39,6 +42,7 @@
           [sortBy]="sortBy$ | async"
           [currentPage]="currentPage"
           [pageIndices]="listing.pageIndices(currentPage)"
+          [fragmentOnRouting]="fragmentOnRouting"
         ></ish-product-list-toolbar>
       </ng-template>
 

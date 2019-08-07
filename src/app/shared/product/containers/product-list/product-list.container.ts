@@ -25,6 +25,7 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
   @Input() category?: Category;
   @Input() id: ProductListingID;
   @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';
+  @Input() fragmentOnRouting = 'product-list-top';
 
   productListingView$: Observable<ProductListingView>;
   viewType$ = this.store.pipe(select(getProductListingViewType));
