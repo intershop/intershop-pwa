@@ -17,4 +17,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class ProductListPagingComponent {
   @Input() currentPage: number;
   @Input() pageIndices: { value: number; display: string }[];
+  @Input() fragmentOnRouting: string;
 }
