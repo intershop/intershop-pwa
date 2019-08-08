@@ -89,13 +89,13 @@ describe('Search Box Component', () => {
 
   describe('with inputs', () => {
     it('should show button text when buttonText is set', () => {
-      component.configuration = { buttonText: 'buttonTextInput' };
+      component.configuration = { id: 'searchbox', buttonText: 'buttonTextInput' };
       fixture.detectChanges();
       const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
     });
     it('should show placeholder text when placeholderText is set', () => {
-      component.configuration = { placeholderText: 'placeholderTextInput' };
+      component.configuration = { id: 'searchbox', placeholderText: 'placeholderTextInput' };
       fixture.detectChanges();
       const inputElement = element.querySelector('.searchTerm');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholderTextInput');

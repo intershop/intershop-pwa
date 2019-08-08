@@ -32,7 +32,7 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnChanges {
-  @Input() configuration: SearchBoxConfiguration = {};
+  @Input() configuration: SearchBoxConfiguration = { id: 'default' };
   @Input() searchTerm: string;
   @Input() results: SuggestTerm[];
   @Output() searchTermChange = new EventEmitter<string>();
