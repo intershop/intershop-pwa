@@ -17,12 +17,16 @@ const accountPageRoutes: Routes = [
       {
         path: 'addresses',
         data: { breadcrumbData: [{ key: 'account.saved_addresses.link' }] },
-        loadChildren: '../account-addresses/account-addresses-page.module#AccountAddressesPageModule',
+        loadChildren: () =>
+          import('../account-addresses/account-addresses-page.module').then(m => m.AccountAddressesPageModule),
       },
       {
         path: 'orders',
         data: { breadcrumbData: [{ key: 'account.order_history.link' }] },
-        loadChildren: '../account-order-history/account-order-history-page.module#AccountOrderHistoryPageModule',
+        loadChildren: () =>
+          import('../account-order-history/account-order-history-page.module').then(
+            m => m.AccountOrderHistoryPageModule
+          ),
       },
       {
         path: 'orders/:orderId',
@@ -32,7 +36,7 @@ const accountPageRoutes: Routes = [
             { key: 'account.orderdetails.breadcrumb' },
           ],
         },
-        loadChildren: '../account-order/account-order-page.module#AccountOrderPageModule',
+        loadChildren: () => import('../account-order/account-order-page.module').then(m => m.AccountOrderPageModule),
       },
       {
         path: 'overview',
@@ -42,17 +46,20 @@ const accountPageRoutes: Routes = [
       {
         path: 'profile',
         data: { breadcrumbData: [{ key: 'account.profile.link' }] },
-        loadChildren: '../account-profile/account-profile-page.module#AccountProfilePageModule',
+        loadChildren: () =>
+          import('../account-profile/account-profile-page.module').then(m => m.AccountProfilePageModule),
       },
       {
         path: 'quote-list',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: 'app/extensions/quoting/pages/quote-list/quote-list-page.module#QuoteListPageModule',
+        loadChildren: () =>
+          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
       },
       {
         path: 'quote',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: 'app/extensions/quoting/pages/quote-edit/quote-edit-page.module#QuoteEditPageModule',
+        loadChildren: () =>
+          import('../../extensions/quoting/pages/quote-edit/quote-edit-page.module').then(m => m.QuoteEditPageModule),
       },
       {
         path: 'quote-request',
@@ -62,8 +69,10 @@ const accountPageRoutes: Routes = [
             { key: 'quote.quote_details.link' },
           ],
         },
-        loadChildren:
-          'app/extensions/quoting/pages/quote-request-edit/quote-request-edit-page.module#QuoteRequestEditPageModule',
+        loadChildren: () =>
+          import('../../extensions/quoting/pages/quote-request-edit/quote-request-edit-page.module').then(
+            m => m.QuoteRequestEditPageModule
+          ),
       },
       {
         path: '',

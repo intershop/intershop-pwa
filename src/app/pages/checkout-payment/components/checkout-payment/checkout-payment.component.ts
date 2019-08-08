@@ -244,7 +244,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.paymentRedirectRequired) {
       // do a hard redirect to payment redirect URL
-      document.location.assign(this.basket.payment.redirectUrl);
+      location.assign(this.basket.payment.redirectUrl);
     } else {
       this.nextStep.emit();
     }

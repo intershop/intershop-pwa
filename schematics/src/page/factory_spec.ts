@@ -119,7 +119,8 @@ describe('Page Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const appRoutingModule = tree.readContent('/projects/bar/src/app/pages/app-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
-    expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
+    expect(appRoutingModule).toContain('foo-page.module');
+    expect(appRoutingModule).toContain('FooPageModule');
   });
 
   it('should create a page in extension if supplied', async () => {
@@ -189,7 +190,8 @@ describe('Page Schematic', () => {
       '/projects/bar/src/app/extensions/feature/pages/feature-routing.module.ts'
     );
     expect(appRoutingModule).toContain(`path: 'foo'`);
-    expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
+    expect(appRoutingModule).toContain('foo-page.module');
+    expect(appRoutingModule).toContain('FooPageModule');
   });
 
   it('should register route in feature routing module when it is the first', async () => {
@@ -200,7 +202,8 @@ describe('Page Schematic', () => {
       '/projects/bar/src/app/extensions/feature2/pages/feature2-routing.module.ts'
     );
     expect(appRoutingModule).toContain(`path: 'foo'`);
-    expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
+    expect(appRoutingModule).toContain('foo-page.module');
+    expect(appRoutingModule).toContain('FooPageModule');
   });
 
   it('should register route in page routing module when subpaging is detected', async () => {
@@ -210,11 +213,13 @@ describe('Page Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('page', { ...options, name: 'foo-bar' }, appTree).toPromise();
     const appRoutingModule = tree.readContent('/projects/bar/src/app/pages/app-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
-    expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
+    expect(appRoutingModule).toContain('foo-page.module');
+    expect(appRoutingModule).toContain('FooPageModule');
     expect(appRoutingModule).not.toContain('FooBar');
 
     const fooRoutingModule = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.module.ts');
     expect(fooRoutingModule).toContain(`path: 'bar'`);
-    expect(fooRoutingModule).toContain('foo-bar-page.module#FooBarPageModule');
+    expect(fooRoutingModule).toContain('foo-bar-page.module');
+    expect(fooRoutingModule).toContain('FooBarPageModule');
   });
 });

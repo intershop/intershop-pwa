@@ -117,10 +117,12 @@ describe('Orders Effects', () => {
     }));
 
     it('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
-      Object.defineProperty(document.location, 'assign', {
-        configurable: true,
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
       });
-      window.location.assign = jest.fn();
+
       const action = new orderActions.CreateOrderSuccess({
         order: {
           id: '123',
@@ -133,7 +135,7 @@ describe('Orders Effects', () => {
 
       tick(500);
 
-      expect(document.location.assign).toHaveBeenCalled();
+      expect(window.location.assign).toHaveBeenCalled();
     }));
   });
 

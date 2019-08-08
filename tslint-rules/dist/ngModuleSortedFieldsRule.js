@@ -36,8 +36,14 @@ var NgModulesSortedFieldsWalker = (function (_super) {
         }
         _super.prototype.visitCallExpression.call(this, node);
     };
-    NgModulesSortedFieldsWalker.prototype.visitNgModule = function (decorator) {
+    NgModulesSortedFieldsWalker.prototype.visitClassDecorator = function (decorator) {
         var _this = this;
+        if (decorator
+            .getChildAt(1)
+            .getChildAt(0)
+            .getText() !== 'NgModule') {
+            return;
+        }
         decorator
             .getSourceFile()
             .getChildAt(0)
@@ -53,7 +59,7 @@ var NgModulesSortedFieldsWalker = (function (_super) {
             .getChildAt(0)
             .getChildAt(1);
         this.visitNgModuleDeclarationList(ngModuleDeclarationList);
-        _super.prototype.visitNgModule.call(this, decorator);
+        _super.prototype.visitClassDecorator.call(this, decorator);
     };
     NgModulesSortedFieldsWalker.prototype.visitNgModuleDeclarationList = function (ngModuleDeclarationList) {
         var _this = this;

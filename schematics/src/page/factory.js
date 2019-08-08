@@ -9,11 +9,10 @@ const common_1 = require("../utils/common");
 const filesystem_1 = require("../utils/filesystem");
 function addRouteToArray(options, host, position, insertComma) {
     const dasherizedName = core_1.strings.dasherize(options.name);
-    const loadChildren = (options.child ? '..' : '.') +
-        `/${dasherizedName}/${dasherizedName}-page.module#${core_1.strings.classify(dasherizedName)}PageModule`;
+    const loadChildren = `() => import('${options.child ? '..' : '.'}/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${core_1.strings.classify(dasherizedName)}PageModule)`;
     const path = options.child ? options.child : dasherizedName;
     const recorder = host.beginUpdate(options.routingModule);
-    recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: '${loadChildren}' }`);
+    recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren} }`);
     host.commitUpdate(recorder);
 }
 function determineRoutingModule(host, options) {

@@ -1,21 +1,27 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "target": "es5",
-    "baseUrl": "src",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
     "paths": {
-      "ish-core/*": ["app/core/*"],
-      "ish-shared/*": ["app/shared/*"],
-      "ish-shell/*": ["app/shell/*"]
+      "ish-core/*": ["src/app/core/*"],
+      "ish-shared/*": ["src/app/shared/*"],
+      "ish-shell/*": ["src/app/shell/*"],
+      "ngrx-router": ["src/ngrx-router"]
     },
     "typeRoots": ["node_modules/@types", "node_modules/jest-extended"],
-    "lib": ["es2017", "dom"]
+    "lib": ["es2018", "dom"]
   },
-  "exclude": ["node_modules"]
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
 }

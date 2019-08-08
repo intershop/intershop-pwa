@@ -19,8 +19,7 @@ import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/v
 })
 // tslint:disable-next-line:ccp-no-intelligence-in-components
 export class AppComponent {
-  @ViewChild('cookieLaw')
-  private cookieLaw: CookieLawContainerComponent;
+  @ViewChild('cookieLaw', { static: false }) private cookieLaw: CookieLawContainerComponent;
   isBrowser: boolean;
 
   wrapperClasses$ = combineLatest([
