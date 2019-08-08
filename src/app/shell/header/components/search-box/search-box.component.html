@@ -1,11 +1,5 @@
 <!-- NEEDS_WORK: review and adapt -->
-<form
-  role="search"
-  class="search clearfix"
-  name="SearchBox_Header"
-  [formGroup]="searchForm"
-  (ngSubmit)="submitSearch()"
->
+<form role="search" class="search clearfix" name="SearchBox_Header" (submit)="submitSearch($event)">
   <input
     [placeholder]="configuration?.placeholderText || ''"
     formControlName="search"
@@ -13,6 +7,8 @@
     name="SearchTerm"
     type="text"
     class="form-control searchTerm"
+    (input)="search($event.target.value)"
+    value="{{ searchTerm }}"
     (focus)="hidePopup()"
     (blur)="hidePopup()"
     (keydown.esc)="hidePopup()"

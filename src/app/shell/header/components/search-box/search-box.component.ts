@@ -5,15 +5,10 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
@@ -36,23 +31,16 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
   templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
+export class SearchBoxComponent implements OnChanges {
   @Input() configuration: SearchBoxConfiguration = {};
   @Input() searchTerm: string;
   @Input() results: SuggestTerm[];
   @Output() searchTermChange = new EventEmitter<string>();
   @Output() performSearch = new EventEmitter<string>();
 
-  searchForm: FormGroup;
   isHidden = true;
   activeIndex = -1;
   currentSearchTerm = '';
-
-  private destroy$ = new Subject();
-
-  ngOnInit() {
-    this.initSearchForm();
-  }
 
   ngOnChanges(c: SimpleChanges) {
     this.updateSearchTerm(c.searchTerm);
@@ -68,12 +56,8 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateSearchTerm(searchTerm: SimpleChange) {
     if (searchTerm) {
-      this.setSearchFormValue(this.searchTerm);
+      this.currentSearchTerm = this.searchTerm;
     }
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
   }
 
   hidePopup() {
@@ -82,22 +66,23 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   search(searchTerm: string) {
+    this.currentSearchTerm = searchTerm;
     this.searchTermChange.emit(searchTerm);
   }
 
   submitSearch() {
     if (this.activeIndex > -1) {
-      this.setSearchFormValue(this.results[this.activeIndex].term);
+      this.currentSearchTerm = this.results[this.activeIndex].term;
     }
-    const { search } = this.searchForm.value;
-    if (search) {
+    if (this.currentSearchTerm) {
       this.hidePopup();
-      this.performSearch.emit(search);
+      this.performSearch.emit(this.currentSearchTerm);
     }
+    return false;
   }
 
   submitSuggestedTerm(suggestedTerm: string) {
-    this.setSearchFormValue(suggestedTerm);
+    this.currentSearchTerm = suggestedTerm;
     this.submitSearch();
   }
 
@@ -115,37 +100,5 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
 
   isActiveSuggestedTerm(index: number) {
     return this.activeIndex === index;
-  }
-
-  private setSearchFormValue(value: string) {
-    // TODO: check why this method can be called before there is a searchForm
-    if (this.searchForm) {
-      this.searchForm.patchValue(
-        {
-          search: value,
-        },
-        { emitEvent: false }
-      );
-    }
-
-    this.currentSearchTerm = value;
-  }
-
-  private initSearchForm(): void {
-    this.searchForm = new FormGroup({
-      search: new FormControl(''),
-    });
-
-    if (this.configuration && this.configuration.autoSuggest) {
-      this.searchForm
-        .get('search')
-        .valueChanges.pipe(
-          tap(x => {
-            this.currentSearchTerm = x;
-          }),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(this.searchTermChange);
-    }
   }
 }
