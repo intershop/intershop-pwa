@@ -53,7 +53,7 @@ export class OrdersEffects {
         order.orderCreation.stopAction.type === 'Redirect' &&
         order.orderCreation.stopAction.redirectUrl
       ) {
-        document.location.assign(order.orderCreation.stopAction.redirectUrl);
+        location.assign(order.orderCreation.stopAction.redirectUrl);
       } else {
         this.router.navigate(['/checkout/receipt']);
       }

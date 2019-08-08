@@ -98,7 +98,7 @@ jest_test:
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest -c jest-reports.config.js --ci
+    - npx ng test -i --config-path jest-reports.config.js --ci
     - echo "build complete"
 
 compile:
@@ -116,7 +116,7 @@ compile:
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npx tsc -p src/tsconfig.spec.json
+    - npx tsc -p tsconfig.spec.json
     - cd e2e
     - npm ci
     - npx tsc -p cypress/tsconfig.json

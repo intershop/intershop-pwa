@@ -48,9 +48,7 @@ describe('Api Service Errorhandler', () => {
   });
 
   using(dataProviderKnown, dataSlice => {
-    it(`should create  state \' ${dataSlice.expectedType} \')  when Http Code ${
-      dataSlice.error.status
-    } is handled`, () => {
+    it(`should create  state \'${dataSlice.expectedType}\' when Http Code ${dataSlice.error.status} is handled`, () => {
       const header = new HttpHeaders();
       dataSlice.error.headers = header;
 

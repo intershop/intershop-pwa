@@ -20,7 +20,7 @@ export class RetailSetPartsComponent {
   /**
    * accumulate changes from product item containers and emit the complete current retail set
    */
-  productChange(idx: number, sku: string, quantity: number) {
+  productChange(idx: number, sku: string, quantity?: number) {
     const newParts = [...this.parts];
     newParts.splice(idx, 1, { sku, quantity: typeof quantity === 'number' ? quantity : this.parts[idx].quantity });
     this.partsChange.emit(newParts);

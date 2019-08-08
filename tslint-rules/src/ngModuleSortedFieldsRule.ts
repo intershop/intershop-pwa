@@ -24,7 +24,16 @@ class NgModulesSortedFieldsWalker extends NgWalker {
     super.visitCallExpression(node);
   }
 
-  visitNgModule(decorator: ts.Decorator) {
+  visitClassDecorator(decorator: ts.Decorator) {
+    if (
+      decorator
+        .getChildAt(1)
+        .getChildAt(0)
+        .getText() !== 'NgModule'
+    ) {
+      return;
+    }
+
     decorator
       .getSourceFile()
       .getChildAt(0)
@@ -43,7 +52,7 @@ class NgModulesSortedFieldsWalker extends NgWalker {
       .getChildAt(1) as ts.SyntaxList;
     this.visitNgModuleDeclarationList(ngModuleDeclarationList);
 
-    super.visitNgModule(decorator);
+    super.visitClassDecorator(decorator);
   }
 
   private visitNgModuleDeclarationList(ngModuleDeclarationList: ts.SyntaxList) {

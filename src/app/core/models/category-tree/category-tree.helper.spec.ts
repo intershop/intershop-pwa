@@ -437,9 +437,7 @@ describe('Category Tree Helper', () => {
         { category1CL: 2, category2CL: 0, expected: 'old' },
       ],
       slice => {
-        it(`should prefer ${slice.expected} one when having completenessLevel ${slice.category1completenessLevel} vs. ${
-          slice.category2completenessLevel
-        }`, () => {
+        it(`should prefer ${slice.expected} one when having completenessLevel ${slice.category1completenessLevel} vs. ${slice.category2completenessLevel}`, () => {
           const category1 = {
             uniqueId: 'A',
             name: 'old',

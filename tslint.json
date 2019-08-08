@@ -108,8 +108,6 @@
     "prefer-const": true,
     "use-shorthand-property-in-object-creation": true,
     "radix": true,
-    "rxjs-no-add": true,
-    "rxjs-no-operator": true,
     "rxjs-no-internal": true,
     "rxjs-finnish": {
       "options": [
@@ -125,8 +123,6 @@
     },
     "rxjs-no-create": true,
     "rxjs-no-ignored-subscribe": true,
-    "rxjs-no-patched": true,
-    "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
     "rxjs-no-unsafe-catch": true,
     "rxjs-no-unsafe-first": { "severity": "off" },
@@ -172,14 +168,14 @@
     ],
     "directive-selector": [true, "attribute", "ish", "camelCase"],
     "component-selector": [true, "element", "ish", "kebab-case"],
-    "use-input-property-decorator": true,
+    "no-inputs-metadata-property": true,
     "no-assignement-to-inputs": true,
-    "use-output-property-decorator": true,
+    "no-outputs-metadata-property": true,
     "use-component-change-detection": { "severity": "warning" },
-    "use-host-property-decorator": true,
+    "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": true,
+    "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
@@ -269,7 +265,7 @@
           "message": "import with 'src' seems to be wrong"
         },
         {
-          "from": "^app/.*",
+          "from": "^(app|src)/.*",
           "message": "Transform into relative import, please."
         },
         {
@@ -369,6 +365,11 @@
           "from": ".*environments/environment.*",
           "filePattern": "^.*/app/((?!(module|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
+        },
+        {
+          "from": "(.*environments/environment).+",
+          "message": "Importing specific environments is not allowed. Use the default one.",
+          "fix": "$1"
         }
       ]
     },
