@@ -27,6 +27,20 @@ import { BasketPromotionComponent } from './basket/components/basket-promotion/b
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
 import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
+import { CMSModule } from './cms/cms.module';
+import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
+import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
+import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
+import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
+import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
+import { CMSProductListComponent } from './cms/components/cms-product-list/cms-product-list.component';
+import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
+import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
+import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
+import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
+import { ContentIncludeContainerComponent } from './cms/containers/content-include/content-include.container';
+import { ContentPageletContainerComponent } from './cms/containers/content-pagelet/content-pagelet.container';
+import { ContentSlotContainerComponent } from './cms/containers/content-slot/content-slot.container';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
@@ -72,6 +86,7 @@ import { RecentlyViewedComponent } from './recently/components/recently-viewed/r
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
 const importExportModules = [
+  CMSModule,
   CommonModule,
   FeatureToggleModule,
   FormlyModule,
@@ -94,6 +109,17 @@ const importExportModules = [
 
 const declaredComponents = [
   BasketPromotionComponent,
+  CMSCarouselComponent,
+  CMSContainerComponent,
+  CMSFreestyleComponent,
+  CMSImageComponent,
+  CMSImageEnhancedComponent,
+  CMSProductListComponent,
+  CMSStandardPageComponent,
+  CMSStaticPageComponent,
+  CMSTextComponent,
+  CMSVideoComponent,
+  ContentSlotContainerComponent,
   FilterCheckboxComponent,
   FilterDropdownComponent,
   FilterSwatchImagesComponent,
@@ -123,6 +149,8 @@ const exportedComponents = [
   BasketItemsSummaryComponent,
   BasketPromotionContainerComponent,
   BreadcrumbComponent,
+  ContentIncludeContainerComponent,
+  ContentPageletContainerComponent,
   FilterNavigationContainerComponent,
   InfoBoxComponent,
   LineItemListComponent,
@@ -153,5 +181,17 @@ const exportedComponents = [
   imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
+  entryComponents: [
+    CMSCarouselComponent,
+    CMSContainerComponent,
+    CMSFreestyleComponent,
+    CMSImageComponent,
+    CMSImageEnhancedComponent,
+    CMSProductListComponent,
+    CMSStandardPageComponent,
+    CMSStaticPageComponent,
+    CMSTextComponent,
+    CMSVideoComponent,
+  ],
 })
 export class SharedModule {}

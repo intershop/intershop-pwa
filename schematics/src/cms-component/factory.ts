@@ -19,7 +19,12 @@ import {
   findDeclaringModule,
   generateSelector,
 } from '../utils/common';
-import { addDeclarationToNgModule, addEntryComponentToNgModule, addProviderToNgModule } from '../utils/registration';
+import {
+  addDeclarationToNgModule,
+  addEntryComponentToNgModule,
+  addImportToFile,
+  addProviderToNgModule,
+} from '../utils/registration';
 
 import { PwaCmsComponentOptionsSchema as Options } from './schema';
 
@@ -41,15 +46,20 @@ export function createCMSComponent(options: Options): Rule {
       options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
     }
     options = generateSelector('component', host, options);
-    options.module = 'cms/cms.module';
+    options.module = 'shared/shared.module';
     options = findDeclaringModule(host, options);
 
     const operations = [];
     operations.push(addDeclarationToNgModule(options));
     operations.push(addEntryComponentToNgModule(options));
+
+    let cmModuleOptions = { ...options, module: 'shared/cms/cms.module' };
+    cmModuleOptions = findDeclaringModule(host, cmModuleOptions);
+
+    operations.push(addImportToFile(cmModuleOptions));
     operations.push(
       addProviderToNgModule({
-        module: options.module,
+        module: cmModuleOptions.module,
         artifactName: `{
       provide: CMS_COMPONENT,
       useValue: {

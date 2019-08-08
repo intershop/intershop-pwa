@@ -187,3 +187,15 @@ export function addImportToNgModuleBefore(
     host.commitUpdate(importRecorder);
   };
 }
+
+export function addImportToFile(options: { module?: string; artifactName?: string; moduleImportPath?: string }): Rule {
+  return host => {
+    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
+    const source = readIntoSourceFile(host, options.module);
+    const importRecorder = host.beginUpdate(options.module);
+
+    insertImport(source, importRecorder, options.artifactName, relativePath);
+
+    host.commitUpdate(importRecorder);
+  };
+}

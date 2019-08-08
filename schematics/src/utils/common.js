@@ -53,7 +53,16 @@ function detectExtension(artifact, host, options) {
     let path = options.path;
     if (options.restricted) {
         if (!extension) {
-            const rootLocation = ['page', 'extension', 'cms'].includes(artifact) ? '' : 'core/';
+            let rootLocation;
+            if (artifact === 'cms') {
+                rootLocation = 'shared/';
+            }
+            else if (['page', 'extension'].includes(artifact)) {
+                rootLocation = '';
+            }
+            else {
+                rootLocation = 'core/';
+            }
             path = `${project.sourceRoot}/app/${rootLocation}${artifact.replace(/s$/, '')}s/`;
         }
         else {

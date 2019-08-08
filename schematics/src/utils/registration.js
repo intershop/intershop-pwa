@@ -117,3 +117,13 @@ function addImportToNgModuleBefore(options, beforeToken) {
     };
 }
 exports.addImportToNgModuleBefore = addImportToNgModuleBefore;
+function addImportToFile(options) {
+    return host => {
+        const relativePath = find_module_1.buildRelativePath(options.module, options.moduleImportPath);
+        const source = filesystem_1.readIntoSourceFile(host, options.module);
+        const importRecorder = host.beginUpdate(options.module);
+        insertImport(source, importRecorder, options.artifactName, relativePath);
+        host.commitUpdate(importRecorder);
+    };
+}
+exports.addImportToFile = addImportToFile;
