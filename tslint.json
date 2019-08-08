@@ -352,7 +352,7 @@
         {
           "import": "^SharedModule$",
           "from": "\\..*",
-          "filePattern": "^(?!.+(page|src/app/cms|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
+          "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
           "message": "SharedModule must only be imported in page or extension modules."
         },
         {
@@ -430,10 +430,6 @@
           "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/ngrx-router/.*$",
-          // cms
-          "^.*/src/app/cms/components/(cms-[a-z-]+)/\\1\\.component\\.ts$",
-          "^.*/src/app/cms/containers/(content-[a-z-]+)/\\1\\.container\\.ts$",
-          "^.*/src/app/cms/(pipes|configurations)/([a-z][a-z0-9-\\.]+)\\.ts$",
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",
@@ -463,7 +459,7 @@
           "^.*/src/app/shared/[a-z][a-z0-9-]+/(configurations|pipes|utils|validators|directives)/.*$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
           // aggregation modules
-          "^.*/src/app/(shell|shared|cms)/\\1\\.module\\.ts$",
+          "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           // extension exports
           "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/[a-z][a-z0-9-]+/components/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
