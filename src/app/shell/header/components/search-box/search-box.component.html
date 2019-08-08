@@ -37,6 +37,7 @@
       *ngFor="let result of results | slice: 0:configuration?.maxAutoSuggests; let liIndex = index"
       [class.active-suggestion]="isActiveSuggestedTerm(liIndex)"
       (mousedown)="submitSuggestedTerm(result.term)"
+      (mouseenter)="activeIndex = liIndex"
     >
       <button
         type="button"
