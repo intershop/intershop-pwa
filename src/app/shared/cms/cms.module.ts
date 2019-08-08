@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../shared/shared.module';
-
 import { CMSCarouselComponent } from './components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
 import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.component';
@@ -13,34 +11,9 @@ import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './components/cms-video/cms-video.component';
 import { CMS_COMPONENT } from './configurations/injection-keys';
-import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
-import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
-import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
 import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
 
-const exportedComponents = [ContentIncludeContainerComponent, ContentPageletContainerComponent];
-
-const entryComponents = [
-  CMSCarouselComponent,
-  CMSContainerComponent,
-  CMSFreestyleComponent,
-  CMSImageComponent,
-  CMSImageEnhancedComponent,
-  CMSProductListComponent,
-  CMSStandardPageComponent,
-  CMSStaticPageComponent,
-  CMSTextComponent,
-  CMSVideoComponent,
-];
-
 @NgModule({
-  imports: [SharedModule],
-  declarations: [
-    ...entryComponents,
-    ...exportedComponents,
-    ContentPageletContainerComponent,
-    ContentSlotContainerComponent,
-  ],
   providers: [
     {
       provide: CMS_COMPONENT,
@@ -123,8 +96,6 @@ const entryComponents = [
       multi: true,
     },
   ],
-  exports: [...exportedComponents],
-  entryComponents: [...entryComponents],
 })
 export class CMSModule {
   constructor(sfeAdapter: SfeAdapterService) {
