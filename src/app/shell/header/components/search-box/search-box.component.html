@@ -29,7 +29,7 @@
       <fa-icon [icon]="['fas', configuration?.icon || 'search']"></fa-icon>
     </ng-container>
     <!-- search button with text -->
-    <ng-template #textBlock> {{ configuration.buttonText }} </ng-template>
+    <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
   </button>
 
   <ul *ngIf="!isHidden && currentSearchTerm && results?.length" class="search-suggest-results">
