@@ -54,7 +54,7 @@ export class FilterService {
   }
 
   private getDomainId(rootName: string) {
-    if (rootName === 'Specials' || rootName === 'Cameras') {
+    if (rootName === 'Specials' || rootName === 'Cameras-Camcorders') {
       return 'inSPIRED-inTRONICS-' + rootName;
     }
     return 'inSPIRED-' + rootName;
