@@ -285,7 +285,7 @@ describe('Shopping Store', () => {
             category: {"uniqueId":"A.123","categoryPath":[2],"completenessLevel":3}
           [Shopping] Load Category Success:
             categories: tree(A,A.123)
-          [Shopping] Load Filter For Category Success:
+          [Shopping] Load Filter Success:
             filterNavigation: {}
         `);
       }));
@@ -329,6 +329,9 @@ describe('Shopping Store', () => {
           [ProductListing] Load More Products:
             id: {"type":"search","value":"something"}
             page: undefined
+          [ProductListing] Set Filters:
+            id: {"type":"search","value":"something"}
+            filters: undefined
           [ProductListing] Set Sorting:
             id: {"type":"search","value":"something"}
             sorting: undefined
@@ -348,7 +351,7 @@ describe('Shopping Store', () => {
             pages: [1]
           [Shopping] Load Filter for Search:
             searchTerm: "something"
-          [Shopping] Load Filter for Search Success:
+          [Shopping] Load Filter Success:
             filterNavigation: {}
         `);
       }));
@@ -424,7 +427,7 @@ describe('Shopping Store', () => {
           category: {"uniqueId":"A.123","categoryPath":[2],"completenessLevel":3}
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
-        [Shopping] Load Filter For Category Success:
+        [Shopping] Load Filter Success:
           filterNavigation: {}
       `);
     }));
@@ -506,6 +509,9 @@ describe('Shopping Store', () => {
           categoryId: "A.123"
         [Shopping] Load Filter For Category:
           category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
+        [ProductListing] Set Filters:
+          id: {"type":"category","value":"A.123.456"}
+          filters: undefined
         [ProductListing] Set Sorting:
           id: {"type":"category","value":"A.123.456"}
           sorting: undefined
@@ -517,7 +523,7 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
+        [Shopping] Load Filter Success:
           filterNavigation: {}
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
@@ -672,7 +678,7 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
+        [Shopping] Load Filter Success:
           filterNavigation: {}
       `);
     }));
@@ -706,6 +712,9 @@ describe('Shopping Store', () => {
             page: undefined
           [Shopping] Select Product:
             sku: undefined
+          [ProductListing] Set Filters:
+            id: {"type":"category","value":"A.123.456"}
+            filters: undefined
           [ProductListing] Set Sorting:
             id: {"type":"category","value":"A.123.456"}
             sorting: undefined
@@ -890,7 +899,7 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
+        [Shopping] Load Filter Success:
           filterNavigation: {}
         [Router] Navigation:
           params: {}
@@ -993,6 +1002,9 @@ describe('Shopping Store', () => {
           page: undefined
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
+        [ProductListing] Set Filters:
+          id: {"type":"search","value":"something"}
+          filters: undefined
         [ProductListing] Set Sorting:
           id: {"type":"search","value":"something"}
           sorting: undefined
@@ -1012,7 +1024,7 @@ describe('Shopping Store', () => {
           pages: [1]
         [Shopping] Load Filter for Search:
           searchTerm: "something"
-        [Shopping] Load Filter for Search Success:
+        [Shopping] Load Filter Success:
           filterNavigation: {}
       `);
     }));

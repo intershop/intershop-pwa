@@ -7,14 +7,12 @@ import { ProductListingID } from '../product-listing/product-listing.reducer';
 
 export enum FilterActionTypes {
   LoadFilterForCategory = '[Shopping] Load Filter For Category',
-  LoadFilterForCategorySuccess = '[Shopping] Load Filter For Category Success',
-  LoadFilterForCategoryFail = '[Shopping] Load Filter For Category Fail',
+  LoadFilterForSearch = '[Shopping] Load Filter for Search',
+  LoadFilterSuccess = '[Shopping] Load Filter Success',
+  LoadFilterFail = '[Shopping] Load Filter Fail',
   ApplyFilter = '[Shopping] Apply Filter',
   ApplyFilterSuccess = '[Shopping] Apply Filter Success',
   ApplyFilterFail = '[Shopping] Apply Filter Fail',
-  LoadFilterForSearch = '[Shopping] Load Filter for Search',
-  LoadFilterForSearchSuccess = '[Shopping] Load Filter for Search Success',
-  LoadFilterForSearchFail = '[Shopping] Load Filter for Search Fail',
   LoadProductsForFilter = '[Shopping] Load Products For Filter',
 }
 
@@ -23,13 +21,13 @@ export class LoadFilterForCategory implements Action {
   constructor(public payload: { category: Category }) {}
 }
 
-export class LoadFilterForCategorySuccess implements Action {
-  readonly type = FilterActionTypes.LoadFilterForCategorySuccess;
+export class LoadFilterSuccess implements Action {
+  readonly type = FilterActionTypes.LoadFilterSuccess;
   constructor(public payload: { filterNavigation: FilterNavigation }) {}
 }
 
-export class LoadFilterForCategoryFail implements Action {
-  readonly type = FilterActionTypes.LoadFilterForCategoryFail;
+export class LoadFilterFail implements Action {
+  readonly type = FilterActionTypes.LoadFilterFail;
   constructor(public payload: { error: HttpError }) {}
 }
 
@@ -38,24 +36,14 @@ export class LoadFilterForSearch implements Action {
   constructor(public payload: { searchTerm: string }) {}
 }
 
-export class LoadFilterForSearchSuccess implements Action {
-  readonly type = FilterActionTypes.LoadFilterForSearchSuccess;
-  constructor(public payload: { filterNavigation: FilterNavigation }) {}
-}
-
-export class LoadFilterForSearchFail implements Action {
-  readonly type = FilterActionTypes.LoadFilterForSearchFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
 export class ApplyFilter implements Action {
   readonly type = FilterActionTypes.ApplyFilter;
-  constructor(public payload: { filterId: string; searchParameter: string }) {}
+  constructor(public payload: { searchParameter: string }) {}
 }
 
 export class ApplyFilterSuccess implements Action {
   readonly type = FilterActionTypes.ApplyFilterSuccess;
-  constructor(public payload: { availableFilter: FilterNavigation; filterName: string; searchParameter: string }) {}
+  constructor(public payload: { availableFilter: FilterNavigation; searchParameter: string }) {}
 }
 
 export class ApplyFilterFail implements Action {
@@ -70,12 +58,10 @@ export class LoadProductsForFilter implements Action {
 
 export type FilterActions =
   | LoadFilterForCategory
-  | LoadFilterForCategorySuccess
-  | LoadFilterForCategoryFail
+  | LoadFilterSuccess
+  | LoadFilterFail
   | ApplyFilter
   | ApplyFilterSuccess
   | ApplyFilterFail
   | LoadFilterForSearch
-  | LoadFilterForSearchSuccess
-  | LoadFilterForSearchFail
   | LoadProductsForFilter;

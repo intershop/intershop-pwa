@@ -24,10 +24,10 @@ describe('Filter Reducer', () => {
     });
   });
 
-  describe('LoadFilterForCategorySuccess', () => {
+  describe('LoadFilterSuccess', () => {
     it('should set filter when reduced', () => {
       const filterNavigation = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.LoadFilterForCategorySuccess({ filterNavigation });
+      const action = new fromActions.LoadFilterSuccess({ filterNavigation });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filterNavigation);
@@ -35,9 +35,9 @@ describe('Filter Reducer', () => {
     });
   });
 
-  describe('LoadFilterForCategoryFailed', () => {
+  describe('LoadFilterFailed', () => {
     it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterForCategoryFail({ error: {} as HttpError });
+      const action = new fromActions.LoadFilterFail({ error: {} as HttpError });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
@@ -54,10 +54,10 @@ describe('Filter Reducer', () => {
     });
   });
 
-  describe('LoadFilterForSearchSuccess', () => {
+  describe('LoadFilterSuccess', () => {
     it('should set filter when reduced', () => {
       const filterNavigation = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.LoadFilterForSearchSuccess({ filterNavigation });
+      const action = new fromActions.LoadFilterSuccess({ filterNavigation });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filterNavigation);
@@ -65,9 +65,9 @@ describe('Filter Reducer', () => {
     });
   });
 
-  describe('LoadFilterForSearchFailed', () => {
+  describe('LoadFilterFailed', () => {
     it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterForSearchFail({ error: {} as HttpError });
+      const action = new fromActions.LoadFilterFail({ error: {} as HttpError });
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
@@ -77,7 +77,7 @@ describe('Filter Reducer', () => {
 
   describe('ApplyFilter', () => {
     it('should change state to loading when reduced', () => {
-      const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });
+      const action = new fromActions.ApplyFilter({ searchParameter: 'b' });
       const state = filterReducer(initialState, action);
 
       expect(state.loading).toBeTrue();
@@ -89,7 +89,6 @@ describe('Filter Reducer', () => {
       const filter = { filter: [{ name: 'a' }] } as FilterNavigation;
       const action = new fromActions.ApplyFilterSuccess({
         availableFilter: filter,
-        filterName: 'a',
         searchParameter: 'b',
       });
       const state = filterReducer(initialState, action);

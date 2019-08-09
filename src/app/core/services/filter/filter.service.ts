@@ -40,14 +40,14 @@ export class FilterService {
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
-  applyFilter(filterName: string, searchParameter: string): Observable<FilterNavigation> {
+  applyFilter(searchParameter: string): Observable<FilterNavigation> {
     return this.apiService
-      .get<FilterNavigationData>(`filters/${filterName};SearchParameter=${searchParameter}`)
+      .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`)
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
-  getProductSkusForFilter(filterName: string, searchParameter: string): Observable<string[]> {
-    return this.apiService.get(`filters/${filterName};SearchParameter=${searchParameter}/hits`).pipe(
+  getProductSkusForFilter(searchParameter: string): Observable<string[]> {
+    return this.apiService.get(`filters/default;SearchParameter=${searchParameter}/hits`).pipe(
       unpackEnvelope<Link>(),
       map(e => e.map(l => l.uri).map(ProductMapper.parseSKUfromURI))
     );
