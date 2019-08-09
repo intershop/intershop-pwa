@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -17,12 +17,9 @@ describe('Search Box Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, StoreModule.forRoot({}), TranslateModule.forRoot()],
       declarations: [MockComponent(SearchBoxComponent), SearchBoxContainerComponent],
-      providers: [
-        { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
-        { provide: Store, useFactory: () => instance(mock(Store)) },
-      ],
+      providers: [{ provide: SuggestService, useFactory: () => instance(mock(SuggestService)) }],
     })
       .compileComponents()
       .then(() => {

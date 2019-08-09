@@ -290,7 +290,7 @@ describe('Shopping Store', () => {
     describe('and looking for suggestions', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SuggestSearch({ searchTerm: 'some' }));
+        store.dispatch(new SuggestSearch({ searchTerm: 'some', id: 'searchbox' }));
         tick(5000);
       }));
 

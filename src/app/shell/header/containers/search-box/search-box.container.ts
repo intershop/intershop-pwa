@@ -1,9 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 
-import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from 'ish-core/store/shopping/search';
-
+import {
+  SuggestSearch,
+  getCurrentSearchboxId,
+  getSearchTerm,
+  getSuggestSearchResults,
+} from 'ish-core/store/shopping/search';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**
@@ -26,13 +31,19 @@ export class SearchBoxContainerComponent {
    */
   @Input() configuration?: SearchBoxConfiguration;
 
-  searchResults$ = this.store.pipe(select(getSuggestSearchResults));
   previousSearchTerm$ = this.store.pipe(select(getSearchTerm));
+  currentSearchboxId$ = this.store.pipe(select(getCurrentSearchboxId));
+  searchResults$ = this.store.pipe(select(getSuggestSearchResults));
+  searchResultsToDisplay$ = this.searchResults$.pipe(
+    withLatestFrom(this.currentSearchboxId$),
+    filter(([, id]) => !this.configuration || !this.configuration.id || this.configuration.id === id),
+    map(([hits]) => hits)
+  );
 
   constructor(private store: Store<{}>, private router: Router) {}
 
   suggestSearch(term: string) {
-    this.store.dispatch(new SuggestSearch({ searchTerm: term }));
+    this.store.dispatch(new SuggestSearch({ searchTerm: term, id: this.configuration && this.configuration.id }));
   }
 
   performSearch(searchTerm: string) {

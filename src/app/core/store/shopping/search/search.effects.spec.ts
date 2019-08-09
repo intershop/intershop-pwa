@@ -160,7 +160,7 @@ describe('Search Effects', () => {
 
     describe('suggestSearch$', () => {
       it('should not fire when search term is falsy', fakeAsync(() => {
-        const action = new SuggestSearch({ searchTerm: undefined });
+        const action = new SuggestSearch({ searchTerm: undefined, id: 'searchbox' });
         store$.dispatch(action);
 
         tick(5000);
@@ -169,7 +169,7 @@ describe('Search Effects', () => {
       }));
 
       it('should not fire when search term is empty', fakeAsync(() => {
-        const action = new SuggestSearch({ searchTerm: '' });
+        const action = new SuggestSearch({ searchTerm: '', id: 'searchbox' });
         store$.dispatch(action);
 
         tick(5000);
@@ -178,7 +178,7 @@ describe('Search Effects', () => {
       }));
 
       it('should return search terms when available', fakeAsync(() => {
-        const action = new SuggestSearch({ searchTerm: 'g' });
+        const action = new SuggestSearch({ searchTerm: 'g', id: 'searchbox' });
         store$.dispatch(action);
 
         tick(5000);
@@ -187,11 +187,11 @@ describe('Search Effects', () => {
       }));
 
       it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-        store$.dispatch(new SuggestSearch({ searchTerm: 'g' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'g', id: 'searchbox' }));
         tick(50);
-        store$.dispatch(new SuggestSearch({ searchTerm: 'goo' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'goo', id: 'searchbox' }));
         tick(100);
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(200);
 
         verify(suggestServiceMock.search(anyString())).never();
@@ -201,10 +201,10 @@ describe('Search Effects', () => {
       }));
 
       it('should send only once if search term is entered multiple times', fakeAsync(() => {
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(2000);
         verify(suggestServiceMock.search(anyString())).once();
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(2000);
 
         verify(suggestServiceMock.search(anyString())).once();
@@ -213,7 +213,7 @@ describe('Search Effects', () => {
       it('should not fire action when error is encountered at service level', fakeAsync(() => {
         when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(4000);
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
