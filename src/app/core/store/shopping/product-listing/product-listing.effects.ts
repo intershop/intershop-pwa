@@ -12,7 +12,7 @@ import {
 } from 'ish-core/configurations/injection-keys';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { LoadProductsForFilter } from '../filter';
+import { ApplyFilter, LoadProductsForFilter } from '../filter';
 import { LoadProductsForCategory } from '../products';
 import { SearchProducts } from '../search';
 
@@ -73,6 +73,7 @@ export class ProductListingEffects {
             return [
               ...acts,
               new LoadProductsForFilter({ id: { ...id, filters: b64u.toBase64(b64u.encode(filters)) } }),
+              new ApplyFilter({ searchParameter: b64u.toBase64(b64u.encode(filters)) }),
             ];
           } else {
             switch (id.type) {

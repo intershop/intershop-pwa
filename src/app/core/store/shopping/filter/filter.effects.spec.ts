@@ -46,7 +46,7 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.getProductSkusForFilter(anything(), anything())).thenCall(a => {
+    when(filterServiceMock.getProductSkusForFilter(anything())).thenCall(a => {
       if (a.name === 'invalid') {
         return throwError({ message: 'invalid' });
       } else {
@@ -54,7 +54,7 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.applyFilter(anyString(), anyString())).thenCall(a => {
+    when(filterServiceMock.applyFilter(anyString())).thenCall(a => {
       if (a === 'invalid') {
         return throwError({ message: 'invalid' });
       } else {
@@ -91,18 +91,18 @@ describe('Filter Effects', () => {
       });
     });
 
-    it('should map to action of type LoadFilterForCategoriesSuccess', () => {
+    it('should map to action of type LoadFilterSuccess', () => {
       const action = new fromActions.LoadFilterForCategory({ category: { name: 'c' } as Category });
-      const completion = new fromActions.LoadFilterForCategorySuccess({ filterNavigation: filterNav });
+      const completion = new fromActions.LoadFilterSuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadAvailableFilterForCategories$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type LoadFilterForCategoriesFail', () => {
+    it('should map invalid request to action of type LoadFilterFail', () => {
       const action = new fromActions.LoadFilterForCategory({ category: { name: 'invalid' } as Category });
-      const completion = new fromActions.LoadFilterForCategoryFail({ error: { message: 'invalid' } as HttpError });
+      const completion = new fromActions.LoadFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -140,20 +140,19 @@ describe('Filter Effects', () => {
 
   describe('applyFilter$', () => {
     it('should call the filterService for ApplyFilter action', done => {
-      const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });
+      const action = new fromActions.ApplyFilter({ searchParameter: 'b' });
       actions$ = of(action);
 
       effects.applyFilter$.subscribe(() => {
-        verify(filterServiceMock.applyFilter('a', 'b')).once();
+        verify(filterServiceMock.applyFilter('b')).once();
         done();
       });
     });
 
     it('should map to action of type ApplyFilterSuccess', () => {
-      const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });
+      const action = new fromActions.ApplyFilter({ searchParameter: 'b' });
       const completion = new fromActions.ApplyFilterSuccess({
         availableFilter: filterNav,
-        filterName: 'a',
         searchParameter: 'b',
       });
       actions$ = hot('-a-a-a', { a: action });
@@ -163,7 +162,7 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
-      const action = new fromActions.ApplyFilter({ filterId: 'invalid', searchParameter: 'b' });
+      const action = new fromActions.ApplyFilter({ searchParameter: 'invalid' });
       const completion = new fromActions.ApplyFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -210,18 +209,18 @@ describe('Filter Effects', () => {
       });
     });
 
-    it('should map to action of type LoadFilterForSearchSuccess', () => {
+    it('should map to action of type LoadFilterSuccess', () => {
       const action = new fromActions.LoadFilterForSearch({ searchTerm: 'search' });
-      const completion = new fromActions.LoadFilterForSearchSuccess({ filterNavigation: filterNav });
+      const completion = new fromActions.LoadFilterSuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadFilterForSearch$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type LoadFilterForSearchFail', () => {
+    it('should map invalid request to action of type LoadFilterFail', () => {
       const action = new fromActions.LoadFilterForSearch({ searchTerm: 'invalid' });
-      const completion = new fromActions.LoadFilterForSearchFail({ error: { message: 'invalid' } as HttpError });
+      const completion = new fromActions.LoadFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

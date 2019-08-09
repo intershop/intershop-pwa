@@ -23,8 +23,8 @@ export class FilterEffects {
     mapToPayloadProperty('category'),
     mergeMap(category =>
       this.filterService.getFilterForCategory(category).pipe(
-        map(filterNavigation => new filterActions.LoadFilterForCategorySuccess({ filterNavigation })),
-        mapErrorToAction(filterActions.LoadFilterForCategoryFail)
+        map(filterNavigation => new filterActions.LoadFilterSuccess({ filterNavigation })),
+        mapErrorToAction(filterActions.LoadFilterFail)
       )
     )
   );
@@ -35,8 +35,8 @@ export class FilterEffects {
     mapToPayloadProperty('searchTerm'),
     mergeMap(searchTerm =>
       this.filterService.getFilterForSearch(searchTerm).pipe(
-        map(filterNavigation => new filterActions.LoadFilterForSearchSuccess({ filterNavigation })),
-        mapErrorToAction(filterActions.LoadFilterForSearchFail)
+        map(filterNavigation => new filterActions.LoadFilterSuccess({ filterNavigation })),
+        mapErrorToAction(filterActions.LoadFilterFail)
       )
     )
   );
@@ -59,9 +59,9 @@ export class FilterEffects {
   applyFilter$ = this.actions$.pipe(
     ofType<filterActions.ApplyFilter>(filterActions.FilterActionTypes.ApplyFilter),
     mapToPayload(),
-    mergeMap(({ filterId: filterName, searchParameter }) =>
-      this.filterService.applyFilter(filterName, searchParameter).pipe(
-        map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, filterName, searchParameter })),
+    mergeMap(({ searchParameter }) =>
+      this.filterService.applyFilter(searchParameter).pipe(
+        map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, searchParameter })),
         mapErrorToAction(filterActions.ApplyFilterFail)
       )
     )
@@ -74,7 +74,7 @@ export class FilterEffects {
     withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
     switchMap(([{ id }, itemsPerPage]) =>
       this.filterService
-        .getProductSkusForFilter('default', id.filters)
+        .getProductSkusForFilter(id.filters)
         .pipe(mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))]))
     )
   );

@@ -52,22 +52,22 @@ describe('Filter Service', () => {
   });
 
   it("should get Filter data when 'applyFilter' is called", done => {
-    when(apiService.get('filters/a;SearchParameter=b')).thenReturn(of(filterMock as FilterNavigationData));
-    filterService.applyFilter('a', 'b').subscribe(data => {
+    when(apiService.get('filters/default;SearchParameter=b')).thenReturn(of(filterMock as FilterNavigationData));
+    filterService.applyFilter('b').subscribe(data => {
       expect(data.filter).toHaveLength(1);
       expect(data.filter[0].facets).toHaveLength(2);
       expect(data.filter[0].facets[0].name).toEqual('a');
       expect(data.filter[0].facets[1].name).toEqual('b');
-      verify(apiService.get('filters/a;SearchParameter=b')).once();
+      verify(apiService.get('filters/default;SearchParameter=b')).once();
       done();
     });
   });
 
   it("should get Product SKUs when 'getProductSkusForFilter' is called", done => {
-    when(apiService.get('filters/a;SearchParameter=b/hits')).thenReturn(of(productsMock));
-    filterService.getProductSkusForFilter('a', 'b').subscribe(data => {
+    when(apiService.get('filters/default;SearchParameter=b/hits')).thenReturn(of(productsMock));
+    filterService.getProductSkusForFilter('b').subscribe(data => {
       expect(data).toEqual(['123', '234']);
-      verify(apiService.get('filters/a;SearchParameter=b/hits')).once();
+      verify(apiService.get('filters/default;SearchParameter=b/hits')).once();
       done();
     });
   });
