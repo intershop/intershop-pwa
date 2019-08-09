@@ -8,7 +8,7 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -30,9 +30,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() pageIndices: number[];
   @Input() fragmentOnRouting: string;
 
-  sortForm = new FormGroup({
-    sortDropdown: new FormControl(''),
-  });
+  sortDropdown = new FormControl('');
   sortOptions: SelectOption[] = [];
 
   private destroy$ = new Subject();
@@ -40,17 +38,14 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.sortForm
-      .get('sortDropdown')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(sorting => {
-        this.router.navigate([], {
-          relativeTo: this.activatedRoute,
-          queryParamsHandling: 'merge',
-          queryParams: { sorting, page: 1 },
-          fragment: this.fragmentOnRouting,
-        });
+    this.sortDropdown.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(sorting => {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
+        queryParams: { sorting, page: 1 },
+        fragment: this.fragmentOnRouting,
       });
+    });
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -59,8 +54,8 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private updateSortBy(sortBy: SimpleChange) {
-    if (sortBy && this.sortForm) {
-      this.sortForm.get('sortDropdown').setValue(this.sortBy, { emitEvent: false });
+    if (sortBy) {
+      this.sortDropdown.setValue(this.sortBy || undefined, { emitEvent: false });
     }
   }
 
