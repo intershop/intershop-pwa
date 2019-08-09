@@ -2514,5 +2514,6 @@
   "checkout.credit_card.CVCStyleId.error.notFound": "ID de style du code de validation de carte introuvable.",
   "account.date.year.error.required": "Veuillez sélectionner une année.",
   "account.date.month.error.required": "Veuillez sélectionner un mois.",
-  "account.login.quotes.message": "Veuillez vous connecter à votre compte pour utiliser les devis."
+  "account.login.quotes.message": "Veuillez vous connecter à votre compte pour utiliser les devis.",
+  "common.button.spinning.label": "En train d\u2019ajouter..."
 }

@@ -4,16 +4,24 @@
     name="addProduct"
     class="btn"
     [ngClass]="class"
-    [class.btn-primary]="!(displayType === 'icon')"
-    [disabled]="disabled"
+    [class.btn-primary]="!displayIcon"
+    [disabled]="disabled || (displaySpinner$ | async)"
     [attr.title]="translationKey | translate"
     data-testing-id="addToCartButton"
     (click)="addToBasket()"
   >
-    <ng-container *ngIf="displayType === 'icon'; else defaultButton">
-      <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>
-    </ng-container>
+    <ng-container *ngIf="!(displaySpinner$ | async); else spinning">
+      <!-- Add to Cart button -->
+      <ng-container *ngIf="displayIcon; else defaultButton">
+        <fa-icon [icon]="['fas', 'shopping-cart']"></fa-icon>
+      </ng-container>
 
-    <ng-template #defaultButton>{{ translationKey | translate }}</ng-template>
+      <ng-template #defaultButton>{{ translationKey | translate }}</ng-template>
+    </ng-container>
+    <!-- button with spinning animation after Add to Cart -->
+    <ng-template #spinning>
+      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [ngClass]="{ 'pr-3': !displayIcon }"></fa-icon>
+      <span *ngIf="!displayIcon">{{ 'common.button.spinning.label' | translate }}</span>
+    </ng-template>
   </button>
 </div>
