@@ -9,8 +9,6 @@ export enum ProductListingActionTypes {
   LoadMoreProducts = '[ProductListing] Load More Products',
   SetProductListingPageSize = '[ProductListing] Set Product Listing Page Size',
   SetViewType = '[ProductListing] Set View Type',
-  SetSorting = '[ProductListing] Set Sorting',
-  SetFilters = '[ProductListing] Set Filters',
 }
 
 export class SetProductListingPages implements Action {
@@ -25,7 +23,7 @@ export class SetProductListingPageSize implements Action {
 
 export class LoadMoreProducts implements Action {
   readonly type = ProductListingActionTypes.LoadMoreProducts;
-  constructor(public payload: { id: ProductListingID; page: number }) {}
+  constructor(public payload: { id: ProductListingID; page?: number }) {}
 }
 
 export class SetViewType implements Action {
@@ -33,20 +31,4 @@ export class SetViewType implements Action {
   constructor(public payload: { viewType: ViewType }) {}
 }
 
-export class SetSorting implements Action {
-  readonly type = ProductListingActionTypes.SetSorting;
-  constructor(public payload: { id: ProductListingID; sorting: string }) {}
-}
-
-export class SetFilters implements Action {
-  readonly type = ProductListingActionTypes.SetFilters;
-  constructor(public payload: { id: ProductListingID; filters: string }) {}
-}
-
-export type ProductListingAction =
-  | SetProductListingPages
-  | LoadMoreProducts
-  | SetProductListingPageSize
-  | SetViewType
-  | SetSorting
-  | SetFilters;
+export type ProductListingAction = SetProductListingPages | LoadMoreProducts | SetProductListingPageSize | SetViewType;

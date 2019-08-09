@@ -104,6 +104,7 @@ export type ProductsAction =
   | LoadProductIfNotLoaded
   | LoadProductSuccess
   | LoadProductsForCategory
+  | LoadProductsForCategoryFail
   | LoadProductVariations
   | LoadProductVariationsFail
   | LoadProductVariationsSuccess

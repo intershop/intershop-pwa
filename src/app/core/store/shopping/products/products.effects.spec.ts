@@ -144,7 +144,7 @@ describe('Products Effects', () => {
       });
     });
 
-    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProductSuccess for each product in the list', () => {
+    it('should trigger actions for loading content for the product list', () => {
       actions$ = hot('a', {
         a: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       });

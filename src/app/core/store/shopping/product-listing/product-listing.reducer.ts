@@ -1,6 +1,9 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { FilterActionTypes, FilterActions } from '../filter';
+import { ProductsAction, ProductsActionTypes } from '../products';
+import { SearchAction, SearchActionTypes } from '../search';
 
 import { ProductListingAction, ProductListingActionTypes } from './product-listing.actions';
 
@@ -74,12 +77,15 @@ function mergeCurrentSettings(
   id: ProductListingID,
   newSettings: Pick<ProductListingID, 'filters' | 'sorting'>
 ) {
-  const serializedId = serializeProductListingID(id);
+  const serializedId = serializeProductListingID({ type: id.type, value: id.value });
   const oldSettings = currentSettings[serializedId] || {};
   return { ...currentSettings, [serializedId]: { ...oldSettings, ...newSettings } };
 }
 
-export function productListingReducer(state = initialState, action: ProductListingAction): ProductListingState {
+export function productListingReducer(
+  state = initialState,
+  action: ProductListingAction | SearchAction | ProductsAction | FilterActions
+): ProductListingState {
   switch (action.type) {
     case ProductListingActionTypes.SetProductListingPageSize:
       return { ...state, itemsPerPage: action.payload.itemsPerPage };
@@ -87,30 +93,25 @@ export function productListingReducer(state = initialState, action: ProductListi
     case ProductListingActionTypes.SetViewType:
       return { ...state, viewType: action.payload.viewType };
 
-    case ProductListingActionTypes.SetSorting:
-      return {
-        ...state,
-        currentSettings: mergeCurrentSettings(state.currentSettings, action.payload.id, {
-          sorting: action.payload.sorting,
-        }),
-      };
-
-    case ProductListingActionTypes.SetFilters:
-      return {
-        ...state,
-        currentSettings: mergeCurrentSettings(state.currentSettings, action.payload.id, {
-          filters: action.payload.filters,
-        }),
-      };
-
-    case ProductListingActionTypes.LoadMoreProducts:
+    case SearchActionTypes.SearchProducts:
+    case ProductsActionTypes.LoadProductsForCategory:
+    case FilterActionTypes.LoadProductsForFilter:
       return { ...state, loading: true };
+
+    case SearchActionTypes.SearchProductsFail:
+    case ProductsActionTypes.LoadProductsForCategoryFail:
+    case FilterActionTypes.LoadProductsForFilterFail:
+      return { ...state, loading: false };
 
     case ProductListingActionTypes.SetProductListingPages: {
       // merge payload with previous entity in state
       const newState = adapter.upsertOne(action.payload, {
         ...state,
         loading: false,
+        currentSettings: mergeCurrentSettings(state.currentSettings, action.payload.id, {
+          sorting: action.payload.id.sorting,
+          filters: action.payload.id.filters,
+        }),
       });
       // overwrite pages property when not supplied by the action payload
       if (!action.payload.pages) {

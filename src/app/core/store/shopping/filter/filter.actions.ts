@@ -14,6 +14,7 @@ export enum FilterActionTypes {
   ApplyFilterSuccess = '[Shopping] Apply Filter Success',
   ApplyFilterFail = '[Shopping] Apply Filter Fail',
   LoadProductsForFilter = '[Shopping] Load Products For Filter',
+  LoadProductsForFilterFail = '[Shopping] Load Products For Filter Fail',
 }
 
 export class LoadFilterForCategory implements Action {
@@ -53,7 +54,12 @@ export class ApplyFilterFail implements Action {
 
 export class LoadProductsForFilter implements Action {
   readonly type = FilterActionTypes.LoadProductsForFilter;
-  constructor(public payload: { id: ProductListingID }) {}
+  constructor(public payload: { id: ProductListingID; searchParameter: string }) {}
+}
+
+export class LoadProductsForFilterFail implements Action {
+  readonly type = FilterActionTypes.LoadProductsForFilterFail;
+  constructor(public payload: { error: HttpError }) {}
 }
 
 export type FilterActions =
@@ -64,4 +70,5 @@ export type FilterActions =
   | ApplyFilterSuccess
   | ApplyFilterFail
   | LoadFilterForSearch
-  | LoadProductsForFilter;
+  | LoadProductsForFilter
+  | LoadProductsForFilterFail;
