@@ -4,7 +4,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { isEqual } from 'lodash-es';
-import { distinctUntilChanged, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { debounce, distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
@@ -17,7 +18,7 @@ import { LoadProductsForCategory } from '../products';
 import { SearchProducts } from '../search';
 
 import * as actions from './product-listing.actions';
-import { getProductListingViewType } from './product-listing.selectors';
+import { getProductListingView, getProductListingViewType } from './product-listing.selectors';
 
 @Injectable()
 export class ProductListingEffects {
@@ -58,35 +59,37 @@ export class ProductListingEffects {
     switchMap(({ id, page }) =>
       this.activatedRoute.queryParamMap.pipe(
         map(params => ({
+          id,
           sorting: params.get('sorting') || undefined,
-          currentPage: page || +params.get('page') || undefined,
+          page: page || +params.get('page') || undefined,
           filters: params.get('filters') || undefined,
         })),
-        distinctUntilChanged(isEqual),
-
-        mergeMap(({ sorting, currentPage, filters }) => {
-          const acts = [
-            new actions.SetFilters({ id, filters: filters && b64u.toBase64(b64u.encode(filters)) }),
-            new actions.SetSorting({ id, sorting }),
-          ];
-          if (filters) {
-            return [
-              ...acts,
-              new LoadProductsForFilter({ id: { ...id, filters: b64u.toBase64(b64u.encode(filters)) } }),
-              new ApplyFilter({ searchParameter: b64u.toBase64(b64u.encode(filters)) }),
-            ];
-          } else {
-            switch (id.type) {
-              case 'category':
-                return [...acts, new LoadProductsForCategory({ categoryId: id.value, page: currentPage, sorting })];
-              case 'search':
-                return [...acts, new SearchProducts({ searchTerm: id.value, page: currentPage, sorting })];
-              default:
-                return acts;
-            }
-          }
-        })
+        distinctUntilChanged(isEqual)
       )
-    )
+    ),
+    debounce(({ id, sorting, page, filters }) =>
+      this.store.pipe(
+        select(getProductListingView, { ...id, sorting, filters }),
+        filter(view => view.empty() || !view.productsOfPage(page).length)
+      )
+    ),
+    mergeMap(({ id, sorting, page, filters }) => {
+      if (filters) {
+        const searchParameter = b64u.toBase64(b64u.encode(filters));
+        return [
+          new LoadProductsForFilter({ id: { ...id, filters }, searchParameter }),
+          new ApplyFilter({ searchParameter }),
+        ];
+      } else {
+        switch (id.type) {
+          case 'category':
+            return [new LoadProductsForCategory({ categoryId: id.value, page, sorting })];
+          case 'search':
+            return [new SearchProducts({ searchTerm: id.value, page, sorting })];
+          default:
+            return EMPTY;
+        }
+      }
+    })
   );
 }

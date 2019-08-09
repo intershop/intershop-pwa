@@ -116,7 +116,7 @@ export const getProductListingView = createSelector(
   getProductListingItemsPerPage,
   getProductListingSettings,
   (entities, itemsPerPage, settings, id: ProductListingID) => {
-    const currentSettings = settings[serializeProductListingID(id)] || {};
+    const currentSettings = settings[serializeProductListingID({ type: id.type, value: id.value })] || {};
     const serializedId = serializeProductListingID({ ...currentSettings, ...id });
     return entities && createView(entities[serializedId], itemsPerPage);
   }

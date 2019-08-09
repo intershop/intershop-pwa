@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
@@ -7,12 +6,10 @@ import { EMPTY } from 'rxjs';
 import {
   catchError,
   concatMap,
-  debounce,
   debounceTime,
   distinctUntilChanged,
   filter,
   map,
-  mapTo,
   switchMap,
   tap,
   withLatestFrom,
@@ -22,12 +19,7 @@ import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-stat
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
-import {
-  LoadMoreProducts,
-  SetProductListingPages,
-  getProductListingItemsPerPage,
-  getProductListingView,
-} from '../product-listing';
+import { LoadMoreProducts, SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
 import { LoadProductSuccess } from '../products';
 
 import {
@@ -46,10 +38,8 @@ export class SearchEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private httpStatusCodeService: HttpStatusCodeService,
-    private activatedRoute: ActivatedRoute
+    private httpStatusCodeService: HttpStatusCodeService
   ) {}
-
   /**
    * Effect that listens for search route changes and triggers a search action.
    */
@@ -59,36 +49,23 @@ export class SearchEffects {
     mapToParam<string>('searchTerm'),
     whenTruthy(),
     distinctUntilChanged(),
-    switchMap(searchTerm =>
-      this.activatedRoute.queryParamMap.pipe(
-        map(params => +params.get('page') || undefined),
-        distinctUntilChanged(),
-        switchMap(page =>
-          this.store.pipe(
-            select(getProductListingView, { type: 'search', value: searchTerm }),
-            filter(view => !view.productsOfPage(page).length),
-            mapTo(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page }))
-          )
-        )
-      )
-    )
+    map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } }))
   );
 
   @Effect()
   searchProducts$ = this.actions$.pipe(
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    debounce(() =>
+    mapToPayload(),
+    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+    withLatestFrom(
       this.store.pipe(
         select(getProductListingItemsPerPage),
         whenTruthy()
       )
     ),
-    mapToPayload(),
-    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-    withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
     concatMap(([{ searchTerm, page, sorting }, itemsPerPage]) =>
       this.productsService.searchProducts(searchTerm, page, itemsPerPage, sorting).pipe(
-        switchMap(({ total, products, sortKeys }) => [
+        concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
           new SearchProductsSuccess({ searchTerm }),
           new SetProductListingPages({

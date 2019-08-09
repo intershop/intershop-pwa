@@ -178,14 +178,15 @@ describe('Filter Effects', () => {
         id: {
           type: 'search',
           value: 'test',
-          filters: 'b',
+          filters: 'b*',
         },
+        searchParameter: 'b',
       });
       const completion = new SetProductListingPages({
         id: {
           type: 'search',
           value: 'test',
-          filters: 'b',
+          filters: 'b*',
         },
         1: ['123', '234'],
         itemCount: 2,

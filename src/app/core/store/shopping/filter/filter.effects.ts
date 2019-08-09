@@ -9,6 +9,7 @@ import { FilterService } from '../../../services/filter/filter.service';
 import { CategoriesActionTypes, getSelectedCategory } from '../categories';
 import { SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
 import { ProductListingID, ProductListingType } from '../product-listing/product-listing.reducer';
+import { LoadProductFail } from '../products';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 
 import * as filterActions from './filter.actions';
@@ -72,10 +73,11 @@ export class FilterEffects {
     ofType<filterActions.LoadProductsForFilter>(filterActions.FilterActionTypes.LoadProductsForFilter),
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
-    switchMap(([{ id }, itemsPerPage]) =>
-      this.filterService
-        .getProductSkusForFilter(id.filters)
-        .pipe(mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))]))
+    switchMap(([{ id, searchParameter }, itemsPerPage]) =>
+      this.filterService.getProductSkusForFilter(searchParameter).pipe(
+        mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))]),
+        mapErrorToAction(LoadProductFail)
+      )
     )
   );
 

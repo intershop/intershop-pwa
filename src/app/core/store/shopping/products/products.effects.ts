@@ -6,7 +6,6 @@ import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import {
   concatMap,
-  debounce,
   distinct,
   distinctUntilChanged,
   filter,
@@ -75,18 +74,17 @@ export class ProductsEffects {
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    debounce(() =>
+    mapToPayload(),
+    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+    withLatestFrom(
       this.store.pipe(
         select(getProductListingItemsPerPage),
         whenTruthy()
       )
     ),
-    mapToPayload(),
-    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-    withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
     concatMap(([{ categoryId, page, sorting }, itemsPerPage]) =>
       this.productsService.getCategoryProducts(categoryId, page, itemsPerPage, sorting).pipe(
-        switchMap(({ total, products, sortKeys }) => [
+        concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetProductListingPages({
             id: { type: 'category', value: categoryId, sorting },

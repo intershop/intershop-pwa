@@ -1,12 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   map,
   mapTo,
@@ -29,7 +27,7 @@ import {
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
-import { LoadMoreProducts, getProductListingView } from '../product-listing';
+import { LoadMoreProducts } from '../product-listing';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
@@ -41,8 +39,7 @@ export class CategoriesEffects {
     private store: Store<{}>,
     private categoryService: CategoriesService,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
-    private httpStatusCodeService: HttpStatusCodeService,
-    private activatedRoute: ActivatedRoute
+    private httpStatusCodeService: HttpStatusCodeService
   ) {}
 
   /**
@@ -142,38 +139,14 @@ export class CategoriesEffects {
     )
   );
 
-  /**
-   * Trigger {@link LoadProductsForCategory} if we are on a family page
-   * and the corresponding products were not yet loaded.
-   */
   @Effect()
-  productOrCategoryChanged$ = combineLatest([
-    this.store.pipe(
-      select(selectors.getSelectedCategory),
-      whenTruthy(),
-      distinctUntilKeyChanged('uniqueId')
-    ),
-    this.actions$.pipe(
-      ofRoute('category/:categoryUniqueId'),
-      mapToParam<string>('categoryUniqueId')
-    ),
-  ]).pipe(
-    filter(([category, categoryUniqueId]) => category.uniqueId === categoryUniqueId),
-    filter(([category]) => category && category.hasOnlineProducts),
-    map(([, categoryId]) => categoryId),
-    switchMap(categoryId =>
-      this.activatedRoute.queryParamMap.pipe(
-        map(params => +params.get('page') || undefined),
-        distinctUntilChanged(),
-        switchMap(page =>
-          this.store.pipe(
-            select(getProductListingView, { type: 'category', value: categoryId }),
-            filter(view => !view.productsOfPage(page).length),
-            mapTo(new LoadMoreProducts({ id: { type: 'category', value: categoryId }, page }))
-          )
-        )
-      )
-    )
+  productOrCategoryChanged$ = this.actions$.pipe(
+    ofRoute('category/:categoryUniqueId'),
+    mapToParam<string>('categoryUniqueId'),
+    switchMap(() => this.store.pipe(select(selectors.getSelectedCategory))),
+    whenTruthy(),
+    filter(cat => cat.hasOnlineProducts),
+    map(({ uniqueId }) => new LoadMoreProducts({ id: { type: 'category', value: uniqueId } }))
   );
 
   @Effect({ dispatch: false })
