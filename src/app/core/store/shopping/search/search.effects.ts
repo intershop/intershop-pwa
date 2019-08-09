@@ -15,6 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
@@ -38,7 +39,8 @@ export class SearchEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private productListingMapper: ProductListingMapper
   ) {}
   /**
    * Effect that listens for search route changes and triggers a search action.
@@ -68,12 +70,14 @@ export class SearchEffects {
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
           new SearchProductsSuccess({ searchTerm }),
-          new SetProductListingPages({
-            id: { type: 'search', value: searchTerm, sorting },
-            itemCount: total,
-            [page]: products.map(p => p.sku),
-            sortKeys,
-          }),
+          new SetProductListingPages(
+            this.productListingMapper.createPages(products.map(p => p.sku), 'search', searchTerm, {
+              startPage: page,
+              sorting,
+              sortKeys,
+              itemCount: total,
+            })
+          ),
         ]),
         mapErrorToAction(SearchProductsFail)
       )

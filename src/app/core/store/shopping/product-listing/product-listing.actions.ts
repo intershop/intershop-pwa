@@ -1,8 +1,7 @@
 import { Action } from '@ngrx/store';
 
+import { ProductListingID, ProductListingType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-
-import { ProductListingID, ProductListingType } from './product-listing.reducer';
 
 export enum ProductListingActionTypes {
   SetProductListingPages = '[ProductListing] Set Product Listing Pages',

@@ -2,12 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { range } from 'lodash-es';
 
+import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as actions from './product-listing.actions';
-import { ProductListingView, getProductListingLoading, getProductListingView } from './product-listing.selectors';
+import { getProductListingLoading, getProductListingView } from './product-listing.selectors';
 
 describe('Product Listing Selectors', () => {
   const TEST_ID = { type: 'test', value: 'dummy' };
@@ -15,8 +16,8 @@ describe('Product Listing Selectors', () => {
 
   beforeEach(() => {
     expect.addSnapshotSerializer({
-      test: (val: ProductListingView) => val && typeof val.products === 'function',
-      print: (val: ProductListingView, serialize) =>
+      test: val => val && typeof val.products === 'function',
+      print: (val, serialize) =>
         serialize({
           'pageIndices()': val.pageIndices(),
           'products()': val.products(),

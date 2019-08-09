@@ -5,15 +5,14 @@ import { Observable, Subject } from 'rxjs';
 import { concatMap, map, take, takeUntil } from 'rxjs/operators';
 
 import { Category } from 'ish-core/models/category/category.model';
+import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import {
   LoadMoreProducts,
-  ProductListingView,
   getProductListingLoading,
   getProductListingView,
   getProductListingViewType,
 } from 'ish-core/store/shopping/product-listing';
-import { ProductListingID } from 'ish-core/store/shopping/product-listing/product-listing.reducer';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 @Component({

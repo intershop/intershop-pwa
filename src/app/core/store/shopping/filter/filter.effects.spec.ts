@@ -191,7 +191,6 @@ describe('Filter Effects', () => {
         1: ['123', '234'],
         itemCount: 2,
         sortKeys: [],
-        pages: [1],
       });
       actions$ = hot('        -a-b-|', { a: routing, b: action });
       const expected$ = cold('---c-|', { c: completion });

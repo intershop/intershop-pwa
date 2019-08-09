@@ -1,5 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
+import { ProductListingID, ProductListingType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { FilterActionTypes, FilterActions } from '../filter';
 import { ProductsAction, ProductsActionTypes } from '../products';
@@ -7,12 +8,13 @@ import { SearchAction, SearchActionTypes } from '../search';
 
 import { ProductListingAction, ProductListingActionTypes } from './product-listing.actions';
 
-export interface ProductListingID {
-  type: string;
-  value: string;
-  sorting?: string;
-  filters?: string;
+export function serializeProductListingID(id: ProductListingID) {
+  return `${id.type}@${id.value}@${id.filters || id.sorting}`;
 }
+
+export const adapter = createEntityAdapter<ProductListingType>({
+  selectId: item => serializeProductListingID(item.id),
+});
 
 /**
  * the state type of a product listing
@@ -28,22 +30,6 @@ export interface ProductListingID {
  * into the state in the same entity. The view supplied by the selector helps
  * retrieving all necessary properties through helper methods
  */
-export interface ProductListingType {
-  id: ProductListingID;
-  itemCount: number;
-  sortKeys: string[];
-  [page: number]: string[];
-  pages?: number[];
-}
-
-export function serializeProductListingID(id: ProductListingID) {
-  return `${id.type}@${id.value}@${id.filters || id.sorting}`;
-}
-
-export const adapter = createEntityAdapter<ProductListingType>({
-  selectId: item => serializeProductListingID(item.id),
-});
-
 export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
   itemsPerPage: number;
