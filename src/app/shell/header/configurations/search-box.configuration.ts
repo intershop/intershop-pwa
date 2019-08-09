@@ -2,7 +2,7 @@ export interface SearchBoxConfiguration {
   /**
    * id to support the multiple use on a page. does not have to be unique
    */
-  id: string;
+  id?: string;
   /**
    * text for search button on search box, icon is used if no text is provided
    */

@@ -12,6 +12,11 @@ export const getSearchTerm = createSelector(
   state => state.searchTerm
 );
 
+export const getCurrentSearchboxId = createSelector(
+  getSearchState,
+  state => state.currentSearchboxId
+);
+
 export const getSuggestSearchResults = createSelector(
   getSearchState,
   state => state.suggestSearchResults
