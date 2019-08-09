@@ -12,6 +12,7 @@ import { shoppingReducers } from '../../shopping/shopping-store.module';
 import { checkoutReducers } from '../checkout-store.module';
 
 import {
+  AddItemsToBasketSuccess,
   LoadBasket,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligiblePaymentMethodsFail,
@@ -26,6 +27,7 @@ import {
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
+  getBasketLastTimeProductAdded,
   getBasketLoading,
   getCurrentBasket,
   getCurrentBasketId,
@@ -53,8 +55,16 @@ describe('Basket Selectors', () => {
 
     it('should not select any shipping methods if it is in initial state', () => {
       expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+    });
+
+    it('should not select any payment methods if it is in initial state', () => {
+      expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+    });
+
+    it('should not select loading, error and lastTimeProductAdded if it is in initial state', () => {
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getBasketError(store$.state)).toBeUndefined();
+      expect(getBasketLastTimeProductAdded(store$.state)).toBeUndefined();
     });
   });
 
@@ -190,6 +200,20 @@ describe('Basket Selectors', () => {
         expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
         expect(getBasketError(store$.state)).toEqual({ message: 'error' });
       });
+    });
+  });
+
+  describe('loading last time a product has been added to basket', () => {
+    beforeEach(() => {
+      store$.dispatch(new AddItemsToBasketSuccess());
+    });
+
+    it('should get the last time when a product was added', () => {
+      const firstTimeAdded = new Date(getBasketLastTimeProductAdded(store$.state));
+
+      expect(firstTimeAdded).toBeDate();
+      store$.dispatch(new AddItemsToBasketSuccess());
+      expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
     });
   });
 });
