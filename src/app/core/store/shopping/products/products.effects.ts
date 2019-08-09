@@ -19,6 +19,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
@@ -44,7 +45,8 @@ export class ProductsEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private router: Router,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private productListingMapper: ProductListingMapper
   ) {}
 
   @Effect()
@@ -86,12 +88,14 @@ export class ProductsEffects {
       this.productsService.getCategoryProducts(categoryId, page, itemsPerPage, sorting).pipe(
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
-          new SetProductListingPages({
-            id: { type: 'category', value: categoryId, sorting },
-            itemCount: total,
-            [page]: products.map(p => p.sku),
-            sortKeys,
-          }),
+          new SetProductListingPages(
+            this.productListingMapper.createPages(products.map(p => p.sku), 'category', categoryId, {
+              startPage: page,
+              sortKeys,
+              sorting,
+              itemCount: total,
+            })
+          ),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )

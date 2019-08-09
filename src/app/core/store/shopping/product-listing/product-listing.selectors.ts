@@ -2,9 +2,14 @@ import { createSelector } from '@ngrx/store';
 import { flatten, memoize, once, range } from 'lodash-es';
 import { identity } from 'rxjs';
 
+import {
+  ProductListingID,
+  ProductListingType,
+  ProductListingView,
+} from 'ish-core/models/product-listing/product-listing.model';
 import { getShoppingState } from '../shopping-store';
 
-import { ProductListingID, ProductListingType, adapter, serializeProductListingID } from './product-listing.reducer';
+import { adapter, serializeProductListingID } from './product-listing.reducer';
 
 const getProductListingState = createSelector(
   getShoppingState,
@@ -32,19 +37,6 @@ export const getProductListingSettings = createSelector(
 );
 
 const { selectEntities: getProductListingEntites } = adapter.getSelectors(getProductListingState);
-
-export interface ProductListingView {
-  itemCount: number;
-  sortKeys: string[];
-  lastPage: number;
-  products(): string[];
-  productsOfPage(page: number): string[];
-  nextPage(): number;
-  previousPage(): number;
-  pageIndices(currentPage?: number): { value: number; display: string }[];
-  allPagesAvailable(): boolean;
-  empty(): boolean;
-}
 
 function mergeAllPages(data: ProductListingType) {
   return flatten(data.pages.map(page => data[page]));

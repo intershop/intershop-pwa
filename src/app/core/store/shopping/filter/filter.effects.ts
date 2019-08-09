@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { range } from 'lodash-es';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { FilterService } from '../../../services/filter/filter.service';
 import { CategoriesActionTypes, getSelectedCategory } from '../categories';
-import { SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
-import { ProductListingID, ProductListingType } from '../product-listing/product-listing.reducer';
+import { SetProductListingPages } from '../product-listing';
 import { LoadProductFail } from '../products';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 
@@ -16,7 +15,12 @@ import * as filterActions from './filter.actions';
 
 @Injectable()
 export class FilterEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private filterService: FilterService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store<{}>,
+    private filterService: FilterService,
+    private productListingMapper: ProductListingMapper
+  ) {}
 
   @Effect()
   loadAvailableFilterForCategories$ = this.actions$.pipe(
@@ -72,25 +76,15 @@ export class FilterEffects {
   loadFilteredProducts$ = this.actions$.pipe(
     ofType<filterActions.LoadProductsForFilter>(filterActions.FilterActionTypes.LoadProductsForFilter),
     mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getProductListingItemsPerPage))),
-    switchMap(([{ id, searchParameter }, itemsPerPage]) =>
+    switchMap(({ id, searchParameter }) =>
       this.filterService.getProductSkusForFilter(searchParameter).pipe(
-        mergeMap(newProducts => [new SetProductListingPages(this.constructPages(newProducts, id, itemsPerPage))]),
+        mergeMap(newProducts => [
+          new SetProductListingPages(
+            this.productListingMapper.createPages(newProducts, id.type, id.value, { filters: id.filters })
+          ),
+        ]),
         mapErrorToAction(LoadProductFail)
       )
     )
   );
-
-  constructPages(products: string[], id: ProductListingID, itemsPerPage: number): ProductListingType {
-    const pages = range(0, Math.ceil(products.length / itemsPerPage)).map(n =>
-      products.slice(n * itemsPerPage, (n + 1) * itemsPerPage)
-    );
-    return {
-      id,
-      itemCount: products.length,
-      sortKeys: [],
-      ...pages.reduce((acc, val, idx) => ({ ...acc, [idx + 1]: val }), {}),
-      pages: pages.map((_, idx) => idx + 1),
-    };
-  }
 }
