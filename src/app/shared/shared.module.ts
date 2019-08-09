@@ -30,6 +30,7 @@ import { BasketPromotionContainerComponent } from './basket/containers/basket-pr
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
+import { CMSDialogComponent } from './cms/components/cms-dialog/cms-dialog.component';
 import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
@@ -46,6 +47,7 @@ import { AccordionComponent } from './common/components/accordion/accordion.comp
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
 import { InfoBoxComponent } from './common/components/info-box/info-box.component';
 import { LoadingComponent } from './common/components/loading/loading.component';
+import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
 import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
@@ -111,6 +113,7 @@ const declaredComponents = [
   BasketPromotionComponent,
   CMSCarouselComponent,
   CMSContainerComponent,
+  CMSDialogComponent,
   CMSFreestyleComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
@@ -156,6 +159,7 @@ const exportedComponents = [
   LineItemListComponent,
   LoadingComponent,
   ModalDialogComponent,
+  ModalDialogLinkComponent,
   OrderListContainerComponent,
   OrderWidgetComponent,
   ProductAddToBasketComponent,
@@ -184,6 +188,7 @@ const exportedComponents = [
   entryComponents: [
     CMSCarouselComponent,
     CMSContainerComponent,
+    CMSDialogComponent,
     CMSFreestyleComponent,
     CMSImageComponent,
     CMSImageEnhancedComponent,

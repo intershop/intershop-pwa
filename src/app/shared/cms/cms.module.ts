@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { CMSCarouselComponent } from './components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
+import { CMSDialogComponent } from './components/cms-dialog/cms-dialog.component';
 import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
@@ -92,6 +93,14 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
       useValue: {
         definitionQualifiedName: 'app_sf_responsive_cm:pagevariant.standard.pagelet2-Pagevariant',
         class: CMSStandardPageComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.common.dialog.pagelet2-Component',
+        class: CMSDialogComponent,
       },
       multi: true,
     },

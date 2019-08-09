@@ -16,6 +16,8 @@ import { CustomerAddressFormComponent } from '../../../../shared/address-forms/c
 import { AddressComponent } from '../../../../shared/address/components/address/address.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
@@ -39,8 +41,10 @@ describe('Checkout Address Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(ContentIncludeContainerComponent),
         MockComponent(CustomerAddressFormComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(ModalDialogLinkComponent),
       ],
       imports: [
         FormsSharedModule,

@@ -10,7 +10,8 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { LazyBasketAddToQuoteComponent } from '../../../../extensions/quoting/exports/basket/components/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -24,9 +25,10 @@ describe('Shopping Basket Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(ContentIncludeContainerComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LineItemListComponent),
-        MockComponent(ModalDialogComponent),
+        MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,
       ],
       imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
