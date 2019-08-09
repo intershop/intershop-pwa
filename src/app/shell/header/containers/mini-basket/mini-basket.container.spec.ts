@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -15,6 +16,7 @@ describe('Mini Basket Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MiniBasketContainerComponent, MockComponent(MiniBasketComponent)],
+      imports: [RouterTestingModule],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })
       .compileComponents()

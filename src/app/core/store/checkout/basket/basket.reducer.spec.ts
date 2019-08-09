@@ -120,6 +120,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
+        expect(state.lastTimeProductAdded).toBeUndefined();
       });
     });
 
@@ -141,6 +142,7 @@ describe('Basket Reducer', () => {
 
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
+        expect(state.lastTimeProductAdded).toBeDate();
       });
     });
   });
