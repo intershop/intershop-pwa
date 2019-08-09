@@ -15,11 +15,12 @@
         | translate: { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
     }}
   </ng-template>
-  <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{
-    'product.ready_for_shipment.detail.text' | translate
-  }}</a>
+  <!-- details link and dialog -->
+  <ish-modal-dialog-link
+    linkText="product.ready_for_shipment.detail.text"
+    [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate }"
+    [ngClass]="'details-link'"
+  >
+    <ish-content-include includeId="systeminclude.dialog.readyForShipment.pagelet2-Include"></ish-content-include>
+  </ish-modal-dialog-link>
 </div>
-
-<ish-modal-dialog #modalDialog [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate }">
-  <div [innerHTML]="'shopping.product.readyforshipment.details.text' | translate"></div>
-</ish-modal-dialog>

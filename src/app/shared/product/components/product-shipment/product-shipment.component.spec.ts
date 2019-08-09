@@ -2,9 +2,11 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
+import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { ProductShipmentComponent } from './product-shipment.component';
 
@@ -18,7 +20,11 @@ describe('Product Shipment Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbModalModule, TranslateModule.forRoot()],
-      declarations: [ModalDialogComponent, ProductShipmentComponent],
+      declarations: [
+        MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ModalDialogLinkComponent),
+        ProductShipmentComponent,
+      ],
     }).compileComponents();
   }));
 
