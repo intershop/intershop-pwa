@@ -17,7 +17,7 @@ export const environment: Environment = {
   mockServerAPI: true,
 
   /* FEATURE TOOGLES */
-  features: ['compare', 'recently', 'experimental'],
+  features: ['compare', 'recently', 'rating', 'experimental'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

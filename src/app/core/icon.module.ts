@@ -71,13 +71,9 @@ export class IconModule {
       faTh,
       faTimes,
       faTrashAlt,
-<<<<<<< HEAD
-      faUser
-=======
       faUser,
       faStar,
       faStarHalf
->>>>>>> ISREST-817: create product rating star component
     );
   }
 }
