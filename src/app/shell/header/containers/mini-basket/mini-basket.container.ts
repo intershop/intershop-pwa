@@ -1,9 +1,11 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, concat, of, timer } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, switchMap } from 'rxjs/operators';
+import { Observable, Subject, concat, of, timer } from 'rxjs';
+import { distinctUntilChanged, mapTo, switchMap } from 'rxjs/operators';
 
-import { getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { getBasketLastTimeProductAdded, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-mini-basket-container',
@@ -15,15 +17,19 @@ export class MiniBasketContainerComponent implements OnInit {
   basketAnimation$: Observable<string>;
 
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
-  constructor(private store: Store<{}>) {}
+
+  private destroy$ = new Subject();
+
+  constructor(private store: Store<{}>, private location: Location) {}
 
   ngOnInit() {
-    this.basketAnimation$ = this.store.pipe(
-      select(getCurrentBasket),
-      map(basket => (basket && basket.lineItems ? basket.totalProductQuantity : 0)),
-      distinctUntilChanged(),
-      filter(count => count !== 0),
-      switchMap(() => concat(of('tada'), timer(2000).pipe(mapTo(''))))
-    );
+    if (this.location.path() !== '/basket') {
+      this.basketAnimation$ = this.store.pipe(
+        select(getBasketLastTimeProductAdded),
+        whenTruthy(),
+        distinctUntilChanged(),
+        switchMap(() => concat(of('tada'), timer(2500).pipe(mapTo(''))))
+      );
+    }
   }
 }

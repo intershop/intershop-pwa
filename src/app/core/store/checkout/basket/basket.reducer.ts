@@ -12,6 +12,7 @@ export interface BasketState {
   eligiblePaymentMethods: PaymentMethod[];
   loading: boolean;
   error: HttpError; // add, update and delete errors
+  lastTimeProductAdded: Date;
 }
 
 export const initialState: BasketState = {
@@ -20,6 +21,7 @@ export const initialState: BasketState = {
   eligiblePaymentMethods: [],
   loading: false,
   error: undefined,
+  lastTimeProductAdded: undefined,
 };
 
 export function basketReducer(state = initialState, action: BasketAction | OrdersAction): BasketState {
@@ -67,7 +69,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         loading: false,
       };
     }
-    case BasketActionTypes.AddItemsToBasketSuccess:
+
     case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess:
@@ -79,6 +81,15 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         loading: false,
         error: undefined,
+      };
+    }
+
+    case BasketActionTypes.AddItemsToBasketSuccess: {
+      return {
+        ...state,
+        loading: false,
+        error: undefined,
+        lastTimeProductAdded: new Date(),
       };
     }
 

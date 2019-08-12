@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -71,7 +72,10 @@ describe('Mini Basket Component', () => {
   });
 
   it('should hold propper product count if loaded', () => {
-    component.ngOnChanges();
+    const changes: SimpleChanges = {
+      basket: new SimpleChange(undefined, basket, false),
+    };
+    component.ngOnChanges(changes);
     expect(component.itemCount).toBe(30);
   });
 

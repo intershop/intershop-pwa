@@ -26,6 +26,7 @@ import {
   faQuestionCircle,
   faSearch,
   faShoppingCart,
+  faSpinner,
   faTh,
   faTimes,
   faTrashAlt,
@@ -58,16 +59,17 @@ export class IconModule {
       faPaperPlane,
       faPencilAlt,
       faPhone,
+      faPlayCircle,
       faPlus,
       faPrint,
       faQuestionCircle,
       faSearch,
       faShoppingCart,
+      faSpinner,
       faTh,
       faTimes,
       faTrashAlt,
-      faUser,
-      faPlayCircle
+      faUser
     );
   }
 }
