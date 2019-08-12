@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { shoppingReducers } from '../shopping-store.module';
@@ -38,7 +37,7 @@ describe('Filter Selectors', () => {
 
   describe('with LoadFilterForCategory state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategory({ category: {} as Category }));
+      store$.dispatch(new LoadFilterForCategory({ uniqueId: 'dummy' }));
     });
 
     it('should set the state to loading', () => {

@@ -78,38 +78,44 @@ function calculatePageIndices(currentPage: number, itemCount: number, itemsPerPa
   ];
 }
 
-const createView = memoize(
-  (data, itemsPerPage): ProductListingView => {
-    const lastPage = data ? data.pages[data.pages.length - 1] : NaN;
-    const firstPage = (data && data.pages && data.pages[0]) || NaN;
-    return {
-      products: once(() => (data ? mergeAllPages(data) : [])),
-      productsOfPage: memoize(page => (data && data[page || 1]) || [], identity),
-      nextPage: once(() => (data ? (lastPage * itemsPerPage < data.itemCount && lastPage + 1) || undefined : 1)),
-      previousPage: once(() => (data && firstPage !== 1 ? firstPage - 1 : undefined)),
-      lastPage,
-      itemCount: data ? data.itemCount : 0,
-      sortKeys: data ? data.sortKeys : [],
-      pageIndices: memoize(
-        (currentPage?) => (data ? calculatePageIndices(currentPage || lastPage, data.itemCount, itemsPerPage) : []),
-        identity
-      ),
-      allPagesAvailable: once(() =>
-        !data ? false : range(1, Math.ceil(data.itemCount / itemsPerPage) + 1).every(idx => !!data[idx])
-      ),
-      empty: () => !data || data.pages.length === 0,
-    };
-  },
-  (data: ProductListingType) => data
-);
+const createView = (data, itemsPerPage): ProductListingView => {
+  const lastPage = data ? data.pages[data.pages.length - 1] : NaN;
+  const firstPage = (data && data.pages && data.pages[0]) || NaN;
+  return {
+    products: once(() => (data ? mergeAllPages(data) : [])),
+    productsOfPage: memoize(page => (data && data[page || 1]) || [], identity),
+    nextPage: once(() => (data ? (lastPage * itemsPerPage < data.itemCount && lastPage + 1) || undefined : 1)),
+    previousPage: once(() => (data && firstPage !== 1 ? firstPage - 1 : undefined)),
+    lastPage,
+    itemCount: data ? data.itemCount : 0,
+    sortKeys: data ? data.sortKeys : [],
+    pageIndices: memoize(
+      (currentPage?) => (data ? calculatePageIndices(currentPage || lastPage, data.itemCount, itemsPerPage) : []),
+      identity
+    ),
+    allPagesAvailable: once(() =>
+      !data ? false : range(1, Math.ceil(data.itemCount / itemsPerPage) + 1).every(idx => !!data[idx])
+    ),
+    empty: () => !data || data.pages.length === 0,
+  };
+};
+
+function calculateLookUpID(id: ProductListingID, settings: Pick<ProductListingID, 'filters' | 'sorting'>) {
+  const currentSettings = settings[serializeProductListingID({ type: id.type, value: id.value })] || {};
+  return serializeProductListingID({ ...currentSettings, ...id });
+}
 
 export const getProductListingView = createSelector(
   getProductListingEntites,
   getProductListingItemsPerPage,
   getProductListingSettings,
-  (entities, itemsPerPage, settings, id: ProductListingID) => {
-    const currentSettings = settings[serializeProductListingID({ type: id.type, value: id.value })] || {};
-    const serializedId = serializeProductListingID({ ...currentSettings, ...id });
-    return entities && createView(entities[serializedId], itemsPerPage);
-  }
+  memoize(
+    (entities, itemsPerPage, settings, id) =>
+      entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage),
+    (entities, _, settings, id: ProductListingID) =>
+      JSON.stringify([
+        entities[calculateLookUpID(id, settings)],
+        settings[serializeProductListingID({ type: id.type, value: id.value })],
+      ])
+  )
 );

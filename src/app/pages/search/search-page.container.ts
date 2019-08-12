@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { debounce, map, switchMap } from 'rxjs/operators';
 
-import { getProductListingView } from 'ish-core/store/shopping/product-listing';
-import { getSearchLoading, getSearchTerm } from 'ish-core/store/shopping/search';
+import { getProductListingLoading, getProductListingView } from 'ish-core/store/shopping/product-listing';
+import { getSearchTerm } from 'ish-core/store/shopping/search';
+import { whenFalsy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-search-page-container',
@@ -13,6 +14,12 @@ import { getSearchLoading, getSearchTerm } from 'ish-core/store/shopping/search'
 export class SearchPageContainerComponent {
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   numberOfItems$ = this.searchTerm$.pipe(
+    debounce(() =>
+      this.store.pipe(
+        select(getProductListingLoading),
+        whenFalsy()
+      )
+    ),
     switchMap(term =>
       this.store.pipe(
         select(getProductListingView, { type: 'search', value: term }),
@@ -20,10 +27,7 @@ export class SearchPageContainerComponent {
       )
     )
   );
-  searchLoading$ = this.store.pipe(
-    select(getSearchLoading),
-    debounceTime(500)
-  );
+  searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   constructor(private store: Store<{}>) {}
 }

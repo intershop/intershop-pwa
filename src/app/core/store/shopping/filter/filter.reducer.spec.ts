@@ -1,4 +1,3 @@
-import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 
@@ -17,7 +16,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterForCategory', () => {
     it('should change state to loading when reduced', () => {
-      const action = new fromActions.LoadFilterForCategory({ category: {} as Category });
+      const action = new fromActions.LoadFilterForCategory({ uniqueId: 'dummy' });
       const state = filterReducer(initialState, action);
 
       expect(state.loading).toBeTrue();

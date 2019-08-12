@@ -6,6 +6,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 export enum ProductListingActionTypes {
   SetProductListingPages = '[ProductListing] Set Product Listing Pages',
   LoadMoreProducts = '[ProductListing] Load More Products',
+  LoadMoreProductsForParams = '[ProductListing Internal] Load More Products For Params',
   SetProductListingPageSize = '[ProductListing] Set Product Listing Page Size',
   SetViewType = '[ProductListing] Set View Type',
 }
@@ -25,9 +26,19 @@ export class LoadMoreProducts implements Action {
   constructor(public payload: { id: ProductListingID; page?: number }) {}
 }
 
+export class LoadMoreProductsForParams implements Action {
+  readonly type = ProductListingActionTypes.LoadMoreProductsForParams;
+  constructor(public payload: { id: ProductListingID; page: number; sorting: string; filters: string }) {}
+}
+
 export class SetViewType implements Action {
   readonly type = ProductListingActionTypes.SetViewType;
   constructor(public payload: { viewType: ViewType }) {}
 }
 
-export type ProductListingAction = SetProductListingPages | LoadMoreProducts | SetProductListingPageSize | SetViewType;
+export type ProductListingAction =
+  | SetProductListingPages
+  | LoadMoreProducts
+  | LoadMoreProductsForParams
+  | SetProductListingPageSize
+  | SetViewType;

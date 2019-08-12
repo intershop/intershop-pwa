@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { Category } from '../../models/category/category.model';
 import { FilterNavigationData } from '../../models/filter-navigation/filter-navigation.interface';
 import { ApiService } from '../api/api.service';
 
@@ -41,7 +40,7 @@ describe('Filter Service', () => {
 
   it("should get Filter data when 'getFilterForCategory' is called", done => {
     when(apiService.get('filters', anything())).thenReturn(of(filterMock as FilterNavigationData));
-    filterService.getFilterForCategory({ name: 'a', uniqueId: 'A.B' } as Category).subscribe(data => {
+    filterService.getFilterForCategory('A.B').subscribe(data => {
       expect(data.filter).toHaveLength(1);
       expect(data.filter[0].facets).toHaveLength(2);
       expect(data.filter[0].facets[0].name).toEqual('a');

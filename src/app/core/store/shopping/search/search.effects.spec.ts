@@ -23,7 +23,7 @@ import { LoadMoreProducts, SetProductListingPageSize } from '../product-listing'
 import { ProductListingEffects } from '../product-listing/product-listing.effects';
 import { shoppingReducers } from '../shopping-store.module';
 
-import { SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
+import { SearchProducts, SearchProductsFail, SelectSearchTerm, SuggestSearch } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -80,13 +80,24 @@ describe('Search Effects', () => {
       store.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
     });
 
-    describe('triggerSearch$', () => {
+    describe('listenToRouteForSearchTerm$', () => {
       it('should trigger action if search URL is matched', () => {
         const action = new RouteNavigation({
           path: 'search/:searchTerm',
           params: { searchTerm: 'dummy' },
           queryParams: [],
         });
+        actions$ = hot('a', { a: action });
+
+        expect(effects.listenToRouteForSearchTerm$).toBeObservable(
+          cold('a', { a: new SelectSearchTerm({ searchTerm: 'dummy' }) })
+        );
+      });
+    });
+
+    describe('triggerSearch$', () => {
+      it('should trigger action if search URL is matched', () => {
+        const action = new SelectSearchTerm({ searchTerm: 'dummy' });
         actions$ = hot('a', { a: action });
 
         expect(effects.triggerSearch$).toBeObservable(

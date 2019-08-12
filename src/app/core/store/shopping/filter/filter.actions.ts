@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
-import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 
@@ -19,7 +18,7 @@ export enum FilterActionTypes {
 
 export class LoadFilterForCategory implements Action {
   readonly type = FilterActionTypes.LoadFilterForCategory;
-  constructor(public payload: { category: Category }) {}
+  constructor(public payload: { uniqueId: string }) {}
 }
 
 export class LoadFilterSuccess implements Action {

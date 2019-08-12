@@ -27,7 +27,7 @@ import {
   SearchActionTypes,
   SearchProducts,
   SearchProductsFail,
-  SearchProductsSuccess,
+  SelectSearchTerm,
   SuggestSearch,
   SuggestSearchSuccess,
 } from './search.actions';
@@ -42,13 +42,26 @@ export class SearchEffects {
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper
   ) {}
+
+  /**
+   * Effect that listens for search route changes and triggers a search action.
+   */
+  @Effect()
+  listenToRouteForSearchTerm$ = this.actions$.pipe(
+    ofRoute('search/:searchTerm'),
+    mapToParam<string>('searchTerm'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    map(searchTerm => new SelectSearchTerm({ searchTerm }))
+  );
+
   /**
    * Effect that listens for search route changes and triggers a search action.
    */
   @Effect()
   triggerSearch$ = this.actions$.pipe(
-    ofRoute('search/:searchTerm'),
-    mapToParam<string>('searchTerm'),
+    ofType<SelectSearchTerm>(SearchActionTypes.SelectSearchTerm),
+    mapToPayloadProperty('searchTerm'),
     whenTruthy(),
     distinctUntilChanged(),
     map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } }))
@@ -69,7 +82,6 @@ export class SearchEffects {
       this.productsService.searchProducts(searchTerm, page, itemsPerPage, sorting).pipe(
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
-          new SearchProductsSuccess({ searchTerm }),
           new SetProductListingPages(
             this.productListingMapper.createPages(products.map(p => p.sku), 'search', searchTerm, {
               startPage: page,
