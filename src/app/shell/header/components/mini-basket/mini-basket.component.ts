@@ -1,5 +1,13 @@
 import { AnimationBuilder, animate, style } from '@angular/animations';
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 
@@ -34,12 +42,26 @@ export class MiniBasketComponent implements OnChanges {
 
   constructor(private animationBuilder: AnimationBuilder) {}
 
-  ngOnChanges() {
+  ngOnChanges(c: SimpleChanges) {
+    this.animateBasket(c);
     if (this.basket) {
       this.itemCount = this.basket.totalProductQuantity;
     } else {
       this.resetScroller();
       this.itemCount = 0;
+    }
+  }
+
+  /**
+   * Animate Basket after the product line item count has changed
+   */
+  animateBasket(c: SimpleChanges) {
+    if (c && c.basketAnimation) {
+      if (this.basketAnimation && c.basketAnimation.currentValue === 'tada') {
+        this.open();
+      } else {
+        this.collapse();
+      }
     }
   }
 
