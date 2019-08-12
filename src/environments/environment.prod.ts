@@ -11,7 +11,7 @@ export const environment: Environment = {
   // icmApplication: 'pwa',
 
   /* FEATURE TOOGLES */
-  features: ['compare', 'recently'],
+  features: ['compare', 'recently', 'rating'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

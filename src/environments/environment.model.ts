@@ -18,6 +18,7 @@ export interface Environment {
   features: (
     | 'compare'
     | 'recently'
+    | 'rating'
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'quoting'
