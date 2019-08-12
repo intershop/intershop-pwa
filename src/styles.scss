@@ -18,5 +18,8 @@
 // import bootstrap styles for toasts
 @import 'node_modules/ngx-toastr/toastr-bs4-alert';
 
+// import default theme for swiper
+@import '~swiper/dist/css/swiper.min.css';
+
 // import theme customizations
 @import 'theme/main';

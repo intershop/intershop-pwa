@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product, ProductCompletenessLevel, SkuQuantityType } from '../../../models/product/product.model';
 
@@ -17,6 +18,9 @@ export enum ProductsActionTypes {
   LoadProductVariationsFail = '[Shopping] Load Product Variations Fail',
   LoadProductVariationsSuccess = '[Shopping] Load Product Variations Success',
   LoadRetailSetSuccess = '[Shopping] Load Retail Set Success',
+  LoadProductLinks = '[Shopping] Load Product Links',
+  LoadProductLinksFail = '[Shopping] Load Product Links Fail',
+  LoadProductLinksSuccess = '[Shopping] Load Product Links Success',
 }
 
 export class SelectProduct implements Action {
@@ -83,6 +87,21 @@ export class LoadRetailSetSuccess implements Action {
   constructor(public payload: { sku: string; parts: string[] }) {}
 }
 
+export class LoadProductLinks implements Action {
+  readonly type = ProductsActionTypes.LoadProductLinks;
+  constructor(public payload: { sku: string }) {}
+}
+
+export class LoadProductLinksFail implements Action {
+  readonly type = ProductsActionTypes.LoadProductLinksFail;
+  constructor(public payload: { error: HttpError; sku: string }) {}
+}
+
+export class LoadProductLinksSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadProductLinksSuccess;
+  constructor(public payload: { sku: string; links: ProductLinks }) {}
+}
+
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
@@ -95,4 +114,7 @@ export type ProductsAction =
   | LoadProductVariations
   | LoadProductVariationsFail
   | LoadProductVariationsSuccess
-  | LoadRetailSetSuccess;
+  | LoadRetailSetSuccess
+  | LoadProductLinks
+  | LoadProductLinksFail
+  | LoadProductLinksSuccess;

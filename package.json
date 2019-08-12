@@ -83,6 +83,7 @@
     "ng2-validation": "^4.2.0",
     "ngrx-store-localstorage": "^5.1.1",
     "ngx-infinite-scroll": "^7.0.1",
+    "ngx-swiper-wrapper": "^8.0.2",
     "ngx-toastr": "^10.0.4",
     "rxjs": "^6.5.2",
     "ts-loader": "5.3.2",

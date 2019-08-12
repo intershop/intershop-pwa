@@ -2627,5 +2627,14 @@
   "compare.message.add.text": "{{0}} has been added to the compare list.",
   "compare.message.delete.text": "{{0}} has been deleted from the compare list.",
   "product.add_to_basket.message.add.text": "{{0}} has been added to the shopping cart.",
-  "common.button.spinning.label": "Adding..."
+  "common.button.spinning.label": "Adding...",
+  "product.product_links.accessory.title": "Accessories",
+  "product.product_links.crossselling.title": "You may also like",
+  "product.product_links.differentorderunit.title": "Different Order Unit",
+  "product.product_links.followup.title": "Follow-Up",
+  "product.product_links.other.title": "Featured",
+  "product.product_links.replacement.title": "Replacement",
+  "product.product_links.spareparts.title": "Spare Parts",
+  "product.product_links.upselling.title": "Alternatives",
+  "product.product_links.quantity.label": "Quantity"
 }

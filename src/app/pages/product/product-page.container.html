@@ -15,11 +15,13 @@
         (productToCompare)="addToCompare($event)"
         (selectVariation)="variationSelected($event, product)"
       ></ish-product-detail>
+
       <ish-product-bundle-parts
         *ngIf="isProductBundle(product)"
         [product]="product"
         (productToBasket)="addToBasket()"
       ></ish-product-bundle-parts>
+
       <ish-retail-set-parts
         *ngIf="isRetailSet(product)"
         [product]="product"
@@ -27,6 +29,8 @@
         (partsChange)="retailSetParts$.next($event)"
         (productToBasket)="addToBasket()"
       ></ish-retail-set-parts>
+
+      <ish-product-links-container [sku]="product.sku"></ish-product-links-container>
     </ng-container>
   </ng-template>
 </div>
