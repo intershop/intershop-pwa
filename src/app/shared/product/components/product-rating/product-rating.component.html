@@ -1,0 +1,6 @@
+<div>
+  <ng-container *ngFor="let i of stars">
+    <ish-product-rating-star [filled]="getStarFilledState(i + 1)" [lastStar]="i === 4"></ish-product-rating-star>
+  </ng-container>
+  <span class="product-info ml-1">({{ product.roundedAverageRating }})</span>
+</div>
