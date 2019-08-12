@@ -7,8 +7,8 @@ export interface ProductListingID {
 
 export interface ProductListingType {
   id: ProductListingID;
-  itemCount: number;
-  sortKeys: string[];
+  itemCount?: number;
+  sortKeys?: string[];
   [page: number]: string[];
   pages?: number[];
 }

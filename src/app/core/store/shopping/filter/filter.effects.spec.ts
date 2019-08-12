@@ -7,14 +7,10 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
-import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { FilterService } from '../../../services/filter/filter.service';
-import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
 import { SetProductListingPageSize, SetProductListingPages } from '../product-listing';
-import { SearchProductsSuccess } from '../search';
 import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './filter.actions';
@@ -39,7 +35,7 @@ describe('Filter Effects', () => {
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
-      if (a.name === 'invalid') {
+      if (a === 'invalid') {
         return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
@@ -82,7 +78,7 @@ describe('Filter Effects', () => {
 
   describe('loadAvailableFilterForCategories$', () => {
     it('should call the filterService for LoadFilterForCategories action', done => {
-      const action = new fromActions.LoadFilterForCategory({ category: { name: 'c' } as Category });
+      const action = new fromActions.LoadFilterForCategory({ uniqueId: 'c' });
       actions$ = of(action);
 
       effects.loadAvailableFilterForCategories$.subscribe(() => {
@@ -92,7 +88,7 @@ describe('Filter Effects', () => {
     });
 
     it('should map to action of type LoadFilterSuccess', () => {
-      const action = new fromActions.LoadFilterForCategory({ category: { name: 'c' } as Category });
+      const action = new fromActions.LoadFilterForCategory({ uniqueId: 'c' });
       const completion = new fromActions.LoadFilterSuccess({ filterNavigation: filterNav });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -101,40 +97,12 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type LoadFilterFail', () => {
-      const action = new fromActions.LoadFilterForCategory({ category: { name: 'invalid' } as Category });
+      const action = new fromActions.LoadFilterForCategory({ uniqueId: 'invalid' });
       const completion = new fromActions.LoadFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadAvailableFilterForCategories$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadFilterIfCategoryWasSelected$', () => {
-    it('should trigger LoadFilterForCategory for SelectCategory action', done => {
-      const tree = categoryTree([
-        {
-          uniqueId: 'Cameras.Camcorder',
-          categoryPath: ['Cameras', 'Cameras.Camcorder'],
-        } as Category,
-        {
-          uniqueId: 'Cameras',
-          categoryPath: ['Cameras'],
-        } as Category,
-      ]);
-
-      store$.dispatch(new LoadCategorySuccess({ categories: tree }));
-      store$.dispatch(new SelectCategory({ categoryId: 'Cameras.Camcorder' }));
-
-      actions$ = of(new SelectedCategoryAvailable({ categoryId: 'Cameras.Camcorder' }));
-
-      effects.loadFilterIfCategoryWasSelected$.subscribe(action => {
-        expect(action).toMatchInlineSnapshot(`
-          [Shopping] Load Filter For Category:
-            category: {"uniqueId":"Cameras.Camcorder","categoryPath":[2]}
-        `);
-        done();
-      });
     });
   });
 
@@ -225,17 +193,6 @@ describe('Filter Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadFilterForSearch$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadFilterForSearchIfSearchSuccess$', () => {
-    it('should trigger LoadFilterForSearch for SearchProductsSuccess action', () => {
-      const action = new SearchProductsSuccess({ searchTerm: 'a' });
-
-      const completion = new fromActions.LoadFilterForSearch({ searchTerm: 'a' });
-      actions$ = hot('a', { a: action });
-      const expected$ = cold('c', { c: completion });
-      expect(effects.loadFilterForSearchIfSearchSuccess$).toBeObservable(expected$);
     });
   });
 });

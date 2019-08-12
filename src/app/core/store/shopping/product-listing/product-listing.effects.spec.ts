@@ -12,6 +12,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
+import { LoadMoreProducts } from './product-listing.actions';
 import { ProductListingEffects } from './product-listing.effects';
 import { getProductListingItemsPerPage, getProductListingViewType } from './product-listing.selectors';
 
@@ -68,6 +69,100 @@ describe('Product Listing Effects', () => {
       tick(500);
 
       expect(getProductListingViewType(store$.state)).toEqual('list');
+    }));
+  });
+
+  describe('action triggering without filters', () => {
+    beforeEach(fakeAsync(() => {
+      router.navigateByUrl('/some?sorting=name-asc');
+      tick(500);
+      store$.reset();
+    }));
+
+    it('should fire all necessary actions for search page', fakeAsync(() => {
+      store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: 'term' } }));
+
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [ProductListing] Load More Products:
+          id: {"type":"search","value":"term"}
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"search","value":"term"}
+          filters: undefined
+          sorting: "name-asc"
+          page: undefined
+        [Shopping] Search Products:
+          searchTerm: "term"
+          page: undefined
+          sorting: "name-asc"
+        [Shopping] Load Filter for Search:
+          searchTerm: "term"
+      `);
+    }));
+
+    it('should fire all necessary actions for family page', fakeAsync(() => {
+      store$.dispatch(new LoadMoreProducts({ id: { type: 'category', value: 'cat' } }));
+
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"cat"}
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"category","value":"cat"}
+          filters: undefined
+          sorting: "name-asc"
+          page: undefined
+        [Shopping] Load Products for Category:
+          categoryId: "cat"
+          page: undefined
+          sorting: "name-asc"
+        [Shopping] Load Filter For Category:
+          uniqueId: "cat"
+      `);
+    }));
+  });
+
+  describe('action triggering with filters', () => {
+    beforeEach(fakeAsync(() => {
+      router.navigateByUrl('/some?filters=blablubb');
+      tick(500);
+      store$.reset();
+    }));
+
+    it('should fire all necessary actions for search page', fakeAsync(() => {
+      store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: 'term' } }));
+
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [ProductListing] Load More Products:
+          id: {"type":"search","value":"term"}
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"search","value":"term"}
+          filters: "blablubb"
+          sorting: undefined
+          page: undefined
+        [Shopping] Load Products For Filter:
+          id: {"type":"search","value":"term","filters":"blablubb"}
+          searchParameter: "YmxhYmx1YmI="
+        [Shopping] Apply Filter:
+          searchParameter: "YmxhYmx1YmI="
+      `);
+    }));
+
+    it('should fire all necessary actions for family page', fakeAsync(() => {
+      store$.dispatch(new LoadMoreProducts({ id: { type: 'category', value: 'cat' } }));
+
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"cat"}
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"category","value":"cat"}
+          filters: "blablubb"
+          sorting: undefined
+          page: undefined
+        [Shopping] Load Products For Filter:
+          id: {"type":"category","value":"cat","filters":"blablubb"}
+          searchParameter: "YmxhYmx1YmI="
+        [Shopping] Apply Filter:
+          searchParameter: "YmxhYmx1YmI="
+      `);
     }));
   });
 });

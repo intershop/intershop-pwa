@@ -5,11 +5,9 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { SearchProductsSuccess } from 'ish-core/store/shopping/search';
+import { SelectSearchTerm } from 'ish-core/store/shopping/search';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
-import { ProductListPagingComponent } from '../../shared/product/components/product-list-paging/product-list-paging.component';
 
 import { SearchNoResultComponent } from './components/search-no-result/search-no-result.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
@@ -31,8 +29,6 @@ describe('Search Page Container', () => {
       ],
       declarations: [
         MockComponent(BreadcrumbComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(ProductListPagingComponent),
         MockComponent(SearchNoResultComponent),
         MockComponent(SearchResultComponent),
         SearchPageContainerComponent,
@@ -58,7 +54,7 @@ describe('Search Page Container', () => {
 
   it('should render search no result component if search has no results', () => {
     const newProducts = [];
-    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search' }));
+    store$.dispatch(new SelectSearchTerm({ searchTerm: 'search' }));
     store$.dispatch(
       new SetProductListingPages({
         id: { type: 'search', value: 'search' },
@@ -74,7 +70,7 @@ describe('Search Page Container', () => {
 
   it('should render search result component if search has results', () => {
     const newProducts = ['testSKU1', 'testSKU2'];
-    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search' }));
+    store$.dispatch(new SelectSearchTerm({ searchTerm: 'search' }));
     store$.dispatch(
       new SetProductListingPages({
         id: { type: 'search', value: 'search' },
