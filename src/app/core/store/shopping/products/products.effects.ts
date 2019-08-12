@@ -5,6 +5,7 @@ import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import {
+  distinct,
   distinctUntilChanged,
   exhaustMap,
   filter,
@@ -265,5 +266,30 @@ export class ProductsEffects {
   redirectIfErrorInCategoryProducts$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategoryFail),
     tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
+  );
+
+  @Effect()
+  loadProductLinks$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductLinks>(productsActions.ProductsActionTypes.LoadProductLinks),
+    mapToPayloadProperty('sku'),
+    distinct(),
+    mergeMap(sku =>
+      this.productsService.getProductLinks(sku).pipe(
+        map(links => new productsActions.LoadProductLinksSuccess({ sku, links })),
+        mapErrorToAction(productsActions.LoadProductLinksFail)
+      )
+    )
+  );
+
+  @Effect()
+  loadLinkedCategories$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductLinksSuccess>(productsActions.ProductsActionTypes.LoadProductLinksSuccess),
+    mapToPayloadProperty('links'),
+    map(links =>
+      Object.keys(links)
+        .reduce((acc, val) => [...acc, ...(links[val].categories || [])], [])
+        .filter((val, idx, arr) => arr.indexOf(val) === idx)
+    ),
+    mergeMap(ids => ids.map(categoryId => new LoadCategory({ categoryId })))
   );
 }

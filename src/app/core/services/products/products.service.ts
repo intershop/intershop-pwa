@@ -6,6 +6,7 @@ import { defaultIfEmpty, map } from 'rxjs/operators';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { Link } from 'ish-core/models/link/link.model';
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
@@ -160,6 +161,30 @@ export class ProductsService {
       unpackEnvelope<Link>(),
       map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
       defaultIfEmpty([])
+    );
+  }
+
+  getProductLinks(sku: string): Observable<ProductLinks> {
+    return this.apiService.get(`products/${sku}/links`).pipe(
+      unpackEnvelope<{ linkType: string; categoryLinks: Link[]; productLinks: Link[] }>(),
+      map(links =>
+        links.reduce(
+          (acc, link) => ({
+            ...acc,
+            [link.linkType]: {
+              products: !link.productLinks
+                ? []
+                : link.productLinks.map(pl => pl.uri).map(ProductMapper.parseSKUfromURI),
+              categories: !link.categoryLinks
+                ? []
+                : link.categoryLinks.map(cl =>
+                    cl.uri.split('/categories/')[1].replace('/', CategoryHelper.uniqueIdSeparator)
+                  ),
+            },
+          }),
+          {}
+        )
+      )
     );
   }
 }

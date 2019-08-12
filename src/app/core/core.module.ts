@@ -8,6 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 import { CookieLawModule } from 'angular2-cookie-law';
+import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ToastrModule } from 'ngx-toastr';
 
 import { ConfigurationModule } from './configuration.module';
@@ -20,6 +21,14 @@ import { StateManagementModule } from './state-management.module';
 export function translateFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
+
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+  direction: 'horizontal',
+  keyboard: true,
+  mousewheel: false,
+  navigation: true,
+  scrollbar: false,
+};
 @NgModule({
   imports: [
     BrowserCookiesModule.forRoot(),
@@ -48,6 +57,7 @@ export function translateFactory(http: HttpClient) {
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
+    { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG },
   ],
   // exports needed to use the CookieLaw module in the AppComponent
   exports: [CookieLawModule, TranslateModule],
