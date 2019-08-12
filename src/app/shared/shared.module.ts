@@ -76,6 +76,7 @@ import { ProductPriceComponent } from './product/components/product-price/produc
 import { ProductPromotionComponent } from './product/components/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRatingStarComponent } from './product/components/product-rating-star/product-rating-star.component';
+import { ProductRatingComponent } from './product/components/product-rating/product-rating.component';
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
@@ -178,6 +179,7 @@ const exportedComponents = [
   ProductPriceComponent,
   ProductPromotionContainerComponent,
   ProductQuantityComponent,
+  ProductRatingComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
