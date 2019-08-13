@@ -22,6 +22,11 @@
           "value": true
         },
         {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
           "name": "productMaster",
           "type": "Boolean",
           "value": false
@@ -30,11 +35,6 @@
           "name": "mastered",
           "type": "Boolean",
           "value": false
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
@@ -55,6 +55,11 @@
             "type": "Money",
             "value": 303.62
           }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
         },
         {
           "name": "availability",
@@ -93,6 +98,11 @@
           "value": true
         },
         {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
           "name": "productMaster",
           "type": "Boolean",
           "value": false
@@ -101,11 +111,6 @@
           "name": "mastered",
           "type": "Boolean",
           "value": false
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
@@ -126,6 +131,11 @@
             "type": "Money",
             "value": 129.85
           }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
         },
         {
           "name": "availability",
