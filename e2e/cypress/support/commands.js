@@ -38,22 +38,23 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
       newUrl += '?' + split[1];
     }
   }
+
+  cy.window().then(win => (win.angularStable = undefined));
+
+  originalFn(newUrl, { ...options, failOnStatusCode: false });
+
+  cy.get('ish-root', { timeout: 60000 }).should('be.hidden');
+
   return cy
     .window()
-    .then(win => (win.angularStable = undefined))
-    .then(() => originalFn(newUrl, { ...options, failOnStatusCode: false }))
+    .its('angularStable')
+    .should('be.true')
     .then(() =>
-      cy
-        .window()
-        .its('angularStable')
-        .should('be.true')
-        .then(() =>
-          cy.url().should(newUrl => {
-            const simplifiedUrl = url.replace(/[\/\?]/g, '.+').replace(' ', '.+');
-            const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
-            expect(newUrl).to.match(oldUrlRegex);
-          })
-        )
+      cy.url().should(newUrl => {
+        const simplifiedUrl = url.replace(/[\/\?]/g, '.+').replace(' ', '.+');
+        const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
+        expect(newUrl).to.match(oldUrlRegex);
+      })
     );
 });
 
