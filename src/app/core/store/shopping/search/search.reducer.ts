@@ -1,18 +1,31 @@
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 import { SearchAction, SearchActionTypes } from './search.actions';
 
-export interface SearchState {
-  searchTerm: string;
+export interface SuggestCacheType {
+  term: string;
   suggestSearchResults: SuggestTerm[];
-  currentSearchboxId: string;
 }
 
-export const initialState: SearchState = {
+export const searchCacheAdapter = createEntityAdapter<SuggestCacheType>({
+  selectId: search => search.term,
+});
+
+export interface SearchState extends EntityState<SuggestCacheType> {
+  searchTerm: string;
+  loading: boolean;
+  currentSearchboxId: string;
+  suggestSearchResults: SuggestTerm[];
+}
+
+export const initialState: SearchState = searchCacheAdapter.getInitialState({
   searchTerm: undefined,
-  suggestSearchResults: [],
+  loading: false,
   currentSearchboxId: undefined,
-};
+  suggestSearchResults: [],
+});
 
 export function searchReducer(state = initialState, action: SearchAction): SearchState {
   switch (action.type) {
@@ -31,10 +44,16 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
     }
 
     case SearchActionTypes.SuggestSearchSuccess: {
-      return {
-        ...state,
-        suggestSearchResults: action.payload.suggests,
-      };
+      return searchCacheAdapter.upsertOne(
+        {
+          term: action.payload.searchTerm,
+          suggestSearchResults: action.payload.suggests,
+        },
+        {
+          ...state,
+          suggestSearchResults: action.payload.suggests,
+        }
+      );
     }
   }
 

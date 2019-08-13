@@ -23,7 +23,13 @@ import { LoadMoreProducts, SetProductListingPageSize } from '../product-listing'
 import { ProductListingEffects } from '../product-listing/product-listing.effects';
 import { shoppingReducers } from '../shopping-store.module';
 
-import { SearchProducts, SearchProductsFail, SelectSearchTerm, SuggestSearch } from './search.actions';
+import {
+  SearchProducts,
+  SearchProductsFail,
+  SelectSearchTerm,
+  SuggestApiSearch,
+  SuggestSearch,
+} from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -213,7 +219,7 @@ describe('Search Effects', () => {
       it('should not fire action when error is encountered at service level', fakeAsync(() => {
         when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
+        store$.dispatch(new SuggestApiSearch({ searchTerm: 'good' }));
         tick(4000);
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
