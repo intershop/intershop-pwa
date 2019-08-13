@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
@@ -15,6 +16,7 @@ describe('Product Master Variations Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [
         MockComponent(FilterNavigationContainerComponent),
         MockComponent(ProductListContainerComponent),
@@ -38,8 +40,8 @@ describe('Product Master Variations Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <a id="variation-list-top"></a
       ><ish-filter-navigation
-        fragmentonrouting="variation-list-top"
-        ng-reflect-fragment-on-routing="variation-list-top"
+        orientation="horizontal"
+        ng-reflect-orientation="horizontal"
       ></ish-filter-navigation
       ><ish-product-list-container
         fragmentonrouting="variation-list-top"

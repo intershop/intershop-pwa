@@ -79,7 +79,7 @@ export class ProductMasterVariationsService {
     return {
       filter: Object.keys(groups).map(key => ({
         id: key,
-        displayType: 'dropdown',
+        displayType: 'checkbox',
         name: groups[key][0].name,
         facets: groups[key].map(val => this.createFacet(key, val, filters)),
       })),

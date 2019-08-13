@@ -1,0 +1,8 @@
+<div class="row justify-content-left" *ngIf="filterNavigation">
+  <div *ngFor="let element of filterNavigation.filter; trackBy: trackByFn" class="col-auto">
+    <ish-filter-dropdown-multiselect
+      [filterElement]="element"
+      (applyFilter)="applyFilter.emit($event)"
+    ></ish-filter-dropdown-multiselect>
+  </div>
+</div>

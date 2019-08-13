@@ -8,9 +8,9 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 import { LoadFilterSuccess } from 'ish-core/store/shopping/filter';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { FilterCheckboxComponent } from '../../components/filter-checkbox/filter-checkbox.component';
-import { FilterDropdownComponent } from '../../components/filter-dropdown/filter-dropdown.component';
-import { FilterSwatchImagesComponent } from '../../components/filter-swatch-images/filter-swatch-images.component';
+import { FilterNavigationBadgesComponent } from '../../components/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationHorizontalComponent } from '../../components/filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationSidebarComponent } from '../../components/filter-navigation-sidebar/filter-navigation-sidebar.component';
 
 import { FilterNavigationContainerComponent } from './filter-navigation.container';
 
@@ -30,9 +30,9 @@ describe('Filter Navigation Container', () => {
       ],
       declarations: [
         FilterNavigationContainerComponent,
-        MockComponent(FilterCheckboxComponent),
-        MockComponent(FilterDropdownComponent),
-        MockComponent(FilterSwatchImagesComponent),
+        MockComponent(FilterNavigationBadgesComponent),
+        MockComponent(FilterNavigationHorizontalComponent),
+        MockComponent(FilterNavigationSidebarComponent),
       ],
     }).compileComponents();
   }));
@@ -56,43 +56,29 @@ describe('Filter Navigation Container', () => {
     expect(findAllIshElements(element)).toBeEmpty();
   });
 
-  it('should display filter-dropdown if facet with displayType dropdown is present', () => {
+  it('should display sidebar component for default mode', () => {
     const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
-
     store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-dropdown']);
+
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-filter-navigation-sidebar",
+      ]
+    `);
   });
 
-  it('should display filter-checkbox if facet with displayType text_clear is present', () => {
-    const filterNavigation = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
-
+  it('should display horizontal components if set', () => {
+    const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
     store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
+    component.orientation = 'horizontal';
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
-  });
 
-  it('should display filter-swatch-images if facet with displayType swatch is present', () => {
-    const filterNavigation = { filter: [{ displayType: 'swatch' } as Filter] } as FilterNavigation;
-
-    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
-    fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-swatch-images']);
-  });
-
-  it('should display filter-checkbox if facet has no displayType set', () => {
-    const filterNavigation = { filter: [{} as Filter] } as FilterNavigation;
-
-    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
-    fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
-  });
-
-  it('should display filter-checkbox if facet has a typo in the displayType', () => {
-    const filterNavigation = { filter: [{ displayType: 'typo' } as Filter] } as FilterNavigation;
-
-    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
-    fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-filter-navigation-badges",
+        "ish-filter-navigation-horizontal",
+      ]
+    `);
   });
 });
