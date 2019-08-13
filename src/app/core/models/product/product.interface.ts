@@ -74,7 +74,6 @@ export interface ProductDataStub {
   attributes: Attribute[];
   description: string;
   title: string;
-  defaultCategory?: CategoryData;
 }
 
 export interface ProductVariationLink extends Link {

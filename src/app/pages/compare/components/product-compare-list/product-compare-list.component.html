@@ -60,13 +60,12 @@
           </td>
         </tr>
 
-        <!-- TODO: Ratings
-        <tr>
-          <th>{{'product.compare.ratings.label' | translate}}</th>
+        <tr *ishFeature="'rating'">
+          <th>{{ 'product.compare.ratings.label' | translate }}</th>
           <td *ngFor="let product of visibleProducts">
+            <ish-product-rating [product]="product"></ish-product-rating>
           </td>
         </tr>
-        -->
 
         <tr>
           <th>{{ 'product.short_description.label' | translate }}</th>

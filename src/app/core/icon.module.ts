@@ -27,6 +27,8 @@ import {
   faSearch,
   faShoppingCart,
   faSpinner,
+  faStar,
+  faStarHalf,
   faTh,
   faTimes,
   faTrashAlt,
@@ -69,7 +71,9 @@ export class IconModule {
       faTh,
       faTimes,
       faTrashAlt,
-      faUser
+      faUser,
+      faStar,
+      faStarHalf
     );
   }
 }

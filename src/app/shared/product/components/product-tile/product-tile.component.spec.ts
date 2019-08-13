@@ -17,6 +17,7 @@ import { ProductAddToBasketComponent } from '../product-add-to-basket/product-ad
 import { ProductAddToCompareComponent } from '../product-add-to-compare/product-add-to-compare.component';
 import { ProductLabelComponent } from '../product-label/product-label.component';
 import { ProductPriceComponent } from '../product-price/product-price.component';
+import { ProductRatingComponent } from '../product-rating/product-rating.component';
 import { ProductVariationSelectComponent } from '../product-variation-select/product-variation-select.component';
 
 import { ProductTileComponent } from './product-tile.component';
@@ -43,6 +44,7 @@ describe('Product Tile Component', () => {
         MockComponent(ProductLabelComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductPromotionContainerComponent),
+        MockComponent(ProductRatingComponent),
         MockComponent(ProductVariationSelectComponent),
         ProductTileComponent,
       ],

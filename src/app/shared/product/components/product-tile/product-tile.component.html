@@ -10,6 +10,8 @@
     product.name
   }}</a>
 
+  <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
+
   <ish-product-promotion-container
     *ngIf="configuration.displayPromotions"
     [product]="product"
