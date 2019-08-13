@@ -137,7 +137,7 @@ export class ProductMapper {
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
-      roundedAverageRating: retrieveStubAttributeValue(data, 'roundedAverageRating'),
+      roundedAverageRating: +retrieveStubAttributeValue<string>(data, 'roundedAverageRating') || 0,
       type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
       promotionIds: mapPromotionIds(promotionLinks),
@@ -182,7 +182,7 @@ export class ProductMapper {
       manufacturer: data.manufacturer,
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,
-      roundedAverageRating: data.roundedAverageRating,
+      roundedAverageRating: +data.roundedAverageRating || 0,
       sku: data.sku,
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId

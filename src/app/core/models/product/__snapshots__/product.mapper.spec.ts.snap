@@ -43,7 +43,7 @@ Object {
   "promotionIds": Array [],
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
-  "roundedAverageRating": undefined,
+  "roundedAverageRating": 0,
   "salePrice": Object {
     "currency": "USD",
     "type": "Money",

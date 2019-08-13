@@ -33,7 +33,7 @@ export class ProductRatingComponent {
    */
   getStarFilledState(index: number): 'full' | 'half' | 'empty' {
     if (this.product.roundedAverageRating) {
-      const rate = +this.product.roundedAverageRating;
+      const rate = this.product.roundedAverageRating;
       return index <= rate ? 'full' : index - 0.5 === rate ? 'half' : 'empty';
     } else {
       return 'empty';
