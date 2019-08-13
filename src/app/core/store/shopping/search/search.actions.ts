@@ -8,6 +8,7 @@ export enum SearchActionTypes {
   SearchProducts = '[Shopping] Search Products',
   SearchProductsFail = '[Shopping] Search Products Fail',
   SuggestSearch = '[Shopping] Suggest Search',
+  SuggestApiSearch = '[Shopping] Suggest Api Search',
   SuggestSearchSuccess = '[Shopping] Suggest Search Success',
 }
 
@@ -31,9 +32,14 @@ export class SuggestSearch implements Action {
   constructor(public payload: { searchTerm: string; id: string }) {}
 }
 
+export class SuggestApiSearch implements Action {
+  readonly type = SearchActionTypes.SuggestApiSearch;
+  constructor(public payload: { searchTerm: string }) {}
+}
+
 export class SuggestSearchSuccess implements Action {
   readonly type = SearchActionTypes.SuggestSearchSuccess;
-  constructor(public payload: { suggests: SuggestTerm[] }) {}
+  constructor(public payload: { searchTerm: string; suggests: SuggestTerm[] }) {}
 }
 
 export type SearchAction =

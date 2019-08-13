@@ -39,7 +39,7 @@ import { coreEffects, coreReducers } from '../core-store.module';
 import { getCategoryIds, getSelectedCategory } from './categories';
 import { getProductIds, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
-import { SuggestSearch } from './search';
+import { SuggestApiSearch } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 
 describe('Shopping Store', () => {
@@ -290,13 +290,13 @@ describe('Shopping Store', () => {
     describe('and looking for suggestions', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SuggestSearch({ searchTerm: 'some', id: 'searchbox' }));
+        store.dispatch(new SuggestApiSearch({ searchTerm: 'some' }));
         tick(5000);
       }));
 
       it('should trigger suggest actions when suggest feature is used', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Shopping] Suggest Search:
+          [Shopping] Suggest Api Search:
             searchTerm: "some"
           [Shopping] Suggest Search Success:
             suggests: [{"term":"something"}]

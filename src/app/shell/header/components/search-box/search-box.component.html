@@ -1,6 +1,7 @@
 <!-- NEEDS_WORK: review and adapt -->
-<form role="search" class="search clearfix" name="SearchBox_Header" (submit)="submitSearch()">
+<form #searchForm role="search" class="search clearfix" name="SearchBox_Header" (submit)="submitSearch()">
   <input
+    #searchInput
     [placeholder]="configuration?.placeholderText || ''"
     formControlName="search"
     autocomplete="off"
@@ -8,7 +9,7 @@
     type="text"
     class="form-control searchTerm"
     (input)="search($event.target.value)"
-    value="{{ searchTerm }}"
+    value="{{ true ? '' : searchTerm }}"
     (focus)="hidePopup()"
     (blur)="hidePopup()"
     (keydown.esc)="hidePopup()"
@@ -47,3 +48,4 @@
     </li>
   </ul>
 </form>
+currentSearchTerm: {{ currentSearchTerm }}
