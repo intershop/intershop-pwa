@@ -5,33 +5,6 @@ import { Product } from 'ish-core/models/product/product.model';
 
 import { ProductIdComponent } from './product-id.component';
 
-const MOCK_PRODUCT: Product = {
-  attributes: [],
-  availability: true,
-  completenessLevel: 1,
-  failed: false,
-  images: [],
-  inStock: true,
-  listPrice: {
-    currency: 'EUR',
-    value: 9.99,
-  },
-  longDescription: '',
-  manufacturer: '',
-  minOrderQuantity: 1,
-  name: '',
-  promotionIds: [],
-  readyForShipmentMax: 1,
-  readyForShipmentMin: 1,
-  salePrice: {
-    currency: 'EUR',
-    value: 9.99,
-  },
-  shortDescription: '',
-  sku: 'test-sku',
-  type: 'Product',
-};
-
 describe('Product Id Component', () => {
   let component: ProductIdComponent;
   let fixture: ComponentFixture<ProductIdComponent>;
@@ -47,7 +20,7 @@ describe('Product Id Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductIdComponent);
     component = fixture.componentInstance;
-    component.product = MOCK_PRODUCT;
+    component.product = { sku: 'test-sku' } as Product;
     element = fixture.nativeElement;
   });
 

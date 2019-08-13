@@ -22,6 +22,11 @@
           "value": true
         },
         {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
           "name": "productMaster",
           "type": "Boolean",
           "value": false
@@ -30,11 +35,6 @@
           "name": "mastered",
           "type": "Boolean",
           "value": false
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
@@ -57,6 +57,11 @@
           }
         },
         {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "5.0"
+        },
+        {
           "name": "availability",
           "type": "Boolean",
           "value": true
@@ -65,6 +70,21 @@
           "name": "manufacturer",
           "type": "String",
           "value": "GoPro"
+        },
+        {
+          "name": "promotions",
+          "type": "LinkResourceCollectionRO",
+          "value": {
+            "elements": [
+              {
+                "itemId": "5PercentOnActionCams",
+                "title": "5 % discount on action cameras and accessories",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
+              }
+            ],
+            "type": "ResourceCollection"
+          }
         }
       ],
       "description": "High-performance capture. Touch-display convenience. - Features 1080p60 and",
@@ -93,6 +113,11 @@
           "value": true
         },
         {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
           "name": "productMaster",
           "type": "Boolean",
           "value": false
@@ -101,11 +126,6 @@
           "name": "mastered",
           "type": "Boolean",
           "value": false
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
         },
         {
           "name": "listPrice",
@@ -128,6 +148,11 @@
           }
         },
         {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
           "name": "availability",
           "type": "Boolean",
           "value": true
@@ -136,6 +161,21 @@
           "name": "manufacturer",
           "type": "String",
           "value": "GoPro"
+        },
+        {
+          "name": "promotions",
+          "type": "LinkResourceCollectionRO",
+          "value": {
+            "elements": [
+              {
+                "itemId": "5PercentOnActionCams",
+                "title": "5 % discount on action cameras and accessories",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
+              }
+            ],
+            "type": "ResourceCollection"
+          }
         }
       ],
       "description": "The best, only smaller. HERO5 Session combines 4K video, one-button simplicity and voice control all in a small, waterproof design.",
