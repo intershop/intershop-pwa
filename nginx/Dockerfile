@@ -2,7 +2,7 @@ FROM ubuntu:latest as buildstep
 RUN echo "intalling nginx with mod-pagespeed" && \
   apt-get update && \
   apt-get install -y curl build-essential zlib1g-dev libpcre3-dev unzip wget uuid-dev sudo && \
-  curl -f -L -sS https://ngxpagespeed.com/install > install.sh && \
+  curl -kfL -sS https://ngxpagespeed.com/install > install.sh && \
   bash install.sh --nginx-version latest
 
 FROM scratch as configstep
