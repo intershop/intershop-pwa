@@ -20,7 +20,7 @@ describe('Product Rating Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductRatingComponent);
     component = fixture.componentInstance;
-    component.product = { roundedAverageRating: '3' } as Product;
+    component.product = { roundedAverageRating: 3.5 } as Product;
     element = fixture.nativeElement;
   });
 
@@ -28,5 +28,30 @@ describe('Product Rating Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+    expect(element).toMatchInlineSnapshot(`
+      <div>
+        <ish-product-rating-star
+          ng-reflect-filled="full"
+          ng-reflect-last-star="false"
+        ></ish-product-rating-star
+        ><ish-product-rating-star
+          ng-reflect-filled="full"
+          ng-reflect-last-star="false"
+        ></ish-product-rating-star
+        ><ish-product-rating-star
+          ng-reflect-filled="full"
+          ng-reflect-last-star="false"
+        ></ish-product-rating-star
+        ><ish-product-rating-star
+          ng-reflect-filled="half"
+          ng-reflect-last-star="false"
+        ></ish-product-rating-star
+        ><ish-product-rating-star
+          ng-reflect-filled="empty"
+          ng-reflect-last-star="true"
+        ></ish-product-rating-star
+        ><span class="product-info ml-1">(3.5)</span>
+      </div>
+    `);
   });
 });
