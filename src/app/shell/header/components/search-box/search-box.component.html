@@ -9,7 +9,7 @@
     type="text"
     class="form-control searchTerm"
     (input)="search($event.target.value)"
-    value="{{ true ? '' : searchTerm }}"
+    value="{{ searchTerm }}"
     (focus)="hidePopup()"
     (blur)="hidePopup()"
     (keydown.esc)="hidePopup()"
@@ -48,4 +48,3 @@
     </li>
   </ul>
 </form>
-currentSearchTerm: {{ currentSearchTerm }}

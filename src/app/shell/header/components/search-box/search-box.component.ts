@@ -13,7 +13,6 @@ import {
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
-// TODO: implement without ReactiveFormsModule so shell.module does not depend on it
 /**
  * displays the search box with search button
  *
@@ -41,6 +40,7 @@ export class SearchBoxComponent implements OnChanges {
   isHidden = true;
   activeIndex = -1;
   currentSearchTerm = '';
+  formSubmitted = false;
 
   ngOnChanges(c: SimpleChanges) {
     this.updateSearchTerm(c.searchTerm);
@@ -50,7 +50,7 @@ export class SearchBoxComponent implements OnChanges {
   private updatePopupStatus(c: SimpleChanges) {
     if (c.results) {
       const resultsAvailable = !!this.results && this.results.length > 0 && !!this.currentSearchTerm;
-      this.isHidden = !resultsAvailable;
+      this.isHidden = this.formSubmitted ? true : !resultsAvailable;
     }
   }
 
@@ -66,11 +66,13 @@ export class SearchBoxComponent implements OnChanges {
   }
 
   search(searchTerm: string) {
+    this.formSubmitted = false;
     this.currentSearchTerm = searchTerm;
     this.searchTermChange.emit(searchTerm);
   }
 
   submitSearch() {
+    this.formSubmitted = true;
     if (this.activeIndex > -1) {
       this.currentSearchTerm = this.results[this.activeIndex].term;
     }
