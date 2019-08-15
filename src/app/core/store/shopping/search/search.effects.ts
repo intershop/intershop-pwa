@@ -111,7 +111,7 @@ export class SearchEffects {
 
   @Effect()
   suggestApiSearch$ = this.actions$.pipe(
-    ofType<SuggestSearch>(SearchActionTypes.SuggestApiSearch),
+    ofType<SuggestApiSearch>(SearchActionTypes.SuggestApiSearch),
     mapToPayloadProperty('searchTerm'),
     debounceTime(400),
     distinctUntilChanged(),
