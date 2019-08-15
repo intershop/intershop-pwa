@@ -124,6 +124,23 @@ describe('Search Effects', () => {
         });
       });
     });
+
+    describe('suggestSearch$', () => {
+      it('should perform a suggest-search with given search term when suggest-search is requested', () => {
+        const id = 'searchbox';
+
+        const a = new SuggestSearch({ searchTerm: 'A', id });
+        const b = new SuggestSearch({ searchTerm: 'B', id });
+        actions$ = hot('a-b-a-|', { a, b });
+
+        expect(effects.suggestSearch$).toBeObservable(
+          cold('a-b-a-|', {
+            a: new SuggestApiSearch({ searchTerm: 'A' }),
+            b: new SuggestApiSearch({ searchTerm: 'B' }),
+          })
+        );
+      });
+    });
   });
 
   describe('with fakeAsync', () => {
