@@ -50,7 +50,7 @@ export class SearchBoxComponent implements OnChanges {
   private updatePopupStatus(c: SimpleChanges) {
     if (c.results) {
       const resultsAvailable = !!this.results && this.results.length > 0 && !!this.currentSearchTerm;
-      this.isHidden = this.formSubmitted ? true : !resultsAvailable;
+      this.isHidden = this.formSubmitted || !resultsAvailable;
     }
   }
 
@@ -66,6 +66,7 @@ export class SearchBoxComponent implements OnChanges {
   }
 
   search(searchTerm: string) {
+    this.isHidden = !searchTerm;
     this.formSubmitted = false;
     this.currentSearchTerm = searchTerm;
     this.searchTermChange.emit(searchTerm);
