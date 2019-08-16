@@ -107,7 +107,7 @@ describe('Category Mapper', () => {
 
     it('should insert uniqueId of raw CategoryData when categoryPath is supplied', () => {
       const category = categoryMapper.fromDataSingle({ categoryPath: [{ id: '1' }] } as CategoryData);
-      expect(category.uniqueId).toEqual('1');
+      expect(category).toHaveProperty('uniqueId', '1');
       verify(imageMapper.fromImages(anything())).once();
     });
 
@@ -115,7 +115,7 @@ describe('Category Mapper', () => {
       const category = categoryMapper.fromDataSingle({
         categoryPath: [{ id: '1' }, { id: '2' }],
       } as CategoryData);
-      expect(category.uniqueId).toEqual('1.2');
+      expect(category).toHaveProperty('uniqueId', '1.2');
       expect(category.categoryPath).toEqual(['1', '1.2']);
       verify(imageMapper.fromImages(anything())).once();
     });
@@ -138,13 +138,14 @@ describe('Category Mapper', () => {
       const tree = categoryMapper.fromData({
         categoryPath: [{ id: '1' }],
       } as CategoryData);
-      expect(tree).toBeTruthy();
-      expect(tree.rootIds).toEqual(['1']);
-      expect(Object.keys(tree.nodes)).toEqual(['1']);
-      const rootNode = tree.nodes['1'];
-      expect(rootNode).toBeTruthy();
-      expect(rootNode.uniqueId).toEqual('1');
-      expect(tree.edges).toBeEmpty();
+
+      expect(tree).toMatchInlineSnapshot(`
+        └─ 1
+
+      `);
+
+      expect(tree.nodes['1']).toHaveProperty('uniqueId', '1');
+
       verify(imageMapper.fromImages(anything())).once();
     });
 
@@ -152,15 +153,14 @@ describe('Category Mapper', () => {
       const tree = categoryMapper.fromData({
         categoryPath: [{ id: '1' }, { id: '2' }],
       } as CategoryData);
-      expect(tree).toBeTruthy();
-      expect(tree.rootIds).toEqual(['1']);
-      expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
 
-      const node = tree.nodes['1.2'];
-      expect(node).toBeTruthy();
-      expect(node.uniqueId).toEqual('1.2');
+      expect(tree).toMatchInlineSnapshot(`
+        └─ 1
+           └─ 1.2
 
-      expect(tree.edges).toEqual({ 1: ['1.2'] });
+      `);
+
+      expect(tree.nodes['1.2']).toHaveProperty('uniqueId', '1.2');
     });
 
     it(`should handle sub categories on raw CategoryData`, () => {
@@ -168,19 +168,14 @@ describe('Category Mapper', () => {
         categoryPath: [{ id: '1' }],
         subCategories: [{ categoryPath: [{ id: '1' }, { id: '2' }] } as CategoryData],
       } as CategoryData);
-      expect(tree).toBeTruthy();
 
-      expect(tree.rootIds).toEqual(['1']);
+      expect(tree).toMatchInlineSnapshot(`
+        └─ 1
+           └─ 1.2
 
-      expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
-      expect(tree.nodes['1']).toBeTruthy();
-      expect(tree.nodes['1'].uniqueId).toEqual('1');
-      expect(tree.nodes['1.2']).toBeTruthy();
-      expect(tree.nodes['1.2'].uniqueId).toEqual('1.2');
-
-      expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
-
-      expect(tree.edges).toEqual({ 1: ['1.2'] });
+      `);
+      expect(tree.nodes['1']).toHaveProperty('uniqueId', '1');
+      expect(tree.nodes['1.2']).toHaveProperty('uniqueId', '1.2');
     });
   });
 });

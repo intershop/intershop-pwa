@@ -8,7 +8,7 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 
-import { LoadContentPage, LoadContentPageFail, PagesActionTypes } from './pages.actions';
+import { LoadContentPage, LoadContentPageFail } from './pages.actions';
 import { PagesEffects } from './pages.effects';
 
 describe('Pages Effects', () => {
@@ -39,8 +39,10 @@ describe('Pages Effects', () => {
 
       effects.loadContentPage$.subscribe((action: LoadContentPageFail) => {
         verify(cmsServiceMock.getContentPage('dummy')).once();
-        expect(action.type).toEqual(PagesActionTypes.LoadContentPageFail);
-        expect(action.payload.error).toHaveProperty('message', 'ERROR');
+        expect(action).toMatchInlineSnapshot(`
+          [Content Page API] Load Content Page Fail:
+            error: {"message":"ERROR"}
+        `);
         done();
       });
     });

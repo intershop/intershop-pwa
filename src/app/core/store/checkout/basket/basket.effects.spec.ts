@@ -111,8 +111,10 @@ describe('Basket Effects', () => {
 
       effects.loadBasketByAPIToken$.subscribe(action => {
         verify(basketServiceMock.getBasketByToken('dummy')).once();
-        expect(action.type).toEqual(basketActions.BasketActionTypes.LoadBasketSuccess);
-        expect(action.payload).toHaveProperty('basket.id', 'basket');
+        expect(action).toMatchInlineSnapshot(`
+          [Basket API] Load Basket Success:
+            basket: {"id":"basket"}
+        `);
         done();
       });
     });
