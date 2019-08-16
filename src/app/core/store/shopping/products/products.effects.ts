@@ -274,7 +274,7 @@ export class ProductsEffects {
     mergeMap(sku =>
       this.productsService.getProductLinks(sku).pipe(
         map(links => new productsActions.LoadProductLinksSuccess({ sku, links })),
-        mapErrorToAction(productsActions.LoadProductLinksFail)
+        mapErrorToAction(productsActions.LoadProductLinksFail, { sku })
       )
     )
   );

@@ -96,4 +96,68 @@ describe('Products Service', () => {
       done();
     });
   });
+
+  it("should get product links data when 'getProductLinks' is called", done => {
+    when(apiServiceMock.get(`products/${productSku}/links`)).thenReturn(of([]));
+    productsService.getProductLinks(productSku).subscribe(() => {
+      verify(apiServiceMock.get(`products/${productSku}/links`)).once();
+      done();
+    });
+  });
+
+  it("should get map product links data when 'getProductLinks' is called", done => {
+    when(apiServiceMock.get(`products/${productSku}/links`)).thenReturn(
+      of({
+        elements: [
+          {
+            linkType: 'replacement',
+            productLinks: [
+              {
+                uri: 'inSPIRED-inTRONICS-Site/-/products/9438012',
+              },
+              {
+                uri: 'inSPIRED-inTRONICS-Site/-/products/5910874',
+              },
+            ],
+          },
+          {
+            linkType: 'crossselling',
+            categoryLinks: [
+              {
+                uri: 'inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders',
+              },
+            ],
+            productLinks: [
+              {
+                uri: 'inSPIRED-inTRONICS-Site/-/products/341951',
+              },
+            ],
+          },
+        ],
+      })
+    );
+
+    productsService.getProductLinks(productSku).subscribe(links => {
+      expect(links).toMatchInlineSnapshot(`
+        Object {
+          "crossselling": Object {
+            "categories": Array [
+              "Cameras-Camcorders",
+            ],
+            "products": Array [
+              "341951",
+            ],
+          },
+          "replacement": Object {
+            "categories": Array [],
+            "products": Array [
+              "9438012",
+              "5910874",
+            ],
+          },
+        }
+      `);
+      done();
+    });
+  });
 });

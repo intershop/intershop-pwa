@@ -10,6 +10,7 @@ import {
   LoadProduct,
   LoadProductBundlesSuccess,
   LoadProductFail,
+  LoadProductLinksSuccess,
   LoadProductSuccess,
   LoadProductVariations,
   LoadProductVariationsFail,
@@ -20,6 +21,7 @@ import {
 import {
   getProduct,
   getProductEntities,
+  getProductLinks,
   getProductLoading,
   getProducts,
   getSelectedProduct,
@@ -235,6 +237,33 @@ describe('Products Selectors', () => {
       const products = getProducts(store$.state, { skus: ['SKU1', 'SKU2', 'SKU3'] });
       expect(products).toHaveLength(3);
       expect(products.map(p => p.name)).toEqual(['sku1', 'sku2', 'sku3']);
+    });
+  });
+
+  describe('when loading product links', () => {
+    it('should contain the product link information on the product', () => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'ABC' } as Product }));
+      store$.dispatch(
+        new LoadProductLinksSuccess({
+          sku: 'ABC',
+          links: { linkType: { products: ['prod'], categories: ['cat'] } },
+        })
+      );
+
+      expect(getProductLinks(store$.state, { sku: 'ABC' })).toMatchInlineSnapshot(`
+        Object {
+          "linkType": Object {
+            "categories": [Function],
+            "categoryIds": Array [
+              "cat",
+            ],
+            "productSKUs": Array [
+              "prod",
+            ],
+            "products": [Function],
+          },
+        }
+      `);
     });
   });
 });
