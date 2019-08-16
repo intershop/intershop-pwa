@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouteNavigation } from 'ngrx-router';
 import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
@@ -36,20 +35,11 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { coreEffects, coreReducers } from '../core-store.module';
 
-import {
-  CategoriesActionTypes,
-  LoadCategory,
-  SelectCategory,
-  SelectedCategoryAvailable,
-  getCategoryIds,
-  getSelectedCategory,
-} from './categories';
-import { FilterActionTypes } from './filter';
-import { LoadProduct, ProductsActionTypes, SelectProduct, getProductIds, getSelectedProduct } from './products';
-import { RecentlyActionTypes, getRecentlyViewedProducts } from './recently';
-import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
+import { getCategoryIds, getSelectedCategory } from './categories';
+import { getProductIds, getSelectedProduct } from './products';
+import { getRecentlyViewedProducts } from './recently';
+import { SuggestSearch } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
-import { ViewconfActionTypes } from './viewconf';
 
 describe('Shopping Store', () => {
   const DEBUG = false;
@@ -223,6 +213,7 @@ describe('Shopping Store', () => {
     store.logActions = DEBUG;
     store.logState = DEBUG;
     router = TestBed.get(Router);
+    store.reset();
   });
 
   it('should be created', () => {
@@ -236,10 +227,25 @@ describe('Shopping Store', () => {
     }));
 
     it('should just load toplevel categories when no specific shopping page is loaded', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {}
+          queryParams: {}
+          data: {}
+          path: "home"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+      `);
 
       expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
       expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
@@ -260,16 +266,29 @@ describe('Shopping Store', () => {
       }));
 
       it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123' }));
-        expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next()).toEqual(new SelectedCategoryAvailable({ categoryId: 'A.123' }));
-        expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {"categoryUniqueId":"A.123"}
+            queryParams: {}
+            data: {}
+            path: "category/:categoryUniqueId"
+          [Shopping] Select Category:
+            categoryId: "A.123"
+          [Shopping] Load Category:
+            categoryId: "A.123"
+          [Shopping] Load Category Success:
+            categories: tree(A.123,A.123.456)
+          [Shopping] Selected Category Available:
+            categoryId: "A.123"
+          [Shopping] Load Category:
+            categoryId: "A"
+          [Shopping] Load Filter For Category:
+            category: {"uniqueId":"A.123","categoryPath":[2],"completenessLevel":3}
+          [Shopping] Load Category Success:
+            categories: tree(A,A.123)
+          [Shopping] Load Filter For Category Success:
+            filterNavigation: {}
+        `);
       }));
     });
 
@@ -281,10 +300,12 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger suggest actions when suggest feature is used', () => {
-        const i = store.actionsIterator(['Shopping']);
-
-        expect(i.next()).toEqual(new SuggestSearchSuccess({ suggests: [{ term: 'something' }] }));
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Shopping] Suggest Search:
+            searchTerm: "some"
+          [Shopping] Suggest Search Success:
+            suggests: [{"term":"something"}]
+        `);
       });
     });
 
@@ -300,17 +321,30 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger required actions when searching', fakeAsync(() => {
-        const i = store.actionsIterator(['Shopping']);
-
-        expect(i.next().type).toEqual(SearchActionTypes.PrepareNewSearch);
-        expect(i.next()).toEqual(new SearchProducts({ searchTerm: 'something' }));
-        expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
-        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {"searchTerm":"something"}
+            queryParams: {}
+            data: {}
+            path: "search/:searchTerm"
+          [Shopping] Prepare Search For Products
+          [Shopping] Search Products:
+            searchTerm: "something"
+          [Shopping] Search Products Success:
+            searchTerm: "something"
+          [Shopping] Set Paging Info:
+            currentPage: 0
+            totalItems: 1
+            newProducts: ["P2"]
+          [Shopping] Load Product Success:
+            product: {"sku":"P2"}
+          [Shopping] Set SortKey List:
+            sortKeys: []
+          [Shopping] Load Filter for Search:
+            searchTerm: "something"
+          [Shopping] Load Filter for Search Success:
+            filterNavigation: {}
+        `);
       }));
 
       describe('and viewing the product', () => {
@@ -321,13 +355,21 @@ describe('Shopping Store', () => {
         }));
 
         it('should reload the product data when selected', fakeAsync(() => {
-          const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
-
-          expect(i.next()).toEqual(new SelectProduct({ sku: 'P2' }));
-          expect(i.next()).toEqual(new LoadProduct({ sku: 'P2' }));
-          expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
-          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-          expect(i.next()).toBeUndefined();
+          expect(store.actionsArray()).toMatchInlineSnapshot(`
+            [Router] Navigation:
+              params: {"sku":"P2"}
+              queryParams: {}
+              data: {}
+              path: "product/:sku"
+            [Shopping] Select Product:
+              sku: "P2"
+            [Shopping] Load Product:
+              sku: "P2"
+            [Recently Viewed] Add Product to Recently:
+              sku: "P2"
+            [Shopping] Load Product Success:
+              product: {"sku":"P2"}
+          `);
         }));
       });
     });
@@ -346,20 +388,41 @@ describe('Shopping Store', () => {
     }));
 
     it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]', '[Router]']);
-      expect(i.next().type).toMatchInlineSnapshot(`"[Router] Navigation"`);
-      expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next()).toEqual(new SelectedCategoryAvailable({ categoryId: 'A.123' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"categoryUniqueId":"A.123"}
+          queryParams: {}
+          data: {}
+          path: "category/:categoryUniqueId"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Select Category:
+          categoryId: "A.123"
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load Category:
+          categoryId: "A.123"
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Selected Category Available:
+          categoryId: "A.123"
+        [Shopping] Load Category:
+          categoryId: "A"
+        [Shopping] Load Filter For Category:
+          category: {"uniqueId":"A.123","categoryPath":[2],"completenessLevel":3}
+        [Shopping] Load Category Success:
+          categories: tree(A,A.123)
+        [Shopping] Load Filter For Category Success:
+          filterNavigation: {}
+      `);
     }));
 
     describe('and and going to compare page', () => {
@@ -376,9 +439,14 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {}
+            queryParams: {}
+            data: {}
+            path: "compare"
+          [Shopping] Deselect Category
+        `);
       }));
 
       it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
@@ -401,25 +469,57 @@ describe('Shopping Store', () => {
     }));
 
     it('should have all required actions when going to a family page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
-      expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next()).toEqual(new SelectedCategoryAvailable({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
-      expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"categoryUniqueId":"A.123.456"}
+          queryParams: {}
+          data: {}
+          path: "category/:categoryUniqueId"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Select Category:
+          categoryId: "A.123.456"
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load Category:
+          categoryId: "A.123.456"
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Load Category Success:
+          categories: tree(A.123.456)
+        [Shopping] Selected Category Available:
+          categoryId: "A.123.456"
+        [Shopping] Load Products for Category:
+          categoryId: "A.123.456"
+        [Shopping] Load Category:
+          categoryId: "A"
+        [Shopping] Load Category:
+          categoryId: "A.123"
+        [Shopping] Load Filter For Category:
+          category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
+        [Shopping] Load Product Success:
+          product: {"sku":"P1"}
+        [Shopping] Load Product Success:
+          product: {"sku":"P2"}
+        [Shopping] Set Paging Info:
+          currentPage: 0
+          totalItems: 2
+          newProducts: ["P1","P2"]
+        [Shopping] Set SortKey List:
+          sortKeys: []
+        [Shopping] Load Category Success:
+          categories: tree(A,A.123)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Load Filter For Category Success:
+          filterNavigation: {}
+      `);
     }));
 
     it('should not put anything in recently viewed products when going to a family page', fakeAsync(() => {
@@ -434,12 +534,21 @@ describe('Shopping Store', () => {
       }));
 
       it('should reload the product when selected', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
-        expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
-        expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
-        expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {"categoryUniqueId":"A.123.456","sku":"P1"}
+            queryParams: {}
+            data: {}
+            path: "category/:categoryUniqueId/product/:sku"
+          [Shopping] Select Product:
+            sku: "P1"
+          [Shopping] Load Product:
+            sku: "P1"
+          [Recently Viewed] Add Product to Recently:
+            sku: "P1"
+          [Shopping] Load Product Success:
+            product: {"sku":"P1"}
+        `);
       }));
 
       it('should add the product to recently viewed products when going to product detail page', fakeAsync(() => {
@@ -454,9 +563,15 @@ describe('Shopping Store', () => {
         }));
 
         it('should deselect product when navigating back', fakeAsync(() => {
-          const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
-          expect(i.next()).toBeUndefined();
+          expect(store.actionsArray()).toMatchInlineSnapshot(`
+            [Router] Navigation:
+              params: {"categoryUniqueId":"A.123.456"}
+              queryParams: {}
+              data: {}
+              path: "category/:categoryUniqueId"
+            [Shopping] Select Product:
+              sku: undefined
+          `);
         }));
       });
     });
@@ -475,9 +590,14 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {}
+            queryParams: {}
+            data: {}
+            path: "compare"
+          [Shopping] Deselect Category
+        `);
       }));
 
       it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
@@ -500,24 +620,53 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
-      expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next()).toEqual(new SelectedCategoryAvailable({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"categoryUniqueId":"A.123.456","sku":"P1"}
+          queryParams: {}
+          data: {}
+          path: "category/:categoryUniqueId/product/:sku"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Select Category:
+          categoryId: "A.123.456"
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Select Product:
+          sku: "P1"
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load Category:
+          categoryId: "A.123.456"
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Load Product:
+          sku: "P1"
+        [Shopping] Load Category Success:
+          categories: tree(A.123.456)
+        [Shopping] Load Product Success:
+          product: {"sku":"P1"}
+        [Shopping] Selected Category Available:
+          categoryId: "A.123.456"
+        [Recently Viewed] Add Product to Recently:
+          sku: "P1"
+        [Shopping] Load Category:
+          categoryId: "A"
+        [Shopping] Load Category:
+          categoryId: "A.123"
+        [Shopping] Load Filter For Category:
+          category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
+        [Shopping] Load Category Success:
+          categories: tree(A,A.123)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Load Filter For Category Success:
+          filterNavigation: {}
+      `);
     }));
 
     it('should put the product to recently viewed products when going to product detail page', fakeAsync(() => {
@@ -538,14 +687,27 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger actions for products when they are not yet loaded', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
-        expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
-        expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {"categoryUniqueId":"A.123.456"}
+            queryParams: {}
+            data: {}
+            path: "category/:categoryUniqueId"
+          [Shopping] Load Products for Category:
+            categoryId: "A.123.456"
+          [Shopping] Select Product:
+            sku: undefined
+          [Shopping] Load Product Success:
+            product: {"sku":"P1"}
+          [Shopping] Load Product Success:
+            product: {"sku":"P2"}
+          [Shopping] Set Paging Info:
+            currentPage: 0
+            totalItems: 2
+            newProducts: ["P1","P2"]
+          [Shopping] Set SortKey List:
+            sortKeys: []
+        `);
       }));
 
       it('should not put anything additionally to recently viewed products when going back', fakeAsync(() => {
@@ -567,10 +729,16 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
-        expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {}
+            queryParams: {}
+            data: {}
+            path: "compare"
+          [Shopping] Deselect Category
+          [Shopping] Select Product:
+            sku: undefined
+        `);
       }));
 
       it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
@@ -593,14 +761,33 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]', '[Recently Viewed]']);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next()).toEqual(new SelectProduct({ sku: 'P1' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next()).toEqual(new LoadProduct({ sku: 'P1' }));
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"sku":"P1"}
+          queryParams: {}
+          data: {}
+          path: "product/:sku"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Select Product:
+          sku: "P1"
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Load Product:
+          sku: "P1"
+        [Shopping] Load Product Success:
+          product: {"sku":"P1"}
+        [Recently Viewed] Add Product to Recently:
+          sku: "P1"
+      `);
     }));
 
     describe('and and going to compare page', () => {
@@ -617,9 +804,15 @@ describe('Shopping Store', () => {
       }));
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
-        const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {}
+            queryParams: {}
+            data: {}
+            path: "compare"
+          [Shopping] Select Product:
+            sku: undefined
+        `);
       }));
 
       it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
@@ -642,36 +835,60 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a product page with invalid product sku', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]', '[Router]']);
-
-      const productPageRouting = i.next() as RouteNavigation;
-      expect(productPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
-      expect(productPageRouting.payload.params.sku).toEqual('P3');
-      expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.456');
-
-      expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next()).toEqual(new SelectProduct({ sku: 'P3' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123.456' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next()).toEqual(new LoadProduct({ sku: 'P3' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
-      expect(i.next()).toEqual(new SelectedCategoryAvailable({ categoryId: 'A.123.456' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A' }));
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123' }));
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-
-      const errorPageRouting = i.next() as RouteNavigation;
-      expect(errorPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
-      expect(errorPageRouting.payload.path).toEqual('error');
-
-      expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
-      expect(i.next()).toEqual(new SelectProduct({ sku: undefined }));
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"categoryUniqueId":"A.123.456","sku":"P3"}
+          queryParams: {}
+          data: {}
+          path: "category/:categoryUniqueId/product/:sku"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Select Category:
+          categoryId: "A.123.456"
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Select Product:
+          sku: "P3"
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load Category:
+          categoryId: "A.123.456"
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Load Product:
+          sku: "P3"
+        [Shopping] Load Category Success:
+          categories: tree(A.123.456)
+        [Shopping] Load Product Fail:
+          error: {"message":"error loading product P3"}
+          sku: "P3"
+        [Shopping] Selected Category Available:
+          categoryId: "A.123.456"
+        [Shopping] Load Category:
+          categoryId: "A"
+        [Shopping] Load Category:
+          categoryId: "A.123"
+        [Shopping] Load Filter For Category:
+          category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
+        [Shopping] Load Category Success:
+          categories: tree(A,A.123)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Load Filter For Category Success:
+          filterNavigation: {}
+        [Router] Navigation:
+          params: {}
+          queryParams: {}
+          data: {}
+          path: "error"
+        [Shopping] Deselect Category
+        [Shopping] Select Product:
+          sku: undefined
+      `);
     }));
 
     it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
@@ -697,24 +914,37 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required load actions when going to a category page with invalid category uniqueId', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]', '[Router]']);
-
-      const productPageRouting = i.next() as RouteNavigation;
-      expect(productPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
-      expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.XXX');
-
-      expect(i.next()).toEqual(new SelectCategory({ categoryId: 'A.123.XXX' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next()).toEqual(new LoadCategory({ categoryId: 'A.123.XXX' }));
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategoryFail);
-
-      const errorPageRouting = i.next() as RouteNavigation;
-      expect(errorPageRouting.type).toMatchInlineSnapshot(`"[Router] Navigation"`);
-      expect(errorPageRouting.payload.path).toEqual('error');
-
-      expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"categoryUniqueId":"A.123.XXX"}
+          queryParams: {}
+          data: {}
+          path: "category/:categoryUniqueId"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Select Category:
+          categoryId: "A.123.XXX"
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load Category:
+          categoryId: "A.123.XXX"
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Load Category Fail:
+          error: {"message":"error loading category A.123.XXX"}
+        [Router] Navigation:
+          params: {}
+          queryParams: {}
+          data: {}
+          path: "error"
+        [Shopping] Deselect Category
+      `);
     }));
 
     it('should not have a selected product or category when redirected to error page', fakeAsync(() => {
@@ -734,19 +964,42 @@ describe('Shopping Store', () => {
     }));
 
     it('should trigger required actions when searching', fakeAsync(() => {
-      const i = store.actionsIterator(['[Shopping]']);
-
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-      expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-      expect(i.next().type).toEqual(SearchActionTypes.PrepareNewSearch);
-      expect(i.next()).toEqual(new SearchProducts({ searchTerm: 'something' }));
-      expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
-      expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
-      expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-      expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
-      expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
-      expect(i.next()).toBeUndefined();
+      expect(store.actionsArray()).toMatchInlineSnapshot(`
+        [Router] Navigation:
+          params: {"searchTerm":"something"}
+          queryParams: {}
+          data: {}
+          path: "search/:searchTerm"
+        [Locale] Set Available Locales:
+          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
+        [Viewconf Internal] Set Device Type:
+          deviceType: "pc"
+        [Viewconf Internal] Set Breadcrumb Data:
+          breadcrumbData: undefined
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping Internal] Set Endless Scrolling Page Size:
+          itemsPerPage: 3
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [Shopping] Prepare Search For Products
+        [Shopping] Search Products:
+          searchTerm: "something"
+        [Shopping] Search Products Success:
+          searchTerm: "something"
+        [Shopping] Set Paging Info:
+          currentPage: 0
+          totalItems: 1
+          newProducts: ["P2"]
+        [Shopping] Load Product Success:
+          product: {"sku":"P2"}
+        [Shopping] Set SortKey List:
+          sortKeys: []
+        [Shopping] Load Filter for Search:
+          searchTerm: "something"
+        [Shopping] Load Filter for Search Success:
+          filterNavigation: {}
+      `);
     }));
   });
 });

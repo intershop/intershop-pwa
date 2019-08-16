@@ -411,41 +411,14 @@ describe('Products Effects', () => {
 
       effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
-                              Array [
-                                LoadProductSuccess {
-                                  "payload": Object {
-                                    "product": Object {
-                                      "sku": "A",
-                                    },
-                                  },
-                                  "type": "[Shopping] Load Product Success",
-                                },
-                                LoadProductSuccess {
-                                  "payload": Object {
-                                    "product": Object {
-                                      "sku": "B",
-                                    },
-                                  },
-                                  "type": "[Shopping] Load Product Success",
-                                },
-                                LoadProductBundlesSuccess {
-                                  "payload": Object {
-                                    "bundledProducts": Array [
-                                      Object {
-                                        "quantity": 1,
-                                        "sku": "A",
-                                      },
-                                      Object {
-                                        "quantity": 1,
-                                        "sku": "B",
-                                      },
-                                    ],
-                                    "sku": "ABC",
-                                  },
-                                  "type": "[Shopping] Load Product Bundles Success",
-                                },
-                              ]
-                        `);
+          [Shopping] Load Product Success:
+            product: {"sku":"A"}
+          [Shopping] Load Product Success:
+            product: {"sku":"B"}
+          [Shopping] Load Product Bundles Success:
+            sku: "ABC"
+            bundledProducts: [{"sku":"A","quantity":1},{"sku":"B","quantity":1}]
+        `);
         done();
       });
     });
@@ -459,34 +432,13 @@ describe('Products Effects', () => {
 
       effects.loadPartsOfRetailSet$.pipe(toArray()).subscribe(actions => {
         expect(actions).toMatchInlineSnapshot(`
-          Array [
-            LoadProductSuccess {
-              "payload": Object {
-                "product": Object {
-                  "sku": "A",
-                },
-              },
-              "type": "[Shopping] Load Product Success",
-            },
-            LoadProductSuccess {
-              "payload": Object {
-                "product": Object {
-                  "sku": "B",
-                },
-              },
-              "type": "[Shopping] Load Product Success",
-            },
-            LoadRetailSetSuccess {
-              "payload": Object {
-                "parts": Array [
-                  "A",
-                  "B",
-                ],
-                "sku": "ABC",
-              },
-              "type": "[Shopping] Load Retail Set Success",
-            },
-          ]
+          [Shopping] Load Product Success:
+            product: {"sku":"A"}
+          [Shopping] Load Product Success:
+            product: {"sku":"B"}
+          [Shopping] Load Retail Set Success:
+            sku: "ABC"
+            parts: ["A","B"]
         `);
         done();
       });

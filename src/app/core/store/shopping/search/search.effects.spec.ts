@@ -17,11 +17,10 @@ import { ApiService } from '../../../services/api/api.service';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import { shoppingReducers } from '../shopping-store.module';
-import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading, ViewconfActionTypes } from '../viewconf';
+import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading } from '../viewconf';
 
 import {
   PrepareNewSearch,
-  SearchActionTypes,
   SearchMoreProducts,
   SearchProducts,
   SearchProductsFail,
@@ -229,10 +228,13 @@ describe('Search Effects', () => {
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
 
-        const iter = store$.actionsIterator([/.*/]);
-        expect(iter.next().type).toEqual(ViewconfActionTypes.SetEndlessScrollingPageSize);
-        expect(iter.next().type).toEqual(SearchActionTypes.SuggestSearch);
-        expect(iter.next()).toBeUndefined();
+        expect(store$.actionsArray()).toMatchInlineSnapshot(`
+          @ngrx/effects/init
+          [Shopping Internal] Set Endless Scrolling Page Size:
+            itemsPerPage: 3
+          [Shopping] Suggest Search:
+            searchTerm: "good"
+        `);
 
         verify(suggestServiceMock.search(anyString())).once();
       }));

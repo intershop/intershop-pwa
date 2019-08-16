@@ -11,9 +11,9 @@ export const containsActionWithTypeAndPayload = (type: string, predicate: (paylo
   actions: { type: string; payload: unknown }[]
 ) => !!actions.filter(a => a.type === type && predicate(a.payload)).length;
 
-function includeAction(action: Action, include: (string | RegExp)[]) {
+function includeAction(action: Action, include: string[] | RegExp) {
   const type = action.type;
-  return include.some(inc => (typeof inc === 'string' ? type.indexOf(inc) >= 0 : type.search(inc) >= 0));
+  return include instanceof Array ? include.some(inc => type.indexOf(inc) >= 0) : type.search(include) >= 0;
 }
 
 /**
@@ -53,25 +53,10 @@ export class TestStore {
     this.actions = [];
   }
 
-  actionsArray(include: (string | RegExp)[]) {
+  actionsArray(include: string[] | RegExp = /.*/) {
     return this.actions
       .filter(current => !!current && !!current.type)
       .filter(current => includeAction(current, include));
-  }
-
-  actionsIterator(include: (string | RegExp)[]) {
-    let currentIdx = 0;
-
-    return {
-      next: (): Action => {
-        let current;
-        do {
-          currentIdx++;
-          current = this.actions[currentIdx];
-        } while (!!current && !!current.type && !includeAction(current, include));
-        return current;
-      },
-    };
   }
 }
 
