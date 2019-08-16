@@ -36,7 +36,7 @@ export class ProductLinksContainerComponent implements OnChanges {
    */
   swiperConfig: SwiperConfigInterface;
 
-  constructor(private store: Store<{}>, @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number) {
+  constructor(private store: Store<{}>, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
     this.swiperConfig = {
       breakpoints: {
         [largeBreakpointWidth]: {
