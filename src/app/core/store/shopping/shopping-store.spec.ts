@@ -299,6 +299,7 @@ describe('Shopping Store', () => {
           [Shopping] Suggest Api Search:
             searchTerm: "some"
           [Shopping] Suggest Search Success:
+            searchTerm: "some"
             suggests: [{"term":"something"}]
         `);
       });
