@@ -50,7 +50,7 @@ export class HeaderModule {
   getSearchSuggestions(searchTerm: string) {
     cy.get('[data-testing-id="search-box-desktop"] input.searchTerm').type(searchTerm);
     cy.get('ul.search-suggest-results').should('be.visible');
-    return cy.get('ul.search-suggest-results').get('span.searchTerm');
+    return cy.get('ul.search-suggest-results').get('li button');
   }
 
   doProductSearch(searchTerm: string) {
