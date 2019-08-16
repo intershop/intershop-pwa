@@ -33,7 +33,7 @@ describe('Product Master Variations Service', () => {
         serialize(
           val.facets.map(
             facet =>
-              `${facet.filterId}:${facet.name}:${facet.selected} -> ${b64u.decode(
+              `${facet.filterId}:${facet.name}:${facet.selected}:${facet.count} -> ${b64u.decode(
                 b64u.fromBase64(facet.searchParameter)
               )}`
           )
@@ -65,13 +65,13 @@ describe('Product Master Variations Service', () => {
           "filterNavigation": Object {
             "filter": Array [
               Array [
-                "HDD:512GB:false -> HDD=512GB",
-                "HDD:256GB:false -> HDD=256GB",
+                "HDD:512GB:false:3 -> HDD=512GB",
+                "HDD:256GB:false:2 -> HDD=256GB",
               ],
               Array [
-                "COL:Brown:false -> COL=Brown",
-                "COL:Red:false -> COL=Red",
-                "COL:Black:false -> COL=Black",
+                "COL:Brown:false:2 -> COL=Brown",
+                "COL:Red:false:2 -> COL=Red",
+                "COL:Black:false:1 -> COL=Black",
               ],
             ],
           },
@@ -96,18 +96,43 @@ describe('Product Master Variations Service', () => {
           "filterNavigation": Object {
             "filter": Array [
               Array [
-                "HDD:512GB:true -> COL=Red",
-                "HDD:256GB:false -> HDD=512GB,256GB&COL=Red",
+                "HDD:512GB:true:2 -> COL=Red",
+                "HDD:256GB:false:2 -> HDD=512GB,256GB&COL=Red",
               ],
               Array [
-                "COL:Brown:false -> HDD=512GB&COL=Red,Brown",
-                "COL:Red:true -> HDD=512GB",
-                "COL:Black:false -> HDD=512GB&COL=Red,Black",
+                "COL:Brown:false:2 -> HDD=512GB&COL=Red,Brown",
+                "COL:Red:true:3 -> HDD=512GB",
+                "COL:Black:false:2 -> HDD=512GB&COL=Red,Black",
               ],
             ],
           },
           "products": Array [
             "V3",
+          ],
+        }
+      `);
+    });
+  });
+
+  describe('with extra single filters restricting other filters activated', () => {
+    it('should respond with selected filters and all variations when queried', () => {
+      expect(productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(master, 'COL=Black'))
+        .toMatchInlineSnapshot(`
+        Object {
+          "filterNavigation": Object {
+            "filter": Array [
+              Array [
+                "HDD:512GB:false:1 -> COL=Black&HDD=512GB",
+              ],
+              Array [
+                "COL:Brown:false:3 -> COL=Black,Brown",
+                "COL:Red:false:3 -> COL=Black,Red",
+                "COL:Black:true:5 -> ",
+              ],
+            ],
+          },
+          "products": Array [
+            "V5",
           ],
         }
       `);
@@ -126,13 +151,13 @@ describe('Product Master Variations Service', () => {
           "filterNavigation": Object {
             "filter": Array [
               Array [
-                "HDD:512GB:true -> HDD=256GB&COL=Red",
-                "HDD:256GB:true -> HDD=512GB&COL=Red",
+                "HDD:512GB:true:1 -> HDD=256GB&COL=Red",
+                "HDD:256GB:true:1 -> HDD=512GB&COL=Red",
               ],
               Array [
-                "COL:Brown:false -> HDD=512GB,256GB&COL=Red,Brown",
-                "COL:Red:true -> HDD=512GB,256GB",
-                "COL:Black:false -> HDD=512GB,256GB&COL=Red,Black",
+                "COL:Brown:false:4 -> HDD=512GB,256GB&COL=Red,Brown",
+                "COL:Red:true:5 -> HDD=512GB,256GB",
+                "COL:Black:false:3 -> HDD=512GB,256GB&COL=Red,Black",
               ],
             ],
           },
