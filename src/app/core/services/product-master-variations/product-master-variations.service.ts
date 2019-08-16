@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
-import { groupBy, intersection } from 'lodash-es';
+import { groupBy } from 'lodash-es';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
-import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
+import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
+
+interface FiltersType {
+  [facet: string]: string[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class ProductMasterVariationsService {
@@ -19,20 +23,9 @@ export class ProductMasterVariationsService {
     };
   }
 
-  private filterVariations(product: VariationProductMasterView, filters): string[] {
+  private filterVariations(product: VariationProductMasterView, filters: FiltersType): string[] {
     if (filters && Object.keys(filters).length) {
-      return intersection(
-        ...Object.entries(filters).map(([key, value]) =>
-          product
-            .variations()
-            .filter(variation =>
-              variation.variableVariationAttributes.find(
-                attr => attr.variationAttributeId === key && Array.isArray(value) && value.includes(attr.value)
-              )
-            )
-            .map(p => p.sku)
-        )
-      );
+      return this.potetialMatches(filters, product.variations()).map(p => p.sku);
     } else {
       return product.variations().map(p => p.sku);
     }
@@ -55,18 +48,38 @@ export class ProductMasterVariationsService {
     return [...array, value];
   }
 
-  private createFacet(filterName: string, attribute: VariationAttribute, filters) {
+  private potetialMatches(newFilters: FiltersType, variations: VariationProductView[]) {
+    return variations.filter(variation =>
+      Object.keys(newFilters)
+        .filter(facet => newFilters[facet].length)
+        .every(facet =>
+          newFilters[facet].some(
+            val =>
+              !!variation.variableVariationAttributes.find(
+                attr => attr.variationAttributeId === facet && attr.value === val
+              )
+          )
+        )
+    );
+  }
+
+  private createFacet(
+    filterName: string,
+    attribute: VariationAttribute,
+    filters: FiltersType,
+    variations: VariationProductView[]
+  ) {
     const selected = !!filters[filterName] && filters[filterName].includes(attribute.value);
-    const searchParameter = this.mergeFormParams({
+    const newFilters = {
       ...filters,
       [filterName]: selected
         ? this.removed(filters[filterName], attribute.value)
         : this.added(filters[filterName], attribute.value),
-    });
+    };
     return {
       name: attribute.value,
-      searchParameter: b64u.toBase64(b64u.encode(searchParameter)),
-      count: undefined,
+      searchParameter: b64u.toBase64(b64u.encode(this.mergeFormParams(newFilters))),
+      count: this.potetialMatches(newFilters, variations).length,
       filterId: filterName,
       link: { uri: '', title: attribute.value, type: 'Link' },
       selected,
@@ -74,26 +87,28 @@ export class ProductMasterVariationsService {
     };
   }
 
-  private createFilterNavigation(product: VariationProductMasterView, filters): FilterNavigation {
+  private createFilterNavigation(product: VariationProductMasterView, filters: FiltersType): FilterNavigation {
     const groups = groupBy(product.variationAttributeValues, val => val.variationAttributeId);
     return {
       filter: Object.keys(groups).map(key => ({
         id: key,
         displayType: 'checkbox',
         name: groups[key][0].name,
-        facets: groups[key].map(val => this.createFacet(key, val, filters)),
+        facets: groups[key]
+          .map(val => this.createFacet(key, val, filters, product.variations()))
+          .filter(facet => !!facet.count || facet.selected),
       })),
     };
   }
 
-  private mergeFormParams(object) {
+  private mergeFormParams(object: FiltersType): string {
     return Object.entries(object)
       .filter(([, value]) => Array.isArray(value) && value.length)
       .map(([key, val]) => `${key}=${(val as string[]).join(',')}`)
       .join('&');
   }
 
-  private splitFormParams(object: string) {
+  private splitFormParams(object: string): FiltersType {
     return object
       ? object
           .split('&')
