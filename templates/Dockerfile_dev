@@ -4,10 +4,5 @@ WORKDIR /workspace
 RUN npm ci --production
 COPY src /workspace/src
 COPY angular.json ngsw-config.json tsconfig.json /workspace/
-RUN npx ng build --progress false --aot
-
-FROM node:10-alpine
-RUN npm i -g spa-http-server
-COPY --from=buildstep /workspace/dist/browser /app
 EXPOSE 8080
-CMD http-server /app --push-state
+CMD npx ng serve --host 0.0.0.0 --disableHostCheck true --aot --port 8080
