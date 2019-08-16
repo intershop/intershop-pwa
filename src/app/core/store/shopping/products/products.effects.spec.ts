@@ -56,7 +56,7 @@ describe('Products Effects', () => {
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anything())).thenReturn(
       of({
         sortKeys: ['name-asc', 'name-desc'],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
@@ -139,7 +139,7 @@ describe('Products Effects', () => {
       actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
-        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).once();
+        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc')).once();
         done();
       });
     });
@@ -162,7 +162,7 @@ describe('Products Effects', () => {
     });
 
     it('should not die if repeating errors are encountered', () => {
-      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anyNumber(), anything())).thenReturn(
+      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anything())).thenReturn(
         throwError({ message: 'ERROR' })
       );
       actions$ = hot('-a-a-a', {

@@ -1,11 +1,19 @@
 import { TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
+import { combineReducers } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import {
+  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
+} from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductsService } from './products.service';
 
@@ -38,8 +46,17 @@ describe('Products Service', () => {
   beforeEach(async(() => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({ configuration: configurationReducer })],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
+      imports: [
+        ...ngrxTesting({ configuration: configurationReducer, shopping: combineReducers(shoppingReducers) }, [
+          ProductListingEffects,
+        ]),
+        RouterTestingModule,
+      ],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'grid' },
+      ],
     });
     productsService = TestBed.get(ProductsService);
   }));
@@ -55,7 +72,7 @@ describe('Products Service', () => {
 
   it("should get a list of products SKUs for a given Category when 'getCategoryProducts' is called", done => {
     when(apiServiceMock.get(`categories/${categoryId}/products`, anything())).thenReturn(of(productsMockData));
-    productsService.getCategoryProducts(categoryId, 0, 3).subscribe(data => {
+    productsService.getCategoryProducts(categoryId, 0).subscribe(data => {
       expect(data.products.map(p => p.sku)).toEqual(['ProductA', 'ProductB']);
       expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
       verify(apiServiceMock.get(`categories/${categoryId}/products`, anything())).once();
@@ -67,7 +84,7 @@ describe('Products Service', () => {
     const searchTerm = 'aaa';
 
     when(apiServiceMock.get(anything(), anything())).thenReturn(of(productsMockData));
-    productsService.searchProducts(searchTerm, 0, 10);
+    productsService.searchProducts(searchTerm, 0);
 
     verify(apiServiceMock.get(anything(), anything())).once();
   });

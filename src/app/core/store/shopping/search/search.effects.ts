@@ -1,26 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, concatMap, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
-import { LoadMoreProducts, SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
+import { LoadMoreProducts, SetProductListingPages } from '../product-listing';
 import { LoadProductSuccess } from '../products';
 
 import {
@@ -72,14 +62,8 @@ export class SearchEffects {
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
     mapToPayload(),
     map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-    withLatestFrom(
-      this.store.pipe(
-        select(getProductListingItemsPerPage),
-        whenTruthy()
-      )
-    ),
-    concatMap(([{ searchTerm, page, sorting }, itemsPerPage]) =>
-      this.productsService.searchProducts(searchTerm, page, itemsPerPage, sorting).pipe(
+    concatMap(({ searchTerm, page, sorting }) =>
+      this.productsService.searchProducts(searchTerm, page, sorting).pipe(
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
           new SetProductListingPages(

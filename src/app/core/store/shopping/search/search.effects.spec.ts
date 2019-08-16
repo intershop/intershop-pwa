@@ -36,7 +36,7 @@ describe('Search Effects', () => {
     when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
     productsServiceMock = mock(ProductsService);
     const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber(), anything())).thenCall(
+    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anything())).thenCall(
       (searchTerm: string, page: number, itemsPerPage: number) => {
         if (!searchTerm) {
           return throwError({ message: 'ERROR' });
@@ -113,7 +113,7 @@ describe('Search Effects', () => {
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 1, 3, anything())).once();
+          verify(productsServiceMock.searchProducts(searchTerm, 1, anything())).once();
           done();
         });
       });
@@ -239,13 +239,13 @@ describe('Search Effects', () => {
         const searchTerm = '123';
 
         store$.dispatch(new SearchProducts({ searchTerm }));
-        verify(productsServiceMock.searchProducts(searchTerm, 1, 3, anything())).once();
+        verify(productsServiceMock.searchProducts(searchTerm, 1, anything())).once();
 
         store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));
-        verify(productsServiceMock.searchProducts(searchTerm, 2, 3, anything())).once();
+        verify(productsServiceMock.searchProducts(searchTerm, 2, anything())).once();
 
         store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 3 }));
-        verify(productsServiceMock.searchProducts(searchTerm, 3, 3, anything())).once();
+        verify(productsServiceMock.searchProducts(searchTerm, 3, anything())).once();
       }));
     });
   });

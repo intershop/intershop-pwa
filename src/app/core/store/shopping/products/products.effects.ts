@@ -33,7 +33,7 @@ import {
 } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
-import { SetProductListingPages, getProductListingItemsPerPage } from '../product-listing';
+import { SetProductListingPages } from '../product-listing';
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
@@ -78,14 +78,8 @@ export class ProductsEffects {
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
     mapToPayload(),
     map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
-    withLatestFrom(
-      this.store.pipe(
-        select(getProductListingItemsPerPage),
-        whenTruthy()
-      )
-    ),
-    concatMap(([{ categoryId, page, sorting }, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryId, page, itemsPerPage, sorting).pipe(
+    concatMap(({ categoryId, page, sorting }) =>
+      this.productsService.getCategoryProducts(categoryId, page, sorting).pipe(
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetProductListingPages(
