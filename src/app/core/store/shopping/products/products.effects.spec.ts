@@ -18,6 +18,7 @@ import { VariationProduct } from '../../../models/product/product-variation.mode
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
+import { LoadCategory } from '../categories';
 import { shoppingReducers } from '../shopping-store.module';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
 
@@ -489,6 +490,65 @@ describe('Products Effects', () => {
         `);
         done();
       });
+    });
+  });
+
+  describe('loadProductLinks$', () => {
+    it('should load product links reference when queried', () => {
+      when(productsServiceMock.getProductLinks('ABC')).thenReturn(
+        of({ linkType: { products: ['prod'], categories: [] } })
+      );
+
+      actions$ = hot('a', { a: new fromActions.LoadProductLinks({ sku: 'ABC' }) });
+      expect(effects.loadProductLinks$).toBeObservable(
+        cold('(a)', {
+          a: new fromActions.LoadProductLinksSuccess({
+            sku: 'ABC',
+            links: { linkType: { products: ['prod'], categories: [] } },
+          }),
+        })
+      );
+    });
+
+    it('should send fail action in case of failure for load product links', () => {
+      when(productsServiceMock.getProductLinks('ABC')).thenReturn(throwError({ message: 'ERROR' }));
+
+      actions$ = hot('a', { a: new fromActions.LoadProductLinks({ sku: 'ABC' }) });
+      expect(effects.loadProductLinks$).toBeObservable(
+        cold('(a)', {
+          a: new fromActions.LoadProductLinksFail({
+            error: { message: 'ERROR' } as HttpError,
+            sku: 'ABC',
+          }),
+        })
+      );
+    });
+  });
+
+  describe('loadLinkedCategories$', () => {
+    it('should load category links reference when queried', () => {
+      actions$ = hot('(a)', {
+        a: new fromActions.LoadProductLinksSuccess({
+          sku: 'ABC',
+          links: {
+            linkType1: { products: [], categories: ['cat1', 'cat2'] },
+            linkType2: { products: [], categories: ['cat1', 'cat3'] },
+          },
+        }),
+      });
+      expect(effects.loadLinkedCategories$).toBeObservable(
+        cold('(abc)', {
+          a: new LoadCategory({
+            categoryId: 'cat1',
+          }),
+          b: new LoadCategory({
+            categoryId: 'cat2',
+          }),
+          c: new LoadCategory({
+            categoryId: 'cat3',
+          }),
+        })
+      );
     });
   });
 });
