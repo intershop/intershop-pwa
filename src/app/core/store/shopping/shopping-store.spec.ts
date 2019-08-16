@@ -126,14 +126,14 @@ describe('Shopping Store', () => {
         return throwError({ message: `error loading product ${sku}` });
       }
     });
-    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything())).thenReturn(
       of({
         sortKeys: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber(), anything())).thenReturn(
+    when(productsServiceMock.searchProducts('something', anyNumber(), anything())).thenReturn(
       of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
 
