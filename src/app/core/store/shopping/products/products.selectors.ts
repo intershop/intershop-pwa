@@ -122,7 +122,7 @@ export const getSelectedProductVariationOptions = createSelector(
 export const getProductBundleParts = createSelector(
   getProductEntities,
   (entities: Dictionary<ProductBundle>, props: { sku: string }) =>
-    !ProductHelper.isProductBundle(entities[props.sku])
+    !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
       ? []
       : entities[props.sku].bundledProducts
           .filter(({ sku }) => !!entities[sku])
