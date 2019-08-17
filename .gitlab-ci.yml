@@ -52,6 +52,30 @@ setup:
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
     - echo "setup complete"
 
+start_review_server:
+  cache: {}
+  dependencies: []
+  stage: setup
+  only:
+    - merge_requests
+  tags:
+    - shell-executor
+    - docker
+    - demoserver
+  script:
+    - docker build -t review-server templates/review-server
+    - docker rm -f review-server || true
+    - docker run
+      --name review-server
+      --detach
+      --restart always
+      -v /var/run/docker.sock:/var/run/docker.sock:ro
+      --publish 3000:3000
+      review-server /usr/bin/node /review-proxy
+  environment:
+    name: review-server
+    url: http://$DEMO_SERVER_NAME:3000
+
 jest_test:
   image: node:10
   stage: build
@@ -224,30 +248,6 @@ publish_pwa_latest:
     - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:master
     - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:master ${CI_REGISTRY_IMAGE}:latest
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:latest
-
-start_review_server:
-  cache: {}
-  dependencies: []
-  stage: publish
-  only:
-    - merge_requests
-  tags:
-    - shell-executor
-    - docker
-    - demoserver
-  script:
-    - docker build -t review-server templates/review-server
-    - docker rm -f review-server || true
-    - docker run
-      --name review-server
-      --detach
-      --restart always
-      -v /var/run/docker.sock:/var/run/docker.sock:ro
-      --publish 3000:3000
-      review-server /usr/bin/node /review-proxy
-  environment:
-    name: review-server
-    url: http://$DEMO_SERVER_NAME:3000
 
 publish_nginx:
   cache: {}
