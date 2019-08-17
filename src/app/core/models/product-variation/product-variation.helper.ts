@@ -76,9 +76,8 @@ export class ProductVariationHelper {
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
-    const options: VariationSelectOption[] = product
-      .productMaster()
-      .variationAttributeValues.map(attr => ({
+    const options: VariationSelectOption[] = (product.productMaster().variationAttributeValues || [])
+      .map(attr => ({
         label: attr.value,
         value: attr.value,
         type: attr.variationAttributeId,

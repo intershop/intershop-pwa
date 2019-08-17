@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProductListPagingComponent } from './product-list-paging.component';
 
@@ -9,6 +10,7 @@ describe('Product List Paging Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [ProductListPagingComponent],
     }).compileComponents();
   }));
@@ -17,8 +19,7 @@ describe('Product List Paging Component', () => {
     fixture = TestBed.createComponent(ProductListPagingComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.pageIndices = [1, 2, 3];
-    component.pageUrl = '/some/followup/link';
+    component.pageIndices = [{ value: 1, display: '1' }, { value: 2, display: '2' }, { value: 3, display: '3' }];
   });
 
   it('should be created', () => {
@@ -32,9 +33,38 @@ describe('Product List Paging Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <div class="product-list-paging">
-        <a class="active" href="/some/followup/link?page=1">1</a><a href="/some/followup/link?page=2">2</a
-        ><a href="/some/followup/link?page=3">3</a><a href="/some/followup/link?page=2">»</a>
+      <div class="product-list-paging row justify-content-center">
+        <a class=" col-1 inactive">«</a>
+        <div class="col-auto">
+          <a
+            queryparamshandling="merge"
+            class="active"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=1"
+            >1</a
+          ><a
+            queryparamshandling="merge"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=2"
+            >2</a
+          ><a
+            queryparamshandling="merge"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=3"
+            >3</a
+          >
+        </div>
+        <a
+          class="col-1"
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >»</a
+        >
       </div>
     `);
   });
@@ -44,10 +74,45 @@ describe('Product List Paging Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <div class="product-list-paging">
-        <a href="/some/followup/link?page=1">«</a><a href="/some/followup/link?page=1">1</a
-        ><a class="active" href="/some/followup/link?page=2">2</a
-        ><a href="/some/followup/link?page=3">3</a><a href="/some/followup/link?page=3">»</a>
+      <div class="product-list-paging row justify-content-center">
+        <a
+          class="col-1"
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=1"
+          >«</a
+        >
+        <div class="col-auto">
+          <a
+            queryparamshandling="merge"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=1"
+            >1</a
+          ><a
+            queryparamshandling="merge"
+            class="active"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=2"
+            >2</a
+          ><a
+            queryparamshandling="merge"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=3"
+            >3</a
+          >
+        </div>
+        <a
+          class="col-1"
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=3"
+          >»</a
+        >
       </div>
     `);
   });
@@ -57,10 +122,38 @@ describe('Product List Paging Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-      <div class="product-list-paging">
-        <a href="/some/followup/link?page=2">«</a><a href="/some/followup/link?page=1">1</a
-        ><a href="/some/followup/link?page=2">2</a
-        ><a class="active" href="/some/followup/link?page=3">3</a>
+      <div class="product-list-paging row justify-content-center">
+        <a
+          class="col-1"
+          queryparamshandling="merge"
+          ng-reflect-query-params-handling="merge"
+          ng-reflect-router-link=""
+          href="/?page=2"
+          >«</a
+        >
+        <div class="col-auto">
+          <a
+            queryparamshandling="merge"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=1"
+            >1</a
+          ><a
+            queryparamshandling="merge"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=2"
+            >2</a
+          ><a
+            queryparamshandling="merge"
+            class="active"
+            ng-reflect-query-params-handling="merge"
+            ng-reflect-router-link=""
+            href="/?page=3"
+            >3</a
+          >
+        </div>
+        <a class="col-1 inactive">»</a>
       </div>
     `);
   });

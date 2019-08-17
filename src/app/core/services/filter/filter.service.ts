@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
-import { Category } from '../../models/category/category.model';
 import { FilterNavigationData } from '../../models/filter-navigation/filter-navigation.interface';
 import { FilterNavigationMapper } from '../../models/filter-navigation/filter-navigation.mapper';
 import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
@@ -17,8 +16,8 @@ import { ApiService, unpackEnvelope } from '../api/api.service';
 export class FilterService {
   constructor(private apiService: ApiService) {}
 
-  getFilterForCategory(category: Category): Observable<FilterNavigation> {
-    const idList = category.uniqueId.split('.');
+  getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
+    const idList = categoryUniqueId.split('.');
     // TODO from REST
     const categoryDomainName = this.getDomainId(idList[0]);
     const params = new HttpParams()
@@ -40,21 +39,21 @@ export class FilterService {
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
-  applyFilter(filterName: string, searchParameter: string): Observable<FilterNavigation> {
+  applyFilter(searchParameter: string): Observable<FilterNavigation> {
     return this.apiService
-      .get<FilterNavigationData>(`filters/${filterName};SearchParameter=${searchParameter}`)
+      .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`)
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
-  getProductSkusForFilter(filterName: string, searchParameter: string): Observable<string[]> {
-    return this.apiService.get(`filters/${filterName};SearchParameter=${searchParameter}/hits`).pipe(
+  getProductSkusForFilter(searchParameter: string): Observable<string[]> {
+    return this.apiService.get(`filters/default;SearchParameter=${searchParameter}/hits`).pipe(
       unpackEnvelope<Link>(),
       map(e => e.map(l => l.uri).map(ProductMapper.parseSKUfromURI))
     );
   }
 
   private getDomainId(rootName: string) {
-    if (rootName === 'Specials' || rootName === 'Cameras') {
+    if (rootName === 'Specials' || rootName === 'Cameras-Camcorders') {
       return 'inSPIRED-inTRONICS-' + rootName;
     }
     return 'inSPIRED-' + rootName;

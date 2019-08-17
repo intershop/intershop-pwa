@@ -1,37 +1,55 @@
-<div class="filters-row row">
-  <div class="col-12 col-md-9 col-lg-7 switch-layout">
-    <div class="col-4 col-md-3">
-      <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap">
-        {{ itemCount | i18nPlural: ('product.items.label' | translate) || { other: '#' } }}
+<div class="filters-row row align-items-center">
+  <div class="col-12 col-sm-3 col-lg-2 text-center">
+    <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap">
+      {{ itemCount | i18nPlural: ('product.items.label' | translate) || { other: '#' } }}
+    </div>
+  </div>
+  <div class="col-12 col-sm-9 col-md-6 col-lg-6 text-center product-list-paging">
+    <ish-product-list-paging
+      *ngIf="pageIndices && pageIndices.length && currentPage"
+      [currentPage]="currentPage"
+      [pageIndices]="pageIndices"
+      [fragmentOnRouting]="fragmentOnRouting"
+    ></ish-product-list-paging>
+  </div>
+  <div class="sort-by col-12 col-md-3 col-lg-4">
+    <div class="row justify-content-end">
+      <div class="col-xs-12 col-sm-3 col-md-12 col-lg-5">
+        <a
+          class="list-view-link"
+          [ngClass]="{ 'list-active': listView }"
+          data-testing-id="list-view-link"
+          [routerLink]="[]"
+          queryParamsHandling="merge"
+          [queryParams]="{ view: 'list' }"
+          replaceUrl
+          [fragment]="fragmentOnRouting"
+        >
+          <fa-icon [icon]="['fas', 'list']"></fa-icon>
+        </a>
+        <a
+          class="grid-view-link"
+          [ngClass]="{ 'grid-active': gridView }"
+          data-testing-id="grid-view-link"
+          [routerLink]="[]"
+          queryParamsHandling="merge"
+          [queryParams]="{ view: 'grid' }"
+          replaceUrl
+          [fragment]="fragmentOnRouting"
+        >
+          <fa-icon [icon]="['fas', 'th']"></fa-icon>
+        </a>
+      </div>
+      <div *ngIf="sortOptions.length" class="align-self-center col-xs-12 col-sm-9 col-md-12 col-lg-7">
+        <select
+          [formControl]="sortDropdown"
+          class="form-control sort-by-filter"
+          id="SortingAttribute"
+          name="SortingAttribute"
+        >
+          <option *ngFor="let o of sortOptions" [value]="o.value">{{ o.label }}</option>
+        </select>
       </div>
     </div>
-  </div>
-  <div class="col-4 col-md-3 col-lg-2 switch-layout">
-    <div class="sort-by">
-      <a
-        class="list-view-link"
-        [ngClass]="{ 'list-active': listView }"
-        data-testing-id="list-view-link"
-        (click)="setViewType('list')"
-      >
-        <fa-icon [icon]="['fas', 'list']"></fa-icon>
-      </a>
-      <a
-        class="grid-view-link"
-        [ngClass]="{ 'grid-active': gridView }"
-        data-testing-id="grid-view-link"
-        (click)="setViewType('grid')"
-      >
-        <fa-icon [icon]="['fas', 'th']"></fa-icon>
-      </a>
-    </div>
-  </div>
-  <div class="col-8 col-md-12 col-lg-3 sort-by">
-    <form class="sort-by-filter" name="sortByForm" novalidate="" [formGroup]="sortForm">
-      <!-- TODO: Remove form tag, it's not needed -->
-      <select class="form-control" formControlName="sortDropdown" id="SortingAttribute" name="SortingAttribute">
-        <option *ngFor="let o of sortOptions" [value]="o.value">{{ o.label }}</option>
-      </select>
-    </form>
   </div>
 </div>

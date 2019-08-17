@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { Product } from 'ish-core/models/product/product.model';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
 import { ProductItemContainerComponent } from '../../containers/product-item/product-item.container';
 
 import { ProductListComponent } from './product-list.component';
@@ -16,12 +13,7 @@ describe('Product List Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [InfiniteScrollModule],
-      declarations: [
-        MockComponent(LoadingComponent),
-        MockComponent(ProductItemContainerComponent),
-        ProductListComponent,
-      ],
+      declarations: [MockComponent(ProductItemContainerComponent), ProductListComponent],
     }).compileComponents();
   }));
 
@@ -29,7 +21,7 @@ describe('Product List Component', () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.products = [{ sku: 'sku' } as Product];
+    component.products = ['sku'];
   });
 
   it('should be created', () => {

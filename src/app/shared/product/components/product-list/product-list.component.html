@@ -1,23 +1,13 @@
-<div class="product-list row" infiniteScroll (scrolled)="loadMore.emit()">
-  <ng-container *ngFor="let product of products; trackBy: trackByFn">
+<div class="product-list row">
+  <ng-container *ngFor="let sku of products">
     <div *ngIf="isGrid" class="col-6 col-lg-4 product-list-item grid-view">
-      <ish-product-item-container
-        [configuration]="{ displayType: 'tile' }"
-        [productSku]="product.sku"
-        [category]="category"
-      >
+      <ish-product-item-container [configuration]="{ displayType: 'tile' }" [productSku]="sku" [category]="category">
       </ish-product-item-container>
     </div>
 
     <div *ngIf="isList" class="col-lg-12 product-list-item list-view">
-      <ish-product-item-container
-        [configuration]="{ displayType: 'row' }"
-        [productSku]="product.sku"
-        [category]="category"
-      >
+      <ish-product-item-container [configuration]="{ displayType: 'row' }" [productSku]="sku" [category]="category">
       </ish-product-item-container>
     </div>
   </ng-container>
 </div>
-
-<ish-loading *ngIf="loadingMore" [standalone]="true"></ish-loading>

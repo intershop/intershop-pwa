@@ -7,7 +7,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  *  <ish-product-list-paging *ngIf="displayPaging$ | async"
  *    [currentPage]="currentPage$ | async"
  *    [pageIndices]="pageIndices$ | async"
- *    [pageUrl]="pageUrl"
  *  ></ish-product-list-paging>
  */
 @Component({
@@ -17,14 +16,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class ProductListPagingComponent {
   @Input() currentPage: number;
-  @Input() pageIndices: number[];
-  @Input() pageUrl: string;
-
-  /**
-   * Generates a paging URL for the given page number with the current page URL
-   * @param pageNumber The page number to generate the URL for
-   */
-  generatePagingUrl(pageNumber: number): string {
-    return `${this.pageUrl}?page=${pageNumber}`;
-  }
+  @Input() pageIndices: { value: number; display: string }[];
+  @Input() fragmentOnRouting: string;
 }

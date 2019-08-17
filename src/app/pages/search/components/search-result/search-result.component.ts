@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 /**
  * The Search Result Component displays a list of products as the result of a search and emits events for changing view type or sorting of the list.
@@ -26,9 +26,4 @@ export class SearchResultComponent {
    * The total number of product search results (might be different from products.length if paging is applied).
    */
   @Input() totalItems: number;
-
-  /**
-   * Request from the product-list to retrieve more products.
-   */
-  @Output() loadMore = new EventEmitter<void>();
 }

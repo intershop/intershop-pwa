@@ -1,11 +1,14 @@
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
+import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { SetEndlessScrollingPageSize, SetPagingInfo } from 'ish-core/store/shopping/viewconf';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
 import { ProductListPagingComponent } from '../../components/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from '../../components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from '../../components/product-list/product-list.component';
@@ -13,6 +16,7 @@ import { ProductListComponent } from '../../components/product-list/product-list
 import { ProductListContainerComponent } from './product-list.container';
 
 describe('Product List Container', () => {
+  const TEST_ID = { type: 'test', value: 'dummy' };
   let component: ProductListContainerComponent;
   let fixture: ComponentFixture<ProductListContainerComponent>;
   let element: HTMLElement;
@@ -21,11 +25,14 @@ describe('Product List Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        InfiniteScrollModule,
+        RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
       ],
       declarations: [
+        MockComponent(LoadingComponent),
         MockComponent(ProductListComponent),
         MockComponent(ProductListPagingComponent),
         MockComponent(ProductListToolbarComponent),
@@ -39,57 +46,56 @@ describe('Product List Container', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListContainerComponent);
     component = fixture.componentInstance;
+    component.id = TEST_ID;
     element = fixture.nativeElement;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(() => component.ngOnChanges({})).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should display components without paging on the page', () => {
+    component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
     fixture.detectChanges();
 
     expect(findAllIshElements(element)).toIncludeAllMembers(['ish-product-list', 'ish-product-list-toolbar']);
   });
 
-  it('should display components with paging on the page if available', () => {
-    store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
-    store$.dispatch(new SetPagingInfo({ totalItems: 3, currentPage: 2, newProducts: new Array(2) }));
-
-    fixture.detectChanges();
-
-    expect(findAllIshElements(element)).toIncludeAllMembers([
-      'ish-product-list',
-      'ish-product-list-toolbar',
-      'ish-product-list-paging',
-    ]);
-  });
-
-  describe('loading more products', () => {
+  describe('display modes', () => {
     beforeEach(() => {
-      store$.dispatch(new SetEndlessScrollingPageSize({ itemsPerPage: 1 }));
+      store$.dispatch(new SetProductListingPageSize({ itemsPerPage: 1 }));
+      store$.dispatch(new SetProductListingPages({ id: TEST_ID, itemCount: 30, sortKeys: [] }));
+
+      component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
     });
 
-    it('should emit an event when loading more products is possible', () => {
-      store$.dispatch(new SetPagingInfo({ totalItems: 2, currentPage: 0, newProducts: [] }));
+    it('should display components with paging on the page if available and mode is endless-scrolling', () => {
+      component.mode = 'endless-scrolling';
+      fixture.detectChanges();
 
-      const emitter = spy(component.loadMore);
-
-      component.loadMoreProducts();
-
-      verify(emitter.emit()).once();
+      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+        Array [
+          "ish-product-list",
+          "ish-product-list-paging",
+          "ish-product-list-toolbar",
+        ]
+      `);
     });
 
-    it('should not emit an event when loading more products is impossible', () => {
-      store$.dispatch(new SetPagingInfo({ totalItems: 2, currentPage: 1, newProducts: [] }));
+    it('should display components with paging on the page if available and mode is paging', () => {
+      component.mode = 'paging';
+      fixture.detectChanges();
 
-      const emitter = spy(component.loadMore);
-
-      component.loadMoreProducts();
-
-      verify(emitter.emit()).never();
+      expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+        Array [
+          "ish-product-list",
+          "ish-product-list-toolbar",
+          "ish-product-list-toolbar",
+        ]
+      `);
     });
   });
 });

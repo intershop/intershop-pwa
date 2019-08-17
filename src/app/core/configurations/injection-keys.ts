@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { Locale } from '../models/locale/locale.model';
 
 /**
@@ -25,9 +26,13 @@ export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = new InjectionToken<numbe
   'mainNavigationMaxSubCategoriesDepth'
 );
 /**
- * global definition of the endless scrolling page size
+ * global definition of the product listing page size
  */
-export const ENDLESS_SCROLLING_ITEMS_PER_PAGE = new InjectionToken<number>('endlessScrollingItemsPerPage');
+export const PRODUCT_LISTING_ITEMS_PER_PAGE = new InjectionToken<number>('productListingItemsPerPage');
+/**
+ * default definition of the product listing view type
+ */
+export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE = new InjectionToken<ViewType>('defaultProductListingViewType');
 /**
  * global definition of the Bootstrap grid system breakpoint widths
  */

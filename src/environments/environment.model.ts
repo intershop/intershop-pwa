@@ -59,7 +59,10 @@ export interface Environment {
   mainNavigationMaxSubCategoriesDepth: number;
 
   // global definition of the product listing page size
-  endlessScrollingItemsPerPage: number;
+  productListingItemsPerPage: number;
+
+  // default viewType used for product listings
+  defaultProductListingViewType: 'grid' | 'list';
 
   // enable or disable service worker
   serviceWorker: boolean;

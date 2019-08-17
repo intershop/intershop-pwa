@@ -36,11 +36,11 @@ class AngularHTMLSerializer implements jest.SnapshotSerializerPlugin {
   }
 }
 
-function arrayToObject(val: string[], edges: { [key: string]: string[] }) {
+function arrayToObject<T>(val: string[], edges: { [key: string]: string[] }) {
   return val.reduce((tree, node) => {
     tree[node] = edges[node] ? arrayToObject(edges[node], edges) : undefined;
     return tree;
-  }, {}) as any;
+  }, {}) as T;
 }
 
 function serializeCategoryTree(ct: {
@@ -55,7 +55,8 @@ function serializeCategoryTree(ct: {
     .concat(ct.rootIds);
   const danglingKeys = Object.keys(ct.nodes).filter(key => !assignedKeys.includes(key));
   if (danglingKeys.length) {
-    tree.dangling = arrayToObject(danglingKeys, ct.edges);
+    // tslint:disable-next-line:no-string-literal
+    tree['dangling'] = arrayToObject(danglingKeys, ct.edges);
   }
   return asTree(tree);
 }
@@ -117,7 +118,7 @@ class NgrxActionArraySerializer implements jest.SnapshotSerializerPlugin {
     return val.map(serialize).join('\n');
   }
 
-  test(val: any): boolean {
+  test(val): boolean {
     return (
       val instanceof Array &&
       val.length &&
