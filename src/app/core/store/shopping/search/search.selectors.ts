@@ -7,11 +7,6 @@ export const getSearchState = createSelector(
   (state: ShoppingState) => state.search
 );
 
-export const getSearchLoading = createSelector(
-  getSearchState,
-  state => state.loading
-);
-
 export const getSearchTerm = createSelector(
   getSearchState,
   state => state.searchTerm

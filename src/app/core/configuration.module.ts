@@ -20,7 +20,8 @@ import { FeatureToggleModule } from './feature-toggle.module';
       provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
       useValue: environment.mainNavigationMaxSubCategoriesDepth,
     },
-    { provide: injectionKeys.ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: environment.endlessScrollingItemsPerPage },
+    { provide: injectionKeys.PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: environment.productListingItemsPerPage },
+    { provide: injectionKeys.DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: environment.defaultProductListingViewType },
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },

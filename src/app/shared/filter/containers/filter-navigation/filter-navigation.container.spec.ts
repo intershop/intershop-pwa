@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { LoadFilterForCategorySuccess } from 'ish-core/store/shopping/filter';
+import { LoadFilterSuccess } from 'ish-core/store/shopping/filter';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { FilterCheckboxComponent } from '../../components/filter-checkbox/filter-checkbox.component';
@@ -22,6 +23,7 @@ describe('Filter Navigation Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
@@ -57,7 +59,7 @@ describe('Filter Navigation Container', () => {
   it('should display filter-dropdown if facet with displayType dropdown is present', () => {
     const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
+    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-dropdown']);
   });
@@ -65,7 +67,7 @@ describe('Filter Navigation Container', () => {
   it('should display filter-checkbox if facet with displayType text_clear is present', () => {
     const filterNavigation = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
+    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });
@@ -73,7 +75,7 @@ describe('Filter Navigation Container', () => {
   it('should display filter-swatch-images if facet with displayType swatch is present', () => {
     const filterNavigation = { filter: [{ displayType: 'swatch' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
+    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-swatch-images']);
   });
@@ -81,7 +83,7 @@ describe('Filter Navigation Container', () => {
   it('should display filter-checkbox if facet has no displayType set', () => {
     const filterNavigation = { filter: [{} as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
+    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });
@@ -89,7 +91,7 @@ describe('Filter Navigation Container', () => {
   it('should display filter-checkbox if facet has a typo in the displayType', () => {
     const filterNavigation = { filter: [{ displayType: 'typo' } as Filter] } as FilterNavigation;
 
-    store$.dispatch(new LoadFilterForCategorySuccess({ filterNavigation }));
+    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });

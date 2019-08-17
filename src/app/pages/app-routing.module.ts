@@ -54,6 +54,7 @@ const routes: Routes = [
       paramsInheritanceStrategy: 'always',
       scrollPositionRestoration: 'enabled',
       initialNavigation: 'enabled',
+      anchorScrolling: 'enabled',
     }),
   ],
   exports: [RouterModule],

@@ -11,10 +11,11 @@ import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito
 
 import {
   AVAILABLE_LOCALES,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
   MEDIUM_BREAKPOINT_WIDTH,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -125,15 +126,14 @@ describe('Shopping Store', () => {
         return throwError({ message: `error loading product ${sku}` });
       }
     });
-    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anyString())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anything())).thenReturn(
       of({
-        categoryUniqueId: 'A.123.456',
         sortKeys: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
         total: 2,
       })
     );
-    when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
+    when(productsServiceMock.searchProducts('something', anyNumber(), anything())).thenReturn(
       of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
 
@@ -203,9 +203,10 @@ describe('Shopping Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
+        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
 
@@ -241,8 +242,6 @@ describe('Shopping Store', () => {
           breadcrumbData: undefined
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
       `);
@@ -282,12 +281,8 @@ describe('Shopping Store', () => {
             categoryId: "A.123"
           [Shopping] Load Category:
             categoryId: "A"
-          [Shopping] Load Filter For Category:
-            category: {"uniqueId":"A.123","categoryPath":[2],"completenessLevel":3}
           [Shopping] Load Category Success:
             categories: tree(A,A.123)
-          [Shopping] Load Filter For Category Success:
-            filterNavigation: {}
         `);
       }));
     });
@@ -327,23 +322,33 @@ describe('Shopping Store', () => {
             queryParams: {}
             data: {}
             path: "search/:searchTerm"
-          [Shopping] Prepare Search For Products
+          [Shopping] Set Search Term:
+            searchTerm: "something"
+          [ProductListing] Load More Products:
+            id: {"type":"search","value":"something"}
+          [ProductListing Internal] Load More Products For Params:
+            id: {"type":"search","value":"something"}
+            filters: undefined
+            sorting: undefined
+            page: undefined
           [Shopping] Search Products:
             searchTerm: "something"
-          [Shopping] Search Products Success:
-            searchTerm: "something"
-          [Shopping] Set Paging Info:
-            currentPage: 0
-            totalItems: 1
-            newProducts: ["P2"]
-          [Shopping] Load Product Success:
-            product: {"sku":"P2"}
-          [Shopping] Set SortKey List:
-            sortKeys: []
+            page: undefined
+            sorting: undefined
           [Shopping] Load Filter for Search:
             searchTerm: "something"
-          [Shopping] Load Filter for Search Success:
+          [Shopping] Load Product Success:
+            product: {"sku":"P2"}
+          [ProductListing] Set Product Listing Pages:
+            1: ["P2"]
+            id: {"type":"search","value":"something"}
+            itemCount: 1
+            sortKeys: []
+            pages: [1]
+          [Shopping] Load Filter Success:
             filterNavigation: {}
+          [ProductListing] Set Product Listing Pages:
+            id: {"type":"search","value":"something"}
         `);
       }));
 
@@ -404,8 +409,6 @@ describe('Shopping Store', () => {
           categoryId: "A.123"
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123"
         [Shopping] Load top level categories success:
@@ -416,12 +419,8 @@ describe('Shopping Store', () => {
           categoryId: "A.123"
         [Shopping] Load Category:
           categoryId: "A"
-        [Shopping] Load Filter For Category:
-          category: {"uniqueId":"A.123","categoryPath":[2],"completenessLevel":3}
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
-        [Shopping] Load Filter For Category Success:
-          filterNavigation: {}
       `);
     }));
 
@@ -485,8 +484,6 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories success:
@@ -495,30 +492,59 @@ describe('Shopping Store', () => {
           categories: tree(A.123.456)
         [Shopping] Selected Category Available:
           categoryId: "A.123.456"
-        [Shopping] Load Products for Category:
-          categoryId: "A.123.456"
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"A.123.456"}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Filter For Category:
-          category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
-        [Shopping] Load Product Success:
-          product: {"sku":"P1"}
-        [Shopping] Load Product Success:
-          product: {"sku":"P2"}
-        [Shopping] Set Paging Info:
-          currentPage: 0
-          totalItems: 2
-          newProducts: ["P1","P2"]
-        [Shopping] Set SortKey List:
-          sortKeys: []
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"category","value":"A.123.456"}
+          filters: undefined
+          sorting: undefined
+          page: undefined
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
+        [Shopping] Load Products for Category:
+          categoryId: "A.123.456"
+          page: undefined
+          sorting: undefined
+        [Shopping] Load Filter For Category:
+          uniqueId: "A.123.456"
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"A.123.456"}
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"A.123.456"}
+        [Shopping] Load Product Success:
+          product: {"sku":"P1"}
+        [Shopping] Load Product Success:
+          product: {"sku":"P2"}
+        [ProductListing] Set Product Listing Pages:
+          1: ["P1","P2"]
+          id: {"type":"category","value":"A.123.456"}
+          itemCount: 2
+          sortKeys: []
+          pages: [1]
+        [Shopping] Load Filter Success:
           filterNavigation: {}
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"category","value":"A.123.456"}
+          filters: undefined
+          sorting: undefined
+          page: undefined
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"category","value":"A.123.456"}
+          filters: undefined
+          sorting: undefined
+          page: undefined
+        [ProductListing] Set Product Listing Pages:
+          id: {"type":"category","value":"A.123.456"}
+        [ProductListing] Set Product Listing Pages:
+          id: {"type":"category","value":"A.123.456"}
+        [ProductListing] Set Product Listing Pages:
+          id: {"type":"category","value":"A.123.456"}
       `);
     }));
 
@@ -569,8 +595,17 @@ describe('Shopping Store', () => {
               queryParams: {}
               data: {}
               path: "category/:categoryUniqueId"
+            [ProductListing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
             [Shopping] Select Product:
               sku: undefined
+            [ProductListing Internal] Load More Products For Params:
+              id: {"type":"category","value":"A.123.456"}
+              filters: undefined
+              sorting: undefined
+              page: undefined
+            [ProductListing] Set Product Listing Pages:
+              id: {"type":"category","value":"A.123.456"}
           `);
         }));
       });
@@ -638,8 +673,6 @@ describe('Shopping Store', () => {
           depth: 1
         [Shopping] Select Product:
           sku: "P1"
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories success:
@@ -658,14 +691,10 @@ describe('Shopping Store', () => {
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Filter For Category:
-          category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
-          filterNavigation: {}
       `);
     }));
 
@@ -693,20 +722,35 @@ describe('Shopping Store', () => {
             queryParams: {}
             data: {}
             path: "category/:categoryUniqueId"
-          [Shopping] Load Products for Category:
-            categoryId: "A.123.456"
+          [ProductListing] Load More Products:
+            id: {"type":"category","value":"A.123.456"}
           [Shopping] Select Product:
             sku: undefined
+          [ProductListing Internal] Load More Products For Params:
+            id: {"type":"category","value":"A.123.456"}
+            filters: undefined
+            sorting: undefined
+            page: undefined
+          [Shopping] Load Products for Category:
+            categoryId: "A.123.456"
+            page: undefined
+            sorting: undefined
+          [Shopping] Load Filter For Category:
+            uniqueId: "A.123.456"
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
           [Shopping] Load Product Success:
             product: {"sku":"P2"}
-          [Shopping] Set Paging Info:
-            currentPage: 0
-            totalItems: 2
-            newProducts: ["P1","P2"]
-          [Shopping] Set SortKey List:
+          [ProductListing] Set Product Listing Pages:
+            1: ["P1","P2"]
+            id: {"type":"category","value":"A.123.456"}
+            itemCount: 2
             sortKeys: []
+            pages: [1]
+          [Shopping] Load Filter Success:
+            filterNavigation: {}
+          [ProductListing] Set Product Listing Pages:
+            id: {"type":"category","value":"A.123.456"}
         `);
       }));
 
@@ -777,8 +821,6 @@ describe('Shopping Store', () => {
           depth: 1
         [Shopping] Select Product:
           sku: "P1"
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
         [Shopping] Load Product:
@@ -853,8 +895,6 @@ describe('Shopping Store', () => {
           depth: 1
         [Shopping] Select Product:
           sku: "P3"
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories success:
@@ -872,14 +912,10 @@ describe('Shopping Store', () => {
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
-        [Shopping] Load Filter For Category:
-          category: {"uniqueId":"A.123.456","categoryPath":[3],"hasOnlineProduct...
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Load Filter For Category Success:
-          filterNavigation: {}
         [Router] Navigation:
           params: {}
           queryParams: {}
@@ -930,8 +966,6 @@ describe('Shopping Store', () => {
           categoryId: "A.123.XXX"
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
         [Shopping] Load Category:
           categoryId: "A.123.XXX"
         [Shopping] Load top level categories success:
@@ -978,27 +1012,35 @@ describe('Shopping Store', () => {
           breadcrumbData: undefined
         [Shopping] Load top level categories:
           depth: 1
-        [Shopping Internal] Set Endless Scrolling Page Size:
-          itemsPerPage: 3
+        [Shopping] Set Search Term:
+          searchTerm: "something"
         [Shopping] Load top level categories success:
           categories: tree(A,A.123,B)
-        [Shopping] Prepare Search For Products
+        [ProductListing] Load More Products:
+          id: {"type":"search","value":"something"}
+        [ProductListing Internal] Load More Products For Params:
+          id: {"type":"search","value":"something"}
+          filters: undefined
+          sorting: undefined
+          page: undefined
         [Shopping] Search Products:
           searchTerm: "something"
-        [Shopping] Search Products Success:
-          searchTerm: "something"
-        [Shopping] Set Paging Info:
-          currentPage: 0
-          totalItems: 1
-          newProducts: ["P2"]
-        [Shopping] Load Product Success:
-          product: {"sku":"P2"}
-        [Shopping] Set SortKey List:
-          sortKeys: []
+          page: undefined
+          sorting: undefined
         [Shopping] Load Filter for Search:
           searchTerm: "something"
-        [Shopping] Load Filter for Search Success:
+        [Shopping] Load Product Success:
+          product: {"sku":"P2"}
+        [ProductListing] Set Product Listing Pages:
+          1: ["P2"]
+          id: {"type":"search","value":"something"}
+          itemCount: 1
+          sortKeys: []
+          pages: [1]
+        [Shopping] Load Filter Success:
           filterNavigation: {}
+        [ProductListing] Set Product Listing Pages:
+          id: {"type":"search","value":"something"}
       `);
     }));
   });

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
@@ -59,13 +59,18 @@ describe('Category Page Container', () => {
     expect(findAllIshElements(element)).toBeEmpty();
   });
 
-  it('should display loading when category is loading', () => {
+  it('should display loading when category is loading', fakeAsync(() => {
     store$.dispatch(new LoadCategory({ categoryId: 'dummy' }));
 
     fixture.detectChanges();
 
+    expect(findAllIshElements(element)).toBeEmpty();
+
+    tick(5000);
+    fixture.detectChanges();
+
     expect(findAllIshElements(element)).toEqual(['ish-loading']);
-  });
+  }));
 
   it('should display category-page when category has sub categories', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;

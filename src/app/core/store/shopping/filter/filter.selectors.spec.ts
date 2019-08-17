@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { shoppingReducers } from '../shopping-store.module';
@@ -11,9 +10,9 @@ import {
   ApplyFilter,
   ApplyFilterFail,
   ApplyFilterSuccess,
+  LoadFilterFail,
   LoadFilterForCategory,
-  LoadFilterForCategoryFail,
-  LoadFilterForCategorySuccess,
+  LoadFilterSuccess,
 } from './filter.actions';
 import { getAvailableFilter, getFilterLoading } from './filter.selectors';
 
@@ -38,7 +37,7 @@ describe('Filter Selectors', () => {
 
   describe('with LoadFilterForCategory state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategory({ category: {} as Category }));
+      store$.dispatch(new LoadFilterForCategory({ uniqueId: 'dummy' }));
     });
 
     it('should set the state to loading', () => {
@@ -46,11 +45,9 @@ describe('Filter Selectors', () => {
     });
   });
 
-  describe('with LoadFilterForCategorySuccess state', () => {
+  describe('with LoadFilterSuccess state', () => {
     beforeEach(() => {
-      store$.dispatch(
-        new LoadFilterForCategorySuccess({ filterNavigation: { filter: [{ name: 'a' }] } as FilterNavigation })
-      );
+      store$.dispatch(new LoadFilterSuccess({ filterNavigation: { filter: [{ name: 'a' }] } as FilterNavigation }));
     });
 
     it('should set the state to loaded', () => {
@@ -62,9 +59,9 @@ describe('Filter Selectors', () => {
     });
   });
 
-  describe('with LoadFilterForCategoryFail state', () => {
+  describe('with LoadFilterFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategoryFail({ error: {} as HttpError }));
+      store$.dispatch(new LoadFilterFail({ error: {} as HttpError }));
     });
 
     it('should set the state to loaded', () => {
@@ -78,7 +75,7 @@ describe('Filter Selectors', () => {
 
   describe('with ApplyFilter state', () => {
     beforeEach(() => {
-      store$.dispatch(new ApplyFilter({ filterId: 'a', searchParameter: 'b' }));
+      store$.dispatch(new ApplyFilter({ searchParameter: 'b' }));
     });
 
     it('should set the state to loaded', () => {
@@ -91,7 +88,6 @@ describe('Filter Selectors', () => {
       store$.dispatch(
         new ApplyFilterSuccess({
           availableFilter: {} as FilterNavigation,
-          filterName: 'a',
           searchParameter: 'b',
         })
       );

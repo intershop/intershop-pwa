@@ -5,11 +5,11 @@ import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   map,
   mapTo,
   mergeMap,
+  switchMap,
   switchMapTo,
   take,
   tap,
@@ -27,8 +27,7 @@ import {
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
-import { LoadProductsForCategory } from '../products';
-import { getVisibleProducts } from '../viewconf';
+import { LoadMoreProducts } from '../product-listing';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
@@ -140,26 +139,14 @@ export class CategoriesEffects {
     )
   );
 
-  /**
-   * Trigger {@link LoadProductsForCategory} if we are on a family page
-   * and the corresponding products were not yet loaded.
-   */
   @Effect()
-  productOrCategoryChanged$ = combineLatest([
-    this.store.pipe(
-      select(selectors.getSelectedCategory),
-      whenTruthy(),
-      distinctUntilKeyChanged('uniqueId')
-    ),
-    this.actions$.pipe(
-      ofRoute('category/:categoryUniqueId'),
-      mapToParam('categoryUniqueId')
-    ),
-  ]).pipe(
-    filter(([category, categoryUniqueId]) => category.uniqueId === categoryUniqueId),
-    withLatestFrom(this.store.pipe(select(getVisibleProducts))),
-    filter(([[category], skus]) => category && category.hasOnlineProducts && !skus.length),
-    map(([[category]]) => new LoadProductsForCategory({ categoryId: category.uniqueId }))
+  productOrCategoryChanged$ = this.actions$.pipe(
+    ofRoute('category/:categoryUniqueId'),
+    mapToParam<string>('categoryUniqueId'),
+    switchMap(() => this.store.pipe(select(selectors.getSelectedCategory))),
+    whenTruthy(),
+    filter(cat => cat.hasOnlineProducts),
+    map(({ uniqueId }) => new LoadMoreProducts({ id: { type: 'category', value: uniqueId } }))
   );
 
   @Effect({ dispatch: false })

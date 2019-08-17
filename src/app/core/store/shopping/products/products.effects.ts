@@ -5,9 +5,9 @@ import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import {
+  concatMap,
   distinct,
   distinctUntilChanged,
-  exhaustMap,
   filter,
   groupBy,
   map,
@@ -19,6 +19,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
@@ -32,17 +33,7 @@ import {
 } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { LoadCategory } from '../categories';
-import {
-  SetPage,
-  SetPagingInfo,
-  SetPagingLoading,
-  SetSortKeys,
-  canRequestMore,
-  getItemsPerPage,
-  getPagingPage,
-  getSortBy,
-  isEndlessScrollingEnabled,
-} from '../viewconf';
+import { SetProductListingPages } from '../product-listing';
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
@@ -54,7 +45,8 @@ export class ProductsEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private router: Router,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private productListingMapper: ProductListingMapper
   ) {}
 
   @Effect()
@@ -78,44 +70,26 @@ export class ProductsEffects {
     map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
   );
 
-  @Effect()
-  loadMoreProductsForCategory$ = this.actions$.pipe(
-    ofType<productsActions.LoadMoreProductsForCategory>(
-      productsActions.ProductsActionTypes.LoadMoreProductsForCategory
-    ),
-    mapToPayloadProperty('categoryId'),
-    withLatestFrom(
-      this.store.pipe(select(isEndlessScrollingEnabled)),
-      this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage))
-    ),
-    filter(([, endlessScrollingEnabled, moreProductsAvailable]) => endlessScrollingEnabled && moreProductsAvailable),
-    mergeMap(([categoryId, , , pageNumber]) => [
-      new SetPagingLoading(),
-      new SetPage({ pageNumber: pageNumber + 1 }),
-      new productsActions.LoadProductsForCategory({ categoryId }),
-    ])
-  );
-
   /**
    * retrieve products for category incremental respecting paging
    */
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    mapToPayloadProperty('categoryId'),
-    withLatestFrom(
-      this.store.pipe(select(getPagingPage)),
-      this.store.pipe(select(getSortBy)),
-      this.store.pipe(select(getItemsPerPage))
-    ),
-    distinctUntilChanged(),
-    exhaustMap(([categoryId, currentPage, sortBy, itemsPerPage]) =>
-      this.productsService.getCategoryProducts(categoryId, currentPage, itemsPerPage, sortBy).pipe(
-        switchMap(({ total: totalItems, products, sortKeys }) => [
+    mapToPayload(),
+    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+    concatMap(({ categoryId, page, sorting }) =>
+      this.productsService.getCategoryProducts(categoryId, page, sorting).pipe(
+        concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
-          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
-          new SetSortKeys({ sortKeys }),
+          new SetProductListingPages(
+            this.productListingMapper.createPages(products.map(p => p.sku), 'category', categoryId, {
+              startPage: page,
+              sortKeys,
+              sorting,
+              itemCount: total,
+            })
+          ),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )

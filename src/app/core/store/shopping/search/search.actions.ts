@@ -4,27 +4,21 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 export enum SearchActionTypes {
-  PrepareNewSearch = '[Shopping] Prepare Search For Products',
+  SelectSearchTerm = '[Shopping] Set Search Term',
   SearchProducts = '[Shopping] Search Products',
-  SearchProductsSuccess = '[Shopping] Search Products Success',
   SearchProductsFail = '[Shopping] Search Products Fail',
   SuggestSearch = '[Shopping] Suggest Search',
   SuggestSearchSuccess = '[Shopping] Suggest Search Success',
-  SearchMoreProducts = '[Shopping] Search More Products',
 }
 
-export class PrepareNewSearch implements Action {
-  readonly type = SearchActionTypes.PrepareNewSearch;
+export class SelectSearchTerm implements Action {
+  readonly type = SearchActionTypes.SelectSearchTerm;
+  constructor(public payload: { searchTerm: string }) {}
 }
 
 export class SearchProducts implements Action {
   readonly type = SearchActionTypes.SearchProducts;
-  constructor(public payload: { searchTerm: string }) {}
-}
-
-export class SearchProductsSuccess implements Action {
-  readonly type = SearchActionTypes.SearchProductsSuccess;
-  constructor(public payload: { searchTerm: string }) {}
+  constructor(public payload: { searchTerm: string; page?: number; sorting?: string }) {}
 }
 
 export class SearchProductsFail implements Action {
@@ -42,16 +36,9 @@ export class SuggestSearchSuccess implements Action {
   constructor(public payload: { suggests: SuggestTerm[] }) {}
 }
 
-export class SearchMoreProducts implements Action {
-  readonly type = SearchActionTypes.SearchMoreProducts;
-  constructor(public payload: { searchTerm: string }) {}
-}
-
 export type SearchAction =
-  | PrepareNewSearch
+  | SelectSearchTerm
   | SearchProducts
-  | SearchProductsSuccess
   | SearchProductsFail
   | SuggestSearch
-  | SuggestSearchSuccess
-  | SearchMoreProducts;
+  | SuggestSearchSuccess;

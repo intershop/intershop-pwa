@@ -1,44 +1,33 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { Store, createSelector, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil, withLatestFrom } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { debounce, map, switchMap } from 'rxjs/operators';
 
-import { SearchMoreProducts, getSearchLoading, getSearchTerm } from 'ish-core/store/shopping/search';
-import { getPagingLoading, getTotalItems, isProductsAvailable } from 'ish-core/store/shopping/viewconf';
-
-const loading = createSelector(
-  getSearchLoading,
-  getPagingLoading,
-  (a, b) => a && !b
-);
+import { getProductListingLoading, getProductListingView } from 'ish-core/store/shopping/product-listing';
+import { getSearchTerm } from 'ish-core/store/shopping/search';
+import { whenFalsy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-search-page-container',
   templateUrl: './search-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchPageContainerComponent implements OnInit, OnDestroy {
+export class SearchPageContainerComponent {
   searchTerm$ = this.store.pipe(select(getSearchTerm));
-  totalItems$ = this.store.pipe(select(getTotalItems));
-  productsAvailable$ = this.store.pipe(select(isProductsAvailable));
-  searchLoading$ = this.store.pipe(select(loading));
-
-  loadMore = new EventEmitter<void>();
-
-  private destroy$ = new Subject();
+  numberOfItems$ = this.searchTerm$.pipe(
+    debounce(() =>
+      this.store.pipe(
+        select(getProductListingLoading),
+        whenFalsy()
+      )
+    ),
+    switchMap(term =>
+      this.store.pipe(
+        select(getProductListingView, { type: 'search', value: term }),
+        map(view => view.itemCount)
+      )
+    )
+  );
+  searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.loadMore
-      .pipe(
-        withLatestFrom(this.searchTerm$),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts({ searchTerm })));
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
 }

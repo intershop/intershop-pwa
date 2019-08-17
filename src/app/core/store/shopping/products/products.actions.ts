@@ -13,7 +13,6 @@ export enum ProductsActionTypes {
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
   LoadProductsForCategoryFail = '[Shopping] Load Products for Category Fail',
-  LoadMoreProductsForCategory = '[Shopping] Load More Products',
   LoadProductVariations = '[Shopping] Load Product Variations',
   LoadProductVariationsFail = '[Shopping] Load Product Variations Fail',
   LoadProductVariationsSuccess = '[Shopping] Load Product Variations Success',
@@ -49,17 +48,12 @@ export class LoadProductSuccess implements Action {
 
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: { categoryId: string }) {}
+  constructor(public payload: { categoryId: string; page?: number; sorting?: string }) {}
 }
 
 export class LoadProductsForCategoryFail implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategoryFail;
   constructor(public payload: { error: HttpError; categoryId: string }) {}
-}
-
-export class LoadMoreProductsForCategory implements Action {
-  readonly type = ProductsActionTypes.LoadMoreProductsForCategory;
-  constructor(public payload: { categoryId: string }) {}
 }
 
 export class LoadProductVariations implements Action {
@@ -110,7 +104,7 @@ export type ProductsAction =
   | LoadProductIfNotLoaded
   | LoadProductSuccess
   | LoadProductsForCategory
-  | LoadMoreProductsForCategory
+  | LoadProductsForCategoryFail
   | LoadProductVariations
   | LoadProductVariationsFail
   | LoadProductVariationsSuccess

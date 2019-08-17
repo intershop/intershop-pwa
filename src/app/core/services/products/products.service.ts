@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { defaultIfEmpty, map } from 'rxjs/operators';
 
@@ -12,6 +13,7 @@ import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/mod
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -21,7 +23,11 @@ export class ProductsService {
   private static STUB_ATTRS =
     'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,mastered,productMaster,productMasterSKU,roundedAverageRating';
 
-  constructor(private apiService: ApiService, private productMapper: ProductMapper) {}
+  private itemsPerPage: number;
+
+  constructor(private apiService: ApiService, private productMapper: ProductMapper, store: Store<{}>) {
+    store.pipe(select(getProductListingItemsPerPage)).subscribe(itemsPerPage => (this.itemsPerPage = itemsPerPage));
+  }
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -43,17 +49,15 @@ export class ProductsService {
   /**
    * Get a sorted list of all products (as SKU list) assigned to a given Category respecting pagination.
    * @param categoryUniqueId  The unique Category ID.
-   * @param page              The page to request (0-based numbering)
-   * @param itemsPerPage      The number of items on each page.
+   * @param page              The page to request (1-based numbering)
    * @param sortKey           The sortKey to sort the list, default value is ''.
    * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sortings [sortKeys].
    */
   getCategoryProducts(
     categoryUniqueId: string,
     page: number,
-    itemsPerPage: number,
-    sortKey = ''
-  ): Observable<{ products: Product[]; categoryUniqueId: string; sortKeys: string[]; total: number }> {
+    sortKey?: string
+  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
@@ -61,8 +65,8 @@ export class ProductsService {
     let params = new HttpParams()
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attrsGroups', AttributeGroupTypes.ProductLabelAttributes) // TODO: validate if this is working once ISREST-523 is implemented
-      .set('amount', itemsPerPage.toString())
-      .set('offset', (page * itemsPerPage).toString())
+      .set('amount', this.itemsPerPage.toString())
+      .set('offset', ((page - 1) * this.itemsPerPage).toString())
       .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
@@ -77,7 +81,6 @@ export class ProductsService {
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
-          categoryUniqueId,
           total: response.total ? response.total : response.elements.length,
         }))
       );
@@ -86,25 +89,27 @@ export class ProductsService {
   /**
    * Get products for a given search term respecting pagination.
    * @param searchTerm    The search term to look for matching products.
-   * @param page          The page to request (0-based numbering)
-   * @param itemsPerPage  The number of items on each page.
+   * @param page          The page to request (1-based numbering)
    * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
    */
   searchProducts(
     searchTerm: string,
     page: number,
-    itemsPerPage: number
+    sortKey?: string
   ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('searchTerm', searchTerm)
-      .set('amount', itemsPerPage.toString())
-      .set('offset', (page * itemsPerPage).toString())
+      .set('amount', this.itemsPerPage.toString())
+      .set('offset', ((page - 1) * this.itemsPerPage).toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
 
     return this.apiService
       .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
