@@ -9,12 +9,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { CMSService } from '../../../services/cms/cms.service';
 
-import {
-  IncludesActionTypes,
-  LoadContentInclude,
-  LoadContentIncludeFail,
-  LoadContentIncludeSuccess,
-} from './includes.actions';
+import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
 import { IncludesEffects } from './includes.effects';
 
 describe('Includes Effects', () => {
@@ -45,8 +40,11 @@ describe('Includes Effects', () => {
 
       effects.loadContentInclude$.subscribe((action: LoadContentIncludeSuccess) => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
-        expect(action.type).toEqual(IncludesActionTypes.LoadContentIncludeSuccess);
-        expect(action.payload.include).toHaveProperty('id', 'dummy');
+        expect(action).toMatchInlineSnapshot(`
+          [Content Include API] Load Content Include Success:
+            include: {"id":"dummy"}
+            pagelets: []
+        `);
         done();
       });
     });
@@ -58,8 +56,10 @@ describe('Includes Effects', () => {
 
       effects.loadContentInclude$.subscribe((action: LoadContentIncludeFail) => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
-        expect(action.type).toEqual(IncludesActionTypes.LoadContentIncludeFail);
-        expect(action.payload.error).toHaveProperty('message', 'ERROR');
+        expect(action).toMatchInlineSnapshot(`
+          [Content Include API] Load Content Include Fail:
+            error: {"message":"ERROR"}
+        `);
         done();
       });
     });

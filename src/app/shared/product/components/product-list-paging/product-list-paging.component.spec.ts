@@ -31,20 +31,37 @@ describe('Product List Paging Component', () => {
     component.currentPage = 1;
     fixture.detectChanges();
 
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <div class="product-list-paging">
+        <a class="active" href="/some/followup/link?page=1">1</a><a href="/some/followup/link?page=2">2</a
+        ><a href="/some/followup/link?page=3">3</a><a href="/some/followup/link?page=2">»</a>
+      </div>
+    `);
   });
 
   it('should render adequately for middle page', () => {
     component.currentPage = 2;
     fixture.detectChanges();
 
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <div class="product-list-paging">
+        <a href="/some/followup/link?page=1">«</a><a href="/some/followup/link?page=1">1</a
+        ><a class="active" href="/some/followup/link?page=2">2</a
+        ><a href="/some/followup/link?page=3">3</a><a href="/some/followup/link?page=3">»</a>
+      </div>
+    `);
   });
 
   it('should render adequately for last page', () => {
     component.currentPage = 3;
     fixture.detectChanges();
 
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <div class="product-list-paging">
+        <a href="/some/followup/link?page=2">«</a><a href="/some/followup/link?page=1">1</a
+        ><a href="/some/followup/link?page=2">2</a
+        ><a class="active" href="/some/followup/link?page=3">3</a>
+      </div>
+    `);
   });
 });

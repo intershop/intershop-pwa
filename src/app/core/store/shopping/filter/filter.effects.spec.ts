@@ -128,8 +128,10 @@ describe('Filter Effects', () => {
       actions$ = of(new SelectedCategoryAvailable({ categoryId: 'Cameras.Camcorder' }));
 
       effects.loadFilterIfCategoryWasSelected$.subscribe(action => {
-        expect(action.type).toEqual(fromActions.FilterActionTypes.LoadFilterForCategory);
-        expect(action.payload.category.uniqueId).toEqual('Cameras.Camcorder');
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Load Filter For Category:
+            category: {"uniqueId":"Cameras.Camcorder","categoryPath":[2]}
+        `);
         done();
       });
     });

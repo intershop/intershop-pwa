@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Cms Dialog Component should be display slot content if slot is not empty 1`] = `
-<ish-content-slot
-  ng-reflect-slot="app_sf_responsive_cm:slot.dial"
-  ng-reflect-pagelet="[object Object]"
-></ish-content-slot>
-`;

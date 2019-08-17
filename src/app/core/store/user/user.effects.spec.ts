@@ -484,8 +484,10 @@ describe('User Effects', () => {
 
       effects.loadUserByAPIToken$.subscribe(action => {
         verify(userServiceMock.signinUserByToken('dummy')).once();
-        expect(action.type).toEqual(ua.UserActionTypes.LoginUserSuccess);
-        expect(action.payload).toHaveProperty('user.email', 'test@intershop.de');
+        expect(action).toMatchInlineSnapshot(`
+          [Account API] Login User Success:
+            user: {"email":"test@intershop.de"}
+        `);
         done();
       });
     });

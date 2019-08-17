@@ -197,23 +197,13 @@ describe('Product Page Container', () => {
 
     store$.reset();
     component.addToBasket();
-    expect(store$.actionsArray([/.*/])).toMatchInlineSnapshot(`
-      Array [
-        AddProductToBasket {
-          "payload": Object {
-            "quantity": 1,
-            "sku": "A",
-          },
-          "type": "[Basket] Add Product",
-        },
-        AddProductToBasket {
-          "payload": Object {
-            "quantity": 1,
-            "sku": "C",
-          },
-          "type": "[Basket] Add Product",
-        },
-      ]
+    expect(store$.actionsArray()).toMatchInlineSnapshot(`
+      [Basket] Add Product:
+        sku: "A"
+        quantity: 1
+      [Basket] Add Product:
+        sku: "C"
+        quantity: 1
     `);
   });
 });
