@@ -189,16 +189,21 @@ describe('Products Selectors', () => {
 
     describe('and reporting success', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'] }));
+        store$.dispatch(new LoadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'], defaultVariation: 'VAR' }));
       });
 
       it('should set variations data and set loading to false', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
-        expect(getProductEntities(store$.state).SKU).toEqual({
-          sku: 'SKU',
-          type: 'VariationProductMaster',
-          variationSKUs: ['VAR'],
-        });
+        expect(getProductEntities(store$.state).SKU).toMatchInlineSnapshot(`
+          Object {
+            "defaultVariationSKU": "VAR",
+            "sku": "SKU",
+            "type": "VariationProductMaster",
+            "variationSKUs": Array [
+              "VAR",
+            ],
+          }
+        `);
       });
     });
 

@@ -43,7 +43,7 @@ describe('Line Item Edit Component', () => {
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
-        ProductVariationSelectComponent,
+        MockComponent(ProductVariationSelectComponent),
       ],
     }).compileComponents();
   }));
