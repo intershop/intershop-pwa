@@ -82,14 +82,36 @@ describe('Sfe Mapper', () => {
       const pagelet = createContentPageletView('p1', pagelets);
       const sfeMetadata = SfeMapper.mapPageletViewToSfeMetadata(pagelet);
 
-      expect(sfeMetadata).toMatchSnapshot();
+      expect(sfeMetadata).toMatchInlineSnapshot(`
+        Object {
+          "displayName": "p1",
+          "displayType": "pfq",
+          "id": "pagelet:pdomain:p1",
+          "renderObject": Object {
+            "domainId": "pdomain",
+            "id": "p1",
+            "type": "Pagelet",
+          },
+        }
+      `);
     });
 
     it('should map ContentPageletEntryPointView to SfeMetadata', () => {
       const includeView = createContentPageletEntryPointView(include, pagelets);
       const sfeMetadata = SfeMapper.mapIncludeViewToSfeMetadata(includeView);
 
-      expect(sfeMetadata).toMatchSnapshot();
+      expect(sfeMetadata).toMatchInlineSnapshot(`
+        Object {
+          "displayName": "name",
+          "displayType": "Include",
+          "id": "include:idomain:include",
+          "renderObject": Object {
+            "domainId": "idomain",
+            "id": "include",
+            "type": "Include",
+          },
+        }
+      `);
     });
   });
 });

@@ -76,9 +76,7 @@ describe('Line Item Description Component', () => {
 
   it('should give correct sku to productIdComponent', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(
-      `<ish-product-id ng-reflect-product="[object Object]"></ish-product-id>`
-    );
+    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(`<ish-product-id></ish-product-id>`);
   });
 
   it('should hold itemSurcharges for the line item', () => {

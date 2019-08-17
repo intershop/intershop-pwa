@@ -41,7 +41,7 @@ import { LoadProduct } from '../shopping/products';
 import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUser } from '../user';
 
-import { AddItemsToBasket, AddProductToBasket, BasketActionTypes, MergeBasket, MergeBasketSuccess } from './basket';
+import { AddProductToBasket } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout-store.module';
 
 let basketId: string;
@@ -278,30 +278,47 @@ describe('Checkout Store', () => {
     }));
 
     describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', fakeAsync(() => {
-        const i = store.actionsIterator([/Basket/]);
-        expect(i.next().type).toEqual(BasketActionTypes.AddProductToBasket);
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload] }));
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'test' }));
-        expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next()).toBeUndefined();
-      }));
+      it('should initially load basket and basketItems on product add.', () => {
+        expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
+          [Shopping] Load Product:
+            sku: "test"
+          [Shopping] Load Product Success:
+            product: {"name":"test","shortDescription":"test","longDescription":"...
+          [Basket] Add Product:
+            sku: "test"
+            quantity: 1
+          [Basket Internal] Add Items To Basket:
+            items: [{"sku":"test","quantity":1}]
+          [Basket Internal] Add Items To Basket:
+            items: [{"sku":"test","quantity":1}]
+            basketId: "test"
+          [Basket API] Add Items To Basket Success
+          [Basket Internal] Load Basket
+          [Basket API] Load Basket Success:
+            basket: {"id":"test","lineItems":[1]}
+        `);
+      });
     });
 
     describe('and with basket', () => {
-      it('should merge basket on user login.', fakeAsync(() => {
-        const i = store.actionsIterator([/Basket/]);
-        basketId = 'newTest';
+      it('should merge basket on user login.', () => {
         store.reset();
-
         store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
-        expect(i.next().type).toEqual(BasketActionTypes.ResetBasket);
-        expect(i.next()).toEqual(new MergeBasket({ targetBasket: basketId, sourceBasket: 'test' }));
-        expect(i.next()).toEqual(new MergeBasketSuccess({ basket }));
-        expect(i.next()).toBeUndefined();
-      }));
+
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Account] Login User:
+            credentials: {}
+          [Account API] Login User Success:
+            customer: {"type":"PrivateCustomer","customerNo":"test"}
+            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+          [Basket Internal] Reset Basket
+          [Basket Internal] Merge two baskets:
+            targetBasket: "test"
+            sourceBasket: "test"
+          [Basket API] Merge two baskets Success:
+            basket: {"id":"test","lineItems":[1]}
+        `);
+      });
     });
 
     afterEach(() => {
