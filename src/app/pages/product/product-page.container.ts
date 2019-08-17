@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject, of } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
@@ -69,15 +69,25 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.price$ = this.retailSetParts$.pipe(
-      filter(parts => !!parts && !!parts.length),
-      switchMap(parts =>
-        this.store.pipe(
-          select(getProducts, { skus: parts.map(part => part.sku) }),
-          filter(products => products.every(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.List))),
-          map(ProductHelper.calculatePriceRange)
-        )
-      )
+    this.price$ = this.product$.pipe(
+      switchMap(product => {
+        if (ProductHelper.isRetailSet(product)) {
+          return this.retailSetParts$.pipe(
+            filter(parts => !!parts && !!parts.length),
+            switchMap(parts =>
+              this.store.pipe(
+                select(getProducts, { skus: parts.map(part => part.sku) }),
+                filter(products =>
+                  products.every(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.List))
+                ),
+                map(ProductHelper.calculatePriceRange)
+              )
+            )
+          );
+        } else {
+          return of(undefined);
+        }
+      })
     );
   }
 
@@ -122,8 +132,9 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
    * Redirect to default variation product if master product is selected.
    */
   redirectMasterToDefaultVariation(product: VariationProductMasterView) {
-    const defaultVariation = ProductVariationHelper.findDefaultVariationForMaster(product);
-    this.redirectToVariation(defaultVariation);
+    if (ProductVariationHelper.hasDefaultVariation(product)) {
+      this.redirectToVariation(product.defaultVariation());
+    }
   }
 
   ngOnDestroy() {

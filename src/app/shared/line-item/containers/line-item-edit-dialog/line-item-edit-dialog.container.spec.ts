@@ -49,7 +49,7 @@ describe('Line Item Edit Dialog Container', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductRowComponent),
         MockComponent(ProductTileComponent),
-        ProductVariationSelectComponent,
+        MockComponent(ProductVariationSelectComponent),
       ],
     }).compileComponents();
   }));

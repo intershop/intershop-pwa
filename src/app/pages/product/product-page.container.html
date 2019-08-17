@@ -7,7 +7,7 @@
 
       <ish-product-detail
         [product]="product"
-        [price]="(price$ | async) || product"
+        [price]="price$ | async"
         [(quantity)]="quantity"
         [currentUrl]="currentUrl$ | async"
         [variationOptions]="productVariationOptions$ | async"

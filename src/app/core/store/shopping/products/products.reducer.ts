@@ -72,7 +72,10 @@ export function productsReducer(state = initialState, action: ProductsAction): P
 
     case ProductsActionTypes.LoadProductVariationsSuccess: {
       return productAdapter.updateOne(
-        { id: action.payload.sku, changes: { variationSKUs: action.payload.variations } },
+        {
+          id: action.payload.sku,
+          changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
+        },
         { ...state, loading: false }
       );
     }
