@@ -67,9 +67,9 @@ export class ProductListModule {
   }
 
   makeAllProductsVisible() {
-    for (let num = 0; num < 20; num++) {
+    for (let num = 0; num < 10; num++) {
       cy.scrollTo('bottom');
-      waitLoadingEnd(10);
+      waitLoadingEnd();
     }
   }
 }
