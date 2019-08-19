@@ -22,11 +22,9 @@ export class FilterNavigationMapper {
     return facetDatas
       ? facetDatas.map(facet => ({
           name: facet.name,
-          type: facet.type,
           count: facet.count,
           selected: facet.selected,
-          link: facet.link,
-          filterId: facet.link.uri.split('/filters/')[1].split(';')[0],
+          displayName: facet.link.title,
           searchParameter: facet.link.uri.split(';SearchParameter=')[1],
         }))
       : [];
