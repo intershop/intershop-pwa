@@ -14,6 +14,7 @@
       box-shadow: none !important;
     }
 
+    &.btn-reset,
     &.btn-search {
       position: absolute;
       right: 0;
@@ -79,9 +80,10 @@
 
       button {
         width: 100%;
-        padding: $space-default 0 $space-default 4px;
+        // padding: $space-default 0 $space-default 4px;
         font-family: $font-family-regular;
         font-size: 13px;
+        line-height: 47px;
         color: $text-color-quarternary;
         text-align: left;
         background: none;
@@ -141,11 +143,14 @@
       border: $border-width-default solid $border-color-light;
       box-shadow: none;
 
-      + button.btn-search {
-        color: $text-color-primary;
-
-        .ng-fa-icon {
+      + .buttons {
+        button {
+          margin-right: 0;
           color: $text-color-primary;
+
+          .ng-fa-icon {
+            color: $text-color-primary;
+          }
         }
       }
     }
