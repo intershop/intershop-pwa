@@ -19,19 +19,32 @@
     (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)"
   />
 
-  <button
-    class="btn-search btn btn-primary"
-    type="submit"
-    name="search"
-    [title]="'search.searchbox.button.title' | translate"
-  >
-    <!-- search button with icon -->
-    <ng-container *ngIf="!configuration?.buttonText; else textBlock">
-      <fa-icon [icon]="['fas', configuration?.icon || 'search']"></fa-icon>
-    </ng-container>
-    <!-- search button with text -->
-    <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
-  </button>
+  <div class="buttons">
+    <button
+      *ngIf="currentSearchTerm"
+      class="btn-reset btn btn-primary"
+      type="reset"
+      name="reset"
+      style="right: 40px;"
+      (click)="currentSearchTerm = ''; searchInput.focus()"
+    >
+      <fa-icon [icon]="['fas', 'times']"></fa-icon>
+    </button>
+
+    <button
+      class="btn-search btn btn-primary"
+      type="submit"
+      name="search"
+      [title]="'search.searchbox.button.title' | translate"
+    >
+      <!-- search button with icon -->
+      <ng-container *ngIf="!configuration?.buttonText; else textBlock">
+        <fa-icon [icon]="['fas', configuration?.icon || 'search']"></fa-icon>
+      </ng-container>
+      <!-- search button with text -->
+      <ng-template #textBlock> {{ configuration?.buttonText }} </ng-template>
+    </button>
+  </div>
 
   <ul *ngIf="!isHidden && currentSearchTerm && results?.length" class="search-suggest-results">
     <li
