@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 
 import { FeatureToggleDirective } from './directives/feature-toggle.directive';
+import { NotFeatureToggleDirective } from './directives/not-feature-toggle.directive';
 
 @NgModule({
-  declarations: [FeatureToggleDirective],
-  exports: [FeatureToggleDirective],
+  declarations: [FeatureToggleDirective, NotFeatureToggleDirective],
+  exports: [FeatureToggleDirective, NotFeatureToggleDirective],
 })
 export class FeatureToggleModule {}
 
