@@ -23,8 +23,8 @@ describe('Filter Swatch Images Component', () => {
     const filterElement = {
       name: 'Color',
       facets: [
-        { name: 'Black', count: 4, link: { title: 'Black' } },
-        { name: 'Red', count: 5, link: { title: 'Red' }, selected: true },
+        { name: 'Black', count: 4, displayName: 'Black' },
+        { name: 'Red', count: 5, displayName: 'Red', selected: true },
       ],
     } as Filter;
     fixture = TestBed.createComponent(FilterSwatchImagesComponent);

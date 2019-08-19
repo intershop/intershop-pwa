@@ -10,7 +10,7 @@
     <ng-container *ngFor="let facet of filterElement.facets">
       <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
         <!--- TODO: add filter count -->
-        <span class="icon-selected"></span>{{ facet.link.title }}
+        <span class="icon-selected"></span>{{ facet.displayName }}
         <!--- TODO: implement delete filter -->
         <a class="filter-clear"> <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon> </a>
       </li>
@@ -26,7 +26,7 @@
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
         >
-          <span class="icon-notselected"></span>{{ facet.link.title }}
+          <span class="icon-notselected"></span>{{ facet.displayName }}
         </a>
       </li>
     </ng-container>

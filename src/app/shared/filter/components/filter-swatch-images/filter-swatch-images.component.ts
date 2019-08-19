@@ -47,6 +47,6 @@ export class FilterSwatchImagesComponent implements OnInit {
    * Applies a facet of the filter group and shows the new filtered result.
    */
   filter(facet: Facet) {
-    this.applyFilter.emit({ filterId: facet.filterId, searchParameter: facet.searchParameter });
+    this.applyFilter.emit({ filterId: this.filterElement.id, searchParameter: facet.searchParameter });
   }
 }
