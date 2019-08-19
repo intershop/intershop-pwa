@@ -15,7 +15,12 @@
 
   <ng-container *ngIf="lineItemViewType !== 'simple'">
     <!-- edit variation & quantity -->
-    <ish-line-item-edit [lineItem]="pli" [editable]="editable" (updateItem)="onUpdateItem($event)"></ish-line-item-edit>
+    <ish-line-item-edit
+      *ishNotFeature="'advancedVariationHandling'"
+      [lineItem]="pli"
+      [editable]="editable"
+      (updateItem)="onUpdateItem($event)"
+    ></ish-line-item-edit>
 
     <!-- Availability -->
     <ish-product-inventory [product]="pli.product"></ish-product-inventory>
