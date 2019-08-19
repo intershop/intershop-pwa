@@ -1,9 +1,6 @@
-<!--
-  show latest submitted searchterm with
-  [searchTerm]="previousSearchTerm$ | async"
--->
 <ish-search-box
   [configuration]="configuration"
+  [searchTerm]="previousSearchTerm$ | async"
   [results]="searchResultsToDisplay$ | async"
   (searchTermChange)="suggestSearch($event)"
   (performSearch)="performSearch($event)"

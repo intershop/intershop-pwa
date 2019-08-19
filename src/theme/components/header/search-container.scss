@@ -3,15 +3,22 @@
 .search-container {
   position: relative;
 
+  .btn-reset:active,
   .btn-search:active {
     background-color: transparent !important;
     border-color: transparent !important;
   }
 
   button {
+    margin-right: 0 !important;
+
     &:focus,
     &:active {
       box-shadow: none !important;
+    }
+
+    &.btn-reset {
+      opacity: 0.6;
     }
 
     &.btn-reset,
@@ -96,6 +103,23 @@
       }
     }
   }
+
+  input {
+    &:focus {
+      color: $text-color-primary;
+      background: $color-inverse;
+
+      + .buttons {
+        button {
+          color: $text-color-primary;
+
+          .ng-fa-icon {
+            color: $text-color-primary;
+          }
+        }
+      }
+    }
+  }
 }
 
 .header-search-container {
@@ -142,17 +166,6 @@
       background: $color-inverse;
       border: $border-width-default solid $border-color-light;
       box-shadow: none;
-
-      + .buttons {
-        button {
-          margin-right: 0;
-          color: $text-color-primary;
-
-          .ng-fa-icon {
-            color: $text-color-primary;
-          }
-        }
-      }
     }
   }
 
@@ -217,7 +230,17 @@
   width: 100%;
 }
 
-.error-search-container ul.search-suggest-results {
-  top: 33px;
-  width: 100%;
+.error-search-container {
+  ul.search-suggest-results {
+    top: 33px;
+    width: 100%;
+  }
+}
+
+.no-search-result {
+  + .search-container {
+    .buttons button {
+      color: $text-color-primary !important;
+    }
+  }
 }

@@ -23,4 +23,8 @@ export interface SearchBoxConfiguration {
    * configure search box icon
    */
   icon?: string;
+  /**
+   * last searchterm as value
+   */
+  showLastSearchTerm?: boolean;
 }

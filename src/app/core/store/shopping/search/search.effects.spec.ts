@@ -243,6 +243,76 @@ describe('Search Effects', () => {
 
         verify(suggestServiceMock.search(anyString())).once();
       }));
+
+      it('should fire all necessary actions for suggest-search', fakeAsync(() => {
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
+        tick(500); // debounceTime
+        expect(store$.actionsArray(/\[Shopping\]/)).toMatchInlineSnapshot(`
+          [Shopping] Suggest Search:
+            searchTerm: "good"
+            id: "searchbox"
+          [Shopping] Suggest Api Search:
+            searchTerm: "good"
+          [Shopping] Suggest Search Success:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+        `);
+
+        // 2nd term to because distinctUntilChanged
+        store$.dispatch(new SuggestSearch({ searchTerm: 'goo', id: 'searchbox' }));
+        tick(500);
+        expect(store$.actionsArray(/\[Shopping\]/)).toMatchInlineSnapshot(`
+          [Shopping] Suggest Search:
+            searchTerm: "good"
+            id: "searchbox"
+          [Shopping] Suggest Api Search:
+            searchTerm: "good"
+          [Shopping] Suggest Search Success:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+          [Shopping] Suggest Search:
+            searchTerm: "goo"
+            id: "searchbox"
+          [Shopping] Suggest Api Search:
+            searchTerm: "goo"
+          [Shopping] Suggest Search Success:
+            searchTerm: "goo"
+            suggests: [{"term":"Goods"}]
+        `);
+
+        // test cache: search->api->success & search->success->api->success
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
+        tick(500);
+        expect(store$.actionsArray(/\[Shopping\]/)).toMatchInlineSnapshot(`
+          [Shopping] Suggest Search:
+            searchTerm: "good"
+            id: "searchbox"
+          [Shopping] Suggest Api Search:
+            searchTerm: "good"
+          [Shopping] Suggest Search Success:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+          [Shopping] Suggest Search:
+            searchTerm: "goo"
+            id: "searchbox"
+          [Shopping] Suggest Api Search:
+            searchTerm: "goo"
+          [Shopping] Suggest Search Success:
+            searchTerm: "goo"
+            suggests: [{"term":"Goods"}]
+          [Shopping] Suggest Search:
+            searchTerm: "good"
+            id: "searchbox"
+          [Shopping] Suggest Search Success:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+          [Shopping] Suggest Api Search:
+            searchTerm: "good"
+          [Shopping] Suggest Search Success:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+        `);
+      }));
     });
 
     describe('redirectIfSearchProductFail$', () => {
