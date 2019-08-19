@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import {
   SuggestSearch,
@@ -31,7 +31,10 @@ export class SearchBoxContainerComponent {
    */
   @Input() configuration?: SearchBoxConfiguration;
 
-  previousSearchTerm$ = this.store.pipe(select(getSearchTerm));
+  previousSearchTerm$ = this.store.pipe(select(getSearchTerm)).pipe(
+    filter(() => this.configuration && this.configuration.showLastSearchTerm),
+    distinctUntilChanged()
+  );
   currentSearchboxId$ = this.store.pipe(select(getCurrentSearchboxId));
   searchResults$ = this.store.pipe(select(getSuggestSearchResult));
   searchResultsToDisplay$ = this.searchResults$.pipe(

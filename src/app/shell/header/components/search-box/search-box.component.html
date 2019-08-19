@@ -9,7 +9,7 @@
     type="text"
     class="form-control searchTerm"
     (input)="search($event.target.value)"
-    value="{{ currentSearchTerm || searchTerm }}"
+    value="{{ currentSearchTerm }}"
     (focus)="hidePopup()"
     (blur)="hidePopup()"
     (keydown.esc)="hidePopup()"
@@ -25,10 +25,11 @@
       class="btn-reset btn btn-primary"
       type="reset"
       name="reset"
+      [title]="'search.searchbox.button.reset.title' | translate"
       style="right: 40px;"
       (click)="currentSearchTerm = ''; searchInput.focus()"
     >
-      <fa-icon [icon]="['fas', 'times']"></fa-icon>
+      <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
     </button>
 
     <button
