@@ -31,10 +31,10 @@ export interface Environment {
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 
-  // track shop interaction via Google Tag Manager (to be used with 'tracking' feature)
+  // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server side rendering only)
   gtmToken?: string;
 
-  // log client-side javascript errors to sentry.io (to be used with 'sentry' feature)
+  // log client-side javascript errors to sentry.io (to be used with 'sentry' feature, works with server side rendering only)
   sentryDSN?: string;
 
   // protect form submission with captchas (to be used with 'captcha' feature)
