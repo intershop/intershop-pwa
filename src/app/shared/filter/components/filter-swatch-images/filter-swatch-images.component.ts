@@ -25,7 +25,7 @@ export class FilterSwatchImagesComponent implements OnInit {
    * The filter group.
    */
   @Input() filterElement: Filter;
-  @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
+  @Output() applyFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
 
   filterForm: FormGroup;
   isCollapsed = false;
@@ -47,6 +47,6 @@ export class FilterSwatchImagesComponent implements OnInit {
    * Applies a facet of the filter group and shows the new filtered result.
    */
   filter(facet: Facet) {
-    this.applyFilter.emit({ filterId: this.filterElement.id, searchParameter: facet.searchParameter });
+    this.applyFilter.emit({ searchParameter: facet.searchParameter });
   }
 }

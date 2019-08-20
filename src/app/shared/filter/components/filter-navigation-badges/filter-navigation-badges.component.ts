@@ -9,7 +9,7 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 })
 export class FilterNavigationBadgesComponent implements OnChanges {
   @Input() filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ filterId: string; searchParameter: string }>();
+  @Output() applyFilter = new EventEmitter<{ searchParameter: string }>();
   @Output() clearFilters = new EventEmitter<void>();
   selected: { searchParameter: string; facetName: string; filterName: string }[];
 
