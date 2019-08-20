@@ -4,7 +4,6 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { isEqual } from 'lodash-es';
-import { EMPTY, of } from 'rxjs';
 import { distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import {
@@ -90,9 +89,9 @@ export class ProductListingEffects {
         map(view => ({ id, sorting, page, filters, viewAvailable: !view.empty() && view.productsOfPage(page).length }))
       )
     ),
-    mergeMap(({ id, sorting, page, filters, viewAvailable }) => {
+    map(({ id, sorting, page, filters, viewAvailable }) => {
       if (viewAvailable) {
-        return of(new actions.SetProductListingPages({ id: { sorting, filters, ...id } }));
+        return new actions.SetProductListingPages({ id: { sorting, filters, ...id } });
       }
       if (
         filters &&
@@ -100,20 +99,21 @@ export class ProductListingEffects {
         ['search', 'category'].includes(id.type)
       ) {
         const searchParameter = b64u.toBase64(b64u.encode(filters));
-        return of(new LoadProductsForFilter({ id: { ...id, filters }, searchParameter }));
+        return new LoadProductsForFilter({ id: { ...id, filters }, searchParameter });
       } else {
         switch (id.type) {
           case 'category':
-            return of(new LoadProductsForCategory({ categoryId: id.value, page, sorting }));
+            return new LoadProductsForCategory({ categoryId: id.value, page, sorting });
           case 'search':
-            return of(new SearchProducts({ searchTerm: id.value, page, sorting }));
+            return new SearchProducts({ searchTerm: id.value, page, sorting });
           case 'master':
-            return of(new actions.LoadPagesForMaster({ id, sorting, filters }));
+            return new actions.LoadPagesForMaster({ id, sorting, filters });
           default:
-            return EMPTY;
+            return;
         }
       }
-    })
+    }),
+    whenTruthy()
   );
 
   @Effect()
@@ -122,27 +122,28 @@ export class ProductListingEffects {
     mapToPayload(),
     map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
     distinctUntilChanged(isEqual),
-    mergeMap(({ type, value, filters }) => {
+    map(({ type, value, filters }) => {
       if (
         filters &&
         // TODO: work-around for client side computation of master variations
         ['search', 'category'].includes(type)
       ) {
         const searchParameter = b64u.toBase64(b64u.encode(filters));
-        return of(new ApplyFilter({ searchParameter }));
+        return new ApplyFilter({ searchParameter });
       } else {
         switch (type) {
           case 'category':
-            return of(new LoadFilterForCategory({ uniqueId: value }));
+            return new LoadFilterForCategory({ uniqueId: value });
           case 'search':
-            return of(new LoadFilterForSearch({ searchTerm: value }));
+            return new LoadFilterForSearch({ searchTerm: value });
           case 'master':
-            return of(new actions.LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters }));
+            return new actions.LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
           default:
-            return EMPTY;
+            return;
         }
       }
-    })
+    }),
+    whenTruthy()
   );
 
   // TODO: work-around for client side computation of master variations
