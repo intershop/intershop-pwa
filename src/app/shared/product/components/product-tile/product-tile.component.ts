@@ -52,6 +52,11 @@ export class ProductTileComponent {
   }
 
   get variationCount() {
-    return this.product && this.product.variations() && this.product.variations().length;
+    return (
+      this.product &&
+      ProductHelper.isMasterProduct(this.product) &&
+      this.product.variations() &&
+      this.product.variations().length
+    );
   }
 }
