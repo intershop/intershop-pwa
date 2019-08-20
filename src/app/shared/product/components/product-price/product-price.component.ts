@@ -30,4 +30,12 @@ export class ProductPriceComponent implements OnChanges {
       }
     }
   }
+
+  get upperPrice() {
+    return this.product.summedUpSalePrice || this.product.maxSalePrice;
+  }
+
+  get isPriceRange() {
+    return this.product.minSalePrice && this.upperPrice;
+  }
 }
