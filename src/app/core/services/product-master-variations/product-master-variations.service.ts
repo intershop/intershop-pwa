@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 import { groupBy } from 'lodash-es';
 
+import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
-
-interface FiltersType {
-  [facet: string]: string[];
-}
+import { URLFormParams, formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
 
 @Injectable({ providedIn: 'root' })
 export class ProductMasterVariationsService {
@@ -16,16 +14,16 @@ export class ProductMasterVariationsService {
     product: VariationProductMasterView,
     filterString: string
   ): { filterNavigation: FilterNavigation; products: string[] } {
-    const filters = this.splitFormParams(filterString);
+    const filters = stringToFormParams(filterString);
     return {
       filterNavigation: this.createFilterNavigation(product, filters),
       products: this.filterVariations(product, filters),
     };
   }
 
-  private filterVariations(product: VariationProductMasterView, filters: FiltersType): string[] {
+  private filterVariations(product: VariationProductMasterView, filters: URLFormParams): string[] {
     if (filters && Object.keys(filters).length) {
-      return this.potetialMatches(filters, product.variations()).map(p => p.sku);
+      return this.potentialMatches(filters, product.variations()).map(p => p.sku);
     } else {
       return product.variations().map(p => p.sku);
     }
@@ -48,7 +46,7 @@ export class ProductMasterVariationsService {
     return [...array, value];
   }
 
-  private potetialMatches(newFilters: FiltersType, variations: VariationProductView[]) {
+  private potentialMatches(newFilters: URLFormParams, variations: VariationProductView[]) {
     return variations.filter(variation =>
       Object.keys(newFilters)
         .filter(facet => newFilters[facet].length)
@@ -66,9 +64,9 @@ export class ProductMasterVariationsService {
   private createFacet(
     filterName: string,
     attribute: VariationAttribute,
-    filters: FiltersType,
+    filters: URLFormParams,
     variations: VariationProductView[]
-  ) {
+  ): Facet {
     const selected = !!filters[filterName] && filters[filterName].includes(attribute.value);
     const newFilters = {
       ...filters,
@@ -78,8 +76,8 @@ export class ProductMasterVariationsService {
     };
     return {
       name: attribute.value,
-      searchParameter: b64u.toBase64(b64u.encode(this.mergeFormParams(newFilters))),
-      count: this.potetialMatches(newFilters, variations).length,
+      searchParameter: b64u.toBase64(b64u.encode(formParamsToString(newFilters))),
+      count: this.potentialMatches(newFilters, variations).length,
       filterId: filterName,
       link: { uri: '', title: attribute.value, type: 'Link' },
       selected,
@@ -87,7 +85,7 @@ export class ProductMasterVariationsService {
     };
   }
 
-  private createFilterNavigation(product: VariationProductMasterView, filters: FiltersType): FilterNavigation {
+  private createFilterNavigation(product: VariationProductMasterView, filters: URLFormParams): FilterNavigation {
     const groups = groupBy(product.variationAttributeValues, val => val.variationAttributeId);
     return {
       filter: Object.keys(groups).map(key => ({
@@ -99,24 +97,5 @@ export class ProductMasterVariationsService {
           .filter(facet => !!facet.count || facet.selected),
       })),
     };
-  }
-
-  private mergeFormParams(object: FiltersType): string {
-    return Object.entries(object)
-      .filter(([, value]) => Array.isArray(value) && value.length)
-      .map(([key, val]) => `${key}=${(val as string[]).join(',')}`)
-      .join('&');
-  }
-
-  private splitFormParams(object: string): FiltersType {
-    return object
-      ? object
-          .split('&')
-          .map(val => {
-            const sp = val.split('=');
-            return { key: sp[0], value: sp[1].split(',') };
-          })
-          .reduce((acc, val) => ({ ...acc, [val.key]: val.value }), {})
-      : {};
   }
 }
