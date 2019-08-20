@@ -10,7 +10,7 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 })
 export class FilterNavigationHorizontalComponent {
   @Input() filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ filterId: string; searchParameter: string }>();
+  @Output() applyFilter = new EventEmitter<{ searchParameter: string }>();
 
   trackByFn(_, item: Filter) {
     return item.id;
