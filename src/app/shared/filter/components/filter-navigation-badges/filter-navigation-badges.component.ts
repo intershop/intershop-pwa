@@ -31,4 +31,12 @@ export class FilterNavigationBadgesComponent implements OnChanges {
             []
           );
   }
+
+  apply(select: { searchParameter: string; facetName: string; filterName: string }) {
+    this.applyFilter.emit({ searchParameter: select.searchParameter });
+  }
+
+  clear() {
+    this.clearFilters.emit();
+  }
 }
