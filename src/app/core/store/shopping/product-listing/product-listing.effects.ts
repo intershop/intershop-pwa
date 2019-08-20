@@ -157,6 +157,7 @@ export class ProductListingEffects {
         filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
         filter(ProductHelper.hasVariations),
         filter(ProductHelper.isMasterProduct),
+        take(1),
         mergeMap(product => {
           const {
             filterNavigation,
