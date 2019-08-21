@@ -1,7 +1,7 @@
 <div ngbDropdown autoClose="outside">
   <a
     ngbDropdownToggle
-    class="btn btn-secondary dropdown-toggle"
+    class="form-control"
     role="button"
     id="dropdownMenuLink"
     data-toggle="dropdown"
@@ -15,7 +15,7 @@
       class="dropdown-item"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"
-      >{{ facet.link.title }}</a
-    >
+      >{{ facet.displayName }}<fa-icon class="icon-checked" *ngIf="facet.selected" [icon]="['fas', 'check']"></fa-icon
+    ></a>
   </div>
 </div>

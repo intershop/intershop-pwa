@@ -1,8 +1,13 @@
-<div *ngIf="selected" class="row justify-content-left">
-  <div *ngFor="let select of selected" class="col-auto">
-    <a (click)="apply(select)">{{ select.filterName }}: {{ select.facetName }} X</a>
+<div *ngIf="selected" class="row">
+  <div class="col-md-10 col-xs-12">
+    <div *ngFor="let select of selected" class="filter-navigation-badges">
+      <a (click)="apply(select)"
+        >{{ select.filterName }}: {{ select.facetName }}
+        <fa-icon class="form-control-feedback" [icon]="['fas', 'times']"></fa-icon
+      ></a>
+    </div>
   </div>
-  <div *ngIf="selected.length" class="col-auto">
+  <div *ngIf="selected.length" class="col-md-2 col-xs-12 text-right">
     <a (click)="clear()">{{ 'product.remove_all_product_filters.text' | translate }}</a>
   </div>
 </div>
