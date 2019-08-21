@@ -20,41 +20,21 @@
     </p>
 
     <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
-      <div
-        *ngIf="basket.lineItems.length > 2"
-        class="btn-scroll-up"
-        [ngClass]="{ disabled: currentProduct === 0 }"
-        (click)="scrollUp()"
-      >
-        <fa-icon [icon]="['fas', 'angle-up']"></fa-icon>
-      </div>
-
       <div class="product-rows-block">
-        <div class="slider" #slider>
-          <div *ngFor="let lineItem of basket.lineItems" class="product-row">
-            <div class="mini-product-img">
-              <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()">
-                <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
-              </a>
-            </div>
-            <div class="mini-product-info">
-              <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()"> {{ lineItem.name }} </a>
-              <div class="product-price">{{ lineItem.price | ishPrice }}</div>
-              <div class="cart-pli-data">
-                <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
-              </div>
+        <div *ngFor="let lineItem of basket.lineItems" class="product-row">
+          <div class="mini-product-img">
+            <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()">
+              <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
+            </a>
+          </div>
+          <div class="mini-product-info">
+            <a [routerLink]="lineItem.product | ishProductRoute" (click)="collapse()"> {{ lineItem.name }} </a>
+            <div class="product-price">{{ lineItem.price | ishPrice }}</div>
+            <div class="cart-pli-data">
+              <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}
             </div>
           </div>
         </div>
-      </div>
-
-      <div
-        *ngIf="basket.lineItems.length > 2"
-        class="btn-scroll-down"
-        [ngClass]="{ disabled: currentProduct === basket.lineItems.length - 2 }"
-        (click)="scrollDown()"
-      >
-        <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
       </div>
 
       <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">
