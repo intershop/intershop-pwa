@@ -47,6 +47,7 @@ export function ordersReducer(state = initialState, action: OrdersAction): Order
         ...orderAdapter.upsertOne(order, state),
         selected: order.id,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -55,6 +56,7 @@ export function ordersReducer(state = initialState, action: OrdersAction): Order
       return {
         ...orderAdapter.addAll(orders, state),
         loading: false,
+        error: undefined,
       };
     }
 
