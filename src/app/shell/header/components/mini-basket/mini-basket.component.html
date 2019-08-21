@@ -14,6 +14,11 @@
   </a>
 
   <div [ngbCollapse]="isCollapsed" class="mini-cart">
+    <p *ngIf="error && error.status" role="alert" class="text-danger">
+      <span *ngIf="!error.error">{{ error.status }}: {{ error.message }}</span
+      >{{ error.error }}
+    </p>
+
     <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
       <div
         *ngIf="basket.lineItems.length > 2"

@@ -10,13 +10,19 @@ import {
 } from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
  * The Mini Basket Component displays a quick overview over the users basket items.
  * It uses the {@link ProductImageComponent} for the rendering of product images.
  *
  * @example
- * <ish-mini-basket [basket]="basket"></ish-mini-basket>
+ * <ish-mini-basket
+      [basket]="basket$ | async"
+      [view]="view"
+      [basketAnimation]="basketAnimation$ | async"
+      [error]="basketError$ | async"
+    ></ish-mini-basket>
  */
 @Component({
   selector: 'ish-mini-basket',
@@ -30,6 +36,7 @@ export class MiniBasketComponent implements OnChanges {
   @Input() basket: BasketView;
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
   @Input() basketAnimation = '';
+  @Input() error: HttpError;
   /**
    * The vertical product slider element reference.
    */
@@ -53,7 +60,8 @@ export class MiniBasketComponent implements OnChanges {
   }
 
   /**
-   * Animate Basket after the product line item count has changed
+   * Animate basket after the product line item count has changed
+   * Open basket if an error occured
    */
   animateBasket(c: SimpleChanges) {
     if (c && c.basketAnimation) {
@@ -62,6 +70,9 @@ export class MiniBasketComponent implements OnChanges {
       } else {
         this.collapse();
       }
+    }
+    if (c && !!c.error && this.error) {
+      this.open();
     }
   }
 

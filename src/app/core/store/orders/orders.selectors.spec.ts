@@ -18,7 +18,14 @@ import {
   LoadOrdersSuccess,
   SelectOrder,
 } from './orders.actions';
-import { getOrder, getOrders, getOrdersLoading, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
+import {
+  getOrder,
+  getOrders,
+  getOrdersError,
+  getOrdersLoading,
+  getSelectedOrder,
+  getSelectedOrderId,
+} from './orders.selectors';
 
 describe('Orders Selectors', () => {
   let store$: TestStore;
@@ -82,6 +89,7 @@ describe('Orders Selectors', () => {
 
     it('should set the state to loading', () => {
       expect(getOrdersLoading(store$.state)).toBeTrue();
+      expect(getOrdersError(store$.state)).toBeUndefined();
     });
 
     describe('and reporting success', () => {
@@ -91,6 +99,7 @@ describe('Orders Selectors', () => {
 
       it('should set loading to false', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
+        expect(getOrdersError(store$.state)).toBeUndefined();
 
         const loadedOrders = getOrders(store$.state);
         expect(loadedOrders[1].documentNo).toEqual(orders[1].documentNo);
@@ -102,11 +111,12 @@ describe('Orders Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadOrdersFail({ error: { message: 'error' } as HttpError }));
+        store$.dispatch(new LoadOrdersFail({ error: { message: 'error', error: 'errorMessage' } as HttpError }));
       });
 
       it('should not have loaded orders on error', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
+        expect(getOrdersError(store$.state).error).toBe('errorMessage');
         expect(getOrders(store$.state)).toBeEmpty();
       });
     });

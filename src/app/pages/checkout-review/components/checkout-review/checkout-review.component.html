@@ -20,7 +20,10 @@
       <ng-container *ngIf="error.status === 406; else generalError">
         {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures }}
       </ng-container>
-      <ng-template #generalError> {{ error.status }}: {{ error.error }} </ng-template>
+      <ng-template #generalError>
+        <span *ngIf="!error.error">{{ error.status }}: {{ error.message }}</span
+        >{{ error.error }}
+      </ng-template>
     </div>
     <div class="row">
       <p class="col-md-9">{{ 'checkout.order_review.heading.text' | translate }}</p>
