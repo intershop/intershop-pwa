@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -30,7 +29,6 @@ describe('Mini Basket Component', () => {
         CommonModule,
         IconModule,
         NgbCollapseModule,
-        NoopAnimationsModule,
         PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
@@ -57,7 +55,6 @@ describe('Mini Basket Component', () => {
     };
 
     component.basket = basket;
-    component.currentProduct = 0;
   });
 
   it('should be created', () => {
@@ -77,39 +74,6 @@ describe('Mini Basket Component', () => {
     };
     component.ngOnChanges(changes);
     expect(component.itemCount).toBe(30);
-  });
-
-  it('should reset vertical scroll state if basket changes', () => {
-    // TODO: mockito implementation?
-    // tslint:disable-next-line:ban
-    spyOn(component, 'animate');
-
-    component.resetScroller();
-
-    expect(component.currentProduct).toBe(0);
-    expect(component.animate).toHaveBeenCalledWith(0);
-  });
-
-  it('should increment currentProduct index and disable scroll down button when clicking on scroll down button', () => {
-    fixture.detectChanges();
-    (element.getElementsByClassName('btn-scroll-down')[0] as HTMLDivElement).click();
-    fixture.detectChanges();
-    expect(component.currentProduct).toEqual(1);
-    expect(element.getElementsByClassName('btn-scroll-down')[0].getAttribute('class')).toContain('disabled');
-  });
-
-  it('should decrement currentProduct index and disable scroll up button when clicking on scroll up button', () => {
-    fixture.detectChanges();
-
-    (element.getElementsByClassName('btn-scroll-down')[0] as HTMLDivElement).click();
-    fixture.detectChanges();
-    expect(component.currentProduct).toEqual(1);
-    expect(element.getElementsByClassName('btn-scroll-up')[0].getAttribute('class')).not.toContain('disabled');
-
-    (element.getElementsByClassName('btn-scroll-up')[0] as HTMLDivElement).click();
-    fixture.detectChanges();
-    expect(component.currentProduct).toEqual(0);
-    expect(element.getElementsByClassName('btn-scroll-up')[0].getAttribute('class')).toContain('disabled');
   });
 
   it('should render product image component on component', () => {

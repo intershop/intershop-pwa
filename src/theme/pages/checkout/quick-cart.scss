@@ -92,12 +92,22 @@ ul {
 
     .product-rows-block {
       position: relative;
-      max-height: 228px;
-      overflow: hidden;
+      max-height: 380px;
+      overflow-y: auto;
+      scrollbar-width: thin;
 
-      .slider {
-        position: relative;
-        max-height: 208px;
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
       }
     }
 
