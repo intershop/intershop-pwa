@@ -19,6 +19,10 @@
     a {
       float: right;
 
+      @include media-breakpoint-down(xs) {
+        float: none;
+      }
+
       &.grid-view-link,
       &.grid-view-link:hover,
       &.grid-view-link:focus,
@@ -30,6 +34,17 @@
 
       &.grid-view-link {
         margin-right: $space-default;
+
+        @include media-breakpoint-down(xs) {
+          margin-right: 0;
+          margin-left: $space-default;
+        }
+      }
+
+      &.list-view-link {
+        @include media-breakpoint-down(xs) {
+          margin-left: $space-default;
+        }
       }
 
       &.grid-active,
@@ -43,7 +58,6 @@
 
       .ng-fa-icon {
         font-size: 24px;
-        line-height: $input-height;
       }
     }
 
@@ -69,39 +83,40 @@
   }
 }
 
-.pagination-total {
-  line-height: $input-height;
+.product-list-paging {
+  float: left;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li {
+    float: left;
+    margin-right: ($space-default);
+
+    .active {
+      color: $text-color-primary;
+      cursor: unset;
+    }
+
+    .pagination-hide {
+      display: none;
+    }
+  }
 }
 
-.pagination-sites {
-  padding-right: 0;
-  padding-left: 0;
-  line-height: $input-height;
+.filter-navigation-badges {
+  display: inline-block;
+  padding-right: $space-default;
 
-  @media (max-width: $screen-sm-max) {
-    margin-bottom: $space-default;
-  }
+  a,
+  a:not([href]):not([tabindex]) {
+    color: $text-color-primary;
+    white-space: nowrap;
 
-  .pagination-label {
-    float: left;
-    margin-bottom: 0;
-    font-weight: normal;
-  }
-
-  .pagination-site-list {
-    display: inline-block;
-    float: left;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-
-    li {
-      float: left;
-      margin-right: ($space-default);
-
-      .pagination-hide {
-        display: none;
-      }
+    .form-control-feedback {
+      padding-left: $space-default/6;
+      font-size: $font-size-base * 4/5;
+      color: $text-color-corporate;
     }
   }
 }

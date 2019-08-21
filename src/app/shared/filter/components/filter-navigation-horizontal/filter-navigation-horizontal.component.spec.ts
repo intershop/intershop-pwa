@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FilterDropdownMultiselectComponent } from '../filter-dropdown-multiselect/filter-dropdown-multiselect.component';
@@ -13,6 +14,7 @@ describe('Filter Navigation Horizontal Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FilterNavigationHorizontalComponent, MockComponent(FilterDropdownMultiselectComponent)],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
