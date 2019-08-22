@@ -1,5 +1,6 @@
 import b64u from 'b64u';
 
+import { formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
 import { FacetData } from '../facet/facet.interface';
 import { Facet } from '../facet/facet.model';
 import { Filter } from '../filter/filter.model';
@@ -55,13 +56,13 @@ export class FilterNavigationMapper {
 
   private static fixPrice(filterId: string, searchParameter: string): string {
     const decodedSearchParams = b64u.decode(b64u.fromBase64(searchParameter));
-    const params = FilterNavigationMapper.splitFormParams(decodedSearchParams);
+    const params = stringToFormParams(decodedSearchParams);
     return params[filterId][0];
   }
 
   private static postProcess(filter: Filter, facet: Facet, selected: string[]): Facet {
     const decodedSearchParams = b64u.decode(b64u.fromBase64(facet.searchParameter));
-    const paramsMap = FilterNavigationMapper.splitFormParams(decodedSearchParams);
+    const paramsMap = stringToFormParams(decodedSearchParams);
     const isOr = filter.selectionType.endsWith('or');
     if (filter.selectionType === 'single') {
       if (facet.selected) {
@@ -78,32 +79,7 @@ export class FilterNavigationMapper {
         paramsMap[filter.id] = [...selected, facet.name];
       }
     }
-    facet.searchParameter = b64u.toBase64(
-      b64u.encode(FilterNavigationMapper.mergeFormParams(paramsMap, isOr ? 'or' : 'and'))
-    );
+    facet.searchParameter = b64u.toBase64(b64u.encode('&' + formParamsToString(paramsMap, isOr ? '_or_' : '_and_')));
     return facet;
-  }
-
-  private static mergeFormParams(object, joiner: string): string {
-    return (
-      '&' +
-      Object.entries(object)
-        .filter(([, value]) => Array.isArray(value) && value.length)
-        .map(([key, val]) => `${key}=${(val as string[]).join(`_${joiner}_`)}`)
-        .join('&')
-    );
-  }
-
-  private static splitFormParams(object: string) {
-    return object
-      ? object
-          .split('&')
-          .filter(x => !!x)
-          .map(val => {
-            const sp = val.split('=');
-            return { key: sp[0], value: sp[1].split(',') };
-          })
-          .reduce((acc, val) => ({ ...acc, [val.key]: val.value }), {})
-      : {};
   }
 }
