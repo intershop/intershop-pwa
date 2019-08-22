@@ -26,9 +26,9 @@ describe('Filter Dropdown Multiselect Component', () => {
       name: 'Color',
       id: 'Color_of_Product',
       facets: [
-        { link: { uri: undefined, title: 'Red', type: 'Link' }, name: 'Red', selected: false, searchParameter: 'red' },
+        { displayName: 'Red', name: 'Red', selected: false, searchParameter: 'red' },
         {
-          link: { uri: undefined, title: 'Blue', type: 'Link' },
+          displayName: 'Blue',
           name: 'Blue',
           selected: true,
           searchParameter: 'blue',

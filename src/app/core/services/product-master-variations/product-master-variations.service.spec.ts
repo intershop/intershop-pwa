@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import b64u from 'b64u';
 
-import { Facet } from 'ish-core/models/facet/facet.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductMasterVariationsService } from './product-master-variations.service';
@@ -29,13 +29,12 @@ describe('Product Master Variations Service', () => {
 
     expect.addSnapshotSerializer({
       test: val => val && val.facets && val.facets.length,
-      print: (val: { facets: Facet[] }, serialize) =>
+      print: (val: Filter, serialize) =>
+        `${val.id}: ` +
         serialize(
           val.facets.map(
             facet =>
-              `${facet.filterId}:${facet.name}:${facet.selected}:${facet.count} -> ${b64u.decode(
-                b64u.fromBase64(facet.searchParameter)
-              )}`
+              `${facet.name}:${facet.selected}:${facet.count} -> ${b64u.decode(b64u.fromBase64(facet.searchParameter))}`
           )
         ),
     });
@@ -64,14 +63,14 @@ describe('Product Master Variations Service', () => {
         Object {
           "filterNavigation": Object {
             "filter": Array [
-              Array [
-                "HDD:512GB:false:3 -> HDD=512GB",
-                "HDD:256GB:false:2 -> HDD=256GB",
+              HDD: Array [
+                "512GB:false:3 -> HDD=512GB",
+                "256GB:false:2 -> HDD=256GB",
               ],
-              Array [
-                "COL:Brown:false:2 -> COL=Brown",
-                "COL:Red:false:2 -> COL=Red",
-                "COL:Black:false:1 -> COL=Black",
+              COL: Array [
+                "Brown:false:2 -> COL=Brown",
+                "Red:false:2 -> COL=Red",
+                "Black:false:1 -> COL=Black",
               ],
             ],
           },
@@ -95,14 +94,14 @@ describe('Product Master Variations Service', () => {
         Object {
           "filterNavigation": Object {
             "filter": Array [
-              Array [
-                "HDD:512GB:true:2 -> COL=Red",
-                "HDD:256GB:false:2 -> HDD=512GB,256GB&COL=Red",
+              HDD: Array [
+                "512GB:true:2 -> COL=Red",
+                "256GB:false:2 -> HDD=512GB,256GB&COL=Red",
               ],
-              Array [
-                "COL:Brown:false:2 -> HDD=512GB&COL=Red,Brown",
-                "COL:Red:true:3 -> HDD=512GB",
-                "COL:Black:false:2 -> HDD=512GB&COL=Red,Black",
+              COL: Array [
+                "Brown:false:2 -> HDD=512GB&COL=Red,Brown",
+                "Red:true:3 -> HDD=512GB",
+                "Black:false:2 -> HDD=512GB&COL=Red,Black",
               ],
             ],
           },
@@ -121,13 +120,13 @@ describe('Product Master Variations Service', () => {
         Object {
           "filterNavigation": Object {
             "filter": Array [
-              Array [
-                "HDD:512GB:false:1 -> COL=Black&HDD=512GB",
+              HDD: Array [
+                "512GB:false:1 -> COL=Black&HDD=512GB",
               ],
-              Array [
-                "COL:Brown:false:3 -> COL=Black,Brown",
-                "COL:Red:false:3 -> COL=Black,Red",
-                "COL:Black:true:5 -> ",
+              COL: Array [
+                "Brown:false:3 -> COL=Black,Brown",
+                "Red:false:3 -> COL=Black,Red",
+                "Black:true:5 -> ",
               ],
             ],
           },
@@ -150,14 +149,14 @@ describe('Product Master Variations Service', () => {
         Object {
           "filterNavigation": Object {
             "filter": Array [
-              Array [
-                "HDD:512GB:true:1 -> HDD=256GB&COL=Red",
-                "HDD:256GB:true:1 -> HDD=512GB&COL=Red",
+              HDD: Array [
+                "512GB:true:1 -> HDD=256GB&COL=Red",
+                "256GB:true:1 -> HDD=512GB&COL=Red",
               ],
-              Array [
-                "COL:Brown:false:4 -> HDD=512GB,256GB&COL=Red,Brown",
-                "COL:Red:true:5 -> HDD=512GB,256GB",
-                "COL:Black:false:3 -> HDD=512GB,256GB&COL=Red,Black",
+              COL: Array [
+                "Brown:false:4 -> HDD=512GB,256GB&COL=Red,Brown",
+                "Red:true:5 -> HDD=512GB,256GB",
+                "Black:false:3 -> HDD=512GB,256GB&COL=Red,Black",
               ],
             ],
           },
