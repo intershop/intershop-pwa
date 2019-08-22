@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
@@ -32,6 +33,8 @@ export class MiniBasketComponent implements OnChanges {
   isCollapsed = true;
   itemCount = 0;
 
+  constructor(private location: Location) {}
+
   ngOnChanges(c: SimpleChanges) {
     this.animateBasket(c);
     if (this.basket) {
@@ -46,7 +49,7 @@ export class MiniBasketComponent implements OnChanges {
    * Open basket if an error occured
    */
   animateBasket(c: SimpleChanges) {
-    if (c && c.basketAnimation) {
+    if (c && c.basketAnimation && this.location.path() !== '/basket') {
       if (this.basketAnimation && c.basketAnimation.currentValue === 'tada') {
         this.open();
       } else {
