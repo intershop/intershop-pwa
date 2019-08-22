@@ -12,6 +12,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CustomerAddressFormComponent } from '../../../../shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
@@ -29,6 +30,7 @@ describe('Account Addresses Page Component', () => {
         AccountAddressesPageComponent,
         MockComponent(AddressComponent),
         MockComponent(CustomerAddressFormComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(ModalDialogComponent),
       ],
       imports: [FormsSharedModule, IconModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
@@ -224,15 +226,10 @@ describe('Account Addresses Page Component', () => {
     expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeFalsy();
   });
 
-  it('should not render an error if no error occurs', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
-  });
-
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
   it('should emit createCustomerAddress event when createCustomerAddress is triggered', () => {

@@ -18,9 +18,8 @@
   <form class="form-horizontal" [formGroup]="form">
     <div class="row">
       <div class="col-md-12 col-lg-8">
-        <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
-          {{ error.status }}: {{ error.error }}
-        </div>
+        <!-- Error message -->
+        <ish-error-message [error]="error"></ish-error-message>
 
         <ish-line-item-list
           *ngIf="basket"

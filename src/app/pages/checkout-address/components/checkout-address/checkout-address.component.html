@@ -1,7 +1,7 @@
 <div *ngIf="basket" class="row checkout-address-book">
-  <!-- error messages -->
-  <div *ngIf="error && error.status" class="col-md-12">
-    <div role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+  <!-- Error Message -->
+  <div *ngIf="error" class="col-md-12">
+    <ish-error-message [error]="error"></ish-error-message>
   </div>
 
   <div *ngIf="nextDisabled && !error" class="col-md-12">

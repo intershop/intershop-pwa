@@ -38,4 +38,31 @@ describe('Http Error Mapper', () => {
       }
     `);
   });
+
+  it('should convert correctly for simple HttpErrorResponse with error Message', () => {
+    expect(
+      HttpErrorMapper.fromError(
+        new HttpErrorResponse({ status: 401, statusText: 'Unauthorized', error: 'Error Message' })
+      )
+    ).toMatchSnapshot();
+  });
+
+  it('should convert correctly for HttpErrorResponse with errors and causes', () => {
+    expect(
+      HttpErrorMapper.fromError(
+        new HttpErrorResponse({
+          status: 422,
+          statusText: 'Unprocessable Entity',
+          error: {
+            errors: [
+              {
+                message: 'The product could not be added to your basket.',
+                causes: [{ message: 'The maximum allowed item quantity is exceeded' }],
+              },
+            ],
+          },
+        })
+      )
+    ).toMatchSnapshot();
+  });
 });

@@ -14,6 +14,7 @@ import { BasketAddressSummaryComponent } from '../../../../shared/basket/compone
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
 import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
@@ -38,6 +39,7 @@ describe('Checkout Shipping Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(ModalDialogLinkComponent),
       ],
       imports: [
@@ -79,7 +81,7 @@ describe('Checkout Shipping Component', () => {
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no shipping method selected', () => {

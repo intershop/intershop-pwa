@@ -42,3 +42,8 @@ export const getOrdersLoading = createSelector(
   getOrdersState,
   orders => orders.loading
 );
+
+export const getOrdersError = createSelector(
+  getOrdersState,
+  orders => orders.error
+);
