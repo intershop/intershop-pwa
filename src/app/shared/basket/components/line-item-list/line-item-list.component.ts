@@ -39,6 +39,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
+  formLength = 0;
 
   private destroy$ = new Subject();
 
@@ -90,6 +91,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
           });
 
         itemsForm.push(formGroup);
+        this.formLength = itemsForm.length;
       }
     }
 
