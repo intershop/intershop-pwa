@@ -17,14 +17,17 @@ describe('Filter Service', () => {
     elements: [
       {
         name: 'blubb',
+        id: 'test',
         displayType: 'text_clear',
+        selectionType: 'single',
         facets: [
-          { name: 'a', link: { uri: 'domain/filters/dahinter' } },
-          { name: 'b', link: { uri: 'domain/filters/dahinter' } },
+          { name: 'a', link: { uri: 'domain/filters/dahinter;SearchParameter=' } },
+          { name: 'b', link: { uri: 'domain/filters/dahinter;SearchParameter=' } },
         ],
       },
     ],
-  };
+  } as FilterNavigationData;
+
   beforeEach(() => {
     apiService = mock(ApiService);
 
@@ -39,7 +42,7 @@ describe('Filter Service', () => {
   });
 
   it("should get Filter data when 'getFilterForCategory' is called", done => {
-    when(apiService.get('filters', anything())).thenReturn(of(filterMock as FilterNavigationData));
+    when(apiService.get('filters', anything())).thenReturn(of(filterMock));
     filterService.getFilterForCategory('A.B').subscribe(data => {
       expect(data.filter).toHaveLength(1);
       expect(data.filter[0].facets).toHaveLength(2);
@@ -51,7 +54,7 @@ describe('Filter Service', () => {
   });
 
   it("should get Filter data when 'applyFilter' is called", done => {
-    when(apiService.get('filters/default;SearchParameter=b')).thenReturn(of(filterMock as FilterNavigationData));
+    when(apiService.get('filters/default;SearchParameter=b')).thenReturn(of(filterMock));
     filterService.applyFilter('b').subscribe(data => {
       expect(data.filter).toHaveLength(1);
       expect(data.filter[0].facets).toHaveLength(2);

@@ -47,6 +47,6 @@ export class FilterDropdownComponent implements OnInit {
    */
   filter(facetName: string) {
     const facet = this.filterElement.facets.find(f => f.name === facetName);
-    this.applyFilter.emit({ filterId: facet.filterId, searchParameter: facet.searchParameter });
+    this.applyFilter.emit({ filterId: this.filterElement.id, searchParameter: facet.searchParameter });
   }
 }

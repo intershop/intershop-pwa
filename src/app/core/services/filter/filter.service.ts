@@ -25,6 +25,7 @@ export class FilterService {
       .set('CategoryName', idList[idList.length - 1]);
     return this.apiService.get<FilterNavigationData>('filters', { params, skipApiErrorHandling: true }).pipe(
       map(filter => FilterNavigationMapper.fromData(filter)),
+      map(filter => FilterNavigationMapper.fixSearchParameters(filter)),
       // TODO: temporary work-around to omit errors until Filter REST API 2.0 is used
       // tslint:disable-next-line:ban
       catchError(() => of(FilterNavigationMapper.fromData(undefined)))
@@ -36,13 +37,17 @@ export class FilterService {
     const searchParameter = SearchParameterMapper.toData({ queryTerm: searchTerm } as SearchParameter);
     return this.apiService
       .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`, { skipApiErrorHandling: true })
-      .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
+      .pipe(
+        map(filter => FilterNavigationMapper.fromData(filter)),
+        map(filter => FilterNavigationMapper.fixSearchParameters(filter))
+      );
   }
 
   applyFilter(searchParameter: string): Observable<FilterNavigation> {
-    return this.apiService
-      .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`)
-      .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
+    return this.apiService.get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`).pipe(
+      map(filter => FilterNavigationMapper.fromData(filter)),
+      map(filter => FilterNavigationMapper.fixSearchParameters(filter))
+    );
   }
 
   getProductSkusForFilter(searchParameter: string): Observable<string[]> {
