@@ -10,6 +10,7 @@ import { AddressComponent } from '../../../../shared/address/components/address/
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
 import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { InfoBoxComponent } from '../../../../shared/common/components/info-box/info-box.component';
 import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { CheckboxComponent } from '../../../../shared/forms/components/checkbox/checkbox.component';
@@ -29,6 +30,7 @@ describe('Checkout Review Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
@@ -41,6 +43,7 @@ describe('Checkout Review Component', () => {
     fixture = TestBed.createComponent(CheckoutReviewComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+
     component.basket = BasketMockData.getBasket();
   });
 
@@ -71,6 +74,6 @@ describe('Checkout Review Component', () => {
   it('should display a message if an error occurs', () => {
     component.error = { status: 400, error: 'Bad request' } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 });

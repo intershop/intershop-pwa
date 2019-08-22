@@ -1,12 +1,11 @@
 <div *ngIf="basket" class="row">
   <div class="col-md-12 col-lg-8">
     <!-- Messages -->
-    <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
-      {{ error.status }}: {{ error.error }}
-    </div>
+    <ish-error-message [error]="error"></ish-error-message>
     <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping_method.no_Selection.error' | translate }}
     </div>
+
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal">
       <div *ngIf="shippingMethods && shippingMethods.length > 0" class="shipping-methods">

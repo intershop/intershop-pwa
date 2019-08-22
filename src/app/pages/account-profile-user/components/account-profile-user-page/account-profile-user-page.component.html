@@ -1,5 +1,8 @@
 <h1>{{ 'account.update_profile.heading' | translate }}</h1>
-<div *ngIf="error && error.status" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+
+<!-- Error message -->
+<ish-error-message [error]="error"></ish-error-message>
+
 <p>{{ 'account.update_profile.text' | translate }}</p>
 
 <div class="section">

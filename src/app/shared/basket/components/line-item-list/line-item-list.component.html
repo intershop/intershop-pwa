@@ -55,7 +55,7 @@
           </div>
 
           <!-- mobile quantity -->
-          <div class="quantity d-xl-none" [formGroupName]="i">
+          <div *ngIf="formLength > i" class="quantity d-xl-none" [formGroupName]="i">
             <div class="form-group">
               <ng-container
                 *ngTemplateOutlet="
@@ -73,7 +73,7 @@
         </div>
 
         <!-- desktop quantity -->
-        <div class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
+        <div *ngIf="formLength > i" class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
           <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
             <ng-container
               *ngTemplateOutlet="

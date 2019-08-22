@@ -14,6 +14,7 @@ import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module'
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormContainerComponent } from '../../../../shared/address-forms/containers/address-form/address-form.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
@@ -31,7 +32,12 @@ describe('Checkout Address Anonymous Component', () => {
     class DummyComponent {}
 
     TestBed.configureTestingModule({
-      declarations: [CheckoutAddressAnonymousComponent, DummyComponent, MockComponent(AddressFormContainerComponent)],
+      declarations: [
+        CheckoutAddressAnonymousComponent,
+        DummyComponent,
+        MockComponent(AddressFormContainerComponent),
+        MockComponent(ErrorMessageComponent),
+      ],
       imports: [
         FormsSharedModule,
         IconModule,
@@ -101,7 +107,7 @@ describe('Checkout Address Anonymous Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
   it('should set submitted flag if submit is clicked and form is not valid', async(() => {
