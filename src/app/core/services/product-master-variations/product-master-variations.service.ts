@@ -78,10 +78,8 @@ export class ProductMasterVariationsService {
       name: attribute.value,
       searchParameter: b64u.toBase64(b64u.encode(formParamsToString(newFilters))),
       count: this.potentialMatches(newFilters, variations).length,
-      filterId: filterName,
-      link: { uri: '', title: attribute.value, type: 'Link' },
+      displayName: attribute.value,
       selected,
-      type: 'Facet',
     };
   }
 
@@ -92,6 +90,7 @@ export class ProductMasterVariationsService {
         id: key,
         displayType: 'checkbox',
         name: groups[key][0].name,
+        selectionType: 'multiple_or',
         facets: groups[key]
           .map(val => this.createFacet(key, val, filters, product.variations()))
           .filter(facet => !!facet.count || facet.selected),
