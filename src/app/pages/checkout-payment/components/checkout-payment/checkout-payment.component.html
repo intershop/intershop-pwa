@@ -1,10 +1,8 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12 col-lg-8">
     <!-- Messages -->
-    <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
-      <span *ngIf="!error.error">{{ error.status }}: {{ error.message }}</span
-      >{{ error.error }}
-    </div>
+    <ish-error-message [error]="error"></ish-error-message>
+
     <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>

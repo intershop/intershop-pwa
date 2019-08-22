@@ -11,6 +11,7 @@ import { LazyBasketAddToQuoteComponent } from '../../../../extensions/quoting/ex
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
 import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
@@ -26,6 +27,7 @@ describe('Shopping Basket Component', () => {
       declarations: [
         MockComponent(BasketCostSummaryComponent),
         MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
@@ -76,6 +78,6 @@ describe('Shopping Basket Component', () => {
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 });
