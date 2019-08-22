@@ -23,6 +23,6 @@ export class FilterCheckboxComponent {
   isCollapsed = false;
 
   filter(facet: Facet) {
-    this.applyFilter.emit({ filterId: facet.filterId, searchParameter: facet.searchParameter });
+    this.applyFilter.emit({ filterId: this.filterElement.id, searchParameter: facet.searchParameter });
   }
 }
