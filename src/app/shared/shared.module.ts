@@ -46,6 +46,7 @@ import { ContentSlotContainerComponent } from './cms/containers/content-slot/con
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
+import { ErrorMessageComponent } from './common/components/error-message/error-message.component';
 import { InfoBoxComponent } from './common/components/info-box/info-box.component';
 import { LoadingComponent } from './common/components/loading/loading.component';
 import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
@@ -159,6 +160,7 @@ const exportedComponents = [
   BreadcrumbComponent,
   ContentIncludeContainerComponent,
   ContentPageletContainerComponent,
+  ErrorMessageComponent,
   FilterNavigationContainerComponent,
   InfoBoxComponent,
   LineItemListComponent,
