@@ -11,6 +11,8 @@ export interface BasketState {
   eligibleShippingMethods: ShippingMethod[];
   eligiblePaymentMethods: PaymentMethod[];
   loading: boolean;
+  promotionError: HttpError; // for promotion-errors
+  promotionSuccess: string;
   error: HttpError; // add, update and delete errors
   lastTimeProductAdded: Date;
 }
@@ -21,6 +23,8 @@ export const initialState: BasketState = {
   eligiblePaymentMethods: [],
   loading: false,
   error: undefined,
+  promotionError: undefined,
+  promotionSuccess: undefined,
   lastTimeProductAdded: undefined,
 };
 
@@ -53,7 +57,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.LoadBasketFail:
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
-    case BasketActionTypes.AddPromotionCodeToBasketFail:
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
@@ -72,7 +75,27 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.AddPromotionCodeToBasketSuccess:
+    case BasketActionTypes.AddPromotionCodeToBasketFail: {
+      const { error } = action.payload;
+
+      return {
+        ...state,
+        promotionError: error,
+        promotionSuccess: undefined,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.AddPromotionCodeToBasketSuccess: {
+      return {
+        ...state,
+        loading: false,
+        error: undefined,
+        promotionError: undefined,
+        promotionSuccess: action.payload.message,
+      };
+    }
+
     case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess:

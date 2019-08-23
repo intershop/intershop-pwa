@@ -2531,5 +2531,6 @@
   "product.product_links.quantity.label": "Quantité",
   "basket.not_found.error": "Le panier est introuvable.",
   "basket.promotioncode.not_found.error": "Le code promotionnel n\u2019a pas pu \u00EAtre trouv\u00E9",
-  "basket.promotioncode.adding.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9."
+  "basket.promotioncode.adding.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9.",
+  "basket.promotioncode.add_not_successful.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9."
 }

@@ -2641,5 +2641,6 @@
   "product.product_links.quantity.label": "Quantity",
   "basket.not_found.error": "The basket could not be found.",
   "basket.promotioncode.not_found.error": "The promotion code could not be found.",
-  "basket.promotioncode.adding.error": "The promotion code could not be added."
+  "basket.promotioncode.adding.error": "The promotion code could not be added.",
+  "basket.promotioncode.add_not_successful.error": "The promotion code could not be added."
 }
