@@ -52,7 +52,11 @@ import { LoadingComponent } from './common/components/loading/loading.component'
 import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
 import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
+import { FilterDropdownMultiselectComponent } from './filter/components/filter-dropdown-multiselect/filter-dropdown-multiselect.component';
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
+import { FilterNavigationBadgesComponent } from './filter/components/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationHorizontalComponent } from './filter/components/filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationSidebarComponent } from './filter/components/filter-navigation-sidebar/filter-navigation-sidebar.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
@@ -130,6 +134,10 @@ const declaredComponents = [
   ContentSlotContainerComponent,
   FilterCheckboxComponent,
   FilterDropdownComponent,
+  FilterDropdownMultiselectComponent,
+  FilterNavigationBadgesComponent,
+  FilterNavigationHorizontalComponent,
+  FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,

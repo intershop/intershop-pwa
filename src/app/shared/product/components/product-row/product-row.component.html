@@ -81,6 +81,11 @@
             </div>
           </form>
         </div>
+        <div *ngIf="isMasterProduct(product)" class="addtocart-container">
+          <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">{{
+            'product.choose_variation.link' | translate
+          }}</a>
+        </div>
       </div>
     </div>
   </div>

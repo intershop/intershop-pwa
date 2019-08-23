@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
@@ -19,6 +20,7 @@ import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
+import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { getProducts, getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -42,6 +44,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
 
   isProductBundle = ProductHelper.isProductBundle;
   isRetailSet = ProductHelper.isRetailSet;
+  isMasterProduct = ProductHelper.isMasterProduct;
 
   private destroy$ = new Subject();
   retailSetParts$ = new ReplaySubject<SkuQuantityType[]>(1);
@@ -50,7 +53,8 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
     private store: Store<{}>,
     private location: Location,
     private router: Router,
-    private prodRoutePipe: ProductRoutePipe
+    private prodRoutePipe: ProductRoutePipe,
+    private featureToggleService: FeatureToggleService
   ) {}
 
   ngOnInit() {
@@ -61,8 +65,11 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
       )
       .subscribe(product => {
         this.quantity = product.minOrderQuantity;
-        if (ProductHelper.isMasterProduct(product)) {
+        if (ProductHelper.isMasterProduct(product) && !this.featureToggleService.enabled('advancedVariationHandling')) {
           this.redirectMasterToDefaultVariation(product);
+        }
+        if (ProductHelper.isMasterProduct(product) && this.featureToggleService.enabled('advancedVariationHandling')) {
+          this.store.dispatch(new LoadMoreProducts({ id: { type: 'master', value: product.sku }, page: 1 }));
         }
         if (ProductHelper.isRetailSet(product)) {
           this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));

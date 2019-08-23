@@ -359,7 +359,7 @@ deploy_demo_b2b:
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
-      --env FEATURES=quoting,compare,recently,businessCustomerRegistration,sentry
+      --env FEATURES=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       --env SENTRY_DSN=${SENTRY_DSN}
       ${IMAGE}
@@ -396,7 +396,7 @@ deploy_demo_nginx:
       -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_2_SUBDOMAIN=b2b
       -e PWA_2_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       -e PWA_3_SUBDOMAIN=de
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_3_LANG=de_DE
@@ -509,7 +509,7 @@ deploy_review_b2c:
       -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_2_SUBDOMAIN=b2b
       -e PWA_2_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       -e PWA_3_SUBDOMAIN=de
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_3_LANG=de_DE
@@ -576,7 +576,7 @@ deploy_review_b2b:
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
-      -e FEATURES=quoting,recently,compare,businessCustomerRegistration,sentry
+      -e FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       --add-host $ICM_HOST:$ICM_IP
       --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}

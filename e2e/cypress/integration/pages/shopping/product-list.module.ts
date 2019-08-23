@@ -59,7 +59,7 @@ export class ProductListModule {
   }
 
   get pagingBar() {
-    return cy.get('div.product-list-paging', { timeout: 1000 });
+    return cy.get('.product-list-paging', { timeout: 1000 });
   }
 
   get currentPage() {

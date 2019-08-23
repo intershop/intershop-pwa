@@ -1,0 +1,13 @@
+<h3>{{ 'product.product_filters.heading' | translate }}</h3>
+
+<div class="row justify-content-left" *ngIf="filterNavigation">
+  <div
+    *ngFor="let element of filterNavigation.filter; trackBy: trackByFn"
+    class="filter-dropdown col-md-3 col-sm-6 col-xs-12"
+  >
+    <ish-filter-dropdown-multiselect
+      [filterElement]="element"
+      (applyFilter)="applyFilter.emit($event)"
+    ></ish-filter-dropdown-multiselect>
+  </div>
+</div>
