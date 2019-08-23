@@ -267,13 +267,15 @@ describe('Basket Reducer', () => {
           const state = basketReducer(initialState, action);
 
           expect(state.loading).toBeFalse();
-          expect(state.error).toEqual(error);
+          expect(state.promotionError).toEqual(error);
         });
       });
 
       describe('AddPromotionCodeToBasketSuccess action', () => {
         it('should set loading to false', () => {
-          const action = new fromActions.AddPromotionCodeToBasketSuccess();
+          const action = new fromActions.AddPromotionCodeToBasketSuccess({
+            message: 'shopping_cart.promotion.qualified_promo.text',
+          });
           const state = basketReducer(initialState, action);
 
           expect(state.loading).toBeFalse();

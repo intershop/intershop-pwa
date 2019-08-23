@@ -1,17 +1,37 @@
-<form [formGroup]="form" class="cart-summary" (ngSubmit)="submitPromotionCode()">
+<div class="cart-summary">
   <a (click)="isCollapsed = !isCollapsed">{{ 'shopping_cart.promotional_code.heading' | translate }}</a>
+
+  <div *ngIf="promotionError$ | async as promotionError" class="alert alert-danger ng-star-inserted" role="alert">
+    {{ (promotionError.errorCode | translate) || promotionError.error }}
+  </div>
+
+  <div
+    *ngIf="promotionSuccess$ | async as promotionSuccessMessage"
+    class="alert alert-success ng-star-inserted"
+    role="alert"
+  >
+    {{ promotionSuccessMessage | translate }}
+  </div>
+
   <div id="promoentry" class="form-inline" [ngbCollapse]="isCollapsed">
     <input
-      formControlName="codeInput"
+      [formControl]="codeInput"
       id="code"
       name="code"
       class="form-control"
       type="text"
       maxlength="128"
-      placeholder="{{ 'shopping_cart.promotional_code.label' | translate }}"
+      [placeholder]="'shopping_cart.promotional_code.label' | translate"
     />
-    <button id="applyPromotion" name="applyPromotion" type="submit" class="btn btn-link">
+    <button
+      id="applyPromotion"
+      name="applyPromotion"
+      type="submit"
+      class="btn btn-secondary"
+      [disabled]="!codeInput.valid"
+      (click)="submitPromotionCode()"
+    >
       {{ 'shopping_cart.promotion.apply.button.label' | translate }}
     </button>
   </div>
-</form>
+</div>

@@ -2639,5 +2639,6 @@
   "product.product_links.quantity.label": "Anzahl",
   "basket.not_found.error": "Der Warenkorb konnte nicht gefunden werden.",
   "basket.promotioncode.not_found.error": "Der Aktionscode wurde nicht gefunden.",
-  "basket.promotioncode.adding.error": "Der Aktionscode wurde nicht hinzugefügt."
+  "basket.promotioncode.adding.error": "Der Aktionscode wurde nicht hinzugefügt.",
+  "basket.promotioncode.add_not_successful.error": "Der Aktionscode wurde nicht hinzugefügt."
 }

@@ -213,6 +213,7 @@ export class AddPromotionCodeToBasketFail implements Action {
 
 export class AddPromotionCodeToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddPromotionCodeToBasketSuccess;
+  constructor(public payload: { message: string }) {}
 }
 
 export class LoadBasketEligibleShippingMethods implements Action {

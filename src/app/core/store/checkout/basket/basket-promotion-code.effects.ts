@@ -23,14 +23,18 @@ export class BasketPromotionCodeEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([code, basketId]) =>
       this.basketService.addPromotionCodeToBasket(code, basketId).pipe(
-        mapTo(new basketActions.AddPromotionCodeToBasketSuccess()),
+        mapTo(
+          new basketActions.AddPromotionCodeToBasketSuccess({
+            message: 'shopping_cart.promotion.qualified_promo.text',
+          })
+        ),
         mapErrorToAction(basketActions.AddPromotionCodeToBasketFail)
       )
     )
   );
 
   /**
-   * Triggers a LoadBasket action after successful interaction with the Basket API.
+   * Reload basket after successfully adding a promo code
    */
   @Effect()
   loadBasketAfterAddPromotionCodeToBasketChangeSuccess$ = this.actions$.pipe(

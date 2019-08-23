@@ -70,7 +70,9 @@ describe('Basket Promotion Code Effects', () => {
     it('should map to action of type AddPromotionCodeToBasketSuccess', () => {
       const code = 'CODE';
       const action = new basketActions.AddPromotionCodeToBasket({ code });
-      const completion = new basketActions.AddPromotionCodeToBasketSuccess();
+      const completion = new basketActions.AddPromotionCodeToBasketSuccess({
+        message: 'shopping_cart.promotion.qualified_promo.text',
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -94,7 +96,9 @@ describe('Basket Promotion Code Effects', () => {
 
   describe('loadBasketAfterAddPromotionCodeToBasket$', () => {
     it('should map to action of type LoadBasket if AddPromotionCodeToBasketSuccess action triggered', () => {
-      const action = new basketActions.AddPromotionCodeToBasketSuccess();
+      const action = new basketActions.AddPromotionCodeToBasketSuccess({
+        message: 'shopping_cart.promotion.qualified_promo.text',
+      });
       const completion = new basketActions.LoadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
