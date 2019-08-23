@@ -1,14 +1,18 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
@@ -29,16 +33,19 @@ describe('Line Item Description Component', () => {
   let component: LineItemDescriptionComponent;
   let fixture: ComponentFixture<LineItemDescriptionComponent>;
   let element: HTMLElement;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule,
         FormsSharedModule,
         IconModule,
         NgbPopoverModule,
         PipesModule,
         ReactiveFormsModule,
         StoreModule.forRoot({
+          ...coreReducers,
           shopping: combineReducers(shoppingReducers),
         }),
         TranslateModule.forRoot(),
@@ -66,6 +73,7 @@ describe('Line Item Description Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.pli = BasketMockData.getBasketItem();
+    store$ = TestBed.get(Store);
   });
 
   it('should be created', () => {
@@ -88,5 +96,30 @@ describe('Line Item Description Component', () => {
     component.pli = { ...BasketMockData.getBasketItem(), itemSurcharges: undefined };
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelectorAll('.details-tooltip')).toHaveLength(0);
+  });
+
+  it('should display standard elements for normal products', () => {
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-line-item-edit",
+        "ish-product-id",
+        "ish-product-inventory",
+        "ish-product-shipment",
+      ]
+    `);
+  });
+
+  it('should display bundle parts for bundle products', () => {
+    component.pli.product.type = 'Bundle';
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toContain('ish-product-bundle-display-container');
+  });
+
+  it('should not display edit component for variation products with advanced variation handling', () => {
+    component.pli.product.type = 'VariationProduct';
+    store$.dispatch(new ApplyConfiguration({ features: ['advancedVariationHandling'] }));
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).not.toContain('ish-line-item-edit');
   });
 });

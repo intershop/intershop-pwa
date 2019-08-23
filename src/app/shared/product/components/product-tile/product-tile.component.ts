@@ -50,4 +50,13 @@ export class ProductTileComponent {
   variationSelected(selection: VariationSelection) {
     this.selectVariation.emit(selection);
   }
+
+  get variationCount() {
+    return (
+      this.product &&
+      ProductHelper.isMasterProduct(this.product) &&
+      this.product.variations() &&
+      this.product.variations().length
+    );
+  }
 }

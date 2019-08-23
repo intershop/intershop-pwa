@@ -195,6 +195,10 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
+        minListPrice: filterPrice(data.minListPrice),
+        minSalePrice: filterPrice(data.minSalePrice),
+        maxListPrice: filterPrice(data.maxListPrice),
+        maxSalePrice: filterPrice(data.maxSalePrice),
         variationAttributeValues: data.variationAttributeValues,
         type: 'VariationProductMaster',
       };

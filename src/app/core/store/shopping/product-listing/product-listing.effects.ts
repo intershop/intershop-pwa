@@ -1,20 +1,28 @@
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 import { isEqual } from 'lodash-es';
-import { EMPTY, of } from 'rxjs';
-import { distinctUntilChanged, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
 import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
-import { ApplyFilter, LoadFilterForCategory, LoadFilterForSearch, LoadProductsForFilter } from '../filter';
-import { LoadProductsForCategory } from '../products';
+import {
+  ApplyFilter,
+  LoadFilterForCategory,
+  LoadFilterForSearch,
+  LoadFilterSuccess,
+  LoadProductsForFilter,
+} from '../filter';
+import { LoadProductsForCategory, getProduct } from '../products';
 import { SearchProducts } from '../search';
 
 import * as actions from './product-listing.actions';
@@ -28,7 +36,8 @@ export class ProductListingEffects {
     private actions$: Actions,
     private activatedRoute: ActivatedRoute,
     private store: Store<{}>,
-    private router: Router
+    private productListingMapper: ProductListingMapper,
+    private productMasterVariationsService: ProductMasterVariationsService
   ) {}
 
   @Effect()
@@ -80,24 +89,31 @@ export class ProductListingEffects {
         map(view => ({ id, sorting, page, filters, viewAvailable: !view.empty() && view.productsOfPage(page).length }))
       )
     ),
-    mergeMap(({ id, sorting, page, filters, viewAvailable }) => {
+    map(({ id, sorting, page, filters, viewAvailable }) => {
       if (viewAvailable) {
-        return of(new actions.SetProductListingPages({ id: { sorting, filters, ...id } }));
+        return new actions.SetProductListingPages({ id: { sorting, filters, ...id } });
       }
-      if (filters) {
+      if (
+        filters &&
+        // TODO: work-around for client side computation of master variations
+        ['search', 'category'].includes(id.type)
+      ) {
         const searchParameter = b64u.toBase64(b64u.encode(filters));
-        return of(new LoadProductsForFilter({ id: { ...id, filters }, searchParameter }));
+        return new LoadProductsForFilter({ id: { ...id, filters }, searchParameter });
       } else {
         switch (id.type) {
           case 'category':
-            return of(new LoadProductsForCategory({ categoryId: id.value, page, sorting }));
+            return new LoadProductsForCategory({ categoryId: id.value, page, sorting });
           case 'search':
-            return of(new SearchProducts({ searchTerm: id.value, page, sorting }));
+            return new SearchProducts({ searchTerm: id.value, page, sorting });
+          case 'master':
+            return new actions.LoadPagesForMaster({ id, sorting, filters });
           default:
-            return EMPTY;
+            return;
         }
       }
-    })
+    }),
+    whenTruthy()
   );
 
   @Effect()
@@ -106,20 +122,58 @@ export class ProductListingEffects {
     mapToPayload(),
     map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
     distinctUntilChanged(isEqual),
-    mergeMap(({ type, value, filters }) => {
-      if (filters) {
+    map(({ type, value, filters }) => {
+      if (
+        filters &&
+        // TODO: work-around for client side computation of master variations
+        ['search', 'category'].includes(type)
+      ) {
         const searchParameter = b64u.toBase64(b64u.encode(filters));
-        return of(new ApplyFilter({ searchParameter }));
+        return new ApplyFilter({ searchParameter });
       } else {
         switch (type) {
           case 'category':
-            return of(new LoadFilterForCategory({ uniqueId: value }));
+            return new LoadFilterForCategory({ uniqueId: value });
           case 'search':
-            return of(new LoadFilterForSearch({ searchTerm: value }));
+            return new LoadFilterForSearch({ searchTerm: value });
+          case 'master':
+            return new actions.LoadPagesForMaster({ id: { type, value }, sorting: undefined, filters });
           default:
-            return EMPTY;
+            return;
         }
       }
-    })
+    }),
+    whenTruthy()
+  );
+
+  // TODO: work-around for client side computation of master variations
+  @Effect()
+  loadPagesForMaster$ = this.actions$.pipe(
+    ofType<actions.LoadPagesForMaster>(actions.ProductListingActionTypes.LoadPagesForMaster),
+    mapToPayload(),
+    switchMap(({ id, filters }) =>
+      this.store.pipe(
+        select(getProduct, { sku: id.value }),
+        filter(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.Detail)),
+        filter(ProductHelper.hasVariations),
+        filter(ProductHelper.isMasterProduct),
+        take(1),
+        mergeMap(product => {
+          const {
+            filterNavigation,
+            products,
+          } = this.productMasterVariationsService.getFiltersAndFilteredVariationsForMasterProduct(product, filters);
+
+          return [
+            new actions.SetProductListingPages(
+              this.productListingMapper.createPages(products, id.type, id.value, {
+                filters: filters ? b64u.toBase64(b64u.encode(filters)) : undefined,
+              })
+            ),
+            new LoadFilterSuccess({ filterNavigation }),
+          ];
+        })
+      )
+    )
   );
 }

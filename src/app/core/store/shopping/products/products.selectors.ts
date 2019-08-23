@@ -65,7 +65,14 @@ const createView = memoize(
     const defaultCategory = product ? tree.nodes[product.defaultCategoryId] : undefined;
     // fire when self, master or default category changed
     if (ProductHelper.isVariationProduct(product)) {
-      return JSON.stringify([product, entities[product.productMasterSKU], defaultCategory]);
+      return JSON.stringify([product, defaultCategory, entities[product.productMasterSKU]]);
+    }
+    if (ProductHelper.isMasterProduct(product)) {
+      return JSON.stringify([
+        product,
+        defaultCategory,
+        product.variationSKUs && product.variationSKUs.map(sku => entities[sku]),
+      ]);
     }
     // fire when self or default category changed
     return JSON.stringify([product, defaultCategory]);

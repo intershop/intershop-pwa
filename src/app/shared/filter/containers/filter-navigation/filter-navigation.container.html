@@ -1,10 +1,19 @@
-<div class="filter-panel" *ngIf="filter$ | async as filterNavigation">
-  <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
-    <ish-filter-checkbox *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter($event)">
-    </ish-filter-checkbox>
-    <ish-filter-swatch-images *ngSwitchCase="'swatch'" [filterElement]="element" (applyFilter)="applyFilter($event)">
-    </ish-filter-swatch-images>
-    <ish-filter-dropdown *ngSwitchCase="'dropdown'" [filterElement]="element" (applyFilter)="applyFilter($event)">
-    </ish-filter-dropdown>
-  </div>
-</div>
+<ng-container *ngIf="filter$ | async as filterNavigation">
+  <ng-container *ngIf="isSideBar; else horizontal">
+    <ish-filter-navigation-sidebar
+      [filterNavigation]="filterNavigation"
+      (applyFilter)="applyFilter($event)"
+    ></ish-filter-navigation-sidebar>
+  </ng-container>
+  <ng-template #horizontal>
+    <ish-filter-navigation-horizontal
+      [filterNavigation]="filterNavigation"
+      (applyFilter)="applyFilter($event)"
+    ></ish-filter-navigation-horizontal>
+    <ish-filter-navigation-badges
+      [filterNavigation]="filterNavigation"
+      (applyFilter)="applyFilter($event)"
+      (clearFilters)="clearFilters()"
+    ></ish-filter-navigation-badges>
+  </ng-template>
+</ng-container>
