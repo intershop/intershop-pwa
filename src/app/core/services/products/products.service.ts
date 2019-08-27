@@ -67,7 +67,8 @@ export class ProductsService {
       .set('attrsGroups', AttributeGroupTypes.ProductLabelAttributes) // TODO: validate if this is working once ISREST-523 is implemented
       .set('amount', this.itemsPerPage.toString())
       .set('offset', ((page - 1) * this.itemsPerPage).toString())
-      .set('returnSortKeys', 'true');
+      .set('returnSortKeys', 'true')
+      .set('productFilter', 'fallback_searchquerydefinition');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
