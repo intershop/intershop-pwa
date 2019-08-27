@@ -38,10 +38,13 @@ describe('Search Box Component', () => {
 
   function triggerSearch(term: string, results: SuggestTerm[]) {
     component.results = results;
-    component.searchTerm = term;
+    component.searchTermCurrent = term;
+    component.searchTermLatest = term;
+    component.isHidden = !term;
     component.ngOnChanges({
       results: { currentValue: results } as SimpleChange,
-      searchTerm: { currentValue: term } as SimpleChange,
+      searchTermCurrent: { currentValue: term } as SimpleChange,
+      searchTermLatest: { currentValue: term } as SimpleChange,
     } as SimpleChanges);
     fixture.detectChanges();
   }
@@ -52,7 +55,7 @@ describe('Search Box Component', () => {
       done();
     });
 
-    component.search('test');
+    component.searchSuggest('test');
   });
 
   describe('with no results', () => {

@@ -15,6 +15,7 @@ export const searchCacheAdapter = createEntityAdapter<SuggestCacheType>({
 
 export interface SearchState extends EntityState<SuggestCacheType> {
   searchTerm: string;
+  searchTermSuggest: string;
   loading: boolean;
   currentSearchboxId: string;
   suggestSearchResults: SuggestTerm[];
@@ -22,6 +23,7 @@ export interface SearchState extends EntityState<SuggestCacheType> {
 
 export const initialState: SearchState = searchCacheAdapter.getInitialState({
   searchTerm: undefined,
+  searchTermSuggest: undefined,
   loading: false,
   currentSearchboxId: undefined,
   suggestSearchResults: [],
@@ -33,12 +35,14 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
       return {
         ...state,
         searchTerm: action.payload.searchTerm,
+        searchTermSuggest: action.payload.searchTerm,
       };
     }
 
     case SearchActionTypes.SuggestSearch: {
       return {
         ...state,
+        searchTermSuggest: action.payload.searchTerm,
         currentSearchboxId: action.payload.id,
       };
     }
