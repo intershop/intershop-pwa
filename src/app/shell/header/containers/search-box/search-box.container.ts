@@ -7,6 +7,7 @@ import {
   SuggestSearch,
   getCurrentSearchboxId,
   getSearchTerm,
+  getSearchTermSuggest,
   getSuggestSearchResult,
 } from 'ish-core/store/shopping/search';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
@@ -35,6 +36,7 @@ export class SearchBoxContainerComponent {
     filter(() => this.configuration && this.configuration.showLastSearchTerm),
     distinctUntilChanged()
   );
+  searchTermSuggest$ = this.store.pipe(select(getSearchTermSuggest));
   currentSearchboxId$ = this.store.pipe(select(getCurrentSearchboxId));
   searchResults$ = this.store.pipe(select(getSuggestSearchResult));
   searchResultsToDisplay$ = this.searchResults$.pipe(

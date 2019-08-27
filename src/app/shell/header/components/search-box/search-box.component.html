@@ -8,7 +8,7 @@
     name="SearchTerm"
     type="text"
     class="form-control searchTerm"
-    (input)="search($event.target.value)"
+    (input)="searchSuggest($event.target.value)"
     value="{{ currentSearchTerm }}"
     (focus)="hidePopup()"
     (blur)="hidePopup()"
@@ -27,7 +27,7 @@
       name="reset"
       [title]="'search.searchbox.button.reset.title' | translate"
       style="right: 40px;"
-      (click)="currentSearchTerm = ''; searchInput.focus()"
+      (click)="searchSuggest(''); searchInput.focus()"
     >
       <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
     </button>

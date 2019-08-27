@@ -6,7 +6,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 
@@ -32,7 +31,8 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
 })
 export class SearchBoxComponent implements OnChanges {
   @Input() configuration: SearchBoxConfiguration = { id: 'default' };
-  @Input() searchTerm: string;
+  @Input() searchTermLatest: string;
+  @Input() searchTermCurrent: string;
   @Input() results: SuggestTerm[];
   @Output() searchTermChange = new EventEmitter<string>();
   @Output() performSearch = new EventEmitter<string>();
@@ -43,20 +43,8 @@ export class SearchBoxComponent implements OnChanges {
   formSubmitted = false;
 
   ngOnChanges(c: SimpleChanges) {
-    this.updateSearchTerm(c.searchTerm);
-    this.updatePopupStatus(c);
-  }
-
-  private updatePopupStatus(c: SimpleChanges) {
-    if (c.results) {
-      const resultsAvailable = !!this.results && this.results.length > 0 && !!this.currentSearchTerm;
-      this.isHidden = this.formSubmitted || !resultsAvailable;
-    }
-  }
-
-  private updateSearchTerm(searchTerm: SimpleChange) {
-    if (searchTerm) {
-      this.currentSearchTerm = this.searchTerm;
+    if (c.searchTermCurrent) {
+      this.currentSearchTerm = c.searchTermCurrent.currentValue;
     }
   }
 
@@ -65,7 +53,7 @@ export class SearchBoxComponent implements OnChanges {
     this.activeIndex = -1;
   }
 
-  search(searchTerm: string) {
+  searchSuggest(searchTerm: string) {
     this.isHidden = !searchTerm;
     this.formSubmitted = false;
     this.currentSearchTerm = searchTerm;
@@ -73,6 +61,7 @@ export class SearchBoxComponent implements OnChanges {
   }
 
   submitSearch() {
+    this.isHidden = true;
     this.formSubmitted = true;
     if (this.activeIndex > -1) {
       this.currentSearchTerm = this.results[this.activeIndex].term;
