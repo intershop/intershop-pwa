@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { concatMap, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 import { BasketService } from '../../../services/basket/basket.service';
 import { LoadProduct, getProductEntities } from '../../shopping/products';
 import { UserActionTypes } from '../../user';
@@ -145,40 +145,36 @@ export class BasketEffects {
   );
 
   /**
-   * After a user logged in the current basket items are either merged into the user's existing basket or a new basket is created and the items are added to this basket.
+   * After a user logged in a merge basket action is triggered if there are already items in the anonymous user's basket
    */
   @Effect()
   mergeBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
-    switchMap(() => this.basketService.getBaskets()),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    tap(() => this.store.dispatch(new basketActions.ResetBasket())),
-    map(([newBaskets, currentBasket]) => {
-      const items = currentBasket.lineItems
-        .filter(lineItem => !lineItem.isFreeGift)
-        .map(lineItem => ({
-          sku: lineItem.productSKU,
-          quantity: lineItem.quantity.value,
-        }));
-
-      return newBaskets.length
-        ? new basketActions.MergeBasket({ targetBasket: newBaskets[0].id, sourceBasket: currentBasket.id })
-        : new basketActions.AddItemsToBasket({ items, basketId: undefined });
-    })
+    mergeMapTo(
+      this.store.pipe(
+        select(getCurrentBasket),
+        take(1)
+      )
+    ),
+    filter(currentBasket => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
+    mapTo(new basketActions.MergeBasket())
   );
 
   /**
-   * Merge anonymous basket into current basket of registered user.
-   * Only triggers after user login and user already owns another basket.
+   * Merge anonymous basket into current basket of a registered user.
+   * If the user has not yet a basket a new basket is created before the merge
    */
   @Effect()
   mergeBasket$ = this.actions$.pipe(
     ofType<basketActions.MergeBasket>(basketActions.BasketActionTypes.MergeBasket),
-    mapToPayload(),
-    concatMap(payload =>
-      this.basketService.mergeBasket(payload.targetBasket, payload.sourceBasket).pipe(
+    mergeMapTo(
+      this.store.pipe(
+        select(getCurrentBasket),
+        take(1)
+      )
+    ),
+    concatMap(sourceBasket =>
+      this.basketService.mergeBasket(sourceBasket.id).pipe(
         map(basket => new basketActions.MergeBasketSuccess({ basket })),
         mapErrorToAction(basketActions.MergeBasketFail)
       )

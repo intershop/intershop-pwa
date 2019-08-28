@@ -199,7 +199,7 @@ describe('Checkout Store', () => {
       return of(newBaskets);
     });
 
-    when(basketServiceMock.mergeBasket(anything(), anything())).thenCall(() => {
+    when(basketServiceMock.mergeBasket(anything())).thenCall(() => {
       const newBasket = {
         ...basket,
       };
@@ -316,10 +316,7 @@ describe('Checkout Store', () => {
           [Account API] Login User Success:
             customer: {"type":"PrivateCustomer","customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-          [Basket Internal] Reset Basket
-          [Basket Internal] Merge two baskets:
-            targetBasket: "test"
-            sourceBasket: "test"
+          [Basket Internal] Merge two baskets
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
         `);

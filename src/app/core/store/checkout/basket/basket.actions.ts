@@ -143,7 +143,6 @@ export class AddItemsToBasketSuccess implements Action {
 
 export class MergeBasket implements Action {
   readonly type = BasketActionTypes.MergeBasket;
-  constructor(public payload: { targetBasket: string; sourceBasket: string }) {}
 }
 
 export class MergeBasketFail implements Action {
