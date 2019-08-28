@@ -49,7 +49,7 @@ describe('Basket Reducer', () => {
   describe('MergeBasket actions', () => {
     describe('MergeBasket action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.MergeBasket({ targetBasket: '4321', sourceBasket: '1234' });
+        const action = new fromActions.MergeBasket();
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

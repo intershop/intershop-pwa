@@ -375,7 +375,7 @@ describe('Basket Effects', () => {
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
 
       const action = new LoginUserSuccess({ customer: {} as Customer });
-      const completion = new basketActions.MergeBasket({ targetBasket: 'BIDNEW', sourceBasket: 'BID' });
+      const completion = new basketActions.MergeBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
@@ -385,24 +385,41 @@ describe('Basket Effects', () => {
 
   describe('mergeBasket$', () => {
     const basketID = 'BID';
-    const merge = { targetBasket: basketID, sourceBasket: 'SBID' };
 
     beforeEach(() => {
-      when(basketServiceMock.mergeBasket(anyString(), anything())).thenReturn(of(BasketMockData.getBasket()));
+      when(basketServiceMock.mergeBasket(anyString())).thenReturn(of(BasketMockData.getBasket()));
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [
+              {
+                id: 'BIID',
+                name: 'NAME',
+                quantity: { value: 1 },
+                productSKU: 'SKU',
+                price: undefined,
+              } as LineItem,
+            ],
+          } as Basket,
+        })
+      );
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
     });
 
     it('should call the basketService for mergeBasket', done => {
-      const action = new basketActions.MergeBasket(merge);
+      const action = new basketActions.MergeBasket();
       actions$ = of(action);
 
       effects.mergeBasket$.subscribe(() => {
-        verify(basketServiceMock.mergeBasket(basketID, anything())).once();
+        verify(basketServiceMock.mergeBasket(basketID)).once();
         done();
       });
     });
 
     it('should map to action of type MergeBasketSuccess', () => {
-      const action = new basketActions.MergeBasket(merge);
+      const action = new basketActions.MergeBasket();
       const completion = new basketActions.MergeBasketSuccess({ basket: BasketMockData.getBasket() });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -411,9 +428,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type MergeBasketFail', () => {
-      when(basketServiceMock.mergeBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.mergeBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
-      const action = new basketActions.MergeBasket(merge);
+      const action = new basketActions.MergeBasket();
       const completion = new basketActions.MergeBasketFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
