@@ -1,74 +1,54 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Schema as ApplicationOptions } from '@schematics/angular/application/schema';
-import { Schema as WorkspaceOptions } from '@schematics/angular/workspace/schema';
+import { UnitTestTree } from '@angular-devkit/schematics/testing';
+
+import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
 import { PwaModuleOptionsSchema as Options } from './schema';
 
-// tslint:disable:max-line-length
 describe('Module Schematic', () => {
-  const schematicRunner = new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
+  const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {
     name: 'foo',
     project: 'bar',
   };
 
   let appTree: UnitTestTree;
-  beforeEach(() => {
-    appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
-      name: 'workspace',
-      newProjectRoot: 'projects',
-      version: '6.0.0',
-    } as WorkspaceOptions);
-    appTree = schematicRunner.runExternalSchematic(
-      '@schematics/angular',
-      'application',
-      {
-        name: 'bar',
-        inlineStyle: false,
-        inlineTemplate: false,
-        routing: false,
-        style: 'css',
-        skipTests: false,
-        skipPackageJson: false,
-        prefix: 'ish',
-      } as ApplicationOptions,
-      appTree
-    );
+  beforeEach(async () => {
+    appTree = await createApplication(schematicRunner).toPromise();
   });
 
-  it('should create a module', () => {
+  it('should create a module', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('module', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
     expect(tree.files).toInclude('/projects/bar/src/app/foo/foo.module.ts');
   });
 
-  it('should create a module in a sub folder', () => {
+  it('should create a module in a sub folder', async () => {
     const options = { ...defaultOptions, name: 'foo/bar/foobar' };
 
-    const tree = schematicRunner.runSchematic('module', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
     expect(tree.files).toInclude('/projects/bar/src/app/foo/bar/foobar/foobar.module.ts');
   });
 
-  it('should create a flat module', () => {
+  it('should create a flat module', async () => {
     const options = { ...defaultOptions, flat: true };
 
-    const tree = schematicRunner.runSchematic('module', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
     expect(tree.files).toInclude('/projects/bar/src/app/foo.module.ts');
   });
 
-  it('should dasherize a name', () => {
+  it('should dasherize a name', async () => {
     const options = { ...defaultOptions, name: 'TwoWord' };
 
-    const tree = schematicRunner.runSchematic('module', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('module', options, appTree).toPromise();
     expect(tree.files).toContain('/projects/bar/src/app/two-word/two-word.module.ts');
   });
 
-  it('should respect the sourceRoot value', () => {
+  it('should respect the sourceRoot value', async () => {
     const config = JSON.parse(appTree.readContent('/angular.json'));
     config.projects.bar.sourceRoot = 'projects/bar/custom';
     appTree.overwrite('/angular.json', JSON.stringify(config, undefined, 2));
-    appTree = schematicRunner.runSchematic('module', defaultOptions, appTree);
+    appTree = await schematicRunner.runSchematicAsync('module', defaultOptions, appTree).toPromise();
     expect(appTree.files).toContain('/projects/bar/custom/app/foo/foo.module.ts');
   });
 });
