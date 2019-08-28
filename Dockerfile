@@ -1,11 +1,8 @@
 FROM node:10-alpine as buildstep
-COPY package.json package-lock.json /workspace/
+COPY . /workspace/
 WORKDIR /workspace
-RUN npm ci --production
-COPY src /workspace/src
-COPY angular.json ngsw-config.json server.ts tsconfig.json webpack.server.config.js /workspace/
+RUN npm ci
 RUN npm run build
-COPY dist/healthcheck.js dist/*.sh /workspace/dist/
 RUN egrep -o '^\s*(mockServerAPI: true|mustMockPaths)' src/environments/environment.prod.ts || rm -Rf dist/browser/assets/mock*
 
 FROM node:10-alpine
