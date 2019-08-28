@@ -1,38 +1,20 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Schema as ApplicationOptions } from '@schematics/angular/application/schema';
-import { Schema as WorkspaceOptions } from '@schematics/angular/workspace/schema';
+import { UnitTestTree } from '@angular-devkit/schematics/testing';
+
+import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
 import { PwaPageOptionsSchema as Options } from './schema';
 
 describe('Page Schematic', () => {
-  const schematicRunner = new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
+  const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {
     name: 'foo',
     project: 'bar',
   };
 
   let appTree: UnitTestTree;
-  beforeEach(() => {
-    appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
-      name: 'workspace',
-      newProjectRoot: 'projects',
-      version: '6.0.0',
-    } as WorkspaceOptions);
-    appTree = schematicRunner.runExternalSchematic(
-      '@schematics/angular',
-      'application',
-      {
-        name: 'bar',
-        inlineStyle: false,
-        inlineTemplate: false,
-        routing: false,
-        style: 'css',
-        skipTests: false,
-        skipPackageJson: false,
-        prefix: 'ish',
-      } as ApplicationOptions,
-      appTree
-    );
+  beforeEach(async () => {
+    appTree = await createApplication(schematicRunner).toPromise();
+
     appTree.create(
       '/projects/bar/src/app/pages/app-routing.module.ts',
       `
@@ -81,49 +63,49 @@ describe('Page Schematic', () => {
     );
   });
 
-  it('should create a page in root by default', () => {
+  it('should create a page in root by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo-page') >= 0);
     expect(files).toMatchInlineSnapshot(`
-Array [
-  "/projects/bar/src/app/pages/foo/foo-page.module.ts",
-  "/projects/bar/src/app/pages/foo/foo-page.container.ts",
-  "/projects/bar/src/app/pages/foo/foo-page.container.html",
-  "/projects/bar/src/app/pages/foo/foo-page.container.spec.ts",
-  "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.ts",
-  "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.html",
-  "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.spec.ts",
-]
-`);
+      Array [
+        "/projects/bar/src/app/pages/foo/foo-page.module.ts",
+        "/projects/bar/src/app/pages/foo/foo-page.container.ts",
+        "/projects/bar/src/app/pages/foo/foo-page.container.html",
+        "/projects/bar/src/app/pages/foo/foo-page.container.spec.ts",
+        "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.ts",
+        "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.html",
+        "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.spec.ts",
+      ]
+    `);
     expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.module.ts')).toMatchInlineSnapshot(`
-"import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+      "import { NgModule } from '@angular/core';
+      import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
-import { FooPageComponent } from './components/foo-page/foo-page.component';
-import { FooPageContainerComponent } from './foo-page.container';
+      import { SharedModule } from '../../shared/shared.module';
+      import { FooPageComponent } from './components/foo-page/foo-page.component';
+      import { FooPageContainerComponent } from './foo-page.container';
 
-const fooPageRoutes: Routes = [{ path: '', component: FooPageContainerComponent }];
+      const fooPageRoutes: Routes = [{ path: '', component: FooPageContainerComponent }];
 
-@NgModule({
-  imports: [RouterModule.forChild(fooPageRoutes), SharedModule],
-  declarations: [FooPageComponent, FooPageContainerComponent],
-})
-export class FooPageModule { }
-"
-`);
+      @NgModule({
+        imports: [RouterModule.forChild(fooPageRoutes), SharedModule],
+        declarations: [FooPageComponent, FooPageContainerComponent],
+      })
+      export class FooPageModule { }
+      "
+    `);
     expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.container.html')).toMatchInlineSnapshot(`
-"<ish-foo-page></ish-foo-page>
-"
-`);
+      "<ish-foo-page></ish-foo-page>
+      "
+    `);
   });
 
-  it('should create a correct test for the container', () => {
+  it('should create a correct test for the container', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const containerSpecContent = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.container.spec.ts');
     expect(containerSpecContent).toContain(
       `import { FooPageComponent } from './components/foo-page/foo-page.component'`
@@ -131,78 +113,78 @@ export class FooPageModule { }
     expect(containerSpecContent).toContain(`MockComponent(FooPageComponent)`);
   });
 
-  it('should register route in app routing module by default', () => {
+  it('should register route in app routing module by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const appRoutingModule = tree.readContent('/projects/bar/src/app/pages/app-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
     expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
   });
 
-  it('should create a page in extension if supplied', () => {
+  it('should create a page in extension if supplied', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo-page') >= 0);
     expect(files).toMatchInlineSnapshot(`
-Array [
-  "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
-  "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.ts",
-  "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html",
-  "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.spec.ts",
-  "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.ts",
-  "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.html",
-  "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.spec.ts",
-]
-`);
+      Array [
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.spec.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.html",
+        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.spec.ts",
+      ]
+    `);
     expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts'))
       .toMatchInlineSnapshot(`
-"import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+      "import { NgModule } from '@angular/core';
+      import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureModule } from '../../feature.module';
-import { FooPageComponent } from './components/foo-page/foo-page.component';
-import { FooPageContainerComponent } from './foo-page.container';
+      import { FeatureModule } from '../../feature.module';
+      import { FooPageComponent } from './components/foo-page/foo-page.component';
+      import { FooPageContainerComponent } from './foo-page.container';
 
-const fooPageRoutes: Routes = [{ path: '', component: FooPageContainerComponent }];
+      const fooPageRoutes: Routes = [{ path: '', component: FooPageContainerComponent }];
 
-@NgModule({
-  imports: [RouterModule.forChild(fooPageRoutes), FeatureModule],
-  declarations: [FooPageComponent, FooPageContainerComponent],
-})
-export class FooPageModule { }
-"
-`);
+      @NgModule({
+        imports: [RouterModule.forChild(fooPageRoutes), FeatureModule],
+        declarations: [FooPageComponent, FooPageContainerComponent],
+      })
+      export class FooPageModule { }
+      "
+    `);
     expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html'))
       .toMatchInlineSnapshot(`
-"<ish-foo-page></ish-foo-page>
-"
-`);
+      "<ish-foo-page></ish-foo-page>
+      "
+    `);
   });
 
-  it('should create a page in extension if implied by name', () => {
-    const options = { ...defaultOptions, name: 'extenstions/feature/pages/foo' };
+  it('should create a page in extension if implied by name', async () => {
+    const options = { ...defaultOptions, name: 'extensions/feature/pages/foo' };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo-page') >= 0);
     expect(files).toMatchInlineSnapshot(`
-Array [
-  "/projects/bar/src/app/pages/foo/foo-page.module.ts",
-  "/projects/bar/src/app/pages/foo/foo-page.container.ts",
-  "/projects/bar/src/app/pages/foo/foo-page.container.html",
-  "/projects/bar/src/app/pages/foo/foo-page.container.spec.ts",
-  "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.ts",
-  "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.html",
-  "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.spec.ts",
-]
-`);
+      Array [
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.spec.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.html",
+        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.spec.ts",
+      ]
+    `);
   });
 
-  it('should register route in feature routing module', () => {
+  it('should register route in feature routing module', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const appRoutingModule = tree.readContent(
       '/projects/bar/src/app/extensions/feature/pages/feature-routing.module.ts'
     );
@@ -210,10 +192,10 @@ Array [
     expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
   });
 
-  it('should register route in feature routing module when it is the first', () => {
+  it('should register route in feature routing module when it is the first', async () => {
     const options = { ...defaultOptions, extension: 'feature2' };
 
-    const tree = schematicRunner.runSchematic('page', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
     const appRoutingModule = tree.readContent(
       '/projects/bar/src/app/extensions/feature2/pages/feature2-routing.module.ts'
     );
@@ -221,11 +203,11 @@ Array [
     expect(appRoutingModule).toContain('foo-page.module#FooPageModule');
   });
 
-  it('should register route in page routing module when subpaging is detected', () => {
+  it('should register route in page routing module when subpaging is detected', async () => {
     const options = { ...defaultOptions };
 
-    appTree = schematicRunner.runSchematic('page', options, appTree);
-    const tree = schematicRunner.runSchematic('page', { ...options, name: 'foo-bar' }, appTree);
+    appTree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
+    const tree = await schematicRunner.runSchematicAsync('page', { ...options, name: 'foo-bar' }, appTree).toPromise();
     const appRoutingModule = tree.readContent('/projects/bar/src/app/pages/app-routing.module.ts');
     expect(appRoutingModule).toContain(`path: 'foo'`);
     expect(appRoutingModule).toContain('foo-page.module#FooPageModule');

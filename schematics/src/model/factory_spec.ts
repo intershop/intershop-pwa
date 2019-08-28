@@ -1,45 +1,26 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Schema as ApplicationOptions } from '@schematics/angular/application/schema';
-import { Schema as WorkspaceOptions } from '@schematics/angular/workspace/schema';
+import { UnitTestTree } from '@angular-devkit/schematics/testing';
+
+import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
 import { PwaModelOptionsSchema as Options } from './schema';
 
 // tslint:disable:max-line-length
 describe('Model Schematic', () => {
-  const schematicRunner = new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
+  const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {
     name: 'foo',
     project: 'bar',
   };
 
   let appTree: UnitTestTree;
-  beforeEach(() => {
-    appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
-      name: 'workspace',
-      newProjectRoot: 'projects',
-      version: '6.0.0',
-    } as WorkspaceOptions);
-    appTree = schematicRunner.runExternalSchematic(
-      '@schematics/angular',
-      'application',
-      {
-        name: 'bar',
-        inlineStyle: false,
-        inlineTemplate: false,
-        routing: false,
-        style: 'css',
-        skipTests: false,
-        skipPackageJson: false,
-        prefix: 'ish',
-      } as ApplicationOptions,
-      appTree
-    );
+  beforeEach(async () => {
+    appTree = await createApplication(schematicRunner).toPromise();
   });
 
-  it('should create a model in core by default', () => {
+  it('should create a model in core by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('model', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('model', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
 Array [
   "/projects/bar/src/app/core/models/foo/foo.helper.ts",
@@ -52,10 +33,10 @@ Array [
 `);
   });
 
-  it('should create a simple model in core if requested', () => {
+  it('should create a simple model in core if requested', async () => {
     const options = { ...defaultOptions, simple: true };
 
-    const tree = schematicRunner.runSchematic('model', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('model', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
 Array [
   "/projects/bar/src/app/core/models/foo/foo.model.ts",
@@ -63,10 +44,10 @@ Array [
 `);
   });
 
-  it('should create a model in extension if requested', () => {
+  it('should create a model in extension if requested', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
-    const tree = schematicRunner.runSchematic('model', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('model', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo') >= 0)).toMatchInlineSnapshot(`
 Array [
   "/projects/bar/src/app/extensions/feature/models/foo/foo.helper.ts",
