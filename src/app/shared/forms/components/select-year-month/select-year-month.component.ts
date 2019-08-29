@@ -27,6 +27,10 @@ export class SelectYearMonthComponent extends FormElementComponent implements On
    *  number of years which will be displayed beginning with the current year ending in the future
    */
   @Input() yearsCount = 6;
+  /**
+   *  additional css class for the component
+   */
+  @Input() cssClass = '';
 
   monthOptions = [
     { label: '01', value: '01' },
