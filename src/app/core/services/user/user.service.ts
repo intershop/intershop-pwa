@@ -42,7 +42,7 @@ export class UserService {
    */
   signinUser(loginCredentials: LoginCredentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
-      'Authorization',
+      ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
     return this.apiService.get<CustomerData>('customers/-', { headers }).pipe(map(CustomerMapper.mapLoginData));
@@ -98,7 +98,7 @@ export class UserService {
     if (body.captchaResponse) {
       // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
       const headers = new HttpHeaders().set(
-        'Authorization',
+        ApiService.AUTHORIZATION_HEADER_KEY,
         `CAPTCHA g-recaptcha-response=${body.captchaResponse} foo=bar`
       );
       return this.apiService.post<void>('customers', newCustomer, { headers });
@@ -138,21 +138,34 @@ export class UserService {
 
   /**
    * Updates the password of the currently logged in user.
-   * @param customer  The current customer.
-   * @param body      The user password to update.
+   * @param customer    The current customer.
+   * @param user        The current user.
+   * @param password    The new password to update to.
+   * @param oldPassword The users old password for verification.
    */
-  updateUserPassword(customer: Customer, password: string): Observable<void> {
+  updateUserPassword(customer: Customer, user: User, password: string, oldPassword: string): Observable<void> {
     if (!customer) {
       return throwError('updateUserPassword() called without customer');
+    }
+    if (!user) {
+      return throwError('updateUserPassword() called without user');
     }
     if (!password) {
       return throwError('updateUserPassword() called without password');
     }
+    if (!oldPassword) {
+      return throwError('updateUserPassword() called without oldPassword');
+    }
+
+    const headers = new HttpHeaders().set(
+      ApiService.AUTHORIZATION_HEADER_KEY,
+      'BASIC ' + b64u.toBase64(b64u.encode(`${user.email}:${oldPassword}`))
+    );
 
     if (customer.type === 'PrivateCustomer') {
-      return this.apiService.put('customers/-/credentials/password', { password });
+      return this.apiService.put('customers/-/credentials/password', { password }, { headers });
     } else {
-      return this.apiService.put('customers/-/users/-/credentials/password', { password });
+      return this.apiService.put('customers/-/users/-/credentials/password', { password }, { headers });
     }
   }
 

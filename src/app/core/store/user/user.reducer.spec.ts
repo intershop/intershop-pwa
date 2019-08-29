@@ -189,7 +189,7 @@ describe('User Reducer', () => {
 
   describe('Update user password actions', () => {
     it('should loading to true when UpdateUserPassword action is reduced', () => {
-      const action = new UpdateUserPassword({ password: '123' });
+      const action = new UpdateUserPassword({ password: '123', currentPassword: '1234' });
       const state = userReducer(initialState, action);
 
       expect(state.loading).toBeTrue();

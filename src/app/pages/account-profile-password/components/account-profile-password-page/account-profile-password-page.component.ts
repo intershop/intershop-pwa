@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
@@ -15,22 +24,35 @@ import { SpecialValidators } from '../../../../shared/forms/validators/special-v
   templateUrl: './account-profile-password-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfilePasswordPageComponent implements OnInit {
+export class AccountProfilePasswordPageComponent implements OnInit, OnChanges {
   @Input() error: HttpError;
 
-  @Output() updatePassword = new EventEmitter<{ password: string }>();
+  @Output() updatePassword = new EventEmitter<{ password: string; currentPassword: string }>();
 
   form: FormGroup;
   submitted = false;
 
   ngOnInit() {
     this.form = new FormGroup({
+      currentPassword: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, SpecialValidators.password]),
       passwordConfirmation: new FormControl('', [Validators.required, SpecialValidators.password]),
     });
 
     // set additional validator
     this.form.get('passwordConfirmation').setValidators(CustomValidators.equalTo(this.form.get('password')));
+  }
+
+  ngOnChanges(c: SimpleChanges) {
+    this.handleErrors(c);
+  }
+
+  handleErrors(c: SimpleChanges) {
+    if (c.error && c.error.currentValue && c.error.currentValue.error && c.error.currentValue.status === 401) {
+      this.form.controls.currentPassword.setErrors({ incorrect: true });
+      this.form.controls.currentPassword.markAsDirty();
+      this.form.controls.currentPassword.markAsTouched();
+    }
   }
 
   /**
@@ -43,9 +65,10 @@ export class AccountProfilePasswordPageComponent implements OnInit {
       return;
     }
 
-    const password = { password: this.form.get('password').value };
-
-    this.updatePassword.emit(password);
+    this.updatePassword.emit({
+      password: this.form.get('password').value,
+      currentPassword: this.form.get('currentPassword').value,
+    });
   }
 
   get buttonDisabled() {
