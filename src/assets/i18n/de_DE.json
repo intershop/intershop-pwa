@@ -2625,6 +2625,7 @@
   "checkout.credit_card.CVCStyleId.error.notFound": "Kartenprüfnummerstil-ID nicht gefunden.",
   "account.date.year.error.required": "Bitte wählen Sie ein Jahr aus.",
   "account.date.month.error.required": "Bitte wählen Sie einen Monat aus.",
+  "checkout.credit_card.expiryMonth.error.invalid": "Das Ablaufdatum ist ungültig. Bitte überprüfen Sie Ihre Kartendaten.",
   "account.login.quotes.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Preisangebote zu benutzen.",
   "common.button.spinning.label": "Wird hinzugefügt...",
   "product.product_links.accessory.title": "Accessories",
