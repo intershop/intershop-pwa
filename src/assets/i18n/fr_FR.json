@@ -2517,6 +2517,7 @@
   "checkout.credit_card.CVCStyleId.error.notFound": "ID de style du code de validation de carte introuvable.",
   "account.date.year.error.required": "Veuillez sélectionner une année.",
   "account.date.month.error.required": "Veuillez sélectionner un mois.",
+  "checkout.credit_card.expiryMonth.error.invalid": "La date d’expiration n’est pas valide. Veuillez vérifier les données de votre carte.",
   "account.login.quotes.message": "Veuillez vous connecter à votre compte pour utiliser les devis.",
   "common.button.spinning.label": "En train d\u2019ajouter...",
   "product.product_links.accessory.title": "Accessoires",
