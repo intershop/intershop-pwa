@@ -142,27 +142,30 @@ export class BasketService {
   }
 
   /**
-   * Merge the source basket (named in payload) into the target basket.
-   * @param targetBasketId  The id of the target basket (default = current).
+   * Merge the source basket (named in payload) into the current basket.
    * @param sourceBasketId  The id of the source basket.
    * @returns               The merged basket.
    */
-  mergeBasket(targetBasketId: string = 'current', sourceBasketId: string): Observable<Basket> {
+  mergeBasket(sourceBasketId: string): Observable<Basket> {
     if (!sourceBasketId) {
       return throwError('mergeBasket() called without sourceBasketId');
     }
 
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
-    return this.apiService
-      .post<BasketMergeData>(
-        `baskets/${targetBasketId}/merges`,
-        { sourceBasket: sourceBasketId },
-        {
-          headers: this.basketHeaders,
-          params,
-        }
+    return this.createOrGetCurrentBasket().pipe(
+      concatMap(basket =>
+        this.apiService
+          .post<BasketMergeData>(
+            `baskets/${basket.id}/merges`,
+            { sourceBasket: sourceBasketId },
+            {
+              headers: this.basketHeaders,
+              params,
+            }
+          )
+          .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))))
       )
-      .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))));
+    );
   }
 
   /**
@@ -487,5 +490,15 @@ export class BasketService {
     return this.apiService.delete(`baskets/${basketId}/payment-instruments/${paymentInstrumentId}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Build currentBasket stream
+   * gets or creates the basket of the current user
+   */
+  private createOrGetCurrentBasket(): Observable<Basket> {
+    return this.getBaskets().pipe(
+      concatMap(baskets => (baskets && baskets.length ? this.getBasket() : this.createBasket()))
+    );
   }
 }
