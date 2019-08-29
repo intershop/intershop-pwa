@@ -54,7 +54,7 @@ describe('User Effects', () => {
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
-    when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(of(undefined));
+    when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(of(undefined));
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
 
@@ -341,20 +341,21 @@ describe('User Effects', () => {
       );
     });
     it('should call the api service when UpdateUserPassword is called', done => {
-      const action = new ua.UpdateUserPassword({ password: '123' });
+      const action = new ua.UpdateUserPassword({ password: '123', currentPassword: '1234' });
 
       actions$ = of(action);
 
       effects.updateUserPassword$.subscribe(() => {
-        verify(userServiceMock.updateUserPassword(anything(), anyString())).once();
+        verify(userServiceMock.updateUserPassword(anything(), anything(), anyString(), anything())).once();
         done();
       });
     });
 
     it('should dispatch an UpdateUserPasswordSuccess action on successful user password update with the default success message', () => {
       const password = '123';
+      const currentPassword = '1234';
 
-      const action = new ua.UpdateUserPassword({ password });
+      const action = new ua.UpdateUserPassword({ password, currentPassword });
       const completion = new ua.UpdateUserPasswordSuccess({
         successMessage: 'account.profile.update_password.message',
       });
@@ -367,8 +368,9 @@ describe('User Effects', () => {
 
     it('should dispatch an UpdateUserPasswordSuccess action on successful user password update with a given success message', () => {
       const password = '123';
+      const currentPassword = '1234';
 
-      const action = new ua.UpdateUserPassword({ password, successMessage: 'success' });
+      const action = new ua.UpdateUserPassword({ password, currentPassword, successMessage: 'success' });
       const completion = new ua.UpdateUserPasswordSuccess({
         successMessage: 'success',
       });
@@ -380,10 +382,13 @@ describe('User Effects', () => {
     });
 
     it('should dispatch an UpdateUserPasswordFail action on failed user password update', () => {
-      when(userServiceMock.updateUserPassword(anything(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
 
       const password = '123';
-      const action = new ua.UpdateUserPassword({ password });
+      const currentPassword = '1234';
+      const action = new ua.UpdateUserPassword({ password, currentPassword });
       const completion = new ua.UpdateUserPasswordFail({ error: { message: 'invalid' } as HttpError });
 
       actions$ = hot('-a-a-a', { a: action });

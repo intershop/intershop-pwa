@@ -18,7 +18,7 @@ export class AccountProfilePasswordPageContainerComponent {
 
   constructor(private store: Store<{}>) {}
 
-  updateUserPassword(password: { password: string }) {
-    this.store.dispatch(new UpdateUserPassword(password));
+  updateUserPassword(data: { password: string; currentPassword: string }) {
+    this.store.dispatch(new UpdateUserPassword(data));
   }
 }
