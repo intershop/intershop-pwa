@@ -68,6 +68,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
     general: { message: '' },
     cardNumber: { messageKey: '', message: '', code: 0 },
     cvc: { messageKey: '', message: '', code: 0 },
+    expiryMonth: { messageKey: '', message: '', code: 0 },
   };
 
   private destroy$ = new Subject();
@@ -195,13 +196,23 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
       }
 
       this.errorMessage.cvc = error.message.properties.find(prop => prop.key === 'verification');
-
       if (this.errorMessage.cvc && this.errorMessage.cvc.code) {
         this.errorMessage.cvc.messageKey = this.getErrorMessage(
           this.errorMessage.cvc.code,
           'cvc',
           this.errorMessage.cvc.message
         );
+      }
+
+      if (!this.parameterForm.invalid) {
+        this.errorMessage.expiryMonth = error.message.properties.find(prop => prop.key === 'expiryMonth');
+        if (this.errorMessage.expiryMonth && this.errorMessage.expiryMonth.code) {
+          this.errorMessage.expiryMonth.messageKey = this.getErrorMessage(
+            this.errorMessage.expiryMonth.code,
+            'expiryMonth',
+            this.errorMessage.expiryMonth.message
+          );
+        }
       }
     } else if (!this.parameterForm.invalid) {
       this.submit.emit([
@@ -230,6 +241,11 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
       this.errorMessage.cvc.message = undefined;
       this.errorMessage.cvc.messageKey = undefined;
       this.errorMessage.cvc.code = undefined;
+    }
+    if (this.errorMessage.expiryMonth) {
+      this.errorMessage.expiryMonth.message = undefined;
+      this.errorMessage.expiryMonth.messageKey = undefined;
+      this.errorMessage.expiryMonth.code = undefined;
     }
   }
 
@@ -262,6 +278,11 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
       }
       case 4128: {
         messageKey = `checkout.credit_card.${fieldType}.error.length`;
+        break;
+      }
+
+      case 4129: {
+        messageKey = `checkout.credit_card.${fieldType}.error.invalid`;
         break;
       }
       default: {
