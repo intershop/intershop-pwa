@@ -147,11 +147,13 @@ describe('Basket Service', () => {
   });
 
   it("should post source basket to basket when 'mergeBasket' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({}));
+    when(apiService.post(`baskets`, anything(), anything())).thenReturn(of(basketMockData));
     when(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).thenReturn(
       of(basketMergeResponseData)
     );
 
-    basketService.mergeBasket(basketMockData.data.id, sourceBasket).subscribe(() => {
+    basketService.mergeBasket(sourceBasket).subscribe(() => {
       verify(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).once();
       done();
     });
