@@ -8,7 +8,6 @@
     (updatePaymentMethod)="updateBasketPaymentMethod($event)"
     (createPaymentInstrument)="createBasketPaymentInstrument($event)"
     (deletePaymentInstrument)="deletePaymentInstrument($event)"
-    (addPromotionCode)="addPromotionCodeToBasket($event)"
   ></ish-checkout-payment>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>

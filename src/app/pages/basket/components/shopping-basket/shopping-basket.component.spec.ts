@@ -61,15 +61,6 @@ describe('Shopping Basket Component', () => {
     component.onDeleteItem('4712');
   });
 
-  it('should throw addPromotionCodeToBasket event when onAddPromotionCode is triggered.', done => {
-    component.addPromotionCode.subscribe(firedItem => {
-      expect(firedItem).toBe('4712');
-      done();
-    });
-
-    component.onAddPromotionCode('4712');
-  });
-
   it('should throw update item event when onUpdateItem is triggered.', done => {
     const payload = { itemId: 'IID', quantity: 1 };
 

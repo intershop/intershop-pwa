@@ -47,7 +47,7 @@ describe('Basket Promotion Code Component', () => {
   });
 
   it('should display the link, input field and the apply button on component', () => {
-    expect(element.querySelector('a')).toBeTruthy();
+    expect(element.querySelector('a[data-testing-id=promo-collapse-link]')).toBeTruthy();
     expect(element.querySelector('input')).toBeTruthy();
     expect(element.querySelector('button')).toBeTruthy();
   });

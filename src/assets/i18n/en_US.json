@@ -2352,7 +2352,7 @@
   "shopping_cart.promotion.not_in_group_or_redemptions_reached.error": "The promotion code you entered cannot be applied to your order.",
   "shopping_cart.promotion.not_valid.error": "We are sorry, but we didn't recognize the promotion code you entered. Please enter it again or try a different code.",
   "shopping_cart.promotion.not_valid_for_your_order.text": "Not valid for your order",
-  "shopping_cart.promotion.qualified_promo.text": "Your Promotional Discount has been applied.",
+  "shopping_cart.promotion.qualified_promo.text": "Your promotional discount has been applied.",
   "shopping_cart.promotion.redemptions_reached.error": "The promotion code you entered has expired.",
   "shopping_cart.promotion.unqualified_promo.error_line1": "The promotion code you entered is valid but cannot be applied to your order.<br />Please check the <a href=\"{{0}}\" data-dialog>promotion code details</a> or continue checking out.",
   "shopping_cart.promotion_value.amount.text": "-$20.00",

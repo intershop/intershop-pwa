@@ -12,7 +12,6 @@ export interface BasketState {
   eligiblePaymentMethods: PaymentMethod[];
   loading: boolean;
   promotionError: HttpError; // for promotion-errors
-  promotionSuccess: string;
   error: HttpError; // add, update and delete errors
   lastTimeProductAdded: Date;
 }
@@ -24,7 +23,6 @@ export const initialState: BasketState = {
   loading: false,
   error: undefined,
   promotionError: undefined,
-  promotionSuccess: undefined,
   lastTimeProductAdded: undefined,
 };
 
@@ -81,7 +79,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       return {
         ...state,
         promotionError: error,
-        promotionSuccess: undefined,
         loading: false,
       };
     }
@@ -90,9 +87,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       return {
         ...state,
         loading: false,
-        error: undefined,
         promotionError: undefined,
-        promotionSuccess: action.payload.message,
       };
     }
 

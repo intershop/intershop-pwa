@@ -231,13 +231,4 @@ describe('Checkout Payment Component', () => {
       component.deleteBasketPayment(id);
     });
   });
-
-  it('should throw addPromotionCodeToBasket event when onAddPromotionCode is triggered.', done => {
-    component.addPromotionCode.subscribe(firedItem => {
-      expect(firedItem).toBe('4712');
-      done();
-    });
-
-    component.onAddPromotionCode('4712');
-  });
 });

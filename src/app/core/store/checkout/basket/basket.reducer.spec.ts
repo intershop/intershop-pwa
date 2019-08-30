@@ -273,9 +273,7 @@ describe('Basket Reducer', () => {
 
       describe('AddPromotionCodeToBasketSuccess action', () => {
         it('should set loading to false', () => {
-          const action = new fromActions.AddPromotionCodeToBasketSuccess({
-            message: 'shopping_cart.promotion.qualified_promo.text',
-          });
+          const action = new fromActions.AddPromotionCodeToBasketSuccess();
           const state = basketReducer(initialState, action);
 
           expect(state.loading).toBeFalse();

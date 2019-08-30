@@ -4,7 +4,6 @@ import { filter, take } from 'rxjs/operators';
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import {
-  AddPromotionCodeToBasket,
   CreateBasketPayment,
   DeleteBasketPayment,
   LoadBasketEligiblePaymentMethods,
@@ -47,9 +46,5 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
 
   deletePaymentInstrument(paymentInstrumentId: string) {
     this.store.dispatch(new DeleteBasketPayment({ id: paymentInstrumentId }));
-  }
-
-  addPromotionCodeToBasket(code: string) {
-    this.store.dispatch(new AddPromotionCodeToBasket({ code }));
   }
 }

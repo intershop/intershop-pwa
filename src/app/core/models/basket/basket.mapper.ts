@@ -58,6 +58,7 @@ export class BasketMapper {
                 : undefined
             )
           : undefined,
+      promotionCodes: data.promotionCodes,
       totals,
     };
   }
