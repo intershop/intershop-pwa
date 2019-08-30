@@ -62,6 +62,7 @@ export enum BasketActionTypes {
   DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
   DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
+  ResetBasketErrors = '[Basket Internal] Reset Basket and Basket Promotion Errors',
 }
 
 export class LoadBasket implements Action {
@@ -302,6 +303,10 @@ export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
 
+export class ResetBasketErrors implements Action {
+  readonly type = BasketActionTypes.ResetBasketErrors;
+}
+
 export type BasketAction =
   | LoadBasket
   | LoadBasketByAPIToken
@@ -352,4 +357,5 @@ export type BasketAction =
   | DeleteBasketPayment
   | DeleteBasketPaymentFail
   | DeleteBasketPaymentSuccess
-  | ResetBasket;
+  | ResetBasket
+  | ResetBasketErrors;

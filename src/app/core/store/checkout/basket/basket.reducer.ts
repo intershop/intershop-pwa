@@ -150,6 +150,14 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case OrdersActionTypes.CreateOrderSuccess: {
       return initialState;
     }
+
+    case BasketActionTypes.ResetBasketErrors: {
+      return {
+        ...state,
+        error: undefined,
+        promotionError: undefined,
+      };
+    }
   }
   return state;
 }

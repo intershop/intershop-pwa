@@ -538,4 +538,28 @@ describe('Basket Reducer', () => {
       expect(state).toEqual(initialState);
     });
   });
+
+  describe('ResetBasketErrors action', () => {
+    it('should reset error in state if called', () => {
+      const oldState = {
+        ...initialState,
+        error: { message: 'invalid' } as HttpError,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.error).toBeUndefined();
+    });
+
+    it('should reset promotionError in state if called', () => {
+      const oldState = {
+        ...initialState,
+        promotionError: { message: 'invalid' } as HttpError,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.promotionError).toBeUndefined();
+    });
+  });
 });
