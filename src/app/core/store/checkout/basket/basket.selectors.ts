@@ -38,11 +38,6 @@ export const getBasketPromotionError = createSelector(
   basket => basket.promotionError
 );
 
-export const getBasketPromotionSuccess = createSelector(
-  getBasketState,
-  basket => basket.promotionSuccess
-);
-
 export const getBasketLastTimeProductAdded = createSelector(
   getBasketState,
   basket => basket.lastTimeProductAdded

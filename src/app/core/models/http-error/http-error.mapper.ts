@@ -12,7 +12,7 @@ export class HttpErrorMapper {
     return {
       name: error.name,
       message: error.message,
-      errorCode: HttpErrorMapper.getErrorLocalizationCode(error),
+      errorCode: HttpErrorMapper.getErrorCode(error),
       error:
         typeof error.error === 'string'
           ? error.error
@@ -34,7 +34,7 @@ export class HttpErrorMapper {
   }
 
   // tslint:disable-next-line:ban-types
-  private static getErrorLocalizationCode(httpErrorResponse: HttpErrorResponse) {
+  private static getErrorCode(httpErrorResponse: HttpErrorResponse) {
     return (
       (httpErrorResponse &&
         httpErrorResponse.error &&

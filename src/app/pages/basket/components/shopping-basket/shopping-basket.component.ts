@@ -21,7 +21,6 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
  *   [basket]="basket"
  *   (updateItem)="updateItem($event)"
  *   (deleteItem)="deleteItem($event)"
- *   (addPromotionCode)="addPromotionCode($event)"
  * ></ish-shopping-basket>
  */
 @Component({
@@ -35,7 +34,6 @@ export class ShoppingBasketComponent {
 
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
-  @Output() addPromotionCode = new EventEmitter<string>();
 
   form: FormGroup;
   submitted = false;
@@ -67,13 +65,6 @@ export class ShoppingBasketComponent {
    */
   onDeleteItem(itemId) {
     this.deleteItem.emit(itemId);
-  }
-
-  /**
-   * Throws addPromotionCode event when add promotion code was clicked.
-   */
-  onAddPromotionCode(code) {
-    this.addPromotionCode.emit(code);
   }
 
   /**

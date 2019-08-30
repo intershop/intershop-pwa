@@ -22,12 +22,8 @@ export class BasketPromotionCodeEffects {
     mapToPayloadProperty('code'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([code, basketId]) =>
-      this.basketService.addPromotionCodeToBasket(code, basketId).pipe(
-        mapTo(
-          new basketActions.AddPromotionCodeToBasketSuccess({
-            message: 'shopping_cart.promotion.qualified_promo.text',
-          })
-        ),
+      this.basketService.addPromotionCodeToBasket(basketId, code).pipe(
+        mapTo(new basketActions.AddPromotionCodeToBasketSuccess()),
         mapErrorToAction(basketActions.AddPromotionCodeToBasketFail)
       )
     )

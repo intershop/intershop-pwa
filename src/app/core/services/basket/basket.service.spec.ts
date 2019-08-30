@@ -183,7 +183,7 @@ describe('Basket Service', () => {
   it("should add promotion code to specific basket when 'addPromotionCodeToBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
 
-    basketService.addPromotionCodeToBasket('code', basketMockData.data.id).subscribe(() => {
+    basketService.addPromotionCodeToBasket(basketMockData.data.id, 'code').subscribe(() => {
       verify(apiService.post(`baskets/${basketMockData.data.id}/promotioncodes`, anything(), anything())).once();
       done();
     });

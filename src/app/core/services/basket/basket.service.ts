@@ -8,7 +8,6 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
 import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
-import { Container } from 'ish-core/models/container/container.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
@@ -225,19 +224,21 @@ export class BasketService {
   }
 
   /**
-   * Add promotion code to basket.
-   * @param codeStr   The code string of the promotion code that should be added to basket.
+   * Add a promotion code to basket.
    * @param basketId  The id of the basket which the promotion code should be added to.
-   * @returns         Container with result from adding basket promotion code.
+   * @param codeStr   The code string of the promotion code that should be added to basket.
+   * @returns         The info message after creation.
    */
-  addPromotionCodeToBasket(codeStr: string, basketId: string): Observable<Container> {
+  addPromotionCodeToBasket(basketId: string = 'current', codeStr: string): Observable<string> {
     const body = {
       code: codeStr,
     };
 
-    return this.apiService.post(`baskets/${basketId}/promotioncodes`, body, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService
+      .post(`baskets/${basketId}/promotioncodes`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
   }
 
   /**
