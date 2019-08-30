@@ -2,29 +2,24 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Built-in microphone",
+      "name": "Still image resolutions",
       "type": "String",
-      "value": "Y"
+      "value": "3264 x 2448, 2048 x 1536, 1600 x 1200, 640 x 480"
     },
     {
-      "name": "Sensor type",
+      "name": "Battery type",
       "type": "String",
-      "value": "CMOS"
-    },
-    {
-      "name": "Video out",
-      "type": "String",
-      "value": "1"
-    },
-    {
-      "name": "Tripod mountable",
-      "type": "String",
-      "value": "1/4\""
+      "value": "PX1686"
     },
     {
       "name": "Minimum hard disk space",
       "type": "String",
-      "value": "300 MB"
+      "value": "1000 MB"
+    },
+    {
+      "name": "Minimum illumination",
+      "type": "String",
+      "value": "3 lx"
     },
     {
       "name": "Optical zoom",
@@ -32,19 +27,14 @@
       "value": "-"
     },
     {
-      "name": "Built-in speakers",
-      "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Focal length (35mm film equivalent)",
-      "type": "String",
-      "value": "3.9 - 44 mm"
-    },
-    {
       "name": "Image formats supported",
       "type": "String",
-      "value": "JPG,EXIF"
+      "value": "JPG"
+    },
+    {
+      "name": "Self-timer",
+      "type": "String",
+      "value": "2/10 s"
     },
     {
       "name": "Depth",
@@ -52,13 +42,13 @@
       "value": {
         "type": "Quantity",
         "unit": "mm",
-        "value": 99
+        "value": 110.5
       }
     },
     {
       "name": "Video formats supported",
       "type": "String",
-      "value": "MPEG-4, AAC-LC"
+      "value": "MPEG4"
     },
     {
       "name": "Battery technology",
@@ -68,12 +58,22 @@
     {
       "name": "Minimum processor",
       "type": "String",
-      "value": "Pentium 4, 1.4 GHz"
+      "value": "CPU Intel Core Duo E440 2.0GHz"
     },
     {
-      "name": "Internal memory",
+      "name": "Light exposure control",
       "type": "String",
-      "value": "128 MB"
+      "value": "Y"
+    },
+    {
+      "name": "Media types supported",
+      "type": "String",
+      "value": "MPEG4"
+    },
+    {
+      "name": "Manual focus",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "USB 2.0 ports quantity",
@@ -81,19 +81,9 @@
       "value": "1"
     },
     {
-      "name": "Minimum system requirements",
-      "type": "String",
-      "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
-    },
-    {
-      "name": "Capture modes",
-      "type": "String",
-      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
-    },
-    {
       "name": "Compatible memory cards",
       "type": "String",
-      "value": "SD,SDHC"
+      "value": "SD,SDHC,SDXC"
     },
     {
       "name": "Height",
@@ -101,18 +91,18 @@
       "value": {
         "type": "Quantity",
         "unit": "mm",
-        "value": 41
+        "value": 55.4
       }
-    },
-    {
-      "name": "Maximum memory card size",
-      "type": "String",
-      "value": "32 GB"
     },
     {
       "name": "Digital zoom",
       "type": "String",
-      "value": "4 x"
+      "value": "12 x"
+    },
+    {
+      "name": "Flash",
+      "type": "String",
+      "value": "LED on/off"
     },
     {
       "name": "Width",
@@ -120,23 +110,28 @@
       "value": {
         "type": "Quantity",
         "unit": "mm",
-        "value": 18
+        "value": 33
       }
+    },
+    {
+      "name": "Battery life (max)",
+      "type": "String",
+      "value": "0.6 h"
     },
     {
       "name": "Normal focusing range",
       "type": "String",
-      "value": "1.0 - ∞"
+      "value": "0.1 m"
     },
     {
-      "name": "Photo effects",
+      "name": "ISO sensitivity",
       "type": "String",
-      "value": "Sepia,Vivid,Black&White"
+      "value": "Auto,1600"
     },
     {
       "name": "Minimum RAM",
       "type": "String",
-      "value": "1024 MB"
+      "value": "1000 MB"
     },
     {
       "name": "Source data-sheet",
@@ -146,12 +141,17 @@
     {
       "name": "Display diagonal",
       "type": "String",
-      "value": "38.1 mm (1.5 \")"
+      "value": "68.6 mm (2.7 \")"
     },
     {
-      "name": "Bundled software",
+      "name": "Lens focal range",
       "type": "String",
-      "value": "Arcsoft Media Impression"
+      "value": "f = 3.2 – 28.8"
+    },
+    {
+      "name": "Built-in flash",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "Weight",
@@ -159,8 +159,13 @@
       "value": {
         "type": "Quantity",
         "unit": "g",
-        "value": 95
+        "value": 151.5
       }
+    },
+    {
+      "name": "PictBridge",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "HDMI ports quantity",
@@ -168,24 +173,34 @@
       "value": "1"
     },
     {
-      "name": "White balance",
+      "name": "Composite video out",
       "type": "String",
-      "value": "Auto"
+      "value": "Y"
     },
     {
-      "name": "Optical sensor size",
+      "name": "Auto focus",
       "type": "String",
-      "value": "1/0.126 mm (1/3.2 \")"
+      "value": "Y"
+    },
+    {
+      "name": "Flash memory",
+      "type": "String",
+      "value": "64 GB"
+    },
+    {
+      "name": "Focus",
+      "type": "String",
+      "value": "9 point AF, Spot AF, 22-step"
     },
     {
       "name": "Total megapixels",
       "type": "String",
-      "value": "5 MP"
+      "value": "14 MP"
     },
     {
       "name": "Interface",
       "type": "String",
-      "value": "USB 2.0"
+      "value": "HDMI, mini USB 2.0, TV out"
     },
     {
       "name": "Image stabilizer",
@@ -195,12 +210,12 @@
     {
       "name": "Compatible operating systems",
       "type": "String",
-      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
+      "value": "Windows XP SP3, Vista, 7"
     },
     {
       "name": "Colour_of_product",
-      "type": "MultipleString",
-      "value": ["Black", "Blue"]
+      "type": "String",
+      "value": "Black"
     },
     {
       "name": "Camcorder tape type",
@@ -335,6 +350,36 @@
       "type": "Image",
       "typeID": "S",
       "viewID": "front"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "side M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
     }
   ],
   "inStock": true,
@@ -342,18 +387,18 @@
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 129.85
+    "value": 274.28
   },
-  "longDescription": "<b>PlayFull Ze1</b><br/>Whether you’re looking for the latest features or the hottest trends, the KODAK PLAYFULL Video Camera delivers all the goods in a slim and chic design. Get the party started with vibrant 1080p HD and while you’re turning heads, you can catch stunning 5 MP photos in a snap. Then press the Share button, pop out the built-in USB arm and go from social butterfly to social networking superstar in seconds. The fully loaded PLAYFULL Video Camera puts your life center stage and lets you show the world why you are So Kodak.<br/><br/><b>Just press to impress<br/>The world’s only cameras with 3-step sharing!<br/>Kodak’s Share button makes sharing your videos and pictures as simple as 1, 2, 3.</b><br/>- Step 1—Just press Share when in review mode<br/>- Step 2—Choose your favorite sharing destination, e-mail address, or KODAK PULSE Display<br/>- Step 3—Connect your camera to your computer or insert your memory card and your videos or pictures are automatically uploaded to the destination(s)<br/><b>Only KODAK Cameras:</b><br/>- Let you simultaneously share to multiple social networks, e-mail and PULSE Display<br/>- Automatically share when you connect to a PC<br/>- Tag to the largest number of social networks: KODAK Gallery, FACEBOOK, TWITTER, YouTube, FLICKR, ORKUT, YANDEX, and KAIXIN001<br/><br/><b>Bold and beautiful—full HD video and pictures</b><br/>- Full 1080p high definition captures your life in amazing detail<br/>- Easily switch to still camera mode to catch 5 MP, 16:9 widescreen HD still pictures<br/><br/><b>Choose the resolution that works for you:</b><br/>- 1080p—great for stunning playback on your HDTV<br/>- 720p at 60 fps—for fast action and super slow motion playback<br/>- 720p at 30 fps—ideal for general recording in high definition<br/>- WVGA—perfect for conserving space on your memory card or smaller files sizes for web use<br/><br/><b>The power to edit in the palm of your hand</b><br/>- The KODAK PLAYFULL features on-camera editing capability, so you can fine-tune your footage, cut out what you don’t want, or extract still images from video<br/>- When you’re ready to upload, just press Share, choose your destination, pop out the USB arm, and you’re good to go<br/><br/><b>Up for anything, ready for everything</b><br/>- The built-in USB arm is perfect for automatic sharing, in-camera charging, and easy transferring to computer<br/>- Get sharper videos and less blur thanks to built-in digital image stabilization<br/>- Capture your friends in their best light with smart face tracking technology—the camera detects and locks onto faces, then ensures great exposure around them<br/>- See more details and accurate colors with incredible low-light performance<br/>- There’s always room for more—record up to 10 hours of HD video with expandable SD/SDHC card slot (up to 32 GB)<br/><br/>Cool capture effects give a new look to your scenes<br/>- Black and white<br/>- Sepia<br/>- High saturation—bright, bold colors<br/>- '70s film—muted colors, slightly greenish cast, and a little graininess for a retro look<br/><br/><b>Don’t let sun glare ruin your recording</b><br/>- The bright 1.5 in. LCD automatically adjusts to the lighting conditions around you<br/>- See your screen even in ultra-bright sunlight—simply turn on the LCD Glare Shield feature<br/> <br/><b>Great video editing software comes on-board the PLAYFULL Camera<br/>Download the software when you first connect it to your computer to:</b><br/>- Edit and trim videos<br/>- Add a voice-over to narrate your footage<br/>- Add pictures and music to your videos to make cool mashups<br/>- Grab and edit still images from video frames to get that perfect shot<br/><br/><b>Ready for the big screen</b><br/>- HDMI port gives you the option to debut your videos in full glory on your HDTV<br/>- It doesn’t matter if you own a MAC or a PC—the KODAK PLAYFULL is compatible with both<br/>- The optional remote control makes it easy to comfortably enjoy your videos and pictures",
-  "manufacturer": "Kodak",
+  "longDescription": "The ultra compact Camileo SX900 features Full HD (1920 x 1080p) video and high resolution digital image capture. Excellent low light capability ensures you can capture fantastic quality video and still photos all day long. The 9x optical zoom makes simple work of capturing distant subjects, while face and colour detection in photo mode allows to keep your targets in focus at all times. With an HDMI output, playing back your footage on your HD TV is easy. The ultra sleek barrel grip design makes the SX900 easy to take anywhere with you, and with multiple scene modes, focus and light settings, the SX900 helps you capture all your precious memories in Full HD.<br/><br/><b>Main Features</b><br/><br/>- High definition movie recording<br/>- High resolution still images<br/>- 9 x optical zoom lens<br/>- Wide LCD screen<br/>- Low light (3 lux) filming capacity<br/>- SD/SDHC/SDXC card slot<br/>- Face Detect",
+  "manufacturer": "Toshiba",
   "mastered": false,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Kodak PlayFull Ze1",
+  "name": "Toshiba Camileo SX900",
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
-  "productName": "Kodak PlayFull Ze1",
+  "productName": "Toshiba Camileo SX900",
   "productTypes": ["PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
@@ -363,12 +408,12 @@
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 129.85
+    "value": 274.28
   },
   "seoAttributes": {
-    "metaDescription": "Kodak PlayFull Ze1 - PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
+    "metaDescription": "Toshiba Camileo SX900 - Camileo SX900 Full HD, 14MPixel CMOS sensor, 6.858 cm (2.7 \") LCD, Black",
     "metaKeywords": [],
-    "metaTitle": "Kodak PlayFull Ze1 - Camcorders favorable buying at our shop",
+    "metaTitle": "Toshiba Camileo SX900 - Camcorders favorable buying at our shop",
     "robots": ["index", "follow"]
   },
   "shippingMethods": [
@@ -401,8 +446,8 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
-  "sku": "7912061",
+  "shortDescription": "Camileo SX900 Full HD, 14MPixel CMOS sensor, 6.858 cm (2.7 \") LCD, Black",
+  "sku": "4729528",
   "stepOrderQuantity": 1,
   "type": "Product"
 }
