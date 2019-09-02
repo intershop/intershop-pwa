@@ -232,4 +232,16 @@ export class UserEffects {
       )
     )
   );
+
+  @Effect()
+  requestPasswordReminder$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.RequestPasswordReminder),
+    mapToPayloadProperty('data'),
+    concatMap(data =>
+      this.userService.requestPasswordReminder(data).pipe(
+        map(() => new userActions.RequestPasswordReminderSuccess()),
+        mapErrorToAction(userActions.RequestPasswordReminderFail)
+      )
+    )
+  );
 }

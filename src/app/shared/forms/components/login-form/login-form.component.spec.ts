@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
@@ -18,7 +19,7 @@ describe('Login Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FormControlFeedbackComponent, InputComponent, LoginFormComponent, ShowFormFeedbackDirective],
-      imports: [IconModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [IconModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
