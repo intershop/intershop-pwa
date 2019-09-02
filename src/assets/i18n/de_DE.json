@@ -1421,7 +1421,7 @@
   "checkout.pli.warranty.text": "Garantie:",
   "checkout.progress.addresses.label": "Adressen",
   "checkout.progress.payment.label": "Zahlung",
-  "checkout.progress.receipt.label": "Bestellbestätigung",
+  "checkout.progress.receipt.label": "Bestätigung",
   "checkout.progress.review.label": "Prüfen",
   "checkout.progress.shipping.label": "Versand",
   "checkout.progress.step1.text": "1",
@@ -2640,5 +2640,7 @@
   "basket.not_found.error": "Der Warenkorb konnte nicht gefunden werden.",
   "basket.promotioncode.not_found.error": "Der Aktionscode wurde nicht gefunden.",
   "basket.promotioncode.adding.error": "Der Aktionscode wurde nicht hinzugefügt.",
-  "basket.promotioncode.add_not_successful.error": "Der Aktionscode wurde nicht hinzugefügt."
+  "basket.promotioncode.add_not_successful.error": "Der Aktionscode wurde nicht hinzugefügt.",
+  "checkout.shipping.no_methods.message": "Es ist keine Versandart verfügbar, mit der diese Produkte zusammen versendet werden können. Bitte passen Sie den Warenkorb an und geben Sie mehrere separate Bestellungen auf.",
+  "checkout.general.back_to_cart.button.label": "Zurück zum Warenkorb"
 }

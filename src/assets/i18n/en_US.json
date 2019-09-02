@@ -2642,5 +2642,7 @@
   "basket.not_found.error": "The basket could not be found.",
   "basket.promotioncode.not_found.error": "The promotion code could not be found.",
   "basket.promotioncode.adding.error": "The promotion code could not be added.",
-  "basket.promotioncode.add_not_successful.error": "The promotion code could not be added."
+  "basket.promotioncode.add_not_successful.error": "The promotion code could not be added.",
+  "checkout.shipping.no_methods.message": "There is no shipping method available that allows these products to be shipped together. Please adjust the shopping cart and place several separate orders.",
+  "checkout.general.back_to_cart.button.label": "Back to Shopping Cart"
 }
