@@ -58,7 +58,7 @@
       <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="buttonDisabled">
         {{ 'account.signin.button.label' | translate }}
       </button>
-      <a class="btn btn-link">{{ 'account.send_password.heading' | translate }}</a>
+      <a class="btn btn-link" [routerLink]="'/forgotPassword'">{{ 'account.send_password.heading' | translate }}</a>
     </div>
   </div>
 </form>

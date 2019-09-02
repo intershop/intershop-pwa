@@ -13,6 +13,8 @@ export interface UserState {
   successMessage: string;
   error: HttpError;
   pgid: string;
+  passwordReminderSuccess: boolean;
+  passwordReminderError: HttpError;
 }
 
 export const initialState: UserState = {
@@ -24,6 +26,8 @@ export const initialState: UserState = {
   successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
   pgid: undefined,
+  passwordReminderSuccess: undefined,
+  passwordReminderError: undefined,
 };
 
 export function userReducer(state = initialState, action: UserAction): UserState {
@@ -156,6 +160,41 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return {
         ...state,
         pgid: action.payload.pgid,
+      };
+    }
+
+    case UserActionTypes.RequestPasswordReminder: {
+      return {
+        ...state,
+        loading: true,
+        passwordReminderSuccess: undefined,
+        passwordReminderError: undefined,
+      };
+    }
+
+    case UserActionTypes.RequestPasswordReminderSuccess: {
+      return {
+        ...state,
+        loading: false,
+        passwordReminderSuccess: true,
+        passwordReminderError: undefined,
+      };
+    }
+
+    case UserActionTypes.RequestPasswordReminderFail: {
+      return {
+        ...state,
+        loading: false,
+        passwordReminderSuccess: false,
+        passwordReminderError: action.payload.error,
+      };
+    }
+
+    case UserActionTypes.ResetPasswordReminder: {
+      return {
+        ...state,
+        passwordReminderSuccess: undefined,
+        passwordReminderError: undefined,
       };
     }
   }

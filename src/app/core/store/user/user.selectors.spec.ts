@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
@@ -15,12 +16,17 @@ import {
   LoadCompanyUserSuccess,
   LoginUserFail,
   LoginUserSuccess,
+  RequestPasswordReminder,
+  RequestPasswordReminderFail,
+  RequestPasswordReminderSuccess,
   UpdateUserPassword,
   UpdateUserPasswordSuccess,
 } from './user.actions';
 import {
   getLoggedInCustomer,
   getLoggedInUser,
+  getPasswordReminderError,
+  getPasswordReminderSuccess,
   getUserAuthorized,
   getUserError,
   getUserLoading,
@@ -150,6 +156,39 @@ describe('User Selectors', () => {
     store$.dispatch(new UpdateUserPasswordSuccess({ successMessage: 'success' }));
 
     expect(getUserSuccessMessage(store$.state)).toBe('success');
+    expect(getUserLoading(store$.state)).toBeFalse();
+  });
+
+  it('should be initial-state for password reminder when no event or reset was sent', () => {
+    expect(getPasswordReminderError(store$.state)).toBeUndefined();
+    expect(getPasswordReminderSuccess(store$.state)).toBeUndefined();
+  });
+
+  it('should loading on RequestPasswordReminder action', () => {
+    const data: PasswordReminder = {
+      email: 'patricia@test.intershop.de',
+      firstName: 'Patricia',
+      lastName: 'Miller',
+    };
+    store$.dispatch(new RequestPasswordReminder({ data }));
+
+    expect(getPasswordReminderError(store$.state)).toBeUndefined();
+    expect(getPasswordReminderSuccess(store$.state)).toBeUndefined();
+    expect(getUserLoading(store$.state)).toBeTrue();
+  });
+
+  it('should success on RequestPasswordReminderSuccess action', () => {
+    store$.dispatch(new RequestPasswordReminderSuccess());
+    expect(getPasswordReminderError(store$.state)).toBeUndefined();
+    expect(getPasswordReminderSuccess(store$.state)).toBeTrue();
+    expect(getUserLoading(store$.state)).toBeFalse();
+  });
+
+  it('should have error on PasswordReminderFail action', () => {
+    const error = { message: 'invalid' } as HttpError;
+    store$.dispatch(new RequestPasswordReminderFail({ error }));
+    expect(getPasswordReminderError(store$.state)).toMatchObject(error);
+    expect(getPasswordReminderSuccess(store$.state)).toBeFalse();
     expect(getUserLoading(store$.state)).toBeFalse();
   });
 });

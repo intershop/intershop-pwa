@@ -45,3 +45,12 @@ export const getPGID = createSelector(
   getUserState,
   state => state.pgid
 );
+
+export const getPasswordReminderSuccess = createSelector(
+  getUserState,
+  state => state.passwordReminderSuccess
+);
+export const getPasswordReminderError = createSelector(
+  getUserState,
+  state => state.passwordReminderError
+);
