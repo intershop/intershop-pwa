@@ -1507,7 +1507,7 @@
   "checkout.shipping_method.maxNoOfCharacters.error": "Your current entry cannot be processed. You have exceeded the maximum of {{0}} characters. Please edit your previous entry.",
   "checkout.shipping_method.no_Selection.error": "Please select a shipping method.",
   "checkout.shipping_method.profanity.error": "Your current entry cannot be processed. Language deemed inappropriate, derogatory, or profane will not be accepted. Please create a new entry.",
-  "checkout.shipping_method.selection.heading": "Select shipping method:",
+  "checkout.shipping_method.selection.heading": "Select a Shipping Method",
   "checkout.shipping_method.special_instructions.message": "- Enter any special instructions for the shipper.",
   "checkout.show_all.link": "Show All {{0}} Items",
   "checkout.tac": "I agree to the",
