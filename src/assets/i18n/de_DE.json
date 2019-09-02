@@ -1507,7 +1507,7 @@
   "checkout.shipping_method.maxNoOfCharacters.error": "Ihre aktuelle Eingabe kann nicht bearbeitet werden. Sie haben die Höchstzahl von {{0}} möglichen Zeichen überschritten. Bitte bearbeiten Sie Ihre Eingabe.",
   "checkout.shipping_method.no_Selection.error": "Wählen Sie eine Versandart aus.",
   "checkout.shipping_method.profanity.error": "Ihre aktuelle Eingabe kann nicht bearbeitet werden. Unpassende, beleidigende bzw. vulgäre Sprache wird nicht akzeptiert. Bitte machen Sie eine neue Eingabe.",
-  "checkout.shipping_method.selection.heading": "Versandart auswählen:",
+  "checkout.shipping_method.selection.heading": "Versandart auswählen",
   "checkout.shipping_method.special_instructions.message": "- Geben Sie besondere Versandhinweise für den Lieferanten an.",
   "checkout.show_all.link": "Alle {{0}} Artikel anzeigen",
   "checkout.tac": "Ich akzeptiere die",

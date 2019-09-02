@@ -9,7 +9,7 @@
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal">
       <div *ngIf="shippingMethods && shippingMethods.length > 0" class="shipping-methods">
-        <p>{{ 'checkout.shipping_method.selection.heading' | translate }}</p>
+        <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>
 
         <div *ngFor="let shippingMethod of shippingMethods" class="radio">
           <label [for]="'ShippingMethod_' + shippingMethod.id">
