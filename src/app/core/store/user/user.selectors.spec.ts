@@ -141,7 +141,7 @@ describe('User Selectors', () => {
   });
 
   it('should select loading when the user starts to update his password', () => {
-    store$.dispatch(new UpdateUserPassword({ password: '123' }));
+    store$.dispatch(new UpdateUserPassword({ password: '123', currentPassword: '1234' }));
 
     expect(getUserLoading(store$.state)).toBeTrue();
   });

@@ -96,7 +96,7 @@ export class UpdateUserFail implements Action {
 
 export class UpdateUserPassword implements Action {
   readonly type = UserActionTypes.UpdateUserPassword;
-  constructor(public payload: { password: string; successMessage?: string }) {}
+  constructor(public payload: { password: string; currentPassword: string; successMessage?: string }) {}
 }
 
 export class UpdateUserPasswordSuccess implements Action {

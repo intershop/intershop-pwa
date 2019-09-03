@@ -141,7 +141,7 @@ describe('User Service', () => {
     it('should return an error when called and the customer parameter is missing', done => {
       when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
-      userService.updateUserPassword(undefined, '123').subscribe(fail, err => {
+      userService.updateUserPassword(undefined, undefined, '123', '1234').subscribe(fail, err => {
         expect(err).toMatchInlineSnapshot(`"updateUserPassword() called without customer"`);
         done();
       });
@@ -152,7 +152,7 @@ describe('User Service', () => {
     it('should return an error when called and the password parameter is missing', done => {
       when(apiServiceMock.put(anything(), anything())).thenReturn(of({}));
 
-      userService.updateUserPassword({} as Customer, '').subscribe(fail, err => {
+      userService.updateUserPassword({} as Customer, {} as User, '', '').subscribe(fail, err => {
         expect(err).toMatchInlineSnapshot(`"updateUserPassword() called without password"`);
         done();
       });
@@ -161,23 +161,25 @@ describe('User Service', () => {
     });
 
     it("should update a password of a private user when 'updateUserPassword' is called with type 'PrivateCustomer'", done => {
-      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
 
       const customer = { customerNo: '4711', type: 'PrivateCustomer' } as Customer;
+      const user = { email: 'foo@foo.bar' } as User;
 
-      userService.updateUserPassword(customer, '123').subscribe(() => {
-        verify(apiServiceMock.put('customers/-/credentials/password', anything())).once();
+      userService.updateUserPassword(customer, user, '123', '1234').subscribe(() => {
+        verify(apiServiceMock.put('customers/-/credentials/password', anything(), anything())).once();
         done();
       });
     });
 
     it("should update a password of a business user when 'updateUser' is called with type 'SMBCustomer'", done => {
-      when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
 
       const customer = { customerNo: '4711', type: 'SMBCustomer' } as Customer;
+      const user = { email: 'foo@foo.bar' } as User;
 
-      userService.updateUserPassword(customer, '123').subscribe(() => {
-        verify(apiServiceMock.put('customers/-/users/-/credentials/password', anything())).once();
+      userService.updateUserPassword(customer, user, '123', '1234').subscribe(() => {
+        verify(apiServiceMock.put('customers/-/users/-/credentials/password', anything(), anything())).once();
         done();
       });
     });

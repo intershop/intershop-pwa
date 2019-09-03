@@ -3,7 +3,8 @@ import { fillFormField } from '../../framework';
 export class ProfileEditPasswordPage {
   readonly tag = 'ish-account-profile-password-page-container';
 
-  fillForm(data: { password: string; passwordConfirmation?: string }) {
+  fillForm(data: { currentPassword: string; password: string; passwordConfirmation?: string }) {
+    fillFormField(this.tag, 'currentPassword', data.currentPassword);
     fillFormField(this.tag, 'password', data.password);
     fillFormField(this.tag, 'passwordConfirmation', data.passwordConfirmation || data.password);
     return this;

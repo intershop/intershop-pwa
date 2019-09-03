@@ -150,8 +150,9 @@ export class UserEffects {
     ofType<userActions.UpdateUserPassword>(userActions.UserActionTypes.UpdateUserPassword),
     mapToPayload(),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
-    concatMap(([payload, customer]) =>
-      this.userService.updateUserPassword(customer, payload.password).pipe(
+    withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
+    concatMap(([[payload, customer], user]) =>
+      this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
         mapTo(
           new userActions.UpdateUserPasswordSuccess({
             successMessage: payload.successMessage || 'account.profile.update_password.message',
