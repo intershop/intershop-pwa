@@ -32,15 +32,16 @@ describe('Account Profile Password Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display 2 input fields for password and passwordConfirmation', () => {
+  it('should display 3 input fields for oldPassword, password and passwordConfirmation', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(2);
+    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
   });
 
   it('should emit updatePassword event if form is valid', () => {
     const eventEmitter$ = spy(component.updatePassword);
     fixture.detectChanges();
 
+    component.form.get('currentPassword').setValue('!Password01!');
     component.form.get('password').setValue('!Password01!');
     component.form.get('passwordConfirmation').setValue('!Password01!');
     component.submit();
