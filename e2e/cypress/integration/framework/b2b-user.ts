@@ -31,7 +31,6 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
       lastName: user.lastName,
       customerNo: new Date().getTime().toString(),
       email: user.login,
-      login: user.login,
       phoneHome: user.phoneHome,
       title: user.title,
       businessPartnerNo: new Date().getTime().toString(),
