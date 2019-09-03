@@ -54,6 +54,7 @@ $color-inverse: #fff;
 $color-special-primary: #e74c3c; //RED
 $color-special-secondary: #f39c12; //ORANGE
 $color-special-tertiary: #00abea; //BLUE
+$color-special-quarternary: #5cb85c; // GREEN
 
 //
 // BORDERS
@@ -88,8 +89,8 @@ $datepicker-active-bg: $CORPORATE-PRIMARY;
 $datepicker-active-hover: $CORPORATE-SECONDARY;
 
 // input indicator color
-$error-color: #a94442; // TODO: merge with existing theme color?
-$success-color: #3c763d; // TODO: merge with existing theme color?
+$error-color: #dc3545; // TODO: merge with existing theme color?
+$success-color: #28a745; // TODO: merge with existing theme color?
 
 // mobile toogler base width
 $toggler-width: 64px;
@@ -109,3 +110,12 @@ $font-size-sub-menu-item: $font-size-corporate; // ~14px
 $font-size-navbar-item-mobile: $font-size-corporate * 1.14; // ~16px
 $font-size-menu-item-mobile: $font-size-corporate; // ~14px
 $font-size-sub-menu-item-mobile: $font-size-corporate; // ~14px
+
+// toasts
+$toastViewBox: '0 0 16 16';
+$toast-error-icon: '<path d="M7.5,0A7.5,7.5,0,1,0,15,7.5,7.508,7.508,0,0,0,7.5,0Zm0,14A6.5,6.5,0,1,1,14,7.5,6.508,6.508,0,0,1,7.5,14Z"/><path d="M10.854,4.146a.5.5,0,0,0-.708,0L7.5,6.793,4.854,4.146a.5.5,0,0,0-.708.708L6.793,7.5,4.146,10.146a.5.5,0,0,0,.708.708L7.5,8.207l2.646,2.647a.5.5,0,0,0,.708-.708L8.207,7.5l2.647-2.646A.5.5,0,0,0,10.854,4.146Z"/>';
+$toast-warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.476,0,0,0,7.5,14.967Zm0-14A6.533,6.533,0,1,1,.967,7.5,6.54,6.54,0,0,1,7.5.967Z"/><circle cx="7.5" cy="11.5" r="0.5"/><path d="M8,8V3.5a.5.5,0,0,0-1,0V10H8Z"/>';
+$toast-success-icon: '<path d="M13.851,4.149a.5.5,0,0,0-.7,0L6.5,10.8,3.851,8.149a.5.5,0,0,0-.7.7l3,3a.5.5,0,0,0,.7,0l7-7A.5.5,0,0,0,13.851,4.149Z"/>';
+$toast-error-color: rgba(114, 28, 36, 0.999999);
+$toast-warning-color: rgba(133, 100, 4, 0.999999);
+$toast-success-color: rgba(21, 87, 36, 0.999999);
