@@ -8,6 +8,7 @@ describe('Http Error Mapper', () => {
       .toMatchInlineSnapshot(`
       Object {
         "error": undefined,
+        "errorCode": undefined,
         "headers": Object {},
         "message": "Http failure response for (unknown url): 401 Unauthorized",
         "name": "HttpErrorResponse",
@@ -27,6 +28,7 @@ describe('Http Error Mapper', () => {
     ).toMatchInlineSnapshot(`
       Object {
         "error": undefined,
+        "errorCode": undefined,
         "headers": Object {
           "key1": "value1",
           "key2": "value2",

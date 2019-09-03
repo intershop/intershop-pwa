@@ -15,6 +15,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketPromotionCodeComponent } from '../../../../shared/basket/components/basket-promotion-code/basket-promotion-code.component';
 import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
@@ -42,6 +43,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketPromotionCodeComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),

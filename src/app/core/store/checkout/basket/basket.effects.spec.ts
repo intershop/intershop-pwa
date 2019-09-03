@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -460,6 +461,27 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.resetBasketAfterLogout$).toBeObservable(expected$);
+    });
+  });
+
+  describe('routeListenerForResettingBasketErrors$', () => {
+    it('should fire ResetBasketErrors when route basket or checkout/* is navigated', () => {
+      const action = new RouteNavigation({
+        path: 'checkout/payment',
+        params: {},
+        queryParams: {},
+      });
+      const expected = new basketActions.ResetBasketErrors();
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('a', { a: expected }));
+    });
+
+    it('should not fire SelectOrder when route /something is navigated', () => {
+      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('-'));
     });
   });
 });

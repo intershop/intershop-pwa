@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { ofRoute } from 'ngrx-router';
 import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
@@ -204,5 +205,14 @@ export class BasketEffects {
     ofType(UserActionTypes.LogoutUser),
 
     mapTo(new basketActions.ResetBasket())
+  );
+
+  /**
+   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route.
+   */
+  @Effect()
+  routeListenerForResettingBasketErrors$ = this.actions$.pipe(
+    ofRoute(/^(basket|checkout.*)/),
+    mapTo(new basketActions.ResetBasketErrors())
   );
 }
