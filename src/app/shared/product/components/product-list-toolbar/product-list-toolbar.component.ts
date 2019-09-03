@@ -29,6 +29,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() currentPage: number;
   @Input() pageIndices: number[];
   @Input() fragmentOnRouting: string;
+  @Input() isPaging = false;
 
   sortDropdown = new FormControl('');
   sortOptions: SelectOption[] = [];
@@ -42,7 +43,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
         queryParamsHandling: 'merge',
-        queryParams: { sorting, page: 1 },
+        queryParams: this.isPaging ? { sorting, page: 1 } : { sorting },
         fragment: this.fragmentOnRouting,
       });
     });
