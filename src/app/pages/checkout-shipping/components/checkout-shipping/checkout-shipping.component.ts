@@ -73,7 +73,12 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get nextDisabled() {
-    return !this.basket || (!this.basket.commonShippingMethod && this.submitted);
+    return (
+      !this.basket ||
+      !this.shippingMethods ||
+      !this.shippingMethods.length ||
+      (!this.basket.commonShippingMethod && this.submitted)
+    );
   }
 
   ngOnDestroy() {

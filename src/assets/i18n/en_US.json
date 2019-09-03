@@ -1507,7 +1507,7 @@
   "checkout.shipping_method.maxNoOfCharacters.error": "Your current entry cannot be processed. You have exceeded the maximum of {{0}} characters. Please edit your previous entry.",
   "checkout.shipping_method.no_Selection.error": "Please select a shipping method.",
   "checkout.shipping_method.profanity.error": "Your current entry cannot be processed. Language deemed inappropriate, derogatory, or profane will not be accepted. Please create a new entry.",
-  "checkout.shipping_method.selection.heading": "Select shipping method:",
+  "checkout.shipping_method.selection.heading": "Select a Shipping Method",
   "checkout.shipping_method.special_instructions.message": "- Enter any special instructions for the shipper.",
   "checkout.show_all.link": "Show All {{0}} Items",
   "checkout.tac": "I agree to the",
@@ -2642,5 +2642,7 @@
   "basket.not_found.error": "The basket could not be found.",
   "basket.promotioncode.not_found.error": "The promotion code could not be found.",
   "basket.promotioncode.adding.error": "The promotion code could not be added.",
-  "basket.promotioncode.add_not_successful.error": "The promotion code could not be added."
+  "basket.promotioncode.add_not_successful.error": "The promotion code could not be added.",
+  "checkout.shipping.no_methods.message": "There is no shipping method available that allows these products to be shipped together. Please adjust the shopping cart and place several separate orders.",
+  "checkout.general.back_to_cart.button.label": "Back to Shopping Cart"
 }

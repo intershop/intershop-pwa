@@ -1344,7 +1344,7 @@
   "checkout.pli.warranty.text": "Garantie :",
   "checkout.progress.addresses.label": "Adresses",
   "checkout.progress.payment.label": "Paiement",
-  "checkout.progress.receipt.label": "Ticket de caisse",
+  "checkout.progress.receipt.label": "Reçu",
   "checkout.progress.review.label": "Avis",
   "checkout.progress.shipping.label": "Expédition",
   "checkout.progress.step1.text": "1",
@@ -1427,7 +1427,7 @@
   "checkout.shipping_method.maxNoOfCharacters.error": "Impossible de traiter le texte saisi. La longueur maximale de {{0}} caractères est atteinte. Veuillez modifier l'entrée précédente.",
   "checkout.shipping_method.no_Selection.error": "Veuillez sélectionner un mode d'expédition.",
   "checkout.shipping_method.profanity.error": "Impossible de traiter le texte saisi. Les termes jugés inappropriés, injurieux ou vulgaires ne sont pas acceptés. Rédigez un autre texte.",
-  "checkout.shipping_method.selection.heading": "Sélectionner le mode d'expédition :",
+  "checkout.shipping_method.selection.heading": "Sélectionner le mode d'expédition",
   "checkout.shipping_method.special_instructions.message": "- Saisissez des instructions spéciales pour le chargeur.",
   "checkout.show_all.link": "Afficher tous {{0}} articles",
   "checkout.tac": "J'accepte les ",
@@ -2532,5 +2532,7 @@
   "basket.not_found.error": "Le panier est introuvable.",
   "basket.promotioncode.not_found.error": "Le code promotionnel n\u2019a pas pu \u00EAtre trouv\u00E9",
   "basket.promotioncode.adding.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9.",
-  "basket.promotioncode.add_not_successful.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9."
+  "basket.promotioncode.add_not_successful.error": "Le code promotionnel n\u2019a pas pu \u00EAtre ajout\u00E9.",
+  "checkout.shipping.no_methods.message": "Il n’existe pas de méthode d’expédition qui permette d’expédier ces produits ensemble. Veuillez ajuster le panier et passer plusieurs commandes séparées.",
+  "checkout.general.back_to_cart.button.label": "Retour au panier"
 }
