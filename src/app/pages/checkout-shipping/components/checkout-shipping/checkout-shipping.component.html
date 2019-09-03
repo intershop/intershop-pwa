@@ -2,14 +2,14 @@
   <div class="col-md-12 col-lg-8">
     <!-- Messages -->
     <ish-error-message [error]="error"></ish-error-message>
-    <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
-      {{ 'checkout.shipping_method.no_Selection.error' | translate }}
-    </div>
 
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal">
-      <div *ngIf="shippingMethods && shippingMethods.length > 0" class="shipping-methods">
-        <p>{{ 'checkout.shipping_method.selection.heading' | translate }}</p>
+      <div *ngIf="shippingMethods && shippingMethods.length > 0; else noShippingMethods" class="shipping-methods">
+        <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
+          {{ 'checkout.shipping_method.no_Selection.error' | translate }}
+        </div>
+        <h3>{{ 'checkout.shipping_method.selection.heading' | translate }}</h3>
 
         <div *ngFor="let shippingMethod of shippingMethods" class="radio">
           <label [for]="'ShippingMethod_' + shippingMethod.id">
@@ -50,6 +50,12 @@
           </label>
         </div>
       </div>
+      <!--- Message because multiple shipment is not supported yet-->
+      <ng-template #noShippingMethods>
+        <div role="alert" class="alert alert-danger">{{ 'checkout.shipping.no_methods.message' | translate }}</div>
+
+        <a routerLink="/basket">{{ 'checkout.general.back_to_cart.button.label' | translate }}</a>
+      </ng-template>
     </form>
   </div>
 
