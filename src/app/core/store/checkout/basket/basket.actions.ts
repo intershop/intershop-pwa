@@ -31,6 +31,9 @@ export enum BasketActionTypes {
   MergeBasket = '[Basket Internal] Merge two baskets',
   MergeBasketFail = '[Basket API] Merge two baskets Fail',
   MergeBasketSuccess = '[Basket API] Merge two baskets Success',
+  AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
+  AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
+  AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
   AddQuoteToBasket = '[Basket] Add Quote To Basket',
   AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
   AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
@@ -59,6 +62,7 @@ export enum BasketActionTypes {
   DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
   DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
+  ResetBasketErrors = '[Basket Internal] Reset Basket and Basket Promotion Errors',
 }
 
 export class LoadBasket implements Action {
@@ -198,6 +202,20 @@ export class DeleteBasketItemSuccess implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemSuccess;
 }
 
+export class AddPromotionCodeToBasket implements Action {
+  readonly type = BasketActionTypes.AddPromotionCodeToBasket;
+  constructor(public payload: { code: string }) {}
+}
+
+export class AddPromotionCodeToBasketFail implements Action {
+  readonly type = BasketActionTypes.AddPromotionCodeToBasketFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class AddPromotionCodeToBasketSuccess implements Action {
+  readonly type = BasketActionTypes.AddPromotionCodeToBasketSuccess;
+}
+
 export class LoadBasketEligibleShippingMethods implements Action {
   readonly type = BasketActionTypes.LoadBasketEligibleShippingMethods;
 }
@@ -285,6 +303,10 @@ export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
 
+export class ResetBasketErrors implements Action {
+  readonly type = BasketActionTypes.ResetBasketErrors;
+}
+
 export type BasketAction =
   | LoadBasket
   | LoadBasketByAPIToken
@@ -305,6 +327,9 @@ export type BasketAction =
   | MergeBasket
   | MergeBasketFail
   | MergeBasketSuccess
+  | AddPromotionCodeToBasket
+  | AddPromotionCodeToBasketFail
+  | AddPromotionCodeToBasketSuccess
   | AddQuoteToBasket
   | AddQuoteToBasketFail
   | AddQuoteToBasketSuccess
@@ -332,4 +357,5 @@ export type BasketAction =
   | DeleteBasketPayment
   | DeleteBasketPaymentFail
   | DeleteBasketPaymentSuccess
-  | ResetBasket;
+  | ResetBasket
+  | ResetBasketErrors;

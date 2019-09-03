@@ -1,0 +1,26 @@
+<div class="cart-summary">
+  <a (click)="isCollapsed = !isCollapsed" data-testing-id="promo-collapse-link">{{
+    'shopping_cart.promotional_code.heading' | translate
+  }}</a>
+
+  <div *ngIf="promotionError$ | async as promotionError" class="alert alert-danger ng-star-inserted" role="alert">
+    {{ (promotionError.errorCode | translate) || promotionError.error }}
+  </div>
+
+  <div *ngIf="displaySuccessMessage" class="alert alert-success ng-star-inserted" role="alert">
+    {{ 'shopping_cart.promotion.qualified_promo.text' | translate }}
+  </div>
+
+  <div class="form-inline" [ngbCollapse]="isCollapsed">
+    <input
+      [formControl]="codeInput"
+      class="form-control"
+      type="text"
+      [maxlength]="codeMaxLength"
+      [placeholder]="'shopping_cart.promotional_code.label' | translate"
+    />
+    <button type="submit" class="btn btn-secondary" [disabled]="!codeInput.valid" (click)="submitPromotionCode()">
+      {{ 'shopping_cart.promotion.apply.button.label' | translate }}
+    </button>
+  </div>
+</div>

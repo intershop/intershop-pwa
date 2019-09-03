@@ -13,6 +13,7 @@ import { checkoutReducers } from '../checkout-store.module';
 
 import {
   AddItemsToBasketSuccess,
+  AddPromotionCodeToBasketFail,
   LoadBasket,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligiblePaymentMethodsFail,
@@ -29,6 +30,7 @@ import {
   getBasketError,
   getBasketLastTimeProductAdded,
   getBasketLoading,
+  getBasketPromotionError,
   getCurrentBasket,
   getCurrentBasketId,
 } from './basket.selectors';
@@ -64,6 +66,7 @@ describe('Basket Selectors', () => {
     it('should not select loading, error and lastTimeProductAdded if it is in initial state', () => {
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getBasketError(store$.state)).toBeUndefined();
+      expect(getBasketPromotionError(store$.state)).toBeUndefined();
       expect(getBasketLastTimeProductAdded(store$.state)).toBeUndefined();
     });
   });
@@ -214,6 +217,16 @@ describe('Basket Selectors', () => {
       expect(firstTimeAdded).toBeDate();
       store$.dispatch(new AddItemsToBasketSuccess());
       expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
+    });
+  });
+
+  describe('loading promotion error after adding a wrong promotion code', () => {
+    beforeEach(() => {
+      store$.dispatch(new AddPromotionCodeToBasketFail({ error: { message: 'error' } as HttpError }));
+    });
+
+    it('should reporting the failure in case of an error', () => {
+      expect(getBasketPromotionError(store$.state)).toEqual({ message: 'error' });
     });
   });
 });

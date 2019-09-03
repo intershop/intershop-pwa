@@ -12,6 +12,7 @@ export class HttpErrorMapper {
     return {
       name: error.name,
       message: error.message,
+      errorCode: HttpErrorMapper.getErrorCode(error),
       error:
         typeof error.error === 'string'
           ? error.error
@@ -30,5 +31,17 @@ export class HttpErrorMapper {
       message += error.causes.map(cause => (cause.message ? ' ' + cause.message : ''));
     }
     return message || undefined; // undefined is needed to avoid null
+  }
+
+  // tslint:disable-next-line:ban-types
+  private static getErrorCode(httpErrorResponse: HttpErrorResponse) {
+    return (
+      (httpErrorResponse &&
+        httpErrorResponse.error &&
+        httpErrorResponse.error.errors &&
+        httpErrorResponse.error.errors[0] &&
+        httpErrorResponse.error.errors[0].code) ||
+      undefined
+    );
   }
 }

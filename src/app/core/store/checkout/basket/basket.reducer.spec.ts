@@ -250,6 +250,38 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('AddPromotionCodeToBasket actions', () => {
+      describe('AddPromotionCodeToBasket action', () => {
+        it('should set loading to true', () => {
+          const action = new fromActions.AddPromotionCodeToBasket({ code: 'test' });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeTrue();
+        });
+      });
+
+      describe('AddPromotionCodeToBasketFail action', () => {
+        it('should set loading to false', () => {
+          const error = { message: 'invalid' } as HttpError;
+          const action = new fromActions.AddPromotionCodeToBasketFail({ error });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.promotionError).toEqual(error);
+        });
+      });
+
+      describe('AddPromotionCodeToBasketSuccess action', () => {
+        it('should set loading to false', () => {
+          const action = new fromActions.AddPromotionCodeToBasketSuccess();
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.error).toBeUndefined();
+        });
+      });
+    });
+
     describe('ResetBasket action', () => {
       it('should reset to initial state', () => {
         const oldState = {
@@ -504,6 +536,30 @@ describe('Basket Reducer', () => {
       const state = basketReducer(oldState, action);
 
       expect(state).toEqual(initialState);
+    });
+  });
+
+  describe('ResetBasketErrors action', () => {
+    it('should reset error in state if called', () => {
+      const oldState = {
+        ...initialState,
+        error: { message: 'invalid' } as HttpError,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.error).toBeUndefined();
+    });
+
+    it('should reset promotionError in state if called', () => {
+      const oldState = {
+        ...initialState,
+        promotionError: { message: 'invalid' } as HttpError,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.promotionError).toBeUndefined();
     });
   });
 });

@@ -224,6 +224,24 @@ export class BasketService {
   }
 
   /**
+   * Add a promotion code to basket.
+   * @param basketId  The id of the basket which the promotion code should be added to.
+   * @param codeStr   The code string of the promotion code that should be added to basket.
+   * @returns         The info message after creation.
+   */
+  addPromotionCodeToBasket(basketId: string = 'current', codeStr: string): Observable<string> {
+    const body = {
+      code: codeStr,
+    };
+
+    return this.apiService
+      .post(`baskets/${basketId}/promotioncodes`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
+  }
+
+  /**
    * Add quote to basket.
    * @param quoteId   The id of the quote that should be added to basket.
    * @param basketId  The id of the basket which the quote should be added to.
