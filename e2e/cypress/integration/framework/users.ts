@@ -24,8 +24,6 @@ export function createUserViaREST(user: Partial<Registration>) {
     credentials: {
       login: user.login,
       password: user.password,
-      securityQuestion: "What is your mother''s maiden name?",
-      securityQuestionAnswer: user.securityQuestionAnswer,
     },
     preferredLanguage: 'en_US',
   };
