@@ -1,5 +1,9 @@
 export interface SearchBoxConfiguration {
   /**
+   * id to support the multiple use on a page
+   */
+  id?: string;
+  /**
    * text for search button on search box, icon is used if no text is provided
    */
   buttonText?: string;
@@ -19,4 +23,8 @@ export interface SearchBoxConfiguration {
    * configure search box icon
    */
   icon?: string;
+  /**
+   * show last search term as search box value
+   */
+  showLastSearchTerm?: boolean;
 }

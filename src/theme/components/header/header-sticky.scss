@@ -84,6 +84,7 @@
         .header-search-container {
           &.show {
             height: $search-container-height;
+            overflow: unset;
             transition: height 500ms ease-in-out;
           }
 

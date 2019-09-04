@@ -4,6 +4,7 @@ import { AttributeToStringPipe } from './models/attribute/attribute.pipe';
 import { PricePipe } from './models/price/price.pipe';
 import { CategoryRoutePipe } from './pipes/category-route.pipe';
 import { DatePipe } from './pipes/date.pipe';
+import { HighlightPipe } from './pipes/highlight.pipe';
 import { MakeHrefPipe } from './pipes/make-href.pipe';
 import { ProductRoutePipe } from './pipes/product-route.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
@@ -13,6 +14,7 @@ const pipes = [
   AttributeToStringPipe,
   CategoryRoutePipe,
   DatePipe,
+  HighlightPipe,
   MakeHrefPipe,
   PricePipe,
   ProductRoutePipe,

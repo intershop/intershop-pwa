@@ -6,6 +6,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 const _ = {
   suggestTerm: 'k',
   searchTerm: 'kodak',
+  suggestItemText: 'Kodak',
   product: '7912057',
 };
 
@@ -13,7 +14,7 @@ describe('Searching User', () => {
   before(() => HomePage.navigateTo());
 
   it('should enter search term and wait for displayed suggestions', () => {
-    at(HomePage, page => page.header.getSearchSuggestions(_.suggestTerm).should('contain', _.searchTerm));
+    at(HomePage, page => page.header.getSearchSuggestions(_.suggestTerm).should('contain', _.suggestItemText));
   });
 
   it('should perform search and land on search result page', () => {
