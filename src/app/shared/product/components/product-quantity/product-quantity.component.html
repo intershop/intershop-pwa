@@ -6,8 +6,8 @@
         [form]="parentForm"
         [controlName]="controlName"
         [label]="quantityLabel"
-        [labelClass]="'label-quantity col-6'"
-        [inputClass]="'col-6 ' + (class || '')"
+        [labelClass]="labelClass"
+        [inputClass]="inputClass"
       ></ish-select>
     </ng-container>
 
@@ -17,8 +17,8 @@
         [form]="parentForm"
         [controlName]="controlName"
         [label]="quantityLabel"
-        [labelClass]="'label-quantity col-6'"
-        [inputClass]="'col-6 ' + (class || '')"
+        [labelClass]="labelClass"
+        [inputClass]="inputClass"
         [markRequiredLabel]="'off'"
         [min]="allowZeroQuantity ? 0 : product.minOrderQuantity"
         [max]="product.maxOrderQuantity"

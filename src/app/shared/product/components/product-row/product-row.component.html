@@ -61,18 +61,27 @@
         ></ish-product-variation-select>
 
         <div *ngIf="!isMasterProduct(product)" class="product-list-actions-container">
-          <form [formGroup]="productItemForm" class="product-form form-horizontal">
-            <ish-product-quantity
-              *ngIf="configuration.displayQuantity"
-              [readOnly]="configuration.readOnly"
-              [allowZeroQuantity]="configuration.allowZeroQuantity"
-              [quantityLabel]="configuration.quantityLabel"
-              [product]="product"
-              [parentForm]="productItemForm"
-              [controlName]="quantityControlName"
-            ></ish-product-quantity>
+          <form [formGroup]="productItemForm" class="product-form form-horizontal row">
+            <div
+              [ngClass]="
+                configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
+              "
+            >
+              <ish-product-quantity
+                *ngIf="configuration.displayQuantity"
+                [readOnly]="configuration.readOnly"
+                [allowZeroQuantity]="configuration.allowZeroQuantity"
+                [quantityLabel]="configuration.quantityLabel"
+                [product]="product"
+                [parentForm]="productItemForm"
+                [controlName]="quantityControlName"
+              ></ish-product-quantity>
+            </div>
 
-            <div class="addtocart-container">
+            <div
+              class="addtocart-container"
+              [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
+            >
               <ish-product-add-to-basket
                 *ngIf="configuration.displayAddToBasket"
                 [product]="product"

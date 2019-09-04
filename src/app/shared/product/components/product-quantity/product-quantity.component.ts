@@ -45,6 +45,16 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
     return this.parentForm.get(this.controlName) && this.parentForm.get(this.controlName).value;
   }
 
+  get labelClass() {
+    return this.quantityLabel.trim() === '' ? 'col-0' : 'label-quantity col-6';
+  }
+
+  get inputClass() {
+    return this.quantityLabel.trim() === ''
+      ? 'col-12' + (this.class ? this.class : '')
+      : 'col-6' + (this.class ? this.class : '');
+  }
+
   getValidations(): ValidatorFn {
     if (this.type !== 'select') {
       return Validators.compose([
