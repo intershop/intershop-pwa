@@ -1,4 +1,3 @@
-// NEEDS_WORK: review and adapt (search-box results in javascript error when used in french)
 import {
   ChangeDetectionStrategy,
   Component,

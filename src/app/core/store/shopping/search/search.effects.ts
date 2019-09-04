@@ -28,8 +28,8 @@ import {
   SearchProducts,
   SearchProductsFail,
   SelectSearchTerm,
-  SuggestApiSearch,
   SuggestSearch,
+  SuggestSearchAPI,
   SuggestSearchSuccess,
 } from './search.actions';
 import { getSuggestSearchEntities } from './search.selectors';
@@ -103,15 +103,15 @@ export class SearchEffects {
       entities[searchTerm]
         ? [
             new SuggestSearchSuccess({ searchTerm, suggests: entities[searchTerm].suggestSearchResults }),
-            new SuggestApiSearch({ searchTerm }),
+            new SuggestSearchAPI({ searchTerm }),
           ]
-        : [new SuggestApiSearch({ searchTerm })]
+        : [new SuggestSearchAPI({ searchTerm })]
     )
   );
 
   @Effect()
-  suggestApiSearch$ = this.actions$.pipe(
-    ofType<SuggestApiSearch>(SearchActionTypes.SuggestApiSearch),
+  suggestSearchAPI$ = this.actions$.pipe(
+    ofType<SuggestSearchAPI>(SearchActionTypes.SuggestSearchAPI),
     mapToPayloadProperty('searchTerm'),
     debounceTime(400),
     distinctUntilChanged(),
