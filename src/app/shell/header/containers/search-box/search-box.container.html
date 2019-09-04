@@ -1,7 +1,7 @@
 <ish-search-box
   [configuration]="configuration"
   [searchTermLatest]="previousSearchTerm$ | async"
-  [searchTermCurrent]="searchTermSuggest$ | async"
+  [searchTermCurrent]="suggestSearchTerm$ | async"
   [results]="searchResultsToDisplay$ | async"
   (searchTermChange)="suggestSearch($event)"
   (performSearch)="performSearch($event)"

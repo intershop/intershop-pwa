@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 
 import { ShoppingState, getShoppingState } from '../shopping-store';
 
-import { searchCacheAdapter } from './search.reducer';
+import { searchAdapter } from './search.reducer';
 
 export const getSearchState = createSelector(
   getShoppingState,
@@ -12,26 +12,16 @@ export const getSearchState = createSelector(
 export const {
   selectEntities: getSuggestSearchEntities,
   selectIds: getSuggestSearchTerms,
-} = searchCacheAdapter.getSelectors(getSearchState);
-
-export const getSearchLoading = createSelector(
-  getSearchState,
-  state => state.loading
-);
+} = searchAdapter.getSelectors(getSearchState);
 
 export const getSearchTerm = createSelector(
   getSearchState,
   state => state.searchTerm
 );
 
-export const getSearchTermSuggest = createSelector(
+export const getSuggestSearchTerm = createSelector(
   getSearchState,
-  state => state.searchTermSuggest
-);
-
-export const getCurrentSearchboxId = createSelector(
-  getSearchState,
-  state => state.currentSearchboxId
+  state => state.suggestSearchTerm
 );
 
 export const getSuggestSearchResult = createSelector(
@@ -41,5 +31,10 @@ export const getSuggestSearchResult = createSelector(
 
 export const getSuggestSearchResults = createSelector(
   getSuggestSearchEntities,
-  (entities, props: { term: string }) => entities[props.term]
+  (entities, props: { suggestSearchTerm: string }) => entities[props.suggestSearchTerm]
+);
+
+export const getCurrentSearchBoxId = createSelector(
+  getSearchState,
+  state => state.currentSearchBoxId
 );

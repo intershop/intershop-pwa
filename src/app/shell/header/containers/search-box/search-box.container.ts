@@ -5,10 +5,10 @@ import { distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operator
 
 import {
   SuggestSearch,
-  getCurrentSearchboxId,
+  getCurrentSearchBoxId,
   getSearchTerm,
-  getSearchTermSuggest,
   getSuggestSearchResult,
+  getSuggestSearchTerm,
 } from 'ish-core/store/shopping/search';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
@@ -16,7 +16,7 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
  * The search box container component
  *
  * prepares all data for the search box
- * uses {@link SearchBoxComponent} to display search box
+ * uses {@link SearchBoxComponent} to display the search box
  *
  * @example
  * <ish-search-box-container [configuration]="{placeholderText: 'search.searchbox.instructional_text' | translate}"></ish-search-box-container>
@@ -28,7 +28,7 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
 })
 export class SearchBoxContainerComponent {
   /**
-   * the configuration for this component
+   * the search box configuration for this component
    */
   @Input() configuration?: SearchBoxConfiguration;
 
@@ -36,11 +36,11 @@ export class SearchBoxContainerComponent {
     filter(() => this.configuration && this.configuration.showLastSearchTerm),
     distinctUntilChanged()
   );
-  searchTermSuggest$ = this.store.pipe(select(getSearchTermSuggest));
-  currentSearchboxId$ = this.store.pipe(select(getCurrentSearchboxId));
+  suggestSearchTerm$ = this.store.pipe(select(getSuggestSearchTerm));
+  currentSearchBoxId$ = this.store.pipe(select(getCurrentSearchBoxId));
   searchResults$ = this.store.pipe(select(getSuggestSearchResult));
   searchResultsToDisplay$ = this.searchResults$.pipe(
-    withLatestFrom(this.currentSearchboxId$),
+    withLatestFrom(this.currentSearchBoxId$),
     filter(([, id]) => !this.configuration || !this.configuration.id || this.configuration.id === id),
     map(([hits]) => hits)
   );

@@ -27,8 +27,8 @@ import {
   SearchProducts,
   SearchProductsFail,
   SelectSearchTerm,
-  SuggestApiSearch,
   SuggestSearch,
+  SuggestSearchAPI,
 } from './search.actions';
 import { SearchEffects } from './search.effects';
 
@@ -135,8 +135,8 @@ describe('Search Effects', () => {
 
         expect(effects.suggestSearch$).toBeObservable(
           cold('a-b-a-|', {
-            a: new SuggestApiSearch({ searchTerm: 'A' }),
-            b: new SuggestApiSearch({ searchTerm: 'B' }),
+            a: new SuggestSearchAPI({ searchTerm: 'A' }),
+            b: new SuggestSearchAPI({ searchTerm: 'B' }),
           })
         );
       });
@@ -236,7 +236,7 @@ describe('Search Effects', () => {
       it('should not fire action when error is encountered at service level', fakeAsync(() => {
         when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-        store$.dispatch(new SuggestApiSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearchAPI({ searchTerm: 'good' }));
         tick(4000);
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
@@ -247,13 +247,13 @@ describe('Search Effects', () => {
       it('should fire all necessary actions for suggest-search', fakeAsync(() => {
         store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(500); // debounceTime
-        expect(store$.actionsArray(/\[Shopping\]/)).toMatchInlineSnapshot(`
-          [Shopping] Suggest Search:
+        expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "good"
             id: "searchbox"
-          [Shopping] Suggest Api Search:
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
             searchTerm: "good"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "good"
             suggests: [{"term":"Goods"}]
         `);
@@ -261,21 +261,21 @@ describe('Search Effects', () => {
         // 2nd term to because distinctUntilChanged
         store$.dispatch(new SuggestSearch({ searchTerm: 'goo', id: 'searchbox' }));
         tick(500);
-        expect(store$.actionsArray(/\[Shopping\]/)).toMatchInlineSnapshot(`
-          [Shopping] Suggest Search:
+        expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "good"
             id: "searchbox"
-          [Shopping] Suggest Api Search:
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
             searchTerm: "good"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "good"
             suggests: [{"term":"Goods"}]
-          [Shopping] Suggest Search:
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "goo"
             id: "searchbox"
-          [Shopping] Suggest Api Search:
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
             searchTerm: "goo"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "goo"
             suggests: [{"term":"Goods"}]
         `);
@@ -283,32 +283,32 @@ describe('Search Effects', () => {
         // test cache: search->api->success & search->success->api->success
         store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(500);
-        expect(store$.actionsArray(/\[Shopping\]/)).toMatchInlineSnapshot(`
-          [Shopping] Suggest Search:
+        expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "good"
             id: "searchbox"
-          [Shopping] Suggest Api Search:
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
             searchTerm: "good"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "good"
             suggests: [{"term":"Goods"}]
-          [Shopping] Suggest Search:
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "goo"
             id: "searchbox"
-          [Shopping] Suggest Api Search:
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
             searchTerm: "goo"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "goo"
             suggests: [{"term":"Goods"}]
-          [Shopping] Suggest Search:
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "good"
             id: "searchbox"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "good"
             suggests: [{"term":"Goods"}]
-          [Shopping] Suggest Api Search:
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
             searchTerm: "good"
-          [Shopping] Suggest Search Success:
+          [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "good"
             suggests: [{"term":"Goods"}]
         `);

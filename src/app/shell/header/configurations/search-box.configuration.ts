@@ -1,6 +1,6 @@
 export interface SearchBoxConfiguration {
   /**
-   * id to support the multiple use on a page. does not have to be unique
+   * id to support the multiple use on a page
    */
   id?: string;
   /**
@@ -24,7 +24,7 @@ export interface SearchBoxConfiguration {
    */
   icon?: string;
   /**
-   * last searchterm as value
+   * show last search term as search box value
    */
   showLastSearchTerm?: boolean;
 }
