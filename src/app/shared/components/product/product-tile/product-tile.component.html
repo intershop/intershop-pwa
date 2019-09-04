@@ -6,24 +6,24 @@
     <ish-product-label [product]="product"></ish-product-label>
   </div>
 
-  <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
+  <a *ngIf="is('displayName')" class="product-title" [routerLink]="product | ishProductRoute: category">{{
     product.name
   }}</a>
 
   <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
   <ish-product-promotion
-    *ngIf="configuration.displayPromotions"
+    *ngIf="is('displayPromotions')"
     [product]="product"
     displayType="simple"
   ></ish-product-promotion>
 
-  <div *ngIf="configuration.displayPrice" class="price-container">
+  <div *ngIf="is('displayPrice')" class="price-container">
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
   </div>
 
   <ish-product-variation-select
-    *ngIf="variationOptions && configuration.displayVariations"
+    *ngIf="variationOptions && is('displayVariations')"
     [readOnly]="configuration.readOnly"
     [variationOptions]="variationOptions"
     (selectVariation)="variationSelected($event)"
@@ -34,20 +34,20 @@
 
   <div class="product-tile-actions btn-group">
     <ish-lazy-product-add-to-quote
-      *ngIf="configuration.displayAddToQuote && !isMasterProduct(product)"
+      *ngIf="is('displayAddToQuote')"
       [product]="product"
       displayType="icon"
       class="btn-link"
     ></ish-lazy-product-add-to-quote>
     <ish-product-add-to-compare
-      *ngIf="configuration.displayAddToCompare"
+      *ngIf="is('displayAddToCompare')"
       [isInCompareList]="isInCompareList"
       displayType="icon"
       class="btn-link"
       (compareToggle)="toggleCompare()"
     ></ish-product-add-to-compare>
     <ish-product-add-to-basket
-      *ngIf="configuration.displayAddToBasket && !isMasterProduct(product)"
+      *ngIf="is('displayAddToBasket')"
       [product]="product"
       displayType="icon"
       class="btn-link"

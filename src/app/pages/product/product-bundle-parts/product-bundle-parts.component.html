@@ -7,17 +7,7 @@
         <ish-product-item
           [productSku]="part.sku"
           [quantity]="part.quantity"
-          [configuration]="{
-            readOnly: true,
-            quantityLabel: 'product.quantity.label',
-            displayType: 'row',
-            displayPrice: false,
-            displayInventory: false,
-            displayPromotions: false,
-            displayAddToBasket: false,
-            displayAddToQuote: false,
-            displayAddToCompare: false
-          }"
+          [configuration]="productRowConfiguration"
         ></ish-product-item>
       </div>
     </ng-container>

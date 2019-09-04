@@ -8,17 +8,17 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 export interface ProductTileComponentConfiguration {
-  readOnly: boolean;
-  displayName: boolean;
-  displayVariations: boolean;
-  displayPrice: boolean;
-  displayPromotions: boolean;
-  displayAddToBasket: boolean;
-  displayAddToCompare: boolean;
-  displayAddToQuote: boolean;
+  readOnly(p: Product): boolean;
+  displayName(p: Product): boolean;
+  displayVariations(p: Product): boolean;
+  displayPrice(p: Product): boolean;
+  displayPromotions(p: Product): boolean;
+  displayAddToBasket(p: Product): boolean;
+  displayAddToCompare(p: Product): boolean;
+  displayAddToQuote(p: Product): boolean;
 }
 
 @Component({
@@ -58,5 +58,9 @@ export class ProductTileComponent {
       this.product.variations() &&
       this.product.variations().length
     );
+  }
+
+  is(property: keyof ProductTileComponentConfiguration): boolean {
+    return this.configuration[property] && this.configuration[property](this.product);
   }
 }

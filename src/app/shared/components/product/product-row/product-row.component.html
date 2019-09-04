@@ -11,31 +11,31 @@
   <div class="col-9 col-md-10">
     <div class="row">
       <div class="col-md-7 col-xs-12">
-        <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
+        <a *ngIf="is('displayName')" class="product-title" [routerLink]="product | ishProductRoute: category">{{
           product.name
         }}</a>
 
         <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
 
-        <ish-product-id *ngIf="configuration.displaySKU" [product]="product"></ish-product-id>
+        <ish-product-id *ngIf="is('displaySKU')" [product]="product"></ish-product-id>
 
-        <div *ngIf="configuration.displayDescription" class="product-description">{{ product.shortDescription }}</div>
+        <div *ngIf="is('displayDescription')" class="product-description">{{ product.shortDescription }}</div>
 
         <ish-product-promotion
-          *ngIf="configuration.displayPromotions"
+          *ngIf="is('displayPromotions')"
           [product]="product"
           displayType="simpleWithDetail"
         ></ish-product-promotion>
 
         <div class="product-tile-actions btn-group">
           <ish-lazy-product-add-to-quote
-            *ngIf="configuration.displayAddToQuote"
+            *ngIf="is('displayAddToQuote')"
             [product]="product"
             displayType="icon"
             class="btn-link"
           ></ish-lazy-product-add-to-quote>
           <ish-product-add-to-compare
-            *ngIf="configuration.displayAddToCompare"
+            *ngIf="is('displayAddToCompare')"
             [isInCompareList]="isInCompareList"
             displayType="icon"
             class="btn-link"
@@ -46,21 +46,21 @@
 
       <div class="col-12 col-md-5 text-md-right">
         <ish-product-price
-          *ngIf="configuration.displayPrice"
+          *ngIf="is('displayPrice')"
           [product]="product"
           [showInformationalPrice]="true"
         ></ish-product-price>
         <ish-product-inventory
-          *ngIf="configuration.displayInventory && !isMasterProduct(product)"
+          *ngIf="is('displayInventory') && !isMasterProduct(product)"
           [product]="product"
         ></ish-product-inventory>
         <ish-product-shipment
-          *ngIf="configuration.displayShipment && !isMasterProduct(product)"
+          *ngIf="is('displayShipment') && !isMasterProduct(product)"
           [product]="product"
         ></ish-product-shipment>
 
         <ish-product-variation-select
-          *ngIf="variationOptions && configuration.displayVariations"
+          *ngIf="variationOptions && is('displayVariations')"
           [readOnly]="configuration.readOnly"
           [variationOptions]="variationOptions"
           (selectVariation)="variationSelected($event)"
@@ -76,7 +76,7 @@
                 "
               >
                 <ish-product-quantity
-                  *ngIf="configuration.displayQuantity"
+                  *ngIf="is('displayQuantity')"
                   [readOnly]="configuration.readOnly"
                   [allowZeroQuantity]="configuration.allowZeroQuantity"
                   [quantityLabel]="configuration.quantityLabel"
@@ -91,7 +91,7 @@
                 [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
               >
                 <ish-product-add-to-basket
-                  *ngIf="configuration.displayAddToBasket"
+                  *ngIf="is('displayAddToBasket')"
                   [product]="product"
                   (productToBasket)="addToBasket()"
                 ></ish-product-add-to-basket>

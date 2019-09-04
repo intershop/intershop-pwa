@@ -9,11 +9,7 @@
           [quantity]="part.quantity"
           (productSkuChange)="productChange(i, $event)"
           (quantityChange)="productChange(i, part.sku, $event)"
-          [configuration]="{
-            displayType: 'tile',
-            displayAddToCompare: false,
-            displayAddToQuote: false
-          }"
+          [configuration]="productTileConfiguration"
         ></ish-product-item>
       </div>
 
@@ -23,13 +19,7 @@
           [quantity]="part.quantity"
           (productSkuChange)="productChange(i, $event)"
           (quantityChange)="productChange(i, part.sku, $event)"
-          [configuration]="{
-            allowZeroQuantity: true,
-            displayType: 'row',
-            displayAddToCompare: false,
-            displayAddToQuote: false,
-            displayShipment: true
-          }"
+          [configuration]="productRowConfiguration"
         ></ish-product-item>
       </div>
     </ng-container>

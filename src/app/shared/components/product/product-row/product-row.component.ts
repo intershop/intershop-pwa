@@ -11,24 +11,24 @@ import {
   VariationProductMasterView,
   VariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 export interface ProductRowComponentConfiguration {
-  readOnly: boolean;
   allowZeroQuantity: boolean;
   quantityLabel: string;
-  displayName: boolean;
-  displayDescription: boolean;
-  displaySKU: boolean;
-  displayInventory: boolean;
-  displayPrice: boolean;
-  displayPromotions: boolean;
-  displayQuantity: boolean;
-  displayVariations: boolean;
-  displayShipment: boolean;
-  displayAddToBasket: boolean;
-  displayAddToCompare: boolean;
-  displayAddToQuote: boolean;
+  readOnly(p: Product): boolean;
+  displayName(p: Product): boolean;
+  displayDescription(p: Product): boolean;
+  displaySKU(p: Product): boolean;
+  displayInventory(p: Product): boolean;
+  displayPrice(p: Product): boolean;
+  displayPromotions(p: Product): boolean;
+  displayQuantity(p: Product): boolean;
+  displayVariations(p: Product): boolean;
+  displayShipment(p: Product): boolean;
+  displayAddToBasket(p: Product): boolean;
+  displayAddToCompare(p: Product): boolean;
+  displayAddToQuote(p: Product): boolean;
 }
 
 @Component({
@@ -84,5 +84,10 @@ export class ProductRowComponent implements OnInit, OnDestroy {
     if (ProductHelper.isVariationProduct(this.product)) {
       this.selectVariation.emit(selection);
     }
+  }
+
+  is(property: keyof ProductRowComponentConfiguration): boolean {
+    // tslint:disable-next-line:no-any
+    return this.configuration[property] && (this.configuration[property] as any)(this.product);
   }
 }

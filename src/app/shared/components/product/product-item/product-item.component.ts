@@ -22,25 +22,25 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
 import { ProductRowComponentConfiguration } from 'ish-shared/components/product/product-row/product-row.component';
 import { ProductTileComponentConfiguration } from 'ish-shared/components/product/product-tile/product-tile.component';
 
-declare type ProductItemContainerConfiguration = ProductTileComponentConfiguration &
+export type ProductItemContainerConfiguration = ProductTileComponentConfiguration &
   ProductRowComponentConfiguration & { displayType: 'tile' | 'row' };
 
 export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> = {
-  readOnly: false,
+  readOnly: () => false,
   allowZeroQuantity: false,
   quantityLabel: ' ',
-  displayName: true,
-  displayDescription: true,
-  displaySKU: true,
-  displayInventory: true,
-  displayQuantity: true,
-  displayPrice: true,
-  displayPromotions: true,
-  displayVariations: true,
-  displayShipment: false,
-  displayAddToBasket: true,
-  displayAddToCompare: true,
-  displayAddToQuote: true,
+  displayName: () => true,
+  displayDescription: () => true,
+  displaySKU: () => true,
+  displayInventory: () => true,
+  displayQuantity: () => true,
+  displayPrice: () => true,
+  displayPromotions: () => true,
+  displayVariations: () => true,
+  displayShipment: () => false,
+  displayAddToBasket: product => !ProductHelper.isMasterProduct(product),
+  displayAddToCompare: product => !ProductHelper.isMasterProduct(product),
+  displayAddToQuote: product => !ProductHelper.isMasterProduct(product),
   displayType: 'tile',
 };
 
