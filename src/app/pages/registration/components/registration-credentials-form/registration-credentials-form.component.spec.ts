@@ -52,6 +52,7 @@ describe('Registration Credentials Form Component', () => {
   });
 
   it('should display form input fields on creation', () => {
+    component.securityQuestionEnabled = true;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=login]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id=loginConfirmation]')).toBeTruthy();
