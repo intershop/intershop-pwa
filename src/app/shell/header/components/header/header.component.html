@@ -2,10 +2,12 @@
   <ish-search-box-container
     data-testing-id="search-box-desktop"
     [configuration]="{
+      id: 'header',
       placeholderText: 'search.searchbox.instructional_text' | translate,
       autoSuggest: true,
       maxAutoSuggests: 10,
-      icon: icon
+      icon: icon,
+      showLastSearchTerm: true
     }"
   ></ish-search-box-container>
 </ng-template>

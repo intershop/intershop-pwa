@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
-import { catchError, concatMap, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -19,8 +29,10 @@ import {
   SearchProductsFail,
   SelectSearchTerm,
   SuggestSearch,
+  SuggestSearchAPI,
   SuggestSearchSuccess,
 } from './search.actions';
+import { getSuggestSearchEntities } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
@@ -84,12 +96,29 @@ export class SearchEffects {
   suggestSearch$ = this.actions$.pipe(
     ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
     mapToPayloadProperty('searchTerm'),
+    distinctUntilChanged(),
+    filter(searchTerm => !!searchTerm && searchTerm.length > 0),
+    withLatestFrom(this.store.pipe(select(getSuggestSearchEntities))),
+    switchMap(([searchTerm, entities]) =>
+      entities[searchTerm]
+        ? [
+            new SuggestSearchSuccess({ searchTerm, suggests: entities[searchTerm].suggestSearchResults }),
+            new SuggestSearchAPI({ searchTerm }),
+          ]
+        : [new SuggestSearchAPI({ searchTerm })]
+    )
+  );
+
+  @Effect()
+  suggestSearchAPI$ = this.actions$.pipe(
+    ofType<SuggestSearchAPI>(SearchActionTypes.SuggestSearchAPI),
+    mapToPayloadProperty('searchTerm'),
     debounceTime(400),
     distinctUntilChanged(),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(
-        map(suggests => new SuggestSearchSuccess({ suggests })),
+        map(suggests => new SuggestSearchSuccess({ searchTerm, suggests })),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       )

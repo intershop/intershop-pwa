@@ -19,7 +19,7 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
 export function unpackEnvelope<T>(key: string = 'elements'): OperatorFunction<{}, T[]> {
   return source$ =>
     source$.pipe(
-      filter(data => !!data[key] && !!data[key].length),
+      filter(data => !!data && !!data[key] && !!data[key].length),
       map(data => data[key]),
       defaultIfEmpty([])
     );

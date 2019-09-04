@@ -23,7 +23,13 @@ import { LoadMoreProducts, SetProductListingPageSize } from '../product-listing'
 import { ProductListingEffects } from '../product-listing/product-listing.effects';
 import { shoppingReducers } from '../shopping-store.module';
 
-import { SearchProducts, SearchProductsFail, SelectSearchTerm, SuggestSearch } from './search.actions';
+import {
+  SearchProducts,
+  SearchProductsFail,
+  SelectSearchTerm,
+  SuggestSearch,
+  SuggestSearchAPI,
+} from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -118,6 +124,23 @@ describe('Search Effects', () => {
         });
       });
     });
+
+    describe('suggestSearch$', () => {
+      it('should perform a suggest-search with given search term when suggest-search is requested', () => {
+        const id = 'searchbox';
+
+        const a = new SuggestSearch({ searchTerm: 'A', id });
+        const b = new SuggestSearch({ searchTerm: 'B', id });
+        actions$ = hot('a-b-a-|', { a, b });
+
+        expect(effects.suggestSearch$).toBeObservable(
+          cold('a-b-a-|', {
+            a: new SuggestSearchAPI({ searchTerm: 'A' }),
+            b: new SuggestSearchAPI({ searchTerm: 'B' }),
+          })
+        );
+      });
+    });
   });
 
   describe('with fakeAsync', () => {
@@ -160,7 +183,7 @@ describe('Search Effects', () => {
 
     describe('suggestSearch$', () => {
       it('should not fire when search term is falsy', fakeAsync(() => {
-        const action = new SuggestSearch({ searchTerm: undefined });
+        const action = new SuggestSearch({ searchTerm: undefined, id: 'searchbox' });
         store$.dispatch(action);
 
         tick(5000);
@@ -169,7 +192,7 @@ describe('Search Effects', () => {
       }));
 
       it('should not fire when search term is empty', fakeAsync(() => {
-        const action = new SuggestSearch({ searchTerm: '' });
+        const action = new SuggestSearch({ searchTerm: '', id: 'searchbox' });
         store$.dispatch(action);
 
         tick(5000);
@@ -178,7 +201,7 @@ describe('Search Effects', () => {
       }));
 
       it('should return search terms when available', fakeAsync(() => {
-        const action = new SuggestSearch({ searchTerm: 'g' });
+        const action = new SuggestSearch({ searchTerm: 'g', id: 'searchbox' });
         store$.dispatch(action);
 
         tick(5000);
@@ -187,11 +210,11 @@ describe('Search Effects', () => {
       }));
 
       it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
-        store$.dispatch(new SuggestSearch({ searchTerm: 'g' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'g', id: 'searchbox' }));
         tick(50);
-        store$.dispatch(new SuggestSearch({ searchTerm: 'goo' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'goo', id: 'searchbox' }));
         tick(100);
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(200);
 
         verify(suggestServiceMock.search(anyString())).never();
@@ -201,10 +224,10 @@ describe('Search Effects', () => {
       }));
 
       it('should send only once if search term is entered multiple times', fakeAsync(() => {
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(2000);
         verify(suggestServiceMock.search(anyString())).once();
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
         tick(2000);
 
         verify(suggestServiceMock.search(anyString())).once();
@@ -213,12 +236,82 @@ describe('Search Effects', () => {
       it('should not fire action when error is encountered at service level', fakeAsync(() => {
         when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-        store$.dispatch(new SuggestSearch({ searchTerm: 'good' }));
+        store$.dispatch(new SuggestSearchAPI({ searchTerm: 'good' }));
         tick(4000);
 
         effects.suggestSearch$.subscribe(fail, fail, fail);
 
         verify(suggestServiceMock.search(anyString())).once();
+      }));
+
+      it('should fire all necessary actions for suggest-search', fakeAsync(() => {
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
+        tick(500); // debounceTime
+        expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
+          [Suggest Search] Load Search Suggestions:
+            searchTerm: "good"
+            id: "searchbox"
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+            searchTerm: "good"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+        `);
+
+        // 2nd term to because distinctUntilChanged
+        store$.dispatch(new SuggestSearch({ searchTerm: 'goo', id: 'searchbox' }));
+        tick(500);
+        expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
+          [Suggest Search] Load Search Suggestions:
+            searchTerm: "good"
+            id: "searchbox"
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+            searchTerm: "good"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+          [Suggest Search] Load Search Suggestions:
+            searchTerm: "goo"
+            id: "searchbox"
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+            searchTerm: "goo"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "goo"
+            suggests: [{"term":"Goods"}]
+        `);
+
+        // test cache: search->api->success & search->success->api->success
+        store$.dispatch(new SuggestSearch({ searchTerm: 'good', id: 'searchbox' }));
+        tick(500);
+        expect(store$.actionsArray(/\[Suggest Search/)).toMatchInlineSnapshot(`
+          [Suggest Search] Load Search Suggestions:
+            searchTerm: "good"
+            id: "searchbox"
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+            searchTerm: "good"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+          [Suggest Search] Load Search Suggestions:
+            searchTerm: "goo"
+            id: "searchbox"
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+            searchTerm: "goo"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "goo"
+            suggests: [{"term":"Goods"}]
+          [Suggest Search] Load Search Suggestions:
+            searchTerm: "good"
+            id: "searchbox"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+            searchTerm: "good"
+          [Suggest Search Internal] Return Search Suggestions:
+            searchTerm: "good"
+            suggests: [{"term":"Goods"}]
+        `);
       }));
     });
 

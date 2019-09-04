@@ -3,17 +3,25 @@
 .search-container {
   position: relative;
 
+  .btn-reset:active,
   .btn-search:active {
     background-color: transparent !important;
     border-color: transparent !important;
   }
 
   button {
+    margin-right: 0 !important;
+
     &:focus,
     &:active {
       box-shadow: none !important;
     }
 
+    &.btn-reset {
+      opacity: 0.6;
+    }
+
+    &.btn-reset,
     &.btn-search {
       position: absolute;
       right: 0;
@@ -79,18 +87,34 @@
 
       button {
         width: 100%;
-        padding: $space-default 0 $space-default 4px;
         font-family: $font-family-regular;
         font-size: 13px;
+        line-height: 47px;
         color: $text-color-quarternary;
         text-align: left;
-        text-transform: capitalize;
         background: none;
         border: 0;
         border-top: $border-width-default solid $border-color-light;
 
         span {
           font-weight: bold;
+        }
+      }
+    }
+  }
+
+  input {
+    &:focus {
+      color: $text-color-primary;
+      background: $color-inverse;
+
+      + .buttons {
+        button {
+          color: $text-color-primary;
+
+          .ng-fa-icon {
+            color: $text-color-primary;
+          }
         }
       }
     }
@@ -141,19 +165,11 @@
       background: $color-inverse;
       border: $border-width-default solid $border-color-light;
       box-shadow: none;
-
-      + button.btn-search {
-        color: $text-color-primary;
-
-        .ng-fa-icon {
-          color: $text-color-primary;
-        }
-      }
     }
   }
 
   ul.search-suggest-results {
-    width: 92.5%;
+    width: 100%;
   }
 }
 
@@ -213,7 +229,17 @@
   width: 100%;
 }
 
-.error-search-container ul.search-suggest-results {
-  top: 33px;
-  width: 100%;
+.error-search-container {
+  ul.search-suggest-results {
+    top: 33px;
+    width: 100%;
+  }
+}
+
+.no-search-result {
+  + .search-container {
+    .buttons button {
+      color: $text-color-primary !important;
+    }
+  }
 }
