@@ -15,6 +15,7 @@
       "id": "Cameras-Camcorders",
       "name": "Cameras",
       "online": "1",
+      "onlineProductsCountInSubCategories": 75,
       "subCategories": [
         {
           "categoryPath": [
@@ -37,6 +38,7 @@
           "id": "832",
           "name": "Action Cameras",
           "online": "1",
+          "onlineProductsCountInSubCategories": 8,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832"
         },
@@ -61,6 +63,7 @@
           "id": "1290",
           "name": "Bags & Cases",
           "online": "1",
+          "onlineProductsCountInSubCategories": 7,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/1290"
         },
@@ -85,6 +88,7 @@
           "id": "584",
           "name": "Camcorders",
           "online": "1",
+          "onlineProductsCountInSubCategories": 10,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584"
         },
@@ -109,6 +113,7 @@
           "id": "585",
           "name": "Camera Accessories",
           "online": "1",
+          "onlineProductsCountInSubCategories": 9,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/585"
         },
@@ -133,6 +138,7 @@
           "id": "575",
           "name": "Digital Cameras",
           "online": "1",
+          "onlineProductsCountInSubCategories": 32,
           "richContent": "<p><strong>TestImport Cameras</strong></p>\n<p>Digital cameras make amazing pictures, much better than smartphones do. Discover it yourself: the easy handling, the excellent picture quality, the wide zoom range and the quick focus. Digital cameras automatically minimize the effects of vibration to deliver clearer and sharper pictures. At inSPIRED, we offer the best camera equipment for every purpose – leisure or work, robust or sophisticated, always at the best value option. Everyone - both beginners and professionals - feel comfortable in the world of photography with our top digital cameras.</p>\n<p> </p>\n<p><strong>The best choice for beginners and professionals</strong></p>\n<p>Modern digital cameras offer a lot of options with many settings, but still allow for an easy handling. Our cameras from Canon and Kodak produce fascinating pictures. The compact cameras are suitable for leisure and outdoor photography. But we also have extensively equipped devices that can be used in special occasions like underwater photography – specific functions and designs for specific purposes. Take, for example, the GoPro Hero 5: A well-equipped action camera in a compact body that offers high video quality and low battery consumption.</p>\n<p> </p>\n<p><strong>New Cameras - Trendy, stylish, compact design</strong></p>\n<p>You like it simple, modern and impressive? Then you must see the new products from Canon. Here you live to see a new dimension of photography with the IXUS series. The new solutions are adapted to the needs of the customers. Kodak’s M series is the best option for more flexibility. They are easy to carry and sport a touch screen, which allows you to make the settings directly on the display. Thanks to its reversible front, this series is especially suited to take selfies.</p>",
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/575"
@@ -158,6 +164,7 @@
           "id": "577",
           "name": "Webcams",
           "online": "1",
+          "onlineProductsCountInSubCategories": 10,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577"
         }
@@ -181,6 +188,7 @@
       "id": "Computers",
       "name": "Computers",
       "online": "1",
+      "onlineProductsCountInSubCategories": 950,
       "subCategories": [
         {
           "categoryPath": [
@@ -203,6 +211,7 @@
           "id": "897",
           "name": "Tablets",
           "online": "1",
+          "onlineProductsCountInSubCategories": 46,
           "richContent": "<p><strong>Tablets – Use it everywhere</strong></p>\n<p>Tablets are flexible, compact, easy to use, quickly operational and light. That’s the reasons why tablet computers become more popular every year. The users can read e-books, listen to music, watch videos, browse the internet, write e-mails or communicate via social media. So you can use all your applications on the go. The multi-touch capable displays are available in different sizes, according to your wishes and needs. The intuitive handling is supported by the Apple iOS and Google Android operating systems. Additional functionality – productivity, media, games and many more – is offered via “apps”, which can be downloaded for free or for a fee in their corresponding app stores.</p>\n<p> </p>\n<p><strong>Powerful devices</strong></p>\n<p>Current tablets offer fast processors, bright and colorful displays, good speakers, excellent cameras for high-quality photos and, of course, network connectivity. The modern design with a high-quality finish and the light weight give an extra bonus. There are tablets with different memory sizes, e.g., 16GB, 32GB or 64GB. If that’s not enough: Many of these smart devices have an extension slot for memory cards, or they allow to store documents, music and videos in the cloud. At inSPIRED, we offer a wide range of tablets – including best-value devices for beginners to use standard applications and top models with the “best of breed” specs for power users. </p>",
           "subCategories": [
             {
@@ -232,6 +241,7 @@
               "id": "897_Acer",
               "name": "Acer",
               "online": "1",
+              "onlineProductsCountInSubCategories": 3,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Acer"
             },
@@ -262,6 +272,7 @@
               "id": "897_Asus",
               "name": "Asus",
               "online": "1",
+              "onlineProductsCountInSubCategories": 6,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Asus"
             },
@@ -292,6 +303,7 @@
               "id": "897_Fujitsu",
               "name": "Fujitsu",
               "online": "1",
+              "onlineProductsCountInSubCategories": 17,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Fujitsu"
             },
@@ -322,6 +334,7 @@
               "id": "897_Hanvon",
               "name": "Hanvon",
               "online": "1",
+              "onlineProductsCountInSubCategories": 2,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Hanvon"
             },
@@ -352,6 +365,7 @@
               "id": "897_Lenovo",
               "name": "Lenovo",
               "online": "1",
+              "onlineProductsCountInSubCategories": 4,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Lenovo"
             },
@@ -382,6 +396,7 @@
               "id": "897_MSI",
               "name": "MSI",
               "online": "1",
+              "onlineProductsCountInSubCategories": 1,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_MSI"
             },
@@ -412,6 +427,7 @@
               "id": "897_Microsoft",
               "name": "Microsoft",
               "online": "1",
+              "onlineProductsCountInSubCategories": 8,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft"
             },
@@ -442,6 +458,7 @@
               "id": "897_Samsung",
               "name": "Samsung",
               "online": "1",
+              "onlineProductsCountInSubCategories": 5,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Samsung"
             }
@@ -471,6 +488,7 @@
           "id": "1835",
           "name": "Notebooks and PCs",
           "online": "1",
+          "onlineProductsCountInSubCategories": 117,
           "subCategories": [
             {
               "categoryPath": [
@@ -499,6 +517,7 @@
               "id": "151",
               "name": "Notebooks",
               "online": "1",
+              "onlineProductsCountInSubCategories": 12,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/151"
             },
@@ -529,6 +548,7 @@
               "id": "153",
               "name": "PCs",
               "online": "1",
+              "onlineProductsCountInSubCategories": 5,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/153"
             },
@@ -559,6 +579,7 @@
               "id": "3003",
               "name": "Backpacks, Notebook Bags & Cases",
               "online": "1",
+              "onlineProductsCountInSubCategories": 47,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/3003"
             },
@@ -589,6 +610,7 @@
               "id": "152",
               "name": "Docking Stations",
               "online": "1",
+              "onlineProductsCountInSubCategories": 23,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/152"
             },
@@ -619,6 +641,7 @@
               "id": "9851",
               "name": "Ergonomic Wrist Rests",
               "online": "1",
+              "onlineProductsCountInSubCategories": 6,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/9851"
             },
@@ -649,6 +672,7 @@
               "id": "1284",
               "name": "Notebook Accessories",
               "online": "1",
+              "onlineProductsCountInSubCategories": 24,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/1284"
             }
@@ -678,6 +702,7 @@
           "id": "3001",
           "name": "Monitors",
           "online": "1",
+          "onlineProductsCountInSubCategories": 91,
           "subCategories": [
             {
               "categoryPath": [
@@ -706,6 +731,7 @@
               "id": "222",
               "name": "Flat Panel Displays",
               "online": "1",
+              "onlineProductsCountInSubCategories": 37,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/222"
             },
@@ -736,6 +762,7 @@
               "id": "3002",
               "name": "Flat Panel Mounts",
               "online": "1",
+              "onlineProductsCountInSubCategories": 35,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/3002"
             },
@@ -766,6 +793,7 @@
               "id": "943",
               "name": "Monitor Glare & Privacy Filters",
               "online": "1",
+              "onlineProductsCountInSubCategories": 11,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/943"
             },
@@ -796,6 +824,7 @@
               "id": "903",
               "name": "Plasma Panels",
               "online": "1",
+              "onlineProductsCountInSubCategories": 1,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/903"
             },
@@ -826,6 +855,7 @@
               "id": "223",
               "name": "Touch Screen Monitors",
               "online": "1",
+              "onlineProductsCountInSubCategories": 7,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001/223"
             }
@@ -855,6 +885,7 @@
           "id": "191",
           "name": "Input Devices",
           "online": "1",
+          "onlineProductsCountInSubCategories": 73,
           "subCategories": [
             {
               "categoryPath": [
@@ -883,6 +914,7 @@
               "id": "194",
               "name": "Keyboards",
               "online": "1",
+              "onlineProductsCountInSubCategories": 31,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/194"
             },
@@ -913,6 +945,7 @@
               "id": "195",
               "name": "Mice",
               "online": "1",
+              "onlineProductsCountInSubCategories": 16,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/195"
             },
@@ -943,6 +976,7 @@
               "id": "1637",
               "name": "Headsets",
               "online": "1",
+              "onlineProductsCountInSubCategories": 20,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/1637"
             },
@@ -973,6 +1007,7 @@
               "id": "3652",
               "name": "Digital Pens",
               "online": "1",
+              "onlineProductsCountInSubCategories": 3,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/3652"
             },
@@ -1003,6 +1038,7 @@
               "id": "8547",
               "name": "Presentation Devices",
               "online": "1",
+              "onlineProductsCountInSubCategories": 3,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/8547"
             }
@@ -1032,6 +1068,7 @@
           "id": "206",
           "name": "Data Storage",
           "online": "1",
+          "onlineProductsCountInSubCategories": 166,
           "subCategories": [
             {
               "categoryPath": [
@@ -1060,6 +1097,7 @@
               "id": "1622",
               "name": "Blu-ray (re)writers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 6,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1622"
             },
@@ -1090,6 +1128,7 @@
               "id": "214",
               "name": "CD/DVD (Re)Writers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 10,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/214"
             },
@@ -1120,6 +1159,7 @@
               "id": "858",
               "name": "Card Readers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 20,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/858"
             },
@@ -1150,6 +1190,7 @@
               "id": "1823",
               "name": "External Hard Drives",
               "online": "1",
+              "onlineProductsCountInSubCategories": 15,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1823"
             },
@@ -1180,6 +1221,7 @@
               "id": "902",
               "name": "Flash Memory",
               "online": "1",
+              "onlineProductsCountInSubCategories": 40,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/902"
             },
@@ -1210,6 +1252,7 @@
               "id": "219",
               "name": "Hard Disk Drives",
               "online": "1",
+              "onlineProductsCountInSubCategories": 23,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/219"
             },
@@ -1240,6 +1283,7 @@
               "id": "1563",
               "name": "Solid State Drives",
               "online": "1",
+              "onlineProductsCountInSubCategories": 30,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1563"
             },
@@ -1270,6 +1314,7 @@
               "id": "298",
               "name": "Storage Media Cases",
               "online": "1",
+              "onlineProductsCountInSubCategories": 7,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/298"
             },
@@ -1300,6 +1345,7 @@
               "id": "1554",
               "name": "USB Flash Drives",
               "online": "1",
+              "onlineProductsCountInSubCategories": 15,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206/1554"
             }
@@ -1329,6 +1375,7 @@
           "id": "106",
           "name": "Hardware Components",
           "online": "1",
+          "onlineProductsCountInSubCategories": 345,
           "subCategories": [
             {
               "categoryPath": [
@@ -1357,6 +1404,7 @@
               "id": "173",
               "name": "Audio Cards",
               "online": "1",
+              "onlineProductsCountInSubCategories": 6,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/173"
             },
@@ -1387,6 +1435,7 @@
               "id": "830",
               "name": "Cables",
               "online": "1",
+              "onlineProductsCountInSubCategories": 88,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
             },
@@ -1417,6 +1466,7 @@
               "id": "236",
               "name": "Chassis Components",
               "online": "1",
+              "onlineProductsCountInSubCategories": 41,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
             },
@@ -1447,6 +1497,7 @@
               "id": "911",
               "name": "Memory Modules",
               "online": "1",
+              "onlineProductsCountInSubCategories": 100,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/911"
             },
@@ -1507,6 +1558,7 @@
               "id": "816",
               "name": "Power Supplies",
               "online": "1",
+              "onlineProductsCountInSubCategories": 65,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/816"
             },
@@ -1537,6 +1589,7 @@
               "id": "989",
               "name": "Processors",
               "online": "1",
+              "onlineProductsCountInSubCategories": 30,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/989"
             },
@@ -1567,6 +1620,7 @@
               "id": "170",
               "name": "Video Cards",
               "online": "1",
+              "onlineProductsCountInSubCategories": 15,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/170"
             }
@@ -1596,6 +1650,7 @@
           "id": "225",
           "name": "Printers",
           "online": "1",
+          "onlineProductsCountInSubCategories": 120,
           "subCategories": [
             {
               "categoryPath": [
@@ -1624,6 +1679,7 @@
               "id": "234",
               "name": "Inkjet Printers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 9,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/234"
             },
@@ -1654,6 +1710,7 @@
               "id": "235",
               "name": "Laser/LED Printers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 20,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/235"
             },
@@ -1684,6 +1741,7 @@
               "id": "304",
               "name": "Multifunctionals",
               "online": "1",
+              "onlineProductsCountInSubCategories": 20,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/304"
             },
@@ -1714,6 +1772,7 @@
               "id": "922",
               "name": "Photo Printers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 3,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/922"
             },
@@ -1744,6 +1803,7 @@
               "id": "373",
               "name": "Printing Supplies",
               "online": "1",
+              "onlineProductsCountInSubCategories": 68,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225/373"
             }
@@ -1772,6 +1832,7 @@
       "id": "Home-Entertainment",
       "name": "Home Entertainment",
       "online": "1",
+      "onlineProductsCountInSubCategories": 182,
       "subCategories": [
         {
           "categoryPath": [
@@ -1794,6 +1855,7 @@
           "id": "1058",
           "name": "Audio & Video",
           "online": "1",
+          "onlineProductsCountInSubCategories": 100,
           "subCategories": [
             {
               "categoryPath": [
@@ -1822,6 +1884,7 @@
               "id": "1296",
               "name": "Computer TV Tuners",
               "online": "1",
+              "onlineProductsCountInSubCategories": 8,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1296"
             },
@@ -1852,6 +1915,7 @@
               "id": "1001",
               "name": "DVD Players & Recorders",
               "online": "1",
+              "onlineProductsCountInSubCategories": 11,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1001"
             },
@@ -1882,6 +1946,7 @@
               "id": "1020",
               "name": "Headphones",
               "online": "1",
+              "onlineProductsCountInSubCategories": 19,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1020"
             },
@@ -1912,6 +1977,7 @@
               "id": "1082",
               "name": "Home Cinema Systems",
               "online": "1",
+              "onlineProductsCountInSubCategories": 8,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1082"
             },
@@ -1942,6 +2008,7 @@
               "id": "1081",
               "name": "Loudspeakers",
               "online": "1",
+              "onlineProductsCountInSubCategories": 10,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1081"
             },
@@ -1972,6 +2039,7 @@
               "id": "1373",
               "name": "Media players & recorders",
               "online": "1",
+              "onlineProductsCountInSubCategories": 30,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1373"
             },
@@ -2002,6 +2070,7 @@
               "id": "1344",
               "name": "Record Players",
               "online": "1",
+              "onlineProductsCountInSubCategories": 5,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/1344"
             },
@@ -2032,6 +2101,7 @@
               "id": "857",
               "name": "Remote Controls",
               "online": "1",
+              "onlineProductsCountInSubCategories": 9,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058/857"
             }
@@ -2061,6 +2131,7 @@
           "id": "84214",
           "name": "Gaming",
           "online": "1",
+          "onlineProductsCountInSubCategories": 42,
           "subCategories": [
             {
               "categoryPath": [
@@ -2089,6 +2160,7 @@
               "id": "71515",
               "name": "Gaming Controls",
               "online": "1",
+              "onlineProductsCountInSubCategories": 21,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214/71515"
             },
@@ -2119,6 +2191,7 @@
               "id": "8429",
               "name": "Headsets",
               "online": "1",
+              "onlineProductsCountInSubCategories": 21,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214/8429"
             }
@@ -2148,6 +2221,7 @@
           "id": "SmartHome",
           "name": "Smart Home",
           "online": "1",
+          "onlineProductsCountInSubCategories": 5,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
         },
@@ -2172,6 +2246,7 @@
           "id": "220",
           "name": "TVs & Projectors",
           "online": "1",
+          "onlineProductsCountInSubCategories": 35,
           "subCategories": [
             {
               "categoryPath": [
@@ -2200,6 +2275,7 @@
               "id": "558",
               "name": "Data Projectors",
               "online": "1",
+              "onlineProductsCountInSubCategories": 16,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220/558"
             },
@@ -2230,6 +2306,7 @@
               "id": "1078",
               "name": "LCD TVs",
               "online": "1",
+              "onlineProductsCountInSubCategories": 14,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220/1078"
             },
@@ -2260,6 +2337,7 @@
               "id": "1584",
               "name": "LED TVs",
               "online": "1",
+              "onlineProductsCountInSubCategories": 5,
               "type": "Category",
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220/1584"
             }
@@ -2288,6 +2366,7 @@
       "id": "Specials",
       "name": "Specials",
       "online": "1",
+      "onlineProductsCountInSubCategories": 51,
       "subCategories": [
         {
           "categoryPath": [
@@ -2310,6 +2389,7 @@
           "id": "GiftCardsCertificates",
           "name": "Gift Cards & Certificates",
           "online": "1",
+          "onlineProductsCountInSubCategories": 6,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
         },
@@ -2334,6 +2414,7 @@
           "id": "HotDeals",
           "name": "Hot Deals",
           "online": "1",
+          "onlineProductsCountInSubCategories": 9,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
         },
@@ -2358,6 +2439,7 @@
           "id": "NewProducts",
           "name": "New Products",
           "online": "1",
+          "onlineProductsCountInSubCategories": 16,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
         },
@@ -2382,6 +2464,7 @@
           "id": "TopSellers",
           "name": "Top Sellers",
           "online": "1",
+          "onlineProductsCountInSubCategories": 24,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
         }

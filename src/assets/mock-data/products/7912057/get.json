@@ -42,14 +42,14 @@
       "value": "5 x"
     },
     {
-      "name": "Image formats supported",
-      "type": "String",
-      "value": "-"
-    },
-    {
       "name": "Focal length (35mm film equivalent)",
       "type": "String",
       "value": "28 - 140 mm"
+    },
+    {
+      "name": "Image formats supported",
+      "type": "String",
+      "value": "-"
     },
     {
       "name": "Self-timer",
@@ -87,14 +87,14 @@
       "value": "Y"
     },
     {
-      "name": "Minimum processor",
-      "type": "String",
-      "value": "Pentium 4, 2.8 GHz"
-    },
-    {
       "name": "Battery technology",
       "type": "String",
       "value": "Lithium-Ion"
+    },
+    {
+      "name": "Minimum processor",
+      "type": "String",
+      "value": "Pentium 4, 2.8 GHz"
     },
     {
       "name": "Internal memory",
@@ -112,9 +112,9 @@
       "value": "SD,SDHC"
     },
     {
-      "name": "Maximum memory card size",
+      "name": "Camera type",
       "type": "String",
-      "value": "4 GB"
+      "value": "Compact"
     },
     {
       "name": "Megapixel",
@@ -122,9 +122,9 @@
       "value": "14 MP"
     },
     {
-      "name": "Camera type",
+      "name": "Maximum memory card size",
       "type": "String",
-      "value": "Compact"
+      "value": "4 GB"
     },
     {
       "name": "Digital zoom",
@@ -132,14 +132,14 @@
       "value": "-"
     },
     {
-      "name": "Auto focusing (AF) modes",
-      "type": "String",
-      "value": "Unspecified,Face tracking"
-    },
-    {
       "name": "Photo effects",
       "type": "String",
       "value": "Sepia,Black&White"
+    },
+    {
+      "name": "Auto focusing (AF) modes",
+      "type": "String",
+      "value": "Unspecified,Face tracking"
     },
     {
       "name": "ISO sensitivity",
@@ -207,24 +207,24 @@
       "value": "USB"
     },
     {
-      "name": "Compatible operating systems",
-      "type": "String",
-      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
-    },
-    {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
       "name": "Image stabilizer",
       "type": "String",
       "value": "-"
     },
     {
+      "name": "Compatible operating systems",
+      "type": "String",
+      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
+    },
+    {
       "name": "Colour_of_product",
       "type": "String",
       "value": "Black"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
     }
   ],
   "availability": true,
@@ -384,6 +384,7 @@
   "inStock": true,
   "listPrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 132.24
   },
@@ -393,17 +394,26 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Kodak M series EasyShare M552",
+  "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
   "productName": "Kodak M series EasyShare M552",
+  "productTypes": ["PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 132.24
+  },
+  "seoAttributes": {
+    "metaDescription": "Kodak M series EasyShare M552 - EasyShare M552, 14MP, 6.858 cm (2.7 \") LCD, 4x, 28mm, HD 720p, Black",
+    "metaKeywords": [],
+    "metaTitle": "Kodak M series EasyShare M552 - Digital Cameras favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {
