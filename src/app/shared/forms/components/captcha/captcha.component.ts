@@ -6,7 +6,7 @@ import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
 @Component({
   selector: 'ish-captcha',
   templateUrl: './captcha.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CaptchaComponent {
   @Input() parentForm: FormGroup;
@@ -20,5 +20,11 @@ export class CaptchaComponent {
    */
   resolved(captchaResponse: string) {
     this.parentForm.get(this.controlName).setValue(captchaResponse);
+  }
+
+  get hasError(): boolean {
+    return (
+      this.parentForm && this.parentForm.get(this.controlName).invalid && this.parentForm.get(this.controlName).dirty
+    );
   }
 }

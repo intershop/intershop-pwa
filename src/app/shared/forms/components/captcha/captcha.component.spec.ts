@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 
 import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
@@ -14,7 +15,7 @@ describe('Captcha Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CaptchaComponent],
-      imports: [RecaptchaModule.forRoot()],
+      imports: [RecaptchaModule.forRoot(), TranslateModule.forRoot()],
       providers: [{ provide: CAPTCHA_SITE_KEY, useValue: captchaSiteKey }],
     }).compileComponents();
   }));

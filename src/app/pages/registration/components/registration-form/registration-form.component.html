@@ -42,7 +42,7 @@
           [languages]="languages"></ish-registration-personal-form>
           -->
 
-          <div *ishFeature="'captcha'" class="row form-group">
+          <div *ngIf="captchaRegistration" class="row form-group">
             <div class="offset-md-4 col-md-8">
               <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
             </div>
