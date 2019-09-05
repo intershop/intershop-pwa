@@ -2643,5 +2643,6 @@
   "basket.promotioncode.adding.error": "Der Aktionscode wurde nicht hinzugefügt.",
   "basket.promotioncode.add_not_successful.error": "Der Aktionscode wurde nicht hinzugefügt.",
   "checkout.shipping.no_methods.message": "Es ist keine Versandart verfügbar, mit der diese Produkte zusammen versendet werden können. Bitte passen Sie den Warenkorb an und geben Sie mehrere separate Bestellungen auf.",
-  "checkout.general.back_to_cart.button.label": "Zurück zum Warenkorb"
+  "checkout.general.back_to_cart.button.label": "Zurück zum Warenkorb",
+  "recaptcha.v2.incorrect.error": "Beweisen Sie, dass Sie keine Maschine sind."
 }
