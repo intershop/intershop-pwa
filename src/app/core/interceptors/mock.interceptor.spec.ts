@@ -1,12 +1,5 @@
 // tslint:disable:no-any
-import {
-  HttpEventType,
-  HttpHandler,
-  HttpParams,
-  HttpRequest,
-  HttpResponse,
-  HttpXhrBackend,
-} from '@angular/common/http';
+import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
@@ -65,20 +58,6 @@ describe('Mock Interceptor', () => {
         { url: BASE_URL + '/categories', willBeMocked: true, method: 'GET' },
         { url: BASE_URL + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
         { url: './assets/picture.png', willBeMocked: false, method: 'GET' },
-        {
-          url: BASE_URL + '/assets',
-          params: new HttpParams().set('foo', 'bar'),
-          willBeMocked: true,
-          method: 'GET',
-          target: './assets/mock-data/assets/get_foo_bar.json',
-        },
-        {
-          url: BASE_URL + '/assets',
-          params: new HttpParams().set('foo', 'bar?'),
-          willBeMocked: true,
-          method: 'GET',
-          target: './assets/mock-data/assets/get_foo_bar_.json',
-        },
       ];
     }
 
