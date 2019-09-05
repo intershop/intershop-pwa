@@ -11,9 +11,10 @@ import { ProductLinks } from 'ish-core/models/product-links/product-links.model'
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
-import { Product, SkuQuantityType } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -25,7 +26,12 @@ export class ProductsService {
 
   private itemsPerPage: number;
 
-  constructor(private apiService: ApiService, private productMapper: ProductMapper, store: Store<{}>) {
+  constructor(
+    private apiService: ApiService,
+    private productMapper: ProductMapper,
+    store: Store<{}>,
+    private featureToggleService: FeatureToggleService
+  ) {
     store.pipe(select(getProductListingItemsPerPage)).subscribe(itemsPerPage => (this.itemsPerPage = itemsPerPage));
   }
 
@@ -83,7 +89,8 @@ export class ProductsService {
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
           total: response.total ? response.total : response.elements.length,
-        }))
+        })),
+        map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
       );
   }
 
@@ -119,8 +126,20 @@ export class ProductsService {
           products: response.elements.map(element => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
           total: response.total ? response.total : response.elements.length,
-        }))
+        })),
+        map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
       );
+  }
+
+  // TODO: work-around to exchange single-return variation products to master products for B2B
+  private postProcessMasters(products: Product[]): Product[] {
+    if (this.featureToggleService.enabled('advancedVariationHandling')) {
+      return products.map(p =>
+        // tslint:disable-next-line:ish-no-object-literal-type-assertion
+        ProductHelper.isVariationProduct(p) ? ({ sku: p.productMasterSKU, completenessLevel: 0 } as Product) : p
+      );
+    }
+    return products;
   }
 
   /**
