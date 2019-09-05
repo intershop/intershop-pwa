@@ -2,19 +2,34 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Lifetime",
+      "name": "Ports and connectors",
       "type": "String",
-      "value": "50000 clicks"
+      "value": "DC power jack"
     },
     {
-      "name": "Frequency band",
+      "name": "Colours",
       "type": "String",
-      "value": "2400-2483.5 MHz"
+      "value": "White, Slate fabric"
+    },
+    {
+      "name": "Dimensions",
+      "type": "String",
+      "value": "96mm*142mm"
+    },
+    {
+      "name": "Supported operating systems",
+      "type": "String",
+      "value": "Anroid 4.4 and higher, iOS 9.1 and higher"
     },
     {
       "name": "Weight",
       "type": "String",
-      "value": "67 g"
+      "value": "477g"
+    },
+    {
+      "name": "Power",
+      "type": "String",
+      "value": "16.5V, 2A"
     }
   ],
   "availability": true,
@@ -69,6 +84,26 @@
       "type": "Image",
       "typeID": "S",
       "viewID": "front"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
     }
   ],
   "inStock": true,
@@ -76,28 +111,35 @@
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 26.49
+    "value": 185.5
   },
-  "longDescription": "Enrich your system with the Philips Hue dimmer switch and enjoy smooth wireless dimming. The switch works as a normal wall switch and dimmer. Place it anywhere you want, using screws or the adhesive tape on the back plate of the switch.",
-  "manufacturer": "Philips",
+  "longDescription": "Get answers, play songs, tackle your day, enjoy your entertainment and control your smart home with just your voice.",
+  "manufacturer": "Google",
   "mastered": false,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Philips Hue Dimmer switch",
+  "name": "Google Home",
   "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
-  "productName": "Philips Hue Dimmer switch",
-  "productTypes": ["ITEM", "BUNDLED_PRODUCT"],
+  "productName": "Google Home",
+  "productTypes": ["PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "roundedAverageRating": "0.0",
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807171/reviews",
+  "roundedAverageRating": "3.0",
   "salePrice": {
     "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 26.49
+    "value": 185.5
+  },
+  "seoAttributes": {
+    "metaDescription": "Google Home - Hands-free help from the Google Assistant",
+    "metaKeywords": [],
+    "metaTitle": "Google Home - Smart Home favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {
@@ -129,8 +171,8 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "Control your lights anywhere in your house",
-  "sku": "201807193",
+  "shortDescription": "Hands-free help from the Google Assistant",
+  "sku": "201807171",
   "stepOrderQuantity": 1,
   "type": "Product"
 }

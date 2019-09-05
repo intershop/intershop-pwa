@@ -13,6 +13,12 @@
   "id": "Specials",
   "name": "Specials",
   "online": "1",
+  "seoAttributes": {
+    "metaDescription": "Specials, Gift Cards & Certificates, Top Sellers, New Products, Hot Deals always special prices for Specials",
+    "metaKeywords": [],
+    "metaTitle": "Specials favorable buying at our shop",
+    "robots": ["index", "follow"]
+  },
   "subCategories": [
     {
       "categoryPath": [
@@ -47,6 +53,7 @@
       ],
       "name": "Gift Cards & Certificates",
       "online": "1",
+      "onlineProductsCountInSubCategories": 6,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
     },
@@ -83,6 +90,7 @@
       ],
       "name": "Hot Deals",
       "online": "1",
+      "onlineProductsCountInSubCategories": 9,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
     },
@@ -119,6 +127,7 @@
       ],
       "name": "New Products",
       "online": "1",
+      "onlineProductsCountInSubCategories": 16,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
     },
@@ -155,6 +164,7 @@
       ],
       "name": "Top Sellers",
       "online": "1",
+      "onlineProductsCountInSubCategories": 24,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
     }

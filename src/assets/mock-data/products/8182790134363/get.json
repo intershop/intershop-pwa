@@ -47,6 +47,11 @@
       "value": "3840 x 2160 pixels"
     },
     {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -59,16 +64,6 @@
       "name": "Video formats supported",
       "type": "String",
       "value": "H.264|MP4"
-    },
-    {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
-    },
-    {
-      "name": "Supported video modes",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
     },
     {
       "name": "Supported video modes",
@@ -86,11 +81,6 @@
       "value": "USB"
     },
     {
-      "name": "Full HD",
-      "type": "String",
-      "value": "Yes"
-    },
-    {
       "name": "Wireless LAN (WLAN) connection",
       "type": "String",
       "value": "Yes"
@@ -99,6 +89,11 @@
       "name": "Battery technology",
       "type": "String",
       "value": "Lithium-Ion (Li-Ion)"
+    },
+    {
+      "name": "Full HD",
+      "type": "String",
+      "value": "Yes"
     },
     {
       "name": "Compatible memory cards",
@@ -133,14 +128,14 @@
       }
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "Ohne"
-    },
-    {
       "name": "Colour_of_product",
       "type": "String",
       "value": "Black"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "Ohne"
     }
   ],
   "availability": true,
@@ -301,6 +296,7 @@
   "inStock": true,
   "listPrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 391.98
   },
@@ -310,17 +306,34 @@
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "GoPro HERO5 Session",
+  "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
   "productName": "GoPro HERO5 Session",
+  "productTypes": ["PRODUCT"],
+  "promotions": [
+    {
+      "itemId": "5PercentOnActionCams",
+      "title": "5 % discount on action cameras and accessories",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
+    }
+  ],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
     "value": 391.98
+  },
+  "seoAttributes": {
+    "metaDescription": "GoPro HERO5 Session - The best, only smaller. HERO5 Session combines 4K video, one-button simplicity and voice control all in a small, waterproof design.",
+    "metaKeywords": [],
+    "metaTitle": "GoPro HERO5 Session - Action Cameras favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {

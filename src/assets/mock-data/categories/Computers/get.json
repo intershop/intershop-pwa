@@ -13,6 +13,12 @@
   "id": "Computers",
   "name": "Computers",
   "online": "1",
+  "seoAttributes": {
+    "metaDescription": "Computers, Tablets, Printers, Input Devices, Notebooks and PCs, Data Storage, Monitors, Hardware Components always special prices for Computers",
+    "metaKeywords": [],
+    "metaTitle": "Computers favorable buying at our shop",
+    "robots": ["noindex", "nofollow"]
+  },
   "subCategories": [
     {
       "categoryPath": [
@@ -47,6 +53,7 @@
       ],
       "name": "Tablets",
       "online": "1",
+      "onlineProductsCountInSubCategories": 46,
       "richContent": "<p><strong>Tablets – Use it everywhere</strong></p>\n<p>Tablets are flexible, compact, easy to use, quickly operational and light. That’s the reasons why tablet computers become more popular every year. The users can read e-books, listen to music, watch videos, browse the internet, write e-mails or communicate via social media. So you can use all your applications on the go. The multi-touch capable displays are available in different sizes, according to your wishes and needs. The intuitive handling is supported by the Apple iOS and Google Android operating systems. Additional functionality – productivity, media, games and many more – is offered via “apps”, which can be downloaded for free or for a fee in their corresponding app stores.</p>\n<p> </p>\n<p><strong>Powerful devices</strong></p>\n<p>Current tablets offer fast processors, bright and colorful displays, good speakers, excellent cameras for high-quality photos and, of course, network connectivity. The modern design with a high-quality finish and the light weight give an extra bonus. There are tablets with different memory sizes, e.g., 16GB, 32GB or 64GB. If that’s not enough: Many of these smart devices have an extension slot for memory cards, or they allow to store documents, music and videos in the cloud. At inSPIRED, we offer a wide range of tablets – including best-value devices for beginners to use standard applications and top models with the “best of breed” specs for power users. </p>",
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897"
@@ -84,6 +91,7 @@
       ],
       "name": "Notebooks and PCs",
       "online": "1",
+      "onlineProductsCountInSubCategories": 117,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835"
     },
@@ -120,6 +128,7 @@
       ],
       "name": "Monitors",
       "online": "1",
+      "onlineProductsCountInSubCategories": 91,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/3001"
     },
@@ -156,6 +165,7 @@
       ],
       "name": "Input Devices",
       "online": "1",
+      "onlineProductsCountInSubCategories": 73,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191"
     },
@@ -192,6 +202,7 @@
       ],
       "name": "Data Storage",
       "online": "1",
+      "onlineProductsCountInSubCategories": 166,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/206"
     },
@@ -228,6 +239,7 @@
       ],
       "name": "Hardware Components",
       "online": "1",
+      "onlineProductsCountInSubCategories": 345,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
     },
@@ -264,6 +276,7 @@
       ],
       "name": "Printers",
       "online": "1",
+      "onlineProductsCountInSubCategories": 120,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/225"
     }
