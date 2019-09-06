@@ -220,4 +220,18 @@ describe('Product Mapper', () => {
       }
     );
   });
+
+  it('should find default variation for master product', () => {
+    const variations = [
+      { uri: 'inSPIRED-inTRONICS-Site/-/products/111' },
+      {
+        attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+        uri: 'inSPIRED-inTRONICS-Site/-/products/222',
+      },
+      { uri: 'inSPIRED-inTRONICS-Site/-/products/333' },
+    ] as Link[];
+
+    const result = ProductMapper.findDefaultVariation(variations);
+    expect(result).toBe('222');
+  });
 });
