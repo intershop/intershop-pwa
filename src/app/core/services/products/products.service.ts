@@ -145,15 +145,18 @@ export class ProductsService {
   /**
    * Get product variations for the given master product sku.
    */
-  getProductVariations(sku: string): Observable<Partial<VariationProduct>[]> {
+  getProductVariations(sku: string): Observable<{ products: Partial<VariationProduct>[]; defaultVariation: string }> {
     if (!sku) {
       return throwError('getProductVariations() called without a sku');
     }
 
     return this.apiService.get(`products/${sku}/variations`).pipe(
       unpackEnvelope<ProductVariationLink>(),
-      map(links => links.map(link => this.productMapper.fromVariationLink(link, sku))),
-      defaultIfEmpty([])
+      map(links => ({
+        products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
+        defaultVariation: ProductMapper.findDefaultVariation(links),
+      })),
+      defaultIfEmpty({ products: [], defaultVariation: undefined })
     );
   }
 
