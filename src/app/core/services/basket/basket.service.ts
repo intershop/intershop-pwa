@@ -8,6 +8,9 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
 import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
+import { BasketValidationData } from 'ish-core/models/basket-validation/basket-validation.interface';
+import { BasketValidationMapper } from 'ish-core/models/basket-validation/basket-validation.mapper';
+import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -30,6 +33,7 @@ export type BasketUpdateType =
 export type BasketItemUpdateType =
   | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod: { id: string } };
+
 type BasketIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'
@@ -52,6 +56,18 @@ type MergeBasketIncludeType =
   | 'targetBasket_payments'
   | 'targetBasket_payments_paymentMethod'
   | 'targetBasket_payments_paymentInstrument';
+
+type ValidationBasketIncludeType =
+  | 'basket'
+  | 'basket_invoiceToAddress'
+  | 'basket_commonShipToAddress'
+  | 'basket_commonShippingMethod'
+  | 'basket_discounts'
+  | 'basket_lineItems_discounts'
+  | 'basket_lineItems'
+  | 'basket_payments'
+  | 'basket_payments_paymentMethod'
+  | 'basket_payments_paymentInstrument';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -89,6 +105,19 @@ export class BasketService {
     'targetBasket_payments',
     'targetBasket_payments_paymentMethod',
     'targetBasket_payments_paymentInstrument',
+  ];
+
+  private allBasketValidationIncludes: ValidationBasketIncludeType[] = [
+    'basket',
+    'basket_invoiceToAddress',
+    'basket_commonShipToAddress',
+    'basket_commonShippingMethod',
+    'basket_discounts',
+    'basket_lineItems_discounts',
+    'basket_lineItems',
+    'basket_payments',
+    'basket_payments_paymentMethod',
+    'basket_payments_paymentInstrument',
   ];
 
   /**
@@ -185,6 +214,31 @@ export class BasketService {
         params,
       })
       .pipe(map(BasketMapper.fromData));
+  }
+
+  /**
+   * Validates the basket for the given basket id.
+   * @param basketId  The basket id. (default: current)
+   * @param scope     Basket scopes which should be validated ( see also BasketValidationScopeType ), default: minimal scope (max items limit, empty basket)
+   * @returns         The basket and the validation results.
+   */
+  validateBasket(
+    basketId: string = 'current',
+    scopes: BasketValidationScopeType[] = ['']
+  ): Observable<BasketValidation> {
+    const body = {
+      basket: basketId,
+      adjustmentsAllowed: false,
+      scopes,
+    };
+
+    const params = new HttpParams().set('include', this.allBasketValidationIncludes.join());
+    return this.apiService
+      .post<BasketValidationData>(`baskets/${basketId}/validations`, body, {
+        headers: this.basketHeaders,
+        params,
+      })
+      .pipe(map(BasketValidationMapper.fromData));
   }
 
   /**

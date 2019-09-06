@@ -129,6 +129,15 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should validate the basket when 'validateBasket' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of(undefined));
+
+    basketService.validateBasket(basketMockData.data.id).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.data.id}/validations`, anything(), anything())).once();
+      done();
+    });
+  });
+
   it("should get active baskets of the current user when 'getBaskets' is called", done => {
     when(apiService.get(anything(), anything())).thenReturn(of({}));
 

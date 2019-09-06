@@ -52,3 +52,8 @@ export const getBasketEligiblePaymentMethods = createSelector(
   getBasketState,
   basket => basket.eligiblePaymentMethods
 );
+
+export const getBasketValidationResults = createSelector(
+  getBasketState,
+  basket => basket.validationResults
+);

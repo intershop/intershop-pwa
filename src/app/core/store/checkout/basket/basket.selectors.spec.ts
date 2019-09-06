@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -14,6 +15,7 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import {
   AddItemsToBasketSuccess,
   AddPromotionCodeToBasketFail,
+  ContinueCheckoutSuccess,
   LoadBasket,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligiblePaymentMethodsFail,
@@ -31,6 +33,7 @@ import {
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
+  getBasketValidationResults,
   getCurrentBasket,
   getCurrentBasketId,
 } from './basket.selectors';
@@ -227,6 +230,30 @@ describe('Basket Selectors', () => {
 
     it('should reporting the failure in case of an error', () => {
       expect(getBasketPromotionError(store$.state)).toEqual({ message: 'error' });
+    });
+  });
+
+  describe('loading validation result error after the basket has been validated', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: false,
+        adjusted: false,
+        errors: [
+          {
+            message: 'error occured',
+            code: '4711',
+          },
+        ],
+      },
+    };
+    beforeEach(() => {
+      store$.dispatch(new ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation }));
+    });
+
+    it('should reporting the validation results when called', () => {
+      expect(getBasketValidationResults(store$.state).valid).toBeFalse();
+      expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occured');
     });
   });
 });
