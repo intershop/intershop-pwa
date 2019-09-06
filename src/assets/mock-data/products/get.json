@@ -18,6 +18,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
