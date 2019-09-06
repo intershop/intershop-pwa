@@ -7,8 +7,6 @@ export interface Registration {
   loginConfirmation: string;
   password: string;
   passwordConfirmation: string;
-  securityQuestion: number;
-  securityQuestionAnswer: string;
   countryCodeSwitch: string;
   title: string;
   firstName: string;
@@ -26,8 +24,6 @@ export interface Registration {
 
 export const sensibleDefaults: Partial<Registration> = {
   password: '!InterShop00!',
-  securityQuestion: 1,
-  securityQuestionAnswer: 'something',
   countryCodeSwitch: 'AT',
   firstName: 'Test',
   lastName: 'User',

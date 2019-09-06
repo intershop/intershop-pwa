@@ -11,8 +11,6 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
       name: user.lastName,
       login: user.login,
       password: user.password,
-      securityQuestion: 'what was the name of your first pet?',
-      securityQuestionAnswer: 'Snoopy',
     },
     address: {
       title: user.title,
