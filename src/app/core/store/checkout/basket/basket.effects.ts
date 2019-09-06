@@ -1,20 +1,38 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ofRoute } from 'ngrx-router';
-import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  mergeMapTo,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
+import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
+  constructor(
+    private actions$: Actions,
+    private router: Router,
+    private store: Store<{}>,
+    private basketService: BasketService
+  ) {}
 
   /**
    * The load basket effect.
@@ -180,6 +198,61 @@ export class BasketEffects {
         mapErrorToAction(basketActions.MergeBasketFail)
       )
     )
+  );
+
+  /**
+   * Validates the basket before the user is allowed to jump to the next basket step
+   */
+  @Effect()
+  validateBasket$ = this.actions$.pipe(
+    ofType<basketActions.ContinueCheckout>(basketActions.BasketActionTypes.ContinueCheckout),
+    mapToPayloadProperty('targetStep'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    whenTruthy(),
+    concatMap(([targetStep, basketId]) => {
+      let scopes: BasketValidationScopeType[] = [''];
+      let targetRoute = '';
+      switch (targetStep) {
+        case 1: {
+          scopes = ['Products', 'Value'];
+          targetRoute = '/checkout/address';
+          break;
+        }
+        case 2: {
+          scopes = ['InvoiceAddress', 'ShippingAddress', 'Addresses'];
+          targetRoute = '/checkout/shipping';
+          break;
+        }
+        case 3: {
+          scopes = ['Shipping'];
+          targetRoute = '/checkout/payment';
+          break;
+        }
+        case 4: {
+          scopes = ['Payment'];
+          targetRoute = '/checkout/review';
+          break;
+        }
+      }
+      return this.basketService.validateBasket(basketId, scopes).pipe(
+        map(basketValidation => new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })),
+        mapErrorToAction(basketActions.ContinueCheckoutFail)
+      );
+    })
+  );
+
+  /**
+   * After order creation either redirect to a payment provider or show checkout receipt page.
+   */
+  @Effect({ dispatch: false })
+  jumpToNextCheckoutStep$ = this.actions$.pipe(
+    ofType<basketActions.ContinueCheckoutSuccess>(basketActions.BasketActionTypes.ContinueCheckoutSuccess),
+    mapToPayload(),
+    tap(payload => {
+      if (payload.targetRoute && payload.basketValidation && payload.basketValidation.results.valid) {
+        this.router.navigate([payload.targetRoute]);
+      }
+    })
   );
 
   /**

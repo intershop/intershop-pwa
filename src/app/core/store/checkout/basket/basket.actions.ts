@@ -2,6 +2,7 @@ import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
@@ -31,6 +32,9 @@ export enum BasketActionTypes {
   MergeBasket = '[Basket Internal] Merge two baskets',
   MergeBasketFail = '[Basket API] Merge two baskets Fail',
   MergeBasketSuccess = '[Basket API] Merge two baskets Success',
+  ContinueCheckout = '[Basket] Validates Basket and jumps to next basket step',
+  ContinueCheckoutFail = '[Basket API] Validates Basket and jumps to next basket step Fail',
+  ContinueCheckoutSuccess = '[Basket API] Validates Basket and jumps to next basket step Success',
   AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
   AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
   AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
@@ -157,6 +161,27 @@ export class MergeBasketFail implements Action {
 export class MergeBasketSuccess implements Action {
   readonly type = BasketActionTypes.MergeBasketSuccess;
   constructor(public payload: { basket: Basket }) {}
+}
+
+/* targetStep:
+	1: addresses
+	2: shipping
+	3: payment
+	4: review
+*/
+export class ContinueCheckout implements Action {
+  readonly type = BasketActionTypes.ContinueCheckout;
+  constructor(public payload: { targetStep: number }) {}
+}
+
+export class ContinueCheckoutFail implements Action {
+  readonly type = BasketActionTypes.ContinueCheckoutFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class ContinueCheckoutSuccess implements Action {
+  readonly type = BasketActionTypes.ContinueCheckoutSuccess;
+  constructor(public payload: { targetRoute: string; basketValidation: BasketValidation }) {}
 }
 
 export class AddQuoteToBasket implements Action {
@@ -327,6 +352,9 @@ export type BasketAction =
   | MergeBasket
   | MergeBasketFail
   | MergeBasketSuccess
+  | ContinueCheckout
+  | ContinueCheckoutFail
+  | ContinueCheckoutSuccess
   | AddPromotionCodeToBasket
   | AddPromotionCodeToBasketFail
   | AddPromotionCodeToBasketSuccess

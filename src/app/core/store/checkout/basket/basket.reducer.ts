@@ -1,3 +1,4 @@
+import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -14,7 +15,14 @@ export interface BasketState {
   promotionError: HttpError; // for promotion-errors
   error: HttpError; // add, update and delete errors
   lastTimeProductAdded: Date;
+  validationResults: BasketValidationResultType;
 }
+
+const initialValidationResults: BasketValidationResultType = {
+  valid: undefined,
+  adjusted: undefined,
+  errors: [],
+};
 
 export const initialState: BasketState = {
   basket: undefined,
@@ -24,6 +32,7 @@ export const initialState: BasketState = {
   error: undefined,
   promotionError: undefined,
   lastTimeProductAdded: undefined,
+  validationResults: initialValidationResults,
 };
 
 export function basketReducer(state = initialState, action: BasketAction | OrdersAction): BasketState {
@@ -37,6 +46,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.MergeBasket:
+    case BasketActionTypes.ContinueCheckout:
     case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem:
     case BasketActionTypes.LoadBasketEligibleShippingMethods:
@@ -48,12 +58,14 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       return {
         ...state,
         loading: true,
+        validationResults: initialValidationResults,
       };
     }
 
     case BasketActionTypes.MergeBasketFail:
     case BasketActionTypes.LoadBasketFail:
     case BasketActionTypes.UpdateBasketFail:
+    case BasketActionTypes.ContinueCheckoutFail:
     case BasketActionTypes.AddItemsToBasketFail:
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
@@ -128,6 +140,21 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
+    case BasketActionTypes.ContinueCheckoutSuccess: {
+      const basket =
+        action.payload.basketValidation.results.adjusted && action.payload.basketValidation.basket
+          ? action.payload.basketValidation.basket
+          : state.basket;
+
+      return {
+        ...state,
+        basket,
+        loading: false,
+        error: undefined,
+        validationResults: action.payload.basketValidation.results,
+      };
+    }
+
     case BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess: {
       return {
         ...state,
@@ -156,6 +183,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         error: undefined,
         promotionError: undefined,
+        validationResults: initialValidationResults,
       };
     }
   }
