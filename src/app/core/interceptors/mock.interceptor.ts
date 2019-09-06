@@ -5,7 +5,6 @@ import {
   HttpHandler,
   HttpHeaders,
   HttpInterceptor,
-  HttpParams,
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
@@ -99,22 +98,8 @@ export class MockInterceptor implements HttpInterceptor {
     return this.urlHasToBeMocked(req.url)
       ? `${MOCK_DATA_ROOT}/${this.getRestPath(
           this.removeQueryStringParameter(req.url)
-        )}/${req.method.toLocaleLowerCase()}${this.sanitizeParams(req.params)}.json`
+        )}/${req.method.toLocaleLowerCase()}.json`
       : req.url;
-  }
-
-  private sanitize(value: string): string {
-    return value.replace(/[^a-zA-Z0-9-]/g, '_');
-  }
-
-  private sanitizeParams(params: HttpParams): string {
-    return !params
-      ? ''
-      : params
-          .keys()
-          .sort((a, b) => a.localeCompare(b))
-          .map(key => `${this.sanitize(key)}_${this.sanitize(params.get(key))}`)
-          .reduce((a, b) => `${a}_${b}`, '');
   }
 
   private urlHasToBeMocked(url: string): boolean {

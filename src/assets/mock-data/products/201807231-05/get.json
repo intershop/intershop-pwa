@@ -1,4 +1,14 @@
 {
+  "attachments": [
+    {
+      "description": "Get to know Surface Book, the ultra-thin, high-performance laptop with exceptional power and versatility. Use this guide to get started with your Surface Book. For more details and how-to info, go online to Surface.com.",
+      "key": "AC_Information_1_",
+      "name": "Surface Book User Guide",
+      "type": "Information",
+      "uri": false,
+      "value": "inSPIRED:/manuals/surface-book-user-guide-EN.pdf"
+    }
+  ],
   "attributeGroups": {},
   "attributes": [
     {
@@ -9,57 +19,32 @@
     {
       "name": "Processor",
       "type": "String",
-      "value": "7th Generation Intel Core i7"
+      "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
+    },
+    {
+      "name": "Battery Life",
+      "type": "String",
+      "value": "Up to 17 hours of video playback"
     },
     {
       "name": "Memory",
       "type": "String",
-      "value": "8GB RAM"
-    },
-    {
-      "name": "Battery",
-      "type": "String",
-      "value": "Up to 14.5 hours video playback"
+      "value": "16GB RAM"
     },
     {
       "name": "Dimensions",
       "type": "String",
-      "value": "308.02*223.20*14.47 mm"
-    },
-    {
-      "name": "Ports",
-      "type": "String",
-      "value": "USB 3.0, 3.5mm Headset jack, mini DisplayPort, Surface Connect"
+      "value": "343*251*15 mm - 23mm"
     },
     {
       "name": "Software",
       "type": "String",
-      "value": "Windows 10 in S mode"
-    },
-    {
-      "name": "Camera",
-      "type": "String",
-      "value": "720p HD camera (front-facing)"
-    },
-    {
-      "name": "Sensors",
-      "type": "String",
-      "value": "Ambient light sensor"
-    },
-    {
-      "name": "Weight",
-      "type": "String",
-      "value": "1.25 kg"
+      "value": "Windows 10 Pro Creators Update 64-bit"
     },
     {
       "name": "Display",
       "type": "String",
-      "value": "13.5 in PixelSense Display, 2256*1504 (201 PPI)"
-    },
-    {
-      "name": "Colour_of_product",
-      "type": "String",
-      "value": "Platinum"
+      "value": "15\" PixelSense Display, 3240*2160 (260 PPI)"
     }
   ],
   "availability": true,
@@ -73,24 +58,54 @@
         "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/"
       },
       {
-        "id": "1835",
-        "name": "Notebooks and PCs",
+        "id": "897",
+        "name": "Tablets",
         "type": "CategoryPath",
-        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/"
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/"
       },
       {
-        "id": "151",
-        "name": "Notebooks",
+        "id": "897_Microsoft",
+        "name": "Microsoft",
         "type": "CategoryPath",
-        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/151/"
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft/"
       }
     ],
-    "id": "151",
-    "name": "Notebooks",
+    "id": "897_Microsoft",
+    "name": "Microsoft",
     "type": "DefaultCategory",
-    "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/1835/151/"
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft/"
   },
   "images": [
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "back L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "back M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "back S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "back"
+    },
     {
       "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
@@ -155,27 +170,38 @@
   "inStock": true,
   "listPrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 1376.94
+    "value": 3072.94
   },
-  "longDescription": "Work and play your way: Do the things you want on Surface Laptop with protection you can count on and performance that lasts, with Windows 10 in S mode. Get work done with Office all day, listen to iTunes or Spotify, and unwind with your favorite shows on Netflix and Hulu. The perfect balance of portability and performance: You don't have to choose between power and traveling light. Starting at just 2.76 pounds, Surface Laptop gives you an ideal balance of both, plus all-day battery life – up to 14.5 hours. A stunning screen that responds to your touch: Experience faster, more natural navigation on the vibrant 13.5\" PixelSense Display with immersive touchscreen. Enjoy more space for your ideas with an edge-to-edge display and ultra-thin bezel.",
+  "longDescription": "Laptop Mode: A sleek, portable powerhouse with up to 17 hours of battery life. Work with professional-grade software on the full keyboard, trackpad, and touchscreen. Tablet Mode: Detach the stunning PixelSense Display to transform Surface Book 2 into a thin, powerful, and lightweight Intel Core i5/i7 tablet you can take anywhere. Studio Mode: Fold Surface Book 2 into Studio Mode to draw and sketch comfortably and naturally. Add Surface Dial and Pen for an immersive creative experience. View Mode: Detach the screen with the push of a button, turn it around, and reattach to share content and presentations. Perfect for watching your favorite shows.",
   "manufacturer": "Microsoft",
   "mastered": true,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Microsoft Surface Laptop",
+  "name": "Microsoft Surface Book 2",
+  "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
-  "productMasterSKU": "201807204",
-  "productName": "Microsoft Surface Laptop",
+  "productMasterSKU": "201807231",
+  "productName": "Microsoft Surface Book 2",
+  "productTypes": ["VARIATION_PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "roundedAverageRating": "0.0",
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807231-05/reviews",
+  "roundedAverageRating": "4.0",
   "salePrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 1376.94
+    "value": 3072.94
+  },
+  "seoAttributes": {
+    "metaDescription": "Microsoft Surface Book 2 - The most powerful Surface ever",
+    "metaKeywords": [],
+    "metaTitle": "Microsoft Surface Book 2 - Microsoft favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {
@@ -207,22 +233,22 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
-  "sku": "201807204-01",
+  "shortDescription": "The most powerful Surface ever",
+  "sku": "201807231-05",
   "stepOrderQuantity": 1,
   "type": "Product",
   "variableVariationAttributes": [
     {
       "name": "Hard drive size",
       "type": "VariationAttribute",
-      "value": "256GB",
+      "value": "512GB",
       "variationAttributeId": "Attr_harddrivesize"
     },
     {
-      "name": "Color",
+      "name": "Display Size",
       "type": "VariationAttribute",
-      "value": "Platinum",
-      "variationAttributeId": "Colour_of_product"
+      "value": "15\"",
+      "variationAttributeId": "attr_displaysize"
     }
   ]
 }
