@@ -16,19 +16,20 @@ export interface Environment {
 
   /* FEATURE TOOGLES */
   features: (
+    | 'captcha'
     | 'compare'
-    | 'recently'
     | 'rating'
+    | 'recently'
+    | 'securityQuestion'
     /* B2B features */
+    | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
     | 'quoting'
-    | 'advancedVariationHandling'
     /* Third-party Integrations */
-    | 'tracking'
     | 'sentry'
+    | 'tracking'
     /* features which do not have the degree of maturity to use them in production */
-    | 'experimental'
-    | 'captcha')[];
+    | 'experimental')[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 

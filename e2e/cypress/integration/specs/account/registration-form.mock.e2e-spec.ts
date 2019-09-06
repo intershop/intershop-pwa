@@ -7,8 +7,6 @@ describe('Potential Registering User', () => {
   const requiredFields: (keyof Registration)[] = [
     'login',
     'password',
-    'securityQuestion',
-    'securityQuestionAnswer',
     'countryCodeSwitch',
     'firstName',
     'lastName',

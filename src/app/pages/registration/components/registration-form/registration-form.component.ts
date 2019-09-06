@@ -38,6 +38,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   /* switch for business customer registration */
   businessCustomerRegistration: boolean;
   captchaRegistration: boolean;
+  securityQuestionEnabled: boolean;
 
   form: FormGroup;
   submitted = false;
@@ -52,6 +53,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     // toggles business / private customer registration
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
     this.captchaRegistration = this.featureToggle.enabled('captcha');
+    this.securityQuestionEnabled = this.featureToggle.enabled('securityQuestion');
 
     this.createRegistrationForm();
   }
@@ -68,8 +70,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
         loginConfirmation: ['', [Validators.required, CustomValidators.email]],
         password: ['', [Validators.required, SpecialValidators.password]],
         passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
-        securityQuestion: ['', [Validators.required]],
-        securityQuestionAnswer: ['', [Validators.required]],
+        securityQuestion: this.securityQuestionEnabled ? ['', [Validators.required]] : [''],
+        securityQuestionAnswer: this.securityQuestionEnabled ? ['', [Validators.required]] : [''],
       }),
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
