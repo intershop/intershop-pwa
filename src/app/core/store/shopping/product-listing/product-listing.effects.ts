@@ -95,6 +95,8 @@ export class ProductListingEffects {
       }
       if (
         filters &&
+        // TODO: work-around for different products/hits-result without filters
+        (id.type !== 'search' || (id.type === 'search' && filters !== `&@QueryTerm=${id.value}&OnlineFlag=1`)) &&
         // TODO: work-around for client side computation of master variations
         ['search', 'category'].includes(id.type)
       ) {
@@ -125,6 +127,8 @@ export class ProductListingEffects {
     map(({ type, value, filters }) => {
       if (
         filters &&
+        // TODO: work-around for different products/hits-result without filters
+        (type !== 'search' || (type === 'search' && filters !== `&@QueryTerm=${value}&OnlineFlag=1`)) &&
         // TODO: work-around for client side computation of master variations
         ['search', 'category'].includes(type)
       ) {

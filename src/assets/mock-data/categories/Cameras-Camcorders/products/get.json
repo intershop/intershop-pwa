@@ -1,6 +1,711 @@
 {
-  "elements": [],
+  "amount": 9,
+  "elements": [
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957278"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 129.85
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 129.85
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare M575 14 MP, 5X optical, Blue",
+      "title": "Kodak M series EasyShare M575",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957278"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "4584970"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 27.83
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 27.83
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Fujifilm"
+        }
+      ],
+      "description": "SC-Z70 - Soft Case for FinePix Z70, red",
+      "title": "Fujifilm SC-Z70",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4584970"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957277"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 130.33
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 130.33
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare M575 14 MP, 5X optical, Brown",
+      "title": "Kodak M series EasyShare M575",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957277"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "347443"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 27.51
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 27.51
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Dicota"
+        }
+      ],
+      "description": "CamPocket Film - Practical camera bag for digital equipment",
+      "title": "Dicota CamPocket Film",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/347443"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "0027242882539"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.82
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.82
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Sony"
+        }
+      ],
+      "description": "Sony NP-BY1, 640 mAh, Digital camera, Lithium-Ion, 15g",
+      "title": "Sony NP-BY1",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/0027242882539"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957275"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 90.9
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 90.9
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare M550 12 MP, 5X optical",
+      "title": "Kodak M series EasyShare M550",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957275"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957288"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 106.27
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 106.27
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "4.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare C142, 10.3Mp, 1/ 6.35 cm (2.5 \") CCD, 3x opt, SD/SDHC, USB 2.0",
+      "title": "Kodak C series EasyShare C142",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957288"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957279"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 129.85
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 103.88
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare M575 14 MP, 5X optical, Red",
+      "title": "Kodak M series EasyShare M575",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957279"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3998290"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 141.78
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 141.78
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Toshiba"
+        }
+      ],
+      "description": "Camileo S20, 5MP, CMOS, 7.62 cm (3 \") LCD, HDMI, USB 2.0, SD/SDHC, 115g, Red",
+      "title": "Toshiba Camileo S20",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3998290"
+    }
+  ],
   "name": "products",
-  "sortKeys": ["name-desc", "name-asc", "value-asc", "value-desc"],
+  "offset": 0,
+  "sortKeys": [
+    "ProductSalePriceNet-asc",
+    "CategoryPosition-asc",
+    "ProductListPrice-asc",
+    "SalesRankUnitsIndex-desc",
+    "ProductListPrice-desc",
+    "name-asc",
+    "ArrivalDate-desc",
+    "ProductSalePriceNet-desc",
+    "SalesRankUnitsIndex-asc",
+    "name-desc",
+    "AverageRating-asc",
+    "CategoryPosition-desc",
+    "ProductSalePriceGross-desc",
+    "AverageRating-desc",
+    "ArrivalDate-asc",
+    "ProductSalePriceGross-asc"
+  ],
+  "total": 75,
   "type": "ResourceCollection"
 }
