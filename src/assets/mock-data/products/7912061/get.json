@@ -2,9 +2,9 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Battery type",
+      "name": "Built-in microphone",
       "type": "String",
-      "value": "BP-2L5"
+      "value": "Y"
     },
     {
       "name": "Sensor type",
@@ -12,49 +12,39 @@
       "value": "CMOS"
     },
     {
-      "name": "Focal length",
+      "name": "Video out",
       "type": "String",
-      "value": "3 - 60 mm"
+      "value": "1"
     },
     {
-      "name": "Minimum illumination",
+      "name": "Tripod mountable",
       "type": "String",
-      "value": "0.4 lx"
+      "value": "1/4\""
+    },
+    {
+      "name": "Minimum hard disk space",
+      "type": "String",
+      "value": "300 MB"
     },
     {
       "name": "Optical zoom",
       "type": "String",
-      "value": "20 x"
+      "value": "-"
     },
     {
-      "name": "Image formats supported",
+      "name": "Built-in speakers",
       "type": "String",
-      "value": "1920 x 1080, 1600 x 1200, 640 x 480"
+      "value": "Y"
     },
     {
       "name": "Focal length (35mm film equivalent)",
       "type": "String",
-      "value": "40 - 800 mm"
+      "value": "3.9 - 44 mm"
     },
     {
-      "name": "Self-timer",
+      "name": "Image formats supported",
       "type": "String",
-      "value": "10 s"
-    },
-    {
-      "name": "Shooting modes",
-      "type": "String",
-      "value": "FXP, XP+, SP, LP"
-    },
-    {
-      "name": "Maximum video resolution",
-      "type": "String",
-      "value": "1920 x 1080 pixels"
-    },
-    {
-      "name": "Camera shutter speed",
-      "type": "String",
-      "value": "1/2 - 1/20000 s"
+      "value": "JPG,EXIF"
     },
     {
       "name": "Depth",
@@ -62,13 +52,13 @@
       "value": {
         "type": "Quantity",
         "unit": "mm",
-        "value": 124
+        "value": 99
       }
     },
     {
-      "name": "S-Video out",
+      "name": "Video formats supported",
       "type": "String",
-      "value": "0"
+      "value": "MPEG-4, AAC-LC"
     },
     {
       "name": "Battery technology",
@@ -76,14 +66,14 @@
       "value": "Lithium-Ion"
     },
     {
-      "name": "Manual focus",
+      "name": "Minimum processor",
       "type": "String",
-      "value": "Y"
+      "value": "Pentium 4, 1.4 GHz"
     },
     {
-      "name": "S-Video in",
+      "name": "Internal memory",
       "type": "String",
-      "value": "0"
+      "value": "128 MB"
     },
     {
       "name": "USB 2.0 ports quantity",
@@ -91,9 +81,19 @@
       "value": "1"
     },
     {
+      "name": "Minimum system requirements",
+      "type": "String",
+      "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
+    },
+    {
+      "name": "Capture modes",
+      "type": "String",
+      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
+    },
+    {
       "name": "Compatible memory cards",
       "type": "String",
-      "value": "SD / SDHC"
+      "value": "SD,SDHC"
     },
     {
       "name": "Height",
@@ -101,13 +101,18 @@
       "value": {
         "type": "Quantity",
         "unit": "mm",
-        "value": 64
+        "value": 41
       }
+    },
+    {
+      "name": "Maximum memory card size",
+      "type": "String",
+      "value": "32 GB"
     },
     {
       "name": "Digital zoom",
       "type": "String",
-      "value": "400 x"
+      "value": "4 x"
     },
     {
       "name": "Width",
@@ -115,38 +120,23 @@
       "value": {
         "type": "Quantity",
         "unit": "mm",
-        "value": 60
+        "value": 18
       }
     },
     {
-      "name": "Effective megapixels (movie)",
+      "name": "Normal focusing range",
       "type": "String",
-      "value": "1.56 MP"
+      "value": "1.0 - ∞"
     },
     {
-      "name": "Battery life (max)",
+      "name": "Photo effects",
       "type": "String",
-      "value": "3 h"
+      "value": "Sepia,Vivid,Black&White"
     },
     {
-      "name": "Sports",
+      "name": "Minimum RAM",
       "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Microphone, line-in jack",
-      "type": "String",
-      "value": "N"
-    },
-    {
-      "name": "Audio dubbing",
-      "type": "String",
-      "value": "N"
-    },
-    {
-      "name": "Spotlight",
-      "type": "String",
-      "value": "Y"
+      "value": "1024 MB"
     },
     {
       "name": "Source data-sheet",
@@ -156,7 +146,12 @@
     {
       "name": "Display diagonal",
       "type": "String",
-      "value": "68.6 mm (2.7 \")"
+      "value": "38.1 mm (1.5 \")"
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "Arcsoft Media Impression"
     },
     {
       "name": "Weight",
@@ -164,23 +159,8 @@
       "value": {
         "type": "Quantity",
         "unit": "g",
-        "value": 270
+        "value": 95
       }
-    },
-    {
-      "name": "Built-in flash",
-      "type": "String",
-      "value": "N"
-    },
-    {
-      "name": "DV port",
-      "type": "String",
-      "value": "N"
-    },
-    {
-      "name": "Night mode",
-      "type": "String",
-      "value": "Y"
     },
     {
       "name": "HDMI ports quantity",
@@ -188,44 +168,19 @@
       "value": "1"
     },
     {
-      "name": "Component video (YPbPr/YCbCr) out",
+      "name": "White balance",
       "type": "String",
-      "value": "1"
-    },
-    {
-      "name": "Audio system",
-      "type": "String",
-      "value": "Dolby Digital"
-    },
-    {
-      "name": "Auto focus",
-      "type": "String",
-      "value": "Y"
+      "value": "Auto"
     },
     {
       "name": "Optical sensor size",
       "type": "String",
-      "value": "1/0.217 mm (1/5.5 \")"
-    },
-    {
-      "name": "Flash memory",
-      "type": "String",
-      "value": "8 GB"
-    },
-    {
-      "name": "Focus",
-      "type": "String",
-      "value": "TTL"
-    },
-    {
-      "name": "Audio output",
-      "type": "String",
-      "value": "1"
+      "value": "1/0.126 mm (1/3.2 \")"
     },
     {
       "name": "Total megapixels",
       "type": "String",
-      "value": "2.39 MP"
+      "value": "5 MP"
     },
     {
       "name": "Interface",
@@ -233,24 +188,29 @@
       "value": "USB 2.0"
     },
     {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
       "name": "Image stabilizer",
       "type": "String",
       "value": "Y"
     },
     {
-      "name": "Colour_of_product",
+      "name": "Compatible operating systems",
       "type": "String",
-      "value": "Red"
+      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "MultipleString",
+      "value": ["Black", "Blue"]
     },
     {
       "name": "Camcorder tape type",
       "type": "String",
       "value": "Flash memory"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
     }
   ],
   "availability": true,
@@ -375,61 +335,41 @@
       "type": "Image",
       "typeID": "S",
       "viewID": "front"
-    },
-    {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
-      "imageActualHeight": 500,
-      "imageActualWidth": 500,
-      "name": "side L",
-      "primaryImage": false,
-      "type": "Image",
-      "typeID": "L",
-      "viewID": "side"
-    },
-    {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
-      "imageActualHeight": 270,
-      "imageActualWidth": 270,
-      "name": "side M",
-      "primaryImage": false,
-      "type": "Image",
-      "typeID": "M",
-      "viewID": "side"
-    },
-    {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "name": "side S",
-      "primaryImage": false,
-      "type": "Image",
-      "typeID": "S",
-      "viewID": "side"
     }
   ],
   "inStock": true,
   "listPrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 337.35
+    "value": 129.85
   },
-  "longDescription": "Get into HD moviemaking with the LEGRIA HF R16. Lightweight, stylish and undeniably chic, it offers 8GB internal memory and memory card recording – all you need to make your own Full HD masterpiece.<br/>- 8GB Dual Flash Memory<br/>- Smart Auto<br/>- Video Snapshot<br/>- 20x optical zoom lens Dynamic IS<br/>- HD-SD conversion in-camera<br/>- Canon HD Camera System<br/>- Family friendly: Face Detection and Instant AF<br/>- Pre REC<br/>- Relay Recording<br/>- Compatible with standalone DW-100 DVD burner<br/><br/><B>Dual Flash Memory</b><br/>With 8GB of Dual Flash Memory, the LEGRIA HF R16 offers both internal capacity and memory card shooting. Store over 3 hours of movies to built-in memory – or record to SD and SDHC cards, which are great for sharing.<br/><br/><B>Smart Auto with Scene Detection Technology</b><br/>For effortless point-and-shoot operation, the camcorder selects the most appropriate scene mode - from a choice of 31 - to automatically obtain perfect settings. Smart Auto mode uses intelligent Scene Detection Technology to select a scene mode based on brightness, contrast, distance and overall hue<br/><br/><B>Video Snapshot</b><br/>Video Snapshot mode makes it easy to create your own short movies. Every time the Record button is pressed a short movie clip is captured – choose from two, four or eight seconds length. To make a movie, simply arrange your clips in a playlist on the memory card, select a soundtrack, and you’re instantly ready to play your movie on a TV – no need for editing on a PC.<br/><br/><B>Steady shots throughout the range</b><br/>The LEGRIA HF R16 features a genuine Canon HD Video Lens with 20x optical zoom to get you closer to the action. The Dynamic Electronic Image Stabilizer helps achieve steady shots, even when moving.<br/><br/><B>HD to SD conversion</b><br/>In-camera HD to SD conversion makes sharing movies easier. By reducing the size of your movies to web-friendly Standard Definition you can upload your movies faster.<br/><br/><B>Canon HD Camera System</b><br/>Capture stunning images via the Canon HD Camera System: the LEGRIA HF R16 uses a unique combination of HD CMOS sensor, a Canon HD Video Lens with 20x optical zoom, and the DIGIC DV III processor.<br/><br/><B>Pre REC</b><br/>In Pre REC mode, the camcorder starts recording three seconds before the Record button is pressed. These three seconds are automatically added to the beginning of each clip, so you can still capture the crucial moment even if you pressed the Record button too late.<br/><br/><B>Family friendly shooting</b><br/>The LEGRIA HF R16 is perfect for capturing those special moments. Instant AF achieves pin-sharp focus quickly and Face Detection Technology optimises shooting settings for perfect people shots – tracking up to 35 faces in a frame.<br/><br/><B>Continuous shooting with Relay recording</b><br/>If the built-in memory becomes full during shooting, Relay recording automatically switches to continue recording on an SDHC card – so you won’t miss a thing.",
-  "manufacturer": "Canon",
+  "longDescription": "<b>PlayFull Ze1</b><br/>Whether you’re looking for the latest features or the hottest trends, the KODAK PLAYFULL Video Camera delivers all the goods in a slim and chic design. Get the party started with vibrant 1080p HD and while you’re turning heads, you can catch stunning 5 MP photos in a snap. Then press the Share button, pop out the built-in USB arm and go from social butterfly to social networking superstar in seconds. The fully loaded PLAYFULL Video Camera puts your life center stage and lets you show the world why you are So Kodak.<br/><br/><b>Just press to impress<br/>The world’s only cameras with 3-step sharing!<br/>Kodak’s Share button makes sharing your videos and pictures as simple as 1, 2, 3.</b><br/>- Step 1—Just press Share when in review mode<br/>- Step 2—Choose your favorite sharing destination, e-mail address, or KODAK PULSE Display<br/>- Step 3—Connect your camera to your computer or insert your memory card and your videos or pictures are automatically uploaded to the destination(s)<br/><b>Only KODAK Cameras:</b><br/>- Let you simultaneously share to multiple social networks, e-mail and PULSE Display<br/>- Automatically share when you connect to a PC<br/>- Tag to the largest number of social networks: KODAK Gallery, FACEBOOK, TWITTER, YouTube, FLICKR, ORKUT, YANDEX, and KAIXIN001<br/><br/><b>Bold and beautiful—full HD video and pictures</b><br/>- Full 1080p high definition captures your life in amazing detail<br/>- Easily switch to still camera mode to catch 5 MP, 16:9 widescreen HD still pictures<br/><br/><b>Choose the resolution that works for you:</b><br/>- 1080p—great for stunning playback on your HDTV<br/>- 720p at 60 fps—for fast action and super slow motion playback<br/>- 720p at 30 fps—ideal for general recording in high definition<br/>- WVGA—perfect for conserving space on your memory card or smaller files sizes for web use<br/><br/><b>The power to edit in the palm of your hand</b><br/>- The KODAK PLAYFULL features on-camera editing capability, so you can fine-tune your footage, cut out what you don’t want, or extract still images from video<br/>- When you’re ready to upload, just press Share, choose your destination, pop out the USB arm, and you’re good to go<br/><br/><b>Up for anything, ready for everything</b><br/>- The built-in USB arm is perfect for automatic sharing, in-camera charging, and easy transferring to computer<br/>- Get sharper videos and less blur thanks to built-in digital image stabilization<br/>- Capture your friends in their best light with smart face tracking technology—the camera detects and locks onto faces, then ensures great exposure around them<br/>- See more details and accurate colors with incredible low-light performance<br/>- There’s always room for more—record up to 10 hours of HD video with expandable SD/SDHC card slot (up to 32 GB)<br/><br/>Cool capture effects give a new look to your scenes<br/>- Black and white<br/>- Sepia<br/>- High saturation—bright, bold colors<br/>- '70s film—muted colors, slightly greenish cast, and a little graininess for a retro look<br/><br/><b>Don’t let sun glare ruin your recording</b><br/>- The bright 1.5 in. LCD automatically adjusts to the lighting conditions around you<br/>- See your screen even in ultra-bright sunlight—simply turn on the LCD Glare Shield feature<br/> <br/><b>Great video editing software comes on-board the PLAYFULL Camera<br/>Download the software when you first connect it to your computer to:</b><br/>- Edit and trim videos<br/>- Add a voice-over to narrate your footage<br/>- Add pictures and music to your videos to make cool mashups<br/>- Grab and edit still images from video frames to get that perfect shot<br/><br/><b>Ready for the big screen</b><br/>- HDMI port gives you the option to debut your videos in full glory on your HDTV<br/>- It doesn’t matter if you own a MAC or a PC—the KODAK PLAYFULL is compatible with both<br/>- The optional remote control makes it easy to comfortably enjoy your videos and pictures",
+  "manufacturer": "Kodak",
   "mastered": false,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Canon LEGRIA HF R16",
+  "name": "Kodak PlayFull Ze1",
+  "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
-  "productName": "Canon LEGRIA HF R16",
+  "productName": "Kodak PlayFull Ze1",
+  "productTypes": ["PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 303.62
+    "value": 129.85
+  },
+  "seoAttributes": {
+    "metaDescription": "Kodak PlayFull Ze1 - PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
+    "metaKeywords": [],
+    "metaTitle": "Kodak PlayFull Ze1 - Camcorders favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {
@@ -461,8 +401,8 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "LEGRIA HF R16 - 8GB, SDHC, 1/ 13.97 cm (5.5 \") CMOS, 20x opt., dig. 400x",
-  "sku": "3953312",
+  "shortDescription": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
+  "sku": "7912061",
   "stepOrderQuantity": 1,
   "type": "Product"
 }

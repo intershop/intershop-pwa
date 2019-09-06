@@ -37,6 +37,12 @@
   ],
   "name": "Cables",
   "online": "1",
+  "seoAttributes": {
+    "metaDescription": "Cables, High Performance Category 6 UTP Patch Cable 15m, Audio/Video Cables, Firewire Cables, Cable Interface/Gender Adapters, SATA Cables, Usb Cables always special prices for Cables and Hardware Components",
+    "metaKeywords": [],
+    "metaTitle": "Cables - Hardware Components favorable buying at our shop",
+    "robots": ["index", "follow"]
+  },
   "subCategories": [
     {
       "categoryPath": [
@@ -83,6 +89,7 @@
       ],
       "name": "Audio/Video Cables",
       "online": "1",
+      "onlineProductsCountInSubCategories": 30,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1307"
     },
@@ -131,6 +138,7 @@
       ],
       "name": "Cable Interface/Gender Adapters",
       "online": "1",
+      "onlineProductsCountInSubCategories": 21,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501"
     },
@@ -179,6 +187,7 @@
       ],
       "name": "Firewire Cables",
       "online": "1",
+      "onlineProductsCountInSubCategories": 5,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1306"
     },
@@ -227,6 +236,7 @@
       ],
       "name": "SATA Cables",
       "online": "1",
+      "onlineProductsCountInSubCategories": 9,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1303"
     },
@@ -275,6 +285,7 @@
       ],
       "name": "Usb Cables",
       "online": "1",
+      "onlineProductsCountInSubCategories": 20,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1158"
     }

@@ -31,5 +31,11 @@
   ],
   "name": "Action Cameras",
   "online": "1",
+  "seoAttributes": {
+    "metaDescription": "Action Cameras, High-performance capture. Touch-display convenience. - Features 1080p60 and always special prices for Action Cameras and Cameras",
+    "metaKeywords": [],
+    "metaTitle": "Action Cameras - Cameras favorable buying at our shop",
+    "robots": ["index", "follow"]
+  },
   "type": "Category"
 }

@@ -2,38 +2,14 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Ports and connectors",
+      "name": "Warranty",
       "type": "String",
-      "value": "DC power jack"
-    },
-    {
-      "name": "Colours",
-      "type": "String",
-      "value": "White, Slate fabric"
-    },
-    {
-      "name": "Supported operating systems",
-      "type": "String",
-      "value": "Anroid 4.4 and higher, iOS 9.1 and higher"
-    },
-    {
-      "name": "Dimensions",
-      "type": "String",
-      "value": "96mm*142mm"
-    },
-    {
-      "name": "Weight",
-      "type": "String",
-      "value": "477g"
-    },
-    {
-      "name": "Power",
-      "type": "String",
-      "value": "16.5V, 2A"
+      "value": "2 years"
     }
   ],
   "availability": true,
   "availableStock": 0,
+  "bundles": "inSPIRED-inTRONICS-Site/-/products/201807194/bundles",
   "defaultCategory": {
     "categoryPath": [
       {
@@ -97,6 +73,16 @@
     },
     {
       "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "side M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "side S",
@@ -109,27 +95,37 @@
   "inStock": true,
   "listPrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 185.5
+    "value": 105.99
   },
-  "longDescription": "Get answers, play songs, tackle your day, enjoy your entertainment and control your smart home with just your voice.",
-  "manufacturer": "Google",
+  "longDescription": "Philips Hue apps for iOS and Android let you remotely control your lamps wherever you are. Check if you have left the light on before leaving and switch it on if you come home later.",
+  "manufacturer": "Philips",
   "mastered": false,
   "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
-  "name": "Google Home",
-  "productBundle": false,
+  "name": "Philips Hue White Starter Kit",
+  "packingUnit": "",
+  "productBundle": true,
   "productMaster": false,
-  "productName": "Google Home",
+  "productName": "Philips Hue White Starter Kit",
+  "productTypes": ["PRODUCT_BUNDLE"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807171/reviews",
-  "roundedAverageRating": "3.0",
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807194/reviews",
+  "roundedAverageRating": "4.5",
   "salePrice": {
     "currency": "USD",
+    "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 185.5
+    "value": 105.99
+  },
+  "seoAttributes": {
+    "metaDescription": "Philips Hue White Starter Kit - Automate your lamps for easy control and convenience",
+    "metaKeywords": [],
+    "metaTitle": "Philips Hue White Starter Kit - Smart Home favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {
@@ -161,8 +157,8 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "Hands-free help from the Google Assistant",
-  "sku": "201807171",
+  "shortDescription": "Automate your lamps for easy control and convenience",
+  "sku": "201807194",
   "stepOrderQuantity": 1,
   "type": "Product"
 }

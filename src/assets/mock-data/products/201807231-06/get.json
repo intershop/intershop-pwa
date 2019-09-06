@@ -9,16 +9,17 @@
       "value": "inSPIRED:/manuals/surface-book-user-guide-EN.pdf"
     }
   ],
+  "attributeGroups": {},
   "attributes": [
-    {
-      "name": "Processor",
-      "type": "String",
-      "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
-    },
     {
       "name": "Warranty",
       "type": "String",
       "value": "1-year limited hardware warranty"
+    },
+    {
+      "name": "Processor",
+      "type": "String",
+      "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
     },
     {
       "name": "Battery Life",
@@ -47,9 +48,36 @@
     }
   ],
   "availability": true,
+  "availableStock": 0,
+  "defaultCategory": {
+    "categoryPath": [
+      {
+        "id": "Computers",
+        "name": "Computers",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/"
+      },
+      {
+        "id": "897",
+        "name": "Tablets",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/"
+      },
+      {
+        "id": "897_Microsoft",
+        "name": "Microsoft",
+        "type": "CategoryPath",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft/"
+      }
+    ],
+    "id": "897_Microsoft",
+    "name": "Microsoft",
+    "type": "DefaultCategory",
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft/"
+  },
   "images": [
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "back L",
@@ -59,7 +87,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "back M",
@@ -69,7 +97,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "back S",
@@ -79,7 +107,7 @@
       "viewID": "back"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "front L",
@@ -89,7 +117,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -99,7 +127,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "front S",
@@ -109,7 +137,7 @@
       "viewID": "front"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
       "name": "side L",
@@ -119,7 +147,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "side M",
@@ -129,7 +157,7 @@
       "viewID": "side"
     },
     {
-      "effectiveUrl": "/assets/product_img/a.jpg",
+      "effectiveUrl": "assets/mock-img/product/a.jpg",
       "imageActualHeight": 110,
       "imageActualWidth": 110,
       "name": "side S",
@@ -141,28 +169,39 @@
   ],
   "inStock": true,
   "listPrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 2648.94
+    "value": 3496.94
   },
   "longDescription": "Laptop Mode: A sleek, portable powerhouse with up to 17 hours of battery life. Work with professional-grade software on the full keyboard, trackpad, and touchscreen. Tablet Mode: Detach the stunning PixelSense Display to transform Surface Book 2 into a thin, powerful, and lightweight Intel Core i5/i7 tablet you can take anywhere. Studio Mode: Fold Surface Book 2 into Studio Mode to draw and sketch comfortably and naturally. Add Surface Dial and Pen for an immersive creative experience. View Mode: Detach the screen with the push of a button, turn it around, and reattach to share content and presentations. Perfect for watching your favorite shows.",
   "manufacturer": "Microsoft",
   "mastered": true,
+  "maxOrderQuantity": 0,
   "minOrderQuantity": 1,
   "name": "Microsoft Surface Book 2",
+  "packingUnit": "",
   "productBundle": false,
   "productMaster": false,
   "productMasterSKU": "201807231",
   "productName": "Microsoft Surface Book 2",
+  "productTypes": ["VARIATION_PRODUCT"],
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807231-04/reviews",
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807231-06/reviews",
   "roundedAverageRating": "4.0",
   "salePrice": {
+    "currency": "USD",
     "currencyMnemonic": "USD",
     "type": "ProductPrice",
-    "value": 2648.94
+    "value": 3496.94
+  },
+  "seoAttributes": {
+    "metaDescription": "Microsoft Surface Book 2 - The most powerful Surface ever",
+    "metaKeywords": [],
+    "metaTitle": "Microsoft Surface Book 2 - Microsoft favorable buying at our shop",
+    "robots": ["index", "follow"]
   },
   "shippingMethods": [
     {
@@ -195,19 +234,20 @@
     }
   ],
   "shortDescription": "The most powerful Surface ever",
-  "sku": "201807231-04",
+  "sku": "201807231-06",
+  "stepOrderQuantity": 1,
   "type": "Product",
   "variableVariationAttributes": [
     {
       "name": "Hard drive size",
       "type": "VariationAttribute",
-      "value": "256GB ",
+      "value": "1TB",
       "variationAttributeId": "Attr_harddrivesize"
     },
     {
       "name": "Display Size",
       "type": "VariationAttribute",
-      "value": " 15 Zoll",
+      "value": "15\"",
       "variationAttributeId": "attr_displaysize"
     }
   ]

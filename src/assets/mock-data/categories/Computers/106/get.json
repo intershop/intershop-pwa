@@ -31,6 +31,12 @@
   ],
   "name": "Hardware Components",
   "online": "1",
+  "seoAttributes": {
+    "metaDescription": "Hardware Components, Processors, Video Cards, Audio Cards, Motherboards, Power Supplies, Chassis Components, Cables, Memory Modules always special prices for Hardware Components and Computers",
+    "metaKeywords": [],
+    "metaTitle": "Hardware Components - Computers favorable buying at our shop",
+    "robots": ["index", "follow"]
+  },
   "subCategories": [
     {
       "categoryPath": [
@@ -71,6 +77,7 @@
       ],
       "name": "Audio Cards",
       "online": "1",
+      "onlineProductsCountInSubCategories": 6,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/173"
     },
@@ -113,6 +120,7 @@
       ],
       "name": "Cables",
       "online": "1",
+      "onlineProductsCountInSubCategories": 88,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
     },
@@ -155,6 +163,7 @@
       ],
       "name": "Chassis Components",
       "online": "1",
+      "onlineProductsCountInSubCategories": 41,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
     },
@@ -197,6 +206,7 @@
       ],
       "name": "Memory Modules",
       "online": "1",
+      "onlineProductsCountInSubCategories": 100,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/911"
     },
@@ -281,6 +291,7 @@
       ],
       "name": "Power Supplies",
       "online": "1",
+      "onlineProductsCountInSubCategories": 65,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/816"
     },
@@ -323,6 +334,7 @@
       ],
       "name": "Processors",
       "online": "1",
+      "onlineProductsCountInSubCategories": 30,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/989"
     },
@@ -365,6 +377,7 @@
       ],
       "name": "Video Cards",
       "online": "1",
+      "onlineProductsCountInSubCategories": 15,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/170"
     }
