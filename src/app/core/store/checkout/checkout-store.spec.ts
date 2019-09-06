@@ -41,7 +41,7 @@ import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { UserService } from '../../services/user/user.service';
 import { coreEffects, coreReducers } from '../core-store.module';
-import { LoadProduct } from '../shopping/products';
+import { LoadProductSuccess } from '../shopping/products';
 import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUser } from '../user';
 
@@ -59,7 +59,7 @@ describe('Checkout Store', () => {
     id: 'test',
     name: 'test',
     position: 1,
-    quantity: { type: 'test', value: 1 },
+    quantity: { type: 'test', value: 1, unit: 'pcs.' },
     productSKU: 'test',
     price: undefined,
     singleBasePrice: undefined,
@@ -274,28 +274,24 @@ describe('Checkout Store', () => {
   });
 
   describe('with anonymous user', () => {
-    const payload = { sku: 'test', quantity: 1 };
-
     beforeEach(fakeAsync(() => {
-      store.dispatch(new LoadProduct({ sku: 'test' }));
-      store.dispatch(new AddProductToBasket(payload));
+      store.dispatch(new LoadProductSuccess({ product: { sku: 'test', packingUnit: 'pcs.' } as Product }));
+      store.dispatch(new AddProductToBasket({ sku: 'test', quantity: 1 }));
       tick(5000);
     }));
 
     describe('and without basket', () => {
       it('should initially load basket and basketItems on product add.', () => {
         expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
-          [Shopping] Load Product:
-            sku: "test"
           [Shopping] Load Product Success:
-            product: {"name":"test","shortDescription":"test","longDescription":"...
+            product: {"sku":"test","packingUnit":"pcs."}
           [Basket] Add Product:
             sku: "test"
             quantity: 1
           [Basket Internal] Add Items To Basket:
-            items: [{"sku":"test","quantity":1}]
+            items: [{"sku":"test","quantity":1,"unit":"pcs."}]
           [Basket Internal] Add Items To Basket:
-            items: [{"sku":"test","quantity":1}]
+            items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             basketId: "test"
           [Basket API] Add Items To Basket Success
           [Basket Internal] Load Basket

@@ -8,7 +8,9 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';
@@ -54,10 +56,12 @@ describe('Basket Items Effects', () => {
 
   describe('addProductToBasket$', () => {
     it('should accumulate AddProductToBasket to a single AddItemsToBasket action', () => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU1', packingUnit: 'pcs.' } as Product }));
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU2', packingUnit: 'pcs.' } as Product }));
       const action1 = new basketActions.AddProductToBasket({ sku: 'SKU1', quantity: 1 });
       const action2 = new basketActions.AddProductToBasket({ sku: 'SKU2', quantity: 1 });
       const completion = new basketActions.AddItemsToBasket({
-        items: [{ sku: 'SKU2', quantity: 2 }, { sku: 'SKU1', quantity: 2 }],
+        items: [{ sku: 'SKU2', quantity: 2, unit: 'pcs.' }, { sku: 'SKU1', quantity: 2, unit: 'pcs.' }],
       });
       actions$ = hot('        -b-a-b-a--|', { a: action1, b: action2 });
       const expected$ = cold('----------(c|)', { c: completion });
@@ -81,7 +85,7 @@ describe('Basket Items Effects', () => {
         })
       );
 
-      const items = [{ sku: 'SKU', quantity: 1 }];
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
       actions$ = of(action);
 
@@ -101,7 +105,7 @@ describe('Basket Items Effects', () => {
         })
       );
 
-      const items = [{ sku: 'SKU', quantity: 1 }];
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const basketId = 'BID';
       const action = new basketActions.AddItemsToBasket({ items, basketId });
       actions$ = of(action);
@@ -113,7 +117,7 @@ describe('Basket Items Effects', () => {
     });
 
     it('should not call the basketService for addItemsToBasket if no basket in store', () => {
-      const items = [{ sku: 'SKU', quantity: 1 }];
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
       actions$ = of(action);
 
@@ -125,7 +129,7 @@ describe('Basket Items Effects', () => {
     it('should call the basketService for createBasket when no basket is present', done => {
       when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
 
-      const items = [{ sku: 'SKU', quantity: 1 }];
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
       actions$ = of(action);
 
@@ -145,7 +149,7 @@ describe('Basket Items Effects', () => {
         })
       );
 
-      const items = [{ sku: 'SKU', quantity: 1 }];
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
       const completion = new basketActions.AddItemsToBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
@@ -166,7 +170,7 @@ describe('Basket Items Effects', () => {
         })
       );
 
-      const items = [{ sku: 'invalid', quantity: 1 }];
+      const items = [{ sku: 'invalid', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
       const completion = new basketActions.AddItemsToBasketFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
@@ -232,41 +236,44 @@ describe('Basket Items Effects', () => {
       effects.updateBasketItems$.subscribe(() => {
         verify(basketServiceMock.updateBasketItem('BID', payload.lineItemUpdates[1].itemId, anything())).thrice();
         expect(capture(basketServiceMock.updateBasketItem).first()).toMatchInlineSnapshot(`
-Array [
-  "BID",
-  "BIID",
-  Object {
-    "product": undefined,
-    "quantity": Object {
-      "value": 2,
-    },
-  },
-]
-`);
+          Array [
+            "BID",
+            "BIID",
+            Object {
+              "product": undefined,
+              "quantity": Object {
+                "unit": undefined,
+                "value": 2,
+              },
+            },
+          ]
+        `);
         expect(capture(basketServiceMock.updateBasketItem).second()).toMatchInlineSnapshot(`
-Array [
-  "BID",
-  "BIID",
-  Object {
-    "product": undefined,
-    "quantity": Object {
-      "value": 3,
-    },
-  },
-]
-`);
+          Array [
+            "BID",
+            "BIID",
+            Object {
+              "product": undefined,
+              "quantity": Object {
+                "unit": undefined,
+                "value": 3,
+              },
+            },
+          ]
+        `);
         expect(capture(basketServiceMock.updateBasketItem).third()).toMatchInlineSnapshot(`
-Array [
-  "BID",
-  "BIID",
-  Object {
-    "product": undefined,
-    "quantity": Object {
-      "value": 4,
-    },
-  },
-]
-`);
+          Array [
+            "BID",
+            "BIID",
+            Object {
+              "product": undefined,
+              "quantity": Object {
+                "unit": undefined,
+                "value": 4,
+              },
+            },
+          ]
+        `);
         done();
       });
     });

@@ -71,6 +71,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
       if (lineItem.product) {
         const formGroup = this.formBuilder.group({
           itemId: lineItem.id,
+          unit: lineItem.product.packingUnit,
           quantity: [
             lineItem.quantity.value,
             [Validators.required, Validators.max(lineItem.product.maxOrderQuantity), SpecialValidators.integer],

@@ -23,6 +23,7 @@ export interface Product {
   readyForShipmentMax: number;
   sku: string;
   defaultCategoryId?: string;
+  packingUnit: string;
 
   // properties added in model
   type: 'Product' | 'VariationProduct' | 'VariationProductMaster' | 'Bundle' | 'RetailSet';

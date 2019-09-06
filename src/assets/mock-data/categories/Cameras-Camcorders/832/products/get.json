@@ -17,6 +17,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
@@ -106,6 +111,11 @@
             "unit": "",
             "value": 1
           }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
         },
         {
           "name": "inStock",

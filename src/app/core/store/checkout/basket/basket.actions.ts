@@ -133,7 +133,7 @@ export class AddProductToBasket implements Action {
 
 export class AddItemsToBasket implements Action {
   readonly type = BasketActionTypes.AddItemsToBasket;
-  constructor(public payload: { items: { sku: string; quantity: number }[]; basketId?: string }) {}
+  constructor(public payload: { items: { sku: string; quantity: number; unit: string }[]; basketId?: string }) {}
 }
 
 export class AddItemsToBasketFail implements Action {

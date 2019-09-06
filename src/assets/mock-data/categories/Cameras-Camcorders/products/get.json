@@ -18,6 +18,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
@@ -92,6 +97,11 @@
             "unit": "",
             "value": 1
           }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
         },
         {
           "name": "inStock",
@@ -170,6 +180,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
@@ -244,6 +259,11 @@
             "unit": "",
             "value": 1
           }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
         },
         {
           "name": "inStock",
@@ -322,6 +342,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
@@ -396,6 +421,11 @@
             "unit": "",
             "value": 1
           }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
         },
         {
           "name": "inStock",
@@ -474,6 +504,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
@@ -550,6 +585,11 @@
           }
         },
         {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
           "name": "inStock",
           "type": "Boolean",
           "value": true
@@ -624,6 +664,11 @@
             "unit": "",
             "value": 1
           }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
         },
         {
           "name": "inStock",
