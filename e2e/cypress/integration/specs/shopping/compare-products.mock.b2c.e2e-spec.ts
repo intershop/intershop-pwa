@@ -6,7 +6,7 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 const _ = {
   category: 'Cameras-Camcorders.584',
   product1: '3953312',
-  product2: '7912061',
+  product2: '4729528',
 };
 
 describe('Comparing User', () => {
