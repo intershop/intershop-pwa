@@ -402,12 +402,15 @@
         // forbid every logic in components
         "component": {
           "ngrx": false,
-          "service": false
+          "service": false,
+          "router": true
         },
         "container": {
           "ngrx": true,
           // services should only be used by effects
-          "service": false
+          "service": false,
+          // explicit router navigation should only be done in effects
+          "router": true
         }
       }
     },
