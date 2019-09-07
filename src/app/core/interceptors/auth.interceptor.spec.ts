@@ -24,7 +24,7 @@ describe('Auth Interceptor', () => {
     mockInterceptor = {
       handle(_: HttpRequest<any>): Observable<HttpEvent<any>> {
         const headers = responseHeaders;
-        const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers: headers });
+        const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers });
         return of(res);
       },
     };

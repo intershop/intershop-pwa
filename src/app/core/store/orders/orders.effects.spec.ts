@@ -251,7 +251,7 @@ describe('Orders Effects', () => {
       const orderId = '123';
       const action = new RouteNavigation({
         path: 'account/orders/:orderId',
-        params: { orderId: orderId },
+        params: { orderId },
         queryParams: {},
       });
       const expected = new orderActions.SelectOrder({ orderId });
