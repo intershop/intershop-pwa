@@ -359,6 +359,12 @@
           "import": "pluck",
           "from": "rxjs/operators",
           "message": "This operator is not typesafe. Use 'mapToProperty' instead."
+        },
+        {
+          "import": ".*",
+          "from": ".*environments/environment.*",
+          "filePattern": "^.*/app/((?!module\\.ts).)*$",
+          "message": "Importing environment is not allowed. Inject needed properties instead."
         }
       ]
     },
@@ -392,7 +398,6 @@
     "no-disabled-tests": { "severity": "warning" },
     "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true,
-    "do-not-import-environment": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,
     "ccp-no-intelligence-in-components": {
