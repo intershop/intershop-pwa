@@ -13,39 +13,25 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
-var typescript_1 = require("typescript");
-var UseCamelCaseEnvironmentPropertiesWalker = (function (_super) {
-    __extends(UseCamelCaseEnvironmentPropertiesWalker, _super);
-    function UseCamelCaseEnvironmentPropertiesWalker() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UseCamelCaseEnvironmentPropertiesWalker.prototype.visitSourceFile = function (sourceFile) {
-        if (sourceFile.fileName.match(/.*\/environment[\.\w]*\.ts/)) {
-            _super.prototype.visitSourceFile.call(this, sourceFile);
-        }
-    };
-    UseCamelCaseEnvironmentPropertiesWalker.prototype.visitPropertyAssignment = function (propertyAssignment) {
-        var _this = this;
-        propertyAssignment.getChildren().forEach(function (token) {
-            if (token.kind === typescript_1.SyntaxKind.Identifier) {
-                var identifier = token.getText();
-                if (!identifier.match(/^[a-z][A-Za-z0-9]*$/)) {
-                    _super.prototype.addFailureAtNode.call(_this, token, "Property " + token.getText() + " is not camelCase formatted.");
-                }
-            }
-        });
-        _super.prototype.visitPropertyAssignment.call(this, propertyAssignment);
-    };
-    return UseCamelCaseEnvironmentPropertiesWalker;
-}(Lint.RuleWalker));
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new UseCamelCaseEnvironmentPropertiesWalker(sourceFile, this.getOptions()));
+        if (!sourceFile.fileName.match(/.*\/environment[\.\w]*\.ts/)) {
+            return [];
+        }
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            tsquery_1.tsquery(sourceFile, 'PropertyAssignment').forEach(function (token) {
+                var identifier = token.name.getText();
+                if (!identifier.match(/^[a-z][A-Za-z0-9]*$/)) {
+                    ctx.addFailureAtNode(token, "Property " + token.getText() + " is not camelCase formatted.");
+                }
+            });
+        });
     };
     return Rule;
 }(Lint.Rules.AbstractRule));
