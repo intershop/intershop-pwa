@@ -1,23 +1,8 @@
 import { VariationProductView } from '../product-view/product-view.model';
-import { VariationProduct } from '../product/product-variation.model';
 
 import { ProductVariationHelper } from './product-variation.helper';
 
 describe('Product Variation Helper', () => {
-  it('should find default variation for master product', () => {
-    const variations = [
-      { sku: '111' },
-      {
-        attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-        sku: '222',
-      },
-      { sku: '333' },
-    ] as VariationProduct[];
-
-    const result = ProductVariationHelper.findDefaultVariation(variations);
-    expect(result).toBe('222');
-  });
-
   it('should build variation option groups for variation product', () => {
     const variationProduct = {
       sku: '222',

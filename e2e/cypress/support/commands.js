@@ -30,7 +30,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     newUrl = split[0];
     if (/.*\.b2b\..*/.test(Cypress.spec.name)) {
       newUrl +=
-        ';channel=inSPIRED-inTRONICS_Business-Site;features=quoting,compare,recently,businessCustomerRegistration';
+        ';channel=inSPIRED-inTRONICS_Business-Site;features=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling';
     } else if (/.*\.b2c\..*/.test(Cypress.spec.name)) {
       newUrl += ';channel=inSPIRED-inTRONICS-Site';
     }

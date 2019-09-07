@@ -1,9 +1,7 @@
 import { groupBy } from 'lodash-es';
 
 import { objectToArray } from 'ish-core/utils/functions';
-import { AttributeHelper } from '../attribute/attribute.helper';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
-import { VariationProduct } from '../product/product-variation.model';
 
 import { VariationAttribute } from './variation-attribute.model';
 import { VariationOptionGroup } from './variation-option-group.model';
@@ -146,13 +144,5 @@ export class ProductVariationHelper {
 
   static hasDefaultVariation(product: VariationProductMasterView): boolean {
     return product && !!product.defaultVariationSKU;
-  }
-
-  static findDefaultVariation(variations: VariationProduct[]): string {
-    const defaultVariation = variations.find(variation =>
-      AttributeHelper.getAttributeValueByAttributeName<boolean>(variation.attributes, 'defaultVariation')
-    );
-
-    return defaultVariation ? defaultVariation.sku : undefined;
   }
 }
