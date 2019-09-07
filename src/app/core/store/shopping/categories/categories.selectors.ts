@@ -3,7 +3,7 @@ import { createSelector } from '@ngrx/store';
 import { createCategoryView } from '../../../models/category-view/category-view.model';
 import { ShoppingState, getShoppingState } from '../shopping-store';
 
-const getCategoryState = createSelector(
+const getCategoriesState = createSelector(
   getShoppingState,
   (state: ShoppingState) => state.categories
 );
@@ -16,12 +16,12 @@ const getCategoryState = createSelector(
  * When in doubt prefer using getSelectedCategory.
  */
 export const getSelectedCategoryId = createSelector(
-  getCategoryState,
+  getCategoriesState,
   state => state.selected
 );
 
 export const getCategoryTree = createSelector(
-  getCategoryState,
+  getCategoriesState,
   state => state.categories
 );
 
@@ -48,7 +48,7 @@ export const getSelectedCategory = createSelector(
 );
 
 export const getCategoryLoading = createSelector(
-  getCategoryState,
+  getCategoriesState,
   categories => categories.loading
 );
 
@@ -58,6 +58,6 @@ export const getTopLevelCategories = createSelector(
 );
 
 export const isTopLevelCategoriesLoaded = createSelector(
-  getCategoryState,
+  getCategoriesState,
   state => state.topLevelLoaded
 );
