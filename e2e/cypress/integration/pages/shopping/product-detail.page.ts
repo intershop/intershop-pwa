@@ -11,6 +11,7 @@ export class ProductDetailPage {
 
   readonly bundleParts = new ProductListModule('ish-product-bundle-parts');
   readonly retailSetParts = new ProductListModule('ish-retail-set-parts');
+  readonly variations = new ProductListModule('ish-product-master-variations');
 
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
@@ -71,5 +72,18 @@ export class ProductDetailPage {
 
   gotoRecentlyViewedViewAll() {
     cy.get('ish-recently-viewed [data-testing-id=view-all]').click();
+  }
+
+  accordionItem(id: string) {
+    return cy.get('ish-accordion-item a.accordion-toggle').contains(id);
+  }
+
+  changeVariationWithSelect(id: string, value: string) {
+    // tslint:disable-next-line:ban
+    cy.get('#' + id).select(value);
+  }
+
+  gotoMasterProduct() {
+    cy.get('a.all-variations-link').click();
   }
 }

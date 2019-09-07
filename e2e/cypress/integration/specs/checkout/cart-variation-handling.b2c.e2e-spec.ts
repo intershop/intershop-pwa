@@ -15,7 +15,7 @@ const _ = {
   ],
 };
 
-describe('Variation Handling', () => {
+describe('Variation Handling in Cart', () => {
   before(() => {
     ProductDetailPage.navigateTo(_.productSkuInitial);
   });
