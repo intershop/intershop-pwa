@@ -32,7 +32,6 @@ describe('Orders Effects', () => {
 
   // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
