@@ -33,7 +33,6 @@ describe('Checkout Payment Component', () => {
   beforeEach(async(() => {
     // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({

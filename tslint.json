@@ -393,7 +393,6 @@
     "no-commented-out-tests": true,
     "no-focused-tests": true,
     "no-disabled-tests": { "severity": "warning" },
-    "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,

@@ -19,7 +19,6 @@ describe('Server Html Directive', () => {
         `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
-      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class TestComponent {
         html = `<div><a href="product://8182790134362@inSPIRED-inTRONICS">Produkt</a></div>
         <div><a href="http://google.de">Google</a></div>
@@ -57,7 +56,6 @@ describe('Server Html Directive', () => {
         `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
-      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class TestComponent {
         html = `<img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`;
       }
@@ -105,7 +103,6 @@ describe('Server Html Directive', () => {
         `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
-      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class TestComponent {
         html = `<img src="https://google.de/logo.png" alt="LOGO" />`;
       }
@@ -135,7 +132,6 @@ describe('Server Html Directive', () => {
         `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
-      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class TestComponent {}
 
       TestBed.configureTestingModule({

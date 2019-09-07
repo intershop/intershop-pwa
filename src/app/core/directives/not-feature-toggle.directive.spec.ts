@@ -13,7 +13,6 @@ import { FeatureToggleModule } from '../feature-toggle.module';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
 class TestComponent {}
 
 describe('Not Feature Toggle Directive', () => {
