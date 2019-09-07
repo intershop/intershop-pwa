@@ -16,16 +16,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Lint = require("tslint");
 var typescript_1 = require("typescript");
 var ruleHelpers_1 = require("./ruleHelpers");
-var BanSpecificImportsWalker = (function (_super) {
-    __extends(BanSpecificImportsWalker, _super);
-    function BanSpecificImportsWalker(sourceFile, options) {
-        var _this = _super.call(this, sourceFile, options) || this;
+var Rule = (function (_super) {
+    __extends(Rule, _super);
+    function Rule(options) {
+        var _this = _super.call(this, options) || this;
         _this.patterns = [];
         _this.patterns = options.ruleArguments;
         return _this;
     }
-    BanSpecificImportsWalker.prototype.visitImportDeclaration = function (importStatement) {
+    Rule.prototype.apply = function (sourceFile) {
         var _this = this;
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            sourceFile.statements
+                .filter(function (stm) { return stm.kind === typescript_1.SyntaxKind.ImportDeclaration; })
+                .forEach(function (node) {
+                _this.visitImportDeclaration(ctx, node);
+            });
+        });
+    };
+    Rule.prototype.visitImportDeclaration = function (ctx, importStatement) {
         var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, typescript_1.SyntaxKind.StringLiteral);
         var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
         this.patterns.forEach(function (pattern) {
@@ -38,7 +47,7 @@ var BanSpecificImportsWalker = (function (_super) {
                     importList = [importStatement.getChildAt(1)];
                 }
                 else if (importSpecifier.kind === typescript_1.SyntaxKind.NamespaceImport && pattern.starImport) {
-                    _this.addFailureAtNode(importStatement, pattern.message || "Star imports from '" + fromStringText + "' are banned.");
+                    ctx.addFailureAtNode(importStatement, pattern.message || "Star imports from '" + fromStringText + "' are banned.");
                     return;
                 }
                 else {
@@ -54,7 +63,7 @@ var BanSpecificImportsWalker = (function (_super) {
                     importList
                         .filter(function (token) { return new RegExp(pattern.import).test(token.getText()); })
                         .forEach(function (token) {
-                        return _this.addFailureAtNode(token, pattern.message || "Using '" + token.getText() + "' from '" + fromStringText + "' is banned.");
+                        return ctx.addFailureAtNode(token, pattern.message || "Using '" + token.getText() + "' from '" + fromStringText + "' is banned.");
                     });
                 }
                 else {
@@ -62,20 +71,10 @@ var BanSpecificImportsWalker = (function (_super) {
                     if (pattern.fix) {
                         fix = new Lint.Replacement(fromStringToken.getStart(), fromStringToken.getWidth(), "'" + fromStringText.replace(new RegExp(pattern.from), pattern.fix) + "'");
                     }
-                    _this.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.", fix);
+                    ctx.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.", fix);
                 }
             }
         });
-    };
-    return BanSpecificImportsWalker;
-}(Lint.RuleWalker));
-var Rule = (function (_super) {
-    __extends(Rule, _super);
-    function Rule() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new BanSpecificImportsWalker(sourceFile, this.getOptions()));
     };
     return Rule;
 }(Lint.Rules.AbstractRule));
