@@ -12,16 +12,26 @@ interface ImportPattern {
   fix: string;
 }
 
-class BanSpecificImportsWalker extends Lint.RuleWalker {
-  patterns: ImportPattern[] = [];
+export class Rule extends Lint.Rules.AbstractRule {
+  private patterns: ImportPattern[] = [];
 
-  constructor(sourceFile: SourceFile, options: Lint.IOptions) {
-    super(sourceFile, options);
+  constructor(options: Lint.IOptions) {
+    super(options);
 
     this.patterns = options.ruleArguments as ImportPattern[];
   }
 
-  visitImportDeclaration(importStatement: ImportDeclaration) {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+    return this.applyWithFunction(sourceFile, ctx => {
+      sourceFile.statements
+        .filter(stm => stm.kind === SyntaxKind.ImportDeclaration)
+        .forEach(node => {
+          this.visitImportDeclaration(ctx, node as ImportDeclaration);
+        });
+    });
+  }
+
+  private visitImportDeclaration(ctx: Lint.WalkContext<void>, importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
 
@@ -38,10 +48,7 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
         if (importSpecifier.kind === SyntaxKind.Identifier) {
           importList = [importStatement.getChildAt(1)];
         } else if (importSpecifier.kind === SyntaxKind.NamespaceImport && pattern.starImport) {
-          this.addFailureAtNode(
-            importStatement,
-            pattern.message || `Star imports from '${fromStringText}' are banned.`
-          );
+          ctx.addFailureAtNode(importStatement, pattern.message || `Star imports from '${fromStringText}' are banned.`);
           return;
         } else {
           importList = importSpecifier
@@ -58,7 +65,7 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
           importList
             .filter(token => new RegExp(pattern.import).test(token.getText()))
             .forEach(token =>
-              this.addFailureAtNode(
+              ctx.addFailureAtNode(
                 token,
                 pattern.message || `Using '${token.getText()}' from '${fromStringText}' is banned.`
               )
@@ -72,22 +79,9 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
               `'${fromStringText.replace(new RegExp(pattern.from), pattern.fix)}'`
             );
           }
-          this.addFailureAtNode(
-            fromStringToken,
-            pattern.message || `Importing from '${fromStringText} is banned.`,
-            fix
-          );
+          ctx.addFailureAtNode(fromStringToken, pattern.message || `Importing from '${fromStringText} is banned.`, fix);
         }
       }
     });
-  }
-}
-
-/**
- * Implementation of the ban-specific-imports rule.
- */
-export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new BanSpecificImportsWalker(sourceFile, this.getOptions()));
   }
 }
