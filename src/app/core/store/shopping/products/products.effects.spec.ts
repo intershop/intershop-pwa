@@ -181,7 +181,9 @@ describe('Products Effects', () => {
 
   describe('loadProductVariations$', () => {
     beforeEach(() => {
-      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => of([]));
+      when(productsServiceMock.getProductVariations(anyString())).thenCall(() =>
+        of({ products: [], defaultVariation: undefined })
+      );
     });
 
     it('should call the productsService for getProductVariations', done => {

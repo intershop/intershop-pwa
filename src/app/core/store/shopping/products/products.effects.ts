@@ -20,7 +20,6 @@ import {
 } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
-import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
@@ -122,12 +121,12 @@ export class ProductsEffects {
     mapToPayloadProperty('sku'),
     mergeMap(sku =>
       this.productsService.getProductVariations(sku).pipe(
-        mergeMap((variations: VariationProduct[]) => [
-          ...variations.map(product => new productsActions.LoadProductSuccess({ product })),
+        mergeMap(({ products: variations, defaultVariation }) => [
+          ...variations.map((product: Product) => new productsActions.LoadProductSuccess({ product })),
           new productsActions.LoadProductVariationsSuccess({
             sku,
             variations: variations.map(p => p.sku),
-            defaultVariation: ProductVariationHelper.findDefaultVariation(variations),
+            defaultVariation,
           }),
         ]),
         mapErrorToAction(productsActions.LoadProductVariationsFail, { sku })

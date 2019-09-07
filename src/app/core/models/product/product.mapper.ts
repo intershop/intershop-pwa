@@ -50,6 +50,14 @@ export class ProductMapper {
     }
   }
 
+  static findDefaultVariation(variationLinks: Link[]): string {
+    const defaultVariation = variationLinks.find(variation =>
+      AttributeHelper.getAttributeValueByAttributeName<boolean>(variation.attributes, 'defaultVariation')
+    );
+
+    return defaultVariation ? ProductMapper.parseSKUfromURI(defaultVariation.uri) : undefined;
+  }
+
   fromLink(link: Link): Partial<Product> {
     return {
       sku: ProductMapper.parseSKUfromURI(link.uri),
@@ -66,7 +74,6 @@ export class ProductMapper {
       variableVariationAttributes: link.variableVariationAttributeValues,
       productMasterSKU,
       type: 'VariationProduct',
-      attributes: link.attributes || [],
       failed: false,
     };
   }
