@@ -1,3 +1,4 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
@@ -19,7 +20,7 @@ export const kebabCaseFromPascalCase = (input: string): string =>
 const camelCaseFromPascalCase = (input: string): string =>
   `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
 
-class ProjectStructureWalker extends Lint.RuleWalker {
+export class Rule extends Lint.Rules.AbstractRule {
   warnUnmatched = false;
   patterns: RuleDeclaration[] = [];
   ignoredFiles: string[];
@@ -27,8 +28,8 @@ class ProjectStructureWalker extends Lint.RuleWalker {
 
   fileName: string;
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
-    super(sourceFile, options);
+  constructor(options: Lint.IOptions) {
+    super(options);
     if (options.ruleArguments[0]) {
       this.warnUnmatched = !!options.ruleArguments[0].warnUnmatched;
       this.patterns = options.ruleArguments[0].patterns;
@@ -39,21 +40,35 @@ class ProjectStructureWalker extends Lint.RuleWalker {
     }
   }
 
-  visitSourceFile(sourceFile: ts.SourceFile) {
-    this.fileName = sourceFile.fileName;
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+    const isIgnored = this.ignoredFiles.some(ignoredPattern => new RegExp(ignoredPattern).test(sourceFile.fileName));
 
-    const isIgnored = this.ignoredFiles.some(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName));
-
-    if (!isIgnored) {
-      const matchesPathPattern = this.pathPatterns.some(pattern => new RegExp(pattern).test(this.fileName));
-      if (!matchesPathPattern) {
-        this.addFailureAt(0, 1, `this file path does not match any defined patterns`);
-      }
-      super.visitSourceFile(sourceFile);
+    if (isIgnored) {
+      return [];
     }
+
+    const matchesPathPattern = this.pathPatterns.some(pattern => new RegExp(pattern).test(sourceFile.fileName));
+    if (!matchesPathPattern) {
+      return [
+        new Lint.RuleFailure(sourceFile, 0, 1, `this file path does not match any defined patterns`, this.ruleName),
+      ];
+    }
+
+    return this.applyWithFunction(sourceFile, ctx => {
+      tsquery(ctx.sourceFile, '*')
+        .filter(
+          node =>
+            ts.isVariableDeclaration(node) ||
+            ts.isFunctionDeclaration(node) ||
+            ts.isInterfaceDeclaration(node) ||
+            ts.isClassDeclaration(node)
+        )
+        .forEach(node => this.visitDeclaration(ctx, node));
+    });
   }
 
-  private visitName(name: string, node: ts.Node) {
+  visitDeclaration(ctx: Lint.WalkContext<void>, node: { name?: ts.Node } & ts.Node) {
+    const name = node.name.getText();
     const matchingPatterns = this.patterns
       .map(pattern => ({ pattern, match: new RegExp(pattern.name).exec(name) }))
       .filter(x => !!x.match);
@@ -65,48 +80,11 @@ class ProjectStructureWalker extends Lint.RuleWalker {
         .replace(/<kebab>/g, kebabCaseFromPascalCase(matched))
         .replace(/<camel>/g, camelCaseFromPascalCase(matched));
 
-      if (!new RegExp(pathPattern).test(this.fileName)) {
-        this.addFailureAtNode(node, `${name} is not in the correct file (expected ${pathPattern})`);
+      if (!new RegExp(pathPattern).test(ctx.sourceFile.fileName)) {
+        ctx.addFailureAtNode(node.name, `'${name}' is not in the correct file (expected '${pathPattern}')`);
       }
     } else if (matchingPatterns.length === 0 && this.warnUnmatched) {
       console.warn(`no pattern match for ${name} in file ${this.fileName}`);
     }
-  }
-
-  visitClassDeclaration(declaration: ts.ClassDeclaration) {
-    const name = declaration.name.escapedText.toString();
-    this.visitName(name, declaration);
-  }
-
-  visitInterfaceDeclaration(declaration: ts.InterfaceDeclaration) {
-    const name = declaration.name.escapedText.toString();
-    this.visitName(name, declaration);
-  }
-
-  visitFunctionDeclaration(declaration: ts.FunctionDeclaration) {
-    const name = declaration.name.escapedText.toString();
-    this.visitName(name, declaration);
-  }
-
-  visitVariableStatement(stmt: ts.VariableStatement) {
-    if (stmt.getText().startsWith('export')) {
-      super.visitVariableStatement(stmt);
-    }
-  }
-
-  visitVariableDeclaration(declaration: ts.VariableDeclaration) {
-    if (ts.isIdentifier(declaration.name) && (declaration.name as ts.Identifier).escapedText) {
-      const name = (declaration.name as ts.Identifier).escapedText.toString();
-      this.visitName(name, declaration);
-    }
-  }
-}
-
-/**
- * Implementation of the project-structure rule.
- */
-export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ProjectStructureWalker(sourceFile, this.getOptions()));
   }
 }

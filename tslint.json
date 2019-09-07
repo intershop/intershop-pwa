@@ -472,10 +472,6 @@
             "name": "RouterEffects",
             "file": ".*/src/ngrx-router/effects.ts"
           },
-          {
-            "name": "isRoute",
-            "file": ".*/src/ngrx-router/operator.ts"
-          },
           // root components
           {
             "name": "^(AppComponent)$",
@@ -491,58 +487,69 @@
           },
           // angular components
           {
-            "name": "^(.*)PageContainerComponent$",
+            "name": "^([A-Z].*)PageContainerComponent$",
             "file": ".*/pages/<kebab>/<kebab>-page\\.container\\.ts$"
           },
           {
-            "name": "^(.*)ContainerComponent$",
+            "name": "^CMSContainerComponent$",
+            "file": ".*/shared/cms/components/cms-container/cms-container\\.component\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)ContainerComponent$",
             "file": ".*/containers/<kebab>/<kebab>\\.container\\.ts$"
           },
           {
-            "name": "^(.*)Component$",
+            "name": "^(Test|Dummy)Component$",
+            "file": ".*.ts$"
+          },
+          {
+            "name": "^([A-Z].*)Component$",
             "file": ".*/components/<kebab>/<kebab>\\.component\\.ts$"
           },
           {
-            "name": "^(.*)Directive$",
+            "name": "^([A-Z].*)Directive$",
             "file": ".*/directives/<kebab>\\.directive\\.ts$"
           },
-          { "name": "^(.*)Guard$", "file": ".*/guards/<kebab>\\.guard\\.ts$" },
           {
-            "name": "^(.*)Interceptor$",
+            "name": "^([A-Z].*)Guard$",
+            "file": ".*/guards/<kebab>\\.guard\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)Interceptor$",
             "file": ".*/interceptors/<kebab>\\.interceptor\\.ts$"
           },
           // services
           {
-            "name": "^(.*)Service$",
+            "name": "^([A-Z].*)Service$",
             "file": "(/utils.*|/services/<kebab>)/<kebab>\\.service\\.ts$"
           },
           // modules and routing
           {
-            "name": "^(.+)ExportsModule$",
+            "name": "^([A-Z].+)ExportsModule$",
             "file": ".*/extensions/<kebab>/exports/<kebab>-exports\\.module\\.ts$"
           },
           {
-            "name": "^(.+)SharedModule$",
+            "name": "^([A-Z].+)SharedModule$",
             "file": ".*/shared/[a-z][a-z0-9-]+/<kebab>\\.module\\.ts$"
           },
           {
-            "name": "^(.*)PageModule",
+            "name": "^([A-Z].*)PageModule$",
             "file": ".*/<kebab>/<kebab>-page\\.module\\.ts$"
           },
           {
-            "name": "^(.*)RoutingModule",
+            "name": "^([A-Z].*)RoutingModule$",
             "file": ".*/pages/<kebab>-routing\\.module\\.ts$"
           },
           {
-            "name": "^CoreStoreModule",
+            "name": "^CoreStoreModule$",
             "file": ".*/core/store/core-store\\.module\\.ts$"
           },
           {
-            "name": "^(.*)StoreModule",
+            "name": "^([A-Z].*)StoreModule$",
             "file": ".*/(<kebab>|store)/<kebab>-store\\.module\\.ts$"
           },
           {
-            "name": "^(.*)Module",
+            "name": "^(.*)Module$",
             "file": ".*(cypress.*|/<kebab>/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
           { "name": "^(.*)Routes$", "file": ".*/<kebab>\\.module\\.ts$" },
@@ -582,11 +589,7 @@
           },
           { "name": "^(initialState)$", "file": ".*/store/.*\\.reducer\\.ts$" },
           {
-            "name": "^((get|is)[A-Z].*)$",
-            "file": ".*/(store/.*\\.(reducer|selectors)|factories)\\.ts$"
-          },
-          {
-            "name": "^(.*)Reducer$",
+            "name": "^([a-z].*)Reducer$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
           },
           { "name": "^(metaReducers)$", "file": ".*\\.module\\.ts$" },
