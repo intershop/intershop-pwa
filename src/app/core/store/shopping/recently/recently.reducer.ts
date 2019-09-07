@@ -1,7 +1,7 @@
 import * as fromRecently from './recently.actions';
 
 export interface RecentlyState {
-  products: string[];
+  products: { sku: string; group?: string }[];
 }
 
 export const initialState: RecentlyState = {
@@ -11,8 +11,7 @@ export const initialState: RecentlyState = {
 export function recentlyReducer(state = initialState, action: fromRecently.RecentlyAction): RecentlyState {
   switch (action.type) {
     case fromRecently.RecentlyActionTypes.AddToRecently: {
-      const newProduct = action.payload.sku;
-      const products = [newProduct, ...state.products.filter(id => id !== newProduct)];
+      const products = [action.payload, ...state.products];
 
       return { ...state, products };
     }
