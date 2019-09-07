@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
-import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, first, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
@@ -54,7 +54,9 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private prodRoutePipe: ProductRoutePipe,
-    private featureToggleService: FeatureToggleService
+    private featureToggleService: FeatureToggleService,
+    private appRef: ApplicationRef,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
@@ -135,7 +137,16 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   redirectToVariation(variation: VariationProductView, replaceUrl = false) {
     const route = variation && this.prodRoutePipe.transform(variation);
     if (route) {
-      this.router.navigateByUrl(route, { replaceUrl });
+      this.appRef.isStable
+        .pipe(
+          whenTruthy(),
+          first()
+        )
+        .subscribe(() => {
+          this.ngZone.run(() => {
+            this.router.navigateByUrl(route, { replaceUrl });
+          });
+        });
     }
   }
 
