@@ -198,7 +198,6 @@
         "ngOnChanges": 3
       }
     },
-    "local-imports-format": [true, "TypeScriptHeroPlugin"],
     "ng-module-sorted-fields": {
       "severity": "error",
       "options": {
@@ -285,8 +284,8 @@
           "fix": "$1"
         },
         {
-          "from": "(.*)/index$",
-          "message": "trailing '/index' seems to be wrong",
+          "from": "^\\.\\/(\\..*$)",
+          "message": "unnecessary local folder reference",
           "fix": "$1"
         },
         {
