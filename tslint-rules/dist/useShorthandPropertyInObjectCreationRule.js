@@ -13,34 +13,21 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
-var ts = require("typescript");
-var UseShorthandPropertyInObjectCreationWalker = (function (_super) {
-    __extends(UseShorthandPropertyInObjectCreationWalker, _super);
-    function UseShorthandPropertyInObjectCreationWalker() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UseShorthandPropertyInObjectCreationWalker.prototype.visitObjectLiteralExpression = function (node) {
-        var _this = this;
-        node
-            .getChildAt(1)
-            .getChildren()
-            .filter(function (cn) { return cn.kind === ts.SyntaxKind.PropertyAssignment; })
-            .map(function (cn) { return cn; })
-            .filter(function (pa) { return pa.name.getText() === pa.initializer.getText(); })
-            .forEach(function (pa) {
-            return _this.addFailureAtNode(pa, 'Use shorthand property assignement.', Lint.Replacement.replaceNode(pa, pa.name.getText()));
-        });
-    };
-    return UseShorthandPropertyInObjectCreationWalker;
-}(Lint.RuleWalker));
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new UseShorthandPropertyInObjectCreationWalker(sourceFile, this.getOptions()));
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            tsquery_1.tsquery(sourceFile, 'ObjectLiteralExpression PropertyAssignment')
+                .filter(function (pa) { return pa.name.getText() === pa.initializer.getText(); })
+                .forEach(function (pa) {
+                return ctx.addFailureAtNode(pa, 'Use shorthand property assignement.', Lint.Replacement.replaceNode(pa, pa.name.getText()));
+            });
+        });
     };
     return Rule;
 }(Lint.Rules.AbstractRule));
