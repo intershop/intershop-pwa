@@ -13,43 +13,49 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
+var ngWalker_1 = require("codelyzer/angular/ngWalker");
+var basicTemplateAstVisitor_1 = require("codelyzer/angular/templates/basicTemplateAstVisitor");
 var Lint = require("tslint");
-var MESSAGE = 'Container templates should not contain markup.';
-var CCPNoMarkupInContainersWalker = (function (_super) {
-    __extends(CCPNoMarkupInContainersWalker, _super);
-    function CCPNoMarkupInContainersWalker(sourceFile, options) {
-        var _this = _super.call(this, sourceFile, options) || this;
-        _this.patterns = options.ruleArguments[0].patterns;
-        return _this;
+var MESSAGE = 'Container templates should not contain markup. ';
+var ContainerTemplateVisitor = (function (_super) {
+    __extends(ContainerTemplateVisitor, _super);
+    function ContainerTemplateVisitor() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    CCPNoMarkupInContainersWalker.prototype.visitSourceFile = function (sourceFile) {
+    ContainerTemplateVisitor.prototype.visitElement = function (element, context) {
+        this.validateElement(element);
+        _super.prototype.visitElement.call(this, element, context);
+    };
+    ContainerTemplateVisitor.prototype.validateElement = function (element) {
         var _this = this;
-        if (sourceFile.fileName.match(/.*\/containers\/(?!.*(routes|module|spec).ts$).*.ts/)) {
-            var fileName = sourceFile.fileName;
-            var templateName = fileName.substring(0, fileName.length - 2) + 'html';
-            try {
-                var template_1 = fs.readFileSync(templateName, 'utf8');
-                this.patterns.forEach(function (pattern) {
-                    if (template_1.search(pattern) >= 0) {
-                        var message = MESSAGE + " (found '" + pattern + "')";
-                        _this.addFailureAt(0, 1, message);
-                    }
-                });
-            }
-            catch (err) {
-            }
+        if (!element.name.startsWith('ish-') && !element.name.startsWith('ng-') && element.name !== 'div') {
+            this.addFailureFromStartToEnd(element.sourceSpan.start.offset, element.sourceSpan.end.offset, MESSAGE + " Found '" + element.name + "'.");
+        }
+        var failures = element.attrs.map(function (attr) { return _this.validateAttr(attr); }).filter(function (x) { return !!x; });
+        if (failures && failures.length) {
+            this.addFailureFromStartToEnd(element.sourceSpan.start.offset, element.sourceSpan.end.offset, MESSAGE + " " + failures.join(' '));
         }
     };
-    return CCPNoMarkupInContainersWalker;
-}(Lint.RuleWalker));
+    ContainerTemplateVisitor.prototype.validateAttr = function (attr) {
+        if (attr.name === 'class' || attr.name === 'style') {
+            return "Found '" + attr.name + "' with value '" + attr.value + "'.";
+        }
+        else {
+            return;
+        }
+    };
+    return ContainerTemplateVisitor;
+}(basicTemplateAstVisitor_1.BasicTemplateAstVisitor));
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new CCPNoMarkupInContainersWalker(sourceFile, this.getOptions()));
+        if (!sourceFile.fileName.match(/.*\/containers\/.*.ts/)) {
+            return [];
+        }
+        return this.applyWithWalker(new ngWalker_1.NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: ContainerTemplateVisitor }));
     };
     return Rule;
 }(Lint.Rules.AbstractRule));
