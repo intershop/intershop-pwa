@@ -3,7 +3,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable, concat, of, timer } from 'rxjs';
 import { distinctUntilChanged, mapTo, switchMap } from 'rxjs/operators';
 
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { getBasketError, getBasketLastTimeProductAdded, getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -14,7 +13,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 })
 export class MiniBasketContainerComponent implements OnInit {
   basket$ = this.store.pipe(select(getCurrentBasket));
-  basketError$: Observable<HttpError>;
+  basketError$ = this.store.pipe(select(getBasketError));
   basketAnimation$: Observable<string>;
 
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
@@ -28,8 +27,5 @@ export class MiniBasketContainerComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(() => concat(of('tada'), timer(2500).pipe(mapTo(''))))
     );
-
-    // tslint:disable-next-line: initialize-observables-in-declaration
-    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 }
