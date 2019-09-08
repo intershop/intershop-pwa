@@ -1,4 +1,3 @@
-// tslint:disable:project-structure
 import { ContentEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 import { SfeDomNode, SfeMetadata, SfeMetadataNode } from './sfe.types';

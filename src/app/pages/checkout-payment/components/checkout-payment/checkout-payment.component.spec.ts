@@ -31,9 +31,7 @@ describe('Checkout Payment Component', () => {
   let paymentMethodChange: SimpleChanges;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({

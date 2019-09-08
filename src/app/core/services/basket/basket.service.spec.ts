@@ -50,7 +50,7 @@ describe('Basket Service', () => {
 
   const basketMergeResponseData = {
     data: {
-      sourceBasket: sourceBasket,
+      sourceBasket,
       targetBasket: '345678abc',
     },
     included: {

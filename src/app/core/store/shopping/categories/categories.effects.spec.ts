@@ -38,9 +38,7 @@ describe('Categories Effects', () => {
     { uniqueId: '456', categoryPath: ['456'] },
   ] as Category[]);
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
   beforeEach(() => {

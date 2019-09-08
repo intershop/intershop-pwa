@@ -60,7 +60,7 @@ describe('User Selectors', () => {
       new LoginUserSuccess({
         customer: {
           type: 'SMBCustomer',
-          customerNo: customerNo,
+          customerNo,
         },
       } as CustomerUserType)
     );
@@ -80,12 +80,12 @@ describe('User Selectors', () => {
     store$.dispatch(
       new LoginUserSuccess({
         customer: {
-          type: type,
-          customerNo: customerNo,
+          type,
+          customerNo,
           isBusinessCustomer: false,
         },
         user: {
-          firstName: firstName,
+          firstName,
         },
       } as CustomerUserType)
     );

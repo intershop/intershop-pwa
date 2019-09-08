@@ -14,49 +14,45 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Lint = require("tslint");
-var typescript_1 = require("typescript");
+var ts = require("typescript");
 var ruleHelpers_1 = require("./ruleHelpers");
-var CCPNoIntelligenceInComponentsWalker = (function (_super) {
-    __extends(CCPNoIntelligenceInComponentsWalker, _super);
-    function CCPNoIntelligenceInComponentsWalker(sourceFile, options) {
-        var _this = _super.call(this, sourceFile, options) || this;
+var Rule = (function (_super) {
+    __extends(Rule, _super);
+    function Rule(options) {
+        var _this = _super.call(this, options) || this;
         _this.ruleSettings = {};
         _this.ruleSettings.component = options.ruleArguments[0].component;
         _this.ruleSettings.container = options.ruleArguments[0].container;
         return _this;
     }
-    CCPNoIntelligenceInComponentsWalker.prototype.visitSourceFile = function (sourceFile) {
-        if (sourceFile.fileName.match(/.*(component|container)\.ts/)) {
-            this.isContainer = sourceFile.fileName.indexOf('container') >= 0;
-            _super.prototype.visitSourceFile.call(this, sourceFile);
-        }
-    };
-    CCPNoIntelligenceInComponentsWalker.prototype.visitImportDeclaration = function (importStatement) {
-        var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, typescript_1.SyntaxKind.StringLiteral);
-        var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
-        var c;
-        if (this.isContainer) {
-            c = 'container';
-        }
-        else {
-            c = 'component';
-        }
-        if (fromStringText.search(/\/store(\/|$)/) > 0 && !this.ruleSettings[c].ngrx) {
-            this.addFailureAtNode(importStatement, "ngrx handling is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
-        }
-        if (fromStringText.search(/\.service$/) > 0 && !this.ruleSettings[c].service) {
-            this.addFailureAtNode(importStatement, "service usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
-        }
-    };
-    return CCPNoIntelligenceInComponentsWalker;
-}(Lint.RuleWalker));
-var Rule = (function (_super) {
-    __extends(Rule, _super);
-    function Rule() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new CCPNoIntelligenceInComponentsWalker(sourceFile, this.getOptions()));
+        var _this = this;
+        if (!sourceFile.fileName.match(/.*(component|container)\.ts/)) {
+            return [];
+        }
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            _this.isContainer = sourceFile.fileName.indexOf('container') >= 0;
+            ctx.sourceFile.statements.filter(ts.isImportDeclaration).forEach(function (importStatement) {
+                var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, ts.SyntaxKind.StringLiteral);
+                var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
+                var c;
+                if (_this.isContainer) {
+                    c = 'container';
+                }
+                else {
+                    c = 'component';
+                }
+                if (fromStringText.search(/\/store(\/|$)/) >= 0 && !_this.ruleSettings[c].ngrx) {
+                    ctx.addFailureAtNode(importStatement, "ngrx handling is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                }
+                if (fromStringText.search(/\.service$/) >= 0 && !_this.ruleSettings[c].service) {
+                    ctx.addFailureAtNode(importStatement, "service usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                }
+                if (fromStringText.search(/angular\/router/) >= 0 && !_this.ruleSettings[c].router) {
+                    ctx.addFailureAtNode(importStatement, "router usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                }
+            });
+        });
     };
     return Rule;
 }(Lint.Rules.AbstractRule));

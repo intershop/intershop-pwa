@@ -6,23 +6,70 @@ import { RuleHelpers } from './ruleHelpers';
 
 const SHOULD_BE_CREATED_NAME = 'should be created';
 
-class ComponentCreationTestWalker extends Lint.RuleWalker {
-  private warnOnlyOnMissing = false;
-
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
-    super(sourceFile, options);
-    this.warnOnlyOnMissing = this.getOptions()[0] === 'warn';
+export class Rule extends Lint.Rules.AbstractRule {
+  static fsExistsSync(myDir: string): boolean {
+    try {
+      fs.accessSync(myDir);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  visitSourceFile(sourceFile: ts.SourceFile) {
-    if (sourceFile.fileName.search(/.(component|container).ts/) > 0) {
-      const fileName = sourceFile.fileName;
+  private static checkCreationTestContent(ctx: Lint.WalkContext<void>, node: ts.ExpressionStatement) {
+    const shouldBeCreatedBlock = node
+      .getChildAt(0)
+      .getChildAt(2)
+      .getChildAt(2)
+      .getChildAt(4)
+      .getChildAt(1);
+
+    if (!shouldBeCreatedBlock.getChildren().some(Rule.findComponentTruthy)) {
+      ctx.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`);
+    }
+
+    if (!shouldBeCreatedBlock.getChildren().some(Rule.findElementTruthy)) {
+      ctx.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if html element is truthy`);
+    }
+
+    if (!shouldBeCreatedBlock.getChildren().some(Rule.findDetectChangesNotThrow)) {
+      ctx.addFailureAtNode(
+        node,
+        `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`
+      );
+    }
+  }
+
+  private static findComponentTruthy(node: ts.ExpressionStatement): boolean {
+    return node.getText().search(/.*component.*toBeTruthy.*/) >= 0;
+  }
+
+  private static findElementTruthy(node: ts.ExpressionStatement): boolean {
+    return node.getText().search(/.*lement.*toBeTruthy.*/) >= 0;
+  }
+
+  private static findDetectChangesNotThrow(node: ts.ExpressionStatement): boolean {
+    return node.getText().search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0;
+  }
+
+  private static reportMissingCreationTest(ctx: Lint.WalkContext<void>) {
+    const message = `component does not have an active '${SHOULD_BE_CREATED_NAME}' test`;
+    ctx.addFailureAt(0, 1, message);
+  }
+
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+    return this.applyWithFunction(sourceFile, this.visitSourceFile);
+  }
+
+  visitSourceFile(ctx: Lint.WalkContext<void>) {
+    if (ctx.sourceFile.fileName.search(/.(component|container).ts/) > 0) {
+      const fileName = ctx.sourceFile.fileName;
       const testName = fileName.substring(0, fileName.length - 2) + 'spec.ts';
-      if (!this.fsExistsSync(testName)) {
-        this.reportMissingCreationTest(sourceFile);
+      if (!Rule.fsExistsSync(testName)) {
+        Rule.reportMissingCreationTest(ctx);
       }
-    } else if (sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
-      const describe = RuleHelpers.getDescribeBody(sourceFile);
+    } else if (ctx.sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
+      const describe = RuleHelpers.getDescribeBody(ctx.sourceFile);
       if (describe) {
         const creationCheck = describe
           .getChildren()
@@ -33,78 +80,13 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
           );
 
         if (!creationCheck) {
-          super.addFailureAt(0, 1, `component does not have a '${SHOULD_BE_CREATED_NAME}' test`);
+          ctx.addFailureAt(0, 1, `component does not have a '${SHOULD_BE_CREATED_NAME}' test`);
         } else {
-          this.checkCreationTestContent(creationCheck as ts.ExpressionStatement);
+          Rule.checkCreationTestContent(ctx, creationCheck as ts.ExpressionStatement);
         }
-
-        super.visitSourceFile(sourceFile);
       } else {
-        this.reportMissingCreationTest(sourceFile);
+        Rule.reportMissingCreationTest(ctx);
       }
     }
-  }
-
-  private fsExistsSync(myDir: string): boolean {
-    try {
-      fs.accessSync(myDir);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  private checkCreationTestContent(node: ts.ExpressionStatement) {
-    const shouldBeCreatedBlock = node
-      .getChildAt(0)
-      .getChildAt(2)
-      .getChildAt(2)
-      .getChildAt(4)
-      .getChildAt(1);
-
-    if (!shouldBeCreatedBlock.getChildren().some(this.findComponentTruthy)) {
-      super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`);
-    }
-
-    if (!shouldBeCreatedBlock.getChildren().some(this.findElementTruthy)) {
-      super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if html element is truthy`);
-    }
-
-    if (!shouldBeCreatedBlock.getChildren().some(this.findDetectChangesNotThrow)) {
-      super.addFailureAtNode(
-        node,
-        `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`
-      );
-    }
-  }
-
-  private findComponentTruthy(node: ts.ExpressionStatement): boolean {
-    return node.getText().search(/.*component.*toBeTruthy.*/) >= 0;
-  }
-
-  private findElementTruthy(node: ts.ExpressionStatement): boolean {
-    return node.getText().search(/.*lement.*toBeTruthy.*/) >= 0;
-  }
-
-  private findDetectChangesNotThrow(node: ts.ExpressionStatement): boolean {
-    return node.getText().search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0;
-  }
-
-  private reportMissingCreationTest(sourceFile: ts.SourceFile) {
-    const message = `component does not have an active '${SHOULD_BE_CREATED_NAME}' test`;
-    if (this.warnOnlyOnMissing) {
-      console.warn(sourceFile.fileName, message);
-    } else {
-      super.addFailureAt(0, 1, message);
-    }
-  }
-}
-
-/**
- * Implementation of the component-creation-test rule.
- */
-export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new ComponentCreationTestWalker(sourceFile, this.getOptions()));
   }
 }

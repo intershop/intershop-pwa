@@ -15,38 +15,27 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Lint = require("tslint");
 var rule = require("tslint/lib/rules/noObjectLiteralTypeAssertionRule");
-var IshNoObjectLiteralTypeAssertionWalker = (function (_super) {
-    __extends(IshNoObjectLiteralTypeAssertionWalker, _super);
-    function IshNoObjectLiteralTypeAssertionWalker(sourceFile, options) {
-        var _this = _super.call(this, sourceFile, options) || this;
+var Rule = (function (_super) {
+    __extends(Rule, _super);
+    function Rule(options) {
+        var _this = _super.call(this, options) || this;
         _this.includePattern = '.*';
         if (options.ruleArguments.length && options.ruleArguments[0]) {
             _this.includePattern = options.ruleArguments[0];
         }
         return _this;
     }
-    IshNoObjectLiteralTypeAssertionWalker.prototype.visitSourceFile = function (sourceFile) {
-        var _this = this;
+    Rule.prototype.apply = function (sourceFile) {
         if (new RegExp(this.includePattern).test(sourceFile.fileName)) {
-            var failures = IshNoObjectLiteralTypeAssertionWalker.RULE.apply(sourceFile);
-            failures.forEach(function (f) { return _this.addFailure(f); });
+            return Rule.RULE.apply(sourceFile);
         }
+        return [];
     };
-    IshNoObjectLiteralTypeAssertionWalker.RULE = new rule.Rule({
+    Rule.RULE = new rule.Rule({
         ruleArguments: [],
         ruleSeverity: 'error',
         ruleName: 'ish-no-object-literal-type-assertion',
     });
-    return IshNoObjectLiteralTypeAssertionWalker;
-}(Lint.RuleWalker));
-var Rule = (function (_super) {
-    __extends(Rule, _super);
-    function Rule() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new IshNoObjectLiteralTypeAssertionWalker(sourceFile, this.getOptions()));
-    };
     return Rule;
 }(Lint.Rules.AbstractRule));
 exports.Rule = Rule;

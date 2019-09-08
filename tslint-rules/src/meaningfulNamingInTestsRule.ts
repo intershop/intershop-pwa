@@ -1,3 +1,4 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import { getNextToken } from 'tsutils';
 import { Identifier, SourceFile, StringLiteral, SyntaxKind } from 'typescript';
@@ -6,8 +7,8 @@ const DESCRIPTION_REGEX = /^('|`|")should([\s\S]* (always|when|if|until|on|for|o
 
 const DESCRIPTION_VIEWPOINT_ERROR_REGEX = /^('|`)should (check|test)/;
 
-class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
-  interpolatedName(filePath: string) {
+export class Rule extends Lint.Rules.AbstractRule {
+  static interpolatedName(filePath: string) {
     const fileName = filePath
       .split('/')
       .filter((_, idx, array) => idx === array.length - 1)[0]
@@ -15,11 +16,14 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
     return fileName
       .split(/[\.-]+/)
       .map(part => part.substring(0, 1).toUpperCase() + part.substring(1))
-      .reduce((acc, val) => `${acc} ${val}`);
+      .join(' ');
   }
 
-  visitSourceFile(sourceFile: SourceFile) {
-    if (sourceFile.fileName.endsWith('.spec.ts')) {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+    if (!sourceFile.fileName.endsWith('.spec.ts')) {
+      return [];
+    }
+    return this.applyWithFunction(sourceFile, ctx => {
       const statements = sourceFile.statements.filter(
         stmt => stmt.kind === SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'
       );
@@ -28,50 +32,37 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
           .getChildAt(0)
           .getChildAt(2)
           .getChildAt(0) as StringLiteral;
-        const interpolated = this.interpolatedName(sourceFile.fileName);
+        const interpolated = Rule.interpolatedName(sourceFile.fileName);
         if (describeText.text !== interpolated) {
           const fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), `'${interpolated}'`);
-          this.addFailureAtNode(
+          ctx.addFailureAtNode(
             describeText,
             `string does not match filename, expected '${interpolated}' found '${describeText.text}'`,
             fix
           );
         }
       }
-      super.visitSourceFile(sourceFile);
-    }
-  }
 
-  visitIdentifier(node: Identifier) {
-    if (node.getText() === 'it') {
-      const descriptionToken = getNextToken(getNextToken(node));
-      if (descriptionToken) {
-        let description = descriptionToken.getText();
-        // tslint:disable-next-line:no-invalid-template-strings
-        if (description.indexOf('${') >= 0) {
-          description = descriptionToken.parent.getText();
+      tsquery(sourceFile, 'Identifier[name="it"]').forEach((node: Identifier) => {
+        const descriptionToken = getNextToken(getNextToken(node));
+        if (descriptionToken) {
+          let description = descriptionToken.getText();
+          // tslint:disable-next-line:no-invalid-template-strings
+          if (description.indexOf('${') >= 0) {
+            description = descriptionToken.parent.getText();
+          }
+          if (DESCRIPTION_VIEWPOINT_ERROR_REGEX.test(description)) {
+            ctx.addFailureAtNode(
+              descriptionToken,
+              `describe what the component is doing, not what the test is doing (found "${description}")`
+            );
+          } else if (!DESCRIPTION_REGEX.test(description)) {
+            ctx.addFailureAtNode(descriptionToken, `"${description}" does not match ${DESCRIPTION_REGEX}`);
+          }
+        } else {
+          ctx.addFailureAtNode(node, 'could not find a valid description');
         }
-        if (DESCRIPTION_VIEWPOINT_ERROR_REGEX.test(description)) {
-          this.addFailureAtNode(
-            descriptionToken,
-            `describe what the component is doing, not what the test is doing (found "${description}")`
-          );
-        } else if (!DESCRIPTION_REGEX.test(description)) {
-          this.addFailureAtNode(descriptionToken, `"${description}" does not match ${DESCRIPTION_REGEX}`);
-        }
-      } else {
-        this.addFailureAtNode(node, 'could not find a valid description');
-      }
-    }
-    super.visitIdentifier(node);
-  }
-}
-
-/**
- * Implementation of the meainingful-naming-in-tests rule.
- */
-export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new MeaningfulNamingInTestsWalker(sourceFile, this.getOptions()));
+      });
+    });
   }
 }
