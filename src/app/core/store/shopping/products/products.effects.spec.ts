@@ -33,7 +33,6 @@ describe('Products Effects', () => {
   let router: Router;
   let location: Location;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

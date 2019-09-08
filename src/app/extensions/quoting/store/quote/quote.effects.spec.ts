@@ -37,7 +37,6 @@ describe('Quote Effects', () => {
   beforeEach(() => {
     quoteServiceMock = mock(QuoteService);
 
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
     class DummyComponent {}
 

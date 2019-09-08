@@ -17,7 +17,6 @@ describe('Error Effects', () => {
   let store$: Store<{}>;
   let location: Location;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

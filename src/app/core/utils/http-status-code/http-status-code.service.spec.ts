@@ -14,7 +14,6 @@ describe('Http Status Code Service', () => {
   let resSpy;
   let location: Location;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

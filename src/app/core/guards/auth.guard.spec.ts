@@ -16,7 +16,6 @@ describe('Auth Guard', () => {
     let store$: Store<{}>;
 
     beforeEach(async(() => {
-      // tslint:disable-next-line:use-component-change-detection
       @Component({ template: 'dummy' })
       class DummyComponent {}
 
