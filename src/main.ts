@@ -1,4 +1,3 @@
-// tslint:disable:no-console do-not-import-environment
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -12,5 +11,6 @@ if (environment.production) {
 document.addEventListener('DOMContentLoaded', () => {
   platformBrowserDynamic()
     .bootstrapModule(AppModule)
+    // tslint:disable-next-line:no-console
     .catch(err => console.log(err));
 });

@@ -32,5 +32,8 @@
     "prebuild": "npm ci",
     "build": "npx jest && tsc",
     "postbuild": "npx rimraf node_modules && npx rimraf dist/*.spec.js"
+  },
+  "dependencies": {
+    "@phenomnomnominal/tsquery": "^3.0.0"
   }
 }

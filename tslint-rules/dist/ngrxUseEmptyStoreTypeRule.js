@@ -13,31 +13,24 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
 var ts = require("typescript");
-var NgrxUseEmptyStoreTypeWalker = (function (_super) {
-    __extends(NgrxUseEmptyStoreTypeWalker, _super);
-    function NgrxUseEmptyStoreTypeWalker() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    NgrxUseEmptyStoreTypeWalker.prototype.visitIdentifier = function (node) {
-        if (node.getText() === 'Store') {
-            var storeType = node.parent;
-            if (storeType.kind === ts.SyntaxKind.TypeReference && storeType.getText() !== 'Store<{}>') {
-                var fix = new Lint.Replacement(storeType.getStart(), storeType.getWidth(), 'Store<{}>');
-                this.addFailureAtNode(storeType, 'use empty store type (Store<{}>) and use selectors to access the store.', fix);
-            }
-        }
-    };
-    return NgrxUseEmptyStoreTypeWalker;
-}(Lint.RuleWalker));
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new NgrxUseEmptyStoreTypeWalker(sourceFile, this.getOptions()));
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            tsquery_1.tsquery(sourceFile, 'Identifier[name="Store"]').forEach(function (node) {
+                var storeType = node.parent;
+                if (storeType.kind === ts.SyntaxKind.TypeReference && storeType.getText() !== 'Store<{}>') {
+                    var fix = new Lint.Replacement(storeType.getStart(), storeType.getWidth(), 'Store<{}>');
+                    ctx.addFailureAtNode(storeType, 'use empty store type (Store<{}>) and use selectors to access the store.', fix);
+                }
+            });
+        });
     };
     return Rule;
 }(Lint.Rules.AbstractRule));

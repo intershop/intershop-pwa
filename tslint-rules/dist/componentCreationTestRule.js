@@ -18,45 +18,12 @@ var Lint = require("tslint");
 var ts = require("typescript");
 var ruleHelpers_1 = require("./ruleHelpers");
 var SHOULD_BE_CREATED_NAME = 'should be created';
-var ComponentCreationTestWalker = (function (_super) {
-    __extends(ComponentCreationTestWalker, _super);
-    function ComponentCreationTestWalker(sourceFile, options) {
-        var _this = _super.call(this, sourceFile, options) || this;
-        _this.warnOnlyOnMissing = false;
-        _this.warnOnlyOnMissing = _this.getOptions()[0] === 'warn';
-        return _this;
+var Rule = (function (_super) {
+    __extends(Rule, _super);
+    function Rule() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    ComponentCreationTestWalker.prototype.visitSourceFile = function (sourceFile) {
-        if (sourceFile.fileName.search(/.(component|container).ts/) > 0) {
-            var fileName = sourceFile.fileName;
-            var testName = fileName.substring(0, fileName.length - 2) + 'spec.ts';
-            if (!this.fsExistsSync(testName)) {
-                this.reportMissingCreationTest(sourceFile);
-            }
-        }
-        else if (sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
-            var describe_1 = ruleHelpers_1.RuleHelpers.getDescribeBody(sourceFile);
-            if (describe_1) {
-                var creationCheck = describe_1
-                    .getChildren()
-                    .find(function (n) {
-                    return n.kind === ts.SyntaxKind.ExpressionStatement &&
-                        n.getText().startsWith("it('" + SHOULD_BE_CREATED_NAME + "', () => {");
-                });
-                if (!creationCheck) {
-                    _super.prototype.addFailureAt.call(this, 0, 1, "component does not have a '" + SHOULD_BE_CREATED_NAME + "' test");
-                }
-                else {
-                    this.checkCreationTestContent(creationCheck);
-                }
-                _super.prototype.visitSourceFile.call(this, sourceFile);
-            }
-            else {
-                this.reportMissingCreationTest(sourceFile);
-            }
-        }
-    };
-    ComponentCreationTestWalker.prototype.fsExistsSync = function (myDir) {
+    Rule.fsExistsSync = function (myDir) {
         try {
             fs.accessSync(myDir);
             return true;
@@ -65,50 +32,67 @@ var ComponentCreationTestWalker = (function (_super) {
             return false;
         }
     };
-    ComponentCreationTestWalker.prototype.checkCreationTestContent = function (node) {
+    Rule.checkCreationTestContent = function (ctx, node) {
         var shouldBeCreatedBlock = node
             .getChildAt(0)
             .getChildAt(2)
             .getChildAt(2)
             .getChildAt(4)
             .getChildAt(1);
-        if (!shouldBeCreatedBlock.getChildren().some(this.findComponentTruthy)) {
-            _super.prototype.addFailureAtNode.call(this, node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if component is truthy");
+        if (!shouldBeCreatedBlock.getChildren().some(Rule.findComponentTruthy)) {
+            ctx.addFailureAtNode(node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if component is truthy");
         }
-        if (!shouldBeCreatedBlock.getChildren().some(this.findElementTruthy)) {
-            _super.prototype.addFailureAtNode.call(this, node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if html element is truthy");
+        if (!shouldBeCreatedBlock.getChildren().some(Rule.findElementTruthy)) {
+            ctx.addFailureAtNode(node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if html element is truthy");
         }
-        if (!shouldBeCreatedBlock.getChildren().some(this.findDetectChangesNotThrow)) {
-            _super.prototype.addFailureAtNode.call(this, node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if feature.detectChanges does not throw");
+        if (!shouldBeCreatedBlock.getChildren().some(Rule.findDetectChangesNotThrow)) {
+            ctx.addFailureAtNode(node, "'" + SHOULD_BE_CREATED_NAME + "' block does not test if feature.detectChanges does not throw");
         }
     };
-    ComponentCreationTestWalker.prototype.findComponentTruthy = function (node) {
+    Rule.findComponentTruthy = function (node) {
         return node.getText().search(/.*component.*toBeTruthy.*/) >= 0;
     };
-    ComponentCreationTestWalker.prototype.findElementTruthy = function (node) {
+    Rule.findElementTruthy = function (node) {
         return node.getText().search(/.*lement.*toBeTruthy.*/) >= 0;
     };
-    ComponentCreationTestWalker.prototype.findDetectChangesNotThrow = function (node) {
+    Rule.findDetectChangesNotThrow = function (node) {
         return node.getText().search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0;
     };
-    ComponentCreationTestWalker.prototype.reportMissingCreationTest = function (sourceFile) {
+    Rule.reportMissingCreationTest = function (ctx) {
         var message = "component does not have an active '" + SHOULD_BE_CREATED_NAME + "' test";
-        if (this.warnOnlyOnMissing) {
-            console.warn(sourceFile.fileName, message);
-        }
-        else {
-            _super.prototype.addFailureAt.call(this, 0, 1, message);
-        }
+        ctx.addFailureAt(0, 1, message);
     };
-    return ComponentCreationTestWalker;
-}(Lint.RuleWalker));
-var Rule = (function (_super) {
-    __extends(Rule, _super);
-    function Rule() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new ComponentCreationTestWalker(sourceFile, this.getOptions()));
+        return this.applyWithFunction(sourceFile, this.visitSourceFile);
+    };
+    Rule.prototype.visitSourceFile = function (ctx) {
+        if (ctx.sourceFile.fileName.search(/.(component|container).ts/) > 0) {
+            var fileName = ctx.sourceFile.fileName;
+            var testName = fileName.substring(0, fileName.length - 2) + 'spec.ts';
+            if (!Rule.fsExistsSync(testName)) {
+                Rule.reportMissingCreationTest(ctx);
+            }
+        }
+        else if (ctx.sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
+            var describe_1 = ruleHelpers_1.RuleHelpers.getDescribeBody(ctx.sourceFile);
+            if (describe_1) {
+                var creationCheck = describe_1
+                    .getChildren()
+                    .find(function (n) {
+                    return n.kind === ts.SyntaxKind.ExpressionStatement &&
+                        n.getText().startsWith("it('" + SHOULD_BE_CREATED_NAME + "', () => {");
+                });
+                if (!creationCheck) {
+                    ctx.addFailureAt(0, 1, "component does not have a '" + SHOULD_BE_CREATED_NAME + "' test");
+                }
+                else {
+                    Rule.checkCreationTestContent(ctx, creationCheck);
+                }
+            }
+            else {
+                Rule.reportMissingCreationTest(ctx);
+            }
+        }
     };
     return Rule;
 }(Lint.Rules.AbstractRule));

@@ -30,9 +30,7 @@ describe('Orders Effects', () => {
   let store$: Store<{}>;
   let location: Location;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
   const order = { id: '1', documentNo: '00000001', lineItems: [] } as Order;
@@ -252,7 +250,7 @@ describe('Orders Effects', () => {
       const orderId = '123';
       const action = new RouteNavigation({
         path: 'account/orders/:orderId',
-        params: { orderId: orderId },
+        params: { orderId },
         queryParams: {},
       });
       const expected = new orderActions.SelectOrder({ orderId });

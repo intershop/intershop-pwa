@@ -89,7 +89,7 @@ export function mockQuotes() {
     status: 200,
     response: {
       type: 'Quote',
-      items: items,
+      items,
       displayName: 'quoteResponded',
       id: 'quoteResponded',
       number: '01',
@@ -116,7 +116,7 @@ export function mockQuotes() {
     status: 200,
     response: {
       type: 'Quote',
-      items: items,
+      items,
       displayName: 'quoteExpired',
       id: 'quoteExpired',
       number: '02',
@@ -143,7 +143,7 @@ export function mockQuotes() {
     status: 200,
     response: {
       type: 'Quote',
-      items: items,
+      items,
       displayName: 'quoteRejected',
       id: 'quoteRejected',
       number: '03',
@@ -171,7 +171,7 @@ export function mockQuotes() {
     status: 200,
     response: {
       type: 'Quote',
-      items: items,
+      items,
       displayName: 'quoteSubmitted',
       id: 'quoteSubmitted',
       number: '03',
@@ -199,7 +199,7 @@ export function mockQuotes() {
     status: 200,
     response: {
       type: 'Quote',
-      items: items,
+      items,
       displayName: 'quoteNew',
       id: 'quoteNew',
       number: '03',

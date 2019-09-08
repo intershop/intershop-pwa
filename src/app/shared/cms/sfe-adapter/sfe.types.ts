@@ -1,4 +1,3 @@
-// tslint:disable:project-structure no-any
 export interface SfeMetadata {
   id: string;
   displayName: string;
@@ -25,5 +24,6 @@ export interface SfeMetadataNode extends SfeMetadata {
 
 export interface DesignViewMessage {
   type: string;
+  // tslint:disable-next-line:no-any
   payload?: any;
 }

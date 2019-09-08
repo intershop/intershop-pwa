@@ -46,6 +46,9 @@ var Rule = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
+        if (sourceFile.fileName.search(/.(component|container).ts/) < 0) {
+            return [];
+        }
         return this.applyWithWalker(new UseComponentChangeDetectionWalker(sourceFile, this.getOptions()));
     };
     return Rule;

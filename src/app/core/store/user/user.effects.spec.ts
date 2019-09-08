@@ -39,9 +39,7 @@ describe('User Effects', () => {
     user: {},
   } as CustomerUserType;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
   const customer = {
     customerNo: '4711',

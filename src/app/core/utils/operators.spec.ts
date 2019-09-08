@@ -27,7 +27,6 @@ describe('Operators', () => {
   });
 
   describe('mapErrorToAction', () => {
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyFail implements Action {
       type = 'dummy';
       constructor(public payload: { error: HttpError }) {}

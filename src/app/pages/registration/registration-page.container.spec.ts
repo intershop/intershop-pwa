@@ -24,9 +24,7 @@ describe('Registration Page Container', () => {
     { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
   ] as Locale[];
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
   beforeEach(async(() => {

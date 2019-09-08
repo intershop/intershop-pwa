@@ -13,36 +13,28 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
-var UseAsyncSynchronisationInTestsWalker = (function (_super) {
-    __extends(UseAsyncSynchronisationInTestsWalker, _super);
-    function UseAsyncSynchronisationInTestsWalker() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    UseAsyncSynchronisationInTestsWalker.prototype.visitSourceFile = function (sourceFile) {
-        if (sourceFile.fileName.endsWith('.spec.ts')) {
-            _super.prototype.visitSourceFile.call(this, sourceFile);
-        }
-    };
-    UseAsyncSynchronisationInTestsWalker.prototype.visitArrowFunction = function (block) {
-        if (block.parent
-            .getChildAt(0)
-            .getText()
-            .endsWith('.subscribe') &&
-            block.getText().search(/\sdone\(\);/) < 0) {
-            this.addFailureAtNode(block, 'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html');
-        }
-        _super.prototype.visitArrowFunction.call(this, block);
-    };
-    return UseAsyncSynchronisationInTestsWalker;
-}(Lint.RuleWalker));
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new UseAsyncSynchronisationInTestsWalker(sourceFile, this.getOptions()));
+        if (!sourceFile.fileName.endsWith('.spec.ts')) {
+            return [];
+        }
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            tsquery_1.tsquery(ctx.sourceFile, 'ArrowFunction').forEach(function (block) {
+                if (block.parent
+                    .getChildAt(0)
+                    .getText()
+                    .endsWith('.subscribe') &&
+                    block.getText().search(/\sdone\(\)/) < 0) {
+                    ctx.addFailureAtNode(block, 'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html');
+                }
+            });
+        });
     };
     return Rule;
 }(Lint.Rules.AbstractRule));

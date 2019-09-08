@@ -5,15 +5,15 @@ import { getCoreState } from '../core-store';
 
 import { regionAdapter } from './regions.reducer';
 
-const getRegionState = createSelector(
+const getRegionsState = createSelector(
   getCoreState,
   state => state.regions
 );
 
-export const { selectAll: getAllRegions } = regionAdapter.getSelectors(getRegionState);
+export const { selectAll: getAllRegions } = regionAdapter.getSelectors(getRegionsState);
 
 export const getRegionsLoading = createSelector(
-  getRegionState,
+  getRegionsState,
   regions => regions.loading
 );
 

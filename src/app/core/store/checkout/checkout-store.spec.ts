@@ -1,4 +1,3 @@
-// tslint:disable use-component-change-detection prefer-mocks-instead-of-stubs-in-tests
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';

@@ -1,4 +1,3 @@
-// tslint:disable:project-structure
 import { HostBinding } from '@angular/core';
 
 import { SfeMetadata } from './sfe.types';
