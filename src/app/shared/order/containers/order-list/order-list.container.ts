@@ -1,3 +1,4 @@
+// tslint:disable: ccp-no-markup-in-containers
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 

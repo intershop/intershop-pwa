@@ -414,18 +414,7 @@
         }
       }
     },
-    "ccp-no-markup-in-containers": {
-      "severity": "warning",
-      "options": {
-        "patterns": [
-          "<img",
-          "<ul",
-          "<li",
-          "<table",
-          "<(?![^>]*(clearfix|loading-container|-panel))[^>]*\\ class"
-        ]
-      }
-    },
+    "ccp-no-markup-in-containers": { "severity": "warning" },
     "project-structure": {
       "severity": "warning",
       "options": {
