@@ -431,6 +431,8 @@
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
           // models
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
+          // cms
+          "^.*/src/app/shared/cms/sfe-adapter/.*\\.ts$",
           // ngrx
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(action|effects|reducer|selectors)\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
@@ -477,14 +479,19 @@
             "name": "^(App.*Routing)Module$",
             "file": "src/app/pages/<kebab>\\.module\\.ts$"
           },
+          // cms
+          {
+            "name": "^CMSContainerComponent$",
+            "file": ".*/shared/cms/components/cms-container/cms-container\\.component\\.ts$"
+          },
+          {
+            "name": "^Sfe.*$",
+            "file": ".*/shared/cms/sfe-adapter/.*\\.ts$"
+          },
           // angular components
           {
             "name": "^([A-Z].*)PageContainerComponent$",
             "file": ".*/pages/<kebab>/<kebab>-page\\.container\\.ts$"
-          },
-          {
-            "name": "^CMSContainerComponent$",
-            "file": ".*/shared/cms/components/cms-container/cms-container\\.component\\.ts$"
           },
           {
             "name": "^([A-Z].*)ContainerComponent$",

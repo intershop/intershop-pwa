@@ -1,4 +1,3 @@
-// tslint:disable:project-structure
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
