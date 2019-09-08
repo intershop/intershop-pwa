@@ -27,7 +27,6 @@ describe('Configuration Effects', () => {
   let store$: TestStore;
 
   beforeEach(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
     class DummyComponent {}
 

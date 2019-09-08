@@ -35,7 +35,6 @@ describe('Basket Effects', () => {
   let effects: BasketEffects;
   let store$: Store<{}>;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

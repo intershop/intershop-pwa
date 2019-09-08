@@ -22,7 +22,6 @@ describe('Promotions Effects', () => {
   let effects: PromotionsEffects;
   let promotionsServiceMock: PromotionsService;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

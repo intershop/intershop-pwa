@@ -26,7 +26,6 @@ describe('Checkout Address Anonymous Component', () => {
   let fb: FormBuilder;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
     class DummyComponent {}
 

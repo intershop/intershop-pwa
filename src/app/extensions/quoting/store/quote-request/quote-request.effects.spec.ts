@@ -46,7 +46,6 @@ describe('Quote Request Effects', () => {
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

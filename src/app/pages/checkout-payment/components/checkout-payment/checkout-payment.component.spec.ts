@@ -31,7 +31,6 @@ describe('Checkout Payment Component', () => {
   let paymentMethodChange: SimpleChanges;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
     class DummyComponent {}
 

@@ -38,7 +38,6 @@ describe('Categories Effects', () => {
     { uniqueId: '456', categoryPath: ['456'] },
   ] as Category[]);
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
 

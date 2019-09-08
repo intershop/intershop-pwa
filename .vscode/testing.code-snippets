@@ -20,7 +20,6 @@
     "scope": "typescript",
     "prefix": "ish-testing-dummy-component",
     "body": [
-      "// tslint:disable-next-line:use-component-change-detection",
       "@Component({ template: 'dummy' })",
       "class DummyComponent {}",
       "$1"

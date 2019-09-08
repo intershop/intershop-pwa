@@ -30,7 +30,6 @@ describe('Checkout Address Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
     class DummyComponent {}
 

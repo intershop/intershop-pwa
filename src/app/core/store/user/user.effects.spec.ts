@@ -39,7 +39,6 @@ describe('User Effects', () => {
     user: {},
   } as CustomerUserType;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
   class DummyComponent {}
   const customer = {
