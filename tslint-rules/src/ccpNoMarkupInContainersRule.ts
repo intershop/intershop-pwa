@@ -1,4 +1,5 @@
 import * as ast from '@angular/compiler';
+import { tsquery } from '@phenomnomnominal/tsquery';
 import { NgWalker } from 'codelyzer/angular/ngWalker';
 import { BasicTemplateAstVisitor } from 'codelyzer/angular/templates/basicTemplateAstVisitor';
 import * as Lint from 'tslint';
@@ -45,8 +46,16 @@ export class Rule extends Lint.Rules.AbstractRule {
     if (!sourceFile.fileName.match(/.*\/containers\/.*.ts/)) {
       return [];
     }
-    return this.applyWithWalker(
-      new NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: ContainerTemplateVisitor })
-    );
+    const walker = new NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: ContainerTemplateVisitor });
+    walker.walk(sourceFile);
+    const failures = walker.getFailures();
+
+    if (failures && failures.length) {
+      const errorToken = tsquery(sourceFile, 'ClassDeclaration > Identifier')[0];
+      return this.applyWithFunction(sourceFile, ctx => {
+        failures.forEach(f => ctx.addFailureAtNode(errorToken, f.getFailure()));
+      });
+    }
+    return [];
   }
 }

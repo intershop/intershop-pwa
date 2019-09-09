@@ -1,3 +1,4 @@
+// tslint:disable:ish-ordered-imports
 require('jest-preset-angular');
 require('jest-extended');
 import { getTestBed } from '@angular/core/testing';

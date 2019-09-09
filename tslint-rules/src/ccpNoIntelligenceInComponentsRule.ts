@@ -1,3 +1,4 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
@@ -25,7 +26,7 @@ export class Rule extends Lint.Rules.AbstractRule {
       return [];
     }
     return this.applyWithFunction(sourceFile, ctx => {
-      this.isContainer = sourceFile.fileName.indexOf('container') >= 0;
+      this.isContainer = ctx.sourceFile.fileName.indexOf('container') >= 0;
       ctx.sourceFile.statements.filter(ts.isImportDeclaration).forEach((importStatement: ts.ImportDeclaration) => {
         const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, ts.SyntaxKind.StringLiteral);
         const fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
@@ -37,21 +38,23 @@ export class Rule extends Lint.Rules.AbstractRule {
           c = 'component';
         }
 
+        const failuteToken = tsquery(ctx.sourceFile, 'ClassDeclaration > Identifier')[0];
+
         if (fromStringText.search(/\/store(\/|$)/) >= 0 && !this.ruleSettings[c].ngrx) {
           ctx.addFailureAtNode(
-            importStatement,
+            failuteToken,
             `ngrx handling is not allowed in ${c}s. (found ${importStatement.getText()})`
           );
         }
         if (fromStringText.search(/\.service$/) >= 0 && !this.ruleSettings[c].service) {
           ctx.addFailureAtNode(
-            importStatement,
+            failuteToken,
             `service usage is not allowed in ${c}s. (found ${importStatement.getText()})`
           );
         }
         if (fromStringText.search(/angular\/router/) >= 0 && !this.ruleSettings[c].router) {
           ctx.addFailureAtNode(
-            importStatement,
+            failuteToken,
             `router usage is not allowed in ${c}s. (found ${importStatement.getText()})`
           );
         }

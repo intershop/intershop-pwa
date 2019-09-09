@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
 var ts = require("typescript");
 var ruleHelpers_1 = require("./ruleHelpers");
@@ -31,7 +32,7 @@ var Rule = (function (_super) {
             return [];
         }
         return this.applyWithFunction(sourceFile, function (ctx) {
-            _this.isContainer = sourceFile.fileName.indexOf('container') >= 0;
+            _this.isContainer = ctx.sourceFile.fileName.indexOf('container') >= 0;
             ctx.sourceFile.statements.filter(ts.isImportDeclaration).forEach(function (importStatement) {
                 var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, ts.SyntaxKind.StringLiteral);
                 var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
@@ -42,14 +43,15 @@ var Rule = (function (_super) {
                 else {
                     c = 'component';
                 }
+                var failuteToken = tsquery_1.tsquery(ctx.sourceFile, 'ClassDeclaration > Identifier')[0];
                 if (fromStringText.search(/\/store(\/|$)/) >= 0 && !_this.ruleSettings[c].ngrx) {
-                    ctx.addFailureAtNode(importStatement, "ngrx handling is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                    ctx.addFailureAtNode(failuteToken, "ngrx handling is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
                 }
                 if (fromStringText.search(/\.service$/) >= 0 && !_this.ruleSettings[c].service) {
-                    ctx.addFailureAtNode(importStatement, "service usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                    ctx.addFailureAtNode(failuteToken, "service usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
                 }
                 if (fromStringText.search(/angular\/router/) >= 0 && !_this.ruleSettings[c].router) {
-                    ctx.addFailureAtNode(importStatement, "router usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                    ctx.addFailureAtNode(failuteToken, "router usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
                 }
             });
         });

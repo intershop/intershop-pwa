@@ -13,9 +13,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
 var ts = require("typescript");
-var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
