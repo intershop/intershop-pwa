@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -48,8 +48,11 @@ export class HeaderComponent implements OnChanges {
     );
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     this.toggleSpecialStatusOfSearch();
+    if (changes.reset) {
+      this.activeComponent = 'search';
+    }
   }
 
   private toggleSpecialStatusOfSearch() {
