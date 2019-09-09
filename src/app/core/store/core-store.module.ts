@@ -4,9 +4,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 import { RouterEffects } from 'ngrx-router';
 
-import { environment } from '../../../environments/environment';
 import { ngrxStateTransferMeta } from '../configurations/ngrx-state-transfer';
-import { localStorageSyncReducer } from '../utils/local-storage-sync/local-storage-sync.reducer';
 
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';
@@ -60,10 +58,7 @@ export const coreEffects = [
 ];
 
 // tslint:disable-next-line: no-any
-export const metaReducers: MetaReducer<any>[] = [
-  ...(environment.syncLocalStorage ? [localStorageSyncReducer] : []),
-  ngrxStateTransferMeta,
-];
+export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
 
 @NgModule({
   imports: [

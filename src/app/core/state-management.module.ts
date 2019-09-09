@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 
 import { NgrxStateTransfer } from './configurations/ngrx-state-transfer';
 import { CoreStoreModule } from './store/core-store.module';
-import { CrosstabService } from './utils/local-storage-sync/crosstab.service';
 
 @NgModule({
   imports: [
@@ -19,8 +18,7 @@ import { CrosstabService } from './utils/local-storage-sync/crosstab.service';
   providers: [NgrxStateTransfer],
 })
 export class StateManagementModule {
-  constructor(ngrxStateTransfer: NgrxStateTransfer, crosstabService: CrosstabService) {
+  constructor(ngrxStateTransfer: NgrxStateTransfer) {
     ngrxStateTransfer.do();
-    crosstabService.listen();
   }
 }

@@ -69,9 +69,6 @@ export interface Environment {
   // enable or disable service worker
   serviceWorker: boolean;
 
-  // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
-  syncLocalStorage: boolean;
-
   // configuration of the available locales - hard coded for now
   locales: { lang: string; currency: string; value: string; displayName: string; displayLong: string }[];
 }
