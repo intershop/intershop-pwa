@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping-store.module';
 
+import { ClearRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyViewedProducts } from './recently.selectors';
 
@@ -16,6 +19,7 @@ describe('Recently Selectors', () => {
     TestBed.configureTestingModule({
       imports: ngrxTesting(
         {
+          configuration: configurationReducer,
           shopping: combineReducers(shoppingReducers),
         },
         [RecentlyEffects]
@@ -45,6 +49,49 @@ describe('Recently Selectors', () => {
       expect(getRecentlyViewedProducts(store$.state)).toEqual(viewed);
       const filtered = ['B', 'D', 'E', 'C'];
       expect(getMostRecentlyViewedProducts(store$.state)).toEqual(filtered);
+    });
+
+    describe('when clearing the state', () => {
+      beforeEach(() => {
+        store$.dispatch(new ClearRecently());
+      });
+
+      it('should select nothing for an empty state', () => {
+        expect(getRecentlyViewedProducts(store$.state)).toBeEmpty();
+        expect(getMostRecentlyViewedProducts(store$.state)).toBeEmpty();
+      });
+    });
+  });
+
+  describe('after viewing various variation', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'B' } as Product }));
+      ['A1', 'A2', 'A3'].forEach(sku =>
+        store$.dispatch(
+          new LoadProductSuccess({
+            product: { sku, type: 'VariationProduct', productMasterSKU: 'A' } as VariationProduct,
+          })
+        )
+      );
+      ['A1', 'A2', 'B', 'A1', 'A3'].forEach(sku => store$.dispatch(new SelectProduct({ sku })));
+    });
+
+    it('should have collected data for display on pages', () => {
+      const viewed = ['A3', 'B'];
+      expect(getRecentlyViewedProducts(store$.state)).toEqual(viewed);
+      const filtered = ['B'];
+      expect(getMostRecentlyViewedProducts(store$.state)).toEqual(filtered);
+    });
+
+    describe('when clearing the state', () => {
+      beforeEach(() => {
+        store$.dispatch(new ClearRecently());
+      });
+
+      it('should select nothing for an empty state', () => {
+        expect(getRecentlyViewedProducts(store$.state)).toBeEmpty();
+        expect(getMostRecentlyViewedProducts(store$.state)).toBeEmpty();
+      });
     });
   });
 });

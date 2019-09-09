@@ -368,9 +368,10 @@ describe('Shopping Store', () => {
               path: "product/:sku"
             [Shopping] Select Product:
               sku: "P2"
-            [Shopping] Load Product:
-              sku: "P2"
             [Recently Viewed] Add Product to Recently:
+              sku: "P2"
+              group: undefined
+            [Shopping] Load Product:
               sku: "P2"
             [Shopping] Load Product Success:
               product: {"sku":"P2"}
@@ -568,9 +569,10 @@ describe('Shopping Store', () => {
             path: "category/:categoryUniqueId/product/:sku"
           [Shopping] Select Product:
             sku: "P1"
-          [Shopping] Load Product:
-            sku: "P1"
           [Recently Viewed] Add Product to Recently:
+            sku: "P1"
+            group: undefined
+          [Shopping] Load Product:
             sku: "P1"
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
@@ -687,6 +689,7 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Recently Viewed] Add Product to Recently:
           sku: "P1"
+          group: undefined
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -829,6 +832,7 @@ describe('Shopping Store', () => {
           product: {"sku":"P1"}
         [Recently Viewed] Add Product to Recently:
           sku: "P1"
+          group: undefined
       `);
     }));
 
