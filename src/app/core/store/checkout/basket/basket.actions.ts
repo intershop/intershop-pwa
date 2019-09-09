@@ -9,7 +9,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
-import { BasketUpdateType } from '../../../services/basket/basket.service';
+import { BasketUpdateType } from 'ish-core/services/basket/basket.service';
 
 export enum BasketActionTypes {
   LoadBasket = '[Basket Internal] Load Basket',

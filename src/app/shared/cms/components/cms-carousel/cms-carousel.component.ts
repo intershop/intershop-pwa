@@ -2,9 +2,10 @@ import { ApplicationRef, ChangeDetectionStrategy, Component, Input, OnChanges, V
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { mapTo, take } from 'rxjs/operators';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
+
 import { CMSComponent } from '../../models/cms-component/cms-component.model';
 
 @Component({

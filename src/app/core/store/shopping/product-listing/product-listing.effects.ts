@@ -14,16 +14,16 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
-import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import {
   ApplyFilter,
   LoadFilterForCategory,
   LoadFilterForSearch,
   LoadFilterSuccess,
   LoadProductsForFilter,
-} from '../filter';
-import { LoadProductsForCategory, getProduct } from '../products';
-import { SearchProducts } from '../search';
+} from 'ish-core/store/shopping/filter';
+import { LoadProductsForCategory, getProduct } from 'ish-core/store/shopping/products';
+import { SearchProducts } from 'ish-core/store/shopping/search';
+import { mapToPayload, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import * as actions from './product-listing.actions';
 import { getProductListingView, getProductListingViewType } from './product-listing.selectors';

@@ -1,15 +1,15 @@
+import { ContentConfigurationParameters } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 
 import {
   ContentConfigurationParameterView,
   ContentPageletEntryPointView,
   createContentConfigurationParameterView,
   createContentPageletEntryPointView,
-} from './content-views';
+} from './content-view.model';
 
-describe('Content Views', () => {
+describe('Content View Model', () => {
   let configurationParameters: ContentConfigurationParameters;
   let pageletEntryPoint: ContentPageletEntryPoint;
   let pagelets: { [id: string]: ContentPagelet };

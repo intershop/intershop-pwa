@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 
+import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { FeatureToggleModule, FeatureToggleService } from '../../feature-toggle.module';
 
 describe('Feature Toggle Service', () => {
   describe('without features defined', () => {

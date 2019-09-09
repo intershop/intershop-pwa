@@ -1,5 +1,5 @@
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { HttpError } from '../../models/http-error/http-error.model';
 
 import { LoadRegions, LoadRegionsFail, LoadRegionsSuccess, RegionAction } from './regions.actions';
 import { initialState, regionsReducer } from './regions.reducer';

@@ -5,6 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+
 import { LazyQuoteWidgetComponent } from '../../../../extensions/quoting/exports/account/components/lazy-quote-widget/lazy-quote-widget.component';
 import { OrderWidgetComponent } from '../../../../shared/order/components/order-widget/order-widget.component';
 

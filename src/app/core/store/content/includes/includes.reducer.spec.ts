@@ -1,5 +1,5 @@
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
 import { includesReducer, initialState } from './includes.reducer';

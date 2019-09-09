@@ -10,9 +10,10 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
+
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
+import { PromotionDetailsComponent } from '../../../promotion/components/promotion-details/promotion-details.component';
 import { BasketPromotionContainerComponent } from '../../containers/basket-promotion/basket-promotion.container';
 import { LineItemDescriptionComponent } from '../line-item-description/line-item-description.component';
 

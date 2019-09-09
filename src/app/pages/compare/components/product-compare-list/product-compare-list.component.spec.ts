@@ -9,6 +9,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+
 import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from '../../../../shared/product/components/product-attributes/product-attributes.component';
 import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';

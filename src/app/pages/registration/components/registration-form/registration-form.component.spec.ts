@@ -7,10 +7,10 @@ import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
-
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+
 import { AddressFormFactory } from '../../../../shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
 import { AddressFormContainerComponent } from '../../../../shared/address-forms/containers/address-form/address-form.container';

@@ -1,12 +1,12 @@
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import {
   CreateBasketAddress,
   CreateBasketAddressSuccess,
   DeleteBasketShippingAddress,
   UpdateBasketAddress,
-} from '../checkout/basket/basket.actions';
+} from 'ish-core/store/checkout/basket/basket.actions';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import * as fromActions from './addresses.actions';
 import { addressesReducer, initialState } from './addresses.reducer';

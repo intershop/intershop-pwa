@@ -1,8 +1,8 @@
-import { AttributeGroup } from '../attribute-group/attribute-group.model';
-import { Attribute } from '../attribute/attribute.model';
-import { Image } from '../image/image.model';
-import { Price } from '../price/price.model';
-import { ProductLinks } from '../product-links/product-links.model';
+import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Image } from 'ish-core/models/image/image.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 
 export interface Product {
   name: string;

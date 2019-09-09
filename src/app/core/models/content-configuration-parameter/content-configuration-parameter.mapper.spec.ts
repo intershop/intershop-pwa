@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { SetAvailableLocales } from 'ish-core/store/locale';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
-import { Locale } from '../locale/locale.model';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 import { ContentConfigurationParameterMapper } from './content-configuration-parameter.mapper';

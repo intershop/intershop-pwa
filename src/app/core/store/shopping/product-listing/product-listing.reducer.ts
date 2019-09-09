@@ -2,9 +2,9 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { ProductListingID, ProductListingType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { FilterActionTypes, FilterActions } from '../filter';
-import { ProductsAction, ProductsActionTypes } from '../products';
-import { SearchAction, SearchActionTypes } from '../search';
+import { FilterActionTypes, FilterActions } from 'ish-core/store/shopping/filter';
+import { ProductsAction, ProductsActionTypes } from 'ish-core/store/shopping/products';
+import { SearchAction, SearchActionTypes } from 'ish-core/store/shopping/search';
 
 import { ProductListingAction, ProductListingActionTypes } from './product-listing.actions';
 

@@ -16,8 +16,8 @@ import {
 } from 'ish-core/models/product-view/product-view.model';
 import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { getCategoryTree } from '../categories';
-import { getShoppingState } from '../shopping-store';
+import { getCategoryTree } from 'ish-core/store/shopping/categories';
+import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { productAdapter } from './products.reducer';
 

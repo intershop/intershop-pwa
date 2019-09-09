@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-intelligence-in-components ccp-no-markup-in-containers
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,7 +10,8 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+
 import { CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 import { CMSComponent } from '../../models/cms-component/cms-component.model';
 import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
@@ -31,6 +31,7 @@ import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
   templateUrl: './content-pagelet.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-markup-in-containers ccp-no-intelligence-in-components
 export class ContentPageletContainerComponent extends SfeMetadataWrapper implements OnChanges {
   /**
    * The Pagelet that is to be rendered.

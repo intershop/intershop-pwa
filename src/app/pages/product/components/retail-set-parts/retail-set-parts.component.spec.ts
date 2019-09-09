@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+
 import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
 

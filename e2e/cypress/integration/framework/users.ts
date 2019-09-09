@@ -1,4 +1,3 @@
-// tslint:disable:no-unused-expression
 import { Registration } from '../pages/account/registration.page';
 
 export function createUserViaREST(user: Partial<Registration>) {
@@ -48,8 +47,10 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
   }).then(basketCreationResponse => {
     expect(basketCreationResponse.status).to.equal(201);
     const basketUrl = basketCreationResponse.body.links.self;
+    // tslint:disable-next-line:no-unused-expression
     expect(basketUrl).not.to.be.empty;
     const authToken = basketCreationResponse.headers['authentication-token'];
+    // tslint:disable-next-line:no-unused-expression
     expect(authToken).not.to.be.empty;
 
     const body = Object.keys(lineItems).map(product => ({ product, quantity: { value: lineItems[product] } }));

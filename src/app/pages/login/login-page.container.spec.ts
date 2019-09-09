@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { instance, mock } from 'ts-mockito';
-
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { LoginPageContainerComponent } from './login-page.container';

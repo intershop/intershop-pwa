@@ -12,10 +12,10 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { checkoutReducers } from '../checkout-store.module';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import * as basketActions from './basket.actions';

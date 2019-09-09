@@ -23,6 +23,9 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { LoadCategory } from 'ish-core/store/shopping/categories';
+import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   mapErrorToAction,
@@ -31,9 +34,6 @@ import {
   mapToProperty,
   whenTruthy,
 } from 'ish-core/utils/operators';
-import { ProductsService } from '../../../services/products/products.service';
-import { LoadCategory } from '../categories';
-import { SetProductListingPages } from '../product-listing';
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';

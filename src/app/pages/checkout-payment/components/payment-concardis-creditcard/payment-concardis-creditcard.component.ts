@@ -14,8 +14,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 import { ScriptLoaderService } from 'ish-core/services/script-loader/script-loader.service';
+
 import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
 
 // allows access to concardis js functionality
@@ -38,6 +38,7 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * concardis payment method, needed to get configuration parameters

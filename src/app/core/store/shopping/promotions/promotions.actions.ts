@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Promotion } from '../../../models/promotion/promotion.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 
 export enum PromotionsActionTypes {
   LoadPromotion = '[Promotions Internal] Load Promotion',

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { getCoreState } from '../core-store';
+import { getCoreState } from 'ish-core/store/core-store';
 
 import { addressAdapter } from './addresses.reducer';
 

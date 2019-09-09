@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Action, Store } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { UserActionTypes } from '../store/user';
+import { UserActionTypes } from 'ish-core/store/user';
 
 import { LogoutGuard } from './logout.guard';
 

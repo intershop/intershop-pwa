@@ -1,4 +1,4 @@
-import { Filter } from '../filter/filter.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 
 export interface FilterNavigation {
   filter: Filter[];

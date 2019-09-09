@@ -1,4 +1,4 @@
-import { BasketData } from '../basket/basket.interface';
+import { BasketData } from 'ish-core/models/basket/basket.interface';
 
 import { BasketMergeData } from './basket-merge.interface';
 

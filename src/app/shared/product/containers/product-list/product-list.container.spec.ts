@@ -8,7 +8,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+
+import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { ProductListPagingComponent } from '../../components/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from '../../components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from '../../components/product-list/product-list.component';

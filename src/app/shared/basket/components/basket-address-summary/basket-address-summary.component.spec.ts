@@ -6,7 +6,8 @@ import { MockComponent } from 'ng-mocks';
 import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+
+import { AddressComponent } from '../../../address/components/address/address.component';
 
 import { BasketAddressSummaryComponent } from './basket-address-summary.component';
 

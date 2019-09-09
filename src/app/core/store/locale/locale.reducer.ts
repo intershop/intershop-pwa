@@ -1,4 +1,4 @@
-import { Locale } from '../../models/locale/locale.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 
 import { LocaleAction, LocaleActionTypes } from './locale.actions';
 

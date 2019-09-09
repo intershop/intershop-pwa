@@ -16,6 +16,10 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
+import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
   distinctCompareWith,
@@ -24,10 +28,6 @@ import {
   whenFalsy,
   whenTruthy,
 } from 'ish-core/utils/operators';
-import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
-import { CategoryHelper } from '../../../models/category/category.model';
-import { CategoriesService } from '../../../services/categories/categories.service';
-import { LoadMoreProducts } from '../product-listing';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';

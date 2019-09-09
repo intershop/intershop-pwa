@@ -7,8 +7,8 @@ import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { distinctCompareWith } from 'ish-core/utils/operators';
-import { DeviceType } from '../../models/viewtype/viewtype.types';
 
 import { SetBreadcrumbData, SetDeviceType, SetHeaderType, SetStickyHeader, SetWrapperClass } from './viewconf.actions';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';

@@ -18,7 +18,10 @@ import {
 } from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
+import { UserService } from 'ish-core/services/user/user.service';
+import { GeneralError } from 'ish-core/store/error';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -26,9 +29,6 @@ import {
   mapToProperty,
   whenTruthy,
 } from 'ish-core/utils/operators';
-import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
-import { UserService } from '../../services/user/user.service';
-import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError, getUserSuccessMessage } from './user.selectors';

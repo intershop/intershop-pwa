@@ -1,11 +1,9 @@
-// tslint:disable:project-structure
-// due to recursive depending types the definitions must remain in the same file
 import { memoize, once } from 'lodash-es';
 
+import { ContentConfigurationParameters } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
-import { ContentSlot } from '../content-slot/content-slot.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
 
 export interface ContentConfigurationParameterView {
   hasParam(key: string): boolean;

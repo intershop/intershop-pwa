@@ -1,4 +1,4 @@
-import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 
 import {
   CategoriesAction,

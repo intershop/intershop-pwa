@@ -1,5 +1,5 @@
-import { PriceItem } from '../price-item/price-item.interface';
-import { PriceData } from '../price/price.interface';
+import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
+import { PriceData } from 'ish-core/models/price/price.interface';
 
 /**
  * Payment data which are saved at basket and order

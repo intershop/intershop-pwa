@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { FeatureToggleService } from '../utils/feature-toggle/feature-toggle.service';
 
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleGuard implements CanActivate {

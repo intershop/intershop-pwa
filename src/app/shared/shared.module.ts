@@ -17,6 +17,7 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { ShellModule } from '../shell/shell.module';
 

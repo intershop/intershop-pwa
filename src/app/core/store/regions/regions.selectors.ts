@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { Region } from 'ish-core/models/region/region.model';
-import { getCoreState } from '../core-store';
+import { getCoreState } from 'ish-core/store/core-store';
 
 import { regionAdapter } from './regions.reducer';
 

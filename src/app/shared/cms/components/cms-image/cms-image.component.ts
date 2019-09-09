@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ContentViewHelper } from 'ish-core/models/content-view/content-view.helper';
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+
 import { CMSComponent } from '../../models/cms-component/cms-component.model';
 
 @Component({

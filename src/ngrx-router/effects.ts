@@ -1,4 +1,3 @@
-// tslint:disable:no-any
 import { Injectable } from '@angular/core';
 import { ActivationStart, NavigationEnd, Router } from '@angular/router';
 import { Effect } from '@ngrx/effects';
@@ -7,6 +6,7 @@ import { debounce, filter, map } from 'rxjs/operators';
 import { RouteNavigation } from './actions';
 
 @Injectable()
+// tslint:disable:no-any
 export class RouterEffects {
   constructor(private router: Router) {}
 

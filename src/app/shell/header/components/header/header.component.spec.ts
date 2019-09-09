@@ -9,6 +9,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+
 import { HeaderNavigationContainerComponent } from '../../containers/header-navigation/header-navigation.container';
 import { LanguageSwitchContainerComponent } from '../../containers/language-switch/language-switch.container';
 import { LoginStatusContainerComponent } from '../../containers/login-status/login-status.container';

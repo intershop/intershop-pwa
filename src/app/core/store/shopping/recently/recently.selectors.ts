@@ -1,8 +1,8 @@
 import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
-import { getSelectedProductId } from '../products';
-import { getShoppingState } from '../shopping-store';
+import { getSelectedProductId } from 'ish-core/store/shopping/products';
+import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 const getRecentlyState = createSelector(
   getShoppingState,

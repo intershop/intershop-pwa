@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { ShoppingState, getShoppingState } from '../shopping-store';
+import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 const getFilterState = createSelector(
   getShoppingState,

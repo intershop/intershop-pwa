@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { HttpError } from '../../models/http-error/http-error.model';
-import { Order } from '../../models/order/order.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Order } from 'ish-core/models/order/order.model';
 
 import { OrdersAction, OrdersActionTypes } from './orders.actions';
 

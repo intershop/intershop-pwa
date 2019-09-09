@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { CategoryTreeHelper } from '../category-tree/category-tree.helper';
-import { CategoryTree } from '../category-tree/category-tree.model';
-import { ImageMapper } from '../image/image.mapper';
+import { CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.helper';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { ImageMapper } from 'ish-core/models/image/image.mapper';
 
 import { CategoryData, CategoryPathElement } from './category.interface';
 import { Category, CategoryHelper } from './category.model';

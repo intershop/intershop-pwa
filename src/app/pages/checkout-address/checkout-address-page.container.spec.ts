@@ -12,6 +12,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+
 import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';

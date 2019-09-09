@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ApiService } from '../api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 import { CountryService } from './country.service';
 

@@ -1,5 +1,5 @@
-import { BreadcrumbItem } from '../../models/breadcrumb-item/breadcrumb-item.interface';
-import { DeviceType } from '../../models/viewtype/viewtype.types';
+import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { ViewconfActionTypes, ViewconfActions } from './viewconf.actions';
 

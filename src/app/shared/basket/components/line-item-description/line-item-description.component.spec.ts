@@ -13,7 +13,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
+
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
@@ -21,6 +21,7 @@ import { FormsSharedModule } from '../../../forms/forms.module';
 import { LineItemEditDialogComponent } from '../../../line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from '../../../line-item/components/line-item-edit/line-item-edit.component';
 import { LineItemEditDialogContainerComponent } from '../../../line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
+import { ProductIdComponent } from '../../../product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
 import { ProductShipmentComponent } from '../../../product/components/product-shipment/product-shipment.component';
 import { ProductVariationDisplayComponent } from '../../../product/components/product-variation-display/product-variation-display.component';

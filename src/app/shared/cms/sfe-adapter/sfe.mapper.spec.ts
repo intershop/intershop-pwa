@@ -5,7 +5,7 @@ import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.
 import {
   createContentPageletEntryPointView,
   createContentPageletView,
-} from 'ish-core/models/content-view/content-views';
+} from 'ish-core/models/content-view/content-view.model';
 import { createDocumentFromHTML } from 'ish-core/utils/dev/html-query-utils';
 
 import { SfeMapper } from './sfe.mapper';

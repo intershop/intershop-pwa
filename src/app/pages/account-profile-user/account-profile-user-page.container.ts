@@ -8,6 +8,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { getCurrentLocale } from 'ish-core/store/locale';
 import { UpdateUser, getLoggedInUser, getUserError, getUserLoading } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+
 import { determineSalutations } from '../../shared/forms/utils/form-utils';
 
 /**

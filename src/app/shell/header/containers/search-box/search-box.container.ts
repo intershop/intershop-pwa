@@ -10,6 +10,7 @@ import {
   getSuggestSearchResult,
   getSuggestSearchTerm,
 } from 'ish-core/store/shopping/search';
+
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**

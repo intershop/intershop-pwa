@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-markup-in-containers
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
@@ -10,6 +9,7 @@ import { LoadQuoteRequests, getCurrentQuoteRequests, getQuoteRequestLoading } fr
   templateUrl: './quote-widget.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-markup-in-containers
 export class QuoteWidgetContainerComponent implements OnInit {
   quoteRequests$ = this.store.pipe(select(getCurrentQuoteRequests));
   quotes$ = this.store.pipe(select(getCurrentQuotes));

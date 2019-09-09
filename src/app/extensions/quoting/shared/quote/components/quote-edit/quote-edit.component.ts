@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { User } from 'ish-core/models/user/user.model';
+
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
 

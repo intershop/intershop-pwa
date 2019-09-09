@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+
 import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 

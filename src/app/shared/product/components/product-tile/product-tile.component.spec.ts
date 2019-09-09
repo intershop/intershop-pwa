@@ -9,6 +9,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/components/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { DEFAULT_CONFIGURATION } from '../../containers/product-item/product-item.container';

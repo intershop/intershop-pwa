@@ -6,7 +6,8 @@ import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
+
+import { ModalDialogLinkComponent } from '../../../common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { PromotionDetailsComponent } from './promotion-details.component';
 

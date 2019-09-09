@@ -1,5 +1,5 @@
-import { BasketRebate } from '../basket-rebate/basket-rebate.model';
-import { Price } from '../price/price.model';
+import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 export interface BasketTotal {
   itemTotal: Price;

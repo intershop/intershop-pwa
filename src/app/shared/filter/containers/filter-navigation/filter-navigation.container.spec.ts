@@ -8,6 +8,7 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 import { LoadFilterSuccess } from 'ish-core/store/shopping/filter';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+
 import { FilterNavigationBadgesComponent } from '../../components/filter-navigation-badges/filter-navigation-badges.component';
 import { FilterNavigationHorizontalComponent } from '../../components/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from '../../components/filter-navigation-sidebar/filter-navigation-sidebar.component';

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Region } from 'ish-core/models/region/region.model';
+
 import { SelectComponent, SelectOption } from '../select/select.component';
 
 @Component({

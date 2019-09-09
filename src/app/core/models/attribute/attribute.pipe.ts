@@ -2,9 +2,9 @@ import { formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { Price } from 'ish-core/models/price/price.model';
+import { formatPrice } from 'ish-core/models/price/price.pipe';
 import { formatISHDate } from 'ish-core/pipes/date.pipe';
-import { Price } from '../price/price.model';
-import { formatPrice } from '../price/price.pipe';
 
 import { Attribute } from './attribute.model';
 

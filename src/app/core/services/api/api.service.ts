@@ -4,11 +4,11 @@ import { Store, select } from '@ngrx/store';
 import { Observable, OperatorFunction, Subject, forkJoin, of, throwError } from 'rxjs';
 import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 
+import { Link } from 'ish-core/models/link/link.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
+import { getCurrentLocale } from 'ish-core/store/locale';
 import { getAPIToken, getPGID } from 'ish-core/store/user';
-import { Link } from '../../models/link/link.model';
-import { Locale } from '../../models/locale/locale.model';
-import { getCurrentLocale } from '../../store/locale';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 

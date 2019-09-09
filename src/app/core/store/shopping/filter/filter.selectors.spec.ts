@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { shoppingReducers } from '../shopping-store.module';
 
 import {
   ApplyFilter,

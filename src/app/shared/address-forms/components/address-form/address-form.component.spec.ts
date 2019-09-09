@@ -5,8 +5,9 @@ import * as using from 'jasmine-data-provider';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
-import { SelectCountryComponent } from '../../../../shared/forms/components/select-country/select-country.component';
+
+import { InputComponent } from '../../../forms/components/input/input.component';
+import { SelectCountryComponent } from '../../../forms/components/select-country/select-country.component';
 import { AddressFormBusinessComponent } from '../address-form-business/address-form-business.component';
 import { AddressFormDEComponent } from '../address-form-de/address-form-de.component';
 import { AddressFormDefaultComponent } from '../address-form-default/address-form-default.component';

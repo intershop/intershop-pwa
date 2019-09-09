@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+
 import { ProductPromotionComponent } from '../../components/product-promotion/product-promotion.component';
 
 import { ProductPromotionContainerComponent } from './product-promotion.container';
