@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var ngWalker_1 = require("codelyzer/angular/ngWalker");
 var basicTemplateAstVisitor_1 = require("codelyzer/angular/templates/basicTemplateAstVisitor");
 var Lint = require("tslint");
@@ -55,7 +56,16 @@ var Rule = (function (_super) {
         if (!sourceFile.fileName.match(/.*\/containers\/.*.ts/)) {
             return [];
         }
-        return this.applyWithWalker(new ngWalker_1.NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: ContainerTemplateVisitor }));
+        var walker = new ngWalker_1.NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: ContainerTemplateVisitor });
+        walker.walk(sourceFile);
+        var failures = walker.getFailures();
+        if (failures && failures.length) {
+            var errorToken_1 = tsquery_1.tsquery(sourceFile, 'ClassDeclaration > Identifier')[0];
+            return this.applyWithFunction(sourceFile, function (ctx) {
+                failures.forEach(function (f) { return ctx.addFailureAtNode(errorToken_1, f.getFailure()); });
+            });
+        }
+        return [];
     };
     return Rule;
 }(Lint.Rules.AbstractRule));
