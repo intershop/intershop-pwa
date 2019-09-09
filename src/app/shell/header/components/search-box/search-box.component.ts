@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**

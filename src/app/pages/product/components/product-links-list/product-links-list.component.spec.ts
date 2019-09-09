@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
+
 import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
 
 import { ProductLinksListComponent } from './product-links-list.component';

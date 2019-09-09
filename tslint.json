@@ -325,6 +325,7 @@
         {
           "import": "CookiesService",
           "from": "@ngx-utils/cookies",
+          "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
         {
@@ -361,7 +362,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!module\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         }
       ]

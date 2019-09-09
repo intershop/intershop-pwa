@@ -1,7 +1,7 @@
-import { AddressData } from '../address/address.interface';
-import { BasketBaseData, BasketData } from '../basket/basket.interface';
-import { LineItemData } from '../line-item/line-item.interface';
-import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
+import { AddressData } from 'ish-core/models/address/address.interface';
+import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
+import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
+import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
 import { BasketMergeHelper } from './basket-merge.helper';
 import { BasketMergeData } from './basket-merge.interface';

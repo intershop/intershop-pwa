@@ -1,10 +1,9 @@
-// tslint:disable:ban-specific-imports
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 import { RouterEffects } from 'ngrx-router';
 
-import { ngrxStateTransferMeta } from '../configurations/ngrx-state-transfer';
+import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
 
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';

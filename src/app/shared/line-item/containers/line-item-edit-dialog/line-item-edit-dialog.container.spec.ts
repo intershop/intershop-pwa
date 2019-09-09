@@ -11,10 +11,11 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
+
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
+import { ProductIdComponent } from '../../../product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
 import { ProductRowComponent } from '../../../product/components/product-row/product-row.component';
 import { ProductTileComponent } from '../../../product/components/product-tile/product-tile.component';

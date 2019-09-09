@@ -1,4 +1,3 @@
-// tslint:disable:component-creation-test
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Product } from 'ish-core/models/product/product.model';
@@ -20,6 +19,7 @@ import { Product } from 'ish-core/models/product/product.model';
   templateUrl: './lazy-product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
+// tslint:disable-next-line:component-creation-test
 export class LazyProductAddToQuoteComponent {
   @Input() product: Product;
   @Input() disabled = false;

@@ -22,6 +22,7 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
 import { LoadProductIfNotLoaded, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
+
 import { ProductRowComponentConfiguration } from '../../components/product-row/product-row.component';
 import { ProductTileComponentConfiguration } from '../../components/product-tile/product-tile.component';
 

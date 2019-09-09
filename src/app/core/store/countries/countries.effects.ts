@@ -3,8 +3,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
 
+import { CountryService } from 'ish-core/services/country/country.service';
 import { mapErrorToAction } from 'ish-core/utils/operators';
-import { CountryService } from '../../services/country/country.service';
 
 import * as countryActions from './countries.actions';
 import { getAllCountries } from './countries.selectors';

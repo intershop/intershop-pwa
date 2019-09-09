@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
-import { getProductEntities } from '../products';
-import { ShoppingState, getShoppingState } from '../shopping-store';
+import { getProductEntities } from 'ish-core/store/shopping/products';
+import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 export const getCompareState = createSelector(
   getShoppingState,

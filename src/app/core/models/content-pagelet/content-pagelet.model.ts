@@ -1,5 +1,5 @@
-import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentSlot } from '../content-slot/content-slot.model';
+import { ContentConfigurationParameters } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
+import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
 
 export interface ContentPagelet {
   definitionQualifiedName: string;

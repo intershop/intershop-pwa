@@ -5,7 +5,8 @@ import { MockComponent } from 'ng-mocks';
 
 import { OrderView } from 'ish-core/models/order/order.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { AddressComponent } from '../../../../shared/address/components/address/address.component';
+
+import { AddressComponent } from '../../../address/components/address/address.component';
 
 import { OrderListComponent } from './order-list.component';
 

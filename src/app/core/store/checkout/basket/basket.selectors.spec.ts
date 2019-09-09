@@ -5,11 +5,11 @@ import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { LoadProductSuccess } from '../../shopping/products';
-import { shoppingReducers } from '../../shopping/shopping-store.module';
-import { checkoutReducers } from '../checkout-store.module';
 
 import {
   AddItemsToBasketSuccess,

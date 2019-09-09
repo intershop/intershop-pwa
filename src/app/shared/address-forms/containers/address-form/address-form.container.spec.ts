@@ -12,6 +12,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
+
 import { AddressFormComponent } from '../../components/address-form/address-form.component';
 import { AddressFormFactory } from '../../components/address-form/address-form.factory';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';

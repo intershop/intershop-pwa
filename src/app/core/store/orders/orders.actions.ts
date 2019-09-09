@@ -2,8 +2,8 @@ import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { Order } from '../../models/order/order.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Order } from 'ish-core/models/order/order.model';
 
 export enum OrdersActionTypes {
   CreateOrder = '[Order] Create Order',

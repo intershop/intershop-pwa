@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
-import { HttpError } from '../../models/http-error/http-error.model';
-import { Region } from '../../models/region/region.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Region } from 'ish-core/models/region/region.model';
 
 export enum RegionActionTypes {
   LoadRegions = '[Core] Load Regions',

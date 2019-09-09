@@ -7,12 +7,12 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Promotion } from '../../../models/promotion/promotion.model';
-import { PromotionsService } from '../../../services/promotions/promotions.service';
-import { shoppingReducers } from '../../../store/shopping/shopping-store.module';
-import { localeReducer } from '../../locale/locale.reducer';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 
 import * as fromActions from './promotions.actions';
 import { PromotionsEffects } from './promotions.effects';

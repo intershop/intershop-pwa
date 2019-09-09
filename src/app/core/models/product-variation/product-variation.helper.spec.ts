@@ -1,4 +1,4 @@
-import { VariationProductView } from '../product-view/product-view.model';
+import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductVariationHelper } from './product-variation.helper';
 

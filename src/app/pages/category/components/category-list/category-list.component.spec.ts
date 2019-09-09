@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
+
 import { CategoryTileComponent } from '../category-tile/category-tile.component';
 
 import { CategoryListComponent } from './category-list.component';

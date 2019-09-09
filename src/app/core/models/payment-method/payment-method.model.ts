@@ -1,8 +1,8 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { PaymentInstrument } from '../payment-instrument/payment-instrument.model';
-import { PaymentRestriction } from '../payment-restriction/payment-restriction.model';
-import { Price } from '../price/price.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentRestriction } from 'ish-core/models/payment-restriction/payment-restriction.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 export interface PaymentMethod {
   id: string;

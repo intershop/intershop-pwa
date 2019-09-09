@@ -5,10 +5,10 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { Country } from '../../models/country/country.model';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { CountryService } from '../../services/country/country.service';
-import { coreReducers } from '../core-store.module';
+import { Country } from 'ish-core/models/country/country.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { CountryService } from 'ish-core/services/country/country.service';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { CountryActionTypes, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { CountriesEffects } from './countries.effects';

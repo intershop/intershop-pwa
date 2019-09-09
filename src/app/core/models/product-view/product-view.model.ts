@@ -1,12 +1,12 @@
 import { Dictionary } from '@ngrx/entity';
 import { once } from 'lodash-es';
 
-import { CategoryTree } from '../category-tree/category-tree.model';
-import { CategoryView, createCategoryView } from '../category-view/category-view.model';
-import { VariationProductMaster } from '../product/product-variation-master.model';
-import { VariationProduct } from '../product/product-variation.model';
-import { AllProductTypes } from '../product/product.helper';
-import { Product } from '../product/product.model';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { CategoryView, createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { AllProductTypes } from 'ish-core/models/product/product.helper';
+import { Product } from 'ish-core/models/product/product.model';
 
 /**
  * View on a {@link Product} with additional methods for default category

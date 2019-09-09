@@ -1,4 +1,3 @@
-// tslint:disable:no-any
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -13,8 +12,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/configuration';
-import { MOCK_SERVER_API, MUST_MOCK_PATHS } from '../configurations/injection-keys';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
@@ -37,11 +36,11 @@ export class MockInterceptor implements HttpInterceptor {
    * Intercepts out going request and changes url to mock url if needed.
    * Intercepts incoming response and sets authentication-token header if login was requested.
    * Also handles logging in patricia with correct password and failing if credentials are wrong
-   * @param  {HttpRequest<any>} req
+   * @param  {HttpRequest<unknown>} req
    * @param  {HttpHandler} next
-   * @returns  Observable<HttpEvent<any>>
+   * @returns  Observable<HttpEvent<unknown>>
    */
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!this.requestHasToBeMocked(req)) {
       return next.handle(req);
     }
@@ -68,21 +67,21 @@ export class MockInterceptor implements HttpInterceptor {
     );
   }
 
-  private isLoginAttempt(req: HttpRequest<any>) {
+  private isLoginAttempt(req: HttpRequest<unknown>) {
     return req.headers.has('Authorization');
   }
 
   /**
    * check if user patricia@test.intershop.de with !InterShop00! is logged in correctly
    */
-  private isMockUserLoggingInSuccessfully(req: HttpRequest<any>) {
+  private isMockUserLoggingInSuccessfully(req: HttpRequest<unknown>) {
     return req.headers.get('Authorization') === 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
   }
 
   /**
    * Decides if token needs to be attached and attaches it
    */
-  private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
+  private attachTokenIfNecessary(req: HttpRequest<unknown>, response: HttpResponse<unknown>): HttpResponse<unknown> {
     if ((this.isLoginAttempt(req) && this.isMockUserLoggingInSuccessfully(req)) || req.url.indexOf('customers') > -1) {
       // tslint:disable-next-line:no-console
       console.log('attaching dummy token');
@@ -94,7 +93,7 @@ export class MockInterceptor implements HttpInterceptor {
   /**
    * transforms server REST URL to mock REST URL
    */
-  getMockUrl(req: HttpRequest<any>) {
+  getMockUrl(req: HttpRequest<unknown>) {
     return this.urlHasToBeMocked(req.url)
       ? `${MOCK_DATA_ROOT}/${this.getRestPath(
           this.removeQueryStringParameter(req.url)
@@ -113,7 +112,7 @@ export class MockInterceptor implements HttpInterceptor {
   /**
    * check if HttpRequest has to be mocked
    */
-  requestHasToBeMocked(req: HttpRequest<any>): boolean {
+  requestHasToBeMocked(req: HttpRequest<unknown>): boolean {
     return this.urlHasToBeMocked(req.url);
   }
 

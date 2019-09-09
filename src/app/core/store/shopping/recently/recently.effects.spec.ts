@@ -5,11 +5,11 @@ import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { Product } from 'ish-core/models/product/product.model';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { Product } from '../../../models/product/product.model';
-import { LoadProductSuccess, SelectProduct } from '../products';
-import { shoppingReducers } from '../shopping-store.module';
+import { LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 
 import { AddToRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';

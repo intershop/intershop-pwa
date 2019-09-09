@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+
 import { SelectOption } from '../../../forms/components/select/select.component';
 
 @Component({

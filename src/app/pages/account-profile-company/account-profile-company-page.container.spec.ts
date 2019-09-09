@@ -7,6 +7,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
+
 import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 
 import { AccountProfileCompanyPageContainerComponent } from './account-profile-company-page.container';

@@ -4,7 +4,8 @@ import { StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+
+import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { ProductRowComponent } from '../../components/product-row/product-row.component';
 import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
 

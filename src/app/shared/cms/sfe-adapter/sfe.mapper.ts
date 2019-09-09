@@ -1,4 +1,4 @@
-import { ContentEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 import { SfeDomNode, SfeMetadata, SfeMetadataNode } from './sfe.types';
 

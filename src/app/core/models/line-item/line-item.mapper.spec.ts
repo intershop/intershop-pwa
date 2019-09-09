@@ -1,4 +1,4 @@
-import { OrderItemData } from '../order-item/order-item.interface';
+import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 
 import { LineItemData } from './line-item.interface';
 import { LineItemMapper } from './line-item.mapper';

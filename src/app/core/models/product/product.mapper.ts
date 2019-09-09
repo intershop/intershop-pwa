@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { CategoryMapper } from 'ish-core/models/category/category.mapper';
+import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { AttributeHelper } from '../attribute/attribute.helper';
-import { CategoryData } from '../category/category.interface';
-import { CategoryMapper } from '../category/category.mapper';
-import { ImageMapper } from '../image/image.mapper';
-import { Price } from '../price/price.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 import { VariationProduct } from './product-variation.model';
 import { AllProductTypes, SkuQuantityType } from './product.helper';

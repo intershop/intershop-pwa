@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 
-import { CategoryData } from '../category/category.interface';
-import { CategoryMapper } from '../category/category.mapper';
-import { Category } from '../category/category.model';
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { CategoryMapper } from 'ish-core/models/category/category.mapper';
+import { Category } from 'ish-core/models/category/category.model';
 
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';

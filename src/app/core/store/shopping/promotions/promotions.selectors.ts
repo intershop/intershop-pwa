@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 import { memoize } from 'lodash-es';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { ShoppingState, getShoppingState } from '../shopping-store';
+import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { promotionAdapter } from './promotions.reducer';
 

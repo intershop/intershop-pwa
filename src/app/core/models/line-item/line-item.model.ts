@@ -1,6 +1,6 @@
-import { BasketRebate } from '../basket-rebate/basket-rebate.model';
-import { Price } from '../price/price.model';
-import { Product } from '../product/product.model';
+import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 export interface LineItem {
   id: string;

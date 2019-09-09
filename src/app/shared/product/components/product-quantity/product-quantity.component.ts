@@ -11,6 +11,7 @@ import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
 
 import { Product } from 'ish-core/models/product/product.model';
+
 import { SelectOption } from '../../../forms/components/select/select.component';
 import { SpecialValidators } from '../../../forms/validators/special-validators';
 

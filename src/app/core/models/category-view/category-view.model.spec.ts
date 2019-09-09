@@ -1,5 +1,5 @@
+import { Category } from 'ish-core/models/category/category.model';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { Category } from '../category/category.model';
 
 import { createCategoryView } from './category-view.model';
 

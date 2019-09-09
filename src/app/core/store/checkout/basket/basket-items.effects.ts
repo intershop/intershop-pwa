@@ -20,9 +20,9 @@ import {
   LineItemUpdateHelper,
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
+import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
-import { BasketService } from '../../../services/basket/basket.service';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';

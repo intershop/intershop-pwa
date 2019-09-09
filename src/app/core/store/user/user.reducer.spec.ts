@@ -1,7 +1,7 @@
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { Customer } from '../../models/customer/customer.model';
-import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
-import { User } from '../../models/user/user.model';
+import { User } from 'ish-core/models/user/user.model';
 
 import {
   CreateUserFail,

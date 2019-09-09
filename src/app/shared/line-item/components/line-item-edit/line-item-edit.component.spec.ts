@@ -6,11 +6,12 @@ import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
+
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
+import { ProductIdComponent } from '../../../product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
 import { ProductVariationSelectComponent } from '../../../product/components/product-variation-select/product-variation-select.component';
 import { LineItemEditDialogContainerComponent } from '../../containers/line-item-edit-dialog/line-item-edit-dialog.container';

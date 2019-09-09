@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+
 import { FilterCheckboxComponent } from '../filter-checkbox/filter-checkbox.component';
 import { FilterDropdownComponent } from '../filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from '../filter-swatch-images/filter-swatch-images.component';

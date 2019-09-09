@@ -5,6 +5,7 @@ import { filter, take } from 'rxjs/operators';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { getUserAuthorized } from 'ish-core/store/user';
+
 import { AddProductToQuoteRequest } from '../../../../store/quote-request';
 import { ProductAddToQuoteDialogContainerComponent } from '../product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 

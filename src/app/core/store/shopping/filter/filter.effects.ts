@@ -4,10 +4,10 @@ import { Store } from '@ngrx/store';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { FilterService } from 'ish-core/services/filter/filter.service';
+import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { LoadProductFail } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { FilterService } from '../../../services/filter/filter.service';
-import { SetProductListingPages } from '../product-listing';
-import { LoadProductFail } from '../products';
 
 import * as filterActions from './filter.actions';
 

@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { instance, mock } from 'ts-mockito';
-
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { ServerErrorPageComponent } from './components/server-error-page/server-error-page.component';

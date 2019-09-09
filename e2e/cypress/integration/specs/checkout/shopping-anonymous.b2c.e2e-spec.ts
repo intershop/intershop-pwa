@@ -1,5 +1,4 @@
 import { at } from '../../framework';
-
 import { AddressDetailsTypes, AddressesPage } from '../../pages/checkout/addresses.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { PaymentPage } from '../../pages/checkout/payment.page';

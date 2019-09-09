@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
+
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { ForgotPasswordFormComponent } from './forgot-password-form.component';

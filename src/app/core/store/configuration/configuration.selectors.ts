@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import { getCoreState } from '../core-store';
+import { getCoreState } from 'ish-core/store/core-store';
 
-const getConfigurationState = createSelector(
+export const getConfigurationState = createSelector(
   getCoreState,
   state => state.configuration
 );

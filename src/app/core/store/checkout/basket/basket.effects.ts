@@ -4,10 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { ofRoute } from 'ngrx-router';
 import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
+import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { BasketService } from '../../../services/basket/basket.service';
-import { LoadProduct, getProductEntities } from '../../shopping/products';
-import { UserActionTypes } from '../../user';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';

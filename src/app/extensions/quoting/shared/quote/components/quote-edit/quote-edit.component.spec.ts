@@ -7,6 +7,7 @@ import { spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { PipesModule } from 'ish-core/pipes.module';
+
 import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
 import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';

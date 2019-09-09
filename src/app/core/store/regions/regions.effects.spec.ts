@@ -7,8 +7,8 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { CountryService } from '../../services/country/country.service';
-import { coreReducers } from '../core-store.module';
+import { CountryService } from 'ish-core/services/country/country.service';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import * as regionActions from './regions.actions';
 import { RegionsEffects } from './regions.effects';

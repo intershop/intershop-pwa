@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import { OrderView, createOrderView } from '../../models/order/order.model';
-import { getCoreState } from '../core-store';
-import { getProductEntities } from '../shopping/products';
+import { OrderView, createOrderView } from 'ish-core/models/order/order.model';
+import { getCoreState } from 'ish-core/store/core-store';
+import { getProductEntities } from 'ish-core/store/shopping/products';
 
 import { orderAdapter } from './orders.reducer';
 

@@ -5,9 +5,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { ofRoute } from 'ngrx-router';
 import { filter, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
 
+import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
-import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
-import { Locale } from '../../models/locale/locale.model';
 
 import * as fromActions from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';

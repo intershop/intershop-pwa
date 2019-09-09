@@ -8,6 +8,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { LoadBasket, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+
 import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 import { RecentlyViewedContainerComponent } from '../../shared/recently/containers/recently-viewed/recently-viewed.container';
 

@@ -11,6 +11,7 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products/products.selectors';
+
 import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
 
 /**

@@ -4,9 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { distinctUntilKeyChanged, filter, map } from 'rxjs/operators';
 
 import { ProductHelper } from 'ish-core/models/product/product.model';
+import { getSelectedProduct } from 'ish-core/store/shopping/products/products.selectors';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { getSelectedProduct } from '../products/products.selectors';
 
 import * as recentlyActions from './recently.actions';
 

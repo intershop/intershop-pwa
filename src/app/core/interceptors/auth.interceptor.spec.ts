@@ -1,30 +1,29 @@
-// tslint:disable:no-any
-import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { coreReducers } from '../store/core-store.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor', () => {
   const responseData = `{"name":"test","age":"34"}`;
   let responseHeaders: HttpHeaders;
-  let getRequest: HttpRequest<any>;
+  let getRequest: HttpRequest<unknown>;
   let authInterceptor: AuthInterceptor;
-  let mockInterceptor: any;
+  let mockInterceptor: HttpHandler;
   let store$: Store<{}>;
 
   beforeEach(() => {
-    getRequest = new HttpRequest<any>('GET', ' ');
+    getRequest = new HttpRequest<unknown>('GET', ' ');
     responseHeaders = new HttpHeaders();
     mockInterceptor = {
-      handle(_: HttpRequest<any>): Observable<HttpEvent<any>> {
+      handle(_: HttpRequest<unknown>): Observable<HttpEvent<unknown>> {
         const headers = responseHeaders;
-        const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers });
+        const res = new HttpResponse<unknown>({ body: JSON.parse(responseData), headers });
         return of(res);
       },
     };
@@ -37,7 +36,7 @@ describe('Auth Interceptor', () => {
   });
 
   it('should return mocked body in response when requested', done => {
-    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data: HttpResponse<any>) => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data: HttpResponse<unknown>) => {
       const response = data;
       expect(response.body).toEqual(JSON.parse(responseData));
       done();

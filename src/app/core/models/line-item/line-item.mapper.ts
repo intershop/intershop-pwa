@@ -1,7 +1,7 @@
-import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
-import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
-import { OrderItemData } from '../order-item/order-item.interface';
-import { PriceMapper } from '../price/price.mapper';
+import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
+import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
+import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { LineItemData } from './line-item.interface';
 import { LineItem } from './line-item.model';

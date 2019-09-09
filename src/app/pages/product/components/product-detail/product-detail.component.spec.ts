@@ -8,6 +8,7 @@ import { MockComponent } from 'ng-mocks';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/components/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { AccordionItemComponent } from '../../../../shared/common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from '../../../../shared/common/components/accordion/accordion.component';

@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
@@ -18,6 +17,7 @@ import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/v
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class AppComponent {
   @ViewChild('cookieLaw')
   private cookieLaw: CookieLawContainerComponent;

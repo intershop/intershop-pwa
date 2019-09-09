@@ -1,5 +1,5 @@
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Promotion } from '../../../models/promotion/promotion.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 
 import * as fromActions from './promotions.actions';
 import { PromotionsState, initialState, promotionsReducer } from './promotions.reducer';

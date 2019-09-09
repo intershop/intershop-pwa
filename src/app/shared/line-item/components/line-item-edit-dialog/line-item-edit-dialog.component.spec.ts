@@ -4,10 +4,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
+
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
+import { ProductIdComponent } from '../../../product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
 import { ProductVariationSelectComponent } from '../../../product/components/product-variation-select/product-variation-select.component';
 

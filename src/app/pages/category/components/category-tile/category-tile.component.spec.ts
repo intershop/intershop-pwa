@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
+
 import { CategoryImageComponent } from '../category-image/category-image.component';
 
 import { CategoryTileComponent } from './category-tile.component';

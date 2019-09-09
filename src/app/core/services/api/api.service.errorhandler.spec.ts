@@ -7,7 +7,7 @@ import { cold } from 'jest-marbles';
 import { noop } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { ErrorActionTypes } from '../../store/error';
+import { ErrorActionTypes } from 'ish-core/store/error';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 

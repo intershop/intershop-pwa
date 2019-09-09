@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+
 import { HeaderCheckoutComponent } from '../../components/header-checkout/header-checkout.component';
 import { HeaderSimpleComponent } from '../../components/header-simple/header-simple.component';
 import { HeaderComponent } from '../../components/header/header.component';
