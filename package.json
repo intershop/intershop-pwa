@@ -81,7 +81,6 @@
     "lodash-es": "^4.17.11",
     "ng-recaptcha": "^4.2.1",
     "ng2-validation": "^4.2.0",
-    "ngrx-store-localstorage": "^5.1.1",
     "ngx-infinite-scroll": "^7.0.1",
     "ngx-swiper-wrapper": "^8.0.2",
     "ngx-toastr": "^10.0.4",
