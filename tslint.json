@@ -203,6 +203,7 @@
       }
     },
     "ish-ordered-imports": true,
+    "ish-useful-imports": true,
     "no-duplicate-imports": true,
     "ban": [
       true,
