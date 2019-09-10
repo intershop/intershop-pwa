@@ -8,6 +8,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
+import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Credentials, LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
@@ -190,5 +191,22 @@ export class UserService {
    */
   getCompanyUserData(): Observable<User> {
     return this.apiService.get('customers/-/users/-').pipe(map(UserMapper.fromData));
+  }
+
+  /**
+   * Request an email for the given datas user with a link to reset the users password.
+   * @param data  The user data (email, firstName, lastName, answer) to identify the user.
+   */
+  requestPasswordReminder(data: PasswordReminder) {
+    if (data.captchaResponse) {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      const headers = new HttpHeaders().set(
+        'Authorization',
+        `CAPTCHA g-recaptcha-response=${data.captchaResponse} foo=bar`
+      );
+      return this.apiService.post('security/reminder', { answer: '', ...data }, { headers });
+    } else {
+      return this.apiService.post('security/reminder', { answer: '', ...data });
+    }
   }
 }
