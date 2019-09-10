@@ -1,3 +1,49 @@
+# [0.14.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.14.0/) (2019-09-10)
+
+**required Intershop Commerce Management version: 7.10.13.4**
+
+### Features
+
+- show ratings for products (ISREST-817)
+- add forgot password functionality to request an email with a password reset link (ISREST-844)
+- improved searchbox with search suggest handling (ISREST-229)
+- enable a customer to redeem a promotion code in shopping cart and checkout (ISREST-697)
+- require old password when updating the user password
+- advanced variation handling - filter variations on product master pages (ISREST-515)
+- display basket and order errors in mini basket or on the checkout pages, respectively (ISREST-275)
+- client side filter navigation for deselect, multiple select, price ranges
+- enable security question for registration via feature toggle (disabled by default)
+- add support for product links (ISREST-733)
+- provide visual feedback after adding a product to cart (ISREST-618)
+- display cms content in the modal dialogs 'Privacy Policy' and 'Safe & Secure' (ISREST-341)
+- enable captcha via feature toggle, e.g. for user registration (ISREST-77)
+- server-side basket merging after login using a REST request (ISREST-276)
+- add support for retail sets (ISREST-689)
+- add support for product bundles (ISREST-683)
+
+### Bug Fixes
+
+- display an error message if the user selects a wrong expiry date for the concardis credit card (ISREST-825)
+- collapse category navigation for mobile view (ISREST-836)
+- inconsitent product list count by querying the search index with the default product list call and clientside workarounds
+- form control feedback colors and styling improved (ISREST-838)
+- display a message if the user doesn't check the captcha (ISREST-829)
+- enable endless scrolling after sorting (ISREST-837)
+- display a message if no shipping method is available for the shopping cart (ISREST-594)
+- keep product attributes when starting at product variation
+- use always server-side merging for merging baskets after user login (ISREST-835)
+- fixes for azure-pipelines.yml template
+- consolidate different implementations for product id display (ISREST-761)
+- consume basket rest data, minor code refactoring (ISREST-811)
+- footer is not localized (ISREST-506)
+- missing variation attributes in select boxes fixed by a more robust SKUs parsing from URIs
+- use packing units on products for basket line items (ISREST-786)
+
+### BREAKING CHANGES
+
+- due to file system restrictions, mock-data file names no longer contain parameters
+- CMSModule is now integrated into SharedModule
+
 # 0.13.1 (2019-08-01)
 
 **required Intershop Commerce Management version: 7.10.13.1**
