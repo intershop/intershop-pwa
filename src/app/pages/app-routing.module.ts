@@ -50,6 +50,10 @@ const routes: Routes = [
     path: 'forgotPassword',
     loadChildren: () => import('./forgot-password/forgot-password-page.module').then(m => m.ForgotPasswordPageModule),
   },
+  {
+    path: 'contact',
+    loadChildren: () => import('./contact/contact-page.module').then(m => m.ContactPageModule),
+  },
 ];
 
 @NgModule({
