@@ -30,7 +30,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     newUrl = split[0];
     if (/.*\.b2b\..*/.test(Cypress.spec.name)) {
       newUrl +=
-        ';channel=inSPIRED-inTRONICS_Business-Site;features=quoting,compare,recently,businessCustomerRegistration';
+        ';channel=inSPIRED-inTRONICS_Business-Site;features=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling';
     } else if (/.*\.b2c\..*/.test(Cypress.spec.name)) {
       newUrl += ';channel=inSPIRED-inTRONICS-Site';
     }
@@ -38,22 +38,23 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
       newUrl += '?' + split[1];
     }
   }
+
+  cy.window().then(win => (win.angularStable = undefined));
+
+  originalFn(newUrl, { ...options, failOnStatusCode: false });
+
+  cy.get('ish-root', { timeout: 60000 }).should('be.hidden');
+
   return cy
     .window()
-    .then(win => (win.angularStable = undefined))
-    .then(() => originalFn(newUrl, { ...options, failOnStatusCode: false }))
+    .its('angularStable')
+    .should('be.true')
     .then(() =>
-      cy
-        .window()
-        .its('angularStable')
-        .should('be.true')
-        .then(() =>
-          cy.url().should(newUrl => {
-            const simplifiedUrl = url.replace(/[\/\?]/g, '.+').replace(' ', '.+');
-            const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
-            expect(newUrl).to.match(oldUrlRegex);
-          })
-        )
+      cy.url().should(newUrl => {
+        const simplifiedUrl = url.replace(/[\/\?]/g, '.+').replace(' ', '.+');
+        const oldUrlRegex = new RegExp(`(${simplifiedUrl}|\/error$)`);
+        expect(newUrl).to.match(oldUrlRegex);
+      })
     );
 });
 

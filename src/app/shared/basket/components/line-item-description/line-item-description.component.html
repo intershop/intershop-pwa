@@ -1,13 +1,26 @@
 <ng-container *ngIf="pli && pli.product">
   <!-- Product ID -->
-  <p class="product-id">{{ 'checkout.pli.item.text.id' | translate }} {{ pli.productSKU }}</p>
+  <ish-product-id [product]="pli.product"></ish-product-id>
 
   <!-- Product Variations -->
-  <ish-product-variation-display [product]="pli.product"></ish-product-variation-display>
+  <ish-product-variation-display
+    *ngIf="isVariationProduct(pli.product)"
+    [product]="pli.product"
+  ></ish-product-variation-display>
+  <!-- Product Bundles -->
+  <ish-product-bundle-display-container
+    *ngIf="isBundleProduct(pli.product)"
+    [productBundleSKU]="pli.product.sku"
+  ></ish-product-bundle-display-container>
 
   <ng-container *ngIf="lineItemViewType !== 'simple'">
     <!-- edit variation & quantity -->
-    <ish-line-item-edit [lineItem]="pli" [editable]="editable" (updateItem)="onUpdateItem($event)"></ish-line-item-edit>
+    <ish-line-item-edit
+      *ishNotFeature="'advancedVariationHandling'"
+      [lineItem]="pli"
+      [editable]="editable"
+      (updateItem)="onUpdateItem($event)"
+    ></ish-line-item-edit>
 
     <!-- Availability -->
     <ish-product-inventory [product]="pli.product"></ish-product-inventory>

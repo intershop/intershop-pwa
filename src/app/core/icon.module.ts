@@ -26,8 +26,12 @@ import {
   faQuestionCircle,
   faSearch,
   faShoppingCart,
+  faSpinner,
+  faStar,
+  faStarHalf,
   faTh,
   faTimes,
+  faTimesCircle,
   faTrashAlt,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
@@ -58,16 +62,20 @@ export class IconModule {
       faPaperPlane,
       faPencilAlt,
       faPhone,
+      faPlayCircle,
       faPlus,
       faPrint,
       faQuestionCircle,
       faSearch,
       faShoppingCart,
+      faSpinner,
       faTh,
       faTimes,
+      faTimesCircle,
       faTrashAlt,
       faUser,
-      faPlayCircle
+      faStar,
+      faStarHalf
     );
   }
 }

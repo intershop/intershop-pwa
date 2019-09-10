@@ -1,0 +1,10 @@
+<div *ngIf="error as error" role="alert" class="alert alert-danger">
+  <ng-container *ngIf="error.status === 406; else generalError">
+    {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures }}
+  </ng-container>
+  <ng-template #generalError>
+    <span *ngIf="!error.error">{{ error.status }}: {{ error.message }}</span
+    >{{ error.error }}
+  </ng-template>
+  <ng-content></ng-content>
+</div>

@@ -1,15 +1,20 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { defaultIfEmpty, map } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductData, ProductDataStub, ProductVariationLink } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getProductListingItemsPerPage } from 'ish-core/store/shopping/product-listing';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -17,9 +22,18 @@ import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   private static STUB_ATTRS =
-    'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,mastered,productMaster,productMasterSKU';
+    'sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating';
 
-  constructor(private apiService: ApiService, private productMapper: ProductMapper) {}
+  private itemsPerPage: number;
+
+  constructor(
+    private apiService: ApiService,
+    private productMapper: ProductMapper,
+    store: Store<{}>,
+    private featureToggleService: FeatureToggleService
+  ) {
+    store.pipe(select(getProductListingItemsPerPage)).subscribe(itemsPerPage => (this.itemsPerPage = itemsPerPage));
+  }
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -41,17 +55,15 @@ export class ProductsService {
   /**
    * Get a sorted list of all products (as SKU list) assigned to a given Category respecting pagination.
    * @param categoryUniqueId  The unique Category ID.
-   * @param page              The page to request (0-based numbering)
-   * @param itemsPerPage      The number of items on each page.
+   * @param page              The page to request (1-based numbering)
    * @param sortKey           The sortKey to sort the list, default value is ''.
    * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sortings [sortKeys].
    */
   getCategoryProducts(
     categoryUniqueId: string,
     page: number,
-    itemsPerPage: number,
-    sortKey = ''
-  ): Observable<{ products: Product[]; categoryUniqueId: string; sortKeys: string[]; total: number }> {
+    sortKey?: string
+  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
@@ -59,9 +71,10 @@ export class ProductsService {
     let params = new HttpParams()
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('attrsGroups', AttributeGroupTypes.ProductLabelAttributes) // TODO: validate if this is working once ISREST-523 is implemented
-      .set('amount', itemsPerPage.toString())
-      .set('offset', (page * itemsPerPage).toString())
-      .set('returnSortKeys', 'true');
+      .set('amount', this.itemsPerPage.toString())
+      .set('offset', ((page - 1) * this.itemsPerPage).toString())
+      .set('returnSortKeys', 'true')
+      .set('productFilter', 'fallback_searchquerydefinition');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
@@ -75,34 +88,36 @@ export class ProductsService {
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
-          categoryUniqueId,
           total: response.total ? response.total : response.elements.length,
-        }))
+        })),
+        map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
       );
   }
 
   /**
    * Get products for a given search term respecting pagination.
    * @param searchTerm    The search term to look for matching products.
-   * @param page          The page to request (0-based numbering)
-   * @param itemsPerPage  The number of items on each page.
+   * @param page          The page to request (1-based numbering)
    * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
    */
   searchProducts(
     searchTerm: string,
     page: number,
-    itemsPerPage: number
+    sortKey?: string
   ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('searchTerm', searchTerm)
-      .set('amount', itemsPerPage.toString())
-      .set('offset', (page * itemsPerPage).toString())
+      .set('amount', this.itemsPerPage.toString())
+      .set('offset', ((page - 1) * this.itemsPerPage).toString())
       .set('attrs', ProductsService.STUB_ATTRS)
       .set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
 
     return this.apiService
       .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
@@ -111,22 +126,93 @@ export class ProductsService {
           products: response.elements.map(element => this.productMapper.fromStubData(element)),
           sortKeys: response.sortKeys,
           total: response.total ? response.total : response.elements.length,
-        }))
+        })),
+        map(({ products, sortKeys, total }) => ({ products: this.postProcessMasters(products), sortKeys, total }))
       );
+  }
+
+  // TODO: work-around to exchange single-return variation products to master products for B2B
+  private postProcessMasters(products: Product[]): Product[] {
+    if (this.featureToggleService.enabled('advancedVariationHandling')) {
+      return products.map(p =>
+        // tslint:disable-next-line:ish-no-object-literal-type-assertion
+        ProductHelper.isVariationProduct(p) ? ({ sku: p.productMasterSKU, completenessLevel: 0 } as Product) : p
+      );
+    }
+    return products;
   }
 
   /**
    * Get product variations for the given master product sku.
    */
-  getProductVariations(sku: string): Observable<Partial<VariationProduct>[]> {
+  getProductVariations(sku: string): Observable<{ products: Partial<VariationProduct>[]; defaultVariation: string }> {
     if (!sku) {
       return throwError('getProductVariations() called without a sku');
     }
 
     return this.apiService.get(`products/${sku}/variations`).pipe(
       unpackEnvelope<ProductVariationLink>(),
-      map(links => links.map(link => this.productMapper.fromVariationLink(link, sku))),
+      map(links => ({
+        products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
+        defaultVariation: ProductMapper.findDefaultVariation(links),
+      })),
+      defaultIfEmpty({ products: [], defaultVariation: undefined })
+    );
+  }
+
+  /**
+   * get product bundle information for the given bundle sku.
+   */
+  getProductBundles(sku: string): Observable<{ stubs: Partial<Product>[]; bundledProducts: SkuQuantityType[] }> {
+    if (!sku) {
+      return throwError('getProductBundles() called without a sku');
+    }
+
+    return this.apiService.get(`products/${sku}/bundles`).pipe(
+      unpackEnvelope<Link>(),
+      map(links => ({
+        stubs: links.map(link => this.productMapper.fromLink(link)),
+        bundledProducts: this.productMapper.fromProductBundleData(links),
+      }))
+    );
+  }
+
+  /**
+   * get product retail set information for the given retail set sku.
+   */
+  getRetailSetParts(sku: string): Observable<Partial<Product>[]> {
+    if (!sku) {
+      return throwError('getRetailSetParts() called without a sku');
+    }
+
+    return this.apiService.get(`products/${sku}/partOfRetailSet`).pipe(
+      unpackEnvelope<Link>(),
+      map(links => links.map(link => this.productMapper.fromRetailSetLink(link))),
       defaultIfEmpty([])
+    );
+  }
+
+  getProductLinks(sku: string): Observable<ProductLinks> {
+    return this.apiService.get(`products/${sku}/links`).pipe(
+      unpackEnvelope<{ linkType: string; categoryLinks: Link[]; productLinks: Link[] }>(),
+      map(links =>
+        links.reduce(
+          (acc, link) => ({
+            ...acc,
+            [link.linkType]: {
+              products: !link.productLinks
+                ? []
+                : link.productLinks.map(pl => pl.uri).map(ProductMapper.parseSKUfromURI),
+              categories: !link.categoryLinks
+                ? []
+                : link.categoryLinks.map(cl =>
+                    cl.uri.split('/categories/')[1].replace('/', CategoryHelper.uniqueIdSeparator)
+                  ),
+            },
+          }),
+          {}
+        )
+      )
     );
   }
 }

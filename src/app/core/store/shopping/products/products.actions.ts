@@ -1,20 +1,25 @@
 import { Action } from '@ngrx/store';
 
+import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product, ProductCompletenessLevel } from '../../../models/product/product.model';
+import { Product, ProductCompletenessLevel, SkuQuantityType } from '../../../models/product/product.model';
 
 export enum ProductsActionTypes {
   SelectProduct = '[Shopping] Select Product',
   LoadProduct = '[Shopping] Load Product',
+  LoadProductBundlesSuccess = '[Shopping] Load Product Bundles Success',
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductIfNotLoaded = '[Shopping] Load Product if not Loaded',
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
   LoadProductsForCategoryFail = '[Shopping] Load Products for Category Fail',
-  LoadMoreProductsForCategory = '[Shopping] Load More Products',
   LoadProductVariations = '[Shopping] Load Product Variations',
   LoadProductVariationsFail = '[Shopping] Load Product Variations Fail',
   LoadProductVariationsSuccess = '[Shopping] Load Product Variations Success',
+  LoadRetailSetSuccess = '[Shopping] Load Retail Set Success',
+  LoadProductLinks = '[Shopping] Load Product Links',
+  LoadProductLinksFail = '[Shopping] Load Product Links Fail',
+  LoadProductLinksSuccess = '[Shopping] Load Product Links Success',
 }
 
 export class SelectProduct implements Action {
@@ -43,17 +48,12 @@ export class LoadProductSuccess implements Action {
 
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: { categoryId: string }) {}
+  constructor(public payload: { categoryId: string; page?: number; sorting?: string }) {}
 }
 
 export class LoadProductsForCategoryFail implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategoryFail;
   constructor(public payload: { error: HttpError; categoryId: string }) {}
-}
-
-export class LoadMoreProductsForCategory implements Action {
-  readonly type = ProductsActionTypes.LoadMoreProductsForCategory;
-  constructor(public payload: { categoryId: string }) {}
 }
 
 export class LoadProductVariations implements Action {
@@ -68,17 +68,47 @@ export class LoadProductVariationsFail implements Action {
 
 export class LoadProductVariationsSuccess implements Action {
   readonly type = ProductsActionTypes.LoadProductVariationsSuccess;
-  constructor(public payload: { sku: string; variations: string[] }) {}
+  constructor(public payload: { sku: string; variations: string[]; defaultVariation: string }) {}
+}
+
+export class LoadProductBundlesSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadProductBundlesSuccess;
+  constructor(public payload: { sku: string; bundledProducts: SkuQuantityType[] }) {}
+}
+
+export class LoadRetailSetSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadRetailSetSuccess;
+  constructor(public payload: { sku: string; parts: string[] }) {}
+}
+
+export class LoadProductLinks implements Action {
+  readonly type = ProductsActionTypes.LoadProductLinks;
+  constructor(public payload: { sku: string }) {}
+}
+
+export class LoadProductLinksFail implements Action {
+  readonly type = ProductsActionTypes.LoadProductLinksFail;
+  constructor(public payload: { error: HttpError; sku: string }) {}
+}
+
+export class LoadProductLinksSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadProductLinksSuccess;
+  constructor(public payload: { sku: string; links: ProductLinks }) {}
 }
 
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
+  | LoadProductBundlesSuccess
   | LoadProductFail
   | LoadProductIfNotLoaded
   | LoadProductSuccess
   | LoadProductsForCategory
-  | LoadMoreProductsForCategory
+  | LoadProductsForCategoryFail
   | LoadProductVariations
   | LoadProductVariationsFail
-  | LoadProductVariationsSuccess;
+  | LoadProductVariationsSuccess
+  | LoadRetailSetSuccess
+  | LoadProductLinks
+  | LoadProductLinksFail
+  | LoadProductLinksSuccess;

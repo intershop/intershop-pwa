@@ -1,15 +1,17 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
@@ -19,43 +21,52 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ProductAddToQuoteDialogComponent } from '../../extensions/quoting/shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
 import { RecentlyViewedContainerComponent } from '../../shared/recently/containers/recently-viewed/recently-viewed.container';
 
+import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { ProductMasterVariationsComponent } from './components/product-master-variations/product-master-variations.component';
+import { RetailSetPartsComponent } from './components/retail-set-parts/retail-set-parts.component';
+import { ProductLinksContainerComponent } from './containers/product-links/product-links.container';
 import { ProductPageContainerComponent } from './product-page.container';
 
 describe('Product Page Container', () => {
   let component: ProductPageContainerComponent;
   let fixture: ComponentFixture<ProductPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let store$: TestStore;
   let location: Location;
+  let router: Router;
 
   beforeEach(async(() => {
     @Component({ template: 'dummy', changeDetection: ChangeDetectionStrategy.OnPush })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule,
-        NgbModalModule,
-        RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
-        StoreModule.forRoot({
+        ...ngrxTesting({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
         }),
+        FeatureToggleModule,
+        NgbModalModule,
+        RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
       ],
       declarations: [
         DummyComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductAddToQuoteDialogComponent),
+        MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
+        MockComponent(ProductLinksContainerComponent),
+        MockComponent(ProductMasterVariationsComponent),
         MockComponent(RecentlyViewedContainerComponent),
+        MockComponent(RetailSetPartsComponent),
         ProductPageContainerComponent,
       ],
       providers: [ProductRoutePipe],
@@ -68,7 +79,8 @@ describe('Product Page Container', () => {
     element = fixture.nativeElement;
 
     location = TestBed.get(Location);
-    store$ = TestBed.get(Store);
+    router = TestBed.get(Router);
+    store$ = TestBed.get(TestStore);
     store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
   });
 
@@ -97,6 +109,7 @@ describe('Product Page Container', () => {
     expect(findAllIshElements(element)).toEqual([
       'ish-breadcrumb',
       'ish-product-detail',
+      'ish-product-links-container',
       'ish-recently-viewed-container',
     ]);
   });
@@ -148,30 +161,71 @@ describe('Product Page Container', () => {
     expect(location.path()).toEqual('/product/333');
   }));
 
-  it('should redirect to default variation for master product', fakeAsync(() => {
+  describe('redirecting to default variation', () => {
     const product = {
       sku: 'M111',
       type: 'VariationProductMaster',
       completenessLevel: ProductCompletenessLevel.Detail,
     } as VariationProductMaster;
 
-    const variation1 = { sku: '111' } as VariationProduct;
-    const variation2 = {
-      sku: '222',
-      attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
-      completenessLevel: ProductCompletenessLevel.Detail,
-    } as VariationProduct;
+    beforeEach(() => {
+      const variation1 = { sku: '111' } as VariationProduct;
+      const variation2 = {
+        sku: '222',
+        attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+        completenessLevel: ProductCompletenessLevel.Detail,
+      } as VariationProduct;
 
+      store$.dispatch(new LoadProductSuccess({ product }));
+      store$.dispatch(new LoadProductSuccess({ product: variation1 }));
+      store$.dispatch(new LoadProductSuccess({ product: variation2 }));
+
+      store$.dispatch(
+        new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'], defaultVariation: '222' })
+      );
+      store$.dispatch(new SelectProduct(product));
+    });
+
+    it('should redirect to default variation for master product', fakeAsync(() => {
+      router.navigateByUrl(`/product/${product.sku}`);
+
+      fixture.detectChanges();
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/product/222"`);
+    }));
+
+    it('should not redirect to default variation for master product if advanced variation handling is activated', fakeAsync(() => {
+      store$.dispatch(new ApplyConfiguration({ features: ['advancedVariationHandling'] }));
+      router.navigateByUrl(`/product/${product.sku}`);
+
+      fixture.detectChanges();
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/product/M111"`);
+    }));
+  });
+
+  it('should only dispatch retail set products when quantities are greater than 0', () => {
+    const product = {
+      sku: 'ABC',
+      partSKUs: ['A', 'B', 'C'],
+      type: 'RetailSet',
+    } as ProductRetailSet;
     store$.dispatch(new LoadProductSuccess({ product }));
-    store$.dispatch(new LoadProductSuccess({ product: variation1 }));
-    store$.dispatch(new LoadProductSuccess({ product: variation2 }));
-
-    store$.dispatch(new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'] }));
     store$.dispatch(new SelectProduct({ sku: product.sku }));
 
-    fixture.detectChanges();
-    tick(500);
+    component.retailSetParts$.next([{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 0 }, { sku: 'C', quantity: 1 }]);
 
-    expect(location.path()).toEqual('/product/222');
-  }));
+    store$.reset();
+    component.addToBasket();
+    expect(store$.actionsArray()).toMatchInlineSnapshot(`
+      [Basket] Add Product:
+        sku: "A"
+        quantity: 1
+      [Basket] Add Product:
+        sku: "C"
+        quantity: 1
+    `);
+  });
 });

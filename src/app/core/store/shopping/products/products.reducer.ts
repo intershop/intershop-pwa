@@ -1,16 +1,14 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
-import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { AllProductTypes } from 'ish-core/models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
-export const productAdapter = createEntityAdapter<Product | VariationProduct | VariationProductMaster>({
+export const productAdapter = createEntityAdapter<AllProductTypes>({
   selectId: product => product.sku,
 });
 
-export interface ProductsState extends EntityState<Product | VariationProduct | VariationProductMaster> {
+export interface ProductsState extends EntityState<AllProductTypes> {
   loading: boolean;
   selected: string;
   failed: string[];
@@ -20,7 +18,6 @@ export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
   selected: undefined,
   failed: [],
-  variations: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -75,7 +72,28 @@ export function productsReducer(state = initialState, action: ProductsAction): P
 
     case ProductsActionTypes.LoadProductVariationsSuccess: {
       return productAdapter.updateOne(
-        { id: action.payload.sku, changes: { variationSKUs: action.payload.variations } },
+        {
+          id: action.payload.sku,
+          changes: { variationSKUs: action.payload.variations, defaultVariationSKU: action.payload.defaultVariation },
+        },
+        { ...state, loading: false }
+      );
+    }
+
+    case ProductsActionTypes.LoadProductBundlesSuccess: {
+      return productAdapter.updateOne(
+        { id: action.payload.sku, changes: { bundledProducts: action.payload.bundledProducts } },
+        { ...state, loading: false }
+      );
+    }
+
+    case ProductsActionTypes.LoadRetailSetSuccess: {
+      return productAdapter.updateOne({ id: action.payload.sku, changes: { partSKUs: action.payload.parts } }, state);
+    }
+
+    case ProductsActionTypes.LoadProductLinksSuccess: {
+      return productAdapter.updateOne(
+        { id: action.payload.sku, changes: { links: action.payload.links } },
         { ...state, loading: false }
       );
     }

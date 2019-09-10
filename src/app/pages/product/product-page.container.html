@@ -7,12 +7,36 @@
 
       <ish-product-detail
         [product]="product"
+        [price]="price$ | async"
+        [(quantity)]="quantity"
         [currentUrl]="currentUrl$ | async"
         [variationOptions]="productVariationOptions$ | async"
-        (productToBasket)="addToBasket($event)"
+        (productToBasket)="addToBasket()"
         (productToCompare)="addToCompare($event)"
         (selectVariation)="variationSelected($event, product)"
       ></ish-product-detail>
+
+      <ish-product-master-variations
+        *ngIf="isMasterProduct(product)"
+        [product]="product"
+        [category]="category$ | async"
+      ></ish-product-master-variations>
+
+      <ish-product-bundle-parts
+        *ngIf="isProductBundle(product)"
+        [product]="product"
+        (productToBasket)="addToBasket()"
+      ></ish-product-bundle-parts>
+
+      <ish-retail-set-parts
+        *ngIf="isRetailSet(product)"
+        [product]="product"
+        [parts]="retailSetParts$ | async"
+        (partsChange)="retailSetParts$.next($event)"
+        (productToBasket)="addToBasket()"
+      ></ish-retail-set-parts>
+
+      <ish-product-links-container [sku]="product.sku"></ish-product-links-container>
     </ng-container>
   </ng-template>
 </div>

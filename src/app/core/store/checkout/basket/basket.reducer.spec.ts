@@ -46,6 +46,42 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('MergeBasket actions', () => {
+    describe('MergeBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.MergeBasket();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('MergeBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+
+        const action = new fromActions.MergeBasketSuccess({ basket });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+
+    describe('MergeBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.MergeBasketFail({ error });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+  });
+
   describe('UpdateBasket actions', () => {
     describe('UpdateBasket action', () => {
       it('should set loading to true', () => {
@@ -84,6 +120,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
+        expect(state.lastTimeProductAdded).toBeUndefined();
       });
     });
 
@@ -105,6 +142,7 @@ describe('Basket Reducer', () => {
 
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
+        expect(state.lastTimeProductAdded).toBeDate();
       });
     });
   });
@@ -209,6 +247,38 @@ describe('Basket Reducer', () => {
 
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
+      });
+    });
+
+    describe('AddPromotionCodeToBasket actions', () => {
+      describe('AddPromotionCodeToBasket action', () => {
+        it('should set loading to true', () => {
+          const action = new fromActions.AddPromotionCodeToBasket({ code: 'test' });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeTrue();
+        });
+      });
+
+      describe('AddPromotionCodeToBasketFail action', () => {
+        it('should set loading to false', () => {
+          const error = { message: 'invalid' } as HttpError;
+          const action = new fromActions.AddPromotionCodeToBasketFail({ error });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.promotionError).toEqual(error);
+        });
+      });
+
+      describe('AddPromotionCodeToBasketSuccess action', () => {
+        it('should set loading to false', () => {
+          const action = new fromActions.AddPromotionCodeToBasketSuccess();
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.error).toBeUndefined();
+        });
       });
     });
 
@@ -466,6 +536,30 @@ describe('Basket Reducer', () => {
       const state = basketReducer(oldState, action);
 
       expect(state).toEqual(initialState);
+    });
+  });
+
+  describe('ResetBasketErrors action', () => {
+    it('should reset error in state if called', () => {
+      const oldState = {
+        ...initialState,
+        error: { message: 'invalid' } as HttpError,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.error).toBeUndefined();
+    });
+
+    it('should reset promotionError in state if called', () => {
+      const oldState = {
+        ...initialState,
+        promotionError: { message: 'invalid' } as HttpError,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.promotionError).toBeUndefined();
     });
   });
 });

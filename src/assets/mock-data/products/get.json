@@ -1,0 +1,91 @@
+{
+  "amount": 9,
+  "elements": [
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "7912057"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 132.24
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 132.24
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare M552, 14MP, 6.858 cm (2.7 \") LCD, 4x, 28mm, HD 720p, Black",
+      "title": "Kodak M series EasyShare M552",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/7912057"
+    }
+  ],
+  "name": "products",
+  "offset": 0,
+  "sortKeys": ["name-desc", "name-asc", "value-asc", "value-desc"],
+  "total": 1,
+  "type": "ResourceCollection"
+}

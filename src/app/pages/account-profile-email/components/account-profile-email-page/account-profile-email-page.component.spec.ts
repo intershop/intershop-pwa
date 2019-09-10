@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
 import { InputComponent } from '../../../../shared/forms/components/input/input.component';
 
 import { AccountProfileEmailPageComponent } from './account-profile-email-page.component';
@@ -16,7 +17,11 @@ describe('Account Profile Email Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [AccountProfileEmailPageComponent, MockComponent(InputComponent)],
+      declarations: [
+        AccountProfileEmailPageComponent,
+        MockComponent(ErrorMessageComponent),
+        MockComponent(InputComponent),
+      ],
     }).compileComponents();
   }));
 

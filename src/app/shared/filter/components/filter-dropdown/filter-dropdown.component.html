@@ -8,9 +8,10 @@
   <ul class="filter-list">
     <ng-container *ngFor="let facet of filterElement.facets">
       <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
-        <span class="icon-selected"></span>{{ facet.link.title }} <span class="filter-count">({{ facet.count }})</span>
-        <!--- TODO: implement delete filter -->
-        <a class="filter-clear"> <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon> </a>
+        <span class="icon-selected"></span>{{ facet.displayName }} <span class="filter-count">({{ facet.count }})</span>
+        <a class="filter-clear" (click)="filter(facet.name)">
+          <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
+        </a>
       </li>
     </ng-container>
   </ul>
@@ -25,7 +26,7 @@
         <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
         <ng-container *ngFor="let facet of filterElement.facets">
           <option *ngIf="!facet.selected && facet.name !== 'Show all'" [value]="facet.name">{{
-            facet.link.title
+            facet.displayName
           }}</option>
         </ng-container>
       </select>

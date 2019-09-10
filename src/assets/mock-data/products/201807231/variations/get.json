@@ -76,13 +76,13 @@
         {
           "name": "Hard drive size",
           "type": "VariationAttribute",
-          "value": "256GB ",
+          "value": "256GB",
           "variationAttributeId": "Attr_harddrivesize"
         },
         {
           "name": "Display Size",
           "type": "VariationAttribute",
-          "value": " 15 Zoll",
+          "value": "15\"",
           "variationAttributeId": "attr_displaysize"
         }
       ]
@@ -96,13 +96,13 @@
         {
           "name": "Hard drive size",
           "type": "VariationAttribute",
-          "value": " 512GB ",
+          "value": "512GB",
           "variationAttributeId": "Attr_harddrivesize"
         },
         {
           "name": "Display Size",
           "type": "VariationAttribute",
-          "value": " 15 Zoll",
+          "value": "15\"",
           "variationAttributeId": "attr_displaysize"
         }
       ]
@@ -116,13 +116,13 @@
         {
           "name": "Hard drive size",
           "type": "VariationAttribute",
-          "value": " 1TB",
+          "value": "1TB",
           "variationAttributeId": "Attr_harddrivesize"
         },
         {
           "name": "Display Size",
           "type": "VariationAttribute",
-          "value": " 15 Zoll",
+          "value": "15\"",
           "variationAttributeId": "attr_displaysize"
         }
       ]

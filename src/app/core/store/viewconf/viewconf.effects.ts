@@ -4,14 +4,14 @@ import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToData, ofRoute } from 'ngrx-router';
 import { fromEvent } from 'rxjs';
-import { map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
+import { distinctUntilChanged, map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { distinctCompareWith } from 'ish-core/utils/operators';
 import { DeviceType } from '../../models/viewtype/viewtype.types';
 
 import { SetBreadcrumbData, SetDeviceType, SetHeaderType, SetStickyHeader, SetWrapperClass } from './viewconf.actions';
-import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from './viewconf.selectors';
+import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
@@ -62,7 +62,7 @@ export class ViewconfEffects {
     switchMap(() =>
       fromEvent(window, 'scroll').pipe(
         map(() => window.pageYOffset >= 170),
-        distinctCompareWith(this.store.pipe(select(isStickyHeader))),
+        distinctUntilChanged(),
         map(sticky => new SetStickyHeader({ sticky }))
       )
     )

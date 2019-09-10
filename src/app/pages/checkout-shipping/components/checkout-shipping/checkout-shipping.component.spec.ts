@@ -13,6 +13,9 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { CheckoutShippingComponent } from './checkout-shipping.component';
@@ -23,9 +26,7 @@ describe('Checkout Shipping Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({
@@ -35,6 +36,9 @@ describe('Checkout Shipping Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ErrorMessageComponent),
+        MockComponent(ModalDialogLinkComponent),
       ],
       imports: [
         FormsSharedModule,
@@ -75,7 +79,7 @@ describe('Checkout Shipping Component', () => {
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
   it('should not render an error if the user has currently no shipping method selected', () => {

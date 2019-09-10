@@ -10,9 +10,9 @@ export class SearchResultPage {
 
   readonly filterNavigation = new FilterNavigationModule();
 
-  readonly productList = new ProductListModule();
+  readonly productList = new ProductListModule('ish-product-list-container');
 
-  static navigateTo(term: string) {
-    cy.visit(`/search/${term}`);
+  static navigateTo(term: string, page?: number) {
+    cy.visit(`/search/${term}${page ? `?page=${page}` : ''}`);
   }
 }

@@ -1,11 +1,17 @@
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
+import { ProductListModule } from './product-list.module';
+
 export class ProductDetailPage {
   readonly tag = 'ish-product-page-container';
 
   readonly header = new HeaderModule();
   readonly breadcrumb = new BreadcrumbModule();
+
+  readonly bundleParts = new ProductListModule('ish-product-bundle-parts');
+  readonly retailSetParts = new ProductListModule('ish-retail-set-parts');
+  readonly variations = new ProductListModule('ish-product-master-variations');
 
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
@@ -15,21 +21,23 @@ export class ProductDetailPage {
     }
   }
 
-  private addToCartButton = () => cy.get('[data-testing-id="addToCartButton"]');
-  private addToCompareButton = () => cy.get('ish-product-detail-actions [data-testing-id*="compare"]');
-  private addToQuoteRequestButton = () => cy.get('[data-testing-id="addToQuoteButton"]');
-  private quantityInput = () => cy.get('[data-testing-id="quantity"]');
+  private addToCartButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToCartButton"]');
+  private addToCompareButton() {
+    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="compare"]');
+  }
+  private addToQuoteRequestButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToQuoteButton"]');
+  private quantityInput = () => cy.get('ish-product-detail').find('[data-testing-id="quantity"]');
 
   isComplete() {
     return this.addToCartButton().should('be.visible');
   }
 
   get sku() {
-    return cy.get('span[itemprop="sku"]');
+    return cy.get('ish-product-detail').find('span[itemprop="sku"]');
   }
 
   get price() {
-    return cy.get('div[data-testing-id="current-price"]');
+    return cy.get('ish-product-detail').find('div[data-testing-id="current-price"]');
   }
 
   addProductToCompare() {
@@ -64,5 +72,18 @@ export class ProductDetailPage {
 
   gotoRecentlyViewedViewAll() {
     cy.get('ish-recently-viewed [data-testing-id=view-all]').click();
+  }
+
+  accordionItem(id: string) {
+    return cy.get('ish-accordion-item a.accordion-toggle').contains(id);
+  }
+
+  changeVariationWithSelect(id: string, value: string) {
+    // tslint:disable-next-line:ban
+    cy.get('#' + id).select(value);
+  }
+
+  gotoMasterProduct() {
+    cy.get('a.all-variations-link').click();
   }
 }

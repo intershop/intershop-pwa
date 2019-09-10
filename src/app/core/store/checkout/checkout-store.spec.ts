@@ -1,6 +1,5 @@
-// tslint:disable use-component-change-detection prefer-mocks-instead-of-stubs-in-tests
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,7 +7,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
-import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import {
+  DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
+  LARGE_BREAKPOINT_WIDTH,
+  MEDIUM_BREAKPOINT_WIDTH,
+} from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -18,8 +21,8 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import {
   AVAILABLE_LOCALES,
-  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from '../../configurations/injection-keys';
 import { Basket } from '../../models/basket/basket.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
@@ -37,11 +40,11 @@ import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { UserService } from '../../services/user/user.service';
 import { coreEffects, coreReducers } from '../core-store.module';
-import { LoadProduct } from '../shopping/products';
+import { LoadProductSuccess } from '../shopping/products';
 import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUser } from '../user';
 
-import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
+import { AddProductToBasket } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout-store.module';
 
 let basketId: string;
@@ -55,7 +58,7 @@ describe('Checkout Store', () => {
     id: 'test',
     name: 'test',
     position: 1,
-    quantity: { type: 'test', value: 1 },
+    quantity: { type: 'test', value: 1, unit: 'pcs.' },
     productSKU: 'test',
     price: undefined,
     singleBasePrice: undefined,
@@ -195,6 +198,13 @@ describe('Checkout Store', () => {
       return of(newBaskets);
     });
 
+    when(basketServiceMock.mergeBasket(anything())).thenCall(() => {
+      const newBasket = {
+        ...basket,
+      };
+      return of(newBasket);
+    });
+
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
 
     const productsServiceMock = mock(ProductsService);
@@ -246,9 +256,10 @@ describe('Checkout Store', () => {
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
+        { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
 
@@ -262,39 +273,48 @@ describe('Checkout Store', () => {
   });
 
   describe('with anonymous user', () => {
-    const payload = { sku: 'test', quantity: 1 };
-
-    beforeEach(() => {
-      store.dispatch(new LoadProduct({ sku: 'test' }));
-      store.dispatch(new AddProductToBasket(payload));
-    });
+    beforeEach(fakeAsync(() => {
+      store.dispatch(new LoadProductSuccess({ product: { sku: 'test', packingUnit: 'pcs.' } as Product }));
+      store.dispatch(new AddProductToBasket({ sku: 'test', quantity: 1 }));
+      tick(5000);
+    }));
 
     describe('and without basket', () => {
       it('should initially load basket and basketItems on product add.', () => {
-        const i = store.actionsIterator([/Basket/]);
-        expect(i.next().type).toEqual(BasketActionTypes.AddProductToBasket);
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload] }));
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'test' }));
-        expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next()).toBeUndefined();
+        expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
+          [Shopping] Load Product Success:
+            product: {"sku":"test","packingUnit":"pcs."}
+          [Basket] Add Product:
+            sku: "test"
+            quantity: 1
+          [Basket Internal] Add Items To Basket:
+            items: [{"sku":"test","quantity":1,"unit":"pcs."}]
+          [Basket Internal] Add Items To Basket:
+            items: [{"sku":"test","quantity":1,"unit":"pcs."}]
+            basketId: "test"
+          [Basket API] Add Items To Basket Success
+          [Basket Internal] Load Basket
+          [Basket API] Load Basket Success:
+            basket: {"id":"test","lineItems":[1]}
+        `);
       });
     });
 
     describe('and with basket', () => {
       it('should merge basket on user login.', () => {
-        const i = store.actionsIterator([/Basket/]);
-        basketId = 'newTest';
         store.reset();
-
         store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
-        expect(i.next().type).toEqual(BasketActionTypes.ResetBasket);
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'newTest' }));
-        expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
-        expect(i.next()).toBeUndefined();
+
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Account] Login User:
+            credentials: {}
+          [Account API] Login User Success:
+            customer: {"type":"PrivateCustomer","customerNo":"test"}
+            user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
+          [Basket Internal] Merge two baskets
+          [Basket API] Merge two baskets Success:
+            basket: {"id":"test","lineItems":[1]}
+        `);
       });
     });
 

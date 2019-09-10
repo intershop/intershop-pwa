@@ -30,7 +30,7 @@ describe('Changing User', () => {
 
     at(ProfileEditPasswordPage, page =>
       page
-        .fillForm({ password: _.newPassword })
+        .fillForm({ password: _.newPassword, currentPassword: _.user.password })
         .submit()
         .its('status')
         .should('equal', 204)

@@ -8,8 +8,6 @@ import { PaymentData } from '../payment/payment.interface';
 import { PriceItem } from '../price-item/price-item.interface';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
-// ToDo: Find a general way to handle base data
-// tslint:disable-next-line:project-structure
 export interface BasketBaseData {
   id: string;
   purchaseCurrency?: string;
@@ -25,6 +23,7 @@ export interface BasketBaseData {
   buckets?: string[];
   lineItems?: string[];
   payments?: string[];
+  promotionCodes?: string[];
   totals: BasketTotalData;
   totalProductQuantity?: number;
   surcharges?: {

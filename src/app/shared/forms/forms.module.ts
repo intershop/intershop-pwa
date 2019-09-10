@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 
@@ -43,7 +44,7 @@ const exportedComponents = [
   ShowFormFeedbackDirective,
 ];
 @NgModule({
-  imports: [CommonModule, IconModule, ReactiveFormsModule, RecaptchaModule, TranslateModule],
+  imports: [CommonModule, IconModule, ReactiveFormsModule, RecaptchaModule, RouterModule, TranslateModule],
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents],
 })

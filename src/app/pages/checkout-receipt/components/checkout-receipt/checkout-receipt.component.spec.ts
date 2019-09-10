@@ -7,7 +7,9 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from '../../../../shared/address/components/address/address.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
 import { InfoBoxComponent } from '../../../../shared/common/components/info-box/info-box.component';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutReceiptComponent } from './checkout-receipt.component';
 
@@ -22,8 +24,10 @@ describe('Checkout Receipt Component', () => {
         CheckoutReceiptComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(ContentIncludeContainerComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
+        MockComponent(ModalDialogLinkComponent),
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();

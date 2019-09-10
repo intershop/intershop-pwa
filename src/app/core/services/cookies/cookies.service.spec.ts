@@ -31,10 +31,10 @@ describe('Cookies Service', () => {
   });
 
   describe('when cookieLaw was not yet accepted', () => {
-    it('should not call remove of underlying implementation', done => {
+    it('should call remove of underlying implementation', done => {
       setTimeout(() => {
         cookiesService.remove('dummy');
-        verify(foreignCookiesServiceMock.remove('dummy')).never();
+        verify(foreignCookiesServiceMock.remove('dummy')).once();
         done();
       }, 2000);
     });

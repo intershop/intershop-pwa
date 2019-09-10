@@ -7,12 +7,14 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 
 /**
- * The Shopping Basket Component displays the users basket items and cost summary.
+ * The Shopping Basket Component displays the users basket items, cost summary
+ * and promotion code input.
  * It provides update cart and add cart to quote functionality.
  * It is the starting point for the checkout workflow.
  *
  * It uses the {@link LineItemListComponent} for the rendering of line items.
  * It uses the {@link BasketCostSummaryComponent} to render the cost summary.
+ * It uses the {@link BasketPromotionCodeComponent} to render the promotion code input.
  *
  * @example
  * <ish-shopping-basket

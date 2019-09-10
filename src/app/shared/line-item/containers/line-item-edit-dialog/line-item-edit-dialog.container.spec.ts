@@ -11,6 +11,7 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { FormsSharedModule } from '../../../forms/forms.module';
@@ -43,11 +44,12 @@ describe('Line Item Edit Dialog Container', () => {
         LineItemEditDialogComponent,
         LineItemEditDialogContainerComponent,
         MockComponent(LoadingComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductRowComponent),
         MockComponent(ProductTileComponent),
-        ProductVariationSelectComponent,
+        MockComponent(ProductVariationSelectComponent),
       ],
     }).compileComponents();
   }));
@@ -80,9 +82,9 @@ describe('Line Item Edit Dialog Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display sku of variation', () => {
+  it('should give correct product id of variation to product id component', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[itemprop="sku"]').innerHTML).toBe('SKU');
+    expect(element.querySelector('ish-product-id')).toMatchInlineSnapshot(`<ish-product-id></ish-product-id>`);
   });
 
   it('should display ish-components on the container', () => {

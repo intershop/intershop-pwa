@@ -35,6 +35,9 @@ class UseComponentChangeDetectionWalker extends NgWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+    if (sourceFile.fileName.search(/.(component|container).ts/) < 0) {
+      return [];
+    }
     return this.applyWithWalker(new UseComponentChangeDetectionWalker(sourceFile, this.getOptions()));
   }
 }

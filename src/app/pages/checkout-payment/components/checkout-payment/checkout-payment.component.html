@@ -1,9 +1,8 @@
 <div class="row" *ngIf="basket">
   <div class="col-md-12 col-lg-8">
     <!-- Messages -->
-    <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
-      {{ error.status }}: {{ error.error }}
-    </div>
+    <ish-error-message [error]="error"></ish-error-message>
+
     <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
@@ -49,8 +48,8 @@
                       {{ 'checkout.payment.method.charges.text' | translate }}&nbsp;{{
                         paymentMethod.paymentCosts | ishPrice
                       }}&nbsp;
-                      <span *ngIf="paymentMethod.paymentCostsThreshold" class="form-text text-muted">
-                        <span class="hidden-xs">&nbsp;-&nbsp;</span
+                      <span *ngIf="paymentMethod.paymentCostsThreshold" class="text-muted">
+                        <span class="hidden-xs">-&nbsp;</span
                         >{{ 'checkout.payment.payment_cost_threshold.text' | translate }}
                         <span class="text-nowrap">{{ paymentMethod.paymentCostsThreshold | ishPrice }}</span>
                       </span>
@@ -137,6 +136,9 @@
   <!-- basket summary -->
   <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
+    <ish-basket-promotion-code></ish-basket-promotion-code>
+
     <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
     <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
 
@@ -147,6 +149,12 @@
         {{ 'checkout.button.label' | translate }}
       </button>
     </div>
-    <!-- ToDo: Privacy policy link - ISREST-341 -->
+    <!-- Privacy policy link -->
+    <ish-modal-dialog-link
+      linkText="checkout.widget.security_privacy_policy.link"
+      [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
+    >
+      <ish-content-include includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"></ish-content-include>
+    </ish-modal-dialog-link>
   </div>
 </div>

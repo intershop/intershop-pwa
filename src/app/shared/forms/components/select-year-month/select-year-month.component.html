@@ -1,4 +1,9 @@
-<div class="row form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControlArray">
+<div
+  class="row form-group has-feedback"
+  [formGroup]="form"
+  [ishShowFormFeedback]="formControlArray"
+  [ngClass]="cssClass"
+>
   <label [attr.for]="'month-' + uuid" class="col-form-label" [ngClass]="labelClass"
     >{{ label | translate }}<span *ngIf="required" class="required">*</span></label
   >

@@ -5,6 +5,7 @@ import { CategoryTree } from '../category-tree/category-tree.model';
 import { CategoryView, createCategoryView } from '../category-view/category-view.model';
 import { VariationProductMaster } from '../product/product-variation-master.model';
 import { VariationProduct } from '../product/product-variation.model';
+import { AllProductTypes } from '../product/product.helper';
 import { Product } from '../product/product.model';
 
 /**
@@ -22,6 +23,7 @@ export interface VariationProductView extends VariationProduct {
 
 export interface VariationProductMasterView extends VariationProductMaster {
   variations(): VariationProductView[];
+  defaultVariation(): VariationProductView;
   defaultCategory(): CategoryView;
 }
 
@@ -39,7 +41,7 @@ export function createProductView(product: Product, tree: CategoryTree): Product
 
 export function createVariationProductMasterView(
   product: VariationProductMaster,
-  entities: Dictionary<Product | VariationProduct | VariationProductMaster>,
+  entities: Dictionary<AllProductTypes>,
   tree: CategoryTree
 ): VariationProductMasterView {
   if (!tree || !product) {
@@ -53,12 +55,15 @@ export function createVariationProductMasterView(
           product.variationSKUs.map(variationSKU => createVariationProductView(entities[variationSKU], entities, tree))
         )
       : () => [],
+    defaultVariation: product.defaultVariationSKU
+      ? once(() => createVariationProductView(entities[product.defaultVariationSKU], entities, tree))
+      : undefined,
   };
 }
 
 export function createVariationProductView(
   product: VariationProduct,
-  entities: Dictionary<Product | VariationProduct | VariationProductMaster>,
+  entities: Dictionary<AllProductTypes>,
   tree: CategoryTree
 ): VariationProductView {
   if (!tree || !product) {

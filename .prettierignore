@@ -36,6 +36,7 @@ Dockerfile*
 /nginx/*.conf
 /nginx/*.tmpl
 *gradle*
+/.idea/
 LICENSE
 /charts/**/templates/*
 *~

@@ -35,6 +35,7 @@ export class LineItemMapper {
                 shippingTaxTotal: data.pricing.shippingTaxTotal,
                 shippingTotal: PriceMapper.fromPriceItem(data.pricing.shippingTotal),
                 total: PriceMapper.fromPriceItem(data.pricing.price),
+                undiscountedTotal: PriceMapper.fromPriceItem(data.pricing.undiscountedPrice),
                 valueRebatesTotal: PriceMapper.fromPriceItem(data.pricing.valueRebatesTotal),
               }
             : undefined,

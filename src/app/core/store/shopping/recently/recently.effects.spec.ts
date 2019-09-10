@@ -4,6 +4,9 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping-store.module';
@@ -19,7 +22,9 @@ describe('Recently Effects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule,
         StoreModule.forRoot({
+          configuration: configurationReducer,
           shopping: combineReducers(shoppingReducers),
         }),
       ],
@@ -28,6 +33,8 @@ describe('Recently Effects', () => {
 
     effects = TestBed.get(RecentlyEffects);
     store$ = TestBed.get(Store);
+
+    store$.dispatch(new ApplyConfiguration({ features: [] }));
   });
 
   describe('viewedProduct$', () => {
@@ -39,13 +46,9 @@ describe('Recently Effects', () => {
 
     it('should fire when product is in store and selected', () => {
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'A' } as Product }));
+      store$.dispatch(new SelectProduct({ sku: 'A' }));
 
-      const action = new SelectProduct({ sku: 'A' });
-      store$.dispatch(action);
-
-      actions$ = hot('---a', { a: action });
-
-      expect(effects.viewedProduct$).toBeObservable(cold('---a', { a: new AddToRecently({ sku: 'A' }) }));
+      expect(effects.viewedProduct$).toBeObservable(cold('a', { a: new AddToRecently({ sku: 'A' }) }));
     });
 
     it('should not fire when product is deselected', () => {

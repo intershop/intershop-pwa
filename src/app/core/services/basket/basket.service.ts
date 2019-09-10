@@ -6,6 +6,8 @@ import { catchError, concatMap, map, mapTo } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
+import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
@@ -20,15 +22,15 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 import { ApiService, unpackEnvelope } from '../api/api.service';
 
-export declare type BasketUpdateType =
+export type BasketUpdateType =
   | { invoiceToAddress: string }
   | { commonShipToAddress: string }
   | { commonShippingMethod: string }
   | { calculationState: string };
-export declare type BasketItemUpdateType =
-  | { quantity?: { value: number }; product?: string }
+export type BasketItemUpdateType =
+  | { quantity?: { value: number; unit: string }; product?: string }
   | { shippingMethod: { id: string } };
-export declare type BasketIncludeType =
+type BasketIncludeType =
   | 'invoiceToAddress'
   | 'commonShipToAddress'
   | 'commonShippingMethod'
@@ -39,6 +41,18 @@ export declare type BasketIncludeType =
   | 'payments_paymentMethod'
   | 'payments_paymentInstrument';
 
+type MergeBasketIncludeType =
+  | 'targetBasket'
+  | 'targetBasket_invoiceToAddress'
+  | 'targetBasket_commonShipToAddress'
+  | 'targetBasket_commonShippingMethod'
+  | 'targetBasket_discounts'
+  | 'targetBasket_lineItems_discounts'
+  | 'targetBasket_lineItems'
+  | 'targetBasket_payments'
+  | 'targetBasket_payments_paymentMethod'
+  | 'targetBasket_payments_paymentInstrument';
+
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  */
@@ -46,7 +60,7 @@ export declare type BasketIncludeType =
 export class BasketService {
   constructor(private apiService: ApiService) {}
 
-  // declare http header for Basket API v1
+  // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.basket.v1+json',
@@ -62,6 +76,19 @@ export class BasketService {
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
+  ];
+
+  private allTargetBasketIncludes: MergeBasketIncludeType[] = [
+    'targetBasket',
+    'targetBasket_invoiceToAddress',
+    'targetBasket_commonShipToAddress',
+    'targetBasket_commonShippingMethod',
+    'targetBasket_discounts',
+    'targetBasket_lineItems_discounts',
+    'targetBasket_lineItems',
+    'targetBasket_payments',
+    'targetBasket_payments_paymentMethod',
+    'targetBasket_payments_paymentInstrument',
   ];
 
   /**
@@ -114,6 +141,33 @@ export class BasketService {
   }
 
   /**
+   * Merge the source basket (named in payload) into the current basket.
+   * @param sourceBasketId  The id of the source basket.
+   * @returns               The merged basket.
+   */
+  mergeBasket(sourceBasketId: string): Observable<Basket> {
+    if (!sourceBasketId) {
+      return throwError('mergeBasket() called without sourceBasketId');
+    }
+
+    const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
+    return this.createOrGetCurrentBasket().pipe(
+      concatMap(basket =>
+        this.apiService
+          .post<BasketMergeData>(
+            `baskets/${basket.id}/merges`,
+            { sourceBasket: sourceBasketId },
+            {
+              headers: this.basketHeaders,
+              params,
+            }
+          )
+          .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))))
+      )
+    );
+  }
+
+  /**
    * Updates the basket for the given basket id or fallback to 'current' as basket id.
    * @param basketId  The basket id.
    * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
@@ -126,7 +180,7 @@ export class BasketService {
 
     const params = new HttpParams().set('include', this.allBasketIncludes.join());
     return this.apiService
-      .patch(`baskets/${basketId}`, body, {
+      .patch<BasketData>(`baskets/${basketId}`, body, {
         headers: this.basketHeaders,
         params,
       })
@@ -151,7 +205,10 @@ export class BasketService {
    * @param basketId  The id of the basket to add the items to.
    * @param items     The list of product SKU and quantity pairs to be added to the basket.
    */
-  addItemsToBasket(basketId: string = 'current', items: { sku: string; quantity: number }[]): Observable<void> {
+  addItemsToBasket(
+    basketId: string = 'current',
+    items: { sku: string; quantity: number; unit: string }[]
+  ): Observable<void> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -160,12 +217,31 @@ export class BasketService {
       product: item.sku,
       quantity: {
         value: item.quantity,
+        unit: item.unit,
       },
     }));
 
     return this.apiService.post(`baskets/${basketId}/items`, body, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Add a promotion code to basket.
+   * @param basketId  The id of the basket which the promotion code should be added to.
+   * @param codeStr   The code string of the promotion code that should be added to basket.
+   * @returns         The info message after creation.
+   */
+  addPromotionCodeToBasket(basketId: string = 'current', codeStr: string): Observable<string> {
+    const body = {
+      code: codeStr,
+    };
+
+    return this.apiService
+      .post(`baskets/${basketId}/promotioncodes`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
   }
 
   /**
@@ -435,5 +511,15 @@ export class BasketService {
     return this.apiService.delete(`baskets/${basketId}/payment-instruments/${paymentInstrumentId}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Build currentBasket stream
+   * gets or creates the basket of the current user
+   */
+  private createOrGetCurrentBasket(): Observable<Basket> {
+    return this.getBaskets().pipe(
+      concatMap(baskets => (baskets && baskets.length ? this.getBasket() : this.createBasket()))
+    );
   }
 }

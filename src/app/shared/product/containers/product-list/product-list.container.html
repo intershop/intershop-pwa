@@ -1,23 +1,64 @@
-<ish-product-list-toolbar
-  [itemCount]="totalItems$ | async"
-  [viewType]="viewType$ | async"
-  [sortBy]="sortBy$ | async"
-  [sortKeys]="sortKeys$ | async"
-  (viewTypeChange)="changeViewType($event)"
-  (sortByChange)="changeSortBy($event)"
-></ish-product-list-toolbar>
+<a *ngIf="fragmentOnRouting === 'product-list-top'" id="product-list-top"></a>
+<ng-container *ngIf="productListingView$ | async as listing">
+  <div
+    *ngIf="isEndlessScrolling"
+    infiniteScroll
+    (scrolled)="loadMoreProducts('down')"
+    (scrolledUp)="loadMoreProducts('up')"
+    alwaysCallback="true"
+    immediateCheck="true"
+  >
+    <ish-product-list-toolbar
+      [itemCount]="listing.itemCount"
+      [sortKeys]="listing.sortKeys"
+      [viewType]="viewType$ | async"
+      [sortBy]="sortBy$ | async"
+      [fragmentOnRouting]="fragmentOnRouting"
+    ></ish-product-list-toolbar>
 
-<ish-product-list
-  [products]="products$ | async"
-  [category]="category"
-  [viewType]="viewType$ | async"
-  [loadingMore]="loadingMore$ | async"
-  (loadMore)="loadMoreProducts()"
-></ish-product-list>
+    <ish-product-list
+      [products]="listing.products()"
+      [category]="category"
+      [viewType]="viewType$ | async"
+    ></ish-product-list>
 
-<ish-product-list-paging
-  *ngIf="displayPaging$ | async"
-  [currentPage]="currentPage$ | async"
-  [pageIndices]="pageIndices$ | async"
-  [pageUrl]="pageUrl"
-></ish-product-list-paging>
+    <ish-loading *ngIf="listingLoading$ | async" [standalone]="true"></ish-loading>
+    <div class="row justify-content-center">
+      <ish-product-list-paging
+        *ngIf="!listing.allPagesAvailable()"
+        [currentPage]="listing.lastPage"
+        [pageIndices]="listing.pageIndices()"
+        [fragmentOnRouting]="fragmentOnRouting"
+      ></ish-product-list-paging>
+    </div>
+  </div>
+
+  <div *ngIf="isPaging">
+    <ng-container *ngIf="currentPage$ | async as currentPage">
+      <ng-template #pagingToolbar>
+        <ish-product-list-toolbar
+          [itemCount]="listing.itemCount"
+          [sortKeys]="listing.sortKeys"
+          [viewType]="viewType$ | async"
+          [sortBy]="sortBy$ | async"
+          [currentPage]="currentPage"
+          [pageIndices]="listing.pageIndices(currentPage)"
+          [fragmentOnRouting]="fragmentOnRouting"
+          [isPaging]="true"
+        ></ish-product-list-toolbar>
+      </ng-template>
+
+      <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>
+
+      <ish-product-list
+        [products]="listing.productsOfPage(currentPage)"
+        [category]="category"
+        [viewType]="viewType$ | async"
+      ></ish-product-list>
+
+      <ish-loading *ngIf="listingLoading$ | async" [standalone]="true"></ish-loading>
+
+      <ng-container *ngTemplateOutlet="pagingToolbar"></ng-container>
+    </ng-container>
+  </div>
+</ng-container>

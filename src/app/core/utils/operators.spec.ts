@@ -27,7 +27,6 @@ describe('Operators', () => {
   });
 
   describe('mapErrorToAction', () => {
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyFail implements Action {
       type = 'dummy';
       constructor(public payload: { error: HttpError }) {}
@@ -48,6 +47,7 @@ describe('Operators', () => {
               name: 'HttpErrorResponse',
               message: 'Http failure response for http://example.org: 404 undefined',
               error: undefined,
+              errorCode: undefined,
               status: 404,
               statusText: 'Unknown Error',
               headers: {

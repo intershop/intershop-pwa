@@ -12,6 +12,7 @@ import {
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SwiperModule } from 'ngx-swiper-wrapper';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
@@ -23,18 +24,40 @@ import { AddressComponent } from './address/components/address/address.component
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './basket/components/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
 import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
+import { CMSModule } from './cms/cms.module';
+import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
+import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
+import { CMSDialogComponent } from './cms/components/cms-dialog/cms-dialog.component';
+import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
+import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
+import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
+import { CMSProductListComponent } from './cms/components/cms-product-list/cms-product-list.component';
+import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
+import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
+import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
+import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
+import { ContentIncludeContainerComponent } from './cms/containers/content-include/content-include.container';
+import { ContentPageletContainerComponent } from './cms/containers/content-pagelet/content-pagelet.container';
+import { ContentSlotContainerComponent } from './cms/containers/content-slot/content-slot.container';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
+import { ErrorMessageComponent } from './common/components/error-message/error-message.component';
 import { InfoBoxComponent } from './common/components/info-box/info-box.component';
 import { LoadingComponent } from './common/components/loading/loading.component';
+import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
 import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
+import { FilterDropdownMultiselectComponent } from './filter/components/filter-dropdown-multiselect/filter-dropdown-multiselect.component';
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
+import { FilterNavigationBadgesComponent } from './filter/components/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationHorizontalComponent } from './filter/components/filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationSidebarComponent } from './filter/components/filter-navigation-sidebar/filter-navigation-sidebar.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
@@ -48,6 +71,8 @@ import { OrderListContainerComponent } from './order/containers/order-list/order
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
+import { ProductBundleDisplayComponent } from './product/components/product-bundle-display/product-bundle-display.component';
+import { ProductIdComponent } from './product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
 import { ProductLabelComponent } from './product/components/product-label/product-label.component';
 import { ProductListPagingComponent } from './product/components/product-list-paging/product-list-paging.component';
@@ -56,11 +81,14 @@ import { ProductListComponent } from './product/components/product-list/product-
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
 import { ProductPromotionComponent } from './product/components/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
+import { ProductRatingStarComponent } from './product/components/product-rating-star/product-rating-star.component';
+import { ProductRatingComponent } from './product/components/product-rating/product-rating.component';
 import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
 import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
+import { ProductBundleDisplayContainerComponent } from './product/containers/product-bundle-display/product-bundle-display.container';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
 import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
@@ -69,6 +97,7 @@ import { RecentlyViewedComponent } from './recently/components/recently-viewed/r
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
 const importExportModules = [
+  CMSModule,
   CommonModule,
   FeatureToggleModule,
   FormlyModule,
@@ -86,24 +115,44 @@ const importExportModules = [
   ReactiveFormsModule,
   RouterModule,
   ShellModule,
+  SwiperModule,
   TranslateModule,
 ];
 
 const declaredComponents = [
   BasketPromotionComponent,
+  CMSCarouselComponent,
+  CMSContainerComponent,
+  CMSDialogComponent,
+  CMSFreestyleComponent,
+  CMSImageComponent,
+  CMSImageEnhancedComponent,
+  CMSProductListComponent,
+  CMSStandardPageComponent,
+  CMSStaticPageComponent,
+  CMSTextComponent,
+  CMSVideoComponent,
+  ContentSlotContainerComponent,
   FilterCheckboxComponent,
   FilterDropdownComponent,
+  FilterDropdownMultiselectComponent,
+  FilterNavigationBadgesComponent,
+  FilterNavigationHorizontalComponent,
+  FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
   LineItemEditDialogContainerComponent,
   OrderListComponent,
+  ProductBundleDisplayComponent,
+  ProductIdComponent,
   ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
   ProductPromotionComponent,
+  ProductRatingStarComponent,
   ProductRowComponent,
   ProductTileComponent,
   RecentlyViewedComponent,
@@ -116,18 +165,25 @@ const exportedComponents = [
   BasketAddressSummaryComponent,
   BasketCostSummaryComponent,
   BasketItemsSummaryComponent,
+  BasketPromotionCodeComponent,
   BasketPromotionContainerComponent,
   BreadcrumbComponent,
+  ContentIncludeContainerComponent,
+  ContentPageletContainerComponent,
+  ErrorMessageComponent,
   FilterNavigationContainerComponent,
   InfoBoxComponent,
   LineItemListComponent,
   LoadingComponent,
   ModalDialogComponent,
+  ModalDialogLinkComponent,
   OrderListContainerComponent,
   OrderWidgetComponent,
   ProductAddToBasketComponent,
   ProductAddToCompareComponent,
   ProductAttributesComponent,
+  ProductBundleDisplayContainerComponent,
+  ProductIdComponent,
   ProductInventoryComponent,
   ProductItemContainerComponent,
   ProductLabelComponent,
@@ -135,6 +191,7 @@ const exportedComponents = [
   ProductPriceComponent,
   ProductPromotionContainerComponent,
   ProductQuantityComponent,
+  ProductRatingComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
@@ -146,5 +203,18 @@ const exportedComponents = [
   imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
+  entryComponents: [
+    CMSCarouselComponent,
+    CMSContainerComponent,
+    CMSDialogComponent,
+    CMSFreestyleComponent,
+    CMSImageComponent,
+    CMSImageEnhancedComponent,
+    CMSProductListComponent,
+    CMSStandardPageComponent,
+    CMSStaticPageComponent,
+    CMSTextComponent,
+    CMSVideoComponent,
+  ],
 })
 export class SharedModule {}

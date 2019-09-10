@@ -26,6 +26,9 @@ function generateSelectOptionsForRange(min: number, max: number): SelectOption[]
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit, OnChanges {
+  @Input() readOnly = false;
+  @Input() allowZeroQuantity = false;
+  @Input() quantityLabel = 'product.quantity.label';
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
@@ -38,11 +41,25 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
     this.parentForm.get(this.controlName).setValidators(this.getValidations());
   }
 
+  get quantity() {
+    return this.parentForm.get(this.controlName) && this.parentForm.get(this.controlName).value;
+  }
+
+  get labelClass() {
+    return this.quantityLabel.trim() === '' ? 'col-0' : 'label-quantity col-6';
+  }
+
+  get inputClass() {
+    return this.quantityLabel.trim() === ''
+      ? 'col-12' + (this.class ? this.class : '')
+      : 'col-6' + (this.class ? this.class : '');
+  }
+
   getValidations(): ValidatorFn {
     if (this.type !== 'select') {
       return Validators.compose([
         Validators.required,
-        Validators.min(this.product.minOrderQuantity),
+        Validators.min(this.allowZeroQuantity ? 0 : this.product.minOrderQuantity),
         Validators.max(this.product.maxOrderQuantity),
         SpecialValidators.integer,
       ]);

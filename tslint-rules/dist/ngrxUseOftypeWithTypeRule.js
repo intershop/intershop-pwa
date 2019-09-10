@@ -13,40 +13,33 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
 var tsutils_1 = require("tsutils");
 var ts = require("typescript");
-var NgrxUseOftypeWithTypeWalker = (function (_super) {
-    __extends(NgrxUseOftypeWithTypeWalker, _super);
-    function NgrxUseOftypeWithTypeWalker() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    NgrxUseOftypeWithTypeWalker.prototype.visitIdentifier = function (node) {
-        if (node.getText() === 'ofType') {
-            var ofTypeOperatorStatement = node.parent;
-            if (!!ofTypeOperatorStatement &&
-                ofTypeOperatorStatement.kind === ts.SyntaxKind.CallExpression &&
-                ofTypeOperatorStatement.getChildCount() > 2 &&
-                ofTypeOperatorStatement.getChildAt(1).getText() !== '<') {
-                var followedOperator = tsutils_1.getNextToken(tsutils_1.getNextToken(ofTypeOperatorStatement));
-                if (/^(m|switchM|flatM|concatM|exhaustM|mergeM)ap$/.test(followedOperator.getText())) {
-                    var followedOperatorBody = followedOperator.parent.getChildAt(2).getChildAt(0);
-                    if (!followedOperatorBody.getText().startsWith('()')) {
-                        this.addFailureAtNode(ofTypeOperatorStatement.getChildAt(0), 'use ofType operator with specific action type');
-                    }
-                }
-            }
-        }
-    };
-    return NgrxUseOftypeWithTypeWalker;
-}(Lint.RuleWalker));
 var Rule = (function (_super) {
     __extends(Rule, _super);
     function Rule() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new NgrxUseOftypeWithTypeWalker(sourceFile, this.getOptions()));
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            tsquery_1.tsquery(ctx.sourceFile, 'Identifier[name="ofType"]').forEach(function (node) {
+                var ofTypeOperatorStatement = node.parent;
+                if (!!ofTypeOperatorStatement &&
+                    ofTypeOperatorStatement.kind === ts.SyntaxKind.CallExpression &&
+                    ofTypeOperatorStatement.getChildCount() > 2 &&
+                    ofTypeOperatorStatement.getChildAt(1).getText() !== '<') {
+                    var followedOperator = tsutils_1.getNextToken(tsutils_1.getNextToken(ofTypeOperatorStatement));
+                    if (/^(m|switchM|flatM|concatM|exhaustM|mergeM)ap$/.test(followedOperator.getText())) {
+                        var followedOperatorBody = followedOperator.parent.getChildAt(2).getChildAt(0);
+                        if (!followedOperatorBody.getText().startsWith('()')) {
+                            ctx.addFailureAtNode(ofTypeOperatorStatement.getChildAt(0), 'use ofType operator with specific action type');
+                        }
+                    }
+                }
+            });
+        });
     };
     return Rule;
 }(Lint.Rules.AbstractRule));

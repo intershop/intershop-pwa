@@ -1,34 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Effect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { distinctUntilKeyChanged, filter, map } from 'rxjs/operators';
 
-import { mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
-import { ProductsActionTypes, SelectProduct } from '../products';
+import { ProductHelper } from 'ish-core/models/product/product.model';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { getSelectedProduct } from '../products/products.selectors';
 
 import * as recentlyActions from './recently.actions';
 
 @Injectable()
 export class RecentlyEffects {
-  constructor(private actions: Actions, private store: Store<{}>) {}
+  constructor(private store: Store<{}>, private featureToggleService: FeatureToggleService) {}
 
   @Effect()
-  viewedProduct$ = combineLatest([
-    this.actions.pipe(
-      ofType<SelectProduct>(ProductsActionTypes.SelectProduct),
-      mapToPayloadProperty('sku'),
-      whenTruthy()
+  viewedProduct$ = this.store.pipe(
+    select(getSelectedProduct),
+    whenTruthy(),
+    distinctUntilKeyChanged('sku'),
+    filter(
+      product =>
+        this.featureToggleService.enabled('advancedVariationHandling') || !ProductHelper.isMasterProduct(product)
     ),
-    this.store.pipe(
-      select(getSelectedProduct),
-      whenTruthy()
-    ),
-  ]).pipe(
-    filter(([sku, product]) => sku === product.sku),
-    map(([, product]) => product.sku),
-    distinctUntilChanged(),
-    map(sku => new recentlyActions.AddToRecently({ sku }))
+    map(product => ({
+      sku: product.sku,
+      group: (ProductHelper.isVariationProduct(product) && product.productMasterSKU) || undefined,
+    })),
+    map(({ sku, group }) => new recentlyActions.AddToRecently({ sku, group }))
   );
 }

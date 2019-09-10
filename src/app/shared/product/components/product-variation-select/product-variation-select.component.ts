@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 
@@ -12,11 +13,19 @@ import { VariationSelection } from 'ish-core/models/product-variation/variation-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
+  @Input() readOnly = false;
   @Input() variationOptions: VariationOptionGroup[] = [];
+  @Input() productMasterSKU: string;
   @Output() selectVariation = new EventEmitter<VariationSelection>();
 
   form: FormGroup;
+  advancedVariationHandling: boolean;
+
   private destroy$ = new Subject();
+
+  constructor(featureToggleService: FeatureToggleService) {
+    this.advancedVariationHandling = featureToggleService.enabled('advancedVariationHandling');
+  }
 
   ngOnChanges() {
     this.initForm();
@@ -29,13 +38,17 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
     }
   }
 
+  getActiveOption(group: VariationOptionGroup) {
+    return group.options.find(o => o.active);
+  }
+
   /**
    * Build the product variations select form
    */
   buildSelectForm(optionGroups: VariationOptionGroup[]): FormGroup {
     return new FormGroup(
       optionGroups.reduce((acc, group) => {
-        const activeOption = group.options.find(o => o.active);
+        const activeOption = this.getActiveOption(group);
 
         return {
           ...acc,

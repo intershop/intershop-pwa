@@ -34,9 +34,7 @@
     "class-name": true,
     "comment-format": [true, "check-space"],
     "curly": true,
-    "deprecation": {
-      "severity": "warn"
-    },
+    "deprecation": true,
     "eofline": true,
     "forin": true,
     "import-blacklist": [true, "rxjs/Rx", "lodash", "."],
@@ -131,8 +129,16 @@
     "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
     "rxjs-no-unsafe-catch": true,
+    "rxjs-no-unsafe-first": { "severity": "off" },
     "rxjs-no-unsafe-scope": { "severity": "off" },
     "rxjs-no-unsafe-takeuntil": true,
+    "rxjs-no-subject-value": true,
+    "rxjs-no-subject-unsubscribe": true,
+    "rxjs-no-exposed-subjects": { "severity": "off" },
+    "rxjs-no-explicit-generics": { "severity": "off" },
+    "rxjs-no-ignored-replay-buffer": true,
+    "rxjs-prefer-async-pipe": { "severity": "off" },
+    "rxjs-throw-error": { "severity": "off" },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
@@ -190,7 +196,6 @@
         "ngOnChanges": 3
       }
     },
-    "local-imports-format": [true, "TypeScriptHeroPlugin"],
     "ng-module-sorted-fields": {
       "severity": "error",
       "options": {
@@ -277,8 +282,8 @@
           "fix": "$1"
         },
         {
-          "from": "(.*)/index$",
-          "message": "trailing '/index' seems to be wrong",
+          "from": "^\\.\\/(\\..*$)",
+          "message": "unnecessary local folder reference",
           "fix": "$1"
         },
         {
@@ -308,7 +313,7 @@
         },
         { "starImport": true, "from": "lodash.*" },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|flatten|isEqual)$).*",
           "from": "lodash.*"
         },
         {
@@ -344,13 +349,19 @@
         {
           "import": "^SharedModule$",
           "from": "\\..*",
-          "filePattern": "^(?!.+(page|src/app/cms|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
+          "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$",
           "message": "SharedModule must only be imported in page or extension modules."
         },
         {
           "import": "pluck",
           "from": "rxjs/operators",
           "message": "This operator is not typesafe. Use 'mapToProperty' instead."
+        },
+        {
+          "import": ".*",
+          "from": ".*environments/environment.*",
+          "filePattern": "^.*/app/((?!module\\.ts).)*$",
+          "message": "Importing environment is not allowed. Inject needed properties instead."
         }
       ]
     },
@@ -382,9 +393,7 @@
     "no-commented-out-tests": true,
     "no-focused-tests": true,
     "no-disabled-tests": { "severity": "warning" },
-    "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true,
-    "do-not-import-environment": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,
     "ccp-no-intelligence-in-components": {
@@ -393,27 +402,19 @@
         // forbid every logic in components
         "component": {
           "ngrx": false,
-          "service": false
+          "service": false,
+          "router": true
         },
         "container": {
           "ngrx": true,
           // services should only be used by effects
-          "service": false
+          "service": false,
+          // explicit router navigation should only be done in effects
+          "router": true
         }
       }
     },
-    "ccp-no-markup-in-containers": {
-      "severity": "warning",
-      "options": {
-        "patterns": [
-          "<img",
-          "<ul",
-          "<li",
-          "<table",
-          "<(?![^>]*(clearfix|loading-container|-panel))[^>]*\\ class"
-        ]
-      }
-    },
+    "ccp-no-markup-in-containers": { "severity": "warning" },
     "project-structure": {
       "severity": "warning",
       "options": {
@@ -422,10 +423,6 @@
           "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/ngrx-router/.*$",
-          // cms
-          "^.*/src/app/cms/components/(cms-[a-z-]+)/\\1\\.component\\.ts$",
-          "^.*/src/app/cms/containers/(content-[a-z-]+)/\\1\\.container\\.ts$",
-          "^.*/src/app/cms/(pipes|configurations)/([a-z][a-z0-9-\\.]+)\\.ts$",
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",
@@ -434,6 +431,8 @@
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
           // models
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
+          // cms
+          "^.*/src/app/shared/cms/sfe-adapter/.*\\.ts$",
           // ngrx
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(action|effects|reducer|selectors)\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
@@ -455,7 +454,7 @@
           "^.*/src/app/shared/[a-z][a-z0-9-]+/(configurations|pipes|utils|validators|directives)/.*$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
           // aggregation modules
-          "^.*/src/app/(shell|shared|cms)/\\1\\.module\\.ts$",
+          "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           // extension exports
           "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/[a-z][a-z0-9-]+/components/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
@@ -466,10 +465,6 @@
           {
             "name": "RouterEffects",
             "file": ".*/src/ngrx-router/effects.ts"
-          },
-          {
-            "name": "isRoute",
-            "file": ".*/src/ngrx-router/operator.ts"
           },
           // root components
           {
@@ -484,60 +479,76 @@
             "name": "^(App.*Routing)Module$",
             "file": "src/app/pages/<kebab>\\.module\\.ts$"
           },
+          // cms
+          {
+            "name": "^CMSContainerComponent$",
+            "file": ".*/shared/cms/components/cms-container/cms-container\\.component\\.ts$"
+          },
+          {
+            "name": "^Sfe.*$",
+            "file": ".*/shared/cms/sfe-adapter/.*\\.ts$"
+          },
           // angular components
           {
-            "name": "^(.*)PageContainerComponent$",
+            "name": "^([A-Z].*)PageContainerComponent$",
             "file": ".*/pages/<kebab>/<kebab>-page\\.container\\.ts$"
           },
           {
-            "name": "^(.*)ContainerComponent$",
+            "name": "^([A-Z].*)ContainerComponent$",
             "file": ".*/containers/<kebab>/<kebab>\\.container\\.ts$"
           },
           {
-            "name": "^(.*)Component$",
+            "name": "^(Test|Dummy)Component$",
+            "file": ".*.ts$"
+          },
+          {
+            "name": "^([A-Z].*)Component$",
             "file": ".*/components/<kebab>/<kebab>\\.component\\.ts$"
           },
           {
-            "name": "^(.*)Directive$",
+            "name": "^([A-Z].*)Directive$",
             "file": ".*/directives/<kebab>\\.directive\\.ts$"
           },
-          { "name": "^(.*)Guard$", "file": ".*/guards/<kebab>\\.guard\\.ts$" },
           {
-            "name": "^(.*)Interceptor$",
+            "name": "^([A-Z].*)Guard$",
+            "file": ".*/guards/<kebab>\\.guard\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)Interceptor$",
             "file": ".*/interceptors/<kebab>\\.interceptor\\.ts$"
           },
           // services
           {
-            "name": "^(.*)Service$",
+            "name": "^([A-Z].*)Service$",
             "file": "(/utils.*|/services/<kebab>)/<kebab>\\.service\\.ts$"
           },
           // modules and routing
           {
-            "name": "^(.+)ExportsModule$",
+            "name": "^([A-Z].+)ExportsModule$",
             "file": ".*/extensions/<kebab>/exports/<kebab>-exports\\.module\\.ts$"
           },
           {
-            "name": "^(.+)SharedModule$",
+            "name": "^([A-Z].+)SharedModule$",
             "file": ".*/shared/[a-z][a-z0-9-]+/<kebab>\\.module\\.ts$"
           },
           {
-            "name": "^(.*)PageModule",
+            "name": "^([A-Z].*)PageModule$",
             "file": ".*/<kebab>/<kebab>-page\\.module\\.ts$"
           },
           {
-            "name": "^(.*)RoutingModule",
+            "name": "^([A-Z].*)RoutingModule$",
             "file": ".*/pages/<kebab>-routing\\.module\\.ts$"
           },
           {
-            "name": "^CoreStoreModule",
+            "name": "^CoreStoreModule$",
             "file": ".*/core/store/core-store\\.module\\.ts$"
           },
           {
-            "name": "^(.*)StoreModule",
+            "name": "^([A-Z].*)StoreModule$",
             "file": ".*/(<kebab>|store)/<kebab>-store\\.module\\.ts$"
           },
           {
-            "name": "^(.*)Module",
+            "name": "^(.*)Module$",
             "file": ".*(cypress.*|/<kebab>/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
           { "name": "^(.*)Routes$", "file": ".*/<kebab>\\.module\\.ts$" },
@@ -549,6 +560,10 @@
           {
             "name": "^([A-Z].*)Mapper$",
             "file": ".*/models/<kebab>/<kebab>\\.mapper\\.ts$"
+          },
+          {
+            "name": "^([A-Z].*)BaseData$",
+            "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
           },
           {
             "name": "^([A-Z].*)Data$",
@@ -573,11 +588,7 @@
           },
           { "name": "^(initialState)$", "file": ".*/store/.*\\.reducer\\.ts$" },
           {
-            "name": "^((get|is)[A-Z].*)$",
-            "file": ".*/(store/.*\\.(reducer|selectors)|factories)\\.ts$"
-          },
-          {
-            "name": "^(.*)Reducer$",
+            "name": "^([a-z].*)Reducer$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
           },
           { "name": "^(metaReducers)$", "file": ".*\\.module\\.ts$" },

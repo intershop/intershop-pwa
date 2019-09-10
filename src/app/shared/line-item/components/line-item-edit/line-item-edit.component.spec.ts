@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
 import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { LoadingComponent } from '../../../common/components/loading/loading.component';
 import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
@@ -39,9 +40,10 @@ describe('Line Item Edit Component', () => {
         LineItemEditDialogContainerComponent,
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
-        ProductVariationSelectComponent,
+        MockComponent(ProductVariationSelectComponent),
       ],
     }).compileComponents();
   }));

@@ -1,7 +1,7 @@
 <div class="row">
-  <!-- error messages -->
-  <div *ngIf="error && error.status" class="col-md-12">
-    <div role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+  <!-- Error message -->
+  <div class="col-md-12">
+    <ish-error-message [error]="error"></ish-error-message>
   </div>
 
   <!--- login --->

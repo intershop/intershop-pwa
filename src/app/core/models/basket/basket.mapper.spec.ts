@@ -1,4 +1,5 @@
 import { AddressData } from '../address/address.interface';
+import { BasketTotalData } from '../basket-total/basket-total.interface';
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { LineItemData } from '../line-item/line-item.interface';
 import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
@@ -40,7 +41,7 @@ describe('Basket Mapper', () => {
           currency: 'USD',
         },
       },
-    },
+    } as BasketTotalData,
     discounts: {
       valueBasedDiscounts: ['discount_1'],
     },

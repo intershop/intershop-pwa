@@ -12,7 +12,6 @@ describe('Feature Toggle Guard', () => {
 
   beforeEach(() => {
     @Component({ template: 'dummy', changeDetection: ChangeDetectionStrategy.OnPush })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({

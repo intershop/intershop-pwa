@@ -8,6 +8,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
+import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { Credentials, LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
@@ -18,12 +19,12 @@ import { ApiService } from '../api/api.service';
  */
 
 // request data type for create user
-declare interface CreatePrivateCustomerType extends CustomerData {
+interface CreatePrivateCustomerType extends CustomerData {
   address: Address;
   credentials: Credentials;
 }
 
-declare interface CreateBusinessCustomerType extends Customer {
+interface CreateBusinessCustomerType extends Customer {
   address: Address;
   credentials: Credentials;
   user: User;
@@ -42,7 +43,7 @@ export class UserService {
    */
   signinUser(loginCredentials: LoginCredentials): Observable<CustomerUserType> {
     const headers = new HttpHeaders().set(
-      'Authorization',
+      ApiService.AUTHORIZATION_HEADER_KEY,
       'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
     return this.apiService.get<CustomerData>('customers/-', { headers }).pipe(map(CustomerMapper.mapLoginData));
@@ -88,14 +89,22 @@ export class UserService {
     } else {
       newCustomer = {
         ...body.customer,
-        // TODO: the addition of 'login: body.user.email' is a temporary fix for an ICM 7.10.7.3 API break
-        user: { ...body.user, login: body.user.email },
+        user: { ...body.user },
         address: customerAddress,
         credentials: body.credentials,
       };
     }
 
-    return this.apiService.post<void>('customers', newCustomer);
+    if (body.captchaResponse) {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      const headers = new HttpHeaders().set(
+        ApiService.AUTHORIZATION_HEADER_KEY,
+        `CAPTCHA g-recaptcha-response=${body.captchaResponse} foo=bar`
+      );
+      return this.apiService.post<void>('customers', newCustomer, { headers });
+    } else {
+      return this.apiService.post<void>('customers', newCustomer);
+    }
   }
 
   /**
@@ -129,21 +138,34 @@ export class UserService {
 
   /**
    * Updates the password of the currently logged in user.
-   * @param customer  The current customer.
-   * @param body      The user password to update.
+   * @param customer    The current customer.
+   * @param user        The current user.
+   * @param password    The new password to update to.
+   * @param oldPassword The users old password for verification.
    */
-  updateUserPassword(customer: Customer, password: string): Observable<void> {
+  updateUserPassword(customer: Customer, user: User, password: string, oldPassword: string): Observable<void> {
     if (!customer) {
       return throwError('updateUserPassword() called without customer');
+    }
+    if (!user) {
+      return throwError('updateUserPassword() called without user');
     }
     if (!password) {
       return throwError('updateUserPassword() called without password');
     }
+    if (!oldPassword) {
+      return throwError('updateUserPassword() called without oldPassword');
+    }
+
+    const headers = new HttpHeaders().set(
+      ApiService.AUTHORIZATION_HEADER_KEY,
+      'BASIC ' + b64u.toBase64(b64u.encode(`${user.email}:${oldPassword}`))
+    );
 
     if (customer.type === 'PrivateCustomer') {
-      return this.apiService.put('customers/-/credentials/password', { password });
+      return this.apiService.put('customers/-/credentials/password', { password }, { headers });
     } else {
-      return this.apiService.put('customers/-/users/-/credentials/password', { password });
+      return this.apiService.put('customers/-/users/-/credentials/password', { password }, { headers });
     }
   }
 
@@ -169,5 +191,22 @@ export class UserService {
    */
   getCompanyUserData(): Observable<User> {
     return this.apiService.get('customers/-/users/-').pipe(map(UserMapper.fromData));
+  }
+
+  /**
+   * Request an email for the given datas user with a link to reset the users password.
+   * @param data  The user data (email, firstName, lastName, answer) to identify the user.
+   */
+  requestPasswordReminder(data: PasswordReminder) {
+    if (data.captchaResponse) {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      const headers = new HttpHeaders().set(
+        'Authorization',
+        `CAPTCHA g-recaptcha-response=${data.captchaResponse} foo=bar`
+      );
+      return this.apiService.post('security/reminder', { answer: '', ...data }, { headers });
+    } else {
+      return this.apiService.post('security/reminder', { answer: '', ...data });
+    }
   }
 }

@@ -8,17 +8,19 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { VariationProductMaster } from '../../../models/product/product-variation-master.model';
 import { VariationProduct } from '../../../models/product/product-variation.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
+import { LoadCategory } from '../categories';
+import { SetProductListingPageSize, SetProductListingPages } from '../product-listing';
 import { shoppingReducers } from '../shopping-store.module';
-import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
 
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
@@ -31,9 +33,7 @@ describe('Products Effects', () => {
   let router: Router;
   let location: Location;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
   beforeEach(() => {
@@ -46,9 +46,16 @@ describe('Products Effects', () => {
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).thenReturn(
+    when(productsServiceMock.getProductBundles(anything())).thenCall((sku: string) => {
+      if (!sku) {
+        return throwError({ message: 'invalid' });
+      } else {
+        return of({ product: { sku }, stubs: [] });
+      }
+    });
+
+    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anything())).thenReturn(
       of({
-        categoryUniqueId: '123',
         sortKeys: ['name-asc', 'name-desc'],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
         total: 2,
@@ -68,7 +75,7 @@ describe('Products Effects', () => {
         ProductsEffects,
         provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
@@ -76,6 +83,20 @@ describe('Products Effects', () => {
     store$ = TestBed.get(Store);
     router = spy(TestBed.get(Router));
     location = TestBed.get(Location);
+    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+  });
+
+  describe('loadProductBundles$', () => {
+    it('should call the productsService for LoadProductBundles action', done => {
+      const sku = 'P123';
+      const action = new fromActions.LoadProductSuccess({ product: { sku, type: 'Bundle' } as Product });
+      actions$ = of(action);
+
+      effects.loadProductBundles$.subscribe(() => {
+        verify(productsServiceMock.getProductBundles(sku)).once();
+        done();
+      });
+    });
   });
 
   describe('loadProduct$', () => {
@@ -112,34 +133,34 @@ describe('Products Effects', () => {
   });
 
   describe('loadProductsForCategory$', () => {
-    beforeEach(() => {
-      store$.dispatch(new ChangeSortBy({ sorting: 'name-asc' }));
-    });
-
     it('should call service for SKU list', done => {
-      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123' }));
+      actions$ = of(new fromActions.LoadProductsForCategory({ categoryId: '123', sorting: 'name-asc' }));
 
       effects.loadProductsForCategory$.subscribe(() => {
-        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).once();
+        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), 'name-asc')).once();
         done();
       });
     });
 
-    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProductSuccess for each product in the list', () => {
+    it('should trigger actions for loading content for the product list', () => {
       actions$ = hot('a', {
         a: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
       });
       const expectedValues = {
         b: new fromActions.LoadProductSuccess({ product: { sku: 'P222' } as Product }),
         c: new fromActions.LoadProductSuccess({ product: { sku: 'P333' } as Product }),
-        d: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
-        e: new SetSortKeys({ sortKeys: ['name-asc', 'name-desc'] }),
+        d: new SetProductListingPages({
+          id: { type: 'category', value: '123' },
+          itemCount: 2,
+          sortKeys: ['name-asc', 'name-desc'],
+          1: ['P222', 'P333'],
+        }),
       };
-      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcde)', expectedValues));
+      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcd)', expectedValues));
     });
 
     it('should not die if repeating errors are encountered', () => {
-      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anyNumber(), anyString())).thenReturn(
+      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anything())).thenReturn(
         throwError({ message: 'ERROR' })
       );
       actions$ = hot('-a-a-a', {
@@ -158,7 +179,9 @@ describe('Products Effects', () => {
 
   describe('loadProductVariations$', () => {
     beforeEach(() => {
-      when(productsServiceMock.getProductVariations(anyString())).thenCall(() => of([]));
+      when(productsServiceMock.getProductVariations(anyString())).thenCall(() =>
+        of({ products: [], defaultVariation: undefined })
+      );
     });
 
     it('should call the productsService for getProductVariations', done => {
@@ -173,7 +196,11 @@ describe('Products Effects', () => {
 
     it('should map to action of type LoadProductVariationsSuccess', () => {
       const action = new fromActions.LoadProductVariations({ sku: 'MSKU' });
-      const completion = new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: [] });
+      const completion = new fromActions.LoadProductVariationsSuccess({
+        sku: 'MSKU',
+        variations: [],
+        defaultVariation: undefined,
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -247,7 +274,9 @@ describe('Products Effects', () => {
       } as VariationProductMaster;
 
       store$.dispatch(new fromActions.LoadProductSuccess({ product }));
-      store$.dispatch(new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'] }));
+      store$.dispatch(
+        new fromActions.LoadProductVariationsSuccess({ sku: 'MSKU', variations: ['VAR'], defaultVariation: 'VAR' })
+      );
 
       const action = new fromActions.LoadProductSuccess({ product });
       actions$ = hot('-a', { a: action });
@@ -267,20 +296,6 @@ describe('Products Effects', () => {
       const expected$ = cold('-');
 
       expect(effects.loadProductVariationsForMasterProduct$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadMoreProductsForCategory$', () => {
-    it('should trigger if more products are available', () => {
-      actions$ = hot('a', {
-        a: new fromActions.LoadMoreProductsForCategory({ categoryId: '123' }),
-      });
-      const expectedValues = {
-        a: new SetPagingLoading(),
-        b: new SetPage({ pageNumber: 1 }),
-        c: new fromActions.LoadProductsForCategory({ categoryId: '123' }),
-      };
-      expect(effects.loadMoreProductsForCategory$).toBeObservable(cold('(abc)', expectedValues));
     });
   });
 
@@ -373,5 +388,111 @@ describe('Products Effects', () => {
 
       expect(location.path()).toEqual('/error');
     }));
+  });
+
+  describe('loadProductBundles$', () => {
+    it('should load stubs and bundle reference when queried', done => {
+      when(productsServiceMock.getProductBundles('ABC')).thenReturn(
+        of({
+          stubs: [{ sku: 'A' }, { sku: 'B' }],
+          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 1 }],
+        })
+      );
+
+      actions$ = of(new fromActions.LoadProductSuccess({ product: { sku: 'ABC', type: 'Bundle' } as Product }));
+
+      effects.loadProductBundles$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          [Shopping] Load Product Success:
+            product: {"sku":"A"}
+          [Shopping] Load Product Success:
+            product: {"sku":"B"}
+          [Shopping] Load Product Bundles Success:
+            sku: "ABC"
+            bundledProducts: [{"sku":"A","quantity":1},{"sku":"B","quantity":1}]
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('loadPartsOfRetailSet$', () => {
+    it('should load stubs and retail set reference when queried', done => {
+      when(productsServiceMock.getRetailSetParts('ABC')).thenReturn(of([{ sku: 'A' }, { sku: 'B' }]));
+
+      actions$ = of(new fromActions.LoadProductSuccess({ product: { sku: 'ABC', type: 'RetailSet' } as Product }));
+
+      effects.loadPartsOfRetailSet$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          [Shopping] Load Product Success:
+            product: {"sku":"A"}
+          [Shopping] Load Product Success:
+            product: {"sku":"B"}
+          [Shopping] Load Retail Set Success:
+            sku: "ABC"
+            parts: ["A","B"]
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('loadProductLinks$', () => {
+    it('should load product links reference when queried', () => {
+      when(productsServiceMock.getProductLinks('ABC')).thenReturn(
+        of({ linkType: { products: ['prod'], categories: [] } })
+      );
+
+      actions$ = hot('a', { a: new fromActions.LoadProductLinks({ sku: 'ABC' }) });
+      expect(effects.loadProductLinks$).toBeObservable(
+        cold('(a)', {
+          a: new fromActions.LoadProductLinksSuccess({
+            sku: 'ABC',
+            links: { linkType: { products: ['prod'], categories: [] } },
+          }),
+        })
+      );
+    });
+
+    it('should send fail action in case of failure for load product links', () => {
+      when(productsServiceMock.getProductLinks('ABC')).thenReturn(throwError({ message: 'ERROR' }));
+
+      actions$ = hot('a', { a: new fromActions.LoadProductLinks({ sku: 'ABC' }) });
+      expect(effects.loadProductLinks$).toBeObservable(
+        cold('(a)', {
+          a: new fromActions.LoadProductLinksFail({
+            error: { message: 'ERROR' } as HttpError,
+            sku: 'ABC',
+          }),
+        })
+      );
+    });
+  });
+
+  describe('loadLinkedCategories$', () => {
+    it('should load category links reference when queried', () => {
+      actions$ = hot('(a)', {
+        a: new fromActions.LoadProductLinksSuccess({
+          sku: 'ABC',
+          links: {
+            linkType1: { products: [], categories: ['cat1', 'cat2'] },
+            linkType2: { products: [], categories: ['cat1', 'cat3'] },
+          },
+        }),
+      });
+      expect(effects.loadLinkedCategories$).toBeObservable(
+        cold('(abc)', {
+          a: new LoadCategory({
+            categoryId: 'cat1',
+          }),
+          b: new LoadCategory({
+            categoryId: 'cat2',
+          }),
+          c: new LoadCategory({
+            categoryId: 'cat3',
+          }),
+        })
+      );
+    });
   });
 });

@@ -1,42 +1,52 @@
-import * as fs from 'fs';
+import * as ast from '@angular/compiler';
+import { NgWalker } from 'codelyzer/angular/ngWalker';
+import { BasicTemplateAstVisitor } from 'codelyzer/angular/templates/basicTemplateAstVisitor';
 import * as Lint from 'tslint';
 import { SourceFile } from 'typescript';
 
-const MESSAGE = 'Container templates should not contain markup.';
+const MESSAGE = 'Container templates should not contain markup. ';
 
-class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
-  patterns: string[];
-
-  constructor(sourceFile: SourceFile, options: Lint.IOptions) {
-    super(sourceFile, options);
-    this.patterns = options.ruleArguments[0].patterns;
+class ContainerTemplateVisitor extends BasicTemplateAstVisitor {
+  visitElement(element: ast.ElementAst, context) {
+    this.validateElement(element);
+    super.visitElement(element, context);
   }
 
-  visitSourceFile(sourceFile: SourceFile) {
-    if (sourceFile.fileName.match(/.*\/containers\/(?!.*(routes|module|spec).ts$).*.ts/)) {
-      const fileName = sourceFile.fileName;
-      const templateName = fileName.substring(0, fileName.length - 2) + 'html';
+  validateElement(element: ast.ElementAst) {
+    if (!element.name.startsWith('ish-') && !element.name.startsWith('ng-') && element.name !== 'div') {
+      this.addFailureFromStartToEnd(
+        element.sourceSpan.start.offset,
+        element.sourceSpan.end.offset,
+        `${MESSAGE} Found '${element.name}'.`
+      );
+    }
 
-      try {
-        const template = fs.readFileSync(templateName, 'utf8');
-        this.patterns.forEach(pattern => {
-          if (template.search(pattern) >= 0) {
-            const message = `${MESSAGE} (found '${pattern}')`;
-            this.addFailureAt(0, 1, message);
-          }
-        });
-      } catch (err) {
-        // ignored
-      }
+    const failures = element.attrs.map(attr => this.validateAttr(attr)).filter(x => !!x);
+    if (failures && failures.length) {
+      this.addFailureFromStartToEnd(
+        element.sourceSpan.start.offset,
+        element.sourceSpan.end.offset,
+        `${MESSAGE} ${failures.join(' ')}`
+      );
+    }
+  }
+
+  validateAttr(attr: ast.AttrAst) {
+    if (attr.name === 'class' || attr.name === 'style') {
+      return `Found '${attr.name}' with value '${attr.value}'.`;
+    } else {
+      return;
     }
   }
 }
 
-/**
- * Implementation of the ccp-no-markup-in-containers rule.
- */
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: SourceFile): Lint.RuleFailure[] {
-    return this.applyWithWalker(new CCPNoMarkupInContainersWalker(sourceFile, this.getOptions()));
+    if (!sourceFile.fileName.match(/.*\/containers\/.*.ts/)) {
+      return [];
+    }
+    return this.applyWithWalker(
+      new NgWalker(sourceFile, this.getOptions(), { templateVisitorCtrl: ContainerTemplateVisitor })
+    );
   }
 }

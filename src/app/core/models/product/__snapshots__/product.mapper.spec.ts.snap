@@ -40,9 +40,11 @@ Object {
   "manufacturer": "Kodak",
   "minOrderQuantity": 5,
   "name": "Kodak M series EasyShare M552",
+  "packingUnit": "pcs.",
   "promotionIds": Array [],
   "readyForShipmentMax": undefined,
   "readyForShipmentMin": undefined,
+  "roundedAverageRating": 0,
   "salePrice": Object {
     "currency": "USD",
     "type": "Money",
@@ -53,5 +55,3 @@ Object {
   "type": "Product",
 }
 `;
-
-exports[`Product Mapper fromStubData should throw an error when stub data has no sku attribute 1`] = `"cannot construct product stub without SKU"`;

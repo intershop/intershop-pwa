@@ -1,9 +1,7 @@
 <div data-testing-id="checkout-review-page">
-  <h1>{{ 'checkout.order_review.heading.title' | translate }}</h1>
-
   <ish-checkout-review
     [basket]="basket$ | async"
-    [error]="basketError$ | async"
+    [error]="error$ | async"
     (createOrder)="onCreateOrder($event)"
   ></ish-checkout-review>
 

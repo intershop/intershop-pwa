@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
-declare type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
+type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
 
 /**
  * The Header Component displays the page header.
@@ -30,6 +30,13 @@ export class HeaderComponent implements OnChanges {
 
   activeComponent: CollapsibleComponent = 'search';
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.toggleSpecialStatusOfSearch();
+    if (changes.reset) {
+      this.activeComponent = 'search';
+    }
+  }
+
   get showSearch() {
     return (
       this.activeComponent === 'search' &&
@@ -48,11 +55,12 @@ export class HeaderComponent implements OnChanges {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.toggleSpecialStatusOfSearch();
-    if (changes.reset) {
-      this.activeComponent = 'search';
-    }
+  get showDesktopLogoLink() {
+    return (!this.isSticky && this.deviceType === 'tablet') || this.deviceType === 'pc';
+  }
+
+  get showMobileLogoLink() {
+    return (this.isSticky && this.deviceType !== 'pc') || this.deviceType === 'mobile';
   }
 
   private toggleSpecialStatusOfSearch() {

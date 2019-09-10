@@ -1,10 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
+import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { Attribute } from '../attribute/attribute.model';
 import { ImageMapper } from '../image/image.mapper';
+import { Link } from '../link/link.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';
@@ -36,8 +38,7 @@ describe('Product Mapper', () => {
     it(`should return Product when getting a ProductData`, () => {
       const product: Product = productMapper.fromData({ sku: '1' } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === 'Product').toBeTruthy();
-      expect(product.type === 'VariationProduct').toBeFalsy();
+      expect(product.type).toEqual('Product');
       verify(imageMapper.fromImages(anything())).once();
     });
 
@@ -48,7 +49,7 @@ describe('Product Mapper', () => {
         productMasterSKU: '2',
       } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === 'VariationProduct').toBeTruthy();
+      expect(product.type).toEqual('VariationProduct');
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
       verify(imageMapper.fromImages(anything())).once();
     });
@@ -56,7 +57,7 @@ describe('Product Mapper', () => {
     it(`should return VariationProductMaster when getting a ProductData with productMaster = true`, () => {
       const product: Product = productMapper.fromData({ sku: '1', productMaster: true } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === 'VariationProductMaster').toBeTruthy();
+      expect(product.type).toEqual('VariationProductMaster');
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
     });
 
@@ -67,7 +68,7 @@ describe('Product Mapper', () => {
         variationAttributeValues: [],
       } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === 'VariationProductMaster').toBeTruthy();
+      expect(product.type).toEqual('VariationProductMaster');
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
       expect((product as VariationProductMaster).variationAttributeValues).toBeEmpty();
     });
@@ -79,16 +80,47 @@ describe('Product Mapper', () => {
         variableVariationAttributes: [],
       } as ProductData);
       expect(product).toBeTruthy();
-      expect(product.type === 'Product').toBeTruthy();
-      expect(product.type === 'VariationProduct').toBeFalsy();
+      expect(product.type).toEqual('Product');
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
       expect((product as VariationProductMaster).variationAttributeValues).toBeFalsy();
+    });
+
+    it('should return ProductBundle when getting a ProductData with productBundle = true', () => {
+      const product: Product = productMapper.fromData({
+        sku: '1',
+        productBundle: true,
+      } as ProductData);
+      expect(product).toBeTruthy();
+      expect(product.type).toEqual('Bundle');
+      expect(ProductHelper.isProductBundle(product)).toBeTrue();
+    });
+
+    it('should return ProductBundle when getting a ProductData with producttype contains "BUNDLE"', () => {
+      const product: Product = productMapper.fromData({
+        sku: '1',
+        productTypes: ['BUNDLE'],
+      } as ProductData);
+      expect(product).toBeTruthy();
+      expect(product.type).toEqual('Bundle');
+      expect(ProductHelper.isProductBundle(product)).toBeTrue();
+    });
+
+    it('should return ProductRetailSet when getting a ProductData with retailSet = true', () => {
+      const product: Product = productMapper.fromData({
+        sku: '1',
+        retailSet: true,
+      } as ProductData);
+      expect(product).toBeTruthy();
+      expect(product.type).toEqual('RetailSet');
+      expect(ProductHelper.isRetailSet(product)).toBeTrue();
     });
   });
 
   describe('fromStubData', () => {
     it('should throw an error when stub data has no sku attribute', () => {
-      expect(() => productMapper.fromStubData({} as ProductDataStub)).toThrowErrorMatchingSnapshot();
+      expect(() => productMapper.fromStubData({} as ProductDataStub)).toThrowErrorMatchingInlineSnapshot(
+        `"cannot construct product stub without SKU"`
+      );
     });
 
     it('should construct a stub when supplied with an API response', () => {
@@ -120,6 +152,7 @@ describe('Product Mapper', () => {
           { name: 'availability', value: true },
           { name: 'manufacturer', value: 'Kodak' },
           { name: 'minOrderQuantity', value: { value: 5 } },
+          { name: 'packingUnit', value: 'pcs.' },
           { name: 'inStock', value: false },
         ] as Attribute[],
         description: 'EasyShare M552, 14MP, 6.858 cm (2.7 ") LCD, 4x, 28mm, HD 720p, Black',
@@ -128,5 +161,77 @@ describe('Product Mapper', () => {
 
       expect(stub).toMatchSnapshot();
     });
+  });
+
+  describe('fromProductBundleData', () => {
+    it('should map bundle stubs to sku and quantity', () => {
+      expect(
+        productMapper.fromProductBundleData([
+          {
+            attributes: [{ name: 'quantity', value: { value: 1 } }],
+            uri: 'inSPIRED-inTRONICS-Site/-/products/201807191',
+          },
+          {
+            attributes: [{ name: 'quantity', value: { value: 2 } }],
+            uri: 'inSPIRED-inTRONICS-Site/-/products/201807192',
+          },
+          {
+            attributes: [{ name: 'quantity', value: { value: 1 } }],
+            uri: 'inSPIRED-inTRONICS-Site/-/products/201807193',
+          },
+        ] as Link[])
+      ).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "quantity": 1,
+            "sku": "201807191",
+          },
+          Object {
+            "quantity": 2,
+            "sku": "201807192",
+          },
+          Object {
+            "quantity": 1,
+            "sku": "201807193",
+          },
+        ]
+      `);
+    });
+  });
+
+  describe('parseSKUfromURI()', () => {
+    using(
+      [
+        'site/products/123',
+        'products/123',
+        'site/products/123?test=dummy',
+        'products/123?test=dummy',
+        'site/products;spgid=dfds/123',
+        'products;spgid=dfds/123',
+        'site/products;spgid=dfds/123?test=dummy',
+        'products;spgid=dfds/123?test=dummy',
+        'site/products;spgid=dfds/123?test=dummy&test2=dummy',
+        'products;spgid=dfds/123?test=dummy&test2=dummy',
+      ],
+      uri => {
+        it(`should parse correct sku when given '${uri}'`, () => {
+          expect(ProductMapper.parseSKUfromURI(uri)).toEqual('123');
+        });
+      }
+    );
+  });
+
+  it('should find default variation for master product', () => {
+    const variations = [
+      { uri: 'inSPIRED-inTRONICS-Site/-/products/111' },
+      {
+        attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
+        uri: 'inSPIRED-inTRONICS-Site/-/products/222',
+      },
+      { uri: 'inSPIRED-inTRONICS-Site/-/products/333' },
+    ] as Link[];
+
+    const result = ProductMapper.findDefaultVariation(variations);
+    expect(result).toBe('222');
   });
 });

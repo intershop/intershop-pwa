@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -83,6 +83,7 @@
     "ng2-validation": "^4.2.0",
     "ngrx-store-localstorage": "^5.1.1",
     "ngx-infinite-scroll": "^7.0.1",
+    "ngx-swiper-wrapper": "^8.0.2",
     "ngx-toastr": "^10.0.4",
     "rxjs": "^6.5.2",
     "ts-loader": "5.3.2",
@@ -101,7 +102,7 @@
     "istanbul-api": "^2.1.6",
     "istanbul-reports": "^2.2.6",
     "jasmine-data-provider": "^2.2.0",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "jest-extended": "^0.11.1",
     "jest-html-reporter": "^2.5.0",
     "jest-junit": "^6.4.0",
@@ -118,6 +119,7 @@
     "stylelint-config-recommended-scss": "^3.3.0",
     "stylelint-config-standard": "^18.3.0",
     "stylelint-scss": "^3.8.0",
+    "treeify": "^1.1.0",
     "ts-mockito": "2.3.1",
     "tsickle": "^0.34.0",
     "tslib": "^1.9.3",

@@ -5,44 +5,34 @@ import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
-  debounce,
+  concatMap,
   debounceTime,
   distinctUntilChanged,
-  exhaustMap,
   filter,
   map,
-  mergeMap,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
+import { LoadMoreProducts, SetProductListingPages } from '../product-listing';
 import { LoadProductSuccess } from '../products';
-import {
-  SetPage,
-  SetPagingInfo,
-  SetPagingLoading,
-  SetSortKeys,
-  canRequestMore,
-  getItemsPerPage,
-  getPagingPage,
-  isEndlessScrollingEnabled,
-} from '../viewconf';
 
 import {
-  PrepareNewSearch,
   SearchActionTypes,
-  SearchMoreProducts,
   SearchProducts,
   SearchProductsFail,
-  SearchProductsSuccess,
+  SelectSearchTerm,
   SuggestSearch,
+  SuggestSearchAPI,
   SuggestSearchSuccess,
 } from './search.actions';
+import { getSuggestSearchEntities } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
@@ -51,65 +41,51 @@ export class SearchEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private httpStatusCodeService: HttpStatusCodeService
+    private httpStatusCodeService: HttpStatusCodeService,
+    private productListingMapper: ProductListingMapper
   ) {}
 
   /**
    * Effect that listens for search route changes and triggers a search action.
    */
   @Effect()
-  triggerSearch$ = this.actions$.pipe(
+  listenToRouteForSearchTerm$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
-    // wait until config parameter is set
-    debounce(() =>
-      this.store.pipe(
-        select(getItemsPerPage),
-        filter(x => x > 0)
-      )
-    ),
     mapToParam<string>('searchTerm'),
     whenTruthy(),
     distinctUntilChanged(),
-    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts({ searchTerm })])
-  );
-
-  @Effect()
-  searchMoreProducts$ = this.actions$.pipe(
-    ofType<SearchMoreProducts>(SearchActionTypes.SearchMoreProducts),
-    mapToPayloadProperty('searchTerm'),
-    withLatestFrom(
-      this.store.pipe(select(isEndlessScrollingEnabled)),
-      this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage))
-    ),
-    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
-    mergeMap(([searchTerm, , , pageNumber]) => [
-      new SetPagingLoading(),
-      new SetPage({ pageNumber: pageNumber + 1 }),
-      new SearchProducts({ searchTerm }),
-    ])
+    map(searchTerm => new SelectSearchTerm({ searchTerm }))
   );
 
   /**
-   * execute a product search respecting pagination
+   * Effect that listens for search route changes and triggers a search action.
    */
+  @Effect()
+  triggerSearch$ = this.actions$.pipe(
+    ofType<SelectSearchTerm>(SearchActionTypes.SelectSearchTerm),
+    mapToPayloadProperty('searchTerm'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } }))
+  );
+
   @Effect()
   searchProducts$ = this.actions$.pipe(
     ofType<SearchProducts>(SearchActionTypes.SearchProducts),
-    mapToPayloadProperty('searchTerm'),
-    withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
-    distinctUntilChanged(),
-    exhaustMap(([searchTerm, currentPage, itemsPerPage]) =>
-      this.productsService.searchProducts(searchTerm, currentPage, itemsPerPage).pipe(
-        mergeMap(({ total: totalItems, products, sortKeys }) => [
-          // dispatch action with search result
-          new SearchProductsSuccess({ searchTerm }),
-          // dispatch viewconf action
-          new SetPagingInfo({ currentPage, totalItems, newProducts: products.map(p => p.sku) }),
-          // dispatch actions to load the product information of the found products
+    mapToPayload(),
+    map(payload => ({ ...payload, page: payload.page ? payload.page : 1 })),
+    concatMap(({ searchTerm, page, sorting }) =>
+      this.productsService.searchProducts(searchTerm, page, sorting).pipe(
+        concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new LoadProductSuccess({ product })),
-          // dispatch action to store the returned sorting options
-          new SetSortKeys({ sortKeys }),
+          new SetProductListingPages(
+            this.productListingMapper.createPages(products.map(p => p.sku), 'search', searchTerm, {
+              startPage: page,
+              sorting,
+              sortKeys,
+              itemCount: total,
+            })
+          ),
         ]),
         mapErrorToAction(SearchProductsFail)
       )
@@ -120,12 +96,29 @@ export class SearchEffects {
   suggestSearch$ = this.actions$.pipe(
     ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
     mapToPayloadProperty('searchTerm'),
+    distinctUntilChanged(),
+    filter(searchTerm => !!searchTerm && searchTerm.length > 0),
+    withLatestFrom(this.store.pipe(select(getSuggestSearchEntities))),
+    switchMap(([searchTerm, entities]) =>
+      entities[searchTerm]
+        ? [
+            new SuggestSearchSuccess({ searchTerm, suggests: entities[searchTerm].suggestSearchResults }),
+            new SuggestSearchAPI({ searchTerm }),
+          ]
+        : [new SuggestSearchAPI({ searchTerm })]
+    )
+  );
+
+  @Effect()
+  suggestSearchAPI$ = this.actions$.pipe(
+    ofType<SuggestSearchAPI>(SearchActionTypes.SuggestSearchAPI),
+    mapToPayloadProperty('searchTerm'),
     debounceTime(400),
     distinctUntilChanged(),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(
-        map(suggests => new SuggestSearchSuccess({ suggests })),
+        map(suggests => new SuggestSearchSuccess({ searchTerm, suggests })),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       )

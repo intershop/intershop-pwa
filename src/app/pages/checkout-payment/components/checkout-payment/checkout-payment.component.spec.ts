@@ -15,6 +15,10 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketPromotionCodeComponent } from '../../../../shared/basket/components/basket-promotion-code/basket-promotion-code.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
@@ -27,9 +31,7 @@ describe('Checkout Payment Component', () => {
   let paymentMethodChange: SimpleChanges;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({
@@ -39,7 +41,11 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketPromotionCodeComponent),
+        MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
+        MockComponent(ModalDialogLinkComponent),
         MockComponent(PaymentConcardisCreditcardComponent),
       ],
       imports: [
@@ -118,7 +124,7 @@ describe('Checkout Payment Component', () => {
     it('should render an error if an error occurs', () => {
       component.error = { status: 404 } as HttpError;
       fixture.detectChanges();
-      expect(element.querySelector('[role="alert"]')).toBeTruthy();
+      expect(element.querySelector('ish-error-message')).toBeTruthy();
     });
 
     it('should not render an error if the user has currently no payment method selected', () => {

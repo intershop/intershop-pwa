@@ -23,13 +23,16 @@ function createCMSComponent(options) {
             options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
         }
         options = common_1.generateSelector('component', host, options);
-        options.module = 'cms/cms.module';
+        options.module = 'shared/shared.module';
         options = common_1.findDeclaringModule(host, options);
         const operations = [];
         operations.push(registration_1.addDeclarationToNgModule(options));
         operations.push(registration_1.addEntryComponentToNgModule(options));
+        let cmModuleOptions = Object.assign({}, options, { module: 'shared/cms/cms.module' });
+        cmModuleOptions = common_1.findDeclaringModule(host, cmModuleOptions);
+        operations.push(registration_1.addImportToFile(cmModuleOptions));
         operations.push(registration_1.addProviderToNgModule({
-            module: options.module,
+            module: cmModuleOptions.module,
             artifactName: `{
       provide: CMS_COMPONENT,
       useValue: {

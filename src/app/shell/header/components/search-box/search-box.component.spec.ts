@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -16,7 +16,7 @@ describe('Search Box Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchBoxComponent],
-      imports: [IconModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [IconModule, PipesModule, TranslateModule.forRoot()],
     })
       .overrideComponent(SearchBoxComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -38,10 +38,13 @@ describe('Search Box Component', () => {
 
   function triggerSearch(term: string, results: SuggestTerm[]) {
     component.results = results;
-    component.searchTerm = term;
+    component.searchTermCurrent = term;
+    component.searchTermLatest = term;
+    component.isHidden = !term;
     component.ngOnChanges({
       results: { currentValue: results } as SimpleChange,
-      searchTerm: { currentValue: term } as SimpleChange,
+      searchTermCurrent: { currentValue: term } as SimpleChange,
+      searchTermLatest: { currentValue: term } as SimpleChange,
     } as SimpleChanges);
     fixture.detectChanges();
   }
@@ -52,7 +55,7 @@ describe('Search Box Component', () => {
       done();
     });
 
-    component.search('test');
+    component.searchSuggest('test');
   });
 
   describe('with no results', () => {
@@ -89,13 +92,13 @@ describe('Search Box Component', () => {
 
   describe('with inputs', () => {
     it('should show button text when buttonText is set', () => {
-      component.configuration = { buttonText: 'buttonTextInput' };
+      component.configuration = { id: 'searchbox', buttonText: 'buttonTextInput' };
       fixture.detectChanges();
       const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
     });
     it('should show placeholder text when placeholderText is set', () => {
-      component.configuration = { placeholderText: 'placeholderTextInput' };
+      component.configuration = { id: 'searchbox', placeholderText: 'placeholderTextInput' };
       fixture.detectChanges();
       const inputElement = element.querySelector('.searchTerm');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholderTextInput');

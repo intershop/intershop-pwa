@@ -7,7 +7,7 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Promotion } from '../../../models/promotion/promotion.model';
 import { PromotionsService } from '../../../services/promotions/promotions.service';
@@ -22,9 +22,7 @@ describe('Promotions Effects', () => {
   let effects: PromotionsEffects;
   let promotionsServiceMock: PromotionsService;
 
-  // tslint:disable-next-line:use-component-change-detection
   @Component({ template: 'dummy' })
-  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class DummyComponent {}
 
   beforeEach(() => {
@@ -50,7 +48,7 @@ describe('Promotions Effects', () => {
         PromotionsEffects,
         provideMockActions(() => actions$),
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
-        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
+        { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 

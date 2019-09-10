@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 
+import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpError } from '../../models/http-error/http-error.model';
@@ -29,6 +30,10 @@ export enum UserActionTypes {
   UserErrorReset = '[Account Internal] Reset User Error',
   LoadUserByAPIToken = '[Account] Load User by API Token',
   SetPGID = '[Personalization Internal] Set PGID',
+  RequestPasswordReminder = '[Password Reminder] Request Password Reminder',
+  RequestPasswordReminderFail = '[Password Reminder API] Request Password Reminder Fail',
+  RequestPasswordReminderSuccess = '[Password Reminder API] Request Password Reminder Success',
+  ResetPasswordReminder = '[Password Reminder Internal] Reset Password Reminder Data',
 }
 
 export class LoginUser implements Action {
@@ -96,7 +101,7 @@ export class UpdateUserFail implements Action {
 
 export class UpdateUserPassword implements Action {
   readonly type = UserActionTypes.UpdateUserPassword;
-  constructor(public payload: { password: string; successMessage?: string }) {}
+  constructor(public payload: { password: string; currentPassword: string; successMessage?: string }) {}
 }
 
 export class UpdateUserPasswordSuccess implements Action {
@@ -142,6 +147,24 @@ export class SetPGID implements Action {
   constructor(public payload: { pgid: string }) {}
 }
 
+export class RequestPasswordReminder implements Action {
+  readonly type = UserActionTypes.RequestPasswordReminder;
+  constructor(public payload: { data: PasswordReminder }) {}
+}
+
+export class RequestPasswordReminderSuccess implements Action {
+  readonly type = UserActionTypes.RequestPasswordReminderSuccess;
+}
+
+export class RequestPasswordReminderFail implements Action {
+  readonly type = UserActionTypes.RequestPasswordReminderFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class ResetPasswordReminder implements Action {
+  readonly type = UserActionTypes.ResetPasswordReminder;
+}
+
 export type UserAction =
   | LoginUser
   | LoginUserFail
@@ -165,4 +188,8 @@ export type UserAction =
   | UserSuccessMessageReset
   | UserErrorReset
   | LoadUserByAPIToken
-  | SetPGID;
+  | SetPGID
+  | RequestPasswordReminder
+  | RequestPasswordReminderSuccess
+  | RequestPasswordReminderFail
+  | ResetPasswordReminder;

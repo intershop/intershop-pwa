@@ -1,7 +1,6 @@
 import { groupBy } from 'lodash-es';
 
 import { objectToArray } from 'ish-core/utils/functions';
-import { AttributeHelper } from '../attribute/attribute.helper';
 import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { VariationAttribute } from './variation-attribute.model';
@@ -76,9 +75,8 @@ export class ProductVariationHelper {
 
     // transform all variation attribute values to selectOptions
     // each with information about alternative combinations and active status (active status comes from currently selected variation)
-    const options: VariationSelectOption[] = product
-      .productMaster()
-      .variationAttributeValues.map(attr => ({
+    const options: VariationSelectOption[] = (product.productMaster().variationAttributeValues || [])
+      .map(attr => ({
         label: attr.value,
         value: attr.value,
         type: attr.variationAttributeId,
@@ -144,11 +142,7 @@ export class ProductVariationHelper {
     }
   }
 
-  static findDefaultVariationForMaster(product: VariationProductMasterView): VariationProductView {
-    return product
-      .variations()
-      .find(variation =>
-        AttributeHelper.getAttributeValueByAttributeName<boolean>(variation.attributes, 'defaultVariation')
-      );
+  static hasDefaultVariation(product: VariationProductMasterView): boolean {
+    return product && !!product.defaultVariationSKU;
   }
 }

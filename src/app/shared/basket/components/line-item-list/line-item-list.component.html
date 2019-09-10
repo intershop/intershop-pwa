@@ -55,7 +55,7 @@
           </div>
 
           <!-- mobile quantity -->
-          <div class="quantity d-xl-none" [formGroupName]="i">
+          <div *ngIf="formLength > i" class="quantity d-xl-none" [formGroupName]="i">
             <div class="form-group">
               <ng-container
                 *ngTemplateOutlet="
@@ -73,7 +73,7 @@
         </div>
 
         <!-- desktop quantity -->
-        <div class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
+        <div *ngIf="formLength > i" class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
           <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
             <ng-container
               *ngTemplateOutlet="
@@ -109,11 +109,13 @@
             <p *ngIf="pli.totals.originTotal" class="text-nowrap">{{ pli.totals.originTotal | ishPrice }}</p>
 
             <!-- (Suggested) Total Price  -->
-            <p class="text-nowrap" data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</p>
+            <div class="text-nowrap" data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
           </div>
 
           <!-- Value Rebates Total -->
-          <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">{{ pli.price | ishPrice }}</div>
+          <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
+            {{ pli.totals.undiscountedTotal | ishPrice }}
+          </div>
 
           <!-- Gift -->
           <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>

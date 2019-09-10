@@ -11,7 +11,9 @@ export interface BasketState {
   eligibleShippingMethods: ShippingMethod[];
   eligiblePaymentMethods: PaymentMethod[];
   loading: boolean;
+  promotionError: HttpError; // for promotion-errors
   error: HttpError; // add, update and delete errors
+  lastTimeProductAdded: Date;
 }
 
 export const initialState: BasketState = {
@@ -20,6 +22,8 @@ export const initialState: BasketState = {
   eligiblePaymentMethods: [],
   loading: false,
   error: undefined,
+  promotionError: undefined,
+  lastTimeProductAdded: undefined,
 };
 
 export function basketReducer(state = initialState, action: BasketAction | OrdersAction): BasketState {
@@ -29,8 +33,10 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:
+    case BasketActionTypes.AddPromotionCodeToBasket:
     case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
+    case BasketActionTypes.MergeBasket:
     case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem:
     case BasketActionTypes.LoadBasketEligibleShippingMethods:
@@ -45,6 +51,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
+    case BasketActionTypes.MergeBasketFail:
     case BasketActionTypes.LoadBasketFail:
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
@@ -66,7 +73,24 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.AddItemsToBasketSuccess:
+    case BasketActionTypes.AddPromotionCodeToBasketFail: {
+      const { error } = action.payload;
+
+      return {
+        ...state,
+        promotionError: error,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.AddPromotionCodeToBasketSuccess: {
+      return {
+        ...state,
+        loading: false,
+        promotionError: undefined,
+      };
+    }
+
     case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess:
@@ -81,6 +105,16 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
+    case BasketActionTypes.AddItemsToBasketSuccess: {
+      return {
+        ...state,
+        loading: false,
+        error: undefined,
+        lastTimeProductAdded: new Date(),
+      };
+    }
+
+    case BasketActionTypes.MergeBasketSuccess:
     case BasketActionTypes.LoadBasketSuccess: {
       const basket = {
         ...action.payload.basket,
@@ -115,6 +149,14 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.ResetBasket:
     case OrdersActionTypes.CreateOrderSuccess: {
       return initialState;
+    }
+
+    case BasketActionTypes.ResetBasketErrors: {
+      return {
+        ...state,
+        error: undefined,
+        promotionError: undefined,
+      };
     }
   }
   return state;

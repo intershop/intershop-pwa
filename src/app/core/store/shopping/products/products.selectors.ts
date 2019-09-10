@@ -1,7 +1,10 @@
+import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 import { memoize } from 'lodash-es';
 
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ProductLinks, ProductLinksView } from 'ish-core/models/product-links/product-links.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import {
   ProductView,
@@ -11,6 +14,7 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
+import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from '../categories';
 import { getShoppingState } from '../shopping-store';
@@ -32,11 +36,9 @@ const productToVariationOptions = memoize(
     `${product && product.sku}#${ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)}`
 );
 
-export const {
-  selectEntities: getProductEntities,
-  selectAll: getProducts,
-  selectIds: getProductIds,
-} = productAdapter.getSelectors(getProductsState);
+export const { selectEntities: getProductEntities, selectIds: getProductIds } = productAdapter.getSelectors(
+  getProductsState
+);
 
 export const getSelectedProductId = createSelector(
   getProductsState,
@@ -63,25 +65,47 @@ const createView = memoize(
     const defaultCategory = product ? tree.nodes[product.defaultCategoryId] : undefined;
     // fire when self, master or default category changed
     if (ProductHelper.isVariationProduct(product)) {
-      return JSON.stringify([product, entities[product.productMasterSKU], defaultCategory]);
+      return JSON.stringify([product, defaultCategory, entities[product.productMasterSKU]]);
+    }
+    if (ProductHelper.isMasterProduct(product)) {
+      return JSON.stringify([
+        product,
+        defaultCategory,
+        product.variationSKUs && product.variationSKUs.map(sku => entities[sku]),
+      ]);
     }
     // fire when self or default category changed
     return JSON.stringify([product, defaultCategory]);
   }
 );
 
+function createFailedOrProductView(sku: string, failed, entities, tree) {
+  if (failed.includes(sku)) {
+    // tslint:disable-next-line: ish-no-object-literal-type-assertion
+    return createProductView({ sku, failed: true } as Product, tree);
+  }
+  return createView(entities[sku], entities, tree);
+}
+
 export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
   getFailed,
-  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView => {
-    if (failed.includes(props.sku)) {
-      // tslint:disable-next-line: ish-no-object-literal-type-assertion
-      return createProductView({ sku: props.sku, failed: true } as Product, tree);
-    }
+  (tree, entities, failed, props: { sku: string }): ProductView | VariationProductView | VariationProductMasterView =>
+    createFailedOrProductView(props.sku, failed, entities, tree)
+);
 
-    return createView(entities[props.sku], entities, tree);
-  }
+export const getProducts = createSelector(
+  getCategoryTree,
+  getProductEntities,
+  getFailed,
+  (
+    tree,
+    entities,
+    failed,
+    props: { skus: string[] }
+  ): (ProductView | VariationProductView | VariationProductMasterView)[] =>
+    props.skus.map(sku => createFailedOrProductView(sku, failed, entities, tree)).filter(x => !!x)
 );
 
 export const getSelectedProduct = createSelector(
@@ -102,7 +126,40 @@ export const getSelectedProductVariationOptions = createSelector(
   productToVariationOptions
 );
 
+export const getProductBundleParts = createSelector(
+  getProductEntities,
+  (entities: Dictionary<ProductBundle>, props: { sku: string }) =>
+    !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
+      ? []
+      : entities[props.sku].bundledProducts
+          .filter(({ sku }) => !!entities[sku])
+          .map(({ sku, quantity }) => ({
+            product: entities[sku],
+            quantity,
+          }))
+);
+
 export const getProductLoading = createSelector(
   getProductsState,
   products => products.loading
+);
+
+export const getProductLinks = createSelector(
+  getCategoryTree,
+  getProductEntities,
+  (categories, products, props: { sku: string }): ProductLinksView =>
+    !products[props.sku] || !products[props.sku].links
+      ? {}
+      : Object.keys(products[props.sku].links).reduce((acc, val) => {
+          const links: ProductLinks = products[props.sku].links;
+          acc[val] = {
+            products: () =>
+              links[val].products.map(sku => createProductView(products[sku], categories)).filter(x => !!x),
+            productSKUs: links[val].products || [],
+            categories: () =>
+              links[val].categories.map(uniqueId => createCategoryView(categories, uniqueId)).filter(x => !!x),
+            categoryIds: links[val].categories || [],
+          };
+          return acc;
+        }, {})
 );

@@ -1,4 +1,10 @@
+import { Dictionary } from '@ngrx/entity';
+import { memoize } from 'lodash-es';
+
 import { Basket, BasketView } from '../basket/basket.model';
+import { VariationProductMaster } from '../product/product-variation-master.model';
+import { VariationProduct } from '../product/product-variation.model';
+import { Product } from '../product/product.model';
 
 export interface AbstractOrder {
   documentNo: string;
@@ -18,3 +24,24 @@ export interface AbstractOrder {
 export interface Order extends Basket, AbstractOrder {}
 
 export interface OrderView extends BasketView, AbstractOrder {}
+
+export const createOrderView = memoize(
+  (order, products): OrderView => {
+    if (!order) {
+      return;
+    }
+
+    return {
+      ...order,
+      lineItems: order.lineItems
+        ? order.lineItems.map(li => ({
+            ...li,
+            product: products ? products[li.productSKU] : undefined,
+          }))
+        : [],
+    };
+  },
+  // fire when basket or line items changed
+  (order: Order, products: Dictionary<Product | VariationProduct | VariationProductMaster>): string =>
+    order && JSON.stringify([order, ...order.lineItems.map(li => products[li.productSKU])])
+);

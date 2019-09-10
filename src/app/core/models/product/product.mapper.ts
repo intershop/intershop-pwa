@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { AttributeHelper } from '../attribute/attribute.helper';
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { ImageMapper } from '../image/image.mapper';
-import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 
-import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
+import { AllProductTypes, SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
 import { Product } from './product.model';
 
@@ -40,24 +40,57 @@ function mapPromotionIds(data: Link[]): string[] {
 export class ProductMapper {
   constructor(private imageMapper: ImageMapper, private categoryMapper: CategoryMapper) {}
 
+  static parseSKUfromURI(uri: string): string {
+    const match = /products[^\/]*\/([^\?]*)/.exec(uri);
+    if (match) {
+      return match[1];
+    } else {
+      console.warn(`could not find sku in uri '${uri}'`);
+      return;
+    }
+  }
+
+  static findDefaultVariation(variationLinks: Link[]): string {
+    const defaultVariation = variationLinks.find(variation =>
+      AttributeHelper.getAttributeValueByAttributeName<boolean>(variation.attributes, 'defaultVariation')
+    );
+
+    return defaultVariation ? ProductMapper.parseSKUfromURI(defaultVariation.uri) : undefined;
+  }
+
+  fromLink(link: Link): Partial<Product> {
+    return {
+      sku: ProductMapper.parseSKUfromURI(link.uri),
+      name: link.title,
+      shortDescription: link.description,
+      type: 'Product',
+      completenessLevel: 1,
+    };
+  }
+
   fromVariationLink(link: ProductVariationLink, productMasterSKU: string): Partial<VariationProduct> {
     return {
-      sku: link.uri.split('/products/')[1],
+      ...this.fromLink(link),
       variableVariationAttributes: link.variableVariationAttributeValues,
-      name: link.title,
       productMasterSKU,
-      shortDescription: link.description,
       type: 'VariationProduct',
-      attributes: link.attributes || [],
-      completenessLevel: 1,
       failed: false,
+    };
+  }
+
+  fromRetailSetLink(link: Link): Partial<Product> {
+    return {
+      sku: ProductMapper.parseSKUfromURI(link.uri),
+      name: link.title,
+      shortDescription: link.description,
+      completenessLevel: 1,
     };
   }
 
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
-  fromStubData(data: ProductDataStub): Product | VariationProductMaster | VariationProduct {
+  fromStubData(data: ProductDataStub): AllProductTypes {
     const sku = retrieveStubAttributeValue<string>(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
@@ -107,10 +140,12 @@ export class ProductMapper {
       inStock: retrieveStubAttributeValue(data, 'inStock'),
       longDescription: undefined,
       minOrderQuantity,
+      packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
       attributes: [],
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
+      roundedAverageRating: +retrieveStubAttributeValue<string>(data, 'roundedAverageRating') || 0,
       type: 'Product',
       defaultCategoryId: productCategory ? this.categoryMapper.fromDataSingle(productCategory).uniqueId : undefined,
       promotionIds: mapPromotionIds(promotionLinks),
@@ -137,7 +172,7 @@ export class ProductMapper {
   /**
    * map API Response to fully qualified {@link Product}s
    */
-  fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
+  fromData(data: ProductData): AllProductTypes {
     const product: Product = {
       type: 'Product',
       name: data.productName,
@@ -146,6 +181,7 @@ export class ProductMapper {
       availability: data.availability,
       inStock: data.inStock,
       minOrderQuantity: data.minOrderQuantity || 1,
+      packingUnit: data.packingUnit,
       maxOrderQuantity: data.maxOrderQuantity || 100,
       attributes: data.attributes,
       attributeGroups: data.attributeGroups,
@@ -155,6 +191,7 @@ export class ProductMapper {
       manufacturer: data.manufacturer,
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,
+      roundedAverageRating: +data.roundedAverageRating || 0,
       sku: data.sku,
       defaultCategoryId: data.defaultCategory
         ? this.categoryMapper.fromDataSingle(data.defaultCategory).uniqueId
@@ -167,6 +204,10 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
+        minListPrice: filterPrice(data.minListPrice),
+        minSalePrice: filterPrice(data.minSalePrice),
+        maxListPrice: filterPrice(data.maxListPrice),
+        maxSalePrice: filterPrice(data.maxSalePrice),
         variationAttributeValues: data.variationAttributeValues,
         type: 'VariationProductMaster',
       };
@@ -177,8 +218,30 @@ export class ProductMapper {
         variableVariationAttributes: data.variableVariationAttributes,
         type: 'VariationProduct',
       };
+    } else if ((data.productTypes && data.productTypes.includes('BUNDLE')) || data.productBundle) {
+      return {
+        ...product,
+        type: 'Bundle',
+      };
+    } else if (data.retailSet) {
+      return {
+        ...product,
+        type: 'RetailSet',
+        minListPrice: filterPrice(data.minListPrice),
+        minSalePrice: filterPrice(data.minSalePrice),
+        summedUpListPrice: filterPrice(data.summedUpListPrice),
+        summedUpSalePrice: filterPrice(data.summedUpSalePrice),
+        partSKUs: [],
+      };
     } else {
       return product;
     }
+  }
+
+  fromProductBundleData(links: Link[]): SkuQuantityType[] {
+    return links.map(link => ({
+      sku: ProductMapper.parseSKUfromURI(link.uri),
+      quantity: AttributeHelper.getAttributeValueByAttributeName<{ value: number }>(link.attributes, 'quantity').value,
+    }));
   }
 }

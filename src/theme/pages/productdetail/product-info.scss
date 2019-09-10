@@ -1,3 +1,23 @@
+.product-title {
+  font-family: $font-family-condensedbold;
+  font-size: 16px;
+  color: $text-color-primary;
+}
+
+a.product-title {
+  font-family: $font-family-condensedregular;
+  color: $text-color-corporate;
+}
+
+.product-id {
+  font-size: $font-size-corporate;
+  color: $text-color-quarternary;
+
+  label {
+    padding-right: ($space-default / 3);
+  }
+}
+
 .product-info {
   font-family: $font-family-condensedregular;
   color: $text-color-quarternary;
@@ -15,12 +35,6 @@
       &:hover {
         color: darken($text-color-quarternary, 10%);
       }
-    }
-  }
-
-  .product-number {
-    label {
-      margin: 0;
     }
   }
 
@@ -85,7 +99,8 @@
   }
 
   .add-to-cart {
-    padding-bottom: $space-default;
+    margin-top: $space-default;
+    margin-bottom: $space-default;
   }
 
   .add-to-wishlist {

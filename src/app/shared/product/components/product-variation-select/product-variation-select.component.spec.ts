@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { ProductVariationSelectComponent } from './product-variation-select.component';
 
@@ -11,7 +16,13 @@ describe('Product Variation Select Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        StoreModule.forRoot(coreReducers),
+        TranslateModule.forRoot(),
+      ],
       declarations: [ProductVariationSelectComponent],
     }).compileComponents();
   }));
@@ -63,9 +74,6 @@ describe('Product Variation Select Component', () => {
         ],
       },
     ];
-
-    component.ngOnChanges();
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
@@ -75,10 +83,16 @@ describe('Product Variation Select Component', () => {
   });
 
   it('should initialize form of option groups', () => {
+    component.ngOnChanges();
+    fixture.detectChanges();
+
     expect(component.form).toBeTruthy();
   });
 
   it('should set active values for form', () => {
+    component.ngOnChanges();
+    fixture.detectChanges();
+
     expect(component.form.value).toEqual({
       a1: 'B',
       a2: 'D',
@@ -86,6 +100,9 @@ describe('Product Variation Select Component', () => {
   });
 
   it('should throw event when form values change', done => {
+    component.ngOnChanges();
+    fixture.detectChanges();
+
     component.selectVariation.subscribe(selection => {
       expect(selection).toEqual({
         a1: 'A',
@@ -105,5 +122,12 @@ describe('Product Variation Select Component', () => {
       a1: 'BBB',
       a2: 'D',
     });
+  });
+
+  it('should render read-only data when configured', () => {
+    component.readOnly = true;
+    component.ngOnChanges();
+    fixture.detectChanges();
+    expect(element.textContent).toMatchInlineSnapshot(`"Attr 1: BAttr 2: D"`);
   });
 });

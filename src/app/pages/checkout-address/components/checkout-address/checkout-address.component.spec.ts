@@ -16,6 +16,9 @@ import { CustomerAddressFormComponent } from '../../../../shared/address-forms/c
 import { AddressComponent } from '../../../../shared/address/components/address/address.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
@@ -27,9 +30,7 @@ describe('Checkout Address Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    // tslint:disable-next-line:use-component-change-detection
     @Component({ template: 'dummy' })
-    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
     class DummyComponent {}
 
     TestBed.configureTestingModule({
@@ -39,8 +40,11 @@ describe('Checkout Address Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(ContentIncludeContainerComponent),
         MockComponent(CustomerAddressFormComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(ModalDialogLinkComponent),
       ],
       imports: [
         FormsSharedModule,
@@ -176,14 +180,15 @@ describe('Checkout Address Component', () => {
   });
 
   it('should not render an error if no error occurs', () => {
+    component.error = undefined;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+    expect(element.querySelector('ish-error-message')).toBeFalsy();
   });
 
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 
   it('should render invoice address form if showInvoiceAddressForm is called', () => {

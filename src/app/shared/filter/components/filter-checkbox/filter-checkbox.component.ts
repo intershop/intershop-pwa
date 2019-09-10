@@ -19,10 +19,10 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 })
 export class FilterCheckboxComponent {
   @Input() filterElement: Filter;
-  @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
+  @Output() applyFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
   isCollapsed = false;
 
   filter(facet: Facet) {
-    this.applyFilter.emit({ filterId: facet.filterId, searchParameter: facet.searchParameter });
+    this.applyFilter.emit({ searchParameter: facet.searchParameter });
   }
 }

@@ -114,7 +114,7 @@ export class SentryConfigEffects {
         message: err.message,
         extra: {
           error: err,
-          action: action,
+          action,
         },
         tags: {
           origin: action.type,

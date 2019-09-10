@@ -1,14 +1,12 @@
 import { fillFormField } from '../../framework';
 
-export declare type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
+export type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
 
 export interface Registration {
   login: string;
   loginConfirmation: string;
   password: string;
   passwordConfirmation: string;
-  securityQuestion: number;
-  securityQuestionAnswer: string;
   countryCodeSwitch: string;
   title: string;
   firstName: string;
@@ -26,8 +24,6 @@ export interface Registration {
 
 export const sensibleDefaults: Partial<Registration> = {
   password: '!InterShop00!',
-  securityQuestion: 1,
-  securityQuestionAnswer: 'something',
   countryCodeSwitch: 'AT',
   firstName: 'Test',
   lastName: 'User',

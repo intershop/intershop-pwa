@@ -1,7 +1,7 @@
 import { fillFormField, waitLoadingEnd } from '../../framework';
 import { Registration } from '../account/registration.page';
 
-export declare type AddressDetailsTypes = Partial<
+export type AddressDetailsTypes = Partial<
   Pick<Registration, 'countryCodeSwitch' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
 >;
 

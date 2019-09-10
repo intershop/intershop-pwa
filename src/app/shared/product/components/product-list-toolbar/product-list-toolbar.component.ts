@@ -1,16 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,22 +26,27 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Input() viewType: ViewType = 'grid';
   @Input() sortBy = 'default';
   @Input() sortKeys: string[];
-  @Output() viewTypeChange = new EventEmitter<string>();
-  @Output() sortByChange = new EventEmitter<string>();
+  @Input() currentPage: number;
+  @Input() pageIndices: number[];
+  @Input() fragmentOnRouting: string;
+  @Input() isPaging = false;
 
-  sortForm: FormGroup;
+  sortDropdown = new FormControl('');
   sortOptions: SelectOption[] = [];
 
   private destroy$ = new Subject();
 
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+
   ngOnInit() {
-    this.sortForm = new FormGroup({
-      sortDropdown: new FormControl(''),
+    this.sortDropdown.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(sorting => {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
+        queryParams: this.isPaging ? { sorting, page: 1 } : { sorting },
+        fragment: this.fragmentOnRouting,
+      });
     });
-    this.sortForm
-      .get('sortDropdown')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(this.sortByChange);
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -51,8 +55,8 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private updateSortBy(sortBy: SimpleChange) {
-    if (sortBy && this.sortForm) {
-      this.sortForm.get('sortDropdown').setValue(this.sortBy, { emitEvent: false });
+    if (sortBy) {
+      this.sortDropdown.setValue(this.sortBy || undefined, { emitEvent: false });
     }
   }
 
@@ -76,10 +80,6 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   get gridView() {
-    return this.viewType === 'grid';
-  }
-
-  setViewType(mode: ViewType) {
-    this.viewTypeChange.emit(mode);
+    return !this.listView;
   }
 }

@@ -8,6 +8,7 @@
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images [product]="product"></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
+    <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
     <h1>
       <span itemprop="name">{{ product.name }}</span>
     </h1>
@@ -19,26 +20,25 @@
         </a>
       </div>
 
-      <div class="product-number">
-        <label>{{ 'product.itemNumber.label' | translate }}</label> <span itemprop="sku">{{ product.sku }}</span>
-      </div>
+      <ish-product-id [product]="product"></ish-product-id>
 
       <ish-product-promotion-container [product]="product"></ish-product-promotion-container>
 
       <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price
-          [product]="product"
+          [product]="price || product"
           [showInformationalPrice]="true"
           [showPriceSavings]="true"
         ></ish-product-price>
 
-        <ish-product-inventory [product]="product"></ish-product-inventory>
+        <ish-product-inventory *ngIf="!isRetailSet(product)" [product]="product"></ish-product-inventory>
       </div>
 
-      <ish-product-shipment [product]="product"></ish-product-shipment>
+      <ish-product-shipment *ngIf="!isRetailSet(product)" [product]="product"></ish-product-shipment>
 
       <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
+        [productMasterSKU]="product.productMasterSKU"
         [variationOptions]="variationOptions"
         (selectVariation)="variationSelected($event)"
       ></ish-product-variation-select>
@@ -47,6 +47,7 @@
         <div class="row">
           <div class="w-100">
             <ish-product-quantity
+              *ngIf="!isRetailSet(product)"
               [product]="product"
               [parentForm]="productDetailForm"
               [controlName]="quantityControlName"
@@ -59,6 +60,7 @@
           [product]="product"
           [class]="'btn-lg btn-block'"
           [disabled]="productDetailForm.invalid"
+          [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
           (productToBasket)="addToBasket()"
         ></ish-product-add-to-basket>
 

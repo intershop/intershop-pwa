@@ -65,7 +65,7 @@ describe('Payment Method Mapper', () => {
           },
 
           pattern: {
-            regexp: regexp,
+            regexp,
             message: 'The IBAN structure is invalid.',
           },
         },

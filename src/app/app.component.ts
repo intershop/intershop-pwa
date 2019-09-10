@@ -33,7 +33,7 @@ export class AppComponent {
       select(getDeviceType),
       map(deviceType => (deviceType === 'mobile' ? 'sticky-header' : ''))
     ),
-  ]).pipe(map(arr => arr.join(' ')));
+  ]).pipe(map(classes => classes.filter(c => !!c)));
 
   deviceType$ = this.store.pipe(select(getDeviceType));
 

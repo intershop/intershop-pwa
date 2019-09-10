@@ -36,32 +36,35 @@ export interface ProductData {
   productMasterSKU?: string;
   minOrderQuantity: number;
   maxOrderQuantity?: number;
+  packingUnit: string;
+
   // If Variation Master and Retail Set {
-  minListPrice?: number;
-  maxListPrice?: number;
-  minSalePrice?: number;
-  maxSalePrice?: number;
+  minListPrice?: Price;
+  maxListPrice?: Price;
+  minSalePrice?: Price;
+  maxSalePrice?: Price;
   // }
-  variationAttributeValues?: Attribute[];
-  variableVariationAttributes?: Attribute[];
+  variationAttributeValues?: VariationAttribute[];
+  variableVariationAttributes?: VariationAttribute[];
   partOfRetailSet: boolean;
   // If  Retail Set {
-  summedUpListPrice?: number;
-  summedUpSalePrice?: number;
+  summedUpListPrice?: Price;
+  summedUpSalePrice?: Price;
   // }
 
   attachments?: any;
   variations?: any;
   crosssells?: any;
   productMaster: boolean;
-  listPrice: Price;
   productBundle: boolean;
+  listPrice: Price;
   salePrice: Price;
   manufacturer: string;
   mastered: boolean;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   attributes?: Attribute[];
+  productTypes: string[];
   attributeGroups?: { [id: string]: AttributeGroup };
   defaultCategory?: CategoryData;
 
@@ -73,7 +76,6 @@ export interface ProductDataStub {
   attributes: Attribute[];
   description: string;
   title: string;
-  defaultCategory?: CategoryData;
 }
 
 export interface ProductVariationLink extends Link {

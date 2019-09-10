@@ -15,7 +15,10 @@
           <p class="indicates-required">
             <span class="required">*</span>{{ 'account.required_field.message' | translate }}
           </p>
-          <ish-registration-credentials-form [parentForm]="form"></ish-registration-credentials-form>
+          <ish-registration-credentials-form
+            [parentForm]="form"
+            [securityQuestionEnabled]="securityQuestionEnabled"
+          ></ish-registration-credentials-form>
         </div>
       </div>
     </div>
@@ -42,9 +45,11 @@
           [languages]="languages"></ish-registration-personal-form>
           -->
 
-          <!--- TODO: captcha integration
-          <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
-          -->
+          <div *ngIf="captchaRegistration" class="row form-group">
+            <div class="offset-md-4 col-md-8">
+              <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
+            </div>
+          </div>
 
           <ish-registration-company-form
             *ngIf="businessCustomerRegistration"

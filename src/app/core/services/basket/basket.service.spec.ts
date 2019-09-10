@@ -43,6 +43,36 @@ describe('Basket Service', () => {
   const itemMockData = {
     sku: 'test',
     quantity: 10,
+    unit: 'pcs.',
+  };
+
+  const sourceBasket = '012345';
+
+  const basketMergeResponseData = {
+    data: {
+      sourceBasket,
+      targetBasket: '345678abc',
+    },
+    included: {
+      targetBasket: {
+        '345678abc': {
+          id: 'test',
+          calculationState: 'UNCALCULATED',
+          buckets: [
+            {
+              lineItems: [],
+              shippingMethod: {},
+              shipToAddress: {},
+            },
+          ],
+          payment: {
+            name: 'testPayment',
+            id: 'paymentId',
+          },
+          totals: {},
+        },
+      },
+    },
   };
 
   beforeEach(() => {
@@ -117,6 +147,19 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should post source basket to basket when 'mergeBasket' is called", done => {
+    when(apiService.get(anything(), anything())).thenReturn(of({}));
+    when(apiService.post(`baskets`, anything(), anything())).thenReturn(of(basketMockData));
+    when(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).thenReturn(
+      of(basketMergeResponseData)
+    );
+
+    basketService.mergeBasket(sourceBasket).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).once();
+      done();
+    });
+  });
+
   it("should patch updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
     when(apiService.patch(anyString(), anything(), anything())).thenReturn(of({}));
 
@@ -129,11 +172,20 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should remove line item from spefic basket when 'deleteBasketItem' is called", done => {
+  it("should remove line item from specific basket when 'deleteBasketItem' is called", done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
     basketService.deleteBasketItem(basketMockData.data.id, lineItemData.id).subscribe(() => {
       verify(apiService.delete(`baskets/${basketMockData.data.id}/items/${lineItemData.id}`, anything())).once();
+      done();
+    });
+  });
+
+  it("should add promotion code to specific basket when 'addPromotionCodeToBasket' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of({}));
+
+    basketService.addPromotionCodeToBasket(basketMockData.data.id, 'code').subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.data.id}/promotioncodes`, anything(), anything())).once();
       done();
     });
   });

@@ -12,6 +12,8 @@ import { shoppingReducers } from '../../shopping/shopping-store.module';
 import { checkoutReducers } from '../checkout-store.module';
 
 import {
+  AddItemsToBasketSuccess,
+  AddPromotionCodeToBasketFail,
   LoadBasket,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligiblePaymentMethodsFail,
@@ -26,7 +28,9 @@ import {
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
+  getBasketLastTimeProductAdded,
   getBasketLoading,
+  getBasketPromotionError,
   getCurrentBasket,
   getCurrentBasketId,
 } from './basket.selectors';
@@ -53,8 +57,17 @@ describe('Basket Selectors', () => {
 
     it('should not select any shipping methods if it is in initial state', () => {
       expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+    });
+
+    it('should not select any payment methods if it is in initial state', () => {
+      expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+    });
+
+    it('should not select loading, error and lastTimeProductAdded if it is in initial state', () => {
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getBasketError(store$.state)).toBeUndefined();
+      expect(getBasketPromotionError(store$.state)).toBeUndefined();
+      expect(getBasketLastTimeProductAdded(store$.state)).toBeUndefined();
     });
   });
 
@@ -90,7 +103,6 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems).toHaveLength(1);
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toHaveProperty('sku', 'sku');
-      expect(currentBasket.itemsCount).toEqual(5);
       expect(currentBasket.payment.paymentInstrument.id).toEqual('ISH_INVOICE');
 
       expect(getCurrentBasketId(store$.state)).toEqual('test');
@@ -191,6 +203,30 @@ describe('Basket Selectors', () => {
         expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
         expect(getBasketError(store$.state)).toEqual({ message: 'error' });
       });
+    });
+  });
+
+  describe('loading last time a product has been added to basket', () => {
+    beforeEach(() => {
+      store$.dispatch(new AddItemsToBasketSuccess());
+    });
+
+    it('should get the last time when a product was added', () => {
+      const firstTimeAdded = new Date(getBasketLastTimeProductAdded(store$.state));
+
+      expect(firstTimeAdded).toBeDate();
+      store$.dispatch(new AddItemsToBasketSuccess());
+      expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
+    });
+  });
+
+  describe('loading promotion error after adding a wrong promotion code', () => {
+    beforeEach(() => {
+      store$.dispatch(new AddPromotionCodeToBasketFail({ error: { message: 'error' } as HttpError }));
+    });
+
+    it('should reporting the failure in case of an error', () => {
+      expect(getBasketPromotionError(store$.state)).toEqual({ message: 'error' });
     });
   });
 });

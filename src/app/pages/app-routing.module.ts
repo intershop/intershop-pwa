@@ -46,6 +46,7 @@ const routes: Routes = [
     loadChildren: './home/home-page.module#HomePageModule',
     canActivate: [LogoutGuard],
   },
+  { path: 'forgotPassword', loadChildren: './forgot-password/forgot-password-page.module#ForgotPasswordPageModule' },
 ];
 
 @NgModule({
@@ -54,6 +55,7 @@ const routes: Routes = [
       paramsInheritanceStrategy: 'always',
       scrollPositionRestoration: 'enabled',
       initialNavigation: 'enabled',
+      anchorScrolling: 'enabled',
     }),
   ],
   exports: [RouterModule],

@@ -9,8 +9,11 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { LazyBasketAddToQuoteComponent } from '../../../../extensions/quoting/exports/basket/components/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketPromotionCodeComponent } from '../../../../shared/basket/components/basket-promotion-code/basket-promotion-code.component';
 import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
+import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -24,9 +27,12 @@ describe('Shopping Basket Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketPromotionCodeComponent),
+        MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
         MockComponent(LineItemListComponent),
-        MockComponent(ModalDialogComponent),
+        MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,
       ],
       imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
@@ -74,6 +80,6 @@ describe('Shopping Basket Component', () => {
   it('should render an error if an error occurs', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
-    expect(element.querySelector('[role="alert"]')).toBeTruthy();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 });

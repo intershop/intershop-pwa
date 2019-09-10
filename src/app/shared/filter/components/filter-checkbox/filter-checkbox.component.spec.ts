@@ -23,8 +23,8 @@ describe('Filter Checkbox Component', () => {
     const filterElement = {
       name: 'Brands',
       facets: [
-        { name: 'AsusName', count: 4, link: { title: 'Asus' } },
-        { name: 'LogitechName', count: 5, link: { title: 'Logitech' }, selected: true },
+        { name: 'AsusName', count: 4, displayName: 'Asus' },
+        { name: 'LogitechName', count: 5, displayName: 'Logitech', selected: true },
       ],
     } as Filter;
     fixture = TestBed.createComponent(FilterCheckboxComponent);

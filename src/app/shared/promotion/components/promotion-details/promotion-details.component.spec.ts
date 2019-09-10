@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
+import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { PromotionDetailsComponent } from './promotion-details.component';
 
@@ -17,7 +17,7 @@ describe('Promotion Details Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ModalDialogComponent), PromotionDetailsComponent, ServerHtmlDirective],
+      declarations: [MockComponent(ModalDialogLinkComponent), PromotionDetailsComponent, ServerHtmlDirective],
       imports: [
         RouterTestingModule,
         StoreModule.forRoot({ configuration: configurationReducer }),
@@ -55,7 +55,6 @@ describe('Promotion Details Component', () => {
 
   it('should display the details link for a promotion', () => {
     expect(element.querySelector('.details-link')).toBeTruthy();
-    expect(element.querySelector('.promotion-details-link')).toBeTruthy();
-    expect(element.querySelector('a')).toBeTruthy();
+    expect(element.querySelector('ish-modal-dialog-link')).toBeTruthy();
   });
 });

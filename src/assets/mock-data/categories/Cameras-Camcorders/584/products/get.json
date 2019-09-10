@@ -1,0 +1,186 @@
+{
+  "elements": [
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "4729528"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 274.28
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 274.28
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Toshiba"
+        }
+      ],
+      "description": "Camileo SX900 Full HD, 14MPixel CMOS sensor, 6.858 cm (2.7 \") LCD, Black",
+      "title": "Toshiba Camileo SX900",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/4729528"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3953312"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 337.35
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 303.62
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Canon"
+        }
+      ],
+      "description": "LEGRIA HF R16 - 8GB, SDHC, 1/ 13.97 cm (5.5 \") CMOS, 20x opt., dig. 400x",
+      "title": "Canon LEGRIA HF R16",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/3953312"
+    }
+  ],
+  "name": "products",
+  "sortKeys": [
+    "ProductSalePriceNet-asc",
+    "CategoryPosition-asc",
+    "ProductListPrice-asc",
+    "SalesRankUnitsIndex-desc",
+    "ProductListPrice-desc",
+    "name-asc",
+    "ArrivalDate-desc",
+    "ProductSalePriceNet-desc",
+    "SalesRankUnitsIndex-asc",
+    "name-desc",
+    "AverageRating-asc",
+    "CategoryPosition-desc",
+    "ProductSalePriceGross-desc",
+    "AverageRating-desc",
+    "ArrivalDate-asc",
+    "ProductSalePriceGross-asc"
+  ],
+  "type": "ResourceCollection"
+}

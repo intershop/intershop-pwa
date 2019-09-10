@@ -18,16 +18,14 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
     case FilterActionTypes.LoadFilterForSearch: {
       return { ...initialState, loading: true };
     }
-    case FilterActionTypes.LoadFilterForCategorySuccess:
-    case FilterActionTypes.LoadFilterForSearchSuccess: {
+    case FilterActionTypes.LoadFilterSuccess: {
       return {
         ...state,
         availableFilter: action.payload.filterNavigation,
         loading: false,
       };
     }
-    case FilterActionTypes.LoadFilterForCategoryFail:
-    case FilterActionTypes.LoadFilterForSearchFail: {
+    case FilterActionTypes.LoadFilterFail: {
       return {
         ...state,
         availableFilter: undefined,

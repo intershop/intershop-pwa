@@ -1,4 +1,4 @@
-// tslint:disable:do-not-import-environment ban-specific-imports
+// tslint:disable:ban-specific-imports
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Store } from '@ngrx/store';

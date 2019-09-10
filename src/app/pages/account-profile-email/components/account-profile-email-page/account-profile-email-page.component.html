@@ -1,5 +1,8 @@
 <h1>{{ 'account.update_email.heading' | translate }}</h1>
-<div *ngIf="error && error.status" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+
+<!-- Error message -->
+<ish-error-message [error]="error"></ish-error-message>
+
 <!-- ToDo:  #IS-27132 change login of a user -->
 <!--<p>{{ 'account.update_email.description' | translate }}</p>-->
 

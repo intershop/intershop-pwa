@@ -15,11 +15,6 @@
     font-size: $font-size-corporate;
     color: $text-color-quarternary;
     text-transform: none;
-
-    span,
-    a {
-      white-space: nowrap;
-    }
   }
 }
 
@@ -261,7 +256,7 @@
 
 .pli-description {
   ul {
-    padding-left: $space-default;
+    padding-left: $space-default/3 * 4;
     list-style-position: outside;
   }
 

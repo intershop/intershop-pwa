@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
 var ts = require("typescript");
 exports.kebabCaseFromPascalCase = function (input) {
@@ -25,10 +26,10 @@ exports.kebabCaseFromPascalCase = function (input) {
 var camelCaseFromPascalCase = function (input) {
     return "" + input.substring(0, 1).toLowerCase() + input.substring(1);
 };
-var ProjectStructureWalker = (function (_super) {
-    __extends(ProjectStructureWalker, _super);
-    function ProjectStructureWalker(sourceFile, options) {
-        var _this = _super.call(this, sourceFile, options) || this;
+var Rule = (function (_super) {
+    __extends(Rule, _super);
+    function Rule(options) {
+        var _this = _super.call(this, options) || this;
         _this.warnUnmatched = false;
         _this.patterns = [];
         if (options.ruleArguments[0]) {
@@ -41,19 +42,31 @@ var ProjectStructureWalker = (function (_super) {
         }
         return _this;
     }
-    ProjectStructureWalker.prototype.visitSourceFile = function (sourceFile) {
+    Rule.prototype.apply = function (sourceFile) {
         var _this = this;
-        this.fileName = sourceFile.fileName;
-        var isIgnored = this.ignoredFiles.some(function (ignoredPattern) { return new RegExp(ignoredPattern).test(_this.fileName); });
-        if (!isIgnored) {
-            var matchesPathPattern = this.pathPatterns.some(function (pattern) { return new RegExp(pattern).test(_this.fileName); });
-            if (!matchesPathPattern) {
-                this.addFailureAt(0, 1, "this file path does not match any defined patterns");
-            }
-            _super.prototype.visitSourceFile.call(this, sourceFile);
+        var isIgnored = this.ignoredFiles.some(function (ignoredPattern) { return new RegExp(ignoredPattern).test(sourceFile.fileName); });
+        if (isIgnored) {
+            return [];
         }
+        var matchesPathPattern = this.pathPatterns.some(function (pattern) { return new RegExp(pattern).test(sourceFile.fileName); });
+        if (!matchesPathPattern) {
+            return [
+                new Lint.RuleFailure(sourceFile, 0, 1, "this file path does not match any defined patterns", this.ruleName),
+            ];
+        }
+        return this.applyWithFunction(sourceFile, function (ctx) {
+            tsquery_1.tsquery(ctx.sourceFile, '*')
+                .filter(function (node) {
+                return ts.isVariableDeclaration(node) ||
+                    ts.isFunctionDeclaration(node) ||
+                    ts.isInterfaceDeclaration(node) ||
+                    ts.isClassDeclaration(node);
+            })
+                .forEach(function (node) { return _this.visitDeclaration(ctx, node); });
+        });
     };
-    ProjectStructureWalker.prototype.visitName = function (name, node) {
+    Rule.prototype.visitDeclaration = function (ctx, node) {
+        var name = node.name.getText();
         var matchingPatterns = this.patterns
             .map(function (pattern) { return ({ pattern: pattern, match: new RegExp(pattern.name).exec(name) }); })
             .filter(function (x) { return !!x.match; });
@@ -63,46 +76,13 @@ var ProjectStructureWalker = (function (_super) {
             var pathPattern = config.pattern.file
                 .replace(/<kebab>/g, exports.kebabCaseFromPascalCase(matched))
                 .replace(/<camel>/g, camelCaseFromPascalCase(matched));
-            if (!new RegExp(pathPattern).test(this.fileName)) {
-                this.addFailureAtNode(node, name + " is not in the correct file (expected " + pathPattern + ")");
+            if (!new RegExp(pathPattern).test(ctx.sourceFile.fileName)) {
+                ctx.addFailureAtNode(node.name, "'" + name + "' is not in the correct file (expected '" + pathPattern + "')");
             }
         }
         else if (matchingPatterns.length === 0 && this.warnUnmatched) {
             console.warn("no pattern match for " + name + " in file " + this.fileName);
         }
-    };
-    ProjectStructureWalker.prototype.visitClassDeclaration = function (declaration) {
-        var name = declaration.name.escapedText.toString();
-        this.visitName(name, declaration);
-    };
-    ProjectStructureWalker.prototype.visitInterfaceDeclaration = function (declaration) {
-        var name = declaration.name.escapedText.toString();
-        this.visitName(name, declaration);
-    };
-    ProjectStructureWalker.prototype.visitFunctionDeclaration = function (declaration) {
-        var name = declaration.name.escapedText.toString();
-        this.visitName(name, declaration);
-    };
-    ProjectStructureWalker.prototype.visitVariableStatement = function (stmt) {
-        if (stmt.getText().startsWith('export')) {
-            _super.prototype.visitVariableStatement.call(this, stmt);
-        }
-    };
-    ProjectStructureWalker.prototype.visitVariableDeclaration = function (declaration) {
-        if (ts.isIdentifier(declaration.name) && declaration.name.escapedText) {
-            var name_1 = declaration.name.escapedText.toString();
-            this.visitName(name_1, declaration);
-        }
-    };
-    return ProjectStructureWalker;
-}(Lint.RuleWalker));
-var Rule = (function (_super) {
-    __extends(Rule, _super);
-    function Rule() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new ProjectStructureWalker(sourceFile, this.getOptions()));
     };
     return Rule;
 }(Lint.Rules.AbstractRule));

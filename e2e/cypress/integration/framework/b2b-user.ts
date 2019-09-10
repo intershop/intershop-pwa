@@ -11,8 +11,6 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
       name: user.lastName,
       login: user.login,
       password: user.password,
-      securityQuestion: 'what was the name of your first pet?',
-      securityQuestionAnswer: 'Snoopy',
     },
     address: {
       title: user.title,
@@ -31,7 +29,6 @@ export function createB2BUserViaREST(user: Partial<Registration>) {
       lastName: user.lastName,
       customerNo: new Date().getTime().toString(),
       email: user.login,
-      login: user.login,
       phoneHome: user.phoneHome,
       title: user.title,
       businessPartnerNo: new Date().getTime().toString(),

@@ -5,4 +5,5 @@ export interface Filter {
   displayType: string;
   id: string;
   facets: Facet[];
+  selectionType: string;
 }

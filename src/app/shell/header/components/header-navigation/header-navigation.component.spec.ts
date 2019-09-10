@@ -43,6 +43,21 @@ describe('Header Navigation Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <ul class="navbar-nav main-navigation-list">
+        <li class="dropdown">
+          <a style="width: 100%;" data-testing-id="A-link"> CAT_A </a
+          ><ish-sub-category-navigation></ish-sub-category-navigation>
+        </li>
+        <li class="dropdown">
+          <a style="width: 100%;" data-testing-id="B-link"> CAT_B </a
+          ><ish-sub-category-navigation></ish-sub-category-navigation>
+        </li>
+        <li class="dropdown">
+          <a style="width: 100%;" data-testing-id="C-link"> CAT_C </a
+          ><ish-sub-category-navigation></ish-sub-category-navigation>
+        </li>
+      </ul>
+    `);
   });
 });
