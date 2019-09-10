@@ -1,0 +1,15 @@
+<ish-breadcrumb [trail]="[{ key: 'helpdesk.contact_us.link' }]"></ish-breadcrumb>
+
+<h1>{{ 'helpdesk.contact_us.heading' | translate }}</h1>
+
+<ng-container *ngIf="(success$ | async) === undefined; else contactConfirmation">
+  <ish-contact-form [subjects]="subjects$ | async" (request)="createRequest($event)"></ish-contact-form>
+
+  <p [innerHTML]="'helpdesk.user_service.message' | translate"></p>
+</ng-container>
+
+<ng-template #contactConfirmation>
+  <ish-contact-confirmation [success]="success$ | async"></ish-contact-confirmation>
+</ng-template>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

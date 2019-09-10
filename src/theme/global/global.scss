@@ -184,3 +184,10 @@ img.marketing {
   font-size: 85%;
   font-weight: normal;
 }
+
+.alert {
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+}
