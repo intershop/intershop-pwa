@@ -13,6 +13,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
@@ -36,6 +37,7 @@ describe('Checkout Shipping Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(ModalDialogLinkComponent),
@@ -90,7 +92,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render an error if the user clicks next and has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
-    component.nextStep();
+    component.goToNextStep();
     fixture.detectChanges();
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
@@ -108,20 +110,20 @@ describe('Checkout Shipping Component', () => {
 
   it('should set submitted if next button is clicked', () => {
     expect(component.submitted).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.submitted).toBeTrue();
   });
 
   it('should not disable next button if basket shipping method is set and next button is clicked', () => {
     expect(component.nextDisabled).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeFalse();
   });
 
   it('should disable next button if basket shipping method is missing and next button is clicked', () => {
     component.basket.commonShippingMethod = undefined;
 
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeTrue();
   });
 });
