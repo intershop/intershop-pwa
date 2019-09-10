@@ -33,6 +33,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  (updatePaymentMethod)="updateBasketPaymentMethod($event)"
  (createPaymentInstrument)="createBasketPaymentInstrument($event)"
  (deletePaymentInstrument)="deletePaymentInstrument($event)"
+ (nextStep)="nextStep()"
 ></ish-checkout-payment>
  */
 @Component({
@@ -48,6 +49,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() updatePaymentMethod = new EventEmitter<string>();
   @Output() createPaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() deletePaymentInstrument = new EventEmitter<string>();
+  @Output() nextStep = new EventEmitter<void>();
 
   paymentForm: FormGroup;
   model = {};
@@ -234,7 +236,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * leads to next checkout page (checkout review)
    */
-  nextStep() {
+  goToNextStep() {
     this.nextSubmitted = true;
     if (this.nextDisabled) {
       return;
@@ -244,7 +246,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       // do a hard redirect to payment redirect URL
       document.location.assign(this.basket.payment.redirectUrl);
     } else {
-      this.router.navigate(['/checkout/review']);
+      this.nextStep.emit();
     }
   }
 

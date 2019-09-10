@@ -9,6 +9,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/basket/components/basket-promotion-code/basket-promotion-code.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
@@ -29,6 +30,7 @@ describe('Shopping Basket Component', () => {
       declarations: [
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketPromotionCodeComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),

@@ -1,0 +1,10 @@
+<ng-container *ngIf="validationResults$ | async as results">
+  <div *ngIf="results.errors?.length" class="alert alert-danger" data-testing-id="validation-message">
+    <ng-container *ngIf="!results.errors[0].parameters?.shippingRestriction; else shippingRestrictionMessage">
+      {{ results.errors[0].message }}
+    </ng-container>
+    <ng-template #shippingRestrictionMessage>
+      {{ results.errors[0].parameters.shippingRestriction }}
+    </ng-template>
+  </div>
+</ng-container>

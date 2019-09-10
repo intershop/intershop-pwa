@@ -4,6 +4,7 @@ import { filter, take } from 'rxjs/operators';
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import {
+  ContinueCheckout,
   CreateBasketPayment,
   DeleteBasketPayment,
   LoadBasketEligiblePaymentMethods,
@@ -46,5 +47,12 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
 
   deletePaymentInstrument(paymentInstrumentId: string) {
     this.store.dispatch(new DeleteBasketPayment({ id: paymentInstrumentId }));
+  }
+
+  /**
+   * Validates the basket and jumps to the next checkout step (Review)
+   */
+  nextStep() {
+    this.store.dispatch(new ContinueCheckout({ targetStep: 4 }));
   }
 }

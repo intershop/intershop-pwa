@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
 import {
+  ContinueCheckout,
   LoadBasketEligibleShippingMethods,
   UpdateBasketShippingMethod,
   getBasketEligibleShippingMethods,
@@ -35,5 +36,12 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
 
   updateBasketShippingMethod(shippingId: string) {
     this.store.dispatch(new UpdateBasketShippingMethod({ shippingId }));
+  }
+
+  /**
+   * Validates the basket and jumps to the next checkout step (Payment)
+   */
+  nextStep() {
+    this.store.dispatch(new ContinueCheckout({ targetStep: 3 }));
   }
 }

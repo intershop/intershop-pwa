@@ -16,11 +16,11 @@ import { BasketAddressSummaryComponent } from 'ish-shared/basket/components/bask
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/basket/components/basket-promotion-code/basket-promotion-code.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
-
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
 import { CheckoutPaymentComponent } from './checkout-payment.component';
@@ -43,6 +43,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketPromotionCodeComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
@@ -136,7 +137,7 @@ describe('Checkout Payment Component', () => {
 
     it('should render an error if the user clicks next and has currently no payment method selected', () => {
       component.basket.payment = undefined;
-      component.nextStep();
+      component.goToNextStep();
       fixture.detectChanges();
       expect(element.querySelector('[role="alert"]')).toBeTruthy();
     });
@@ -145,20 +146,20 @@ describe('Checkout Payment Component', () => {
   describe('next button', () => {
     it('should set submitted if next button is clicked', () => {
       expect(component.nextSubmitted).toBeFalse();
-      component.nextStep();
+      component.goToNextStep();
       expect(component.nextSubmitted).toBeTrue();
     });
 
     it('should not disable next button if basket payment method is set and next button is clicked', () => {
       expect(component.nextDisabled).toBeFalse();
-      component.nextStep();
+      component.goToNextStep();
       expect(component.nextDisabled).toBeFalse();
     });
 
     it('should disable next button if basket payment method is missing and next button is clicked', () => {
       component.basket.payment = undefined;
 
-      component.nextStep();
+      component.goToNextStep();
       expect(component.nextDisabled).toBeTrue();
     });
   });

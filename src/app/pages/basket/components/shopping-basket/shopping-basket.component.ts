@@ -21,6 +21,7 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
  *   [basket]="basket"
  *   (updateItem)="updateItem($event)"
  *   (deleteItem)="deleteItem($event)"
+ *   (nextStep)="nextStep()"
  * ></ish-shopping-basket>
  */
 @Component({
@@ -34,6 +35,7 @@ export class ShoppingBasketComponent {
 
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
+  @Output() nextStep = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;
@@ -68,10 +70,9 @@ export class ShoppingBasketComponent {
   }
 
   /**
-   * checkout button leads to checkout address page
+   * checkout button leads to checkout address page if basket is valid
    */
   checkout() {
-    // ToDo: routing should be handled in another way, see #ISREST-317
-    this.router.navigate(['/checkout/address']);
+    this.nextStep.emit();
   }
 }

@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import {
+  ContinueCheckout,
   DeleteBasketItem,
   UpdateBasketItems,
   getBasketError,
@@ -28,5 +29,9 @@ export class BasketPageContainerComponent {
 
   updateBasketItem(formValue: LineItemUpdate) {
     this.store.dispatch(new UpdateBasketItems({ lineItemUpdates: [formValue] }));
+  }
+
+  nextStep() {
+    this.store.dispatch(new ContinueCheckout({ targetStep: 1 }));
   }
 }
