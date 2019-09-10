@@ -1,3 +1,4 @@
+import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { Customer } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
@@ -10,6 +11,10 @@ import {
   LoginUserFail,
   LoginUserSuccess,
   LogoutUser,
+  RequestPasswordReminder,
+  RequestPasswordReminderFail,
+  RequestPasswordReminderSuccess,
+  ResetPasswordReminder,
   UpdateCustomer,
   UpdateCustomerFail,
   UpdateCustomerSuccess,
@@ -241,6 +246,65 @@ describe('User Reducer', () => {
 
       expect(state.loading).toBeFalse();
       expect(state.error).toEqual(error);
+    });
+  });
+});
+
+describe('User Reducer for Password Reminder', () => {
+  describe('initialState', () => {
+    it('should have nothing in it when unmodified', () => {
+      expect(initialState.passwordReminderError).toBeUndefined();
+      expect(initialState.passwordReminderSuccess).toBeFalsy();
+      expect(initialState.loading).toBeFalsy();
+    });
+  });
+
+  describe('RequestPasswordReminderSuccess action', () => {
+    it('should set success when reduced', () => {
+      const action = new RequestPasswordReminderSuccess();
+      const response = userReducer(initialState, action);
+
+      expect(response.passwordReminderError).toBeUndefined();
+      expect(response.passwordReminderSuccess).toBeTrue();
+      expect(response.loading).toBeFalse();
+    });
+  });
+
+  describe('RequestPasswordReminderFail action', () => {
+    it('should set error when reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new RequestPasswordReminderFail({ error });
+      const response = userReducer(initialState, action);
+
+      expect(response.passwordReminderError).toMatchObject(error);
+      expect(response.passwordReminderSuccess).toBeFalse();
+      expect(response.loading).toBeFalse();
+    });
+  });
+
+  describe('RequestPasswordReminderReset action', () => {
+    it('should set success & reset when reduced', () => {
+      let state = userReducer(initialState, new RequestPasswordReminderSuccess());
+      state = userReducer(state, new ResetPasswordReminder());
+
+      expect(state.passwordReminderError).toBeUndefined();
+      expect(state.passwordReminderSuccess).toBeFalsy();
+      expect(state.loading).toBeFalsy();
+    });
+  });
+
+  describe('RequestPasswordReminder action', () => {
+    it('should set loading when reduced', () => {
+      const data: PasswordReminder = {
+        email: 'patricia@test.intershop.de',
+        firstName: 'Patricia',
+        lastName: 'Miller',
+      };
+      const state = userReducer(initialState, new RequestPasswordReminder({ data }));
+
+      expect(state.passwordReminderError).toBeUndefined();
+      expect(state.passwordReminderSuccess).toBeFalsy();
+      expect(state.loading).toBeTrue();
     });
   });
 });

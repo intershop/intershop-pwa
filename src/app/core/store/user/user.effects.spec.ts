@@ -12,6 +12,7 @@ import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
@@ -55,6 +56,7 @@ describe('User Effects', () => {
     when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(of(undefined));
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
+    when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -501,6 +503,49 @@ describe('User Effects', () => {
       actions$ = hot('a-a-a-', { a: new ua.LoadUserByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
+    });
+  });
+
+  describe('requestPasswordReminder$', () => {
+    const data: PasswordReminder = {
+      email: 'patricia@test.intershop.de',
+      firstName: 'Patricia',
+      lastName: 'Miller',
+    };
+
+    it('should call the api service when RequestPasswordReminder event is called', done => {
+      const action = new ua.RequestPasswordReminder({ data });
+      actions$ = of(action);
+      effects.requestPasswordReminder$.subscribe(() => {
+        verify(userServiceMock.requestPasswordReminder(anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a RequestPasswordReminderSuccess action on successful', () => {
+      const action = new ua.RequestPasswordReminder({ data });
+      const completion = new ua.RequestPasswordReminderSuccess();
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-b', { b: completion });
+
+      expect(effects.requestPasswordReminder$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a RequestPasswordReminderFail action on failed', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+
+      when(userServiceMock.requestPasswordReminder(anything())).thenReturn(throwError(error));
+
+      const action = new ua.RequestPasswordReminder({ data });
+      const completion = new ua.RequestPasswordReminderFail({
+        error: HttpErrorMapper.fromError(error),
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.requestPasswordReminder$).toBeObservable(expected$);
     });
   });
 });
