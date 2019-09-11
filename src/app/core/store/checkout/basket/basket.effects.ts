@@ -20,7 +20,7 @@ import { BasketValidationScopeType } from 'ish-core/models/basket-validation/bas
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
-import { UserActionTypes } from 'ish-core/store/user';
+import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
@@ -133,7 +133,7 @@ export class BasketEffects {
   );
 
   /**
-   * Merge anonymous basket into current basket of a registered user.
+   * Merge basket into current basket of a registered user.
    * If the user has not yet a basket a new basket is created before the merge
    */
   @Effect()
@@ -145,8 +145,9 @@ export class BasketEffects {
         take(1)
       )
     ),
-    concatMap(sourceBasket =>
-      this.basketService.mergeBasket(sourceBasket.id).pipe(
+    withLatestFrom(this.store.pipe(select(getLastAPITokenBeforeLogin))),
+    concatMap(([sourceBasket, authToken]) =>
+      this.basketService.mergeBasket(sourceBasket.id, authToken).pipe(
         map(basket => new basketActions.MergeBasketSuccess({ basket })),
         mapErrorToAction(basketActions.MergeBasketFail)
       )
