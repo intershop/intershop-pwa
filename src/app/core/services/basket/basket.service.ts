@@ -165,11 +165,15 @@ export class BasketService {
   /**
    * Merge the source basket (named in payload) into the current basket.
    * @param sourceBasketId  The id of the source basket.
+   * @param authToken       The token value of the source basket owner.
    * @returns               The merged basket.
    */
-  mergeBasket(sourceBasketId: string): Observable<Basket> {
+  mergeBasket(sourceBasketId: string, authToken: string): Observable<Basket> {
     if (!sourceBasketId) {
       return throwError('mergeBasket() called without sourceBasketId');
+    }
+    if (!authToken) {
+      return throwError('mergeBasket() called without authToken');
     }
 
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
@@ -178,7 +182,7 @@ export class BasketService {
         this.apiService
           .post<BasketMergeData>(
             `baskets/${basket.id}/merges`,
-            { sourceBasket: sourceBasketId },
+            { sourceBasket: sourceBasketId, sourceAuthenticationToken: authToken },
             {
               headers: this.basketHeaders,
               params,

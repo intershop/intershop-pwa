@@ -163,7 +163,7 @@ describe('Basket Service', () => {
       of(basketMergeResponseData)
     );
 
-    basketService.mergeBasket(sourceBasket).subscribe(() => {
+    basketService.mergeBasket(sourceBasket, anyString()).subscribe(() => {
       verify(apiService.post(`baskets/${basketMockData.data.id}/merges`, anything(), anything())).once();
       done();
     });
