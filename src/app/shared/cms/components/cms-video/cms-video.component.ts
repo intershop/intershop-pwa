@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChil
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
-
-import { CMSComponent } from '../../models/cms-component/cms-component.model';
+import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 /**
  * The CMS Video Component integrates a CMS managed video either via native video tag

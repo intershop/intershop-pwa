@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { LanguageSwitchContainerComponent } from '../../containers/language-switch/language-switch.container';
-import { LoginStatusContainerComponent } from '../../containers/login-status/login-status.container';
-import { MiniBasketContainerComponent } from '../../containers/mini-basket/mini-basket.container';
-import { ProductCompareStatusContainerComponent } from '../../containers/product-compare-status/product-compare-status.container';
+import { LanguageSwitchContainerComponent } from 'ish-shell/header/containers/language-switch/language-switch.container';
+import { LoginStatusContainerComponent } from 'ish-shell/header/containers/login-status/login-status.container';
+import { MiniBasketContainerComponent } from 'ish-shell/header/containers/mini-basket/mini-basket.container';
+import { ProductCompareStatusContainerComponent } from 'ish-shell/header/containers/product-compare-status/product-compare-status.container';
 
 import { UserInformationMobileComponent } from './user-information-mobile.component';
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { ServerErrorPageComponent } from './components/server-error-page/server-error-page.component';

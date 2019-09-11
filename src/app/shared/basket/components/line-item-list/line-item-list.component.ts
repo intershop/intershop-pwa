@@ -6,8 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
-
-import { SpecialValidators } from '../../../forms/validators/special-validators';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Line Item List Component displays a line items.

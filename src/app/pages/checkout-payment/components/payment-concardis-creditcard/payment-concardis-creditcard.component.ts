@@ -15,8 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/services/script-loader/script-loader.service';
-
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 // allows access to concardis js functionality
 // tslint:disable-next-line:no-any

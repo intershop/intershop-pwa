@@ -7,8 +7,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
 import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
-
-import { ContentPageletContainerComponent } from '../../../../shared/cms/containers/content-pagelet/content-pagelet.container';
+import { ContentPageletContainerComponent } from 'ish-shared/cms/containers/content-pagelet/content-pagelet.container';
 
 import { ContentPageComponent } from './content-page.component';
 

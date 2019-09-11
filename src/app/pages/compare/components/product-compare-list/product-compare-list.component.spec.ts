@@ -9,14 +9,14 @@ import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ProductAddToBasketComponent } from 'ish-shared/product/components/product-add-to-basket/product-add-to-basket.component';
+import { ProductAttributesComponent } from 'ish-shared/product/components/product-attributes/product-attributes.component';
+import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
+import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
+import { ProductPriceComponent } from 'ish-shared/product/components/product-price/product-price.component';
+import { ProductRatingComponent } from 'ish-shared/product/components/product-rating/product-rating.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
-import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
-import { ProductAttributesComponent } from '../../../../shared/product/components/product-attributes/product-attributes.component';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
-import { ProductInventoryComponent } from '../../../../shared/product/components/product-inventory/product-inventory.component';
-import { ProductPriceComponent } from '../../../../shared/product/components/product-price/product-price.component';
-import { ProductRatingComponent } from '../../../../shared/product/components/product-rating/product-rating.component';
-import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
 import { ProductCompareListComponent } from './product-compare-list.component';

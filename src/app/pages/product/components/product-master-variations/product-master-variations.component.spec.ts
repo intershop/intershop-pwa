@@ -4,9 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
-
-import { FilterNavigationContainerComponent } from '../../../../shared/filter/containers/filter-navigation/filter-navigation.container';
-import { ProductListContainerComponent } from '../../../../shared/product/containers/product-list/product-list.container';
+import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
+import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
 
 import { ProductMasterVariationsComponent } from './product-master-variations.component';
 

@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
 import { AccountOrderHistoryPageComponent } from './components/account-order-history-page/account-order-history-page.component';

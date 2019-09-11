@@ -4,10 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
-
-import { FormControlFeedbackComponent } from '../../../forms/components/form-control-feedback/form-control-feedback.component';
-import { InputComponent } from '../../../forms/components/input/input.component';
-import { ShowFormFeedbackDirective } from '../../../forms/directives/show-form-feedback.directive';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { AddressFormBusinessComponent } from './address-form-business.component';
 

@@ -12,9 +12,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
-import { SpecialValidators } from '../../../../shared/forms/validators/special-validators';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 /**
  * The Account Profile Password Page Component displays a form for changing the user's password

@@ -6,8 +6,7 @@ import { of } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
-
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountOverviewPageContainerComponent } from './account-overview-page.container';
 import { AccountOverviewPageComponent } from './components/account-overview-page/account-overview-page.component';

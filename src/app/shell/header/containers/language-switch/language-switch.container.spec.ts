@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { LanguageSwitchComponent } from '../../components/language-switch/language-switch.component';
+import { LanguageSwitchComponent } from 'ish-shell/header/components/language-switch/language-switch.component';
 
 import { LanguageSwitchContainerComponent } from './language-switch.container';
 

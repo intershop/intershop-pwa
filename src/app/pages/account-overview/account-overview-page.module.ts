@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageContainerComponent } from './account-overview-page.container';
 import { AccountOverviewPageComponent } from './components/account-overview-page/account-overview-page.component';

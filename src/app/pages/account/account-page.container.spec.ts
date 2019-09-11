@@ -7,7 +7,7 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { AccountPageContainerComponent } from './account-page.container';
 import { AccountPageComponent } from './components/account-page/account-page.component';

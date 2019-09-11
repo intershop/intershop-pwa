@@ -10,12 +10,11 @@ import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-
-import { CustomerAddressFormComponent } from '../../../../shared/address-forms/components/customer-address-form/customer-address-form.component';
-import { AddressComponent } from '../../../../shared/address/components/address/address.component';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
+import { AddressComponent } from 'ish-shared/address/components/address/address.component';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 

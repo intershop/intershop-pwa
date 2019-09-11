@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElementComponent } from '../form-element/form-element.component';
-import { SelectOption } from '../select/select.component';
+import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
+import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 /**
  * The Select Year Month Component allows the user to select a month/year. The appropriate form with a month and a year control has to be provided by the parent.

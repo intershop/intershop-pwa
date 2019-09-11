@@ -6,15 +6,14 @@ import { anything, spy, verify } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-
-import { AddressComponent } from '../../../../shared/address/components/address/address.component';
-import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
-import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { InfoBoxComponent } from '../../../../shared/common/components/info-box/info-box.component';
-import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { CheckboxComponent } from '../../../../shared/forms/components/checkbox/checkbox.component';
+import { AddressComponent } from 'ish-shared/address/components/address/address.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { InfoBoxComponent } from 'ish-shared/common/components/info-box/info-box.component';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
 import { CheckoutReviewComponent } from './checkout-review.component';
 

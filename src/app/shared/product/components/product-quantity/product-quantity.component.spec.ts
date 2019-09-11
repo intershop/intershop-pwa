@@ -5,9 +5,8 @@ import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-
-import { InputComponent } from '../../../forms/components/input/input.component';
-import { SelectComponent } from '../../../forms/components/select/select.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 
 import { ProductQuantityComponent } from './product-quantity.component';
 

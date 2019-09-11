@@ -10,11 +10,11 @@ import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
+import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
+import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
-import { AddressFormFactory } from '../../../../shared/address-forms/components/address-form/address-form.factory';
-import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
-import { AddressFormContainerComponent } from '../../../../shared/address-forms/containers/address-form/address-form.container';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { RegistrationCompanyFormComponent } from '../registration-company-form/registration-company-form.component';
 import { RegistrationCredentialsFormComponent } from '../registration-credentials-form/registration-credentials-form.component';
 

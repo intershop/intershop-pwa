@@ -8,9 +8,8 @@ import { LoadCategory, LoadCategorySuccess, SelectCategory } from 'ish-core/stor
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CategoryPageContainerComponent } from './category-page.container';
 import { CategoryPageComponent } from './components/category-page/category-page.component';

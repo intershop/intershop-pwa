@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
-import { ProductBundleDisplayComponent } from '../../components/product-bundle-display/product-bundle-display.component';
+import { ProductBundleDisplayComponent } from 'ish-shared/product/components/product-bundle-display/product-bundle-display.component';
 
 import { ProductBundleDisplayContainerComponent } from './product-bundle-display.container';
 

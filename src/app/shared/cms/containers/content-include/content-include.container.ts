@@ -16,10 +16,9 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 import { getPGID } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
-import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
-import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 /**
  * The Content Include Container Component renders the content of the include with the given 'includeId'.

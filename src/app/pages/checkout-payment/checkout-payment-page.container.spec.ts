@@ -6,8 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.container';
 import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';

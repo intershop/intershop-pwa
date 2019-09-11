@@ -5,9 +5,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { FormsSharedModule } from '../../../forms/forms.module';
-import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
-import { AddressFormContainerComponent } from '../../containers/address-form/address-form.container';
+import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
+import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
 

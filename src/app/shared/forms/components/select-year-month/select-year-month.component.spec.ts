@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FormsSharedModule } from '../../forms.module';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { SelectYearMonthComponent } from './select-year-month.component';
 

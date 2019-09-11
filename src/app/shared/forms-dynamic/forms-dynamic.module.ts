@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { FormsSharedModule } from '../forms/forms.module';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { InputDynamicComponent } from './components/input-dynamic/input-dynamic.component';
 import { SelectDynamicComponent } from './components/select-dynamic/select-dynamic.component';

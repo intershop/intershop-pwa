@@ -5,9 +5,8 @@ import * as using from 'jasmine-data-provider';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-
-import { ContentIncludeContainerComponent } from '../../../cms/containers/content-include/content-include.container';
-import { ModalDialogLinkComponent } from '../../../common/components/modal-dialog-link/modal-dialog-link.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { ProductShipmentComponent } from './product-shipment.component';
 

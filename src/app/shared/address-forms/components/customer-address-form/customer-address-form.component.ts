@@ -11,8 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Address } from 'ish-core/models/address/address.model';
-
-import { markAsDirtyRecursive } from '../../../forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address. When the user submits the form the new/changed address will be sent to the parent component.

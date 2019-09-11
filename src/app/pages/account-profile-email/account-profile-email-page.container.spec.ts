@@ -3,8 +3,7 @@ import { StoreModule } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfileEmailPageContainerComponent } from './account-profile-email-page.container';
 import { AccountProfileEmailPageComponent } from './components/account-profile-email-page/account-profile-email-page.component';
