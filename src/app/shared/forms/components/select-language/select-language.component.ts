@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
-
-import { SelectComponent, SelectOption } from '../select/select.component';
+import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 @Component({
   selector: 'ish-select-language',

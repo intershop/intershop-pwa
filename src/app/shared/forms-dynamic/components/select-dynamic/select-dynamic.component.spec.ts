@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { SelectComponent } from '../../../forms/components/select/select.component';
+import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 
 import { SelectDynamicComponent } from './select-dynamic.component';
 

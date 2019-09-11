@@ -4,9 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-
-import { ProductLabelComponent } from '../../../../shared/product/components/product-label/product-label.component';
-import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
+import { ProductLabelComponent } from 'ish-shared/product/components/product-label/product-label.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
 import { ProductImagesComponent } from './product-images.component';
 

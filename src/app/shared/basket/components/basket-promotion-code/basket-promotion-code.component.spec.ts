@@ -7,8 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'ish-core/pipes.module';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-
-import { FormsSharedModule } from '../../../forms/forms.module';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { BasketPromotionCodeComponent } from './basket-promotion-code.component';
 

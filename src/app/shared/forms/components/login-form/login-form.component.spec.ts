@@ -5,10 +5,9 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-
-import { ShowFormFeedbackDirective } from '../../directives/show-form-feedback.directive';
-import { FormControlFeedbackComponent } from '../form-control-feedback/form-control-feedback.component';
-import { InputComponent } from '../input/input.component';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { LoginFormComponent } from './login-form.component';
 

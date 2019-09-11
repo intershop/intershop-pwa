@@ -5,9 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { AccountProfileCompanyPageComponent } from './account-profile-company-page.component';
 

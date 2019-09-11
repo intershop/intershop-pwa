@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 
-import { ProductItemContainerComponent } from '../../containers/product-item/product-item.container';
+import { ProductItemContainerComponent } from 'ish-shared/product/containers/product-item/product-item.container';
 
 import { ProductListComponent } from './product-list.component';
 

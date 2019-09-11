@@ -3,8 +3,7 @@ import { MockComponent } from 'ng-mocks';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
 import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
-
-import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
+import { ProductItemContainerComponent } from 'ish-shared/product/containers/product-item/product-item.container';
 
 import { ProductLinksCarouselComponent } from './product-links-carousel.component';
 

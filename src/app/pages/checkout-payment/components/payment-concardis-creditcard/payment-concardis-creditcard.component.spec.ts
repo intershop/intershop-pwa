@@ -5,8 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
-
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { PaymentConcardisCreditcardComponent } from './payment-concardis-creditcard.component';
 

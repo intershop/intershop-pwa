@@ -12,8 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Account Profile Company Page Component displays a form for changing a business customers' company data

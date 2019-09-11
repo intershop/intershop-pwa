@@ -4,10 +4,9 @@ import { MockComponent } from 'ng-mocks';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-
-import { FilterCheckboxComponent } from '../filter-checkbox/filter-checkbox.component';
-import { FilterDropdownComponent } from '../filter-dropdown/filter-dropdown.component';
-import { FilterSwatchImagesComponent } from '../filter-swatch-images/filter-swatch-images.component';
+import { FilterCheckboxComponent } from 'ish-shared/filter/components/filter-checkbox/filter-checkbox.component';
+import { FilterDropdownComponent } from 'ish-shared/filter/components/filter-dropdown/filter-dropdown.component';
+import { FilterSwatchImagesComponent } from 'ish-shared/filter/components/filter-swatch-images/filter-swatch-images.component';
 
 import { FilterNavigationSidebarComponent } from './filter-navigation-sidebar.component';
 

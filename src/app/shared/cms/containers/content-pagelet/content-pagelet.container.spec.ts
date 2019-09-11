@@ -5,10 +5,9 @@ import { instance, mock, when } from 'ts-mockito';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
-
-import { CMSTextComponent } from '../../components/cms-text/cms-text.component';
-import { CMS_COMPONENT } from '../../configurations/injection-keys';
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
+import { CMSTextComponent } from 'ish-shared/cms/components/cms-text/cms-text.component';
+import { CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
 import { ContentPageletContainerComponent } from './content-pagelet.container';
 

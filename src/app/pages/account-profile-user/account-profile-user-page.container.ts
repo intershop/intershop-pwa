@@ -8,8 +8,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { getCurrentLocale } from 'ish-core/store/locale';
 import { UpdateUser, getLoggedInUser, getUserError, getUserLoading } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-
-import { determineSalutations } from '../../shared/forms/utils/form-utils';
+import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Account Profile User Page Container Component renders a page where the user can change his profile data using the {@link AccountProfileUserPageComponent}

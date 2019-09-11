@@ -5,8 +5,8 @@ import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
 
-import { ModalDialogComponent } from '../../../../../../shared/common/components/modal-dialog/modal-dialog.component';
 import { Quote } from '../../../../models/quote/quote.model';
 import { QuoteStateComponent } from '../../../../shared/quote/components/quote-state/quote-state.component';
 

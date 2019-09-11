@@ -4,8 +4,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-
-import { SearchBoxContainerComponent } from '../../../../shell/header/containers/search-box/search-box.container';
+import { SearchBoxContainerComponent } from 'ish-shell/header/containers/search-box/search-box.container';
 
 import { ErrorPageComponent } from './error-page.component';
 

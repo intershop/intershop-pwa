@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { ComparePageContainerComponent } from './compare-page.container';
 import { ProductCompareListComponent } from './components/product-compare-list/product-compare-list.component';

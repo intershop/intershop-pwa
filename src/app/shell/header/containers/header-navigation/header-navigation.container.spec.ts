@@ -4,7 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { HeaderNavigationComponent } from '../../components/header-navigation/header-navigation.component';
+import { HeaderNavigationComponent } from 'ish-shell/header/components/header-navigation/header-navigation.component';
 
 import { HeaderNavigationContainerComponent } from './header-navigation.container';
 

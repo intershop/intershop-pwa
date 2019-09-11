@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
-import { AddressFormFactory } from '../components/address-form/address-form.factory';
+import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 
 export const ADDRESS_FORM_FACTORY = new InjectionToken<AddressFormFactory>('Address Form Factory');
 

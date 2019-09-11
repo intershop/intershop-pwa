@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { OrderListContainerComponent } from '../../../../shared/order/containers/order-list/order-list.container';
+import { OrderListContainerComponent } from 'ish-shared/order/containers/order-list/order-list.container';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 

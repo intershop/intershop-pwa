@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
 import { AccountOrderHistoryPageComponent } from './components/account-order-history-page/account-order-history-page.component';

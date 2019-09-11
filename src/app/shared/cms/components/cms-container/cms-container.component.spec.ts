@@ -2,9 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-
-import { ContentPageletContainerComponent } from '../../containers/content-pagelet/content-pagelet.container';
-import { ContentSlotContainerComponent } from '../../containers/content-slot/content-slot.container';
+import { ContentPageletContainerComponent } from 'ish-shared/cms/containers/content-pagelet/content-pagelet.container';
+import { ContentSlotContainerComponent } from 'ish-shared/cms/containers/content-slot/content-slot.container';
 
 import { CMSContainerComponent } from './cms-container.component';
 

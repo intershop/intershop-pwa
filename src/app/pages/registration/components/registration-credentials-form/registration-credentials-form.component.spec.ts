@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
-import { SelectSecurityQuestionComponent } from '../../../../shared/forms/components/select-security-question/select-security-question.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { SelectSecurityQuestionComponent } from 'ish-shared/forms/components/select-security-question/select-security-question.component';
 
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
 

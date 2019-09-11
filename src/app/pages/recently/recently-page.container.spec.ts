@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { RecentlyViewedAllComponent } from './components/recently-viewed-all/recently-viewed-all.component';
 import { RecentlyPageContainerComponent } from './recently-page.container';

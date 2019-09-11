@@ -3,8 +3,7 @@ import { StoreModule, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-
-import { RecentlyViewedComponent } from '../../components/recently-viewed/recently-viewed.component';
+import { RecentlyViewedComponent } from 'ish-shared/recently/components/recently-viewed/recently-viewed.component';
 
 import { RecentlyViewedContainerComponent } from './recently-viewed.container';
 

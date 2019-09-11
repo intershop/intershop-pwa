@@ -7,11 +7,11 @@ import { spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
 import { PipesModule } from 'ish-core/pipes.module';
+import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
 
-import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
-import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
-import { RecentlyViewedContainerComponent } from '../../../../../../shared/recently/containers/recently-viewed/recently-viewed.container';
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';

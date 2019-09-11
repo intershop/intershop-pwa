@@ -6,16 +6,15 @@ import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-
-import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
-import { LoadingComponent } from '../../../common/components/loading/loading.component';
-import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from '../../../forms/forms.module';
-import { ProductIdComponent } from '../../../product/components/product-id/product-id.component';
-import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
-import { ProductVariationSelectComponent } from '../../../product/components/product-variation-select/product-variation-select.component';
-import { LineItemEditDialogContainerComponent } from '../../containers/line-item-edit-dialog/line-item-edit-dialog.container';
-import { LineItemEditDialogComponent } from '../line-item-edit-dialog/line-item-edit-dialog.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
+import { LineItemEditDialogContainerComponent } from 'ish-shared/line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
+import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
+import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
+import { ProductVariationSelectComponent } from 'ish-shared/product/components/product-variation-select/product-variation-select.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
 import { LineItemEditComponent } from './line-item-edit.component';
 

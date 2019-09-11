@@ -5,8 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
-
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfileUserPageContainerComponent } from './account-profile-user-page.container';
 import { AccountProfileUserPageComponent } from './components/account-profile-user-page/account-profile-user-page.component';

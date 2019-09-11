@@ -5,8 +5,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-
-import { FormsSharedModule } from '../forms/forms.module';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { AddressFormBusinessComponent } from './components/address-form-business/address-form-business.component';
 import { AddressFormDEComponent } from './components/address-form-de/address-form-de.component';

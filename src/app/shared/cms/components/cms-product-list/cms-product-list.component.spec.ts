@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
-
-import { ProductItemContainerComponent } from '../../../product/containers/product-item/product-item.container';
+import { ProductItemContainerComponent } from 'ish-shared/product/containers/product-item/product-item.container';
 
 import { CMSProductListComponent } from './cms-product-list.component';
 

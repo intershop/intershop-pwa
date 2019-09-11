@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AddressFormsSharedModule } from '../../shared/address-forms/address-forms.module';
-import { SharedModule } from '../../shared/shared.module';
+import { AddressFormsSharedModule } from 'ish-shared/address-forms/address-forms.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountAddressesPageContainerComponent } from './account-addresses-page.container';
 import { AccountAddressesPageComponent } from './components/account-addresses-page/account-addresses-page.component';

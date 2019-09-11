@@ -4,8 +4,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-
-import { BasketPromotionComponent } from '../../components/basket-promotion/basket-promotion.component';
+import { BasketPromotionComponent } from 'ish-shared/basket/components/basket-promotion/basket-promotion.component';
 
 import { BasketPromotionContainerComponent } from './basket-promotion.container';
 

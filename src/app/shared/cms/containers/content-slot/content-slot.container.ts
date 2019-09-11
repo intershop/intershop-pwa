@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
-
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
-import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
-import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 /**
  * The Content Slot Container Component renders the assigned sub pagelets

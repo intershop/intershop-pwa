@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
 export interface SelectOption {
   value: string;

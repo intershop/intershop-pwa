@@ -5,8 +5,7 @@ import { mapTo, take } from 'rxjs/operators';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { arraySlices } from 'ish-core/utils/functions';
 import { whenTruthy } from 'ish-core/utils/operators';
-
-import { CMSComponent } from '../../models/cms-component/cms-component.model';
+import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 @Component({
   selector: 'ish-cms-carousel',

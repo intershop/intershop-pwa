@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { AccountProfilePasswordPageComponent } from './account-profile-password-page.component';
 

@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Address } from 'ish-core/models/address/address.model';
-
-import { SelectComponent, SelectOption } from '../select/select.component';
+import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 /**
  * Select box for the given addresses.

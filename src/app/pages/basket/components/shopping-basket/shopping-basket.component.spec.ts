@@ -7,15 +7,15 @@ import { MockComponent } from 'ng-mocks';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketPromotionCodeComponent } from 'ish-shared/basket/components/basket-promotion-code/basket-promotion-code.component';
+import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { LazyBasketAddToQuoteComponent } from '../../../../extensions/quoting/exports/basket/components/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
-import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
-import { BasketPromotionCodeComponent } from '../../../../shared/basket/components/basket-promotion-code/basket-promotion-code.component';
-import { LineItemListComponent } from '../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
