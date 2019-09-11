@@ -12,6 +12,7 @@ describe('Filter Service', () => {
   let filterService;
   const productsMock = {
     elements: [{ uri: 'products/123' }, { uri: 'products/234' }],
+    total: 2,
   };
   const filterMock = {
     elements: [
@@ -65,10 +66,13 @@ describe('Filter Service', () => {
     });
   });
 
-  it("should get Product SKUs when 'getProductSkusForFilter' is called", done => {
+  it("should get Product SKUs when 'getFilteredProducts' is called", done => {
     when(apiService.get('filters/default;SearchParameter=b/hits')).thenReturn(of(productsMock));
-    filterService.getProductSkusForFilter('b').subscribe(data => {
-      expect(data).toEqual(['123', '234']);
+    filterService.getFilteredProducts('b').subscribe(data => {
+      expect(data).toEqual({
+        productSKUs: ['123', '234'],
+        total: 2,
+      });
       verify(apiService.get('filters/default;SearchParameter=b/hits')).once();
       done();
     });

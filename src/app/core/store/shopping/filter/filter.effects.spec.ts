@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
@@ -10,7 +10,7 @@ import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injectio
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
-import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -20,7 +20,6 @@ import { FilterEffects } from './filter.effects';
 describe('Filter Effects', () => {
   let actions$: Observable<Action>;
   let effects: FilterEffects;
-  let store$: Store<{}>;
   let filterServiceMock: FilterService;
 
   const filterNav = {
@@ -43,11 +42,14 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.getProductSkusForFilter(anything())).thenCall(a => {
+    when(filterServiceMock.getFilteredProducts(anything())).thenCall(a => {
       if (a.name === 'invalid') {
         return throwError({ message: 'invalid' });
       } else {
-        return of(['123', '234']);
+        return of({
+          total: 2,
+          productSKUs: ['123', '234'],
+        });
       }
     });
 
@@ -75,8 +77,6 @@ describe('Filter Effects', () => {
     });
 
     effects = TestBed.get(FilterEffects);
-    store$ = TestBed.get(Store);
-    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('loadAvailableFilterForCategories$', () => {

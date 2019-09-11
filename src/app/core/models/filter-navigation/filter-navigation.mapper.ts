@@ -32,6 +32,7 @@ export class FilterNavigationMapper {
           selected: facet.selected,
           displayName: facet.link.title,
           searchParameter: facet.link.uri.split(';SearchParameter=')[1],
+          level: facet.level,
         }))
       : [];
   }

@@ -4,4 +4,5 @@ export class Facet {
   selected: boolean;
   displayName: string;
   searchParameter: string;
+  level: number;
 }
