@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
 import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
 
@@ -19,6 +20,7 @@ describe('Search Result Component', () => {
     TestBed.configureTestingModule({
       imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
       declarations: [
+        MockComponent(BreadcrumbComponent),
         MockComponent(FilterNavigationContainerComponent),
         MockComponent(ProductListContainerComponent),
         SearchResultComponent,
