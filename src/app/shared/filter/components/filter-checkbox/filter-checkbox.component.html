@@ -8,9 +8,12 @@
   <ul class="filter-list">
     <!--- TODO: implement Show All-->
     <ng-container *ngFor="let facet of filterElement.facets">
-      <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
+      <li
+        *ngIf="facet.selected && facet.name !== 'Show all'"
+        class="filter-item filter-selected filter-layer{{ facet.level }}"
+      >
         <!--- TODO: add filter count -->
-        <span class="icon-selected"></span>{{ facet.displayName }}
+        <span class="icon-selected"></span>{{ facet.displayName }} ({{ facet.count }})
         <a class="filter-clear" (click)="filter(facet)">
           <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
         </a>
@@ -20,14 +23,14 @@
 
   <ul class="filter-list" id="collapseFilter" [ngbCollapse]="isCollapsed">
     <ng-container *ngFor="let facet of filterElement.facets">
-      <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item">
+      <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item filter-layer{{ facet.level }}">
         <!--- TODO: add filter count -->
         <a
           class="filter-item-name"
           (click)="filter(facet)"
           [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
         >
-          <span class="icon-notselected"></span>{{ facet.displayName }}
+          <span class="icon-notselected"></span>{{ facet.displayName }} ({{ facet.count }})
         </a>
       </li>
     </ng-container>

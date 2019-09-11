@@ -59,10 +59,13 @@ export class FilterEffects {
     ofType<filterActions.LoadProductsForFilter>(filterActions.FilterActionTypes.LoadProductsForFilter),
     mapToPayload(),
     switchMap(({ id, searchParameter }) =>
-      this.filterService.getProductSkusForFilter(searchParameter).pipe(
-        mergeMap(newProducts => [
+      this.filterService.getFilteredProducts(searchParameter).pipe(
+        mergeMap(({ productSKUs, total }) => [
           new SetProductListingPages(
-            this.productListingMapper.createPages(newProducts, id.type, id.value, { filters: id.filters })
+            this.productListingMapper.createPages(productSKUs, id.type, id.value, {
+              filters: id.filters,
+              itemCount: total,
+            })
           ),
         ]),
         mapErrorToAction(LoadProductFail)
