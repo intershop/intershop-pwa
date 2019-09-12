@@ -52,7 +52,7 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
 
         return {
           ...acc,
-          [group.id]: new FormControl(activeOption.value),
+          [group.id]: new FormControl(activeOption && activeOption.value),
         };
       }, {})
     );
