@@ -15,11 +15,11 @@ import {
   DeleteCustomerAddressSuccess,
   UpdateCustomerAddressFail,
   UpdateCustomerAddressSuccess,
-} from 'ish-core/store/addresses/addresses.actions';
+} from 'ish-core/store/addresses';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoginUserSuccess } from 'ish-core/store/user/user.actions';
+import { LoginUserSuccess } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketAddressesEffects } from './basket-addresses.effects';
