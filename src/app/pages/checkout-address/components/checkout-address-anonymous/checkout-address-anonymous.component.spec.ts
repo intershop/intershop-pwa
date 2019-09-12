@@ -13,9 +13,9 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { AddressFormContainerComponent } from '../../../../shared/address-forms/containers/address-form/address-form.container';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
 

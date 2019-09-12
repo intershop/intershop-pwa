@@ -1,7 +1,7 @@
 import { groupBy } from 'lodash-es';
 
+import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { objectToArray } from 'ish-core/utils/functions';
-import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
 
 import { VariationAttribute } from './variation-attribute.model';
 import { VariationOptionGroup } from './variation-option-group.model';

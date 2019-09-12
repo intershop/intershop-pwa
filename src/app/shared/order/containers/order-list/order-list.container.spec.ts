@@ -4,8 +4,8 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { PipesModule } from 'ish-core/pipes.module';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
-import { OrderListComponent } from '../../components/order-list/order-list.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { OrderListComponent } from 'ish-shared/order/components/order-list/order-list.component';
 
 import { OrderListContainerComponent } from './order-list.container';
 

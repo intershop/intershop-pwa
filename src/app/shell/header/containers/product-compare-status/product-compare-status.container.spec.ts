@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { ProductCompareStatusComponent } from '../../components/product-compare-status/product-compare-status.component';
+import { ProductCompareStatusComponent } from 'ish-shell/header/components/product-compare-status/product-compare-status.component';
 
 import { ProductCompareStatusContainerComponent } from './product-compare-status.container';
 

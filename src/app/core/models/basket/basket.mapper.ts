@@ -1,12 +1,12 @@
-import { AddressMapper } from '../address/address.mapper';
-import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
-import { BasketRebateMapper } from '../basket-rebate/basket-rebate.mapper';
-import { BasketTotal } from '../basket-total/basket-total.model';
-import { BasketBaseData, BasketData } from '../basket/basket.interface';
-import { LineItemMapper } from '../line-item/line-item.mapper';
-import { PaymentMapper } from '../payment/payment.mapper';
-import { PriceMapper } from '../price/price.mapper';
-import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
+import { AddressMapper } from 'ish-core/models/address/address.mapper';
+import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
+import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
+import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
+import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
+import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
+import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
+import { PriceMapper } from 'ish-core/models/price/price.mapper';
+import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
 import { Basket } from './basket.model';
 

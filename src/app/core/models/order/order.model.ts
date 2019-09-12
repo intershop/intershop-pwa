@@ -1,10 +1,10 @@
 import { Dictionary } from '@ngrx/entity';
 import { memoize } from 'lodash-es';
 
-import { Basket, BasketView } from '../basket/basket.model';
-import { VariationProductMaster } from '../product/product-variation-master.model';
-import { VariationProduct } from '../product/product-variation.model';
-import { Product } from '../product/product.model';
+import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 export interface AbstractOrder {
   documentNo: string;

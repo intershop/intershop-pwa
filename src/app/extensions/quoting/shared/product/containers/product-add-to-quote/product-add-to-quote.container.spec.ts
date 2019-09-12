@@ -5,6 +5,7 @@ import { anything, spy, verify } from 'ts-mockito';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
+
 import { quotingReducers } from '../../../../store/quoting-store.module';
 import { ProductAddToQuoteComponent } from '../../components/product-add-to-quote/product-add-to-quote.component';
 

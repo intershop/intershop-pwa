@@ -1,5 +1,4 @@
 import { at, waitLoadingEnd } from '../../framework';
-
 import { CartPage } from '../../pages/checkout/cart.page';
 import { LineItemDialogPage } from '../../pages/checkout/line-item-dialog.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-
 import { MockComponent } from 'ng-mocks';
 
 import { HomePageComponent } from './components/home-page/home-page.component';

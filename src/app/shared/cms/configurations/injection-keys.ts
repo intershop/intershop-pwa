@@ -1,6 +1,6 @@
 import { InjectionToken, Type } from '@angular/core';
 
-import { CMSComponent } from '../models/cms-component/cms-component.model';
+import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 export interface CMSComponentProvider {
   definitionQualifiedName: string;

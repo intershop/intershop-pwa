@@ -11,7 +11,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ProductImageComponent } from '../product-image/product-image.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
 import { MiniBasketComponent } from './mini-basket.component';
 

@@ -4,7 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Account Profile Email Page Component displays a form for changing the user's email address

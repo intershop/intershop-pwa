@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 
 /**

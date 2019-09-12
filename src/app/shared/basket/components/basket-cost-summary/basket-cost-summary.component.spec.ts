@@ -6,8 +6,8 @@ import { MockComponent } from 'ng-mocks';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { PromotionDetailsComponent } from '../../../../shared/promotion/components/promotion-details/promotion-details.component';
-import { BasketPromotionContainerComponent } from '../../containers/basket-promotion/basket-promotion.container';
+import { BasketPromotionContainerComponent } from 'ish-shared/basket/containers/basket-promotion/basket-promotion.container';
+import { PromotionDetailsComponent } from 'ish-shared/promotion/components/promotion-details/promotion-details.component';
 
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 

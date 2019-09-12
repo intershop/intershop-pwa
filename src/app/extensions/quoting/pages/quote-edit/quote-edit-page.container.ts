@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 
 import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
 import { getLoggedInUser } from 'ish-core/store/user';
+
 import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
 
 @Component({

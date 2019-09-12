@@ -1,5 +1,5 @@
-import { PriceItem } from '../price-item/price-item.interface';
-import { Price } from '../price/price.model';
+import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
+import { Price } from 'ish-core/models/price/price.model';
 
 export interface LineItemData {
   id: string;

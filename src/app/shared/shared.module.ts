@@ -17,8 +17,9 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { ShellModule } from 'ish-shell/shell.module';
+
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
-import { ShellModule } from '../shell/shell.module';
 
 import { AddressComponent } from './address/components/address/address.component';
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';

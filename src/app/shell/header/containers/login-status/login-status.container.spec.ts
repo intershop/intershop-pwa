@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { LoginStatusComponent } from '../../components/login-status/login-status.component';
-import { LogoutComponent } from '../../components/logout/logout.component';
+import { LoginStatusComponent } from 'ish-shell/header/components/login-status/login-status.component';
+import { LogoutComponent } from 'ish-shell/header/components/logout/logout.component';
 
 import { LoginStatusContainerComponent } from './login-status.container';
 

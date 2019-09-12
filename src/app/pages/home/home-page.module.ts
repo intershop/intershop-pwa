@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HomePageContainerComponent } from './home-page.container';

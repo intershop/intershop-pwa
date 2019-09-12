@@ -7,9 +7,10 @@ import { MockComponent } from 'ng-mocks';
 import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
 
-import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
-import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
+import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { QuoteStateComponent } from '../../../quote/components/quote-state/quote-state.component';
 

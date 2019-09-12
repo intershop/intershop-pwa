@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { getProductEntities } from 'ish-core/store/shopping/products';
+
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteHelper } from '../../models/quote/quote.helper';
 import { Quote } from '../../models/quote/quote.model';

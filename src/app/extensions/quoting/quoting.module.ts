@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { QuoteWidgetComponent } from './shared/account/components/quote-widget/quote-widget.component';
 import { QuoteWidgetContainerComponent } from './shared/account/containers/quote-widget/quote-widget.container';

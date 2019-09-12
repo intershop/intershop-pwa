@@ -1,7 +1,7 @@
 import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 export function categoryTree(categories?: Category[]): CategoryTree {
   const tree = CategoryTreeHelper.empty();

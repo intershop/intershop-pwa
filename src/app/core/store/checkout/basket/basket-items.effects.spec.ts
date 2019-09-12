@@ -9,13 +9,13 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { AddressService } from 'ish-core/services/address/address.service';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { AddressService } from '../../../services/address/address.service';
-import { BasketService } from '../../../services/basket/basket.service';
-import { OrderService } from '../../../services/order/order.service';
-import { shoppingReducers } from '../../shopping/shopping-store.module';
-import { checkoutReducers } from '../checkout-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 
 import { BasketItemsEffects } from './basket-items.effects';
 import * as basketActions from './basket.actions';

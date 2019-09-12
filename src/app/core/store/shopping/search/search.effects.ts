@@ -16,12 +16,12 @@ import {
 } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { LoadMoreProducts, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
-import { ProductsService } from '../../../services/products/products.service';
-import { SuggestService } from '../../../services/suggest/suggest.service';
-import { LoadMoreProducts, SetProductListingPages } from '../product-listing';
-import { LoadProductSuccess } from '../products';
 
 import {
   SearchActionTypes,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { ForgotPasswordFormComponent } from './components/forgot-password-form/forgot-password-form.component';
 import { ForgotPasswordPageComponent } from './components/forgot-password-page/forgot-password-page.component';

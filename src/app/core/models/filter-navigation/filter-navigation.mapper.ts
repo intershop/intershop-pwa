@@ -1,9 +1,9 @@
 import b64u from 'b64u';
 
+import { FacetData } from 'ish-core/models/facet/facet.interface';
+import { Facet } from 'ish-core/models/facet/facet.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 import { formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
-import { FacetData } from '../facet/facet.interface';
-import { Facet } from '../facet/facet.model';
-import { Filter } from '../filter/filter.model';
 
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigation } from './filter-navigation.model';

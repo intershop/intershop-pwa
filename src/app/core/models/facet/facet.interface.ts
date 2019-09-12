@@ -1,4 +1,4 @@
-import { Link } from '../link/link.model';
+import { Link } from 'ish-core/models/link/link.model';
 
 export class FacetData {
   name: string;

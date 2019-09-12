@@ -4,8 +4,8 @@ import { MockComponent } from 'ng-mocks';
 
 import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { ContentPageComponent } from './components/content-page/content-page.component';
 import { ContentPageContainerComponent } from './content-page.container';

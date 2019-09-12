@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
-
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**

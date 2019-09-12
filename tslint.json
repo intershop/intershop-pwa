@@ -203,6 +203,7 @@
       }
     },
     "ish-ordered-imports": true,
+    "ish-useful-imports": true,
     "no-duplicate-imports": true,
     "ban": [
       true,
@@ -287,6 +288,11 @@
           "fix": "$1"
         },
         {
+          "from": "^(.*store\\/)(.*)\\/\\2.(actions|selectors)$",
+          "message": "use aggregation import instead.",
+          "fix": "$1$2"
+        },
+        {
           "from": "rxjs(?!($|/operators$))",
           "message": "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'"
         },
@@ -324,6 +330,7 @@
         {
           "import": "CookiesService",
           "from": "@ngx-utils/cookies",
+          "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
         {
@@ -360,7 +367,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!module\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         }
       ]

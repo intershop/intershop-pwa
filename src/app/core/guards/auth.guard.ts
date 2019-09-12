@@ -11,8 +11,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable, race, timer } from 'rxjs';
 import { mapTo, take } from 'rxjs/operators';
 
+import { getUserAuthorized } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { getUserAuthorized } from '../store/user';
 
 /**
  * guards a route against unprivileged access (no user is logged in)

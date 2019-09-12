@@ -4,7 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+
 import { QuoteEditComponent } from '../../shared/quote/components/quote-edit/quote-edit.component';
 import { LoadQuoteRequests } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting-store.module';

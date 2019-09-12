@@ -1,5 +1,5 @@
-import { Attribute } from '../attribute/attribute.model';
-import { Image } from '../image/image.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Image } from 'ish-core/models/image/image.model';
 
 export interface Category {
   uniqueId: string;

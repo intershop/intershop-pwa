@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { coreReducers } from 'ish-core/store/core-store.module';
+
 import { ForgotPasswordFormComponent } from '../forgot-password-form/forgot-password-form.component';
 
 import { ForgotPasswordPageComponent } from './forgot-password-page.component';

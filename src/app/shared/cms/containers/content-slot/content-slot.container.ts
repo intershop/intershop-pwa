@@ -1,10 +1,9 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
-import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
-import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
+import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 /**
  * The Content Slot Container Component renders the assigned sub pagelets
@@ -28,6 +27,7 @@ import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
   templateUrl: './content-slot.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ContentSlotContainerComponent extends SfeMetadataWrapper implements OnChanges {
   /**
    * The DefinitionQualifiedName of the slot that should be rendered.

@@ -7,7 +7,7 @@ import { MockComponent } from 'ng-mocks';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { SelectSearchTerm } from 'ish-core/store/shopping/search';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { SearchNoResultComponent } from './components/search-no-result/search-no-result.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';

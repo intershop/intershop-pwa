@@ -11,6 +11,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
+
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';

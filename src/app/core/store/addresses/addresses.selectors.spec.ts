@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { coreReducers } from '../core-store.module';
 
 import { LoadAddresses, LoadAddressesFail, LoadAddressesSuccess } from './addresses.actions';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from './addresses.selectors';

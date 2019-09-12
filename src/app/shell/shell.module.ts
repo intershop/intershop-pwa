@@ -9,6 +9,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 
 import { FooterComponent } from './footer/components/footer/footer.component';

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { ContentConfigurationParameterMapper } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentPageletMapper } from 'ish-core/models/content-pagelet/content-pagelet.mapper';
-import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { ContentPageletMapper } from 'ish-core/models/content-pagelet/content-pagelet.mapper';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 
 @Injectable({ providedIn: 'root' })
 export class ContentPageletEntryPointMapper {

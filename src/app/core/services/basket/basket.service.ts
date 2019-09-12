@@ -8,19 +8,19 @@ import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
 import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
+import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
+import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
-import { BasketBaseData, BasketData } from '../../models/basket/basket.interface';
-import { BasketMapper } from '../../models/basket/basket.mapper';
-import { Basket } from '../../models/basket/basket.model';
-import { Link } from '../../models/link/link.model';
-import { PaymentMethod } from '../../models/payment-method/payment-method.model';
-import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
-import { ApiService, unpackEnvelope } from '../api/api.service';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 export type BasketUpdateType =
   | { invoiceToAddress: string }

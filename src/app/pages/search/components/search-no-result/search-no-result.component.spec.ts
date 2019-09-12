@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { SearchBoxContainerComponent } from '../../../../shell/header/containers/search-box/search-box.container';
+import { SearchBoxContainerComponent } from 'ish-shell/header/containers/search-box/search-box.container';
 
 import { SearchNoResultComponent } from './search-no-result.component';
 

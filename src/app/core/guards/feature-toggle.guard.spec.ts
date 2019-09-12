@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 
+import { FeatureToggleGuard, FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { FeatureToggleGuard, FeatureToggleModule } from '../feature-toggle.module';
 
 describe('Feature Toggle Guard', () => {
   let router: Router;

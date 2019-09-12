@@ -7,7 +7,7 @@ import {
   ProductListingType,
   ProductListingView,
 } from 'ish-core/models/product-listing/product-listing.model';
-import { getShoppingState } from '../shopping-store';
+import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { adapter, serializeProductListingID } from './product-listing.reducer';
 

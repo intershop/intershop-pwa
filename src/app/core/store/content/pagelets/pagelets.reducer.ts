@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
-import { IncludesAction, IncludesActionTypes } from '../includes/includes.actions';
-import { PageAction, PagesActionTypes } from '../pages/pages.actions';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { IncludesAction, IncludesActionTypes } from 'ish-core/store/content/includes/includes.actions';
+import { PageAction, PagesActionTypes } from 'ish-core/store/content/pages/pages.actions';
 
 export interface PageletsState extends EntityState<ContentPagelet> {}
 

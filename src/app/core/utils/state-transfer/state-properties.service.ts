@@ -1,11 +1,12 @@
-// tslint:disable:ban-specific-imports
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { map, pluck } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import { environment } from '../../../../environments/environment';
+import { getConfigurationState } from 'ish-core/store/configuration';
+import { mapToProperty } from 'ish-core/utils/operators';
 
 /**
  * Service for retrieving injection properties {@link ICM_BASE_URL} and {@link REST_ENDPOINT}.
@@ -20,9 +21,11 @@ export class StatePropertiesService {
    */
   getStateOrEnvOrDefault<T>(envKey: string, envPropKey: string): Observable<T> {
     return this.store.pipe(
-      pluck(`configuration.${envPropKey}`),
+      select(getConfigurationState),
+      // tslint:disable-next-line:no-any
+      mapToProperty(envPropKey as any),
       map(value => {
-        if (value) {
+        if (value && value.length) {
           return value;
         } else if (isPlatformServer(this.platformId) && process.env[envKey]) {
           return process.env[envKey];

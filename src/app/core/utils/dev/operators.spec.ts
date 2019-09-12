@@ -1,10 +1,10 @@
-// tslint:disable:no-console
 import { cold, hot } from 'jest-marbles';
 import { Subject, noop } from 'rxjs';
 
 import { log } from './operators';
 
 describe('Operators', () => {
+  // tslint:disable:no-console
   describe('log', () => {
     let subject$: Subject<string>;
 

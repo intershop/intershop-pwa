@@ -1,4 +1,3 @@
-// tslint:disable:no-any
 import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
@@ -6,8 +5,8 @@ import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { MOCK_SERVER_API, MUST_MOCK_PATHS } from '../configurations/injection-keys';
 
 import { MockInterceptor } from './mock.interceptor';
 
@@ -108,13 +107,13 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Intercepting', () => {
-    let request: HttpRequest<any>;
+    let request: HttpRequest<unknown>;
     let handler: HttpHandler;
 
     beforeEach(() => {
       request = new HttpRequest('GET', `${BASE_URL}/some`);
       const handlerMock = mock(HttpXhrBackend);
-      when(handlerMock.handle(anything())).thenReturn(of(new HttpResponse<any>()));
+      when(handlerMock.handle(anything())).thenReturn(of(new HttpResponse<unknown>()));
       handler = instance(handlerMock);
     });
 
@@ -132,7 +131,7 @@ describe('Mock Interceptor', () => {
         .subscribe(event => {
           expect(event.type).toBe(HttpEventType.Response);
 
-          const response = event as HttpResponse<any>;
+          const response = event as HttpResponse<unknown>;
           expect(response.headers.get('authentication-token')).toBeTruthy();
           done();
         });

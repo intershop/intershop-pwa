@@ -1,8 +1,9 @@
-// tslint:disable:no-any no-console
 import { Injectable, Type } from '@angular/core';
 import { Actions, Effect, EffectsModule } from '@ngrx/effects';
 import { Action, ActionReducerMap, Store, StoreModule } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
+
+// tslint:disable:no-any no-console
 
 export const containsActionWithType = (type: string) => (actions: Action[]) =>
   !!actions.filter(a => a.type === type).length;

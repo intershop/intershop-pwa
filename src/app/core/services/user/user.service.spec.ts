@@ -5,9 +5,9 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
-import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
-import { User } from '../../models/user/user.model';
-import { ApiService } from '../api/api.service';
+import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { User } from 'ish-core/models/user/user.model';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 import { UserService } from './user.service';
 

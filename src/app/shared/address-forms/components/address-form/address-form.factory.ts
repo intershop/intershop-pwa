@@ -1,6 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
-
-import { AddressFormBusinessHelper } from '../address-form-business/address-form-business.helper';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export abstract class AddressFormFactory {
   countryCode = 'default';
@@ -21,7 +19,8 @@ export abstract class AddressFormFactory {
     newGroup.addControl('countryCode', new FormControl(''));
 
     if (param.isBusinessAddress) {
-      AddressFormBusinessHelper.addControls(newGroup);
+      newGroup.addControl('companyName1', new FormControl('', Validators.required));
+      newGroup.addControl('companyName2', new FormControl(''));
     }
 
     // apply values to the new form

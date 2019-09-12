@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { LogoutUser } from '../store/user';
+import { LogoutUser } from 'ish-core/store/user';
 
 /**
  * triggers logging out the user if the guarded route is visited

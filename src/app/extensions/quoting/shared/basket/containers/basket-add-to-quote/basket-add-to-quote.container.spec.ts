@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
+
 import { quotingReducers } from '../../../../store/quoting-store.module';
 import { BasketAddToQuoteComponent } from '../../components/basket-add-to-quote/basket-add-to-quote.component';
 

@@ -1,4 +1,4 @@
-import { Category } from '../category/category.model';
+import { Category } from 'ish-core/models/category/category.model';
 
 export interface CategoryTree {
   nodes: { [id: string]: Category };

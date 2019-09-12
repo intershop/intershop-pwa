@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,13 +12,13 @@ import { Store, select } from '@ngrx/store';
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, startWith, takeUntil } from 'rxjs/operators';
 
-import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
+import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 import { getPGID } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
-import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
-import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 /**
  * The Content Include Container Component renders the content of the include with the given 'includeId'.
@@ -33,6 +32,7 @@ import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
   templateUrl: './content-include.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ContentIncludeContainerComponent extends SfeMetadataWrapper implements OnInit, OnDestroy, OnChanges {
   /**
    * The ID of the Include whoes content is to be rendered.

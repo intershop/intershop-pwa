@@ -4,10 +4,10 @@ import { StoreModule } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { CategoryData } from '../../models/category/category.interface';
-import { ApiService } from '../api/api.service';
 
 import { CategoriesService } from './categories.service';
 

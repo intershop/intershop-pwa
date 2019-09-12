@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
+import { FilterNavigationMapper } from 'ish-core/models/filter-navigation/filter-navigation.mapper';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
-import { FilterNavigationData } from '../../models/filter-navigation/filter-navigation.interface';
-import { FilterNavigationMapper } from '../../models/filter-navigation/filter-navigation.mapper';
-import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
-import { Link } from '../../models/link/link.model';
-import { SearchParameterMapper } from '../../models/search-parameter/search-parameter.mapper';
-import { SearchParameter } from '../../models/search-parameter/search-parameter.model';
-import { ApiService, unpackEnvelope } from '../api/api.service';
+import { SearchParameterMapper } from 'ish-core/models/search-parameter/search-parameter.mapper';
+import { SearchParameter } from 'ish-core/models/search-parameter/search-parameter.model';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {

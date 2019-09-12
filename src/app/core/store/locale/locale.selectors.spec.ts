@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { Locale } from '../../models/locale/locale.model';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { localeReducer } from './locale.reducer';

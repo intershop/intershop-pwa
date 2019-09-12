@@ -7,6 +7,7 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
+
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../models/quote-request-item/quote-request-item.mapper';

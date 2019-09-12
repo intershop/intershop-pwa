@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { ApiService } from '../api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 import { PromotionsService } from './promotions.service';
 

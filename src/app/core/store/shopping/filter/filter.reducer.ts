@@ -1,4 +1,4 @@
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 
 import { FilterActionTypes, FilterActions } from './filter.actions';
 

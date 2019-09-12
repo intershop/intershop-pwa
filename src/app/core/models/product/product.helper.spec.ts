@@ -2,7 +2,7 @@ import * as using from 'jasmine-data-provider';
 
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
-import { AttributeHelper } from '../attribute/attribute.helper';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 
 import { ProductDataStub } from './product.interface';
 import { Product, ProductCompletenessLevel, ProductHelper } from './product.model';

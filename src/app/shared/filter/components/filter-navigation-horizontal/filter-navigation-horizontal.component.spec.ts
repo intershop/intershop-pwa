@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FilterDropdownMultiselectComponent } from '../filter-dropdown-multiselect/filter-dropdown-multiselect.component';
+import { FilterDropdownMultiselectComponent } from 'ish-shared/filter/components/filter-dropdown-multiselect/filter-dropdown-multiselect.component';
 
 import { FilterNavigationHorizontalComponent } from './filter-navigation-horizontal.component';
 

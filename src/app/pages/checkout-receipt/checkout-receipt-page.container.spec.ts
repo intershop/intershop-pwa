@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CheckoutReceiptPageContainerComponent } from './checkout-receipt-page.container';
 import { CheckoutReceiptComponent } from './components/checkout-receipt/checkout-receipt.component';

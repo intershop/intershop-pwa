@@ -1,4 +1,3 @@
-// tslint:disable: ccp-no-markup-in-containers
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
@@ -16,6 +15,7 @@ import { LoadOrders, getOrders, getOrdersLoading } from 'ish-core/store/orders';
   templateUrl: './order-list.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-markup-in-containers
 export class OrderListContainerComponent implements OnInit {
   /**
    * The maximum number of items to be displayed.

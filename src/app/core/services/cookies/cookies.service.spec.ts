@@ -1,4 +1,3 @@
-// tslint:disable:ban-specific-imports
 import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { CookiesService as ForeignCookiesService } from '@ngx-utils/cookies';

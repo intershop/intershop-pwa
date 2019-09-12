@@ -1,4 +1,4 @@
-import { PriceItem } from '../price-item/price-item.interface';
+import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
 
 export interface BasketRebateData {
   id: string;

@@ -6,8 +6,8 @@ import { MockComponent } from 'ng-mocks';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
-import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-views';
-import { ContentPageletContainerComponent } from '../../../../shared/cms/containers/content-pagelet/content-pagelet.container';
+import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageletContainerComponent } from 'ish-shared/cms/containers/content-pagelet/content-pagelet.container';
 
 import { ContentPageComponent } from './content-page.component';
 

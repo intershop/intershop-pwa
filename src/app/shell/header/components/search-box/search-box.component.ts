@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
+import { SearchBoxConfiguration } from 'ish-shell/header/configurations/search-box.configuration';
 
 /**
  * displays the search box with search button

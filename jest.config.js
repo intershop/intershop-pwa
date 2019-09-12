@@ -6,7 +6,7 @@ module.exports = {
     'node_modules/(?!(@ngrx|ngx-bootstrap|@angular/common/locales|lodash-es/.*|@ngx-utils/cookies))',
   ],
   moduleNameMapper: {
-    '^ish-core(.*)$': '<rootDir>/src/app/core$1',
+    '^ish-(.*)$': '<rootDir>/src/app/$1',
     '^ngrx-router$': '<rootDir>/src/ngrx-router',
   },
 };

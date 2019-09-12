@@ -4,7 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Forgot Password Form Component displays a Forgot Password form and triggers the submit.

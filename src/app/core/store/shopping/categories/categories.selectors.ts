@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
-import { createCategoryView } from '../../../models/category-view/category-view.model';
-import { ShoppingState, getShoppingState } from '../shopping-store';
+import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 const getCategoriesState = createSelector(
   getShoppingState,

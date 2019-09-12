@@ -1,6 +1,6 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-import { PriceMapper } from '../price/price.mapper';
+import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { PaymentMethodBaseData, PaymentMethodData, PaymentMethodParameterType } from './payment-method.interface';
 import { PaymentMethod } from './payment-method.model';

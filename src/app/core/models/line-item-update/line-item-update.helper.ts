@@ -1,4 +1,4 @@
-import { LineItem } from '../line-item/line-item.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 
 import { LineItemUpdate } from './line-item-update.model';
 

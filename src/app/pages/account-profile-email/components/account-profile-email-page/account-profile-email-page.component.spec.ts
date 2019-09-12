@@ -4,8 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { AccountProfileEmailPageComponent } from './account-profile-email-page.component';
 

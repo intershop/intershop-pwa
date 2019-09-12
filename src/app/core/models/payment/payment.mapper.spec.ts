@@ -1,5 +1,5 @@
-import { PaymentInstrument } from '../payment-instrument/payment-instrument.model';
-import { PaymentMethodBaseData } from '../payment-method/payment-method.interface';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 
 import { PaymentData } from './payment.interface';
 import { PaymentMapper } from './payment.mapper';

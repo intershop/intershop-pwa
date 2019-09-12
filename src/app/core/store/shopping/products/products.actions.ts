@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product, ProductCompletenessLevel, SkuQuantityType } from '../../../models/product/product.model';
+import { Product, ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 export enum ProductsActionTypes {
   SelectProduct = '[Shopping] Select Product',

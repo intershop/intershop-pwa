@@ -11,15 +11,15 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
-import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
-import { LoadingComponent } from '../../../common/components/loading/loading.component';
-import { FormsSharedModule } from '../../../forms/forms.module';
-import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
-import { ProductRowComponent } from '../../../product/components/product-row/product-row.component';
-import { ProductTileComponent } from '../../../product/components/product-tile/product-tile.component';
-import { ProductVariationSelectComponent } from '../../../product/components/product-variation-select/product-variation-select.component';
-import { LineItemEditDialogComponent } from '../../components/line-item-edit-dialog/line-item-edit-dialog.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
+import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
+import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
+import { ProductRowComponent } from 'ish-shared/product/components/product-row/product-row.component';
+import { ProductTileComponent } from 'ish-shared/product/components/product-tile/product-tile.component';
+import { ProductVariationSelectComponent } from 'ish-shared/product/components/product-variation-select/product-variation-select.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
 import { LineItemEditDialogContainerComponent } from './line-item-edit-dialog.container';
 

@@ -22,10 +22,11 @@ import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
+
 import { ProductAddToQuoteDialogComponent } from '../../extensions/quoting/shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
-import { RecentlyViewedContainerComponent } from '../../shared/recently/containers/recently-viewed/recently-viewed.container';
 
 import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';

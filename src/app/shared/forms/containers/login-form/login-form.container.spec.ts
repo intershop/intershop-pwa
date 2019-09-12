@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
-import { LoginFormComponent } from '../../components/login-form/login-form.component';
+import { LoginFormComponent } from 'ish-shared/forms/components/login-form/login-form.component';
 
 import { LoginFormContainerComponent } from './login-form.container';
 

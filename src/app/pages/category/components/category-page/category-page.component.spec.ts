@@ -7,6 +7,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+
 import { CategoryListComponent } from '../category-list/category-list.component';
 import { CategoryNavigationComponent } from '../category-navigation/category-navigation.component';
 

@@ -1,6 +1,6 @@
 import { LinkParser } from 'ish-core/utils/link-parser';
 
-import { ContentConfigurationParameterView } from './content-views';
+import { ContentConfigurationParameterView } from './content-view.model';
 
 export class ContentViewHelper {
   /**

@@ -1,4 +1,4 @@
-import { Address } from '../address/address.model';
+import { Address } from 'ish-core/models/address/address.model';
 
 import { Customer } from './customer.model';
 
