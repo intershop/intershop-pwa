@@ -55,6 +55,7 @@ import { LoadingComponent } from './common/components/loading/loading.component'
 import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
 import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
+import { FilterCollapsableComponent } from './filter/components/filter-collapsable/filter-collapsable.component';
 import { FilterDropdownMultiselectComponent } from './filter/components/filter-dropdown-multiselect/filter-dropdown-multiselect.component';
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
 import { FilterNavigationBadgesComponent } from './filter/components/filter-navigation-badges/filter-navigation-badges.component';
@@ -136,6 +137,7 @@ const declaredComponents = [
   CMSVideoComponent,
   ContentSlotContainerComponent,
   FilterCheckboxComponent,
+  FilterCollapsableComponent,
   FilterDropdownComponent,
   FilterDropdownMultiselectComponent,
   FilterNavigationBadgesComponent,

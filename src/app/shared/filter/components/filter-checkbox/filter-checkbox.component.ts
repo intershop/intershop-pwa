@@ -22,7 +22,6 @@ export class FilterCheckboxComponent implements OnInit {
   @Input() filterElement: Filter;
   @Output() applyFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
   @Output() removeFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
-  isCollapsed = false;
 
   ngOnInit() {
     // # console.log('### this.filterElement (facetGroup)', this.filterElement);

@@ -4,9 +4,10 @@ import { MockComponent } from 'ng-mocks';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { FilterCheckboxComponent } from 'ish-shared/filter/components/filter-checkbox/filter-checkbox.component';
-import { FilterDropdownComponent } from 'ish-shared/filter/components/filter-dropdown/filter-dropdown.component';
-import { FilterSwatchImagesComponent } from 'ish-shared/filter/components/filter-swatch-images/filter-swatch-images.component';
+import { FilterCheckboxComponent } from '../filter-checkbox/filter-checkbox.component';
+import { FilterCollapsableComponent } from '../filter-collapsable/filter-collapsable.component';
+import { FilterDropdownComponent } from '../filter-dropdown/filter-dropdown.component';
+import { FilterSwatchImagesComponent } from '../filter-swatch-images/filter-swatch-images.component';
 
 import { FilterNavigationSidebarComponent } from './filter-navigation-sidebar.component';
 
@@ -20,6 +21,7 @@ describe('Filter Navigation Sidebar Component', () => {
       declarations: [
         FilterNavigationSidebarComponent,
         MockComponent(FilterCheckboxComponent),
+        MockComponent(FilterCollapsableComponent),
         MockComponent(FilterDropdownComponent),
         MockComponent(FilterSwatchImagesComponent),
       ],
@@ -47,34 +49,34 @@ describe('Filter Navigation Sidebar Component', () => {
     component.filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-dropdown']);
+    expect(findAllIshElements(element)).toEqual(['ish-filter-collapsable', 'ish-filter-dropdown']);
   });
 
   it('should display filter-checkbox if facet with displayType text_clear is present', () => {
     component.filterNavigation = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
+    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox', 'ish-filter-collapsable']);
   });
 
   it('should display filter-swatch-images if facet with displayType swatch is present', () => {
     component.filterNavigation = { filter: [{ displayType: 'swatch' } as Filter] } as FilterNavigation;
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-swatch-images']);
+    expect(findAllIshElements(element)).toEqual(['ish-filter-collapsable', 'ish-filter-swatch-images']);
   });
 
   it('should display filter-checkbox if facet has no displayType set', () => {
     component.filterNavigation = { filter: [{} as Filter] } as FilterNavigation;
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
+    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox', 'ish-filter-collapsable']);
   });
 
   it('should display filter-checkbox if facet has a typo in the displayType', () => {
     component.filterNavigation = { filter: [{ displayType: 'typo' } as Filter] } as FilterNavigation;
 
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
+    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox', 'ish-filter-collapsable']);
   });
 });

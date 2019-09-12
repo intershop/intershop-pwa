@@ -28,7 +28,6 @@ export class FilterSwatchImagesComponent implements OnInit {
   @Output() applyFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
 
   filterForm: FormGroup;
-  isCollapsed = false;
 
   private destroy$ = new Subject();
 
