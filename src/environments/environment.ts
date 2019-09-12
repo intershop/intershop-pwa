@@ -28,7 +28,6 @@ export const environment: Environment = {
   productListingItemsPerPage: 9,
   defaultProductListingViewType: 'grid',
   serviceWorker: false,
-  syncLocalStorage: false,
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
