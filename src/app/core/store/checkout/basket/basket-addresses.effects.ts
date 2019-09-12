@@ -11,7 +11,7 @@ import {
   DeleteCustomerAddressSuccess,
   UpdateCustomerAddressFail,
   UpdateCustomerAddressSuccess,
-} from 'ish-core/store/addresses/addresses.actions';
+} from 'ish-core/store/addresses';
 import { getLoggedInCustomer } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
 

@@ -288,6 +288,11 @@
           "fix": "$1"
         },
         {
+          "from": "^(.*store\\/)(.*)\\/\\2.(actions|selectors)$",
+          "message": "use aggregation import instead.",
+          "fix": "$1$2"
+        },
+        {
           "from": "rxjs(?!($|/operators$))",
           "message": "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'"
         },

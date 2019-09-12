@@ -21,7 +21,7 @@ import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module'
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProduct, LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user/user.actions';
+import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import * as basketActions from './basket.actions';
