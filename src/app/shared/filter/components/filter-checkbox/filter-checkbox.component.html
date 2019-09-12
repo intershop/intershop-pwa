@@ -1,38 +1,43 @@
-<div class="filter-group">
-  <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
-    {{ filterElement.name }}
-    <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'angle-down']"></fa-icon>
-    <ng-template #collapsed> <fa-icon class="float-right" [icon]="['fas', 'angle-right']"></fa-icon> </ng-template>
-  </h3>
+<ul class="filter-list">
+  <!--- TODO: implement Show All-->
+  <ng-container *ngFor="let facet of filterElement.facets">
+    <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
+      <!--- TODO: add filter count -->
+      <span class="icon-selected"></span>{{ facet.displayName }}
+      <a class="filter-clear" (click)="filter(facet)">
+        <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
+      </a>
+    </li>
+  </ng-container>
+</ul>
 
-  <ul class="filter-list">
-    <!--- TODO: implement Show All-->
-    <ng-container *ngFor="let facet of filterElement.facets">
-      <li
-        *ngIf="facet.selected && facet.name !== 'Show all'"
-        class="filter-item filter-selected filter-layer{{ facet.level }}"
+<ul class="filter-list">
+  <!--- TODO: implement Show All-->
+  <ng-container *ngFor="let facet of filterElement.facets">
+    <li
+      *ngIf="facet.selected && facet.name !== 'Show all'"
+      class="filter-item filter-selected filter-layer{{ facet.level }}"
+    >
+      <!--- TODO: add filter count -->
+      <span class="icon-selected"></span>{{ facet.displayName }} ({{ facet.count }})
+      <a class="filter-clear" (click)="filter(facet)">
+        <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
+      </a>
+    </li>
+  </ng-container>
+</ul>
+
+<ul class="filter-list">
+  <ng-container *ngFor="let facet of filterElement.facets">
+    <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item filter-layer{{ facet.level }}">
+      <!--- TODO: add filter count -->
+      <a
+        class="filter-item-name"
+        (click)="filter(facet)"
+        [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
       >
-        <!--- TODO: add filter count -->
-        <span class="icon-selected"></span>{{ facet.displayName }} ({{ facet.count }})
-        <a class="filter-clear" (click)="filter(facet)">
-          <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
-        </a>
-      </li>
-    </ng-container>
-  </ul>
-
-  <ul class="filter-list" id="collapseFilter" [ngbCollapse]="isCollapsed">
-    <ng-container *ngFor="let facet of filterElement.facets">
-      <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item filter-layer{{ facet.level }}">
-        <!--- TODO: add filter count -->
-        <a
-          class="filter-item-name"
-          (click)="filter(facet)"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
-        >
-          <span class="icon-notselected"></span>{{ facet.displayName }} ({{ facet.count }})
-        </a>
-      </li>
-    </ng-container>
-  </ul>
-</div>
+        <span class="icon-notselected"></span>{{ facet.displayName }} ({{ facet.count }})
+      </a>
+    </li>
+  </ng-container>
+</ul>

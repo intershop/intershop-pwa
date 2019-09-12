@@ -1,29 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Filter Dropdown Component should be created 1`] = `
-<div class="filter-group">
-  <h3 aria-controls="collapseFilter" aria-expanded="true">
-    Brands <fa-icon class="float-right" ng-reflect-icon-prop="fas,angle-down"></fa-icon>
-  </h3>
-  <ul class="filter-list">
-    <li class="filter-item filter-selected">
-      <span class="icon-selected"></span>Logitech <span class="filter-count">(5)</span
-      ><a class="filter-clear"
-        ><fa-icon class="float-right" ng-reflect-icon-prop="fas,minus"></fa-icon
-      ></a>
-    </li>
-  </ul>
-  <div id="collapseFilter" ng-reflect-collapsed="false" data-testing-id="collapse-filter-Brands">
-    <form name="Filter" novalidate="" role="filter" class="ng-untouched ng-pristine ng-valid">
-      <select
-        class="ws-submit-search-param form-control ng-untouched ng-pristine ng-valid"
-        formcontrolname="filterDropdown"
-        name="SearchParameter"
-        ng-reflect-name="filterDropdown"
-        ><option value="" ng-reflect-value="">search.filter.select_option.text</option
-        ><option value="AsusName" ng-reflect-value="AsusName">Asus</option></select
-      >
-    </form>
-  </div>
+<ul class="filter-list">
+  <li class="filter-item filter-selected">
+    <span class="icon-selected"></span>Logitech <span class="filter-count">(5)</span
+    ><a class="filter-clear"
+      ><fa-icon class="float-right" ng-reflect-icon-prop="fas,minus"></fa-icon
+    ></a>
+  </li>
+</ul>
+<div data-testing-id="collapse-filter-Brands">
+  <form name="Filter" novalidate="" role="filter" class="ng-untouched ng-pristine ng-valid">
+    <select
+      class="ws-submit-search-param form-control ng-untouched ng-pristine ng-valid"
+      formcontrolname="filterDropdown"
+      name="SearchParameter"
+      ng-reflect-name="filterDropdown"
+      ><option value="" ng-reflect-value="">search.filter.select_option.text</option
+      ><option value="AsusName" ng-reflect-value="AsusName">Asus</option></select
+    >
+  </form>
 </div>
 `;

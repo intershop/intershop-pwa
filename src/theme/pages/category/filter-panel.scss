@@ -18,16 +18,23 @@
   }
 
   h3 {
+    cursor: pointer;
+
     .ng-fa-icon {
       color: $text-color-corporate;
     }
   }
 
   .filter-group {
+    &.collapsed {
+      .filter-item:not(.filter-selected) {
+        display: none;
+      }
+    }
+
     &:first-child {
       h3 {
         margin-top: 0;
-        cursor: initial;
       }
     }
   }
