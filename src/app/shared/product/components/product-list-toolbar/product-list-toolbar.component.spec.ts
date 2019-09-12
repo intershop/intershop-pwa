@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { IconModule } from 'ish-core/icon.module';
-import { ProductListPagingComponent } from '../product-list-paging/product-list-paging.component';
+import { ProductListPagingComponent } from 'ish-shared/product/components/product-list-paging/product-list-paging.component';
 
 import { ProductListToolbarComponent } from './product-list-toolbar.component';
 

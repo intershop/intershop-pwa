@@ -1,5 +1,5 @@
-import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
-import { PriceMapper } from '../price/price.mapper';
+import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
+import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { BasketRebate } from './basket-rebate.model';
 

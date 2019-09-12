@@ -1,4 +1,4 @@
-import { Region } from '../region/region.model';
+import { Region } from 'ish-core/models/region/region.model';
 
 export interface Country {
   countryCode: string;

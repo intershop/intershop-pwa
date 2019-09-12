@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FilterNavigationContainerComponent } from '../../../../shared/filter/containers/filter-navigation/filter-navigation.container';
-import { ProductListContainerComponent } from '../../../../shared/product/containers/product-list/product-list.container';
+import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
+import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
 
 import { SearchResultComponent } from './search-result.component';
 

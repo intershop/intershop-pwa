@@ -6,9 +6,9 @@ import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.
 import {
   ContentPageletEntryPointView,
   createContentPageletEntryPointView,
-} from 'ish-core/models/content-view/content-views';
-import { getContentState } from '../content-store';
-import { getContentPageletEntities } from '../pagelets';
+} from 'ish-core/models/content-view/content-view.model';
+import { getContentState } from 'ish-core/store/content/content-store';
+import { getContentPageletEntities } from 'ish-core/store/content/pagelets';
 
 import { pagesAdapter } from './pages.reducer';
 

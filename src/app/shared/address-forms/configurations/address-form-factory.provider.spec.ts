@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
-import { AddressFormDEFactory } from '../components/address-form-de/address-form-de.factory';
-import { AddressFormDefaultFactory } from '../components/address-form-default/address-form-default.factory';
+import { AddressFormDEFactory } from 'ish-shared/address-forms/components/address-form-de/address-form-de.factory';
+import { AddressFormDefaultFactory } from 'ish-shared/address-forms/components/address-form-default/address-form-default.factory';
 
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from './address-form-factory.provider';
 

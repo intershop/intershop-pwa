@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
+
 import { CheckoutAddressPageModule } from '../checkout-address/checkout-address-page.module';
 import { CheckoutPaymentPageModule } from '../checkout-payment/checkout-payment-page.module';
 import { CheckoutReceiptPageModule } from '../checkout-receipt/checkout-receipt-page.module';

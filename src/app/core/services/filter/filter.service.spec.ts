@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FilterNavigationData } from '../../models/filter-navigation/filter-navigation.interface';
-import { ApiService } from '../api/api.service';
+import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 import { FilterService } from './filter.service';
 

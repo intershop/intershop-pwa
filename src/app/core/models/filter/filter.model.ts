@@ -1,4 +1,4 @@
-import { Facet } from '../facet/facet.model';
+import { Facet } from 'ish-core/models/facet/facet.model';
 
 export interface Filter {
   name: string;

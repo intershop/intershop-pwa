@@ -1,8 +1,8 @@
-import { AddressMapper } from '../address/address.mapper';
-import { BasketMapper } from '../basket/basket.mapper';
-import { LineItemMapper } from '../line-item/line-item.mapper';
-import { PaymentMapper } from '../payment/payment.mapper';
-import { ShippingMethodMapper } from '../shipping-method/shipping-method.mapper';
+import { AddressMapper } from 'ish-core/models/address/address.mapper';
+import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
+import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
+import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
 import { OrderData } from './order.interface';
 import { Order } from './order.model';

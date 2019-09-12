@@ -1,7 +1,7 @@
-import { Attribute } from '../attribute/attribute.model';
-import { Image } from '../image/image.model';
-import { PriceHelper } from '../price/price.model';
-import { VariationProductMasterView, VariationProductView } from '../product-view/product-view.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Image } from 'ish-core/models/image/image.model';
+import { PriceHelper } from 'ish-core/models/price/price.model';
+import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 
 import { ProductBundle } from './product-bundle.model';
 import { ProductRetailSet } from './product-retail-set.model';

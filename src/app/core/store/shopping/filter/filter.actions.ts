@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum FilterActionTypes {
   LoadFilterForCategory = '[Shopping] Load Filter For Category',

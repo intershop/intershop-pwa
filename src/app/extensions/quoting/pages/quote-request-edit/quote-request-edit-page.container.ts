@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { getLoggedInUser } from 'ish-core/store/user';
+
 import {
   CreateQuoteRequestFromQuoteRequest,
   DeleteItemFromQuoteRequest,

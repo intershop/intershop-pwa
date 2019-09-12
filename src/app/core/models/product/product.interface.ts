@@ -1,12 +1,11 @@
-// tslint:disable:no-any
-import { AttributeGroup } from '../attribute-group/attribute-group.model';
-import { Attribute } from '../attribute/attribute.model';
-import { CategoryData } from '../category/category.interface';
-import { Image } from '../image/image.model';
-import { Link } from '../link/link.model';
-import { Price } from '../price/price.model';
-import { VariationAttribute } from '../product-variation/variation-attribute.model';
-import { Warranty } from '../warranty/warranty.model';
+import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { Image } from 'ish-core/models/image/image.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
+import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
 export interface ProductData {
   sku: string;
@@ -21,16 +20,16 @@ export interface ProductData {
   images: Image[];
 
   availableWarranties?: Warranty[];
-  availableGiftWraps?: any[];
-  availableGiftMessages?: any[];
-  bundles: any[];
+  availableGiftWraps?: unknown[];
+  availableGiftMessages?: unknown[];
+  bundles: unknown[];
   retailSet: boolean;
 
   inStock: boolean;
 
   // If warranty {
   price?: Price;
-  currency?: any;
+  currency?: unknown;
   // }
 
   productMasterSKU?: string;
@@ -52,9 +51,9 @@ export interface ProductData {
   summedUpSalePrice?: Price;
   // }
 
-  attachments?: any;
-  variations?: any;
-  crosssells?: any;
+  attachments?: unknown;
+  variations?: unknown;
+  crosssells?: unknown;
   productMaster: boolean;
   productBundle: boolean;
   listPrice: Price;

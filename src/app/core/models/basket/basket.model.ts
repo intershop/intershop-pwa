@@ -1,14 +1,14 @@
 import { Dictionary } from '@ngrx/entity';
 import { memoize } from 'lodash-es';
 
-import { Address } from '../address/address.model';
-import { BasketTotal } from '../basket-total/basket-total.model';
-import { LineItem, LineItemView } from '../line-item/line-item.model';
-import { Payment } from '../payment/payment.model';
-import { VariationProductMaster } from '../product/product-variation-master.model';
-import { VariationProduct } from '../product/product-variation.model';
-import { Product } from '../product/product.model';
-import { ShippingMethod } from '../shipping-method/shipping-method.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
+import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 interface AbstractBasket<T> {
   id: string;

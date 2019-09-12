@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { distinct, map, mergeMap } from 'rxjs/operators';
 
+import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { PromotionsService } from '../../../services/promotions/promotions.service';
 
 import * as promotionsActions from './promotions.actions';
 

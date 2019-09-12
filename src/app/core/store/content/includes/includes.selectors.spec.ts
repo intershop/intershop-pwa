@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { contentReducers } from 'ish-core/store/content/content-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { contentReducers } from '../content-store.module';
 
 import { LoadContentIncludeSuccess } from './includes.actions';
 import { getContentInclude } from './includes.selectors';

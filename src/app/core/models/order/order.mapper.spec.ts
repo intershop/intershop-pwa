@@ -1,6 +1,6 @@
-import { AddressData } from '../address/address.interface';
-import { OrderItemData } from '../order-item/order-item.interface';
-import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
+import { AddressData } from 'ish-core/models/address/address.interface';
+import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
 import { OrderBaseData, OrderData } from './order.interface';
 import { OrderMapper } from './order.mapper';

@@ -10,7 +10,9 @@
     "target": "es5",
     "baseUrl": "src",
     "paths": {
-      "ish-core/*": ["app/core/*"]
+      "ish-core/*": ["app/core/*"],
+      "ish-shared/*": ["app/shared/*"],
+      "ish-shell/*": ["app/shell/*"]
     },
     "typeRoots": ["node_modules/@types", "node_modules/jest-extended"],
     "lib": ["es2017", "dom"]

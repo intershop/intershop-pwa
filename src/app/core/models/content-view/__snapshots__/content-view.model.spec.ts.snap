@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Content Views include view created should have a pagelet on slot view on p2 1`] = `
+exports[`Content View Model include view created should have a pagelet on slot view on p2 1`] = `
 Array [
   Object {
     "booleanParam": [Function],
@@ -18,7 +18,7 @@ Array [
 ]
 `;
 
-exports[`Content Views include view created should have a slot view on p2 1`] = `
+exports[`Content View Model include view created should have a slot view on p2 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
@@ -32,7 +32,7 @@ Object {
 }
 `;
 
-exports[`Content Views include view created should have deepest level navigateable on tree 1`] = `
+exports[`Content View Model include view created should have deepest level navigateable on tree 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
@@ -50,7 +50,7 @@ Object {
 }
 `;
 
-exports[`Content Views include view created should have pagelets on top level 1`] = `
+exports[`Content View Model include view created should have pagelets on top level 1`] = `
 Array [
   Object {
     "booleanParam": [Function],
@@ -83,7 +83,7 @@ Array [
 ]
 `;
 
-exports[`Content Views should be able to create a view of a pagelet entry point 1`] = `
+exports[`Content View Model should be able to create a view of a pagelet entry point 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],
@@ -98,7 +98,7 @@ Object {
 }
 `;
 
-exports[`Content Views should be able to create a view of configuration parameters 1`] = `
+exports[`Content View Model should be able to create a view of configuration parameters 1`] = `
 Object {
   "booleanParam": [Function],
   "configParam": [Function],

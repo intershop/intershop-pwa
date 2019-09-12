@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { LoginFormContainerComponent } from '../../../../shared/forms/containers/login-form/login-form.container';
+import { LoginFormContainerComponent } from 'ish-shared/forms/containers/login-form/login-form.container';
 
 import { LoginPageComponent } from './login-page.component';
 

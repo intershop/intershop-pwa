@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import { Locale } from '../models/locale/locale.model';
 
 /**
  * If 'true' the application has to work with the implemented mock data, if 'false' a backend system is used

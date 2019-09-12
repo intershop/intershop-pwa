@@ -6,12 +6,12 @@ import * as using from 'jasmine-data-provider';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { Link } from 'ish-core/models/link/link.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ErrorActionTypes, ServerError } from 'ish-core/store/error';
 import { SetAPIToken } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { Link } from '../../models/link/link.model';
-import { Locale } from '../../models/locale/locale.model';
-import { ErrorActionTypes, ServerError } from '../../store/error';
 
 import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';

@@ -1,7 +1,7 @@
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { Category } from 'ish-core/models/category/category.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { CategoryTree } from '../../../models/category-tree/category-tree.model';
-import { Category } from '../../../models/category/category.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
 
 import * as fromActions from './categories.actions';
 import { categoriesReducer, initialState } from './categories.reducer';

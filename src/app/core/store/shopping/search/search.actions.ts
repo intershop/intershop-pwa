@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
 export enum SearchActionTypes {
   SelectSearchTerm = '[Shopping] Set Search Term',

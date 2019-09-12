@@ -7,11 +7,11 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { FilterService } from '../../../services/filter/filter.service';
-import { SetProductListingPageSize, SetProductListingPages } from '../product-listing';
-import { shoppingReducers } from '../shopping-store.module';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { FilterService } from 'ish-core/services/filter/filter.service';
+import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 
 import * as fromActions from './filter.actions';
 import { FilterEffects } from './filter.effects';

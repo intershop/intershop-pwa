@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { contentReducers } from 'ish-core/store/content/content-store.module';
+import { LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
-import { contentReducers } from '../content-store.module';
-import { LoadContentIncludeSuccess } from '../includes';
 
 import { getContentPageletEntities } from './pagelets.selectors';
 

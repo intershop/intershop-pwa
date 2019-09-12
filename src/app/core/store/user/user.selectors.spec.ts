@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { User } from 'ish-core/models/user/user.model';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { CustomerUserType } from '../../models/customer/customer.model';
-import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
-import { Product } from '../../models/product/product.model';
-import { User } from '../../models/user/user.model';
-import { checkoutReducers } from '../checkout/checkout-store.module';
-import { coreReducers } from '../core-store.module';
-import { LoadProductSuccess } from '../shopping/products';
-import { shoppingReducers } from '../shopping/shopping-store.module';
 
 import {
   LoadCompanyUserSuccess,

@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { User } from '../../models/user/user.model';
+import { User } from 'ish-core/models/user/user.model';
 
 export enum UserActionTypes {
   LoginUser = '[Account] Login User',

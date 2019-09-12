@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -20,6 +19,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
   basket$ = this.store.pipe(select(getCurrentBasket));
   promotionError$ = this.store.pipe(select(getBasketPromotionError));

@@ -2,11 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { Product } from '../../../models/product/product.model';
-import { LoadProductSuccess, SelectProduct } from '../products';
-import { shoppingReducers } from '../shopping-store.module';
 
 import { ClearRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';

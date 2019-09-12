@@ -1,6 +1,6 @@
-import { Customer } from '../../models/customer/customer.model';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { User } from '../../models/user/user.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { User } from 'ish-core/models/user/user.model';
 
 import { UserAction, UserActionTypes } from './user.actions';
 

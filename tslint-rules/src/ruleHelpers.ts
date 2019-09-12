@@ -1,7 +1,7 @@
-// tslint:disable:no-console
 import { getNextToken } from 'tsutils';
 import * as ts from 'typescript';
 
+// tslint:disable:no-console
 export class RuleHelpers {
   static dumpNode(node: ts.Node, dumpTokens: boolean = false) {
     if (node) {

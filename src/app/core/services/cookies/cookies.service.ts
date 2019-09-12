@@ -1,4 +1,3 @@
-// tslint:disable:ban-specific-imports
 import { isPlatformBrowser } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CookiesOptions, CookiesService as ForeignCookiesService } from '@ngx-utils/cookies';

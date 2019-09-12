@@ -1,4 +1,5 @@
 import { Price } from 'ish-core/models/price/price.model';
+
 import { QuoteRequestItem } from '../quote-request-item/quote-request-item.model';
 
 import { QuoteData } from './quote.interface';

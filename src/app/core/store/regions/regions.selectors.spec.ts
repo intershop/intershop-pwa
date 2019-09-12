@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { coreReducers } from '../core-store.module';
 
 import { LoadRegions, LoadRegionsFail, LoadRegionsSuccess } from './regions.actions';
 import { getAllRegions, getRegionsByCountryCode, getRegionsLoading } from './regions.selectors';

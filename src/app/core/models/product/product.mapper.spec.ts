@@ -3,10 +3,10 @@ import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { ImageMapper } from 'ish-core/models/image/image.mapper';
+import { Link } from 'ish-core/models/link/link.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { Attribute } from '../attribute/attribute.model';
-import { ImageMapper } from '../image/image.mapper';
-import { Link } from '../link/link.model';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';

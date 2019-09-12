@@ -1,4 +1,3 @@
-// tslint:disable:no-any
 import { isPlatformServer } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
@@ -13,14 +12,14 @@ import { Observable, Observer } from 'rxjs';
 export class UniversalMockInterceptor implements HttpInterceptor {
   constructor(@Inject(PLATFORM_ID) private platformId) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!isPlatformServer(this.platformId)) {
       console.warn('UniversalMockInterceptor is active for non-server platform');
     }
     if (!req.url.startsWith('http')) {
       // tslint:disable-next-line:no-console
       console.log(`loading mock-data for '${req.url}' from file system.`);
-      return new Observable((observer: Observer<HttpResponse<any>>) => {
+      return new Observable((observer: Observer<HttpResponse<unknown>>) => {
         let rootPath = process.cwd();
         if (rootPath && rootPath.indexOf('browser') > 0) {
           rootPath = process.cwd().split('browser')[0];
@@ -32,7 +31,7 @@ export class UniversalMockInterceptor implements HttpInterceptor {
           observer.error(errString);
         } else {
           const content = JSON.parse(readFileSync(file, 'utf8'));
-          observer.next(new HttpResponse<any>({ body: content }));
+          observer.next(new HttpResponse<unknown>({ body: content }));
           observer.complete();
         }
       });

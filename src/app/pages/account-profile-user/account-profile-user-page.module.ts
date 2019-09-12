@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountProfileUserPageContainerComponent } from './account-profile-user-page.container';
 import { AccountProfileUserPageComponent } from './components/account-profile-user-page/account-profile-user-page.component';

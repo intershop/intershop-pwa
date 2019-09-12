@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { CMSComponent } from '../../models/cms-component/cms-component.model';
+import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 /**
  * The CMS Standard Page Component to render CMS content of the 'Standard Page' page variant model.

@@ -6,8 +6,8 @@ import { Store, StoreModule } from '@ngrx/store';
 import { noop } from 'rxjs';
 import { mock } from 'ts-mockito';
 
-import { HttpError } from '../../models/http-error/http-error.model';
-import { coreReducers } from '../core-store.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { CommunicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';

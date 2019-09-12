@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Promotion } from '../../../models/promotion/promotion.model';
-import { shoppingReducers } from '../../../store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
 import { getPromotion, getPromotionEntities, getPromotions } from './promotions.selectors';

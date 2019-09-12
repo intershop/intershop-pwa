@@ -1,8 +1,9 @@
-// tslint:disable:no-any
 import { Injectable } from '@angular/core';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { ActionReducer, Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
+
+// tslint:disable:no-any
 
 const NGRX_STATE_SK = makeStateKey('ngrxState');
 const STATE_ACTION_TYPE = '[Internal] Import NgRx State';

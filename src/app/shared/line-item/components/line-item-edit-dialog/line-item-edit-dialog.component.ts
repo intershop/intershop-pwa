@@ -8,7 +8,7 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { SpecialValidators } from '../../../forms/validators/special-validators';
+import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-line-item-edit-dialog',

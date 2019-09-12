@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { SearchBoxComponent } from '../../components/search-box/search-box.component';
+import { SearchBoxComponent } from 'ish-shell/header/components/search-box/search-box.component';
 
 import { SearchBoxContainerComponent } from './search-box.container';
 

@@ -5,7 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+
 import { LoadQuotes } from '../../../../store/quote';
 import { LoadQuoteRequests } from '../../../../store/quote-request';
 import { quotingReducers } from '../../../../store/quoting-store.module';

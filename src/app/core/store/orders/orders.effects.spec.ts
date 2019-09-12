@@ -10,15 +10,15 @@ import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { LoadBasket } from 'ish-core/store/checkout/basket';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { Order } from '../../models/order/order.model';
-import { OrderService } from '../../services/order/order.service';
-import { LoadBasket } from '../checkout/basket';
-import { coreReducers } from '../core-store.module';
-import { shoppingReducers } from '../shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser } from '../user';
 
 import * as orderActions from './orders.actions';
 import { OrdersEffects } from './orders.effects';

@@ -1,4 +1,4 @@
-import { PaymentInstrument } from '../payment-instrument/payment-instrument.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 
 /**
  * Payment which is saved at basket and order

@@ -1,5 +1,5 @@
-import { CategoryView } from '../category-view/category-view.model';
-import { ProductView } from '../product-view/product-view.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 export interface ProductLinks {
   [id: string]: {

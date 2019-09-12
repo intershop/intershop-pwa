@@ -12,14 +12,14 @@ import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { User } from 'ish-core/models/user/user.model';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
-import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
-import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { User } from '../../models/user/user.model';
-import { UserService } from '../../services/user/user.service';
-import { coreReducers } from '../core-store.module';
+import { UserService } from 'ish-core/services/user/user.service';
+import { coreReducers } from 'ish-core/store/core-store.module';
 
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';

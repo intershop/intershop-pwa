@@ -7,10 +7,10 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { BasketService } from '../../../services/basket/basket.service';
-import { shoppingReducers } from '../../shopping/shopping-store.module';
-import { checkoutReducers } from '../checkout-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 
 import { BasketPromotionCodeEffects } from './basket-promotion-code.effects';
 import * as basketActions from './basket.actions';

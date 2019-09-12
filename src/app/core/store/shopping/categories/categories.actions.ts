@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
-import { CategoryTree } from '../../../models/category-tree/category-tree.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export enum CategoriesActionTypes {
   SelectCategory = '[Shopping] Select Category',

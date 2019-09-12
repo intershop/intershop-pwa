@@ -1,6 +1,6 @@
+import { Category } from 'ish-core/models/category/category.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { Category } from '../category/category.model';
-import { Product } from '../product/product.model';
 
 import { createProductView } from './product-view.model';
 

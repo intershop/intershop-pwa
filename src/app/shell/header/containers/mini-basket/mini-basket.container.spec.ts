@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { MiniBasketComponent } from '../../components/mini-basket/mini-basket.component';
+import { MiniBasketComponent } from 'ish-shell/header/components/mini-basket/mini-basket.component';
 
 import { MiniBasketContainerComponent } from './mini-basket.container';
 

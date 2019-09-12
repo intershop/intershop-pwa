@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { HttpError } from '../../models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export enum ErrorActionTypes {
   GeneralError = '[Error] Communication Error',

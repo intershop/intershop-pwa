@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -25,6 +24,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   basketLoading$ = this.store.pipe(select(getBasketLoading));
 

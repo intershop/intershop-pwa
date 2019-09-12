@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { PromotionDetailsComponent } from '../../../promotion/components/promotion-details/promotion-details.component';
+import { PromotionDetailsComponent } from 'ish-shared/promotion/components/promotion-details/promotion-details.component';
 
 import { ProductPromotionComponent } from './product-promotion.component';
 
