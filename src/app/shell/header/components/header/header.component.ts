@@ -31,10 +31,10 @@ export class HeaderComponent implements OnChanges {
   activeComponent: CollapsibleComponent = 'search';
 
   ngOnChanges(changes: SimpleChanges) {
-    this.toggleSpecialStatusOfSearch();
     if (changes.reset) {
       this.activeComponent = 'search';
     }
+    this.toggleSpecialStatusOfSearch();
   }
 
   get showSearch() {
