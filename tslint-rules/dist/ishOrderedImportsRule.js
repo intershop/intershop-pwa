@@ -19,20 +19,25 @@ var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cook
 Object.defineProperty(exports, "__esModule", { value: true });
 var Lint = require("tslint");
 var ts = require("typescript");
+function generateLineEnding(sourceFile) {
+    var maybeCarriageReturn = sourceFile.getText()[sourceFile.getLineEndOfPosition(0)] === '\r' ? '\r' : '';
+    return maybeCarriageReturn + '\n';
+}
 function getFromString(node) {
     var stringLiteral = node.getChildren().find(function (e) { return ts.isStringLiteral(e); });
     var text = stringLiteral.getText();
     return text.substring(1, text.length - 1);
 }
-function getSortedEntries(node) {
+function getSortedEntries(node, lineEnding) {
     if (node.getChildAt(1).getChildAt(0) && ts.isNamedImports(node.getChildAt(1).getChildAt(0))) {
         var namedImports = node.getChildAt(1).getChildAt(0);
         var elements = namedImports.elements.map(function (i) { return i.getText(); }).sort();
-        if (node.getText().search(/\n/) > 0) {
+        if (node.getText().search('\n') > 0) {
+            var multilineJoinedElements = elements.join("," + lineEnding + "  ");
             return node
                 .getText()
-                .replace(/\n/g, '')
-                .replace(/\{.*\}/, "{\n  " + elements.join(',\n  ') + ",\n}");
+                .replace(/[\n\r]/g, '')
+                .replace(/\{.*\}/, "{" + lineEnding + "  " + multilineJoinedElements + "," + lineEnding + "}");
         }
         return node.getText().replace(/\{.*\}/, "{ " + elements.join(', ') + " }");
     }
@@ -59,6 +64,7 @@ var Rule = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
+        var lineEnding = generateLineEnding(sourceFile);
         return this.applyWithFunction(sourceFile, function (ctx) {
             var importStatements = ctx.sourceFile.statements.filter(function (stm) {
                 return ts.isImportDeclaration(stm);
@@ -82,10 +88,10 @@ var Rule = (function (_super) {
                     .map(function (num) {
                     return groups_1[num]
                         .sort(sorter_1)
-                        .map(getSortedEntries)
-                        .join('\n');
+                        .map(function (importStatement) { return getSortedEntries(importStatement, lineEnding); })
+                        .join(lineEnding);
                 })
-                    .join('\n\n');
+                    .join(lineEnding + lineEnding);
                 var origImports = ctx.sourceFile.getText().substring(firstStatementOffset, lastStatementOffset);
                 if (origImports !== newImports) {
                     ctx.addFailureAt(firstStatementOffset, lastStatementOffset, 'Import statements are not ordered correctly.', new Lint.Replacement(firstStatementOffset, lastStatementOffset, newImports));
