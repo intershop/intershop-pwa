@@ -2646,5 +2646,6 @@
   "checkout.general.back_to_cart.button.label": "Zurück zum Warenkorb",
   "recaptcha.v2.incorrect.error": "Beweisen Sie, dass Sie keine Maschine sind.",
   "forgot_password.form.send.button.label": "Senden",
-  "account.forgotdata.password_retrieval_info.text.no.security_question": "Geben Sie aus Sicherheitsgründen Ihre E-Mail-Adresse sowie Ihren Vor- und Nachnamen an und senden Sie das Formular ab. Nach korrekter Eingabe der Informationen erhalten Sie von uns eine E-Mail mit einem Link. Öffnen Sie den Link und folgen Sie den Anweisungen, um ein neues Kennwort anzulegen. Sollten Sie Probleme haben oder Hilfe benötigen, kontaktieren Sie unseren <a href=\"page://systempage.helpdesk.index.pagelet2-Page\">Kundenservice</a>."
+  "account.forgotdata.password_retrieval_info.text.no.security_question": "Geben Sie aus Sicherheitsgründen Ihre E-Mail-Adresse sowie Ihren Vor- und Nachnamen an und senden Sie das Formular ab. Nach korrekter Eingabe der Informationen erhalten Sie von uns eine E-Mail mit einem Link. Öffnen Sie den Link und folgen Sie den Anweisungen, um ein neues Kennwort anzulegen. Sollten Sie Probleme haben oder Hilfe benötigen, kontaktieren Sie unseren <a href=\"page://systempage.helpdesk.index.pagelet2-Page\">Kundenservice</a>.",
+  "basket.validation.general.error": "Ihr Warenkorb ist nicht mehr gültig. Bitte korrigieren Sie die unten angegebenen Fehler."
 }

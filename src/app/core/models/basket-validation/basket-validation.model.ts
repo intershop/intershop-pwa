@@ -1,16 +1,18 @@
-import { Basket } from '../basket/basket.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+
+export interface BasketValidationErrorType {
+  code: string;
+  message: string;
+  parameters?: {
+    lineItemId?: string;
+    shippingRestriction?: string;
+  };
+}
 
 export interface BasketValidationResultType {
   valid: boolean;
   adjusted: boolean;
-  errors?: {
-    code: string;
-    message: string;
-    parameters?: {
-      lineItemId?: string;
-      shippingRestriction: string;
-    };
-  }[];
+  errors?: BasketValidationErrorType[];
 }
 
 export type BasketValidationScopeType =

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -16,9 +17,12 @@ describe('Basket Validation Results Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BasketValidationResultsComponent],
-      imports: ngrxTesting({
-        checkout: combineReducers(checkoutReducers),
-      }),
+      imports: [
+        TranslateModule,
+        ngrxTesting({
+          checkout: combineReducers(checkoutReducers),
+        }),
+      ],
     }).compileComponents();
   }));
 

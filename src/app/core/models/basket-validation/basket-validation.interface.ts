@@ -1,11 +1,11 @@
-import { AddressData } from '../address/address.interface';
-import { BasketRebateData } from '../basket-rebate/basket-rebate.interface';
-import { BasketBaseData } from '../basket/basket.interface';
-import { LineItemData } from '../line-item/line-item.interface';
-import { PaymentInstrument } from '../payment-instrument/payment-instrument.model';
-import { PaymentMethodBaseData } from '../payment-method/payment-method.interface';
-import { PaymentData } from '../payment/payment.interface';
-import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
+import { AddressData } from 'ish-core/models/address/address.interface';
+import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
+import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
+import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
+import { PaymentData } from 'ish-core/models/payment/payment.interface';
+import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
 import { BasketValidationResultType } from './basket-validation.model';
 
