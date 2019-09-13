@@ -1,5 +1,5 @@
-import { BasketData } from '../basket/basket.interface';
-import { BasketMapper } from '../basket/basket.mapper';
+import { BasketData } from 'ish-core/models/basket/basket.interface';
+import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 
 import { BasketValidationData } from './basket-validation.interface';
 import { BasketValidation } from './basket-validation.model';

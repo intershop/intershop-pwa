@@ -32,9 +32,9 @@ export enum BasketActionTypes {
   MergeBasket = '[Basket Internal] Merge two baskets',
   MergeBasketFail = '[Basket API] Merge two baskets Fail',
   MergeBasketSuccess = '[Basket API] Merge two baskets Success',
-  ContinueCheckout = '[Basket] Validates Basket and jumps to next basket step',
-  ContinueCheckoutFail = '[Basket API] Validates Basket and jumps to next basket step Fail',
-  ContinueCheckoutSuccess = '[Basket API] Validates Basket and jumps to next basket step Success',
+  ContinueCheckout = '[Basket] Validate Basket and continue checkout',
+  ContinueCheckoutFail = '[Basket API] Validate Basket and continue checkout Fail',
+  ContinueCheckoutSuccess = '[Basket API] Validate Basket and continue checkout Success',
   AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
   AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
   AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
@@ -163,12 +163,6 @@ export class MergeBasketSuccess implements Action {
   constructor(public payload: { basket: Basket }) {}
 }
 
-/* targetStep:
-	1: addresses
-	2: shipping
-	3: payment
-	4: review
-*/
 export class ContinueCheckout implements Action {
   readonly type = BasketActionTypes.ContinueCheckout;
   constructor(public payload: { targetStep: number }) {}
