@@ -1,6 +1,11 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
+function generateLineEnding(sourceFile: ts.SourceFile) {
+  const maybeCarriageReturn = sourceFile.getText()[sourceFile.getLineEndOfPosition(0)] === '\r' ? '\r' : '';
+  return maybeCarriageReturn + '\n';
+}
+
 function getFromString(node: ts.Node): string {
   const stringLiteral = node.getChildren().find(e => ts.isStringLiteral(e)) as ts.StringLiteral;
 
@@ -8,16 +13,17 @@ function getFromString(node: ts.Node): string {
   return text.substring(1, text.length - 1);
 }
 
-function getSortedEntries(node: ts.Node): string {
+function getSortedEntries(node: ts.Node, lineEnding: string): string {
   if (node.getChildAt(1).getChildAt(0) && ts.isNamedImports(node.getChildAt(1).getChildAt(0))) {
     const namedImports = node.getChildAt(1).getChildAt(0) as ts.NamedImports;
     const elements = namedImports.elements.map(i => i.getText()).sort();
 
-    if (node.getText().search(/\n/) > 0) {
+    if (node.getText().search('\n') > 0) {
+      const multilineJoinedElements = elements.join(`,${lineEnding}  `);
       return node
         .getText()
-        .replace(/\n/g, '')
-        .replace(/\{.*\}/, `{\n  ${elements.join(',\n  ')},\n}`);
+        .replace(/[\n\r]/g, '')
+        .replace(/\{.*\}/, `{${lineEnding}  ${multilineJoinedElements},${lineEnding}}`);
     }
 
     return node.getText().replace(/\{.*\}/, `{ ${elements.join(', ')} }`);
@@ -64,6 +70,8 @@ export class Rule extends Lint.Rules.AbstractRule {
   // tslint:enable:object-literal-sort-keys
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+    const lineEnding = generateLineEnding(sourceFile);
+
     return this.applyWithFunction(sourceFile, ctx => {
       const importStatements = ctx.sourceFile.statements.filter(stm =>
         ts.isImportDeclaration(stm)
@@ -90,10 +98,10 @@ export class Rule extends Lint.Rules.AbstractRule {
           .map(num =>
             groups[num]
               .sort(sorter)
-              .map(getSortedEntries)
-              .join('\n')
+              .map(importStatement => getSortedEntries(importStatement, lineEnding))
+              .join(lineEnding)
           )
-          .join('\n\n');
+          .join(lineEnding + lineEnding);
 
         const origImports = ctx.sourceFile.getText().substring(firstStatementOffset, lastStatementOffset);
 
