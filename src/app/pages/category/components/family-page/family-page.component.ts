@@ -22,6 +22,12 @@ export class FamilyPageComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    window.scroll(0, 0);
     this.isCollapsed = this.deviceType === 'mobile';
+  }
+
+  toggle() {
+    this.isCollapsed = !this.isCollapsed;
+    window.scroll(0, 0);
   }
 }
