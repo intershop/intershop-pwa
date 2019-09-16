@@ -38,12 +38,14 @@ export class FilterNavigationMapper {
 
   static fixSearchParameters(filterNavigation: FilterNavigation) {
     filterNavigation.filter.forEach(filter => {
+      filter.id = filter.id.replace(/\ /g, '+');
       const selected = filter.facets
         .filter(facet => facet.selected)
         .map(facet =>
           filter.id.includes('Price') ? FilterNavigationMapper.fixPrice(filter.id, facet.searchParameter) : facet.name
         );
       filter.facets.forEach(facet => {
+        facet.name = facet.name.replace(/\ /g, '+');
         if (filter.id.includes('Price')) {
           facet.name = FilterNavigationMapper.fixPrice(filter.id, facet.searchParameter);
         }
