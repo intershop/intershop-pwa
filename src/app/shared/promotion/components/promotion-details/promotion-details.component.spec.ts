@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { PromotionDetailsComponent } from './promotion-details.component';
@@ -20,8 +20,8 @@ describe('Promotion Details Component', () => {
       declarations: [MockComponent(ModalDialogLinkComponent), PromotionDetailsComponent, ServerHtmlDirective],
       imports: [
         RouterTestingModule,
-        StoreModule.forRoot({ configuration: configurationReducer }),
         TranslateModule.forRoot(),
+        ngrxTesting({ reducers: { configuration: configurationReducer } }),
       ],
     }).compileComponents();
   }));

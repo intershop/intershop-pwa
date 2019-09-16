@@ -370,6 +370,12 @@
           "from": "(.*environments/environment).+",
           "message": "Importing specific environments is not allowed. Use the default one.",
           "fix": "$1"
+        },
+        {
+          "import": "^(StoreModule|EffectsModule)$",
+          "from": "ngrx",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use the testing helper 'ngrxTesting' in tests instead."
         }
       ]
     },

@@ -24,7 +24,9 @@ describe('Product Add To Basket Component', () => {
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
         ngrxTesting({
-          checkout: combineReducers(checkoutReducers),
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
       declarations: [ProductAddToBasketComponent],

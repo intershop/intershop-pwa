@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HeaderCheckoutComponent } from 'ish-shell/header/components/header-checkout/header-checkout.component';
 import { HeaderSimpleComponent } from 'ish-shell/header/components/header-simple/header-simple.component';
 import { HeaderComponent } from 'ish-shell/header/components/header/header.component';
@@ -19,7 +19,7 @@ describe('Header Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule, RouterTestingModule, StoreModule.forRoot(coreReducers)],
+      imports: [FeatureToggleModule, RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       declarations: [
         HeaderContainerComponent,
         MockComponent(HeaderCheckoutComponent),

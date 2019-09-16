@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -16,6 +16,7 @@ import { configurationReducer } from 'ish-core/store/configuration/configuration
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -46,11 +47,13 @@ describe('Quote Effects', () => {
       imports: [
         FeatureToggleModule,
         RouterTestingModule.withRoutes([{ path: 'account/quote-request/:quoteRequestId', component: DummyComponent }]),
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-          user: userReducer,
-          configuration: configurationReducer,
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+            user: userReducer,
+            configuration: configurationReducer,
+          },
         }),
       ],
       providers: [

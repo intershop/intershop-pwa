@@ -40,9 +40,11 @@ describe('User Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        ...coreReducers,
-        checkout: combineReducers(checkoutReducers),
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          ...coreReducers,
+          checkout: combineReducers(checkoutReducers),
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

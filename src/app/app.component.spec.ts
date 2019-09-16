@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CookieLawModule } from 'angular2-cookie-law';
 import { MockComponent } from 'ng-mocks';
@@ -9,6 +8,7 @@ import { MockComponent } from 'ng-mocks';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './shell/footer/components/footer/footer.component';
@@ -33,8 +33,8 @@ describe('App Component', () => {
         CookieLawModule,
         NoopAnimationsModule,
         RouterTestingModule,
-        StoreModule.forRoot(coreReducers),
         TranslateModule.forRoot(),
+        ngrxTesting({ reducers: coreReducers }),
       ],
     }).compileComponents();
   }));

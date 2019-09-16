@@ -18,9 +18,7 @@ describe('Configuration Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        ...coreReducers,
-      }),
+      imports: ngrxTesting({ reducers: coreReducers }),
     });
 
     store$ = TestBed.get(TestStore);

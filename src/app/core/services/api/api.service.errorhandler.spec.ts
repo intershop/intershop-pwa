@@ -1,29 +1,28 @@
 import { HttpHeaders } from '@angular/common/http';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { cold } from 'jest-marbles';
 import { noop } from 'rxjs';
-import { anything, capture, instance, mock, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ErrorActionTypes } from 'ish-core/store/error';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service Errorhandler', () => {
   let apiServiceErrorHandler: ApiServiceErrorHandler;
 
-  let storeMock$: Store<{}>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
-    storeMock$ = mock(Store);
     TestBed.configureTestingModule({
-      declarations: [],
-      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }, ApiServiceErrorHandler],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ngrxTesting()],
     }).compileComponents();
+
     apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
+    store$ = spy(TestBed.get(Store));
   }));
 
   function dataProviderKnown() {
@@ -42,7 +41,7 @@ describe('Api Service Errorhandler', () => {
       dataSlice.error.headers = header;
       const result$ = apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
 
-      verify(storeMock$.dispatch(anything())).never();
+      verify(store$.dispatch(anything())).never();
       expect(result$).toBeObservable(cold('#', undefined, dataSlice.error));
     });
   });
@@ -56,8 +55,8 @@ describe('Api Service Errorhandler', () => {
       apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
       consoleSpy.mockRestore();
 
-      verify(storeMock$.dispatch(anything())).called();
-      const [arg] = capture(storeMock$.dispatch).last();
+      verify(store$.dispatch(anything())).called();
+      const [arg] = capture(store$.dispatch).last();
       expect((arg as Action).type).toBe(dataSlice.expectedType);
     });
   });

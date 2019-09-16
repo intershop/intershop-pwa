@@ -5,6 +5,8 @@ import { RouterEffects } from 'ngrx-router';
 
 import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
 
+import { environment } from '../../../environments/environment';
+
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';
 import { CheckoutStoreModule } from './checkout/checkout-store.module';
@@ -66,7 +68,15 @@ export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
     EffectsModule.forRoot(coreEffects),
     RestoreStoreModule,
     ShoppingStoreModule,
-    StoreModule.forRoot(coreReducers, { metaReducers }),
+    StoreModule.forRoot(coreReducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: !environment.production,
+        strictActionSerializability: !environment.production,
+        strictStateImmutability: !environment.production,
+        strictStateSerializability: !environment.production,
+      },
+    }),
   ],
 })
 export class CoreStoreModule {}

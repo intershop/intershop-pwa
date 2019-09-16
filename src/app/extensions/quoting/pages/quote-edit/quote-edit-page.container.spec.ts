@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { QuoteEditComponent } from '../../shared/quote/components/quote-edit/quote-edit.component';
@@ -30,11 +31,13 @@ describe('Quote Edit Page Container', () => {
       ],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'basket', component: QuoteEditPageContainerComponent }]),
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
     }).compileComponents();
   }));

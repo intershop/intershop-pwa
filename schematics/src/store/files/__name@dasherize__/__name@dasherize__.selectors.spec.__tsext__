@@ -15,11 +15,11 @@ describe('<%= classify(name) %> Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
+      imports: ngrxTesting({ reducers: {
         ...coreReducers<% if (feature) { %>,
         <%= camelize(feature) %>: combineReducers(<%= camelize(feature) %>Reducers),<% } else if (extension) { %>,
         <%= camelize(extension) %>: combineReducers(<%= camelize(extension) %>Reducers),<% } %>
-      }),
+      }}),
     });
 
     store$ = TestBed.get(TestStore);

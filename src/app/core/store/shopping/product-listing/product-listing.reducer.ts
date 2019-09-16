@@ -90,21 +90,16 @@ export function productListingReducer(
       return { ...state, loading: false };
 
     case ProductListingActionTypes.SetProductListingPages: {
-      // merge payload with previous entity in state
-      const newState = adapter.upsertOne(action.payload, {
-        ...state,
-        loading: false,
-        currentSettings: mergeCurrentSettings(state.currentSettings, action.payload.id, {
-          sorting: action.payload.id.sorting,
-          filters: action.payload.id.filters,
-        }),
+      const pages =
+        action.payload.pages ||
+        calculatePages({ ...state.entities[serializeProductListingID(action.payload.id)], ...action.payload });
+
+      const currentSettings = mergeCurrentSettings(state.currentSettings, action.payload.id, {
+        sorting: action.payload.id.sorting,
+        filters: action.payload.id.filters,
       });
-      // overwrite pages property when not supplied by the action payload
-      if (!action.payload.pages) {
-        const entity = newState.entities[serializeProductListingID(action.payload.id)];
-        entity.pages = calculatePages(entity);
-      }
-      return newState;
+
+      return adapter.upsertOne({ ...action.payload, pages }, { ...state, loading: false, currentSettings });
     }
   }
 

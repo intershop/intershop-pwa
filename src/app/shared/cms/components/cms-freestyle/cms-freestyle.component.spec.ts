@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 
 import { CMSFreestyleComponent } from './cms-freestyle.component';
@@ -14,7 +14,7 @@ describe('Cms Freestyle Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StoreModule.forRoot({})],
+      imports: [RouterTestingModule, ngrxTesting()],
       declarations: [CMSFreestyleComponent, ServerHtmlDirective],
     }).compileComponents();
   }));

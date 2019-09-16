@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketPromotionComponent } from 'ish-shared/basket/components/basket-promotion/basket-promotion.component';
 
 import { BasketPromotionContainerComponent } from './basket-promotion.container';
@@ -16,8 +17,10 @@ describe('Basket Promotion Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [BasketPromotionContainerComponent, MockComponent(BasketPromotionComponent)],

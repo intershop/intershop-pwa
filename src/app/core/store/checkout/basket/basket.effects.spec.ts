@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
@@ -26,6 +26,7 @@ import { LoadProduct, LoadProductSuccess } from 'ish-core/store/shopping/product
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as basketActions from './basket.actions';
 import { BasketEffects } from './basket.effects';
@@ -53,10 +54,12 @@ describe('Basket Effects', () => {
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
         ]),
-        StoreModule.forRoot({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
       providers: [

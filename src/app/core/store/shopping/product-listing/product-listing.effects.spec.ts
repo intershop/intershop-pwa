@@ -27,14 +27,14 @@ describe('Product Listing Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting(
-          {
+        RouterTestingModule.withRoutes([{ path: 'some', component: DummyComponent }]),
+        ngrxTesting({
+          reducers: {
             ...coreReducers,
             shopping: combineReducers(shoppingReducers),
           },
-          [ProductListingEffects]
-        ),
-        RouterTestingModule.withRoutes([{ path: 'some', component: DummyComponent }]),
+          effects: [ProductListingEffects],
+        }),
       ],
       providers: [
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },

@@ -44,8 +44,10 @@ describe('Checkout Address Anonymous Component', () => {
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
         TranslateModule.forRoot(),
         ngrxTesting({
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
+          reducers: {
+            ...coreReducers,
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
       providers: [{ provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }],
