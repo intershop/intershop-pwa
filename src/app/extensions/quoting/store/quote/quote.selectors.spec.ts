@@ -26,8 +26,10 @@ describe('Quote Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        quoting: combineReducers(quotingReducers),
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          quoting: combineReducers(quotingReducers),
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
@@ -8,6 +7,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
@@ -24,11 +24,13 @@ describe('Product Detail Actions Component', () => {
         CommonModule,
         FeatureToggleModule,
         IconModule,
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['compare'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['compare'] } },
+          },
+        }),
       ],
       declarations: [ProductDetailActionsComponent],
     }).compileComponents();

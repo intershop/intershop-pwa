@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
@@ -29,10 +30,12 @@ describe('Line Item Edit Component', () => {
         FormsSharedModule,
         PipesModule,
         ReactiveFormsModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
       declarations: [
         LineItemEditComponent,

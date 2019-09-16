@@ -8,7 +8,7 @@ import { OrderMapper } from './order.mapper';
 describe('Order Mapper', () => {
   const orderBaseData = {
     documentNumber: '4711',
-    creationDate: undefined,
+    creationDate: 0,
     status: 'New',
     statusCode: 'NEW',
     id: 'order_1234',

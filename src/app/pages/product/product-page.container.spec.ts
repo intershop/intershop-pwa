@@ -49,13 +49,15 @@ describe('Product Page Container', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        ...ngrxTesting({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-        }),
         FeatureToggleModule,
         NgbModalModule,
         RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
       declarations: [
         DummyComponent,

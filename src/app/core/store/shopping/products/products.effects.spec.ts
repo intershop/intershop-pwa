@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
@@ -21,6 +21,7 @@ import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
@@ -66,9 +67,11 @@ describe('Products Effects', () => {
       declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          locale: localeReducer,
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+            locale: localeReducer,
+          },
         }),
       ],
       providers: [

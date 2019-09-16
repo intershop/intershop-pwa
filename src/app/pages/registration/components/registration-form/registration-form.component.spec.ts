@@ -1,7 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -10,6 +9,7 @@ import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
@@ -50,11 +50,13 @@ describe('Registration Form Component', () => {
         FeatureToggleModule,
         FormsSharedModule,
         ReactiveFormsModule,
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['businessCustomerRegistration'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['businessCustomerRegistration'] } },
+          },
+        }),
       ],
     }).compileComponents();
   }));

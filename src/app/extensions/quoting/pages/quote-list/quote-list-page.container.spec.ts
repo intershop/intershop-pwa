@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { QuoteData } from '../../models/quote/quote.interface';
@@ -27,10 +28,12 @@ describe('Quote List Page Container', () => {
         QuoteListPageContainerComponent,
       ],
       imports: [
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+          },
+        }),
       ],
     }).compileComponents();
   }));

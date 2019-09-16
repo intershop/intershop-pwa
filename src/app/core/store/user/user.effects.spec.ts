@@ -5,7 +5,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
@@ -20,6 +20,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
@@ -67,7 +68,7 @@ describe('User Effects', () => {
           { path: 'account', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
         ]),
-        StoreModule.forRoot(coreReducers),
+        ngrxTesting({ reducers: coreReducers }),
       ],
       providers: [
         UserEffects,
@@ -408,8 +409,10 @@ describe('User Effects', () => {
       );
     });
     it('should call the api service when UpdateCustomer is called for a business customer', done => {
-      customer.companyName = 'OilCorp';
-      const action = new ua.UpdateCustomer({ customer, successMessage: 'success' });
+      const action = new ua.UpdateCustomer({
+        customer: { ...customer, companyName: 'OilCorp' },
+        successMessage: 'success',
+      });
 
       actions$ = of(action);
 

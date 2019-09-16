@@ -47,10 +47,11 @@ describe('Products Service', () => {
     apiServiceMock = mock(ApiService);
     TestBed.configureTestingModule({
       imports: [
-        ...ngrxTesting({ configuration: configurationReducer, shopping: combineReducers(shoppingReducers) }, [
-          ProductListingEffects,
-        ]),
         RouterTestingModule,
+        ngrxTesting({
+          reducers: { configuration: configurationReducer, shopping: combineReducers(shoppingReducers) },
+          effects: [ProductListingEffects],
+        }),
       ],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },

@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoginStatusComponent } from 'ish-shell/header/components/login-status/login-status.component';
 import { LogoutComponent } from 'ish-shell/header/components/logout/logout.component';
 
@@ -20,7 +19,7 @@ describe('Login Status Container', () => {
         MockComponent(LoginStatusComponent),
         MockComponent(LogoutComponent),
       ],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [ngrxTesting()],
     })
       .compileComponents()
       .then(() => {

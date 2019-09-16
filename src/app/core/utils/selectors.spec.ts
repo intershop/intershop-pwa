@@ -14,7 +14,7 @@ describe('Selectors', () => {
       return { ...state, ...action.payload };
     }
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ state: reducer }),
+      imports: ngrxTesting({ reducers: { state: reducer } }),
     });
 
     store = TestBed.get(TestStore);

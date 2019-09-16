@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { contentReducers } from 'ish-core/store/content/content-store.module';
@@ -26,7 +27,9 @@ describe('Content Page Container', () => {
       imports: [
         RouterTestingModule,
         ngrxTesting({
-          content: contentReducers,
+          reducers: {
+            content: combineReducers(contentReducers),
+          },
         }),
       ],
       providers: [ContentPageContainerComponent],

@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { ProductRowComponent } from 'ish-shared/product/components/product-row/product-row.component';
 import { ProductTileComponent } from 'ish-shared/product/components/product-tile/product-tile.component';
@@ -19,8 +20,10 @@ describe('Product Item Container', () => {
     TestBed.configureTestingModule({
       imports: [
         NgbModalModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [

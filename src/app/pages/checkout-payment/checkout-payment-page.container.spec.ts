@@ -27,8 +27,10 @@ describe('Checkout Payment Page Container', () => {
       imports: [
         TranslateModule.forRoot(),
         ngrxTesting({
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
     }).compileComponents();

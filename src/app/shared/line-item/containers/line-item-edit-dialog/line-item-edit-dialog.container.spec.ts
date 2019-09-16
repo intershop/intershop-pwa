@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { Observable, of } from 'rxjs';
@@ -11,6 +11,7 @@ import { VariationProductView } from 'ish-core/models/product-view/product-view.
 import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
@@ -35,10 +36,12 @@ describe('Line Item Edit Dialog Container', () => {
         NgbModalModule,
         PipesModule,
         ReactiveFormsModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
       declarations: [
         LineItemEditDialogComponent,

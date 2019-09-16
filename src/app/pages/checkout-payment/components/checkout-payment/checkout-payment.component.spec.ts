@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule } from '@ngrx/store';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -12,6 +11,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketAddressSummaryComponent } from 'ish-shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
@@ -57,11 +57,13 @@ describe('Checkout Payment Component', () => {
         PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['experimental'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['experimental'] } },
+          },
+        }),
       ],
     })
       .overrideComponent(CheckoutPaymentComponent, {

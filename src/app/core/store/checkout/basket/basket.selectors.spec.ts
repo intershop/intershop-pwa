@@ -44,8 +44,10 @@ describe('Basket Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        checkout: combineReducers(checkoutReducers),
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          checkout: combineReducers(checkoutReducers),
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

@@ -13,7 +13,7 @@ describe('Viewconf Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ checkout: combineReducers(checkoutReducers) }, [ViewconfEffects]),
+      imports: ngrxTesting({ reducers: { checkout: combineReducers(checkoutReducers) }, effects: [ViewconfEffects] }),
     });
 
     store$ = TestBed.get(TestStore);

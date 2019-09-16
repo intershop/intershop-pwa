@@ -17,13 +17,13 @@ describe('Recently Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting(
-        {
+      imports: ngrxTesting({
+        reducers: {
           configuration: configurationReducer,
           shopping: combineReducers(shoppingReducers),
         },
-        [RecentlyEffects]
-      ),
+        effects: [RecentlyEffects],
+      }),
     });
 
     store$ = TestBed.get(TestStore);
