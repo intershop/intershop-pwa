@@ -97,11 +97,11 @@ describe('Search Box Component', () => {
       const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
     });
-    it('should show placeholder text when placeholderText is set', () => {
-      component.configuration = { id: 'searchbox', placeholderText: 'placeholderTextInput' };
+    it('should show placeholder text when placeholder is set', () => {
+      component.configuration = { id: 'searchbox', placeholder: 'placeholderInput' };
       fixture.detectChanges();
       const inputElement = element.querySelector('.searchTerm');
-      expect(inputElement.getAttribute('placeholder')).toBe('placeholderTextInput');
+      expect(inputElement.getAttribute('placeholder')).toBe('placeholderInput');
     });
   });
 });

@@ -17,7 +17,7 @@ export class InputComponent extends FormElementComponent implements OnInit {
   @Input() min?: number;
   @Input() max?: number;
 
-  @Input() placeholderText?: string;
+  @Input() placeholder = '';
 
   calculatedAutocomplete: string;
 

@@ -68,8 +68,8 @@ describe('Input Component', () => {
     expect(element.querySelector('input[autocomplete=off]')).toBeTruthy();
   });
 
-  it('should render placeholder text if placeholderText set', () => {
-    component.placeholderText = 'placeholder';
+  it('should render placeholder text if placeholder set', () => {
+    component.placeholder = 'placeholder';
     fixture.detectChanges();
     expect(element.querySelector('input[placeholder=placeholder]')).toBeTruthy();
   });
