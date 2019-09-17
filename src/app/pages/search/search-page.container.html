@@ -3,7 +3,11 @@
 
   <!-- search result with products -->
   <ng-container *ngIf="numberOfItems$ | async as numberOfItems; else noResult">
-    <ish-search-result [searchTerm]="searchTerm" [totalItems]="numberOfItems"></ish-search-result>
+    <ish-search-result
+      [searchTerm]="searchTerm"
+      [totalItems]="numberOfItems"
+      [deviceType]="deviceType$ | async"
+    ></ish-search-result>
   </ng-container>
 
   <!-- empty search result -->
