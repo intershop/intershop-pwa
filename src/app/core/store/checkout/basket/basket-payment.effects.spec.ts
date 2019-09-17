@@ -11,7 +11,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { BasketService } from 'ish-core/services/basket/basket.service';
+import { BasketPaymentService } from 'ish-core/services/basket/basket-payment.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -22,12 +22,12 @@ import * as basketActions from './basket.actions';
 
 describe('Basket Payment Effects', () => {
   let actions$: Observable<Action>;
-  let basketServiceMock: BasketService;
+  let basketPaymentServiceMock: BasketPaymentService;
   let effects: BasketPaymentEffects;
   let store$: Store<{}>;
 
   beforeEach(() => {
-    basketServiceMock = mock(BasketService);
+    basketPaymentServiceMock = mock(BasketPaymentService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -40,7 +40,7 @@ describe('Basket Payment Effects', () => {
       providers: [
         BasketPaymentEffects,
         provideMockActions(() => actions$),
-        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: BasketPaymentService, useFactory: () => instance(basketPaymentServiceMock) },
       ],
     });
 
@@ -50,7 +50,7 @@ describe('Basket Payment Effects', () => {
 
   describe('loadBasketEligiblePaymentMethods$', () => {
     beforeEach(() => {
-      when(basketServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
+      when(basketPaymentServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
         of([BasketMockData.getPaymentMethod()])
       );
 
@@ -69,7 +69,7 @@ describe('Basket Payment Effects', () => {
       actions$ = of(action);
 
       effects.loadBasketEligiblePaymentMethods$.subscribe(() => {
-        verify(basketServiceMock.getBasketEligiblePaymentMethods('BID')).once();
+        verify(basketPaymentServiceMock.getBasketEligiblePaymentMethods('BID')).once();
         done();
       });
     });
@@ -86,7 +86,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketEligiblePaymentMethodsFail', () => {
-      when(basketServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
+      when(basketPaymentServiceMock.getBasketEligiblePaymentMethods(anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
       const action = new basketActions.LoadBasketEligiblePaymentMethods();
@@ -104,7 +104,7 @@ describe('Basket Payment Effects', () => {
 
   describe('setPaymentAtBasket$ - set payment at basket for the first time', () => {
     beforeEach(() => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketPaymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -123,7 +123,7 @@ describe('Basket Payment Effects', () => {
       actions$ = of(action);
 
       effects.setPaymentAtBasket$.subscribe(() => {
-        verify(basketServiceMock.setBasketPayment('BID', id)).once();
+        verify(basketPaymentServiceMock.setBasketPayment('BID', id)).once();
         done();
       });
     });
@@ -139,7 +139,9 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid request to action of type SetPaymentFail', () => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketPaymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
       const action = new basketActions.SetBasketPayment({ id: 'newPayment' });
       const completion = new basketActions.SetBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
@@ -151,7 +153,7 @@ describe('Basket Payment Effects', () => {
 
   describe('setPaymentAtBasket$ - change payment method at basket', () => {
     beforeEach(() => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketPaymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
     });
@@ -162,7 +164,7 @@ describe('Basket Payment Effects', () => {
       actions$ = of(action);
 
       effects.setPaymentAtBasket$.subscribe(() => {
-        verify(basketServiceMock.setBasketPayment('4711', id)).once();
+        verify(basketPaymentServiceMock.setBasketPayment('4711', id)).once();
         done();
       });
     });
@@ -178,7 +180,9 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid addBasketPayment request to action of type SetPaymentFail', () => {
-      when(basketServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketPaymentServiceMock.setBasketPayment(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
       const action = new basketActions.SetBasketPayment({ id: 'newPayment' });
       const completion = new basketActions.SetBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
@@ -205,7 +209,7 @@ describe('Basket Payment Effects', () => {
     };
 
     beforeEach(() => {
-      when(basketServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
+      when(basketPaymentServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
         of({ id: 'newPaymentInstrumentId' } as PaymentInstrument)
       );
 
@@ -225,7 +229,7 @@ describe('Basket Payment Effects', () => {
       actions$ = of(action);
 
       effects.createBasketPaymentInstrument$.subscribe(() => {
-        verify(basketServiceMock.createBasketPayment('BID', anything())).once();
+        verify(basketPaymentServiceMock.createBasketPayment('BID', anything())).once();
         done();
       });
     });
@@ -241,7 +245,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid request to action of type CreateBasketPaymentFail', () => {
-      when(basketServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
+      when(basketPaymentServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
       const action = new basketActions.CreateBasketPayment({ paymentInstrument });
@@ -319,7 +323,7 @@ describe('Basket Payment Effects', () => {
     };
 
     beforeEach(() => {
-      when(basketServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(of(payment));
+      when(basketPaymentServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(of(payment));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -337,7 +341,7 @@ describe('Basket Payment Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketPayment$.subscribe(() => {
-        verify(basketServiceMock.updateBasketPayment('BID', anything())).once();
+        verify(basketPaymentServiceMock.updateBasketPayment('BID', anything())).once();
         done();
       });
     });
@@ -353,7 +357,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateBasketPaymentFail', () => {
-      when(basketServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(
+      when(basketPaymentServiceMock.updateBasketPayment(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
       const action = new basketActions.UpdateBasketPayment({ params });
@@ -376,7 +380,7 @@ describe('Basket Payment Effects', () => {
 
   describe('deleteBasketPaymentInstrument$', () => {
     beforeEach(() => {
-      when(basketServiceMock.deleteBasketPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
+      when(basketPaymentServiceMock.deleteBasketPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -395,7 +399,7 @@ describe('Basket Payment Effects', () => {
       actions$ = of(action);
 
       effects.deleteBasketPaymentInstrument$.subscribe(() => {
-        verify(basketServiceMock.deleteBasketPaymentInstrument('BID', id)).once();
+        verify(basketPaymentServiceMock.deleteBasketPaymentInstrument('BID', id)).once();
         done();
       });
     });
@@ -411,7 +415,7 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketPaymentFail', () => {
-      when(basketServiceMock.deleteBasketPaymentInstrument(anyString(), anyString())).thenReturn(
+      when(basketPaymentServiceMock.deleteBasketPaymentInstrument(anyString(), anyString())).thenReturn(
         throwError({ message: 'invalid' })
       );
       const action = new basketActions.DeleteBasketPayment({ id: 'newPayment' });
