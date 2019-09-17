@@ -2,12 +2,12 @@
 
 exports[`Filter Swatch Images Component should be created 1`] = `
 <ul class="filter-list clearfix">
-  <li class="filter-item filter-colour">
+  <li class="filter-item filter-color">
     <a class="filter-swatch" title="Black" data-testing-id="filter-link-Black"
       ><span style="background-color: black;"></span
     ></a>
   </li>
-  <li class="filter-item filter-colour filter-selected">
+  <li class="filter-item filter-color filter-selected">
     <a class="filter-swatch" title="Red" data-testing-id="filter-link-Red"
       ><span style="background-color: red;"></span
     ></a>
