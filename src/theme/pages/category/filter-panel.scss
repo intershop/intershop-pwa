@@ -71,7 +71,7 @@
       padding: 3px 0;
       color: $text-color-quarternary;
 
-      &.filter-colour {
+      &.filter-color {
         padding: 0;
       }
 
@@ -105,6 +105,10 @@
 
     &.filter-selected {
       color: $text-color-secondary;
+      margin-right: 3px;
+      margin-bottom: 3px;
+      margin-left: 0;
+      margin-top: 0;
 
       a {
         &.filter-item-name {
@@ -131,9 +135,13 @@
         }
       }
 
-      &.filter-colour {
-        span {
-          border: 2px solid $color-corporate;
+      &.filter-color {
+        a {
+          display: inline-block;
+          border: 1px solid $text-color-quarternary;
+          border-radius: 50%;
+          height: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px; // diameter + 2 * padding + 2 * border-width
+          width: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px;
         }
       }
     }
@@ -248,19 +256,26 @@ label {
   line-height: 14px;
 }
 
-.filter-colour {
+.filter-color {
   float: left;
-  margin-right: 3px;
+  height: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px;
+  margin-right: 8px;
+  margin-left: 1px;
+  margin-bottom: 0;
+  margin-top: 1px;
 }
 
 .filter-swatch {
   span {
     display: inline-block;
-    width: 18px;
-    height: 18px;
+    width: $swatch-image-diameter;
+    height: $swatch-image-diameter;
     border-radius: 50%;
+    position: relative;
+    left: $swatch-image-padding-to-border;
+    top: $swatch-image-padding-to-border;
 
-    &.filter-colour-bright {
+    &.filter-color-bright {
       border: 1px solid $border-color-light;
     }
   }
