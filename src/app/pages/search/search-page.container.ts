@@ -4,6 +4,7 @@ import { debounce, map, switchMap } from 'rxjs/operators';
 
 import { getProductListingLoading, getProductListingView } from 'ish-core/store/shopping/product-listing';
 import { getSearchTerm } from 'ish-core/store/shopping/search';
+import { getDeviceType } from 'ish-core/store/viewconf';
 import { whenFalsy } from 'ish-core/utils/operators';
 
 @Component({
@@ -27,6 +28,8 @@ export class SearchPageContainerComponent {
       )
     )
   );
+
+  deviceType$ = this.store.pipe(select(getDeviceType));
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   constructor(private store: Store<{}>) {}
