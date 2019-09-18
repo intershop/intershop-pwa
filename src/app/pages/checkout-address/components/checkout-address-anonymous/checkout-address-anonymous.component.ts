@@ -113,7 +113,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
    * submits address form and leads to next checkout page (checkout shipping)
    */
   submitAddressForm() {
-    // ToDo: routing should be handled in another way, see #ISREST-317
     if (this.form.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.form);

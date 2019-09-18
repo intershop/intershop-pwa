@@ -6,6 +6,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { LoadAddresses, getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/addresses';
 import {
   AssignBasketAddress,
+  ContinueCheckout,
   CreateBasketAddress,
   DeleteBasketShippingAddress,
   UpdateBasketAddress,
@@ -86,5 +87,12 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
    */
   deleteCustomerAddress(addressId: string) {
     this.store.dispatch(new DeleteBasketShippingAddress({ addressId }));
+  }
+
+  /**
+   * Validates the basket and jumps to the next checkout step (Shipping)
+   */
+  nextStep() {
+    this.store.dispatch(new ContinueCheckout({ targetStep: 2 }));
   }
 }

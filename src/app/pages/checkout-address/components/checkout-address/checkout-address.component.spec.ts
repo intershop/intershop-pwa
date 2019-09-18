@@ -16,6 +16,7 @@ import { CustomerAddressFormComponent } from 'ish-shared/address-forms/component
 import { AddressComponent } from 'ish-shared/address/components/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
@@ -40,6 +41,7 @@ describe('Checkout Address Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(CustomerAddressFormComponent),
         MockComponent(ErrorMessageComponent),
@@ -327,34 +329,34 @@ describe('Checkout Address Component', () => {
   it('should render an error if the user clicks next and has currently no addresses selected', () => {
     component.basket.invoiceToAddress = undefined;
     component.basket.commonShipToAddress = undefined;
-    component.nextStep();
+    component.goToNextStep();
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 
   it('should set submitted if next button is clicked', () => {
     expect(component.submitted).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.submitted).toBeTrue();
   });
 
   it('should not disable next button if basket addresses are set and next button is clicked', () => {
     expect(component.nextDisabled).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeFalse();
   });
 
   it('should disable next button if basket invoice is missing and next button is clicked', () => {
     component.basket.invoiceToAddress = undefined;
 
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeTrue();
   });
 
   it('should disable next button if basket shipping is missing and next button is clicked', () => {
     component.basket.commonShipToAddress = undefined;
 
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeTrue();
   });
 });

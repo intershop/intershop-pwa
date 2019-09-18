@@ -9,13 +9,19 @@ const getBasketState = createSelector(
   state => state.basket
 );
 
+export const getBasketValidationResults = createSelector(
+  getBasketState,
+  basket => basket.validationResults
+);
+
 /**
- * Select the current basket with the appended product data for each line item.
+ * Select the current basket with the appended product data and validation results for each line item.
  */
 export const getCurrentBasket = createSelector(
   getBasketState,
   getProductEntities,
-  (basket, products): BasketView => createBasketView(basket.basket, products)
+  getBasketValidationResults,
+  (basket, products, validationResults): BasketView => createBasketView(basket.basket, products, validationResults)
 );
 
 export const getCurrentBasketId = createSelector(

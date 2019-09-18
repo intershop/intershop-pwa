@@ -1,0 +1,9 @@
+<ng-container *ngFor="let message of messages">
+  <div *ngIf="!!message" class="alert alert-danger" data-testing-id="validation-message">
+    {{ message }}
+  </div>
+</ng-container>
+
+<div *ngIf="hasGeneralBasketError" class="alert alert-danger" data-testing-id="general-validation-message">
+  {{ 'basket.validation.general.error' | translate }}
+</div>
