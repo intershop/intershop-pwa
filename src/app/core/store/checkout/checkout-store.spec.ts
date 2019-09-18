@@ -25,6 +25,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
+import { BasketPaymentService } from 'ish-core/services/basket/basket-payment.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CountryService } from 'ish-core/services/country/country.service';
@@ -243,6 +244,7 @@ describe('Checkout Store', () => {
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: BasketPaymentService, useFactory: () => instance(mock(BasketPaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },

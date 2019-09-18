@@ -1,3 +1,7 @@
+import {
+  BasketValidation,
+  BasketValidationResultType,
+} from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -105,6 +109,46 @@ describe('Basket Reducer', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.UpdateBasketFail({ error });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+  });
+
+  describe('ContinueCheckout actions', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+    describe('ContinueCheckout action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.ContinueCheckout({ targetStep: 1 });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+        expect(state.validationResults.valid).toBeUndefined();
+      });
+    });
+
+    describe('ContinueCheckoutSuccess action', () => {
+      it('should save validationResults when called', () => {
+        const action = new fromActions.ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.validationResults.valid).toBeTrue();
+      });
+    });
+
+    describe('ContinueCheckoutFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.ContinueCheckoutFail({ error });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -560,6 +604,17 @@ describe('Basket Reducer', () => {
       const state = basketReducer(oldState, action);
 
       expect(state.promotionError).toBeUndefined();
+    });
+
+    it('should reset validationErrors in state if called', () => {
+      const oldState = {
+        ...initialState,
+        validationResults: { errors: [{ message: 'errorMessage' }] } as BasketValidationResultType,
+      };
+      const action = new fromActions.ResetBasketErrors();
+      const state = basketReducer(oldState, action);
+
+      expect(state.validationResults.errors).toHaveLength(0);
     });
   });
 });

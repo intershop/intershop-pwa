@@ -27,6 +27,7 @@ import { BasketCostSummaryComponent } from './basket/components/basket-cost-summ
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './basket/components/basket-promotion/basket-promotion.component';
+import { BasketValidationResultsComponent } from './basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
 import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
@@ -168,6 +169,7 @@ const exportedComponents = [
   BasketItemsSummaryComponent,
   BasketPromotionCodeComponent,
   BasketPromotionContainerComponent,
+  BasketValidationResultsComponent,
   BreadcrumbComponent,
   ContentIncludeContainerComponent,
   ContentPageletContainerComponent,

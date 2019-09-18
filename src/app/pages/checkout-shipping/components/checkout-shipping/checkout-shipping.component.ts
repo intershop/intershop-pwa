@@ -29,6 +29,7 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() error: HttpError;
 
   @Output() updateShippingMethod = new EventEmitter<string>();
+  @Output() nextStep = new EventEmitter<void>();
 
   shippingForm: FormGroup;
   submitted = false;
@@ -65,10 +66,10 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * leads to next checkout page (checkout payment)
    */
-  nextStep() {
+  goToNextStep() {
     this.submitted = true;
     if (!this.nextDisabled) {
-      this.router.navigate(['/checkout/payment']);
+      this.nextStep.emit();
     }
   }
 
