@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
  * The Search Result Component displays a list of products as the result of a search and emits events for changing view type or sorting of the list.
@@ -16,7 +18,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   templateUrl: './search-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchResultComponent {
+export class SearchResultComponent implements OnInit, OnChanges {
   /**
    * The the search term leading to the displayed result.
    */
@@ -26,4 +28,23 @@ export class SearchResultComponent {
    * The total number of product search results (might be different from products.length if paging is applied).
    */
   @Input() totalItems: number;
+  @Input() deviceType: DeviceType;
+
+  isCollapsed = false;
+
+  ngOnInit() {
+    this.isCollapsed = this.deviceType === 'mobile';
+  }
+
+  ngOnChanges(change) {
+    window.scroll(0, 0);
+    if (change.deviceType) {
+      this.isCollapsed = this.deviceType === 'mobile';
+    }
+  }
+
+  toggle() {
+    this.isCollapsed = !this.isCollapsed;
+    window.scroll(0, 0);
+  }
 }
