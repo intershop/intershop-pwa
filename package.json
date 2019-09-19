@@ -127,7 +127,6 @@
     "tslint-consistent-codestyle": "^1.15.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-etc": "^1.7.0",
-    "tslint-jasmine-rules": "^1.6.0",
     "typescript": "~3.5.3",
     "webpack-cli": "^3.1.0"
   },
