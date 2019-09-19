@@ -21,7 +21,13 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.model'
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  mapToProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
@@ -123,11 +129,11 @@ export class BasketEffects {
   @Effect()
   addQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayloadProperty('quoteId'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([, basketId]) => !!basketId),
-    concatMap(([quoteId, basketId]) =>
-      this.basketService.addQuoteToBasket(quoteId, basketId).pipe(
+    filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
+    concatMap(([payload, currentBasketId]) =>
+      this.basketService.addQuoteToBasket(payload.quoteId, currentBasketId).pipe(
         map(link => new basketActions.AddQuoteToBasketSuccess({ link })),
         mapErrorToAction(basketActions.AddQuoteToBasketFail)
       )
@@ -141,11 +147,14 @@ export class BasketEffects {
   @Effect()
   getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayloadProperty('quoteId'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([, basketId]) => !basketId),
-    mergeMap(([quoteId]) =>
-      this.basketService.createBasket().pipe(mapTo(new basketActions.AddQuoteToBasket({ quoteId })))
+    filter(([payload, basketId]) => !basketId && !payload.basketId),
+    mergeMap(([{ quoteId }]) =>
+      this.basketService.createBasket().pipe(
+        mapToProperty('id'),
+        map(id => new basketActions.AddQuoteToBasket({ quoteId, basketId: id as string }))
+      )
     )
   );
 
@@ -159,7 +168,7 @@ export class BasketEffects {
       basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.AddQuoteToBasketFail
     ),
-    mapTo(new basketActions.UpdateBasket({ update: { calculationState: 'CALCULATED' } }))
+    mapTo(new basketActions.UpdateBasket({ update: { calculated: true } }))
   );
 
   /**
