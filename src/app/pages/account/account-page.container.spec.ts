@@ -7,8 +7,6 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
-import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
-
 import { AccountPageContainerComponent } from './account-page.container';
 import { AccountPageComponent } from './components/account-page/account-page.component';
 
@@ -19,11 +17,7 @@ describe('Account Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AccountPageContainerComponent,
-        MockComponent(AccountPageComponent),
-        MockComponent(BreadcrumbComponent),
-      ],
+      declarations: [AccountPageContainerComponent, MockComponent(AccountPageComponent)],
       providers: [
         { provide: Store, useFactory: () => instance(mock(Store)) },
         { provide: ActivatedRoute, useValue: { firstChild: { data: EMPTY } } },

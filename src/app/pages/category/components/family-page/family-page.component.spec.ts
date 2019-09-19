@@ -9,6 +9,7 @@ import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
 import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
 
@@ -24,6 +25,7 @@ describe('Family Page Component', () => {
       imports: [IconModule, NgbCollapseModule, PipesModule, TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
+        MockComponent(BreadcrumbComponent),
         MockComponent(FilterNavigationContainerComponent),
         MockComponent(ProductListContainerComponent),
       ],
@@ -45,6 +47,10 @@ describe('Family Page Component', () => {
   });
 
   it('should display all components on the page', () => {
-    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-product-list-container', 'ish-filter-navigation']);
+    expect(findAllIshElements(element)).toIncludeAllMembers([
+      'ish-breadcrumb',
+      'ish-product-list-container',
+      'ish-filter-navigation',
+    ]);
   });
 });

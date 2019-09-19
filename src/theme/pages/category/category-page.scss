@@ -2,7 +2,7 @@
 // CATEGORY PAGE
 
 .category-page {
-  padding: 0 0 ($space-default);
+  padding: $space-default 0 ($space-default);
 
   @media (max-width: $screen-xs-max) {
     padding: 0;

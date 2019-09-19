@@ -1,7 +1,6 @@
 <div class="category-page" [attr.data-testing-id]="category.uniqueId">
   <div class="row">
     <div class="col-md-3">
-      <h1>{{ category.name }}</h1>
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <ish-category-navigation [category]="category" [categoryNavigationLevel]="0"></ish-category-navigation>
       </div>
@@ -12,6 +11,10 @@
       </a>
     </div>
 
-    <div class="col-md-9"><ish-category-list [categories]="category.children()"></ish-category-list></div>
+    <div class="col-md-9">
+      <ish-breadcrumb [category]="category"></ish-breadcrumb>
+      <h1>{{ category.name }}</h1>
+      <ish-category-list [categories]="category.children()"></ish-category-list>
+    </div>
   </div>
 </div>
