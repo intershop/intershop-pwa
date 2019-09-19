@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
+
 import { AccountNavigationComponent } from '../account-navigation/account-navigation.component';
 
 import { AccountPageComponent } from './account-page.component';
@@ -14,7 +16,11 @@ describe('Account Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [AccountPageComponent, MockComponent(AccountNavigationComponent)],
+      declarations: [
+        AccountPageComponent,
+        MockComponent(AccountNavigationComponent),
+        MockComponent(BreadcrumbComponent),
+      ],
     }).compileComponents();
   }));
 
