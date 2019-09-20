@@ -1,17 +1,22 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getTopLevelCategories } from 'ish-core/store/shopping/categories';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 
 @Component({
   selector: 'ish-header-navigation-container',
   templateUrl: './header-navigation.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderNavigationContainerComponent {
+export class HeaderNavigationContainerComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  categories$ = this.store.pipe(select(getTopLevelCategories));
+  categories$: Observable<CategoryView[]>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.categories$ = this.shoppingFacade.topLevelCategories$;
+  }
 }

@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
-import { LoadQuotes, getCurrentQuotes, getQuoteLoading } from '../../../../store/quote';
-import { LoadQuoteRequests, getCurrentQuoteRequests, getQuoteRequestLoading } from '../../../../store/quote-request';
+import { QuotingFacade } from '../../../../facades/quoting.facade';
+import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
+import { Quote } from '../../../../models/quote/quote.model';
 
 @Component({
   selector: 'ish-quote-widget-container',
@@ -11,16 +12,18 @@ import { LoadQuoteRequests, getCurrentQuoteRequests, getQuoteRequestLoading } fr
 })
 // tslint:disable-next-line:ccp-no-markup-in-containers
 export class QuoteWidgetContainerComponent implements OnInit {
-  quoteRequests$ = this.store.pipe(select(getCurrentQuoteRequests));
-  quotes$ = this.store.pipe(select(getCurrentQuotes));
+  quotes$: Observable<Quote[]>;
+  quoteLoading$: Observable<boolean>;
 
-  quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
-  quoteLoading$ = this.store.pipe(select(getQuoteLoading));
+  quoteRequests$: Observable<QuoteRequest[]>;
+  quoteRequestLoading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private quotingFacade: QuotingFacade) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(new LoadQuoteRequests());
-    this.store.dispatch(new LoadQuotes());
+  ngOnInit() {
+    this.quotes$ = this.quotingFacade.quotes$();
+    this.quoteRequests$ = this.quotingFacade.quoteRequests$();
+    this.quoteLoading$ = this.quotingFacade.quoteLoading$;
+    this.quoteRequestLoading$ = this.quotingFacade.quoteRequestLoading$;
   }
 }
