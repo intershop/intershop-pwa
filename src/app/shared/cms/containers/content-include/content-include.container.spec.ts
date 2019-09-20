@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { deepEqual, instance, mock, spy, verify } from 'ts-mockito';
+import { EMPTY, of } from 'rxjs';
+import { anything, instance, mock, when } from 'ts-mockito';
 
-import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { contentReducers } from 'ish-core/store/content/content-store.module';
-import { LoadContentInclude, LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CMSFacade } from 'ish-core/facades/cms.facade';
+import {
+  ContentPageletEntryPointView,
+  createContentPageletEntryPointView,
+} from 'ish-core/models/content-view/content-view.model';
 import { ContentPageletContainerComponent } from 'ish-shared/cms/containers/content-pagelet/content-pagelet.container';
-import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
 import { ContentIncludeContainerComponent } from './content-include.container';
 
@@ -17,36 +16,32 @@ describe('Content Include Container', () => {
   let component: ContentIncludeContainerComponent;
   let fixture: ComponentFixture<ContentIncludeContainerComponent>;
   let element: HTMLElement;
-  let include: ContentPageletEntryPoint;
-  let store$: Store<{}>;
-  let sfeAdapterMock: SfeAdapterService;
+  let include: ContentPageletEntryPointView;
+  let cmsFacade: CMSFacade;
 
   beforeEach(async(() => {
-    include = {
-      id: 'test.include',
-      definitionQualifiedName: 'test.include-Include',
-      domain: 'domain',
-      displayName: 'displayName',
-      resourceSetId: 'resId',
-      configurationParameters: {
-        key: '1',
+    include = createContentPageletEntryPointView(
+      {
+        id: 'test.include',
+        definitionQualifiedName: 'test.include-Include',
+        domain: 'domain',
+        displayName: 'displayName',
+        resourceSetId: 'resId',
+        configurationParameters: {
+          key: '1',
+        },
       },
-    };
+      undefined
+    );
 
-    sfeAdapterMock = mock(SfeAdapterService);
+    cmsFacade = mock(CMSFacade);
+    when(cmsFacade.contentInclude$(anything())).thenReturn(of(include));
+    when(cmsFacade.contentIncludeSfeMetadata$(anything())).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
       declarations: [ContentIncludeContainerComponent, MockComponent(ContentPageletContainerComponent)],
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          content: combineReducers(contentReducers),
-        },
-      }),
-      providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
+      providers: [{ provide: CMSFacade, useValue: instance(cmsFacade) }],
     }).compileComponents();
-
-    store$ = TestBed.get(Store);
   }));
 
   beforeEach(() => {
@@ -59,24 +54,14 @@ describe('Content Include Container', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should dispatch a content loading action on ngOnInit', () => {
-    const storeSpy$ = spy(store$);
-
-    fixture.detectChanges();
-
-    verify(storeSpy$.dispatch(deepEqual(new LoadContentInclude({ includeId: 'test.include' })))).once();
-  });
-
   describe('with content', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-      store$.dispatch(new LoadContentIncludeSuccess({ include, pagelets: [] }));
-    });
-
     it('should have the matching include available for rendering', done => {
+      component.ngOnChanges();
+      fixture.detectChanges();
       component.contentInclude$.subscribe(inc => {
         expect(inc.id).toEqual('test.include');
         expect(inc.numberParam('key')).toBe(1);

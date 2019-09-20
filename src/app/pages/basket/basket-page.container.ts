@@ -1,37 +1,38 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import {
-  ContinueCheckout,
-  DeleteBasketItem,
-  UpdateBasketItems,
-  getBasketError,
-  getBasketLoading,
-  getCurrentBasket,
-} from 'ish-core/store/checkout/basket';
 
 @Component({
   selector: 'ish-basket-page-container',
   templateUrl: './basket-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketPageContainerComponent {
-  basket$ = this.store.pipe(select(getCurrentBasket));
-  basketLoading$ = this.store.pipe(select(getBasketLoading));
-  basketError$ = this.store.pipe(select(getBasketError));
+export class BasketPageContainerComponent implements OnInit {
+  basket$: Observable<BasketView>;
+  basketLoading$: Observable<boolean>;
+  basketError$: Observable<HttpError>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
+
+  ngOnInit() {
+    this.basket$ = this.checkoutFacade.basket$;
+    this.basketLoading$ = this.checkoutFacade.basketLoading$;
+    this.basketError$ = this.checkoutFacade.basketError$;
+  }
 
   deleteBasketItem(itemId: string) {
-    this.store.dispatch(new DeleteBasketItem({ itemId }));
+    this.checkoutFacade.deleteBasketItem(itemId);
   }
 
   updateBasketItem(formValue: LineItemUpdate) {
-    this.store.dispatch(new UpdateBasketItems({ lineItemUpdates: [formValue] }));
+    this.checkoutFacade.updateBasketItem(formValue);
   }
 
   nextStep() {
-    this.store.dispatch(new ContinueCheckout({ targetStep: 1 }));
+    this.checkoutFacade.continue(1);
   }
 }

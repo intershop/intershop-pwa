@@ -1,11 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { CookieLawContainerComponent } from 'angular2-cookie-law';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/viewconf';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
  * The App Component provides the application frame for the single page application.
@@ -18,26 +17,20 @@ import { getDeviceType, getWrapperClass, isStickyHeader } from 'ish-core/store/v
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 // tslint:disable-next-line:ccp-no-intelligence-in-components
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild('cookieLaw', { static: false }) private cookieLaw: CookieLawContainerComponent;
+
   isBrowser: boolean;
+  wrapperClasses$: Observable<string[]>;
+  deviceType$: Observable<DeviceType>;
 
-  wrapperClasses$ = combineLatest([
-    this.store.pipe(select(getWrapperClass)),
-    this.store.pipe(
-      select(isStickyHeader),
-      map(isSticky => (isSticky ? 'sticky-header' : ''))
-    ),
-    this.store.pipe(
-      select(getDeviceType),
-      map(deviceType => (deviceType === 'mobile' ? 'sticky-header' : ''))
-    ),
-  ]).pipe(map(classes => classes.filter(c => !!c)));
-
-  deviceType$ = this.store.pipe(select(getDeviceType));
-
-  constructor(private store: Store<{}>, @Inject(PLATFORM_ID) platformId: string) {
+  constructor(private appFacade: AppFacade, @Inject(PLATFORM_ID) platformId: string) {
     this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+  ngOnInit() {
+    this.deviceType$ = this.appFacade.deviceType$;
+    this.wrapperClasses$ = this.appFacade.appWrapperClasses$;
   }
 
   dismiss() {

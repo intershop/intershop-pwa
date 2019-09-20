@@ -1,6 +1,7 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -35,7 +36,7 @@ describe('Address Form Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },

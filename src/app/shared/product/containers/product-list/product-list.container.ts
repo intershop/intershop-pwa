@@ -1,18 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { concatMap, map, take, takeUntil } from 'rxjs/operators';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductListingID, ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
-import {
-  LoadMoreProducts,
-  getProductListingLoading,
-  getProductListingView,
-  getProductListingViewType,
-} from 'ish-core/store/shopping/product-listing';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -28,16 +22,21 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
   @Input() fragmentOnRouting = 'product-list-top';
 
   productListingView$: Observable<ProductListingView>;
-  viewType$ = this.store.pipe(select(getProductListingViewType));
-  listingLoading$ = this.store.pipe(select(getProductListingLoading));
-  currentPage$ = this.activatedRoute.queryParamMap.pipe(map(params => +params.get('page') || 1));
-  sortBy$ = this.activatedRoute.queryParamMap.pipe(map(params => params.get('sorting')));
+  viewType$: Observable<ViewType>;
+  listingLoading$: Observable<boolean>;
+  currentPage$: Observable<number>;
+  sortBy$: Observable<string>;
 
   private destroy$ = new Subject();
 
-  constructor(private store: Store<{}>, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
+    this.viewType$ = this.shoppingFacade.productListingViewType$;
+    this.listingLoading$ = this.shoppingFacade.productListingLoading$;
+    this.currentPage$ = this.activatedRoute.queryParamMap.pipe(map(params => +params.get('page') || 1));
+    this.sortBy$ = this.activatedRoute.queryParamMap.pipe(map(params => params.get('sorting')));
+
     // append view queryParam to URL if none is set
     this.activatedRoute.queryParamMap
       .pipe(
@@ -56,10 +55,7 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.id) {
-      this.productListingView$ = this.store.pipe(
-        select(getProductListingView, this.id),
-        takeUntil(this.destroy$)
-      );
+      this.productListingView$ = this.shoppingFacade.productListingView$(this.id).pipe(takeUntil(this.destroy$));
     }
   }
 
@@ -91,7 +87,7 @@ export class ProductListContainerComponent implements OnInit, OnChanges, OnDestr
         whenTruthy()
       )
       .subscribe(page => {
-        this.store.dispatch(new LoadMoreProducts({ id: this.id, page }));
+        this.shoppingFacade.loadMoreProducts(this.id, page);
       });
   }
 

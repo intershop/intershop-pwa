@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { UpdateUser, getLoggedInUser, getUserError, getUserLoading } from 'ish-core/store/user';
 
 /**
  * The Account Profile Email Page Container Component renders a page where the user can change his email using the {@link AccountProfileEmailPageComponent}
@@ -12,14 +13,20 @@ import { UpdateUser, getLoggedInUser, getUserError, getUserLoading } from 'ish-c
   templateUrl: './account-profile-email-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileEmailPageContainerComponent {
-  currentUser$ = this.store.pipe(select(getLoggedInUser));
-  userError$ = this.store.pipe(select(getUserError));
-  userLoading$ = this.store.pipe(select(getUserLoading));
+export class AccountProfileEmailPageContainerComponent implements OnInit {
+  currentUser$: Observable<User>;
+  userError$: Observable<HttpError>;
+  userLoading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.currentUser$ = this.accountFacade.user$;
+    this.userError$ = this.accountFacade.userError$;
+    this.userLoading$ = this.accountFacade.userLoading$;
+  }
 
   updateUserEmail(user: User) {
-    this.store.dispatch(new UpdateUser({ user, successMessage: 'account.profile.update_email.message' }));
+    this.accountFacade.updateUserEmail(user);
   }
 }

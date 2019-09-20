@@ -1,14 +1,20 @@
-import { Location } from '@angular/common';
 import { ApplicationRef, ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
 import { filter, first, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import {
+  ProductView,
+  VariationProductMasterView,
+  VariationProductView,
+} from 'ish-core/models/product-view/product-view.model';
 import {
   ProductCompletenessLevel,
   ProductHelper,
@@ -16,12 +22,6 @@ import {
   SkuQuantityType,
 } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
-import { AddProductToBasket } from 'ish-core/store/checkout/basket';
-import { getICMBaseURL } from 'ish-core/store/configuration';
-import { getSelectedCategory } from 'ish-core/store/shopping/categories';
-import { AddToCompare } from 'ish-core/store/shopping/compare';
-import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
-import { getProducts, getSelectedProduct, getSelectedProductVariationOptions } from 'ish-core/store/shopping/products';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -30,17 +30,15 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageContainerComponent implements OnInit, OnDestroy {
-  product$ = this.store.pipe(select(getSelectedProduct));
+  product$: Observable<ProductView | VariationProductView | VariationProductMasterView>;
+  productVariationOptions$: Observable<VariationOptionGroup[]>;
+  productLoading$: Observable<boolean>;
+  category$: Observable<CategoryView>;
+
   quantity: number;
   price$: Observable<ProductPrices>;
-  productVariationOptions$ = this.store.pipe(select(getSelectedProductVariationOptions));
-  category$ = this.store.pipe(select(getSelectedCategory));
-  productLoading$ = this.product$.pipe(map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail)));
 
-  currentUrl$ = this.store.pipe(
-    select(getICMBaseURL),
-    map(baseUrl => baseUrl + this.location.path())
-  );
+  currentUrl$: Observable<string>;
 
   isProductBundle = ProductHelper.isProductBundle;
   isRetailSet = ProductHelper.isRetailSet;
@@ -50,8 +48,8 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   retailSetParts$ = new ReplaySubject<SkuQuantityType[]>(1);
 
   constructor(
-    private store: Store<{}>,
-    private location: Location,
+    private appFacade: AppFacade,
+    private shoppingFacade: ShoppingFacade,
     private router: Router,
     private prodRoutePipe: ProductRoutePipe,
     private featureToggleService: FeatureToggleService,
@@ -60,6 +58,12 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.product$ = this.shoppingFacade.selectedProduct$;
+    this.productVariationOptions$ = this.shoppingFacade.selectedProductVariationOptions$;
+    this.category$ = this.shoppingFacade.selectedCategory$;
+    this.productLoading$ = this.shoppingFacade.productDetailLoading$;
+    this.currentUrl$ = this.appFacade.currentUrl$;
+
     this.product$
       .pipe(
         whenTruthy(),
@@ -75,7 +79,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
           this.redirectToVariation(product.defaultVariation(), true);
         }
         if (ProductHelper.isMasterProduct(product) && this.featureToggleService.enabled('advancedVariationHandling')) {
-          this.store.dispatch(new LoadMoreProducts({ id: { type: 'master', value: product.sku }, page: 1 }));
+          this.shoppingFacade.loadMoreProducts({ type: 'master', value: product.sku }, 1);
         }
         if (ProductHelper.isRetailSet(product)) {
           this.retailSetParts$.next(product.partSKUs.map(sku => ({ sku, quantity: 1 })));
@@ -88,8 +92,7 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
           return this.retailSetParts$.pipe(
             filter(parts => !!parts && !!parts.length),
             switchMap(parts =>
-              this.store.pipe(
-                select(getProducts, { skus: parts.map(part => part.sku) }),
+              this.shoppingFacade.products$(parts.map(part => part.sku)).pipe(
                 filter(products =>
                   products.every(p => ProductHelper.isSufficientlyLoaded(p, ProductCompletenessLevel.List))
                 ),
@@ -116,17 +119,17 @@ export class ProductPageContainerComponent implements OnInit, OnDestroy {
             parts
               .filter(({ quantity }) => !!quantity)
               .forEach(({ sku, quantity }) => {
-                this.store.dispatch(new AddProductToBasket({ sku, quantity }));
+                this.shoppingFacade.addProductToBasket(sku, quantity);
               })
           );
         } else {
-          this.store.dispatch(new AddProductToBasket({ sku: product.sku, quantity: this.quantity }));
+          this.shoppingFacade.addProductToBasket(product.sku, this.quantity);
         }
       });
   }
 
   addToCompare(sku: string) {
-    this.store.dispatch(new AddToCompare({ sku }));
+    this.shoppingFacade.addProductToCompare(sku);
   }
 
   variationSelected(selection: VariationSelection, product: VariationProductView) {

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -14,7 +15,7 @@ describe('Language Switch Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LanguageSwitchContainerComponent, MockComponent(LanguageSwitchComponent)],
-      imports: [ngrxTesting()],
+      imports: [RouterTestingModule, ngrxTesting()],
     })
       .compileComponents()
       .then(() => {

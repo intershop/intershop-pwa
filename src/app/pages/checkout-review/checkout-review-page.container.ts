@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable, merge } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { getBasketError, getBasketLoading, getCurrentBasket } from 'ish-core/store/checkout/basket';
-import { CreateOrder, getOrdersError } from 'ish-core/store/orders';
 
 @Component({
   selector: 'ish-checkout-review-page-container',
@@ -13,21 +11,22 @@ import { CreateOrder, getOrdersError } from 'ish-core/store/orders';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReviewPageContainerComponent implements OnInit {
+  basket$: Observable<BasketView>;
+  loading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
-  basket$ = this.store.pipe(select(getCurrentBasket));
-  loading$ = this.store.pipe(select(getBasketLoading));
-
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
-    this.error$ = merge(this.store.pipe(select(getBasketError)), this.store.pipe(select(getOrdersError)));
+    this.basket$ = this.checkoutFacade.basket$;
+    this.loading$ = this.checkoutFacade.basketLoading$;
+    this.error$ = this.checkoutFacade.basketOrOrdersError$;
   }
 
   /**
    * creates an order and routes to receipt page in case of success
    */
   onCreateOrder(basket: Basket) {
-    this.store.dispatch(new CreateOrder({ basket }));
+    this.checkoutFacade.createOrder(basket);
   }
 }

@@ -99,7 +99,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    if (this.haveBasketOrAddressesChanged(this.basket, c)) {
+    if (this.haveBasketOrAddressesChanged(c)) {
       // prepare select box label and content
       this.prepareInvoiceAddressSelectBox();
       this.prepareShippingAddressSelectBox();
@@ -115,8 +115,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * determine whether the basket or the customer addresses have changed
    */
-  private haveBasketOrAddressesChanged(basket: Basket, c: SimpleChanges) {
-    return basket && (c.addresses || c.basket);
+  private haveBasketOrAddressesChanged(c: SimpleChanges) {
+    return this.basket && this.addresses && (c.addresses || c.basket);
   }
 
   /**

@@ -1,22 +1,27 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
+import { Observable } from 'rxjs';
 
-import { getAvailableFilter } from 'ish-core/store/shopping/filter';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 
 @Component({
   selector: 'ish-filter-navigation',
   templateUrl: './filter-navigation.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterNavigationContainerComponent {
+export class FilterNavigationContainerComponent implements OnInit {
   @Input() fragmentOnRouting: string;
   @Input() orientation: 'sidebar' | 'horizontal' = 'sidebar';
 
-  filter$ = this.store.pipe(select(getAvailableFilter));
+  filter$: Observable<FilterNavigation>;
 
-  constructor(private store: Store<{}>, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private shoppingFacade: ShoppingFacade, private router: Router, private activatedRoute: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.filter$ = this.shoppingFacade.currentFilter$;
+  }
 
   applyFilter(event: { searchParameter: string }) {
     this.router.navigate([], {

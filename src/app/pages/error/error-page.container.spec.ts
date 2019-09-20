@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -19,7 +20,7 @@ describe('Error Page Container', () => {
         MockComponent(ErrorPageComponent),
         MockComponent(ServerErrorPageComponent),
       ],
-      imports: [ngrxTesting()],
+      imports: [RouterTestingModule, ngrxTesting()],
     }).compileComponents();
   }));
 
