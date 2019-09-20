@@ -95,10 +95,10 @@ describe('Search Effects', () => {
           params: { searchTerm: 'dummy' },
           queryParams: [],
         });
-        actions$ = hot('a', { a: action });
+        actions$ = hot('a-a-|', { a: action });
 
         expect(effects.listenToRouteForSearchTerm$).toBeObservable(
-          cold('a', { a: new SelectSearchTerm({ searchTerm: 'dummy' }) })
+          cold('a-a-|', { a: new SelectSearchTerm({ searchTerm: 'dummy' }) })
         );
       });
     });
@@ -106,10 +106,10 @@ describe('Search Effects', () => {
     describe('triggerSearch$', () => {
       it('should trigger action if search URL is matched', () => {
         const action = new SelectSearchTerm({ searchTerm: 'dummy' });
-        actions$ = hot('a', { a: action });
+        actions$ = hot('a-a-|', { a: action });
 
         expect(effects.triggerSearch$).toBeObservable(
-          cold('a', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
+          cold('a-a-|', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
         );
       });
     });

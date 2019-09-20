@@ -53,7 +53,6 @@ export class SearchEffects {
     ofRoute('search/:searchTerm'),
     mapToParam<string>('searchTerm'),
     whenTruthy(),
-    distinctUntilChanged(),
     map(searchTerm => new SelectSearchTerm({ searchTerm }))
   );
 
@@ -65,7 +64,6 @@ export class SearchEffects {
     ofType<SelectSearchTerm>(SearchActionTypes.SelectSearchTerm),
     mapToPayloadProperty('searchTerm'),
     whenTruthy(),
-    distinctUntilChanged(),
     map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } }))
   );
 
