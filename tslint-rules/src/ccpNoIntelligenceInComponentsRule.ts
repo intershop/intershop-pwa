@@ -8,6 +8,7 @@ interface RuleSetting {
   ngrx: boolean;
   service: boolean;
   router: boolean;
+  facade: boolean;
 }
 
 export class Rule extends Lint.Rules.AbstractRule {
@@ -56,6 +57,12 @@ export class Rule extends Lint.Rules.AbstractRule {
           ctx.addFailureAtNode(
             failuteToken,
             `router usage is not allowed in ${c}s. (found ${importStatement.getText()})`
+          );
+        }
+        if (fromStringText.search(/\/facades(\/|$)/) >= 0 && !this.ruleSettings[c].facade) {
+          ctx.addFailureAtNode(
+            failuteToken,
+            `using facades is not allowed in ${c}s. (found ${importStatement.getText()})`
           );
         }
       });
