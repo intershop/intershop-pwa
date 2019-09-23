@@ -8,8 +8,7 @@
     aria-haspopup="true"
     aria-expanded="false"
     [attr.title]="placeholder !== filterElement.name ? placeholder : null"
-    ><span>{{ placeholder }}</span
-    ><span *ngIf="selectedFacets?.length >= 2"> ({{ selectedFacets.length }}) </span></a
+    ><span>{{ placeholder }}</span></a
   >
   <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
     <a

@@ -12,7 +12,7 @@ export class FilterNavigationSidebarComponent {
   @Output() applyFilter = new EventEmitter<{ searchParameter: string }>();
 
   /**
-   * keeps the collabsed state of subcomponents when changing filters
+   * keeps the collapsed state of subcomponents when changing filters
    */
   collapsedElements = {};
 }

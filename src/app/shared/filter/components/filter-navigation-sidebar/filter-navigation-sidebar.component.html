@@ -3,7 +3,7 @@
     <ish-filter-collapsable
       [title]="element.name"
       [collapsed]="!!collapsedElements[element.name]"
-      (collabsedChanged)="collapsedElements[element.name] = $event"
+      (collapsedChanged)="collapsedElements[element.name] = $event"
     >
       <!-- default: text & text_clear -->
       <ish-filter-text *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
