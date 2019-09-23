@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
@@ -15,7 +14,6 @@ import * as filterActions from './filter.actions';
 export class FilterEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
     private filterService: FilterService,
     private productListingMapper: ProductListingMapper
   ) {}
