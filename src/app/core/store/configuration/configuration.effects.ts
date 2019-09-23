@@ -91,7 +91,9 @@ export class ConfigurationEffects {
   }
 
   extractLanguage(paramMap: ParamMap) {
-    return paramMap.has('lang') ? [new SelectLocale({ lang: paramMap.get('lang') })] : [];
+    return paramMap.has('lang') && paramMap.get('lang') !== 'default'
+      ? [new SelectLocale({ lang: paramMap.get('lang') })]
+      : [];
   }
 
   getResolvedUrl(route: ActivatedRouteSnapshot): string {

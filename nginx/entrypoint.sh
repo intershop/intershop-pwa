@@ -23,7 +23,7 @@ do
   [ -z "$CHANNEL" ] && echo "PWA_${i}_CHANNEL must be set" && exit 1
 
   eval "export APPLICATION=\${PWA_${i}_APPLICATION:-'-'}"
-  eval "export LANG=\${PWA_${i}_LANG:-'en_US'}"
+  eval "export LANG=\${PWA_${i}_LANG:-'default'}"
   eval "export FEATURES=\${PWA_${i}_FEATURES:-'default'}"
 
   echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
