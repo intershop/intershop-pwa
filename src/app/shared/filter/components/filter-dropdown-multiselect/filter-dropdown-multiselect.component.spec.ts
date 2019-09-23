@@ -55,7 +55,7 @@ describe('Filter Dropdown Multiselect Component', () => {
           id="dropdownMenuLink"
           ngbdropdowntoggle=""
           role="button"
-          >Color</a
+          ><span>Color</span></a
         >
         <div aria-labelledby="dropdownMenuLink" ngbdropdownmenu="">
           <a class="dropdown-item">Red</a
