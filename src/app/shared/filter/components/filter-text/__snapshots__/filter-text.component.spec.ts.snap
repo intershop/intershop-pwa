@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter Text Component should be created 1`] = `
+<ul class="filter-list">
+  <li class="filter-item filter-layer">
+    <a class="filter-item-name" data-testing-id="filter-link-Asus"> Asus </a>
+  </li>
+  <li class="filter-item filter-layer filter-selected">
+    <a class="filter-item-name" data-testing-id="filter-link-Logitech"> Logitech </a>
+  </li>
+</ul>
+`;

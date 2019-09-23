@@ -62,6 +62,7 @@ import { FilterNavigationBadgesComponent } from './filter/components/filter-navi
 import { FilterNavigationHorizontalComponent } from './filter/components/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from './filter/components/filter-navigation-sidebar/filter-navigation-sidebar.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
+import { FilterTextComponent } from './filter/components/filter-text/filter-text.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
@@ -144,6 +145,7 @@ const declaredComponents = [
   FilterNavigationHorizontalComponent,
   FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
+  FilterTextComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
