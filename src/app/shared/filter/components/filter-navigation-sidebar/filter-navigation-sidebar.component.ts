@@ -10,4 +10,9 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 export class FilterNavigationSidebarComponent {
   @Input() filterNavigation: FilterNavigation;
   @Output() applyFilter = new EventEmitter<{ searchParameter: string }>();
+
+  /**
+   * keeps the collabsed state of subcomponents when changing filters
+   */
+  collapsedElements = {};
 }

@@ -1,20 +1,47 @@
 <div class="filter-panel" *ngIf="filterNavigation">
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
-    <ish-filter-collapsable [title]="element.name">
-      <ish-filter-checkbox *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
+    <ish-filter-collapsable
+      [title]="element.name"
+      [collapsed]="!!collapsedElements[element.name]"
+      (collabsedChanged)="collapsedElements[element.name] = $event"
+    >
+      <!-- default: text & text_clear -->
+      <ish-filter-text *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
+      </ish-filter-text>
+
+      <!-- checkbox -->
+      <ish-filter-checkbox
+        *ngSwitchCase="'checkbox'"
+        [filterElement]="element"
+        (applyFilter)="applyFilter.emit($event)"
+      >
       </ish-filter-checkbox>
+
+      <!-- swatch -->
       <ish-filter-swatch-images
         *ngSwitchCase="'swatch'"
         [filterElement]="element"
         (applyFilter)="applyFilter.emit($event)"
       >
       </ish-filter-swatch-images>
-      <ish-filter-dropdown
-        *ngSwitchCase="'dropdown'"
-        [filterElement]="element"
-        (applyFilter)="applyFilter.emit($event)"
-      >
-      </ish-filter-dropdown>
+
+      <!-- dropdown -->
+      <ng-container *ngSwitchCase="'dropdown'">
+        <div class="filter-dropdown">
+          <ng-container *ngIf="element.selectionType === 'single'; else multiDropdown">
+            <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
+            </ish-filter-dropdown>
+          </ng-container>
+          <ng-template #multiDropdown>
+            <ish-filter-dropdown-multiselect
+              [filterElement]="element"
+              [placeholderType]="'selectedFacets'"
+              (applyFilter)="applyFilter.emit($event)"
+            >
+            </ish-filter-dropdown-multiselect>
+          </ng-template>
+        </div>
+      </ng-container>
     </ish-filter-collapsable>
   </div>
 </div>
