@@ -1,6 +1,6 @@
 <ul class="filter-list">
   <ng-container *ngFor="let facet of filterElement.facets">
-    <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
+    <li *ngIf="facet.selected" class="filter-item filter-selected">
       <span class="icon-selected"></span>{{ facet.displayName }} <span class="filter-count">({{ facet.count }})</span>
       <a class="filter-clear" (click)="filter(facet.name)">
         <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
@@ -14,9 +14,7 @@
     <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
       <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
       <ng-container *ngFor="let facet of filterElement.facets">
-        <option *ngIf="!facet.selected && facet.name !== 'Show all'" [value]="facet.name">{{
-          facet.displayName
-        }}</option>
+        <option *ngIf="!facet.selected" [value]="facet.name">{{ facet.displayName }}</option>
       </ng-container>
     </select>
   </form>

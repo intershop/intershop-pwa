@@ -1,7 +1,7 @@
 import b64u from 'b64u';
 
-import { FacetData } from 'ish-core/models/facet/facet.interface';
 import { Facet } from 'ish-core/models/facet/facet.model';
+import { FilterData } from 'ish-core/models/filter/filter.interface';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
 
@@ -17,23 +17,30 @@ export class FilterNavigationMapper {
               id: filterData.id,
               name: filterData.name,
               displayType: filterData.displayType,
-              facets: FilterNavigationMapper.mapFacetData(filterData.facets),
+              facets: FilterNavigationMapper.mapFacetData(filterData),
               selectionType: filterData.selectionType || 'single',
             }))
           : [],
     };
   }
 
-  private static mapFacetData(facetDatas: FacetData[]) {
-    return facetDatas
-      ? facetDatas.map(facet => ({
-          name: facet.name,
-          count: facet.count,
-          selected: facet.selected,
-          displayName: facet.link.title,
-          searchParameter: facet.link.uri.split(';SearchParameter=')[1],
-          level: facet.level,
-        }))
+  private static mapFacetData(filterData: FilterData) {
+    return filterData.facets
+      ? filterData.facets.reduce((acc, facet) => {
+          if (facet.name !== 'Show all') {
+            acc.push({
+              name: facet.name,
+              count: facet.count,
+              selected: facet.selected,
+              displayName: facet.link.title,
+              searchParameter: facet.link.uri.split(';SearchParameter=')[1],
+              level: facet.level || 0,
+            });
+          } else {
+            console.warn(`Limiting filters is not supported. Set limit to -1 in the BackOffice (${filterData.name})`);
+          }
+          return acc;
+        }, [])
       : [];
   }
 
