@@ -1,43 +1,20 @@
+<!--- TODO: implement Show All-->
 <ul class="filter-list">
-  <!--- TODO: implement Show All-->
-  <ng-container *ngFor="let facet of filterElement.facets">
-    <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
-      <!--- TODO: add filter count -->
-      <span class="icon-selected"></span>{{ facet.displayName }}
-      <a class="filter-clear" (click)="filter(facet)">
-        <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
-      </a>
-    </li>
-  </ng-container>
-</ul>
-
-<ul class="filter-list">
-  <!--- TODO: implement Show All-->
   <ng-container *ngFor="let facet of filterElement.facets">
     <li
-      *ngIf="facet.selected && facet.name !== 'Show all'"
-      class="filter-item filter-selected filter-layer{{ facet.level }}"
+      *ngIf="facet.displayName !== 'Show all'"
+      class="filter-item filter-layer{{ facet.level }}"
+      [ngClass]="{
+        'filter-selected': facet.selected
+      }"
     >
-      <!--- TODO: add filter count -->
-      <span class="icon-selected"></span>{{ facet.displayName }} ({{ facet.count }})
-      <a class="filter-clear" (click)="filter(facet)">
-        <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
-      </a>
-    </li>
-  </ng-container>
-</ul>
-
-<ul class="filter-list">
-  <ng-container *ngFor="let facet of filterElement.facets">
-    <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item filter-layer{{ facet.level }}">
-      <!--- TODO: add filter count -->
-      <a
-        class="filter-item-name"
-        (click)="filter(facet)"
-        [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
-      >
-        <span class="icon-notselected"></span>{{ facet.displayName }} ({{ facet.count }})
-      </a>
+      <div>
+        <label class="filter-item-checkbox-label-native">
+          <input type="checkbox" [checked]="facet.selected" (change)="filter(facet)" />
+          <span class="filter-item-name"> {{ facet.displayName }} </span>
+          <span class="count"> ({{ facet.count }}) </span>
+        </label>
+      </div>
     </li>
   </ng-container>
 </ul>
