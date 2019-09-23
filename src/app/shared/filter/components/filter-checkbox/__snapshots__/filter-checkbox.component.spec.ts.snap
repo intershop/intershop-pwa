@@ -2,24 +2,21 @@
 
 exports[`Filter Checkbox Component should be created 1`] = `
 <ul class="filter-list">
-  <li class="filter-item filter-selected">
-    <span class="icon-selected"></span>Logitech
-    <a class="filter-clear"
-      ><fa-icon class="float-right" ng-reflect-icon-prop="fas,minus"></fa-icon></a>
-  </li>
-</ul>
-<ul class="filter-list">
-  <li class="filter-item filter-selected filter-layer">
-    <span class="icon-selected"></span>Logitech (5)
-    <a class="filter-clear"
-      ><fa-icon class="float-right" ng-reflect-icon-prop="fas,minus"></fa-icon></a>
-  </li>
-</ul>
-<ul class="filter-list">
   <li class="filter-item filter-layer">
-    <a class="filter-item-name" data-testing-id="filter-link-AsusName"
-      ><span class="icon-notselected"></span>Asus (4)
-    </a>
+    <div>
+      <label class="filter-item-checkbox-label-native"
+        ><input type="checkbox" /><span class="filter-item-name"> Asus </span
+        ><span class="count"> (4) </span></label
+      >
+    </div>
+  </li>
+  <li class="filter-item filter-layer filter-selected">
+    <div>
+      <label class="filter-item-checkbox-label-native"
+        ><input type="checkbox" /><span class="filter-item-name"> Logitech </span
+        ><span class="count"> (5) </span></label
+      >
+    </div>
   </li>
 </ul>
 `;
