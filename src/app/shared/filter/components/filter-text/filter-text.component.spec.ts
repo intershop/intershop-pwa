@@ -22,8 +22,8 @@ describe('Filter Text Component', () => {
     const filterElement = {
       name: 'Brands',
       facets: [
-        { name: 'AsusName', count: 4, displayName: 'Asus' },
-        { name: 'LogitechName', count: 5, displayName: 'Logitech', selected: true },
+        { name: 'AsusName', level: 0, count: 4, displayName: 'Asus' },
+        { name: 'LogitechName', level: 0, count: 5, displayName: 'Logitech', selected: true },
       ],
     } as Filter;
     fixture = TestBed.createComponent(FilterTextComponent);
@@ -36,6 +36,15 @@ describe('Filter Text Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
+    expect(element).toMatchInlineSnapshot(`
+      <ul class="filter-list">
+        <li class="filter-item filter-layer0">
+          <a class="filter-item-name" data-testing-id="filter-link-Asus"> Asus (4) </a>
+        </li>
+        <li class="filter-item filter-layer0 filter-selected">
+          <a><span class="filter-item-name"> Logitech </span><span class="count"> (5) </span></a>
+        </li>
+      </ul>
+    `);
   });
 });
