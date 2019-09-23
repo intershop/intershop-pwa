@@ -176,12 +176,6 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "initialize-observables-in-declaration": {
-      "severity": "warning",
-      "options": {
-        "only-simple": true
-      }
-    },
     "lifecycle-cyclomatic-complexity": {
       "severity": "warning",
       "options": {
@@ -438,18 +432,21 @@
         "component": {
           "ngrx": false,
           "service": false,
-          "router": true
+          "router": true,
+          "facade": false
         },
         "container": {
-          "ngrx": true,
+          "ngrx": false,
           // services should only be used by effects
           "service": false,
           // explicit router navigation should only be done in effects
-          "router": true
+          "router": true,
+          "facade": true
         }
       }
     },
     "ccp-no-markup-in-containers": { "severity": "warning" },
+    "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
       "options": {
@@ -468,6 +465,8 @@
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
           // cms
           "^.*/src/app/shared/cms/sfe-adapter/.*\\.ts$",
+          // facades
+          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/facades/(index|[a-z][a-z0-9-]+\\.facade)\\.ts$",
           // ngrx
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(action|effects|reducer|selectors)\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
@@ -604,6 +603,11 @@
           {
             "name": "^([A-Z].*)Data$",
             "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
+          },
+          // facades
+          {
+            "name": "^([A-Z].*)Facade$",
+            "file": ".*/app/(core|extensions/[a-z][a-z0-9-]+)/facades/<kebab>\\.facade\\.ts$"
           },
           // ngrx
           {
