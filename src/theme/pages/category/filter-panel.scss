@@ -8,6 +8,7 @@
 
 .filter-panel {
   padding-right: ($space-default * 2);
+  user-select: none;
 
   @media (max-width: $screen-sm-max) {
     padding-right: 0;
@@ -28,6 +29,10 @@
   .filter-group {
     &.collapsed {
       .filter-item:not(.filter-selected) {
+        display: none;
+      }
+
+      .filter-dropdown {
         display: none;
       }
     }
@@ -59,6 +64,12 @@
     list-style: none;
   }
 
+  .filter-item-checkbox-label-native {
+    display: block;
+    margin-bottom: 0;
+    cursor: pointer;
+  }
+
   .ng-fa-icon {
     &:hover {
       color: $link-hover-color;
@@ -71,11 +82,9 @@
       padding: 3px 0;
       color: $text-color-quarternary;
 
-      &.filter-color {
-        padding: 0;
-      }
-
       a {
+        display: block;
+
         &.filter-item-name {
           color: $text-color-quarternary;
         }
@@ -104,27 +113,26 @@
     }
 
     &.filter-selected {
-      color: $text-color-secondary;
-      margin-right: 3px;
-      margin-bottom: 3px;
-      margin-left: 0;
-      margin-top: 0;
+      color: $text-color-primary;
 
-      a {
-        &.filter-item-name {
-          color: $text-color-secondary;
-        }
+      .filter-item-name,
+      a.filter-item-name {
+        //font-weight: bold; // todo?
+        color: $text-color-primary;
+      }
 
-        &.filter-clear {
-          float: right;
-          width: 16px;
-          height: 16px;
-          line-height: 14px;
-          text-align: center;
-        }
+      a.filter-clear {
+        float: right;
+        width: 16px;
+        height: 16px;
+        line-height: 14px;
+        text-align: center;
       }
 
       span {
+        font-weight: normal;
+        color: $text-color-quarternary;
+
         &.icon-selected {
           display: inline-block;
           width: 15px;
@@ -136,12 +144,12 @@
       }
 
       &.filter-color {
+        border-color: $text-color-quarternary;
+
         a {
           display: inline-block;
-          border: 1px solid $text-color-quarternary;
-          border-radius: 50%;
-          height: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px; // diameter + 2 * padding + 2 * border-width
           width: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px;
+          height: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px; // diameter + 2 * padding + 2 * border-width
         }
       }
     }
@@ -217,7 +225,7 @@
           a {
             &.filter-item-name {
               &.filter-selected {
-                color: $text-color-secondary;
+                color: $text-color-primary;
               }
             }
           }
@@ -251,29 +259,29 @@ label {
   }
 }
 
-.filter-clear .ng-fa-icon {
-  font-size: $font-size-base * 0.85;
-  line-height: 14px;
+.filter-clear.ng-fa-icon {
+  line-height: inherit;
 }
 
 .filter-color {
   float: left;
+  width: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px;
   height: $swatch-image-diameter + 2 * $swatch-image-padding-to-border + 2px;
-  margin-right: 8px;
-  margin-left: 1px;
-  margin-bottom: 0;
-  margin-top: 1px;
+  padding: 0 !important;
+  margin: 1px;
+  border: 1px solid transparent;
+  border-radius: 50%;
 }
 
 .filter-swatch {
   span {
+    position: relative;
+    top: $swatch-image-padding-to-border;
+    left: $swatch-image-padding-to-border;
     display: inline-block;
     width: $swatch-image-diameter;
     height: $swatch-image-diameter;
     border-radius: 50%;
-    position: relative;
-    left: $swatch-image-padding-to-border;
-    top: $swatch-image-padding-to-border;
 
     &.filter-color-bright {
       border: 1px solid $border-color-light;

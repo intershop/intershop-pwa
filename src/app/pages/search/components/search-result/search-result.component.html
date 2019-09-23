@@ -4,11 +4,6 @@
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <ish-filter-navigation></ish-filter-navigation>
       </div>
-      <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
-        {{ 'search.mobile.filter.trigger' | translate }}
-        <fa-icon *ngIf="isCollapsed" [icon]="['fas', 'angle-down']"></fa-icon>
-        <fa-icon *ngIf="!isCollapsed" [icon]="['fas', 'angle-up']"></fa-icon>
-      </a>
     </div>
   </div>
 
@@ -20,7 +15,11 @@
           | translate: { '1': searchTerm, '2': totalItems | i18nPlural: ('search.title.items.text' | translate) }
       }}
     </h1>
-
+    <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
+      {{ 'search.mobile.filter.trigger' | translate }}
+      <fa-icon *ngIf="isCollapsed" [icon]="['fas', 'angle-down']"></fa-icon>
+      <fa-icon *ngIf="!isCollapsed" [icon]="['fas', 'angle-up']"></fa-icon>
+    </a>
     <ish-product-list-container
       [id]="{ type: 'search', value: searchTerm }"
       fragmentOnRouting="search-page-top"
