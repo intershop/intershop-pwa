@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, StoreModule } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadContentPage, LoadContentPageFail } from './pages.actions';
 import { PagesEffects } from './pages.effects';
@@ -20,7 +21,7 @@ describe('Pages Effects', () => {
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({})],
+      imports: [ngrxTesting()],
       providers: [
         PagesEffects,
         provideMockActions(() => actions$),

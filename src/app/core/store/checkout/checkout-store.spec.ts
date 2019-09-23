@@ -224,14 +224,6 @@ describe('Checkout Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting(
-          {
-            ...coreReducers,
-            checkout: combineReducers(checkoutReducers),
-            shopping: combineReducers(shoppingReducers),
-          },
-          [...coreEffects, ...checkoutEffects, ...shoppingEffects]
-        ),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
@@ -240,6 +232,14 @@ describe('Checkout Store', () => {
         ]),
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+          effects: [...coreEffects, ...checkoutEffects, ...shoppingEffects],
+        }),
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
@@ -280,7 +280,7 @@ describe('Checkout Store', () => {
     }));
 
     describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', () => {
+      it('should initially load basket and basketItems on product add.', fakeAsync(() => {
         expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
           [Shopping] Load Product Success:
             product: {"sku":"test","packingUnit":"pcs."}
@@ -297,11 +297,11 @@ describe('Checkout Store', () => {
           [Basket API] Load Basket Success:
             basket: {"id":"test","lineItems":[1]}
         `);
-      });
+      }));
     });
 
     describe('and with basket', () => {
-      it('should merge basket on user login.', () => {
+      it('should merge basket on user login.', fakeAsync(() => {
         store.reset();
         store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
 
@@ -315,7 +315,7 @@ describe('Checkout Store', () => {
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
         `);
-      });
+      }));
     });
 
     afterEach(() => {

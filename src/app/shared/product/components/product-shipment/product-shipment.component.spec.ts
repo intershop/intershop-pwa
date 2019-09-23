@@ -83,9 +83,7 @@ describe('Product Shipment Component', () => {
       ];
     }
     using(dataProvider, dataSlice => {
-      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${
-        dataSlice.readyForShipmentMin
-      } and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
+      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${dataSlice.readyForShipmentMin} and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
         product.readyForShipmentMin = dataSlice.readyForShipmentMin;
         product.readyForShipmentMax = dataSlice.readyForShipmentMax;
         translate.set(dataSlice.localeKey, dataSlice.localeValue);

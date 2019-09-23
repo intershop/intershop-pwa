@@ -13,7 +13,7 @@ describe('Viewconf Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting(coreReducers, [ViewconfEffects]),
+      imports: ngrxTesting({ reducers: coreReducers, effects: [ViewconfEffects] }),
       providers: [
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },

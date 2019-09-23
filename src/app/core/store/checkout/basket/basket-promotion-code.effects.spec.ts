@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -11,6 +11,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { BasketPromotionCodeEffects } from './basket-promotion-code.effects';
 import * as basketActions from './basket.actions';
@@ -25,10 +26,12 @@ describe('Basket Promotion Code Effects', () => {
     basketServiceMock = mock(BasketService);
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
       providers: [

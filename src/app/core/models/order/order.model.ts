@@ -8,7 +8,7 @@ import { Product } from 'ish-core/models/product/product.model';
 
 export interface AbstractOrder {
   documentNo: string;
-  creationDate: Date;
+  creationDate: number;
   orderCreation: {
     status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
     stopAction?: {

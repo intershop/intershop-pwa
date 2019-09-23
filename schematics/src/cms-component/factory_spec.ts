@@ -1,14 +1,12 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Schema as ApplicationOptions } from '@schematics/angular/application/schema';
-import { Schema as WorkspaceOptions } from '@schematics/angular/workspace/schema';
-import { concatMap, switchMap } from 'rxjs/operators';
+import { UnitTestTree } from '@angular-devkit/schematics/testing';
+import { noop } from 'rxjs';
 
-import { PwaModuleOptionsSchema } from '../module/schema';
+import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
 import { PwaCmsComponentOptionsSchema as Options } from './schema';
 
-describe('Component Schematic', () => {
-  const schematicRunner = new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
+describe('CMS Component Schematic', () => {
+  const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {
     name: 'foo',
     definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
@@ -20,148 +18,114 @@ describe('Component Schematic', () => {
   };
 
   let appTree: UnitTestTree;
-  beforeEach(done => {
-    schematicRunner
-      .runExternalSchematicAsync('@schematics/angular', 'workspace', {
-        name: 'workspace',
-        newProjectRoot: 'projects',
-        version: '6.0.0',
-      } as WorkspaceOptions)
+  beforeEach(async () => {
+    appTree = await createApplication(schematicRunner)
       .pipe(
-        concatMap(tree =>
-          schematicRunner.runExternalSchematicAsync(
-            '@schematics/angular',
-            'application',
-            {
-              name: 'bar',
-              inlineStyle: false,
-              inlineTemplate: false,
-              routing: false,
-              style: 'css',
-              skipTests: false,
-              skipPackageJson: false,
-              prefix: 'ish',
-            } as ApplicationOptions,
-            tree
-          )
-        ),
-        switchMap(tree =>
-          schematicRunner.runSchematicAsync(
-            'module',
-            { project: 'bar', name: 'shared/cms' } as PwaModuleOptionsSchema,
-            tree
-          )
-        ),
-        switchMap(tree =>
-          schematicRunner.runSchematicAsync(
-            'module',
-            { project: 'bar', name: 'shared' } as PwaModuleOptionsSchema,
-            tree
-          )
-        )
+        createModule(schematicRunner, { name: 'shared' }),
+        createModule(schematicRunner, { name: 'shared/cms' })
       )
-      .subscribe(tree => {
-        appTree = tree;
-        done();
-      });
+      .toPromise();
   });
 
-  it('should create a component in cms module with added name prefix', () => {
+  it('should create a component in cms module with added name prefix', async () => {
     const options = { ...defaultOptions };
-    const tree = schematicRunner.runSchematic('cms-component', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
-Array [
-  "/projects/bar/src/app/shared/cms/cms.module.ts",
-  "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
-  "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
-  "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
-]
-`);
+      Array [
+        "/projects/bar/src/app/shared/cms/cms.module.ts",
+        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.ts",
+        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.html",
+        "/projects/bar/src/app/shared/cms/components/cms-foo/cms-foo.component.spec.ts",
+      ]
+    `);
     expect(tree.readContent('/projects/bar/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
-"import { NgModule } from '@angular/core';
-import { CMSFooComponent } from './components/cms-foo/cms-foo.component';
+      "import { NgModule } from '@angular/core';
+      import { CMSFooComponent } from './components/cms-foo/cms-foo.component';
 
-@NgModule({
-  imports: [],
-  declarations: [],
-  exports: [],
-  entryComponents: [],
-  providers: [{
-      provide: CMS_COMPONENT,
-      useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
-        class: CMSFooComponent,
-      },
-      multi: true,
-    }]
-})
-export class CmsModule { }
-"
-`);
+      @NgModule({
+        imports: [],
+        declarations: [],
+        exports: [],
+        entryComponents: [],
+        providers: [{
+            provide: CMS_COMPONENT,
+            useValue: {
+              definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
+              class: CMSFooComponent,
+            },
+            multi: true,
+          }]
+      })
+      export class CmsModule { }
+      "
+    `);
     expect(tree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
-"import { NgModule } from '@angular/core';
-import { CMSFooComponent } from './cms/components/cms-foo/cms-foo.component';
+      "import { NgModule } from '@angular/core';
+      import { CMSFooComponent } from './cms/components/cms-foo/cms-foo.component';
 
-@NgModule({
-  imports: [],
-  declarations: [CMSFooComponent],
-  exports: [],
-  entryComponents: [CMSFooComponent]
-})
-export class SharedModule { }
-"
-`);
+      @NgModule({
+        imports: [],
+        declarations: [CMSFooComponent],
+        exports: [],
+        entryComponents: [CMSFooComponent]
+      })
+      export class SharedModule { }
+      "
+    `);
   });
 
-  it('should create a component in cms module without added name prefix if requested', () => {
+  it('should create a component in cms module without added name prefix if requested', async () => {
     const options = { ...defaultOptions, noCMSPrefixing: true };
-    const tree = schematicRunner.runSchematic('cms-component', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('cms-component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('cms') >= 0)).toMatchInlineSnapshot(`
-Array [
-  "/projects/bar/src/app/shared/cms/cms.module.ts",
-  "/projects/bar/src/app/shared/cms/components/foo/foo.component.ts",
-  "/projects/bar/src/app/shared/cms/components/foo/foo.component.html",
-  "/projects/bar/src/app/shared/cms/components/foo/foo.component.spec.ts",
-]
-`);
+      Array [
+        "/projects/bar/src/app/shared/cms/cms.module.ts",
+        "/projects/bar/src/app/shared/cms/components/foo/foo.component.ts",
+        "/projects/bar/src/app/shared/cms/components/foo/foo.component.html",
+        "/projects/bar/src/app/shared/cms/components/foo/foo.component.spec.ts",
+      ]
+    `);
     expect(tree.readContent('/projects/bar/src/app/shared/cms/cms.module.ts')).toMatchInlineSnapshot(`
-"import { NgModule } from '@angular/core';
-import { FooComponent } from './components/foo/foo.component';
+      "import { NgModule } from '@angular/core';
+      import { FooComponent } from './components/foo/foo.component';
 
-@NgModule({
-  imports: [],
-  declarations: [],
-  exports: [],
-  entryComponents: [],
-  providers: [{
-      provide: CMS_COMPONENT,
-      useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
-        class: FooComponent,
-      },
-      multi: true,
-    }]
-})
-export class CmsModule { }
-"
-`);
+      @NgModule({
+        imports: [],
+        declarations: [],
+        exports: [],
+        entryComponents: [],
+        providers: [{
+            provide: CMS_COMPONENT,
+            useValue: {
+              definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
+              class: FooComponent,
+            },
+            multi: true,
+          }]
+      })
+      export class CmsModule { }
+      "
+    `);
     expect(tree.readContent('/projects/bar/src/app/shared/shared.module.ts')).toMatchInlineSnapshot(`
-"import { NgModule } from '@angular/core';
-import { FooComponent } from './cms/components/foo/foo.component';
+      "import { NgModule } from '@angular/core';
+      import { FooComponent } from './cms/components/foo/foo.component';
 
-@NgModule({
-  imports: [],
-  declarations: [FooComponent],
-  exports: [],
-  entryComponents: [FooComponent]
-})
-export class SharedModule { }
-"
-`);
+      @NgModule({
+        imports: [],
+        declarations: [FooComponent],
+        exports: [],
+        entryComponents: [FooComponent]
+      })
+      export class SharedModule { }
+      "
+    `);
   });
 
-  it('should throw when definitionQualifiedName is missing', () => {
+  it('should throw when definitionQualifiedName is missing', done => {
     const options = { ...defaultOptions, definitionQualifiedName: undefined };
-    expect(() => schematicRunner.runSchematic('cms-component', options, appTree)).toThrow();
+    schematicRunner.runSchematicAsync('cms-component', options, appTree).subscribe(noop, err => {
+      expect(err).toMatchInlineSnapshot(`[Error: Option (definitionQualifiedName) is required.]`);
+      done();
+    });
   });
 });

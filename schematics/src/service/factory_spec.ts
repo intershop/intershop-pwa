@@ -1,44 +1,25 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { Schema as ApplicationOptions } from '@schematics/angular/application/schema';
-import { Schema as WorkspaceOptions } from '@schematics/angular/workspace/schema';
+import { UnitTestTree } from '@angular-devkit/schematics/testing';
+
+import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
 import { PwaServiceOptionsSchema as Options } from './schema';
 
 describe('Service Schematic', () => {
-  const schematicRunner = new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
+  const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {
     name: 'foo',
     project: 'bar',
   };
 
   let appTree: UnitTestTree;
-  beforeEach(() => {
-    appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
-      name: 'workspace',
-      newProjectRoot: 'projects',
-      version: '6.0.0',
-    } as WorkspaceOptions);
-    appTree = schematicRunner.runExternalSchematic(
-      '@schematics/angular',
-      'application',
-      {
-        name: 'bar',
-        inlineStyle: false,
-        inlineTemplate: false,
-        routing: false,
-        style: 'css',
-        skipTests: false,
-        skipPackageJson: false,
-        prefix: 'ish',
-      } as ApplicationOptions,
-      appTree
-    );
+  beforeEach(async () => {
+    appTree = await createApplication(schematicRunner).toPromise();
   });
 
-  it('should create a service in core by default', () => {
+  it('should create a service in core by default', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('service', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
     expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.spec.ts');
     expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.ts');
@@ -46,19 +27,19 @@ describe('Service Schematic', () => {
     expect(tree.readContent('/projects/bar/src/app/core/services/foo/foo.service.ts')).toContain('../api/api.service');
   });
 
-  it('should ignore folders in name', () => {
+  it('should ignore folders in name', async () => {
     const options = { ...defaultOptions, name: 'foobar/bar/foo' };
 
-    const tree = schematicRunner.runSchematic('service', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
     expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.spec.ts');
     expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.ts');
   });
 
-  it('should create a service in extension if supplied', () => {
+  it('should create a service in extension if supplied', async () => {
     const options = { ...defaultOptions, extension: 'feature' };
 
-    const tree = schematicRunner.runSchematic('service', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
     expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.spec.ts');
     expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.ts');
@@ -68,10 +49,10 @@ describe('Service Schematic', () => {
     );
   });
 
-  it('should create a service in extension if implied by name', () => {
+  it('should create a service in extension if implied by name', async () => {
     const options = { ...defaultOptions, name: 'src/app/extensions/feature/services/foo' };
 
-    const tree = schematicRunner.runSchematic('service', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.service') >= 0);
     expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.spec.ts');
     expect(files).toContain('/projects/bar/src/app/extensions/feature/services/foo/foo.service.ts');
@@ -81,10 +62,10 @@ describe('Service Schematic', () => {
     );
   });
 
-  it('service should be tree-shakeable', () => {
+  it('service should be tree-shakeable', async () => {
     const options = { ...defaultOptions };
 
-    const tree = schematicRunner.runSchematic('service', options, appTree);
+    const tree = await schematicRunner.runSchematicAsync('service', options, appTree).toPromise();
     const content = tree.readContent('/projects/bar/src/app/core/services/foo/foo.service.ts');
     expect(content).toMatch(/providedIn: 'root'/);
   });

@@ -14,7 +14,7 @@ describe('Locale Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ locale: localeReducer }),
+      imports: ngrxTesting({ reducers: { locale: localeReducer } }),
     });
 
     store$ = TestBed.get(TestStore);

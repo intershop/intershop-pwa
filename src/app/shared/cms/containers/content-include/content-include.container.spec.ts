@@ -38,8 +38,10 @@ describe('Content Include Container', () => {
     TestBed.configureTestingModule({
       declarations: [ContentIncludeContainerComponent, MockComponent(ContentPageletContainerComponent)],
       imports: ngrxTesting({
-        ...coreReducers,
-        content: combineReducers(contentReducers),
+        reducers: {
+          ...coreReducers,
+          content: combineReducers(contentReducers),
+        },
       }),
       providers: [{ provide: SfeAdapterService, useValue: instance(sfeAdapterMock) }],
     }).compileComponents();

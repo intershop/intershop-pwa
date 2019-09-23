@@ -1,7 +1,7 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Store, StoreModule } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -12,6 +12,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormComponent } from 'ish-shared/address-forms/components/address-form/address-form.component';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import {
@@ -35,7 +36,7 @@ describe('Address Form Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
-      imports: [PipesModule, StoreModule.forRoot(coreReducers)],
+      imports: [PipesModule, ngrxTesting({ reducers: coreReducers })],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },

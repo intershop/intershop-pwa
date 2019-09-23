@@ -41,8 +41,7 @@ export class ContentPageletContainerComponent extends SfeMetadataWrapper impleme
 
   private components: CMSComponentProvider[] = [];
 
-  @ViewChild('cmsOutlet', { read: ViewContainerRef })
-  cmsOutlet: ViewContainerRef;
+  @ViewChild('cmsOutlet', { read: ViewContainerRef, static: true }) cmsOutlet: ViewContainerRef;
 
   constructor(
     injector: Injector,

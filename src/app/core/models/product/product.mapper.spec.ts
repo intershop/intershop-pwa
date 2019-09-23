@@ -1,5 +1,4 @@
 import { TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -7,6 +6,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';
@@ -20,14 +20,14 @@ describe('Product Mapper', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          {
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
             initialState: {
               configuration: { baseURL: 'http://www.example.org' },
             },
-          }
-        ),
+          },
+        }),
       ],
     });
     productMapper = TestBed.get(ProductMapper);

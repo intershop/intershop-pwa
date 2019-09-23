@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
+
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { quotingReducers } from '../../../../store/quoting-store.module';
 import { ProductAddToQuoteDialogComponent } from '../../components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
@@ -16,8 +19,11 @@ describe('Product Add To Quote Dialog Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [MockComponent(ProductAddToQuoteDialogComponent), ProductAddToQuoteDialogContainerComponent],

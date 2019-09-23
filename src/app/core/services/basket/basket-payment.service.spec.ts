@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { BasketPaymentService } from './basket-payment.service';
 
@@ -35,8 +36,10 @@ describe('Basket Payment Service', () => {
     apiService = mock(ApiService);
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
+        ngrxTesting({
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],

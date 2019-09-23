@@ -1,11 +1,12 @@
 import { HttpEvent, HttpHandler, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { Store, StoreModule } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AuthInterceptor } from './auth.interceptor';
 
@@ -28,7 +29,7 @@ describe('Auth Interceptor', () => {
       },
     };
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [ngrxTesting({ reducers: coreReducers })],
       providers: [AuthInterceptor],
     });
     authInterceptor = TestBed.get(AuthInterceptor);

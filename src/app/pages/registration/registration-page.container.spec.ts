@@ -2,13 +2,13 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { RegistrationFormComponent } from './components/registration-form/registration-form.component';
 import { RegistrationPageContainerComponent } from './registration-page.container';
@@ -33,8 +33,8 @@ describe('Registration Page Container', () => {
       providers: [{ provide: AVAILABLE_LOCALES, useValue: defaultLocales }],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
-        StoreModule.forRoot(coreReducers),
         TranslateModule.forRoot(),
+        ngrxTesting({ reducers: coreReducers }),
       ],
     }).compileComponents();
 

@@ -98,7 +98,7 @@ jest_test:
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest -c jest-reports.config.js --ci
+    - npx ng test -i --config-path jest-reports.config.js --ci
     - echo "build complete"
 
 compile:
@@ -116,7 +116,7 @@ compile:
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npx tsc -p src/tsconfig.spec.json
+    - npx tsc -p tsconfig.spec.json
     - cd e2e
     - npm ci
     - npx tsc -p cypress/tsconfig.json
@@ -174,6 +174,8 @@ deploy_review_mock:
       $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-mock"
       ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
+    - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
   environment:
     name: review/mock-$CI_COMMIT_REF_SLUG
     url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock

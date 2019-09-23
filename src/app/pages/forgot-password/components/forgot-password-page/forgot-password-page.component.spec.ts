@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ForgotPasswordFormComponent } from '../forgot-password-form/forgot-password-form.component';
 
@@ -19,7 +19,7 @@ describe('Forgot Password Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ForgotPasswordPageComponent, MockComponent(ForgotPasswordFormComponent), ServerHtmlDirective],
-      imports: [RouterTestingModule, StoreModule.forRoot(coreReducers), TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
     }).compileComponents();
   }));
 

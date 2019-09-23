@@ -1,12 +1,13 @@
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { getConfigurationState } from 'ish-core/store/configuration';
 import { mapToProperty } from 'ish-core/utils/operators';
+
+import { environment } from '../../../../environments/environment';
 
 /**
  * Service for retrieving injection properties {@link ICM_BASE_URL} and {@link REST_ENDPOINT}.

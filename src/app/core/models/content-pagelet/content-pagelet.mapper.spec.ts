@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPageletMapper } from './content-pagelet.mapper';
@@ -12,9 +12,9 @@ describe('Content Pagelet Mapper', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          {
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
             initialState: {
               configuration: {
                 baseURL: 'http://www.example.org',
@@ -22,8 +22,8 @@ describe('Content Pagelet Mapper', () => {
                 channel: 'channel',
               },
             },
-          }
-        ),
+          },
+        }),
       ],
     });
 

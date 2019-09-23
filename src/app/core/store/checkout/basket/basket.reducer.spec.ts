@@ -186,7 +186,7 @@ describe('Basket Reducer', () => {
 
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
-        expect(state.lastTimeProductAdded).toBeDate();
+        expect(state.lastTimeProductAdded).toBeNumber();
       });
     });
   });

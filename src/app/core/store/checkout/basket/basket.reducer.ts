@@ -14,7 +14,7 @@ export interface BasketState {
   loading: boolean;
   promotionError: HttpError; // for promotion-errors
   error: HttpError; // add, update and delete errors
-  lastTimeProductAdded: Date;
+  lastTimeProductAdded: number;
   validationResults: BasketValidationResultType;
 }
 
@@ -122,7 +122,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         loading: false,
         error: undefined,
-        lastTimeProductAdded: new Date(),
+        lastTimeProductAdded: new Date().getTime(),
       };
     }
 

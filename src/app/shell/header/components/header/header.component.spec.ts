@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -9,6 +8,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { UserInformationMobileComponent } from 'ish-shell/header/components/user-information-mobile/user-information-mobile.component';
 import { HeaderNavigationContainerComponent } from 'ish-shell/header/containers/header-navigation/header-navigation.container';
 import { LanguageSwitchContainerComponent } from 'ish-shell/header/containers/language-switch/language-switch.container';
@@ -31,11 +31,13 @@ describe('Header Component', () => {
         IconModule,
         NgbCollapseModule,
         RouterTestingModule,
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['compare'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['compare'] } },
+          },
+        }),
       ],
       declarations: [
         HeaderComponent,
