@@ -134,13 +134,16 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * filter out payment methods with capability `RedirectBeforeCheckout`, if experimental features are not enabled
    */
   private filterPaymentMethods() {
+    let methods: PaymentMethod[];
     if (this.experimental) {
-      this.filteredPaymentMethods = this.paymentMethods;
+      methods = this.paymentMethods;
     } else {
-      this.filteredPaymentMethods = this.paymentMethods.filter(
+      methods = this.paymentMethods.filter(
         pm => !pm.capabilities || !pm.capabilities.some(cap => cap.startsWith('Redirect') && pm.id.startsWith('ISH'))
       );
     }
+    // copy objects for runtime checks because formly modifies them, TODO: refactor
+    this.filteredPaymentMethods = methods.map(x => JSON.parse(JSON.stringify(x)));
   }
 
   /**
@@ -244,7 +247,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.paymentRedirectRequired) {
       // do a hard redirect to payment redirect URL
-      document.location.assign(this.basket.payment.redirectUrl);
+      location.assign(this.basket.payment.redirectUrl);
     } else {
       this.nextStep.emit();
     }

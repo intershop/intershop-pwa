@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { MiniBasketComponent } from 'ish-shell/header/components/mini-basket/mini-basket.component';
 
 import { MiniBasketContainerComponent } from './mini-basket.container';
@@ -16,8 +18,12 @@ describe('Mini Basket Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MiniBasketContainerComponent, MockComponent(MiniBasketComponent)],
-      imports: [RouterTestingModule],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [
+        RouterTestingModule,
+        ngrxTesting({
+          reducers: { shopping: combineReducers(shoppingReducers), checkout: combineReducers(checkoutReducers) },
+        }),
+      ],
     })
       .compileComponents()
       .then(() => {

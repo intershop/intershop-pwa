@@ -46,8 +46,10 @@ describe('Orders Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        ...coreReducers,
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          ...coreReducers,
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

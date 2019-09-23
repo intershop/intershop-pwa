@@ -32,11 +32,16 @@ export function mapErrorToAction<S, T>(actionType: new (error: { error: HttpErro
         /*
           display error in certain circumstances:
           typeof window === 'undefined' -- universal mode
-          window.name !== 'nodejs' -- excludes display for jest
+          !process.env.JEST_WORKER_ID -- excludes display for jest
           process.env.DEBUG -- when environment explicitely wants it
           err instanceof Error -- i.e. TypeErrors that would be suppressed otherwise
          */
-        if (typeof window === 'undefined' || window.name !== 'nodejs' || process.env.DEBUG || err instanceof Error) {
+        if (
+          typeof window === 'undefined' ||
+          (typeof process !== 'undefined' && !process.env.JEST_WORKER_ID) ||
+          (typeof process !== 'undefined' && process.env.DEBUG) ||
+          err instanceof Error
+        ) {
           console.error(err);
         }
         const errorAction = new actionType({ error: HttpErrorMapper.fromError(err), ...extras });

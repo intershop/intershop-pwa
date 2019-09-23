@@ -33,8 +33,11 @@ describe('Configuration Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting({ configuration: configurationReducer, locale: localeReducer }, [ConfigurationEffects]),
         RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer, locale: localeReducer },
+          effects: [ConfigurationEffects],
+        }),
       ],
       providers: [
         ConfigurationEffects,

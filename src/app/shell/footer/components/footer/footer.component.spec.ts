@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { IconModule } from 'ish-core/icon.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { FooterComponent } from './footer.component';
 
@@ -23,8 +23,8 @@ describe('Footer Component', () => {
         IconModule,
         NgbCollapseModule,
         RouterTestingModule,
-        StoreModule.forRoot(coreReducers),
         TranslateModule.forRoot(),
+        ngrxTesting({ reducers: coreReducers }),
       ],
       declarations: [FooterComponent, ServerHtmlDirective],
     })

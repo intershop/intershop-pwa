@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { ForgotPasswordPageComponent } from './components/forgot-password-page/forgot-password-page.component';
@@ -12,18 +12,15 @@ describe('Forgot Password Page Container', () => {
   let fixture: ComponentFixture<ForgotPasswordPageContainerComponent>;
   let component: ForgotPasswordPageContainerComponent;
   let element: HTMLElement;
-  let storeMock$: Store<{}>;
 
   beforeEach(async(() => {
-    storeMock$ = mock(Store);
-
     TestBed.configureTestingModule({
       declarations: [
         ForgotPasswordPageContainerComponent,
         MockComponent(ForgotPasswordPageComponent),
         MockComponent(LoadingComponent),
       ],
-      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
+      imports: [ngrxTesting({ reducers: coreReducers })],
     }).compileComponents();
   }));
 

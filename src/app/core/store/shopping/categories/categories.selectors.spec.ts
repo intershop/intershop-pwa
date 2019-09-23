@@ -38,7 +38,9 @@ describe('Categories Selectors', () => {
 
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

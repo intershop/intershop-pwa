@@ -36,9 +36,11 @@ describe('Checkout Address Page Container', () => {
       imports: [
         TranslateModule.forRoot(),
         ngrxTesting({
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
+          reducers: {
+            ...coreReducers,
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
     }).compileComponents();

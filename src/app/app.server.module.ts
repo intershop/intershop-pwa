@@ -24,7 +24,7 @@ export class TranslateUniversalLoader implements TranslateLoader {
       if (rootPath && rootPath.indexOf('browser') > 0) {
         rootPath = process.cwd().split('browser')[0];
       }
-      const file = join(rootPath, 'browser', 'assets', 'i18n', `${lang}.json`);
+      const file = join(rootPath, 'dist', 'browser', 'assets', 'i18n', `${lang}.json`);
       if (!existsSync(file)) {
         const errString = `Localization file '${file}' not found!`;
         console.error(errString);

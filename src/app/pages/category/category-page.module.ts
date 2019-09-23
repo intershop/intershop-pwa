@@ -18,7 +18,7 @@ const categoryPageRoutes: Routes = [
   },
   {
     path: ':categoryUniqueId/product',
-    loadChildren: '../product/product-page.module#ProductPageModule',
+    loadChildren: () => import('../product/product-page.module').then(m => m.ProductPageModule),
   },
 ];
 

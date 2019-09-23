@@ -15,7 +15,9 @@ describe('Pagelets Integration', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        content: combineReducers(contentReducers),
+        reducers: {
+          content: combineReducers(contentReducers),
+        },
       }),
     });
 

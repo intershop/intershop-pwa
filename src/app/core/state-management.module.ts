@@ -10,10 +10,13 @@ import { CoreStoreModule } from './store/core-store.module';
 
 @NgModule({
   imports: [
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.serviceWorker }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     BrowserTransferStateModule,
     CoreStoreModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
   providers: [NgrxStateTransfer],
 })

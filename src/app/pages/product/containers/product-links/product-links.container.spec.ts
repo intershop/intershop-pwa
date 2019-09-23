@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ProductItemContainerComponent } from 'ish-shared/product/containers/product-item/product-item.container';
 
 import { ProductLinksCarouselComponent } from '../../components/product-links-carousel/product-links-carousel.component';
@@ -19,7 +19,7 @@ describe('Product Links Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers), TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
       declarations: [
         MockComponent(ProductItemContainerComponent),
         MockComponent(ProductLinksCarouselComponent),

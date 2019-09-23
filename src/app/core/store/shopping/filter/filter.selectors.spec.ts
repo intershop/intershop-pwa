@@ -22,7 +22,9 @@ describe('Filter Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

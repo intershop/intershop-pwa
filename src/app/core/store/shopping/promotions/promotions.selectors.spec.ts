@@ -21,7 +21,9 @@ describe('Promotions Selectors', () => {
 
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

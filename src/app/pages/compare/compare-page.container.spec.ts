@@ -24,10 +24,12 @@ describe('Compare Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [ComparePageContainerComponent, MockComponent(ProductCompareListComponent)],
       imports: [
-        ...ngrxTesting({
-          shopping: combineReducers(shoppingReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
     }).compileComponents();
     store$ = TestBed.get(TestStore);

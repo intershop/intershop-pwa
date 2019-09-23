@@ -28,13 +28,13 @@ function addRouteToArray(
 ) {
   const dasherizedName = strings.dasherize(options.name);
 
-  const loadChildren =
-    (options.child ? '..' : '.') +
-    `/${dasherizedName}/${dasherizedName}-page.module#${strings.classify(dasherizedName)}PageModule`;
+  const loadChildren = `() => import('${
+    options.child ? '..' : '.'
+  }/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${strings.classify(dasherizedName)}PageModule)`;
   const path = options.child ? options.child : dasherizedName;
 
   const recorder = host.beginUpdate(options.routingModule);
-  recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: '${loadChildren}' }`);
+  recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren} }`);
   host.commitUpdate(recorder);
 }
 

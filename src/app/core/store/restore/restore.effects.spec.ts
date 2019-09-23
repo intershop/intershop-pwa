@@ -37,12 +37,14 @@ describe('Restore Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        ...ngrxTesting({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
-        }),
         RouterTestingModule.withRoutes([]),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
+        }),
       ],
       providers: [
         RestoreEffects,

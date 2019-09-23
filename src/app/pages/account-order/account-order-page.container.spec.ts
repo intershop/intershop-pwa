@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AccountOrderPageContainerComponent } from './account-order-page.container';
 import { AccountOrderPageComponent } from './components/account-order-page/account-order-page.component';
@@ -14,11 +16,7 @@ describe('Account Order Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-        }),
-      ],
+      imports: [ngrxTesting({ reducers: { ...coreReducers, shopping: combineReducers(shoppingReducers) } })],
       declarations: [AccountOrderPageContainerComponent, MockComponent(AccountOrderPageComponent)],
     }).compileComponents();
   }));

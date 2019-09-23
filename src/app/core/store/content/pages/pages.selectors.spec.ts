@@ -15,8 +15,10 @@ describe('Pages Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        ...coreReducers,
-        content: combineReducers(contentReducers),
+        reducers: {
+          ...coreReducers,
+          content: combineReducers(contentReducers),
+        },
       }),
     });
 

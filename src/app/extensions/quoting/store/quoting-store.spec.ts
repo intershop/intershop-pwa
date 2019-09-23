@@ -82,15 +82,6 @@ describe('Quoting Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting(
-          {
-            ...coreReducers,
-            quoting: combineReducers(quotingReducers),
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-          },
-          [...coreEffects, ...quotingEffects]
-        ),
         FeatureToggleModule,
         RouterTestingModule.withRoutes([
           { path: 'account', component: DummyComponent },
@@ -98,6 +89,15 @@ describe('Quoting Store', () => {
         ]),
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
+          effects: [...coreEffects, ...quotingEffects],
+        }),
       ],
       providers: [
         QuoteRequestService,

@@ -20,7 +20,9 @@ describe('Basket Validation Results Component', () => {
       imports: [
         TranslateModule,
         ngrxTesting({
-          checkout: combineReducers(checkoutReducers),
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
     }).compileComponents();

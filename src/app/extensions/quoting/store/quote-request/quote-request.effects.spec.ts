@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { noop, of, throwError } from 'rxjs';
@@ -26,6 +26,7 @@ import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/pro
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
@@ -65,12 +66,14 @@ describe('Quote Request Effects', () => {
           { path: 'login', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
         ]),
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
-          user: userReducer,
-          configuration: configurationReducer,
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+            user: userReducer,
+            configuration: configurationReducer,
+          },
         }),
       ],
       providers: [

@@ -24,5 +24,5 @@ cat tslint.json | grep -Ev '^\s*//' > tslint.hard.json
 
 node tslint-hard
 
-npx tslint --project src/tsconfig.spec.json -c tslint.hard.json
+npx tslint --project tsconfig.spec.json -c tslint.hard.json
 npx tslint --project e2e/cypress/tsconfig.json -c tslint.hard.json

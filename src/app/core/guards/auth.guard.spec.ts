@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, StoreModule } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AuthGuard } from './auth.guard';
 
@@ -22,7 +23,7 @@ describe('Auth Guard', () => {
       TestBed.configureTestingModule({
         imports: [
           RouterTestingModule.withRoutes([{ path: 'login', component: DummyComponent }]),
-          StoreModule.forRoot(coreReducers),
+          ngrxTesting({ reducers: coreReducers }),
         ],
         declarations: [DummyComponent],
       }).compileComponents();

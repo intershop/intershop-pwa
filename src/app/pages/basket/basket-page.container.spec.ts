@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -8,6 +8,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { LoadBasket, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
 
@@ -31,11 +32,13 @@ describe('Basket Page Container', () => {
         MockComponent(ShoppingBasketEmptyComponent),
       ],
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
     }).compileComponents();
   }));

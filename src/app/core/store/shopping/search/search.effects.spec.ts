@@ -65,10 +65,12 @@ describe('Search Effects', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          ...ngrxTesting({
-            shopping: combineReducers(shoppingReducers),
-          }),
           RouterTestingModule,
+          ngrxTesting({
+            reducers: {
+              shopping: combineReducers(shoppingReducers),
+            },
+          }),
         ],
         providers: [
           SearchEffects,
@@ -155,13 +157,13 @@ describe('Search Effects', () => {
       TestBed.configureTestingModule({
         declarations: [DummyComponent],
         imports: [
-          ...ngrxTesting(
-            {
+          RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+          ngrxTesting({
+            reducers: {
               shopping: combineReducers(shoppingReducers),
             },
-            [SearchEffects, ProductListingEffects]
-          ),
-          RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+            effects: [SearchEffects, ProductListingEffects],
+          }),
         ],
         providers: [
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },

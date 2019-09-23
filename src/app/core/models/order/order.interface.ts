@@ -9,7 +9,7 @@ import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-met
 
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;
-  creationDate: Date;
+  creationDate: number;
   orderCreation: {
     status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
     stopAction?: {

@@ -81,11 +81,7 @@ describe('Product Price Component', () => {
       ];
     }
     using(dataProvider, dataSlice => {
-      it(`should evaluate isListPriceGreaterThanSalePrice to "${
-        dataSlice.isListPriceGreaterThanSalePrice
-      }" and isListPriceLessThanSalePrice to "${dataSlice.isListPriceLessThanSalePrice}" when ${
-        dataSlice.description
-      }`, () => {
+      it(`should evaluate isListPriceGreaterThanSalePrice to "${dataSlice.isListPriceGreaterThanSalePrice}" and isListPriceLessThanSalePrice to "${dataSlice.isListPriceLessThanSalePrice}" when ${dataSlice.description}`, () => {
         product.listPrice.value = dataSlice.listPrice;
         product.salePrice.value = dataSlice.salePrice;
         component.ngOnChanges();
@@ -175,9 +171,7 @@ describe('Product Price Component', () => {
         ];
       }
       using(dataProvider, dataSlice => {
-        it(`should apply "${dataSlice.querySelector}" class when showInformationalPrice = true and ${
-          dataSlice.description
-        }`, () => {
+        it(`should apply "${dataSlice.querySelector}" class when showInformationalPrice = true and ${dataSlice.description}`, () => {
           component.isListPriceGreaterThanSalePrice = dataSlice.isListPriceGreaterThanSalePrice;
           component.isListPriceLessThanSalePrice = dataSlice.isListPriceLessThanSalePrice;
           fixture.detectChanges();

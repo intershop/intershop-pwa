@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -13,6 +13,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as fromActions from './promotions.actions';
 import { PromotionsEffects } from './promotions.effects';
@@ -39,9 +40,11 @@ describe('Promotions Effects', () => {
       declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          locale: localeReducer,
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+            locale: localeReducer,
+          },
         }),
       ],
       providers: [

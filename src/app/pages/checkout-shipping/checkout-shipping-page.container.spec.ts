@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -23,15 +23,13 @@ describe('Checkout Shipping Page Container', () => {
         MockComponent(CheckoutShippingComponent),
         MockComponent(LoadingComponent),
       ],
-
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-        }),
         TranslateModule.forRoot(),
         ngrxTesting({
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
     }).compileComponents();
