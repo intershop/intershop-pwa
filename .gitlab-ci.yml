@@ -122,32 +122,25 @@ compile:
     - npx tsc -p cypress/tsconfig.json
     - echo "build complete"
 
-codestyle:
+code_quality:
   image: node:10
   stage: build
   only:
-    - merge_requests
-  except:
     refs:
       - develop
-      - master
+      - merge_requests
   tags:
     - docker-executor
     - performance
   artifacts:
-    expire_in: 1 day
-    paths:
-      - reports/jscpd
-      - reports/tslint
+    reports:
+      codequality: gl-code-quality-report.json
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npm i --no-save tslint-html-report jscpd-html-reporter
-    - node reports/tslint-report
-    - node reports/jscpd-report
-    - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+    - node reports/tslint-gitlab
     - echo "build complete"
 
 deploy_review_mock:
