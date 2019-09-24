@@ -18,4 +18,10 @@ module.exports = {
   transform: {
     '^.+\\.js$': 'babel-jest',
   },
+  snapshotSerializers: [
+    './src/jest-serializer/AngularHTMLSerializer.js',
+    './src/jest-serializer/CategoryTreeSerializer.js',
+    './src/jest-serializer/NgrxActionSerializer.js',
+    './src/jest-serializer/NgrxActionArraySerializer.js',
+  ],
 };
