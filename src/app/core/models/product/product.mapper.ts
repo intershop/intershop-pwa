@@ -90,7 +90,7 @@ export class ProductMapper {
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
-  fromStubData(data: ProductDataStub): AllProductTypes {
+  fromStubData(data: ProductDataStub): Partial<AllProductTypes> {
     const sku = retrieveStubAttributeValue<string>(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
@@ -107,7 +107,7 @@ export class ProductMapper {
     const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
     const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
 
-    const product: Product = {
+    const product: Partial<Product> = {
       shortDescription: data.description,
       name: data.title,
       sku,
@@ -141,7 +141,6 @@ export class ProductMapper {
       longDescription: undefined,
       minOrderQuantity,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
-      attributes: [],
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
