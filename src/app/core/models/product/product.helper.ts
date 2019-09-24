@@ -100,7 +100,7 @@ export class ProductHelper {
   /**
    * Check if product is a variation product
    */
-  static isVariationProduct(product: Product): product is VariationProduct & VariationProductView {
+  static isVariationProduct(product: Partial<Product>): product is VariationProduct & VariationProductView {
     return product && product.type === 'VariationProduct';
   }
 
