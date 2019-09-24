@@ -67,7 +67,13 @@ export class ProductsEffects {
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
     filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
-    map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
+    groupBy(([{ sku }]) => sku),
+    mergeMap(group$ =>
+      group$.pipe(
+        throttleTime(3000),
+        map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
+      )
+    )
   );
 
   /**
