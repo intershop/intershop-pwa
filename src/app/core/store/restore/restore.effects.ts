@@ -47,7 +47,10 @@ export class RestoreEffects {
       this.makeCookie({ apiToken, type: user ? 'user' : basket ? 'basket' : 'order', orderId })
     ),
     tap(cookie => {
-      const options = { expires: new Date(Date.now() + 3600000) };
+      const options = {
+        expires: new Date(Date.now() + 3600000),
+        secure: (isPlatformBrowser(this.platformId) && location.protocol === 'https:') || false,
+      };
       this.cookieService.put('apiToken', cookie, options);
     })
   );
