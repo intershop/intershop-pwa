@@ -22,7 +22,7 @@ import {
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
@@ -67,7 +67,13 @@ export class ProductsEffects {
     mapToPayload(),
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
     filter(([{ sku, level }, entities]) => !ProductHelper.isSufficientlyLoaded(entities[sku], level)),
-    map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
+    groupBy(([{ sku }]) => sku),
+    mergeMap(group$ =>
+      group$.pipe(
+        throttleTime(3000),
+        map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
+      )
+    )
   );
 
   /**
@@ -151,7 +157,13 @@ export class ProductsEffects {
     mergeMap(groups =>
       groups.pipe(
         throttleTime(3000),
-        map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+        map(
+          ([product]) =>
+            new productsActions.LoadProductIfNotLoaded({
+              sku: product.productMasterSKU,
+              level: ProductCompletenessLevel.List,
+            })
+        )
       )
     )
   );
@@ -188,6 +200,10 @@ export class ProductsEffects {
     map(([sku]) => new productsActions.SelectProduct({ sku }))
   );
 
+  /**
+   * reloads product when it is selected (usually product detail page)
+   * change to {@link LoadProductIfNotLoaded} if no reload is needed
+   */
   @Effect()
   selectedProduct$ = this.actions$.pipe(
     ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),

@@ -22,7 +22,7 @@ import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
@@ -455,7 +455,7 @@ describe('Quote Request Effects', () => {
       const action = new quoteRequestActions.LoadQuoteRequestItemsSuccess({
         quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
       });
-      const completion = new LoadProduct({ sku: 'SKU' });
+      const completion = new LoadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

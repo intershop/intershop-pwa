@@ -16,13 +16,13 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadProduct, LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded, LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -139,7 +139,7 @@ describe('Basket Effects', () => {
   });
 
   describe('loadProductsForBasket$', () => {
-    it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
+    it('should trigger product loading actions for line items if LoadBasketSuccess action triggered', () => {
       when(basketServiceMock.getBasket(anything())).thenReturn(of());
 
       const action = new basketActions.LoadBasketSuccess({
@@ -159,7 +159,7 @@ describe('Basket Effects', () => {
         } as Basket,
       });
 
-      const completion = new LoadProduct({ sku: 'SKU' });
+      const completion = new LoadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

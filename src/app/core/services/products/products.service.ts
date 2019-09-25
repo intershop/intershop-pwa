@@ -132,14 +132,13 @@ export class ProductsService {
   }
 
   // TODO: work-around to exchange single-return variation products to master products for B2B
-  private postProcessMasters(products: Product[]): Product[] {
+  private postProcessMasters(products: Partial<Product>[]): Product[] {
     if (this.featureToggleService.enabled('advancedVariationHandling')) {
       return products.map(p =>
-        // tslint:disable-next-line:ish-no-object-literal-type-assertion
-        ProductHelper.isVariationProduct(p) ? ({ sku: p.productMasterSKU, completenessLevel: 0 } as Product) : p
-      );
+        ProductHelper.isVariationProduct(p) ? { sku: p.productMasterSKU, completenessLevel: 0 } : p
+      ) as Product[];
     }
-    return products;
+    return products as Product[];
   }
 
   /**
