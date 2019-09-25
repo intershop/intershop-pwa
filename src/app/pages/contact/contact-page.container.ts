@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { debounce, filter, takeUntil } from 'rxjs/operators';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
 import {
@@ -16,7 +18,7 @@ import {
   templateUrl: './contact-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactPageContainerComponent implements OnInit {
+export class ContactPageContainerComponent implements OnInit, OnDestroy {
   /**
    * The list of confirmation subjects to choose from.
    */
@@ -31,14 +33,32 @@ export class ContactPageContainerComponent implements OnInit {
    */
   success$ = this.store.pipe(select(getContactSuccess));
 
-  constructor(private store: Store<{}>) {}
+  private destroy$ = new Subject();
+
+  constructor(private store: Store<{}>, private router: Router) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadContact());
+
+    // reset contact page if the user routes to 'contact' again after a contact form submission
+    this.router.events
+      .pipe(
+        filter(event => event instanceof ActivationEnd && !event.snapshot.queryParamMap.has('submitted')),
+        debounce(() => this.router.events.pipe(filter(event => event instanceof NavigationEnd))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.store.dispatch(new LoadContact());
+      });
   }
 
   /** dispatch contact request */
   createRequest(request: { contact: Contact; captcha?: string }) {
     this.store.dispatch(new CreateContact({ contact: request.contact }));
+    this.router.navigate([], { queryParams: { submitted: true } });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }
