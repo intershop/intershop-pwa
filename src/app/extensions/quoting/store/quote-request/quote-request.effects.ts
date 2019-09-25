@@ -14,7 +14,7 @@ import {
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
-import { LoadProduct, LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
@@ -168,7 +168,7 @@ export class QuoteRequestEffects {
       ...lineItems
         .map(lineItem => lineItem.productSKU)
         .filter(sku => !products[sku])
-        .map(sku => new LoadProduct({ sku })),
+        .map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List })),
     ])
   );
 

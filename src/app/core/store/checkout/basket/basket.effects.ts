@@ -17,8 +17,9 @@ import {
 } from 'rxjs/operators';
 
 import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -71,7 +72,7 @@ export class BasketEffects {
       ...basket.lineItems
         .map(basketItem => basketItem.productSKU)
         .filter(sku => !products[sku])
-        .map(sku => new LoadProduct({ sku })),
+        .map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List })),
     ])
   );
 

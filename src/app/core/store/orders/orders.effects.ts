@@ -6,9 +6,10 @@ import { mapToParam, ofRoute } from 'ngrx-router';
 import { race } from 'rxjs';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { LoadBasket } from 'ish-core/store/checkout/basket';
-import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -134,7 +135,7 @@ export class OrdersEffects {
       ...order.lineItems
         .map(orderItem => orderItem.productSKU)
         .filter(sku => !products[sku])
-        .map(sku => new LoadProduct({ sku })),
+        .map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List })),
     ])
   );
 
