@@ -15,7 +15,7 @@ import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injectio
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
@@ -232,7 +232,7 @@ describe('Products Effects', () => {
           type: 'VariationProduct',
         } as VariationProduct,
       });
-      const completion = new fromActions.LoadProduct({ sku: 'MSKU' });
+      const completion = new fromActions.LoadProductIfNotLoaded({ sku: 'MSKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
