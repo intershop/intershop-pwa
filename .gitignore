@@ -9,6 +9,7 @@
 /bin
 /cache
 /tslint*hard*
+/gl-code-quality-report.json
 
 # unsupported yarn files
 /yarn.lock
