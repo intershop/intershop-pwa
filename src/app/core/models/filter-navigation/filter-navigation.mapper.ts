@@ -18,7 +18,7 @@ export class FilterNavigationMapper {
               name: filterData.name,
               displayType: filterData.displayType,
               facets: FilterNavigationMapper.mapFacetData(filterData.facets),
-              selectionType: filterData.selectionType,
+              selectionType: filterData.selectionType || 'single',
             }))
           : [],
     };
