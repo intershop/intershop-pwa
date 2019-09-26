@@ -19,7 +19,7 @@ import { SearchBoxConfiguration } from 'ish-shell/header/configurations/search-b
  * uses {@link SearchBoxComponent} to display the search box
  *
  * @example
- * <ish-search-box-container [configuration]="{placeholderText: 'search.searchbox.instructional_text' | translate}"></ish-search-box-container>
+ * <ish-search-box-container [configuration]="{placeholder: 'search.searchbox.instructional_text' | translate}"></ish-search-box-container>
  */
 @Component({
   selector: 'ish-search-box-container',
