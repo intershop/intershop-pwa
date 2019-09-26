@@ -9,7 +9,7 @@
     class="dropdown"
     [ngClass]="{ open: isOpened(category) }"
     (mouseover)="subMenuShow(submenu)"
-    (mouseout)="subMenuHide(submenu)"
+    (mouseleave)="subMenuHide(submenu)"
     (click)="subMenuHide(submenu)"
   >
     <a
