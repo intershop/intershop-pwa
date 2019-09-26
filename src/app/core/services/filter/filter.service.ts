@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { FilterNavigationMapper } from 'ish-core/models/filter-navigation/filter-navigation.mapper';
@@ -25,10 +25,7 @@ export class FilterService {
       .set('CategoryName', idList[idList.length - 1]);
     return this.apiService.get<FilterNavigationData>('filters', { params, skipApiErrorHandling: true }).pipe(
       map(filter => FilterNavigationMapper.fromData(filter)),
-      map(filter => FilterNavigationMapper.fixSearchParameters(filter)),
-      // TODO: temporary work-around to omit errors until Filter REST API 2.0 is used
-      // tslint:disable-next-line:ban
-      catchError(() => of(FilterNavigationMapper.fromData(undefined)))
+      map(filter => FilterNavigationMapper.fixSearchParameters(filter))
     );
   }
 
