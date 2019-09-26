@@ -106,13 +106,6 @@
             "exclude": ["**/node_modules/**"]
           }
         },
-        "test": {
-          "builder": "@angular-builders/jest:run",
-          "options": {
-            "tsConfig": "tsconfig.spec.json",
-            "polyfills": "src/polyfills.ts"
-          }
-        },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {

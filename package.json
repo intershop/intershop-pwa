@@ -13,13 +13,13 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "test": "ng test --ci -i",
-    "test:watch": "ng test --watch",
+    "test": "jest --ci",
+    "test:watch": "jest --watch",
     "e2e": "cd e2e && npm install && node open-cypress",
-    "lint": "npx ng lint",
+    "lint": "ng lint",
     "stylelint": "stylelint \"src/**/*.scss\" --fix",
-    "format": "npx prettier --loglevel warn --write \"**/*.*\"",
-    "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npx tsc --project tsconfig.spec.json && npm run build && npm run test",
+    "format": "prettier --loglevel warn --write \"**/*.*\"",
+    "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && tsc --project tsconfig.spec.json && npm run build && npm run test",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -t RELEASE_ -n intershop-changelog.js -i CHANGELOG.md -s",
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
@@ -29,7 +29,7 @@
     "build:client-and-server-bundles": "ng build --prod && ng run intershop-pwa:server:production --bundleDependencies all",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
     "serve": "node dist/server",
-    "build:watch": "npx ng build --aot --watch",
+    "build:watch": "ng build --aot --watch",
     "build": "npm run build:client-and-server-bundles && npm run webpack:server",
     "start": "npm run build && npm run serve"
   },
@@ -82,7 +82,6 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-builders/jest": "^8.2.0",
     "@angular-devkit/build-angular": "~0.803.4",
     "@angular-devkit/core": "^8.3.4",
     "@angular-devkit/schematics": "^8.3.4",
@@ -93,8 +92,6 @@
     "@schematics/angular": "^8.2.0",
     "@types/jest": "^24.0.18",
     "@types/node": "^10.0.0",
-    "babel-jest": "^24.8.0",
-    "babel-polyfill": "^6.26.0",
     "codelyzer": "^5.1.0",
     "cpy-cli": "^2.0.0",
     "husky": "^1.3.1",
@@ -108,7 +105,7 @@
     "jest-html-reporter": "^2.6.0",
     "jest-junit": "^8.0.0",
     "jest-marbles": "^2.5.0",
-    "jest-preset-angular": "^7.1.1",
+    "jest-preset-angular": "^6.0.2",
     "lint-staged": "^8.2.0",
     "ng-mocks": "^8.1.0",
     "prettier": "^1.18.2",
@@ -145,8 +142,7 @@
         "npx tslint --project tsconfig.json --fix --force",
         "npx tslint --project tsconfig.json --fix",
         "npx prettier --loglevel warn --write",
-        "git reset HEAD",
-        "node jest-precommit",
+        "npx jest --ci --bail --findRelatedTests",
         "git add"
       ]
     },
