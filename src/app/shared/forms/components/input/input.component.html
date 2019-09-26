@@ -13,7 +13,7 @@
       [attr.autocomplete]="calculatedAutocomplete"
       [min]="min || (min === 0 ? 0 : '')"
       [max]="max || ''"
-      [placeholder]="placeholderText ? (placeholderText | translate) : ''"
+      [placeholder]="placeholder | translate"
     />
     <ng-content></ng-content>
     <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>

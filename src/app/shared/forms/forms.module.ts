@@ -21,6 +21,7 @@ import { SelectSecurityQuestionComponent } from './components/select-security-qu
 import { SelectTitleComponent } from './components/select-title/select-title.component';
 import { SelectYearMonthComponent } from './components/select-year-month/select-year-month.component';
 import { SelectComponent } from './components/select/select.component';
+import { TextareaComponent } from './components/textarea/textarea.component';
 import { LoginFormContainerComponent } from './containers/login-form/login-form.container';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
@@ -42,6 +43,7 @@ const exportedComponents = [
   SelectTitleComponent,
   SelectYearMonthComponent,
   ShowFormFeedbackDirective,
+  TextareaComponent,
 ];
 @NgModule({
   imports: [CommonModule, IconModule, ReactiveFormsModule, RecaptchaModule, RouterModule, TranslateModule],
