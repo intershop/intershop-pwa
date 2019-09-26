@@ -21,7 +21,7 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome with ng test",
+      "name": "Launch Chrome with debug",
       "url": "http://localhost:9876/debug.html",
       "webRoot": "${workspaceRoot}"
     }

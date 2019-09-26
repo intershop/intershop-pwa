@@ -98,7 +98,7 @@ jest_test:
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx ng test -i --config-path jest-reports.config.js --ci
+    - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
 
 compile:
