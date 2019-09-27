@@ -16,7 +16,7 @@ export class QuoteDetailPage {
   }
 
   get productId() {
-    return cy.get('p[data-testing-id="product-id"]');
+    return cy.get('[itemprop="sku"]');
   }
 
   get totalPrice() {
@@ -29,5 +29,13 @@ export class QuoteDetailPage {
 
   deleteItemFromQuoteRequest() {
     cy.get(`a[title="Remove"]`).click();
+  }
+
+  saveQuoteRequest() {
+    cy.get('[data-testing-id="save-quote-request"]').click();
+  }
+
+  submitQuoteRequest() {
+    cy.get('[data-testing-id="submit-quote-request"]').click();
   }
 }
