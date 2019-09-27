@@ -14,8 +14,7 @@
       <h1>{{ category.name }}</h1>
       <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
-        <fa-icon *ngIf="isCollapsed" [icon]="['fas', 'angle-down']"></fa-icon>
-        <fa-icon *ngIf="!isCollapsed" [icon]="['fas', 'angle-up']"></fa-icon>
+        <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
       </a>
       <ish-product-list-container
         [category]="category"
