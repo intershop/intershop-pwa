@@ -258,7 +258,10 @@ export class QuoteRequestEffects {
    */
   @Effect({ dispatch: false })
   goToLoginOnAddQuoteRequest$ = this.actions$.pipe(
-    ofType(actions.QuoteRequestActionTypes.AddProductToQuoteRequest),
+    ofType(
+      actions.QuoteRequestActionTypes.AddProductToQuoteRequest,
+      actions.QuoteRequestActionTypes.AddBasketToQuoteRequest
+    ),
     mergeMap(() => this.store.pipe(select(getUserAuthorized))),
     whenFalsy(),
     tap(() => {
