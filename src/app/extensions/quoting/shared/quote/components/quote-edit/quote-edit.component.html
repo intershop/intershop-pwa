@@ -164,6 +164,8 @@
     {{ 'quote.edit.saved.your_quote_has_been_saved.text' | translate }}
   </div>
 
+  <div *ngIf="error" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+
   <!--- Quote Item List -->
   <div class="section">
     <h3>{{ 'quote.items.table.heading' | translate }}</h3>

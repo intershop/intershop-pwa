@@ -5,7 +5,13 @@ import { Store, select } from '@ngrx/store';
 import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
 import { getLoggedInUser } from 'ish-core/store/user';
 
-import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
+import {
+  CreateQuoteRequestFromQuote,
+  RejectQuote,
+  getQuoteError,
+  getQuoteLoading,
+  getSelectedQuote,
+} from '../../store/quote';
 
 @Component({
   selector: 'ish-quote-edit-page-container',
@@ -15,6 +21,7 @@ import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQ
 export class QuoteEditPageContainerComponent {
   quote$ = this.store.pipe(select(getSelectedQuote));
   quoteLoading$ = this.store.pipe(select(getQuoteLoading));
+  quoteError$ = this.store.pipe(select(getQuoteError));
   user$ = this.store.pipe(select(getLoggedInUser));
 
   constructor(private store: Store<{}>, private router: Router) {}
