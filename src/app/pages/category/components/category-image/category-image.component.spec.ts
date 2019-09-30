@@ -31,6 +31,7 @@ describe('Category Image Component', () => {
       ],
     } as Category;
     component.category = category;
+    component.showImage = true;
     component.ngOnChanges();
     fixture.detectChanges();
   });
