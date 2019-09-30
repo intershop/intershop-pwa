@@ -8,15 +8,19 @@ const esModules = [
 ];
 
 module.exports = {
+  globals: {
+    'ts-jest': {
+      tsConfigFile: '<rootDir>/tsconfig.spec.json',
+    },
+    __TRANSFORM_HTML__: true,
+  },
+  preset: 'jest-preset-angular',
+  roots: ['src'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
+  transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {
     '^ish-(.*)$': '<rootDir>/src/app/$1',
     '^ngrx-router$': '<rootDir>/src/ngrx-router',
-  },
-  setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
-  transformIgnorePatterns: [`<rootDir>/node_modules/(?!${esModules.join('|')})`],
-  testMatch: ['**/*.spec.ts'],
-  transform: {
-    '^.+\\.js$': 'babel-jest',
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',
