@@ -153,6 +153,13 @@
     </div>
   </isif> -->
 
+  <div *ngIf="quote.state === 'Submitted'" data-testing-id="success-message" class="alert alert-info">
+    {{
+      'quote.edit.submitted.your_quote_has_been_submitted.text'
+        | translate: { '0': quote.creationDate | date: 'shortDate' }
+    }}
+  </div>
+
   <!--- Quote Item List -->
   <div class="section">
     <h3>{{ 'quote.items.table.heading' | translate }}</h3>
