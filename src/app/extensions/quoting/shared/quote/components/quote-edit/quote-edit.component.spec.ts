@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
@@ -32,6 +33,7 @@ describe('Quote Edit Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(QuoteStateComponent),
         MockComponent(RecentlyViewedContainerComponent),
+        MockComponent(ServerHtmlDirective),
         QuoteEditComponent,
       ],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
