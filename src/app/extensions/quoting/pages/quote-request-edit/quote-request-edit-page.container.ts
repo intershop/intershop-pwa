@@ -11,6 +11,7 @@ import {
   SubmitQuoteRequest,
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
+  getQuoteRequestError,
   getQuoteRequestLoading,
   getSelectedQuoteRequest,
 } from '../../store/quote-request';
@@ -23,6 +24,7 @@ import {
 export class QuoteRequestEditPageContainerComponent {
   quote$ = this.store.pipe(select(getSelectedQuoteRequest));
   quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
+  quoteError$ = this.store.pipe(select(getQuoteRequestError));
   user$ = this.store.pipe(select(getLoggedInUser));
 
   constructor(private store: Store<{}>) {}

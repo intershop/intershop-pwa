@@ -2,6 +2,7 @@
   *ngIf="quote$ | async as quote"
   [quote]="quote"
   [user]="user$ | async"
+  [error]="quoteError$ | async"
   (deleteItem)="deleteQuoteRequestItem($event)"
   (deleteQuoteRequest)="deleteQuoteRequest($event)"
   (updateItem)="updateQuoteRequestItem($event)"

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, merge, of, timer } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { User } from 'ish-core/models/user/user.model';
 
@@ -39,6 +40,7 @@ import { Quote } from '../../../../models/quote/quote.model';
 export class QuoteEditComponent implements OnChanges {
   @Input() quote: Quote | QuoteRequest;
   @Input() user: User;
+  @Input() error: HttpError;
 
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
