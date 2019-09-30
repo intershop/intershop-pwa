@@ -16,10 +16,10 @@
     <p>{{ 'quote.edit.submitted.your_quote_number.text' | translate }} {{ quote.number }}</p>
     <p>
       {{ 'quote.edit.submitted.your_quote.text' | translate }} <br />
-      <!-- TODO: current redirect implementation causes complete reload of the app -->
       <span
-        [innerHTML]="
-          'quote.edit.submitted.you_can_check.text' | translate: { '0': '/account/quote-list', '1': '/account' }
+        [ishServerHtml]="
+          'quote.edit.submitted.you_can_check.text'
+            | translate: { '0': 'route://account/quote-list', '1': 'route://account' }
         "
       ></span>
     </p>
