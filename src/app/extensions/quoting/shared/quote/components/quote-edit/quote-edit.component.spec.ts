@@ -137,7 +137,8 @@ describe('Quote Edit Component', () => {
     });
 
     it('should render submitted heading if submit is clicked', () => {
-      component.submit();
+      component.quote.state = 'Submitted';
+      component.submitted = true;
       fixture.detectChanges();
       expect(element.textContent).toContain('quote.edit.submitted.your_quote_number.text');
     });

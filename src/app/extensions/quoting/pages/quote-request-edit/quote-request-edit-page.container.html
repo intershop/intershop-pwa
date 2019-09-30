@@ -3,6 +3,7 @@
   [quote]="quote"
   [user]="user$ | async"
   [error]="quoteError$ | async"
+  [submitted]="submitted"
   (deleteItem)="deleteQuoteRequestItem($event)"
   (deleteQuoteRequest)="deleteQuoteRequest($event)"
   (updateItem)="updateQuoteRequestItem($event)"
