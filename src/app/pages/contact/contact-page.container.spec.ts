@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { contactReducers } from 'ish-core/store/contact/contact-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
@@ -19,7 +20,15 @@ describe('Contact Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            contact: combineReducers(contactReducers),
+          },
+        }),
+      ],
       declarations: [
         ContactPageContainerComponent,
         MockComponent(BreadcrumbComponent),
