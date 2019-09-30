@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { DeferLoadModule } from '@trademe/ng-defer-load';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -38,6 +39,7 @@ const exportedComponents = [
 @NgModule({
   imports: [
     CommonModule,
+    DeferLoadModule,
     FeatureToggleModule,
     IconModule,
     NgbCollapseModule,

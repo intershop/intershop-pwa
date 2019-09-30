@@ -11,6 +11,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 
@@ -99,6 +100,7 @@ import { RecentlyViewedContainerComponent } from './recently/containers/recently
 const importExportModules = [
   CMSModule,
   CommonModule,
+  DeferLoadModule,
   FeatureToggleModule,
   FormlyModule,
   FormsDynamicModule,
