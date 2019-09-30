@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, merge, of, timer } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -53,6 +55,8 @@ export class QuoteEditComponent implements OnChanges {
   validFromDate: number;
   validToDate: number;
   submitted = false;
+  saved = false;
+  displaySavedMessage$: Observable<boolean>;
 
   constructor(private router: Router) {
     this.form = new FormGroup({
@@ -69,6 +73,14 @@ export class QuoteEditComponent implements OnChanges {
     this.validToDate = quote.validToDate;
 
     this.patchForm(quote);
+
+    this.toggleSaveMessage();
+  }
+
+  private toggleSaveMessage() {
+    if (!this.submitted && this.saved && !this.error) {
+      this.displaySavedMessage$ = merge(of(true), timer(5000).pipe(mapTo(false)));
+    }
   }
 
   private patchForm(quote: Quote) {
@@ -127,6 +139,7 @@ export class QuoteEditComponent implements OnChanges {
       displayName: this.form.value.displayName,
       description: this.form.value.description,
     });
+    this.saved = true;
   }
 
   /**

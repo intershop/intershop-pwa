@@ -160,6 +160,10 @@
     }}
   </div>
 
+  <div *ngIf="displaySavedMessage$ | async" data-testing-id="success-message" class="alert alert-success alert-fade">
+    {{ 'quote.edit.saved.your_quote_has_been_saved.text' | translate }}
+  </div>
+
   <!--- Quote Item List -->
   <div class="section">
     <h3>{{ 'quote.items.table.heading' | translate }}</h3>
