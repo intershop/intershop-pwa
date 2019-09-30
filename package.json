@@ -61,6 +61,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@ngx-utils/cookies": "^3.0.2",
     "@sentry/browser": "^5.8.0",
+    "@trademe/ng-defer-load": "^3.1.0",
     "@types/lodash-es": "^4.17.3",
     "@wishtack/reactive-component-loader": "^1.0.0",
     "acorn": "^6.1.1",
