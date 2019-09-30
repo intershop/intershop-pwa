@@ -14,7 +14,7 @@ import { ApiService } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private filterNavigationMapper: FilterNavigationMapper) {}
 
   getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
     const idList = categoryUniqueId.split('.');
@@ -24,8 +24,8 @@ export class FilterService {
       .set('CategoryDomainName', categoryDomainName)
       .set('CategoryName', idList[idList.length - 1]);
     return this.apiService.get<FilterNavigationData>('filters', { params, skipApiErrorHandling: true }).pipe(
-      map(filter => FilterNavigationMapper.fromData(filter)),
-      map(filter => FilterNavigationMapper.fixSearchParameters(filter))
+      map(filter => this.filterNavigationMapper.fromData(filter)),
+      map(filter => this.filterNavigationMapper.fixSearchParameters(filter))
     );
   }
 
@@ -35,15 +35,15 @@ export class FilterService {
     return this.apiService
       .get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`, { skipApiErrorHandling: true })
       .pipe(
-        map(filter => FilterNavigationMapper.fromData(filter)),
-        map(filter => FilterNavigationMapper.fixSearchParameters(filter))
+        map(filter => this.filterNavigationMapper.fromData(filter)),
+        map(filter => this.filterNavigationMapper.fixSearchParameters(filter))
       );
   }
 
   applyFilter(searchParameter: string): Observable<FilterNavigation> {
     return this.apiService.get<FilterNavigationData>(`filters/default;SearchParameter=${searchParameter}`).pipe(
-      map(filter => FilterNavigationMapper.fromData(filter)),
-      map(filter => FilterNavigationMapper.fixSearchParameters(filter))
+      map(filter => this.filterNavigationMapper.fromData(filter)),
+      map(filter => this.filterNavigationMapper.fixSearchParameters(filter))
     );
   }
 

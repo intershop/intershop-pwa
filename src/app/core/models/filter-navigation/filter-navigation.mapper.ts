@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
@@ -8,8 +9,9 @@ import { formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigation } from './filter-navigation.model';
 
+@Injectable({ providedIn: 'root' })
 export class FilterNavigationMapper {
-  static fromData(data: FilterNavigationData): FilterNavigation {
+  fromData(data: FilterNavigationData): FilterNavigation {
     return {
       filter:
         data && data.elements
@@ -17,14 +19,14 @@ export class FilterNavigationMapper {
               id: filterData.id,
               name: filterData.name,
               displayType: filterData.displayType,
-              facets: FilterNavigationMapper.mapFacetData(filterData),
+              facets: this.mapFacetData(filterData),
               selectionType: filterData.selectionType || 'single',
             }))
           : [],
     };
   }
 
-  private static mapFacetData(filterData: FilterData) {
+  private mapFacetData(filterData: FilterData) {
     return filterData.facets
       ? filterData.facets.reduce((acc, facet) => {
           if (facet.name !== 'Show all') {
@@ -44,33 +46,31 @@ export class FilterNavigationMapper {
       : [];
   }
 
-  static fixSearchParameters(filterNavigation: FilterNavigation) {
+  fixSearchParameters(filterNavigation: FilterNavigation) {
     filterNavigation.filter.forEach(filter => {
       filter.id = filter.id.replace(/\ /g, '+');
       const selected = filter.facets
         .filter(facet => facet.selected)
-        .map(facet =>
-          filter.id.includes('Price') ? FilterNavigationMapper.fixPrice(filter.id, facet.searchParameter) : facet.name
-        );
+        .map(facet => (filter.id.includes('Price') ? this.fixPrice(filter.id, facet.searchParameter) : facet.name));
       filter.facets.forEach(facet => {
         facet.name = facet.name.replace(/\ /g, '+');
         if (filter.id.includes('Price')) {
-          facet.name = FilterNavigationMapper.fixPrice(filter.id, facet.searchParameter);
+          facet.name = this.fixPrice(filter.id, facet.searchParameter);
         }
-        FilterNavigationMapper.postProcess(filter, facet, selected);
+        this.postProcess(filter, facet, selected);
       });
     });
 
     return filterNavigation;
   }
 
-  private static fixPrice(filterId: string, searchParameter: string): string {
+  private fixPrice(filterId: string, searchParameter: string): string {
     const decodedSearchParams = b64u.decode(b64u.fromBase64(searchParameter));
     const params = stringToFormParams(decodedSearchParams);
     return params[filterId][0];
   }
 
-  private static postProcess(filter: Filter, facet: Facet, selected: string[]): Facet {
+  private postProcess(filter: Filter, facet: Facet, selected: string[]): Facet {
     const decodedSearchParams = b64u.decode(b64u.fromBase64(facet.searchParameter));
     const paramsMap = stringToFormParams(decodedSearchParams);
     const isOr = filter.selectionType.endsWith('or');
