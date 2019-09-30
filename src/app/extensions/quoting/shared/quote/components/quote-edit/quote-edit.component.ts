@@ -41,6 +41,7 @@ export class QuoteEditComponent implements OnChanges {
   @Input() quote: Quote | QuoteRequest;
   @Input() user: User;
   @Input() error: HttpError;
+  @Input() submitted = false;
 
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
@@ -56,7 +57,6 @@ export class QuoteEditComponent implements OnChanges {
   sellerComment: string;
   validFromDate: number;
   validToDate: number;
-  submitted = false;
   saved = false;
   displaySavedMessage$: Observable<boolean>;
 
@@ -80,7 +80,7 @@ export class QuoteEditComponent implements OnChanges {
   }
 
   private toggleSaveMessage() {
-    if (!this.submitted && this.saved && !this.error) {
+    if (!this.submitted && this.saved && !this.error && this.quote.state === 'New') {
       this.displaySavedMessage$ = merge(of(true), timer(5000).pipe(mapTo(false)));
     }
   }
@@ -126,7 +126,6 @@ export class QuoteEditComponent implements OnChanges {
    */
   submit() {
     this.submitQuoteRequest.emit();
-    this.submitted = true;
   }
 
   /**

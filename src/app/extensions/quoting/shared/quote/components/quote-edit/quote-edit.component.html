@@ -13,7 +13,10 @@
   <!--- Quote Header ( shown once if quote request submitted ) -->
   <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quoteTitle">
     <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
-    <p>{{ 'quote.edit.submitted.your_quote_number.text' | translate }} {{ quote.number }}</p>
+    <p>
+      {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
+      <a [routerLink]="['/account/quote-request', quote.id]">{{ quote.number }}</a>
+    </p>
     <p>
       {{ 'quote.edit.submitted.your_quote.text' | translate }} <br />
       <span
