@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
-import { FilterData } from 'ish-core/models/filter/filter.interface';
+import { FilterData, FilterValueMap } from 'ish-core/models/filter/filter.interface';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { getICMStaticURL } from 'ish-core/store/configuration';
 import { formParamsToString, stringToFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterNavigationData } from './filter-navigation.interface';
@@ -11,6 +13,12 @@ import { FilterNavigation } from './filter-navigation.model';
 
 @Injectable({ providedIn: 'root' })
 export class FilterNavigationMapper {
+  private icmStaticURL: string;
+
+  constructor(store: Store<{}>) {
+    store.pipe(select(getICMStaticURL)).subscribe(url => (this.icmStaticURL = url));
+  }
+
   fromData(data: FilterNavigationData): FilterNavigation {
     return {
       filter:
@@ -20,10 +28,37 @@ export class FilterNavigationMapper {
               name: filterData.name,
               displayType: filterData.displayType,
               facets: this.mapFacetData(filterData),
+              filterValueMap: this.parseFilterValueMap(filterData.filterValueMap),
               selectionType: filterData.selectionType || 'single',
             }))
           : [],
     };
+  }
+
+  /**
+   * parse ish-link to
+   */
+  private parseFilterValueMapUrl(url: string) {
+    const urlParts = url.split(':');
+    return `${this.icmStaticURL}/${urlParts[0]}/-${urlParts[1]}`;
+  }
+
+  /**
+   * parse FilterValueMap for image-links
+   */
+  private parseFilterValueMap(filterValueMap: FilterValueMap): FilterValueMap {
+    return filterValueMap
+      ? Object.keys(filterValueMap).reduce((acc, k) => {
+          acc[k] = {
+            mapping:
+              filterValueMap[k].type === 'image'
+                ? `url(${this.parseFilterValueMapUrl(filterValueMap[k].mapping)})`
+                : filterValueMap[k].mapping,
+            type: filterValueMap[k].type,
+          };
+          return acc;
+        }, {})
+      : {};
   }
 
   private mapFacetData(filterData: FilterData) {
