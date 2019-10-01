@@ -1,21 +1,23 @@
-<ul class="filter-list">
-  <ng-container *ngFor="let facet of filterElement.facets">
-    <li *ngIf="facet.selected" class="filter-item filter-selected">
-      <span class="icon-selected"></span>{{ facet.displayName }} <span class="filter-count">({{ facet.count }})</span>
-      <a class="filter-clear" (click)="filter(facet.name)">
-        <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
-      </a>
-    </li>
-  </ng-container>
-</ul>
-
-<div [attr.data-testing-id]="'collapse-filter-' + (filterElement.name | sanitize)">
-  <form role="filter" name="Filter" [formGroup]="filterForm">
-    <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
-      <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
-      <ng-container *ngFor="let facet of filterElement.facets">
-        <option *ngIf="!facet.selected" [value]="facet.name">{{ facet.displayName }}</option>
-      </ng-container>
-    </select>
-  </form>
+<div ngbDropdown autoClose="outside">
+  <a
+    ngbDropdownToggle
+    class="form-control"
+    role="button"
+    id="dropdownMenuLink"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    [attr.title]="placeholder !== filterElement.name ? placeholder : null"
+    ><span>{{ placeholder }}</span></a
+  >
+  <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
+    <a
+      *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
+      class="dropdown-item"
+      [ngClass]="{ selected: facet.selected }"
+      (click)="apply(facet)"
+      >{{ facet.displayName }}<ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container
+      ><fa-icon class="icon-checked" *ngIf="facet.selected" [icon]="['fas', 'check']"></fa-icon
+    ></a>
+  </div>
 </div>

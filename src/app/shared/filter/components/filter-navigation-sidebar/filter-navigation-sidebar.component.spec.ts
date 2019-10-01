@@ -6,7 +6,6 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { FilterCheckboxComponent } from 'ish-shared/filter/components/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsableComponent } from 'ish-shared/filter/components/filter-collapsable/filter-collapsable.component';
-import { FilterDropdownMultiselectComponent } from 'ish-shared/filter/components/filter-dropdown-multiselect/filter-dropdown-multiselect.component';
 import { FilterDropdownComponent } from 'ish-shared/filter/components/filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from 'ish-shared/filter/components/filter-swatch-images/filter-swatch-images.component';
 import { FilterTextComponent } from 'ish-shared/filter/components/filter-text/filter-text.component';
@@ -25,7 +24,6 @@ describe('Filter Navigation Sidebar Component', () => {
         MockComponent(FilterCheckboxComponent),
         MockComponent(FilterCollapsableComponent),
         MockComponent(FilterDropdownComponent),
-        MockComponent(FilterDropdownMultiselectComponent),
         MockComponent(FilterSwatchImagesComponent),
         MockComponent(FilterTextComponent),
       ],
