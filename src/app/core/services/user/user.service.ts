@@ -12,7 +12,7 @@ import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/m
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
  */
@@ -197,15 +197,15 @@ export class UserService {
    * @param data  The user data (email, firstName, lastName, answer) to identify the user.
    */
   requestPasswordReminder(data: PasswordReminder) {
-    if (data.captchaResponse) {
+    const options: AvailableOptions = {
+      skipApiErrorHandling: true,
+    };
+
+    if (data.captcha) {
       // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      const headers = new HttpHeaders().set(
-        'Authorization',
-        `CAPTCHA g-recaptcha-response=${data.captchaResponse} foo=bar`
-      );
-      return this.apiService.post('security/reminder', { answer: '', ...data }, { headers });
-    } else {
-      return this.apiService.post('security/reminder', { answer: '', ...data });
+      options.headers = new HttpHeaders().set('Authorization', `CAPTCHA g-recaptcha-response=${data.captcha} foo=bar`);
     }
+
+    return this.apiService.post('security/reminder', { answer: '', ...data }, options);
   }
 }

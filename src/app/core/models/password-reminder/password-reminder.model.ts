@@ -3,5 +3,5 @@ export interface PasswordReminder {
   firstName: string;
   lastName: string;
   answer?: string;
-  captchaResponse?: string;
+  captcha?: string;
 }
