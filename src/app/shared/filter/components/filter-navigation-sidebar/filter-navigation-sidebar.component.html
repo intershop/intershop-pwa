@@ -28,18 +28,12 @@
       <!-- dropdown -->
       <ng-container *ngSwitchCase="'dropdown'">
         <div class="filter-dropdown">
-          <ng-container *ngIf="element.selectionType === 'single'; else multiDropdown">
-            <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
-            </ish-filter-dropdown>
-          </ng-container>
-          <ng-template #multiDropdown>
-            <ish-filter-dropdown-multiselect
-              [filterElement]="element"
-              [placeholderType]="'selectedFacets'"
-              (applyFilter)="applyFilter.emit($event)"
-            >
-            </ish-filter-dropdown-multiselect>
-          </ng-template>
+          <ish-filter-dropdown
+            [filterElement]="element"
+            [placeholderType]="'selectedFacets'"
+            (applyFilter)="applyFilter.emit($event)"
+          >
+          </ish-filter-dropdown>
         </div>
       </ng-container>
     </ish-filter-collapsable>
