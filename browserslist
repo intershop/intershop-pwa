@@ -9,3 +9,4 @@
 last 2 versions
 Firefox ESR
 not dead
+IE 11 # explicitly configure the IE 11 support
