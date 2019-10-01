@@ -21,7 +21,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { Price } from 'ish-core/models/price/price.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
@@ -274,7 +274,11 @@ describe('Checkout Store', () => {
 
   describe('with anonymous user', () => {
     beforeEach(fakeAsync(() => {
-      store.dispatch(new LoadProductSuccess({ product: { sku: 'test', packingUnit: 'pcs.' } as Product }));
+      store.dispatch(
+        new LoadProductSuccess({
+          product: { sku: 'test', packingUnit: 'pcs.', completenessLevel: ProductCompletenessLevel.List } as Product,
+        })
+      );
       store.dispatch(new AddProductToBasket({ sku: 'test', quantity: 1 }));
       tick(5000);
     }));
@@ -283,7 +287,7 @@ describe('Checkout Store', () => {
       it('should initially load basket and basketItems on product add.', fakeAsync(() => {
         expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
           [Shopping] Load Product Success:
-            product: {"sku":"test","packingUnit":"pcs."}
+            product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
           [Basket] Add Product:
             sku: "test"
             quantity: 1
@@ -296,6 +300,9 @@ describe('Checkout Store', () => {
           [Basket Internal] Load Basket
           [Basket API] Load Basket Success:
             basket: {"id":"test","lineItems":[1]}
+          [Shopping] Load Product if not Loaded:
+            sku: "test"
+            level: 2
         `);
       }));
     });
