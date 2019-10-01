@@ -9,7 +9,7 @@ import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLate
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { LoadBasket } from 'ish-core/store/checkout/basket';
-import { LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -130,12 +130,10 @@ export class OrdersEffects {
   loadProductsForSelectedOrder$ = this.actions$.pipe(
     ofType<ordersActions.LoadOrderSuccess>(ordersActions.OrdersActionTypes.LoadOrderSuccess),
     mapToPayloadProperty('order'),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    switchMap(([order, products]) => [
-      ...order.lineItems
-        .map(orderItem => orderItem.productSKU)
-        .filter(sku => !products[sku])
-        .map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List })),
+    switchMap(order => [
+      ...order.lineItems.map(
+        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+      ),
     ])
   );
 

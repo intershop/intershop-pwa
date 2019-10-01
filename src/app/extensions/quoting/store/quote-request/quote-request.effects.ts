@@ -14,7 +14,7 @@ import {
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
-import { LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
@@ -163,12 +163,10 @@ export class QuoteRequestEffects {
   loadProductsForQuoteRequest$ = this.actions$.pipe(
     ofType<actions.LoadQuoteRequestItemsSuccess>(actions.QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess),
     mapToPayloadProperty('quoteRequestItems'),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    concatMap(([lineItems, products]) => [
-      ...lineItems
-        .map(lineItem => lineItem.productSKU)
-        .filter(sku => !products[sku])
-        .map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List })),
+    concatMap(lineItems => [
+      ...lineItems.map(
+        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+      ),
     ])
   );
 
