@@ -19,7 +19,7 @@ import {
 import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -67,12 +67,10 @@ export class BasketEffects {
   loadProductsForBasket$ = this.actions$.pipe(
     ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
     mapToPayloadProperty('basket'),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    switchMap(([basket, products]) => [
-      ...basket.lineItems
-        .map(basketItem => basketItem.productSKU)
-        .filter(sku => !products[sku])
-        .map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List })),
+    switchMap(basket => [
+      ...basket.lineItems.map(
+        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+      ),
     ])
   );
 
