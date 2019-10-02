@@ -86,6 +86,12 @@
       "description": "Move Component.",
       "schema": "./move-component/schema.json",
       "hidden": true
+    },
+    "decontainerize-0.16-to-0.17": {
+      "factory": "./migration/decontainerize-0.16-to-0.17/factory#decontainerize",
+      "description": "Perform de-containerization from 0.15 to 0.16.",
+      "schema": "./migration/decontainerize-0.16-to-0.17/schema.json",
+      "hidden": true
     }
   }
 }

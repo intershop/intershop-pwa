@@ -52,6 +52,7 @@
     "typescript": "~3.5.3"
   },
   "dependencies": {
+    "@phenomnomnominal/tsquery": "^3.0.0",
     "@schematics/angular": "^8.2.0"
   }
 }

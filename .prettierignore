@@ -33,7 +33,7 @@ browserslist
 /junit.xml
 /tslint-rules/dist
 /schematics/src/**/files/**
-/schematics/**/*.js
+/schematics/src/**/*.js
 /templates/**/*.*
 /nginx/*.conf
 /nginx/*.tmpl

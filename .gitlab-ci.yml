@@ -68,8 +68,8 @@ migration:
     - performance
   script:
     - npm ci
-    - node schematics/migration/0.15-to-0.16
-    - node schematics/migration/0.15-to-0.16 | grep -q "Nothing to be done."
+    - node schematics/migration/0.16-to-0.17
+    - node schematics/migration/0.16-to-0.17 | grep -q "Nothing to be done."
     - npm run check
 
 start_review_server:
