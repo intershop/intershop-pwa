@@ -173,6 +173,7 @@
       <!-- IF STATE NEW -->
       <ng-container *ngIf="quote.state === 'New'">
         <button
+          data-testing-id="submit-quote-request"
           type="submit"
           class="btn btn-primary float-right"
           [disabled]="quote.items.length === 0"
@@ -181,7 +182,12 @@
           {{ 'quote.edit.button.submit.label' | translate }}
         </button>
 
-        <button type="submit" class="btn btn-secondary float-right" (click)="update()">
+        <button
+          data-testing-id="save-quote-request"
+          type="submit"
+          class="btn btn-secondary float-right"
+          (click)="update()"
+        >
           {{ 'quote.edit.button.save.label' | translate }}
         </button>
       </ng-container>

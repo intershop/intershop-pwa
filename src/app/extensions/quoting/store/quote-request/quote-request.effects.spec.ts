@@ -805,16 +805,29 @@ describe('Quote Request Effects', () => {
   });
 
   describe('goToLoginOnAddQuoteRequest$', () => {
-    it('should navigate to /login with returnUrl set if AddQuoteRequest called without proper login.', fakeAsync(() => {
+    beforeEach(fakeAsync(() => {
       router.navigateByUrl('/foobar');
       tick(500);
       expect(location.path()).toEqual('/foobar');
+    }));
 
+    it('should navigate to login with returnUrl set if AddProductToQuoteRequest called without proper login.', fakeAsync(() => {
       const payload = {
         sku: 'SKU',
         quantity: 1,
       };
       const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
+      actions$ = of(action);
+
+      effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar&messageKey=quotes');
+    }));
+
+    it('should navigate to /login with returnUrl set if AddBasketToQuoteRequest called without proper login.', fakeAsync(() => {
+      const action = new quoteRequestActions.AddBasketToQuoteRequest();
       actions$ = of(action);
 
       effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);
