@@ -2536,5 +2536,6 @@
   "recaptcha.v2.incorrect.error": "Veuillez v\u00E9rifier que vous \u00EAtes une personne r\u00E9elle.",
   "forgot_password.form.send.button.label": "Envoyer",
   "account.forgotdata.password_retrieval_info.text.no.security_question": "Pour des raisons de sécurité, veuillez fournir votre courriel, votre prénom et votre nom de famille et soumettre le formulaire. Si les informations que vous avez saisies sont correctes, nous vous enverrons un courriel avec un lien. Suivez ce lien pour créer un nouveau mot de passe. Si vous avez des questions ou si vous avez besoin d'aide, veuillez contacter notre  <a href=\"page://systempage.helpdesk.index.pagelet2-Page\">Service Client</a>.",
-  "basket.validation.general.error": "Votre panier n'est plus valide. Corrigez les erreurs signalées ci-dessous."
+  "basket.validation.general.error": "Votre panier n'est plus valide. Corrigez les erreurs signalées ci-dessous.",
+  "servererror.mailServer.error": "Votre courriel n’a pas pu être envoyé. Nous nous excusons pour les inconvénients. Veuillez réessayer plus tard."
 }
