@@ -52,6 +52,26 @@ setup:
     - bash scripts/ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
     - echo "setup complete"
 
+migration:
+  image: node:10
+  stage: setup
+  allow_failure: true
+  timeout: 3h
+  only:
+    - merge_requests
+  except:
+    refs:
+      - develop
+      - master
+  tags:
+    - docker-executor
+    - performance
+  script:
+    - npm ci
+    - node schematics/migration/0.15-to-0.16
+    - node schematics/migration/0.15-to-0.16 | grep -q "Nothing to be done."
+    - npm run check
+
 start_review_server:
   cache: {}
   dependencies: []
