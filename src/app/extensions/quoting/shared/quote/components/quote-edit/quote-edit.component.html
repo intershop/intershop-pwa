@@ -11,7 +11,7 @@
   </isif> -->
 
   <!--- Quote Header ( shown once if quote request submitted ) -->
-  <ng-container *ngIf="submitted">
+  <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quoteTitle">
     <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
     <p>{{ 'quote.edit.submitted.your_quote_number.text' | translate }} {{ quote.number }}</p>
     <p>
@@ -26,7 +26,7 @@
     <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': user.email } }}</p>
   </ng-container>
 
-  <ng-container *ngIf="submitted === false">
+  <ng-template #quoteTitle>
     <!-- Title and Description -->
     <ng-container *ngIf="quote.displayName; else noDisplayName">
       <h1>
@@ -51,7 +51,7 @@
     <div *ngIf="quote.state === 'Responded' && !isQuoteStarted" class="alert alert-info">
       {{ 'quote.error.not_started' | translate }}
     </div>
-  </ng-container>
+  </ng-template>
 
   <!--
   <isif condition="#isDefined(ErrorCode)#">
