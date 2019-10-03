@@ -4,7 +4,7 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
@@ -15,8 +15,12 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [FilterSwatchImagesComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse)],
+      declarations: [
+        FilterSwatchImagesComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(NgbCollapse),
+        SanitizePipe,
+      ],
     }).compileComponents();
   }));
 

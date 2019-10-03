@@ -3,10 +3,10 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -29,12 +29,7 @@ describe('Line Item Description Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        PipesModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { ...coreReducers } }),
-      ],
+      imports: [FeatureToggleModule, TranslateModule.forRoot(), ngrxTesting({ reducers: { ...coreReducers } })],
       declarations: [
         LineItemDescriptionComponent,
         MockComponent(FaIconComponent),
@@ -45,6 +40,7 @@ describe('Line Item Description Component', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationDisplayComponent),
+        MockPipe(PricePipe),
       ],
     }).compileComponents();
   }));

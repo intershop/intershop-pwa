@@ -5,10 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -50,9 +50,9 @@ describe('Checkout Payment Component', () => {
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockPipe(PricePipe),
       ],
       imports: [
-        PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
         TranslateModule.forRoot(),

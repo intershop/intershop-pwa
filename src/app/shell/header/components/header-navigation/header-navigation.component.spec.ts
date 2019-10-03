@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { CategoryRoutePipe } from 'ish-core/pipes/category-route.pipe';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { SubCategoryNavigationComponent } from 'ish-shell/header/components/sub-category-navigation/sub-category-navigation.component';
 
@@ -18,8 +18,9 @@ describe('Header Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule, RouterTestingModule],
+      imports: [RouterTestingModule],
       declarations: [
+        CategoryRoutePipe,
         HeaderNavigationComponent,
         MockComponent(FaIconComponent),
         MockComponent(SubCategoryNavigationComponent),

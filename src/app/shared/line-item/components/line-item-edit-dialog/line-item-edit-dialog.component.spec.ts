@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
@@ -20,7 +20,7 @@ describe('Line Item Edit Dialog Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         LineItemEditDialogComponent,
         MockComponent(InputComponent),
@@ -29,6 +29,7 @@ describe('Line Item Edit Dialog Component', () => {
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockPipe(PricePipe),
       ],
     }).compileComponents();
   }));

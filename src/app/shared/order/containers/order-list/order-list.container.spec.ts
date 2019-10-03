@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -20,7 +19,6 @@ describe('Order List Container', () => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(LoadingComponent), MockComponent(OrderListComponent), OrderListContainerComponent],
       imports: [
-        PipesModule,
         ngrxTesting({
           reducers: {
             ...coreReducers,

@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
 
 import { Quote } from '../../../../models/quote/quote.model';
@@ -23,9 +23,10 @@ describe('Quote List Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(QuoteStateComponent),
+        MockPipe(DatePipe),
         QuoteListComponent,
       ],
-      imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

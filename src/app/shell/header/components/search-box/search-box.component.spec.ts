@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/c
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -16,8 +16,8 @@ describe('Search Box Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(FaIconComponent), SearchBoxComponent],
-      imports: [PipesModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(FaIconComponent), MockPipe(HighlightPipe), SearchBoxComponent],
+      imports: [TranslateModule.forRoot()],
     })
       .overrideComponent(SearchBoxComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

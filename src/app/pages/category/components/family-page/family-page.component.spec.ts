@@ -6,7 +6,6 @@ import { MockComponent } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
@@ -22,7 +21,7 @@ describe('Family Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
         MockComponent(BreadcrumbComponent),

@@ -4,8 +4,6 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
-
 import { InfoBoxComponent } from './info-box.component';
 
 describe('Info Box Component', () => {
@@ -15,7 +13,7 @@ describe('Info Box Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [InfoBoxComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
