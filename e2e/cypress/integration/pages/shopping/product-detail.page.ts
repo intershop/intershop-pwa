@@ -63,7 +63,7 @@ export class ProductDetailPage {
   }
 
   get recentlyViewedItems() {
-    return cy.get('ish-recently-viewed ish-product-tile');
+    return cy.get('[data-testing-id="recently-viewed"] ish-product-tile');
   }
 
   recentlyViewedItem(sku: string) {
@@ -71,7 +71,7 @@ export class ProductDetailPage {
   }
 
   gotoRecentlyViewedViewAll() {
-    cy.get('ish-recently-viewed [data-testing-id=view-all]').click();
+    cy.get('[data-testing-id="recently-viewed"] [data-testing-id=view-all]').click();
   }
 
   accordionItem(id: string) {
