@@ -95,7 +95,6 @@ import { ProductItemContainerComponent } from './product/containers/product-item
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
 import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
-import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
 const importExportModules = [
@@ -157,7 +156,6 @@ const declaredComponents = [
   ProductRatingStarComponent,
   ProductRowComponent,
   ProductTileComponent,
-  RecentlyViewedComponent,
 ];
 
 const exportedComponents = [
