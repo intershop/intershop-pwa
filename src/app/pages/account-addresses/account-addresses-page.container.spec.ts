@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
@@ -21,7 +20,7 @@ describe('Account Addresses Page Container', () => {
         MockComponent(AccountAddressesPageComponent),
         MockComponent(LoadingComponent),
       ],
-      imports: [PipesModule, ngrxTesting({ reducers: coreReducers })],
+      imports: [ngrxTesting({ reducers: coreReducers })],
     }).compileComponents();
   }));
 

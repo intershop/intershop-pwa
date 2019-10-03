@@ -4,11 +4,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
@@ -24,12 +25,14 @@ describe('Mini Basket Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MiniBasketComponent,
         MockComponent(FaIconComponent),
         MockComponent(NgbCollapse),
         MockComponent(ProductImageComponent),
+        MockPipe(PricePipe),
+        MockPipe(ProductRoutePipe),
       ],
     }).compileComponents();
   }));

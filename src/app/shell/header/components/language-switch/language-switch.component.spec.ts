@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
 
 import { LanguageSwitchComponent } from './language-switch.component';
 
@@ -22,8 +22,8 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbDropdownModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [LanguageSwitchComponent, MockComponent(FaIconComponent)],
+      imports: [NgbDropdownModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [LanguageSwitchComponent, MockComponent(FaIconComponent), MockPipe(MakeHrefPipe)],
     })
       .compileComponents()
       .then(() => {

@@ -5,10 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketAddressSummaryComponent } from 'ish-shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
@@ -42,9 +42,9 @@ describe('Checkout Shipping Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbPopover),
+        MockPipe(PricePipe),
       ],
       imports: [
-        PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
         TranslateModule.forRoot(),

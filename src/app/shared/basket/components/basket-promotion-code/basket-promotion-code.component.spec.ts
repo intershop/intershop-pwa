@@ -5,7 +5,6 @@ import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -20,7 +19,6 @@ describe('Basket Promotion Code Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        PipesModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         ngrxTesting({

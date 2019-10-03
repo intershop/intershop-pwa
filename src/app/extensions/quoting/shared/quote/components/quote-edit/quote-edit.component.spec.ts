@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -26,6 +26,7 @@ describe('Quote Edit Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        DatePipe,
         MockComponent(InputComponent),
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
@@ -33,7 +34,7 @@ describe('Quote Edit Component', () => {
         MockComponent(RecentlyViewedContainerComponent),
         QuoteEditComponent,
       ],
-      imports: [PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

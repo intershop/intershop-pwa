@@ -4,7 +4,7 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
 import { FilterCheckboxComponent } from './filter-checkbox.component';
 
@@ -15,8 +15,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [FilterCheckboxComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse)],
+      declarations: [FilterCheckboxComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse), SanitizePipe],
     }).compileComponents();
   }));
 

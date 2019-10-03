@@ -3,12 +3,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { Observable, of } from 'rxjs';
 
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
-import { PipesModule } from 'ish-core/pipes.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -33,7 +33,6 @@ describe('Line Item Edit Dialog Container', () => {
     TestBed.configureTestingModule({
       imports: [
         NgbModalModule,
-        PipesModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         ngrxTesting({
@@ -53,6 +52,7 @@ describe('Line Item Edit Dialog Container', () => {
         MockComponent(ProductRowComponent),
         MockComponent(ProductTileComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockPipe(PricePipe),
       ],
     }).compileComponents();
   }));

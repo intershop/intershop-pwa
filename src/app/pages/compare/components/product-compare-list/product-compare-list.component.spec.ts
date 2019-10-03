@@ -2,11 +2,12 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { Product } from 'ish-core/models/product/product.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ProductAddToBasketComponent } from 'ish-shared/product/components/product-add-to-basket/product-add-to-basket.component';
@@ -32,7 +33,6 @@ describe('Product Compare List Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ngrxTesting({ reducers: { configuration: configurationReducer } }),
@@ -47,6 +47,8 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductRatingComponent),
+        MockPipe(AttributeToStringPipe),
+        MockPipe(ProductRoutePipe),
         ProductCompareListComponent,
       ],
     }).compileComponents();

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -32,7 +32,6 @@ describe('Product Tile Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ngrxTesting({ reducers: { configuration: configurationReducer } }),
@@ -47,6 +46,7 @@ describe('Product Tile Component', () => {
         MockComponent(ProductPromotionContainerComponent),
         MockComponent(ProductRatingComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockPipe(ProductRoutePipe),
         ProductTileComponent,
       ],
     }).compileComponents();
