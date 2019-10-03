@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -21,7 +20,6 @@ describe('Footer Component', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserTransferStateModule,
-        NgbCollapseModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ngrxTesting({ reducers: coreReducers }),

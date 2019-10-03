@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -17,8 +17,8 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [FilterDropdownComponent, MockComponent(FaIconComponent)],
+      imports: [PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [FilterDropdownComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse)],
     }).compileComponents();
   }));
 

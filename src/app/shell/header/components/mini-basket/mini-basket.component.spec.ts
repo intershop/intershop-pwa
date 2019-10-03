@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -25,8 +24,13 @@ describe('Mini Basket Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NgbCollapseModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [MiniBasketComponent, MockComponent(FaIconComponent), MockComponent(ProductImageComponent)],
+      imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MiniBasketComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(NgbCollapse),
+        MockComponent(ProductImageComponent),
+      ],
     }).compileComponents();
   }));
 

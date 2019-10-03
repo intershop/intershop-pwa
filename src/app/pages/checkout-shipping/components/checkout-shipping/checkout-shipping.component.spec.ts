@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -41,9 +41,9 @@ describe('Checkout Shipping Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(NgbPopover),
       ],
       imports: [
-        NgbPopoverModule,
         PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),

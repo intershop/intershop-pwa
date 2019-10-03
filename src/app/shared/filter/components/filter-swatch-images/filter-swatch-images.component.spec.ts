@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -15,8 +15,8 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, PipesModule],
-      declarations: [FilterSwatchImagesComponent, MockComponent(FaIconComponent)],
+      imports: [PipesModule],
+      declarations: [FilterSwatchImagesComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse)],
     }).compileComponents();
   }));
 

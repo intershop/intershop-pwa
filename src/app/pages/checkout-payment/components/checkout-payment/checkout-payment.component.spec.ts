@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, SimpleChange, SimpleChanges } from 
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -48,10 +48,10 @@ describe('Checkout Payment Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
       ],
       imports: [
-        NgbCollapseModule,
         PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),

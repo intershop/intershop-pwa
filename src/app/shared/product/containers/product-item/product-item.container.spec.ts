@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
@@ -19,7 +18,6 @@ describe('Product Item Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgbModalModule,
         ngrxTesting({
           reducers: {
             shopping: combineReducers(shoppingReducers),
