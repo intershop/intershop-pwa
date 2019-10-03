@@ -17,7 +17,6 @@ import { HeaderCheckoutComponent } from './header/components/header-checkout/hea
 import { HeaderNavigationComponent } from './header/components/header-navigation/header-navigation.component';
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
 import { HeaderComponent } from './header/components/header/header.component';
-import { LanguageSwitchComponent } from './header/components/language-switch/language-switch.component';
 import { LoginStatusComponent } from './header/components/login-status/login-status.component';
 import { LogoutComponent } from './header/components/logout/logout.component';
 import { MiniBasketComponent } from './header/components/mini-basket/mini-basket.component';
@@ -61,7 +60,6 @@ const exportedComponents = [
     HeaderNavigationComponent,
     HeaderNavigationContainerComponent,
     HeaderSimpleComponent,
-    LanguageSwitchComponent,
     LanguageSwitchContainerComponent,
     LoginStatusComponent,
     LoginStatusContainerComponent,
