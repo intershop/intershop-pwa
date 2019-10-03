@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { MockComponent } from 'ng-mocks';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
-import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -17,8 +18,8 @@ describe('Sub Category Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, PipesModule, RouterTestingModule],
-      declarations: [SubCategoryNavigationComponent],
+      imports: [PipesModule, RouterTestingModule],
+      declarations: [MockComponent(FaIconComponent), SubCategoryNavigationComponent],
       providers: [{ provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 }],
     }).compileComponents();
   }));

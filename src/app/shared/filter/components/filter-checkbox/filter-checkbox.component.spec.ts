@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
@@ -14,8 +15,8 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, PipesModule],
-      declarations: [FilterCheckboxComponent],
+      imports: [NgbCollapseModule, PipesModule],
+      declarations: [FilterCheckboxComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 

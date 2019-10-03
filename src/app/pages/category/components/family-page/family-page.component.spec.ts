@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -22,10 +22,11 @@ describe('Family Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, PipesModule, TranslateModule.forRoot()],
+      imports: [NgbCollapseModule, PipesModule, TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
         MockComponent(BreadcrumbComponent),
+        MockComponent(FaIconComponent),
         MockComponent(FilterNavigationContainerComponent),
         MockComponent(ProductListContainerComponent),
       ],

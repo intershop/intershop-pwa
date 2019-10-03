@@ -1,12 +1,12 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -31,9 +31,10 @@ describe('Account Addresses Page Component', () => {
         MockComponent(AddressComponent),
         MockComponent(CustomerAddressFormComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
       ],
-      imports: [FormsSharedModule, IconModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

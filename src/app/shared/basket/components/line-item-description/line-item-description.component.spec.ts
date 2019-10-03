@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -41,7 +41,6 @@ describe('Line Item Description Component', () => {
       imports: [
         FeatureToggleModule,
         FormsSharedModule,
-        IconModule,
         NgbPopoverModule,
         PipesModule,
         ReactiveFormsModule,
@@ -58,6 +57,7 @@ describe('Line Item Description Component', () => {
         LineItemEditComponent,
         LineItemEditDialogComponent,
         LineItemEditDialogContainerComponent,
+        MockComponent(FaIconComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ProductBundleDisplayContainerComponent),

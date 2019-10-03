@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
+import { MockComponent } from 'ng-mocks';
 
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
@@ -15,8 +15,8 @@ describe('Form Control Feedback Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserModule, IconModule, TranslateModule.forRoot()],
-      declarations: [FormControlFeedbackComponent],
+      imports: [BrowserModule, TranslateModule.forRoot()],
+      declarations: [FormControlFeedbackComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
 
     translateService = TestBed.get(TranslateService);

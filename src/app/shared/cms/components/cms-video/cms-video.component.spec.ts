@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
@@ -15,8 +16,7 @@ describe('Cms Video Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CMSVideoComponent],
-      imports: [IconModule],
+      declarations: [CMSVideoComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 

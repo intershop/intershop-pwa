@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
 import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
@@ -18,9 +18,10 @@ describe('Search Result Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
+      imports: [NgbCollapseModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(BreadcrumbComponent),
+        MockComponent(FaIconComponent),
         MockComponent(FilterNavigationContainerComponent),
         MockComponent(ProductListContainerComponent),
         SearchResultComponent,

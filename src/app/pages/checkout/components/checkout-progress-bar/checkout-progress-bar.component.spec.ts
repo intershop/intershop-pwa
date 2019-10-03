@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
+import { MockComponent } from 'ng-mocks';
 
 import { CheckoutProgressBarComponent } from './checkout-progress-bar.component';
 
@@ -13,8 +13,8 @@ describe('Checkout Progress Bar Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [CheckoutProgressBarComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [CheckoutProgressBarComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 
