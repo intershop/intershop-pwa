@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { PipesModule } from 'ish-core/pipes.module';
 
@@ -21,8 +22,8 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbDropdownModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [LanguageSwitchComponent],
+      imports: [NgbDropdownModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [LanguageSwitchComponent, MockComponent(FaIconComponent)],
     })
       .compileComponents()
       .then(() => {

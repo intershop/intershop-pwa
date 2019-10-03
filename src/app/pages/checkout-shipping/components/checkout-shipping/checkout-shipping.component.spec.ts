@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -40,11 +40,11 @@ describe('Checkout Shipping Component', () => {
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
         MockComponent(ModalDialogLinkComponent),
       ],
       imports: [
         FormsSharedModule,
-        IconModule,
         NgbPopoverModule,
         PipesModule,
         ReactiveFormsModule,

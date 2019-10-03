@@ -373,6 +373,12 @@
           "from": "ngrx",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Use the testing helper 'ngrxTesting' in tests instead."
+        },
+        {
+          "import": "^IconModule$",
+          "from": "ish-core/icon.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent(FaIconComponent) in tests instead."
         }
       ]
     },

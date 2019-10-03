@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -28,7 +28,6 @@ describe('Header Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        IconModule,
         NgbCollapseModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
@@ -41,6 +40,7 @@ describe('Header Component', () => {
       ],
       declarations: [
         HeaderComponent,
+        MockComponent(FaIconComponent),
         MockComponent(HeaderNavigationContainerComponent),
         MockComponent(LanguageSwitchContainerComponent),
         MockComponent(LoginStatusContainerComponent),

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketPromotionContainerComponent } from 'ish-shared/basket/containers/basket-promotion/basket-promotion.container';
@@ -21,9 +21,10 @@ describe('Basket Items Summary Component', () => {
       declarations: [
         BasketItemsSummaryComponent,
         MockComponent(BasketPromotionContainerComponent),
+        MockComponent(FaIconComponent),
         MockComponent(PromotionDetailsComponent),
       ],
-      imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

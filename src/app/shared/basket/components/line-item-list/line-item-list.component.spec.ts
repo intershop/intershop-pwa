@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { IconModule } from 'ish-core/icon.module';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
@@ -28,18 +28,12 @@ describe('Line Item List Component', () => {
       declarations: [
         LineItemListComponent,
         MockComponent(BasketPromotionContainerComponent),
+        MockComponent(FaIconComponent),
         MockComponent(LineItemDescriptionComponent),
         MockComponent(ProductImageComponent),
         MockComponent(PromotionDetailsComponent),
       ],
-      imports: [
-        FormsSharedModule,
-        IconModule,
-        PipesModule,
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
