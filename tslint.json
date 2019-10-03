@@ -385,6 +385,12 @@
           "from": "ish-shared/forms/forms.module",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Performance: Use MockComponent for individual components in tests instead."
+        },
+        {
+          "import": "^NO_ERRORS_SCHEMA$",
+          "from": "@angular/core",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent for individual components in tests instead."
         }
       ]
     },
