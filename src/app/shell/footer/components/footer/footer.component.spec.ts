@@ -26,7 +26,7 @@ describe('Footer Component', () => {
         TranslateModule.forRoot(),
         ngrxTesting({ reducers: coreReducers }),
       ],
-      declarations: [FooterComponent, MockComponent(FaIconComponent), ServerHtmlDirective],
+      declarations: [FooterComponent, MockComponent(FaIconComponent), MockComponent(ServerHtmlDirective)],
     })
       .compileComponents()
       .then(() => {

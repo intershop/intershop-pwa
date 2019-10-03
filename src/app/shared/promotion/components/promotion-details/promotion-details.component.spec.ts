@@ -17,7 +17,11 @@ describe('Promotion Details Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ModalDialogLinkComponent), PromotionDetailsComponent, ServerHtmlDirective],
+      declarations: [
+        MockComponent(ModalDialogLinkComponent),
+        MockComponent(ServerHtmlDirective),
+        PromotionDetailsComponent,
+      ],
       imports: [
         RouterTestingModule,
         TranslateModule.forRoot(),

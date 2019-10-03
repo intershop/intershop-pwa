@@ -23,7 +23,7 @@ describe('Address Form Business Component', () => {
         FormControlFeedbackComponent,
         InputComponent,
         MockComponent(FaIconComponent),
-        ShowFormFeedbackDirective,
+        MockComponent(ShowFormFeedbackDirective),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
