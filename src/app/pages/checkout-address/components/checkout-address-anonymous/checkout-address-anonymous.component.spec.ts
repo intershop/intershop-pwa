@@ -15,7 +15,8 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { LoginFormContainerComponent } from 'ish-shared/forms/containers/login-form/login-form.container';
 
 import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous.component';
 
@@ -36,9 +37,10 @@ describe('Checkout Address Anonymous Component', () => {
         MockComponent(AddressFormContainerComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
+        MockComponent(InputComponent),
+        MockComponent(LoginFormContainerComponent),
       ],
       imports: [
-        FormsSharedModule,
         NgbCollapseModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),

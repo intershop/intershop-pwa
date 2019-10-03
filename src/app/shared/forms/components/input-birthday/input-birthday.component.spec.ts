@@ -1,9 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { InputBirthdayComponent } from './input-birthday.component';
 
@@ -14,7 +12,8 @@ describe('Input Birthday Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsSharedModule, TranslateModule.forRoot()],
+      declarations: [InputBirthdayComponent],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()

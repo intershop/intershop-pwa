@@ -14,7 +14,7 @@ import { CustomerAddressFormComponent } from 'ish-shared/address-forms/component
 import { AddressComponent } from 'ish-shared/address/components/address/address.component';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
 
@@ -33,8 +33,9 @@ describe('Account Addresses Page Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(SelectAddressComponent),
       ],
-      imports: [FormsSharedModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

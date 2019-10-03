@@ -17,7 +17,6 @@ import { BasketValidationResultsComponent } from 'ish-shared/basket/components/b
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { CheckoutShippingComponent } from './checkout-shipping.component';
 
@@ -44,7 +43,6 @@ describe('Checkout Shipping Component', () => {
         MockComponent(ModalDialogLinkComponent),
       ],
       imports: [
-        FormsSharedModule,
         NgbPopoverModule,
         PipesModule,
         ReactiveFormsModule,

@@ -12,7 +12,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { LineItemDescriptionComponent } from 'ish-shared/basket/components/line-item-description/line-item-description.component';
 import { BasketPromotionContainerComponent } from 'ish-shared/basket/containers/basket-promotion/basket-promotion.container';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { PromotionDetailsComponent } from 'ish-shared/promotion/components/promotion-details/promotion-details.component';
 import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
@@ -29,11 +29,12 @@ describe('Line Item List Component', () => {
         LineItemListComponent,
         MockComponent(BasketPromotionContainerComponent),
         MockComponent(FaIconComponent),
+        MockComponent(InputComponent),
         MockComponent(LineItemDescriptionComponent),
         MockComponent(ProductImageComponent),
         MockComponent(PromotionDetailsComponent),
       ],
-      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

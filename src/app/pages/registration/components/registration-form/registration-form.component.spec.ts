@@ -13,7 +13,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 
 import { RegistrationCompanyFormComponent } from '../registration-company-form/registration-company-form.component';
 import { RegistrationCredentialsFormComponent } from '../registration-credentials-form/registration-credentials-form.component';
@@ -38,6 +38,7 @@ describe('Registration Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressFormContainerComponent),
+        MockComponent(CaptchaComponent),
         MockComponent(RegistrationCompanyFormComponent),
         MockComponent(RegistrationCredentialsFormComponent),
         RegistrationFormComponent,
@@ -48,7 +49,6 @@ describe('Registration Form Component', () => {
       ],
       imports: [
         FeatureToggleModule,
-        FormsSharedModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         ngrxTesting({
