@@ -1,10 +1,13 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { MockComponent } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { SubCategoryNavigationComponent } from 'ish-shell/header/components/sub-category-navigation/sub-category-navigation.component';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
 
@@ -15,9 +18,12 @@ describe('Header Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [HeaderNavigationComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [PipesModule, RouterTestingModule],
+      declarations: [
+        HeaderNavigationComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(SubCategoryNavigationComponent),
+      ],
     }).compileComponents();
   }));
 
@@ -46,16 +52,43 @@ describe('Header Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
         <li class="dropdown">
-          <a style="width: 100%;" data-testing-id="A-link"> CAT_A </a
-          ><ish-sub-category-navigation></ish-sub-category-navigation>
+          <a
+            style="width: 100%;"
+            ng-reflect-router-link="/category/A"
+            data-testing-id="A-link"
+            href="/category/A"
+          >
+            CAT_A </a
+          ><ish-sub-category-navigation
+            ng-reflect-view="auto"
+            ng-reflect-sub-categories-depth="1"
+          ></ish-sub-category-navigation>
         </li>
         <li class="dropdown">
-          <a style="width: 100%;" data-testing-id="B-link"> CAT_B </a
-          ><ish-sub-category-navigation></ish-sub-category-navigation>
+          <a
+            style="width: 100%;"
+            ng-reflect-router-link="/category/B"
+            data-testing-id="B-link"
+            href="/category/B"
+          >
+            CAT_B </a
+          ><ish-sub-category-navigation
+            ng-reflect-view="auto"
+            ng-reflect-sub-categories-depth="1"
+          ></ish-sub-category-navigation>
         </li>
         <li class="dropdown">
-          <a style="width: 100%;" data-testing-id="C-link"> CAT_C </a
-          ><ish-sub-category-navigation></ish-sub-category-navigation>
+          <a
+            style="width: 100%;"
+            ng-reflect-router-link="/category/C"
+            data-testing-id="C-link"
+            href="/category/C"
+          >
+            CAT_C </a
+          ><ish-sub-category-navigation
+            ng-reflect-view="auto"
+            ng-reflect-sub-categories-depth="1"
+          ></ish-sub-category-navigation>
         </li>
       </ul>
     `);

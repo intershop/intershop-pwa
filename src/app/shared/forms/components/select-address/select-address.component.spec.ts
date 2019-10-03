@@ -1,9 +1,12 @@
-import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
+import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { SelectAddressComponent } from './select-address.component';
 
@@ -14,9 +17,12 @@ describe('Select Address Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SelectAddressComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        MockComponent(FormControlFeedbackComponent),
+        MockComponent(ShowFormFeedbackDirective),
+        SelectAddressComponent,
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
