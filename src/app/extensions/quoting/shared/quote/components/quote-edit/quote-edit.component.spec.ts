@@ -9,7 +9,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { PipesModule } from 'ish-core/pipes.module';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
 
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
@@ -26,13 +26,14 @@ describe('Quote Edit Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        MockComponent(InputComponent),
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
         MockComponent(QuoteStateComponent),
         MockComponent(RecentlyViewedContainerComponent),
         QuoteEditComponent,
       ],
-      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

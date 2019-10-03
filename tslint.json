@@ -379,6 +379,12 @@
           "from": "ish-core/icon.module",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Use MockComponent(FaIconComponent) in tests instead."
+        },
+        {
+          "import": "^FormsSharedModule$",
+          "from": "ish-shared/forms/forms.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Performance: Use MockComponent for individual components in tests instead."
         }
       ]
     },

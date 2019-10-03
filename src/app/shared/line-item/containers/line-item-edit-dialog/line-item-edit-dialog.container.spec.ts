@@ -13,7 +13,7 @@ import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module'
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
@@ -32,7 +32,6 @@ describe('Line Item Edit Dialog Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsSharedModule,
         NgbModalModule,
         PipesModule,
         ReactiveFormsModule,
@@ -46,6 +45,7 @@ describe('Line Item Edit Dialog Container', () => {
       declarations: [
         LineItemEditDialogComponent,
         LineItemEditDialogContainerComponent,
+        MockComponent(InputComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
@@ -92,21 +92,12 @@ describe('Line Item Edit Dialog Container', () => {
 
   it('should display ish-components on the container', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers([
-      'ish-form-control-feedback',
-      'ish-input',
-      'ish-product-image',
-    ]);
+    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-product-image']);
   });
 
   it('should display loading-components on the container', () => {
     component.loading$ = of(true);
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toIncludeAllMembers([
-      'ish-form-control-feedback',
-      'ish-input',
-      'ish-loading',
-      'ish-loading',
-    ]);
+    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-loading']);
   });
 });

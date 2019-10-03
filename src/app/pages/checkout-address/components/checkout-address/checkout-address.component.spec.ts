@@ -21,7 +21,7 @@ import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/cont
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { CheckoutAddressComponent } from './checkout-address.component';
 
@@ -48,9 +48,9 @@ describe('Checkout Address Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(SelectAddressComponent),
       ],
       imports: [
-        FormsSharedModule,
         NgbCollapseModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),

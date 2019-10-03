@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
 import { ProductVariationSelectComponent } from 'ish-shared/product/components/product-variation-select/product-variation-select.component';
@@ -20,9 +20,10 @@ describe('Line Item Edit Dialog Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         LineItemEditDialogComponent,
+        MockComponent(InputComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),

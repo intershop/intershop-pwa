@@ -20,7 +20,6 @@ import { BasketValidationResultsComponent } from 'ish-shared/basket/components/b
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
@@ -52,7 +51,6 @@ describe('Checkout Payment Component', () => {
         MockComponent(PaymentConcardisCreditcardComponent),
       ],
       imports: [
-        FormsSharedModule,
         NgbCollapseModule,
         PipesModule,
         ReactiveFormsModule,

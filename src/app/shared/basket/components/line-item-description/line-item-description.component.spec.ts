@@ -16,7 +16,7 @@ import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from 'ish-shared/line-item/components/line-item-edit/line-item-edit.component';
 import { LineItemEditDialogContainerComponent } from 'ish-shared/line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
@@ -40,7 +40,6 @@ describe('Line Item Description Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        FormsSharedModule,
         NgbPopoverModule,
         PipesModule,
         ReactiveFormsModule,
@@ -58,6 +57,7 @@ describe('Line Item Description Component', () => {
         LineItemEditDialogComponent,
         LineItemEditDialogContainerComponent,
         MockComponent(FaIconComponent),
+        MockComponent(InputComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ProductBundleDisplayContainerComponent),
