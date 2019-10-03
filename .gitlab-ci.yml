@@ -98,7 +98,7 @@ jest_test:
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest --collectCoverage --coverageReporters text-summary  --reporters=default --reporters=jest-junit --ci
+    - npx jest --collectCoverage --coverageReporters text-summary  --reporters=default --reporters=jest-junit --ci -w 3
     - echo "build complete"
 
 compile:
