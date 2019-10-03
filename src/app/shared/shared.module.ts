@@ -81,7 +81,6 @@ import { ProductListPagingComponent } from './product/components/product-list-pa
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
-import { ProductPromotionComponent } from './product/components/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRatingStarComponent } from './product/components/product-rating-star/product-rating-star.component';
 import { ProductRatingComponent } from './product/components/product-rating/product-rating.component';
@@ -152,7 +151,6 @@ const declaredComponents = [
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
-  ProductPromotionComponent,
   ProductRatingStarComponent,
   ProductRowComponent,
   ProductTileComponent,
