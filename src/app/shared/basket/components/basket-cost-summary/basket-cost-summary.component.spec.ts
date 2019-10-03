@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -22,9 +22,10 @@ describe('Basket Cost Summary Component', () => {
         BasketCostSummaryComponent,
         MockComponent(BasketPromotionContainerComponent),
         MockComponent(FaIconComponent),
+        MockComponent(NgbPopover),
         MockComponent(PromotionDetailsComponent),
       ],
-      imports: [NgbPopoverModule, PipesModule, TranslateModule.forRoot()],
+      imports: [PipesModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

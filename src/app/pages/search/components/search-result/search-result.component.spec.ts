@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -18,11 +18,12 @@ describe('Search Result Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationContainerComponent),
+        MockComponent(NgbCollapse),
         MockComponent(ProductListContainerComponent),
         SearchResultComponent,
       ],

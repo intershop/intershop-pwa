@@ -13,7 +13,7 @@ exports[`Filter Checkbox Component should be created 1`] = `
       ></a>
     </li>
   </ul>
-  <ul class="filter-list collapse show" id="collapseFilter" ng-reflect-collapsed="false">
+  <ul class="filter-list" id="collapseFilter" ng-reflect-collapsed="false">
     <li class="filter-item">
       <a class="filter-item-name" data-testing-id="filter-link-AsusName"
         ><span class="icon-notselected"></span>Asus

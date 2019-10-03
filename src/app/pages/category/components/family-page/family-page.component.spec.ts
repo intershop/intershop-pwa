@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -22,12 +22,13 @@ describe('Family Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, PipesModule, TranslateModule.forRoot()],
+      imports: [PipesModule, TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationContainerComponent),
+        MockComponent(NgbCollapse),
         MockComponent(ProductListContainerComponent),
       ],
     }).compileComponents();

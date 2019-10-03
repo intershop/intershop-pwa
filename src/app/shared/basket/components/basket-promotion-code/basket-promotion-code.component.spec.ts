@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { PipesModule } from 'ish-core/pipes.module';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
@@ -19,7 +20,6 @@ describe('Basket Promotion Code Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgbCollapseModule,
         PipesModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
@@ -30,7 +30,7 @@ describe('Basket Promotion Code Component', () => {
           },
         }),
       ],
-      declarations: [BasketPromotionCodeComponent],
+      declarations: [BasketPromotionCodeComponent, MockComponent(NgbCollapse)],
     }).compileComponents();
   }));
 
