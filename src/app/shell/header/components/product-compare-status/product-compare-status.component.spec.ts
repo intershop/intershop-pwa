@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
+import { MockComponent } from 'ng-mocks';
 
 import { ProductCompareStatusComponent } from './product-compare-status.component';
 
@@ -15,11 +15,10 @@ describe('Product Compare Status Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        IconModule,
         RouterTestingModule.withRoutes([{ path: 'compare', component: ProductCompareStatusComponent }]),
         TranslateModule.forRoot(),
       ],
-      declarations: [ProductCompareStatusComponent],
+      declarations: [MockComponent(FaIconComponent), ProductCompareStatusComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductCompareStatusComponent);

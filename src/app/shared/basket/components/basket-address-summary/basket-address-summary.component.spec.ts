@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from 'ish-shared/address/components/address/address.component';
@@ -17,8 +17,8 @@ describe('Basket Address Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BasketAddressSummaryComponent, MockComponent(AddressComponent)],
-      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [BasketAddressSummaryComponent, MockComponent(AddressComponent), MockComponent(FaIconComponent)],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

@@ -7,7 +7,6 @@ import { anything, spy, verify } from 'ts-mockito';
 
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
 
@@ -20,7 +19,7 @@ describe('Customer Address Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CustomerAddressFormComponent, MockComponent(AddressFormContainerComponent)],
-      imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [AddressFormFactoryProvider],
     }).compileComponents();
   }));

@@ -7,7 +7,6 @@ import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mocki
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { PipesModule } from 'ish-core/pipes.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
 import { LoginUserSuccess } from 'ish-core/store/user';
@@ -36,7 +35,7 @@ describe('Address Form Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
-      imports: [PipesModule, ngrxTesting({ reducers: coreReducers })],
+      imports: [ngrxTesting({ reducers: coreReducers })],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },

@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
-import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 import { AccountProfilePageComponent } from './account-profile-page.component';
 
@@ -26,8 +27,8 @@ describe('Account Profile Page Component', () => {
     ] as Locale[];
 
     TestBed.configureTestingModule({
-      declarations: [AccountProfilePageComponent],
-      imports: [IconModule, PipesModule, TranslateModule.forRoot()],
+      declarations: [AccountProfilePageComponent, MockComponent(FaIconComponent), MockPipe(DatePipe)],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: AVAILABLE_LOCALES, useValue: locales }],
     }).compileComponents();
   }));

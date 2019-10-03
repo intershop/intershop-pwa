@@ -41,6 +41,7 @@
 /.sass-cache
 /connect.lock
 /coverage
+/junit.xml
 *.log
 /typings
 /src/environments/environment.local.ts

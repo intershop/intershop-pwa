@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { Product } from 'ish-core/models/product/product.model';
-import { PipesModule } from 'ish-core/pipes.module';
 
 import { ProductAttributesComponent } from './product-attributes.component';
 
@@ -15,8 +15,8 @@ describe('Product Attributes Component', () => {
     product = { sku: 'sku' } as Product;
     product.attributes = [{ name: 'A', type: 'String', value: 'A' }, { name: 'B', type: 'String', value: 'B' }];
     TestBed.configureTestingModule({
-      imports: [PipesModule, TranslateModule.forRoot()],
-      declarations: [ProductAttributesComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [AttributeToStringPipe, ProductAttributesComponent],
     }).compileComponents();
   }));
 

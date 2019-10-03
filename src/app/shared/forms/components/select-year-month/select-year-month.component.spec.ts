@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { SelectYearMonthComponent } from './select-year-month.component';
 
@@ -13,8 +15,12 @@ describe('Select Year Month Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [FormsSharedModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(FormControlFeedbackComponent),
+        MockComponent(ShowFormFeedbackDirective),
+        SelectYearMonthComponent,
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {

@@ -27,7 +27,7 @@ describe('App Component', () => {
         AppComponent,
         MockComponent(FooterComponent),
         MockComponent(HeaderContainerComponent),
-        ServerHtmlDirective,
+        MockComponent(ServerHtmlDirective),
       ],
       imports: [
         CookieLawModule,

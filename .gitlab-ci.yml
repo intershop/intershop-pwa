@@ -93,12 +93,12 @@ jest_test:
       - reports/coverage
     expire_in: 1 day
     reports:
-      junit: reports/junit.xml
+      junit: junit.xml
   dependencies: []
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest -c jest-reports.config.js --ci
+    - npx jest --collectCoverage --coverageReporters text-summary  --reporters=default --reporters=jest-junit --ci -w 3
     - echo "build complete"
 
 compile:

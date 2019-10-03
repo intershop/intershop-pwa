@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, SimpleChange, SimpleChanges } from 
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -20,7 +20,6 @@ import { BasketValidationResultsComponent } from 'ish-shared/basket/components/b
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
@@ -49,12 +48,11 @@ describe('Checkout Payment Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockPipe(PricePipe),
       ],
       imports: [
-        FormsSharedModule,
-        NgbCollapseModule,
-        PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
         TranslateModule.forRoot(),

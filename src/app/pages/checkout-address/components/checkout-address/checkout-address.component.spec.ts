@@ -2,12 +2,12 @@ import { Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -21,7 +21,7 @@ import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/cont
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
+import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { CheckoutAddressComponent } from './checkout-address.component';
 
@@ -45,12 +45,12 @@ describe('Checkout Address Component', () => {
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(CustomerAddressFormComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(SelectAddressComponent),
       ],
       imports: [
-        FormsSharedModule,
-        IconModule,
         NgbCollapseModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),

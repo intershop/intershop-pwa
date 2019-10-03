@@ -1,10 +1,13 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
+import { SelectRegionComponent } from 'ish-shared/forms/components/select-region/select-region.component';
 
 import { AddressFormUSComponent } from './address-form-us.component';
 
@@ -15,9 +18,14 @@ describe('Address Form Us Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressFormUSComponent, InputComponent, SelectTitleComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        AddressFormUSComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(InputComponent),
+        MockComponent(NgbPopover),
+        MockComponent(SelectRegionComponent),
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {
@@ -43,24 +51,24 @@ describe('Address Form Us Component', () => {
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=firstName]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=lastName]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=addressLine1]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=addressLine2]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=postalCode]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=city]')).toBeTruthy();
+    expect(element.querySelector('[controlname=firstName]')).toBeTruthy();
+    expect(element.querySelector('[controlname=lastName]')).toBeTruthy();
+    expect(element.querySelector('[controlname=addressLine1]')).toBeTruthy();
+    expect(element.querySelector('[controlname=addressLine2]')).toBeTruthy();
+    expect(element.querySelector('[controlname=postalCode]')).toBeTruthy();
+    expect(element.querySelector('[controlname=city]')).toBeTruthy();
   });
 
   it('should display region select box if regions  input parameter is not empty', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=state]')).toBeFalsy();
+    expect(element.querySelector('[controlname=state]')).toBeFalsy();
 
     component.regions = [
       { countryCode: 'US', regionCode: 'AL', name: 'Alabama', id: 'USAL' },
       { countryCode: 'US', regionCode: 'FL', name: 'Florida', id: 'USFL' },
     ];
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=state]')).toBeFalsy();
+    expect(element.querySelector('[controlname=state]')).toBeFalsy();
   });
 
   it('should display an apo/fpo popover link on creation', () => {

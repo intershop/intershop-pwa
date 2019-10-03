@@ -1,6 +1,7 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
@@ -15,9 +16,8 @@ describe('Address Form De Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressFormDEComponent, InputComponent, SelectTitleComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [AddressFormDEComponent, MockComponent(InputComponent), MockComponent(SelectTitleComponent)],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {
@@ -44,13 +44,13 @@ describe('Address Form De Component', () => {
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=title]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=firstName]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=lastName]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=addressLine1]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=addressLine2]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=addressLine3]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=postalCode]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=city]')).toBeTruthy();
+    expect(element.querySelector('ish-select-title')).toBeTruthy();
+    expect(element.querySelector('[controlname=firstName]')).toBeTruthy();
+    expect(element.querySelector('[controlname=lastName]')).toBeTruthy();
+    expect(element.querySelector('[controlname=addressLine1]')).toBeTruthy();
+    expect(element.querySelector('[controlname=addressLine2]')).toBeTruthy();
+    expect(element.querySelector('[controlname=addressLine3]')).toBeTruthy();
+    expect(element.querySelector('[controlname=postalCode]')).toBeTruthy();
+    expect(element.querySelector('[controlname=city]')).toBeTruthy();
   });
 });

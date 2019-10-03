@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -23,7 +24,6 @@ describe('Product Detail Actions Component', () => {
       imports: [
         CommonModule,
         FeatureToggleModule,
-        IconModule,
         TranslateModule.forRoot(),
         ngrxTesting({
           reducers: { configuration: configurationReducer },
@@ -32,7 +32,7 @@ describe('Product Detail Actions Component', () => {
           },
         }),
       ],
-      declarations: [ProductDetailActionsComponent],
+      declarations: [MockComponent(FaIconComponent), ProductDetailActionsComponent],
     }).compileComponents();
   }));
 

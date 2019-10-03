@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { User } from 'ish-core/models/user/user.model';
 
 import { LogoutComponent } from './logout.component';
@@ -13,8 +14,8 @@ describe('Logout Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, TranslateModule.forRoot()],
-      declarations: [LogoutComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [LogoutComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 

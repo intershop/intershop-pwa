@@ -1,7 +1,7 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectSecurityQuestionComponent } from 'ish-shared/forms/components/select-security-question/select-security-question.component';
@@ -15,9 +15,12 @@ describe('Registration Credentials Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InputComponent, RegistrationCredentialsFormComponent, SelectSecurityQuestionComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        MockComponent(InputComponent),
+        MockComponent(SelectSecurityQuestionComponent),
+        RegistrationCredentialsFormComponent,
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {
@@ -54,11 +57,11 @@ describe('Registration Credentials Form Component', () => {
   it('should display form input fields on creation', () => {
     component.securityQuestionEnabled = true;
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=login]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=loginConfirmation]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=password]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=passwordConfirmation]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=securityQuestion]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=securityQuestionAnswer]')).toBeTruthy();
+    expect(element.querySelector('ish-input[controlname=login]')).toBeTruthy();
+    expect(element.querySelector('ish-input[controlname=loginConfirmation]')).toBeTruthy();
+    expect(element.querySelector('ish-input[controlname=password]')).toBeTruthy();
+    expect(element.querySelector('ish-input[controlname=passwordConfirmation]')).toBeTruthy();
+    expect(element.querySelector('ish-select-security-question')).toBeTruthy();
+    expect(element.querySelector('ish-input[controlname=securityQuestionAnswer]')).toBeTruthy();
   });
 });
