@@ -30,6 +30,7 @@ browserslist
 /docs
 /out-tsc
 /coverage
+/junit.xml
 /tslint-rules/dist
 /schematics/src/**/files/**
 /schematics/**/*.js

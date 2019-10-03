@@ -1,15 +1,15 @@
-import { CommonModule } from '@angular/common';
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
@@ -25,15 +25,15 @@ describe('Mini Basket Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        IconModule,
-        NgbCollapseModule,
-        PipesModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MiniBasketComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(NgbCollapse),
+        MockComponent(ProductImageComponent),
+        MockPipe(PricePipe),
+        MockPipe(ProductRoutePipe),
       ],
-      declarations: [MiniBasketComponent, MockComponent(ProductImageComponent)],
     }).compileComponents();
   }));
 

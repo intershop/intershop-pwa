@@ -1,32 +1,23 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { Store, combineReducers } from '@ngrx/store';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
-import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from 'ish-shared/forms/forms.module';
-import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from 'ish-shared/line-item/components/line-item-edit/line-item-edit.component';
-import { LineItemEditDialogContainerComponent } from 'ish-shared/line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
 import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
 import { ProductShipmentComponent } from 'ish-shared/product/components/product-shipment/product-shipment.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/product/components/product-variation-display/product-variation-display.component';
-import { ProductVariationSelectComponent } from 'ish-shared/product/components/product-variation-select/product-variation-select.component';
 import { ProductBundleDisplayContainerComponent } from 'ish-shared/product/containers/product-bundle-display/product-bundle-display.container';
-import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
 import { LineItemDescriptionComponent } from './line-item-description.component';
 
@@ -38,35 +29,18 @@ describe('Line Item Description Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        FormsSharedModule,
-        IconModule,
-        NgbPopoverModule,
-        PipesModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [FeatureToggleModule, TranslateModule.forRoot(), ngrxTesting({ reducers: { ...coreReducers } })],
       declarations: [
         LineItemDescriptionComponent,
-        LineItemEditComponent,
-        LineItemEditDialogComponent,
-        LineItemEditDialogContainerComponent,
-        MockComponent(LoadingComponent),
-        MockComponent(ModalDialogComponent),
+        MockComponent(FaIconComponent),
+        MockComponent(LineItemEditComponent),
+        MockComponent(NgbPopover),
         MockComponent(ProductBundleDisplayContainerComponent),
         MockComponent(ProductIdComponent),
-        MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationDisplayComponent),
-        MockComponent(ProductVariationSelectComponent),
+        MockPipe(PricePipe),
       ],
     }).compileComponents();
   }));

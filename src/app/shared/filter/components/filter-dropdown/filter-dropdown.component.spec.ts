@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
 import { FilterDropdownComponent } from './filter-dropdown.component';
 
@@ -16,8 +17,8 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [FilterDropdownComponent],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [FilterDropdownComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse), SanitizePipe],
     }).compileComponents();
   }));
 

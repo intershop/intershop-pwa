@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 
@@ -13,8 +14,7 @@ describe('Filter Dropdown Multiselect Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule],
-      declarations: [FilterDropdownMultiselectComponent],
+      declarations: [FilterDropdownMultiselectComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 
@@ -60,21 +60,7 @@ describe('Filter Dropdown Multiselect Component', () => {
         <div aria-labelledby="dropdownMenuLink" ngbdropdownmenu="">
           <a class="dropdown-item">Red</a
           ><a class="dropdown-item selected"
-            >Blue<fa-icon class="icon-checked ng-fa-icon" ng-reflect-icon-prop="fas,check"
-              ><svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="check"
-                class="svg-inline--fa fa-check fa-w-16"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
-                ></path></svg></fa-icon
+            >Blue<fa-icon class="icon-checked" ng-reflect-icon-prop="fas,check"></fa-icon
           ></a>
         </div>
       </div>

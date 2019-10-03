@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { MockComponent } from 'ng-mocks';
@@ -50,7 +49,6 @@ describe('Product Page Container', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        NgbModalModule,
         RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
         ngrxTesting({
           reducers: {

@@ -1,6 +1,9 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MockComponent } from 'ng-mocks';
+
+import { InputBirthdayComponent } from 'ish-shared/forms/components/input-birthday/input-birthday.component';
+import { SelectLanguageComponent } from 'ish-shared/forms/components/select-language/select-language.component';
 
 import { RegistrationPersonalFormComponent } from './registration-personal-form.component';
 
@@ -11,8 +14,12 @@ describe('Registration Personal Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RegistrationPersonalFormComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        MockComponent(InputBirthdayComponent),
+        MockComponent(SelectLanguageComponent),
+        RegistrationPersonalFormComponent,
+      ],
+      imports: [ReactiveFormsModule],
     })
       .compileComponents()
       .then(() => {

@@ -1,7 +1,10 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
+
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { SelectComponent, SelectOption } from './select.component';
 
@@ -12,9 +15,12 @@ describe('Select Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SelectComponent],
-      imports: [TranslateModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [
+        MockComponent(FormControlFeedbackComponent),
+        MockComponent(ShowFormFeedbackDirective),
+        SelectComponent,
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {

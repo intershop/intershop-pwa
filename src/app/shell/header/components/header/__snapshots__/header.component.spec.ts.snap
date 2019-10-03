@@ -45,7 +45,7 @@ exports[`Header Component rendering should render normal header adequately for d
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -100,7 +100,7 @@ exports[`Header Component rendering should render normal header adequately for m
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -155,7 +155,7 @@ exports[`Header Component rendering should render normal header adequately for t
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -210,7 +210,7 @@ exports[`Header Component rendering should render sticky header adequately for d
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -265,7 +265,7 @@ exports[`Header Component rendering should render sticky header adequately for m
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -320,7 +320,7 @@ exports[`Header Component rendering should render sticky header adequately for t
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav class="global-nav navbar-expand-md collapse" ng-reflect-collapsed="true">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
       <div class="main-navigation" role="navigation">
         <ish-header-navigation-container></ish-header-navigation-container
         ><ish-user-information-mobile></ish-user-information-mobile>

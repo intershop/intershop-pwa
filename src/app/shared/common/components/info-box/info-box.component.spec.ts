@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { IconModule } from 'ish-core/icon.module';
-import { PipesModule } from 'ish-core/pipes.module';
+import { MockComponent } from 'ng-mocks';
 
 import { InfoBoxComponent } from './info-box.component';
 
@@ -14,8 +13,8 @@ describe('Info Box Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [InfoBoxComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [InfoBoxComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 

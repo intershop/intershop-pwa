@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderWidgetComponent } from 'ish-shared/order/components/order-widget/order-widget.component';
@@ -23,10 +23,11 @@ describe('Account Overview Page Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountOverviewPageComponent,
+        MockComponent(FaIconComponent),
         MockComponent(LazyQuoteWidgetComponent),
         MockComponent(OrderWidgetComponent),
       ],
-      imports: [IconModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

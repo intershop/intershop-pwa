@@ -373,6 +373,30 @@
           "from": "ngrx",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Use the testing helper 'ngrxTesting' in tests instead."
+        },
+        {
+          "import": "^IconModule$",
+          "from": "ish-core/icon.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent(FaIconComponent) in tests instead."
+        },
+        {
+          "import": "^FormsSharedModule$",
+          "from": "ish-shared/forms/forms.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Performance: Use MockComponent for individual components in tests instead."
+        },
+        {
+          "import": "^NO_ERRORS_SCHEMA$",
+          "from": "@angular/core",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent for individual components in tests instead."
+        },
+        {
+          "import": "^PipesModule$",
+          "from": "ish-core/pipes.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Performance: Use MockPipe or declare it individually in tests instead."
         }
       ]
     },

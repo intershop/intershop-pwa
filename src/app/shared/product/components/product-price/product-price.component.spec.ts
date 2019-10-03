@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { AnyProductType } from 'ish-core/models/product/product.model';
-import { PipesModule } from 'ish-core/pipes.module';
 
 import { ProductPriceComponent } from './product-price.component';
 
@@ -17,8 +17,8 @@ describe('Product Price Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, PipesModule, TranslateModule.forRoot()],
-      declarations: [ProductPriceComponent],
+      imports: [CommonModule, TranslateModule.forRoot()],
+      declarations: [PricePipe, ProductPriceComponent],
     }).compileComponents();
   }));
 
