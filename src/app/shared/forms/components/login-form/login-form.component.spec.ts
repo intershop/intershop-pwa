@@ -24,7 +24,7 @@ describe('Login Form Component', () => {
         InputComponent,
         LoginFormComponent,
         MockComponent(FaIconComponent),
-        ShowFormFeedbackDirective,
+        MockComponent(ShowFormFeedbackDirective),
       ],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();

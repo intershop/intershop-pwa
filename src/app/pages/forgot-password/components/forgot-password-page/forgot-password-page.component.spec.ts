@@ -18,7 +18,11 @@ describe('Forgot Password Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ForgotPasswordPageComponent, MockComponent(ForgotPasswordFormComponent), ServerHtmlDirective],
+      declarations: [
+        ForgotPasswordPageComponent,
+        MockComponent(ForgotPasswordFormComponent),
+        MockComponent(ServerHtmlDirective),
+      ],
       imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
     }).compileComponents();
   }));

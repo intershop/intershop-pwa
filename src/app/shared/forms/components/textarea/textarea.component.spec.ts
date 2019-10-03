@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
 import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
@@ -14,7 +15,7 @@ describe('Textarea Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ShowFormFeedbackDirective, TextareaComponent],
+      declarations: [MockComponent(ShowFormFeedbackDirective), TextareaComponent],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
