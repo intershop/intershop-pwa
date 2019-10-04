@@ -1,17 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, combineReducers } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
-import { LoadQuotes } from '../../../../store/quote';
-import { LoadQuoteRequests } from '../../../../store/quote-request';
-import { quotingReducers } from '../../../../store/quoting-store.module';
-import { QuoteWidgetComponent } from '../../components/quote-widget/quote-widget.component';
+import { QuotingFacade } from '../../../../facades/quoting.facade';
+import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
+import { Quote } from '../../../../models/quote/quote.model';
 
 import { QuoteWidgetContainerComponent } from './quote-widget.container';
 
@@ -19,19 +16,37 @@ describe('Quote Widget Container', () => {
   let component: QuoteWidgetContainerComponent;
   let fixture: ComponentFixture<QuoteWidgetContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let quotingFacade: QuotingFacade;
+
+  const quoteRequests = [
+    {
+      state: 'New',
+    },
+  ] as QuoteRequest[];
+
+  const quotes = [
+    {
+      state: 'Converted',
+    },
+    {
+      state: 'Expired',
+    },
+    {
+      state: 'Rejected',
+    },
+    {
+      state: 'Responded',
+    },
+  ] as Quote[];
 
   beforeEach(async(() => {
+    quotingFacade = mock(QuotingFacade);
+    when(quotingFacade.quotesAndQuoteRequests$()).thenReturn(of([]));
+
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { ...coreReducers, quoting: combineReducers(quotingReducers) } }),
-      ],
-      declarations: [
-        MockComponent(LoadingComponent),
-        MockComponent(QuoteWidgetComponent),
-        QuoteWidgetContainerComponent,
-      ],
+      imports: [TranslateModule.forRoot()],
+      declarations: [MockComponent(LoadingComponent), QuoteWidgetContainerComponent],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
   }));
 
@@ -40,7 +55,13 @@ describe('Quote Widget Container', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$ = TestBed.get(Store);
+    const translate = TestBed.get(TranslateService);
+    translate.setDefaultLang('en');
+    translate.use('en');
+    translate.set('account.quotes.widget.new.label', 'N');
+    translate.set('account.quotes.widget.submitted.label', 'S');
+    translate.set('account.quotes.widget.accepted.label', 'A');
+    translate.set('account.quotes.widget.rejected.label', 'R');
   });
 
   it('should be created', () => {
@@ -49,23 +70,19 @@ describe('Quote Widget Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should dispatch action when addToQuote is triggered.', () => {
-    const storeSpy$ = spy(store$);
-
-    fixture.detectChanges();
-
-    verify(storeSpy$.dispatch(anything())).twice();
-  });
-
-  it('should render loading component if quotes loading', () => {
-    store$.dispatch(new LoadQuotes());
+  it('should render loading component if quotes or quoteRequests loading', () => {
+    when(quotingFacade.quotesOrQuoteRequestsLoading$).thenReturn(of(true));
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it('should render loading component if quoteRequests loading', () => {
-    store$.dispatch(new LoadQuoteRequests());
+  it('should calculate and display the right amounts when rendered', () => {
+    when(quotingFacade.quotesAndQuoteRequests$()).thenReturn(of([...quotes, ...quoteRequests]));
+
     fixture.detectChanges();
-    expect(element.querySelector('ish-loading')).toBeTruthy();
+
+    const quoteWidget = element.querySelector('[data-testing-id="quote-widget"]');
+    expect(quoteWidget).toBeTruthy();
+    expect(quoteWidget.textContent).toMatchInlineSnapshot(`"N1S0A3R1"`);
   });
 });
