@@ -11,22 +11,25 @@
   </isif> -->
 
   <!--- Quote Header ( shown once if quote request submitted ) -->
-  <ng-container *ngIf="submitted">
+  <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quoteTitle">
     <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
-    <p>{{ 'quote.edit.submitted.your_quote_number.text' | translate }} {{ quote.number }}</p>
+    <p>
+      {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
+      <a [routerLink]="['/account/quote-request', quote.id]">{{ quote.number }}</a>
+    </p>
     <p>
       {{ 'quote.edit.submitted.your_quote.text' | translate }} <br />
-      <!-- TODO: current redirect implementation causes complete reload of the app -->
       <span
-        [innerHTML]="
-          'quote.edit.submitted.you_can_check.text' | translate: { '0': '/account/quote-list', '1': '/account' }
+        [ishServerHtml]="
+          'quote.edit.submitted.you_can_check.text'
+            | translate: { '0': 'route://account/quote-list', '1': 'route://account' }
         "
       ></span>
     </p>
     <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': user.email } }}</p>
   </ng-container>
 
-  <ng-container *ngIf="submitted === false">
+  <ng-template #quoteTitle>
     <!-- Title and Description -->
     <ng-container *ngIf="quote.displayName; else noDisplayName">
       <h1>
@@ -51,7 +54,7 @@
     <div *ngIf="quote.state === 'Responded' && !isQuoteStarted" class="alert alert-info">
       {{ 'quote.error.not_started' | translate }}
     </div>
-  </ng-container>
+  </ng-template>
 
   <!--
   <isif condition="#isDefined(ErrorCode)#">
@@ -152,6 +155,19 @@
       <istext key="#ERRORCODE_QUOTEVALIDATION#"/>
     </div>
   </isif> -->
+
+  <div *ngIf="quote.state === 'Submitted'" data-testing-id="success-message" class="alert alert-info">
+    {{
+      'quote.edit.submitted.your_quote_has_been_submitted.text'
+        | translate: { '0': quote.creationDate | date: 'shortDate' }
+    }}
+  </div>
+
+  <div *ngIf="displaySavedMessage$ | async" data-testing-id="success-message" class="alert alert-success alert-fade">
+    {{ 'quote.edit.saved.your_quote_has_been_saved.text' | translate }}
+  </div>
+
+  <div *ngIf="error" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
 
   <!--- Quote Item List -->
   <div class="section">

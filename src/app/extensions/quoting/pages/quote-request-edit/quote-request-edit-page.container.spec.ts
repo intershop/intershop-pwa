@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -27,6 +28,7 @@ describe('Quote Request Edit Page Container', () => {
         QuoteRequestEditPageContainerComponent,
       ],
       imports: [
+        RouterTestingModule,
         TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {

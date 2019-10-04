@@ -2500,6 +2500,7 @@
   "quote.edit.unsubmitted.provide_comment.text": "Fügen Sie ihrer Preisanfrage einen Kommentar hinzu.",
   "quote.edit.unsubmitted.seller_comment.label": "Kommentar des Anbieters:",
   "quote.edit.submitted.your_quote_has_been_submitted.text": "Ihr Preisangebot wurde am {{0}} gesendet. Sie werden per E-Mail über ein Angebot informiert.",
+  "quote.edit.saved.your_quote_has_been_saved.text": "Ihr Preisangebot wurde gespeichert.",
   "quote.edit.submitted.your_quote_expired.text": "Ihr Preisangebot ist am {{0}} {{1}} abgelaufen.",
   "quote.edit.back_to_shopping.link": "Weiter einkaufen",
   "quote.edit.back_to_quotes.link": "Zurück zu Preisangeboten",
