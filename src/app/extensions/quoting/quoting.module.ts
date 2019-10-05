@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { QuoteWidgetContainerComponent } from './shared/account/containers/quote-widget/quote-widget.container';
-import { BasketAddToQuoteComponent } from './shared/basket/components/basket-add-to-quote/basket-add-to-quote.component';
 import { BasketAddToQuoteContainerComponent } from './shared/basket/containers/basket-add-to-quote/basket-add-to-quote.container';
 import { ProductAddToQuoteDialogComponent } from './shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 import { ProductAddToQuoteComponent } from './shared/product/components/product-add-to-quote/product-add-to-quote.component';
@@ -16,7 +15,6 @@ import { QuotingStoreModule } from './store/quoting-store.module';
 @NgModule({
   imports: [QuotingStoreModule, SharedModule],
   declarations: [
-    BasketAddToQuoteComponent,
     BasketAddToQuoteContainerComponent,
     ProductAddToQuoteComponent,
     ProductAddToQuoteContainerComponent,
