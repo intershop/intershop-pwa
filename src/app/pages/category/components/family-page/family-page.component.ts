@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID } from '@angular/core';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -17,17 +18,23 @@ export class FamilyPageComponent implements OnInit, OnChanges {
 
   isCollapsed = false;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: string) {}
+
   ngOnInit() {
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
   ngOnChanges() {
-    window.scroll(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      window.scroll(0, 0);
+    }
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
   toggle() {
     this.isCollapsed = !this.isCollapsed;
-    window.scroll(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      window.scroll(0, 0);
+    }
   }
 }
