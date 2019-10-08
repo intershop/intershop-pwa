@@ -4,24 +4,20 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { filter, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, startWith, take } from 'rxjs/operators';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { ProductView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
-import { AddProductToBasket } from 'ish-core/store/checkout/basket';
-import { ToggleCompare, isInCompareProducts } from 'ish-core/store/shopping/compare';
-import { LoadProductIfNotLoaded, getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products';
 import { ProductRowComponentConfiguration } from 'ish-shared/product/components/product-row/product-row.component';
 import { ProductTileComponentConfiguration } from 'ish-shared/product/components/product-tile/product-tile.component';
 
@@ -60,7 +56,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   templateUrl: './product-item.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChanges {
+export class ProductItemContainerComponent implements OnInit, OnChanges {
   private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   /**
    * The Product SKU to render a product item for.
@@ -81,40 +77,29 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChang
    */
   @Input() configuration: ProductItemContainerConfiguration = DEFAULT_CONFIGURATION;
 
-  productForDisplay$: Observable<ProductView>;
+  product$: Observable<ProductView>;
   loading$: Observable<boolean>;
   productVariationOptions$: Observable<VariationOptionGroup[]>;
   isInCompareList$: Observable<boolean>;
 
-  private destroy$ = new Subject();
   private sku$: Observable<string>;
-  private product$: Observable<ProductView>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
 
   // tslint:disable:initialize-observables-in-declaration
   ngOnInit() {
     this.sku$ = this.productSkuChange.pipe(startWith(this.productSku));
-    this.product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
 
-    this.productForDisplay$ = this.product$.pipe(
-      filter(p => ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
-    );
-    this.loading$ = this.product$.pipe(
-      map(p => !ProductHelper.isReadyForDisplay(p, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL))
+    this.product$ = this.shoppingFacade.product$(this.sku$, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL);
+
+    this.loading$ = this.shoppingFacade.productNotReady$(
+      this.sku$,
+      ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL
     );
 
-    this.productVariationOptions$ = this.sku$.pipe(
-      switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku })))
-    );
-    this.isInCompareList$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(isInCompareProducts(sku)))));
+    this.productVariationOptions$ = this.shoppingFacade.productVariationOptions$(this.sku$);
 
-    // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
-    this.sku$.pipe(takeUntil(this.destroy$)).subscribe(sku => {
-      this.store.dispatch(
-        new LoadProductIfNotLoaded({ sku, level: ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL })
-      );
-    });
+    this.isInCompareList$ = this.shoppingFacade.inCompareProducts$(this.sku$);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -129,16 +114,12 @@ export class ProductItemContainerComponent implements OnInit, OnDestroy, OnChang
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-  }
-
   toggleCompare() {
-    this.sku$.pipe(take(1)).subscribe(sku => this.store.dispatch(new ToggleCompare({ sku })));
+    this.sku$.pipe(take(1)).subscribe(sku => this.shoppingFacade.toggleProductCompare(sku));
   }
 
   addToBasket(quantity: number) {
-    this.sku$.pipe(take(1)).subscribe(sku => this.store.dispatch(new AddProductToBasket({ sku, quantity })));
+    this.sku$.pipe(take(1)).subscribe(sku => this.shoppingFacade.addProductToBasket(sku, quantity));
   }
 
   replaceVariation(selection: VariationSelection) {

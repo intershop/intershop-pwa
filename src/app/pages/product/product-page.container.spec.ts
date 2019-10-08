@@ -216,6 +216,8 @@ describe('Product Page Container', () => {
     store$.dispatch(new LoadProductSuccess({ product }));
     store$.dispatch(new SelectProduct({ sku: product.sku }));
 
+    fixture.detectChanges();
+
     component.retailSetParts$.next([{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 0 }, { sku: 'C', quantity: 1 }]);
 
     store$.reset();

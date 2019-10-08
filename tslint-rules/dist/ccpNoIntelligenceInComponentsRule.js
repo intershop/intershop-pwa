@@ -53,6 +53,9 @@ var Rule = (function (_super) {
                 if (fromStringText.search(/angular\/router/) >= 0 && !_this.ruleSettings[c].router) {
                     ctx.addFailureAtNode(failuteToken, "router usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
                 }
+                if (fromStringText.search(/\/facades(\/|$)/) >= 0 && !_this.ruleSettings[c].facade) {
+                    ctx.addFailureAtNode(failuteToken, "using facades is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                }
             });
         });
     };

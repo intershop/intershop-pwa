@@ -1,4 +1,4 @@
-<ng-container *ngIf="productForDisplay$ | async as product">
+<ng-container *ngIf="product$ | async as product">
   <ish-product-tile
     *ngIf="isTile"
     [configuration]="configuration"

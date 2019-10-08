@@ -1,6 +1,6 @@
 <ish-registration-form
   [languages]="locales"
-  [error]="userCreateError$ | async"
+  [error]="userError$ | async"
   (create)="onCreate($event)"
   (cancel)="onCancel()"
 >

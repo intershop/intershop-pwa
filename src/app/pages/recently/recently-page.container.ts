@@ -1,19 +1,24 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { ClearRecently, getRecentlyViewedProducts } from 'ish-core/store/shopping/recently';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { AllProductTypes } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-recently-page-container',
   templateUrl: './recently-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecentlyPageContainerComponent {
-  products$ = this.store.pipe(select(getRecentlyViewedProducts));
+export class RecentlyPageContainerComponent implements OnInit {
+  products$: Observable<AllProductTypes>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.products$ = this.shoppingFacade.recentlyViewedProducts$;
+  }
 
   clearAll() {
-    this.store.dispatch(new ClearRecently());
+    this.shoppingFacade.clearRecentlyViewedProducts();
   }
 }

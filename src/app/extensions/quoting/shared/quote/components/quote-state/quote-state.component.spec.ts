@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
@@ -26,7 +27,10 @@ describe('Quote State Component', () => {
     element = fixture.nativeElement;
     component.quote = {} as Quote;
 
-    jest.spyOn(Date, 'now').mockImplementation(() => timestamp);
+    // mock ngOnInit as we really do not want to handle timers here
+    jest.spyOn(component, 'ngOnInit').mockImplementation(() => {
+      component.currentDateTime$ = of(timestamp);
+    });
   });
 
   it('should be created', () => {

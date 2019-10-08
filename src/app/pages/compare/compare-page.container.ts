@@ -1,25 +1,30 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { AddProductToBasket } from 'ish-core/store/checkout/basket';
-import { RemoveFromCompare, getCompareProducts, getCompareProductsCount } from 'ish-core/store/shopping/compare';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { AllProductTypes } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-compare-page-container',
   templateUrl: './compare-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComparePageContainerComponent {
-  compareProducts$ = this.store.pipe(select(getCompareProducts));
-  compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
+export class ComparePageContainerComponent implements OnInit {
+  compareProducts$: Observable<AllProductTypes[]>;
+  compareProductsCount$: Observable<number>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.compareProducts$ = this.shoppingFacade.compareProducts$;
+    this.compareProductsCount$ = this.shoppingFacade.compareProductsCount$;
+  }
 
   addToBasket({ sku, quantity }) {
-    this.store.dispatch(new AddProductToBasket({ sku, quantity }));
+    this.shoppingFacade.addProductToBasket(sku, quantity);
   }
 
   removeFromCompare(sku: string) {
-    this.store.dispatch(new RemoveFromCompare({ sku }));
+    this.shoppingFacade.removeProductFromCompare(sku);
   }
 }

@@ -1,21 +1,21 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getCompareProductsSKUs } from 'ish-core/store/shopping/compare';
-import { mapToProperty } from 'ish-core/utils/operators';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 
 @Component({
   selector: 'ish-product-compare-status-container',
   templateUrl: './product-compare-status.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductCompareStatusContainerComponent {
+export class ProductCompareStatusContainerComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  productCompareCount$ = this.store.pipe(
-    select(getCompareProductsSKUs),
-    mapToProperty('length')
-  );
+  productCompareCount$: Observable<number>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
+
+  ngOnInit() {
+    this.productCompareCount$ = this.shoppingFacade.compareProductsCount$;
+  }
 }

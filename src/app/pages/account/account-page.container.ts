@@ -1,15 +1,22 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getBreadcrumbData, getDeviceType } from 'ish-core/store/viewconf';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   templateUrl: './account-page.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AccountPageContainerComponent {
-  breadcrumbData$ = this.store.pipe(select(getBreadcrumbData));
-  deviceType$ = this.store.pipe(select(getDeviceType));
+export class AccountPageContainerComponent implements OnInit {
+  breadcrumbData$: Observable<BreadcrumbItem[]>;
+  deviceType$: Observable<DeviceType>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private appFacade: AppFacade) {}
+
+  ngOnInit() {
+    this.breadcrumbData$ = this.appFacade.breadcrumbData$;
+    this.deviceType$ = this.appFacade.deviceType$;
+  }
 }

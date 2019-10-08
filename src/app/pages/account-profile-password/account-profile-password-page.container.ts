@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { UpdateUserPassword, getUserError, getUserLoading } from 'ish-core/store/user';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
  * The Account Profile Password Page Container Component renders a page where the user can change his password using the {@link AccountProfilePasswordPageComponent}
@@ -12,13 +13,18 @@ import { UpdateUserPassword, getUserError, getUserLoading } from 'ish-core/store
   templateUrl: './account-profile-password-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfilePasswordPageContainerComponent {
-  userError$ = this.store.pipe(select(getUserError));
-  userLoading$ = this.store.pipe(select(getUserLoading));
+export class AccountProfilePasswordPageContainerComponent implements OnInit {
+  userError$: Observable<HttpError>;
+  userLoading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.userError$ = this.accountFacade.userError$;
+    this.userLoading$ = this.accountFacade.userLoading$;
+  }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {
-    this.store.dispatch(new UpdateUserPassword(data));
+    this.accountFacade.updateUserPassword(data);
   }
 }
