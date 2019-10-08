@@ -18,6 +18,10 @@ The project uses Angular CLI which has to be installed globally. Run `npm instal
 
 The project can alternatively be run in production mode with `npm start`.
 
+## Customization
+
+Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./CUSTOMIZING.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
+
 ## Project Update
 
 An update of the project to a new release version might include added or updated dependencies. So in case of an update run `npm install` before serving or building the application.
