@@ -2,14 +2,14 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { Product } from 'ish-core/models/product/product.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -91,9 +91,26 @@ describe('Products Service', () => {
   });
 
   it("should get product variations data when 'getProductVariations' is called", done => {
-    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of([]));
+    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(of({ elements: [] }));
     productsService.getProductVariations(productSku).subscribe(() => {
       verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
+      done();
+    });
+  });
+
+  it("should get all product variations data when 'getProductVariations' is called and more than 50 variations exist", done => {
+    when(apiServiceMock.get(`products/${productSku}/variations`)).thenReturn(
+      of({ elements: [], amount: 50, total: 56 })
+    );
+    when(apiServiceMock.get(`products/${productSku}/variations`, anything())).thenReturn(
+      of({ elements: [], amount: 6, total: 56 })
+    );
+    productsService.getProductVariations(productSku).subscribe(() => {
+      verify(apiServiceMock.get(`products/${productSku}/variations`)).once();
+      verify(apiServiceMock.get(`products/${productSku}/variations`, anything())).once();
+      const [, args] = capture<string, AvailableOptions>(apiServiceMock.get).last();
+      expect(args.params).toBeTruthy();
+      expect(args.params.toString()).toMatchInlineSnapshot(`"amount=6&offset=50"`);
       done();
     });
   });
