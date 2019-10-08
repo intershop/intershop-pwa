@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, throwError } from 'rxjs';
-import { defaultIfEmpty, map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
@@ -149,9 +149,17 @@ export class ProductsService {
       return throwError('getProductVariations() called without a sku');
     }
 
-    return this.apiService.get(`products/${sku}/variations`).pipe(
-      unpackEnvelope<ProductVariationLink>(),
-      map(links => ({
+    return this.apiService.get<{ elements: Link[]; total: number; amount: number }>(`products/${sku}/variations`).pipe(
+      switchMap(resp =>
+        !resp.total
+          ? of(resp.elements)
+          : this.apiService
+              .get<{ elements: Link[] }>(`products/${sku}/variations`, {
+                params: new HttpParams().set('amount', `${resp.total - resp.amount}`).set('offset', `${resp.amount}`),
+              })
+              .pipe(map(resp2 => [...resp.elements, ...resp2.elements]))
+      ),
+      map((links: ProductVariationLink[]) => ({
         products: links.map(link => this.productMapper.fromVariationLink(link, sku)),
         defaultVariation: ProductMapper.findDefaultVariation(links),
       })),
