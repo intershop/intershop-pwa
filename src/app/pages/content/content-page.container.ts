@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
+import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 
 /**
  * The Content Page Container Component fetches the data required to render CMS managed pages.
@@ -11,9 +12,14 @@ import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/co
   templateUrl: './content-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentPageContainerComponent {
-  contentPage$ = this.store.pipe(select(getSelectedContentPage));
-  contentPageLoading$ = this.store.pipe(select(getContentPageLoading));
+export class ContentPageContainerComponent implements OnInit {
+  contentPage$: Observable<ContentPageletEntryPointView>;
+  contentPageLoading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private cmsFacade: CMSFacade) {}
+
+  ngOnInit() {
+    this.contentPage$ = this.cmsFacade.contentPage$;
+    this.contentPageLoading$ = this.cmsFacade.contentPageLoading$;
+  }
 }

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store } from '@ngrx/store';
 
-import { AddBasketToQuoteRequest } from '../../../../store/quote-request';
+import { QuotingFacade } from '../../../../facades/quoting.facade';
 
 /**
  * The Product Add To Quote Container Component displays a button which adds a product to a Quote Request.
@@ -13,9 +12,9 @@ import { AddBasketToQuoteRequest } from '../../../../store/quote-request';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketAddToQuoteContainerComponent {
-  constructor(private store: Store<{}>) {}
+  constructor(private quotingFacade: QuotingFacade) {}
 
   addToQuote() {
-    this.store.dispatch(new AddBasketToQuoteRequest());
+    this.quotingFacade.addBasketToQuoteRequest();
   }
 }

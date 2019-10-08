@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
@@ -24,6 +25,7 @@ describe('Category Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         ngrxTesting({
           reducers: {
             ...coreReducers,

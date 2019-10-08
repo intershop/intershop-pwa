@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
-import { getCurrentLocale } from 'ish-core/store/locale';
-import { UpdateUser, getLoggedInUser, getUserError, getUserLoading } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
 
@@ -19,17 +20,26 @@ import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileUserPageContainerComponent implements OnInit {
-  currentUser$ = this.store.pipe(select(getLoggedInUser));
-  currentLocale$ = this.store.pipe(select(getCurrentLocale));
-  userError$ = this.store.pipe(select(getUserError));
-  userLoading$ = this.store.pipe(select(getUserLoading));
+  currentUser$: Observable<User>;
+  userError$: Observable<HttpError>;
+  userLoading$: Observable<boolean>;
+  currentLocale$: Observable<Locale>;
 
   titles: string[];
   currentCountryCode = '';
 
-  constructor(private store: Store<{}>, @Inject(AVAILABLE_LOCALES) public locales: Locale[]) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private appFacade: AppFacade,
+    @Inject(AVAILABLE_LOCALES) public locales: Locale[]
+  ) {}
 
   ngOnInit() {
+    this.currentUser$ = this.accountFacade.user$;
+    this.userError$ = this.accountFacade.userError$;
+    this.userLoading$ = this.accountFacade.userLoading$;
+    this.currentLocale$ = this.appFacade.currentLocale$;
+
     // determine default language from session and available locales
     this.currentLocale$
       .pipe(
@@ -43,6 +53,6 @@ export class AccountProfileUserPageContainerComponent implements OnInit {
   }
 
   updateUserProfile(user: User) {
-    this.store.dispatch(new UpdateUser({ user, successMessage: 'account.profile.update_profile.message' }));
+    this.accountFacade.updateUserProfile(user);
   }
 }

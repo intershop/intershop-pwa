@@ -1,17 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import {
-  CreateCustomerAddress,
-  DeleteCustomerAddress,
-  LoadAddresses,
-  getAddressesError,
-  getAddressesLoading,
-  getAllAddresses,
-} from 'ish-core/store/addresses';
-import { UpdateUser, getLoggedInUser, getUserError } from 'ish-core/store/user';
 
 /**
  * The Account Addresses Page Container Component renders the account addresses page of a logged in user using the {@link AccountAddressesPageComponent}
@@ -22,27 +15,31 @@ import { UpdateUser, getLoggedInUser, getUserError } from 'ish-core/store/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountAddressesPageContainerComponent implements OnInit {
-  addresses$ = this.store.pipe(select(getAllAddresses));
-  user$ = this.store.pipe(select(getLoggedInUser));
-  loading$ = this.store.pipe(select(getAddressesLoading));
-  errorAddresses$ = this.store.pipe(select(getAddressesError));
-  errorUser$ = this.store.pipe(select(getUserError));
+  addresses$: Observable<Address[]>;
+  loading$: Observable<boolean>;
+  errorAddresses$: Observable<HttpError>;
+  user$: Observable<User>;
+  errorUser$: Observable<HttpError>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadAddresses());
+    this.addresses$ = this.accountFacade.addresses$();
+    this.loading$ = this.accountFacade.addressesLoading$;
+    this.errorAddresses$ = this.accountFacade.addressesError$;
+    this.user$ = this.accountFacade.user$;
+    this.errorUser$ = this.accountFacade.userError$;
   }
 
   createCustomerAddress(address: Address) {
-    this.store.dispatch(new CreateCustomerAddress({ address }));
+    this.accountFacade.createCustomerAddress(address);
   }
 
   deleteCustomerAddress(addressId: string) {
-    this.store.dispatch(new DeleteCustomerAddress({ addressId }));
+    this.accountFacade.deleteCustomerAddress(addressId);
   }
 
   updateUser(user: User) {
-    this.store.dispatch(new UpdateUser({ user }));
+    this.accountFacade.updateUser(user);
   }
 }

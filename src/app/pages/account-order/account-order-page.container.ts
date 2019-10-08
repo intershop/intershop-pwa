@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getSelectedOrder } from 'ish-core/store/orders';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { OrderView } from 'ish-core/models/order/order.model';
 
 /**
  * The Order Page Container reads order data from store and displays them using the {@link OrderPageComponent}
@@ -12,8 +13,12 @@ import { getSelectedOrder } from 'ish-core/store/orders';
   templateUrl: './account-order-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOrderPageContainerComponent {
-  order$ = this.store.pipe(select(getSelectedOrder));
+export class AccountOrderPageContainerComponent implements OnInit {
+  order$: Observable<OrderView>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.order$ = this.accountFacade.selectedOrder$;
+  }
 }

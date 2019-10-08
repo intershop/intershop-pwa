@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { interval } from 'rxjs';
-import { mapTo, startWith } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Observable, timer } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
@@ -16,15 +16,16 @@ import { Quote } from '../../../../models/quote/quote.model';
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteStateComponent implements OnChanges {
+export class QuoteStateComponent implements OnChanges, OnInit {
   @Input() quote: Quote | QuoteRequest;
 
   validToDate: number;
 
-  currentDateTime$ = interval(1000).pipe(
-    startWith(0),
-    mapTo(Date.now())
-  );
+  currentDateTime$: Observable<number>;
+
+  ngOnInit() {
+    this.currentDateTime$ = timer(0, 1000).pipe(mapTo(Date.now()));
+  }
 
   ngOnChanges() {
     this.validToDate = undefined;

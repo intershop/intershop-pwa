@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getUserAuthorized } from 'ish-core/store/user';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 /**
  * The Login Page Container displays the login page component {@link LoginPageComponent} as wrapper for the login form
@@ -10,8 +10,12 @@ import { getUserAuthorized } from 'ish-core/store/user';
   templateUrl: './login-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageContainerComponent {
-  isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
+export class LoginPageContainerComponent implements OnInit {
+  isLoggedIn$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.isLoggedIn$ = this.accountFacade.isLoggedIn$;
+  }
 }

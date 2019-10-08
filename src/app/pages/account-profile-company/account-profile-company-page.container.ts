@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { UpdateCustomer, getLoggedInCustomer, getUserError, getUserLoading } from 'ish-core/store/user';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -16,13 +17,17 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountProfileCompanyPageContainerComponent implements OnInit {
-  currentCustomer$ = this.store.pipe(select(getLoggedInCustomer));
-  userError$ = this.store.pipe(select(getUserError));
-  userLoading$ = this.store.pipe(select(getUserLoading));
+  currentCustomer$: Observable<Customer>;
+  userError$: Observable<HttpError>;
+  userLoading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>, private router: Router) {}
+  constructor(private accountFacade: AccountFacade, private router: Router) {}
 
   ngOnInit() {
+    this.currentCustomer$ = this.accountFacade.customer$;
+    this.userError$ = this.accountFacade.userError$;
+    this.userLoading$ = this.accountFacade.userLoading$;
+
     // check if the current customer is a business customer, otherwise the profile page is displayed
     this.currentCustomer$
       .pipe(
@@ -37,6 +42,6 @@ export class AccountProfileCompanyPageContainerComponent implements OnInit {
   }
 
   updateCompanyProfile(customer: Customer) {
-    this.store.dispatch(new UpdateCustomer({ customer, successMessage: 'account.profile.update_profile.message' }));
+    this.accountFacade.updateCustomerProfile(customer);
   }
 }

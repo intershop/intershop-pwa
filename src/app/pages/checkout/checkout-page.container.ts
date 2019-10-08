@@ -1,14 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getCheckoutStep } from 'ish-core/store/checkout/viewconf';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 
 @Component({
   templateUrl: './checkout-page.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CheckoutPageContainerComponent {
-  checkoutStep$ = this.store.pipe(select(getCheckoutStep));
+export class CheckoutPageContainerComponent implements OnInit {
+  checkoutStep$: Observable<number>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
+
+  ngOnInit() {
+    this.checkoutStep$ = this.checkoutFacade.checkoutStep$;
+  }
 }

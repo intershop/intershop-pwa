@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Product } from 'ish-core/models/product/product.model';
-import { getProductBundleParts } from 'ish-core/store/shopping/products';
 
 @Component({
   selector: 'ish-product-bundle-display-container',
@@ -18,7 +17,7 @@ export class ProductBundleDisplayContainerComponent implements OnChanges, OnDest
 
   private destroy$ = new Subject();
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -26,10 +25,9 @@ export class ProductBundleDisplayContainerComponent implements OnChanges, OnDest
 
   ngOnChanges() {
     if (this.productBundleSKU) {
-      this.productBundleParts$ = this.store.pipe(
-        select(getProductBundleParts, { sku: this.productBundleSKU }),
-        takeUntil(this.destroy$)
-      );
+      this.productBundleParts$ = this.shoppingFacade
+        .productBundleParts$(this.productBundleSKU)
+        .pipe(takeUntil(this.destroy$));
     }
   }
 }

@@ -1,4 +1,5 @@
 import { range } from 'lodash-es';
+import { Observable, isObservable, of } from 'rxjs';
 
 /**
  * Returns an array of array slices with requested length.
@@ -19,3 +20,5 @@ export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
  */
 export const objectToArray = (values: { [key: string]: string }) =>
   Object.keys(values).map(key => ({ key, value: values[key] }));
+
+export const toObservable = <T>(input: T | Observable<T>): Observable<T> => (isObservable(input) ? input : of(input));

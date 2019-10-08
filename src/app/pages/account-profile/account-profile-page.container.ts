@@ -1,16 +1,24 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getLoggedInCustomer, getLoggedInUser, getUserSuccessMessage } from 'ish-core/store/user';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   templateUrl: './account-profile-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfilePageContainerComponent {
-  user$ = this.store.pipe(select(getLoggedInUser));
-  customer$ = this.store.pipe(select(getLoggedInCustomer));
-  userSuccessMessage$ = this.store.pipe(select(getUserSuccessMessage));
+export class AccountProfilePageContainerComponent implements OnInit {
+  user$: Observable<User>;
+  customer$: Observable<Customer>;
+  userSuccessMessage$: Observable<string>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.user$ = this.accountFacade.user$;
+    this.customer$ = this.accountFacade.customer$;
+    this.userSuccessMessage$ = this.accountFacade.userSuccessMessage$;
+  }
 }

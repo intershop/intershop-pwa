@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { Observable } from 'rxjs';
 
 import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinksView } from 'ish-core/models/product-links/product-links.model';
-import { LoadProductLinks, getProductLinks } from 'ish-core/store/shopping/products';
 
 /**
  * The Product Link Container Component
@@ -36,7 +35,7 @@ export class ProductLinksContainerComponent implements OnChanges {
    */
   swiperConfig: SwiperConfigInterface;
 
-  constructor(private store: Store<{}>, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
+  constructor(private shoppingFacade: ShoppingFacade, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
     this.swiperConfig = {
       breakpoints: {
         [largeBreakpointWidth]: {
@@ -56,8 +55,7 @@ export class ProductLinksContainerComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.sku) {
-      this.store.dispatch(new LoadProductLinks({ sku: this.sku }));
-      this.links$ = this.store.pipe(select(getProductLinks, { sku: this.sku }));
+      this.links$ = this.shoppingFacade.productLinks$(this.sku);
     }
   }
 }

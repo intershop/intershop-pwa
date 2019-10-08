@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { getBasketValidationResults } from 'ish-core/store/checkout/basket';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -12,23 +12,24 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * @example
  * <ish-basket-validation-results></ish-basket-validation-results>
  */
+// tslint:disable:ccp-no-intelligence-in-components
 @Component({
   selector: 'ish-basket-validation-results',
   templateUrl: './basket-validation-results.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class BasketValidationResultsComponent implements OnInit, OnDestroy {
-  validationResults$ = this.store.pipe(select(getBasketValidationResults));
-  private destroy$ = new Subject();
-
+  validationResults$: Observable<BasketValidationResultType>;
   hasGeneralBasketError = false;
   messages = [];
 
-  constructor(private store: Store<{}>, private cd: ChangeDetectorRef) {}
+  private destroy$ = new Subject();
+
+  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.validationResults$ = this.checkoutFacade.basketValidationResults$;
+
     // update emitted to display spinning animation
     this.validationResults$
       .pipe(

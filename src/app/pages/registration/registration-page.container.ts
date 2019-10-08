@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { CreateUser, getUserError } from 'ish-core/store/user';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}
@@ -15,16 +16,24 @@ import { CreateUser, getUserError } from 'ish-core/store/user';
   templateUrl: './registration-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistrationPageContainerComponent {
-  userCreateError$ = this.store.pipe(select(getUserError));
+export class RegistrationPageContainerComponent implements OnInit {
+  userError$: Observable<HttpError>;
 
-  constructor(private store: Store<{}>, private router: Router, @Inject(AVAILABLE_LOCALES) public locales: Locale[]) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private router: Router,
+    @Inject(AVAILABLE_LOCALES) public locales: Locale[]
+  ) {}
+
+  ngOnInit() {
+    this.userError$ = this.accountFacade.userError$;
+  }
 
   onCancel() {
     this.router.navigate(['/home']);
   }
 
   onCreate(body: CustomerRegistrationType) {
-    this.store.dispatch(new CreateUser(body));
+    this.accountFacade.createUser(body);
   }
 }

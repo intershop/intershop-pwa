@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
@@ -23,7 +24,7 @@ describe('Account Profile User Page Container', () => {
     ] as Locale[];
 
     TestBed.configureTestingModule({
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfileUserPageContainerComponent,
         MockComponent(AccountProfileUserPageComponent),
