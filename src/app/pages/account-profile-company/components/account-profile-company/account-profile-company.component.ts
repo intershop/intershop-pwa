@@ -19,11 +19,11 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  * see also: {@link AccountProfileCompanyPageContainerComponent}
  */
 @Component({
-  selector: 'ish-account-profile-company-page',
-  templateUrl: './account-profile-company-page.component.html',
+  selector: 'ish-account-profile-company',
+  templateUrl: './account-profile-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileCompanyPageComponent implements OnInit, OnChanges {
+export class AccountProfileCompanyComponent implements OnInit, OnChanges {
   @Input() currentCustomer: Customer;
   @Input() error: HttpError;
 

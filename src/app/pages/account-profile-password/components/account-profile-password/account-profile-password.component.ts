@@ -20,11 +20,11 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
  * see also: {@link AccountProfilePasswordPageContainerComponent}
  */
 @Component({
-  selector: 'ish-account-profile-password-page',
-  templateUrl: './account-profile-password-page.component.html',
+  selector: 'ish-account-profile-password',
+  templateUrl: './account-profile-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfilePasswordPageComponent implements OnInit, OnChanges {
+export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   @Input() error: HttpError;
 
   @Output() updatePassword = new EventEmitter<{ password: string; currentPassword: string }>();

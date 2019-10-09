@@ -3,7 +3,7 @@ import { fillFormField } from '../../framework';
 export type ProfileEditCompanyTypes = Partial<Record<'companyName' | 'companyName2' | 'taxationID', string>>;
 
 export class ProfileEditCompanyPage {
-  readonly tag = 'ish-account-profile-company-page';
+  readonly tag = 'ish-account-profile-company';
 
   fillForm(data: ProfileEditCompanyTypes) {
     Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));

@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountProfileEmailPageContainerComponent } from './account-profile-email-page.container';
-import { AccountProfileEmailPageComponent } from './components/account-profile-email-page/account-profile-email-page.component';
+import { AccountProfileEmailComponent } from './components/account-profile-email/account-profile-email.component';
 
 const routes: Routes = [
   {
@@ -14,6 +14,6 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
-  declarations: [AccountProfileEmailPageComponent, AccountProfileEmailPageContainerComponent],
+  declarations: [AccountProfileEmailComponent, AccountProfileEmailPageContainerComponent],
 })
 export class AccountProfileEmailPageModule {}

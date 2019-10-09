@@ -11,7 +11,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfileCompanyPageContainerComponent } from './account-profile-company-page.container';
-import { AccountProfileCompanyPageComponent } from './components/account-profile-company-page/account-profile-company-page.component';
+import { AccountProfileCompanyComponent } from './components/account-profile-company/account-profile-company.component';
 
 describe('Account Profile Company Page Container', () => {
   let component: AccountProfileCompanyPageContainerComponent;
@@ -24,7 +24,7 @@ describe('Account Profile Company Page Container', () => {
       imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfileCompanyPageContainerComponent,
-        MockComponent(AccountProfileCompanyPageComponent),
+        MockComponent(AccountProfileCompanyComponent),
         MockComponent(LoadingComponent),
       ],
     }).compileComponents();
@@ -44,7 +44,7 @@ describe('Account Profile Company Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render account-profile-company-page component for a business customer', () => {
+  it('should render account-profile-company component for a business customer', () => {
     const businessCustomer = {
       customerNo: '4711',
       isBusinessCustomer: true,
@@ -57,10 +57,10 @@ describe('Account Profile Company Page Container', () => {
       })
     );
     fixture.detectChanges();
-    expect(element.querySelector('ish-account-profile-company-page')).toBeTruthy();
+    expect(element.querySelector('ish-account-profile-company')).toBeTruthy();
   });
 
-  it('should not render account-profile-company-page component for a private customer', () => {
+  it('should not render account-profile-company component for a private customer', () => {
     const privateCustomer = {
       customerNo: '4712',
       isBusinessCustomer: false,
@@ -73,6 +73,6 @@ describe('Account Profile Company Page Container', () => {
       })
     );
     fixture.detectChanges();
-    expect(element.querySelector('ish-account-profile-company-page')).toBeFalsy();
+    expect(element.querySelector('ish-account-profile-company')).toBeFalsy();
   });
 });
