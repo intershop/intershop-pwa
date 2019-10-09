@@ -10,7 +10,7 @@ import { LoginUserSuccess } from 'ish-core/store/user';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AccountProfilePageContainerComponent } from './account-profile-page.container';
-import { AccountProfilePageComponent } from './components/account-profile-page/account-profile-page.component';
+import { AccountProfileComponent } from './components/account-profile/account-profile.component';
 
 describe('Account Profile Page Container', () => {
   let component: AccountProfilePageContainerComponent;
@@ -28,7 +28,7 @@ describe('Account Profile Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountProfilePageContainerComponent, MockComponent(AccountProfilePageComponent)],
+      declarations: [AccountProfilePageContainerComponent, MockComponent(AccountProfileComponent)],
       imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
     })
       .compileComponents()
