@@ -8,16 +8,19 @@
     aria-haspopup="true"
     aria-expanded="false"
     [attr.title]="placeholder !== filterElement.name ? placeholder : null"
-    ><span>{{ placeholder }}</span></a
   >
+    <span>{{ placeholder }}</span>
+  </a>
   <div ngbDropdownMenu aria-labelledby="dropdownMenuLink">
     <a
       *ngFor="let facet of filterElement.facets; trackBy: trackByFn"
       class="dropdown-item"
       [ngClass]="{ selected: facet.selected }"
       (click)="apply(facet)"
-      >{{ facet.displayName }}<ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container
-      ><fa-icon class="icon-checked" *ngIf="facet.selected" [icon]="['fas', 'check']"></fa-icon
-    ></a>
+    >
+      {{ facet.displayName }}
+      <ng-container *ngIf="facet.count"> ({{ facet.count }})</ng-container>
+      <fa-icon *ngIf="facet.selected" [icon]="['fas', 'check']" class="icon-checked"></fa-icon>
+    </a>
   </div>
 </div>

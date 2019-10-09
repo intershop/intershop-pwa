@@ -1,12 +1,7 @@
 <!--- TODO: implement Show All-->
 <ul class="filter-list">
   <ng-container *ngFor="let facet of facets">
-    <li
-      class="filter-item filter-layer{{ facet.level }}"
-      [ngClass]="{
-        'filter-selected': facet.selected
-      }"
-    >
+    <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
       <!-- selected -->
       <ng-container *ngIf="facet.selected && facet.level === maxLevel; else notSelectedBox">
         <!-- taxonomic category-filter (last level not unselectable) -->
@@ -19,7 +14,7 @@
             <span class="filter-item-name"> {{ facet.displayName }} </span>
             <span class="count"> ({{ facet.count }}) </span>
             <ng-container *ngIf="filterElement.displayType === 'text_clear'">
-              <fa-icon class="float-right filter-clear" [icon]="['fas', 'times']"></fa-icon>
+              <fa-icon [icon]="['fas', 'times']" class="float-right filter-clear"></fa-icon>
             </ng-container>
           </a>
         </ng-template>
@@ -33,7 +28,6 @@
           [attr.data-testing-id]="'filter-link-' + (facet.displayName | sanitize)"
         >
           {{ facet.displayName }}
-
           <ng-container *ngIf="facet.level === maxLevel"> ({{ facet.count }}) </ng-container>
         </a>
       </ng-template>

@@ -1,4 +1,4 @@
-<div class="filter-panel" *ngIf="filterNavigation">
+<div *ngIf="filterNavigation" class="filter-panel">
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
     <ish-filter-collapsable
       [title]="element.name"
