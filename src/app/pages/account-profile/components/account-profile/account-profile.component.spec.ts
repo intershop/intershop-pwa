@@ -10,11 +10,11 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 
-import { AccountProfilePageComponent } from './account-profile-page.component';
+import { AccountProfileComponent } from './account-profile.component';
 
-describe('Account Profile Page Component', () => {
-  let component: AccountProfilePageComponent;
-  let fixture: ComponentFixture<AccountProfilePageComponent>;
+describe('Account Profile Component', () => {
+  let component: AccountProfileComponent;
+  let fixture: ComponentFixture<AccountProfileComponent>;
   let element: HTMLElement;
   let locales: Locale[];
 
@@ -29,7 +29,7 @@ describe('Account Profile Page Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        AccountProfilePageComponent,
+        AccountProfileComponent,
         MockComponent(FaIconComponent),
         MockComponent(ServerHtmlDirective),
         MockPipe(DatePipe),
@@ -40,7 +40,7 @@ describe('Account Profile Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfilePageComponent);
+    fixture = TestBed.createComponent(AccountProfileComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.user = user;
