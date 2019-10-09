@@ -10,17 +10,17 @@ import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
 import { InfoBoxComponent } from 'ish-shared/common/components/info-box/info-box.component';
 
-import { AccountOrderPageComponent } from './account-order-page.component';
+import { AccountOrderComponent } from './account-order.component';
 
-describe('Account Order Page Component', () => {
-  let component: AccountOrderPageComponent;
-  let fixture: ComponentFixture<AccountOrderPageComponent>;
+describe('Account Order Component', () => {
+  let component: AccountOrderComponent;
+  let fixture: ComponentFixture<AccountOrderComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccountOrderPageComponent,
+        AccountOrderComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(FaIconComponent),
@@ -33,7 +33,7 @@ describe('Account Order Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountOrderPageComponent);
+    fixture = TestBed.createComponent(AccountOrderComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.order = BasketMockData.getOrder();
