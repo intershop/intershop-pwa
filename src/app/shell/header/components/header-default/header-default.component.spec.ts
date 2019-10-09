@@ -17,12 +17,12 @@ import { MiniBasketContainerComponent } from 'ish-shell/header/containers/mini-b
 import { ProductCompareStatusContainerComponent } from 'ish-shell/header/containers/product-compare-status/product-compare-status.container';
 import { SearchBoxContainerComponent } from 'ish-shell/header/containers/search-box/search-box.container';
 
-import { HeaderComponent } from './header.component';
+import { HeaderDefaultComponent } from './header-default.component';
 
-describe('Header Component', () => {
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('Header Default Component', () => {
+  let fixture: ComponentFixture<HeaderDefaultComponent>;
   let element: HTMLElement;
-  let component: HeaderComponent;
+  let component: HeaderDefaultComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,7 +38,7 @@ describe('Header Component', () => {
         }),
       ],
       declarations: [
-        HeaderComponent,
+        HeaderDefaultComponent,
         MockComponent(FaIconComponent),
         MockComponent(HeaderNavigationContainerComponent),
         MockComponent(LanguageSwitchContainerComponent),
@@ -52,7 +52,7 @@ describe('Header Component', () => {
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(HeaderComponent);
+        fixture = TestBed.createComponent(HeaderDefaultComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
       });

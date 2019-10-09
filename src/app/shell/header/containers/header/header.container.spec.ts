@@ -7,8 +7,8 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HeaderCheckoutComponent } from 'ish-shell/header/components/header-checkout/header-checkout.component';
+import { HeaderDefaultComponent } from 'ish-shell/header/components/header-default/header-default.component';
 import { HeaderSimpleComponent } from 'ish-shell/header/components/header-simple/header-simple.component';
-import { HeaderComponent } from 'ish-shell/header/components/header/header.component';
 
 import { HeaderContainerComponent } from './header.container';
 
@@ -23,7 +23,7 @@ describe('Header Container', () => {
       declarations: [
         HeaderContainerComponent,
         MockComponent(HeaderCheckoutComponent),
-        MockComponent(HeaderComponent),
+        MockComponent(HeaderDefaultComponent),
         MockComponent(HeaderSimpleComponent),
       ],
     }).compileComponents();
@@ -43,6 +43,6 @@ describe('Header Container', () => {
 
   it('should render default header component if no headerType is set', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toContain('ish-header');
+    expect(findAllIshElements(element)).toContain('ish-header-default');
   });
 });
