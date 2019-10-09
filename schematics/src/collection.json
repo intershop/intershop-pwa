@@ -78,6 +78,12 @@
       "factory": "./azure-pipeline/factory#createAzurePipeline",
       "description": "Create Azure Pipeline.",
       "schema": "./azure-pipeline/schema.json"
+    },
+    "move-component": {
+      "factory": "./move-component/factory#move",
+      "description": "Move Component.",
+      "schema": "./move-component/schema.json",
+      "hidden": true
     }
   }
 }
