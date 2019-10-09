@@ -4,15 +4,15 @@
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <ish-category-navigation [category]="category" [categoryNavigationLevel]="0"></ish-category-navigation>
       </div>
+      <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
+        {{ 'search.mobile.filter.trigger' | translate }}
+        <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
+      </a>
     </div>
 
     <div class="col-md-9">
       <ish-breadcrumb [category]="category"></ish-breadcrumb>
       <h1>{{ category.name }}</h1>
-      <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
-        {{ 'search.mobile.filter.trigger' | translate }}
-        <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
-      </a>
       <ish-category-list [categories]="category.children()"></ish-category-list>
     </div>
   </div>

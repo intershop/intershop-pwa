@@ -8,14 +8,14 @@
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <ish-filter-navigation></ish-filter-navigation>
       </div>
-    </div>
-    <div class="col-md-9">
-      <ish-breadcrumb [category]="category"></ish-breadcrumb>
-      <h1>{{ category.name }}</h1>
       <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
         {{ 'search.mobile.filter.trigger' | translate }}
         <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
       </a>
+    </div>
+    <div class="col-md-9">
+      <ish-breadcrumb [category]="category"></ish-breadcrumb>
+      <h1>{{ category.name }}</h1>
       <ish-product-list-container
         [category]="category"
         [id]="{ type: 'category', value: category.uniqueId }"
