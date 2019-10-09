@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "MoveComponent",
+  "title": "Move Component Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "from": {
+      "type": "string",
+      "description": "The folder of the component source.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What source folder has the component? (relative to src/app/)"
+    },
+    "to": {
+      "type": "string",
+      "description": "The target folder of the component.",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "What target folder would you like to use for the component? (relative to src/app/)"
+    }
+  }
+}
