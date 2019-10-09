@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
@@ -45,15 +45,4 @@ describe('Filter Swatch Images Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });
-
-  it('should toggle all swatch images when filter group header is clicked', fakeAsync(() => {
-    fixture.detectChanges();
-    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-    filterGroupHead.click();
-    tick(500);
-    fixture.detectChanges();
-
-    const hiddenFilterFacet = element.getElementsByTagName('ul')[0];
-    expect(hiddenFilterFacet.className).not.toContain('show');
-  }));
 });

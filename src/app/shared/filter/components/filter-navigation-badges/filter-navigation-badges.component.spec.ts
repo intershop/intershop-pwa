@@ -56,20 +56,20 @@ describe('Filter Navigation Badges Component', () => {
       <div class="row">
         <div class="col-md-10 col-xs-12">
           <div class="filter-navigation-badges">
-            <a
-              >Color: Blue
+            <a>
+              Color: Blue
               <fa-icon class="form-control-feedback" ng-reflect-icon-prop="fas,times"></fa-icon
             ></a>
           </div>
           <div class="filter-navigation-badges">
-            <a
-              >Color: Black
+            <a>
+              Color: Black
               <fa-icon class="form-control-feedback" ng-reflect-icon-prop="fas,times"></fa-icon
             ></a>
           </div>
           <div class="filter-navigation-badges">
-            <a
-              >HDD: 456 <fa-icon class="form-control-feedback" ng-reflect-icon-prop="fas,times"></fa-icon
+            <a>
+              HDD: 456 <fa-icon class="form-control-feedback" ng-reflect-icon-prop="fas,times"></fa-icon
             ></a>
           </div>
         </div>

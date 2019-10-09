@@ -1,0 +1,11 @@
+a {
+  display: flex;
+  padding-right: 20px;
+
+  span:first-child {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

@@ -1,24 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Filter Checkbox Component should be created 1`] = `
-<div class="filter-group">
-  <h3 aria-controls="collapseFilter" aria-expanded="true">
-    Brands <fa-icon class="float-right" ng-reflect-icon-prop="fas,angle-down"></fa-icon>
-  </h3>
-  <ul class="filter-list">
-    <li class="filter-item filter-selected">
-      <span class="icon-selected"></span>Logitech
-      <a class="filter-clear"
-        ><fa-icon class="float-right" ng-reflect-icon-prop="fas,minus"></fa-icon
-      ></a>
-    </li>
-  </ul>
-  <ul class="filter-list" id="collapseFilter" ng-reflect-collapsed="false">
-    <li class="filter-item">
-      <a class="filter-item-name" data-testing-id="filter-link-AsusName"
-        ><span class="icon-notselected"></span>Asus
-      </a>
-    </li>
-  </ul>
-</div>
+<ul class="filter-list">
+  <li class="filter-item filter-layer">
+    <div>
+      <label class="filter-item-checkbox-label-native"
+        ><input type="checkbox" /><span class="filter-item-name"> Asus </span
+        ><span class="count"> (4) </span></label
+      >
+    </div>
+  </li>
+  <li class="filter-item filter-layer filter-selected">
+    <div>
+      <label class="filter-item-checkbox-label-native"
+        ><input type="checkbox" /><span class="filter-item-name"> Logitech </span
+        ><span class="count"> (5) </span></label
+      >
+    </div>
+  </li>
+</ul>
 `;
