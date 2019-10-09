@@ -19,11 +19,11 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
  * <ish-header></ish-header>
  */
 @Component({
-  selector: 'ish-header',
-  templateUrl: './header.component.html',
+  selector: 'ish-header-default',
+  templateUrl: './header-default.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnChanges {
+export class HeaderDefaultComponent implements OnChanges {
   @Input() isSticky = false;
   @Input() deviceType: DeviceType;
   @Input() reset: void;

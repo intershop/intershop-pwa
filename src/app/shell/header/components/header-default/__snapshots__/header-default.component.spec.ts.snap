@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Header Component rendering should render normal header adequately for desktop 1`] = `
+exports[`Header Default Component rendering should render normal header adequately for desktop 1`] = `
 <div class="header container">
   <ul class="user-links">
     <li>
@@ -55,7 +55,7 @@ exports[`Header Component rendering should render normal header adequately for d
 </div>
 `;
 
-exports[`Header Component rendering should render normal header adequately for mobile devices 1`] = `
+exports[`Header Default Component rendering should render normal header adequately for mobile devices 1`] = `
 <div class="header container">
   <ul class="user-links">
     <li>
@@ -110,7 +110,7 @@ exports[`Header Component rendering should render normal header adequately for m
 </div>
 `;
 
-exports[`Header Component rendering should render normal header adequately for tablet devices 1`] = `
+exports[`Header Default Component rendering should render normal header adequately for tablet devices 1`] = `
 <div class="header container">
   <ul class="user-links">
     <li>
@@ -165,7 +165,7 @@ exports[`Header Component rendering should render normal header adequately for t
 </div>
 `;
 
-exports[`Header Component rendering should render sticky header adequately for desktop 1`] = `
+exports[`Header Default Component rendering should render sticky header adequately for desktop 1`] = `
 <div class="header container">
   <ul class="user-links">
     <li>
@@ -220,7 +220,7 @@ exports[`Header Component rendering should render sticky header adequately for d
 </div>
 `;
 
-exports[`Header Component rendering should render sticky header adequately for mobile devices 1`] = `
+exports[`Header Default Component rendering should render sticky header adequately for mobile devices 1`] = `
 <div class="header container">
   <ul class="user-links">
     <li>
@@ -275,7 +275,7 @@ exports[`Header Component rendering should render sticky header adequately for m
 </div>
 `;
 
-exports[`Header Component rendering should render sticky header adequately for tablet devices 1`] = `
+exports[`Header Default Component rendering should render sticky header adequately for tablet devices 1`] = `
 <div class="header container">
   <ul class="user-links">
     <li>

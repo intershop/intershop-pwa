@@ -14,9 +14,9 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 
 import { FooterComponent } from './footer/components/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
+import { HeaderDefaultComponent } from './header/components/header-default/header-default.component';
 import { HeaderNavigationComponent } from './header/components/header-navigation/header-navigation.component';
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
-import { HeaderComponent } from './header/components/header/header.component';
 import { LoginStatusComponent } from './header/components/login-status/login-status.component';
 import { LogoutComponent } from './header/components/logout/logout.component';
 import { MiniBasketComponent } from './header/components/mini-basket/mini-basket.component';
@@ -56,7 +56,7 @@ const exportedComponents = [
     ...exportedComponents,
     ClickOutsideDirective,
     HeaderCheckoutComponent,
-    HeaderComponent,
+    HeaderDefaultComponent,
     HeaderNavigationComponent,
     HeaderNavigationContainerComponent,
     HeaderSimpleComponent,
