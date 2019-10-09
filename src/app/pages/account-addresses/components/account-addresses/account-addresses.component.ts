@@ -24,11 +24,11 @@ import { User } from 'ish-core/models/user/user.model';
  * see also: {@link AccountAddressPageContainerComponent}
  */
 @Component({
-  selector: 'ish-account-addresses-page',
-  templateUrl: './account-addresses-page.component.html',
+  selector: 'ish-account-addresses',
+  templateUrl: './account-addresses.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountAddressesPageComponent implements OnInit, OnChanges, OnDestroy {
+export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() addresses: Address[];
   @Input() user: User;
   @Input() error: HttpError;
