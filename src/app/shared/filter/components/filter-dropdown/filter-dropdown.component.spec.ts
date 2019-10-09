@@ -58,9 +58,9 @@ describe('Filter Dropdown Component', () => {
           ><span>Color</span></a
         >
         <div aria-labelledby="dropdownMenuLink" ngbdropdownmenu="">
-          <a class="dropdown-item">Red</a
-          ><a class="dropdown-item selected"
-            >Blue<fa-icon class="icon-checked" ng-reflect-icon-prop="fas,check"></fa-icon
+          <a class="dropdown-item"> Red </a
+          ><a class="dropdown-item selected">
+            Blue <fa-icon class="icon-checked" ng-reflect-icon-prop="fas,check"></fa-icon
           ></a>
         </div>
       </div>
