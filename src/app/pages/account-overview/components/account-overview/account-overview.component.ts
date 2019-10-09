@@ -9,11 +9,11 @@ import { User } from 'ish-core/models/user/user.model';
  * <ish-account-overview-page [user]="user$ | async"></ish-account-overview-page>
  */
 @Component({
-  selector: 'ish-account-overview-page',
-  templateUrl: './account-overview-page.component.html',
+  selector: 'ish-account-overview',
+  templateUrl: './account-overview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOverviewPageComponent {
+export class AccountOverviewComponent {
   @Input() user: User;
   @Input() customer: Customer;
 }

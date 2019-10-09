@@ -10,11 +10,11 @@ import { OrderWidgetComponent } from 'ish-shared/order/components/order-widget/o
 
 import { LazyQuoteWidgetComponent } from '../../../../extensions/quoting/exports/account/components/lazy-quote-widget/lazy-quote-widget.component';
 
-import { AccountOverviewPageComponent } from './account-overview-page.component';
+import { AccountOverviewComponent } from './account-overview.component';
 
-describe('Account Overview Page Component', () => {
-  let fixture: ComponentFixture<AccountOverviewPageComponent>;
-  let component: AccountOverviewPageComponent;
+describe('Account Overview Component', () => {
+  let fixture: ComponentFixture<AccountOverviewComponent>;
+  let component: AccountOverviewComponent;
   let element: HTMLElement;
   let translate: TranslateService;
   const user = { firstName: 'Patricia' } as User;
@@ -23,7 +23,7 @@ describe('Account Overview Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccountOverviewPageComponent,
+        AccountOverviewComponent,
         MockComponent(FaIconComponent),
         MockComponent(LazyQuoteWidgetComponent),
         MockComponent(OrderWidgetComponent),
@@ -34,7 +34,7 @@ describe('Account Overview Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountOverviewPageComponent);
+    fixture = TestBed.createComponent(AccountOverviewComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.get(TranslateService);
