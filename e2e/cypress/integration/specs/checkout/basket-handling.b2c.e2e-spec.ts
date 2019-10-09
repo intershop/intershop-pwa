@@ -74,6 +74,7 @@ describe('Basket Handling', () => {
         .submit()
         .its('status')
         .should('equal', 200);
+      cy.wait(1000);
     });
     at(MyAccountPage, page => page.header.miniCart.total.should('contain', _.product.price * 2));
   });
