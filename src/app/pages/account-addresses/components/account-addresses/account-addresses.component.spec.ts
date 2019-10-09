@@ -16,18 +16,18 @@ import { ErrorMessageComponent } from 'ish-shared/common/components/error-messag
 import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
 import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
-import { AccountAddressesPageComponent } from './account-addresses-page.component';
+import { AccountAddressesComponent } from './account-addresses.component';
 
-describe('Account Addresses Page Component', () => {
-  let component: AccountAddressesPageComponent;
-  let fixture: ComponentFixture<AccountAddressesPageComponent>;
+describe('Account Addresses Component', () => {
+  let component: AccountAddressesComponent;
+  let fixture: ComponentFixture<AccountAddressesComponent>;
   let element: HTMLElement;
   let addressChange: SimpleChanges;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccountAddressesPageComponent,
+        AccountAddressesComponent,
         MockComponent(AddressComponent),
         MockComponent(CustomerAddressFormComponent),
         MockComponent(ErrorMessageComponent),
@@ -40,7 +40,7 @@ describe('Account Addresses Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountAddressesPageComponent);
+    fixture = TestBed.createComponent(AccountAddressesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 

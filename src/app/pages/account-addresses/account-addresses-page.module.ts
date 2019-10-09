@@ -5,11 +5,11 @@ import { AddressFormsSharedModule } from 'ish-shared/address-forms/address-forms
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountAddressesPageContainerComponent } from './account-addresses-page.container';
-import { AccountAddressesPageComponent } from './components/account-addresses-page/account-addresses-page.component';
+import { AccountAddressesComponent } from './components/account-addresses/account-addresses.component';
 
 const routes: Routes = [{ path: '', component: AccountAddressesPageContainerComponent }];
 @NgModule({
   imports: [AddressFormsSharedModule, RouterModule.forChild(routes), SharedModule],
-  declarations: [AccountAddressesPageComponent, AccountAddressesPageContainerComponent],
+  declarations: [AccountAddressesComponent, AccountAddressesPageContainerComponent],
 })
 export class AccountAddressesPageModule {}
