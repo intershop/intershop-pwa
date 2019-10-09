@@ -1,52 +1,45 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
+import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 
-/**
- * The Filter Dropdown Component displays a filter group. The facets of the filter group are presented as options of a select box.
- *
- * @example
- * <ish-filter-dropdown
- *               [filterElement]="element"
- *               (applyFilter)="applyFilter($event)"
- * </ish-filter-dropdown>
- */
 @Component({
   selector: 'ish-filter-dropdown',
   templateUrl: './filter-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./filter-dropdown.component.scss'],
 })
 export class FilterDropdownComponent implements OnInit {
-  /**
-   * The filter group.
-   */
   @Input() filterElement: Filter;
+  @Input() placeholderType: 'groupName' | 'selectedFacets' = 'groupName';
   @Output() applyFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
 
-  filterForm: FormGroup;
-  isCollapsed = false;
+  placeholder = '';
+  selectedFacets: Facet[] = [];
 
-  private destroy$ = new Subject();
-
-  ngOnInit() {
-    this.filterForm = new FormGroup({
-      filterDropdown: new FormControl(''),
-    });
-
-    this.filterForm
-      .get('filterDropdown')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(filterDropdown => this.filter(filterDropdown));
+  apply(facet: Facet) {
+    this.applyFilter.emit({ searchParameter: facet.searchParameter });
   }
 
-  /**
-   * Applies a facet of the filter group and shows the new filtered result.
-   */
-  filter(facetName: string) {
-    const facet = this.filterElement.facets.find(f => f.name === facetName);
-    this.applyFilter.emit({ searchParameter: facet.searchParameter });
+  trackByFn(_, item: Facet) {
+    return item.name;
+  }
+
+  ngOnInit() {
+    this.initPlaceHolder();
+  }
+
+  initPlaceHolder() {
+    this.placeholder = this.filterElement.name;
+
+    this.selectedFacets = this.filterElement.facets.filter(x => x.selected);
+
+    if (this.placeholderType === 'selectedFacets') {
+      const placeholder = this.selectedFacets.map(x => x.displayName).join(', ');
+
+      if (placeholder) {
+        this.placeholder = placeholder;
+      }
+    }
   }
 }

@@ -6,4 +6,5 @@ export class FacetData {
   count: number;
   selected: boolean;
   link: Link;
+  level: number;
 }

@@ -1,21 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Filter Swatch Images Component should be created 1`] = `
-<div class="filter-group">
-  <h3 aria-controls="collapseFilter" aria-expanded="true">
-    Color <fa-icon class="float-right" ng-reflect-icon-prop="fas,angle-down"></fa-icon>
-  </h3>
-  <ul class="filter-list clearfix" id="collapseFilter" ng-reflect-collapsed="false">
-    <li class="filter-item filter-colour">
-      <a class="filter-swatch" title="Black" data-testing-id="filter-link-Black"
-        ><span style="background-color: black;"></span
-      ></a>
-    </li>
-    <li class="filter-item filter-colour filter-selected">
-      <a class="filter-swatch" title="Red" data-testing-id="filter-link-Red"
-        ><span style="background-color: red;"></span
-      ></a>
-    </li>
-  </ul>
-</div>
+<ul class="filter-list clearfix">
+  <li class="filter-item filter-color">
+    <a class="filter-swatch" title="Black" data-testing-id="filter-link-Black"
+      ><span style="background-color: black;"></span
+    ></a>
+  </li>
+  <li class="filter-item filter-color filter-selected">
+    <a class="filter-swatch" title="Red" data-testing-id="filter-link-Red"
+      ><span style="background-color: red;"></span
+    ></a>
+  </li>
+</ul>
 `;

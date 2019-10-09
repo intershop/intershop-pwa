@@ -80,6 +80,7 @@ export class ProductMasterVariationsService {
       count: this.potentialMatches(newFilters, variations).length,
       displayName: attribute.value,
       selected,
+      level: 0,
     };
   }
 

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
@@ -39,18 +39,4 @@ describe('Filter Checkbox Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });
-
-  it('should toggle unselected filter facets when filter group header is clicked', fakeAsync(() => {
-    fixture.detectChanges();
-    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-    filterGroupHead.click();
-    tick(500);
-    fixture.detectChanges();
-
-    const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
-    expect(selectedFilterFacet.textContent).toContain('Logitech');
-
-    const hiddenFilterFacet = element.querySelector('a[data-testing-id=filter-link-AsusName]');
-    expect(hiddenFilterFacet.parentNode.parentElement.className).not.toContain('show');
-  }));
 });
