@@ -11,11 +11,11 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  * see also: {@link AccountProfileEmailPageContainerComponent}
  */
 @Component({
-  selector: 'ish-account-profile-email-page',
-  templateUrl: './account-profile-email-page.component.html',
+  selector: 'ish-account-profile-email',
+  templateUrl: './account-profile-email.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileEmailPageComponent implements OnInit {
+export class AccountProfileEmailComponent implements OnInit {
   @Input() error: HttpError;
   @Input() currentUser: User;
 

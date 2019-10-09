@@ -10,18 +10,18 @@ import { InputComponent } from 'ish-shared/forms/components/input/input.componen
 import { SelectLanguageComponent } from 'ish-shared/forms/components/select-language/select-language.component';
 import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
 
-import { AccountProfileUserPageComponent } from './account-profile-user-page.component';
+import { AccountProfileUserComponent } from './account-profile-user.component';
 
-describe('Account Profile User Page Component', () => {
-  let component: AccountProfileUserPageComponent;
-  let fixture: ComponentFixture<AccountProfileUserPageComponent>;
+describe('Account Profile User Component', () => {
+  let component: AccountProfileUserComponent;
+  let fixture: ComponentFixture<AccountProfileUserComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        AccountProfileUserPageComponent,
+        AccountProfileUserComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
         MockComponent(SelectLanguageComponent),
@@ -31,7 +31,7 @@ describe('Account Profile User Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfileUserPageComponent);
+    fixture = TestBed.createComponent(AccountProfileUserComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

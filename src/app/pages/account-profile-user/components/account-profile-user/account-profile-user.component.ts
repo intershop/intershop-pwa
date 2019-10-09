@@ -21,11 +21,11 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
  * see also: {@link AccountProfileUserPageContainerComponent}
  */
 @Component({
-  selector: 'ish-account-profile-user-page',
-  templateUrl: './account-profile-user-page.component.html',
+  selector: 'ish-account-profile-user',
+  templateUrl: './account-profile-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfileUserPageComponent implements OnInit, OnChanges {
+export class AccountProfileUserComponent implements OnInit, OnChanges {
   @Input() currentUser: User;
   @Input() titles: string[];
   @Input() languages: Locale[];

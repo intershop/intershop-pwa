@@ -4,24 +4,25 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
-import { AccountProfilePasswordPageComponent } from './account-profile-password-page.component';
+import { AccountProfileEmailComponent } from './account-profile-email.component';
 
-describe('Account Profile Password Page Component', () => {
-  let component: AccountProfilePasswordPageComponent;
-  let fixture: ComponentFixture<AccountProfilePasswordPageComponent>;
+describe('Account Profile Email Component', () => {
+  let component: AccountProfileEmailComponent;
+  let fixture: ComponentFixture<AccountProfileEmailComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountProfilePasswordPageComponent, MockComponent(InputComponent)],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [AccountProfileEmailComponent, MockComponent(ErrorMessageComponent), MockComponent(InputComponent)],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfilePasswordPageComponent);
+    fixture = TestBed.createComponent(AccountProfileEmailComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
@@ -32,25 +33,24 @@ describe('Account Profile Password Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display 3 input fields for oldPassword, password and passwordConfirmation', () => {
+  it('should display 2 input fields for email and emailConfirmation', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('ish-input')).toHaveLength(3);
+    expect(element.querySelectorAll('ish-input')).toHaveLength(2);
   });
 
-  it('should emit updatePassword event if form is valid', () => {
-    const eventEmitter$ = spy(component.updatePassword);
+  it('should emit updateEmail event if form is valid', () => {
+    const eventEmitter$ = spy(component.updateEmail);
     fixture.detectChanges();
 
-    component.form.get('currentPassword').setValue('!Password01!');
-    component.form.get('password').setValue('!Password01!');
-    component.form.get('passwordConfirmation').setValue('!Password01!');
+    component.form.get('email').setValue('patricia@test.intershop.de');
+    component.form.get('emailConfirmation').setValue('patricia@test.intershop.de');
     component.submit();
 
     verify(eventEmitter$.emit(anything())).once();
   });
 
-  it('should not emit updatePassword event if form is invalid', () => {
-    const eventEmitter$ = spy(component.updatePassword);
+  it('should not emit updateEmail event if form is invalid', () => {
+    const eventEmitter$ = spy(component.updateEmail);
     fixture.detectChanges();
 
     component.submit();

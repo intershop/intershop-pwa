@@ -4,30 +4,24 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
-import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
-import { AccountProfileCompanyPageComponent } from './account-profile-company-page.component';
+import { AccountProfilePasswordComponent } from './account-profile-password.component';
 
-describe('Account Profile Company Page Component', () => {
-  let component: AccountProfileCompanyPageComponent;
-  let fixture: ComponentFixture<AccountProfileCompanyPageComponent>;
+describe('Account Profile Password Component', () => {
+  let component: AccountProfilePasswordComponent;
+  let fixture: ComponentFixture<AccountProfilePasswordComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      declarations: [AccountProfilePasswordComponent, MockComponent(InputComponent)],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountProfileCompanyPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InputComponent),
-      ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountProfileCompanyPageComponent);
+    fixture = TestBed.createComponent(AccountProfilePasswordComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
@@ -38,24 +32,25 @@ describe('Account Profile Company Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display 3 input fields for companyName, companyName2 and taxationID', () => {
+  it('should display 3 input fields for oldPassword, password and passwordConfirmation', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('ish-input')).toHaveLength(3);
   });
 
-  it('should emit updateCompanyProfile event if form is valid', () => {
-    const eventEmitter$ = spy(component.updateCompanyProfile);
-
-    component.currentCustomer = { customerNo: '4711', type: 'SMBCustomer', companyName: 'OilCorp' } as Customer;
+  it('should emit updatePassword event if form is valid', () => {
+    const eventEmitter$ = spy(component.updatePassword);
     fixture.detectChanges();
 
+    component.form.get('currentPassword').setValue('!Password01!');
+    component.form.get('password').setValue('!Password01!');
+    component.form.get('passwordConfirmation').setValue('!Password01!');
     component.submit();
 
     verify(eventEmitter$.emit(anything())).once();
   });
 
-  it('should not emit updateCompanyProfile event if form is invalid', () => {
-    const eventEmitter$ = spy(component.updateCompanyProfile);
+  it('should not emit updatePassword event if form is invalid', () => {
+    const eventEmitter$ = spy(component.updatePassword);
     fixture.detectChanges();
 
     component.submit();
