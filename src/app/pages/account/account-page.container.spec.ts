@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { EMPTY } from 'rxjs';
+import { instance, mock } from 'ts-mockito';
 
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { AccountPageContainerComponent } from './account-page.container';
-import { AccountPageComponent } from './components/account-page/account-page.component';
+import { AccountNavigationComponent } from './components/account-navigation/account-navigation.component';
 
 describe('Account Page Container', () => {
   let fixture: ComponentFixture<AccountPageContainerComponent>;
@@ -17,9 +16,13 @@ describe('Account Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountPageContainerComponent, MockComponent(AccountPageComponent)],
-      providers: [{ provide: ActivatedRoute, useValue: { firstChild: { data: EMPTY } } }],
-      imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting()],
+      declarations: [
+        AccountPageContainerComponent,
+        MockComponent(AccountNavigationComponent),
+        MockComponent(BreadcrumbComponent),
+      ],
+      imports: [RouterTestingModule],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   }));
 
