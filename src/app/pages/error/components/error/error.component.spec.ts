@@ -6,23 +6,23 @@ import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { SearchBoxContainerComponent } from 'ish-shell/header/containers/search-box/search-box.container';
 
-import { ErrorPageComponent } from './error-page.component';
+import { ErrorComponent } from './error.component';
 
-describe('Error Page Component', () => {
-  let fixture: ComponentFixture<ErrorPageComponent>;
+describe('Error Component', () => {
+  let fixture: ComponentFixture<ErrorComponent>;
   let element: HTMLElement;
-  let component: ErrorPageComponent;
+  let component: ErrorComponent;
   let translate: TranslateService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ErrorPageComponent, MockComponent(SearchBoxContainerComponent), SafeHtmlPipe],
+      declarations: [ErrorComponent, MockComponent(SearchBoxContainerComponent), SafeHtmlPipe],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorPageComponent);
+    fixture = TestBed.createComponent(ErrorComponent);
     element = fixture.nativeElement;
     component = fixture.componentInstance;
     translate = TestBed.get(TranslateService);

@@ -3,23 +3,23 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 
-import { ServerErrorPageComponent } from './server-error-page.component';
+import { ServerErrorComponent } from './server-error.component';
 
-describe('Server Error Page Component', () => {
-  let fixture: ComponentFixture<ServerErrorPageComponent>;
+describe('Server Error Component', () => {
+  let fixture: ComponentFixture<ServerErrorComponent>;
   let element: HTMLElement;
-  let component: ServerErrorPageComponent;
+  let component: ServerErrorComponent;
   let translate: TranslateService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [SafeHtmlPipe, ServerErrorPageComponent],
+      declarations: [SafeHtmlPipe, ServerErrorComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ServerErrorPageComponent);
+    fixture = TestBed.createComponent(ServerErrorComponent);
     element = fixture.nativeElement;
     component = fixture.componentInstance;
     component.error = { current: { status: 0 } };
