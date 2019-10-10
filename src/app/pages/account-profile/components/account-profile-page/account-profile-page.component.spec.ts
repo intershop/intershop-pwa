@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -27,7 +28,12 @@ describe('Account Profile Page Component', () => {
     ] as Locale[];
 
     TestBed.configureTestingModule({
-      declarations: [AccountProfilePageComponent, MockComponent(FaIconComponent), MockPipe(DatePipe)],
+      declarations: [
+        AccountProfilePageComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(ServerHtmlDirective),
+        MockPipe(DatePipe),
+      ],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: AVAILABLE_LOCALES, useValue: locales }],
     }).compileComponents();

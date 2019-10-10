@@ -6,5 +6,8 @@
 <h4 class="form-text">{{ 'account.order.questions.title' | translate }}</h4>
 <p
   class="form-text"
-  [innerHTML]="'account.order.questions.note' | translate: { '0': '/page/help', '1': '/page/contactUs' }"
+  [ishServerHtml]="
+    'account.order.questions.note'
+      | translate: { '0': 'route://page/systempage.helpdesk.index.pagelet2-Page', '1': 'route://contact' }
+  "
 ></p>
