@@ -45,5 +45,9 @@
 
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
-  <span [innerHTML]="'account.overview.note.text' | translate: { '0': '/page/privacyPolicy' }"></span>
+  <span
+    [ishServerHtml]="
+      'account.overview.note.text' | translate: { '0': 'route://page/systempage.privacyPolicy.pagelet2-Page' }
+    "
+  ></span>
 </p>
