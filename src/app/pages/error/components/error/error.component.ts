@@ -8,8 +8,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
  * <ish-error-page></ish-error-page>
  */
 @Component({
-  selector: 'ish-error-page',
-  templateUrl: './error-page.component.html',
+  selector: 'ish-error',
+  templateUrl: './error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ErrorPageComponent {}
+export class ErrorComponent {}

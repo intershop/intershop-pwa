@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { ErrorPageComponent } from './components/error-page/error-page.component';
-import { ServerErrorPageComponent } from './components/server-error-page/server-error-page.component';
+import { ErrorComponent } from './components/error/error.component';
+import { ServerErrorComponent } from './components/server-error/server-error.component';
 import { ErrorPageContainerComponent } from './error-page.container';
 
 const errorPageRoutes: Routes = [
@@ -13,6 +13,6 @@ const errorPageRoutes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(errorPageRoutes), SharedModule],
-  declarations: [ErrorPageComponent, ErrorPageContainerComponent, ServerErrorPageComponent],
+  declarations: [ErrorComponent, ErrorPageContainerComponent, ServerErrorComponent],
 })
 export class ErrorPageModule {}

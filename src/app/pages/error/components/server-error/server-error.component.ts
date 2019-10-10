@@ -9,11 +9,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * ></ish-server-error-page>
  */
 @Component({
-  selector: 'ish-server-error-page',
-  templateUrl: './server-error-page.component.html',
+  selector: 'ish-server-error',
+  templateUrl: './server-error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServerErrorPageComponent {
+export class ServerErrorComponent {
   // TODO: do not handle complete ErrorState, model type might be required
   /**
    * The occured error.

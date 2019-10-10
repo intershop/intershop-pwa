@@ -4,8 +4,8 @@ import { MockComponent } from 'ng-mocks';
 
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ErrorPageComponent } from './components/error-page/error-page.component';
-import { ServerErrorPageComponent } from './components/server-error-page/server-error-page.component';
+import { ErrorComponent } from './components/error/error.component';
+import { ServerErrorComponent } from './components/server-error/server-error.component';
 import { ErrorPageContainerComponent } from './error-page.container';
 
 describe('Error Page Container', () => {
@@ -15,11 +15,7 @@ describe('Error Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ErrorPageContainerComponent,
-        MockComponent(ErrorPageComponent),
-        MockComponent(ServerErrorPageComponent),
-      ],
+      declarations: [ErrorPageContainerComponent, MockComponent(ErrorComponent), MockComponent(ServerErrorComponent)],
       imports: [RouterTestingModule, ngrxTesting()],
     }).compileComponents();
   }));
