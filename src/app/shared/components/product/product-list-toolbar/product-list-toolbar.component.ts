@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { isEqual } from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -50,8 +51,10 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnChanges(c: SimpleChanges) {
+    if (c.sortKeys && !isEqual(c.sortKeys.currentValue, c.sortKeys.previousValue)) {
+      this.updateSortKeys(c.sortKeys);
+    }
     this.updateSortBy(c.sortBy);
-    this.updateSortKeys(c.sortKeys);
   }
 
   private updateSortBy(sortBy: SimpleChange) {

@@ -75,7 +75,8 @@ describe('Filter Reducer', () => {
       const filter = { filter: [{ name: 'a' }] } as FilterNavigation;
       const action = applyFilterSuccess({
         availableFilter: filter,
-        searchParameter: 'b',
+
+        searchParameter: { param: ['b'] },
       });
       const state = filterReducer(initialState, action);
 

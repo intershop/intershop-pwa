@@ -75,6 +75,8 @@ describe('Product Listing Effects', () => {
     it('should fire all necessary actions for search page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
 
+      tick(0);
+
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
           id: {"type":"search","value":"term"}
@@ -94,6 +96,8 @@ describe('Product Listing Effects', () => {
 
     it('should fire all necessary actions for family page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
+
+      tick(0);
 
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
@@ -115,7 +119,7 @@ describe('Product Listing Effects', () => {
 
   describe('action triggering with filters', () => {
     beforeEach(fakeAsync(() => {
-      router.navigateByUrl('/some?filters=blablubb');
+      router.navigateByUrl('/some?filters=param%3Dblablubb');
       tick(500);
       store$.reset();
     }));
@@ -123,38 +127,48 @@ describe('Product Listing Effects', () => {
     it('should fire all necessary actions for search page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
 
+      tick(0);
+
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
           id: {"type":"search","value":"term"}
         [Product Listing Internal] Load More Products For Params:
-          id: {"type":"search","value":"term"}
-          filters: "blablubb"
+          id: {"type":"search","value":"term","filters":{"param":[1],"sear...
+          filters: {"param":[1],"searchTerm":[1]}
           sorting: undefined
           page: undefined
         [Filter Internal] Load Products For Filter:
-          id: {"type":"search","value":"term","filters":"blablubb"}
-          searchParameter: "YmxhYmx1YmI="
+          id: {"type":"search","value":"term","filters":{"param":[1],"sear...
+          searchParameter: {"param":[1],"searchTerm":[1]}
+          page: undefined
+          sorting: undefined
         [Filter] Apply Filter:
-          searchParameter: "YmxhYmx1YmI="
+          searchParameter: {"param":[1],"searchTerm":[1]}
       `);
+      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.param', ['blablubb']);
+      expect(store$.actionsArray()[1]).toHaveProperty('payload.filters.searchTerm', ['term']);
     }));
 
     it('should fire all necessary actions for family page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
 
+      tick(0);
+
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
         [Product Listing] Load More Products:
           id: {"type":"category","value":"cat"}
         [Product Listing Internal] Load More Products For Params:
-          id: {"type":"category","value":"cat"}
-          filters: "blablubb"
+          id: {"type":"category","value":"cat","filters":{"param":[1]}}
+          filters: {"param":[1]}
           sorting: undefined
           page: undefined
         [Filter Internal] Load Products For Filter:
-          id: {"type":"category","value":"cat","filters":"blablubb"}
-          searchParameter: "YmxhYmx1YmI="
+          id: {"type":"category","value":"cat","filters":{"param":[1]}}
+          searchParameter: {"param":[1]}
+          page: undefined
+          sorting: undefined
         [Filter] Apply Filter:
-          searchParameter: "YmxhYmx1YmI="
+          searchParameter: {"param":[1]}
       `);
     }));
   });

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation-horizontal',
@@ -10,7 +11,7 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 })
 export class FilterNavigationHorizontalComponent {
   @Input() filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ searchParameter: string }>();
+  @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   trackByFn(_, item: Filter) {
     return item.id;

@@ -3,6 +3,7 @@ import { createAction } from '@ngrx/store';
 import { ProductListingID, ProductListingType } from 'ish-core/models/product-listing/product-listing.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { payload } from 'ish-core/utils/ngrx-creators';
+import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 export const setProductListingPages = createAction(
   '[Product Listing Internal] Set Product Listing Pages',
@@ -21,12 +22,12 @@ export const loadMoreProducts = createAction(
 
 export const loadMoreProductsForParams = createAction(
   '[Product Listing Internal] Load More Products For Params',
-  payload<{ id: ProductListingID; page: number; sorting: string; filters: string }>()
+  payload<{ id: ProductListingID; page: number; sorting: string; filters: URLFormParams }>()
 );
 
 export const setViewType = createAction('[Product Listing Internal] Set View Type', payload<{ viewType: ViewType }>());
 
 export const loadPagesForMaster = createAction(
   '[Product Listing Internal] Load Pages For Master',
-  payload<{ id: ProductListingID; filters: string; sorting: string }>()
+  payload<{ id: ProductListingID; filters: URLFormParams; sorting: string }>()
 );

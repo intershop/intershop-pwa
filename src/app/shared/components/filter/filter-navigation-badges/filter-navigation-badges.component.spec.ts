@@ -25,22 +25,23 @@ describe('Filter Navigation Badges Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
+    const facet = (n, value, selected) => ({
+      name: value,
+      searchParameter: { [n]: value },
+      displayName: value,
+      count: 0,
+      selected,
+      level: 0,
+    });
     component.filterNavigation = {
       filter: [
         {
           name: 'Color',
-          facets: [
-            { name: 'Red', searchParameter: 'red' },
-            { name: 'Blue', searchParameter: 'blue', selected: true },
-            { name: 'Black', searchParameter: 'black', selected: true },
-          ],
+          facets: [facet('Color', 'red', false), facet('Color', 'blue', true), facet('Color', 'black', true)],
         },
         {
           name: 'HDD',
-          facets: [
-            { name: '123', searchParameter: '123' },
-            { name: '456', searchParameter: '456', selected: true },
-          ],
+          facets: [facet('HDD', '123', false), facet('HDD', '456', true)],
         },
       ] as Filter[],
     } as FilterNavigation;
@@ -60,12 +61,12 @@ describe('Filter Navigation Badges Component', () => {
         <div class="col-md-10 col-xs-12">
           <div class="filter-navigation-badges">
             <a>
-              Color: Blue <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
+              Color: blue <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
             ></a>
           </div>
           <div class="filter-navigation-badges">
             <a>
-              Color: Black <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
+              Color: black <fa-icon class="form-control-feedback" ng-reflect-icon="fas,times"></fa-icon
             ></a>
           </div>
           <div class="filter-navigation-badges">

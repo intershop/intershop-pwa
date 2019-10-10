@@ -14,7 +14,6 @@ import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './product-listing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-// tslint:disable-next-line:ccp-no-markup-in-containers
 export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() category?: Category;
   @Input() id: ProductListingID;

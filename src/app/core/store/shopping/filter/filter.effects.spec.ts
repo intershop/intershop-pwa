@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -48,7 +48,7 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.getFilteredProducts(anything())).thenCall(a => {
+    when(filterServiceMock.getFilteredProducts(anything(), anything(), anything())).thenCall(a => {
       if (a.name === 'invalid') {
         return throwError({ message: 'invalid' });
       } else {
@@ -59,8 +59,8 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.applyFilter(anyString())).thenCall(a => {
-      if (a === 'invalid') {
+    when(filterServiceMock.applyFilter(anything())).thenCall(a => {
+      if (a.param[0] === 'invalid') {
         return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
@@ -110,20 +110,20 @@ describe('Filter Effects', () => {
 
   describe('applyFilter$', () => {
     it('should call the filterService for ApplyFilter action', done => {
-      const action = applyFilter({ searchParameter: 'b' });
+      const action = applyFilter({ searchParameter: { param: ['b'] } });
       actions$ = of(action);
 
       effects.applyFilter$.subscribe(() => {
-        verify(filterServiceMock.applyFilter('b')).once();
+        verify(filterServiceMock.applyFilter(deepEqual({ param: ['b'] }))).once();
         done();
       });
     });
 
     it('should map to action of type ApplyFilterSuccess', () => {
-      const action = applyFilter({ searchParameter: 'b' });
+      const action = applyFilter({ searchParameter: { param: ['b'] } });
       const completion = applyFilterSuccess({
         availableFilter: filterNav,
-        searchParameter: 'b',
+        searchParameter: { param: ['b'] },
       });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -132,7 +132,7 @@ describe('Filter Effects', () => {
     });
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
-      const action = applyFilter({ searchParameter: 'invalid' });
+      const action = applyFilter({ searchParameter: { param: ['invalid'] } });
       const completion = applyFilterFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -147,15 +147,16 @@ describe('Filter Effects', () => {
         id: {
           type: 'search',
           value: 'test',
-          filters: 'b*',
+          filters: { searchTerm: ['b*'] },
         },
-        searchParameter: 'b',
+
+        searchParameter: { param: ['b'] },
       });
       const completion = setProductListingPages({
         id: {
           type: 'search',
           value: 'test',
-          filters: 'b*',
+          filters: { searchTerm: ['b*'] },
         },
         1: ['123', '234'],
         itemCount: 2,

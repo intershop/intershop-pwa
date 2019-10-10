@@ -8,9 +8,7 @@ describe('Search Parameter Mapper', () => {
       searchParameter.queryTerm = 'camera';
       searchParameter.sortings = ['name-asc', 'sku-desc'];
 
-      expect(SearchParameterMapper.toData(searchParameter)).toEqual(
-        'JkBRdWVyeVRlcm09Y2FtZXJhJkBTb3J0Lm5hbWU9MCZAU29ydC5za3U9MQ=='
-      );
+      expect(SearchParameterMapper.toData(searchParameter)).toEqual('&searchTerm=camera&@Sort.name=0&@Sort.sku=1');
     });
   });
 });

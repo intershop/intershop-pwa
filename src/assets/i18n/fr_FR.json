@@ -2874,5 +2874,6 @@
   "account.organization.user_management.new_user.confirmation": " L’utilisateur \"{{0}}\" a été créé.",
   "account.organization.user_management.update_user.confirmation": "L’utilisateur \"{{0}}\" a été mise à jour.",
   "subject.has.no.permission.assigned": "Vous n’avez pas l’autorisation nécessaire d’effectuer cette action.",
-  "user.not.authenticated": "Vous n’êtes pas authentifié pour accéder à cette page."
+  "user.not.authenticated": "Vous n’êtes pas authentifié pour accéder à cette page.",
+  "search.noresult.filtered_products.message": "Nous sommes désolés, nous n’avons pu trouver aucun produit correspondant à votre choix de filtre."
 }

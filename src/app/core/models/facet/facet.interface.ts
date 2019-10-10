@@ -7,4 +7,7 @@ export class FacetData {
   selected: boolean;
   link: Link;
   level: number;
+  mappedValue?: string;
+  mappedType?: 'colorcode' | 'image' | 'text';
+  displayValue: string;
 }

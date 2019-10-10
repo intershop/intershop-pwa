@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -54,15 +54,6 @@ describe('Category Page Component', () => {
 
     expect(findAllIshElements(element)).toBeEmpty();
   });
-
-  it('should display loading when category is loading', fakeAsync(() => {
-    when(shoppingFacade.selectedCategoryLoading$).thenReturn(of(true));
-
-    tick(5000);
-    fixture.detectChanges();
-
-    expect(findAllIshElements(element)).toEqual(['ish-loading']);
-  }));
 
   it('should display categories when category has sub categories', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;

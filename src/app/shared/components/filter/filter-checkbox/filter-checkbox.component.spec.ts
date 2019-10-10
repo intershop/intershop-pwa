@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -15,6 +16,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [FilterCheckboxComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse), SanitizePipe],
     }).compileComponents();
   }));
@@ -22,6 +24,7 @@ describe('Filter Checkbox Component', () => {
   beforeEach(() => {
     const filterElement = {
       name: 'Brands',
+      limitCount: -1,
       facets: [
         { name: 'AsusName', count: 4, displayName: 'Asus' },
         { name: 'LogitechName', count: 5, displayName: 'Logitech', selected: true },

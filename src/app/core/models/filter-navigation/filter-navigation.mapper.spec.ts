@@ -32,14 +32,21 @@ describe('Filter Navigation Mapper', () => {
 
     it('should parse objects when elements exists with facets', () => {
       const data = {
-        elements: [{ facets: [{ name: 'testName', link: { uri: '/filters/uri;SearchParameter=param' } }] }],
+        elements: [{ filterEntries: [{ name: 'testName', link: { uri: '/filters/uri?SearchParameter=param' } }] }],
       } as FilterNavigationData;
 
       const model = mapper.fromData(data);
       expect(model.filter).toBeTruthy();
       expect(model.filter).toHaveLength(1);
       expect(model.filter[0].facets).toHaveLength(1);
-      expect(model.filter[0].facets[0].searchParameter).toBe('param');
+      expect(model.filter[0].facets[0].searchParameter).toMatchInlineSnapshot(`
+        Object {
+          "SearchParameter": Array [
+            "param",
+          ],
+          "category": undefined,
+        }
+      `);
     });
 
     it('should parse objects when elements exists', () => {

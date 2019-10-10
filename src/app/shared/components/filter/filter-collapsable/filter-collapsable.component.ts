@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 export class FilterCollapsableComponent implements OnInit {
   @Input() title: string;
   @Input() collapsed: boolean;
-  @Output() collapsedChanged = new EventEmitter<boolean>();
+  @Output() collapsedChange = new EventEmitter<boolean>();
 
   isCollapsed = false;
 
@@ -18,6 +18,6 @@ export class FilterCollapsableComponent implements OnInit {
 
   toggle() {
     this.isCollapsed = !this.isCollapsed;
-    this.collapsedChanged.emit(this.isCollapsed);
+    this.collapsedChange.emit(this.isCollapsed);
   }
 }
