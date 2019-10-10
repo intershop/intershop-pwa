@@ -180,7 +180,7 @@ export class ContinueCheckoutSuccess implements Action {
 
 export class AddQuoteToBasket implements Action {
   readonly type = BasketActionTypes.AddQuoteToBasket;
-  constructor(public payload: { quoteId: string }) {}
+  constructor(public payload: { quoteId: string; basketId?: string }) {}
 }
 
 export class AddQuoteToBasketFail implements Action {

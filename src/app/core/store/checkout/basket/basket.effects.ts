@@ -123,11 +123,11 @@ export class BasketEffects {
   @Effect()
   addQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayloadProperty('quoteId'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([, basketId]) => !!basketId),
-    concatMap(([quoteId, basketId]) =>
-      this.basketService.addQuoteToBasket(quoteId, basketId).pipe(
+    filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
+    concatMap(([payload, currentBasketId]) =>
+      this.basketService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
         map(link => new basketActions.AddQuoteToBasketSuccess({ link })),
         mapErrorToAction(basketActions.AddQuoteToBasketFail)
       )
@@ -141,11 +141,13 @@ export class BasketEffects {
   @Effect()
   getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayloadProperty('quoteId'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([, basketId]) => !basketId),
-    mergeMap(([quoteId]) =>
-      this.basketService.createBasket().pipe(mapTo(new basketActions.AddQuoteToBasket({ quoteId })))
+    filter(([payload, basketId]) => !basketId && !payload.basketId),
+    mergeMap(([{ quoteId }]) =>
+      this.basketService
+        .createBasket()
+        .pipe(map(basket => new basketActions.AddQuoteToBasket({ quoteId, basketId: basket.id })))
     )
   );
 
@@ -159,7 +161,7 @@ export class BasketEffects {
       basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.AddQuoteToBasketFail
     ),
-    mapTo(new basketActions.UpdateBasket({ update: { calculationState: 'CALCULATED' } }))
+    mapTo(new basketActions.UpdateBasket({ update: { calculated: true } }))
   );
 
   /**
