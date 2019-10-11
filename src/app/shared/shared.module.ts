@@ -67,7 +67,6 @@ import { FormsSharedModule } from './forms/forms.module';
 import { LineItemEditDialogComponent } from './line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './line-item/components/line-item-edit/line-item-edit.component';
 import { LineItemEditDialogContainerComponent } from './line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
-import { OrderListComponent } from './order/components/order-list/order-list.component';
 import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
@@ -143,7 +142,6 @@ const declaredComponents = [
   LineItemEditComponent,
   LineItemEditDialogComponent,
   LineItemEditDialogContainerComponent,
-  OrderListComponent,
   ProductIdComponent,
   ProductLabelComponent,
   ProductListComponent,
