@@ -31,7 +31,7 @@ describe('Contact Confirmation Component', () => {
     component.success = true;
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
-      <p>
+      <p data-testing-id="successText">
         helpdesk.contactus.thankyou<br />
         helpdesk.contactus.youwillreceive
       </p>
