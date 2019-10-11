@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { ProductBundleDisplayComponent } from 'ish-shared/product/components/product-bundle-display/product-bundle-display.component';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { Product } from 'ish-core/models/product/product.model';
 
 import { ProductBundleDisplayContainerComponent } from './product-bundle-display.container';
 
@@ -10,11 +11,14 @@ describe('Product Bundle Display Container', () => {
   let component: ProductBundleDisplayContainerComponent;
   let fixture: ComponentFixture<ProductBundleDisplayContainerComponent>;
   let element: HTMLElement;
+  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async(() => {
+    shoppingFacade = mock(ShoppingFacade);
+
     TestBed.configureTestingModule({
-      imports: [ngrxTesting()],
-      declarations: [MockComponent(ProductBundleDisplayComponent), ProductBundleDisplayContainerComponent],
+      declarations: [ProductBundleDisplayContainerComponent],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   }));
 
@@ -28,5 +32,25 @@ describe('Product Bundle Display Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render product bundle parts when supplied', () => {
+    when(shoppingFacade.productBundleParts$('sku')).thenReturn(
+      of([
+        { product: { sku: 'ABC', name: 'abc' } as Product, quantity: 3 },
+        { product: { sku: 'DEF', name: 'def' } as Product, quantity: 2 },
+      ])
+    );
+    component.productBundleSKU = 'sku';
+
+    component.ngOnChanges();
+    fixture.detectChanges();
+
+    expect(element).toMatchInlineSnapshot(`
+      <ul>
+        <li>3 x abc</li>
+        <li>2 x def</li>
+      </ul>
+    `);
   });
 });
