@@ -15,11 +15,11 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
  * ></ish-forgot-password-page>
  */
 @Component({
-  selector: 'ish-forgot-password-page',
-  templateUrl: './forgot-password-page.component.html',
+  selector: 'ish-forgot-password',
+  templateUrl: './forgot-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordPageComponent {
+export class ForgotPasswordComponent {
   /**
    * The success input indicates whether the request for a password reminder was successful or if the request form still needs to be displayed.
    */

@@ -9,17 +9,17 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ForgotPasswordFormComponent } from '../forgot-password-form/forgot-password-form.component';
 
-import { ForgotPasswordPageComponent } from './forgot-password-page.component';
+import { ForgotPasswordComponent } from './forgot-password.component';
 
-describe('Forgot Password Page Component', () => {
-  let component: ForgotPasswordPageComponent;
-  let fixture: ComponentFixture<ForgotPasswordPageComponent>;
+describe('Forgot Password Component', () => {
+  let component: ForgotPasswordComponent;
+  let fixture: ComponentFixture<ForgotPasswordComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ForgotPasswordPageComponent,
+        ForgotPasswordComponent,
         MockComponent(ForgotPasswordFormComponent),
         MockComponent(ServerHtmlDirective),
       ],
@@ -28,7 +28,7 @@ describe('Forgot Password Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ForgotPasswordPageComponent);
+    fixture = TestBed.createComponent(ForgotPasswordComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
