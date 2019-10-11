@@ -528,20 +528,6 @@ describe('Shopping Store', () => {
           sortKeys: []
         [Shopping] Load Filter Success:
           filterNavigation: {}
-        [ProductListing Internal] Load More Products For Params:
-          id: {"type":"category","value":"A.123.456"}
-          filters: undefined
-          sorting: undefined
-          page: undefined
-        [ProductListing Internal] Load More Products For Params:
-          id: {"type":"category","value":"A.123.456"}
-          filters: undefined
-          sorting: undefined
-          page: undefined
-        [ProductListing] Set Product Listing Pages:
-          id: {"type":"category","value":"A.123.456"}
-        [ProductListing] Set Product Listing Pages:
-          id: {"type":"category","value":"A.123.456"}
         [ProductListing] Set Product Listing Pages:
           id: {"type":"category","value":"A.123.456"}
       `);
@@ -599,6 +585,73 @@ describe('Shopping Store', () => {
               id: {"type":"category","value":"A.123.456"}
             [Shopping] Select Product:
               sku: undefined
+          `);
+        }));
+      });
+    });
+
+    describe('and searching for all products', () => {
+      beforeEach(fakeAsync(() => {
+        store.reset();
+        router.navigate(['/search', 'something']);
+        tick(5000);
+      }));
+
+      it('should load the right filters for search', fakeAsync(() => {
+        expect(store.actionsArray()).toMatchInlineSnapshot(`
+          [Router] Navigation:
+            params: {"searchTerm":"something"}
+            queryParams: {}
+            data: {}
+            path: "search/:searchTerm"
+          [Shopping] Deselect Category
+          [Shopping] Set Search Term:
+            searchTerm: "something"
+          [ProductListing] Load More Products:
+            id: {"type":"search","value":"something"}
+          [ProductListing Internal] Load More Products For Params:
+            id: {"type":"search","value":"something"}
+            filters: undefined
+            sorting: undefined
+            page: undefined
+          [Shopping] Search Products:
+            searchTerm: "something"
+            page: undefined
+            sorting: undefined
+          [Shopping] Load Filter for Search:
+            searchTerm: "something"
+          [Shopping] Load Product Success:
+            product: {"sku":"P2"}
+          [ProductListing] Set Product Listing Pages:
+            1: ["P2"]
+            id: {"type":"search","value":"something"}
+            itemCount: 1
+            sortKeys: []
+          [Shopping] Load Filter Success:
+            filterNavigation: {}
+          [ProductListing] Set Product Listing Pages:
+            id: {"type":"search","value":"something"}
+        `);
+      }));
+
+      describe('and going back to family page', () => {
+        beforeEach(fakeAsync(() => {
+          store.reset();
+          router.navigate(['/category', 'A.123.456']);
+          tick(5000);
+        }));
+
+        it('should load the right filters for family page again', fakeAsync(() => {
+          expect(store.actionsArray()).toMatchInlineSnapshot(`
+            [Router] Navigation:
+              params: {"categoryUniqueId":"A.123.456"}
+              queryParams: {}
+              data: {}
+              path: "category/:categoryUniqueId"
+            [Shopping] Select Category:
+              categoryId: "A.123.456"
+            [ProductListing] Load More Products:
+              id: {"type":"category","value":"A.123.456"}
             [ProductListing Internal] Load More Products For Params:
               id: {"type":"category","value":"A.123.456"}
               filters: undefined
@@ -606,6 +659,10 @@ describe('Shopping Store', () => {
               page: undefined
             [ProductListing] Set Product Listing Pages:
               id: {"type":"category","value":"A.123.456"}
+            [Shopping] Load Filter For Category:
+              uniqueId: "A.123.456"
+            [Shopping] Load Filter Success:
+              filterNavigation: {}
           `);
         }));
       });

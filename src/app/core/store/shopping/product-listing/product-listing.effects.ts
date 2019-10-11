@@ -72,10 +72,10 @@ export class ProductListingEffects {
           sorting: params.get('sorting') || undefined,
           page: +params.get('page') || page || undefined,
           filters: params.get('filters') || undefined,
-        })),
-        distinctUntilChanged(isEqual)
+        }))
       )
     ),
+    distinctUntilChanged(isEqual),
     map(({ id, filters, sorting, page }) => new actions.LoadMoreProductsForParams({ id, filters, sorting, page }))
   );
 
