@@ -95,13 +95,13 @@ describe('Product Master Variations Service', () => {
           "filterNavigation": Object {
             "filter": Array [
               HDD: Array [
-                "512GB:true:2 -> COL=Red",
+                "512GB:true:3 -> COL=Red",
                 "256GB:false:2 -> HDD=512GB,256GB&COL=Red",
               ],
               COL: Array [
                 "Brown:false:2 -> HDD=512GB&COL=Red,Brown",
-                "Red:true:3 -> HDD=512GB",
-                "Black:false:2 -> HDD=512GB&COL=Red,Black",
+                "Red:true:2 -> HDD=512GB",
+                "Black:false:1 -> HDD=512GB&COL=Red,Black",
               ],
             ],
           },
@@ -121,12 +121,12 @@ describe('Product Master Variations Service', () => {
           "filterNavigation": Object {
             "filter": Array [
               HDD: Array [
-                "512GB:false:1 -> COL=Black&HDD=512GB",
+                "512GB:false:3 -> COL=Black&HDD=512GB",
               ],
               COL: Array [
-                "Brown:false:3 -> COL=Black,Brown",
-                "Red:false:3 -> COL=Black,Red",
-                "Black:true:5 -> ",
+                "Brown:false:2 -> COL=Black,Brown",
+                "Red:false:2 -> COL=Black,Red",
+                "Black:true:1 -> ",
               ],
             ],
           },
@@ -150,13 +150,13 @@ describe('Product Master Variations Service', () => {
           "filterNavigation": Object {
             "filter": Array [
               HDD: Array [
-                "512GB:true:1 -> HDD=256GB&COL=Red",
-                "256GB:true:1 -> HDD=512GB&COL=Red",
+                "512GB:true:3 -> HDD=256GB&COL=Red",
+                "256GB:true:2 -> HDD=512GB&COL=Red",
               ],
               COL: Array [
-                "Brown:false:4 -> HDD=512GB,256GB&COL=Red,Brown",
-                "Red:true:5 -> HDD=512GB,256GB",
-                "Black:false:3 -> HDD=512GB,256GB&COL=Red,Black",
+                "Brown:false:2 -> HDD=512GB,256GB&COL=Red,Brown",
+                "Red:true:2 -> HDD=512GB,256GB",
+                "Black:false:1 -> HDD=512GB,256GB&COL=Red,Black",
               ],
             ],
           },
