@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { HomePageComponent } from './components/home-page/home-page.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+
 import { HomePageContainerComponent } from './home-page.container';
 
 describe('Home Page Container', () => {
@@ -11,7 +12,7 @@ describe('Home Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePageContainerComponent, MockComponent(HomePageComponent)],
+      declarations: [HomePageContainerComponent, MockComponent(ContentIncludeContainerComponent)],
     }).compileComponents();
   }));
 
@@ -25,5 +26,15 @@ describe('Home Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render home page include when rendered', () => {
+    fixture.detectChanges();
+    expect(element).toMatchInlineSnapshot(`
+      <ish-content-include
+        includeid="pwa.include.homepage.pagelet2-Include"
+        ng-reflect-include-id="pwa.include.homepage.pagelet2-"
+      ></ish-content-include>
+    `);
   });
 });
