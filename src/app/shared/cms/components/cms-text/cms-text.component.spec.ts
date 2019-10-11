@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 
 import { CMSTextComponent } from './cms-text.component';
@@ -12,7 +14,8 @@ describe('Cms Text Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CMSTextComponent, SafeHtmlPipe],
+      imports: [RouterTestingModule, ngrxTesting()],
+      declarations: [CMSTextComponent, ServerHtmlDirective],
     }).compileComponents();
   }));
 

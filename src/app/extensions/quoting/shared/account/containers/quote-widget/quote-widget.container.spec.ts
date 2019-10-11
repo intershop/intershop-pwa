@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+
 import { LoadQuotes } from '../../../../store/quote';
 import { LoadQuoteRequests } from '../../../../store/quote-request';
 import { quotingReducers } from '../../../../store/quoting-store.module';
@@ -22,8 +24,8 @@ describe('Quote Widget Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({ ...coreReducers, quoting: combineReducers(quotingReducers) }),
         TranslateModule.forRoot(),
+        ngrxTesting({ reducers: { ...coreReducers, quoting: combineReducers(quotingReducers) } }),
       ],
       declarations: [
         MockComponent(LoadingComponent),

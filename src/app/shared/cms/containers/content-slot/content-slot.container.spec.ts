@@ -4,8 +4,8 @@ import { instance, mock } from 'ts-mockito';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
-import { ContentPageletContainerComponent } from '../content-pagelet/content-pagelet.container';
+import { ContentPageletContainerComponent } from 'ish-shared/cms/containers/content-pagelet/content-pagelet.container';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
 import { ContentSlotContainerComponent } from './content-slot.container';
 

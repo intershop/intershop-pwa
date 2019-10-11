@@ -77,9 +77,16 @@ export class ProductMasterVariationsService {
     return {
       name: attribute.value,
       searchParameter: b64u.toBase64(b64u.encode(formParamsToString(newFilters))),
-      count: this.potentialMatches(newFilters, variations).length,
+      count:
+        this.potentialMatches(newFilters, variations).length &&
+        variations.filter(variation =>
+          variation.variableVariationAttributes.find(
+            att => att.variationAttributeId === attribute.variationAttributeId && att.value === attribute.value
+          )
+        ).length,
       displayName: attribute.value,
       selected,
+      level: 0,
     };
   }
 

@@ -1,22 +1,26 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { debounceTime } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getCategoryLoading, getSelectedCategory } from 'ish-core/store/shopping/categories';
-import { getDeviceType } from 'ish-core/store/viewconf';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-category-page-container',
   templateUrl: './category-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryPageContainerComponent {
-  category$ = this.store.pipe(select(getSelectedCategory));
-  categoryLoading$ = this.store.pipe(
-    select(getCategoryLoading),
-    debounceTime(500)
-  );
-  deviceType$ = this.store.pipe(select(getDeviceType));
+export class CategoryPageContainerComponent implements OnInit {
+  category$: Observable<CategoryView>;
+  categoryLoading$: Observable<boolean>;
+  deviceType$: Observable<DeviceType>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade, private appFacade: AppFacade) {}
+
+  ngOnInit() {
+    this.category$ = this.shoppingFacade.selectedCategory$;
+    this.categoryLoading$ = this.shoppingFacade.selectedCategoryLoading$;
+    this.deviceType$ = this.appFacade.deviceType$;
+  }
 }

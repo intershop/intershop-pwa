@@ -1,8 +1,9 @@
-// tslint:disable:no-any no-console
 import { Injectable, Type } from '@angular/core';
 import { Actions, Effect, EffectsModule } from '@ngrx/effects';
-import { Action, ActionReducerMap, Store, StoreModule } from '@ngrx/store';
+import { Action, ActionReducerMap, RootStoreConfig, Store, StoreModule } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
+
+// tslint:disable:no-any no-console
 
 export const containsActionWithType = (type: string) => (actions: Action[]) =>
   !!actions.filter(a => a.type === type).length;
@@ -60,6 +61,23 @@ export class TestStore {
   }
 }
 
-export function ngrxTesting(reducers: ActionReducerMap<{}, Action>, effects: Type<any>[] = []) {
-  return [StoreModule.forRoot(reducers), EffectsModule.forRoot([TestStore, ...effects])];
+export function ngrxTesting<T>(
+  options: {
+    reducers?: ActionReducerMap<T, Action>;
+    effects?: Type<any>[];
+    config?: RootStoreConfig<T>;
+  } = {}
+) {
+  return [
+    StoreModule.forRoot(options.reducers || ({} as ActionReducerMap<T, Action>), {
+      ...(options.config || {}),
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictActionSerializability: true,
+        strictStateImmutability: true,
+        strictStateSerializability: true,
+      },
+    }),
+    EffectsModule.forRoot([TestStore, ...(options.effects || [])]),
+  ];
 }

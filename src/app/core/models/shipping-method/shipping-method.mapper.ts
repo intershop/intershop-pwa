@@ -1,4 +1,4 @@
-import { PriceMapper } from '../price/price.mapper';
+import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { ShippingMethodData } from './shipping-method.interface';
 import { ShippingMethod } from './shipping-method.model';

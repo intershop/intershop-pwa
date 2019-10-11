@@ -1,4 +1,5 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';

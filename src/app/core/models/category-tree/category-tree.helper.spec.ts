@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 
-import { CategoryData } from '../category/category.interface';
-import { CategoryMapper } from '../category/category.mapper';
-import { Category } from '../category/category.model';
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { CategoryMapper } from 'ish-core/models/category/category.mapper';
+import { Category } from 'ish-core/models/category/category.model';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';
@@ -326,7 +326,7 @@ describe('Category Tree Helper', () => {
       let categoryMapper: CategoryMapper;
 
       beforeEach(() => {
-        TestBed.configureTestingModule({ imports: [StoreModule.forRoot({})] });
+        TestBed.configureTestingModule({ imports: [ngrxTesting()] });
         categoryMapper = TestBed.get(CategoryMapper);
 
         tree = [catARaw, catBRaw].reduce(
@@ -437,9 +437,7 @@ describe('Category Tree Helper', () => {
         { category1CL: 2, category2CL: 0, expected: 'old' },
       ],
       slice => {
-        it(`should prefer ${slice.expected} one when having completenessLevel ${slice.category1completenessLevel} vs. ${
-          slice.category2completenessLevel
-        }`, () => {
+        it(`should prefer ${slice.expected} one when having completenessLevel ${slice.category1completenessLevel} vs. ${slice.category2completenessLevel}`, () => {
           const category1 = {
             uniqueId: 'A',
             name: 'old',

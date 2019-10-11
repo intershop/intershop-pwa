@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 
 import { SearchBoxComponent } from './search-box.component';
 
@@ -15,8 +16,8 @@ describe('Search Box Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchBoxComponent],
-      imports: [IconModule, PipesModule, TranslateModule.forRoot()],
+      declarations: [MockComponent(FaIconComponent), MockPipe(HighlightPipe), SearchBoxComponent],
+      imports: [TranslateModule.forRoot()],
     })
       .overrideComponent(SearchBoxComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -97,11 +98,11 @@ describe('Search Box Component', () => {
       const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
     });
-    it('should show placeholder text when placeholderText is set', () => {
-      component.configuration = { id: 'searchbox', placeholderText: 'placeholderTextInput' };
+    it('should show placeholder text when placeholder is set', () => {
+      component.configuration = { id: 'searchbox', placeholder: 'placeholderInput' };
       fixture.detectChanges();
       const inputElement = element.querySelector('.searchTerm');
-      expect(inputElement.getAttribute('placeholder')).toBe('placeholderTextInput');
+      expect(inputElement.getAttribute('placeholder')).toBe('placeholderInput');
     });
   });
 });

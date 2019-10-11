@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.container';
 import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';

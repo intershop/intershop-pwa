@@ -6,8 +6,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { CMSService } from '../../../services/cms/cms.service';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { CMSService } from 'ish-core/services/cms/cms.service';
 
 import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
 import { IncludesEffects } from './includes.effects';

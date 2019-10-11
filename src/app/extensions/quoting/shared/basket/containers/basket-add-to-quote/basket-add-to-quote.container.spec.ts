@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+
 import { quotingReducers } from '../../../../store/quoting-store.module';
 import { BasketAddToQuoteComponent } from '../../components/basket-add-to-quote/basket-add-to-quote.component';
 
@@ -17,7 +19,7 @@ describe('Basket Add To Quote Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({ ...coreReducers, quoting: combineReducers(quotingReducers) })],
+      imports: [ngrxTesting({ reducers: { ...coreReducers, quoting: combineReducers(quotingReducers) } })],
       declarations: [BasketAddToQuoteContainerComponent, MockComponent(BasketAddToQuoteComponent)],
     })
       .compileComponents()

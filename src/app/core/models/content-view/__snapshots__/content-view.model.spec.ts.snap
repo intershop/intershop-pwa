@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content View Model include view created should have a pagelet on slot view on p2 1`] = `
+Array [
+  Object {
+    "booleanParam": [Function],
+    "configParam": [Function],
+    "configurationParameters": undefined,
+    "definitionQualifiedName": "fq",
+    "displayName": "p3",
+    "domain": "domain",
+    "hasParam": [Function],
+    "id": "p3",
+    "numberParam": [Function],
+    "slot": [Function],
+    "stringParam": [Function],
+  },
+]
+`;
+
+exports[`Content View Model include view created should have a slot view on p2 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "displayName": "slot",
+  "domain": "domain",
+  "hasParam": [Function],
+  "id": "fq",
+  "numberParam": [Function],
+  "pagelets": [Function],
+  "stringParam": [Function],
+}
+`;
+
+exports[`Content View Model include view created should have deepest level navigateable on tree 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "configurationParameters": Object {
+    "key7": "4",
+  },
+  "definitionQualifiedName": "fq",
+  "displayName": "p4",
+  "domain": "domain",
+  "hasParam": [Function],
+  "id": "p4",
+  "numberParam": [Function],
+  "slot": [Function],
+  "stringParam": [Function],
+}
+`;
+
+exports[`Content View Model include view created should have pagelets on top level 1`] = `
+Array [
+  Object {
+    "booleanParam": [Function],
+    "configParam": [Function],
+    "configurationParameters": Object {
+      "key4": "2",
+    },
+    "definitionQualifiedName": "fq",
+    "displayName": "p1",
+    "domain": "domain",
+    "hasParam": [Function],
+    "id": "p1",
+    "numberParam": [Function],
+    "slot": [Function],
+    "stringParam": [Function],
+  },
+  Object {
+    "booleanParam": [Function],
+    "configParam": [Function],
+    "configurationParameters": undefined,
+    "definitionQualifiedName": "fq",
+    "displayName": "p2",
+    "domain": "domain",
+    "hasParam": [Function],
+    "id": "p2",
+    "numberParam": [Function],
+    "slot": [Function],
+    "stringParam": [Function],
+  },
+]
+`;
+
+exports[`Content View Model should be able to create a view of a pagelet entry point 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "displayName": "name",
+  "domain": "domain",
+  "hasParam": [Function],
+  "id": "include",
+  "numberParam": [Function],
+  "pagelets": [Function],
+  "resourceSetId": "resId",
+  "stringParam": [Function],
+}
+`;
+
+exports[`Content View Model should be able to create a view of configuration parameters 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "hasParam": [Function],
+  "numberParam": [Function],
+  "stringParam": [Function],
+}
+`;

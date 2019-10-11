@@ -2,21 +2,21 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { BasketAddressSummaryComponent } from '../../../../shared/basket/components/basket-address-summary/basket-address-summary.component';
-import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
-import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
-import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { BasketAddressSummaryComponent } from 'ish-shared/basket/components/basket-address-summary/basket-address-summary.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutShippingComponent } from './checkout-shipping.component';
 
@@ -36,15 +36,15 @@ describe('Checkout Shipping Component', () => {
         MockComponent(BasketAddressSummaryComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(NgbPopover),
+        MockPipe(PricePipe),
       ],
       imports: [
-        FormsSharedModule,
-        IconModule,
-        NgbPopoverModule,
-        PipesModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
         TranslateModule.forRoot(),
@@ -90,7 +90,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render an error if the user clicks next and has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
-    component.nextStep();
+    component.goToNextStep();
     fixture.detectChanges();
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
@@ -108,20 +108,20 @@ describe('Checkout Shipping Component', () => {
 
   it('should set submitted if next button is clicked', () => {
     expect(component.submitted).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.submitted).toBeTrue();
   });
 
   it('should not disable next button if basket shipping method is set and next button is clicked', () => {
     expect(component.nextDisabled).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeFalse();
   });
 
   it('should disable next button if basket shipping method is missing and next button is clicked', () => {
     component.basket.commonShippingMethod = undefined;
 
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeTrue();
   });
 });

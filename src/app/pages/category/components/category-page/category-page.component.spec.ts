@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
+
 import { CategoryListComponent } from '../category-list/category-list.component';
 import { CategoryNavigationComponent } from '../category-navigation/category-navigation.component';
 
@@ -19,11 +22,14 @@ describe('Category Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot()],
       declarations: [
         CategoryPageComponent,
+        MockComponent(BreadcrumbComponent),
         MockComponent(CategoryListComponent),
         MockComponent(CategoryNavigationComponent),
+        MockComponent(FaIconComponent),
+        MockComponent(NgbCollapse),
       ],
     }).compileComponents();
   }));
@@ -50,5 +56,9 @@ describe('Category Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display all components on the page', () => {
+    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-breadcrumb']);
   });
 });

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { Observable, concat, of, timer } from 'rxjs';
 import { distinctUntilChanged, mapTo, switchMap } from 'rxjs/operators';
 
-import { getBasketError, getBasketLastTimeProductAdded, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -12,17 +13,18 @@ import { whenTruthy } from 'ish-core/utils/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniBasketContainerComponent implements OnInit {
-  basket$ = this.store.pipe(select(getCurrentBasket));
-  basketError$ = this.store.pipe(select(getBasketError));
+  basket$: Observable<Basket>;
+  basketError$: Observable<HttpError>;
   basketAnimation$: Observable<string>;
 
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
-    this.basketAnimation$ = this.store.pipe(
-      select(getBasketLastTimeProductAdded),
+    this.basket$ = this.checkoutFacade.basket$;
+    this.basketError$ = this.checkoutFacade.basketError$;
+    this.basketAnimation$ = this.checkoutFacade.basketChange$.pipe(
       whenTruthy(),
       distinctUntilChanged(),
       switchMap(() => concat(of('tada'), timer(2500).pipe(mapTo(''))))

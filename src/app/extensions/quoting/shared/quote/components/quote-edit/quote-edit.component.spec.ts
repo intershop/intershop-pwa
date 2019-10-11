@@ -5,12 +5,14 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
-import { PipesModule } from 'ish-core/pipes.module';
-import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
-import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
-import { RecentlyViewedContainerComponent } from '../../../../../../shared/recently/containers/recently-viewed/recently-viewed.container';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
+
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
@@ -25,13 +27,16 @@ describe('Quote Edit Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        DatePipe,
+        MockComponent(InputComponent),
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
         MockComponent(QuoteStateComponent),
         MockComponent(RecentlyViewedContainerComponent),
+        MockComponent(ServerHtmlDirective),
         QuoteEditComponent,
       ],
-      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -132,7 +137,8 @@ describe('Quote Edit Component', () => {
     });
 
     it('should render submitted heading if submit is clicked', () => {
-      component.submit();
+      component.quote.state = 'Submitted';
+      component.submitted = true;
       fixture.detectChanges();
       expect(element.textContent).toContain('quote.edit.submitted.your_quote_number.text');
     });

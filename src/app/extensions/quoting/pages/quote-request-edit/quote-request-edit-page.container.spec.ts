@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+
 import { QuoteEditComponent } from '../../shared/quote/components/quote-edit/quote-edit.component';
 import { LoadQuoteRequests } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting-store.module';
@@ -25,11 +28,14 @@ describe('Quote Request Edit Page Container', () => {
         QuoteRequestEditPageContainerComponent,
       ],
       imports: [
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
+        RouterTestingModule,
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
     }).compileComponents();
   }));

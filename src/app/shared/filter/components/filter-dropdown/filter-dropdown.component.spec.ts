@@ -1,11 +1,9 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
+import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
 
 import { FilterDropdownComponent } from './filter-dropdown.component';
 
@@ -16,44 +14,56 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [FilterDropdownComponent],
+      declarations: [FilterDropdownComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    const filterElement = {
-      name: 'Brands',
-      facets: [
-        { name: 'AsusName', count: 4, displayName: 'Asus' },
-        { name: 'LogitechName', count: 5, displayName: 'Logitech', selected: true },
-      ],
-    } as Filter;
-
     fixture = TestBed.createComponent(FilterDropdownComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.filterElement = filterElement;
+    component.filterElement = {
+      name: 'Color',
+      id: 'Color_of_Product',
+      facets: [
+        { displayName: 'Red', name: 'Red', selected: false, searchParameter: 'red' },
+        {
+          displayName: 'Blue',
+          name: 'Blue',
+          selected: true,
+          searchParameter: 'blue',
+        },
+      ] as Facet[],
+    } as Filter;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
   });
 
-  it('should toggle unselected filter facets when filter group header is clicked', fakeAsync(() => {
+  it('should display popup when rendered', () => {
     fixture.detectChanges();
-    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-    filterGroupHead.click();
-    tick(500);
-    fixture.detectChanges();
-
-    const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
-    expect(selectedFilterFacet.textContent).toContain('Logitech');
-
-    const hiddenFilters = element.querySelector('[data-testing-id=collapse-filter-Brands]');
-    expect(hiddenFilters.className).not.toContain('show');
-  }));
+    expect(element).toMatchInlineSnapshot(`
+      <div autoclose="outside" ngbdropdown="">
+        <a
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="form-control"
+          data-toggle="dropdown"
+          id="dropdownMenuLink"
+          ngbdropdowntoggle=""
+          role="button"
+          ><span>Color</span></a
+        >
+        <div aria-labelledby="dropdownMenuLink" ngbdropdownmenu="">
+          <a class="dropdown-item"> Red </a
+          ><a class="dropdown-item selected">
+            Blue <fa-icon class="icon-checked" ng-reflect-icon-prop="fas,check"></fa-icon
+          ></a>
+        </div>
+      </div>
+    `);
+  });
 });

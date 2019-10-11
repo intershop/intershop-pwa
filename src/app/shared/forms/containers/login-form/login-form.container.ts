@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
-import { LoginUser, getUserError } from 'ish-core/store/user';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -23,14 +24,18 @@ import { LoginUser, getUserError } from 'ish-core/store/user';
   templateUrl: './login-form.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginFormContainerComponent {
-  loginError$ = this.store.pipe(select(getUserError));
+export class LoginFormContainerComponent implements OnInit {
+  loginError$: Observable<HttpError>;
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
-    private store: Store<{}>
+    private accountFacade: AccountFacade
   ) {}
 
+  ngOnInit() {
+    this.loginError$ = this.accountFacade.userError$;
+  }
+
   loginUser(credentials: LoginCredentials) {
-    this.store.dispatch(new LoginUser({ credentials }));
+    this.accountFacade.loginUser(credentials);
   }
 }

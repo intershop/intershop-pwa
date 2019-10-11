@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
+import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { SearchBoxContainerComponent } from '../../../../shell/header/containers/search-box/search-box.container';
+import { SearchBoxContainerComponent } from 'ish-shell/header/containers/search-box/search-box.container';
 
 import { ErrorPageComponent } from './error-page.component';
 
@@ -16,8 +16,8 @@ describe('Error Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [PipesModule, TranslateModule.forRoot()],
-      declarations: [ErrorPageComponent, MockComponent(SearchBoxContainerComponent)],
+      imports: [TranslateModule.forRoot()],
+      declarations: [ErrorPageComponent, MockComponent(SearchBoxContainerComponent), SafeHtmlPipe],
     }).compileComponents();
   }));
 

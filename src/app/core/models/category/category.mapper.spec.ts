@@ -1,11 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { ImageMapper } from '../image/image.mapper';
 
 import { CategoryData } from './category.interface';
 import { CategoryMapper } from './category.mapper';
@@ -16,7 +16,7 @@ describe('Category Mapper', () => {
   let imageMapper: ImageMapper;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({ imports: [StoreModule.forRoot({ configuration: configurationReducer })] });
+    TestBed.configureTestingModule({ imports: [ngrxTesting({ reducers: { configuration: configurationReducer } })] });
     categoryMapper = TestBed.get(CategoryMapper);
     imageMapper = spy(TestBed.get(ImageMapper));
   }));

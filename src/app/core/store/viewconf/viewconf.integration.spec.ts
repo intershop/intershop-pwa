@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { RouteNavigation } from 'ngrx-router';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { coreReducers } from '../core-store.module';
 
 import { ViewconfEffects } from './viewconf.effects';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
@@ -13,7 +13,7 @@ describe('Viewconf Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting(coreReducers, [ViewconfEffects]),
+      imports: ngrxTesting({ reducers: coreReducers, effects: [ViewconfEffects] }),
       providers: [
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },

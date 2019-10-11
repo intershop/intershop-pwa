@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var fs = require("fs");
 var Lint = require("tslint");
 var ts = require("typescript");
@@ -60,7 +61,8 @@ var Rule = (function (_super) {
     };
     Rule.reportMissingCreationTest = function (ctx) {
         var message = "component does not have an active '" + SHOULD_BE_CREATED_NAME + "' test";
-        ctx.addFailureAt(0, 1, message);
+        var failuteToken = tsquery_1.tsquery(ctx.sourceFile, 'ClassDeclaration > Identifier')[0];
+        ctx.addFailureAtNode(failuteToken, message);
     };
     Rule.prototype.apply = function (sourceFile) {
         return this.applyWithFunction(sourceFile, this.visitSourceFile);

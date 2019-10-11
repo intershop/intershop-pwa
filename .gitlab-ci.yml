@@ -93,12 +93,12 @@ jest_test:
       - reports/coverage
     expire_in: 1 day
     reports:
-      junit: reports/junit.xml
+      junit: junit.xml
   dependencies: []
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - npm ci --prefer-offline
-    - npx jest -c jest-reports.config.js --ci
+    - npx jest --collectCoverage --coverageReporters text-summary  --reporters=default --reporters=jest-junit --ci -w 3
     - echo "build complete"
 
 compile:
@@ -116,38 +116,31 @@ compile:
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npx tsc -p src/tsconfig.spec.json
+    - npx tsc -p tsconfig.spec.json
     - cd e2e
     - npm ci
     - npx tsc -p cypress/tsconfig.json
     - echo "build complete"
 
-codestyle:
+code_quality:
   image: node:10
   stage: build
   only:
-    - merge_requests
-  except:
     refs:
       - develop
-      - master
+      - merge_requests
   tags:
     - docker-executor
     - performance
   artifacts:
-    expire_in: 1 day
-    paths:
-      - reports/jscpd
-      - reports/tslint
+    reports:
+      codequality: gl-code-quality-report.json
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npm i --no-save tslint-html-report jscpd-html-reporter
-    - node reports/tslint-report
-    - node reports/jscpd-report
-    - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+    - node reports/tslint-gitlab
     - echo "build complete"
 
 deploy_review_mock:
@@ -174,6 +167,8 @@ deploy_review_mock:
       $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-mock"
       ${CI_REGISTRY_IMAGE}:mock-${CI_BUILD_REF}
+    - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
+    - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock"
   environment:
     name: review/mock-$CI_COMMIT_REF_SLUG
     url: http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-mock
@@ -706,7 +701,7 @@ universal_b2b:
 
 cypress_remote:
   <<: *cypress_definition
-  parallel: 5
+  parallel: 7
   only:
     - merge_requests
     - triggers

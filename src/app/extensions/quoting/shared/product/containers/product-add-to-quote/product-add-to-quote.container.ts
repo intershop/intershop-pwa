@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store, select } from '@ngrx/store';
-import { filter, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Product } from 'ish-core/models/product/product.model';
-import { getUserAuthorized } from 'ish-core/store/user';
-import { AddProductToQuoteRequest } from '../../../../store/quote-request';
+import { whenTruthy } from 'ish-core/utils/operators';
+
+import { QuotingFacade } from '../../../../facades/quoting.facade';
 import { ProductAddToQuoteDialogContainerComponent } from '../product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 
 /**
@@ -24,17 +25,16 @@ export class ProductAddToQuoteContainerComponent {
   @Input() class?: string;
   @Input() quantity?: number;
 
-  constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
+  constructor(private ngbModal: NgbModal, private quotingFacade: QuotingFacade, private accountFacade: AccountFacade) {}
 
   addToQuote() {
-    const { sku } = this.product;
     const quantity = this.quantity ? this.quantity : this.product.minOrderQuantity;
-    this.store.dispatch(new AddProductToQuoteRequest({ sku, quantity }));
-    this.store
+    this.quotingFacade.addProductToQuoteRequest(this.product.sku, quantity);
+
+    this.accountFacade.isLoggedIn$
       .pipe(
-        select(getUserAuthorized),
         take(1),
-        filter(b => b)
+        whenTruthy()
       )
       .subscribe(() => {
         this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });

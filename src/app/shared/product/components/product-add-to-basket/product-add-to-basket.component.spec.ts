@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { ToastrModule } from 'ngx-toastr';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -20,14 +21,15 @@ describe('Product Add To Basket Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        IconModule,
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
         ngrxTesting({
-          checkout: combineReducers(checkoutReducers),
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
-      declarations: [ProductAddToBasketComponent],
+      declarations: [MockComponent(FaIconComponent), ProductAddToBasketComponent],
     }).compileComponents();
   }));
 
@@ -70,7 +72,7 @@ describe('Product Add To Basket Component', () => {
   it('should show icon button when display type is icon ', () => {
     component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('fa-icon').className).toBeTruthy();
+    expect(element.querySelector('fa-icon')).toBeTruthy();
   });
 
   it('should show disable button when "disabled" is set to "false" ', () => {

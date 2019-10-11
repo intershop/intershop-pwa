@@ -5,8 +5,8 @@ import { map } from 'rxjs/operators';
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { ContentPagelet } from '../../models/content-pagelet/content-pagelet.model';
-import { ApiService } from '../api/api.service';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 /**
  * The CMS Service handles the interaction with the CMS API.

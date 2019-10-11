@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { CategoryPageContainerComponent } from './category-page.container';
 import { CategoryImageComponent } from './components/category-image/category-image.component';
@@ -18,7 +18,7 @@ const categoryPageRoutes: Routes = [
   },
   {
     path: ':categoryUniqueId/product',
-    loadChildren: '../product/product-page.module#ProductPageModule',
+    loadChildren: () => import('../product/product-page.module').then(m => m.ProductPageModule),
   },
 ];
 

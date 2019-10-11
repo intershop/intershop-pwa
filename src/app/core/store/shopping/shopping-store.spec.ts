@@ -31,9 +31,9 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
+import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { coreEffects, coreReducers } from '../core-store.module';
 
 import { getCategoryIds, getSelectedCategory } from './categories';
 import { getProductIds, getSelectedProduct } from './products';
@@ -149,13 +149,6 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting(
-          {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-          },
-          [...coreEffects, ...shoppingEffects]
-        ),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
@@ -188,6 +181,13 @@ describe('Shopping Store', () => {
         ]),
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+          },
+          effects: [...coreEffects, ...shoppingEffects],
+        }),
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
@@ -344,7 +344,6 @@ describe('Shopping Store', () => {
             id: {"type":"search","value":"something"}
             itemCount: 1
             sortKeys: []
-            pages: [1]
           [Shopping] Load Filter Success:
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
@@ -527,7 +526,6 @@ describe('Shopping Store', () => {
           id: {"type":"category","value":"A.123.456"}
           itemCount: 2
           sortKeys: []
-          pages: [1]
         [Shopping] Load Filter Success:
           filterNavigation: {}
         [ProductListing Internal] Load More Products For Params:
@@ -749,7 +747,6 @@ describe('Shopping Store', () => {
             id: {"type":"category","value":"A.123.456"}
             itemCount: 2
             sortKeys: []
-            pages: [1]
           [Shopping] Load Filter Success:
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
@@ -1040,7 +1037,6 @@ describe('Shopping Store', () => {
           id: {"type":"search","value":"something"}
           itemCount: 1
           sortKeys: []
-          pages: [1]
         [Shopping] Load Filter Success:
           filterNavigation: {}
         [ProductListing] Set Product Listing Pages:

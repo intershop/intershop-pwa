@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { instance, mock } from 'ts-mockito';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
+
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { ServerErrorPageComponent } from './components/server-error-page/server-error-page.component';
@@ -20,7 +20,7 @@ describe('Error Page Container', () => {
         MockComponent(ErrorPageComponent),
         MockComponent(ServerErrorPageComponent),
       ],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [RouterTestingModule, ngrxTesting()],
     }).compileComponents();
   }));
 

@@ -1,5 +1,5 @@
-import { ContentConfigurationParameterData } from '../content-configuration-parameter/content-configuration-parameter.interface';
-import { ContentPageletData } from '../content-pagelet/content-pagelet.interface';
+import { ContentConfigurationParameterData } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.interface';
+import { ContentPageletData } from 'ish-core/models/content-pagelet/content-pagelet.interface';
 
 export interface ContentSlotData {
   definitionQualifiedName: string;

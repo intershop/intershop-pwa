@@ -20,7 +20,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Checkout Payment Component renders the checkout payment page. On this page the user can select a payment method. Some payment methods require the user to enter some additional data, like credit card data. For some payment methods there is special javascript functionality necessary provided by an external payment host. See also {@link CheckoutPaymentPageContainerComponent}
@@ -33,6 +33,7 @@ import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils'
  (updatePaymentMethod)="updateBasketPaymentMethod($event)"
  (createPaymentInstrument)="createBasketPaymentInstrument($event)"
  (deletePaymentInstrument)="deletePaymentInstrument($event)"
+ (nextStep)="nextStep()"
 ></ish-checkout-payment>
  */
 @Component({
@@ -48,6 +49,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() updatePaymentMethod = new EventEmitter<string>();
   @Output() createPaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() deletePaymentInstrument = new EventEmitter<string>();
+  @Output() nextStep = new EventEmitter<void>();
 
   paymentForm: FormGroup;
   model = {};
@@ -132,13 +134,16 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * filter out payment methods with capability `RedirectBeforeCheckout`, if experimental features are not enabled
    */
   private filterPaymentMethods() {
+    let methods: PaymentMethod[];
     if (this.experimental) {
-      this.filteredPaymentMethods = this.paymentMethods;
+      methods = this.paymentMethods;
     } else {
-      this.filteredPaymentMethods = this.paymentMethods.filter(
+      methods = this.paymentMethods.filter(
         pm => !pm.capabilities || !pm.capabilities.some(cap => cap.startsWith('Redirect') && pm.id.startsWith('ISH'))
       );
     }
+    // copy objects for runtime checks because formly modifies them, TODO: refactor
+    this.filteredPaymentMethods = methods.map(x => JSON.parse(JSON.stringify(x)));
   }
 
   /**
@@ -234,7 +239,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * leads to next checkout page (checkout review)
    */
-  nextStep() {
+  goToNextStep() {
     this.nextSubmitted = true;
     if (this.nextDisabled) {
       return;
@@ -242,9 +247,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.paymentRedirectRequired) {
       // do a hard redirect to payment redirect URL
-      document.location.assign(this.basket.payment.redirectUrl);
+      location.assign(this.basket.payment.redirectUrl);
     } else {
-      this.router.navigate(['/checkout/review']);
+      this.nextStep.emit();
     }
   }
 

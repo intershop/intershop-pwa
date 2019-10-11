@@ -1,14 +1,41 @@
-<div class="filter-panel" *ngIf="filterNavigation">
+<div *ngIf="filterNavigation" class="filter-panel">
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
-    <ish-filter-checkbox *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
-    </ish-filter-checkbox>
-    <ish-filter-swatch-images
-      *ngSwitchCase="'swatch'"
-      [filterElement]="element"
-      (applyFilter)="applyFilter.emit($event)"
+    <ish-filter-collapsable
+      [title]="element.name"
+      [collapsed]="!!collapsedElements[element.name]"
+      (collapsedChanged)="collapsedElements[element.name] = $event"
     >
-    </ish-filter-swatch-images>
-    <ish-filter-dropdown *ngSwitchCase="'dropdown'" [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
-    </ish-filter-dropdown>
+      <!-- default: text & text_clear -->
+      <ish-filter-text *ngSwitchDefault [filterElement]="element" (applyFilter)="applyFilter.emit($event)">
+      </ish-filter-text>
+
+      <!-- checkbox -->
+      <ish-filter-checkbox
+        *ngSwitchCase="'checkbox'"
+        [filterElement]="element"
+        (applyFilter)="applyFilter.emit($event)"
+      >
+      </ish-filter-checkbox>
+
+      <!-- swatch -->
+      <ish-filter-swatch-images
+        *ngSwitchCase="'swatch'"
+        [filterElement]="element"
+        (applyFilter)="applyFilter.emit($event)"
+      >
+      </ish-filter-swatch-images>
+
+      <!-- dropdown -->
+      <ng-container *ngSwitchCase="'dropdown'">
+        <div class="filter-dropdown">
+          <ish-filter-dropdown
+            [filterElement]="element"
+            [placeholderType]="'selectedFacets'"
+            (applyFilter)="applyFilter.emit($event)"
+          >
+          </ish-filter-dropdown>
+        </div>
+      </ng-container>
+    </ish-filter-collapsable>
   </div>
 </div>

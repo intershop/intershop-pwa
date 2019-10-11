@@ -4,23 +4,24 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
-import { PRODUCT_LISTING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { VariationProductMaster } from '../../../models/product/product-variation-master.model';
-import { VariationProduct } from '../../../models/product/product-variation.model';
-import { Product } from '../../../models/product/product.model';
-import { ProductsService } from '../../../services/products/products.service';
-import { localeReducer } from '../../locale/locale.reducer';
-import { LoadCategory } from '../categories';
-import { SetProductListingPageSize, SetProductListingPages } from '../product-listing';
-import { shoppingReducers } from '../shopping-store.module';
+import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
+import { LoadCategory } from 'ish-core/store/shopping/categories';
+import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
@@ -66,9 +67,11 @@ describe('Products Effects', () => {
       declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          locale: localeReducer,
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+            locale: localeReducer,
+          },
         }),
       ],
       providers: [
@@ -229,7 +232,7 @@ describe('Products Effects', () => {
           type: 'VariationProduct',
         } as VariationProduct,
       });
-      const completion = new fromActions.LoadProduct({ sku: 'MSKU' });
+      const completion = new fromActions.LoadProductIfNotLoaded({ sku: 'MSKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 

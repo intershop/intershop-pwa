@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { CategoryMapper } from 'ish-core/models/category/category.mapper';
+import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { AttributeHelper } from '../attribute/attribute.helper';
-import { CategoryData } from '../category/category.interface';
-import { CategoryMapper } from '../category/category.mapper';
-import { ImageMapper } from '../image/image.mapper';
-import { Price } from '../price/price.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 import { VariationProduct } from './product-variation.model';
 import { AllProductTypes, SkuQuantityType } from './product.helper';
@@ -90,7 +90,7 @@ export class ProductMapper {
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
-  fromStubData(data: ProductDataStub): AllProductTypes {
+  fromStubData(data: ProductDataStub): Partial<AllProductTypes> {
     const sku = retrieveStubAttributeValue<string>(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
@@ -107,7 +107,7 @@ export class ProductMapper {
     const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
     const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
 
-    const product: Product = {
+    const product: Partial<Product> = {
       shortDescription: data.description,
       name: data.title,
       sku,
@@ -141,7 +141,6 @@ export class ProductMapper {
       longDescription: undefined,
       minOrderQuantity,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
-      attributes: [],
       attributeGroups: data.attributeGroups,
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,

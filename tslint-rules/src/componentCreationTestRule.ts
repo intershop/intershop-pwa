@@ -1,3 +1,4 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as fs from 'fs';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
@@ -54,7 +55,8 @@ export class Rule extends Lint.Rules.AbstractRule {
 
   private static reportMissingCreationTest(ctx: Lint.WalkContext<void>) {
     const message = `component does not have an active '${SHOULD_BE_CREATED_NAME}' test`;
-    ctx.addFailureAt(0, 1, message);
+    const failuteToken = tsquery(ctx.sourceFile, 'ClassDeclaration > Identifier')[0];
+    ctx.addFailureAtNode(failuteToken, message);
   }
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {

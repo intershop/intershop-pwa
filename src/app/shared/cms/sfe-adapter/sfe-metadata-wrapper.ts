@@ -14,7 +14,7 @@ import { SfeMetadata } from './sfe.types';
  * }
  */
 export class SfeMetadataWrapper {
-  @HostBinding('attr.data-sfe') protected sfeMetadataAttribute: string;
+  @HostBinding('attr.data-sfe') sfeMetadataAttribute: string;
 
   /** Write SFE metadata to the host element of the component */
   setSfeMetadata(metadata: SfeMetadata) {

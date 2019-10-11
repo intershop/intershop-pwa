@@ -13,9 +13,7 @@ import { ShellModule } from './shell/shell.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule.withServerTransition({
-      appId: 'intershop-pwa',
-    }),
+    BrowserModule.withServerTransition({ appId: 'intershop-pwa' }),
     BrowserAnimationsModule,
     CoreModule,
     ShellModule,

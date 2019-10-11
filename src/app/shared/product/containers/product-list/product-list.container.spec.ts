@@ -1,17 +1,18 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
-import { ProductListPagingComponent } from '../../components/product-list-paging/product-list-paging.component';
-import { ProductListToolbarComponent } from '../../components/product-list-toolbar/product-list-toolbar.component';
-import { ProductListComponent } from '../../components/product-list/product-list.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { ProductListPagingComponent } from 'ish-shared/product/components/product-list-paging/product-list-paging.component';
+import { ProductListToolbarComponent } from 'ish-shared/product/components/product-list-toolbar/product-list-toolbar.component';
+import { ProductListComponent } from 'ish-shared/product/components/product-list/product-list.component';
 
 import { ProductListContainerComponent } from './product-list.container';
 
@@ -27,8 +28,10 @@ describe('Product List Container', () => {
       imports: [
         InfiniteScrollModule,
         RouterTestingModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [

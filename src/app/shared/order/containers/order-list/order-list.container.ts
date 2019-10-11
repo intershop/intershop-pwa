@@ -1,8 +1,8 @@
-// tslint:disable: ccp-no-markup-in-containers
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
-import { LoadOrders, getOrders, getOrdersLoading } from 'ish-core/store/orders';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { Order } from 'ish-core/models/order/order.model';
 
 /**
  * The Order List Container Component fetches order data and displays them all (or only a limited amount) using the {@link OrderListComponent}
@@ -16,6 +16,7 @@ import { LoadOrders, getOrders, getOrdersLoading } from 'ish-core/store/orders';
   templateUrl: './order-list.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-markup-in-containers
 export class OrderListContainerComponent implements OnInit {
   /**
    * The maximum number of items to be displayed.
@@ -30,12 +31,13 @@ export class OrderListContainerComponent implements OnInit {
    */
   @Input() compact: boolean;
 
-  orders$ = this.store.pipe(select(getOrders));
-  loading$ = this.store.pipe(select(getOrdersLoading));
+  orders$: Observable<Order[]>;
+  loading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadOrders());
+    this.orders$ = this.accountFacade.orders$();
+    this.loading$ = this.accountFacade.ordersLoading$;
   }
 }

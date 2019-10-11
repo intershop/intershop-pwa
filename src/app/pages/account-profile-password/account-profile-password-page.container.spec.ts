@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfilePasswordPageContainerComponent } from './account-profile-password-page.container';
 import { AccountProfilePasswordPageComponent } from './components/account-profile-password-page/account-profile-password-page.component';
@@ -15,7 +15,7 @@ describe('Account Profile Password Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfilePasswordPageContainerComponent,
         MockComponent(AccountProfilePasswordPageComponent),

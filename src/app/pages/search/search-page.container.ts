@@ -1,33 +1,27 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { debounce, map, switchMap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { getProductListingLoading, getProductListingView } from 'ish-core/store/shopping/product-listing';
-import { getSearchTerm } from 'ish-core/store/shopping/search';
-import { whenFalsy } from 'ish-core/utils/operators';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-search-page-container',
   templateUrl: './search-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchPageContainerComponent {
-  searchTerm$ = this.store.pipe(select(getSearchTerm));
-  numberOfItems$ = this.searchTerm$.pipe(
-    debounce(() =>
-      this.store.pipe(
-        select(getProductListingLoading),
-        whenFalsy()
-      )
-    ),
-    switchMap(term =>
-      this.store.pipe(
-        select(getProductListingView, { type: 'search', value: term }),
-        map(view => view.itemCount)
-      )
-    )
-  );
-  searchLoading$ = this.store.pipe(select(getProductListingLoading));
+export class SearchPageContainerComponent implements OnInit {
+  searchTerm$: Observable<string>;
+  numberOfItems$: Observable<number>;
+  searchLoading$: Observable<boolean>;
+  deviceType$: Observable<DeviceType>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade, private appFacade: AppFacade) {}
+
+  ngOnInit() {
+    this.searchTerm$ = this.shoppingFacade.searchTerm$;
+    this.numberOfItems$ = this.shoppingFacade.searchItemsCount$;
+    this.searchLoading$ = this.shoppingFacade.searchLoading$;
+    this.deviceType$ = this.appFacade.deviceType$;
+  }
 }

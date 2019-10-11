@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
-import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
-import { LoadingComponent } from '../../../common/components/loading/loading.component';
-import { FormsSharedModule } from '../../../forms/forms.module';
-import { ProductInventoryComponent } from '../../../product/components/product-inventory/product-inventory.component';
-import { ProductVariationSelectComponent } from '../../../product/components/product-variation-select/product-variation-select.component';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
+import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
+import { ProductVariationSelectComponent } from 'ish-shared/product/components/product-variation-select/product-variation-select.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
 
 import { LineItemEditDialogComponent } from './line-item-edit-dialog.component';
 
@@ -20,14 +20,16 @@ describe('Line Item Edit Dialog Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsSharedModule, PipesModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
         LineItemEditDialogComponent,
+        MockComponent(InputComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductIdComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockPipe(PricePipe),
       ],
     }).compileComponents();
   }));

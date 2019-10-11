@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { Product } from 'ish-core/models/product/product.model';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { Product } from '../../../models/product/product.model';
-import { LoadProductSuccess, SelectProduct } from '../products';
-import { shoppingReducers } from '../shopping-store.module';
+import { LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AddToRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
@@ -23,9 +24,11 @@ describe('Recently Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        StoreModule.forRoot({
-          configuration: configurationReducer,
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            configuration: configurationReducer,
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       providers: [RecentlyEffects, provideMockActions(() => actions$)],

@@ -1,15 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { filter, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import {
-  LoadBasketEligibleShippingMethods,
-  UpdateBasketShippingMethod,
-  getBasketEligibleShippingMethods,
-  getBasketError,
-  getBasketLoading,
-  getCurrentBasket,
-} from 'ish-core/store/checkout/basket';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 @Component({
   selector: 'ish-checkout-shipping-page-container',
@@ -17,23 +12,28 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutShippingPageContainerComponent implements OnInit {
-  basket$ = this.store.pipe(select(getCurrentBasket));
-  loading$ = this.store.pipe(select(getBasketLoading));
-  shippingMethods$ = this.store.pipe(select(getBasketEligibleShippingMethods));
-  basketError$ = this.store.pipe(select(getBasketError));
+  basket$: Observable<BasketView>;
+  loading$: Observable<boolean>;
+  shippingMethods$: Observable<ShippingMethod[]>;
+  basketError$: Observable<HttpError>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
-    this.basket$
-      .pipe(
-        filter(x => !!x),
-        take(1)
-      )
-      .subscribe(() => this.store.dispatch(new LoadBasketEligibleShippingMethods()));
+    this.basket$ = this.checkoutFacade.basket$;
+    this.loading$ = this.checkoutFacade.basketLoading$;
+    this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethods$();
+    this.basketError$ = this.checkoutFacade.basketError$;
   }
 
   updateBasketShippingMethod(shippingId: string) {
-    this.store.dispatch(new UpdateBasketShippingMethod({ shippingId }));
+    this.checkoutFacade.updateBasketShippingMethod(shippingId);
+  }
+
+  /**
+   * Validates the basket and jumps to the next checkout step (Payment)
+   */
+  nextStep() {
+    this.checkoutFacade.continue(3);
   }
 }

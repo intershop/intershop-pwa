@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
-import { AddressFormFactory } from '../address-form/address-form.factory';
+import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 
 @Injectable()
 export class AddressFormDEFactory extends AddressFormFactory {

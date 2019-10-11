@@ -2,25 +2,26 @@ import { Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { CustomerAddressFormComponent } from '../../../../shared/address-forms/components/customer-address-form/customer-address-form.component';
-import { AddressComponent } from '../../../../shared/address/components/address/address.component';
-import { BasketCostSummaryComponent } from '../../../../shared/basket/components/basket-cost-summary/basket-cost-summary.component';
-import { BasketItemsSummaryComponent } from '../../../../shared/basket/components/basket-items-summary/basket-items-summary.component';
-import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
-import { ModalDialogComponent } from '../../../../shared/common/components/modal-dialog/modal-dialog.component';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
+import { AddressComponent } from 'ish-shared/address/components/address/address.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
+import { SelectAddressComponent } from 'ish-shared/forms/components/select-address/select-address.component';
 
 import { CheckoutAddressComponent } from './checkout-address.component';
 
@@ -40,15 +41,16 @@ describe('Checkout Address Component', () => {
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
         MockComponent(BasketItemsSummaryComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(CustomerAddressFormComponent),
         MockComponent(ErrorMessageComponent),
+        MockComponent(FaIconComponent),
         MockComponent(ModalDialogComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockComponent(SelectAddressComponent),
       ],
       imports: [
-        FormsSharedModule,
-        IconModule,
         NgbCollapseModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
@@ -327,34 +329,34 @@ describe('Checkout Address Component', () => {
   it('should render an error if the user clicks next and has currently no addresses selected', () => {
     component.basket.invoiceToAddress = undefined;
     component.basket.commonShipToAddress = undefined;
-    component.nextStep();
+    component.goToNextStep();
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 
   it('should set submitted if next button is clicked', () => {
     expect(component.submitted).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.submitted).toBeTrue();
   });
 
   it('should not disable next button if basket addresses are set and next button is clicked', () => {
     expect(component.nextDisabled).toBeFalse();
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeFalse();
   });
 
   it('should disable next button if basket invoice is missing and next button is clicked', () => {
     component.basket.invoiceToAddress = undefined;
 
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeTrue();
   });
 
   it('should disable next button if basket shipping is missing and next button is clicked', () => {
     component.basket.commonShipToAddress = undefined;
 
-    component.nextStep();
+    component.goToNextStep();
     expect(component.nextDisabled).toBeTrue();
   });
 });

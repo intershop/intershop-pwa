@@ -1,18 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { filter, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import {
-  CreateBasketPayment,
-  DeleteBasketPayment,
-  LoadBasketEligiblePaymentMethods,
-  SetBasketPayment,
-  getBasketEligiblePaymentMethods,
-  getBasketError,
-  getBasketLoading,
-  getCurrentBasket,
-} from 'ish-core/store/checkout/basket';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
 @Component({
   selector: 'ish-checkout-payment-page-container',
@@ -20,31 +13,36 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutPaymentPageContainerComponent implements OnInit {
-  basket$ = this.store.pipe(select(getCurrentBasket));
-  loading$ = this.store.pipe(select(getBasketLoading));
-  paymentMethods$ = this.store.pipe(select(getBasketEligiblePaymentMethods));
-  basketError$ = this.store.pipe(select(getBasketError));
+  basket$: Observable<BasketView>;
+  basketError$: Observable<HttpError>;
+  loading$: Observable<boolean>;
+  paymentMethods$: Observable<PaymentMethod[]>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
-    this.basket$
-      .pipe(
-        filter(x => !!x),
-        take(1)
-      )
-      .subscribe(() => this.store.dispatch(new LoadBasketEligiblePaymentMethods()));
+    this.basket$ = this.checkoutFacade.basket$;
+    this.basketError$ = this.checkoutFacade.basketError$;
+    this.loading$ = this.checkoutFacade.basketLoading$;
+    this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$();
   }
 
   updateBasketPaymentMethod(paymentName: string) {
-    this.store.dispatch(new SetBasketPayment({ id: paymentName }));
+    this.checkoutFacade.setBasketPayment(paymentName);
   }
 
-  createBasketPaymentInstrument(paymentInstrument: PaymentInstrument) {
-    this.store.dispatch(new CreateBasketPayment({ paymentInstrument }));
+  createBasketPaymentInstrument(instrument: PaymentInstrument) {
+    this.checkoutFacade.createBasketPayment(instrument);
   }
 
-  deletePaymentInstrument(paymentInstrumentId: string) {
-    this.store.dispatch(new DeleteBasketPayment({ id: paymentInstrumentId }));
+  deletePaymentInstrument(instrumentId: string) {
+    this.checkoutFacade.deleteBasketPayment(instrumentId);
+  }
+
+  /**
+   * Validates the basket and jumps to the next checkout step (Review)
+   */
+  nextStep() {
+    this.checkoutFacade.continue(4);
   }
 }

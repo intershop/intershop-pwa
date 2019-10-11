@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { instance, mock } from 'ts-mockito';
-
 import { MockComponent } from 'ng-mocks';
+
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { LoginPageContainerComponent } from './login-page.container';
@@ -11,14 +11,11 @@ describe('Login Page Container', () => {
   let fixture: ComponentFixture<LoginPageContainerComponent>;
   let component: LoginPageContainerComponent;
   let element: HTMLElement;
-  let storeMock$: Store<{}>;
 
   beforeEach(async(() => {
-    storeMock$ = mock(Store);
-
     TestBed.configureTestingModule({
       declarations: [LoginPageContainerComponent, MockComponent(LoginPageComponent)],
-      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
+      imports: [ngrxTesting({ reducers: coreReducers })],
     }).compileComponents();
   }));
 

@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { Store, StoreModule, select } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { HttpError } from '../../models/http-error/http-error.model';
-import { coreReducers } from '../core-store.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
 import { ErrorState } from './error.reducer';
@@ -15,7 +16,7 @@ describe('Error Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [ngrxTesting({ reducers: coreReducers })],
     });
 
     store$ = TestBed.get(Store);

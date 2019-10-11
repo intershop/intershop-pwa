@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { SearchBoxComponent } from '../../components/search-box/search-box.component';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { SearchBoxComponent } from 'ish-shell/header/components/search-box/search-box.component';
 
 import { SearchBoxContainerComponent } from './search-box.container';
 
@@ -17,7 +19,11 @@ describe('Search Box Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StoreModule.forRoot({}), TranslateModule.forRoot()],
+      imports: [
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        ngrxTesting({ reducers: { shopping: combineReducers(shoppingReducers) } }),
+      ],
       declarations: [MockComponent(SearchBoxComponent), SearchBoxContainerComponent],
       providers: [{ provide: SuggestService, useFactory: () => instance(mock(SuggestService)) }],
     })

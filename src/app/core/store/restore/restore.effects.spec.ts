@@ -11,14 +11,14 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
+import { BasketActionTypes, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/orders';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { BasketActionTypes, LoadBasketSuccess } from '../checkout/basket';
-import { checkoutReducers } from '../checkout/checkout-store.module';
-import { coreReducers } from '../core-store.module';
-import { LoadOrderSuccess, OrdersActionTypes } from '../orders';
-import { shoppingReducers } from '../shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes, getLoggedInUser } from '../user';
 
 import { RestoreEffects } from './restore.effects';
 
@@ -37,12 +37,14 @@ describe('Restore Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        ...ngrxTesting({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
-        }),
         RouterTestingModule.withRoutes([]),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
+        }),
       ],
       providers: [
         RestoreEffects,

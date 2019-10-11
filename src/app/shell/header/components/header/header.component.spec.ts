@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule } from '@ngrx/store';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { HeaderNavigationContainerComponent } from '../../containers/header-navigation/header-navigation.container';
-import { LanguageSwitchContainerComponent } from '../../containers/language-switch/language-switch.container';
-import { LoginStatusContainerComponent } from '../../containers/login-status/login-status.container';
-import { MiniBasketContainerComponent } from '../../containers/mini-basket/mini-basket.container';
-import { ProductCompareStatusContainerComponent } from '../../containers/product-compare-status/product-compare-status.container';
-import { SearchBoxContainerComponent } from '../../containers/search-box/search-box.container';
-import { UserInformationMobileComponent } from '../user-information-mobile/user-information-mobile.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { UserInformationMobileComponent } from 'ish-shell/header/components/user-information-mobile/user-information-mobile.component';
+import { HeaderNavigationContainerComponent } from 'ish-shell/header/containers/header-navigation/header-navigation.container';
+import { LanguageSwitchContainerComponent } from 'ish-shell/header/containers/language-switch/language-switch.container';
+import { LoginStatusContainerComponent } from 'ish-shell/header/containers/login-status/login-status.container';
+import { MiniBasketContainerComponent } from 'ish-shell/header/containers/mini-basket/mini-basket.container';
+import { ProductCompareStatusContainerComponent } from 'ish-shell/header/containers/product-compare-status/product-compare-status.container';
+import { SearchBoxContainerComponent } from 'ish-shell/header/containers/search-box/search-box.container';
 
 import { HeaderComponent } from './header.component';
 
@@ -28,21 +28,23 @@ describe('Header Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        IconModule,
-        NgbCollapseModule,
         RouterTestingModule,
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['compare'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['compare'] } },
+          },
+        }),
       ],
       declarations: [
         HeaderComponent,
+        MockComponent(FaIconComponent),
         MockComponent(HeaderNavigationContainerComponent),
         MockComponent(LanguageSwitchContainerComponent),
         MockComponent(LoginStatusContainerComponent),
         MockComponent(MiniBasketContainerComponent),
+        MockComponent(NgbCollapse),
         MockComponent(ProductCompareStatusContainerComponent),
         MockComponent(SearchBoxContainerComponent),
         MockComponent(UserInformationMobileComponent),

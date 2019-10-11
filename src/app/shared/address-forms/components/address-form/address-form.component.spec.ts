@@ -5,14 +5,14 @@ import * as using from 'jasmine-data-provider';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
-import { SelectCountryComponent } from '../../../../shared/forms/components/select-country/select-country.component';
-import { AddressFormBusinessComponent } from '../address-form-business/address-form-business.component';
-import { AddressFormDEComponent } from '../address-form-de/address-form-de.component';
-import { AddressFormDefaultComponent } from '../address-form-default/address-form-default.component';
-import { AddressFormFRComponent } from '../address-form-fr/address-form-fr.component';
-import { AddressFormGBComponent } from '../address-form-gb/address-form-gb.component';
-import { AddressFormUSComponent } from '../address-form-us/address-form-us.component';
+import { AddressFormBusinessComponent } from 'ish-shared/address-forms/components/address-form-business/address-form-business.component';
+import { AddressFormDEComponent } from 'ish-shared/address-forms/components/address-form-de/address-form-de.component';
+import { AddressFormDefaultComponent } from 'ish-shared/address-forms/components/address-form-default/address-form-default.component';
+import { AddressFormFRComponent } from 'ish-shared/address-forms/components/address-form-fr/address-form-fr.component';
+import { AddressFormGBComponent } from 'ish-shared/address-forms/components/address-form-gb/address-form-gb.component';
+import { AddressFormUSComponent } from 'ish-shared/address-forms/components/address-form-us/address-form-us.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { SelectCountryComponent } from 'ish-shared/forms/components/select-country/select-country.component';
 
 import { AddressFormComponent } from './address-form.component';
 

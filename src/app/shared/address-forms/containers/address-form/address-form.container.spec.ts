@@ -1,20 +1,24 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Store, StoreModule } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { PipesModule } from 'ish-core/pipes.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
-import { AddressFormComponent } from '../../components/address-form/address-form.component';
-import { AddressFormFactory } from '../../components/address-form/address-form.factory';
-import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AddressFormComponent } from 'ish-shared/address-forms/components/address-form/address-form.component';
+import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
+import {
+  ADDRESS_FORM_FACTORY,
+  AddressFormFactoryProvider,
+} from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 
 import { AddressFormContainerComponent } from './address-form.container';
 
@@ -32,7 +36,7 @@ describe('Address Form Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
-      imports: [PipesModule, StoreModule.forRoot(coreReducers)],
+      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },

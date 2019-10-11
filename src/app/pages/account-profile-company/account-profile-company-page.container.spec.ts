@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, StoreModule } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfileCompanyPageContainerComponent } from './account-profile-company-page.container';
 import { AccountProfileCompanyPageComponent } from './components/account-profile-company-page/account-profile-company-page.component';
@@ -20,7 +21,7 @@ describe('Account Profile Company Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StoreModule.forRoot(coreReducers)],
+      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfileCompanyPageContainerComponent,
         MockComponent(AccountProfileCompanyPageComponent),

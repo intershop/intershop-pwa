@@ -6,6 +6,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { quotingReducers } from '../quoting-store.module';
@@ -35,8 +36,10 @@ describe('Quote Request Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        quoting: combineReducers(quotingReducers),
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          quoting: combineReducers(quotingReducers),
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

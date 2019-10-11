@@ -1,14 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, StoreModule } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { CountryService } from '../../services/country/country.service';
-import { coreReducers } from '../core-store.module';
+import { CountryService } from 'ish-core/services/country/country.service';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as regionActions from './regions.actions';
 import { RegionsEffects } from './regions.effects';
@@ -30,7 +31,7 @@ describe('Regions Effects', () => {
     when(countryServiceMock.getRegionsByCountry(anyString())).thenReturn(of(regions));
 
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [ngrxTesting({ reducers: coreReducers })],
       providers: [
         RegionsEffects,
         provideMockActions(() => actions$),

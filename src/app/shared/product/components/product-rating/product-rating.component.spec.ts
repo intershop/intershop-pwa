@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponents } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
+import { ProductRatingStarComponent } from 'ish-shared/product/components/product-rating-star/product-rating-star.component';
 
 import { ProductRatingComponent } from './product-rating.component';
 

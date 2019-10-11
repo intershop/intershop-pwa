@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
@@ -7,9 +8,9 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadCategory, LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CategoryPageContainerComponent } from './category-page.container';
 import { CategoryPageComponent } from './components/category-page/category-page.component';
@@ -24,14 +25,16 @@ describe('Category Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
+        RouterTestingModule,
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [
         CategoryPageContainerComponent,
-        MockComponent(BreadcrumbComponent),
         MockComponent(CategoryPageComponent),
         MockComponent(FamilyPageComponent),
         MockComponent(LoadingComponent),
@@ -80,7 +83,7 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-category-page']);
+    expect(findAllIshElements(element)).toEqual(['ish-category-page']);
   });
 
   it('should display family-page when category has products', () => {
@@ -91,6 +94,6 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-family-page']);
+    expect(findAllIshElements(element)).toEqual(['ish-family-page']);
   });
 });

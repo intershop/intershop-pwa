@@ -41,6 +41,7 @@ class FormType {
      (updateAddress)="updateAddress($event)"
      (createAddress)="createAddress($event)"
      (deleteShippingAddress)="deleteCustomerAddress($event)"
+     (nextStep)="nextStep()"
   ></ish-checkout-address>
  */
 @Component({
@@ -58,6 +59,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Output() createAddress = new EventEmitter<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>();
   @Output() updateAddress = new EventEmitter<Address>();
   @Output() deleteShippingAddress = new EventEmitter<string>();
+  @Output() nextStep = new EventEmitter<void>();
 
   invoice = new FormType();
   shipping = new FormType();
@@ -97,7 +99,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    if (this.haveBasketOrAddressesChanged(this.basket, c)) {
+    if (this.haveBasketOrAddressesChanged(c)) {
       // prepare select box label and content
       this.prepareInvoiceAddressSelectBox();
       this.prepareShippingAddressSelectBox();
@@ -113,8 +115,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * determine whether the basket or the customer addresses have changed
    */
-  private haveBasketOrAddressesChanged(basket: Basket, c: SimpleChanges) {
-    return basket && (c.addresses || c.basket);
+  private haveBasketOrAddressesChanged(c: SimpleChanges) {
+    return this.basket && this.addresses && (c.addresses || c.basket);
   }
 
   /**
@@ -216,11 +218,10 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * leads to next checkout page (checkout shipping)
    */
-  nextStep() {
-    // ToDo: routing should be handled in another way, see #ISREST-317
+  goToNextStep() {
     this.submitted = true;
     if (!this.nextDisabled) {
-      this.router.navigate(['/checkout/shipping']);
+      this.nextStep.emit();
     }
   }
 

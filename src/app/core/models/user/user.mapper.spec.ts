@@ -1,5 +1,5 @@
+import { Address } from 'ish-core/models/address/address.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { Address } from '../address/address.model';
 
 import { UserData } from './user.interface';
 import { UserMapper } from './user.mapper';

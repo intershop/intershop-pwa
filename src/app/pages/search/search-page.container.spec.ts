@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { SelectSearchTerm } from 'ish-core/store/shopping/search';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { SearchNoResultComponent } from './components/search-no-result/search-no-result.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
@@ -23,8 +24,10 @@ describe('Search Page Container', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [

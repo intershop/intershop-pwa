@@ -1,20 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import {
-  DeleteItemFromQuoteRequest,
-  DeleteQuoteRequest,
-  SelectQuoteRequest,
-  SubmitQuoteRequest,
-  UpdateQuoteRequest,
-  UpdateQuoteRequestItems,
-  getActiveQuoteRequest,
-  getQuoteRequestLoading,
-} from '../../../../store/quote-request';
+
+import { QuotingFacade } from '../../../../facades/quoting.facade';
+import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 
 @Component({
   selector: 'ish-product-add-to-quote-dialog-container',
@@ -22,41 +14,44 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDestroy {
-  activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));
-  quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
+  activeQuoteRequest$: Observable<QuoteRequest>;
+  quoteRequestLoading$: Observable<boolean>;
 
   private destroy$ = new Subject();
 
-  constructor(public ngbActiveModal: NgbActiveModal, private store: Store<{}>) {}
+  constructor(public ngbActiveModal: NgbActiveModal, private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
+    this.activeQuoteRequest$ = this.quotingFacade.activeQuoteRequest$;
+    this.quoteRequestLoading$ = this.quotingFacade.quoteRequestLoading$;
+
     this.activeQuoteRequest$
       .pipe(
         filter(quoteRequest => !!quoteRequest),
         distinctUntilKeyChanged('id'),
         takeUntil(this.destroy$)
       )
-      .subscribe(quoteRequest => this.store.dispatch(new SelectQuoteRequest({ id: quoteRequest.id })));
+      .subscribe(quoteRequest => this.quotingFacade.selectQuoteRequest(quoteRequest.id));
   }
 
-  deleteQuoteRequestItem(payload: string) {
-    this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
+  deleteQuoteRequestItem(itemId: string) {
+    this.quotingFacade.deleteQuoteRequestItem(itemId);
   }
 
-  deleteQuoteRequest(payload: string) {
-    this.store.dispatch(new DeleteQuoteRequest({ id: payload }));
+  deleteQuoteRequest(id: string) {
+    this.quotingFacade.deleteQuoteRequest(id);
   }
 
   updateQuoteRequestItem(payload: LineItemUpdate) {
-    this.store.dispatch(new UpdateQuoteRequestItems({ lineItemUpdates: [payload] }));
+    this.quotingFacade.updateQuoteRequestItem(payload);
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {
-    this.store.dispatch(new UpdateQuoteRequest(payload));
+    this.quotingFacade.updateQuoteRequest(payload);
   }
 
   submitQuoteRequest() {
-    this.store.dispatch(new SubmitQuoteRequest());
+    this.quotingFacade.submitQuoteRequest();
   }
 
   ngOnDestroy() {

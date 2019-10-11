@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { ToastrModule } from 'ngx-toastr';
 import { spy, verify } from 'ts-mockito';
-
-import { IconModule } from 'ish-core/icon.module';
 
 import { ProductAddToQuoteComponent } from './product-add-to-quote.component';
 
@@ -15,8 +15,8 @@ describe('Product Add To Quote Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, ToastrModule.forRoot(), TranslateModule.forRoot()],
-      declarations: [ProductAddToQuoteComponent],
+      imports: [ToastrModule.forRoot(), TranslateModule.forRoot()],
+      declarations: [MockComponent(FaIconComponent), ProductAddToQuoteComponent],
     }).compileComponents();
   }));
 

@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { RouteNavigation } from 'ngrx-router';
 
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { checkoutReducers } from '../checkout-store.module';
 
 import { ViewconfEffects } from './viewconf.effects';
 import { getCheckoutStep } from './viewconf.selectors';
@@ -13,7 +13,7 @@ describe('Viewconf Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ checkout: combineReducers(checkoutReducers) }, [ViewconfEffects]),
+      imports: ngrxTesting({ reducers: { checkout: combineReducers(checkoutReducers) }, effects: [ViewconfEffects] }),
     });
 
     store$ = TestBed.get(TestStore);

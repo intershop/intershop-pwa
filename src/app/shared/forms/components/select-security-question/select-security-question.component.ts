@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { SelectComponent, SelectOption } from '../select/select.component';
+import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 
 @Component({
   selector: 'ish-select-security-question',

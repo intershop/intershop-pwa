@@ -1,0 +1,8 @@
+<div class="filter-group" [ngClass]="{ collapsed: isCollapsed }">
+  <h3 (click)="toggle()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
+    {{ title }}
+    <fa-icon [icon]="['fas', isCollapsed ? 'angle-right' : 'angle-down']" class="float-right"></fa-icon>
+  </h3>
+
+  <ng-content></ng-content>
+</div>

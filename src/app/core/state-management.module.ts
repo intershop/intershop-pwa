@@ -7,20 +7,21 @@ import { environment } from '../../environments/environment';
 
 import { NgrxStateTransfer } from './configurations/ngrx-state-transfer';
 import { CoreStoreModule } from './store/core-store.module';
-import { CrosstabService } from './utils/local-storage-sync/crosstab.service';
 
 @NgModule({
   imports: [
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.serviceWorker }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     BrowserTransferStateModule,
     CoreStoreModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
   providers: [NgrxStateTransfer],
 })
 export class StateManagementModule {
-  constructor(ngrxStateTransfer: NgrxStateTransfer, crosstabService: CrosstabService) {
+  constructor(ngrxStateTransfer: NgrxStateTransfer) {
     ngrxStateTransfer.do();
-    crosstabService.listen();
   }
 }

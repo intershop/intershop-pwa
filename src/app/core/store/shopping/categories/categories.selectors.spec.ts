@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { Category } from 'ish-core/models/category/category.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { Category } from '../../../models/category/category.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
-import { LoadProductSuccess } from '../products';
-import { shoppingReducers } from '../shopping-store.module';
 
 import {
   LoadCategory,
@@ -38,7 +38,9 @@ describe('Categories Selectors', () => {
 
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 

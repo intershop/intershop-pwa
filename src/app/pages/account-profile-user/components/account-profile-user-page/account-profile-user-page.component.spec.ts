@@ -5,10 +5,10 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
-import { ErrorMessageComponent } from '../../../../shared/common/components/error-message/error-message.component';
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
-import { SelectLanguageComponent } from '../../../../shared/forms/components/select-language/select-language.component';
-import { SelectTitleComponent } from '../../../../shared/forms/components/select-title/select-title.component';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { SelectLanguageComponent } from 'ish-shared/forms/components/select-language/select-language.component';
+import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
 
 import { AccountProfileUserPageComponent } from './account-profile-user-page.component';
 

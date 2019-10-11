@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElementComponent } from 'ish-shared/forms/components/form-element/form-element.component';
 
 @Component({
   selector: 'ish-input',
@@ -17,7 +17,7 @@ export class InputComponent extends FormElementComponent implements OnInit {
   @Input() min?: number;
   @Input() max?: number;
 
-  @Input() placeholderText?: string;
+  @Input() placeholder = '';
 
   calculatedAutocomplete: string;
 

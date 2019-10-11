@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { ofRoute } from 'ngrx-router';
 import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { BasketService } from 'ish-core/services/basket/basket.service';
+import { BasketPaymentService } from 'ish-core/services/basket/basket-payment.service';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
@@ -12,7 +12,11 @@ import { getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store<{}>,
+    private basketPaymentService: BasketPaymentService
+  ) {}
 
   /**
    * The load basket eligible payment methods effect.
@@ -22,7 +26,7 @@ export class BasketPaymentEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketEligiblePaymentMethods),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([, basketid]) =>
-      this.basketService.getBasketEligiblePaymentMethods(basketid).pipe(
+      this.basketPaymentService.getBasketEligiblePaymentMethods(basketid).pipe(
         map(result => new basketActions.LoadBasketEligiblePaymentMethodsSuccess({ paymentMethods: result })),
         mapErrorToAction(basketActions.LoadBasketEligiblePaymentMethodsFail)
       )
@@ -38,7 +42,7 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([paymentInstrumentId, basketid]) =>
-      this.basketService.setBasketPayment(basketid, paymentInstrumentId).pipe(
+      this.basketPaymentService.setBasketPayment(basketid, paymentInstrumentId).pipe(
         mapTo(new basketActions.SetBasketPaymentSuccess()),
         mapErrorToAction(basketActions.SetBasketPaymentFail)
       )
@@ -54,7 +58,7 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('paymentInstrument'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([paymentInstrument, basketid]) =>
-      this.basketService.createBasketPayment(basketid, paymentInstrument).pipe(
+      this.basketPaymentService.createBasketPayment(basketid, paymentInstrument).pipe(
         concatMap(payload => [
           new basketActions.SetBasketPayment({ id: payload.id }),
           new basketActions.CreateBasketPaymentSuccess(),
@@ -92,7 +96,7 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('params'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([params, basketid]) =>
-      this.basketService.updateBasketPayment(basketid, params).pipe(
+      this.basketPaymentService.updateBasketPayment(basketid, params).pipe(
         mapTo(new basketActions.UpdateBasketPaymentSuccess()),
         mapErrorToAction(basketActions.UpdateBasketPaymentFail)
       )
@@ -108,7 +112,7 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([paymentInstrumentId, basketid]) =>
-      this.basketService.deleteBasketPaymentInstrument(basketid, paymentInstrumentId).pipe(
+      this.basketPaymentService.deleteBasketPaymentInstrument(basketid, paymentInstrumentId).pipe(
         mapTo(new basketActions.DeleteBasketPaymentSuccess()),
         mapErrorToAction(basketActions.DeleteBasketPaymentFail)
       )

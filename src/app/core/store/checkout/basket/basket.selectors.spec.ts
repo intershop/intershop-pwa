@@ -1,19 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { LoadProductSuccess } from '../../shopping/products';
-import { shoppingReducers } from '../../shopping/shopping-store.module';
-import { checkoutReducers } from '../checkout-store.module';
 
 import {
   AddItemsToBasketSuccess,
   AddPromotionCodeToBasketFail,
+  ContinueCheckoutSuccess,
   LoadBasket,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligiblePaymentMethodsFail,
@@ -31,6 +33,7 @@ import {
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
+  getBasketValidationResults,
   getCurrentBasket,
   getCurrentBasketId,
 } from './basket.selectors';
@@ -41,8 +44,10 @@ describe('Basket Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
-        checkout: combineReducers(checkoutReducers),
-        shopping: combineReducers(shoppingReducers),
+        reducers: {
+          checkout: combineReducers(checkoutReducers),
+          shopping: combineReducers(shoppingReducers),
+        },
       }),
     });
 
@@ -125,6 +130,30 @@ describe('Basket Selectors', () => {
 
       currentBasket = getCurrentBasket(store$.state);
       expect(currentBasket.lineItems[0].product).toHaveProperty('name', 'new name');
+    });
+
+    it('should set validation results to the lineitem if basket is not valid', () => {
+      store$.dispatch(
+        new LoadBasketSuccess({
+          basket: { id: 'test', lineItems: [{ id: 'test', productSKU: 'sku' } as LineItem] } as Basket,
+        })
+      );
+      store$.dispatch(
+        new ContinueCheckoutSuccess({
+          targetRoute: '/checkout/address',
+          basketValidation: {
+            results: {
+              valid: false,
+              errors: [
+                { code: 'basket.validation.4711', message: 'test error message', parameters: { lineItemId: 'test' } },
+              ],
+            },
+          } as BasketValidation,
+        })
+      );
+
+      const currentBasket = getCurrentBasket(store$.state);
+      expect(currentBasket.lineItems[0].validationError.code).toEqual('basket.validation.4711');
     });
 
     it('should set loading to false and set error state', () => {
@@ -227,6 +256,30 @@ describe('Basket Selectors', () => {
 
     it('should reporting the failure in case of an error', () => {
       expect(getBasketPromotionError(store$.state)).toEqual({ message: 'error' });
+    });
+  });
+
+  describe('loading validation result error after the basket has been validated', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: false,
+        adjusted: false,
+        errors: [
+          {
+            message: 'error occured',
+            code: '4711',
+          },
+        ],
+      },
+    };
+    beforeEach(() => {
+      store$.dispatch(new ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation }));
+    });
+
+    it('should reporting the validation results when called', () => {
+      expect(getBasketValidationResults(store$.state).valid).toBeFalse();
+      expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occured');
     });
   });
 });

@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
-import { PipesModule } from 'ish-core/pipes.module';
-import { ModalDialogComponent } from '../../../../../../shared/common/components/modal-dialog/modal-dialog.component';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
+
 import { Quote } from '../../../../models/quote/quote.model';
 import { QuoteStateComponent } from '../../../../shared/quote/components/quote-state/quote-state.component';
 
@@ -18,8 +19,14 @@ describe('Quote List Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ModalDialogComponent), MockComponent(QuoteStateComponent), QuoteListComponent],
-      imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockComponent(ModalDialogComponent),
+        MockComponent(QuoteStateComponent),
+        MockPipe(DatePipe),
+        QuoteListComponent,
+      ],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

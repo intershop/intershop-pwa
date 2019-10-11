@@ -1,19 +1,18 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
-
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { Credentials, LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
+import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
-import { Credentials, LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer, CustomerRegistrationType, CustomerUserType } from '../../models/customer/customer.model';
-import { User } from '../../models/user/user.model';
-import { ApiService } from '../api/api.service';
+import { User } from 'ish-core/models/user/user.model';
+import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
  */
@@ -198,15 +197,15 @@ export class UserService {
    * @param data  The user data (email, firstName, lastName, answer) to identify the user.
    */
   requestPasswordReminder(data: PasswordReminder) {
-    if (data.captchaResponse) {
+    const options: AvailableOptions = {
+      skipApiErrorHandling: true,
+    };
+
+    if (data.captcha) {
       // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      const headers = new HttpHeaders().set(
-        'Authorization',
-        `CAPTCHA g-recaptcha-response=${data.captchaResponse} foo=bar`
-      );
-      return this.apiService.post('security/reminder', { answer: '', ...data }, { headers });
-    } else {
-      return this.apiService.post('security/reminder', { answer: '', ...data });
+      options.headers = new HttpHeaders().set('Authorization', `CAPTCHA g-recaptcha-response=${data.captcha} foo=bar`);
     }
+
+    return this.apiService.post('security/reminder', { answer: '', ...data }, options);
   }
 }

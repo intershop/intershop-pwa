@@ -1,4 +1,4 @@
-import { Price } from '../price/price.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 import { Product } from './product.model';
 

@@ -12,7 +12,7 @@ import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
 import { CheckoutAddressAnonymousComponent } from './components/checkout-address-anonymous/checkout-address-anonymous.component';
@@ -36,9 +36,11 @@ describe('Checkout Address Page Container', () => {
       imports: [
         TranslateModule.forRoot(),
         ngrxTesting({
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
+          reducers: {
+            ...coreReducers,
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
     }).compileComponents();

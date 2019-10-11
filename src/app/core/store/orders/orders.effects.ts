@@ -6,11 +6,12 @@ import { mapToParam, ofRoute } from 'ngrx-router';
 import { race } from 'rxjs';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { LoadBasket } from 'ish-core/store/checkout/basket';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
-import { OrderService } from '../../services/order/order.service';
-import { LoadBasket } from '../checkout/basket';
-import { LoadProduct, getProductEntities } from '../shopping/products';
-import { UserActionTypes, getLoggedInUser } from '../user';
 
 import * as ordersActions from './orders.actions';
 import { getOrder, getSelectedOrderId } from './orders.selectors';
@@ -53,7 +54,7 @@ export class OrdersEffects {
         order.orderCreation.stopAction.type === 'Redirect' &&
         order.orderCreation.stopAction.redirectUrl
       ) {
-        document.location.assign(order.orderCreation.stopAction.redirectUrl);
+        location.assign(order.orderCreation.stopAction.redirectUrl);
       } else {
         this.router.navigate(['/checkout/receipt']);
       }
@@ -129,12 +130,10 @@ export class OrdersEffects {
   loadProductsForSelectedOrder$ = this.actions$.pipe(
     ofType<ordersActions.LoadOrderSuccess>(ordersActions.OrdersActionTypes.LoadOrderSuccess),
     mapToPayloadProperty('order'),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    switchMap(([order, products]) => [
-      ...order.lineItems
-        .map(orderItem => orderItem.productSKU)
-        .filter(sku => !products[sku])
-        .map(sku => new LoadProduct({ sku })),
+    switchMap(order => [
+      ...order.lineItems.map(
+        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+      ),
     ])
   );
 

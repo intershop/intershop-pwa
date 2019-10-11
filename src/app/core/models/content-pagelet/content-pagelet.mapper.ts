@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { ContentConfigurationParameterMapper } from '../content-configuration-parameter/content-configuration-parameter.mapper';
-import { ContentSlotData } from '../content-slot/content-slot.interface';
-import { ContentSlot } from '../content-slot/content-slot.model';
+import { ContentConfigurationParameterMapper } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
+import { ContentSlotData } from 'ish-core/models/content-slot/content-slot.interface';
+import { ContentSlot } from 'ish-core/models/content-slot/content-slot.model';
 
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPagelet } from './content-pagelet.model';

@@ -1,11 +1,9 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Product } from 'ish-core/models/product/product.model';
-import { getBasketLoading } from 'ish-core/store/checkout/basket';
 import { whenFalsy } from 'ish-core/utils/operators';
 
 /**
@@ -25,8 +23,9 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class ProductAddToBasketComponent implements OnInit, OnDestroy {
-  basketLoading$ = this.store.pipe(select(getBasketLoading));
+  basketLoading$: Observable<boolean>;
 
   /**
    * The product that can be added to basket
@@ -53,7 +52,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    */
   @Output() productToBasket = new EventEmitter<void>();
 
-  constructor(private store: Store<{}>) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   // fires 'true' after add To Cart is clicked and basket is loading
   displaySpinner$ = new BehaviorSubject(false);
@@ -61,6 +60,8 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
   ngOnInit() {
+    this.basketLoading$ = this.checkoutFacade.basketLoading$;
+
     // update emitted to display spinning animation
     this.basketLoading$
       .pipe(

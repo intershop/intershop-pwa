@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
 
-import { LineItemListComponent } from '../../../../../../shared/basket/components/line-item-list/line-item-list.component';
-import { LoadingComponent } from '../../../../../../shared/common/components/loading/loading.component';
-import { FormsSharedModule } from '../../../../../../shared/forms/forms.module';
+import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { QuoteStateComponent } from '../../../quote/components/quote-state/quote-state.component';
 
@@ -23,12 +23,13 @@ describe('Product Add To Quote Dialog Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        MockComponent(InputComponent),
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
         MockComponent(QuoteStateComponent),
         ProductAddToQuoteDialogComponent,
       ],
-      imports: [FormsSharedModule, NgbModalModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

@@ -8,41 +8,40 @@ import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import {
+  AVAILABLE_LOCALES,
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   LARGE_BREAKPOINT_WIDTH,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
   MEDIUM_BREAKPOINT_WIDTH,
+  PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { Product } from 'ish-core/models/product/product.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
+import { AddressService } from 'ish-core/services/address/address.service';
+import { BasketPaymentService } from 'ish-core/services/basket/basket-payment.service';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { CountryService } from 'ish-core/services/country/country.service';
+import { FilterService } from 'ish-core/services/filter/filter.service';
+import { OrderService } from 'ish-core/services/order/order.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { UserService } from 'ish-core/services/user/user.service';
+import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingEffects, shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUser } from 'ish-core/store/user';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import {
-  AVAILABLE_LOCALES,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-  PRODUCT_LISTING_ITEMS_PER_PAGE,
-} from '../../configurations/injection-keys';
-import { Basket } from '../../models/basket/basket.model';
-import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer } from '../../models/customer/customer.model';
-import { LineItem } from '../../models/line-item/line-item.model';
-import { Locale } from '../../models/locale/locale.model';
-import { Price } from '../../models/price/price.model';
-import { AddressService } from '../../services/address/address.service';
-import { BasketService } from '../../services/basket/basket.service';
-import { CategoriesService } from '../../services/categories/categories.service';
-import { CountryService } from '../../services/country/country.service';
-import { FilterService } from '../../services/filter/filter.service';
-import { OrderService } from '../../services/order/order.service';
-import { ProductsService } from '../../services/products/products.service';
-import { SuggestService } from '../../services/suggest/suggest.service';
-import { UserService } from '../../services/user/user.service';
-import { coreEffects, coreReducers } from '../core-store.module';
-import { LoadProductSuccess } from '../shopping/products';
-import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
-import { LoginUser } from '../user';
 
 import { AddProductToBasket } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout-store.module';
@@ -225,14 +224,6 @@ describe('Checkout Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting(
-          {
-            ...coreReducers,
-            checkout: combineReducers(checkoutReducers),
-            shopping: combineReducers(shoppingReducers),
-          },
-          [...coreEffects, ...checkoutEffects, ...shoppingEffects]
-        ),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
@@ -241,10 +232,19 @@ describe('Checkout Store', () => {
         ]),
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+          effects: [...coreEffects, ...checkoutEffects, ...shoppingEffects],
+        }),
       ],
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: BasketPaymentService, useFactory: () => instance(mock(BasketPaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
@@ -274,16 +274,20 @@ describe('Checkout Store', () => {
 
   describe('with anonymous user', () => {
     beforeEach(fakeAsync(() => {
-      store.dispatch(new LoadProductSuccess({ product: { sku: 'test', packingUnit: 'pcs.' } as Product }));
+      store.dispatch(
+        new LoadProductSuccess({
+          product: { sku: 'test', packingUnit: 'pcs.', completenessLevel: ProductCompletenessLevel.List } as Product,
+        })
+      );
       store.dispatch(new AddProductToBasket({ sku: 'test', quantity: 1 }));
       tick(5000);
     }));
 
     describe('and without basket', () => {
-      it('should initially load basket and basketItems on product add.', () => {
+      it('should initially load basket and basketItems on product add.', fakeAsync(() => {
         expect(store.actionsArray(/Basket|Shopping/)).toMatchInlineSnapshot(`
           [Shopping] Load Product Success:
-            product: {"sku":"test","packingUnit":"pcs."}
+            product: {"sku":"test","packingUnit":"pcs.","completenessLevel":2}
           [Basket] Add Product:
             sku: "test"
             quantity: 1
@@ -296,12 +300,15 @@ describe('Checkout Store', () => {
           [Basket Internal] Load Basket
           [Basket API] Load Basket Success:
             basket: {"id":"test","lineItems":[1]}
+          [Shopping] Load Product if not Loaded:
+            sku: "test"
+            level: 2
         `);
-      });
+      }));
     });
 
     describe('and with basket', () => {
-      it('should merge basket on user login.', () => {
+      it('should merge basket on user login.', fakeAsync(() => {
         store.reset();
         store.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
 
@@ -315,7 +322,7 @@ describe('Checkout Store', () => {
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
         `);
-      });
+      }));
     });
 
     afterEach(() => {

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { LoginStatusContainerComponent } from '../../containers/login-status/login-status.container';
+import { LoginStatusContainerComponent } from 'ish-shell/header/containers/login-status/login-status.container';
 
 import { HeaderCheckoutComponent } from './header-checkout.component';
 

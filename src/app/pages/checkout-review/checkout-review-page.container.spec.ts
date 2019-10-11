@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { LoadingComponent } from '../../shared/common/components/loading/loading.component';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CheckoutReviewPageContainerComponent } from './checkout-review-page.container';
 import { CheckoutReviewComponent } from './components/checkout-review/checkout-review.component';
@@ -23,12 +24,14 @@ describe('Checkout Review Page Container', () => {
         MockComponent(LoadingComponent),
       ],
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
       ],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();
   }));
 

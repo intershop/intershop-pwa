@@ -1,6 +1,6 @@
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { Order } from '../../models/order/order.model';
 
 import * as fromActions from './orders.actions';
 import { initialState, ordersReducer } from './orders.reducer';

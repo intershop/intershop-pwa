@@ -1,8 +1,8 @@
 import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
-import { getSelectedProductId } from '../products';
-import { getShoppingState } from '../shopping-store';
+import { getSelectedProductId } from 'ish-core/store/shopping/products';
+import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 const getRecentlyState = createSelector(
   getShoppingState,
@@ -11,15 +11,13 @@ const getRecentlyState = createSelector(
 
 export const getRecentlyViewedProducts = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)
-)(
-  getRecentlyState,
-  (state): string[] =>
-    state.products
-      // take only first element of each group
-      .filter((val, _, arr) => !val.group || arr.find(el => el.group === val.group) === val)
-      .map(e => e.sku)
-      // take only first appearance of sku
-      .filter((val, idx, arr) => arr.indexOf(val) === idx)
+)(getRecentlyState, (state): string[] =>
+  state.products
+    // take only first element of each group
+    .filter((val, _, arr) => !val.group || arr.find(el => el.group === val.group) === val)
+    .map(e => e.sku)
+    // take only first appearance of sku
+    .filter((val, idx, arr) => arr.indexOf(val) === idx)
 );
 
 /**

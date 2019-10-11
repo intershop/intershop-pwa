@@ -1,20 +1,39 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ofRoute } from 'ngrx-router';
-import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  mergeMapTo,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { BasketService } from '../../../services/basket/basket.service';
-import { LoadProduct, getProductEntities } from '../../shopping/products';
-import { UserActionTypes } from '../../user';
+import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
+import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { UserActionTypes } from 'ish-core/store/user';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
+  constructor(
+    private actions$: Actions,
+    private router: Router,
+    private store: Store<{}>,
+    private basketService: BasketService
+  ) {}
 
   /**
    * The load basket effect.
@@ -48,12 +67,10 @@ export class BasketEffects {
   loadProductsForBasket$ = this.actions$.pipe(
     ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
     mapToPayloadProperty('basket'),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    switchMap(([basket, products]) => [
-      ...basket.lineItems
-        .map(basketItem => basketItem.productSKU)
-        .filter(sku => !products[sku])
-        .map(sku => new LoadProduct({ sku })),
+    switchMap(basket => [
+      ...basket.lineItems.map(
+        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+      ),
     ])
   );
 
@@ -106,11 +123,11 @@ export class BasketEffects {
   @Effect()
   addQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayloadProperty('quoteId'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([, basketId]) => !!basketId),
-    concatMap(([quoteId, basketId]) =>
-      this.basketService.addQuoteToBasket(quoteId, basketId).pipe(
+    filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
+    concatMap(([payload, currentBasketId]) =>
+      this.basketService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
         map(link => new basketActions.AddQuoteToBasketSuccess({ link })),
         mapErrorToAction(basketActions.AddQuoteToBasketFail)
       )
@@ -124,11 +141,13 @@ export class BasketEffects {
   @Effect()
   getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayloadProperty('quoteId'),
+    mapToPayload(),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([, basketId]) => !basketId),
-    mergeMap(([quoteId]) =>
-      this.basketService.createBasket().pipe(mapTo(new basketActions.AddQuoteToBasket({ quoteId })))
+    filter(([payload, basketId]) => !basketId && !payload.basketId),
+    mergeMap(([{ quoteId }]) =>
+      this.basketService
+        .createBasket()
+        .pipe(map(basket => new basketActions.AddQuoteToBasket({ quoteId, basketId: basket.id })))
     )
   );
 
@@ -142,7 +161,7 @@ export class BasketEffects {
       basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.AddQuoteToBasketFail
     ),
-    mapTo(new basketActions.UpdateBasket({ update: { calculationState: 'CALCULATED' } }))
+    mapTo(new basketActions.UpdateBasket({ update: { calculated: true } }))
   );
 
   /**
@@ -180,6 +199,61 @@ export class BasketEffects {
         mapErrorToAction(basketActions.MergeBasketFail)
       )
     )
+  );
+
+  /**
+   * Validates the basket before the user is allowed to jump to the next basket step
+   */
+  @Effect()
+  validateBasket$ = this.actions$.pipe(
+    ofType<basketActions.ContinueCheckout>(basketActions.BasketActionTypes.ContinueCheckout),
+    mapToPayloadProperty('targetStep'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    whenTruthy(),
+    concatMap(([targetStep, basketId]) => {
+      let scopes: BasketValidationScopeType[] = [''];
+      let targetRoute = '';
+      switch (targetStep) {
+        case 1: {
+          scopes = ['Products', 'Value'];
+          targetRoute = '/checkout/address';
+          break;
+        }
+        case 2: {
+          scopes = ['InvoiceAddress', 'ShippingAddress', 'Addresses'];
+          targetRoute = '/checkout/shipping';
+          break;
+        }
+        case 3: {
+          scopes = ['Shipping'];
+          targetRoute = '/checkout/payment';
+          break;
+        }
+        case 4: {
+          scopes = ['Payment'];
+          targetRoute = '/checkout/review';
+          break;
+        }
+      }
+      return this.basketService.validateBasket(basketId, scopes).pipe(
+        map(basketValidation => new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })),
+        mapErrorToAction(basketActions.ContinueCheckoutFail)
+      );
+    })
+  );
+
+  /**
+   * After order creation either redirect to a payment provider or show checkout receipt page.
+   */
+  @Effect({ dispatch: false })
+  jumpToNextCheckoutStep$ = this.actions$.pipe(
+    ofType<basketActions.ContinueCheckoutSuccess>(basketActions.BasketActionTypes.ContinueCheckoutSuccess),
+    mapToPayload(),
+    tap(payload => {
+      if (payload.targetRoute && payload.basketValidation && payload.basketValidation.results.valid) {
+        this.router.navigate([payload.targetRoute]);
+      }
+    })
   );
 
   /**

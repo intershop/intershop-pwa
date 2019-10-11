@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { CountryMapper } from 'ish-core/models/country/country.mapper';
+import { Country } from 'ish-core/models/country/country.model';
 import { RegionData } from 'ish-core/models/region/region.interface';
 import { RegionMapper } from 'ish-core/models/region/region.mapper';
 import { Region } from 'ish-core/models/region/region.model';
-import { CountryMapper } from '../../models/country/country.mapper';
-import { Country } from '../../models/country/country.model';
-import { ApiService, unpackEnvelope } from '../api/api.service';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class CountryService {

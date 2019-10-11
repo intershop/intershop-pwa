@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 
-import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 
 import { HomePageComponent } from './home-page.component';
 
@@ -13,7 +12,6 @@ describe('Home Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCarouselModule],
       declarations: [HomePageComponent, MockComponent(ContentIncludeContainerComponent)],
     }).compileComponents();
   }));

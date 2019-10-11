@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { IconModule } from 'ish-core/icon.module';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { SelectYearMonthComponent } from 'ish-shared/forms/components/select-year-month/select-year-month.component';
 
 import { PaymentConcardisCreditcardComponent } from './payment-concardis-creditcard.component';
 
@@ -16,8 +17,13 @@ describe('Payment Concardis Creditcard Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentConcardisCreditcardComponent],
-      imports: [FormsSharedModule, IconModule, NgbPopoverModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockComponent(NgbPopover),
+        MockComponent(SelectYearMonthComponent),
+        PaymentConcardisCreditcardComponent,
+      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

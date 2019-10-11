@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Country } from 'ish-core/models/country/country.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { Country } from '../../models/country/country.model';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { coreReducers } from '../core-store.module';
 
 import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { getAllCountries, getCountriesLoading } from './countries.selectors';
@@ -15,7 +15,7 @@ describe('Countries Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting(coreReducers),
+      imports: ngrxTesting({ reducers: coreReducers }),
     });
 
     store$ = TestBed.get(TestStore);

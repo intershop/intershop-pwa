@@ -1,11 +1,11 @@
-// tslint:disable:ccp-no-intelligence-in-components
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AddPromotionCodeToBasket, getBasketPromotionError, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -20,9 +20,10 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
-  basket$ = this.store.pipe(select(getCurrentBasket));
-  promotionError$ = this.store.pipe(select(getBasketPromotionError));
+  basket$: Observable<BasketView>;
+  promotionError$: Observable<HttpError>;
 
   codeInput: FormControl;
   isCollapsed = true;
@@ -33,9 +34,12 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private store: Store<{}>, private cd: ChangeDetectorRef) {}
+  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.basket$ = this.checkoutFacade.basket$;
+    this.promotionError$ = this.checkoutFacade.promotionError$;
+
     this.codeInput = new FormControl('', [Validators.required, Validators.maxLength(this.codeMaxLength)]);
 
     // update emitted to display spinning animation
@@ -62,7 +66,7 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
     if (!this.basketPromoCodes || !this.basketPromoCodes.includes(this.codeInput.value)) {
       this.lastEnteredPromoCode = this.codeInput.value;
     }
-    this.store.dispatch(new AddPromotionCodeToBasket({ code: this.codeInput.value }));
+    this.checkoutFacade.addPromotionCodeToBasket(this.codeInput.value);
   }
 
   ngOnDestroy() {

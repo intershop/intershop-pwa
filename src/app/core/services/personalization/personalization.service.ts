@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService } from '../api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class PersonalizationService {

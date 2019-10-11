@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { noop, of, throwError } from 'rxjs';
@@ -22,10 +22,12 @@ import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
@@ -64,12 +66,14 @@ describe('Quote Request Effects', () => {
           { path: 'login', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
         ]),
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
-          user: userReducer,
-          configuration: configurationReducer,
+        ngrxTesting({
+          reducers: {
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+            user: userReducer,
+            configuration: configurationReducer,
+          },
         }),
       ],
       providers: [
@@ -451,7 +455,7 @@ describe('Quote Request Effects', () => {
       const action = new quoteRequestActions.LoadQuoteRequestItemsSuccess({
         quoteRequestItems: [{ productSKU: 'SKU' } as QuoteRequestItem],
       });
-      const completion = new LoadProduct({ sku: 'SKU' });
+      const completion = new LoadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -801,16 +805,29 @@ describe('Quote Request Effects', () => {
   });
 
   describe('goToLoginOnAddQuoteRequest$', () => {
-    it('should navigate to /login with returnUrl set if AddQuoteRequest called without proper login.', fakeAsync(() => {
+    beforeEach(fakeAsync(() => {
       router.navigateByUrl('/foobar');
       tick(500);
       expect(location.path()).toEqual('/foobar');
+    }));
 
+    it('should navigate to login with returnUrl set if AddProductToQuoteRequest called without proper login.', fakeAsync(() => {
       const payload = {
         sku: 'SKU',
         quantity: 1,
       };
       const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
+      actions$ = of(action);
+
+      effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/login?returnUrl=%2Ffoobar&messageKey=quotes');
+    }));
+
+    it('should navigate to /login with returnUrl set if AddBasketToQuoteRequest called without proper login.', fakeAsync(() => {
+      const action = new quoteRequestActions.AddBasketToQuoteRequest();
       actions$ = of(action);
 
       effects.goToLoginOnAddQuoteRequest$.subscribe(noop, fail, noop);

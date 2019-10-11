@@ -89,10 +89,16 @@ grep "AudioComponent" src/app/shared/shared.module.ts
 
 git add -A
 npx lint-staged
-npx tsc --project src/tsconfig.spec.json
+npx tsc --project tsconfig.spec.json
 
-sed -i -e 's/mockServerAPI.*/mockServerAPI: true,/g' src/environments/environment.prod.ts
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
+
+if grep mockServerAPI src/environments/environment.prod.ts
+then
+  sed -i -e 's/mockServerAPI.*/mockServerAPI: true,/g' src/environments/environment.prod.ts
+else
+  sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
+fi
 
 npm run build
 

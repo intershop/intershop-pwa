@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { ShowFormFeedbackDirective } from '../../directives/show-form-feedback.directive';
-import { FormControlFeedbackComponent } from '../form-control-feedback/form-control-feedback.component';
-import { InputComponent } from '../input/input.component';
+import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
+import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
 
 import { LoginFormComponent } from './login-form.component';
 
@@ -18,8 +19,14 @@ describe('Login Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FormControlFeedbackComponent, InputComponent, LoginFormComponent, ShowFormFeedbackDirective],
-      imports: [IconModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        FormControlFeedbackComponent,
+        InputComponent,
+        LoginFormComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(ShowFormFeedbackDirective),
+      ],
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
-import { BreadcrumbComponent } from '../../shared/common/components/breadcrumb/breadcrumb.component';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { RecentlyViewedAllComponent } from './components/recently-viewed-all/recently-viewed-all.component';
 import { RecentlyPageContainerComponent } from './recently-page.container';
@@ -21,8 +22,7 @@ describe('Recently Page Container', () => {
         MockComponent(RecentlyViewedAllComponent),
         RecentlyPageContainerComponent,
       ],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: { shopping: combineReducers(shoppingReducers) } })],
     }).compileComponents();
   }));
 

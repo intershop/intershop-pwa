@@ -7,10 +7,7 @@
     "tslint-eslint-rules",
     "intershop-tslint-rules"
   ],
-  "rulesDirectory": [
-    "node_modules/codelyzer",
-    "node_modules/tslint-jasmine-rules/dist"
-  ],
+  "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
     "no-extra-boolean-cast": true,
     "no-static-this": true,
@@ -108,8 +105,6 @@
     "prefer-const": true,
     "use-shorthand-property-in-object-creation": true,
     "radix": true,
-    "rxjs-no-add": true,
-    "rxjs-no-operator": true,
     "rxjs-no-internal": true,
     "rxjs-finnish": {
       "options": [
@@ -125,8 +120,6 @@
     },
     "rxjs-no-create": true,
     "rxjs-no-ignored-subscribe": true,
-    "rxjs-no-patched": true,
-    "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
     "rxjs-no-unsafe-catch": true,
     "rxjs-no-unsafe-first": { "severity": "off" },
@@ -172,23 +165,17 @@
     ],
     "directive-selector": [true, "attribute", "ish", "camelCase"],
     "component-selector": [true, "element", "ish", "kebab-case"],
-    "use-input-property-decorator": true,
+    "no-inputs-metadata-property": true,
     "no-assignement-to-inputs": true,
-    "use-output-property-decorator": true,
+    "no-outputs-metadata-property": true,
     "use-component-change-detection": { "severity": "warning" },
-    "use-host-property-decorator": true,
+    "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": true,
+    "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "initialize-observables-in-declaration": {
-      "severity": "warning",
-      "options": {
-        "only-simple": true
-      }
-    },
     "lifecycle-cyclomatic-complexity": {
       "severity": "warning",
       "options": {
@@ -203,6 +190,7 @@
       }
     },
     "ish-ordered-imports": true,
+    "ish-useful-imports": true,
     "no-duplicate-imports": true,
     "ban": [
       true,
@@ -268,7 +256,7 @@
           "message": "import with 'src' seems to be wrong"
         },
         {
-          "from": "^app/.*",
+          "from": "^(app|src)/.*",
           "message": "Transform into relative import, please."
         },
         {
@@ -285,6 +273,11 @@
           "from": "^\\.\\/(\\..*$)",
           "message": "unnecessary local folder reference",
           "fix": "$1"
+        },
+        {
+          "from": "^(.*store\\/)(.*)\\/\\2.(actions|selectors)$",
+          "message": "use aggregation import instead.",
+          "fix": "$1$2"
         },
         {
           "from": "rxjs(?!($|/operators$))",
@@ -324,6 +317,7 @@
         {
           "import": "CookiesService",
           "from": "@ngx-utils/cookies",
+          "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
         {
@@ -360,8 +354,43 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!module\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
+        },
+        {
+          "from": "(.*environments/environment).+",
+          "message": "Importing specific environments is not allowed. Use the default one.",
+          "fix": "$1"
+        },
+        {
+          "import": "^(StoreModule|EffectsModule)$",
+          "from": "ngrx",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use the testing helper 'ngrxTesting' in tests instead."
+        },
+        {
+          "import": "^IconModule$",
+          "from": "ish-core/icon.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent(FaIconComponent) in tests instead."
+        },
+        {
+          "import": "^FormsSharedModule$",
+          "from": "ish-shared/forms/forms.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Performance: Use MockComponent for individual components in tests instead."
+        },
+        {
+          "import": "^NO_ERRORS_SCHEMA$",
+          "from": "@angular/core",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Use MockComponent for individual components in tests instead."
+        },
+        {
+          "import": "^PipesModule$",
+          "from": "ish-core/pipes.module",
+          "filePattern": "^.*\\.spec\\.ts*$",
+          "message": "Performance: Use MockPipe or declare it individually in tests instead."
         }
       ]
     },
@@ -403,18 +432,21 @@
         "component": {
           "ngrx": false,
           "service": false,
-          "router": true
+          "router": true,
+          "facade": false
         },
         "container": {
-          "ngrx": true,
+          "ngrx": false,
           // services should only be used by effects
           "service": false,
           // explicit router navigation should only be done in effects
-          "router": true
+          "router": true,
+          "facade": true
         }
       }
     },
     "ccp-no-markup-in-containers": { "severity": "warning" },
+    "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
       "options": {
@@ -427,12 +459,14 @@
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",
           // extra artifacts
-          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(service)s/([a-z][a-z0-9-]+)/\\3\\.\\2[a-z0-9-\\.]*\\.ts",
+          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
           // models
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/models/([a-z][a-z0-9-]+)/\\2\\.(pipe|helper|interface|mapper|types)\\.ts$",
           // cms
           "^.*/src/app/shared/cms/sfe-adapter/.*\\.ts$",
+          // facades
+          "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/facades/(index|[a-z][a-z0-9-]+\\.facade)\\.ts$",
           // ngrx
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/\\2(\\-[a-z][a-z0-9-]+|)\\.(action|effects|reducer|selectors)\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
@@ -520,8 +554,9 @@
           // services
           {
             "name": "^([A-Z].*)Service$",
-            "file": "(/utils.*|/services/<kebab>)/<kebab>\\.service\\.ts$"
+            "file": "(/utils.*|/services/([a-z][a-z0-9-]+/|))[a-z][a-z0-9-]+/<kebab>\\.service\\.ts$"
           },
+
           // modules and routing
           {
             "name": "^([A-Z].+)ExportsModule$",
@@ -568,6 +603,11 @@
           {
             "name": "^([A-Z].*)Data$",
             "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$"
+          },
+          // facades
+          {
+            "name": "^([A-Z].*)Facade$",
+            "file": ".*/app/(core|extensions/[a-z][a-z0-9-]+)/facades/<kebab>\\.facade\\.ts$"
           },
           // ngrx
           {

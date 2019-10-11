@@ -9,17 +9,16 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { Country } from 'ish-core/models/country/country.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
-import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
-import { isBusinessCustomer } from 'ish-core/store/user';
-import { determineSalutations, updateValidatorsByDataLength } from '../../../forms/utils/form-utils';
-import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
+import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
+import { determineSalutations, updateValidatorsByDataLength } from 'ish-shared/forms/utils/form-utils';
 
 /**
  * The Address Form Container Component fetches address form related data (countries, regions, titles) and displays an address form using the {@link AddressFormComponent}
@@ -34,9 +33,6 @@ import { AddressFormFactoryProvider } from '../../configurations/address-form-fa
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestroy {
-  countries$ = this.store.pipe(select(getAllCountries));
-  loading$ = this.store.pipe(select(getCountriesLoading));
-
   /**
    * Parent form: it must contain control 'countryCodeSwitch' and the actual address control
    */
@@ -47,6 +43,8 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
    */
   @Input() controlName = 'address';
 
+  countries$: Observable<Country[]>;
+  loading$: Observable<boolean>;
   regions$: Observable<Region[]>;
   titles: string[];
   isBusinessCustomer = false;
@@ -54,23 +52,22 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
   private destroy$ = new Subject();
 
   constructor(
-    private store: Store<{}>,
+    private accountFacade: AccountFacade,
+    private appFacade: AppFacade,
     private afs: AddressFormFactoryProvider,
     private cd: ChangeDetectorRef,
     private featureToggle: FeatureToggleService
-  ) {
-    this.store
-      .pipe(
-        select(isBusinessCustomer),
-        takeUntil(this.destroy$)
-      )
+  ) {}
+
+  ngOnInit() {
+    this.countries$ = this.appFacade.countries$();
+    this.loading$ = this.appFacade.countriesLoading$;
+
+    this.accountFacade.isBusinessCustomer$
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         data => (this.isBusinessCustomer = data || this.featureToggle.enabled('businessCustomerRegistration'))
       );
-  }
-
-  ngOnInit() {
-    this.store.dispatch(new LoadCountries());
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -109,12 +106,7 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
    */
   private fetchDataAfterCountryChange(countryCode: string) {
     if (countryCode) {
-      this.store.dispatch(new LoadRegions({ countryCode }));
-
-      this.regions$ = this.store.pipe(
-        select(getRegionsByCountryCode, { countryCode }),
-        tap(regions => this.updateRegions(regions))
-      );
+      this.regions$ = this.appFacade.regions$(countryCode).pipe(tap(regions => this.updateRegions(regions)));
 
       this.titles = determineSalutations(countryCode);
       this.cd.detectChanges(); // necessary to show titles/regions while editing an existing address

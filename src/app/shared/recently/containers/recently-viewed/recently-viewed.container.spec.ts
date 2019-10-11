@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { RecentlyViewedComponent } from '../../components/recently-viewed/recently-viewed.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { RecentlyViewedComponent } from 'ish-shared/recently/components/recently-viewed/recently-viewed.component';
 
 import { RecentlyViewedContainerComponent } from './recently-viewed.container';
 
@@ -16,8 +17,10 @@ describe('Recently Viewed Container', () => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(RecentlyViewedComponent), RecentlyViewedContainerComponent],
       imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
     }).compileComponents();

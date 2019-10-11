@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, merge, of, timer } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { User } from 'ish-core/models/user/user.model';
+
 import { QuoteRequest } from '../../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../../models/quote/quote.model';
 
@@ -36,6 +40,8 @@ import { Quote } from '../../../../models/quote/quote.model';
 export class QuoteEditComponent implements OnChanges {
   @Input() quote: Quote | QuoteRequest;
   @Input() user: User;
+  @Input() error: HttpError;
+  @Input() submitted = false;
 
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
@@ -51,7 +57,8 @@ export class QuoteEditComponent implements OnChanges {
   sellerComment: string;
   validFromDate: number;
   validToDate: number;
-  submitted = false;
+  saved = false;
+  displaySavedMessage$: Observable<boolean>;
 
   constructor(private router: Router) {
     this.form = new FormGroup({
@@ -68,6 +75,14 @@ export class QuoteEditComponent implements OnChanges {
     this.validToDate = quote.validToDate;
 
     this.patchForm(quote);
+
+    this.toggleSaveMessage();
+  }
+
+  private toggleSaveMessage() {
+    if (!this.submitted && this.saved && !this.error && this.quote.state === 'New') {
+      this.displaySavedMessage$ = merge(of(true), timer(5000).pipe(mapTo(false)));
+    }
   }
 
   private patchForm(quote: Quote) {
@@ -111,7 +126,6 @@ export class QuoteEditComponent implements OnChanges {
    */
   submit() {
     this.submitQuoteRequest.emit();
-    this.submitted = true;
   }
 
   /**
@@ -126,6 +140,7 @@ export class QuoteEditComponent implements OnChanges {
       displayName: this.form.value.displayName,
       description: this.form.value.description,
     });
+    this.saved = true;
   }
 
   /**

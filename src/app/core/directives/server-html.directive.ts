@@ -37,10 +37,10 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
 
   ngAfterContentInit() {
     // use setAttribute here to bypass security check
-    this.elementRef.nativeElement.querySelectorAll('[href]').forEach((element: HTMLElement) => {
+    Array.from(this.elementRef.nativeElement.querySelectorAll('[href]')).forEach((element: HTMLElement) => {
       element.setAttribute('href', LinkParser.parseLink(element.getAttribute('href')));
     });
-    this.elementRef.nativeElement.querySelectorAll('[src]').forEach((element: HTMLElement) => {
+    Array.from(this.elementRef.nativeElement.querySelectorAll('[src]')).forEach((element: HTMLElement) => {
       element.setAttribute('src', this.transformMediaObjectSrc(element.getAttribute('src')));
     });
   }

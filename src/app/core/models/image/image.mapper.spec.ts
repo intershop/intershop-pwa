@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ImageMapper } from './image.mapper';
 import { Image } from './image.model';
@@ -35,10 +35,12 @@ describe('Image Mapper', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { baseURL: 'http://example.org' } } }
-        ),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { baseURL: 'http://example.org' } },
+          },
+        }),
       ],
     });
     imageMapper = TestBed.get(ImageMapper);

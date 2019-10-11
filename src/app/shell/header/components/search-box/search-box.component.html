@@ -1,7 +1,7 @@
 <form #searchForm role="search" class="search clearfix" name="SearchBox_Header" (submit)="submitSearch()">
   <input
     #searchInput
-    [placeholder]="configuration?.placeholderText || ''"
+    [placeholder]="configuration?.placeholder || ''"
     formControlName="search"
     autocomplete="off"
     name="SearchTerm"

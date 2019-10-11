@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { Address } from 'ish-core/models/address/address.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import * as messagesActions from 'ish-core/store/messages/messages.actions';
+import { AddressService } from 'ish-core/services/address/address.service';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { SuccessMessage } from 'ish-core/store/messages';
+import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { Address } from '../../models/address/address.model';
-import { AddressService } from '../../services/address/address.service';
-import { checkoutReducers } from '../checkout/checkout-store.module';
-import { LoginUserSuccess, LogoutUser } from '../user';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as addressesActions from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';
@@ -32,9 +33,11 @@ describe('Addresses Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-          user: userReducer,
+        ngrxTesting({
+          reducers: {
+            checkout: combineReducers(checkoutReducers),
+            user: userReducer,
+          },
         }),
       ],
       providers: [
@@ -87,7 +90,7 @@ describe('Addresses Effects', () => {
       const address = { urn: '123' } as Address;
       const action = new addressesActions.CreateCustomerAddress({ address });
       const completion = new addressesActions.CreateCustomerAddressSuccess({ address: { urn: 'test' } as Address });
-      const completion2 = new messagesActions.SuccessMessage({
+      const completion2 = new SuccessMessage({
         message: 'account.addresses.new_address_created.message',
       });
 

@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
@@ -14,8 +15,12 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, PipesModule],
-      declarations: [FilterSwatchImagesComponent],
+      declarations: [
+        FilterSwatchImagesComponent,
+        MockComponent(FaIconComponent),
+        MockComponent(NgbCollapse),
+        SanitizePipe,
+      ],
     }).compileComponents();
   }));
 
@@ -40,15 +45,4 @@ describe('Filter Swatch Images Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });
-
-  it('should toggle all swatch images when filter group header is clicked', fakeAsync(() => {
-    fixture.detectChanges();
-    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-    filterGroupHead.click();
-    tick(500);
-    fixture.detectChanges();
-
-    const hiddenFilterFacet = element.getElementsByTagName('ul')[0];
-    expect(hiddenFilterFacet.className).not.toContain('show');
-  }));
 });

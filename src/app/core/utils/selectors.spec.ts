@@ -1,10 +1,10 @@
-// tslint:disable:no-any
 import { TestBed } from '@angular/core/testing';
 import { Action, Selector, createSelector } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from './dev/ngrx-testing';
 import { firstTruthy } from './selectors';
 
+// tslint:disable:no-any
 describe('Selectors', () => {
   let store: TestStore;
   const getState = (state: any) => state.state;
@@ -14,7 +14,7 @@ describe('Selectors', () => {
       return { ...state, ...action.payload };
     }
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ state: reducer }),
+      imports: ngrxTesting({ reducers: { state: reducer } }),
     });
 
     store = TestBed.get(TestStore);

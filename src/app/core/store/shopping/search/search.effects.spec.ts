@@ -9,19 +9,19 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
-} from '../../../configurations/injection-keys';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
-import { ApiService } from '../../../services/api/api.service';
-import { ProductsService } from '../../../services/products/products.service';
-import { SuggestService } from '../../../services/suggest/suggest.service';
-import { LoadMoreProducts, SetProductListingPageSize } from '../product-listing';
-import { ProductListingEffects } from '../product-listing/product-listing.effects';
-import { shoppingReducers } from '../shopping-store.module';
+} from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
+import { ApiService } from 'ish-core/services/api/api.service';
+import { ProductsService } from 'ish-core/services/products/products.service';
+import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { LoadMoreProducts, SetProductListingPageSize } from 'ish-core/store/shopping/product-listing';
+import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
   SearchProducts,
@@ -65,10 +65,12 @@ describe('Search Effects', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          ...ngrxTesting({
-            shopping: combineReducers(shoppingReducers),
-          }),
           RouterTestingModule,
+          ngrxTesting({
+            reducers: {
+              shopping: combineReducers(shoppingReducers),
+            },
+          }),
         ],
         providers: [
           SearchEffects,
@@ -93,10 +95,10 @@ describe('Search Effects', () => {
           params: { searchTerm: 'dummy' },
           queryParams: [],
         });
-        actions$ = hot('a', { a: action });
+        actions$ = hot('a-a-|', { a: action });
 
         expect(effects.listenToRouteForSearchTerm$).toBeObservable(
-          cold('a', { a: new SelectSearchTerm({ searchTerm: 'dummy' }) })
+          cold('a-a-|', { a: new SelectSearchTerm({ searchTerm: 'dummy' }) })
         );
       });
     });
@@ -104,10 +106,10 @@ describe('Search Effects', () => {
     describe('triggerSearch$', () => {
       it('should trigger action if search URL is matched', () => {
         const action = new SelectSearchTerm({ searchTerm: 'dummy' });
-        actions$ = hot('a', { a: action });
+        actions$ = hot('a-a-|', { a: action });
 
         expect(effects.triggerSearch$).toBeObservable(
-          cold('a', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
+          cold('a-a-|', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
         );
       });
     });
@@ -155,13 +157,13 @@ describe('Search Effects', () => {
       TestBed.configureTestingModule({
         declarations: [DummyComponent],
         imports: [
-          ...ngrxTesting(
-            {
+          RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+          ngrxTesting({
+            reducers: {
               shopping: combineReducers(shoppingReducers),
             },
-            [SearchEffects, ProductListingEffects]
-          ),
-          RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+            effects: [SearchEffects, ProductListingEffects],
+          }),
         ],
         providers: [
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },

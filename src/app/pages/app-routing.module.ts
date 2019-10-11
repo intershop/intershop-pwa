@@ -7,46 +7,53 @@ import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', loadChildren: './home/home-page.module#HomePageModule' },
-  { path: 'error', loadChildren: './error/error-page.module#ErrorPageModule' },
-  { path: 'product', loadChildren: './product/product-page.module#ProductPageModule' },
-  { path: 'category', loadChildren: './category/category-page.module#CategoryPageModule' },
+  { path: 'home', loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule) },
+  { path: 'error', loadChildren: () => import('./error/error-page.module').then(m => m.ErrorPageModule) },
+  { path: 'product', loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule) },
+  { path: 'category', loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule) },
   {
     path: 'account',
-    loadChildren: './account/account-page.module#AccountPageModule',
+    loadChildren: () => import('./account/account-page.module').then(m => m.AccountPageModule),
     canActivate: [AuthGuard],
   },
   {
     path: 'compare',
-    loadChildren: './compare/compare-page.module#ComparePageModule',
+    loadChildren: () => import('./compare/compare-page.module').then(m => m.ComparePageModule),
     canActivate: [FeatureToggleGuard],
     data: { feature: 'compare' },
   },
   {
     path: 'recently',
-    loadChildren: './recently/recently-page.module#RecentlyPageModule',
+    loadChildren: () => import('./recently/recently-page.module').then(m => m.RecentlyPageModule),
     canActivate: [FeatureToggleGuard],
     data: { feature: 'recently' },
   },
-  { path: 'search', loadChildren: './search/search-page.module#SearchPageModule' },
-  { path: 'basket', loadChildren: './basket/basket-page.module#BasketPageModule' },
+  { path: 'search', loadChildren: () => import('./search/search-page.module').then(m => m.SearchPageModule) },
+  { path: 'basket', loadChildren: () => import('./basket/basket-page.module').then(m => m.BasketPageModule) },
   {
     path: 'checkout',
-    loadChildren: './checkout/checkout-page.module#CheckoutPageModule',
+    loadChildren: () => import('./checkout/checkout-page.module').then(m => m.CheckoutPageModule),
     data: { headerType: 'checkout' },
   },
-  { path: 'page', loadChildren: './content/content-page.module#ContentPageModule' },
+  { path: 'page', loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule) },
   {
     path: 'register',
-    loadChildren: './registration/registration-page.module#RegistrationPageModule',
+    loadChildren: () => import('./registration/registration-page.module').then(m => m.RegistrationPageModule),
   },
-  { path: 'login', loadChildren: './login/login-page.module#LoginPageModule' },
+  { path: 'login', loadChildren: () => import('./login/login-page.module').then(m => m.LoginPageModule) },
   {
     path: 'logout',
-    loadChildren: './home/home-page.module#HomePageModule',
+    loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
     canActivate: [LogoutGuard],
   },
-  { path: 'forgotPassword', loadChildren: './forgot-password/forgot-password-page.module#ForgotPasswordPageModule' },
+  {
+    path: 'forgotPassword',
+    loadChildren: () => import('./forgot-password/forgot-password-page.module').then(m => m.ForgotPasswordPageModule),
+  },
+  {
+    path: 'contact',
+    loadChildren: () => import('./contact/contact-page.module').then(m => m.ContactPageModule),
+  },
 ];
 
 @NgModule({

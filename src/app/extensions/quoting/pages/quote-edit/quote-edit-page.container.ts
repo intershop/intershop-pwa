@@ -1,33 +1,44 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
-import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
-import { getLoggedInUser } from 'ish-core/store/user';
-import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { User } from 'ish-core/models/user/user.model';
+
+import { QuotingFacade } from '../../facades/quoting.facade';
+import { Quote } from '../../models/quote/quote.model';
 
 @Component({
   selector: 'ish-quote-edit-page-container',
   templateUrl: './quote-edit-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteEditPageContainerComponent {
-  quote$ = this.store.pipe(select(getSelectedQuote));
-  quoteLoading$ = this.store.pipe(select(getQuoteLoading));
-  user$ = this.store.pipe(select(getLoggedInUser));
+export class QuoteEditPageContainerComponent implements OnInit {
+  quote$: Observable<Quote>;
+  quoteLoading$: Observable<boolean>;
+  quoteError$: Observable<HttpError>;
+  user$: Observable<User>;
 
-  constructor(private store: Store<{}>, private router: Router) {}
+  constructor(private quotingFacade: QuotingFacade, private accountFacade: AccountFacade, private router: Router) {}
+
+  ngOnInit() {
+    this.quote$ = this.quotingFacade.quote$;
+    this.quoteLoading$ = this.quotingFacade.quoteLoading$;
+    this.quoteError$ = this.quotingFacade.quoteError$;
+    this.user$ = this.accountFacade.user$;
+  }
 
   copyQuote() {
-    this.store.dispatch(new CreateQuoteRequestFromQuote());
+    this.quotingFacade.createQuoteRequestFromQuote();
   }
 
   rejectQuote() {
-    this.store.dispatch(new RejectQuote());
+    this.quotingFacade.rejectQuote();
   }
 
   addQuoteToBasket(quoteId: string) {
-    this.store.dispatch(new AddQuoteToBasket({ quoteId }));
+    this.quotingFacade.addQuoteToBasket(quoteId);
     this.router.navigate(['/basket']);
   }
 }

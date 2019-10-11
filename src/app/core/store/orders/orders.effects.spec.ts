@@ -3,22 +3,23 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { LoadBasket } from 'ish-core/store/checkout/basket';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { HttpError } from '../../models/http-error/http-error.model';
-import { Order } from '../../models/order/order.model';
-import { OrderService } from '../../services/order/order.service';
-import { LoadBasket } from '../checkout/basket';
-import { coreReducers } from '../core-store.module';
-import { shoppingReducers } from '../shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser } from '../user';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as orderActions from './orders.actions';
 import { OrdersEffects } from './orders.effects';
@@ -48,9 +49,11 @@ describe('Orders Effects', () => {
         RouterTestingModule.withRoutes([
           { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
         ]),
-        StoreModule.forRoot({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       providers: [
@@ -117,10 +120,12 @@ describe('Orders Effects', () => {
     }));
 
     it('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
-      Object.defineProperty(document.location, 'assign', {
-        configurable: true,
+      // mock location.assign() with jest.fn()
+      Object.defineProperty(window, 'location', {
+        value: { assign: jest.fn() },
+        writable: true,
       });
-      window.location.assign = jest.fn();
+
       const action = new orderActions.CreateOrderSuccess({
         order: {
           id: '123',
@@ -133,7 +138,7 @@ describe('Orders Effects', () => {
 
       tick(500);
 
-      expect(document.location.assign).toHaveBeenCalled();
+      expect(window.location.assign).toHaveBeenCalled();
     }));
   });
 

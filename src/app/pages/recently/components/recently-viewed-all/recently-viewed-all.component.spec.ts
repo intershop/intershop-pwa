@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
-import { ProductItemContainerComponent } from '../../../../shared/product/containers/product-item/product-item.container';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { ProductItemContainerComponent } from 'ish-shared/product/containers/product-item/product-item.container';
 
 import { RecentlyViewedAllComponent } from './recently-viewed-all.component';
 

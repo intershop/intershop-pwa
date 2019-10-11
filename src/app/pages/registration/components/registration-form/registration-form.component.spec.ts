@@ -1,20 +1,20 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
-
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { AddressFormFactory } from '../../../../shared/address-forms/components/address-form/address-form.factory';
-import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
-import { AddressFormContainerComponent } from '../../../../shared/address-forms/containers/address-form/address-form.container';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
+import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
+import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
+import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
+
 import { RegistrationCompanyFormComponent } from '../registration-company-form/registration-company-form.component';
 import { RegistrationCredentialsFormComponent } from '../registration-credentials-form/registration-credentials-form.component';
 
@@ -38,6 +38,7 @@ describe('Registration Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(AddressFormContainerComponent),
+        MockComponent(CaptchaComponent),
         MockComponent(RegistrationCompanyFormComponent),
         MockComponent(RegistrationCredentialsFormComponent),
         RegistrationFormComponent,
@@ -48,13 +49,14 @@ describe('Registration Form Component', () => {
       ],
       imports: [
         FeatureToggleModule,
-        FormsSharedModule,
         ReactiveFormsModule,
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['businessCustomerRegistration'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['businessCustomerRegistration'] } },
+          },
+        }),
       ],
     }).compileComponents();
   }));

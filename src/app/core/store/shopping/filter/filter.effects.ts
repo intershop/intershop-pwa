@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
+import { FilterService } from 'ish-core/services/filter/filter.service';
+import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { LoadProductFail } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty } from 'ish-core/utils/operators';
-import { FilterService } from '../../../services/filter/filter.service';
-import { SetProductListingPages } from '../product-listing';
-import { LoadProductFail } from '../products';
 
 import * as filterActions from './filter.actions';
 
@@ -15,7 +14,6 @@ import * as filterActions from './filter.actions';
 export class FilterEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<{}>,
     private filterService: FilterService,
     private productListingMapper: ProductListingMapper
   ) {}
@@ -61,10 +59,13 @@ export class FilterEffects {
     ofType<filterActions.LoadProductsForFilter>(filterActions.FilterActionTypes.LoadProductsForFilter),
     mapToPayload(),
     switchMap(({ id, searchParameter }) =>
-      this.filterService.getProductSkusForFilter(searchParameter).pipe(
-        mergeMap(newProducts => [
+      this.filterService.getFilteredProducts(searchParameter).pipe(
+        mergeMap(({ productSKUs, total }) => [
           new SetProductListingPages(
-            this.productListingMapper.createPages(newProducts, id.type, id.value, { filters: id.filters })
+            this.productListingMapper.createPages(productSKUs, id.type, id.value, {
+              filters: id.filters,
+              itemCount: total,
+            })
           ),
         ]),
         mapErrorToAction(LoadProductFail)

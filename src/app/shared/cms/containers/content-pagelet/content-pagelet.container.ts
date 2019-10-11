@@ -1,4 +1,3 @@
-// tslint:disable:ccp-no-intelligence-in-components ccp-no-markup-in-containers
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,12 +10,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import { ContentPageletView } from 'ish-core/models/content-view/content-views';
-import { CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
-import { CMSComponent } from '../../models/cms-component/cms-component.model';
-import { SfeAdapterService } from '../../sfe-adapter/sfe-adapter.service';
-import { SfeMetadataWrapper } from '../../sfe-adapter/sfe-metadata-wrapper';
-import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
+import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
+import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
+import { SfeMetadataWrapper } from 'ish-shared/cms/sfe-adapter/sfe-metadata-wrapper';
+import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 
 /**
  * The Content Pagelet Container Component renders the given 'pagelet'.
@@ -31,6 +30,7 @@ import { SfeMapper } from '../../sfe-adapter/sfe.mapper';
   templateUrl: './content-pagelet.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:ccp-no-markup-in-containers ccp-no-intelligence-in-components
 export class ContentPageletContainerComponent extends SfeMetadataWrapper implements OnChanges {
   /**
    * The Pagelet that is to be rendered.
@@ -41,8 +41,7 @@ export class ContentPageletContainerComponent extends SfeMetadataWrapper impleme
 
   private components: CMSComponentProvider[] = [];
 
-  @ViewChild('cmsOutlet', { read: ViewContainerRef })
-  cmsOutlet: ViewContainerRef;
+  @ViewChild('cmsOutlet', { read: ViewContainerRef, static: true }) cmsOutlet: ViewContainerRef;
 
   constructor(
     injector: Injector,

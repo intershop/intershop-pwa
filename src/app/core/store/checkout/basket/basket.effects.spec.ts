@@ -1,28 +1,32 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { AddressService } from 'ish-core/services/address/address.service';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { OrderService } from 'ish-core/services/order/order.service';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user/user.actions';
+import { LoadProductIfNotLoaded, LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { AddressService } from '../../../services/address/address.service';
-import { BasketService } from '../../../services/basket/basket.service';
-import { OrderService } from '../../../services/order/order.service';
-import { LoadProduct, LoadProductSuccess } from '../../shopping/products';
-import { shoppingReducers } from '../../shopping/shopping-store.module';
-import { checkoutReducers } from '../checkout-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as basketActions from './basket.actions';
 import { BasketEffects } from './basket.effects';
@@ -34,6 +38,7 @@ describe('Basket Effects', () => {
   let addressServiceMock: AddressService;
   let effects: BasketEffects;
   let store$: Store<{}>;
+  let location: Location;
 
   @Component({ template: 'dummy' })
   class DummyComponent {}
@@ -46,10 +51,15 @@ describe('Basket Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
+        RouterTestingModule.withRoutes([
+          { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
+        ]),
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
         }),
       ],
       providers: [
@@ -63,6 +73,7 @@ describe('Basket Effects', () => {
 
     effects = TestBed.get(BasketEffects);
     store$ = TestBed.get(Store);
+    location = TestBed.get(Location);
   });
 
   describe('loadBasket$', () => {
@@ -128,7 +139,7 @@ describe('Basket Effects', () => {
   });
 
   describe('loadProductsForBasket$', () => {
-    it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
+    it('should trigger product loading actions for line items if LoadBasketSuccess action triggered', () => {
       when(basketServiceMock.getBasket(anything())).thenReturn(of());
 
       const action = new basketActions.LoadBasketSuccess({
@@ -148,7 +159,7 @@ describe('Basket Effects', () => {
         } as Basket,
       });
 
-      const completion = new LoadProduct({ sku: 'SKU' });
+      const completion = new LoadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -436,6 +447,84 @@ describe('Basket Effects', () => {
 
       expect(effects.mergeBasket$).toBeObservable(expected$);
     });
+  });
+
+  describe('loadBasketAfterLogin$', () => {
+    it('should map to action of type LoadBasket if pre login basket is empty', () => {
+      when(basketServiceMock.getBaskets()).thenReturn(of([{ id: 'BIDNEW' } as BasketBaseData]));
+
+      const action = new LoginUserSuccess({ customer: {} as Customer });
+      const completion = new basketActions.LoadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loadBasketAfterLogin$).toBeObservable(expected$);
+    });
+  });
+
+  describe('continueCheckoutIfBasketIsValid$', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.validateBasket(anything(), anything())).thenReturn(of(basketValidation));
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: BasketMockData.getBasket(),
+        })
+      );
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
+    });
+
+    it('should call the basketService for validateBasket', done => {
+      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      actions$ = of(action);
+
+      effects.validateBasket$.subscribe(() => {
+        verify(basketServiceMock.validateBasket(BasketMockData.getBasket().id, anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type ContinueCheckoutSuccess', () => {
+      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      const completion = new basketActions.ContinueCheckoutSuccess({
+        targetRoute: '/checkout/address',
+        basketValidation,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type ContinueCheckoutFail', () => {
+      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+
+      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      const completion = new basketActions.ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+
+    it('should navigate to the next checkout route after ContinueCheckoutSuccess if the basket is valid', fakeAsync(() => {
+      const action = new basketActions.ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation });
+      actions$ = of(action);
+
+      effects.jumpToNextCheckoutStep$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/address');
+    }));
   });
 
   describe('loadBasketAfterLogin$', () => {

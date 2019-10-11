@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { User } from 'ish-core/models/user/user.model';
 
 import { LoginStatusComponent } from './login-status.component';
@@ -19,8 +20,8 @@ describe('Login Status Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [LoginStatusComponent],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [LoginStatusComponent, MockComponent(FaIconComponent)],
       providers: [],
     })
       .compileComponents()

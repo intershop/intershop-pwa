@@ -1,21 +1,23 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
+import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { Product } from 'ish-core/models/product/product.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ProductAddToBasketComponent } from '../../../../shared/product/components/product-add-to-basket/product-add-to-basket.component';
-import { ProductAttributesComponent } from '../../../../shared/product/components/product-attributes/product-attributes.component';
-import { ProductIdComponent } from '../../../../shared/product/components/product-id/product-id.component';
-import { ProductInventoryComponent } from '../../../../shared/product/components/product-inventory/product-inventory.component';
-import { ProductPriceComponent } from '../../../../shared/product/components/product-price/product-price.component';
-import { ProductRatingComponent } from '../../../../shared/product/components/product-rating/product-rating.component';
-import { ProductImageComponent } from '../../../../shell/header/components/product-image/product-image.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ProductAddToBasketComponent } from 'ish-shared/product/components/product-add-to-basket/product-add-to-basket.component';
+import { ProductAttributesComponent } from 'ish-shared/product/components/product-attributes/product-attributes.component';
+import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
+import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
+import { ProductPriceComponent } from 'ish-shared/product/components/product-price/product-price.component';
+import { ProductRatingComponent } from 'ish-shared/product/components/product-rating/product-rating.component';
+import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
+
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';
 
 import { ProductCompareListComponent } from './product-compare-list.component';
@@ -31,13 +33,12 @@ describe('Product Compare List Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        IconModule,
-        PipesModule,
         RouterTestingModule,
-        StoreModule.forRoot({ configuration: configurationReducer }),
         TranslateModule.forRoot(),
+        ngrxTesting({ reducers: { configuration: configurationReducer } }),
       ],
       declarations: [
+        MockComponent(FaIconComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductComparePagingComponent),
@@ -46,6 +47,8 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductRatingComponent),
+        MockPipe(AttributeToStringPipe),
+        MockPipe(ProductRoutePipe),
         ProductCompareListComponent,
       ],
     }).compileComponents();

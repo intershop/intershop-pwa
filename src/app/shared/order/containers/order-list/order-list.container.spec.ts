@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
 
-import { PipesModule } from 'ish-core/pipes.module';
-import { LoadingComponent } from '../../../../shared/common/components/loading/loading.component';
-import { OrderListComponent } from '../../components/order-list/order-list.component';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { OrderListComponent } from 'ish-shared/order/components/order-list/order-list.component';
 
 import { OrderListContainerComponent } from './order-list.container';
 
@@ -17,8 +18,14 @@ describe('Order List Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(LoadingComponent), MockComponent(OrderListComponent), OrderListContainerComponent],
-      imports: [PipesModule],
-      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [
+        ngrxTesting({
+          reducers: {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+          },
+        }),
+      ],
     }).compileComponents();
   }));
 

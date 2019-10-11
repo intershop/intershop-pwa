@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
@@ -8,9 +8,10 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 import { LoadFilterSuccess } from 'ish-core/store/shopping/filter';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { FilterNavigationBadgesComponent } from '../../components/filter-navigation-badges/filter-navigation-badges.component';
-import { FilterNavigationHorizontalComponent } from '../../components/filter-navigation-horizontal/filter-navigation-horizontal.component';
-import { FilterNavigationSidebarComponent } from '../../components/filter-navigation-sidebar/filter-navigation-sidebar.component';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { FilterNavigationBadgesComponent } from 'ish-shared/filter/components/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationHorizontalComponent } from 'ish-shared/filter/components/filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationSidebarComponent } from 'ish-shared/filter/components/filter-navigation-sidebar/filter-navigation-sidebar.component';
 
 import { FilterNavigationContainerComponent } from './filter-navigation.container';
 
@@ -24,8 +25,10 @@ describe('Filter Navigation Container', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
         }),
       ],
       declarations: [

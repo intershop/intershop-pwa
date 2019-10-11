@@ -1,14 +1,15 @@
 import { Dictionary } from '@ngrx/entity';
 import { memoize } from 'lodash-es';
 
-import { Address } from '../address/address.model';
-import { BasketTotal } from '../basket-total/basket-total.model';
-import { LineItem, LineItemView } from '../line-item/line-item.model';
-import { Payment } from '../payment/payment.model';
-import { VariationProductMaster } from '../product/product-variation-master.model';
-import { VariationProduct } from '../product/product-variation.model';
-import { Product } from '../product/product.model';
-import { ShippingMethod } from '../shipping-method/shipping-method.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
+import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
+import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 interface AbstractBasket<T> {
   id: string;
@@ -29,7 +30,7 @@ export interface Basket extends AbstractBasket<LineItem> {}
 export interface BasketView extends AbstractBasket<LineItemView> {}
 
 export const createBasketView = memoize(
-  (basket, products): BasketView => {
+  (basket, products, validationResults): BasketView => {
     if (!basket) {
       return;
     }
@@ -43,11 +44,20 @@ export const createBasketView = memoize(
             name: products && products[li.productSKU] ? products[li.productSKU].name : undefined,
             inStock: products && products[li.productSKU] ? products[li.productSKU].inStock : undefined,
             availability: products && products[li.productSKU] ? products[li.productSKU].availability : undefined,
+            validationError:
+              validationResults && !validationResults.valid && validationResults.errors
+                ? validationResults.errors.find(error => error.parameters && error.parameters.lineItemId === li.id)
+                : undefined,
           }))
         : [],
     };
   },
-  // fire when basket or line items changed
-  (basket: Basket, products: Dictionary<Product | VariationProduct | VariationProductMaster>): string =>
-    basket && JSON.stringify([basket, ...basket.lineItems.map(li => products[li.productSKU])])
+  // fire when basket line items or validation results changed
+  (
+    basket: Basket,
+    products: Dictionary<Product | VariationProduct | VariationProductMaster>,
+    validationResults: BasketValidationResultType
+  ): string =>
+    basket &&
+    JSON.stringify([basket, ...basket.lineItems.map(li => products[li.productSKU])]) + JSON.stringify(validationResults)
 );

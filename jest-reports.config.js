@@ -9,7 +9,8 @@ module.exports = {
       'jest-junit',
       {
         suiteName: 'Intershop Progressive Webapp Unit Tests',
-        output: 'reports/junit.xml',
+        outputDirectory: 'reports',
+        outputName: 'junit.xml',
       },
     ],
     [

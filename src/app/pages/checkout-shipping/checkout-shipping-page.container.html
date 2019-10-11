@@ -6,6 +6,7 @@
     [shippingMethods]="shippingMethods$ | async"
     [error]="basketError$ | async"
     (updateShippingMethod)="updateBasketShippingMethod($event)"
+    (nextStep)="nextStep()"
   ></ish-checkout-shipping>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>

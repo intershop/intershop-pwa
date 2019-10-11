@@ -1,14 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import {
-  RequestPasswordReminder,
-  ResetPasswordReminder,
-  getPasswordReminderError,
-  getPasswordReminderSuccess,
-  getUserLoading,
-} from 'ish-core/store/user';
 
 /**
  * The Forgot Password Page Container handles the password reminder interaction with the server and state
@@ -19,17 +14,21 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForgotPasswordPageContainerComponent implements OnInit {
-  passwordReminderSuccess$ = this.store.pipe(select(getPasswordReminderSuccess));
-  passwordReminderError$ = this.store.pipe(select(getPasswordReminderError));
-  loading$ = this.store.pipe(select(getUserLoading));
+  passwordReminderSuccess$: Observable<boolean>;
+  passwordReminderError$: Observable<HttpError>;
+  loading$: Observable<boolean>;
 
-  constructor(private store: Store<{}>) {}
+  constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
-    this.store.dispatch(new ResetPasswordReminder());
+    this.passwordReminderSuccess$ = this.accountFacade.passwordReminderSuccess$;
+    this.passwordReminderError$ = this.accountFacade.passwordReminderError$;
+    this.loading$ = this.accountFacade.userLoading$;
+
+    this.accountFacade.resetPasswordReminder();
   }
 
   requestPasswordReminder(data: PasswordReminder) {
-    this.store.dispatch(new RequestPasswordReminder({ data }));
+    this.accountFacade.requestPasswordReminder(data);
   }
 }

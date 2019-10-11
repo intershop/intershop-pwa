@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 
-import { PipesModule } from 'ish-core/pipes.module';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { FormsSharedModule } from '../../../forms/forms.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { BasketPromotionCodeComponent } from './basket-promotion-code.component';
 
@@ -19,17 +19,16 @@ describe('Basket Promotion Code Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsSharedModule,
-        NgbCollapseModule,
-        PipesModule,
         ReactiveFormsModule,
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
-        }),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
+        }),
       ],
-      declarations: [BasketPromotionCodeComponent],
+      declarations: [BasketPromotionCodeComponent, MockComponent(NgbCollapse)],
     }).compileComponents();
   }));
 

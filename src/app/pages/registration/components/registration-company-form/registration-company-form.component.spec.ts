@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { RegistrationCompanyFormComponent } from './registration-company-form.component';
 

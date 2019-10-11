@@ -7,10 +7,10 @@ import { combineLatest, interval } from 'rxjs';
 import { filter, map, mapTo, switchMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
+import { LoadBasketByAPIToken, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { LoadOrderByAPIToken, getSelectedOrderId } from 'ish-core/store/orders';
+import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { LoadBasketByAPIToken, getCurrentBasket } from '../checkout/basket';
-import { LoadOrderByAPIToken, getSelectedOrderId } from '../orders';
-import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from '../user';
 
 interface CookieType {
   apiToken: string;
@@ -47,7 +47,10 @@ export class RestoreEffects {
       this.makeCookie({ apiToken, type: user ? 'user' : basket ? 'basket' : 'order', orderId })
     ),
     tap(cookie => {
-      const options = { expires: new Date(Date.now() + 3600000) };
+      const options = {
+        expires: new Date(Date.now() + 3600000),
+        secure: (isPlatformBrowser(this.platformId) && location.protocol === 'https:') || false,
+      };
       this.cookieService.put('apiToken', cookie, options);
     })
   );

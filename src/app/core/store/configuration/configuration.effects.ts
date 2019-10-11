@@ -4,9 +4,9 @@ import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Route
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { filter, map, mergeMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
+import { SelectLocale } from 'ish-core/store/locale';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
-import { SelectLocale } from '../locale';
 
 import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
 import { ConfigurationState } from './configuration.reducer';
@@ -91,7 +91,9 @@ export class ConfigurationEffects {
   }
 
   extractLanguage(paramMap: ParamMap) {
-    return paramMap.has('lang') ? [new SelectLocale({ lang: paramMap.get('lang') })] : [];
+    return paramMap.has('lang') && paramMap.get('lang') !== 'default'
+      ? [new SelectLocale({ lang: paramMap.get('lang') })]
+      : [];
   }
 
   getResolvedUrl(route: ActivatedRouteSnapshot): string {

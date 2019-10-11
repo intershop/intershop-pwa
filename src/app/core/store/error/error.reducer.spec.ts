@@ -2,8 +2,8 @@ import * as using from 'jasmine-data-provider';
 import { RouteNavigation } from 'ngrx-router';
 import { anything } from 'ts-mockito';
 
-import { HttpError } from '../../models/http-error/http-error.model';
-import { LoginUserSuccess } from '../user';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LoginUserSuccess } from 'ish-core/store/user';
 
 import { CommunicationTimeoutError, ErrorActionTypes, HttpErrorAction } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';

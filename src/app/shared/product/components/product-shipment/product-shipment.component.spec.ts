@@ -5,8 +5,8 @@ import * as using from 'jasmine-data-provider';
 import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { ContentIncludeContainerComponent } from '../../../../shared/cms/containers/content-include/content-include.container';
-import { ModalDialogLinkComponent } from '../../../../shared/common/components/modal-dialog-link/modal-dialog-link.component';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 
 import { ProductShipmentComponent } from './product-shipment.component';
 
@@ -83,9 +83,7 @@ describe('Product Shipment Component', () => {
       ];
     }
     using(dataProvider, dataSlice => {
-      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${
-        dataSlice.readyForShipmentMin
-      } and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
+      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${dataSlice.readyForShipmentMin} and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
         product.readyForShipmentMin = dataSlice.readyForShipmentMin;
         product.readyForShipmentMax = dataSlice.readyForShipmentMax;
         translate.set(dataSlice.localeKey, dataSlice.localeValue);

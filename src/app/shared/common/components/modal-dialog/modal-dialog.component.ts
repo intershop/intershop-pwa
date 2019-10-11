@@ -41,22 +41,18 @@ export interface ModalOptions {
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable:no-any
 export class ModalDialogComponent {
   @Input() options: ModalOptions;
 
-  @Output() // tslint:disable-next-line:no-any
-  confirmed = new EventEmitter<any>();
+  @Output() confirmed = new EventEmitter<any>();
 
-  @Output() // tslint:disable-next-line:no-any
-  onClosed = new EventEmitter<any>();
+  @Output() onClosed = new EventEmitter<any>();
 
-  @ViewChild('template')
-  // tslint:disable-next-line:no-any
-  modalDialogTemplate: TemplateRef<any>;
+  @ViewChild('template', { static: false }) modalDialogTemplate: TemplateRef<any>;
 
   ngbModalRef: NgbModalRef;
 
-  // tslint:disable-next-line:no-any
   data: any;
 
   constructor(private ngbModal: NgbModal) {}
@@ -64,7 +60,6 @@ export class ModalDialogComponent {
   /**
    * Configure and show modal dialog.
    */
-  // tslint:disable-next-line:no-any
   show(data?: any) {
     if (data) {
       this.data = data;

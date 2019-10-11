@@ -1,17 +1,18 @@
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Action, Store, StoreModule } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { Link } from 'ish-core/models/link/link.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ErrorActionTypes, ServerError } from 'ish-core/store/error';
 import { SetAPIToken } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { Link } from '../../models/link/link.model';
-import { Locale } from '../../models/locale/locale.model';
-import { ErrorActionTypes, ServerError } from '../../store/error';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -28,14 +29,14 @@ describe('Api Service', () => {
         imports: [
           // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
-          StoreModule.forRoot(
-            { configuration: configurationReducer },
-            {
+          ngrxTesting({
+            reducers: { configuration: configurationReducer },
+            config: {
               initialState: {
                 configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
               },
-            }
-          ),
+            },
+          }),
         ],
         providers: [ApiServiceErrorHandler, ApiService],
       });
@@ -231,14 +232,14 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          StoreModule.forRoot(
-            { configuration: configurationReducer },
-            {
+          ngrxTesting({
+            reducers: { configuration: configurationReducer },
+            config: {
               initialState: {
                 configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
               },
-            }
-          ),
+            },
+          }),
         ],
         providers: [ApiServiceErrorHandler, ApiService],
       });
@@ -402,14 +403,14 @@ describe('Api Service', () => {
         imports: [
           // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
-          StoreModule.forRoot(
-            { configuration: configurationReducer, user: userReducer },
-            {
+          ngrxTesting({
+            reducers: { configuration: configurationReducer, user: userReducer },
+            config: {
               initialState: {
                 configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
               },
-            }
-          ),
+            },
+          }),
         ],
         providers: [ApiServiceErrorHandler, ApiService],
       });

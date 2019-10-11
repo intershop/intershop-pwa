@@ -14,9 +14,10 @@ import {
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
-import { LoadProduct, LoadProductIfNotLoaded, getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
@@ -162,12 +163,10 @@ export class QuoteRequestEffects {
   loadProductsForQuoteRequest$ = this.actions$.pipe(
     ofType<actions.LoadQuoteRequestItemsSuccess>(actions.QuoteRequestActionTypes.LoadQuoteRequestItemsSuccess),
     mapToPayloadProperty('quoteRequestItems'),
-    withLatestFrom(this.store.pipe(select(getProductEntities))),
-    concatMap(([lineItems, products]) => [
-      ...lineItems
-        .map(lineItem => lineItem.productSKU)
-        .filter(sku => !products[sku])
-        .map(sku => new LoadProduct({ sku })),
+    concatMap(lineItems => [
+      ...lineItems.map(
+        ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
+      ),
     ])
   );
 
@@ -259,7 +258,10 @@ export class QuoteRequestEffects {
    */
   @Effect({ dispatch: false })
   goToLoginOnAddQuoteRequest$ = this.actions$.pipe(
-    ofType(actions.QuoteRequestActionTypes.AddProductToQuoteRequest),
+    ofType(
+      actions.QuoteRequestActionTypes.AddProductToQuoteRequest,
+      actions.QuoteRequestActionTypes.AddBasketToQuoteRequest
+    ),
     mergeMap(() => this.store.pipe(select(getUserAuthorized))),
     whenFalsy(),
     tap(() => {

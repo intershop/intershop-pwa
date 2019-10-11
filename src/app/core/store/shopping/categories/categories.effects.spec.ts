@@ -3,24 +3,25 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { SelectLocale, SetAvailableLocales } from 'ish-core/store/locale';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
+import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
+import { SelectProduct } from 'ish-core/store/shopping/products/products.actions';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
-import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../configurations/injection-keys';
-import { CategoryView } from '../../../models/category-view/category-view.model';
-import { Category, CategoryCompletenessLevel } from '../../../models/category/category.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Locale } from '../../../models/locale/locale.model';
-import { CategoriesService } from '../../../services/categories/categories.service';
-import { SelectLocale, SetAvailableLocales } from '../../locale';
-import { localeReducer } from '../../locale/locale.reducer';
-import { LoadMoreProducts } from '../product-listing';
-import { SelectProduct } from '../products/products.actions';
-import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
@@ -53,9 +54,11 @@ describe('Categories Effects', () => {
       declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          locale: localeReducer,
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+            locale: localeReducer,
+          },
         }),
       ],
       providers: [

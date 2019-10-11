@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { AnyProductType } from 'ish-core/models/product/product.model';
-import { PipesModule } from 'ish-core/pipes.module';
 
 import { ProductPriceComponent } from './product-price.component';
 
@@ -17,8 +17,8 @@ describe('Product Price Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, PipesModule, TranslateModule.forRoot()],
-      declarations: [ProductPriceComponent],
+      imports: [CommonModule, TranslateModule.forRoot()],
+      declarations: [PricePipe, ProductPriceComponent],
     }).compileComponents();
   }));
 
@@ -81,11 +81,7 @@ describe('Product Price Component', () => {
       ];
     }
     using(dataProvider, dataSlice => {
-      it(`should evaluate isListPriceGreaterThanSalePrice to "${
-        dataSlice.isListPriceGreaterThanSalePrice
-      }" and isListPriceLessThanSalePrice to "${dataSlice.isListPriceLessThanSalePrice}" when ${
-        dataSlice.description
-      }`, () => {
+      it(`should evaluate isListPriceGreaterThanSalePrice to "${dataSlice.isListPriceGreaterThanSalePrice}" and isListPriceLessThanSalePrice to "${dataSlice.isListPriceLessThanSalePrice}" when ${dataSlice.description}`, () => {
         product.listPrice.value = dataSlice.listPrice;
         product.salePrice.value = dataSlice.salePrice;
         component.ngOnChanges();
@@ -175,9 +171,7 @@ describe('Product Price Component', () => {
         ];
       }
       using(dataProvider, dataSlice => {
-        it(`should apply "${dataSlice.querySelector}" class when showInformationalPrice = true and ${
-          dataSlice.description
-        }`, () => {
+        it(`should apply "${dataSlice.querySelector}" class when showInformationalPrice = true and ${dataSlice.description}`, () => {
           component.isListPriceGreaterThanSalePrice = dataSlice.isListPriceGreaterThanSalePrice;
           component.isListPriceLessThanSalePrice = dataSlice.isListPriceLessThanSalePrice;
           fixture.detectChanges();

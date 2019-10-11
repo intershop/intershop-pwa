@@ -1,17 +1,21 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { ReplaySubject, Subject } from 'rxjs';
-import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
+import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
-import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
+import {
+  ProductView,
+  VariationProductMasterView,
+  VariationProductView,
+} from 'ish-core/models/product-view/product-view.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
-import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
-import { getProduct, getProductVariationOptions } from 'ish-core/store/shopping/products/products.selectors';
-import { ModalDialogComponent } from '../../../common/components/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
 
 /**
  * The Line Item Edit Dialog Container Component displays an edit-dialog of a line items to edit quantity and variation.
@@ -39,25 +43,26 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
   quantityUpdate: LineItemUpdate;
   skuUpdate: LineItemUpdate;
 
+  private product$: Observable<ProductView | VariationProductView | VariationProductMasterView>;
+  variationOptions$: Observable<VariationOptionGroup[]>;
+  variation$: Observable<VariationProduct | VariationProductView>;
+  loading$: Observable<boolean>;
+
   /** holds the current SKU */
   private sku$ = new ReplaySubject<string>(1);
-  private product$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProduct, { sku }))));
-  variationOptions$ = this.sku$.pipe(switchMap(sku => this.store.pipe(select(getProductVariationOptions, { sku }))));
-  variation$ = this.product$.pipe(
-    filter(
-      p => ProductHelper.isVariationProduct(p) && ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.List)
-    )
-  );
-  loading$ = this.product$.pipe(map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.List)));
+
   private destroy$ = new Subject();
 
-  constructor(private store: Store<{}>) {}
+  constructor(private shoppingFacade: ShoppingFacade) {}
 
-  ngOnInit(): void {
-    // Checks if the product is already in the store and only dispatches a LoadProduct action if it is not
-    this.sku$.pipe(takeUntil(this.destroy$)).subscribe(sku => {
-      this.store.dispatch(new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.List }));
-    });
+  ngOnInit() {
+    this.product$ = this.shoppingFacade.product$(this.sku$, ProductCompletenessLevel.List);
+
+    this.variationOptions$ = this.shoppingFacade.productVariationOptions$(this.sku$);
+
+    this.variation$ = this.product$.pipe(filter(p => ProductHelper.isVariationProduct(p)));
+
+    this.loading$ = this.shoppingFacade.productNotReady$(this.sku$, ProductCompletenessLevel.List);
 
     this.variation$.pipe(takeUntil(this.destroy$)).subscribe(product => {
       if (this.modalDialogRef) {
@@ -71,7 +76,7 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
     this.initModalDialogConfirmed();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroy$.next();
   }
 
@@ -82,20 +87,15 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
   /**
    * handle form-change for variations
    */
-  variationSelected(selection: VariationSelection): void {
-    this.product$
-      .pipe(
-        take(1),
-        filter<VariationProductView>(product => ProductHelper.isVariationProduct(product))
-      )
-      .subscribe(product => {
-        const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
-        this.skuUpdate = {
-          itemId: this.lineItem.id,
-          sku,
-        };
-        this.sku$.next(sku);
-      });
+  variationSelected(selection: VariationSelection) {
+    this.variation$.pipe(take(1)).subscribe((product: VariationProductView) => {
+      const { sku } = ProductVariationHelper.findPossibleVariationForSelection(selection, product);
+      this.skuUpdate = {
+        itemId: this.lineItem.id,
+        sku,
+      };
+      this.sku$.next(sku);
+    });
   }
 
   /**
@@ -117,7 +117,7 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
   /**
    * register subscription to modalDialogRef.confirmed (modalDialog-submit-button)
    */
-  private initModalDialogConfirmed(): void {
+  private initModalDialogConfirmed() {
     if (this.modalDialogRef) {
       this.modalDialogRef.confirmed.subscribe(() => {
         this.save();
@@ -128,7 +128,7 @@ export class LineItemEditDialogContainerComponent implements OnInit, OnDestroy {
   /**
    * save changes to store
    */
-  private save(): void {
+  private save() {
     const data: LineItemUpdate = {
       itemId: this.lineItem.id,
     };

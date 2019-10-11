@@ -24,7 +24,7 @@ describe('Variation Handling B2B', () => {
     });
   });
 
-  describe.only('starting at variation', () => {
+  describe('starting at variation', () => {
     before(() => ProductDetailPage.navigateTo(_.featuredVariationSKU));
 
     it('should be at that variation', () => {

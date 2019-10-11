@@ -9,6 +9,7 @@
 /bin
 /cache
 /tslint*hard*
+/gl-code-quality-report.json
 
 # unsupported yarn files
 /yarn.lock
@@ -40,6 +41,7 @@
 /.sass-cache
 /connect.lock
 /coverage
+/junit.xml
 *.log
 /typings
 /src/environments/environment.local.ts

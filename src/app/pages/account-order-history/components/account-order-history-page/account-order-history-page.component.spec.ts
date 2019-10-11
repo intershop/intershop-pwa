@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { OrderListContainerComponent } from '../../../../shared/order/containers/order-list/order-list.container';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { OrderListContainerComponent } from 'ish-shared/order/containers/order-list/order-list.container';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
@@ -13,7 +14,11 @@ describe('Account Order History Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountOrderHistoryPageComponent, MockComponent(OrderListContainerComponent)],
+      declarations: [
+        AccountOrderHistoryPageComponent,
+        MockComponent(OrderListContainerComponent),
+        MockComponent(ServerHtmlDirective),
+      ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));

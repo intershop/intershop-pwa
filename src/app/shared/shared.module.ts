@@ -17,8 +17,9 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { ShellModule } from 'ish-shell/shell.module';
+
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
-import { ShellModule } from '../shell/shell.module';
 
 import { AddressComponent } from './address/components/address/address.component';
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
@@ -26,6 +27,7 @@ import { BasketCostSummaryComponent } from './basket/components/basket-cost-summ
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
 import { BasketPromotionComponent } from './basket/components/basket-promotion/basket-promotion.component';
+import { BasketValidationResultsComponent } from './basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
 import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
@@ -53,12 +55,13 @@ import { LoadingComponent } from './common/components/loading/loading.component'
 import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
 import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
-import { FilterDropdownMultiselectComponent } from './filter/components/filter-dropdown-multiselect/filter-dropdown-multiselect.component';
+import { FilterCollapsableComponent } from './filter/components/filter-collapsable/filter-collapsable.component';
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
 import { FilterNavigationBadgesComponent } from './filter/components/filter-navigation-badges/filter-navigation-badges.component';
 import { FilterNavigationHorizontalComponent } from './filter/components/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from './filter/components/filter-navigation-sidebar/filter-navigation-sidebar.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
+import { FilterTextComponent } from './filter/components/filter-text/filter-text.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
@@ -134,12 +137,13 @@ const declaredComponents = [
   CMSVideoComponent,
   ContentSlotContainerComponent,
   FilterCheckboxComponent,
+  FilterCollapsableComponent,
   FilterDropdownComponent,
-  FilterDropdownMultiselectComponent,
   FilterNavigationBadgesComponent,
   FilterNavigationHorizontalComponent,
   FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
+  FilterTextComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogComponent,
@@ -167,6 +171,7 @@ const exportedComponents = [
   BasketItemsSummaryComponent,
   BasketPromotionCodeComponent,
   BasketPromotionContainerComponent,
+  BasketValidationResultsComponent,
   BreadcrumbComponent,
   ContentIncludeContainerComponent,
   ContentPageletContainerComponent,

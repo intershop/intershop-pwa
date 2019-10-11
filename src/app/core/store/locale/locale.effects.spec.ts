@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
-import { Locale } from '../../models/locale/locale.model';
-import { coreReducers } from '../core-store.module';
+import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { LocaleEffects } from './locale.effects';
@@ -28,7 +29,7 @@ describe('Locale Effects', () => {
     translateServiceMock = mock(TranslateService);
 
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [ngrxTesting({ reducers: coreReducers })],
       providers: [
         LocaleEffects,
         provideMockActions(() => actions$),

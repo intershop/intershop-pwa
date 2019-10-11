@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 
+import { FeatureToggleGuard, FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { FeatureToggleGuard, FeatureToggleModule } from '../feature-toggle.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 describe('Feature Toggle Guard', () => {
   let router: Router;
@@ -36,10 +36,12 @@ describe('Feature Toggle Guard', () => {
             data: { feature: 'feature2' },
           },
         ]),
-        StoreModule.forRoot(
-          { configuration: configurationReducer },
-          { initialState: { configuration: { features: ['feature1'] } } }
-        ),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['feature1'] } },
+          },
+        }),
       ],
     });
 

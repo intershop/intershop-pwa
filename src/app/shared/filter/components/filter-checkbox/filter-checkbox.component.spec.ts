@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { MockComponent } from 'ng-mocks';
 
-import { IconModule } from 'ish-core/icon.module';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { PipesModule } from 'ish-core/pipes.module';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
 import { FilterCheckboxComponent } from './filter-checkbox.component';
 
@@ -14,8 +15,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IconModule, NgbCollapseModule, PipesModule],
-      declarations: [FilterCheckboxComponent],
+      declarations: [FilterCheckboxComponent, MockComponent(FaIconComponent), MockComponent(NgbCollapse), SanitizePipe],
     }).compileComponents();
   }));
 
@@ -39,18 +39,4 @@ describe('Filter Checkbox Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });
-
-  it('should toggle unselected filter facets when filter group header is clicked', fakeAsync(() => {
-    fixture.detectChanges();
-    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-    filterGroupHead.click();
-    tick(500);
-    fixture.detectChanges();
-
-    const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
-    expect(selectedFilterFacet.textContent).toContain('Logitech');
-
-    const hiddenFilterFacet = element.querySelector('a[data-testing-id=filter-link-AsusName]');
-    expect(hiddenFilterFacet.parentNode.parentElement.className).not.toContain('show');
-  }));
 });

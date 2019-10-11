@@ -1,4 +1,4 @@
-import { Attribute } from '../attribute/attribute.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 
 export interface Link {
   title: string;

@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { IconModule } from 'ish-core/icon.module';
-import { PipesModule } from 'ish-core/pipes.module';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductAddToCompareComponent } from './product-add-to-compare.component';
 
@@ -20,18 +20,14 @@ describe('Product Add To Compare Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        IconModule,
-        PipesModule,
         RouterTestingModule,
-        StoreModule.forRoot(
-          {
-            configuration: configurationReducer,
-          },
-          { initialState: { configuration: { features: ['compare'] } } }
-        ),
         TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: { initialState: { configuration: { features: ['compare'] } } },
+        }),
       ],
-      declarations: [ProductAddToCompareComponent],
+      declarations: [MockComponent(FaIconComponent), ProductAddToCompareComponent],
     }).compileComponents();
   }));
 

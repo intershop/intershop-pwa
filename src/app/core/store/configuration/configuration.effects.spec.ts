@@ -10,9 +10,9 @@ import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
+import { SetAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { SetAvailableLocales, getCurrentLocale } from '../locale';
-import { localeReducer } from '../locale/locale.reducer';
 
 import { ApplyConfiguration, ConfigurationActionTypes } from './configuration.actions';
 import { ConfigurationEffects } from './configuration.effects';
@@ -33,8 +33,11 @@ describe('Configuration Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting({ configuration: configurationReducer, locale: localeReducer }, [ConfigurationEffects]),
         RouterTestingModule.withRoutes([{ path: 'home', component: DummyComponent }]),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer, locale: localeReducer },
+          effects: [ConfigurationEffects],
+        }),
       ],
       providers: [
         ConfigurationEffects,

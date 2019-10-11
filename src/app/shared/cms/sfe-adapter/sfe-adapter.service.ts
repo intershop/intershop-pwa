@@ -1,4 +1,5 @@
-import { ApplicationRef, Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { fromEvent, merge } from 'rxjs';
@@ -36,7 +37,12 @@ export class SfeAdapterService {
   /** Set to true enables the SFE capabilities even in top-level windows when no design view is present. For debug purposes only! */
   private initOnTopLevel = false;
 
-  constructor(private router: Router, private store: Store<{}>, private appRef: ApplicationRef) {}
+  constructor(
+    private router: Router,
+    private store: Store<{}>,
+    private appRef: ApplicationRef,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {}
 
   /**
    * Start method that sets up SFE communication.
@@ -77,7 +83,7 @@ export class SfeAdapterService {
    * (3) OR the debug mode is on (`initOnTopLevel`).
    */
   private shouldInit() {
-    return typeof window !== 'undefined' && ((window.parent && window.parent !== window) || this.initOnTopLevel);
+    return isPlatformBrowser(this.platformId) && ((window.parent && window.parent !== window) || this.initOnTopLevel);
   }
 
   /**

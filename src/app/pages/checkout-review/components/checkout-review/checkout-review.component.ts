@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 @Component({
   selector: 'ish-checkout-review',

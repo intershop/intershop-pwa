@@ -1,12 +1,11 @@
-// tslint:disable:ban-specific-imports
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 import { RouterEffects } from 'ngrx-router';
 
+import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
+
 import { environment } from '../../../environments/environment';
-import { ngrxStateTransferMeta } from '../configurations/ngrx-state-transfer';
-import { localStorageSyncReducer } from '../utils/local-storage-sync/local-storage-sync.reducer';
 
 import { AddressesEffects } from './addresses/addresses.effects';
 import { addressesReducer } from './addresses/addresses.reducer';
@@ -60,10 +59,7 @@ export const coreEffects = [
 ];
 
 // tslint:disable-next-line: no-any
-export const metaReducers: MetaReducer<any>[] = [
-  ...(environment.syncLocalStorage ? [localStorageSyncReducer] : []),
-  ngrxStateTransferMeta,
-];
+export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
 
 @NgModule({
   imports: [
@@ -72,7 +68,15 @@ export const metaReducers: MetaReducer<any>[] = [
     EffectsModule.forRoot(coreEffects),
     RestoreStoreModule,
     ShoppingStoreModule,
-    StoreModule.forRoot(coreReducers, { metaReducers }),
+    StoreModule.forRoot(coreReducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: !environment.production,
+        strictActionSerializability: !environment.production,
+        strictStateImmutability: !environment.production,
+        strictStateSerializability: !environment.production,
+      },
+    }),
   ],
 })
 export class CoreStoreModule {}

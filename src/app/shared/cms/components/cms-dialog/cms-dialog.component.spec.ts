@@ -1,9 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-views';
-import { ContentSlotContainerComponent } from '../../../cms/containers/content-slot/content-slot.container';
+import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ContentSlotContainerComponent } from 'ish-shared/cms/containers/content-slot/content-slot.container';
 
 import { CMSDialogComponent } from './cms-dialog.component';
 
@@ -14,7 +18,8 @@ describe('Cms Dialog Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CMSDialogComponent, MockComponent(ContentSlotContainerComponent)],
+      imports: [RouterTestingModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
+      declarations: [CMSDialogComponent, MockComponent(ContentSlotContainerComponent), ServerHtmlDirective],
     }).compileComponents();
   }));
 

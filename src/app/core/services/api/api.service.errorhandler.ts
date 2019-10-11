@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, throwError } from 'rxjs';
 
-import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
-import { CommunicationTimeoutError, ServerError } from '../../store/error/error.actions';
+import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
+import { CommunicationTimeoutError, ServerError } from 'ish-core/store/error';
 
 @Injectable({ providedIn: 'root' })
 export class ApiServiceErrorHandler {

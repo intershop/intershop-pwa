@@ -21,6 +21,7 @@
 .createMockdata.table
 package.json
 Dockerfile*
+browserslist
 /node_modules
 /build
 /builds
@@ -29,6 +30,7 @@ Dockerfile*
 /docs
 /out-tsc
 /coverage
+/junit.xml
 /tslint-rules/dist
 /schematics/src/**/files/**
 /schematics/**/*.js

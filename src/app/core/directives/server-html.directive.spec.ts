@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ServerHtmlDirective } from './server-html.directive';
 
@@ -27,7 +27,7 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule, StoreModule.forRoot({ configuration: configurationReducer })],
+        imports: [RouterTestingModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -64,12 +64,12 @@ describe('Server Html Directive', () => {
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [
           RouterTestingModule,
-          StoreModule.forRoot(
-            { configuration: configurationReducer },
-            {
+          ngrxTesting({
+            reducers: { configuration: configurationReducer },
+            config: {
               initialState: { configuration: { baseURL: 'http://example.org' } },
-            }
-          ),
+            },
+          }),
         ],
       }).compileComponents();
 
@@ -109,7 +109,7 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule, StoreModule.forRoot({ configuration: configurationReducer })],
+        imports: [RouterTestingModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -138,8 +138,8 @@ describe('Server Html Directive', () => {
         declarations: [ServerHtmlDirective, TestComponent],
         imports: [
           RouterTestingModule,
-          StoreModule.forRoot({ configuration: configurationReducer }),
           TranslateModule.forRoot(),
+          ngrxTesting({ reducers: { configuration: configurationReducer } }),
         ],
       }).compileComponents();
 

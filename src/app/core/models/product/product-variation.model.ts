@@ -1,4 +1,4 @@
-import { VariationAttribute } from '../product-variation/variation-attribute.model';
+import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 
 import { Product } from './product.model';
 

@@ -1,4 +1,3 @@
-// tslint:disable:component-creation-test
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
@@ -6,6 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './lazy-quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// tslint:disable-next-line:component-creation-test
 export class LazyQuoteWidgetComponent {
   componentLocation = {
     moduleId: 'ish-extensions-quoting',
