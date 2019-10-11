@@ -1,3 +1,43 @@
+# [0.15.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.15.0/) (2019-10-11)
+
+**required Intershop Commerce Management version: 7.10.14.0**
+
+### Features
+
+- use isServerHTML directive for all relevant places
+- search filter navigation interaction and visual design rework (ISREST-847)
+- provide guide for customization in project development
+- facades as additional layer of abstraction, mainly to hide complexity of NgRx usage from components
+- quote state feedback messages (ISREST-865)
+- contact us functionality (ISREST-840)
+- Angular 8 upgrade and other dependencies update (ISREST-800)
+- changed positioning of breadcrumb and page title for pages with left navigation
+- validate basket on each checkout step without server-side adjustments (ISREST-846)
+- remove local storage sync functionality (was experimental but not really used)
+
+### Bug Fixes
+
+- IE 11 issues (added missing polyfills for unsupported browser functionality that caused JavaScript errors)
+- calculate correct counts in product-master-variations service
+- AddQuoteToBasket action runs into endless loop if the user has no basket yet (ISREST-856)
+- do a second call to retrieve all remaining variations if more than 50 are available
+- disable 'window.scroll' functionality for server side rendering
+- redirect to login if anonymous user creates quote request from basket
+- forgot password functionality handle (mail) server error with error message instead of error page
+- regressions with health check
+- products loose attributes on compare page
+- default locale gets overridden when no locale is supplied (ISREST-858)
+- make search filter collapsible in mobile and consistent with filter navigation (ISREST-465)
+- position captcha on registration form below company inputs (business customer registration)
+- filter with space in ID cannot be deselected
+- filter selection shows search input at sticky header
+
+### BREAKING CHANGES
+
+- The PWA is now using Angular 8, follow the upgrade guide to update your own components: https://update.angular.io/#7.0:8.0.
+- Using NgRx artifacts in Angular components is now deprecated, use facades instead.
+- Changed default import references for relative imports within the project and adapted tslint rules to enforce it (old import notation would still work but would lead to tslint errors).
+
 # [0.14.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.14.0/) (2019-09-10)
 
 **required Intershop Commerce Management version: 7.10.13.4**
