@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
+
 import { ServerErrorPageComponent } from './server-error-page.component';
 
 describe('Server Error Page Component', () => {
@@ -12,7 +14,7 @@ describe('Server Error Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ServerErrorPageComponent],
+      declarations: [SafeHtmlPipe, ServerErrorPageComponent],
     }).compileComponents();
   }));
 
