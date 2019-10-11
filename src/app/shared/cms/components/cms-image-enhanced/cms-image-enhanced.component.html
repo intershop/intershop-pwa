@@ -42,7 +42,7 @@
       <p
         *ngIf="pagelet.hasParam('Description')"
         class="hidden-xs"
-        [innerHTML]="pagelet.stringParam('Description') | safeHtml"
+        [ishServerHtml]="pagelet.stringParam('Description')"
       ></p>
       <a
         *ngIf="pagelet.hasParam('Link') && pagelet.hasParam('LinkText')"

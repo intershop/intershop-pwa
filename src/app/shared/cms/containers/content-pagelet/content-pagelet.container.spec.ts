@@ -1,9 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock, when } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 import { CMSTextComponent } from 'ish-shared/cms/components/cms-text/cms-text.component';
 import { CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
@@ -23,7 +25,8 @@ describe('Content Pagelet Container', () => {
     when(sfeAdapterMock.isInitialized()).thenReturn(true);
 
     TestBed.configureTestingModule({
-      declarations: [CMSTextComponent, ContentPageletContainerComponent, SafeHtmlPipe],
+      imports: [RouterTestingModule, ngrxTesting()],
+      declarations: [CMSTextComponent, ContentPageletContainerComponent, ServerHtmlDirective],
       providers: [
         {
           provide: CMS_COMPONENT,

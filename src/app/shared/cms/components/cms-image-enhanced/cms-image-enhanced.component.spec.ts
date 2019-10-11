@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockComponent } from 'ng-mocks';
 
-import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 
 import { CMSImageEnhancedComponent } from './cms-image-enhanced.component';
@@ -13,8 +14,8 @@ describe('Cms Image Enhanced Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CMSImageEnhancedComponent, SafeHtmlPipe],
       imports: [RouterTestingModule],
+      declarations: [CMSImageEnhancedComponent, MockComponent(ServerHtmlDirective)],
     }).compileComponents();
   }));
 
