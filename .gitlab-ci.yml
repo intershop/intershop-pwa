@@ -694,6 +694,7 @@ schematics:
   script:
     - npm install
     - bash e2e/test-schematics.sh
+    - sh .gitlab-ci-check-no-additional-warnings.sh
     - echo "schematics complete"
 
 .universal_template: &universal_definition
