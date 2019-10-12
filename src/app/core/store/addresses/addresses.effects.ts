@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { concatMap, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { AddressService } from 'ish-core/services/address/address.service';
-import * as messagesActions from 'ish-core/store/messages';
+import { SuccessMessage } from 'ish-core/store/messages';
 import { UserActionTypes, getLoggedInCustomer } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -39,7 +39,7 @@ export class AddressesEffects {
       this.addressService.createCustomerAddress(customer.customerNo, address).pipe(
         mergeMap(newAddress => [
           new addressActions.CreateCustomerAddressSuccess({ address: newAddress }),
-          new messagesActions.SuccessMessage({
+          new SuccessMessage({
             message: 'account.addresses.new_address_created.message',
           }),
         ]),
