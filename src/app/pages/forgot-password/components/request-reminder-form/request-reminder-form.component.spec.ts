@@ -10,16 +10,16 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
-import { ForgotPasswordFormComponent } from './forgot-password-form.component';
+import { RequestReminderFormComponent } from './request-reminder-form.component';
 
-describe('Forgot Password Form Component', () => {
-  let component: ForgotPasswordFormComponent;
-  let fixture: ComponentFixture<ForgotPasswordFormComponent>;
+describe('Request Reminder Form Component', () => {
+  let component: RequestReminderFormComponent;
+  let fixture: ComponentFixture<RequestReminderFormComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ForgotPasswordFormComponent, MockComponent(CaptchaComponent), MockComponent(InputComponent)],
+      declarations: [MockComponent(CaptchaComponent), MockComponent(InputComponent), RequestReminderFormComponent],
       imports: [
         FeatureToggleModule,
         ReactiveFormsModule,
@@ -31,7 +31,7 @@ describe('Forgot Password Form Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ForgotPasswordFormComponent);
+    fixture = TestBed.createComponent(RequestReminderFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

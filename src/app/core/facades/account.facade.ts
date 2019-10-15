@@ -6,6 +6,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
+import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
 import {
@@ -32,6 +33,7 @@ import {
   UpdateCustomer,
   UpdateUser,
   UpdateUserPassword,
+  UpdateUserPasswordByPasswordReminder,
   getLoggedInCustomer,
   getLoggedInUser,
   getPasswordReminderError,
@@ -98,6 +100,10 @@ export class AccountFacade {
 
   requestPasswordReminder(data: PasswordReminder) {
     this.store.dispatch(new RequestPasswordReminder({ data }));
+  }
+
+  requestPasswordReminderUpdate(data: PasswordReminderUpdate) {
+    this.store.dispatch(new UpdateUserPasswordByPasswordReminder(data));
   }
 
   // ORDERS
