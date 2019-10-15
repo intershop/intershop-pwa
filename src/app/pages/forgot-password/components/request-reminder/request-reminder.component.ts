@@ -6,23 +6,24 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 
 /**
- * The Forgot Password Page Container handles the password reminder interaction with the server and state
- * and displays the Forgot Password Page Component {@link ForgotPasswordPageComponent} with the Forgot Password Form.
+ * The Request Reminder Component handles the interaction for requesting a password reminder email.
+ * See also {@link RequestReminderFormComponent}.
  */
 @Component({
-  templateUrl: './forgot-password-page.container.html',
+  selector: 'ish-request-reminder',
+  templateUrl: './request-reminder.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordPageContainerComponent implements OnInit {
-  passwordReminderSuccess$: Observable<boolean>;
-  passwordReminderError$: Observable<HttpError>;
+export class RequestReminderComponent implements OnInit {
+  success$: Observable<boolean>;
+  error$: Observable<HttpError>;
   loading$: Observable<boolean>;
 
   constructor(private accountFacade: AccountFacade) {}
 
-  ngOnInit() {
-    this.passwordReminderSuccess$ = this.accountFacade.passwordReminderSuccess$;
-    this.passwordReminderError$ = this.accountFacade.passwordReminderError$;
+  ngOnInit(): void {
+    this.success$ = this.accountFacade.passwordReminderSuccess$;
+    this.error$ = this.accountFacade.passwordReminderError$;
     this.loading$ = this.accountFacade.userLoading$;
 
     this.accountFacade.resetPasswordReminder();
