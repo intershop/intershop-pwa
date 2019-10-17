@@ -16,11 +16,11 @@
     <div class="col-md-9">
       <ish-breadcrumb [category]="category"></ish-breadcrumb>
       <h1>{{ category.name }}</h1>
-      <ish-product-list-container
+      <ish-product-listing-container
         [category]="category"
         [id]="{ type: 'category', value: category.uniqueId }"
         fragmentOnRouting="family-page-top"
-      ></ish-product-list-container>
+      ></ish-product-listing-container>
     </div>
   </div>
 </div>

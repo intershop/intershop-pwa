@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { VariationProductMasterView } from 'ish-core/models/product-view/product-view.model';
 import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
-import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
+import { ProductListingContainerComponent } from 'ish-shared/product/containers/product-listing/product-listing.container';
 
 import { ProductMasterVariationsComponent } from './product-master-variations.component';
 
@@ -19,7 +19,7 @@ describe('Product Master Variations Component', () => {
       imports: [RouterTestingModule],
       declarations: [
         MockComponent(FilterNavigationContainerComponent),
-        MockComponent(ProductListContainerComponent),
+        MockComponent(ProductListingContainerComponent),
         ProductMasterVariationsComponent,
       ],
     }).compileComponents();
@@ -43,19 +43,19 @@ describe('Product Master Variations Component', () => {
         orientation="horizontal"
         ng-reflect-orientation="horizontal"
       ></ish-filter-navigation
-      ><ish-product-list-container
+      ><ish-product-listing-container
         fragmentonrouting="variation-list-top"
         mode="paging"
         ng-reflect-mode="paging"
         ng-reflect-fragment-on-routing="variation-list-top"
-      ></ish-product-list-container>
+      ></ish-product-listing-container>
     `);
   });
 
   it('should set the correct id for the underlying product list', () => {
     fixture.detectChanges();
-    const productList = fixture.debugElement.query(By.css('ish-product-list-container'))
-      .componentInstance as ProductListContainerComponent;
+    const productList = fixture.debugElement.query(By.css('ish-product-listing-container'))
+      .componentInstance as ProductListingContainerComponent;
 
     expect(productList.id).toMatchInlineSnapshot(`
       Object {
