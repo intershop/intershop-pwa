@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { User } from 'ish-core/models/user/user.model';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
@@ -31,7 +30,7 @@ export class ContactFormComponent implements OnChanges, OnInit {
   contactForm: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder, private featureToggle: FeatureToggleService) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
@@ -54,9 +53,8 @@ export class ContactFormComponent implements OnChanges, OnInit {
         order: formValue.order,
       };
 
-      this.featureToggle.enabled('captcha')
-        ? this.request.emit({ contact, captcha: formValue.captcha })
-        : this.request.emit({ contact });
+      /* ToDo: send captcha data if captcha is supported by REST, see #IS-28299 */
+      this.request.emit({ contact });
     } else {
       markAsDirtyRecursive(this.contactForm);
       this.submitted = true;
@@ -82,7 +80,8 @@ export class ContactFormComponent implements OnChanges, OnInit {
       order: [''],
       subject: ['', Validators.required],
       comments: ['', Validators.required],
-      captcha: this.featureToggle.enabled('captcha') ? ['', [Validators.required]] : [''],
+      captcha: [''],
+      captchaAction: ['contact_us'],
     });
   }
 
