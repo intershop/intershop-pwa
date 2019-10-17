@@ -3,6 +3,7 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 
 import { environment } from '../../environments/environment';
 
@@ -12,6 +13,8 @@ import { FeatureToggleModule } from './feature-toggle.module';
 @NgModule({
   imports: [FeatureToggleModule],
   providers: [
+    // tslint:disable-next-line:no-string-literal
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment['captchaSiteKey'] },
     // tslint:disable-next-line:no-string-literal
     { provide: injectionKeys.MOCK_SERVER_API, useValue: environment['mockServerAPI'] },
     // tslint:disable-next-line:no-string-literal
