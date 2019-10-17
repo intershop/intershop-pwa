@@ -10,12 +10,12 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
-  selector: 'ish-product-list-container',
-  templateUrl: './product-list.container.html',
+  selector: 'ish-product-listing-container',
+  templateUrl: './product-listing.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 // tslint:disable-next-line:ccp-no-markup-in-containers
-export class ProductListContainerComponent implements OnInit, OnChanges, OnDestroy {
+export class ProductListingContainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() category?: Category;
   @Input() id: ProductListingID;
   @Input() mode: 'endless-scrolling' | 'paging' = 'endless-scrolling';

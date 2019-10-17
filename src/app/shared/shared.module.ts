@@ -89,7 +89,7 @@ import { ProductVariationDisplayComponent } from './product/components/product-v
 import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
 import { ProductBundleDisplayContainerComponent } from './product/containers/product-bundle-display/product-bundle-display.container';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
-import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
+import { ProductListingContainerComponent } from './product/containers/product-listing/product-listing.container';
 import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
@@ -182,7 +182,7 @@ const exportedComponents = [
   ProductInventoryComponent,
   ProductItemContainerComponent,
   ProductLabelComponent,
-  ProductListContainerComponent,
+  ProductListingContainerComponent,
   ProductPriceComponent,
   ProductPromotionContainerComponent,
   ProductQuantityComponent,

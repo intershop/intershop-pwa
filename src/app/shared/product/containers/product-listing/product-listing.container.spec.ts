@@ -14,12 +14,12 @@ import { ProductListPagingComponent } from 'ish-shared/product/components/produc
 import { ProductListToolbarComponent } from 'ish-shared/product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from 'ish-shared/product/components/product-list/product-list.component';
 
-import { ProductListContainerComponent } from './product-list.container';
+import { ProductListingContainerComponent } from './product-listing.container';
 
-describe('Product List Container', () => {
+describe('Product Listing Container', () => {
   const TEST_ID = { type: 'test', value: 'dummy' };
-  let component: ProductListContainerComponent;
-  let fixture: ComponentFixture<ProductListContainerComponent>;
+  let component: ProductListingContainerComponent;
+  let fixture: ComponentFixture<ProductListingContainerComponent>;
   let element: HTMLElement;
   let store$: Store<{}>;
 
@@ -39,7 +39,7 @@ describe('Product List Container', () => {
         MockComponent(ProductListComponent),
         MockComponent(ProductListPagingComponent),
         MockComponent(ProductListToolbarComponent),
-        ProductListContainerComponent,
+        ProductListingContainerComponent,
       ],
     }).compileComponents();
 
@@ -47,7 +47,7 @@ describe('Product List Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductListContainerComponent);
+    fixture = TestBed.createComponent(ProductListingContainerComponent);
     component = fixture.componentInstance;
     component.id = TEST_ID;
     element = fixture.nativeElement;
