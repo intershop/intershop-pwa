@@ -13,6 +13,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 export class CheckoutReviewComponent implements OnInit {
   @Input() basket: Basket;
   @Input() error: HttpError;
+  @Input() submitting: boolean;
   @Output() createOrder = new EventEmitter<Basket>();
 
   form: FormGroup;
