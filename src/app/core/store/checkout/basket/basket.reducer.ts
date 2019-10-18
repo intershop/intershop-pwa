@@ -58,7 +58,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       return {
         ...state,
         loading: true,
-        validationResults: initialValidationResults,
       };
     }
 
@@ -140,18 +139,17 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.ContinueCheckoutSuccess: {
-      const basket =
-        action.payload.basketValidation.results.adjusted && action.payload.basketValidation.basket
-          ? action.payload.basketValidation.basket
-          : state.basket;
+    case BasketActionTypes.ContinueCheckoutSuccess:
+    case BasketActionTypes.ContinueCheckoutWithIssues: {
+      const validation = action.payload.basketValidation;
+      const basket = validation && validation.results.adjusted && validation.basket ? validation.basket : state.basket;
 
       return {
         ...state,
         basket,
         loading: false,
         error: undefined,
-        validationResults: action.payload.basketValidation.results,
+        validationResults: validation && validation.results,
       };
     }
 
