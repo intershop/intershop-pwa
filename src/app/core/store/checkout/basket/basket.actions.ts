@@ -34,7 +34,8 @@ export enum BasketActionTypes {
   MergeBasketSuccess = '[Basket API] Merge two baskets Success',
   ContinueCheckout = '[Basket] Validate Basket and continue checkout',
   ContinueCheckoutFail = '[Basket API] Validate Basket and continue checkout Fail',
-  ContinueCheckoutSuccess = '[Basket API] Validate Basket and continue checkout Success',
+  ContinueCheckoutSuccess = '[Basket API] Validate Basket and continue with success',
+  ContinueCheckoutWithIssues = '[Basket API] Validate Basket and continue with issues',
   AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
   AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
   AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
@@ -175,6 +176,11 @@ export class ContinueCheckoutFail implements Action {
 
 export class ContinueCheckoutSuccess implements Action {
   readonly type = BasketActionTypes.ContinueCheckoutSuccess;
+  constructor(public payload: { targetRoute: string; basketValidation: BasketValidation }) {}
+}
+
+export class ContinueCheckoutWithIssues implements Action {
+  readonly type = BasketActionTypes.ContinueCheckoutWithIssues;
   constructor(public payload: { targetRoute: string; basketValidation: BasketValidation }) {}
 }
 
@@ -349,6 +355,7 @@ export type BasketAction =
   | ContinueCheckout
   | ContinueCheckoutFail
   | ContinueCheckoutSuccess
+  | ContinueCheckoutWithIssues
   | AddPromotionCodeToBasket
   | AddPromotionCodeToBasketFail
   | AddPromotionCodeToBasketSuccess

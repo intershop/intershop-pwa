@@ -10,7 +10,7 @@ import { Order } from './order.model';
 export class OrderMapper {
   static fromData(payload: OrderData): Order {
     if (!Array.isArray(payload.data)) {
-      const { data, included } = payload;
+      const { data, included, infos } = payload;
       const totals = BasketMapper.getTotals(data, included ? included.discounts : undefined);
 
       return {
@@ -56,6 +56,7 @@ export class OrderMapper {
               )
             : undefined,
         totals,
+        infos,
       };
     }
   }

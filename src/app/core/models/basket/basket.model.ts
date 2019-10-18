@@ -2,6 +2,7 @@ import { Dictionary } from '@ngrx/entity';
 import { memoize } from 'lodash-es';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -24,6 +25,7 @@ interface AbstractBasket<T> {
   totals: BasketTotal;
   totalProductQuantity?: number;
   bucketId?: string;
+  infos?: BasketInfo[];
 }
 
 export interface Basket extends AbstractBasket<LineItem> {}

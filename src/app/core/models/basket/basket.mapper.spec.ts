@@ -151,6 +151,12 @@ describe('Basket Mapper', () => {
         data: { ...basketBaseData },
 
         included: { ...basketIncludedData },
+        infos: [
+          {
+            message: 'infoMessage',
+            code: 'infoCode',
+          },
+        ],
       } as BasketData;
     });
 
@@ -209,6 +215,12 @@ describe('Basket Mapper', () => {
       basket = BasketMapper.fromData(basketData);
 
       expect(basket.lineItems).toBeArrayOfSize(1);
+    });
+
+    it('should return infos if included', () => {
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.infos).toBeArrayOfSize(1);
     });
 
     it('should return discounts if included', () => {

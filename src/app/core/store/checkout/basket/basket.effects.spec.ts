@@ -525,6 +525,19 @@ describe('Basket Effects', () => {
 
       expect(location.path()).toEqual('/checkout/address');
     }));
+
+    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
+      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      basketValidation.results.valid = false;
+      const completion = new basketActions.ContinueCheckoutWithIssues({
+        targetRoute: '/checkout/address',
+        basketValidation,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasket$).toBeObservable(expected$);
+    });
   });
 
   describe('loadBasketAfterLogin$', () => {
@@ -564,7 +577,14 @@ describe('Basket Effects', () => {
       expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('a', { a: expected }));
     });
 
-    it('should not fire SelectOrder when route /something is navigated', () => {
+    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', () => {
+      const action = new RouteNavigation({ path: 'checkout/payment', params: {}, queryParams: { error: true } });
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('-'));
+    });
+
+    it('should not fire ResetBasketErrors when route /something is navigated', () => {
       const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
 
       actions$ = hot('a', { a: action });
