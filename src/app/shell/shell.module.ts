@@ -18,7 +18,6 @@ import { HeaderDefaultComponent } from './header/components/header-default/heade
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
 import { LoginStatusComponent } from './header/components/login-status/login-status.component';
 import { LogoutComponent } from './header/components/logout/logout.component';
-import { MiniBasketComponent } from './header/components/mini-basket/mini-basket.component';
 import { ProductImageComponent } from './header/components/product-image/product-image.component';
 import { SearchBoxComponent } from './header/components/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/components/sub-category-navigation/sub-category-navigation.component';
@@ -62,7 +61,6 @@ const exportedComponents = [
     LoginStatusComponent,
     LoginStatusContainerComponent,
     LogoutComponent,
-    MiniBasketComponent,
     MiniBasketContainerComponent,
     ProductCompareStatusContainerComponent,
     SearchBoxComponent,
