@@ -64,7 +64,6 @@ import { FilterTextComponent } from './filter/components/filter-text/filter-text
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
-import { LineItemEditDialogComponent } from './line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './line-item/components/line-item-edit/line-item-edit.component';
 import { LineItemEditDialogContainerComponent } from './line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
 import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
@@ -140,7 +139,6 @@ const declaredComponents = [
   FilterTextComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,
-  LineItemEditDialogComponent,
   LineItemEditDialogContainerComponent,
   ProductIdComponent,
   ProductLabelComponent,

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { Observable, of } from 'rxjs';
@@ -12,12 +11,9 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { LineItemEditDialogComponent } from 'ish-shared/line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { ProductIdComponent } from 'ish-shared/product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
 import { ProductRowComponent } from 'ish-shared/product/components/product-row/product-row.component';
@@ -31,24 +27,14 @@ describe('Line Item Edit Dialog Container', () => {
   let component: LineItemEditDialogContainerComponent;
   let fixture: ComponentFixture<LineItemEditDialogContainerComponent>;
   let element: HTMLElement;
-  let shoppingFacadeMock: ShoppingFacade;
+  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async(() => {
-    shoppingFacadeMock = mock(ShoppingFacade);
+    shoppingFacade = mock(ShoppingFacade);
 
     TestBed.configureTestingModule({
-      imports: [
-        NgbModalModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [NgbModalModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        LineItemEditDialogComponent,
         LineItemEditDialogContainerComponent,
         MockComponent(InputComponent),
         MockComponent(LoadingComponent),
@@ -60,7 +46,7 @@ describe('Line Item Edit Dialog Container', () => {
         MockComponent(ProductVariationSelectComponent),
         MockPipe(PricePipe),
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) }],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   }));
 
@@ -84,11 +70,11 @@ describe('Line Item Edit Dialog Container', () => {
       },
     } as unknown) as LineItemView;
 
-    when(shoppingFacadeMock.product$(anything(), anything())).thenReturn(of(component.lineItem.product) as Observable<
+    when(shoppingFacade.product$(anything(), anything())).thenReturn(of(component.lineItem.product) as Observable<
       VariationProductView
     >);
 
-    when(shoppingFacadeMock.productNotReady$(anything(), anything())).thenReturn(of(false));
+    when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(false));
   });
 
   it('should be created', () => {
@@ -108,7 +94,7 @@ describe('Line Item Edit Dialog Container', () => {
   });
 
   it('should display loading-components on the container', () => {
-    when(shoppingFacadeMock.productNotReady$(anything(), anything())).thenReturn(of(true));
+    when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(true));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toIncludeAllMembers(['ish-input', 'ish-loading']);
   });
