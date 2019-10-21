@@ -23,6 +23,7 @@ interface AbstractBasket<T> {
   promotionCodes?: string[];
   totals: BasketTotal;
   totalProductQuantity?: number;
+  bucketId?: string;
 }
 
 export interface Basket extends AbstractBasket<LineItem> {}
