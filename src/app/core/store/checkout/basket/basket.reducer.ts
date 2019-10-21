@@ -26,8 +26,8 @@ const initialValidationResults: BasketValidationResultType = {
 
 export const initialState: BasketState = {
   basket: undefined,
-  eligibleShippingMethods: [],
-  eligiblePaymentMethods: [],
+  eligibleShippingMethods: undefined,
+  eligiblePaymentMethods: undefined,
   loading: false,
   error: undefined,
   promotionError: undefined,
