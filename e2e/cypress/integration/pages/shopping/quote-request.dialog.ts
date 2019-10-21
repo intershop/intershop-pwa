@@ -1,5 +1,5 @@
 export class QuoteRequestDialog {
-  readonly tag = 'ish-product-add-to-quote-dialog';
+  readonly tag = 'ish-product-add-to-quote-dialog-container';
 
   private saveQuoteRequestButton = () => cy.get('[data-testing-id="saveQuoteRequest"]');
   private submitQuoteRequestButton = () => cy.get('[data-testing-id="submitQuoteRequest"]');

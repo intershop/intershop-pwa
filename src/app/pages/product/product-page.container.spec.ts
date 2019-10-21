@@ -25,8 +25,6 @@ import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/bre
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
 
-import { ProductAddToQuoteDialogComponent } from '../../extensions/quoting/shared/product/components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
-
 import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductMasterVariationsComponent } from './components/product-master-variations/product-master-variations.component';
@@ -61,7 +59,6 @@ describe('Product Page Container', () => {
         DummyComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(LoadingComponent),
-        MockComponent(ProductAddToQuoteDialogComponent),
         MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
         MockComponent(ProductLinksContainerComponent),
