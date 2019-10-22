@@ -4,10 +4,17 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
-import { concatMap, filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import {
+  UpdateBasket,
+  UpdateBasketFail,
+  UpdateBasketItemsSuccess,
+  getCurrentBasketId,
+} from 'ish-core/store/checkout/basket';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -24,6 +31,7 @@ export class QuoteEffects {
     private actions$: Actions,
     private featureToggleService: FeatureToggleService,
     private quoteService: QuoteService,
+    private basketService: BasketService,
     private router: Router,
     private store: Store<{}>
   ) {}
@@ -139,5 +147,61 @@ export class QuoteEffects {
         ({ productSKU }) => new LoadProductIfNotLoaded({ sku: productSKU, level: ProductCompletenessLevel.List })
       ),
     ])
+  );
+
+  /**
+   * Get current basket if missing and call AddQuoteToBasketAction
+   * Only triggers if the user has not yet a basket
+   */
+  @Effect()
+  getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
+    ofType<actions.AddQuoteToBasket>(actions.QuoteActionTypes.AddQuoteToBasket),
+    mapToPayloadProperty('quoteId'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    filter(([, basketId]) => !basketId),
+    mergeMap(([quoteId]) => this.basketService.createBasket().pipe(mapTo(new actions.AddQuoteToBasket({ quoteId }))))
+  );
+
+  /**
+   * Add quote to the current basket.
+   * Only triggers if the user has a basket.
+   */
+  @Effect()
+  addQuoteToBasket$ = this.actions$.pipe(
+    ofType<actions.AddQuoteToBasket>(actions.QuoteActionTypes.AddQuoteToBasket),
+    mapToPayloadProperty('quoteId'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    filter(([, basketId]) => !!basketId),
+    concatMap(([quoteId, basketId]) =>
+      this.basketService.addQuoteToBasket(quoteId, basketId).pipe(
+        map(link => new actions.AddQuoteToBasketSuccess({ link })),
+        mapErrorToAction(actions.AddQuoteToBasketFail)
+      )
+    )
+  );
+
+  /**
+   * Forward all failed/successful AddQuoteToBasket to the basket so that the payload can be contained there
+   */
+  @Effect()
+  addQuoteToBasketFail$ = this.actions$.pipe(
+    ofType<actions.AddQuoteToBasketFail>(actions.QuoteActionTypes.AddQuoteToBasketFail),
+    map(({ payload }) => new UpdateBasketFail(payload))
+  );
+
+  @Effect()
+  addQuoteToBasketSuccess$ = this.actions$.pipe(
+    ofType<actions.AddQuoteToBasketSuccess>(actions.QuoteActionTypes.AddQuoteToBasketSuccess),
+    mapTo(new UpdateBasketItemsSuccess())
+  );
+
+  /**
+   * Triggers a Caluculate Basket action after adding a quote to basket.
+   * ToDo: This is only necessary as long as api v0 is used for addQuote and addPayment
+   */
+  @Effect()
+  calculateBasketAfterAddToQuote = this.actions$.pipe(
+    ofType(actions.QuoteActionTypes.AddQuoteToBasketSuccess, actions.QuoteActionTypes.AddQuoteToBasketFail),
+    mapTo(new UpdateBasket({ update: { calculationState: 'CALCULATED' } }))
   );
 }

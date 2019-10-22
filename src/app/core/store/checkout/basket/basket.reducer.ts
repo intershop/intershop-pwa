@@ -43,7 +43,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddPromotionCodeToBasket:
-    case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.MergeBasket:
     case BasketActionTypes.ContinueCheckout:
@@ -66,7 +65,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.ContinueCheckoutFail:
     case BasketActionTypes.AddItemsToBasketFail:
-    case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
     case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
@@ -102,7 +100,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess:
     case BasketActionTypes.SetBasketPaymentSuccess:
