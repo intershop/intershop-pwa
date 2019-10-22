@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Link } from 'ish-core/models/link/link.model';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../models/quote/quote.interface';
@@ -19,6 +20,9 @@ export enum QuoteActionTypes {
   CreateQuoteRequestFromQuote = '[Quote] Create Quote Request from Quote',
   CreateQuoteRequestFromQuoteFail = '[Quote API] Create Quote Request from Quote Fail',
   CreateQuoteRequestFromQuoteSuccess = '[Quote API] Create Quote Request from Quote Success',
+  AddQuoteToBasket = '[Basket] Add Quote To Basket',
+  AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
+  AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
 }
 
 export class SelectQuote implements Action {
@@ -83,6 +87,21 @@ export class CreateQuoteRequestFromQuoteSuccess implements Action {
   constructor(public payload: { quoteLineItemRequest: QuoteLineItemResult }) {}
 }
 
+export class AddQuoteToBasket implements Action {
+  readonly type = QuoteActionTypes.AddQuoteToBasket;
+  constructor(public payload: { quoteId: string }) {}
+}
+
+export class AddQuoteToBasketFail implements Action {
+  readonly type = QuoteActionTypes.AddQuoteToBasketFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class AddQuoteToBasketSuccess implements Action {
+  readonly type = QuoteActionTypes.AddQuoteToBasketSuccess;
+  constructor(public payload: { link: Link }) {}
+}
+
 export type QuoteAction =
   | SelectQuote
   | LoadQuotes
@@ -96,4 +115,7 @@ export type QuoteAction =
   | RejectQuoteSuccess
   | CreateQuoteRequestFromQuote
   | CreateQuoteRequestFromQuoteFail
-  | CreateQuoteRequestFromQuoteSuccess;
+  | CreateQuoteRequestFromQuoteSuccess
+  | AddQuoteToBasket
+  | AddQuoteToBasketFail
+  | AddQuoteToBasketSuccess;

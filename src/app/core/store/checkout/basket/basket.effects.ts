@@ -117,54 +117,6 @@ export class BasketEffects {
   );
 
   /**
-   * Add quote to the current basket.
-   * Only triggers if the user has a basket.
-   */
-  @Effect()
-  addQuoteToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
-    concatMap(([payload, currentBasketId]) =>
-      this.basketService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
-        map(link => new basketActions.AddQuoteToBasketSuccess({ link })),
-        mapErrorToAction(basketActions.AddQuoteToBasketFail)
-      )
-    )
-  );
-
-  /**
-   * Get current basket if missing and call AddQuoteToBasketAction
-   * Only triggers if the user has not yet a basket
-   */
-  @Effect()
-  getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([payload, basketId]) => !basketId && !payload.basketId),
-    mergeMap(([{ quoteId }]) =>
-      this.basketService
-        .createBasket()
-        .pipe(map(basket => new basketActions.AddQuoteToBasket({ quoteId, basketId: basket.id })))
-    )
-  );
-
-  /**
-   * Triggers a Caluculate Basket action after adding a quote to basket.
-   * ToDo: This is only necessary as long as api v0 is used for addQuote and addPayment
-   */
-  @Effect()
-  calculateBasketAfterAddToQuote = this.actions$.pipe(
-    ofType(
-      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
-      basketActions.BasketActionTypes.AddQuoteToBasketFail
-    ),
-    mapTo(new basketActions.UpdateBasket({ update: { calculated: true } }))
-  );
-
-  /**
    * After a user logged in a merge basket action is triggered if there are already items in the anonymous user's basket
    */
   @Effect()
