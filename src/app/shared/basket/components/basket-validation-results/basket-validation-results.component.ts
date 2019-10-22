@@ -3,7 +3,10 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
+import {
+  BasketValidationErrorType,
+  BasketValidationResultType,
+} from 'ish-core/models/basket-validation/basket-validation.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -37,15 +40,33 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(results => {
-        this.hasGeneralBasketError =
-          results.errors && results.errors.some(error => error.parameters && !error.parameters.shippingRestriction);
+        this.hasGeneralBasketError = results.errors && results.errors.some(error => this.isLineItemMessage(error));
 
-        // display messages only if they are not item related
-        this.messages =
-          results.errors &&
-          results.errors.map(error => (!error.parameters ? error.message : error.parameters.shippingRestriction));
+        // display messages only if they are not item related, filter duplicate entries
+        this.messages = Array.from(
+          new Set(
+            results.errors &&
+              results.errors.map(error =>
+                !this.isLineItemMessage(error)
+                  ? error.parameters && error.parameters.shippingRestriction
+                    ? error.parameters.shippingRestriction
+                    : error.message
+                  : undefined
+              )
+          )
+        );
         this.cd.detectChanges();
       });
+  }
+
+  isLineItemMessage(error: BasketValidationErrorType): boolean {
+    return (
+      error.parameters &&
+      error.parameters.scopes &&
+      error.parameters.scopes.includes('Products') &&
+      error.parameters.lineItemId &&
+      !error.parameters.shippingRestriction
+    );
   }
 
   ngOnDestroy() {
