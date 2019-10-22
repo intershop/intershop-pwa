@@ -4,11 +4,11 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
 
 import { QuoteRequest } from '../models/quote-request/quote-request.model';
 import { Quote } from '../models/quote/quote.model';
 import {
+  AddQuoteToBasket,
   CreateQuoteRequestFromQuote,
   DeleteQuote,
   LoadQuotes,

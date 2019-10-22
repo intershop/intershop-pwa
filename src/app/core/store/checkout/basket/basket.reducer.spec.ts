@@ -5,7 +5,6 @@ import {
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { CreateOrderSuccess } from 'ish-core/store/orders';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -200,39 +199,6 @@ describe('Basket Reducer', () => {
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
         expect(state.lastTimeProductAdded).toBeNumber();
-      });
-    });
-  });
-
-  describe('AddQuoteToBasket actions', () => {
-    describe('AddQuoteToBasket action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.AddQuoteToBasket({ quoteId: 'QID' });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('AddQuoteToBasketFail action', () => {
-      it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.AddQuoteToBasketFail({ error });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toEqual(error);
-      });
-    });
-
-    describe('AddQuoteToBasketSuccess action', () => {
-      it('should set loading to false', () => {
-        const link = {} as Link;
-        const action = new fromActions.AddQuoteToBasketSuccess({ link });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toBeUndefined();
       });
     });
   });

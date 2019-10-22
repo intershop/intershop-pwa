@@ -8,9 +8,14 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { User } from 'ish-core/models/user/user.model';
+import { BasketService } from 'ish-core/services/basket/basket.service';
+import { LoadBasketSuccess } from 'ish-core/store/checkout/basket/basket.actions';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -31,6 +36,7 @@ import { QuoteEffects } from './quote.effects';
 describe('Quote Effects', () => {
   let actions$;
   let quoteServiceMock: QuoteService;
+  let basketServiceMock: BasketService;
   let effects: QuoteEffects;
   let store$: Store<{}>;
 
@@ -38,6 +44,7 @@ describe('Quote Effects', () => {
 
   beforeEach(() => {
     quoteServiceMock = mock(QuoteService);
+    basketServiceMock = mock(BasketService);
 
     @Component({ template: 'dummy' })
     class DummyComponent {}
@@ -51,6 +58,7 @@ describe('Quote Effects', () => {
           reducers: {
             quoting: combineReducers(quotingReducers),
             shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
             user: userReducer,
             configuration: configurationReducer,
           },
@@ -60,6 +68,7 @@ describe('Quote Effects', () => {
         QuoteEffects,
         provideMockActions(() => actions$),
         { provide: QuoteService, useFactory: () => instance(quoteServiceMock) },
+        { provide: BasketService, useFactory: () => instance(basketServiceMock) },
       ],
     });
 
@@ -288,6 +297,84 @@ describe('Quote Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadQuotesAfterChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('addQuoteToBasket$', () => {
+    it('should call the basketService for addQuoteToBasket', done => {
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
+      store$.dispatch(
+        new LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+
+      const quoteId = 'QID';
+      const action = new quoteActions.AddQuoteToBasket({ quoteId });
+      actions$ = of(action);
+
+      effects.addQuoteToBasket$.subscribe(() => {
+        verify(basketServiceMock.addQuoteToBasket(quoteId, 'BID')).once();
+        done();
+      });
+    });
+
+    it('should call the basketService for createBasket if no basket is present', done => {
+      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
+
+      const quoteId = 'quoteId';
+      const action = new quoteActions.AddQuoteToBasket({ quoteId });
+      actions$ = of(action);
+
+      effects.getBasketBeforeAddQuoteToBasket$.subscribe(() => {
+        verify(basketServiceMock.createBasket()).once();
+        done();
+      });
+    });
+
+    it('should map to action of type AddQuoteToBasketSuccess', () => {
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
+
+      store$.dispatch(
+        new LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+
+      const quoteId = 'QID';
+      const action = new quoteActions.AddQuoteToBasket({ quoteId });
+      const completion = new quoteActions.AddQuoteToBasketSuccess({ link: {} as Link });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addQuoteToBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type AddQuoteToBasketFail', () => {
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
+
+      store$.dispatch(
+        new LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+
+      const quoteId = 'QID';
+      const action = new quoteActions.AddQuoteToBasket({ quoteId });
+      const completion = new quoteActions.AddQuoteToBasketFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addQuoteToBasket$).toBeObservable(expected$);
     });
   });
 });
