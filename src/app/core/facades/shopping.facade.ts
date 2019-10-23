@@ -47,7 +47,7 @@ import {
   getSuggestSearchTerm,
 } from 'ish-core/store/shopping/search';
 import { toObservable } from 'ish-core/utils/functions';
-import { whenFalsy } from 'ish-core/utils/operators';
+import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -131,7 +131,10 @@ export class ShoppingFacade {
 
   // SEARCH
   searchTerm$ = this.store.pipe(select(getSearchTerm));
-  suggestSearchTerm$ = this.store.pipe(select(getSuggestSearchTerm));
+  suggestSearchTerm$ = this.store.pipe(
+    select(getSuggestSearchTerm),
+    whenTruthy()
+  );
   currentSearchBoxId$ = this.store.pipe(select(getCurrentSearchBoxId));
   searchResults$ = this.store.pipe(select(getSuggestSearchResult));
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
