@@ -22,6 +22,7 @@ import { QuoteRequest } from '../../../../models/quote-request/quote-request.mod
  *   (updateItem)="updateQuoteRequestItem($event)"
  *   (updateQuoteRequest)="updateQuoteRequest($event)"
  *   (submitQuoteRequest)="submitQuoteRequest()"
+ *   (updateSubmitQuoteRequest)="updateSubmitQuoteRequest($event)"
  * >
  * </ish-product-add-to-quote-dialog>
  */
@@ -38,6 +39,7 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   @Output() deleteQuoteRequest = new EventEmitter<string>();
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
+  @Output() updateSubmitQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
 
@@ -93,10 +95,17 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   }
 
   /**
-   * Throws submitQuoteRequest event when submit button was clicked.
+   * Throws submitQuoteRequest or if necessary updateSubmitQuoteRequest event when submit button was clicked.
    */
   submit() {
-    this.submitQuoteRequest.emit();
+    if (this.form && this.form.dirty) {
+      this.updateSubmitQuoteRequest.emit({
+        displayName: this.form.value.displayName,
+        description: this.form.value.description,
+      });
+    } else {
+      this.submitQuoteRequest.emit();
+    }
     this.hide();
   }
 
