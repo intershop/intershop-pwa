@@ -40,6 +40,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     case QuoteRequestActionTypes.UpdateQuoteRequest:
     case QuoteRequestActionTypes.DeleteQuoteRequest:
     case QuoteRequestActionTypes.SubmitQuoteRequest:
+    case QuoteRequestActionTypes.UpdateSubmitQuoteRequest:
     case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest:
     case QuoteRequestActionTypes.LoadQuoteRequestItems:
     case QuoteRequestActionTypes.AddProductToQuoteRequest:
@@ -104,6 +105,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
       return {
         ...state,
         loading: false,
+        error: undefined,
       };
     }
   }
