@@ -53,6 +53,7 @@ export class QuoteEditComponent implements OnChanges {
 
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
+  @Output() updateSubmitQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
   @Output() deleteQuoteRequest = new EventEmitter<string>();
@@ -132,10 +133,18 @@ export class QuoteEditComponent implements OnChanges {
   }
 
   /**
-   * Throws submitQuoteRequest event when submit button was clicked.
+   * Throws submitQuoteRequest event or if neccessary updateSubmitQuoteRequest event
+   * when submit button was clicked.
    */
   submit() {
-    this.submitQuoteRequest.emit();
+    if (this.form && this.form.dirty) {
+      this.updateSubmitQuoteRequest.emit({
+        displayName: this.form.value.displayName,
+        description: this.form.value.description,
+      });
+    } else {
+      this.submitQuoteRequest.emit();
+    }
   }
 
   /**

@@ -54,6 +54,10 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
     this.quotingFacade.submitQuoteRequest();
   }
 
+  updateSubmitQuoteRequest(payload: { displayName?: string; description?: string }) {
+    this.quotingFacade.updateSubmitQuoteRequest(payload);
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
   }

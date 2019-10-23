@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
@@ -153,6 +153,24 @@ describe('Quote Edit Component', () => {
       });
 
       component.update();
+    });
+
+    it('should throw updateSubmitQuoteRequest event when submit is clicked and the form values were changed before ', () => {
+      const emitter = spy(component.updateSubmitQuoteRequest);
+
+      component.form.value.displayName = 'DNAME';
+      component.form.value.description = 'DESC';
+      component.form.markAsDirty();
+
+      component.submit();
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`
+        Object {
+          "description": "DESC",
+          "displayName": "DNAME",
+        }
+      `);
     });
   });
 
