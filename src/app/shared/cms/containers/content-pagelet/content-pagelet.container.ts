@@ -9,7 +9,10 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import { Observable } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
+import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
@@ -23,7 +26,7 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
  * for the DefinitionQualifiedName of the pagelet.
  *
  * @example
- * <ish-content-pagelet [pagelet]="pagelet"></ish-content-pagelet>
+ * <ish-content-pagelet [pageletId]="pagelet.id"></ish-content-pagelet>
  */
 @Component({
   selector: 'ish-content-pagelet',
@@ -33,9 +36,12 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
 // tslint:disable-next-line:ccp-no-markup-in-containers ccp-no-intelligence-in-components
 export class ContentPageletContainerComponent extends SfeMetadataWrapper implements OnChanges {
   /**
-   * The Pagelet that is to be rendered.
+   * The Id of the Pagelet that is to be rendered.
    */
-  @Input() pagelet: ContentPageletView;
+  @Input() pageletId: string;
+
+  pagelet$: Observable<ContentPageletView>;
+  pagelet: ContentPageletView;
 
   noMappingFound: boolean;
 
@@ -46,18 +52,27 @@ export class ContentPageletContainerComponent extends SfeMetadataWrapper impleme
   constructor(
     injector: Injector,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private sfeAdapter: SfeAdapterService
+    private sfeAdapter: SfeAdapterService,
+    private cmsFacade: CMSFacade
   ) {
     super();
     this.components = injector.get<CMSComponentProvider[]>(CMS_COMPONENT, []);
   }
 
   ngOnChanges() {
-    this.mapComponent();
+    this.pagelet$ = this.cmsFacade.pagelet$(this.pageletId).pipe(
+      filter(x => !!x),
+      take(1)
+    );
 
-    if (this.pagelet && this.sfeAdapter.isInitialized()) {
-      this.setSfeMetadata(SfeMapper.mapPageletViewToSfeMetadata(this.pagelet));
-    }
+    this.pagelet$.subscribe(x => {
+      this.pagelet = x;
+
+      this.mapComponent();
+      if (this.pagelet && this.sfeAdapter.isInitialized()) {
+        this.setSfeMetadata(SfeMapper.mapPageletViewToSfeMetadata(this.pagelet));
+      }
+    });
   }
 
   private mapComponent() {

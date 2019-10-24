@@ -2,7 +2,7 @@
   <ish-breadcrumb [trail]="[{ key: contentPage.displayName }]"></ish-breadcrumb>
   <ish-content-pagelet
     *ngIf="contentPage.pagelets().length"
-    [pagelet]="contentPage.pagelets()[0]"
+    [pageletId]="contentPage.pagelets()[0].id"
   ></ish-content-pagelet>
 </ng-container>
 
