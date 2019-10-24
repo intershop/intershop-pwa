@@ -64,6 +64,12 @@ before(() => {
   cy.setCookie('cookieLawSeen', 'true');
 });
 
+beforeEach(() => {
+  cy.window().then(win => {
+    win.console.error = Cypress.log;
+  });
+});
+
 Cypress.Cookies.debug(true);
 
 // keep certain cookies
