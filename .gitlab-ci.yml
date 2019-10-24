@@ -57,7 +57,10 @@ start_review_server:
   dependencies: []
   stage: setup
   only:
-    - merge_requests
+    refs:
+      - merge_requests
+      - develop
+      - master
   tags:
     - shell-executor
     - docker
