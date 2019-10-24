@@ -103,22 +103,6 @@ describe('Content Page Container', () => {
 
     const child = fixture.debugElement.query(By.css('ish-content-pagelet'))
       .componentInstance as ContentPageletContainerComponent;
-    expect(child.pagelet).toMatchInlineSnapshot(`
-      Object {
-        "booleanParam": [Function],
-        "configParam": [Function],
-        "configurationParameters": Object {
-          "HTML": "foo",
-        },
-        "definitionQualifiedName": "fq",
-        "displayName": "pid",
-        "domain": "domain",
-        "hasParam": [Function],
-        "id": "pid",
-        "numberParam": [Function],
-        "slot": [Function],
-        "stringParam": [Function],
-      }
-    `);
+    expect(child.pageletId).toMatchInlineSnapshot(`"pid"`);
   });
 });

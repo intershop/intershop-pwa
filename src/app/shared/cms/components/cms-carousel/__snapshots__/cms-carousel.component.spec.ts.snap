@@ -14,10 +14,10 @@ exports[`Cms Carousel Component should be created 1`] = `
           <div class="carousel-item active">
             <div class="row">
               <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
-                <ish-content-pagelet></ish-content-pagelet>
+                <ish-content-pagelet ng-reflect-pagelet-id="slide1"></ish-content-pagelet>
               </div>
               <div class="col-sm-6" ng-reflect-ng-class="col-sm-6">
-                <ish-content-pagelet></ish-content-pagelet>
+                <ish-content-pagelet ng-reflect-pagelet-id="slide2"></ish-content-pagelet>
               </div>
             </div>
           </div></div
