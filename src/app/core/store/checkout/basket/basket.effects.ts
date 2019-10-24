@@ -153,11 +153,29 @@ export class BasketEffects {
     )
   );
 
+  @Effect()
+  validateBasket$ = this.actions$.pipe(
+    ofType<basketActions.ValidateBasket>(basketActions.BasketActionTypes.ValidateBasket),
+    mapToPayloadProperty('scopes'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    whenTruthy(),
+    concatMap(([scopes, basketId]) =>
+      this.basketService.validateBasket(basketId, scopes).pipe(
+        map(basketValidation =>
+          basketValidation.results.valid
+            ? new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation })
+            : new basketActions.ContinueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
+        ),
+        mapErrorToAction(basketActions.ContinueCheckoutFail)
+      )
+    )
+  );
+
   /**
    * Validates the basket before the user is allowed to jump to the next basket step
    */
   @Effect()
-  validateBasket$ = this.actions$.pipe(
+  validateBasketAndContinueCheckout$ = this.actions$.pipe(
     ofType<basketActions.ContinueCheckout>(basketActions.BasketActionTypes.ContinueCheckout),
     mapToPayloadProperty('targetStep'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),

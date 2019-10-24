@@ -383,7 +383,7 @@ describe('Basket Effects', () => {
     });
   });
 
-  describe('continueCheckoutIfBasketIsValid$', () => {
+  describe('validateBasket$', () => {
     const basketValidation: BasketValidation = {
       basket: BasketMockData.getBasket(),
       results: {
@@ -404,10 +404,77 @@ describe('Basket Effects', () => {
     });
 
     it('should call the basketService for validateBasket', done => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
       actions$ = of(action);
 
       effects.validateBasket$.subscribe(() => {
+        verify(basketServiceMock.validateBasket(BasketMockData.getBasket().id, anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type ContinueCheckoutSuccess', () => {
+      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
+      const completion = new basketActions.ContinueCheckoutSuccess({
+        targetRoute: undefined,
+        basketValidation,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type ContinueCheckoutFail', () => {
+      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
+
+      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
+      const completion = new basketActions.ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
+      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
+      basketValidation.results.valid = false;
+      const completion = new basketActions.ContinueCheckoutWithIssues({
+        targetRoute: undefined,
+        basketValidation,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('continueCheckoutIfBasketIsValid$', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.validateBasket(anything(), anything())).thenReturn(of(basketValidation));
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: BasketMockData.getBasket(),
+        })
+      );
+      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
+    });
+
+    it('should call the basketService for validateBasketAndContinueCheckout', done => {
+      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
+      actions$ = of(action);
+
+      effects.validateBasketAndContinueCheckout$.subscribe(() => {
         verify(basketServiceMock.validateBasket(BasketMockData.getBasket().id, anything())).once();
         done();
       });
@@ -422,7 +489,7 @@ describe('Basket Effects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.validateBasket$).toBeObservable(expected$);
+      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type ContinueCheckoutFail', () => {
@@ -433,7 +500,7 @@ describe('Basket Effects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.validateBasket$).toBeObservable(expected$);
+      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
     });
 
     it('should navigate to the next checkout route after ContinueCheckoutSuccess if the basket is valid', fakeAsync(() => {
@@ -457,7 +524,7 @@ describe('Basket Effects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.validateBasket$).toBeObservable(expected$);
+      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
     });
   });
 
