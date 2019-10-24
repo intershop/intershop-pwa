@@ -24,6 +24,7 @@ export enum QuoteRequestActionTypes {
   SubmitQuoteRequest = '[Quote] Submit Quote Request',
   SubmitQuoteRequestFail = '[Quote API] Submit Quote Request Fail',
   SubmitQuoteRequestSuccess = '[Quote API] Submit Quote Request Success',
+  UpdateSubmitQuoteRequest = '[Quote] Update and Submit Quote Request',
   CreateQuoteRequestFromQuoteRequest = '[Quote] Create Quote Request from Quote Request',
   CreateQuoteRequestFromQuoteRequestFail = '[Quote API] Create Quote Request from Quote Request Fail',
   CreateQuoteRequestFromQuoteRequestSuccess = '[Quote API] Create Quote Request from Quote Request Success',
@@ -119,6 +120,11 @@ export class SubmitQuoteRequestFail implements Action {
 export class SubmitQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.SubmitQuoteRequestSuccess;
   constructor(public payload: { id: string }) {}
+}
+
+export class UpdateSubmitQuoteRequest implements Action {
+  readonly type = QuoteRequestActionTypes.UpdateSubmitQuoteRequest;
+  constructor(public payload: { displayName?: string; description?: string }) {}
 }
 
 export class CreateQuoteRequestFromQuoteRequest implements Action {
@@ -226,6 +232,7 @@ export type QuoteAction =
   | SubmitQuoteRequest
   | SubmitQuoteRequestFail
   | SubmitQuoteRequestSuccess
+  | UpdateSubmitQuoteRequest
   | CreateQuoteRequestFromQuoteRequest
   | CreateQuoteRequestFromQuoteRequestFail
   | CreateQuoteRequestFromQuoteRequestSuccess

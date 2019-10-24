@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { noop } from 'rxjs';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
@@ -100,6 +100,24 @@ describe('Product Add To Quote Dialog Component', () => {
       });
 
       component.update();
+    });
+
+    it('should throw updateSubmitQuoteRequest event when submit is clicked and the form values were changed before ', () => {
+      const emitter = spy(component.updateSubmitQuoteRequest);
+
+      component.form.value.displayName = 'DNAME';
+      component.form.value.description = 'DESC';
+      component.form.markAsDirty();
+
+      component.submit();
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`
+        Object {
+          "description": "DESC",
+          "displayName": "DNAME",
+        }
+      `);
     });
   });
 });

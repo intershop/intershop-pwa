@@ -8,7 +8,7 @@ import { Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { noop, of, throwError } from 'rxjs';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -308,6 +308,65 @@ describe('Quote Request Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.submitQuoteRequest$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateSubmitQuoteRequest$', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' }));
+
+      when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenReturn(
+        of({ id: 'QRID' } as QuoteRequestData)
+      );
+      when(quoteRequestServiceMock.submitQuoteRequest(anything())).thenReturn(of('QRID'));
+    });
+
+    it('should call the quoteService for updateQuoteRequest and for submitQuoteRequest', done => {
+      actions$ = of(new quoteRequestActions.UpdateSubmitQuoteRequest({ displayName: 'edited' }));
+      effects.updateSubmitQuoteRequest$.subscribe(action => {
+        verify(quoteRequestServiceMock.updateQuoteRequest('QRID', deepEqual({ displayName: 'edited' }))).once();
+        verify(quoteRequestServiceMock.submitQuoteRequest('QRID')).once();
+        expect(action).toMatchInlineSnapshot(`
+          [Quote API] Submit Quote Request Success:
+            id: "QRID"
+        `);
+        done();
+      });
+    });
+
+    it('should call the quoteService for updateQuoteRequest and send an UpdateQuoteRequestFail action on error', done => {
+      when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenReturn(
+        throwError({ message: 'something went wrong' })
+      );
+
+      actions$ = of(new quoteRequestActions.UpdateSubmitQuoteRequest({ displayName: 'edited' }));
+      effects.updateSubmitQuoteRequest$.subscribe(action => {
+        verify(quoteRequestServiceMock.updateQuoteRequest('QRID', deepEqual({ displayName: 'edited' }))).once();
+        expect(action).toMatchInlineSnapshot(`
+          [Quote API] Update Quote Request Fail:
+            error: {"message":"something went wrong"}
+        `);
+        done();
+      });
+    });
+
+    it('should call the quoteService for updateQuoteRequest and for submitQuoteRequest and send an SubmitQuoteRequestFail action on error', done => {
+      when(quoteRequestServiceMock.submitQuoteRequest(anything())).thenReturn(
+        throwError({ message: 'something went wrong' })
+      );
+
+      actions$ = of(new quoteRequestActions.UpdateSubmitQuoteRequest({ displayName: 'edited' }));
+      effects.updateSubmitQuoteRequest$.subscribe(action => {
+        verify(quoteRequestServiceMock.updateQuoteRequest('QRID', deepEqual({ displayName: 'edited' }))).once();
+        verify(quoteRequestServiceMock.submitQuoteRequest('QRID')).once();
+        expect(action).toMatchInlineSnapshot(`
+          [Quote API] Submit Quote Request Fail:
+            error: {"message":"something went wrong"}
+        `);
+        done();
+      });
     });
   });
 
