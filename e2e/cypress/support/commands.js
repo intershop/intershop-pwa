@@ -66,7 +66,13 @@ before(() => {
 
 beforeEach(() => {
   cy.window().then(win => {
-    win.console.error = Cypress.log;
+    win.console.error = arg =>
+      Cypress.log({
+        name: 'Error',
+        error: true,
+        message: arg && (arg.message || JSON.stringify(arg)),
+        consoleProps: () => arg,
+      });
   });
 });
 
