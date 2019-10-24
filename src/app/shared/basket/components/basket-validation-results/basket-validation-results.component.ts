@@ -46,13 +46,13 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
         this.messages = Array.from(
           new Set(
             results.errors &&
-              results.errors.map(error =>
-                !this.isLineItemMessage(error)
-                  ? error.parameters && error.parameters.shippingRestriction
+              results.errors.map(error => {
+                if (!this.isLineItemMessage(error)) {
+                  return error.parameters && error.parameters.shippingRestriction
                     ? error.parameters.shippingRestriction
-                    : error.message
-                  : undefined
-              )
+                    : error.message;
+                }
+              })
           )
         );
         this.cd.detectChanges();

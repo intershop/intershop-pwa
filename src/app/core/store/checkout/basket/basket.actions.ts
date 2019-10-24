@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
+import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
@@ -31,6 +31,7 @@ export enum BasketActionTypes {
   MergeBasket = '[Basket Internal] Merge two baskets',
   MergeBasketFail = '[Basket API] Merge two baskets Fail',
   MergeBasketSuccess = '[Basket API] Merge two baskets Success',
+  ValidateBasket = '[Basket] Validate Basket',
   ContinueCheckout = '[Basket] Validate Basket and continue checkout',
   ContinueCheckoutFail = '[Basket API] Validate Basket and continue checkout Fail',
   ContinueCheckoutSuccess = '[Basket API] Validate Basket and continue with success',
@@ -158,6 +159,11 @@ export class MergeBasketFail implements Action {
 export class MergeBasketSuccess implements Action {
   readonly type = BasketActionTypes.MergeBasketSuccess;
   constructor(public payload: { basket: Basket }) {}
+}
+
+export class ValidateBasket implements Action {
+  readonly type = BasketActionTypes.ValidateBasket;
+  constructor(public payload: { scopes: BasketValidationScopeType[] }) {}
 }
 
 export class ContinueCheckout implements Action {
@@ -333,6 +339,7 @@ export type BasketAction =
   | MergeBasket
   | MergeBasketFail
   | MergeBasketSuccess
+  | ValidateBasket
   | ContinueCheckout
   | ContinueCheckoutFail
   | ContinueCheckoutSuccess
