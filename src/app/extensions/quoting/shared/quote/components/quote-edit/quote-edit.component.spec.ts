@@ -168,34 +168,34 @@ describe('Quote Edit Component', () => {
     });
 
     it('should render sellerComment if type Quote and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toContain('SCOM');
     });
 
     it('should render validFromDate if state === Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/1/70');
     });
 
     it('should not render validFromDate if state is !== Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/1/70');
     });
 
     it('should render validToDate if state state === Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/2/70');
     });
 
     it('should not render validToDate if state is  !== Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/2/70');
