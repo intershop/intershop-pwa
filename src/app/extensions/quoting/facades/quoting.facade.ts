@@ -27,6 +27,7 @@ import {
   SubmitQuoteRequest,
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
+  UpdateSubmitQuoteRequest,
   getActiveQuoteRequest,
   getCurrentQuoteRequests,
   getQuoteRequestError,
@@ -100,6 +101,10 @@ export class QuotingFacade {
 
   submitQuoteRequest() {
     this.store.dispatch(new SubmitQuoteRequest());
+  }
+
+  updateSubmitQuoteRequest(payload: { displayName?: string; description?: string }) {
+    this.store.dispatch(new UpdateSubmitQuoteRequest(payload));
   }
 
   copyQuoteRequest() {

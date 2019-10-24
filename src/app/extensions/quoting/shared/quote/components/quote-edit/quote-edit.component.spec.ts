@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
@@ -154,6 +154,24 @@ describe('Quote Edit Component', () => {
 
       component.update();
     });
+
+    it('should throw updateSubmitQuoteRequest event when submit is clicked and the form values were changed before ', () => {
+      const emitter = spy(component.updateSubmitQuoteRequest);
+
+      component.form.value.displayName = 'DNAME';
+      component.form.value.description = 'DESC';
+      component.form.markAsDirty();
+
+      component.submit();
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`
+        Object {
+          "description": "DESC",
+          "displayName": "DNAME",
+        }
+      `);
+    });
   });
 
   describe('Quote', () => {
@@ -168,34 +186,34 @@ describe('Quote Edit Component', () => {
     });
 
     it('should render sellerComment if type Quote and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toContain('SCOM');
     });
 
     it('should render validFromDate if state === Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/1/70');
     });
 
     it('should not render validFromDate if state is !== Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/1/70');
     });
 
     it('should render validToDate if state state === Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/2/70');
     });
 
     it('should not render validToDate if state is  !== Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/2/70');

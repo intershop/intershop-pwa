@@ -1,5 +1,5 @@
 <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
-  <!--- Error messages -->
+  <!-- Error messages -->
   <!-- <isif condition="#isDefined(ERROR_submit_quote_failed)#">
     <istext key="quote.edit.already_submitted.text" />
   </isif>
@@ -10,7 +10,7 @@
     <istext key="quote.edit.already_refused.text" />
   </isif> -->
 
-  <!--- Quote Header ( shown once if quote request submitted ) -->
+  <!-- Quote Header ( shown once if quote request submitted ) -->
   <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quoteTitle">
     <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
     <p>
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <!--- Shows the valid from/to date  -->
+  <!-- Shows the valid from/to date  -->
   <div *ngIf="quote.state === 'Responded'" class="row">
     <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
     <div class="col-8 col-md-9 col-xl-10">
@@ -169,7 +169,7 @@
 
   <div *ngIf="error" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
 
-  <!--- Quote Item List -->
+  <!-- Quote Item List -->
   <div class="section">
     <h3>{{ 'quote.items.table.heading' | translate }}</h3>
     <ish-line-item-list
@@ -184,7 +184,7 @@
   </div>
 
   <div class="form-btn-group clearfix">
-    <!--- here are the buttons -->
+    <!-- here are the buttons -->
     <ng-container *ngIf="quote.items">
       <!-- IF STATE NEW -->
       <ng-container *ngIf="quote.state === 'New'">

@@ -68,6 +68,12 @@ export class QuoteRequestEditPageContainerComponent implements OnInit, OnDestroy
     this.submitted = true;
   }
 
+  updateSubmitQuoteRequest(payload: { displayName?: string; description?: string }) {
+    this.quotingFacade.updateSubmitQuoteRequest(payload);
+    this.router.navigate([], { queryParams: { submitted: true } });
+    this.submitted = true;
+  }
+
   copyQuote() {
     this.quotingFacade.copyQuoteRequest();
   }
