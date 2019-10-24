@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, merge, of, timer } from 'rxjs';
@@ -67,14 +75,16 @@ export class QuoteEditComponent implements OnChanges {
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(c: SimpleChanges) {
     const quote = this.quote as Quote;
 
     this.sellerComment = quote.sellerComment;
     this.validFromDate = quote.validFromDate;
     this.validToDate = quote.validToDate;
 
-    this.patchForm(quote);
+    if (c.quote) {
+      this.patchForm(quote);
+    }
 
     this.toggleSaveMessage();
   }
