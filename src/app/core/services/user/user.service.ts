@@ -137,12 +137,12 @@ export class UserService {
 
   /**
    * Updates the password of the currently logged in user.
-   * @param customer    The current customer.
-   * @param user        The current user.
-   * @param password    The new password to update to.
-   * @param oldPassword The users old password for verification.
+   * @param customer         The current customer.
+   * @param user             The current user.
+   * @param password         The new password to update to.
+   * @param currentPassword  The users old password for verification.
    */
-  updateUserPassword(customer: Customer, user: User, password: string, oldPassword: string): Observable<void> {
+  updateUserPassword(customer: Customer, user: User, password: string, currentPassword: string): Observable<void> {
     if (!customer) {
       return throwError('updateUserPassword() called without customer');
     }
@@ -152,19 +152,14 @@ export class UserService {
     if (!password) {
       return throwError('updateUserPassword() called without password');
     }
-    if (!oldPassword) {
-      return throwError('updateUserPassword() called without oldPassword');
+    if (!currentPassword) {
+      return throwError('updateUserPassword() called without currentPassword');
     }
 
-    const headers = new HttpHeaders().set(
-      ApiService.AUTHORIZATION_HEADER_KEY,
-      'BASIC ' + b64u.toBase64(b64u.encode(`${user.email}:${oldPassword}`))
-    );
-
     if (customer.type === 'PrivateCustomer') {
-      return this.apiService.put('customers/-/credentials/password', { password }, { headers });
+      return this.apiService.put('customers/-/credentials/password', { password, currentPassword });
     } else {
-      return this.apiService.put('customers/-/users/-/credentials/password', { password }, { headers });
+      return this.apiService.put('customers/-/users/-/credentials/password', { password, currentPassword });
     }
   }
 
