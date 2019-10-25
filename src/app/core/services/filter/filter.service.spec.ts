@@ -4,6 +4,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { FilterService } from './filter.service';
 
@@ -33,6 +34,7 @@ describe('Filter Service', () => {
     apiService = mock(ApiService);
 
     TestBed.configureTestingModule({
+      imports: [ngrxTesting({})],
       providers: [FilterService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
     filterService = TestBed.get(FilterService);

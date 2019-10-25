@@ -1,5 +1,12 @@
 import { FacetData } from 'ish-core/models/facet/facet.interface';
 
+export interface FilterValueMap {
+  [key: string]: {
+    mapping: string;
+    type: 'colorcode' | 'image' | 'text';
+  };
+}
+
 export interface FilterData {
   name: string;
   type: string;
@@ -10,4 +17,5 @@ export interface FilterData {
   limitCount: number;
   minCount: number;
   scope: string;
+  filterValueMap?: FilterValueMap;
 }

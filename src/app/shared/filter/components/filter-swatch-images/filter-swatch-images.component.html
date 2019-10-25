@@ -3,13 +3,15 @@
     <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
       <a
         class="filter-swatch"
-        title="facet.name"
-        [title]="facet.name"
+        [title]="facet.displayName + ' (' + facet.count + ')'"
         (click)="filter(facet)"
-        [attr.data-testing-id]="'filter-link-' + (facet.name | sanitize)"
+        [attr.data-testing-id]="'filter-link-' + (facet.displayName | sanitize)"
       >
-        <!--- TODO: use color code from REST call as background color-->
-        <span [style.background-color]="facet.name.toLowerCase()"></span>
+        <span
+          [style.background-image]="getBackgroundImage(facet)"
+          [style.background-color]="getBackgroundColor(facet)"
+          [style.border]="facet.displayName.toLowerCase() === 'white' ? '1px solid #ddd' : null"
+        ></span>
       </a>
     </li>
   </ng-container>
