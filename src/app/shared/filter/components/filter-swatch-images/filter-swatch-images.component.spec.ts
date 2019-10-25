@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { MockComponent } from 'ng-mocks';
 
+import { FilterValueMap } from 'ish-core/models/filter/filter.interface';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 
@@ -15,12 +13,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FilterSwatchImagesComponent,
-        MockComponent(FaIconComponent),
-        MockComponent(NgbCollapse),
-        SanitizePipe,
-      ],
+      declarations: [FilterSwatchImagesComponent, SanitizePipe],
     }).compileComponents();
   }));
 
@@ -31,6 +24,10 @@ describe('Filter Swatch Images Component', () => {
         { name: 'Black', count: 4, displayName: 'Black' },
         { name: 'Red', count: 5, displayName: 'Red', selected: true },
       ],
+      filterValueMap: {
+        Black: { type: 'colorcode', mapping: 'black' },
+        Red: { type: 'colorcode', mapping: 'red' },
+      } as FilterValueMap,
     } as Filter;
     fixture = TestBed.createComponent(FilterSwatchImagesComponent);
     component = fixture.componentInstance;
