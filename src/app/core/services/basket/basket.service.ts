@@ -381,23 +381,33 @@ export class BasketService {
   }
 
   /**
-   * Get eligible shipping methods for the selected basket.
+   * Get eligible shipping methods for the selected basket or for the selected bucket of a basket.
+   * @param basketId  The basket id.
    * @param basketId  The basket id.
    * @returns         The eligible shipping methods.
    */
-  getBasketEligibleShippingMethods(basketId: string): Observable<ShippingMethod[]> {
+  getBasketEligibleShippingMethods(basketId: string, bucketId?: string): Observable<ShippingMethod[]> {
     if (!basketId) {
       return throwError('getBasketEligibleShippingMethods() called without basketId');
     }
 
-    return this.apiService
-      .get(`baskets/${basketId}/eligible-shipping-methods`, {
-        headers: this.basketHeaders,
-      })
-      .pipe(
-        unpackEnvelope<ShippingMethodData>('data'),
-        map(data => data.map(ShippingMethodMapper.fromData))
-      );
+    return bucketId
+      ? this.apiService
+          .get(`baskets/${basketId}/buckets/${bucketId}/eligible-shipping-methods`, {
+            headers: this.basketHeaders,
+          })
+          .pipe(
+            unpackEnvelope<ShippingMethodData>('data'),
+            map(data => data.map(ShippingMethodMapper.fromData))
+          )
+      : this.apiService
+          .get(`baskets/${basketId}/eligible-shipping-methods`, {
+            headers: this.basketHeaders,
+          })
+          .pipe(
+            unpackEnvelope<ShippingMethodData>('data'),
+            map(data => data.map(ShippingMethodMapper.fromData))
+          );
   }
 
   /**

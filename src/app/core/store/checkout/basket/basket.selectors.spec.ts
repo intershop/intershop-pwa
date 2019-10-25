@@ -61,11 +61,11 @@ describe('Basket Selectors', () => {
     });
 
     it('should not select any shipping methods if it is in initial state', () => {
-      expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+      expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
     });
 
     it('should not select any payment methods if it is in initial state', () => {
-      expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+      expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
     });
 
     it('should not select loading, error and lastTimeProductAdded if it is in initial state', () => {
@@ -194,7 +194,7 @@ describe('Basket Selectors', () => {
 
       it('should not have loaded shipping methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+        expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toEqual({ message: 'error' });
       });
     });
@@ -229,7 +229,7 @@ describe('Basket Selectors', () => {
 
       it('should not have loaded payment methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+        expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toEqual({ message: 'error' });
       });
     });
