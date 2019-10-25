@@ -80,9 +80,9 @@ export class BasketEffects {
   @Effect()
   loadBasketEligibleShippingMethods$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([, basketId]) =>
-      this.basketService.getBasketEligibleShippingMethods(basketId).pipe(
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([, basket]) =>
+      this.basketService.getBasketEligibleShippingMethods(basket.id, basket.bucketId).pipe(
         map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
       )
