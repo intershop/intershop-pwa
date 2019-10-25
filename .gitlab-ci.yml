@@ -426,6 +426,23 @@ deploy_demo_BO:
     name: BackOffice
     url: $BO_URL
 
+deploy_demo_MAIL:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    - merge_requests
+    - develop
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "done"
+  environment:
+    name: MailServer
+    url: $MAILSERVER_URL
+
 deploy_reports:
   stage: deploy
   cache: {}
