@@ -19,7 +19,13 @@ export interface BasketTotal {
   shippingRebatesTotal?: Price;
   shippingRebates?: BasketRebate[];
 
-  itemSurchargeTotalsByType: {
+  itemSurchargeTotalsByType?: {
+    amount: Price;
+    description: string;
+    displayName: string;
+  }[];
+
+  bucketSurchargeTotalsByType?: {
     amount: Price;
     description: string;
     displayName: string;
