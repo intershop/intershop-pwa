@@ -32,6 +32,11 @@ export interface BasketBaseData {
       description: string;
       name: string;
     }[];
+    bucketSurcharges?: {
+      amount: PriceItem;
+      description: string;
+      name: string;
+    }[];
   };
 }
 
