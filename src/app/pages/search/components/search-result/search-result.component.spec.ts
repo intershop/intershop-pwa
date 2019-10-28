@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
-import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
+import { ProductListingContainerComponent } from 'ish-shared/product/containers/product-listing/product-listing.container';
 
 import { SearchResultComponent } from './search-result.component';
 
@@ -24,7 +24,7 @@ describe('Search Result Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationContainerComponent),
         MockComponent(NgbCollapse),
-        MockComponent(ProductListContainerComponent),
+        MockComponent(ProductListingContainerComponent),
         SearchResultComponent,
       ],
     }).compileComponents();

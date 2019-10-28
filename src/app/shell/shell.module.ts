@@ -14,16 +14,9 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 
 import { FooterComponent } from './footer/components/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
-import { HeaderNavigationComponent } from './header/components/header-navigation/header-navigation.component';
+import { HeaderDefaultComponent } from './header/components/header-default/header-default.component';
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
-import { HeaderComponent } from './header/components/header/header.component';
-import { LanguageSwitchComponent } from './header/components/language-switch/language-switch.component';
-import { LoginStatusComponent } from './header/components/login-status/login-status.component';
-import { LogoutComponent } from './header/components/logout/logout.component';
-import { MiniBasketComponent } from './header/components/mini-basket/mini-basket.component';
-import { ProductCompareStatusComponent } from './header/components/product-compare-status/product-compare-status.component';
 import { ProductImageComponent } from './header/components/product-image/product-image.component';
-import { SearchBoxComponent } from './header/components/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/components/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/components/user-information-mobile/user-information-mobile.component';
 import { HeaderNavigationContainerComponent } from './header/containers/header-navigation/header-navigation.container';
@@ -58,20 +51,13 @@ const exportedComponents = [
     ...exportedComponents,
     ClickOutsideDirective,
     HeaderCheckoutComponent,
-    HeaderComponent,
-    HeaderNavigationComponent,
+    HeaderDefaultComponent,
     HeaderNavigationContainerComponent,
     HeaderSimpleComponent,
-    LanguageSwitchComponent,
     LanguageSwitchContainerComponent,
-    LoginStatusComponent,
     LoginStatusContainerComponent,
-    LogoutComponent,
-    MiniBasketComponent,
     MiniBasketContainerComponent,
-    ProductCompareStatusComponent,
     ProductCompareStatusContainerComponent,
-    SearchBoxComponent,
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
   ],

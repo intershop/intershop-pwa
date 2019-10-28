@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
+import { OrderListContainerComponent } from 'ish-shared/order/containers/order-list/order-list.container';
 
 import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
-import { AccountOrderHistoryPageComponent } from './components/account-order-history-page/account-order-history-page.component';
 
 describe('Account Order History Page Container', () => {
   let component: AccountOrderHistoryPageContainerComponent;
@@ -17,10 +17,11 @@ describe('Account Order History Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountOrderHistoryPageContainerComponent,
-        MockComponent(AccountOrderHistoryPageComponent),
         MockComponent(LoadingComponent),
+        MockComponent(OrderListContainerComponent),
+        MockComponent(ServerHtmlDirective),
       ],
-      imports: [TranslateModule.forRoot(), ngrxTesting()],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -38,6 +39,6 @@ describe('Account Order History Page Container', () => {
 
   it('should render order list component on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-account-order-history-page')).toBeTruthy();
+    expect(element.querySelector('ish-order-list-container')).toBeTruthy();
   });
 });

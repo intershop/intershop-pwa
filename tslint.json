@@ -306,7 +306,7 @@
         },
         { "starImport": true, "from": "lodash.*" },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|flatten|isEqual)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual)$).*",
           "from": "lodash.*"
         },
         {
@@ -445,7 +445,6 @@
         }
       }
     },
-    "ccp-no-markup-in-containers": { "severity": "warning" },
     "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",

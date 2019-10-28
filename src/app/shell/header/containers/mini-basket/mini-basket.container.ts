@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, concat, of, timer } from 'rxjs';
-import { distinctUntilChanged, mapTo, switchMap } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, concat, of, timer } from 'rxjs';
+import { distinctUntilChanged, filter, mapTo, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { Price } from 'ish-core/models/price/price.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -12,22 +14,68 @@ import { whenTruthy } from 'ish-core/utils/operators';
   templateUrl: './mini-basket.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MiniBasketContainerComponent implements OnInit {
-  basket$: Observable<Basket>;
+export class MiniBasketContainerComponent implements OnInit, OnDestroy {
   basketError$: Observable<HttpError>;
   basketAnimation$: Observable<string>;
+  itemTotal$: Observable<Price>;
+  itemCount$: Observable<number>;
+  lineItems$: Observable<LineItemView[]>;
+
+  isCollapsed = true;
 
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
 
-  constructor(private checkoutFacade: CheckoutFacade) {}
+  private destroy$ = new Subject();
+
+  constructor(private checkoutFacade: CheckoutFacade, private location: Location, private cdRef: ChangeDetectorRef) {}
+
+  ngOnDestroy() {
+    this.destroy$.next();
+  }
 
   ngOnInit() {
-    this.basket$ = this.checkoutFacade.basket$;
-    this.basketError$ = this.checkoutFacade.basketError$;
+    this.itemCount$ = this.checkoutFacade.basketItemCount$;
+    this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
+    this.lineItems$ = this.checkoutFacade.basketLineItems$;
+    this.basketError$ = this.checkoutFacade.basketError$.pipe(
+      whenTruthy(),
+      tap(() => this.open())
+    );
     this.basketAnimation$ = this.checkoutFacade.basketChange$.pipe(
+      filter(() => this.location.path() !== '/basket'),
       whenTruthy(),
       distinctUntilChanged(),
       switchMap(() => concat(of('tada'), timer(2500).pipe(mapTo(''))))
     );
+
+    this.basketAnimation$.pipe(takeUntil(this.destroy$)).subscribe(animation => {
+      if (animation) {
+        this.open();
+      } else {
+        this.collapse();
+      }
+    });
+  }
+
+  /**
+   * Toggle the collapse state of the mini basket programmatically.
+   */
+  toggleCollapse() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  /**
+   * Collapse the mini basket programmatically.
+   */
+  collapse() {
+    this.isCollapsed = true;
+    this.cdRef.markForCheck();
+  }
+
+  /**
+   * Open the mini basket programmatically.
+   */
+  open() {
+    this.isCollapsed = false;
   }
 }

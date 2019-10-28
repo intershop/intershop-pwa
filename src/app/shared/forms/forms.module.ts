@@ -12,7 +12,6 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputBirthdayComponent } from './components/input-birthday/input-birthday.component';
 import { InputComponent } from './components/input/input.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SelectAddressComponent } from './components/select-address/select-address.component';
 import { SelectCountryComponent } from './components/select-country/select-country.component';
 import { SelectLanguageComponent } from './components/select-language/select-language.component';
@@ -25,7 +24,7 @@ import { TextareaComponent } from './components/textarea/textarea.component';
 import { LoginFormContainerComponent } from './containers/login-form/login-form.container';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
-const declaredComponents = [LoginFormComponent];
+const declaredComponents = [];
 
 const exportedComponents = [
   CaptchaComponent,

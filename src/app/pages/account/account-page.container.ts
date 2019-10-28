@@ -6,6 +6,7 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
+  selector: 'ish-account-page',
   templateUrl: './account-page.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

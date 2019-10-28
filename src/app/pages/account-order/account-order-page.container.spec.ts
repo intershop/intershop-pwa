@@ -7,7 +7,7 @@ import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module'
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AccountOrderPageContainerComponent } from './account-order-page.container';
-import { AccountOrderPageComponent } from './components/account-order-page/account-order-page.component';
+import { AccountOrderComponent } from './components/account-order/account-order.component';
 
 describe('Account Order Page Container', () => {
   let component: AccountOrderPageContainerComponent;
@@ -17,7 +17,7 @@ describe('Account Order Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ngrxTesting({ reducers: { ...coreReducers, shopping: combineReducers(shoppingReducers) } })],
-      declarations: [AccountOrderPageContainerComponent, MockComponent(AccountOrderPageComponent)],
+      declarations: [AccountOrderPageContainerComponent, MockComponent(AccountOrderComponent)],
     }).compileComponents();
   }));
 

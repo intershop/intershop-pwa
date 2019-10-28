@@ -1,5 +1,25 @@
-<ish-product-promotion
-  *ngIf="promotions$ | async as promotions"
-  [promotions]="promotions"
-  [displayType]="displayType"
-></ish-product-promotion>
+<ng-container *ngIf="promotions$ | async as promotions">
+  <ul *ngIf="promotions.length" class="promotion-list">
+    <ng-container *ngFor="let promotion of promotions">
+      <li *ngIf="!promotion.disableMessages" class="promotion-list-item">
+        <ng-container *ngIf="displayType === 'simple' || displayType === 'simpleWithDetail'; else default">
+          <span class="promotion-short-title" [ishServerHtml]="promotion.title"></span>
+          <ish-promotion-details
+            *ngIf="displayType === 'simpleWithDetail'"
+            [promotion]="promotion"
+          ></ish-promotion-details>
+        </ng-container>
+
+        <ng-template #default>
+          <div *ngIf="promotion.icon" class="promotion-icon" [ishServerHtml]="promotion.icon"></div>
+          <div *ngIf="promotion.title" class="promotion-short-title" [ishServerHtml]="promotion.title"></div>
+          <br />
+          <div>
+            <span *ngIf="promotion.longTitle" class="promotion-long-title" [ishServerHtml]="promotion.longTitle"></span>
+            <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+          </div>
+        </ng-template>
+      </li>
+    </ng-container>
+  </ul>
+</ng-container>

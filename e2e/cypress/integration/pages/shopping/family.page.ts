@@ -3,11 +3,11 @@ import { HeaderModule } from '../header.module';
 import { ProductListModule } from './product-list.module';
 
 export class FamilyPage {
-  readonly tag = 'ish-family-page';
+  readonly tag = 'ish-category-products';
 
   readonly header = new HeaderModule();
 
-  readonly productList = new ProductListModule('ish-product-list-container');
+  readonly productList = new ProductListModule('ish-product-listing-container');
 
   static navigateTo(categoryUniqueId: string, page?: number) {
     cy.visit(`/category/${categoryUniqueId}${page ? `?page=${page}` : ''}`);

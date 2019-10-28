@@ -1,12 +1,16 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
-import { MockComponent } from 'ng-mocks';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { OrderView } from 'ish-core/models/order/order.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { AddressComponent } from 'ish-shared/address/components/address/address.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
-import { OrderListComponent } from 'ish-shared/order/components/order-list/order-list.component';
 
 import { OrderListContainerComponent } from './order-list.container';
 
@@ -14,18 +18,25 @@ describe('Order List Container', () => {
   let component: OrderListContainerComponent;
   let fixture: ComponentFixture<OrderListContainerComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
+  const orders = [
+    { id: '00123', documentNo: '123', totals: {} },
+    { id: '00124', documentNo: '124', totals: {} },
+  ] as OrderView[];
 
   beforeEach(async(() => {
+    accountFacade = mock(AccountFacade);
+
     TestBed.configureTestingModule({
-      declarations: [MockComponent(LoadingComponent), MockComponent(OrderListComponent), OrderListContainerComponent],
-      imports: [
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
+      declarations: [
+        MockComponent(AddressComponent),
+        MockComponent(LoadingComponent),
+        MockPipe(DatePipe),
+        MockPipe(PricePipe),
+        OrderListContainerComponent,
       ],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -41,8 +52,40 @@ describe('Order List Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render order list component on page', () => {
+  it('should display empty list text if there are no orders', () => {
+    when(accountFacade.orders$()).thenReturn(of([]));
     fixture.detectChanges();
-    expect(element.querySelector('ish-order-list')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=emptyList]')).toBeTruthy();
+  });
+
+  it('should display loading overlay if orders are loading', () => {
+    when(accountFacade.ordersLoading$).thenReturn(of(true));
+    fixture.detectChanges();
+    expect(element.querySelector('ish-loading')).toBeTruthy();
+  });
+
+  it('should display a list if there are orders', () => {
+    when(accountFacade.orders$()).thenReturn(of(orders));
+    fixture.detectChanges();
+
+    expect(element.querySelector('div.list-body')).toBeTruthy();
+    expect(element.querySelectorAll('div.list-item-row')).toHaveLength(2);
+    expect(element.querySelector('ish-address')).toBeTruthy();
+  });
+
+  it('should display a certain number of items if maxItemsCount is set', () => {
+    when(accountFacade.orders$()).thenReturn(of(orders));
+    component.maxListItems = 1;
+    fixture.detectChanges();
+
+    expect(element.querySelectorAll('div.list-item-row')).toHaveLength(1);
+  });
+
+  it('should not display addresses if compact is set to true', () => {
+    when(accountFacade.orders$()).thenReturn(of(orders));
+    component.compact = true;
+    fixture.detectChanges();
+
+    expect(element.querySelector('ish-address')).toBeFalsy();
   });
 });

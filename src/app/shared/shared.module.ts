@@ -26,7 +26,6 @@ import { BasketAddressSummaryComponent } from './basket/components/basket-addres
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
-import { BasketPromotionComponent } from './basket/components/basket-promotion/basket-promotion.component';
 import { BasketValidationResultsComponent } from './basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
@@ -65,16 +64,13 @@ import { FilterTextComponent } from './filter/components/filter-text/filter-text
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
-import { LineItemEditDialogComponent } from './line-item/components/line-item-edit-dialog/line-item-edit-dialog.component';
 import { LineItemEditComponent } from './line-item/components/line-item-edit/line-item-edit.component';
 import { LineItemEditDialogContainerComponent } from './line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
-import { OrderListComponent } from './order/components/order-list/order-list.component';
 import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
-import { ProductBundleDisplayComponent } from './product/components/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from './product/components/product-id/product-id.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
 import { ProductLabelComponent } from './product/components/product-label/product-label.component';
@@ -82,7 +78,6 @@ import { ProductListPagingComponent } from './product/components/product-list-pa
 import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
-import { ProductPromotionComponent } from './product/components/product-promotion/product-promotion.component';
 import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
 import { ProductRatingStarComponent } from './product/components/product-rating-star/product-rating-star.component';
 import { ProductRatingComponent } from './product/components/product-rating/product-rating.component';
@@ -93,10 +88,9 @@ import { ProductVariationDisplayComponent } from './product/components/product-v
 import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
 import { ProductBundleDisplayContainerComponent } from './product/containers/product-bundle-display/product-bundle-display.container';
 import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
-import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
+import { ProductListingContainerComponent } from './product/containers/product-listing/product-listing.container';
 import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
 import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
-import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
 const importExportModules = [
@@ -123,7 +117,6 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
-  BasketPromotionComponent,
   CMSCarouselComponent,
   CMSContainerComponent,
   CMSDialogComponent,
@@ -146,20 +139,15 @@ const declaredComponents = [
   FilterTextComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,
-  LineItemEditDialogComponent,
   LineItemEditDialogContainerComponent,
-  OrderListComponent,
-  ProductBundleDisplayComponent,
   ProductIdComponent,
   ProductLabelComponent,
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
-  ProductPromotionComponent,
   ProductRatingStarComponent,
   ProductRowComponent,
   ProductTileComponent,
-  RecentlyViewedComponent,
 ];
 
 const exportedComponents = [
@@ -192,7 +180,7 @@ const exportedComponents = [
   ProductInventoryComponent,
   ProductItemContainerComponent,
   ProductLabelComponent,
-  ProductListContainerComponent,
+  ProductListingContainerComponent,
   ProductPriceComponent,
   ProductPromotionContainerComponent,
   ProductQuantityComponent,

@@ -13,8 +13,8 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { CategoryPageContainerComponent } from './category-page.container';
-import { CategoryPageComponent } from './components/category-page/category-page.component';
-import { FamilyPageComponent } from './components/family-page/family-page.component';
+import { CategoryCategoriesComponent } from './components/category-categories/category-categories.component';
+import { CategoryProductsComponent } from './components/category-products/category-products.component';
 
 describe('Category Page Container', () => {
   let component: CategoryPageContainerComponent;
@@ -35,8 +35,8 @@ describe('Category Page Container', () => {
       ],
       declarations: [
         CategoryPageContainerComponent,
-        MockComponent(CategoryPageComponent),
-        MockComponent(FamilyPageComponent),
+        MockComponent(CategoryCategoriesComponent),
+        MockComponent(CategoryProductsComponent),
         MockComponent(LoadingComponent),
       ],
     }).compileComponents();
@@ -75,7 +75,7 @@ describe('Category Page Container', () => {
     expect(findAllIshElements(element)).toEqual(['ish-loading']);
   }));
 
-  it('should display category-page when category has sub categories', () => {
+  it('should display categories when category has sub categories', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     const subCategory = { uniqueId: 'dummy.A', categoryPath: ['dummy', 'dummy.A'] } as Category;
     store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category, subCategory]) }));
@@ -83,10 +83,10 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-category-page']);
+    expect(findAllIshElements(element)).toEqual(['ish-category-categories']);
   });
 
-  it('should display family-page when category has products', () => {
+  it('should display products when category has products', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     category.hasOnlineProducts = true;
     store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category]) }));
@@ -94,6 +94,6 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-family-page']);
+    expect(findAllIshElements(element)).toEqual(['ish-category-products']);
   });
 });
