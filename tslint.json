@@ -445,7 +445,6 @@
         }
       }
     },
-    "ccp-no-markup-in-containers": { "severity": "warning" },
     "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
