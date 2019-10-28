@@ -25,6 +25,7 @@ describe('New User', () => {
     it('should fill in registration form an submit', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
+        page.acceptTAC();
         page
           .submitAndObserve()
           .its('statusMessage')
@@ -68,6 +69,7 @@ describe('New User', () => {
     it('should fill in registration form', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
+        page.acceptTAC();
       });
     });
 
