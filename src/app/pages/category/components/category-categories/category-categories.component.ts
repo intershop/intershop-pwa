@@ -5,14 +5,11 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
-  selector: 'ish-family-page',
-  templateUrl: './family-page.component.html',
+  selector: 'ish-category-categories',
+  templateUrl: './category-categories.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FamilyPageComponent implements OnInit, OnChanges {
-  /**
-   * The the category leading to the displayed result.
-   */
+export class CategoryCategoriesComponent implements OnInit, OnChanges {
   @Input() category: CategoryView;
   @Input() deviceType: DeviceType;
 
