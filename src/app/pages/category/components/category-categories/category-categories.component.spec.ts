@@ -13,18 +13,18 @@ import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/bre
 import { CategoryListComponent } from '../category-list/category-list.component';
 import { CategoryNavigationComponent } from '../category-navigation/category-navigation.component';
 
-import { CategoryPageComponent } from './category-page.component';
+import { CategoryCategoriesComponent } from './category-categories.component';
 
-describe('Category Page Component', () => {
-  let component: CategoryPageComponent;
-  let fixture: ComponentFixture<CategoryPageComponent>;
+describe('Category Categories Component', () => {
+  let component: CategoryCategoriesComponent;
+  let fixture: ComponentFixture<CategoryCategoriesComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        CategoryPageComponent,
+        CategoryCategoriesComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(CategoryListComponent),
         MockComponent(CategoryNavigationComponent),
@@ -35,7 +35,7 @@ describe('Category Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CategoryPageComponent);
+    fixture = TestBed.createComponent(CategoryCategoriesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 

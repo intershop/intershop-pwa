@@ -12,18 +12,18 @@ import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/bre
 import { FilterNavigationContainerComponent } from 'ish-shared/filter/containers/filter-navigation/filter-navigation.container';
 import { ProductListContainerComponent } from 'ish-shared/product/containers/product-list/product-list.container';
 
-import { FamilyPageComponent } from './family-page.component';
+import { CategoryProductsComponent } from './category-products.component';
 
-describe('Family Page Component', () => {
-  let component: FamilyPageComponent;
-  let fixture: ComponentFixture<FamilyPageComponent>;
+describe('Category Products Component', () => {
+  let component: CategoryProductsComponent;
+  let fixture: ComponentFixture<CategoryProductsComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        FamilyPageComponent,
+        CategoryProductsComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(FaIconComponent),
         MockComponent(FilterNavigationContainerComponent),
@@ -34,7 +34,7 @@ describe('Family Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FamilyPageComponent);
+    fixture = TestBed.createComponent(CategoryProductsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     const cat = { uniqueId: 'A', categoryPath: ['A'] } as Category;
