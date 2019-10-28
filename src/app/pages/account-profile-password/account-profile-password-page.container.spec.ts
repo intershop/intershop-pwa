@@ -6,7 +6,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfilePasswordPageContainerComponent } from './account-profile-password-page.container';
-import { AccountProfilePasswordPageComponent } from './components/account-profile-password-page/account-profile-password-page.component';
+import { AccountProfilePasswordComponent } from './components/account-profile-password/account-profile-password.component';
 
 describe('Account Profile Password Page Container', () => {
   let component: AccountProfilePasswordPageContainerComponent;
@@ -18,7 +18,7 @@ describe('Account Profile Password Page Container', () => {
       imports: [ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfilePasswordPageContainerComponent,
-        MockComponent(AccountProfilePasswordPageComponent),
+        MockComponent(AccountProfilePasswordComponent),
         MockComponent(LoadingComponent),
       ],
     }).compileComponents();

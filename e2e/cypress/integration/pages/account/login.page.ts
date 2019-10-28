@@ -1,7 +1,7 @@
 import { HeaderModule } from '../header.module';
 
 export class LoginPage {
-  readonly tag = 'ish-login-form';
+  readonly tag = 'ish-login-form-container';
 
   readonly header = new HeaderModule();
 

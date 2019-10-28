@@ -2,9 +2,18 @@
   <h2>{{ 'account.quotes.widget.my_quotes.heading' | translate }}</h2>
 
   <div class="loading-container">
-    <ish-quote-widget [quoteRequests]="quoteRequests$ | async" [quotes]="quotes$ | async"></ish-quote-widget>
+    <div *ngIf="counts$ | async as counts" class="row pb-2" data-testing-id="quote-widget">
+      <div class="col-6">{{ 'account.quotes.widget.new.label' | translate }}</div>
+      <div class="col-6 text-right" data-testing-id="new-counter">{{ counts['New'] || 0 }}</div>
+      <div class="col-6">{{ 'account.quotes.widget.submitted.label' | translate }}</div>
+      <div class="col-6 text-right" data-testing-id="submitted-counter">{{ counts['Submitted'] || 0 }}</div>
+      <div class="col-6">{{ 'account.quotes.widget.accepted.label' | translate }}</div>
+      <div class="col-6 text-right" data-testing-id="accepted-counter">{{ counts['Accepted'] || 0 }}</div>
+      <div class="col-6">{{ 'account.quotes.widget.rejected.label' | translate }}</div>
+      <div class="col-6 text-right" data-testing-id="rejected-counter">{{ counts['Rejected'] || 0 }}</div>
+    </div>
 
-    <ish-loading *ngIf="(quoteLoading$ | async) || (quoteRequestLoading$ | async)"></ish-loading>
+    <ish-loading *ngIf="loading$ | async"></ish-loading>
   </div>
 
   <a routerLink="/account/quote-list" data-testing-id="quoute-list-link">{{

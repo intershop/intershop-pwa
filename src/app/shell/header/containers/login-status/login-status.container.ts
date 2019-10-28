@@ -20,4 +20,15 @@ export class LoginStatusContainerComponent implements OnInit {
   ngOnInit() {
     this.user$ = this.accountFacade.user$;
   }
+
+  getViewClasses(): string {
+    switch (this.view) {
+      case 'auto':
+        return 'd-none d-md-inline';
+      case 'full':
+        return 'd-inline';
+      case 'small':
+        return 'd-none';
+    }
+  }
 }

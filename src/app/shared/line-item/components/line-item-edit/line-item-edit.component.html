@@ -1,7 +1,7 @@
 <ng-container *ngIf="editable && lineItem && isVariationProduct(lineItem.product)">
   <!-- edit-link -->
   <a
-    (click)="modalDialog.show(); lineItemDialogContainer.reset()"
+    (click)="modalDialog.show()"
     class="line-item-edit-link"
     rel="nofollow"
     title="{{ 'checkout.variation.edit.button.label' | translate }}"
@@ -19,7 +19,6 @@
     }"
   >
     <ish-line-item-edit-dialog-container
-      #lineItemDialogContainer
       [lineItem]="lineItem"
       [modalDialogRef]="modalDialog"
       (updateItem)="onUpdateItem($event)"

@@ -9,7 +9,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountProfileUserPageContainerComponent } from './account-profile-user-page.container';
-import { AccountProfileUserPageComponent } from './components/account-profile-user-page/account-profile-user-page.component';
+import { AccountProfileUserComponent } from './components/account-profile-user/account-profile-user.component';
 
 describe('Account Profile User Page Container', () => {
   let component: AccountProfileUserPageContainerComponent;
@@ -27,7 +27,7 @@ describe('Account Profile User Page Container', () => {
       imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfileUserPageContainerComponent,
-        MockComponent(AccountProfileUserPageComponent),
+        MockComponent(AccountProfileUserComponent),
         MockComponent(LoadingComponent),
       ],
       providers: [{ provide: AVAILABLE_LOCALES, useValue: locales }],

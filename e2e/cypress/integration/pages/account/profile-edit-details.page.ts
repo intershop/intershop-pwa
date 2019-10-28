@@ -7,7 +7,7 @@ export type ProfileEditDetailsTypes = Partial<
 >;
 
 export class ProfileEditDetailsPage {
-  readonly tag = 'ish-account-profile-user-page';
+  readonly tag = 'ish-account-profile-user';
 
   fillForm(data: ProfileEditDetailsTypes) {
     Object.keys(data).forEach(key => fillFormField(this.tag, key, data[key]));

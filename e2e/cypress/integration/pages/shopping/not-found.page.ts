@@ -1,3 +1,3 @@
 export class NotFoundPage {
-  readonly tag = 'ish-error-page';
+  readonly tag = 'ish-error';
 }

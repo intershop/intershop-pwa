@@ -6,7 +6,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountAddressesPageContainerComponent } from './account-addresses-page.container';
-import { AccountAddressesPageComponent } from './components/account-addresses-page/account-addresses-page.component';
+import { AccountAddressesComponent } from './components/account-addresses/account-addresses.component';
 
 describe('Account Addresses Page Container', () => {
   let component: AccountAddressesPageContainerComponent;
@@ -17,7 +17,7 @@ describe('Account Addresses Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountAddressesPageContainerComponent,
-        MockComponent(AccountAddressesPageComponent),
+        MockComponent(AccountAddressesComponent),
         MockComponent(LoadingComponent),
       ],
       imports: [ngrxTesting({ reducers: coreReducers })],
@@ -38,6 +38,6 @@ describe('Account Addresses Page Container', () => {
 
   it('should render account addresses component on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-account-addresses-page')).toBeTruthy();
+    expect(element.querySelector('ish-account-addresses')).toBeTruthy();
   });
 });

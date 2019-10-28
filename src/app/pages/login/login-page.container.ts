@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
@@ -12,10 +14,16 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 })
 export class LoginPageContainerComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
+  loginMessageKey$: Observable<string>;
 
-  constructor(private accountFacade: AccountFacade) {}
+  constructor(private accountFacade: AccountFacade, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.isLoggedIn$ = this.accountFacade.isLoggedIn$;
+
+    this.loginMessageKey$ = this.route.queryParamMap.pipe(
+      map(params => params.get('messageKey')),
+      map(messageKey => (messageKey ? `account.login.${messageKey}.message` : undefined))
+    );
   }
 }
