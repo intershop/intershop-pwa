@@ -54,6 +54,26 @@
 
           <div class="row form-group">
             <div class="offset-md-4 col-md-8">
+              <ish-checkbox
+                [form]="form"
+                controlName="termsAndConditions"
+                [errorMessages]="{ pattern: 'checkout.tac.error.tip' }"
+              >
+                <span>{{ 'checkout.tac' | translate }}&nbsp;</span>
+                <ish-modal-dialog-link
+                  linkText="checkout.tac.link"
+                  [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
+                >
+                  <ish-content-include
+                    includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"
+                  ></ish-content-include>
+                </ish-modal-dialog-link>
+              </ish-checkbox>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="offset-md-4 col-md-8">
               <input
                 type="submit"
                 [disabled]="formDisabled"

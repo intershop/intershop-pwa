@@ -26,6 +26,7 @@ describe('New B2B User', () => {
     it('should fill in registration form an submit', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
+        page.acceptTAC();
         page
           .submitAndObserve()
           .its('statusMessage')
@@ -69,11 +70,13 @@ describe('New B2B User', () => {
     it('should fill in registration form', () => {
       at(RegistrationPage, page => {
         page.fillForm(_.user);
+        page.acceptTAC();
       });
     });
 
     it('should get an error when submitting', () => {
       at(RegistrationPage, page => {
+        page.acceptTAC();
         page
           .submitAndObserve()
           .its('statusMessage')
