@@ -6,7 +6,6 @@ import { BasketValidation } from 'ish-core/models/basket-validation/basket-valid
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -39,9 +38,6 @@ export enum BasketActionTypes {
   AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
   AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
   AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
-  AddQuoteToBasket = '[Basket] Add Quote To Basket',
-  AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
-  AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
   UpdateBasketItems = '[Basket] Update Basket Items',
   UpdateBasketItemsFail = '[Basket API] Update Basket Items Fail',
   UpdateBasketItemsSuccess = '[Basket API] Update Basket Items Success',
@@ -182,21 +178,6 @@ export class ContinueCheckoutSuccess implements Action {
 export class ContinueCheckoutWithIssues implements Action {
   readonly type = BasketActionTypes.ContinueCheckoutWithIssues;
   constructor(public payload: { targetRoute: string; basketValidation: BasketValidation }) {}
-}
-
-export class AddQuoteToBasket implements Action {
-  readonly type = BasketActionTypes.AddQuoteToBasket;
-  constructor(public payload: { quoteId: string; basketId?: string }) {}
-}
-
-export class AddQuoteToBasketFail implements Action {
-  readonly type = BasketActionTypes.AddQuoteToBasketFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class AddQuoteToBasketSuccess implements Action {
-  readonly type = BasketActionTypes.AddQuoteToBasketSuccess;
-  constructor(public payload: { link: Link }) {}
 }
 
 export class UpdateBasketItems implements Action {
@@ -359,9 +340,6 @@ export type BasketAction =
   | AddPromotionCodeToBasket
   | AddPromotionCodeToBasketFail
   | AddPromotionCodeToBasketSuccess
-  | AddQuoteToBasket
-  | AddQuoteToBasketFail
-  | AddQuoteToBasketSuccess
   | UpdateBasketItems
   | UpdateBasketItemsFail
   | UpdateBasketItemsSuccess

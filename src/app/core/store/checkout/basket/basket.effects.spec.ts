@@ -15,7 +15,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -281,84 +280,6 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
-    });
-  });
-
-  describe('addQuoteToBasket$', () => {
-    it('should call the basketService for addQuoteToBasket', done => {
-      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-
-      const quoteId = 'QID';
-      const action = new basketActions.AddQuoteToBasket({ quoteId });
-      actions$ = of(action);
-
-      effects.addQuoteToBasket$.subscribe(() => {
-        verify(basketServiceMock.addQuoteToBasket(quoteId, 'BID')).once();
-        done();
-      });
-    });
-
-    it('should call the basketService for createBasket if no basket is present', done => {
-      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
-
-      const quoteId = 'quoteId';
-      const action = new basketActions.AddQuoteToBasket({ quoteId });
-      actions$ = of(action);
-
-      effects.getBasketBeforeAddQuoteToBasket$.subscribe(() => {
-        verify(basketServiceMock.createBasket()).once();
-        done();
-      });
-    });
-
-    it('should map to action of type AddQuoteToBasketSuccess', () => {
-      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-
-      const quoteId = 'QID';
-      const action = new basketActions.AddQuoteToBasket({ quoteId });
-      const completion = new basketActions.AddQuoteToBasketSuccess({ link: {} as Link });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.addQuoteToBasket$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type AddQuoteToBasketFail', () => {
-      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-          } as Basket,
-        })
-      );
-
-      const quoteId = 'QID';
-      const action = new basketActions.AddQuoteToBasket({ quoteId });
-      const completion = new basketActions.AddQuoteToBasketFail({ error: { message: 'invalid' } as HttpError });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.addQuoteToBasket$).toBeObservable(expected$);
     });
   });
 
