@@ -2,7 +2,7 @@
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
     <ish-filter-collapsable
       [title]="element.name"
-      [collapsed]="!!collapsedElements[element.name]"
+      [collapsed]="collapsedElements[element.name]"
       (collapsedChanged)="collapsedElements[element.name] = $event"
     >
       <!-- default: text & text_clear -->

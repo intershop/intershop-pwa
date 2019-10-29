@@ -120,14 +120,14 @@ describe('Line Item List Component', () => {
     it('should render item quantity change input field if editable === true', () => {
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(!!element.querySelector('ish-input[controlname=quantity]')).toBeTruthy();
+      expect(element.querySelector('ish-input[controlname=quantity]')).toBeTruthy();
     });
 
     it('should not render item quantity change input field if editable === false', () => {
       component.editable = false;
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(!!element.querySelector('ish-input[controlname=quantity]')).not.toBeTruthy();
+      expect(element.querySelector('ish-input[controlname=quantity]')).not.toBeTruthy();
     });
 
     it('should render item delete button if editable === true', () => {
