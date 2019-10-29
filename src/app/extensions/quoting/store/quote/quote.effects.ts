@@ -155,7 +155,7 @@ export class QuoteEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
     concatMap(([payload, currentBasketId]) =>
-      this.basketService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
+      this.quoteService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
         map(link => new actions.AddQuoteToBasketSuccess({ link })),
         mapErrorToAction(actions.AddQuoteToBasketFail)
       )

@@ -13,7 +13,6 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -290,20 +289,6 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
-  }
-
-  /**
-   * Add quote to basket.
-   * @param quoteId   The id of the quote that should be added to basket.
-   * @param basketId  The id of the basket which the quote should be added to.
-   * @returns         Link to the updated basket items.
-   */
-  addQuoteToBasket(quoteId: string, basketId: string): Observable<Link> {
-    const body = {
-      quoteID: quoteId,
-    };
-
-    return this.apiService.post(`baskets/${basketId}/items`, body);
   }
 
   /**
