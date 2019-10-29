@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, concat, of, timer } from 'rxjs';
-import { distinctUntilChanged, filter, mapTo, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, mapTo, switchMap, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -37,10 +37,16 @@ export class MiniBasketContainerComponent implements OnInit, OnDestroy {
     this.itemCount$ = this.checkoutFacade.basketItemCount$;
     this.itemTotal$ = this.checkoutFacade.basketItemTotal$;
     this.lineItems$ = this.checkoutFacade.basketLineItems$;
-    this.basketError$ = this.checkoutFacade.basketError$.pipe(
-      whenTruthy(),
-      tap(() => this.open())
-    );
+    this.basketError$ = this.checkoutFacade.basketError$;
+
+    this.basketError$
+      .pipe(
+        whenTruthy(),
+        filter(() => this.location.path() !== '/basket'),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => this.open());
+
     this.basketAnimation$ = this.checkoutFacade.basketChange$.pipe(
       filter(() => this.location.path() !== '/basket'),
       whenTruthy(),
@@ -77,5 +83,6 @@ export class MiniBasketContainerComponent implements OnInit, OnDestroy {
    */
   open() {
     this.isCollapsed = false;
+    this.cdRef.markForCheck();
   }
 }
