@@ -9,12 +9,13 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { BasketValidationErrorType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { LoadBasket } from 'ish-core/store/checkout/basket';
+import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/checkout/basket';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
@@ -140,6 +141,36 @@ describe('Orders Effects', () => {
 
       expect(window.location.assign).toHaveBeenCalled();
     }));
+  });
+
+  describe('rollbackAfterOrderCreation', () => {
+    it('should navigate to /checkout/payment after CreateOrderSuccess if order creation was rolled back', () => {
+      const action = new orderActions.CreateOrderSuccess({
+        order: {
+          id: '123',
+          orderCreation: { status: 'ROLLED_BACK' },
+          infos: [{ message: 'Info' }],
+        } as Order,
+      });
+      actions$ = of(action);
+
+      const completion1 = new LoadBasket();
+      const completion2 = new ContinueCheckoutWithIssues({
+        targetRoute: undefined,
+        basketValidation: {
+          basket: undefined,
+          results: {
+            valid: false,
+            adjusted: false,
+            errors: [{ message: 'Info' } as BasketValidationErrorType],
+          },
+        },
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.rollbackAfterOrderCreation$).toBeObservable(expected$);
+    });
   });
 
   describe('loadOrders$', () => {

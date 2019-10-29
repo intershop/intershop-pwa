@@ -145,6 +145,19 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('ContinueCheckoutWithIssues action', () => {
+      it('should save validationResults when called', () => {
+        const action = new fromActions.ContinueCheckoutWithIssues({
+          targetRoute: '/checkout/address',
+          basketValidation,
+        });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.validationResults.valid).toBeTrue();
+      });
+    });
+
     describe('ContinueCheckoutFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
