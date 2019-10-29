@@ -106,6 +106,7 @@ export class ProductMapper {
     const mastered = retrieveStubAttributeValue<boolean>(data, 'mastered');
     const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
     const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
+    const retailSet = retrieveStubAttributeValue<boolean>(data, 'retailSet');
 
     const product: Partial<Product> = {
       shortDescription: data.description,
@@ -162,6 +163,11 @@ export class ProductMapper {
         ...product,
         productMasterSKU,
         type: 'VariationProduct',
+      };
+    } else if (retailSet) {
+      return {
+        ...product,
+        type: 'RetailSet',
       };
     } else {
       return product;

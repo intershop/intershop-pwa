@@ -419,6 +419,38 @@ describe('Products Effects', () => {
     });
   });
 
+  describe('loadRetailSetProductDetail$', () => {
+    it('should trigger loading details if it is a retail set', done => {
+      actions$ = of(
+        new fromActions.LoadProductSuccess({
+          product: { sku: 'ABC', type: 'RetailSet' } as Product,
+        })
+      );
+
+      effects.loadRetailSetProductDetail$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`
+          [Shopping] Load Product if not Loaded:
+            sku: "ABC"
+            level: 3
+        `);
+        done();
+      });
+    });
+
+    it('should do nothing if product is not a retail set', done => {
+      actions$ = of(
+        new fromActions.LoadProductSuccess({
+          product: { sku: 'ABC', type: 'Product' } as Product,
+        })
+      );
+
+      effects.loadRetailSetProductDetail$.pipe(toArray()).subscribe(actions => {
+        expect(actions).toMatchInlineSnapshot(`Array []`);
+        done();
+      });
+    });
+  });
+
   describe('loadPartsOfRetailSet$', () => {
     it('should load stubs and retail set reference when queried', done => {
       when(productsServiceMock.getRetailSetParts('ABC')).thenReturn(of([{ sku: 'A' }, { sku: 'B' }]));
