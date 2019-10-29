@@ -6,53 +6,53 @@
 <!-- ToDo:  #IS-27132 change login of a user -->
 <!--<p>{{ 'account.update_email.description' | translate }}</p>-->
 
-<div class="section">
-  <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
-    <div class="row form-group">
-      <label class="col-md-3 col-form-label"> {{ 'account.update_email.email.label' | translate }} </label>
-      <div *ngIf="currentUser" class="col-md-3 col-form-label">{{ currentUser.email }}</div>
+<div class="row">
+  <div class="col-md-10 col-xl-8">
+    <div class="section">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
+        <div class="row form-group">
+          <label class="col-md-4 col-form-label"> {{ 'account.update_email.email.label' | translate }} </label>
+          <div *ngIf="currentUser" class="col-md-8 col-form-label">{{ currentUser.email }}</div>
+        </div>
+
+        <ish-input
+          [form]="form"
+          controlName="email"
+          type="email"
+          label="account.update_email.newemail.label"
+          markRequiredLabel="off"
+          [errorMessages]="{
+            required: 'account.update_email.email.error.notempty',
+            email: 'account.update_email.email.error.email'
+          }"
+        >
+        </ish-input>
+
+        <ish-input
+          [form]="form"
+          controlName="emailConfirmation"
+          type="email"
+          markRequiredLabel="on"
+          label="account.update_email.email_confirmation.label"
+          markRequiredLabel="off"
+          [errorMessages]="{
+            required: 'account.update_email.email.error.notempty',
+            email: 'account.update_email.email.error.email',
+            equalTo: 'account.update_email.email_confirmation.error.stringcompare'
+          }"
+        ></ish-input>
+
+        <div class="row">
+          <div class="offset-md-4 col-md-8">
+            <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
+              {{ 'account.update.button.label' | translate }}
+            </button>
+            <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
+          </div>
+        </div>
+      </form>
     </div>
-
-    <ish-input
-      [form]="form"
-      controlName="email"
-      type="email"
-      label="account.update_email.newemail.label"
-      labelClass="col-md-3"
-      inputClass="col-md-5 col-xl-4"
-      markRequiredLabel="off"
-      [errorMessages]="{
-        required: 'account.update_email.email.error.notempty',
-        email: 'account.update_email.email.error.email'
-      }"
-    >
-    </ish-input>
-
-    <ish-input
-      [form]="form"
-      controlName="emailConfirmation"
-      type="email"
-      markRequiredLabel="on"
-      label="account.update_email.email_confirmation.label"
-      labelClass="col-md-3"
-      inputClass="col-md-5 col-xl-4"
-      markRequiredLabel="off"
-      [errorMessages]="{
-        required: 'account.update_email.email.error.notempty',
-        email: 'account.update_email.email.error.email',
-        equalTo: 'account.update_email.email_confirmation.error.stringcompare'
-      }"
-    ></ish-input>
-
-    <div class="row">
-      <div class="offset-md-3 col-md-6">
-        <button type="submit" class="btn btn-primary" [disabled]="buttonDisabled">
-          {{ 'account.update.button.label' | translate }}
-        </button>
-        <a routerLink="/account/profile" class="btn btn-secondary">{{ 'account.cancel.link' | translate }}</a>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>
 
 <h4 class="form-text">{{ 'account.help.heading' | translate }}</h4>
