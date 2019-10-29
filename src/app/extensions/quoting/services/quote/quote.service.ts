@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, take } from 'rxjs/operators';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
 
@@ -116,5 +117,19 @@ export class QuoteService {
           )
       )
     );
+  }
+
+  /**
+   * Add quote to basket.
+   * @param quoteId   The id of the quote that should be added to basket.
+   * @param basketId  The id of the basket which the quote should be added to.
+   * @returns         Link to the updated basket items.
+   */
+  addQuoteToBasket(quoteId: string, basketId: string): Observable<Link> {
+    const body = {
+      quoteID: quoteId,
+    };
+
+    return this.apiService.post(`baskets/${basketId}/items`, body);
   }
 }
