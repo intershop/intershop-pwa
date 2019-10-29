@@ -1,4 +1,5 @@
 import { AddressData } from 'ish-core/models/address/address.interface';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
@@ -35,4 +36,5 @@ export interface OrderData {
     payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
     payments_paymentInstrument?: { [id: string]: PaymentInstrument };
   };
+  infos?: BasketInfo[];
 }

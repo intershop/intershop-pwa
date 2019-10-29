@@ -8,7 +8,7 @@ import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLate
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { LoadBasket } from 'ish-core/store/checkout/basket';
+import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/checkout/basket';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -47,6 +47,7 @@ export class OrdersEffects {
   continueAfterOrderCreation$ = this.actions$.pipe(
     ofType(ordersActions.OrdersActionTypes.CreateOrderSuccess),
     mapToPayloadProperty('order'),
+    filter(order => !order || !order.orderCreation || order.orderCreation.status !== 'ROLLED_BACK'),
     tap(order => {
       if (
         order.orderCreation &&
@@ -59,6 +60,28 @@ export class OrdersEffects {
         this.router.navigate(['/checkout/receipt']);
       }
     })
+  );
+
+  @Effect()
+  rollbackAfterOrderCreation$ = this.actions$.pipe(
+    ofType(ordersActions.OrdersActionTypes.CreateOrderSuccess),
+    mapToPayloadProperty('order'),
+    filter(order => order.orderCreation && order.orderCreation.status === 'ROLLED_BACK'),
+    tap(() => this.router.navigate(['/checkout/payment'], { queryParams: { error: true } })),
+    concatMap(order => [
+      new LoadBasket(),
+      new ContinueCheckoutWithIssues({
+        targetRoute: undefined,
+        basketValidation: {
+          basket: undefined,
+          results: {
+            valid: false,
+            adjusted: false,
+            errors: order.infos,
+          },
+        },
+      }),
+    ])
   );
 
   @Effect()

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ofRoute } from 'ngrx-router';
+import { mapToQueryParam, ofRoute } from 'ngrx-router';
 import {
   concatMap,
   filter,
@@ -21,7 +21,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.model'
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
@@ -236,7 +236,11 @@ export class BasketEffects {
         }
       }
       return this.basketService.validateBasket(basketId, scopes).pipe(
-        map(basketValidation => new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })),
+        map(basketValidation =>
+          basketValidation.results.valid
+            ? new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })
+            : new basketActions.ContinueCheckoutWithIssues({ targetRoute, basketValidation })
+        ),
         mapErrorToAction(basketActions.ContinueCheckoutFail)
       );
     })
@@ -247,7 +251,10 @@ export class BasketEffects {
    */
   @Effect({ dispatch: false })
   jumpToNextCheckoutStep$ = this.actions$.pipe(
-    ofType<basketActions.ContinueCheckoutSuccess>(basketActions.BasketActionTypes.ContinueCheckoutSuccess),
+    ofType<basketActions.ContinueCheckoutSuccess>(
+      basketActions.BasketActionTypes.ContinueCheckoutSuccess,
+      basketActions.BasketActionTypes.ContinueCheckoutWithIssues
+    ),
     mapToPayload(),
     tap(payload => {
       if (payload.targetRoute && payload.basketValidation && payload.basketValidation.results.valid) {
@@ -282,11 +289,15 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route.
+   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
+   * Add queryParam error=true to the route to prevent resetting errors.
+   *
    */
   @Effect()
   routeListenerForResettingBasketErrors$ = this.actions$.pipe(
     ofRoute(/^(basket|checkout.*)/),
+    mapToQueryParam<string>('error'),
+    whenFalsy(),
     mapTo(new basketActions.ResetBasketErrors())
   );
 }

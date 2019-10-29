@@ -12,8 +12,7 @@ import { Basket } from './basket.model';
 
 export class BasketMapper {
   static fromData(payload: BasketData): Basket {
-    const data = payload.data;
-    const included = payload.included;
+    const { data, included, infos } = payload;
 
     const totals = data.calculated
       ? BasketMapper.getTotals(data, included ? included.discounts : undefined)
@@ -61,6 +60,7 @@ export class BasketMapper {
           : undefined,
       promotionCodes: data.promotionCodes,
       totals,
+      infos,
     };
   }
 

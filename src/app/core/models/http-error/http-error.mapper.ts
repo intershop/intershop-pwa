@@ -1,5 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
+
 import { HttpError } from './http-error.model';
 
 export class HttpErrorMapper {
@@ -25,7 +27,7 @@ export class HttpErrorMapper {
     };
   }
 
-  private static determineErrorMessage(error: { message: string; causes: { message: string }[] }): string {
+  private static determineErrorMessage(error: BasketInfo): string {
     let message = error && error.message;
     if (message && error.causes) {
       message += error.causes.map(cause => (cause.message ? ' ' + cause.message : ''));

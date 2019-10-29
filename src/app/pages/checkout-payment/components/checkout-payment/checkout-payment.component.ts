@@ -138,12 +138,14 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     if (this.experimental) {
       methods = this.paymentMethods;
     } else {
-      methods = this.paymentMethods.filter(
-        pm => !pm.capabilities || !pm.capabilities.some(cap => cap.startsWith('Redirect') && pm.id.startsWith('ISH'))
-      );
+      methods =
+        this.paymentMethods &&
+        this.paymentMethods.filter(
+          pm => !pm.capabilities || !pm.capabilities.some(cap => cap.startsWith('Redirect') && pm.id.startsWith('ISH'))
+        );
     }
     // copy objects for runtime checks because formly modifies them, TODO: refactor
-    this.filteredPaymentMethods = methods.map(x => JSON.parse(JSON.stringify(x)));
+    this.filteredPaymentMethods = methods && methods.map(x => JSON.parse(JSON.stringify(x)));
   }
 
   /**
