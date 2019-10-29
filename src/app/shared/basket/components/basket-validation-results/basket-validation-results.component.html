@@ -1,5 +1,5 @@
 <ng-container *ngFor="let message of messages">
-  <div *ngIf="!!message" class="alert alert-danger" data-testing-id="validation-message">
+  <div *ngIf="message" class="alert alert-danger" data-testing-id="validation-message">
     {{ message }}
   </div>
 </ng-container>

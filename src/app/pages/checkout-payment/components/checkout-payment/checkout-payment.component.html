@@ -71,7 +71,7 @@
           </li>
           <!-- Payment parameter form -->
           <div
-            *ngIf="!!paymentMethod.parameters"
+            *ngIf="paymentMethod.parameters"
             class="section"
             [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
           >

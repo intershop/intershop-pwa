@@ -1,6 +1,6 @@
 <ng-container *ngIf="activeQuoteRequest$ | async as quote">
   <div class="modal-header">
-    <h2 class="modal-title" *ngIf="!!quote">
+    <h2 class="modal-title" *ngIf="quote">
       <!-- Titel and Description -->
       <ng-container *ngIf="quote.displayName; else noDisplayName">
         {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.displayName }}
@@ -16,7 +16,7 @@
 
   <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
     <div class="modal-body">
-      <ng-container *ngIf="!!quote">
+      <ng-container *ngIf="quote">
         <div class="row">
           <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
             'quote.edit.unsubmitted.quote_no.label' | translate
