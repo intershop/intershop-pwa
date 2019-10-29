@@ -10,7 +10,7 @@
   <form [formGroup]="form" (ngSubmit)="submit()" class="form-horizontal" novalidate="novalidate">
     <div class="row form-group">
       <label class="col-md-3 col-form-label"> {{ 'account.update_email.email.label' | translate }} </label>
-      <div *ngIf="!!currentUser" class="col-md-3 col-form-label">{{ currentUser.email }}</div>
+      <div *ngIf="currentUser" class="col-md-3 col-form-label">{{ currentUser.email }}</div>
     </div>
 
     <ish-input

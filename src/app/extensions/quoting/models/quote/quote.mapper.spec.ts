@@ -21,7 +21,7 @@ describe('Quote Mapper', () => {
       const quoteItem = QuoteMapper.fromData(quoteData);
 
       expect(quoteItem).toBeTruthy();
-      expect(!!quoteItem.state).toBeTruthy();
+      expect(quoteItem.state).toBeTruthy();
     });
   });
 });

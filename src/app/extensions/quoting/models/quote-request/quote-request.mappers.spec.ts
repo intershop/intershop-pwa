@@ -22,7 +22,7 @@ describe('Quote Request Mappers', () => {
       const quoteRequestItem = QuoteRequestMapper.fromData(quoteRequestData);
 
       expect(quoteRequestItem).toBeTruthy();
-      expect(!!quoteRequestItem).toBeTruthy();
+      expect(quoteRequestItem.state).toBeTruthy();
     });
   });
 });
