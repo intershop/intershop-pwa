@@ -351,6 +351,17 @@ describe('Basket Items Effects', () => {
     });
   });
 
+  describe('validateBasketAfterUpdateFailure$', () => {
+    it('should map to action of type ValidateBasket if UpdateBasketItemFail action triggered', () => {
+      const action = new basketActions.UpdateBasketItemsFail({ error: { message: 'invalid' } as HttpError });
+      const completion = new basketActions.ValidateBasket({ scopes: ['Products'] });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validateBasketAfterUpdateFailure$).toBeObservable(expected$);
+    });
+  });
+
   describe('deleteBasketItem$', () => {
     beforeEach(() => {
       when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of(undefined));

@@ -141,6 +141,17 @@ export class BasketItemsEffects {
   );
 
   /**
+   * Validates the basket after and update item error occurred
+   */
+  @Effect()
+  validateBasketAfterUpdateFailure$ = this.actions$.pipe(
+    ofType<basketActions.UpdateBasketItemsFail>(basketActions.BasketActionTypes.UpdateBasketItemsFail),
+    mapToPayload(),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    mapTo(new basketActions.ValidateBasket({ scopes: ['Products'] }))
+  );
+
+  /**
    * Delete basket item effect.
    */
   @Effect()
