@@ -29,7 +29,7 @@ import { determineSalutations, updateValidatorsByDataLength } from 'ish-shared/f
  */
 @Component({
   selector: 'ish-address-form-container',
-  templateUrl: './address-form.container.html',
+  templateUrl: './address-form-container.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestroy {

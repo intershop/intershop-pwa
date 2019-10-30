@@ -8,6 +8,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
 import { AddressFormBusinessComponent } from './components/address-form-business/address-form-business.component';
+import { AddressFormContainerComponent } from './components/address-form-container/address-form-container.component';
 import { AddressFormDEComponent } from './components/address-form-de/address-form-de.component';
 import { AddressFormDEFactory } from './components/address-form-de/address-form-de.factory';
 import { AddressFormDefaultComponent } from './components/address-form-default/address-form-default.component';
@@ -21,7 +22,6 @@ import { AddressFormUSFactory } from './components/address-form-us/address-form-
 import { AddressFormComponent } from './components/address-form/address-form.component';
 import { CustomerAddressFormComponent } from './components/customer-address-form/customer-address-form.component';
 import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from './configurations/address-form-factory.provider';
-import { AddressFormContainerComponent } from './containers/address-form/address-form.container';
 
 const declaredComponents = [
   AddressFormBusinessComponent,
