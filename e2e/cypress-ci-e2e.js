@@ -34,6 +34,7 @@ const DEFAULT_CONFIG = {
     trashAssetsBeforeRuns: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
+  modifyObstructiveCode: false,
 };
 
 let totalFailuresIncludingRetries = 0;
