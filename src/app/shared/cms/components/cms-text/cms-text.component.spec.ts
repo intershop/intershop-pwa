@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 
 import { CMSTextComponent } from './cms-text.component';
 
@@ -40,7 +40,7 @@ describe('Cms Text Component', () => {
       domain: 'domain',
       configurationParameters: { HTMLText: 'foo' },
     };
-    component.pagelet = createSimplePageletView(pagelet);
+    component.pagelet = createContentPageletView(pagelet);
 
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`<span>foo</span>`);

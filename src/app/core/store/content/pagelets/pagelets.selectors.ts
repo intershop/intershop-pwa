@@ -14,6 +14,5 @@ export const { selectEntities: getContentPageletEntities } = pageletsAdapter.get
 
 export const getContentPageletViewById = createSelector(
   getContentPageletEntities,
-  (entities, props: { id: string }): ContentPageletView =>
-    !entities[props.id] ? undefined : createContentPageletView(props.id, entities)
+  (entities, id: string): ContentPageletView => createContentPageletView(entities[id])
 );

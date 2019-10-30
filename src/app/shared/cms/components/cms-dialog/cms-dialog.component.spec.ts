@@ -4,7 +4,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ContentSlotContainerComponent } from 'ish-shared/cms/containers/content-slot/content-slot.container';
@@ -43,19 +43,13 @@ describe('Cms Dialog Component', () => {
       id: 'id',
       configurationParameters: { Content: 'testContent' },
     } as ContentPagelet;
-    const pageletView = createContentPageletView(pagelet.id, { [pagelet.id]: pagelet }) as ContentPageletView;
+    const pageletView = createContentPageletView(pagelet);
     component.pagelet = pageletView;
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('[data-testing-id="dialog-content"]').innerHTML).toBe('testContent');
   });
 
   it('should be display slot content if slot is not empty', () => {
-    const dialog = {
-      id: 'dialogId',
-      domain: 'domain',
-      displayName: 'dialog displayName',
-      definitionQualifiedName: 'fq',
-    };
     const pagelet2 = {
       domain: 'domain',
       displayName: 'pagelet1',
@@ -64,16 +58,14 @@ describe('Cms Dialog Component', () => {
       configurationParameters: {},
       slots: [
         {
+          displayName: 'dialog',
           definitionQualifiedName: 'app_sf_responsive_cm:slot.dialog.content.pagelet2-Slot',
-          pageletIDs: dialog.id,
+          pageletIDs: ['dialogId'],
         },
       ],
     };
 
-    component.pagelet = createContentPageletView(pagelet2.id, {
-      [pagelet2.id]: pagelet2,
-      [dialog.id]: dialog,
-    });
+    component.pagelet = createContentPageletView(pagelet2);
 
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(

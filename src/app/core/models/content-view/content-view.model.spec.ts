@@ -7,6 +7,7 @@ import {
   ContentPageletEntryPointView,
   createContentConfigurationParameterView,
   createContentPageletEntryPointView,
+  createContentPageletView,
 } from './content-view.model';
 
 describe('Content View Model', () => {
@@ -95,13 +96,37 @@ describe('Content View Model', () => {
   });
 
   it('should be able to create a view of a pagelet entry point', () => {
-    expect(() => createContentPageletEntryPointView(pageletEntryPoint, pagelets)).not.toThrow();
-    expect(createContentPageletEntryPointView(pageletEntryPoint, pagelets)).toMatchSnapshot();
+    expect(() => createContentPageletEntryPointView(pageletEntryPoint)).not.toThrow();
+    expect(createContentPageletEntryPointView(pageletEntryPoint)).toMatchInlineSnapshot(`
+      Object {
+        "booleanParam": [Function],
+        "configParam": [Function],
+        "displayName": "name",
+        "domain": "domain",
+        "hasParam": [Function],
+        "id": "include",
+        "numberParam": [Function],
+        "pageletIDs": Array [
+          "p1",
+          "p2",
+        ],
+        "resourceSetId": "resId",
+        "stringParam": [Function],
+      }
+    `);
   });
 
   it('should be able to create a view of configuration parameters', () => {
     expect(() => createContentConfigurationParameterView(configurationParameters)).not.toThrow();
-    expect(createContentConfigurationParameterView(configurationParameters)).toMatchSnapshot();
+    expect(createContentConfigurationParameterView(configurationParameters)).toMatchInlineSnapshot(`
+      Object {
+        "booleanParam": [Function],
+        "configParam": [Function],
+        "hasParam": [Function],
+        "numberParam": [Function],
+        "stringParam": [Function],
+      }
+    `);
   });
 
   describe('parameter view created', () => {
@@ -217,7 +242,7 @@ describe('Content View Model', () => {
     let view: ContentPageletEntryPointView;
 
     beforeEach(() => {
-      view = createContentPageletEntryPointView(pageletEntryPoint, pagelets);
+      view = createContentPageletEntryPointView(pageletEntryPoint);
     });
 
     it('should have properties on first level', () => {
@@ -227,53 +252,71 @@ describe('Content View Model', () => {
     });
 
     it('should have pagelets on top level', () => {
-      expect(view.pagelets()).toHaveLength(2);
-      expect(view.pagelets().map(p => p.id)).toIncludeAllMembers(['p1', 'p2']);
-      expect(view.pagelets()[0]).not.toBeUndefined();
-      expect(view.pagelets()[1]).not.toBeUndefined();
-      expect(view.pagelets()).toMatchSnapshot();
+      expect(view.pageletIDs).toHaveLength(2);
+      expect(view.pageletIDs).toIncludeAllMembers(['p1', 'p2']);
     });
 
     it('should have a slot for p1', () => {
-      expect(view.pagelets()[0]).toBeTruthy();
-      const p1 = view.pagelets()[0];
+      const p1 = createContentPageletView(pagelets.p1);
+      expect(p1).toBeTruthy();
       expect(p1.slot('fq')).toBeTruthy();
       const slot = p1.slot('fq');
-      expect(slot.pagelets()).toBeEmpty();
+      expect(slot.pageletIDs).toBeEmpty();
       expect(slot.configParam('no')).toBeUndefined();
     });
 
     it('should have a slot view on p2', () => {
-      expect(view.pagelets()[1].slot('fq')).toMatchSnapshot();
+      const p2 = createContentPageletView(pagelets.p2);
+      expect(p2.slot('fq')).toMatchInlineSnapshot(`
+        Object {
+          "booleanParam": [Function],
+          "configParam": [Function],
+          "displayName": "slot",
+          "domain": "domain",
+          "hasParam": [Function],
+          "id": "fq",
+          "numberParam": [Function],
+          "pageletIDs": Array [
+            "p3",
+          ],
+          "stringParam": [Function],
+        }
+      `);
     });
 
     it('should have a pagelet on slot view on p2', () => {
-      expect(
-        view
-          .pagelets()[1]
-          .slot('fq')
-          .pagelets()
-      ).toHaveLength(1);
-      expect(
-        view
-          .pagelets()[1]
-          .slot('fq')
-          .pagelets()
-      ).toMatchSnapshot();
+      const p2 = createContentPageletView(pagelets.p2);
+      expect(p2.slot('fq').pageletIDs).toMatchInlineSnapshot(`
+        Array [
+          "p3",
+        ]
+      `);
+      expect(p2.slot('fq').pageletIDs).toHaveLength(1);
     });
 
     it('should have deepest level navigateable on tree', () => {
-      const p4 = view
-        .pagelets()[1]
-        .slot('fq')
-        .pagelets()[0]
-        .slot('fq')
-        .pagelets()[0];
+      const p4 = createContentPageletView(pagelets.p4);
 
+      expect(p4).toMatchInlineSnapshot(`
+        Object {
+          "booleanParam": [Function],
+          "configParam": [Function],
+          "configurationParameters": Object {
+            "key7": "4",
+          },
+          "definitionQualifiedName": "fq",
+          "displayName": "p4",
+          "domain": "domain",
+          "hasParam": [Function],
+          "id": "p4",
+          "numberParam": [Function],
+          "slot": [Function],
+          "stringParam": [Function],
+        }
+      `);
       expect(p4.slot('fq')).toBeUndefined();
       expect(p4.hasParam('key7')).toBeTrue();
       expect(p4.numberParam('key7')).toBe(4);
-      expect(p4).toMatchSnapshot();
     });
   });
 });

@@ -36,6 +36,6 @@ export class CMSFacade {
   }
 
   pagelet$(id: string) {
-    return this.store.pipe(select(getContentPageletViewById, { id }));
+    return this.store.pipe(select(getContentPageletViewById, id));
   }
 }

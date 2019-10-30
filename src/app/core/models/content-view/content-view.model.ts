@@ -1,4 +1,4 @@
-import { memoize, once } from 'lodash-es';
+import { memoize } from 'lodash-es';
 
 import { ContentConfigurationParameters } from 'ish-core/models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
@@ -13,11 +13,11 @@ export interface ContentConfigurationParameterView {
   configParam<T extends object>(key: string): T;
 }
 
-export interface ContentEntryPointView {
+interface ContentEntryPointView {
   id: string;
   domain: string;
   displayName?: string;
-  pagelets(): ContentPageletView[];
+  pageletIDs: string[];
 }
 
 export interface ContentSlotView extends ContentEntryPointView, ContentConfigurationParameterView {}
@@ -27,7 +27,7 @@ export interface ContentPageletEntryPointView extends ContentEntryPointView, Con
   domain: string;
   displayName: string;
   resourceSetId: string;
-  pagelets(): ContentPageletView[];
+  pageletIDs: string[];
 }
 
 export interface ContentPageletView extends ContentConfigurationParameterView {
@@ -65,12 +65,8 @@ export const createContentConfigurationParameterView = (
   configParam: <T extends object>(key) => params[key] as T,
 });
 
-export const createContentPageletView = (
-  id: string,
-  pagelets: { [id: string]: ContentPagelet }
-): ContentPageletView => {
-  const pagelet = pagelets[id];
-  return {
+export const createContentPageletView = (pagelet: ContentPagelet): ContentPageletView =>
+  pagelet && {
     definitionQualifiedName: pagelet.definitionQualifiedName,
     configurationParameters: pagelet.configurationParameters,
     id: pagelet.id,
@@ -79,56 +75,28 @@ export const createContentPageletView = (
     slot: !pagelet.slots
       ? () => undefined
       : memoize(qualifiedName =>
-          createContentSlotView(
-            pagelet,
-            pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName),
-            pagelets
-          )
+          createContentSlotView(pagelet, pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName))
         ),
     ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };
-};
 
-export const createContentEntryPointView = (
-  id: string,
-  domain: string,
-  pageletIDs: string[],
-  pagelets: { [id: string]: ContentPagelet }
-): ContentEntryPointView => ({
-  id,
-  domain,
-  pagelets:
-    pageletIDs && pageletIDs.length
-      ? once(() => pageletIDs.map(pId => createContentPageletView(pId, pagelets)))
-      : () => [],
-});
-
-export const createContentSlotView = (
-  pagelet: ContentPagelet,
-  slot: ContentSlot,
-  pagelets: { [id: string]: ContentPagelet }
-): ContentSlotView =>
-  !slot
-    ? undefined
-    : {
-        ...createContentEntryPointView(slot.definitionQualifiedName, pagelet.domain, slot.pageletIDs, pagelets),
-        ...createContentConfigurationParameterView(slot.configurationParameters || {}),
-        displayName: slot.displayName,
-      };
+export const createContentSlotView = (pagelet: ContentPagelet, slot: ContentSlot): ContentSlotView =>
+  slot && {
+    id: slot.definitionQualifiedName,
+    domain: pagelet.domain,
+    pageletIDs: slot.pageletIDs || [],
+    ...createContentConfigurationParameterView(slot.configurationParameters || {}),
+    displayName: slot.displayName,
+  };
 
 export const createContentPageletEntryPointView = (
-  pageletEntryPoint: ContentPageletEntryPoint,
-  pagelets: { [id: string]: ContentPagelet }
-): ContentPageletEntryPointView => ({
-  id: pageletEntryPoint.id,
-  domain: pageletEntryPoint.domain,
-  resourceSetId: pageletEntryPoint.resourceSetId,
-  displayName: pageletEntryPoint.displayName,
-  ...createContentEntryPointView(
-    pageletEntryPoint.id,
-    pageletEntryPoint.domain,
-    pageletEntryPoint.pageletIDs,
-    pagelets
-  ),
-  ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
-});
+  pageletEntryPoint: ContentPageletEntryPoint
+): ContentPageletEntryPointView =>
+  pageletEntryPoint && {
+    id: pageletEntryPoint.id,
+    domain: pageletEntryPoint.domain,
+    resourceSetId: pageletEntryPoint.resourceSetId,
+    displayName: pageletEntryPoint.displayName,
+    pageletIDs: pageletEntryPoint.pageletIDs || [],
+    ...createContentConfigurationParameterView(pageletEntryPoint.configurationParameters || {}),
+  };

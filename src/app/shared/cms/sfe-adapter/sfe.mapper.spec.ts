@@ -1,8 +1,8 @@
 import * as using from 'jasmine-data-provider';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import {
+  ContentPageletView,
   createContentPageletEntryPointView,
   createContentPageletView,
 } from 'ish-core/models/content-view/content-view.model';
@@ -41,7 +41,7 @@ describe('Sfe Mapper', () => {
 
   describe('sfeMetadata Mappings', () => {
     let include: ContentPageletEntryPoint;
-    let pagelets: { [id: string]: ContentPagelet };
+    let pagelet: ContentPageletView;
 
     beforeEach(() => {
       include = {
@@ -59,27 +59,24 @@ describe('Sfe Mapper', () => {
         },
       };
 
-      pagelets = {
-        p1: {
-          id: 'p1',
-          domain: 'pdomain',
-          displayName: 'p1',
-          definitionQualifiedName: 'pfq',
-          configurationParameters: {
-            pkey4: '2',
-          },
-          slots: [
-            {
-              definitionQualifiedName: 'fq',
-              displayName: 'slot',
-            },
-          ],
+      pagelet = createContentPageletView({
+        id: 'p1',
+        domain: 'pdomain',
+        displayName: 'p1',
+        definitionQualifiedName: 'pfq',
+        configurationParameters: {
+          pkey4: '2',
         },
-      };
+        slots: [
+          {
+            definitionQualifiedName: 'fq',
+            displayName: 'slot',
+          },
+        ],
+      });
     });
 
     it('should map ContentPageletView to SfeMetadata', () => {
-      const pagelet = createContentPageletView('p1', pagelets);
       const sfeMetadata = SfeMapper.mapPageletViewToSfeMetadata(pagelet);
 
       expect(sfeMetadata).toMatchInlineSnapshot(`
@@ -97,7 +94,7 @@ describe('Sfe Mapper', () => {
     });
 
     it('should map ContentPageletEntryPointView to SfeMetadata', () => {
-      const includeView = createContentPageletEntryPointView(include, pagelets);
+      const includeView = createContentPageletEntryPointView(include);
       const sfeMetadata = SfeMapper.mapIncludeViewToSfeMetadata(includeView);
 
       expect(sfeMetadata).toMatchInlineSnapshot(`
