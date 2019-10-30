@@ -20,9 +20,9 @@ import {
   AddressFormFactoryProvider,
 } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 
-import { AddressFormContainerComponent } from './address-form.container';
+import { AddressFormContainerComponent } from './address-form-container.component';
 
-describe('Address Form Container', () => {
+describe('Address Form Container Component', () => {
   let component: AddressFormContainerComponent;
   let fixture: ComponentFixture<AddressFormContainerComponent>;
   let element: HTMLElement;

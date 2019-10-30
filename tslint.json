@@ -517,10 +517,6 @@
           },
           // cms
           {
-            "name": "^CMSContainerComponent$",
-            "file": ".*/shared/cms/components/cms-container/cms-container\\.component\\.ts$"
-          },
-          {
             "name": "^Sfe.*$",
             "file": ".*/shared/cms/sfe-adapter/.*\\.ts$"
           },
@@ -531,7 +527,7 @@
           },
           {
             "name": "^([A-Z].*)ContainerComponent$",
-            "file": ".*/containers/<kebab>/<kebab>\\.container\\.ts$"
+            "file": ".*(/containers/<kebab>/<kebab>\\.container\\.ts|/components/<kebab>-container/<kebab>-container\\.component\\.ts)$"
           },
           {
             "name": "^(Test|Dummy)Component$",
