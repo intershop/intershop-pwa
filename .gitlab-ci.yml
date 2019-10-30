@@ -205,6 +205,7 @@ publish_pwa:
     refs:
       - develop
       - master
+      - demo
       - tags
       - merge_requests
   tags:
@@ -256,6 +257,7 @@ publish_nginx:
     refs:
       - develop
       - master
+      - demo
       - tags
       - merge_requests
     changes:
@@ -642,6 +644,38 @@ build_e2e_image:
     - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} e2e
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+
+deploy_public_demo:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    - demo
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "done"
+  environment:
+    name: Public Deployment
+    url: $PUBLIC_DEMO_URL
+
+deploy_public_BO:
+  stage: deploy
+  cache: {}
+  dependencies: []
+  tags:
+    - shell-executor
+  only:
+    - demo
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "done"
+  environment:
+    name: Public Deployment BackOffice
+    url: $PUBLIC_BO_URL
 
 schematics:
   image: node:10
