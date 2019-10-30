@@ -230,6 +230,21 @@ export class ProductsEffects {
   );
 
   @Effect()
+  loadRetailSetProductDetail$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    mapToPayloadProperty('product'),
+    filter(ProductHelper.isRetailSet),
+    mapToProperty('sku'),
+    map(
+      sku =>
+        new productsActions.LoadProductIfNotLoaded({
+          sku,
+          level: ProductCompletenessLevel.Detail,
+        })
+    )
+  );
+
+  @Effect()
   loadPartsOfRetailSet$ = this.actions$.pipe(
     ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
     mapToPayloadProperty('product'),
