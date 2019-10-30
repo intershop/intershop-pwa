@@ -2,7 +2,7 @@
 
 <ng-template #renderPagelets>
   <ish-content-pagelet
-    *ngFor="let pagelet of pagelet.slot(slot).pagelets()"
-    [pageletId]="pagelet.id"
+    *ngFor="let pagelet of pagelet.slot(slot).pageletIDs"
+    [pageletId]="pagelet"
   ></ish-content-pagelet>
 </ng-template>

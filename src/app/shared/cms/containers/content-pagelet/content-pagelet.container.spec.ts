@@ -6,8 +6,8 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
 import { CMSTextComponent } from 'ish-shared/cms/components/cms-text/cms-text.component';
 import { CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
@@ -39,9 +39,9 @@ describe('Content Pagelet Container', () => {
 
     cmsFacade = mock(CMSFacade);
     when(cmsFacade.pagelet$('cmsText')).thenReturn(
-      of(createSimplePageletView(createContentPageletMock('cmsText', 'fq-defined')))
+      of(createContentPageletView(createContentPageletMock('cmsText', 'fq-defined')))
     );
-    when(cmsFacade.pagelet$('id')).thenReturn(of(createSimplePageletView(createContentPageletMock('id', 'fq'))));
+    when(cmsFacade.pagelet$('id')).thenReturn(of(createContentPageletView(createContentPageletMock('id', 'fq'))));
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ngrxTesting()],

@@ -20,19 +20,16 @@ describe('Content Include Container', () => {
   let cmsFacade: CMSFacade;
 
   beforeEach(async(() => {
-    include = createContentPageletEntryPointView(
-      {
-        id: 'test.include',
-        definitionQualifiedName: 'test.include-Include',
-        domain: 'domain',
-        displayName: 'displayName',
-        resourceSetId: 'resId',
-        configurationParameters: {
-          key: '1',
-        },
+    include = createContentPageletEntryPointView({
+      id: 'test.include',
+      definitionQualifiedName: 'test.include-Include',
+      domain: 'domain',
+      displayName: 'displayName',
+      resourceSetId: 'resId',
+      configurationParameters: {
+        key: '1',
       },
-      undefined
-    );
+    });
 
     cmsFacade = mock(CMSFacade);
     when(cmsFacade.contentInclude$(anything())).thenReturn(of(include));

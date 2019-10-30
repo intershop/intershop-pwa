@@ -8,7 +8,7 @@ import { mapToProperty } from 'ish-core/utils/operators';
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
 export interface ContentConfigurationParameters {
-  [key: string]: string | object;
+  [key: string]: string | object | number;
 }
 
 @Injectable({ providedIn: 'root' })
