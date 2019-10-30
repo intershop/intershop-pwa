@@ -12,7 +12,8 @@ const getPageletsState = createSelector(
 
 export const { selectEntities: getContentPageletEntities } = pageletsAdapter.getSelectors(getPageletsState);
 
-export const getContentPageletViewById = createSelector(
-  getContentPageletEntities,
-  (entities, id: string): ContentPageletView => createContentPageletView(entities[id])
-);
+export const getContentPagelet = () =>
+  createSelector(
+    getContentPageletEntities,
+    (entities, id: string): ContentPageletView => createContentPageletView(entities[id])
+  );

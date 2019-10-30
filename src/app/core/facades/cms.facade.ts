@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
-import { getContentPageletViewById } from 'ish-core/store/content/pagelets';
+import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
 import { getPGID } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -36,6 +36,6 @@ export class CMSFacade {
   }
 
   pagelet$(id: string) {
-    return this.store.pipe(select(getContentPageletViewById, id));
+    return this.store.pipe(select(getContentPagelet(), id));
   }
 }
