@@ -4,8 +4,7 @@ server {
 
     location / {
         proxy_cache my_cache;
-        # enable to also cache error responses
-        # proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
+        proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -14,7 +13,8 @@ server {
         add_header X-Cache-Status $upstream_cache_status;
 
         proxy_ignore_headers Cache-Control;
-        proxy_cache_valid any 10m;
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 404      1m;
 
         add_header X-icm-subdomain $SUBDOMAIN always;
         add_header X-icm-channel $CHANNEL always;
