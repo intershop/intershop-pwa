@@ -48,7 +48,10 @@ describe('Orders Effects', () => {
       declarations: [DummyComponent],
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'checkout', children: [{ path: 'receipt', component: DummyComponent }] },
+          {
+            path: 'checkout',
+            children: [{ path: 'receipt', component: DummyComponent }, { path: 'payment', component: DummyComponent }],
+          },
         ]),
         ngrxTesting({
           reducers: {
