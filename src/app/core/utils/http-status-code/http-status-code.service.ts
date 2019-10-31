@@ -12,13 +12,13 @@ export class HttpStatusCodeService {
     @Optional() @Inject(RESPONSE) private response: any
   ) {}
 
-  setStatus(status: 404 | 500) {
+  setStatus(status: number) {
     if (isPlatformServer(this.platformId)) {
       this.response.status(status);
     }
   }
 
-  setStatusAndRedirect(status: 404 | 500) {
+  setStatusAndRedirect(status: number) {
     this.setStatus(status);
     this.router.navigateByUrl('/error');
   }
