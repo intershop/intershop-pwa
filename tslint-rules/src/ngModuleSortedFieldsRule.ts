@@ -92,14 +92,8 @@ class NgModulesSortedFieldsWalker extends NgWalker {
       return;
     }
 
-    const noWhite = list
-      .getChildren()
-      .filter(node => node.kind !== ts.SyntaxKind.CommaToken)
-      .map(node => node.getText().trim())
-      .join(', ');
-
     for (const token of this.ignoreTokens) {
-      if (noWhite.search(token) >= 0) {
+      if (list.getFullText().search(token) >= 0) {
         return;
       }
     }
@@ -107,13 +101,13 @@ class NgModulesSortedFieldsWalker extends NgWalker {
     const sorted = list
       .getChildren()
       .filter(node => node.kind !== ts.SyntaxKind.CommaToken)
-      .map(node => node.getText().trim())
-      .sort()
+      .map(node => node.getFullText())
+      .sort((a, b) => (a.trim() > b.trim() ? 1 : a.trim() < b.trim() ? -1 : 0))
       .filter((val, idx, arr) => idx === arr.indexOf(val))
-      .join(', ');
+      .join(',');
 
-    if (sorted !== noWhite) {
-      return sorted;
+    if (sorted !== list.getFullText().replace(/,$/, '')) {
+      return sorted.replace(/^\n\r?/, '').replace(/^\ */g, '') + (list.getFullText().endsWith(',') ? ',' : '');
     }
     return;
   }
