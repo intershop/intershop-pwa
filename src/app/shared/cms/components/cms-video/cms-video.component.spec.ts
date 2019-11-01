@@ -37,7 +37,7 @@ describe('Cms Video Component', () => {
         Mute: 'false',
       },
     };
-    pageletView = createContentPageletView(pagelet.id, { [pagelet.id]: pagelet });
+    pageletView = createContentPageletView(pagelet);
   });
 
   it('should be created', () => {

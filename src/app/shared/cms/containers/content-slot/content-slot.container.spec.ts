@@ -3,7 +3,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ContentPageletContainerComponent } from 'ish-shared/cms/containers/content-pagelet/content-pagelet.container';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
@@ -43,7 +43,7 @@ describe('Content Slot Container', () => {
         },
       ],
     } as ContentPagelet;
-    component.pagelet = createSimplePageletView(pagelet);
+    component.pagelet = createContentPageletView(pagelet);
     component.slot = 'slot123';
     element = fixture.nativeElement;
   });

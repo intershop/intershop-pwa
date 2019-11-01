@@ -31,7 +31,7 @@ describe('Cms Static Page Component', () => {
       id: 'id',
       configurationParameters: {},
     };
-    pageletView = createContentPageletView(pagelet.id, { [pagelet.id]: pagelet });
+    pageletView = createContentPageletView(pagelet);
   });
 
   it('should be created', () => {

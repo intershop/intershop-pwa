@@ -4,7 +4,10 @@
     [slot]="'app_sf_responsive_cm:slot.container.content.pagelet2-Slot'"
     [pagelet]="pagelet"
   >
-    <ish-content-pagelet *ngFor="let slotPagelet of contentSlotPagelets" [pagelet]="slotPagelet"></ish-content-pagelet>
+    <ish-content-pagelet
+      *ngFor="let slotPagelet of contentSlotPagelets"
+      [pageletId]="slotPagelet"
+    ></ish-content-pagelet>
   </ish-content-slot>
 </div>
 

@@ -18,7 +18,7 @@ import { SfeMapper } from 'ish-shared/cms/sfe-adapter/sfe.mapper';
  *
  * <ish-content-slot [wrapper]="true" [slot]="'app_pwa:slot.pagelet2-Slot'" [pagelet]="pagelet">
  *               <div *ngFor="let slotPagelet of slotPagelets">
- *                 <ish-content-pagelet [pagelet]="slotPagelet"></ish-content-pagelet>
+ *                 <ish-content-pagelet [pageletId]="slotPagelet"></ish-content-pagelet>
  *               </div>
  * </ish-content-slot>
  */

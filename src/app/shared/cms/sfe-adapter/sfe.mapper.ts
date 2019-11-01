@@ -1,4 +1,4 @@
-import { ContentEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 import { SfeDomNode, SfeMetadata, SfeMetadataNode } from './sfe.types';
 
@@ -57,7 +57,7 @@ export class SfeMapper {
   }
 
   /** Create SFE metadata from a an entrypoint/include */
-  static mapIncludeViewToSfeMetadata(include: ContentEntryPointView): SfeMetadata {
+  static mapIncludeViewToSfeMetadata(include: ContentPageletEntryPointView): SfeMetadata {
     return {
       id: `include:${include.domain}:${include.id}`,
       displayName: include.displayName,
