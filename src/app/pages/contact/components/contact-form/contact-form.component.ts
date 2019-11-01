@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Contact } from 'ish-core/models/contact/contact.model';
+import { User } from 'ish-core/models/user/user.model';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -20,6 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 export class ContactFormComponent implements OnChanges, OnInit {
   /** Possible subjects to show to the customer in a select box. */
   @Input() subjects: string[] = [];
+  @Input() user: User;
   /** The contact request to send. */
   @Output() request = new EventEmitter<{ contact: Contact; captcha?: string }>();
 
@@ -69,10 +71,14 @@ export class ContactFormComponent implements OnChanges, OnInit {
   }
 
   private initForm() {
+    const name = this.user && `${this.user.firstName} ${this.user.lastName}`;
+    const email = this.user && this.user.email;
+    const phone = this.user && (this.user.phoneBusiness || this.user.phoneMobile || this.user.phoneHome);
+
     this.contactForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      name: [name, Validators.required],
+      email: [email, [Validators.required, Validators.email]],
+      phone: [phone, Validators.required],
       order: [''],
       subject: ['', Validators.required],
       comments: ['', Validators.required],
