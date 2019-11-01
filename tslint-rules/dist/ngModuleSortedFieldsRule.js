@@ -92,26 +92,21 @@ var NgModulesSortedFieldsWalker = (function (_super) {
         if (!list) {
             return;
         }
-        var noWhite = list
-            .getChildren()
-            .filter(function (node) { return node.kind !== ts.SyntaxKind.CommaToken; })
-            .map(function (node) { return node.getText().trim(); })
-            .join(', ');
         for (var _i = 0, _a = this.ignoreTokens; _i < _a.length; _i++) {
             var token = _a[_i];
-            if (noWhite.search(token) >= 0) {
+            if (list.getFullText().search(token) >= 0) {
                 return;
             }
         }
         var sorted = list
             .getChildren()
             .filter(function (node) { return node.kind !== ts.SyntaxKind.CommaToken; })
-            .map(function (node) { return node.getText().trim(); })
-            .sort()
+            .map(function (node) { return node.getFullText(); })
+            .sort(function (a, b) { return (a.trim() > b.trim() ? 1 : a.trim() < b.trim() ? -1 : 0); })
             .filter(function (val, idx, arr) { return idx === arr.indexOf(val); })
-            .join(', ');
-        if (sorted !== noWhite) {
-            return sorted;
+            .join(',');
+        if (sorted !== list.getFullText().replace(/,$/, '')) {
+            return sorted.replace(/^\n\r?/, '').replace(/^\ */g, '') + (list.getFullText().endsWith(',') ? ',' : '');
         }
         return;
     };
