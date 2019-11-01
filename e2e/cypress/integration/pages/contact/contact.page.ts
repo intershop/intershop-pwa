@@ -10,16 +10,28 @@ export class ContactPage {
 
   private submitButton = () => cy.get('[data-testing-id="submitContact"]');
 
+  get nameInput() {
+    return cy.get('input[data-testing-id="name"]');
+  }
+
+  get emailInput() {
+    return cy.get('input[data-testing-id="email"]');
+  }
+
+  get phoneInput() {
+    return cy.get('input[data-testing-id="phone"]');
+  }
+
   fillForm(name: string, email: string, phone: string, subject: string, comments: string) {
-    cy.get('input[data-testing-id="name"]')
+    this.nameInput
       .clear()
       .type(name)
       .blur();
-    cy.get('input[data-testing-id="email"]')
+    this.emailInput
       .clear()
       .type(email)
       .blur();
-    cy.get('input[data-testing-id="phone"]')
+    this.phoneInput
       .clear()
       .type(phone)
       .blur();
