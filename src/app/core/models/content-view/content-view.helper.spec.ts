@@ -1,8 +1,7 @@
 import * as using from 'jasmine-data-provider';
 
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
-
 import { ContentViewHelper } from './content-view.helper';
+import { createContentPageletView } from './content-view.model';
 
 describe('Content View Helper', () => {
   describe('getRouterLink', () => {
@@ -14,7 +13,7 @@ describe('Content View Helper', () => {
       ],
       ({ input, expected }) => {
         it(`should transform ${input} to ${expected}`, () => {
-          const pagelet = createSimplePageletView({
+          const pagelet = createContentPageletView({
             definitionQualifiedName: 'fq',
             id: 'id',
             domain: 'domain',
@@ -41,7 +40,7 @@ describe('Content View Helper', () => {
       ],
       ({ input, expected }) => {
         it(`should evalute ${input} to ${expected}`, () => {
-          const pagelet = createSimplePageletView({
+          const pagelet = createContentPageletView({
             definitionQualifiedName: 'fq',
             id: 'id',
             domain: 'domain',

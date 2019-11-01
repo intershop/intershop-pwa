@@ -11,11 +11,11 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 export class CMSContainerComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
-  contentSlotPagelets: ContentPageletView[] = [];
+  contentSlotPagelets: string[] = [];
   containerClasses = '';
 
   ngOnChanges() {
-    let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pagelets();
+    let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pageletIDs;
     if (this.pagelet.hasParam('UpperBound')) {
       contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
     }

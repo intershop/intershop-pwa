@@ -25,18 +25,6 @@ describe('Cms Container Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSContainerComponent);
     component = fixture.componentInstance;
-    const slide1 = {
-      definitionQualifiedName: 'fq',
-      id: 'slide1',
-      domain: 'domain',
-      displayName: 'slide1',
-    };
-    const slide2 = {
-      definitionQualifiedName: 'fq',
-      id: 'slide2',
-      domain: 'domain',
-      displayName: 'slide2',
-    };
     const pagelet = {
       definitionQualifiedName: 'fq',
       id: 'id',
@@ -48,16 +36,13 @@ describe('Cms Container Component', () => {
       },
       slots: [
         {
+          displayName: 'test',
           definitionQualifiedName: 'app_sf_responsive_cm:slot.container.content.pagelet2-Slot',
-          pageletIDs: [slide1.id, slide2.id],
+          pageletIDs: ['slide1', 'slide2'],
         },
       ],
     };
-    component.pagelet = createContentPageletView(pagelet.id, {
-      [pagelet.id]: pagelet,
-      [slide1.id]: slide1,
-      [slide2.id]: slide2,
-    });
+    component.pagelet = createContentPageletView(pagelet);
     element = fixture.nativeElement;
   });
 
@@ -72,7 +57,8 @@ describe('Cms Container Component', () => {
         ng-reflect-ng-class="col-12 col-md-6 col-lg-4 float"
       >
         <ish-content-slot ng-reflect-slot="app_sf_responsive_cm:slot.cont" ng-reflect-wrapper="true"
-          ><ish-content-pagelet></ish-content-pagelet><ish-content-pagelet></ish-content-pagelet
+          ><ish-content-pagelet ng-reflect-pagelet-id="slide1"></ish-content-pagelet
+          ><ish-content-pagelet ng-reflect-pagelet-id="slide2"></ish-content-pagelet
         ></ish-content-slot>
       </div>
     `);

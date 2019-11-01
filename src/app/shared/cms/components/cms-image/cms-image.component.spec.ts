@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 import { CMSImageComponent } from './cms-image.component';
 
@@ -34,7 +34,7 @@ describe('Cms Image Component', () => {
         LinkTitle: 'bar',
       },
     };
-    component.pagelet = createSimplePageletView(pagelet);
+    component.pagelet = createContentPageletView(pagelet);
   });
 
   it('should be created', () => {

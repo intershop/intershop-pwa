@@ -28,19 +28,6 @@ describe('Cms Carousel Component', () => {
     fixture = TestBed.createComponent(CMSCarouselComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    const slide1 = {
-      id: 'slide1',
-      domain: 'domain',
-      displayName: 'slide1',
-      definitionQualifiedName: 'fq',
-    };
-    const slide2 = {
-      id: 'slide2',
-      domain: 'domain',
-      displayName: 'slide2',
-      definitionQualifiedName: 'fq',
-    };
-
     const pagelet = {
       id: 'id',
       definitionQualifiedName: 'fq',
@@ -52,16 +39,13 @@ describe('Cms Carousel Component', () => {
       },
       slots: [
         {
+          displayName: 'test',
           definitionQualifiedName: 'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot',
-          pageletIDs: [slide1.id, slide2.id],
+          pageletIDs: ['slide1', 'slide2'],
         },
       ],
     };
-    component.pagelet = createContentPageletView(pagelet.id, {
-      [pagelet.id]: pagelet,
-      [slide1.id]: slide1,
-      [slide2.id]: slide2,
-    });
+    component.pagelet = createContentPageletView(pagelet);
   });
 
   it('should be created', () => {

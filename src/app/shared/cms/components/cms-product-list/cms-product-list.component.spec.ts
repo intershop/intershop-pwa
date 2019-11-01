@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { ProductItemContainerComponent } from 'ish-shared/product/containers/product-item/product-item.container';
 
 import { CMSProductListComponent } from './cms-product-list.component';
@@ -33,7 +33,7 @@ describe('Cms Product List Component', () => {
         ListItemCSSClass: 'li-css-class',
       },
     };
-    component.pagelet = createSimplePageletView(pagelet);
+    component.pagelet = createContentPageletView(pagelet);
   });
 
   it('should be created', () => {

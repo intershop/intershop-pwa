@@ -20,34 +20,13 @@ describe('Content Page Container', () => {
   let element: HTMLElement;
   let cmsFacade: CMSFacade;
 
-  const pagelets = {
-    pid: {
-      displayName: 'pid',
-      domain: 'domain',
-      definitionQualifiedName: 'fq',
-      id: 'pid',
-      configurationParameters: {
-        HTML: 'foo',
-      },
-    },
-    cmp: {
-      displayName: 'cmp',
-      domain: 'domain',
-      definitionQualifiedName: 'component',
-      id: 'cmp',
-      configurationParameters: {
-        HTML: '<div>test</div>',
-      },
-    },
-  };
-
   const contentPage = {
     resourceSetId: 'rid',
     domain: 'domain',
     definitionQualifiedName: 'test',
     id: 'id',
     displayName: 'test',
-    pageletIDs: [pagelets.pid.id, pagelets.cmp.id],
+    pageletIDs: ['pid', 'cmp'],
   };
 
   beforeEach(async(() => {
@@ -91,7 +70,7 @@ describe('Content Page Container', () => {
   });
 
   it('should render first pagelet of content page when retrieved from facade', () => {
-    when(cmsFacade.contentPage$).thenReturn(of(createContentPageletEntryPointView(contentPage, pagelets)));
+    when(cmsFacade.contentPage$).thenReturn(of(createContentPageletEntryPointView(contentPage)));
     fixture.detectChanges();
 
     expect(findAllIshElements(element)).toMatchInlineSnapshot(`
@@ -103,22 +82,6 @@ describe('Content Page Container', () => {
 
     const child = fixture.debugElement.query(By.css('ish-content-pagelet'))
       .componentInstance as ContentPageletContainerComponent;
-    expect(child.pagelet).toMatchInlineSnapshot(`
-      Object {
-        "booleanParam": [Function],
-        "configParam": [Function],
-        "configurationParameters": Object {
-          "HTML": "foo",
-        },
-        "definitionQualifiedName": "fq",
-        "displayName": "pid",
-        "domain": "domain",
-        "hasParam": [Function],
-        "id": "pid",
-        "numberParam": [Function],
-        "slot": [Function],
-        "stringParam": [Function],
-      }
-    `);
+    expect(child.pageletId).toMatchInlineSnapshot(`"pid"`);
   });
 });

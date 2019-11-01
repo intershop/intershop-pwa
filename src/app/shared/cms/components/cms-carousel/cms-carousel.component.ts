@@ -19,7 +19,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges {
 
   slideItems = 6;
   itemGridSize = 12;
-  pageletSlides: ContentPageletView[][] = [];
+  pageletSlides: string[][] = [];
 
   constructor(private appRef: ApplicationRef) {}
 
@@ -29,7 +29,7 @@ export class CMSCarouselComponent implements CMSComponent, OnChanges {
     }
     this.itemGridSize = (12 - (12 % this.slideItems)) / this.slideItems;
 
-    const slotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot').pagelets();
+    const slotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot').pageletIDs;
     this.pageletSlides = arraySlices(slotPagelets, this.slideItems);
 
     this.appRef.isStable
