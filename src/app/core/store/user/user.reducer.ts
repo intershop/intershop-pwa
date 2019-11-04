@@ -9,6 +9,7 @@ export interface UserState {
   user: User;
   authorized: boolean;
   _authToken: string;
+  _lastAuthTokenBeforeLogin: string;
   loading: boolean;
   successMessage: string;
   error: HttpError;
@@ -22,6 +23,7 @@ export const initialState: UserState = {
   user: undefined,
   authorized: false,
   _authToken: undefined,
+  _lastAuthTokenBeforeLogin: undefined,
   loading: false,
   successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
@@ -46,7 +48,12 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
-    case UserActionTypes.LoginUser:
+    case UserActionTypes.LoginUser: {
+      return {
+        ...initialState,
+        _lastAuthTokenBeforeLogin: state._authToken,
+      };
+    }
     case UserActionTypes.LogoutUser: {
       return initialState;
     }

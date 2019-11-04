@@ -12,6 +12,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -23,7 +24,7 @@ import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module'
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductIfNotLoaded, LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
+import { LoginUser, LoginUserSuccess, LogoutUser, SetAPIToken } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -316,9 +317,10 @@ describe('Basket Effects', () => {
 
   describe('mergeBasket$', () => {
     const basketID = 'BID';
+    const sourceAuthToken = 'authToken';
 
     beforeEach(() => {
-      when(basketServiceMock.mergeBasket(anyString())).thenReturn(of(BasketMockData.getBasket()));
+      when(basketServiceMock.mergeBasket(anyString(), anyString())).thenReturn(of(BasketMockData.getBasket()));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -337,6 +339,8 @@ describe('Basket Effects', () => {
         })
       );
       store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
+      store$.dispatch(new SetAPIToken({ apiToken: sourceAuthToken }));
+      store$.dispatch(new LoginUser({ credentials: {} as LoginCredentials }));
     });
 
     it('should call the basketService for mergeBasket', done => {
@@ -344,7 +348,7 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.mergeBasket$.subscribe(() => {
-        verify(basketServiceMock.mergeBasket(basketID)).once();
+        verify(basketServiceMock.mergeBasket(basketID, sourceAuthToken)).once();
         done();
       });
     });
@@ -359,7 +363,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type MergeBasketFail', () => {
-      when(basketServiceMock.mergeBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
+      when(basketServiceMock.mergeBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new basketActions.MergeBasket();
       const completion = new basketActions.MergeBasketFail({ error: { message: 'invalid' } as HttpError });
