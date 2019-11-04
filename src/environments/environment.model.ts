@@ -16,7 +16,8 @@ export interface Environment {
 
   /* FEATURE TOOGLES */
   features: (
-    | 'captcha'
+    | 'captchaV2'
+    | 'captchaV3'
     | 'compare'
     | 'rating'
     | 'recently'

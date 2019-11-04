@@ -95,12 +95,10 @@ export class UserService {
     }
 
     if (body.captchaResponse) {
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      const headers = new HttpHeaders().set(
-        ApiService.AUTHORIZATION_HEADER_KEY,
-        `CAPTCHA g-recaptcha-response=${body.captchaResponse} foo=bar`
-      );
-      return this.apiService.post<void>('customers', newCustomer, { headers });
+      return this.apiService.post<void>('customers', newCustomer, {
+        headers: this.appendCaptchaHeaders(body.captchaResponse, body.captchaAction),
+      });
+      // without captcha
     } else {
       return this.apiService.post<void>('customers', newCustomer);
     }
@@ -189,7 +187,7 @@ export class UserService {
 
   /**
    * Request an email for the given datas user with a link to reset the users password.
-   * @param data  The user data (email, firstName, lastName, answer) to identify the user.
+   * @param data  The user data (email, firstName, lastName ) to identify the user.
    */
   requestPasswordReminder(data: PasswordReminder) {
     const options: AvailableOptions = {
@@ -197,10 +195,26 @@ export class UserService {
     };
 
     if (data.captcha) {
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      options.headers = new HttpHeaders().set('Authorization', `CAPTCHA g-recaptcha-response=${data.captcha} foo=bar`);
+      options.headers = this.appendCaptchaHeaders(data.captcha, data.captchaAction);
     }
 
     return this.apiService.post('security/reminder', { answer: '', ...data }, options);
+  }
+
+  // provides the request header for the appropriate captcha service
+  private appendCaptchaHeaders(captcha: string, captchaAction: string): HttpHeaders {
+    let headers = new HttpHeaders();
+    // captcha V3
+    if (captchaAction) {
+      headers = headers.set(
+        ApiService.AUTHORIZATION_HEADER_KEY,
+        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
+      );
+      // captcha V2
+    } else {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      headers = headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
+    }
+    return headers;
   }
 }

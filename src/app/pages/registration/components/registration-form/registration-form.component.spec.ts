@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -25,8 +24,6 @@ describe('Registration Form Component', () => {
   let component: RegistrationFormComponent;
   let element: HTMLElement;
   let fb: FormBuilder;
-  const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-  const captchaReponse = 'FAKE_CAPTCHA_RESPONSE';
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
@@ -43,10 +40,7 @@ describe('Registration Form Component', () => {
         MockComponent(RegistrationCredentialsFormComponent),
         RegistrationFormComponent,
       ],
-      providers: [
-        { provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) },
-        { provide: CAPTCHA_SITE_KEY, useValue: captchaSiteKey },
-      ],
+      providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],
       imports: [
         FeatureToggleModule,
         ReactiveFormsModule,
@@ -127,7 +121,8 @@ describe('Registration Form Component', () => {
       control: new FormControl('foo', Validators.required),
       credentials: fb.group({}),
       address: fb.group({}),
-      captchaResponse: captchaReponse,
+      captcha: 'FAKE_CAPTCHA_RESPONSE',
+      captchaAction: 'create_account',
     });
 
     component.create.subscribe(() => {
