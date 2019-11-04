@@ -1,4 +1,14 @@
-import { AfterContentInit, AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -10,7 +20,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
 @Directive({
   selector: '[ishServerHtml]',
 })
-export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
   private destroy$ = new Subject();
   private icmBaseUrl: string;
 
@@ -35,7 +45,17 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
     element.insertAdjacentHTML('afterbegin', val);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.ishServerHtml.firstChange) {
+      this.patchElements();
+    }
+  }
+
   ngAfterContentInit() {
+    this.patchElements();
+  }
+
+  private patchElements() {
     // use setAttribute here to bypass security check
     Array.from(this.elementRef.nativeElement.querySelectorAll('[href]')).forEach((element: HTMLElement) => {
       element.setAttribute('href', LinkParser.parseLink(element.getAttribute('href')));
