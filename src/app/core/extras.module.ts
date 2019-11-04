@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SentryModule } from '../extensions/sentry/sentry.module';
+import { SeoModule } from '../extensions/seo/seo.module';
 import { TrackingModule } from '../extensions/tracking/tracking.module';
 
 /*
@@ -12,6 +13,8 @@ const importExportModules = [
   TrackingModule,
   // browser error tracking with https://sentry.io
   SentryModule,
+  // ngx-meta integration https://www.npmjs.com/package/@ngx-meta/core
+  SeoModule,
 ];
 
 @NgModule({

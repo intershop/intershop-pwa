@@ -56,6 +56,7 @@
     "@nguniversal/express-engine": "^8.1.1",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "@ngx-formly/core": "^4.8.3",
+    "@ngx-meta/core": "^7.0.0",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@ngx-utils/cookies": "^3.0.2",

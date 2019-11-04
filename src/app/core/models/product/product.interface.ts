@@ -5,6 +5,7 @@ import { Image } from 'ish-core/models/image/image.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
+import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
 export interface ProductData {
@@ -68,6 +69,8 @@ export interface ProductData {
   defaultCategory?: CategoryData;
 
   promotions?: Link[];
+
+  seoAttributes: SeoAttributes;
 }
 
 export interface ProductDataStub {

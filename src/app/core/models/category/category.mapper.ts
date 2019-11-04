@@ -106,6 +106,7 @@ export class CategoryMapper {
         images: this.imageMapper.fromImages(categoryData.images),
         attributes: categoryData.attributes,
         completenessLevel: this.computeCompleteness(categoryData),
+        seoAttributes: categoryData.seoAttributes,
       };
     } else {
       throw new Error(`'categoryData' is required`);
