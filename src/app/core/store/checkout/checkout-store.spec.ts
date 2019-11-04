@@ -197,7 +197,7 @@ describe('Checkout Store', () => {
       return of(newBaskets);
     });
 
-    when(basketServiceMock.mergeBasket(anything())).thenCall(() => {
+    when(basketServiceMock.mergeBasket(anything(), anything())).thenCall(() => {
       const newBasket = {
         ...basket,
       };

@@ -76,7 +76,9 @@ describe('Basket Handling', () => {
         .should('equal', 200);
       cy.wait(1000);
     });
-    at(MyAccountPage, page => page.header.miniCart.total.should('contain', _.product.price * 2));
+    at(MyAccountPage, page => {
+      page.header.miniCart.total.should('contain', _.product.price * 2);
+    });
   });
 
   it('user adds one more product to basket when logged in', () => {
