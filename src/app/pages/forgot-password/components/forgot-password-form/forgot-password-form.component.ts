@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -28,17 +27,13 @@ export class ForgotPasswordFormComponent implements OnInit {
   form: FormGroup;
   submitted = false;
 
-  captchaEnabled: boolean;
-
-  constructor(private featureToggle: FeatureToggleService) {}
-
   ngOnInit() {
-    this.captchaEnabled = this.featureToggle.enabled('captcha');
     this.form = new FormGroup({
       email: new FormControl('', [Validators.required, CustomValidators.email]),
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      captcha: new FormControl(undefined, this.captchaEnabled ? Validators.required : []),
+      captcha: new FormControl(''),
+      captchaAction: new FormControl('forgot_password'),
     });
   }
 

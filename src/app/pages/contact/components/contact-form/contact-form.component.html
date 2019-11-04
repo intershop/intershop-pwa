@@ -36,11 +36,8 @@
     maxlength="30000"
     rows="10"
   ></ish-textarea>
-  <div *ishFeature="'captcha'" class="row form-group">
-    <div class="offset-md-4 col-md-8">
-      <ish-captcha [parentForm]="contactForm" controlName="captcha"></ish-captcha>
-    </div>
-  </div>
+
+  <ish-captcha [form]="contactForm"></ish-captcha>
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
