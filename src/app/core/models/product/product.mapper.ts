@@ -204,6 +204,7 @@ export class ProductMapper {
       promotionIds: mapPromotionIds(data.promotions),
       completenessLevel: 3,
       failed: false,
+      seoAttributes: data.seoAttributes,
     };
 
     if (data.productMaster) {

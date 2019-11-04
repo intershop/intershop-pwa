@@ -2654,5 +2654,13 @@
   "registration.tac_privacy_policy.end.text": ".",
   "registration.tac.error.tip": "Bitte stimmen Sie den Bedingungen zu, um fortzufahren.",
   "registration.privacy_policy.details.title": "Datenschutzhinweise",
-  "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, keine Leerzeichen."
+  "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, keine Leerzeichen.",
+  "seo.title.home": "inTRONICS Startseite",
+  "seo.description.home": "inTRONICS Startseite Beschreibung ...",
+  "seo.title.search": "Suchergebnis für '{{0}}'",
+  "seo.title.checkout": "Kasse",
+  "seo.title.error": "Fehler",
+  "seo.applicationName": "Intershop PWA",
+  "seo.defaults.title": "Intershop Progressive Web App",
+  "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA"
 }

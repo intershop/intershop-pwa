@@ -2655,5 +2655,13 @@
   "registration.tac_privacy_policy.end.text": ".",
   "registration.tac.error.tip": "Please agree to the terms to continue.",
   "registration.privacy_policy.details.title": "Privacy Policy",
-  "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "The password must include 7 characters minimum, containing numbers and letters, no spaces."
+  "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "The password must include 7 characters minimum, containing numbers and letters, no spaces.",
+  "seo.title.home": "inTRONICS Home",
+  "seo.description.home": "inTRONICS home description ...",
+  "seo.title.search": "Search Result for '{{0}}'",
+  "seo.title.checkout": "Checkout",
+  "seo.title.error": "Error",
+  "seo.applicationName": "Intershop PWA",
+  "seo.defaults.title": "Intershop Progressive Web App",
+  "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA"
 }

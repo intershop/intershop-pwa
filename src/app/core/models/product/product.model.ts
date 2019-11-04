@@ -3,6 +3,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
+import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
 
 export interface Product {
   name: string;
@@ -31,6 +32,7 @@ export interface Product {
   completenessLevel: number;
   failed: boolean;
   links?: ProductLinks;
+  seoAttributes?: SeoAttributes;
 }
 
 export * from './product.helper';
