@@ -4,12 +4,13 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { filter, startWith, take } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { filter, startWith, take, takeUntil } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Category } from 'ish-core/models/category/category.model';
@@ -56,7 +57,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   templateUrl: './product-item.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductItemContainerComponent implements OnInit, OnChanges {
+export class ProductItemContainerComponent implements OnInit, OnChanges, OnDestroy {
   private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   /**
    * The Product SKU to render a product item for.
@@ -82,13 +83,23 @@ export class ProductItemContainerComponent implements OnInit, OnChanges {
   productVariationOptions$: Observable<VariationOptionGroup[]>;
   isInCompareList$: Observable<boolean>;
 
-  private sku$: Observable<string>;
+  private sku$ = new ReplaySubject<string>(1);
+  private destroy$ = new Subject();
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 
+  ngOnDestroy() {
+    this.destroy$.next();
+  }
+
   // tslint:disable:initialize-observables-in-declaration
   ngOnInit() {
-    this.sku$ = this.productSkuChange.pipe(startWith(this.productSku));
+    this.productSkuChange
+      .pipe(
+        startWith(this.productSku),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(this.sku$);
 
     this.product$ = this.shoppingFacade.product$(this.sku$, ProductItemContainerComponent.REQUIRED_COMPLETENESS_LEVEL);
 
