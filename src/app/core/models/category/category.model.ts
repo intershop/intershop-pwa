@@ -4,6 +4,7 @@ import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.mod
 
 export interface Category {
   uniqueId: string;
+  categoryRef: string;
 
   categoryPath: string[];
   name: string;
