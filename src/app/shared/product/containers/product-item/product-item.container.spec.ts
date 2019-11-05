@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { ProductRowComponent } from 'ish-shared/product/components/product-row/product-row.component';
 import { ProductTileComponent } from 'ish-shared/product/components/product-tile/product-tile.component';
@@ -14,22 +15,18 @@ describe('Product Item Container', () => {
   let component: ProductItemContainerComponent;
   let fixture: ComponentFixture<ProductItemContainerComponent>;
   let element: HTMLElement;
+  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async(() => {
+    shoppingFacade = mock(ShoppingFacade);
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
       declarations: [
         MockComponent(LoadingComponent),
         MockComponent(ProductRowComponent),
         MockComponent(ProductTileComponent),
         ProductItemContainerComponent,
       ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   }));
 
@@ -44,5 +41,64 @@ describe('Product Item Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  describe('with variation product', () => {
+    beforeEach(() => {
+      const variation = {
+        sku: 'sku',
+        type: 'VariationProduct',
+        variations: () => [
+          {
+            sku: 'skuV2',
+            variableVariationAttributes: [{ variationAttributeId: 'HDD', value: '256' }],
+          },
+        ],
+      } as VariationProductView;
+      when(shoppingFacade.product$(anything(), anything())).thenReturn(of(variation));
+    });
+
+    it('should trigger add product to cart with right sku', () => {
+      expect(() => fixture.detectChanges()).not.toThrow();
+
+      component.addToBasket(3);
+
+      verify(shoppingFacade.addProductToBasket(anything(), anything())).once();
+      expect(capture(shoppingFacade.addProductToBasket).last()).toMatchInlineSnapshot(`
+        Array [
+          "sku",
+          3,
+        ]
+      `);
+    });
+
+    describe('when changing variation', () => {
+      it('should trigger product sku change when sku is changing', () => {
+        expect(() => fixture.detectChanges()).not.toThrow();
+
+        const emitter = spy(component.productSkuChange);
+
+        component.replaceVariation({ HDD: '256' });
+
+        verify(emitter.emit(anything())).once();
+        const [sku] = capture(emitter.emit).last();
+        expect(sku).toMatchInlineSnapshot(`"skuV2"`);
+      });
+
+      it('should trigger add product to cart with right sku', () => {
+        expect(() => fixture.detectChanges()).not.toThrow();
+
+        component.replaceVariation({ HDD: '256' });
+        component.addToBasket(4);
+
+        verify(shoppingFacade.addProductToBasket(anything(), anything())).once();
+        expect(capture(shoppingFacade.addProductToBasket).last()).toMatchInlineSnapshot(`
+          Array [
+            "skuV2",
+            4,
+          ]
+        `);
+      });
+    });
   });
 });
