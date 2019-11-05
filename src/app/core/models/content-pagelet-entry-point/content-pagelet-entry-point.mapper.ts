@@ -17,7 +17,8 @@ export class ContentPageletEntryPointMapper {
    * Converts {@link ContentPageletEntryPointData} to the model entity {@link ContentPageletEntryPoint} and enclosed {@link ContentPagelet}s.
    */
   fromData(
-    data: ContentPageletEntryPointData
+    data: ContentPageletEntryPointData,
+    clientId?: string
   ): { pageletEntryPoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] } {
     if (!data) {
       throw new Error('falsy input');
@@ -43,6 +44,7 @@ export class ContentPageletEntryPointMapper {
       resourceSetId: data.resourceSetId,
       pageletIDs,
       configurationParameters,
+      clientId: clientId ? clientId : data.id,
     };
 
     return { pageletEntryPoint, pagelets };
