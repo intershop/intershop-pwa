@@ -19,7 +19,7 @@ import {
 import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
@@ -218,9 +218,9 @@ export class BasketEffects {
   );
 
   /**
-   * After order creation either redirect to a payment provider or show checkout receipt page.
+   * Jumps to the next checkout step after basket validation. In case of adjustments the product data of removed items are loaded.
    */
-  @Effect({ dispatch: false })
+  @Effect()
   jumpToNextCheckoutStep$ = this.actions$.pipe(
     ofType<basketActions.ContinueCheckoutSuccess>(
       basketActions.BasketActionTypes.ContinueCheckoutSuccess,
@@ -228,10 +228,27 @@ export class BasketEffects {
     ),
     mapToPayload(),
     tap(payload => {
-      if (payload.targetRoute && payload.basketValidation && payload.basketValidation.results.valid) {
+      if (
+        payload.targetRoute &&
+        payload.basketValidation &&
+        payload.basketValidation.results.valid &&
+        !payload.basketValidation.results.adjusted
+      ) {
         this.router.navigate([payload.targetRoute]);
       }
-    })
+    }),
+    filter(
+      payload =>
+        payload.basketValidation &&
+        payload.basketValidation.results.adjusted &&
+        !!payload.basketValidation.results.infos
+    ),
+    map(payload => payload.basketValidation.results.infos),
+    switchMap(infos => [
+      ...infos.map(info =>
+        info.parameters && info.parameters.productSku ? new LoadProduct({ sku: info.parameters.productSku }) : undefined
+      ),
+    ])
   );
 
   /**

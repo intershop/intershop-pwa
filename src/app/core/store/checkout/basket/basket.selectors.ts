@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
 import { getCheckoutState } from 'ish-core/store/checkout/checkout-store';
 import { getProductEntities } from 'ish-core/store/shopping/products';
@@ -11,7 +12,23 @@ const getBasketState = createSelector(
 
 export const getBasketValidationResults = createSelector(
   getBasketState,
-  basket => basket.validationResults
+  getProductEntities,
+  (basket, products): BasketValidationResultType => {
+    if (!basket || !basket.validationResults) {
+      return;
+    }
+
+    const basketResults = basket.validationResults;
+    return {
+      ...basketResults,
+      infos: basketResults.infos
+        ? basketResults.infos.map(info => ({
+            ...info,
+            parameters: { ...info.parameters, product: products[info.parameters.productSku] },
+          }))
+        : [],
+    };
+  }
 );
 
 /**

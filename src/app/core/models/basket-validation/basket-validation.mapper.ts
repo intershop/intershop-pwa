@@ -13,11 +13,13 @@ export class BasketValidationMapper {
           valid: data.data.results && data.data.results.valid,
           adjusted: data.data.results && data.data.results.adjusted,
           errors: data.data.results && data.data.results.errors,
+          infos: data.data.results && data.data.results.infos,
         },
       };
     }
   }
 
+  // map basket from BasketValidationResult
   private static transform(basketValidationData: BasketValidationData): BasketData {
     return {
       data: basketValidationData.included
