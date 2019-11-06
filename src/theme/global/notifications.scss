@@ -34,11 +34,15 @@
 // alert box, e.g. for product out of stock notification
 
 .alert-box {
-  border: 3px solid error-color;
+  border: 3px solid $error-color;
 
   .alert-box-header {
     padding-bottom: $space-default;
-    color: error-color;
+    color: $error-color;
+  }
+
+  .alert-box-body {
+    padding: 0 $space-default;
   }
 
   .list-body {

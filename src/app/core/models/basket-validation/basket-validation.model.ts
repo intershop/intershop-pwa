@@ -1,4 +1,5 @@
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 export type BasketValidationScopeType =
   | 'Products'
@@ -17,6 +18,8 @@ export interface BasketValidationErrorType {
   message: string;
   parameters?: {
     lineItemId?: string;
+    productSku?: string;
+    product?: Product;
     shippingRestriction?: string;
     scopes?: BasketValidationScopeType[];
   };
@@ -26,6 +29,7 @@ export interface BasketValidationResultType {
   valid: boolean;
   adjusted: boolean;
   errors?: BasketValidationErrorType[];
+  infos?: BasketValidationErrorType[];
 }
 
 export interface BasketValidation {

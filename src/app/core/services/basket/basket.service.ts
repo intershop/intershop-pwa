@@ -225,7 +225,7 @@ export class BasketService {
   ): Observable<BasketValidation> {
     const body = {
       basket: basketId,
-      adjustmentsAllowed: false,
+      adjustmentsAllowed: scopes.includes('Products'),
       scopes,
     };
 

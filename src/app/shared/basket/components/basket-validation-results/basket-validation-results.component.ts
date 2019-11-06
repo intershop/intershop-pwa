@@ -7,6 +7,7 @@ import {
   BasketValidationErrorType,
   BasketValidationResultType,
 } from 'ish-core/models/basket-validation/basket-validation.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -24,7 +25,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   validationResults$: Observable<BasketValidationResultType>;
   hasGeneralBasketError = false;
-  messages = [];
+  errorMessages = [];
+  removedItems: { message: string; product: Product }[];
 
   private destroy$ = new Subject();
 
@@ -43,18 +45,34 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
         this.hasGeneralBasketError = results.errors && results.errors.some(error => this.isLineItemMessage(error));
 
         // display messages only if they are not item related, filter duplicate entries
-        this.messages = Array.from(
-          new Set(
-            results.errors &&
-              results.errors.map(error => {
-                if (!this.isLineItemMessage(error)) {
-                  return error.parameters && error.parameters.shippingRestriction
-                    ? error.parameters.shippingRestriction
-                    : error.message;
-                }
-              })
-          )
-        );
+        this.errorMessages =
+          results.errors &&
+          Array.from(
+            new Set(
+              results.errors &&
+                results.errors.map(error => {
+                  if (!this.isLineItemMessage(error)) {
+                    return error.parameters && error.parameters.shippingRestriction
+                      ? error.parameters.shippingRestriction
+                      : error.message;
+                  }
+                })
+            )
+          );
+
+        this.removedItems =
+          results.infos &&
+          Array.from(
+            new Set(
+              results.infos &&
+                results.infos
+                  .map(info => ({
+                    message: info.message,
+                    product: info.parameters && info.parameters.product,
+                  }))
+                  .filter(info => info.product)
+            )
+          );
         this.cd.detectChanges();
       });
   }
