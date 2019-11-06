@@ -144,6 +144,12 @@ describe('Basket Validation Mapper', () => {
                 code: '4711',
               },
             ],
+            infos: [
+              {
+                message: 'info',
+                code: '4712',
+              },
+            ],
           },
         },
 
@@ -158,6 +164,7 @@ describe('Basket Validation Mapper', () => {
       expect(basketValidation.results.valid).toBeFalse();
       expect(basketValidation.results.adjusted).toBeFalse();
       expect(basketValidation.results.errors[0].message).toEqual('error');
+      expect(basketValidation.results.infos[0].message).toEqual('info');
     });
 
     it('should return (adjusted) Basket when basket was included', () => {
