@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
-import { ScriptLoaderService } from 'ish-core/services/script-loader/script-loader.service';
+import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 // allows access to concardis js functionality
