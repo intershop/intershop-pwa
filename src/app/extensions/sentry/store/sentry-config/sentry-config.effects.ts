@@ -20,7 +20,7 @@ import {
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { getErrorState } from 'ish-core/store/error';
+import { getGeneralError } from 'ish-core/store/error';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -90,8 +90,7 @@ export class SentryConfigEffects {
   @Effect({ dispatch: false })
   trackErrorPageErrors$ = this.store.pipe(
     debounce(() => this.actions$.pipe(ofRoute('error'))),
-    select(getErrorState),
-    mapToProperty('current'),
+    select(getGeneralError),
     whenTruthy(),
     distinctUntilChanged(),
     tap(error => {

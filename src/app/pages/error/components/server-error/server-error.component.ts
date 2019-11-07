@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+
 /**
  * The Server Error Page Component informs the user about an occurred error on server side.
  *
@@ -14,9 +16,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServerErrorComponent {
-  // TODO: do not handle complete ErrorState, model type might be required
   /**
    * The occured error.
    */
-  @Input() error;
+  @Input() error: HttpError;
+  @Input() type: string;
 }
