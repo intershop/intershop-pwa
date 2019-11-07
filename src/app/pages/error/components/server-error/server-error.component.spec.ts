@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { SafeHtmlPipe } from 'ish-core/pipes/safe-html.pipe';
 
 import { ServerErrorComponent } from './server-error.component';
@@ -22,7 +23,7 @@ describe('Server Error Component', () => {
     fixture = TestBed.createComponent(ServerErrorComponent);
     element = fixture.nativeElement;
     component = fixture.componentInstance;
-    component.error = { current: { status: 0 } };
+    component.error = { status: 0 } as HttpError;
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en_US');
     translate.use('en_US');
@@ -41,7 +42,8 @@ describe('Server Error Component', () => {
   });
 
   it('should render the error type if it is available', () => {
-    component.error = { current: { status: 500 }, type: 'Error' };
+    component.error = { status: 500 } as HttpError;
+    component.type = 'Error';
     fixture.detectChanges();
     const a = element.querySelector('p.text-muted');
     expect(a).toBeTruthy();
@@ -49,13 +51,15 @@ describe('Server Error Component', () => {
   });
 
   it('should render a server timeout error content on template', () => {
-    component.error = { current: { status: 0 }, type: 'Error' };
+    component.error = { status: 0 } as HttpError;
+    component.type = 'Error';
     fixture.detectChanges();
     expect(element.querySelector('p.text-muted').textContent).toContain('Server timeout');
   });
 
   it('should render a 5xx error content on template', () => {
-    component.error = { current: { status: 500 }, type: 'Error' };
+    component.error = { status: 500 } as HttpError;
+    component.type = 'Error';
     fixture.detectChanges();
     expect(element.querySelector('p.text-muted').textContent).toContain('Error code 500');
   });

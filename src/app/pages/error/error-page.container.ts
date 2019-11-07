@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { ErrorState } from 'ish-core/store/error/error.reducer';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 // tslint:disable: ccp-no-intelligence-in-components
 @Component({
@@ -11,11 +11,13 @@ import { ErrorState } from 'ish-core/store/error/error.reducer';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorPageContainerComponent implements OnInit {
-  generalError$: Observable<ErrorState>;
+  error$: Observable<HttpError>;
+  type$: Observable<string>;
 
   constructor(private appFacade: AppFacade) {}
 
   ngOnInit() {
-    this.generalError$ = this.appFacade.generalError$;
+    this.error$ = this.appFacade.generalError$;
+    this.type$ = this.appFacade.generalErrorType$;
   }
 }

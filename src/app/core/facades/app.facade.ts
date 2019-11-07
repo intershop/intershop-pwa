@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
-import { getErrorState } from 'ish-core/store/error';
+import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
 import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
 import {
@@ -33,7 +33,8 @@ export class AppFacade {
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
 
-  generalError$ = this.store.pipe(select(getErrorState));
+  generalError$ = this.store.pipe(select(getGeneralError));
+  generalErrorType$ = this.store.pipe(select(getGeneralErrorType));
   breadcrumbData$ = this.store.pipe(select(getBreadcrumbData));
 
   appWrapperClasses$ = combineLatest([
