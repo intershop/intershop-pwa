@@ -22,39 +22,35 @@ var Rule = (function (_super) {
     function Rule(options) {
         var _this = _super.call(this, options) || this;
         _this.ruleSettings = {};
-        _this.ruleSettings.component = options.ruleArguments[0].component;
-        _this.ruleSettings.container = options.ruleArguments[0].container;
+        _this.ruleSettings = options.ruleArguments[0];
         return _this;
     }
     Rule.prototype.apply = function (sourceFile) {
         var _this = this;
-        if (!sourceFile.fileName.match(/.*(component|container)\.ts/)) {
+        var regex = /\.([\w-]+)\.ts$/;
+        if (!regex.test(sourceFile.fileName)) {
+            return [];
+        }
+        var artifact = regex.exec(sourceFile.fileName)[1];
+        if (!this.ruleSettings[artifact]) {
             return [];
         }
         return this.applyWithFunction(sourceFile, function (ctx) {
-            _this.isContainer = ctx.sourceFile.fileName.indexOf('container') >= 0;
             ctx.sourceFile.statements.filter(ts.isImportDeclaration).forEach(function (importStatement) {
                 var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, ts.SyntaxKind.StringLiteral);
                 var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
-                var c;
-                if (_this.isContainer) {
-                    c = 'container';
-                }
-                else {
-                    c = 'component';
-                }
                 var failuteToken = tsquery_1.tsquery(ctx.sourceFile, 'ClassDeclaration > Identifier')[0];
-                if (fromStringText.search(/\/store(\/|$)/) >= 0 && !_this.ruleSettings[c].ngrx) {
-                    ctx.addFailureAtNode(failuteToken, "ngrx handling is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                if (fromStringText.search(/\/store(\/|$)/) >= 0 && !_this.ruleSettings[artifact].ngrx) {
+                    ctx.addFailureAtNode(failuteToken, "ngrx handling is not allowed in " + artifact + "s. (found " + importStatement.getText() + ")");
                 }
-                if (fromStringText.search(/\.service$/) >= 0 && !_this.ruleSettings[c].service) {
-                    ctx.addFailureAtNode(failuteToken, "service usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                if (/\/services\/.*\.service$/.test(fromStringText) && !_this.ruleSettings[artifact].service) {
+                    ctx.addFailureAtNode(failuteToken, "service usage is not allowed in " + artifact + "s. (found " + importStatement.getText() + ")");
                 }
-                if (fromStringText.search(/angular\/router/) >= 0 && !_this.ruleSettings[c].router) {
-                    ctx.addFailureAtNode(failuteToken, "router usage is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                if (fromStringText.search(/angular\/router/) >= 0 && !_this.ruleSettings[artifact].router) {
+                    ctx.addFailureAtNode(failuteToken, "router usage is not allowed in " + artifact + "s. (found " + importStatement.getText() + ")");
                 }
-                if (fromStringText.search(/\/facades(\/|$)/) >= 0 && !_this.ruleSettings[c].facade) {
-                    ctx.addFailureAtNode(failuteToken, "using facades is not allowed in " + c + "s. (found " + importStatement.getText() + ")");
+                if (fromStringText.search(/\/facades(\/|$)/) >= 0 && !_this.ruleSettings[artifact].facade) {
+                    ctx.addFailureAtNode(failuteToken, "using facades is not allowed in " + artifact + "s. (found " + importStatement.getText() + ")");
                 }
             });
         });
