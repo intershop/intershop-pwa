@@ -6,19 +6,19 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
- * The Forgot Password Form Component displays a Forgot Password form and triggers the submit.
+ * The Request Reminder Form Component displays a Forgot Password Request Reminder form and triggers the submit.
  *
  * @example
- * <ish-forgot-password-form
- *               (submitPasswordReminder)="requestPasswordReminder($event)">
- * ></ish-forgot-password-form>
+ * <ish-request-reminder-form
+ *               (submitPasswordReminder)="requestPasswordReminder($event)"
+ * ></ish-request-reminder-form>
  */
 @Component({
-  selector: 'ish-forgot-password-form',
-  templateUrl: './forgot-password-form.component.html',
+  selector: 'ish-request-reminder-form',
+  templateUrl: './request-reminder-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordFormComponent implements OnInit {
+export class RequestReminderFormComponent implements OnInit {
   /**
    * Submit the form data to trigger the request for a password reminder.
    */

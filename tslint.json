@@ -433,7 +433,7 @@
           "ngrx": false,
           "service": false,
           "router": true,
-          "facade": false
+          "facade": true
         },
         "container": {
           "ngrx": false,

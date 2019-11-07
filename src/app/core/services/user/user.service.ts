@@ -9,6 +9,7 @@ import { Credentials, LoginCredentials } from 'ish-core/models/credentials/crede
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
@@ -199,6 +200,17 @@ export class UserService {
     }
 
     return this.apiService.post('security/reminder', { answer: '', ...data }, options);
+  }
+
+  /**
+   * set new password with data based on requestPasswordReminder generated email
+   * @param data  password, userID, secureCode
+   */
+  updateUserPasswordByReminder(data: PasswordReminderUpdate) {
+    const options: AvailableOptions = {
+      skipApiErrorHandling: true,
+    };
+    return this.apiService.post('security/password', data, options);
   }
 
   // provides the request header for the appropriate captcha service

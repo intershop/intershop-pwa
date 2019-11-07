@@ -22,6 +22,7 @@ import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/error';
+import { SuccessMessage } from 'ish-core/store/messages';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -235,13 +236,40 @@ export class UserEffects {
 
   @Effect()
   requestPasswordReminder$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.RequestPasswordReminder),
+    ofType<userActions.RequestPasswordReminder>(userActions.UserActionTypes.RequestPasswordReminder),
     mapToPayloadProperty('data'),
     concatMap(data =>
       this.userService.requestPasswordReminder(data).pipe(
         map(() => new userActions.RequestPasswordReminderSuccess()),
         mapErrorToAction(userActions.RequestPasswordReminderFail)
       )
+    )
+  );
+
+  @Effect()
+  updateUserPasswordByPasswordReminder$ = this.actions$.pipe(
+    ofType<userActions.UpdateUserPasswordByPasswordReminder>(
+      userActions.UserActionTypes.UpdateUserPasswordByPasswordReminder
+    ),
+    mapToPayload(),
+    concatMap(data =>
+      this.userService.updateUserPasswordByReminder(data).pipe(
+        map(() => new userActions.UpdateUserPasswordByPasswordReminderSuccess()),
+        mapErrorToAction(userActions.UpdateUserPasswordByPasswordReminderFail)
+      )
+    )
+  );
+
+  @Effect()
+  updateUserPasswordByPasswordReminderSuccess$ = this.actions$.pipe(
+    ofType<userActions.UpdateUserPasswordByPasswordReminderSuccess>(
+      userActions.UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess
+    ),
+    map(
+      () =>
+        new SuccessMessage({
+          message: 'account.profile.update_password.message',
+        })
     )
   );
 }
