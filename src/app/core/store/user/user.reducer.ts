@@ -170,6 +170,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.UpdateUserPasswordByPasswordReminder:
     case UserActionTypes.RequestPasswordReminder: {
       return {
         ...state,
@@ -179,6 +180,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess:
     case UserActionTypes.RequestPasswordReminderSuccess: {
       return {
         ...state,
@@ -188,6 +190,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.UpdateUserPasswordByPasswordReminderFail:
     case UserActionTypes.RequestPasswordReminderFail: {
       return {
         ...state,
