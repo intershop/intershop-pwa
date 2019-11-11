@@ -199,6 +199,15 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should remove a promotion code from a specific basket when 'removePromotionCodeFromBasket' is called", done => {
+    when(apiService.delete(anyString(), anything())).thenReturn(of({}));
+
+    basketService.removePromotionCodeFromBasket(basketMockData.data.id, 'promoCode').subscribe(() => {
+      verify(apiService.delete(`baskets/${basketMockData.data.id}/promotioncodes/promoCode`, anything())).once();
+      done();
+    });
+  });
+
   it("should create a basket address when 'createBasketAddress' is called", done => {
     when(apiService.post(anyString(), anything(), anything())).thenReturn(of({ data: {} as Address }));
 

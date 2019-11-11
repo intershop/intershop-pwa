@@ -97,6 +97,7 @@ import { ProductTileComponent } from './components/product/product-tile/product-
 import { ProductVariationDisplayComponent } from './components/product/product-variation-display/product-variation-display.component';
 import { ProductVariationSelectComponent } from './components/product/product-variation-select/product-variation-select.component';
 import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
+import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
@@ -205,12 +206,13 @@ const exportedComponents = [
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
   PromotionDetailsComponent,
+  PromotionRemoveComponent,
   RecentlyViewedComponent,
 ];
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents],
+  declarations: [...declaredComponents, ...exportedComponents, PromotionRemoveComponent],
   exports: [...exportedComponents, ...importExportModules],
   entryComponents: [
     CMSCarouselComponent,

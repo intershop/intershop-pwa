@@ -30,7 +30,20 @@
   padding-right: $space-default/2;
 }
 
+.promotion-details-and-remove-links {
+  white-space: nowrap;
+}
+
 .promotion-details-link {
+  padding-left: 0;
+}
+
+.promotion-links-seperator {
+  padding-right: 7.5px;
+  padding-left: 7.5px;
+}
+
+.promotion-remove-link {
   padding-left: 0;
 }
 
