@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -36,6 +38,7 @@ describe('Basket Items Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         ngrxTesting({
           reducers: {
             ...coreReducers,
@@ -154,7 +157,7 @@ describe('Basket Items Effects', () => {
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = new basketActions.AddItemsToBasket({ items });
-      const completion = new basketActions.AddItemsToBasketSuccess();
+      const completion = new basketActions.AddItemsToBasketSuccess({ info: undefined });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -185,7 +188,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterAddItemsToBasket$', () => {
     it('should map to action of type LoadBasket if AddItemsToBasketSuccess action triggered', () => {
-      const action = new basketActions.AddItemsToBasketSuccess();
+      const action = new basketActions.AddItemsToBasketSuccess({ info: undefined });
       const completion = new basketActions.LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -196,7 +199,7 @@ describe('Basket Items Effects', () => {
 
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of());
+      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of([{} as BasketInfo]));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -311,7 +314,8 @@ describe('Basket Items Effects', () => {
         ],
       };
       const action = new basketActions.UpdateBasketItems(payload);
-      const completion = new basketActions.UpdateBasketItemsSuccess();
+      // tslint:disable-next-line: no-null-keyword
+      const completion = new basketActions.UpdateBasketItemsSuccess({ info: null });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -342,7 +346,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterUpdateBasketItem$', () => {
     it('should map to action of type LoadBasket if UpdateBasketItemSuccess action triggered', () => {
-      const action = new basketActions.UpdateBasketItemsSuccess();
+      const action = new basketActions.UpdateBasketItemsSuccess({ info: undefined });
       const completion = new basketActions.LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -390,7 +394,7 @@ describe('Basket Items Effects', () => {
     it('should map to action of type DeleteBasketItemSuccess', () => {
       const itemId = 'BIID';
       const action = new basketActions.DeleteBasketItem({ itemId });
-      const completion = new basketActions.DeleteBasketItemSuccess();
+      const completion = new basketActions.DeleteBasketItemSuccess({ info: undefined });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -412,7 +416,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterDeleteBasketItem$', () => {
     it('should map to action of type LoadBasket if DeleteBasketItemSuccess action triggered', () => {
-      const action = new basketActions.DeleteBasketItemSuccess();
+      const action = new basketActions.DeleteBasketItemSuccess({ info: undefined });
       const completion = new basketActions.LoadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

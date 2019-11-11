@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -30,6 +31,7 @@ import {
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
+  getBasketInfo,
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
@@ -235,17 +237,21 @@ describe('Basket Selectors', () => {
     });
   });
 
-  describe('loading last time a product has been added to basket', () => {
+  describe('loading last time and info when a product has been added to basket', () => {
     beforeEach(() => {
-      store$.dispatch(new AddItemsToBasketSuccess());
+      store$.dispatch(new AddItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo] }));
     });
 
     it('should get the last time when a product was added', () => {
       const firstTimeAdded = new Date(getBasketLastTimeProductAdded(store$.state));
 
       expect(firstTimeAdded).toBeDate();
-      store$.dispatch(new AddItemsToBasketSuccess());
+      store$.dispatch(new AddItemsToBasketSuccess({ info: undefined }));
       expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
+    });
+
+    it('should get the info when a product was added', () => {
+      expect(getBasketInfo(store$.state)).toHaveLength(1);
     });
   });
 

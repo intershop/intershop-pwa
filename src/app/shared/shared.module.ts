@@ -24,6 +24,7 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 import { AddressComponent } from './address/components/address/address.component';
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketInfoComponent } from './basket/components/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from './basket/components/basket-validation-results/basket-validation-results.component';
@@ -156,6 +157,7 @@ const exportedComponents = [
   AddressComponent,
   BasketAddressSummaryComponent,
   BasketCostSummaryComponent,
+  BasketInfoComponent,
   BasketItemsSummaryComponent,
   BasketPromotionCodeComponent,
   BasketPromotionContainerComponent,

@@ -60,7 +60,7 @@ export class BasketMapper {
           : undefined,
       promotionCodes: data.promotionCodes,
       totals,
-      infos,
+      infos: infos && infos.filter(info => info.code !== 'include.not_resolved.error'),
     };
   }
 

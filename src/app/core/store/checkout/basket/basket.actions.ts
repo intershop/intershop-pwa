@@ -2,6 +2,7 @@ import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -145,6 +146,7 @@ export class AddItemsToBasketFail implements Action {
 
 export class AddItemsToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketSuccess;
+  constructor(public payload: { info: BasketInfo[] }) {}
 }
 
 export class MergeBasket implements Action {
@@ -198,6 +200,7 @@ export class UpdateBasketItemsFail implements Action {
 
 export class UpdateBasketItemsSuccess implements Action {
   readonly type = BasketActionTypes.UpdateBasketItemsSuccess;
+  constructor(public payload: { info: BasketInfo[] }) {}
 }
 
 export class DeleteBasketItem implements Action {
@@ -212,6 +215,7 @@ export class DeleteBasketItemFail implements Action {
 
 export class DeleteBasketItemSuccess implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemSuccess;
+  constructor(public payload: { info: BasketInfo[] }) {}
 }
 
 export class AddPromotionCodeToBasket implements Action {

@@ -13,8 +13,12 @@
   <div *ngIf="form.get('items')" class="list-body" formArrayName="items">
     <ng-container *ngFor="let pli of lineItems; index as i; trackBy: trackByFn">
       <div *ngIf="pli.product" class="row list-item-row list-item-row-big">
+        <!-- Errors and Infos -->
         <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
           {{ pli.validationError.message }}
+        </div>
+        <div *ngIf="pli.info?.message" class="alert alert-inline alert-info col-12">
+          {{ pli.info.message }}
         </div>
 
         <!-- Product Image -->
