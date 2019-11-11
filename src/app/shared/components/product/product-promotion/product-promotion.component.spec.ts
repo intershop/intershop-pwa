@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -19,6 +19,7 @@ describe('Product Promotion Component', () => {
 
   beforeEach(async(() => {
     shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.promotions$(anything())).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
       declarations: [

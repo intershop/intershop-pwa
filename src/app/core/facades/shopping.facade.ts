@@ -192,13 +192,13 @@ export class ShoppingFacade {
   // PROMOTIONS
   promotion$(promotionId: string) {
     this.store.dispatch(new LoadPromotion({ promoId: promotionId }));
-    return this.store.pipe(select(getPromotion, { promoId: promotionId }));
+    return this.store.pipe(select(getPromotion(), { promoId: promotionId }));
   }
 
   promotions$(promotionIds: string[]) {
     promotionIds.forEach(promotionId => {
       this.store.dispatch(new LoadPromotion({ promoId: promotionId }));
     });
-    return this.store.pipe(select(getPromotions, { promotionIds }));
+    return this.store.pipe(select(getPromotions(), { promotionIds }));
   }
 }
