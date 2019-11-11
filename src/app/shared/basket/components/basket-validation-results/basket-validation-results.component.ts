@@ -3,10 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import {
-  BasketValidationErrorType,
-  BasketValidationResultType,
-} from 'ish-core/models/basket-validation/basket-validation.model';
+import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
+import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -77,7 +75,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
       });
   }
 
-  isLineItemMessage(error: BasketValidationErrorType): boolean {
+  isLineItemMessage(error: BasketFeedback): boolean {
     return (
       error.parameters &&
       error.parameters.scopes &&

@@ -1,5 +1,5 @@
+import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { Product } from 'ish-core/models/product/product.model';
 
 export type BasketValidationScopeType =
   | 'Products'
@@ -13,23 +13,11 @@ export type BasketValidationScopeType =
   | 'All'
   | ''; // no scope: a minimum is validated
 
-export interface BasketValidationErrorType {
-  code: string;
-  message: string;
-  parameters?: {
-    lineItemId?: string;
-    productSku?: string;
-    product?: Product;
-    shippingRestriction?: string;
-    scopes?: BasketValidationScopeType[];
-  };
-}
-
 export interface BasketValidationResultType {
   valid: boolean;
   adjusted: boolean;
-  errors?: BasketValidationErrorType[];
-  infos?: BasketValidationErrorType[];
+  errors?: BasketFeedback[];
+  infos?: BasketFeedback[];
 }
 
 export interface BasketValidation {

@@ -5,6 +5,8 @@ import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketInfoMapper } from 'ish-core/models/basket-info/basket-info.mapper';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
 import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
 import { BasketValidationData } from 'ish-core/models/basket-validation/basket-validation.interface';
@@ -259,7 +261,7 @@ export class BasketService {
   addItemsToBasket(
     basketId: string = 'current',
     items: { sku: string; quantity: number; unit: string }[]
-  ): Observable<void> {
+  ): Observable<BasketInfo[]> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -272,9 +274,11 @@ export class BasketService {
       },
     }));
 
-    return this.apiService.post(`baskets/${basketId}/items`, body, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService
+      .post(`baskets/${basketId}/items`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(BasketInfoMapper.fromInfo));
   }
 
   /**
@@ -300,11 +304,17 @@ export class BasketService {
    * @param basketId  The id of the basket in which the item should be updated.
    * @param itemId    The id of the line item that should be updated.
    * @param body      request body
+   * @returns         Possible infos after the update.
    */
-  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<void> {
-    return this.apiService.patch(`baskets/${basketId}/items/${itemId}`, body, {
-      headers: this.basketHeaders,
-    });
+  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<BasketInfo[]> {
+    return this.apiService
+      .patch<{ infos: BasketInfo[] }>(`baskets/${basketId}/items/${itemId}`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(payload => ({ ...payload, itemId })),
+        map(BasketInfoMapper.fromInfo)
+      );
   }
 
   /**
@@ -312,10 +322,16 @@ export class BasketService {
    * @param basketId  The id of the basket where the item should be removed.
    * @param itemId    The id of the line item that should be deleted.
    */
-  deleteBasketItem(basketId: string, itemId: string): Observable<void> {
-    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`, {
-      headers: this.basketHeaders,
-    });
+  deleteBasketItem(basketId: string, itemId: string): Observable<BasketInfo[]> {
+    return this.apiService
+      .delete<{ infos: BasketInfo[] }>(`baskets/${basketId}/items/${itemId}`, {
+        headers: this.basketHeaders,
+      })
+
+      .pipe(
+        map(payload => ({ ...payload, itemId })),
+        map(BasketInfoMapper.fromInfo)
+      );
   }
 
   /**

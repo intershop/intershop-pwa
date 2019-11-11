@@ -31,6 +31,11 @@ export const getBasketValidationResults = createSelector(
   }
 );
 
+export const getBasketInfo = createSelector(
+  getBasketState,
+  basket => basket.info
+);
+
 /**
  * Select the current basket with the appended product data and validation results for each line item.
  */
@@ -38,7 +43,9 @@ export const getCurrentBasket = createSelector(
   getBasketState,
   getProductEntities,
   getBasketValidationResults,
-  (basket, products, validationResults): BasketView => createBasketView(basket.basket, products, validationResults)
+  getBasketInfo,
+  (basket, products, validationResults, basketInfo): BasketView =>
+    createBasketView(basket.basket, products, validationResults, basketInfo)
 );
 
 export const getCurrentBasketId = createSelector(

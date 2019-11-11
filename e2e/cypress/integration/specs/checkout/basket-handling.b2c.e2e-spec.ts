@@ -95,7 +95,6 @@ describe('Basket Handling', () => {
   });
 
   it('user should be able to modify the amount of products', () => {
-    at(ProductDetailPage, page => page.header.miniCart.goToCart());
     at(CartPage, page => {
       page.lineItems.should('have.length', 1);
       page.summary.subtotal.should('contain', _.product.price * 3);

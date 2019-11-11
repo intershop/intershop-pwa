@@ -296,7 +296,8 @@ describe('Checkout Store', () => {
           [Basket Internal] Add Items To Basket:
             items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             basketId: "test"
-          [Basket API] Add Items To Basket Success
+          [Basket API] Add Items To Basket Success:
+            info: undefined
           [Basket Internal] Load Basket
           [Basket API] Load Basket Success:
             basket: {"id":"test","lineItems":[1]}
