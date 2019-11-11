@@ -1,8 +1,7 @@
+import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
+
 export interface BasketInfo {
-  causes?: {
-    code: string;
-    message?: string;
-  }[];
+  causes?: BasketFeedback[];
   code: string;
   message: string;
 }

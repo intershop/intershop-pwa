@@ -1,3 +1,4 @@
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import {
   BasketValidation,
   BasketValidationResultType,
@@ -193,11 +194,12 @@ describe('Basket Reducer', () => {
 
     describe('AddItemsToBasketSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddItemsToBasketSuccess();
+        const action = new fromActions.AddItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo] });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
+        expect(state.info[0].message).toEqual('info');
         expect(state.lastTimeProductAdded).toBeNumber();
       });
     });
@@ -233,9 +235,10 @@ describe('Basket Reducer', () => {
 
     describe('UpdateBasketItemsSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.UpdateBasketItemsSuccess();
+        const action = new fromActions.UpdateBasketItemsSuccess({ info: [{ message: 'info' } as BasketInfo] });
         const state = basketReducer(initialState, action);
 
+        expect(state.info[0].message).toEqual('info');
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
       });
@@ -265,9 +268,10 @@ describe('Basket Reducer', () => {
 
     describe('DeleteBasketItemSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.DeleteBasketItemSuccess();
+        const action = new fromActions.DeleteBasketItemSuccess({ info: [{ message: 'info' } as BasketInfo] });
         const state = basketReducer(initialState, action);
 
+        expect(state.info[0].message).toEqual('info');
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
       });

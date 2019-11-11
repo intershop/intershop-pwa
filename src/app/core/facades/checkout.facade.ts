@@ -25,6 +25,7 @@ import {
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
+  getBasketInfo,
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
@@ -50,6 +51,7 @@ export class CheckoutFacade {
   basket$ = this.store.pipe(select(getCurrentBasket));
   basketChange$ = this.store.pipe(select(getBasketLastTimeProductAdded));
   basketError$ = this.store.pipe(select(getBasketError));
+  basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
   basketValidationResults$ = this.store.pipe(select(getBasketValidationResults));
   basketItemCount$ = this.basket$.pipe(map(basket => (basket && basket.totalProductQuantity) || 0));

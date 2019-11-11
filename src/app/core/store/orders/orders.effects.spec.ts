@@ -9,7 +9,7 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { BasketValidationErrorType } from 'ish-core/models/basket-validation/basket-validation.model';
+import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Order } from 'ish-core/models/order/order.model';
@@ -165,7 +165,7 @@ describe('Orders Effects', () => {
           results: {
             valid: false,
             adjusted: false,
-            errors: [{ message: 'Info' } as BasketValidationErrorType],
+            errors: [{ message: 'Info' } as BasketFeedback],
           },
         },
       });

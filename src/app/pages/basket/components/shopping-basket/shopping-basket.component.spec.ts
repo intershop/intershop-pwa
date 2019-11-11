@@ -7,6 +7,7 @@ import { MockComponent } from 'ng-mocks';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketInfoComponent } from 'ish-shared/basket/components/basket-info/basket-info.component';
 import { BasketPromotionCodeComponent } from 'ish-shared/basket/components/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
@@ -27,6 +28,7 @@ describe('Shopping Basket Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketInfoComponent),
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
         MockComponent(ContentIncludeContainerComponent),
