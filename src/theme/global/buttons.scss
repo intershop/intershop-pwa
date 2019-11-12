@@ -30,7 +30,8 @@
     vertical-align: baseline;
   }
 
-  &.btn-secondary {
+  &.btn-secondary,
+  &.btn-default {
     color: $button-default-color;
     background-color: $button-default-bg;
     border-color: $button-default-border;
