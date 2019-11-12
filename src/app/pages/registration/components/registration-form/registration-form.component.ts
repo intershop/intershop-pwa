@@ -74,6 +74,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
+      termsAndConditions: [false, [Validators.required, Validators.pattern('true')]],
       captcha: [''],
       captchaAction: ['create_account'],
       address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
