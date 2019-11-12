@@ -7,11 +7,11 @@ const _ = {
     englishName: 'Cameras',
     germanName: 'Kameras',
   },
-  category: 'Cameras-Camcorders.584',
+  category: 'Cameras-Camcorders.585',
   product: {
-    sku: '3953312',
-    dollarPrice: '303.62',
-    euroPrice: '227,05',
+    sku: '457595',
+    dollarPrice: '35.78',
+    euroPrice: '26,50',
   },
 };
 

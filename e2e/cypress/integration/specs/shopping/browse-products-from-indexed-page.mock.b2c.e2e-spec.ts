@@ -4,12 +4,12 @@ import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
   category: {
-    id: 'Cameras-Camcorders.584',
-    name: 'Camcorders',
+    id: 'Home-Entertainment.SmartHome',
+    name: 'Smart Home',
   },
   product: {
-    sku: '3953312',
-    price: '$303.62',
+    sku: '201807171',
+    price: 185.5,
   },
 };
 

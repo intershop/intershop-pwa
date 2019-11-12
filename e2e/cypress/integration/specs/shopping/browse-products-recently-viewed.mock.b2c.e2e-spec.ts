@@ -5,13 +5,13 @@ import { RecentlyViewedPage } from '../../pages/shopping/recently-viewed.page';
 
 const _ = {
   category: {
-    id: 'Cameras-Camcorders.584',
+    id: 'Home-Entertainment.SmartHome',
   },
   product1: {
-    sku: '3953312',
+    sku: '201807171',
   },
   product2: {
-    sku: '4729528',
+    sku: '201807191',
   },
 };
 
