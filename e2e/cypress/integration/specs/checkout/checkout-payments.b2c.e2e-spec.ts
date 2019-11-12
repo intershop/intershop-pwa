@@ -12,10 +12,10 @@ const _ = {
     ...sensibleDefaults,
   },
   product1: {
-    sku: '3953312',
+    sku: '201807171',
   },
   product2: {
-    sku: '7912061',
+    sku: '201807191',
   },
 };
 

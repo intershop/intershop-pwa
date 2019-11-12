@@ -18,8 +18,8 @@ categories ?imageView=NO-IMAGE&limit=2&view=tree
 categories/Cameras-Camcorders
 categories/Cameras-Camcorders/575
 categories/Cameras-Camcorders/products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating&attrsGroups=PRODUCT_LABEL_ATTRIBUTES&offset=0&returnSortKeys=true&productFilter=fallback_searchquerydefinition
-categories/Cameras-Camcorders/584
-categories/Cameras-Camcorders/584/products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating&attrsGroups=PRODUCT_LABEL_ATTRIBUTES&offset=0&returnSortKeys=true&productFilter=fallback_searchquerydefinition {elements:[.elements[]|select(.uri|test(".*/(3953312|4729528)"))],name,type,sortKeys}
+categories/Home-Entertainment/SmartHome
+categories/Home-Entertainment/SmartHome/products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating&attrsGroups=PRODUCT_LABEL_ATTRIBUTES&offset=0&returnSortKeys=true&productFilter=fallback_searchquerydefinition {elements:[.elements[]|select(.uri|test(".*/(201807171|201807191)"))],name,type,sortKeys}
 categories/Cameras-Camcorders/832
 categories/Cameras-Camcorders/832/products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating&attrsGroups=PRODUCT_LABEL_ATTRIBUTES&offset=0&returnSortKeys=true&productFilter=fallback_searchquerydefinition {elements:[.elements[]|select(.uri|test(".*/(8182790134362|8182790134363)"))],name,type,sortKeys}
 categories/Computers
@@ -28,7 +28,6 @@ categories/Computers/106/236
 categories/Computers/106/830
 categories/Home-Entertainment
 categories/Specials
-products/3953312 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/4729528 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/7912057 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/201807171 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)

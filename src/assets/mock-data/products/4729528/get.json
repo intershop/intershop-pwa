@@ -37,6 +37,11 @@
       "value": "2/10 s"
     },
     {
+      "name": "Video formats supported",
+      "type": "String",
+      "value": "MPEG4"
+    },
+    {
       "name": "Depth",
       "type": "ResourceAttribute",
       "value": {
@@ -44,11 +49,6 @@
         "unit": "mm",
         "value": 110.5
       }
-    },
-    {
-      "name": "Video formats supported",
-      "type": "String",
-      "value": "MPEG4"
     },
     {
       "name": "Battery technology",
@@ -95,14 +95,19 @@
       }
     },
     {
+      "name": "Flash",
+      "type": "String",
+      "value": "LED on/off"
+    },
+    {
       "name": "Digital zoom",
       "type": "String",
       "value": "12 x"
     },
     {
-      "name": "Flash",
+      "name": "Battery life (max)",
       "type": "String",
-      "value": "LED on/off"
+      "value": "0.6 h"
     },
     {
       "name": "Width",
@@ -112,11 +117,6 @@
         "unit": "mm",
         "value": 33
       }
-    },
-    {
-      "name": "Battery life (max)",
-      "type": "String",
-      "value": "0.6 h"
     },
     {
       "name": "Normal focusing range",
@@ -149,11 +149,6 @@
       "value": "f = 3.2 – 28.8"
     },
     {
-      "name": "Built-in flash",
-      "type": "String",
-      "value": "Y"
-    },
-    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -163,7 +158,7 @@
       }
     },
     {
-      "name": "PictBridge",
+      "name": "Built-in flash",
       "type": "String",
       "value": "Y"
     },
@@ -171,6 +166,11 @@
       "name": "HDMI ports quantity",
       "type": "String",
       "value": "1"
+    },
+    {
+      "name": "PictBridge",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "Composite video out",
@@ -213,9 +213,9 @@
       "value": "Windows XP SP3, Vista, 7"
     },
     {
-      "name": "Colour_of_product",
+      "name": "Display",
       "type": "String",
-      "value": "Black"
+      "value": "LCD"
     },
     {
       "name": "Camcorder tape type",
@@ -223,9 +223,9 @@
       "value": "Flash memory"
     },
     {
-      "name": "Display",
+      "name": "Colour_of_product",
       "type": "String",
-      "value": "LCD"
+      "value": "Black"
     }
   ],
   "availability": true,

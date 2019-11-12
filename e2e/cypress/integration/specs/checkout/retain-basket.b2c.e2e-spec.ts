@@ -13,14 +13,14 @@ const _ = {
     login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
   },
-  catalog: 'Cameras-Camcorders',
+  catalog: 'Home-Entertainment',
   category: {
-    id: 'Cameras-Camcorders.584',
-    name: 'Camcorders',
+    id: 'Home-Entertainment.SmartHome',
+    name: 'Smart Home',
   },
   product: {
-    sku: '3953312',
-    price: 303.62,
+    sku: '201807171',
+    price: 185.5,
   },
 };
 
