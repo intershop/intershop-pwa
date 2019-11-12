@@ -4,9 +4,9 @@ import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
 
 const _ = {
-  category: 'Cameras-Camcorders.584',
-  product1: '3953312',
-  product2: '4729528',
+  category: 'Home-Entertainment.SmartHome',
+  product1: '201807171',
+  product2: '201807191',
 };
 
 describe('Comparing User', () => {

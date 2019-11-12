@@ -7,14 +7,14 @@
       "value": "Y"
     },
     {
-      "name": "Still image resolutions",
-      "type": "String",
-      "value": "-"
-    },
-    {
       "name": "Mac compatibility",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Still image resolutions",
+      "type": "String",
+      "value": "-"
     },
     {
       "name": "Sensor type",
@@ -22,14 +22,14 @@
       "value": "-"
     },
     {
-      "name": "Focal length",
-      "type": "String",
-      "value": "-"
-    },
-    {
       "name": "Video capability",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Focal length",
+      "type": "String",
+      "value": "-"
     },
     {
       "name": "Minimum hard disk space",
@@ -42,14 +42,14 @@
       "value": "5 x"
     },
     {
-      "name": "Focal length (35mm film equivalent)",
-      "type": "String",
-      "value": "28 - 140 mm"
-    },
-    {
       "name": "Image formats supported",
       "type": "String",
       "value": "-"
+    },
+    {
+      "name": "Focal length (35mm film equivalent)",
+      "type": "String",
+      "value": "28 - 140 mm"
     },
     {
       "name": "Self-timer",
@@ -57,12 +57,12 @@
       "value": "-"
     },
     {
-      "name": "Maximum video resolution",
+      "name": "Camera shutter speed",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Camera shutter speed",
+      "name": "Maximum video resolution",
       "type": "String",
       "value": "-"
     },
@@ -112,14 +112,14 @@
       "value": "SD,SDHC"
     },
     {
-      "name": "Camera type",
-      "type": "String",
-      "value": "Compact"
-    },
-    {
       "name": "Megapixel",
       "type": "String",
       "value": "14 MP"
+    },
+    {
+      "name": "Camera type",
+      "type": "String",
+      "value": "Compact"
     },
     {
       "name": "Maximum memory card size",
@@ -177,12 +177,12 @@
       "value": "Y"
     },
     {
-      "name": "Maximum image resolution",
+      "name": "Display resolution (numeric)",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Display resolution (numeric)",
+      "name": "Maximum image resolution",
       "type": "String",
       "value": "-"
     },
@@ -217,14 +217,14 @@
       "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
     },
     {
-      "name": "Colour_of_product",
-      "type": "String",
-      "value": "Black"
-    },
-    {
       "name": "Display",
       "type": "String",
       "value": "LCD"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Black"
     }
   ],
   "availability": true,
