@@ -12,14 +12,14 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Warranty",
-      "type": "String",
-      "value": "1-year limited hardware warranty"
-    },
-    {
       "name": "Processor",
       "type": "String",
       "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
+    },
+    {
+      "name": "Warranty",
+      "type": "String",
+      "value": "1-year limited hardware warranty"
     },
     {
       "name": "Battery Life",

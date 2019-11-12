@@ -5,7 +5,7 @@
         {
           "name": "sku",
           "type": "String",
-          "value": "4729528"
+          "value": "201807171"
         },
         {
           "name": "minOrderQuantity",
@@ -48,7 +48,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 274.28
+            "value": 185.5
           }
         },
         {
@@ -58,13 +58,13 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 274.28
+            "value": 185.5
           }
         },
         {
           "name": "roundedAverageRating",
           "type": "String",
-          "value": "0.0"
+          "value": "3.0"
         },
         {
           "name": "availability",
@@ -74,19 +74,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Toshiba"
+          "value": "Google"
         }
       ],
-      "description": "Camileo SX900 Full HD, 14MPixel CMOS sensor, 6.858 cm (2.7 \") LCD, Black",
-      "title": "Toshiba Camileo SX900",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/4729528"
+      "description": "Hands-free help from the Google Assistant",
+      "title": "Google Home",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome/products/201807171"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "3953312"
+          "value": "201807191"
         },
         {
           "name": "minOrderQuantity",
@@ -129,7 +129,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 337.35
+            "value": 63.59
           }
         },
         {
@@ -139,7 +139,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 303.62
+            "value": 63.59
           }
         },
         {
@@ -155,12 +155,12 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Canon"
+          "value": "Philips"
         }
       ],
-      "description": "LEGRIA HF R16 - 8GB, SDHC, 1/ 13.97 cm (5.5 \") CMOS, 20x opt., dig. 400x",
-      "title": "Canon LEGRIA HF R16",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/3953312"
+      "description": "The heart of your Philips Hue system",
+      "title": "Philips Hue Bridge",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome/products/201807191"
     }
   ],
   "name": "products",
