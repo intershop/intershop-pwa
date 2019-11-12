@@ -62,16 +62,16 @@ export class AddressFormContainerComponent implements OnInit, OnChanges, OnDestr
   ngOnInit() {
     this.countries$ = this.appFacade.countries$();
     this.loading$ = this.appFacade.countriesLoading$;
-
-    this.accountFacade.isBusinessCustomer$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        data => (this.isBusinessCustomer = data || this.featureToggle.enabled('businessCustomerRegistration'))
-      );
   }
 
   ngOnChanges(c: SimpleChanges) {
     if (c.parentForm) {
+      this.accountFacade.isBusinessCustomer$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          data => (this.isBusinessCustomer = data || this.featureToggle.enabled('businessCustomerRegistration'))
+        );
+
       const group = this.afs.getFactory('default').getGroup({ isBusinessAddress: this.isBusinessCustomer });
       this.parentForm.setControl(this.controlName, group);
 
