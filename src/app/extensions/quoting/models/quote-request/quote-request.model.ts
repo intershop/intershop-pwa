@@ -12,6 +12,7 @@ interface AbstractQuoteRequest<T> {
   id: string;
   number: string;
   creationDate: number;
+  submittedDate?: number;
   total: Price;
   items: (Link | T)[];
   state: QuoteRequestStateType;
