@@ -1,6 +1,22 @@
+<img src="./intershop-logo.png">
+
 # Intershop Progressive Web App
 
-The Intershop Progressive Web App is an Angular-based storefront clone of the Responsive Starter Store that communicates with the Intershop Commerce Management server via REST API only.
+Welcome to the Intershop PWA project!
+
+The Intershop PWA is an Angular-based progressive web app storefront for the the Intershop Commerce Suite.
+
+The project and all contributions are made available under the [MIT license](./LICENSE).
+
+Accompany us on a journey for great cutting-edge eCommerce and take the chance to make it your journey, too.
+
+If you want to get a first impression, please visit our [public demo](https://intershoppwa.azurewebsites.net/home).
+
+<img src="./intershop-pwa-screenshot.png">
+
+More information on the PWA can be found [here](https://www.intershop.com/en/progressive-web-app).
+
+In order to contribute, please have a look at our [Contribution Guidelines](./CONTRIBUTING.md)
 
 ---
 
