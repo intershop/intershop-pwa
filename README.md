@@ -30,7 +30,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 
-The project uses Angular CLI which has to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine. Use `ng serve` to start up the development server.
+The project uses Angular CLI which has to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine. Use `ng serve --open` to start up the development server and open the progressive web app in your browser.
 
 The project can alternatively be run in production mode with `npm start`.
 
@@ -44,13 +44,11 @@ An update of the project to a new release version might include added or updated
 
 ## Development Server
 
-Run `ng serve` or `ng s` for a dev server that is configured via `environment.ts` to use mocked responses instead of actual REST calls.
+Run `ng serve` or `ng s` for a development server that is configured by default via `environment.ts` to use mocked responses instead of actual REST calls.
 
-Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate with the Intershop Commerce Management via REST API. The used `environment.prod.ts` is configured to be used with the [`intershop7-devenv`](https://gitlab.intershop.de/ISPWA/intershop7-devenv) in a docker toolbox with the IP `192.168.99.100`.
+Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API (see the used `environment.prod.ts` for the configuration).
 
-> If a different setup is used, the IP address and port can be changed in the `environment.prod.ts` or the IP address could be mapped. For running the docker container native on Linux, one could perform `sudo iptables -t nat -A OUTPUT -d 192.168.99.100 -j DNAT --to-destination 127.0.0.1` to enable this mapping.
-
-The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to the development environment, e.g. with a different icmBaseURL or `production: false` for better debugging support while using a real server API. This file will be ignored by Git so the developer-specific setting will not be commited. To use this local environment configuration, the server should be started with `ng s -c local`.
+The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts`). This file will be ignored by Git so the developer-specific setting will not be commited. To use this local environment configuration, the server should be started with `ng s -c local`.
 
 Once the server is running, navigate to `http://localhost:4200/` in your browser to see the application. The app will automatically reload if you change any of the source files.
 
