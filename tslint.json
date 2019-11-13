@@ -5,10 +5,13 @@
     "tslint-consistent-codestyle",
     "tslint-etc",
     "tslint-eslint-rules",
-    "intershop-tslint-rules"
+    "intershop-tslint-rules",
+    "tslint-plugin-prettier",
+    "tslint-config-prettier"
   ],
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
+    "prettier": true,
     "no-extra-boolean-cast": true,
     "no-static-this": true,
     "no-unnecessary-type-annotation": true,
