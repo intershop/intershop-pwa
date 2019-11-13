@@ -2,7 +2,8 @@
   "extends": [
     "stylelint-config-standard",
     "stylelint-config-recommended-scss",
-    "stylelint-config-recess-order"
+    "stylelint-config-recess-order",
+    "stylelint-prettier/recommended"
   ],
   "rules": {
     "at-rule-no-vendor-prefix": true,

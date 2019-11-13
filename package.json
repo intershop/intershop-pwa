@@ -112,9 +112,11 @@
     "prettier": "^1.18.2",
     "rxjs-tslint-rules": "^4.26.1",
     "stylelint": "^10.0.1",
+    "stylelint-config-prettier": "^6.0.0",
     "stylelint-config-recess-order": "^2.0.2",
     "stylelint-config-recommended-scss": "^3.3.0",
     "stylelint-config-standard": "^18.3.0",
+    "stylelint-prettier": "^1.1.1",
     "stylelint-scss": "^3.8.0",
     "treeify": "^1.1.0",
     "ts-loader": "^5.2.0",
@@ -122,9 +124,11 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.20.0",
     "tslint-clean-code": "^0.2.10",
+    "tslint-config-prettier": "^1.18.0",
     "tslint-consistent-codestyle": "^1.15.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-etc": "^1.7.0",
+    "tslint-plugin-prettier": "^2.0.1",
     "typescript": "~3.5.3",
     "webpack-cli": "^3.1.0"
   },
@@ -135,18 +139,16 @@
   },
   "lint-staged": {
     "linters": {
-      "*": [
+      "!(*.ts)": [
         "npx prettier --loglevel warn --write",
         "git add"
       ],
       "*.ts": [
         "npx tslint --project tsconfig.json --fix --force",
         "npx tslint --project tsconfig.json --fix",
-        "npx prettier --loglevel warn --write",
         "npx jest --ci --bail --findRelatedTests",
         "git add"
       ]
-    },
-    "concurrent": false
+    }
   }
 }
