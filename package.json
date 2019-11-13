@@ -7,8 +7,8 @@
     "intershop"
   ],
   "engines": {
-    "node": ">=10.16.0",
-    "npm": "~6.9.0"
+    "node": ">=12.13.0",
+    "npm": "~6.12.0"
   },
   "private": true,
   "scripts": {
@@ -92,7 +92,7 @@
     "@babel/preset-env": "^7.5.5",
     "@schematics/angular": "^8.3.18",
     "@types/jest": "^24.0.18",
-    "@types/node": "^10.0.0",
+    "@types/node": "^12.12.7",
     "codelyzer": "^5.1.0",
     "cpy-cli": "^2.0.0",
     "husky": "^1.3.1",
