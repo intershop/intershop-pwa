@@ -31,7 +31,7 @@ cancel_old_pipelines:
     - echo "cancel complete"
 
 setup:
-  image: node:10
+  image: node:12
   stage: setup
   only:
     - merge_requests
@@ -80,7 +80,7 @@ start_review_server:
     url: http://$DEMO_SERVER_NAME:3000
 
 jest_test:
-  image: node:10
+  image: node:12
   stage: build
   only:
     - merge_requests
@@ -105,7 +105,7 @@ jest_test:
     - echo "build complete"
 
 compile:
-  image: node:10
+  image: node:12
   stage: build
   only:
     - merge_requests
@@ -126,7 +126,7 @@ compile:
     - echo "build complete"
 
 code_quality:
-  image: node:10
+  image: node:12
   stage: build
   only:
     refs:
@@ -678,7 +678,7 @@ deploy_public_BO:
     url: $PUBLIC_BO_URL
 
 schematics:
-  image: node:10
+  image: node:12
   stage: e2e
   retry: 1
   only:
@@ -798,7 +798,7 @@ check_mr_title:
 check_tslint_no_warnings:
   cache: {}
   dependencies: []
-  image: node:10
+  image: node:12
   stage: verify
   only:
     - merge_requests
