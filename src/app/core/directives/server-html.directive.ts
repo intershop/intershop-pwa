@@ -21,6 +21,10 @@ import { LinkParser } from 'ish-core/utils/link-parser';
   selector: '[ishServerHtml]',
 })
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+  @Input() callbacks: {
+    [key: string]: () => {};
+  };
+
   private destroy$ = new Subject();
   private icmBaseUrl: string;
 
@@ -46,7 +50,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.ishServerHtml.firstChange) {
+    if (changes.ishServerHtml && !changes.ishServerHtml.firstChange) {
       this.patchElements();
     }
   }
@@ -87,14 +91,20 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
       // anchors only
       if (el.tagName === 'A') {
         const href = el.getAttribute('href');
+        const cb = el.getAttribute('callback');
 
         // apply default link handling for empty href, external links & target _blank
-        if (!href || href.startsWith('http') || el.getAttribute('target') === '_blank') {
+        if (!cb && (!href || href.startsWith('http') || el.getAttribute('target') === '_blank')) {
           return;
         }
 
-        // otherwise handle as routerLink
-        this.router.navigateByUrl(href);
+        if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
+          this.callbacks[cb]();
+        } else {
+          // otherwise handle as routerLink
+          this.router.navigateByUrl(href);
+        }
+
         event.preventDefault();
         return false;
       }

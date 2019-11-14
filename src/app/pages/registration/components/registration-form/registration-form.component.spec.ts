@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -13,7 +14,7 @@ import { AddressFormFactory } from 'ish-shared/address-forms/components/address-
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
-import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
+import { ModalDialogComponent } from 'ish-shared/common/components/modal-dialog/modal-dialog.component';
 import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
@@ -41,9 +42,10 @@ describe('Registration Form Component', () => {
         MockComponent(CaptchaComponent),
         MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeContainerComponent),
-        MockComponent(ModalDialogLinkComponent),
+        MockComponent(ModalDialogComponent),
         MockComponent(RegistrationCompanyFormComponent),
         MockComponent(RegistrationCredentialsFormComponent),
+        MockComponent(ServerHtmlDirective),
         RegistrationFormComponent,
       ],
       providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],

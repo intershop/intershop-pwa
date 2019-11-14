@@ -158,4 +158,10 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   get formDisabled() {
     return this.form.invalid && this.submitted;
   }
+
+  showModalDialog(dialog) {
+    return () => {
+      dialog.show();
+    };
+  }
 }

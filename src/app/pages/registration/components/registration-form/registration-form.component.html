@@ -59,25 +59,27 @@
                 controlName="termsAndConditions"
                 [errorMessages]="{ pattern: 'registration.tac.error.tip' }"
               >
-                <span>{{ 'registration.tac_privacy_policy.begin.text' | translate }} </span>
-                <ish-modal-dialog-link
-                  linkText="registration.tac.link"
-                  [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
-                >
+                <span
+                  [ishServerHtml]="'registration.tac_privacy_policy.label' | translate"
+                  [callbacks]="{
+                    callbackTAC: showModalDialog(modalDialogTAC),
+                    callbackPP: showModalDialog(modalDialogPP)
+                  }"
+                ></span>
+
+                <!-- modal terms and conditions -->
+                <ish-modal-dialog #modalDialogTAC [options]="{ size: 'lg' }">
                   <ish-content-include
                     includeId="systeminclude.dialog.termsAndConditions.pagelet2-Include"
                   ></ish-content-include>
-                </ish-modal-dialog-link>
-                <span>{{ 'registration.tac_privacy_policy.between.text' | translate }} </span>
-                <ish-modal-dialog-link
-                  linkText="registration.privacy_policy.link"
-                  [options]="{ titleText: 'registration.privacy_policy.details.title' | translate, size: 'lg' }"
-                >
+                </ish-modal-dialog>
+
+                <!-- modal privacyPolicy -->
+                <ish-modal-dialog #modalDialogPP [options]="{ size: 'lg' }">
                   <ish-content-include
                     includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"
                   ></ish-content-include>
-                </ish-modal-dialog-link>
-                <span>{{ 'registration.tac_privacy_policy.end.text' | translate }}</span>
+                </ish-modal-dialog>
               </ish-checkbox>
             </div>
           </div>

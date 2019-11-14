@@ -2647,11 +2647,6 @@
   "forgot_password.form.send.button.label": "Senden",
   "basket.validation.general.error": "Ihr Warenkorb ist nicht mehr gültig. Bitte korrigieren Sie die unten angegebenen Fehler.",
   "servererror.mailServer.error": "Ihre E-Mail konnte leider nicht versandt werden. Wir bitten um Entschuldigung. Bitte versuchen Sie es später erneut.",
-  "registration.tac_privacy_policy.begin.text": "Ich akzeptiere die",
-  "registration.tac.link": "AGB",
-  "registration.tac_privacy_policy.between.text": " und",
-  "registration.privacy_policy.link": "Datenschutzhinweise",
-  "registration.tac_privacy_policy.end.text": ".",
   "registration.tac.error.tip": "Bitte stimmen Sie den Bedingungen zu, um fortzufahren.",
   "registration.privacy_policy.details.title": "Datenschutzhinweise",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, keine Leerzeichen.",
@@ -2664,5 +2659,6 @@
   "seo.defaults.title": "Intershop Progressive Web App",
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "account.login.session_timeout.message": "Sie wurden aufgrund einer langen Inaktivitätsdauer automatisch abgemeldet. Bitte melden Sie sich erneut an, um den Einkauf fortzusetzen.",
-  "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt anmelden</a>"
+  "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt anmelden</a>",
+  "registration.tac_privacy_policy.label": "Ich akzeptiere die <a callback=\"callbackTAC\">AGB</a> und <a callback=\"callbackPP\">Datenschutzhinweise</a>."
 }
