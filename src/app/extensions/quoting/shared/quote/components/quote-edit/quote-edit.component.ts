@@ -71,7 +71,7 @@ export class QuoteEditComponent implements OnChanges {
 
   constructor(private router: Router) {
     this.form = new FormGroup({
-      displayName: new FormControl(undefined, [Validators.required, Validators.maxLength(255)]),
+      displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
     });
   }
@@ -189,5 +189,13 @@ export class QuoteEditComponent implements OnChanges {
 
   get isQuoteStarted(): boolean {
     return Date.now() > this.validFromDate;
+  }
+
+  /**
+   * returns a value to be displayed as quote name
+   * @return display name of the quote if exists, quote number otherwise
+   */
+  get displayName(): string {
+    return this.quote.displayName ? this.quote.displayName : this.quote.number;
   }
 }

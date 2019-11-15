@@ -47,6 +47,7 @@ describe('Quote Edit Component', () => {
 
     const translateService = TestBed.get(TranslateService);
     translateService.use('en');
+    translateService.set('quote.edit.unsubmitted.quote_request_details.text', 'Quote Request Details');
 
     component.quote = {} as Quote;
   });
@@ -62,6 +63,7 @@ describe('Quote Edit Component', () => {
       component.quote = {
         id: 'QRID',
         type: 'QuoteRequest',
+        number: 'QRNUMBER',
         displayName: 'DNAME',
         description: 'DESC',
         state: 'New',
@@ -79,6 +81,19 @@ describe('Quote Edit Component', () => {
         ],
       } as QuoteRequest;
       component.user = {} as User;
+    });
+
+    describe('heading', () => {
+      it('should render the heading with the quote request display name if available', () => {
+        fixture.detectChanges();
+        expect(element.querySelector('h1')).toMatchInlineSnapshot(`<h1>Quote Request Details - DNAME</h1>`);
+      });
+
+      it('should render the heading with the quote request number if the display name is not available', () => {
+        component.quote.displayName = undefined;
+        fixture.detectChanges();
+        expect(element.querySelector('h1')).toMatchInlineSnapshot(`<h1>Quote Request Details - QRNUMBER</h1>`);
+      });
     });
 
     describe('displayName', () => {
