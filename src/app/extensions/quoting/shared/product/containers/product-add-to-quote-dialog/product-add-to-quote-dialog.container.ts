@@ -25,7 +25,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
 
   constructor(public ngbActiveModal: NgbActiveModal, private quotingFacade: QuotingFacade) {
     this.form = new FormGroup({
-      displayName: new FormControl(undefined, [Validators.required, Validators.maxLength(255)]),
+      displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
     });
   }
