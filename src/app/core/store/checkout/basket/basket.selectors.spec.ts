@@ -275,17 +275,22 @@ describe('Basket Selectors', () => {
           {
             message: 'error occured',
             code: '4711',
+            parameters: {
+              lineItemId: '4712',
+            },
           },
         ],
       },
     };
     beforeEach(() => {
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
       store$.dispatch(new ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation }));
     });
 
     it('should reporting the validation results when called', () => {
       expect(getBasketValidationResults(store$.state).valid).toBeFalse();
       expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occured');
+      expect(getBasketValidationResults(store$.state).errors[0].lineItem.id).toEqual('4712');
     });
   });
 });

@@ -99,7 +99,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([update, currentBasketId]) =>
       this.basketService.updateBasket(currentBasketId, update).pipe(
-        map(basket => new basketActions.LoadBasketSuccess({ basket })),
+        concatMap(basket => [new basketActions.LoadBasketSuccess({ basket }), new basketActions.ResetBasketErrors()]),
         mapErrorToAction(basketActions.UpdateBasketFail)
       )
     )
@@ -244,11 +244,11 @@ export class BasketEffects {
         !!payload.basketValidation.results.infos
     ),
     map(payload => payload.basketValidation.results.infos),
-    switchMap(infos => [
-      ...infos.map(info =>
-        info.parameters && info.parameters.productSku ? new LoadProduct({ sku: info.parameters.productSku }) : undefined
-      ),
-    ])
+    concatMap(infos =>
+      infos
+        .filter(info => info.parameters && info.parameters.productSku)
+        .map(info => new LoadProduct({ sku: info.parameters.productSku }))
+    )
   );
 
   /**

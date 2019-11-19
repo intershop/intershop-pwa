@@ -24,7 +24,21 @@ export const getBasketValidationResults = createSelector(
       infos: basketResults.infos
         ? basketResults.infos.map(info => ({
             ...info,
-            parameters: { ...info.parameters, product: products[info.parameters.productSku] },
+            product: info.parameters && products[info.parameters.productSku],
+          }))
+        : [],
+      errors: basketResults.errors
+        ? basketResults.errors.map(error => ({
+            ...error,
+            lineItem: error.parameters &&
+              error.parameters.lineItemId && {
+                ...basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId),
+              },
+            product:
+              error.parameters &&
+              error.parameters.lineItemId &&
+              basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId) &&
+              products[basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId).productSKU],
           }))
         : [],
     };

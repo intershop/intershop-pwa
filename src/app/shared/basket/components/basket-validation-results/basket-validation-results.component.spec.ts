@@ -1,19 +1,16 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
-import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { ProductInventoryComponent } from 'ish-shared/product/components/product-inventory/product-inventory.component';
-import { ProductImageComponent } from 'ish-shell/header/components/product-image/product-image.component';
+import { BasketValidationItemsComponent } from 'ish-shared/basket/components/basket-validation-items/basket-validation-items.component';
+import { BasketValidationProductsComponent } from 'ish-shared/basket/components/basket-validation-products/basket-validation-products.component';
 
 import { BasketValidationResultsComponent } from './basket-validation-results.component';
 
@@ -30,13 +27,10 @@ describe('Basket Validation Results Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         BasketValidationResultsComponent,
-        MockComponent(ProductImageComponent),
-        MockComponent(ProductInventoryComponent),
-        MockPipe(PricePipe),
-        MockPipe(ProductRoutePipe),
+        MockComponent(BasketValidationItemsComponent),
+        MockComponent(BasketValidationProductsComponent),
       ],
       imports: [
-        RouterTestingModule,
         TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
@@ -66,7 +60,9 @@ describe('Basket Validation Results Component', () => {
   });
 
   it('should display a validation message if there is a validation message', () => {
-    const validationMessage = { errors: [{ message: 'validation message' }] } as BasketValidationResultType;
+    const validationMessage = {
+      errors: [{ message: 'validation message', code: 'xyz' }],
+    } as BasketValidationResultType;
 
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
     fixture.detectChanges();
@@ -98,15 +94,40 @@ describe('Basket Validation Results Component', () => {
 
   it('should display a removed item message if there is a removed item', () => {
     const validationMessage = {
-      infos: [{ message: 'info message', parameters: { product: { sku: '43242' } } }],
+      infos: [{ message: 'info message', product: { sku: '43242' } }],
     } as BasketValidationResultType;
 
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
     fixture.detectChanges();
 
     expect(element.querySelector('[data-testing-id=validation-removed-message]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=validation-removed-items-message]').innerHTML).toContain(
-      'info message'
-    );
+    expect(element.querySelector('ish-basket-validation-products')).toBeTruthy();
+  });
+
+  it('should display an undeliverable items message if there are undeliverable items', () => {
+    const validationMessage = {
+      errors: [
+        {
+          message: 'undeliverable items message',
+          code: 'basket.validation.line_item_shipping_restrictions.error',
+          lineItem: {},
+          product: {},
+        },
+      ],
+    } as BasketValidationResultType;
+
+    when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id=undeliverable-items-message]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=validation-message]')).toBeFalsy();
+  });
+
+  it('should delete an item if called', () => {
+    when(checkoutFacadeMock.deleteBasketItem(anyString())).thenReturn(undefined);
+
+    component.deleteItem('4713');
+
+    verify(checkoutFacadeMock.deleteBasketItem('4713')).once();
   });
 });

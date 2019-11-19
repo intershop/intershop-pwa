@@ -225,9 +225,10 @@ export class BasketService {
     basketId: string = 'current',
     scopes: BasketValidationScopeType[] = ['']
   ): Observable<BasketValidation> {
+    const scopesWithAdjustmentsAllowed = ['Products', 'Addresses'];
     const body = {
       basket: basketId,
-      adjustmentsAllowed: scopes.includes('Products'),
+      adjustmentsAllowed: scopes.some(scope => scopesWithAdjustmentsAllowed.includes(scope)),
       scopes,
     };
 

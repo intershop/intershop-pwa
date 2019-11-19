@@ -1,4 +1,4 @@
-import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
+import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 
 export type BasketValidationScopeType =
@@ -16,8 +16,8 @@ export type BasketValidationScopeType =
 export interface BasketValidationResultType {
   valid: boolean;
   adjusted: boolean;
-  errors?: BasketFeedback[];
-  infos?: BasketFeedback[];
+  errors?: BasketFeedbackView[];
+  infos?: BasketFeedbackView[];
 }
 
 export interface BasketValidation {
