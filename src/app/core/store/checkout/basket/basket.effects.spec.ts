@@ -247,12 +247,13 @@ describe('Basket Effects', () => {
       });
     });
 
-    it('should map to action of type LoadBasketSuccess', () => {
+    it('should map to action of type LoadBasketSuccess and ResetBasketErrors', () => {
       const update = { commonShippingMethod: 'shippingId' };
       const action = new basketActions.UpdateBasket({ update });
-      const completion = new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion1 = new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() });
+      const completion2 = new basketActions.ResetBasketErrors();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.updateBasket$).toBeObservable(expected$);
     });

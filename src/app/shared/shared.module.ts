@@ -27,6 +27,8 @@ import { BasketCostSummaryComponent } from './basket/components/basket-cost-summ
 import { BasketInfoComponent } from './basket/components/basket-info/basket-info.component';
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
+import { BasketValidationItemsComponent } from './basket/components/basket-validation-items/basket-validation-items.component';
+import { BasketValidationProductsComponent } from './basket/components/basket-validation-products/basket-validation-products.component';
 import { BasketValidationResultsComponent } from './basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
@@ -118,6 +120,8 @@ const importExportModules = [
 ];
 
 const declaredComponents = [
+  BasketValidationItemsComponent,
+  BasketValidationProductsComponent,
   CMSCarouselComponent,
   CMSContainerComponent,
   CMSDialogComponent,

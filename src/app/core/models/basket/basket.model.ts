@@ -67,7 +67,5 @@ export const createBasketView = memoize(
     basketInfo: BasketInfo[]
   ): string =>
     basket &&
-    JSON.stringify([basket, ...basket.lineItems.map(li => products[li.productSKU])]) +
-      JSON.stringify(validationResults) +
-      JSON.stringify(basketInfo)
+    JSON.stringify([basket, validationResults, basketInfo, ...basket.lineItems.map(li => products[li.productSKU])])
 );
