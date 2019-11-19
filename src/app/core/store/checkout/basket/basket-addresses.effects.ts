@@ -114,13 +114,21 @@ export class BasketAddressesEffects {
       // create address at customer for logged in user
       if (customer) {
         return this.addressService.updateCustomerAddress('-', address).pipe(
-          concatMapTo([new UpdateCustomerAddressSuccess({ address }), new basketActions.LoadBasket()]),
+          concatMapTo([
+            new UpdateCustomerAddressSuccess({ address }),
+            new basketActions.LoadBasket(),
+            new basketActions.ResetBasketErrors(),
+          ]),
           mapErrorToAction(UpdateCustomerAddressFail)
         );
         // create address at basket for anonymous user
       } else {
         return this.basketService.updateBasketAddress('current', address).pipe(
-          concatMapTo([new UpdateCustomerAddressSuccess({ address }), new basketActions.LoadBasket()]),
+          concatMapTo([
+            new UpdateCustomerAddressSuccess({ address }),
+            new basketActions.LoadBasket(),
+            new basketActions.ResetBasketErrors(),
+          ]),
           mapErrorToAction(UpdateCustomerAddressFail)
         );
       }

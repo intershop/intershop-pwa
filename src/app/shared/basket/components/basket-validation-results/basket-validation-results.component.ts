@@ -1,15 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { uniq } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
+import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
- * Displays the basket validation result message.
+ * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
  *
  * @example
  * <ish-basket-validation-results></ish-basket-validation-results>
@@ -22,67 +31,99 @@ import { whenTruthy } from 'ish-core/utils/operators';
 })
 export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   validationResults$: Observable<BasketValidationResultType>;
-  hasGeneralBasketError = false;
-  errorMessages = [];
-  removedItems: { message: string; product: Product }[];
+
+  hasGeneralBasketError$: Observable<boolean>;
+  errorMessages$: Observable<string[]>;
+  undeliverableItems$: Observable<LineItemView[]>;
+  removedItems$: Observable<{ message: string; product: Product }[]>;
+
+  itemHasBeenRemoved = false;
 
   private destroy$ = new Subject();
 
   constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
 
+  @Output() continueCheckout = new EventEmitter<void>();
+
   ngOnInit() {
     this.validationResults$ = this.checkoutFacade.basketValidationResults$;
 
     // update emitted to display spinning animation
-    this.validationResults$
-      .pipe(
-        whenTruthy(),
-        takeUntil(this.destroy$)
+    this.validationResults$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (this.itemHasBeenRemoved) {
+        this.continueCheckout.emit();
+        this.itemHasBeenRemoved = false;
+      }
+    });
+
+    this.hasGeneralBasketError$ = this.validationResults$.pipe(
+      map(results => results && results.errors && results.errors.some(error => this.isLineItemMessage(error)))
+    );
+
+    this.errorMessages$ = this.validationResults$.pipe(
+      map(results =>
+        uniq(
+          results &&
+            results.errors &&
+            results.errors
+              .filter(
+                error =>
+                  !this.isLineItemMessage(error) &&
+                  error.code !== 'basket.validation.line_item_shipping_restrictions.error'
+              )
+              .map(error =>
+                error.parameters && error.parameters.shippingRestriction
+                  ? error.parameters.shippingRestriction
+                  : error.message
+              )
+        ).filter(message => !!message)
       )
-      .subscribe(results => {
-        this.hasGeneralBasketError = results.errors && results.errors.some(error => this.isLineItemMessage(error));
+    );
 
-        // display messages only if they are not item related, filter duplicate entries
-        this.errorMessages =
+    this.undeliverableItems$ = this.validationResults$.pipe(
+      map(
+        results =>
+          results &&
           results.errors &&
-          Array.from(
-            new Set(
-              results.errors &&
-                results.errors.map(error => {
-                  if (!this.isLineItemMessage(error)) {
-                    return error.parameters && error.parameters.shippingRestriction
-                      ? error.parameters.shippingRestriction
-                      : error.message;
-                  }
-                })
+          results.errors
+            .filter(
+              error =>
+                error.code === 'basket.validation.line_item_shipping_restrictions.error' &&
+                error.lineItem &&
+                error.product
             )
-          );
+            .map(error => ({ ...error.lineItem, product: error.product }))
+      )
+    );
 
-        this.removedItems =
+    this.removedItems$ = this.validationResults$.pipe(
+      map(
+        results =>
+          results &&
           results.infos &&
-          Array.from(
-            new Set(
-              results.infos &&
-                results.infos
-                  .map(info => ({
-                    message: info.message,
-                    product: info.parameters && info.parameters.product,
-                  }))
-                  .filter(info => info.product)
-            )
-          );
-        this.cd.detectChanges();
-      });
+          results.infos
+            .map(info => ({
+              message: info.message,
+              product: info.product,
+            }))
+            .filter(info => info.product)
+      )
+    );
   }
 
   isLineItemMessage(error: BasketFeedback): boolean {
-    return (
+    return !!(
       error.parameters &&
+      error.code !== 'basket.validation.line_item_shipping_restrictions.error' &&
       error.parameters.scopes &&
-      error.parameters.scopes.includes('Products') &&
-      error.parameters.lineItemId &&
-      !error.parameters.shippingRestriction
+      (error.parameters.scopes.includes('Addresses') || error.parameters.scopes.includes('Products')) &&
+      error.parameters.lineItemId
     );
+  }
+
+  deleteItem(itemId: string) {
+    this.checkoutFacade.deleteBasketItem(itemId);
+    this.itemHasBeenRemoved = true;
   }
 
   ngOnDestroy() {

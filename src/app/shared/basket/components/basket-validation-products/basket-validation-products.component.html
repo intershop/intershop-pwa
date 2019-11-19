@@ -1,0 +1,42 @@
+<ng-container *ngFor="let item of items">
+  <div *ngIf="item" class="alert alert-box" role="alert" data-testing-id="validation-removed-items-message">
+    <div class="alert-box-header">
+      {{ item.message }}
+    </div>
+    <div class="alert-box-body">
+      <div class="row list-header hidden-xs">
+        <div class="col-md-10 list-header-item">{{ 'checkout.pli.desc.heading' | translate }}</div>
+        <div class="col-md-2 list-header-item column-price">{{ 'checkout.pli.price.heading' | translate }}</div>
+      </div>
+      <div class="list-body">
+        <div class="list-item-row list-item-row-big">
+          <div class="row clearfix">
+            <!---Product Image --->
+            <div class="col-2 list-item">
+              <a [routerLink]="item.product | ishProductRoute">
+                <ish-product-image [product]="item.product" imageType="S" class="product-image"></ish-product-image>
+              </a>
+            </div>
+            <!---Product Description --->
+            <div class="col-7 col-md-6 list-item">
+              <div class="product-title">
+                <a [routerLink]="item.product | ishProductRoute">{{ item.product.name }}</a>
+              </div>
+              <p class="product-id">{{ 'product.itemNumber.label' | translate }}&nbsp;{{ item.product.sku }}</p>
+            </div>
+
+            <!---Out of Stock --->
+            <div class="col-2 offset-2 offset-md-0 order-last order-md-3 list-item">
+              <ish-product-inventory [product]="item.product"></ish-product-inventory>
+            </div>
+
+            <!---Product Price --->
+            <div class="col-3 col-md-2 order-last list-item column-price">
+              {{ item.product.listPrice | ishPrice }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

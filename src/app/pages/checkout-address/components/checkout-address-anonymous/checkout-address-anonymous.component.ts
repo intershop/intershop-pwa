@@ -40,6 +40,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
   @Input() error: HttpError;
 
   @Output() createBasketAddress = new EventEmitter<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>();
+  @Output() nextStep = new EventEmitter<void>();
 
   form: FormGroup;
   invoiceAddressForm: FormGroup;
@@ -85,7 +86,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
   */
   ngOnChanges() {
     if (this.isNextStepAvailable()) {
-      this.router.navigate(['/checkout/shipping']);
+      this.nextStep.emit();
     }
   }
 

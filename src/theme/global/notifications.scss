@@ -58,9 +58,17 @@
   }
 
   @media (max-width: $screen-xs-max) {
+    .alert-box-body {
+      padding: 0;
+    }
+
     .btn {
       width: 100%;
       margin-top: $space-default/2;
+    }
+
+    .list-item-row {
+      padding: 0 $space-default;
     }
   }
 }
