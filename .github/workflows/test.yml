@@ -1,0 +1,110 @@
+name: TestCI
+
+on: [push]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x] # [10.x, 12.x, 13.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-quality-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-quality-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-quality-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-quality-cache-
+
+      - name: Install Packages
+        run: |
+          npm ci
+          cd e2e
+          npm ci
+
+      - name: Code Quality
+        run: |
+          npm run format
+          bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+          node reports/tslint-gitlab
+
+      - name: Compile
+        run: |
+          npx tsc -p tsconfig.spec.json
+          cd e2e
+          npx tsc -p cypress/tsconfig.json
+
+      - name: Lint
+        run: |
+          npm run lint
+
+      - name: Check TSLint no Warnings
+        run: |
+          sh .gitlab-ci-check-no-additional-warnings.sh
+
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x] # [10.x, 12.x, 13.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-test-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-test-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-cache-
+
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
+
+      - name: Test Jest
+        run: |
+          npm test
+
+      - name: Test E2E mocked
+        run: |
+          npm run ng -- serve &
+          wait-on http://localhost:4200
+          cd e2e
+          sh e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          jobs
+          kill %1
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: http://localhost:4200
