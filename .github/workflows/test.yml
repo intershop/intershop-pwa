@@ -34,17 +34,16 @@ jobs:
       - name: Install Packages
         run: |
           npm ci
-          cd e2e
-          npm ci
 
       - name: Code Quality
         run: |
           npm run format
-          bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
-          node reports/tslint-gitlab
+          sh scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+          node reports/tslint
 
       - name: Compile
         run: |
+          npm run ng -- build --aot
           npx tsc -p tsconfig.spec.json
           cd e2e
           npx tsc -p cypress/tsconfig.json
@@ -52,10 +51,13 @@ jobs:
       - name: Lint
         run: |
           npm run lint
+          sh scripts/ci-check-no-additional-warnings.sh
 
-      - name: Check TSLint no Warnings
-        run: |
-          sh .gitlab-ci-check-no-additional-warnings.sh
+      - name: Lint by action
+        uses: mooyoul/tslint-actions@v1.1.1
+        with:
+          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          pattern: '*.ts'
 
   tests:
     runs-on: ubuntu-latest
@@ -101,10 +103,13 @@ jobs:
           npm run ng -- serve &
           wait-on http://localhost:4200
           cd e2e
-          sh e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          sh scripts/e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs
           kill %1
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v1
