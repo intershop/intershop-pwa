@@ -9,7 +9,7 @@ import { debounce, distinctUntilKeyChanged, first, map, switchMap, tap } from 'r
 
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
-import { generateProductRoute } from 'ish-core/pipes/product-route.pipe';
+import { generateProductRoute } from 'ish-core/route-formats/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { CategoriesActionTypes } from 'ish-core/store/shopping/categories';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';

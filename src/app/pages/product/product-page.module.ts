@@ -16,13 +16,8 @@ import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.com
 
 const productPageRoutes: Routes = [
   {
-    path: ':sku',
-    children: [
-      {
-        path: '**',
-        component: ProductPageComponent,
-      },
-    ],
+    path: '', // completely consumed by custom route matcher
+    component: ProductPageComponent,
   },
 ];
 

@@ -1,22 +1,8 @@
-import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 
-import { ProductRoutePipe } from './product-route.pipe';
+import { generateProductRoute } from './product.route';
 
-describe('Product Route Pipe', () => {
-  let productRoutePipe: ProductRoutePipe;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ProductRoutePipe],
-    });
-    productRoutePipe = TestBed.get(ProductRoutePipe);
-  });
-
-  it('should be created', () => {
-    expect(productRoutePipe).toBeTruthy();
-  });
-
+describe('Product Route', () => {
   function dataProvider() {
     return [
       {
@@ -44,7 +30,7 @@ describe('Product Route Pipe', () => {
     it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(
       dataSlice.product
     )}' and category '${JSON.stringify(dataSlice.category)}'`, () => {
-      expect(productRoutePipe.transform(dataSlice.product, dataSlice.category)).toEqual(dataSlice.expected);
+      expect(generateProductRoute(dataSlice.product, dataSlice.category)).toEqual(dataSlice.expected);
     });
   });
 });
