@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LanguageSwitchContainerComponent } from 'ish-shell/header/containers/language-switch/language-switch.container';
 import { LoginStatusContainerComponent } from 'ish-shell/header/containers/login-status/login-status.container';
 import { MiniBasketContainerComponent } from 'ish-shell/header/containers/mini-basket/mini-basket.container';
@@ -16,7 +19,16 @@ describe('User Information Mobile Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule,
+        TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['compare'] } },
+          },
+        }),
+      ],
       declarations: [
         MockComponent(LanguageSwitchContainerComponent),
         MockComponent(LoginStatusContainerComponent),
