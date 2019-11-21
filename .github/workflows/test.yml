@@ -58,7 +58,7 @@ jobs:
       - name: Lint by action
         uses: mooyoul/tslint-actions@v1.1.1
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           pattern: '*.ts'
 
   tests:
@@ -117,6 +117,6 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           # we have already installed all dependencies above
-          install: false
+          install: true
           # Cypress tests and config file are in "e2e" folder
           working-directory: e2e
