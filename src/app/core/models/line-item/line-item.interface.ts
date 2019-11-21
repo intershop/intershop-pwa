@@ -31,4 +31,5 @@ export interface LineItemData {
   };
   hiddenGift: boolean;
   freeGift: boolean;
+  quantityFixed?: boolean;
 }
