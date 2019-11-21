@@ -24,8 +24,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-quality-npm-
 
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-quality-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-quality-cache-
+
       - name: Install Packages
         run: |
+          npm ci
+          cd e2e
           npm ci
 
       - name: Code Quality
