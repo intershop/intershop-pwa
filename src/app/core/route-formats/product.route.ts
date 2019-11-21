@@ -17,43 +17,63 @@ export function generateProductRoute(product: Product, category?: Category): str
   if (!(product && product.sku)) {
     return '/';
   }
-  let productRoute = '/product/' + product.sku;
   const productSlug = generateProductSlug(product);
+  let productRoute = `p-${product.sku}.html`;
   if (productSlug) {
-    productRoute += '/' + productSlug;
+    productRoute = `${productSlug}-${productRoute}`;
   }
 
   if (category) {
-    productRoute = `/category/${category.uniqueId}${productRoute}`;
-  } else {
-    // TODO: add defaultCategory to route once this information is available with the products REST call
+    productRoute = `${category.uniqueId}-c/${productRoute}`;
   }
-  return productRoute;
+
+  return '/' + productRoute;
 }
 
 /**
  * UrlMatcher for product route
  * Defines a specific URL format for the product page
  */
+
 export function productRouteMatcher(url: UrlSegment[]) {
-  // Format: product/:sku/:productSlug
-  if (url[0].path === 'product') {
-    return {
-      posParams: {
-        sku: url[1],
-      },
-      consumed: url,
-    };
+  if (url.length && !url[url.length - 1].path.endsWith('.html')) {
+    return;
   }
 
-  // Format: category/:categoryUniqueId/product/:sku/:productSlug
-  if (url.length >= 4 && url[0].path === 'category' && url[2].path === 'product') {
-    return {
-      posParams: {
-        categoryUniqueId: url[1],
-        sku: url[3],
-      },
-      consumed: url,
-    };
+  let productPath = '';
+  let categoryUniqueId;
+
+  if (url.length === 1) {
+    productPath = url[0].path;
+  } else if (url.length === 2) {
+    // Format: <categoryUniqueId>-c/<productSlug>-p-<sku>.html
+    productPath = url[1].path;
+    categoryUniqueId = url[0].path.slice(0, -2);
   }
+
+  const productParts = productPath.slice(0, -5).split('-'); // remove '.html'
+  let sku;
+
+  // Format: p-<sku>.html
+  if (productParts.length === 2 && productParts[0] === 'p') {
+    sku = productParts[1];
+  }
+
+  // Format: <productSlug>-p-<sku>.html
+  if (productParts.length >= 3 && [...productParts].splice(-2)[0] === 'p') {
+    sku = [...productParts].splice(-1)[0];
+  }
+
+  const posParams: { [key: string]: UrlSegment } = {
+    sku: new UrlSegment(sku, {}),
+  };
+
+  if (categoryUniqueId) {
+    posParams.categoryUniqueId = new UrlSegment(categoryUniqueId, {});
+  }
+
+  return {
+    posParams,
+    consumed: url,
+  };
 }

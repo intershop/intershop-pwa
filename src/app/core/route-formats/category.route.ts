@@ -3,7 +3,7 @@ import { UrlSegment } from '@angular/router';
 import { Category } from 'ish-core/models/category/category.model';
 
 export function generateCategoryRoute(category: Category) {
-  return '/category/' + category.uniqueId;
+  return `/${category.uniqueId}-c`;
 }
 
 /**
@@ -11,11 +11,12 @@ export function generateCategoryRoute(category: Category) {
  * Defines a specific URL format for the category page
  */
 export function categoryRouteMatcher(url: UrlSegment[]) {
-  // Format: category/:categoryUniqueId
-  if (url[0].path === 'category') {
+  // Format: /<categoryUniqueId>-c
+  if (url.length === 1 && url[0].path.endsWith('-c')) {
+    const categoryUniqueId = url[0].path.slice(0, -2);
     return {
       posParams: {
-        categoryUniqueId: url[1],
+        categoryUniqueId: new UrlSegment(categoryUniqueId, {}),
       },
       consumed: url,
     };
