@@ -38,7 +38,7 @@ jobs:
       - name: Code Quality
         run: |
           npm run format
-          sh scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+          bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
           node reports/tslint
 
       - name: Compile
