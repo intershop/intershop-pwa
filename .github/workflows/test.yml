@@ -59,8 +59,9 @@ jobs:
         uses: mooyoul/tslint-actions@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: 'src/**/**.ts'
+          pattern: '*.ts'
           config: 'tslint.json'
+          project: './'
 
   tests:
     runs-on: ubuntu-latest
