@@ -35,6 +35,7 @@ describe('Cms Image Component', () => {
       },
     };
     component.pagelet = createContentPageletView(pagelet);
+    component.showImage = true;
   });
 
   it('should be created', () => {
@@ -43,8 +44,13 @@ describe('Cms Image Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a class="teaser-link" href="http://example.com" title="bar"
-        ><img class="foo" ng-reflect-ng-class="foo" src="http://example.com/foo/bar.png" alt="foo"
-      /></a>
+        ><span
+          ><img
+            class="foo"
+            ng-reflect-ng-class="foo"
+            src="http://example.com/foo/bar.png"
+            alt="foo"/></span
+      ></a>
     `);
   });
 });
