@@ -122,7 +122,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Cypress run
-        uses: cypress-io/github-action@master
+        uses: cypress-io/github-action@v1
         with:
           browser: chrome
           install: true
