@@ -1,9 +1,11 @@
 <div *ngIf="basket && shippingMethods" class="row">
-  <div class="col-md-12 col-lg-8">
-    <!-- Messages -->
+  <!-- Messages -->
+  <div class="col-md-12">
     <ish-error-message [error]="error"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
+  </div>
 
+  <div class="col-md-12 col-lg-8">
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal">
       <div *ngIf="shippingMethods.length; else noShippingMethods" class="shipping-methods">
