@@ -118,29 +118,14 @@ jobs:
   testsCypress:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x] # [10.x, 12.x, 13.x]
-
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Prepare App
-        run: |
-          npm i -g wait-on
-          npm ci
-          npm run ng -- serve &
-          wait-on http://localhost:4200
-          cd e2e
 
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
           browser: chrome
+          start: npm run ng -- serve
           record: true
           parallel: false
           working-directory: e2e
