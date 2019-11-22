@@ -15,18 +15,20 @@
     </h1>
   </div>
 
+  <div>
+    <!-- Error message -->
+    <ish-error-message [error]="error"></ish-error-message>
+
+    <!-- Info messages -->
+    <ish-basket-info></ish-basket-info>
+
+    <!-- Validation messages-->
+    <ish-basket-validation-results></ish-basket-validation-results>
+  </div>
+
   <form class="form-horizontal" [formGroup]="form">
     <div class="row">
       <div class="col-md-12 col-lg-8">
-        <!-- Error message -->
-        <ish-error-message [error]="error"></ish-error-message>
-
-        <!-- Info messages -->
-        <ish-basket-info></ish-basket-info>
-
-        <!-- Validation messages-->
-        <ish-basket-validation-results></ish-basket-validation-results>
-
         <ish-line-item-list
           *ngIf="basket"
           [lineItems]="basket.lineItems"
