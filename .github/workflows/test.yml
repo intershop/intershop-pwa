@@ -130,7 +130,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Cypress run
-        uses: cypress-io/github-action@master
+        uses: cypress-io/github-action@v1
         with:
           browser: chrome
           install: true
@@ -139,7 +139,7 @@ jobs:
           record: true
           parallel: false
           wait-on: http://localhost:4200
-          wait-on-timeout: 600
+          wait-on-timeout: 90
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
