@@ -139,3 +139,9 @@ jobs:
           CI: true
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
+
+      - name: Upload results as an artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: 'screenshots'
+          path: './e2e/cypress/screenshots'
