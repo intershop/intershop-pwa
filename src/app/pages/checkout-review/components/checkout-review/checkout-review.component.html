@@ -15,10 +15,12 @@
 </div>
 
 <div *ngIf="basket" class="row">
-  <div class="col-md-12 col-lg-8">
-    <!-- Error Message-->
+  <!-- Error Message-->
+  <div class="col-md-12">
     <ish-error-message [error]="error"></ish-error-message>
+  </div>
 
+  <div class="col-md-12 col-lg-8">
     <div class="row">
       <p class="col-md-9">{{ 'checkout.order_review.heading.text' | translate }}</p>
       <p class="col-md-3 text-right">
