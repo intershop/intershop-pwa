@@ -143,6 +143,7 @@ jobs:
           browser: chrome
           record: true
           parallel: false
+          working-directory: e2e
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
