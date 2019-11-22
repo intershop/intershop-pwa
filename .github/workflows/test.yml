@@ -115,7 +115,7 @@ jobs:
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
 
-  testsCypress:
+  testsCypressDashboard:
     runs-on: ubuntu-latest
 
     steps:
