@@ -117,6 +117,8 @@ jobs:
 
       - name: Test E2E b2c
         run: |
+          npm run ng -- serve --prod &
+          wait-on http://localhost:4200
           cd e2e
           sh e2e-partition.sh 1 1 '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs
@@ -130,6 +132,8 @@ jobs:
         run: |
           sed -i -e "s/inSPIRED-inTRONICS-Site/inSPIRED-inTRONICS_Business-Site/g" ./src/environments/environment.prod.ts
           sed -i -e "s/\/\*REPLACEMEINCI\*\//, 'businessCustomerRegistration', 'quoting', 'advancedVariationHandling'/g" ./src/environments/environment.prod.ts
+          npm run ng -- serve --prod &
+          wait-on http://localhost:4200
           cd e2e
           sh e2e-partition.sh 1 1 '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs 
