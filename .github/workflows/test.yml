@@ -131,8 +131,6 @@ jobs:
 
       - name: Install Packages
         run: |
-          npm i -g wait-on
-          npm ci
           cd e2e
           npm ci
 
