@@ -143,7 +143,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@master
         with:
-          browser: chrome
           install: false
           start: npm run ng -- serve
           working-directory: e2e
