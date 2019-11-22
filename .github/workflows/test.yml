@@ -137,6 +137,7 @@ jobs:
           start: npm run ng -- serve
           working-directory: e2e
           record: true
+          parallel: true
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
