@@ -132,8 +132,10 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@master
         with:
+          browser: chrome
           install: true
           start: npm run ng -- serve
+          wait-on: http://localhost:4200
           working-directory: e2e
         env:
           CI: true
@@ -141,6 +143,7 @@ jobs:
           ICM_BASE_URL: http://localhost:4200
 
       - name: Upload results as an artifact
+        if: failure()
         uses: actions/upload-artifact@master
         with:
           name: 'screenshots'
