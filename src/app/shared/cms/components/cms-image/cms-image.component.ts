@@ -14,4 +14,7 @@ export class CMSImageComponent implements CMSComponent {
 
   isRouterLink = ContentViewHelper.isRouterLink;
   routerLink = ContentViewHelper.getRouterLink;
+
+  // defered loading flag
+  showImage = false;
 }
