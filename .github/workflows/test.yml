@@ -133,6 +133,7 @@ jobs:
         uses: cypress-io/github-action@v1
         with:
           # just perform install
+          cache-key: node-v${{ matrix.node }}-on-${{ runner.os }}-hash-${{ hashFiles('**/package-lock.json') }}
           runTests: false
 
       - run: cd e2e && npm ci
