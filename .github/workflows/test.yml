@@ -121,7 +121,6 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x] # [10.x, 12.x, 13.x]
-        containers: [1] # 1, 2, 3
 
     steps:
       - uses: actions/checkout@v1
@@ -138,7 +137,7 @@ jobs:
           start: npm run ng -- serve
           working-directory: e2e
           record: true
-          parallel: true
+          parallel: false
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
