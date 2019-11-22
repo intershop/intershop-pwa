@@ -129,6 +129,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - run: npm i -g wait-on
+
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
