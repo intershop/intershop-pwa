@@ -136,10 +136,12 @@ jobs:
           install: true
           start: npm run ng -- serve
           working-directory: e2e
+          record: true
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
       - name: Upload results as an artifact
         if: failure()
