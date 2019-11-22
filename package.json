@@ -34,6 +34,13 @@
     "start": "npm run build && npm run serve"
   },
   "dependencies": {
+    "@cypress/webpack-preprocessor": "^4.1.0",
+    "@types/node": "^10.12.18",
+    "cypress": "^3.4.1",
+    "cypress-failed-log": "^2.5.0",
+    "ts-loader": "5.3.2",
+    "typescript": "~3.2.2",
+    "webpack": "^4.33.0",
     "@angular/animations": "~8.2.13",
     "@angular/common": "~8.2.13",
     "@angular/compiler": "~8.2.13",
