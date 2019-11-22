@@ -30,6 +30,9 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
 
   constructor(private sanitizer: DomSanitizer) {}
 
+  // defered loading flag
+  showVideo = false;
+
   ngOnInit() {
     this.video = this.pagelet.stringParam('Video');
     this.autoplay = this.pagelet.booleanParam('Autoplay');
