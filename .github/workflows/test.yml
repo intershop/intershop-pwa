@@ -131,7 +131,6 @@ jobs:
 
       - name: Install Packages
         run: |
-          cd e2e
           npm ci
 
       - name: Cypress run
