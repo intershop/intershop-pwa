@@ -135,7 +135,6 @@ jobs:
           browser: chrome
           install: true
           start: npm run ng -- serve
-          wait-on: http://localhost:4200
           working-directory: e2e
         env:
           CI: true
