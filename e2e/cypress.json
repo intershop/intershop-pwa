@@ -5,7 +5,7 @@
   "viewportHeight": 1500,
   "video": false,
   "videoUploadOnPasses": false,
-  "testFiles": "**/*.e2e-spec.ts",
+  "testFiles": "**/*mock.e2e-spec.ts",
   "defaultCommandTimeout": 8000,
   "modifyObstructiveCode": false
 }
