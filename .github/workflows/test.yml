@@ -129,12 +129,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Prepare App
+        run: |
+          npm i -g wait-on
+          npm ci
+          npm run ng -- serve &
+          wait-on http://localhost:4200
+          cd e2e
+
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
-          install: true
-          start: npm run ng -- serve
-          working-directory: e2e
           record: true
           parallel: false
         env:
