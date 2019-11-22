@@ -34,13 +34,6 @@
     "start": "npm run build && npm run serve"
   },
   "dependencies": {
-    "@cypress/webpack-preprocessor": "^4.1.0",
-    "@types/node": "^10.12.18",
-    "cypress": "^3.4.1",
-    "cypress-failed-log": "^2.5.0",
-    "ts-loader": "5.3.2",
-    "typescript": "~3.2.2",
-    "webpack": "^4.33.0",
     "@angular/animations": "~8.2.13",
     "@angular/common": "~8.2.13",
     "@angular/compiler": "~8.2.13",
@@ -126,7 +119,6 @@
     "stylelint-prettier": "^1.1.1",
     "stylelint-scss": "^3.8.0",
     "treeify": "^1.1.0",
-    "ts-loader": "^5.2.0",
     "ts-mockito": "2.5.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.20.0",
@@ -137,7 +129,12 @@
     "tslint-etc": "^1.7.0",
     "tslint-plugin-prettier": "^2.0.1",
     "typescript": "~3.5.3",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "@cypress/webpack-preprocessor": "^4.1.0",
+    "cypress": "^3.4.1",
+    "cypress-failed-log": "^2.5.0",
+    "ts-loader": "5.3.2",
+    "webpack": "^4.33.0"
   },
   "husky": {
     "hooks": {
