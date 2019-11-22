@@ -139,6 +139,7 @@ jobs:
           record: true
           parallel: false
           wait-on: http://localhost:4200
+          wait-on-timeout: 600
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
