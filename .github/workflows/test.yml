@@ -129,25 +129,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
-        uses: cypress-io/github-action@v1
-        with:
-          # just perform install
-          runTests: false
-
-      - run: npm i @cypress/webpack-preprocessor@^4.1.0
-      - run: npm i cypress-failed-log@^2.5.0
-      - run: npm i webpack@^4.33.0
-      - run: npm i cypress@^3.6.1
-
       - name: Cypress run
         uses: cypress-io/github-action@master
         with:
-          install: false
+          browser: chrome
+          install: true
           start: npm run ng -- serve
           working-directory: e2e
           record: true
           parallel: false
+          wait-on: http://localhost:4200
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
