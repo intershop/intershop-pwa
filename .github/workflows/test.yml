@@ -129,16 +129,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Packages
-        run: |
-          npm ci
-          cd e2e
-          npm ci
-
       - name: Cypress run
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@master
         with:
-          install: false
+          install: true
           start: npm run ng -- serve
           working-directory: e2e
         env:
