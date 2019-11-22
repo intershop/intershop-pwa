@@ -121,23 +121,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Install dependencies
-        uses: cypress-io/github-action@v1
-        with:
-          # just perform install
-          runTests: false
-
-      - name: Install Cypress
-        run: |
-          npm i @cypress/webpack-preprocessor@^4.1.0
-          npm i cypress-failed-log@^2.5.0
-          npm i webpack@^4.33.0
-
       - name: Cypress run
         uses: cypress-io/github-action@master
         with:
           browser: chrome
-          install: false
+          install: true
           start: npm run ng -- serve
           record: true
           parallel: false
