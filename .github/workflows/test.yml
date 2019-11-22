@@ -107,7 +107,7 @@ jobs:
           npm run ng -- serve &
           wait-on http://localhost:4200
           cd e2e
-          sh scripts/e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          sh e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs
           kill %1
         env:
