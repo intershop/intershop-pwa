@@ -43,7 +43,7 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
 
   originalFn(newUrl, { ...options, failOnStatusCode: false });
 
-  cy.get('ish-root', { timeout: 60000 }).should('be.hidden');
+  cy.get('ish-root', { timeout: 600000 }).should('be.hidden');
 
   return cy
     .window()

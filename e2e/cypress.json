@@ -6,6 +6,6 @@
   "video": false,
   "videoUploadOnPasses": false,
   "testFiles": "**/*mock*.e2e-spec.ts",
-  "defaultCommandTimeout": 8000,
+  "defaultCommandTimeout": 80000,
   "modifyObstructiveCode": false
 }
