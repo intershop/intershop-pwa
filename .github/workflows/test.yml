@@ -114,3 +114,21 @@ jobs:
           CI: true
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
+
+  testsCypress:
+    runs-on: ubuntu-latest
+
+      - name: Install Packages
+        run: |
+          npm ci
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v1
+        with:
+          install: false
+          start: npm run ng -- serve
+          working-directory: e2e
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: http://localhost:4200
