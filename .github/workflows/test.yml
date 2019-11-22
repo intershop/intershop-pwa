@@ -115,6 +115,30 @@ jobs:
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
 
+      - name: Test E2E b2c
+        run: |
+          cd e2e
+          sh e2e-partition.sh 1 1 '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          jobs
+          kill %1
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: https://intershoppwa.azurewebsites.net/
+
+      - name: Test E2E b2b
+        run: |
+          sed -i -e "s/inSPIRED-inTRONICS-Site/inSPIRED-inTRONICS_Business-Site/g" ./src/environments/environment.prod.ts
+          sed -i -e "s/\/\*REPLACEMEINCI\*\//, 'businessCustomerRegistration', 'quoting', 'advancedVariationHandling'/g" ./src/environments/environment.prod.ts
+          cd e2e
+          sh e2e-partition.sh 1 1 '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          jobs 
+          kill %1
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: https://intershoppwa.azurewebsites.net/
+
   testsCypressDashboard:
     runs-on: ubuntu-latest
 
