@@ -129,6 +129,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
+
       - name: Cypress run
         uses: cypress-io/github-action@master
         with:
