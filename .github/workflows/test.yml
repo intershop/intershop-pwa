@@ -129,8 +129,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: npm i -g wait-on
-
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
@@ -140,8 +138,6 @@ jobs:
           working-directory: e2e
           record: true
           parallel: false
-          wait-on: http://localhost:4200
-          wait-on-timeout: 120
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
