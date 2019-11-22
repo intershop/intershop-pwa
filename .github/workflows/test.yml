@@ -140,6 +140,8 @@ jobs:
           working-directory: e2e
           record: true
           parallel: false
+          wait-on: http://localhost:4200
+          wait-on-timeout: 90
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
