@@ -115,6 +115,41 @@ jobs:
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: http://localhost:4200
 
+  testsE2EB2C:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x] # [10.x, 12.x, 13.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-test-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-test-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-cache-
+
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
+
       - name: Test E2E b2c
         run: |
           npm run ng -- serve --prod &
@@ -127,6 +162,41 @@ jobs:
           CI: true
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: https://intershoppwa.azurewebsites.net/
+
+  testsE2EB2B:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x] # [10.x, 12.x, 13.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-test-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-test-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-cache-
+
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
 
       - name: Test E2E b2b
         run: |
