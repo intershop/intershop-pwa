@@ -3,16 +3,20 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToQueryParam, ofRoute } from 'ngrx-router';
-import { EMPTY, Observable, merge, of } from 'rxjs';
+import { EMPTY, Observable, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
+  debounce,
+  debounceTime,
   delay,
   filter,
+  first,
   map,
   mapTo,
   mergeMap,
   switchMap,
+  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -79,6 +83,30 @@ export class UserEffects {
         mapErrorToAction(userActions.LoadCompanyUserFail)
       )
     )
+  );
+
+  @Effect({ dispatch: false })
+  goToLoginAfterLogoutBySessionTimeout$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.ResetAPIToken),
+    switchMapTo(
+      race(
+        // wait for immediate LogoutUser
+        this.actions$.pipe(ofType(userActions.UserActionTypes.LogoutUser)),
+        // or stop flow
+        timer(1000).pipe(switchMapTo(EMPTY))
+      )
+    ),
+    debounce(() =>
+      this.actions$.pipe(
+        debounceTime(2000),
+        first()
+      )
+    ),
+    tap(() => {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
+      });
+    })
   );
 
   /*

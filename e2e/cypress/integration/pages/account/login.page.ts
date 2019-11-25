@@ -40,4 +40,8 @@ export class LoginPage {
   get errorText() {
     return cy.get('div.alert');
   }
+
+  get infoText() {
+    return cy.get('.alert-info');
+  }
 }
