@@ -17,9 +17,7 @@ describe('Contact', () => {
       page.submit();
     });
     at(ContactConfirmationPage, page => {
-      page.getText.contains(
-        /[Thank you for your message.|Your mail couldn't be sent. We apologize for the inconvenience.\nPlease try again later.]/
-      );
+      page.successText.contains('Thank you for your message.');
     });
   });
 

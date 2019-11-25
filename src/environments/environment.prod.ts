@@ -10,7 +10,7 @@ export const environment: Environment = {
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
   /* FEATURE TOOGLES */
-  features: ['compare', 'recently', 'rating' /*REPLACEMEINCI*/],
+  features: ['compare', 'recently', 'rating'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,
