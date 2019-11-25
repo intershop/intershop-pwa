@@ -7,7 +7,7 @@ import { combineLatest, interval } from 'rxjs';
 import { filter, map, mapTo, switchMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { LoadBasketByAPIToken, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { LoadBasketByAPIToken, ResetBasket, getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadOrderByAPIToken, getSelectedOrderId } from 'ish-core/store/orders';
 import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -100,6 +100,26 @@ export class RestoreEffects {
         map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
         filter(({ user, apiToken }) => user && !apiToken),
         mapTo(new LogoutUser())
+      )
+    )
+  );
+
+  @Effect()
+  removeAnonymousBasketIfTokenVanishes$ = this.appRef.isStable.pipe(
+    whenTruthy(),
+    take(1),
+    switchMap(() =>
+      interval(1000).pipe(
+        takeWhile(() => isPlatformBrowser(this.platformId)),
+        withLatestFrom(
+          this.store$.pipe(select(getLoggedInUser)),
+          this.store$.pipe(select(getCurrentBasket)),
+          this.cookieService.cookieLawSeen$
+        ),
+        filter(([, , , cookieLawAccepted]) => cookieLawAccepted),
+        map(([, user, basket]) => ({ user, basket, apiToken: this.cookieService.get('apiToken') })),
+        filter(({ user, basket, apiToken }) => !user && basket && !apiToken),
+        mapTo(new ResetBasket())
       )
     )
   );
