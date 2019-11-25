@@ -19,17 +19,18 @@ export function generateProductRoute(product: Product, category?: Category): str
   if (!(product && product.sku)) {
     return '/';
   }
+  let route = '/product/' + product.sku;
   const productSlug = generateProductSlug(product);
-  let route = `p-${product.sku}.html`;
   if (productSlug) {
-    route = `${productSlug}-${route}`;
+    route += '/' + productSlug;
   }
 
   if (category) {
-    route = `${category.uniqueId}-c/${route}`;
+    route = `/category/${category.uniqueId}${route}`;
+  } else {
+    // TODO: add defaultCategory to route once this information is available with the products REST call
   }
-
-  return '/' + route;
+  return route;
 }
 
 /**
@@ -38,59 +39,36 @@ export function generateProductRoute(product: Product, category?: Category): str
  */
 
 export function productRouteMatcher(url: UrlSegment[], _: UrlSegmentGroup, route: Route) {
-  if (url.length && !url[url.length - 1].path.endsWith('.html')) {
-    return;
-  }
-
   if (!route.data) {
     route.data = {};
   }
 
-  let productPath = '';
-  let categoryUniqueId;
-
-  if (url.length === 1) {
-    productPath = url[0].path;
-  } else if (url.length === 2) {
-    // Format: <categoryUniqueId>-c/<productSlug>-p-<sku>.html
-    route.data.format = '<categoryUniqueId>-c/<productSlug>-p-<sku>.html';
-    productPath = url[1].path;
-    categoryUniqueId = url[0].path.slice(0, -2);
+  // Format: product/:sku/:productSlug
+  if (url[0].path === 'product') {
+    route.data.format = 'product/:sku/:productSlug';
+    return {
+      posParams: {
+        sku: url[1],
+      },
+      consumed: url,
+    };
   }
 
-  const productParts = productPath.slice(0, -5).split('-'); // remove '.html'
-  let sku;
-
-  // Format: p-<sku>.html
-  if (productParts.length === 2 && productParts[0] === 'p') {
-    route.data.format = 'p-<sku>.html';
-    sku = productParts[1];
+  // Format: category/:categoryUniqueId/product/:sku/:productSlug
+  if (url.length >= 4 && url[0].path === 'category' && url[2].path === 'product') {
+    route.data.format = 'category/:categoryUniqueId/product/:sku/:productSlug';
+    return {
+      posParams: {
+        categoryUniqueId: url[1],
+        sku: url[3],
+      },
+      consumed: url,
+    };
   }
-
-  // Format: <productSlug>-p-<sku>.html
-  if (productParts.length >= 3 && [...productParts].splice(-2)[0] === 'p') {
-    if (!categoryUniqueId) {
-      route.data.format = '<productSlug>-p-<sku>.html';
-    }
-    sku = [...productParts].splice(-1)[0];
-  }
-
-  const posParams: { [key: string]: UrlSegment } = {
-    sku: new UrlSegment(sku, {}),
-  };
-
-  if (categoryUniqueId) {
-    posParams.categoryUniqueId = new UrlSegment(categoryUniqueId, {});
-  }
-
-  return {
-    posParams,
-    consumed: url,
-  };
 }
 
 export const productRoute: CustomRoute = {
   matcher: productRouteMatcher,
   generateUrl: generateProductRoute,
-  formats: ['<categoryUniqueId>-c/<productSlug>-p-<sku>.html', 'p-<sku>.html', '<productSlug>-p-<sku>.html'],
+  formats: ['product/:sku/:productSlug', 'category/:categoryUniqueId/product/:sku/:productSlug'],
 };

@@ -5,7 +5,7 @@ import { Category } from 'ish-core/models/category/category.model';
 import { CustomRoute } from './custom-route';
 
 export function generateCategoryRoute(category: Category) {
-  return '/category/' + category.uniqueId;
+  return `/${category.uniqueId}-c`;
 }
 
 /**
@@ -16,13 +16,14 @@ export function categoryRouteMatcher(url: UrlSegment[], _: UrlSegmentGroup, rout
   if (!route.data) {
     route.data = {};
   }
-  route.data.format = 'category/:categoryUniqueId';
+  route.data.format = '<categoryUniqueId>-c';
 
-  // Format: category/:categoryUniqueId
-  if (url[0].path === 'category') {
+  // Format: /<categoryUniqueId>-c
+  if (url.length === 1 && url[0].path.endsWith('-c')) {
+    const categoryUniqueId = url[0].path.slice(0, -2);
     return {
       posParams: {
-        categoryUniqueId: url[1],
+        categoryUniqueId: new UrlSegment(categoryUniqueId, {}),
       },
       consumed: url,
     };
@@ -32,5 +33,5 @@ export function categoryRouteMatcher(url: UrlSegment[], _: UrlSegmentGroup, rout
 export const categoryRoute: CustomRoute = {
   matcher: categoryRouteMatcher,
   generateUrl: generateCategoryRoute,
-  formats: ['category/:categoryUniqueId'],
+  formats: ['<categoryUniqueId>-c'],
 };
