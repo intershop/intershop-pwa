@@ -9,7 +9,7 @@ export const environment: Environment = {
   production: false,
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'http://localhost:4200',
+  icmBaseURL: 'https://intershoppwa.azurewebsites.net',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmChannel: 'inSPIRED-inTRONICS-Site',

@@ -162,6 +162,7 @@ jobs:
           npm run ng -- serve --prod &
           wait-on http://localhost:4200
           cd e2e
+          export NODE_OPTIONS="--max-old-space-size=4096"
           sh e2e-partition.sh 1 1 '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs
           kill %1
@@ -219,6 +220,7 @@ jobs:
           npm run ng -- serve --prod &
           wait-on http://localhost:4200
           cd e2e
+          export NODE_OPTIONS="--max-old-space-size=4096"
           sh e2e-partition.sh 1 1 '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs 
           kill %1
@@ -226,34 +228,6 @@ jobs:
           CI: true
           PWA_BASE_URL: http://localhost:4200
           ICM_BASE_URL: https://intershoppwa.azurewebsites.net/
-
-      - name: Upload results as an artifact
-        if: failure()
-        uses: actions/upload-artifact@master
-        with:
-          name: 'screenshots'
-          path: './e2e/cypress/screenshots'
-
-  testsCypressDashboard:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v1
-        with:
-          browser: chrome
-          install: true
-          start: npm run ng -- serve
-          record: true
-          parallel: false
-          working-directory: e2e
-        env:
-          CI: true
-          PWA_BASE_URL: http://localhost:4200
-          ICM_BASE_URL: http://localhost:4200
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
       - name: Upload results as an artifact
         if: failure()
