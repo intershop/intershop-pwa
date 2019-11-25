@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MetaGuard } from '@ngx-meta/core';
 
+import { categoryRoute } from 'ish-core/custom-routes/category.route';
+import { productRoute } from 'ish-core/custom-routes/product.route';
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
 import { LoginGuard } from 'ish-core/guards/login.guard';
 import { LogoutGuard } from 'ish-core/guards/logout.guard';
-import { categoryRouteMatcher } from 'ish-core/route-formats/category.route';
-import { productRouteMatcher } from 'ish-core/route-formats/product.route';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -34,12 +34,12 @@ const routes: Routes = [
     },
   },
   {
-    matcher: productRouteMatcher,
+    matcher: productRoute.matcher,
     loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule),
     canActivate: [MetaGuard],
   },
   {
-    matcher: categoryRouteMatcher,
+    matcher: categoryRoute.matcher,
     loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
     canActivate: [MetaGuard],
   },

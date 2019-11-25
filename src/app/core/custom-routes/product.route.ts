@@ -1,9 +1,11 @@
-import { UrlSegment } from '@angular/router';
+import { Route, UrlSegment, UrlSegmentGroup } from '@angular/router';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-function generateProductSlug(product: Product) {
+import { CustomRoute } from './custom-route';
+
+export function generateProductSlug(product: Product) {
   return product && product.name ? product.name.replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+$/g, '') : undefined;
 }
 
@@ -18,16 +20,16 @@ export function generateProductRoute(product: Product, category?: Category): str
     return '/';
   }
   const productSlug = generateProductSlug(product);
-  let productRoute = `p-${product.sku}.html`;
+  let route = `p-${product.sku}.html`;
   if (productSlug) {
-    productRoute = `${productSlug}-${productRoute}`;
+    route = `${productSlug}-${route}`;
   }
 
   if (category) {
-    productRoute = `${category.uniqueId}-c/${productRoute}`;
+    route = `${category.uniqueId}-c/${route}`;
   }
 
-  return '/' + productRoute;
+  return '/' + route;
 }
 
 /**
@@ -35,9 +37,13 @@ export function generateProductRoute(product: Product, category?: Category): str
  * Defines a specific URL format for the product page
  */
 
-export function productRouteMatcher(url: UrlSegment[]) {
+export function productRouteMatcher(url: UrlSegment[], _: UrlSegmentGroup, route: Route) {
   if (url.length && !url[url.length - 1].path.endsWith('.html')) {
     return;
+  }
+
+  if (!route.data) {
+    route.data = {};
   }
 
   let productPath = '';
@@ -47,6 +53,7 @@ export function productRouteMatcher(url: UrlSegment[]) {
     productPath = url[0].path;
   } else if (url.length === 2) {
     // Format: <categoryUniqueId>-c/<productSlug>-p-<sku>.html
+    route.data.format = '<categoryUniqueId>-c/<productSlug>-p-<sku>.html';
     productPath = url[1].path;
     categoryUniqueId = url[0].path.slice(0, -2);
   }
@@ -56,11 +63,15 @@ export function productRouteMatcher(url: UrlSegment[]) {
 
   // Format: p-<sku>.html
   if (productParts.length === 2 && productParts[0] === 'p') {
+    route.data.format = 'p-<sku>.html';
     sku = productParts[1];
   }
 
   // Format: <productSlug>-p-<sku>.html
   if (productParts.length >= 3 && [...productParts].splice(-2)[0] === 'p') {
+    if (!categoryUniqueId) {
+      route.data.format = '<productSlug>-p-<sku>.html';
+    }
     sku = [...productParts].splice(-1)[0];
   }
 
@@ -77,3 +88,9 @@ export function productRouteMatcher(url: UrlSegment[]) {
     consumed: url,
   };
 }
+
+export const productRoute: CustomRoute = {
+  matcher: productRouteMatcher,
+  generateUrl: generateProductRoute,
+  formats: ['<categoryUniqueId>-c/<productSlug>-p-<sku>.html', 'p-<sku>.html', '<productSlug>-p-<sku>.html'],
+};

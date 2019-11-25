@@ -1,6 +1,6 @@
 import * as using from 'jasmine-data-provider';
 
-import { generateProductRoute } from './product.route';
+import { productRoute } from './product.route';
 
 describe('Product Route', () => {
   function dataProvider() {
@@ -30,7 +30,7 @@ describe('Product Route', () => {
     it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(
       dataSlice.product
     )}' and category '${JSON.stringify(dataSlice.category)}'`, () => {
-      expect(generateProductRoute(dataSlice.product, dataSlice.category)).toEqual(dataSlice.expected);
+      expect(productRoute.generateUrl(dataSlice.product, dataSlice.category)).toEqual(dataSlice.expected);
     });
   });
 });

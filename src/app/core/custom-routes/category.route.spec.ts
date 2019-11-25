@@ -1,6 +1,6 @@
 import { Category } from 'ish-core/models/category/category.model';
 
-import { generateCategoryRoute } from './category.route';
+import { categoryRoute } from './category.route';
 
 describe('Category Route', () => {
   let cat: Category;
@@ -10,6 +10,6 @@ describe('Category Route', () => {
   });
 
   it('should generate category route for category', () => {
-    expect(generateCategoryRoute(cat)).toEqual('/category/cate');
+    expect(categoryRoute.generateUrl(cat)).toEqual('/category/cate');
   });
 });

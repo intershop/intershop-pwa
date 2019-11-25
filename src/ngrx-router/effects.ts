@@ -22,8 +22,12 @@ export class RouterEffects {
       const { params, queryParams, data } = route;
 
       while (route.parent) {
-        if (route.routeConfig && route.routeConfig.path) {
-          path.push(route.routeConfig.path);
+        if (route.routeConfig) {
+          if (route.routeConfig.path) {
+            path.push(route.routeConfig.path);
+          } else if (route.routeConfig.data && route.routeConfig.data.format) {
+            path.push(route.routeConfig.data.format);
+          }
         }
         route = route.parent;
       }
