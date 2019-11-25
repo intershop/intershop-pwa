@@ -17,6 +17,8 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { SeoActionTypes, SetSeoAttributes } from './seo.actions';
+import { categoryRoute } from 'ish-core/custom-routes/category.route';
+import { productRoute } from 'ish-core/custom-routes/product.route';
 
 @Injectable()
 export class SeoEffects {
@@ -55,7 +57,7 @@ export class SeoEffects {
 
   @Effect()
   seoCategory$ = this.actions$.pipe(
-    ofRoute('category/:categoryUniqueId'),
+    ofRoute(categoryRoute.formats),
     debounce(() => this.actions$.pipe(ofType(CategoriesActionTypes.SelectedCategoryAvailable))),
     switchMap(() =>
       this.store.pipe(
@@ -77,7 +79,7 @@ export class SeoEffects {
 
   @Effect()
   seoProduct$ = this.actions$.pipe(
-    ofRoute(['product/:sku/**', 'category/:categoryUniqueId/product/:sku/**']),
+    ofRoute(productRoute.formats),
     switchMap(() =>
       this.store.pipe(
         select(getSelectedProduct),

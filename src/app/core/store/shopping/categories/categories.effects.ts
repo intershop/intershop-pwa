@@ -30,6 +30,7 @@ import {
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
+import { categoryRoute } from 'ish-core/custom-routes/category.route';
 
 @Injectable()
 export class CategoriesEffects {
@@ -135,7 +136,8 @@ export class CategoriesEffects {
 
   @Effect()
   productOrCategoryChanged$ = this.actions$.pipe(
-    ofRoute('category/:categoryUniqueId'),
+    ofRoute(categoryRoute.formats),
+    log('CAT EFF'),
     mapToParam<string>('categoryUniqueId'),
     switchMap(() => this.store.pipe(select(selectors.getSelectedCategory))),
     whenTruthy(),

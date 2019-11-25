@@ -37,6 +37,7 @@ import {
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
+import { productRoute } from 'ish-core/custom-routes/product.route';
 
 @Injectable()
 export class ProductsEffects {
@@ -214,7 +215,7 @@ export class ProductsEffects {
 
   @Effect()
   loadDefaultCategoryContextForProduct$ = this.actions$.pipe(
-    ofRoute(/^product/),
+    ofRoute(productRoute.formats),
     switchMap(() =>
       this.store.pipe(
         select(productsSelectors.getSelectedProduct),
