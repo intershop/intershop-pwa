@@ -111,3 +111,111 @@ jobs:
         with:
           name: 'screenshots'
           path: './e2e/cypress/screenshots'
+
+  testsE2EB2C:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        partition: [1, 2, 3, 4, 5, 6]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-test-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-test-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-cache-
+
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
+
+      - name: Test E2E b2c
+        run: |
+          npm run ng -- serve --prod &
+          wait-on http://localhost:4200
+          cd e2e
+          sh e2e-partition.sh 6 ${{ matrix.partition }} '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: https://intershoppwa.azurewebsites.net/
+
+      - name: Upload results as an artifact
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: 'screenshots'
+          path: './e2e/cypress/screenshots'
+
+  testsE2EB2B:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        partition: [1, 2, 3]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-test-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-test-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-cache-
+
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
+
+      - name: Test E2E b2b
+        run: |
+          sed -i -e "s/inSPIRED-inTRONICS-Site/inSPIRED-inTRONICS_Business-Site/g" ./src/environments/environment.prod.ts
+          sed -i -e "s/\/\*REPLACEMEINCI\*\//, 'businessCustomerRegistration', 'quoting', 'advancedVariationHandling'/g" ./src/environments/environment.prod.ts
+          npm run ng -- serve --prod &
+          wait-on http://localhost:4200
+          cd e2e
+          sh e2e-partition.sh 3 ${{ matrix.partition }} '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: https://intershoppwa.azurewebsites.net/
+
+      - name: Upload results as an artifact
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: 'screenshots'
+          path: './e2e/cypress/screenshots'
