@@ -23,14 +23,14 @@ if (!process.env.ICM_BASE_URL) {
 
 const DEFAULT_CONFIG = {
   browser: BROWSER,
-  defaultCommandTimeout: 15000,
+  defaultCommandTimeout: 30000,
   reporter: 'junit',
   reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
   spec: TEST_FILES,
   config: {
     baseUrl: process.env.PWA_BASE_URL,
     numTestsKeptInMemory: 1,
-    pageLoadTimeout: 180000,
+    pageLoadTimeout: 60000,
     trashAssetsBeforeRuns: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
