@@ -2,7 +2,6 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
@@ -35,7 +34,7 @@ describe('Account Addresses Component', () => {
         MockComponent(ModalDialogComponent),
         MockComponent(SelectAddressComponent),
       ],
-      imports: [NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -216,7 +215,7 @@ describe('Account Addresses Component', () => {
   it('should render create address button after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeTruthy();
-    expect(element.querySelector('div.show[data-testing-id=create-address-form]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=create-address-form]')).toBeFalsy();
   });
 
   it('should render create address form if showCreateAddressForm is called', () => {
@@ -224,7 +223,7 @@ describe('Account Addresses Component', () => {
     fixture.detectChanges();
 
     expect(component.isCreateAddressFormCollapsed).toBeFalse();
-    expect(element.querySelector('div.show[data-testing-id=create-address-form]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=create-address-form]')).toBeTruthy();
     expect(element.querySelector('a[data-testing-id=create-address-button]')).toBeFalsy();
   });
 
