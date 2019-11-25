@@ -32,5 +32,11 @@ describe('Logout Guard', () => {
       const [arg] = capture(store$.dispatch).last();
       expect((arg as Action).type).toBe(UserActionTypes.LogoutUser);
     });
+
+    it('should redirect to /home when called', () => {
+      const tree = logoutGuard.canActivate();
+
+      expect(tree.toString()).toMatchInlineSnapshot(`"/home"`);
+    });
   });
 });
