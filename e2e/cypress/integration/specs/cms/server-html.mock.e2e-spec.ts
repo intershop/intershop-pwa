@@ -20,13 +20,13 @@ describe('Server Html', () => {
       url: '**/cms/**',
       status: 200,
       response: {
-        definitionQualifiedName: 'app_sf_responsive_cm:pwa.include.homepage.pagelet2-Include',
-        displayName: 'PWA Homepage Content',
-        id: 'pwa.include.homepage.pagelet2-Include',
+        definitionQualifiedName: 'app_sf_pwa_cm:include.homepage.content.pagelet2-Include',
+        displayName: 'Homepage Content',
+        id: 'include.homepage.content.pagelet2-Include',
         link: {
-          title: 'pwa.include.homepage.pagelet2-Include',
+          title: 'include.homepage.content.pagelet2-Include',
           type: 'Link',
-          uri: 'inSPIRED-inTRONICS-Site/-/cms/includes/pwa.include.homepage.pagelet2-Include',
+          uri: 'inSPIRED-inTRONICS-Site/-/cms/includes/include.homepage.content.pagelet2-Include',
         },
         pagelets: [
           {

@@ -64,7 +64,7 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;channel=site');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home;channel=site"`);
-    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/-"`);
+    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/rest"`);
   }));
 
   it('should set imported channel and application to state', fakeAsync(() => {
@@ -78,14 +78,14 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;channel=site;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/-"`);
+    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/rest"`);
   }));
 
   it('should preserve query parameters when redirecting', fakeAsync(() => {
     router.navigateByUrl('/home;channel=site;redirect=1?foo=bar&test=hello');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home?foo=bar&test=hello"`);
-    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/-"`);
+    expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/rest/WFS/site/rest"`);
   }));
 
   it('should set imported features to state', fakeAsync(() => {
