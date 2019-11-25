@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { LogoutUser } from 'ish-core/store/user';
@@ -9,10 +9,10 @@ import { LogoutUser } from 'ish-core/store/user';
  */
 @Injectable({ providedIn: 'root' })
 export class LogoutGuard implements CanActivate {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store<{}>, private router: Router) {}
 
   canActivate() {
     this.store.dispatch(new LogoutUser());
-    return true;
+    return this.router.createUrlTree(['/home']);
   }
 }
