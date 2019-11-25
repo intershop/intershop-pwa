@@ -8,7 +8,7 @@ const _ = {
   productSku: '8182790134362',
   categoryId: 'Computers',
   pageId: 'page.aboutus',
-  route: 'login',
+  route: 'register',
 };
 
 describe('Server Html', () => {
