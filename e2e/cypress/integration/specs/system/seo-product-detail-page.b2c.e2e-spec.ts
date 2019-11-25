@@ -10,7 +10,7 @@ describe('Product Detail Page Meta', () => {
     at(ProductDetailPage, page => {
       waitLoadingEnd(1000);
       page.metaData.check({
-        title: 'Google Home - Smart Home favorable buying at our shop | Intershop PWA',
+        title: 'Google Home - Smart Home | Intershop PWA',
         url: /.*\/sku201807171/,
         description: 'Google Home - Hands-free help from the Google Assistant',
         'og:image': /.*201807171_front.*/,

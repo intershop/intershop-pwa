@@ -54,3 +54,4 @@ suggest ?SearchTerm=kodak
 products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating&offset=0&returnSortKeys=true&searchTerm=kodak {elements:[.elements[]|select(.uri|test(".*/7912057"))],name,type,sortKeys,total:1,offset,amount}
 countries ? . Accept:application/vnd.intershop.country.v1+json
 customers/- ? . Authorization:BASIC\ cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==
+cms/includes/include.homepage.content.pagelet2-Include

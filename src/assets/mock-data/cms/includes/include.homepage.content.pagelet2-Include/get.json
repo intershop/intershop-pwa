@@ -1,13 +1,13 @@
 {
   "customAttributes": {},
-  "definitionQualifiedName": "app_sf_responsive_cm:pwa.include.homepage.pagelet2-Include",
-  "displayName": "PWA Homepage Content",
+  "definitionQualifiedName": "app_sf_pwa_cm:include.homepage.content.pagelet2-Include",
+  "displayName": "Homepage Content",
   "domain": "inSPIRED-inTRONICS-b2c-responsive",
-  "id": "pwa.include.homepage.pagelet2-Include",
+  "id": "include.homepage.content.pagelet2-Include",
   "link": {
-    "title": "pwa.include.homepage.pagelet2-Include",
+    "title": "include.homepage.content.pagelet2-Include",
     "type": "Link",
-    "uri": "inSPIRED-inTRONICS-Site/-/cms/includes/pwa.include.homepage.pagelet2-Include"
+    "uri": "inSPIRED-inTRONICS-Site/-/cms/includes/include.homepage.content.pagelet2-Include"
   },
   "pagelets": [
     {
@@ -146,6 +146,6 @@
       "type": "PageletRO"
     }
   ],
-  "resourceSetID": "app_sf_responsive_cm",
+  "resourceSetID": "app_sf_pwa_cm",
   "type": "PageletEntryPointRO"
 }

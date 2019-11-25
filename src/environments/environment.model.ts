@@ -82,6 +82,7 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   icmChannel: 'inSPIRED-inTRONICS-Site',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
+  icmApplication: 'rest',
 
   production: false,
   mockServerAPI: false,
