@@ -63,9 +63,7 @@ export class ContactFormComponent implements OnChanges, OnInit {
 
   /** map subjects to select box options */
   private mapSubjectOptions(subjects: string[]): SelectOption[] {
-    const options: SelectOption[] = [];
-    subjects.map(subject => options.push({ value: subject, label: subject }));
-    return options;
+    return subjects.map(subject => ({ value: subject, label: subject }));
   }
 
   private initForm() {
