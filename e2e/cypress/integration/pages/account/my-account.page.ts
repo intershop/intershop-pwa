@@ -28,4 +28,8 @@ export class MyAccountPage {
   get rejectedQuoteLabel() {
     return cy.get('[data-testing-id="rejected-counter"]');
   }
+
+  navigateToAddresses() {
+    cy.get('a[data-testing-id="addresses-link"]').click();
+  }
 }
