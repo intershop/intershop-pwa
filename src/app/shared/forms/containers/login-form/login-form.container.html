@@ -16,8 +16,8 @@
       controlName="login"
       type="email"
       label="account.login.email.label"
-      labelClass="col-md-3"
-      inputClass="col-md-6"
+      [labelClass]="labelClass || 'col-md-3'"
+      [inputClass]="inputClass || 'col-md-6'"
       markRequiredLabel="off"
       [errorMessages]="{
         required: 'account.login.email.error.required',
@@ -31,8 +31,8 @@
       [form]="form"
       controlName="login"
       label="account.login.username.label"
-      labelClass="col-md-3"
-      inputClass="col-md-6"
+      [labelClass]="labelClass || 'col-md-3'"
+      [inputClass]="inputClass || 'col-md-6'"
       markRequiredLabel="off"
       [errorMessages]="{ required: 'account.login.username.error.required' }"
     ></ish-input>
@@ -43,8 +43,8 @@
     controlName="password"
     type="password"
     label="account.login.password.label"
-    labelClass="col-md-3"
-    inputClass="col-md-6"
+    [labelClass]="labelClass || 'col-md-3'"
+    [inputClass]="inputClass || 'col-md-6'"
     markRequiredLabel="off"
     [errorMessages]="{
       required: 'account.login.password.error.required',
@@ -54,10 +54,12 @@
   ></ish-input>
 
   <div class="row form-group">
-    <div class="offset-md-3 col-md-9">
+    <div [ngClass]="signInClass || 'offset-md-3 col-md-auto'">
       <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="buttonDisabled">
         {{ 'account.signin.button.label' | translate }}
       </button>
+    </div>
+    <div [ngClass]="forgotPasswordClass || ''">
       <a class="btn btn-link" [routerLink]="'/forgotPassword'">{{ 'account.send_password.heading' | translate }}</a>
     </div>
   </div>
