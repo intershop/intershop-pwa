@@ -50,7 +50,7 @@ export class ProductCompareListComponent implements OnChanges {
   ngOnChanges() {
     this.commonAttributeNames = this.getCommonAttributeNames();
     // decrease the current page value if the current page would be empty because of removing a product from compare
-    if (!((this.currentPage - 1) * this.itemsPerPage < this.compareProducts.length)) {
+    if ((this.currentPage - 1) * this.itemsPerPage >= this.compareProducts.length) {
       this.currentPage = this.currentPage - 1;
     }
     this.setVisibleProducts();
