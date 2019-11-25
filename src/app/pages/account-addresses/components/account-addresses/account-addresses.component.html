@@ -17,12 +17,7 @@
   <ish-error-message [error]="error"></ish-error-message>
 
   <!-- create address form -->
-  <div
-    id="collapseBasic"
-    class="section"
-    [ngbCollapse]="isCreateAddressFormCollapsed"
-    data-testing-id="create-address-form"
-  >
+  <div id="collapseBasic" class="section" *ngIf="!isCreateAddressFormCollapsed" data-testing-id="create-address-form">
     <div class="row">
       <div class="col-md-10 col-xl-8">
         <ish-customer-address-form
