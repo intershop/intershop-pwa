@@ -108,8 +108,6 @@ jobs:
           wait-on http://localhost:4200
           cd e2e
           sh e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
-          jobs
-          kill %1
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
@@ -163,8 +161,6 @@ jobs:
           wait-on http://localhost:4200
           cd e2e
           sh e2e-partition.sh 5 ${{ matrix.partition }} '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
-          jobs
-          kill %1
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
@@ -220,8 +216,6 @@ jobs:
           wait-on http://localhost:4200
           cd e2e
           sh e2e-partition.sh 2 ${{ matrix.partition }} '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
-          jobs 
-          kill %1
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
