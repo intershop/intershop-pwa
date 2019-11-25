@@ -127,7 +127,7 @@ jobs:
 
     strategy:
       matrix:
-        partition: [1, 2, 3, 4, 5] # [10.x, 12.x, 13.x]
+        partition: [1, 2, 3, 4, 5]
 
     steps:
       - uses: actions/checkout@v1
@@ -182,14 +182,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x] # [10.x, 12.x, 13.x]
+        partition: [1, 2]
 
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
 
       - uses: actions/cache@v1
         with:
@@ -219,7 +219,7 @@ jobs:
           npm run ng -- serve --prod &
           wait-on http://localhost:4200
           cd e2e
-          sh e2e-partition.sh 1 1 '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          sh e2e-partition.sh 2 ${{ matrix.partition }} '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
           jobs 
           kill %1
         env:
