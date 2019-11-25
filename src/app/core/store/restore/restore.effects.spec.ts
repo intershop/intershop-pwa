@@ -11,7 +11,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { BasketActionTypes, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { BasketActionTypes, LoadBasketSuccess, getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/orders';
@@ -219,6 +219,48 @@ describe('Restore Effects', () => {
       expect(getLoggedInUser(store$.state)).toBeTruthy();
 
       restoreEffects.logOutUserIfTokenVanishes$.subscribe(fail, fail, fail);
+
+      // terminate checking
+      setTimeout(done, 3000);
+    });
+  });
+
+  describe('removeAnonymousBasketIfTokenVanishes$', () => {
+    it('should remove basket when token is not available and cookie law was accepted', done => {
+      cookieLawSubject$.next(true);
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+      expect(getCurrentBasket(store$.state)).toBeTruthy();
+
+      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe({
+        next: action => {
+          expect(action.type).toEqual(BasketActionTypes.ResetBasket);
+          done();
+        },
+        complete: fail,
+      });
+    });
+
+    it('should do nothing when cookie law was not yet accepted', done => {
+      cookieLawSubject$.next(false);
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+      expect(getCurrentBasket(store$.state)).toBeTruthy();
+
+      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
+
+      // terminate checking
+      setTimeout(done, 3000);
+    });
+
+    it('should do nothing when user is available', done => {
+      cookieLawSubject$.next(true);
+
+      store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+      expect(getCurrentBasket(store$.state)).toBeTruthy();
+
+      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
 
       // terminate checking
       setTimeout(done, 3000);
