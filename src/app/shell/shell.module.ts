@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
+import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -17,6 +18,7 @@ import { FooterComponent } from './footer/components/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/components/header-default/header-default.component';
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
+import { LazyLoginModalComponent } from './header/components/lazy-login-modal/lazy-login-modal.component';
 import { ProductImageComponent } from './header/components/product-image/product-image.component';
 import { SubCategoryNavigationComponent } from './header/components/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/components/user-information-mobile/user-information-mobile.component';
@@ -44,8 +46,13 @@ const exportedComponents = [
     IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
+    NgbModalModule,
     PipesModule.forRoot(),
     QuotingExportsModule,
+    ReactiveComponentLoaderModule.withModule({
+      moduleId: 'ish-shared',
+      loadChildren: '../shared/shared.module#SharedModule',
+    }),
     RouterModule,
     TranslateModule,
   ],
@@ -57,6 +64,7 @@ const exportedComponents = [
     HeaderNavigationContainerComponent,
     HeaderSimpleComponent,
     LanguageSwitchContainerComponent,
+    LazyLoginModalComponent,
     LoginStatusContainerComponent,
     MiniBasketContainerComponent,
     ProductCompareStatusContainerComponent,
@@ -64,5 +72,6 @@ const exportedComponents = [
     UserInformationMobileComponent,
   ],
   exports: [...exportedComponents],
+  entryComponents: [LazyLoginModalComponent],
 })
 export class ShellModule {}

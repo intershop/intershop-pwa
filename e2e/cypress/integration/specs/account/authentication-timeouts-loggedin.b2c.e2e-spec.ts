@@ -57,7 +57,7 @@ describe('Logged in Sleeping User', () => {
     });
   });
 
-  xdescribe('being a long time on a myaccount page', () => {
+  describe('being a long time on a myaccount page', () => {
     it('should wait a long time on myaccount page after logging in', () => {
       LoginPage.navigateTo();
       at(LoginPage, page =>
