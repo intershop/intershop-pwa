@@ -156,19 +156,6 @@ describe('User Effects', () => {
     });
   });
 
-  describe('goToHomeAfterLogout$', () => {
-    it('should navigate to /home after LogoutUser', fakeAsync(() => {
-      const action = new ua.LogoutUser();
-      actions$ = of(action);
-
-      effects.goToHomeAfterLogout$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/home');
-    }));
-  });
-
   describe('redirectAfterLogin$', () => {
     it('should not navigate anywhere when no returnUrl is given', fakeAsync(() => {
       const action = new ua.LoginUserSuccess(loginResponseData);

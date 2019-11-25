@@ -81,12 +81,6 @@ export class UserEffects {
     )
   );
 
-  @Effect({ dispatch: false })
-  goToHomeAfterLogout$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LogoutUser),
-    tap(() => this.router.navigate(['/home']))
-  );
-
   /*
    * redirects to the returnUrl after successful login
    * does not redirect at all, if no returnUrl is defined
