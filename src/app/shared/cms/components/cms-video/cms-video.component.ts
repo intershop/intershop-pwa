@@ -55,18 +55,22 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
     }
   }
 
+  /**
+   * Process video URL by trying different processors.
+   * If all fail, fall back to the default processor
+   */
   private processVideoUrl() {
-    // tslint:disable:no-empty
-    if (this.processedYoutubeVideo()) {
-    } else if (this.processedVimeoVideo()) {
-    } else {
-      this.nativeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video);
+    if (!this.tryProcessYoutubeVideo() && !this.tryProcessVimeoVideo()) {
+      this.tryProcessDefaultVideo();
     }
-    // tslint:enable:no-empty
+  }
+
+  tryProcessDefaultVideo() {
+    this.nativeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video);
   }
 
   // process video URL with a YouTube video ID regex (https://github.com/regexhq/youtube-regex)
-  private processedYoutubeVideo(): boolean {
+  tryProcessYoutubeVideo(): boolean {
     const youtubeVideoRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/i;
     if (youtubeVideoRegex.test(this.video)) {
       const videoId = youtubeVideoRegex.exec(this.video)[1];
@@ -84,7 +88,7 @@ export class CMSVideoComponent implements CMSComponent, OnInit {
   }
 
   // process video URL with a Vimeo video ID regex (https://github.com/regexhq/vimeo-regex)
-  private processedVimeoVideo(): boolean {
+  tryProcessVimeoVideo(): boolean {
     const vimeoVideoRegex = /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/i;
     if (vimeoVideoRegex.test(this.video)) {
       const videoId = vimeoVideoRegex.exec(this.video)[4];
