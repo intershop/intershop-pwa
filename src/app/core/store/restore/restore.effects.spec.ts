@@ -11,7 +11,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { BasketActionTypes, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { BasketActionTypes, LoadBasketSuccess, ResetBasket } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/orders';
@@ -260,6 +260,45 @@ describe('Restore Effects', () => {
 
       // terminate checking
       setTimeout(done, 3000);
+    });
+  });
+
+  describe('sessionKeepAlive$', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    it('should occasionally refresh the basket if it is available', done => {
+      restoreEffects.sessionKeepAlive$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Basket Internal] Load Basket`);
+        done();
+      });
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
+    });
+
+    it('should not refresh the basket if it is getting unavailable', done => {
+      restoreEffects.sessionKeepAlive$.subscribe(fail);
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE / 2);
+
+      store$.dispatch(new ResetBasket());
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
+
+      done();
+    });
+
+    it('should do nothing if basket is unavailable', done => {
+      restoreEffects.sessionKeepAlive$.subscribe(fail);
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
+
+      done();
     });
   });
 });
