@@ -117,7 +117,7 @@ jobs:
 
     strategy:
       matrix:
-        partition: [1, 2, 3, 4, 5]
+        partition: [1, 2, 3, 4, 5, 6]
 
     steps:
       - uses: actions/checkout@v1
@@ -152,7 +152,7 @@ jobs:
           npm run ng -- serve --prod &
           wait-on http://localhost:4200
           cd e2e
-          sh e2e-partition.sh 5 ${{ matrix.partition }} '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          sh e2e-partition.sh 6 ${{ matrix.partition }} '*b2c*.e2e-spec.ts' | xargs -r sh test-e2e.sh
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
@@ -170,7 +170,7 @@ jobs:
 
     strategy:
       matrix:
-        partition: [1, 2]
+        partition: [1, 2, 3]
 
     steps:
       - uses: actions/checkout@v1
@@ -207,7 +207,7 @@ jobs:
           npm run ng -- serve --prod &
           wait-on http://localhost:4200
           cd e2e
-          sh e2e-partition.sh 2 ${{ matrix.partition }} '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          sh e2e-partition.sh 3 ${{ matrix.partition }} '*b2b*.e2e-spec.ts' | xargs -r sh test-e2e.sh
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
