@@ -4,7 +4,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, interval } from 'rxjs';
-import { filter, map, mapTo, switchMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMapTo, filter, first, map, mapTo, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { LoadBasketByAPIToken, ResetBasket, getCurrentBasket } from 'ish-core/store/checkout/basket';
@@ -69,7 +69,7 @@ export class RestoreEffects {
   @Effect()
   restoreUserOrBasketOrOrderByToken$ = this.router.events.pipe(
     filter(event => event instanceof NavigationStart),
-    take(1),
+    first(),
     map(() => this.cookieService.get('apiToken')),
     whenTruthy(),
     map(c => this.parseCookie(c)),
@@ -91,8 +91,8 @@ export class RestoreEffects {
   @Effect()
   logOutUserIfTokenVanishes$ = this.appRef.isStable.pipe(
     whenTruthy(),
-    take(1),
-    switchMap(() =>
+    first(),
+    concatMapTo(
       interval(1000).pipe(
         takeWhile(() => isPlatformBrowser(this.platformId)),
         withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.cookieService.cookieLawSeen$),
@@ -107,8 +107,8 @@ export class RestoreEffects {
   @Effect()
   removeAnonymousBasketIfTokenVanishes$ = this.appRef.isStable.pipe(
     whenTruthy(),
-    take(1),
-    switchMap(() =>
+    first(),
+    concatMapTo(
       interval(1000).pipe(
         takeWhile(() => isPlatformBrowser(this.platformId)),
         withLatestFrom(

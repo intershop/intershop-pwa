@@ -11,6 +11,7 @@ export enum UserActionTypes {
   LoginUserSuccess = '[Account API] Login User Success',
   LoginUserFail = '[Account API] Login User Failed',
   SetAPIToken = '[Account Internal] Set API Token',
+  ResetAPIToken = '[Account Internal] Reset API Token',
   LoadCompanyUser = '[Account Internal] Load Company User',
   LoadCompanyUserFail = '[Account API] Load Company User Fail',
   LoadCompanyUserSuccess = '[Account API] Load Company User Success',
@@ -57,6 +58,10 @@ export class LoginUserSuccess implements Action {
 export class SetAPIToken implements Action {
   readonly type = UserActionTypes.SetAPIToken;
   constructor(public payload: { apiToken: string }) {}
+}
+
+export class ResetAPIToken implements Action {
+  readonly type = UserActionTypes.ResetAPIToken;
 }
 
 export class LoadCompanyUser implements Action {
@@ -187,6 +192,7 @@ export type UserAction =
   | LoginUserFail
   | LoginUserSuccess
   | SetAPIToken
+  | ResetAPIToken
   | LoadCompanyUser
   | LoadCompanyUserFail
   | LoadCompanyUserSuccess

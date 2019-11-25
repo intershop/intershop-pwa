@@ -8,7 +8,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, from, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
@@ -154,6 +154,24 @@ describe('User Effects', () => {
 
       expect(effects.loadCompanyUser$).toBeObservable(expected$);
     });
+  });
+
+  describe('goToLoginAfterLogoutBySessionTimeout$', () => {
+    it('should navigate to login from current route after ResetAPIToken', fakeAsync(() => {
+      store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
+      router.navigateByUrl('/account');
+      tick(500);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/account"`);
+
+      actions$ = from([new ua.ResetAPIToken(), new ua.LogoutUser()]);
+
+      effects.goToLoginAfterLogoutBySessionTimeout$.subscribe(noop, fail, noop);
+
+      tick(5000);
+
+      expect(location.path()).toMatchInlineSnapshot(`"/login?returnUrl=%2Faccount&messageKey=session_timeout"`);
+    }));
   });
 
   describe('redirectAfterLogin$', () => {
