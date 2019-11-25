@@ -20,6 +20,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private store: Store<{}>, private router: Router) {}
+
   canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.guardAccess(state.url);
   }

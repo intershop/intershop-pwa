@@ -11,12 +11,12 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { BasketActionTypes, LoadBasketSuccess, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { BasketActionTypes, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/orders';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
+import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -201,22 +201,21 @@ describe('Restore Effects', () => {
       cookieLawSubject$.next(true);
 
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
-      expect(getLoggedInUser(store$.state)).toBeTruthy();
 
-      restoreEffects.logOutUserIfTokenVanishes$.subscribe({
-        next: action => {
+      restoreEffects.logOutUserIfTokenVanishes$.subscribe(
+        action => {
           expect(action.type).toEqual(UserActionTypes.LogoutUser);
           done();
         },
-        complete: fail,
-      });
+        fail,
+        fail
+      );
     });
 
     it('should do nothing when cookie law was not yet accepted', done => {
       cookieLawSubject$.next(false);
 
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
-      expect(getLoggedInUser(store$.state)).toBeTruthy();
 
       restoreEffects.logOutUserIfTokenVanishes$.subscribe(fail, fail, fail);
 
@@ -230,7 +229,6 @@ describe('Restore Effects', () => {
       cookieLawSubject$.next(true);
 
       store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
-      expect(getCurrentBasket(store$.state)).toBeTruthy();
 
       restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe({
         next: action => {
@@ -245,7 +243,6 @@ describe('Restore Effects', () => {
       cookieLawSubject$.next(false);
 
       store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
-      expect(getCurrentBasket(store$.state)).toBeTruthy();
 
       restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
 
@@ -258,7 +255,6 @@ describe('Restore Effects', () => {
 
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
       store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
-      expect(getCurrentBasket(store$.state)).toBeTruthy();
 
       restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
 

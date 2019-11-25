@@ -51,6 +51,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.LoginUser: {
       return {
         ...initialState,
+        _authToken: state._authToken,
         _lastAuthTokenBeforeLogin: state._authToken,
       };
     }
@@ -62,6 +63,13 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return {
         ...state,
         _authToken: action.payload.apiToken,
+      };
+    }
+
+    case UserActionTypes.ResetAPIToken: {
+      return {
+        ...state,
+        _authToken: undefined,
       };
     }
 
@@ -86,6 +94,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
         ...initialState,
         loading: false,
         error,
+        _authToken: state._authToken,
       };
     }
 
