@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs';
@@ -27,6 +27,11 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormContainerComponent implements OnInit {
+  @Input() labelClass: string;
+  @Input() inputClass: string;
+  @Input() forgotPasswordClass: string;
+  @Input() signInClass: string;
+
   loginError$: Observable<HttpError>;
 
   form: FormGroup;
