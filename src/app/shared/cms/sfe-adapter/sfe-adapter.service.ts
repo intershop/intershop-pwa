@@ -83,7 +83,14 @@ export class SfeAdapterService {
    * (3) OR the debug mode is on (`initOnTopLevel`).
    */
   private shouldInit() {
-    return isPlatformBrowser(this.platformId) && ((window.parent && window.parent !== window) || this.initOnTopLevel);
+    return (
+      isPlatformBrowser(this.platformId) &&
+      // is iframe but not cypress
+      // tslint:disable-next-line: no-string-literal
+      ((window.parent && window.parent !== window && !window['Cypress']) ||
+        // force
+        this.initOnTopLevel)
+    );
   }
 
   /**
@@ -177,7 +184,9 @@ export class SfeAdapterService {
    * @param hostOrigin The window to send the message to. This is necessary due to cross-origin policies.
    */
   private messageToHost(msg: DesignViewMessage, hostOrigin: string) {
-    window.parent.postMessage(msg, hostOrigin);
+    if (this.isInitialized()) {
+      window.parent.postMessage(msg, hostOrigin);
+    }
   }
 
   private getBody() {
