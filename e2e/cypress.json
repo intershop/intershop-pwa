@@ -7,6 +7,5 @@
   "videoUploadOnPasses": false,
   "testFiles": "**/*.e2e-spec.ts",
   "defaultCommandTimeout": 8000,
-  "modifyObstructiveCode": false,
-  "projectId": "62cvdd"
+  "modifyObstructiveCode": false
 }
