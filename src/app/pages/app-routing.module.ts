@@ -4,6 +4,7 @@ import { MetaGuard } from '@ngx-meta/core';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
+import { LoginGuard } from 'ish-core/guards/login.guard';
 import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
 const routes: Routes = [
@@ -122,7 +123,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login-page.module').then(m => m.LoginPageModule),
-    canActivate: [MetaGuard],
+    canActivate: [LoginGuard, MetaGuard],
     data: {
       meta: {
         title: 'account.login.link',

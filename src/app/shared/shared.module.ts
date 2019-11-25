@@ -70,6 +70,7 @@ import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
 import { LineItemEditComponent } from './line-item/components/line-item-edit/line-item-edit.component';
 import { LineItemEditDialogContainerComponent } from './line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
+import { LoginModalComponent } from './login/components/login-modal/login-modal.component';
 import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
@@ -147,6 +148,7 @@ const declaredComponents = [
   LineItemDescriptionComponent,
   LineItemEditComponent,
   LineItemEditDialogContainerComponent,
+  LoginModalComponent,
   ProductIdComponent,
   ProductLabelComponent,
   ProductListComponent,
@@ -216,6 +218,7 @@ const exportedComponents = [
     CMSStaticPageComponent,
     CMSTextComponent,
     CMSVideoComponent,
+    LoginModalComponent,
   ],
 })
 export class SharedModule {}

@@ -2664,5 +2664,6 @@
   "seo.applicationName": "Intershop PWA",
   "seo.defaults.title": "Intershop Progressive Web App",
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
-  "account.login.session_timeout.message": "You have been logged out automatically due to a long period of inactivity. Please log in again to continue shopping."
+  "account.login.session_timeout.message": "You have been logged out automatically due to a long period of inactivity. Please log in again to continue shopping.",
+  "account.login.register_now": "You don't have an account yet?<br/><a href=\"{{0}}\">Register now</a>"
 }
