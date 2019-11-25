@@ -33,7 +33,7 @@ export class SearchParameterMapper {
 
         const sortings = [name];
         if (searchParameter.sortings) {
-          searchParameter.sortings.concat(sortings);
+          searchParameter.sortings = searchParameter.sortings.concat(sortings);
         } else {
           searchParameter.sortings = sortings;
         }
