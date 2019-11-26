@@ -37,7 +37,6 @@ jobs:
         run: |
           npm run format
           bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
-          node reports/tslint
 
       - name: Compile
         run: |
@@ -46,11 +45,6 @@ jobs:
           (cd e2e && npx tsc -p cypress/tsconfig.json)
           (cd schematics && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
           (cd tslint-rules && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
-
-      - name: Lint
-        run: |
-          npm run lint
-          sh scripts/ci-check-no-additional-warnings.sh
 
       - name: Lint by action
         uses: mooyoul/tslint-actions@v1.1.1
