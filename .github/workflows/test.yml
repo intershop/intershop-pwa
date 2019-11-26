@@ -43,16 +43,9 @@ jobs:
         run: |
           npm run ng -- build --aot
           npx tsc -p tsconfig.spec.json
-          cd e2e
-          npx tsc -p cypress/tsconfig.json
-          cd ..
-          cd schematics
-          npm run build
-          bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
-          cd ..
-          cd tslint-rules
-          npm run build
-          bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+          (cd e2e && npx tsc -p cypress/tsconfig.json)
+          (cd schematics && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
+          (cd tslint-rules && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
 
       - name: Lint
         run: |
@@ -63,9 +56,7 @@ jobs:
         uses: mooyoul/tslint-actions@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: '*.ts'
-          config: 'tslint.json'
-          project: './'
+          project: 'tsconfig.json'
 
   tests:
     runs-on: ubuntu-latest
