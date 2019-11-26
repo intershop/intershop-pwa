@@ -2553,7 +2553,7 @@
   "seo.title.error": "Erreur",
   "seo.applicationName": "Intershop PWA",
   "seo.defaults.title": "Intershop Progressive Web App",
-  "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
+  "seo.defaults.description": "Intershop - Progressive Web App - Démo PWA",
   "account.login.session_timeout.message": "Vous avez été déconnecté automatiquement en raison d’une longue période d’inactivité. Veuillez vous connecter à nouveau pour continuer vos achats.",
-  "account.login.register_now": "You don't have an account yet?<br/><a href=\"{{0}}\">Register now</a>"
+  "account.login.register_now": "Vous n’avez pas encore de compte ?<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>"
 }
