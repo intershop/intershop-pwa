@@ -45,6 +45,14 @@ jobs:
           npx tsc -p tsconfig.spec.json
           cd e2e
           npx tsc -p cypress/tsconfig.json
+          cd ..
+          cd schematics
+          npm run build
+          bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+          cd ..
+          cd tslint-rules
+          npm run build
+          bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
 
       - name: Lint
         run: |
@@ -99,7 +107,7 @@ jobs:
           npm run ng -- serve &
           wait-on http://localhost:4200
           cd e2e
-          sh e2e-partition.sh 1 1 '*mock*.e2e-spec.ts' | xargs -r sh test-e2e.sh
+          node cypress-ci-e2e **/*mock*.e2e-spec.ts
         env:
           CI: true
           PWA_BASE_URL: http://localhost:4200
