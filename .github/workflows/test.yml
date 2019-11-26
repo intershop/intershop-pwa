@@ -1,0 +1,121 @@
+name: TestCI
+
+on: [push]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-quality-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-quality-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-quality-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-quality-cache-
+
+      - name: Install Packages
+        run: |
+          npm ci
+          cd e2e
+          npm ci
+
+      - name: Code Quality
+        run: |
+          npm run format
+          bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+          node reports/tslint
+
+      - name: Compile
+        run: |
+          npm run ng -- build --aot
+          npx tsc -p tsconfig.spec.json
+          cd e2e
+          npx tsc -p cypress/tsconfig.json
+          cd ..
+          cd schematics
+          npm run build
+          bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+          cd ..
+          cd tslint-rules
+          npm run build
+          bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
+
+      - name: Lint
+        run: |
+          npm run lint
+          sh scripts/ci-check-no-additional-warnings.sh
+
+      - name: Lint by action
+        uses: mooyoul/tslint-actions@v1.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: '*.ts'
+          config: 'tslint.json'
+          project: './'
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-test-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-npm-
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-test-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-test-cache-
+
+      - name: Install Packages
+        run: |
+          npm i -g wait-on
+          npm ci
+          cd e2e
+          npm ci
+
+      - name: Test Jest
+        run: |
+          npm test
+
+      - name: Test E2E mocked
+        run: |
+          npm run ng -- serve &
+          wait-on http://localhost:4200
+          cd e2e
+          node cypress-ci-e2e **/*mock*.e2e-spec.ts
+        env:
+          CI: true
+          PWA_BASE_URL: http://localhost:4200
+          ICM_BASE_URL: http://localhost:4200
+
+      - name: Upload results as an artifact
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: 'screenshots'
+          path: './e2e/cypress/screenshots'

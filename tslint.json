@@ -650,13 +650,13 @@
           }
         ],
         "ignoredFiles": [
-          "/server.ts$",
+          "server.ts$",
           "src/[^/]*.ts$",
           ".*.spec.ts$",
-          "/tslint-rules/",
-          "/schematics/",
-          "/utils/dev/",
-          "/core/utils/",
+          "tslint-rules/",
+          "schematics/",
+          "utils/dev/",
+          "core/utils/",
           ".*.actions.ts$",
           ".*.model.ts$"
         ]
