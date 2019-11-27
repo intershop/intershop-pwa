@@ -9,9 +9,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketAddressSummaryComponent } from 'ish-shared/basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from 'ish-shared/basket/components/basket-items-summary/basket-items-summary.component';
@@ -56,12 +54,6 @@ describe('Checkout Payment Component', () => {
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: { configuration: { features: ['experimental'] } },
-          },
-        }),
       ],
     })
       .overrideComponent(CheckoutPaymentComponent, {
