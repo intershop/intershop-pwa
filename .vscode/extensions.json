@@ -19,7 +19,7 @@
     // code style + formatting
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
-    "shinnn.stylelint",
+    "hex-ci.stylelint-plus",
     "ms-vscode.vscode-typescript-tslint-plugin",
     // testing
     "orta.vscode-jest",
