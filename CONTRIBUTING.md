@@ -4,6 +4,10 @@ Thank you for your interest in the Intershop PWA project.
 
 We look forward for any kind of contribution.
 
+## Code of Conduct
+
+We have adopted the [Contributor Covenants](https://www.contributor-covenant.org/) Code of Conduct and we expect project participants to adhere to it. Please read and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## Non-Code Contributions
 
 You can contribute to the project without being a software developer. You can help by improving the documentation or analyzing the nature of an issue.
