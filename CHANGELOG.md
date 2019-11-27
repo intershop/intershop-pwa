@@ -1,3 +1,58 @@
+# [0.16.0](https://github.com/intershop/intershop-pwa/releases/tag/0.16.0) (2019-11-29)
+
+**required Intershop Commerce Management version: 7.10.15.2**
+
+### Features
+
+- enable Intershop test payment methods for redirect before and after checkout (ISH creditCard and onlinePay)
+- use modal dialog for login
+- keep session alive by regularly fetching basket
+- handle outdated auth tokens
+- lazy loading for cms managed images and videos (ng-defer-load)
+- lazy loading for product and category images (ng-defer-load)
+- display checkout error messages with full width (ISREST-885)
+- address basket validation with adjustments (ISREST-885)
+- display info messages for adding, updating, deleting basket items (ISREST-852)
+- display removed items on cart after basket was adjusted (ISREST-852)
+- add page meta information for SEO with ngx-meta (ISREST-913)
+- Open Source preparation (change license, add contributing information, update readme)
+- add confirmation for terms and conditions to registration page (ISREST-888)
+- add update password functionality (from generated email link) to the forgot password handling
+- Google reCaptcha V3 support (ISREST-859)
+- fill contact us form with user details if user is logged in
+- tuning for nginx responses and caching
+- fetch price ranges for retail sets on product lists
+- swatch image and color code navigation filter improvement
+
+### Bug Fixes
+
+- production mode support for concardis credit card
+- remove anonymous basket if auth token vanishes
+- improve categories list rendering with a trackBy function (prevents unnecessary re-rendering)
+- hide compare link in mobile view for disabled compare feature (ISREST-928) (#12)
+- quote request notification messages improvements (ISREST-880)
+- enable company input fields when registration form is loaded
+- add wrong variation to cart from product tile after variation change
+- server-html-directive patch elements on input change
+- rework basket merge handling (ISREST-848)
+- navigate to checkout payment page if order creation is rolled back. (ISREST-853)
+- apply a consistent form grid width layout (ISREST-906)
+- display bucket surcharges on checkout cost summary widget (ISREST-904)
+- remove wrong 'Cancel' button styling in edit profile forms (ISREST-839)
+- multiple product-requests on category-page
+- display delivery times and shipping costs for eligible shipping methods (ISREST-869)
+- update quote request before submit if quote request has unsaved changes
+- also send currentPassword when changing user passwords
+
+### Performance Improvements
+
+- decouple content-pagelet-container for more efficient memoization
+
+### BREAKING CHANGES
+
+- The feature toggle 'captcha' was renamed to 'captchaV2' in contrast to the newly introduced 'captchaV3' option that could be used with the reCaptcha V3 service activated in ICM and the PWA.
+- To resolve naming conflicts for the upcoming removal of the container-component-pattern some containers and components were merged into simpler components.
+
 # [0.15.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.15.0/) (2019-10-11)
 
 **required Intershop Commerce Management version: 7.10.14.0**
