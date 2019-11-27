@@ -4,9 +4,7 @@
 
 Welcome to the Intershop PWA project!
 
-The Intershop PWA is an Angular-based progressive web app storefront for the the Intershop Commerce Suite.
-
-The project and all contributions are made available under the [MIT license](./LICENSE).
+The Intershop PWA is an Angular-based progressive web app storefront for the Intershop Commerce Suite.
 
 Accompany us on a journey for great cutting-edge eCommerce and take the chance to make it your journey, too.
 
@@ -117,3 +115,7 @@ The Angular CLI default schematics are still available and working. However, the
 ## Further Help
 
 To get more help on the Angular CLI, use `ng help` or check out the [Angular CLI Documentation](https://github.com/angular/angular-cli/wiki).
+
+## License
+
+The Intershop Progressive Web App is made available under the [MIT license](./LICENSE).
