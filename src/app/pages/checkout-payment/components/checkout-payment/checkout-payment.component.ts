@@ -15,7 +15,6 @@ import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -59,7 +58,6 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   nextSubmitted = false;
   formSubmitted = false;
-  experimental = false;
 
   redirectStatus: string;
 
@@ -67,15 +65,12 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private route: ActivatedRoute, private router: Router, private featureToggle: FeatureToggleService) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   /**
    * create payment form
    */
   ngOnInit() {
-    // if experimental feature is on, payment redirect payment method is allowed
-    this.experimental = this.featureToggle.enabled('experimental');
-
     this.paymentForm = new FormGroup({
       name: new FormControl(this.getBasketPayment()),
       parameters: new FormGroup({}),
@@ -106,12 +101,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    if (c.basket) {
-      this.setPaymentSelectionFromBasket();
-    }
+    this.setPaymentSelectionFromBasket(c);
 
     if (c.paymentMethods) {
-      this.filterPaymentMethods();
+      // copy objects for runtime checks because formly modifies them, TODO: refactor
+      this.filteredPaymentMethods = this.paymentMethods && this.paymentMethods.map(x => JSON.parse(JSON.stringify(x)));
     }
   }
 
@@ -120,32 +114,14 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * Should be used for initialization when basket data is changed
    * invoked by `ngOnChanges()`, important in case of an error
    */
-  private setPaymentSelectionFromBasket() {
-    if (!this.paymentForm) {
+  private setPaymentSelectionFromBasket(c: SimpleChanges) {
+    if (c.basket && !this.paymentForm) {
       return;
     }
 
     this.paymentForm.get('name').setValue(this.getBasketPayment(), { emitEvent: false });
     this.openFormIndex = -1; // close parameter form after successfully basket changed
     this.parameterForm.reset();
-  }
-
-  /**
-   * filter out payment methods with capability `RedirectBeforeCheckout`, if experimental features are not enabled
-   */
-  private filterPaymentMethods() {
-    let methods: PaymentMethod[];
-    if (this.experimental) {
-      methods = this.paymentMethods;
-    } else {
-      methods =
-        this.paymentMethods &&
-        this.paymentMethods.filter(
-          pm => !pm.capabilities || !pm.capabilities.some(cap => cap.startsWith('Redirect') && pm.id.startsWith('ISH'))
-        );
-    }
-    // copy objects for runtime checks because formly modifies them, TODO: refactor
-    this.filteredPaymentMethods = methods && methods.map(x => JSON.parse(JSON.stringify(x)));
   }
 
   /**

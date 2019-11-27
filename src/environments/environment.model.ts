@@ -28,9 +28,7 @@ export interface Environment {
     | 'quoting'
     /* Third-party Integrations */
     | 'sentry'
-    | 'tracking'
-    /* features which do not have the degree of maturity to use them in production */
-    | 'experimental')[];
+    | 'tracking')[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 
