@@ -1,3 +1,42 @@
+# [0.16.0](https://github.com/intershop/intershop-pwa/releases/tag/0.16.0) (2019-11-28)
+
+**required Intershop Commerce Management version: 7.10.15.2**
+
+### Features
+
+- Open Source preparation (change license, add contributing information, update readme)
+- add confirmation for terms and conditions to registration page (ISREST-888)
+- add update password functionality (from generated email link) to the forgot password handling
+- Google reCaptcha V3 support (ISREST-859)
+- fill contact us form with user details if user is logged in
+- tuning for nginx responses and caching
+- fetch price ranges for retail sets on product lists
+- swatch image and color code navigation filter improvement
+
+### Bug Fixes
+
+- enable company input fields when registration form is loaded
+- add wrong variation to cart from product tile after variation change
+- server-html-directive patch elements on input change
+- rework basket merge handling (ISREST-848)
+- navigate to checkout payment page if order creation is rolled back. (ISREST-853)
+- apply a consistent form grid width layout (ISREST-906)
+- display bucket surcharges on checkout cost summary widget (ISREST-904)
+- remove wrong 'Cancel' button styling in edit profile forms (ISREST-839)
+- multiple product-requests on category-page
+- display delivery times and shipping costs for eligible shipping methods (ISREST-869)
+- update quote request before submit if quote request has unsaved changes
+- also send currentPassword when changing user passwords
+
+### Performance Improvements
+
+- decouple content-pagelet-container for more efficient memoization
+
+### BREAKING CHANGES
+
+- The feature toggle 'captcha' was renamed to 'captchaV2' in contrast to the newly introduced 'captchaV3' option that could be used with the reCaptcha V3 service activated in ICM and the PWA.
+- To resolve naming conflicts for the upcoming removal of the container-component-pattern some containers and components were merged into simpler components.
+
 # [0.15.0](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.15.0/) (2019-10-11)
 
 **required Intershop Commerce Management version: 7.10.14.0**
