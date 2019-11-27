@@ -45,11 +45,11 @@ setup:
   script:
     - node --version && npm --version
     - bash -c "cd tslint-rules ; npm --silent run build"
-    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
+    - bash scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
     - bash -c "cd schematics ; npm --silent run build"
-    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
+    - bash scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
     - npm i && npm i
-    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
+    - bash scripts/ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
     - echo "setup complete"
 
 start_review_server:
@@ -142,7 +142,7 @@ code_quality:
   script:
     - npm ci --prefer-offline
     - npm run format
-    - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+    - bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
     - node reports/tslint-gitlab
     - echo "build complete"
 
@@ -807,7 +807,7 @@ check_tslint_no_warnings:
     - performance
   script:
     - npm ci
-    - sh .gitlab-ci-check-no-additional-warnings.sh
+    - sh scripts/ci-check-no-additional-warnings.sh
     - echo "check complete"
 
 housekeeping_images:
