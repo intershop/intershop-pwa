@@ -165,6 +165,32 @@ describe('Basket Effects', () => {
 
       expect(effects.loadProductsForBasket$).toBeObservable(expected$);
     });
+    it('should trigger product loading actions for line items if MergeBasketSuccess action triggered', () => {
+      when(basketServiceMock.getBasket(anything())).thenReturn(of());
+
+      const action = new basketActions.MergeBasketSuccess({
+        basket: {
+          id: 'BID',
+          lineItems: [
+            {
+              id: 'BIID',
+              name: 'NAME',
+              position: 1,
+              quantity: { value: 1 },
+              price: undefined,
+              productSKU: 'SKU',
+            } as LineItem,
+          ],
+          payment: undefined,
+        } as Basket,
+      });
+
+      const completion = new LoadProductIfNotLoaded({ sku: 'SKU', level: ProductCompletenessLevel.List });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductsForBasket$).toBeObservable(expected$);
+    });
   });
 
   describe('loadBasketEligibleShippingMethods$', () => {
