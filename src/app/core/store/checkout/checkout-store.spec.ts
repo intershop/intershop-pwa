@@ -322,6 +322,9 @@ describe('Checkout Store', () => {
           [Basket Internal] Merge two baskets
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
+          [Shopping] Load Product if not Loaded:
+            sku: "test"
+            level: 2
         `);
       }));
     });

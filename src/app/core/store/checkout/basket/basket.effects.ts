@@ -65,7 +65,10 @@ export class BasketEffects {
    */
   @Effect()
   loadProductsForBasket$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
+    ofType<basketActions.LoadBasketSuccess>(
+      basketActions.BasketActionTypes.LoadBasketSuccess,
+      basketActions.BasketActionTypes.MergeBasketSuccess
+    ),
     mapToPayloadProperty('basket'),
     switchMap(basket => [
       ...basket.lineItems.map(
