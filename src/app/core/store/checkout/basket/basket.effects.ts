@@ -247,11 +247,15 @@ export class BasketEffects {
         !!payload.basketValidation.results.infos
     ),
     map(payload => payload.basketValidation),
-    // Load eligible shipping methods if shipping infos are available
     concatMap(validation => {
+      // Load eligible shipping methods if shipping infos are available
       if (validation.scopes.includes('Shipping')) {
         return [new basketActions.LoadBasketEligibleShippingMethods()];
+        // Load eligible payment methods if payment infos are available
+      } else if (validation.scopes.includes('Payment')) {
+        return [new basketActions.LoadBasketEligiblePaymentMethods()];
       } else {
+        // Load products if product related infos are available
         return validation.results.infos
           .filter(info => info.parameters && info.parameters.productSku)
           .map(info => new LoadProduct({ sku: info.parameters.productSku }));

@@ -121,6 +121,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         loading: false,
         error: undefined,
+        validationResults: initialValidationResults,
       };
     }
 
