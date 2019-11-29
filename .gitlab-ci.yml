@@ -37,7 +37,7 @@ setup:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -59,7 +59,7 @@ start_review_server:
   only:
     refs:
       - merge_requests
-      - develop
+      - github-develop
       - master
   tags:
     - shell-executor
@@ -86,7 +86,7 @@ jest_test:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -111,7 +111,7 @@ compile:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -130,7 +130,7 @@ code_quality:
   stage: build
   only:
     refs:
-      - develop
+      - github-develop
       - merge_requests
   tags:
     - docker-executor
@@ -203,7 +203,7 @@ publish_pwa:
   stage: build
   only:
     refs:
-      - develop
+      - github-develop
       - master
       - demo
       - tags
@@ -255,7 +255,7 @@ publish_nginx:
   stage: publish
   only:
     refs:
-      - develop
+      - github-develop
       - master
       - demo
       - tags
@@ -279,7 +279,7 @@ push_reports:
   cache: {}
   only:
     refs:
-      - develop
+      - github-develop
   allow_failure: true
   tags:
     - shell-executor
@@ -301,7 +301,7 @@ deploy_demo:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   tags:
     - shell-executor
     - docker
@@ -339,7 +339,7 @@ deploy_demo_b2b:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   tags:
     - shell-executor
     - docker
@@ -373,7 +373,7 @@ deploy_demo_nginx:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   tags:
     - shell-executor
     - docker
@@ -419,7 +419,7 @@ deploy_demo_BO:
     - shell-executor
   only:
     - merge_requests
-    - develop
+    - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -436,7 +436,7 @@ deploy_demo_MAIL:
     - shell-executor
   only:
     - merge_requests
-    - develop
+    - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -451,7 +451,7 @@ deploy_reports:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   allow_failure: true
   tags:
     - shell-executor
@@ -631,7 +631,7 @@ build_e2e_image:
   image: docker:stable
   only:
     refs:
-      - develop
+      - github-develop
       - merge_requests
   tags:
     - shell-executor
@@ -685,7 +685,7 @@ schematics:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -818,7 +818,7 @@ housekeeping_images:
     - shell-executor
   only:
     refs:
-      - develop
+      - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -831,7 +831,7 @@ housekeeping_environments:
   image: endeveit/docker-jq
   stage: verify
   only:
-    - develop
+    - github-develop
   tags:
     - docker-executor
   script:
