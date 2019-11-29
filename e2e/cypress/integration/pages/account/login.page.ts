@@ -1,7 +1,7 @@
 import { HeaderModule } from '../header.module';
 
 export class LoginPage {
-  readonly tag = 'ish-login-form';
+  readonly tag = 'ish-login-form-container';
 
   readonly header = new HeaderModule();
 
@@ -39,5 +39,9 @@ export class LoginPage {
 
   get errorText() {
     return cy.get('div.alert');
+  }
+
+  get infoText() {
+    return cy.get('.alert-info');
   }
 }

@@ -5,6 +5,8 @@ import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketInfoMapper } from 'ish-core/models/basket-info/basket-info.mapper';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketMergeHelper } from 'ish-core/models/basket-merge/basket-merge.helper';
 import { BasketMergeData } from 'ish-core/models/basket-merge/basket-merge.interface';
 import { BasketValidationData } from 'ish-core/models/basket-validation/basket-validation.interface';
@@ -13,7 +15,6 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -166,11 +167,15 @@ export class BasketService {
   /**
    * Merge the source basket (named in payload) into the current basket.
    * @param sourceBasketId  The id of the source basket.
+   * @param authToken       The token value of the source basket owner.
    * @returns               The merged basket.
    */
-  mergeBasket(sourceBasketId: string): Observable<Basket> {
+  mergeBasket(sourceBasketId: string, authToken: string): Observable<Basket> {
     if (!sourceBasketId) {
       return throwError('mergeBasket() called without sourceBasketId');
+    }
+    if (!authToken) {
+      return throwError('mergeBasket() called without authToken');
     }
 
     const params = new HttpParams().set('include', this.allTargetBasketIncludes.join());
@@ -179,7 +184,7 @@ export class BasketService {
         this.apiService
           .post<BasketMergeData>(
             `baskets/${basket.id}/merges`,
-            { sourceBasket: sourceBasketId },
+            { sourceBasket: sourceBasketId, sourceAuthenticationToken: authToken },
             {
               headers: this.basketHeaders,
               params,
@@ -220,9 +225,10 @@ export class BasketService {
     basketId: string = 'current',
     scopes: BasketValidationScopeType[] = ['']
   ): Observable<BasketValidation> {
+    const scopesWithAdjustmentsAllowed = ['Products', 'Addresses'];
     const body = {
       basket: basketId,
-      adjustmentsAllowed: false,
+      adjustmentsAllowed: scopes.some(scope => scopesWithAdjustmentsAllowed.includes(scope)),
       scopes,
     };
 
@@ -256,7 +262,7 @@ export class BasketService {
   addItemsToBasket(
     basketId: string = 'current',
     items: { sku: string; quantity: number; unit: string }[]
-  ): Observable<void> {
+  ): Observable<BasketInfo[]> {
     if (!items) {
       return throwError('addItemsToBasket() called without items');
     }
@@ -269,9 +275,11 @@ export class BasketService {
       },
     }));
 
-    return this.apiService.post(`baskets/${basketId}/items`, body, {
-      headers: this.basketHeaders,
-    });
+    return this.apiService
+      .post(`baskets/${basketId}/items`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(BasketInfoMapper.fromInfo));
   }
 
   /**
@@ -293,29 +301,21 @@ export class BasketService {
   }
 
   /**
-   * Add quote to basket.
-   * @param quoteId   The id of the quote that should be added to basket.
-   * @param basketId  The id of the basket which the quote should be added to.
-   * @returns         Link to the updated basket items.
-   */
-  addQuoteToBasket(quoteId: string, basketId: string): Observable<Link> {
-    const body = {
-      quoteID: quoteId,
-    };
-
-    return this.apiService.post(`baskets/${basketId}/items`, body);
-  }
-
-  /**
    * Updates specific line items (quantity/shipping method) for the given basket.
    * @param basketId  The id of the basket in which the item should be updated.
    * @param itemId    The id of the line item that should be updated.
    * @param body      request body
+   * @returns         Possible infos after the update.
    */
-  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<void> {
-    return this.apiService.patch(`baskets/${basketId}/items/${itemId}`, body, {
-      headers: this.basketHeaders,
-    });
+  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<BasketInfo[]> {
+    return this.apiService
+      .patch<{ infos: BasketInfo[] }>(`baskets/${basketId}/items/${itemId}`, body, {
+        headers: this.basketHeaders,
+      })
+      .pipe(
+        map(payload => ({ ...payload, itemId })),
+        map(BasketInfoMapper.fromInfo)
+      );
   }
 
   /**
@@ -323,10 +323,16 @@ export class BasketService {
    * @param basketId  The id of the basket where the item should be removed.
    * @param itemId    The id of the line item that should be deleted.
    */
-  deleteBasketItem(basketId: string, itemId: string): Observable<void> {
-    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`, {
-      headers: this.basketHeaders,
-    });
+  deleteBasketItem(basketId: string, itemId: string): Observable<BasketInfo[]> {
+    return this.apiService
+      .delete<{ infos: BasketInfo[] }>(`baskets/${basketId}/items/${itemId}`, {
+        headers: this.basketHeaders,
+      })
+
+      .pipe(
+        map(payload => ({ ...payload, itemId })),
+        map(BasketInfoMapper.fromInfo)
+      );
   }
 
   /**
@@ -381,23 +387,33 @@ export class BasketService {
   }
 
   /**
-   * Get eligible shipping methods for the selected basket.
+   * Get eligible shipping methods for the selected basket or for the selected bucket of a basket.
+   * @param basketId  The basket id.
    * @param basketId  The basket id.
    * @returns         The eligible shipping methods.
    */
-  getBasketEligibleShippingMethods(basketId: string): Observable<ShippingMethod[]> {
+  getBasketEligibleShippingMethods(basketId: string, bucketId?: string): Observable<ShippingMethod[]> {
     if (!basketId) {
       return throwError('getBasketEligibleShippingMethods() called without basketId');
     }
 
-    return this.apiService
-      .get(`baskets/${basketId}/eligible-shipping-methods`, {
-        headers: this.basketHeaders,
-      })
-      .pipe(
-        unpackEnvelope<ShippingMethodData>('data'),
-        map(data => data.map(ShippingMethodMapper.fromData))
-      );
+    return bucketId
+      ? this.apiService
+          .get(`baskets/${basketId}/buckets/${bucketId}/eligible-shipping-methods`, {
+            headers: this.basketHeaders,
+          })
+          .pipe(
+            unpackEnvelope<ShippingMethodData>('data'),
+            map(data => data.map(ShippingMethodMapper.fromData))
+          )
+      : this.apiService
+          .get(`baskets/${basketId}/eligible-shipping-methods`, {
+            headers: this.basketHeaders,
+          })
+          .pipe(
+            unpackEnvelope<ShippingMethodData>('data'),
+            map(data => data.map(ShippingMethodMapper.fromData))
+          );
   }
 
   /**

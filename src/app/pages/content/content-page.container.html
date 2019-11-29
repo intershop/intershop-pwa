@@ -1,6 +1,9 @@
 <ng-container *ngIf="contentPage$ | async as contentPage">
   <ish-breadcrumb [trail]="[{ key: contentPage.displayName }]"></ish-breadcrumb>
-  <ish-content-page [contentPage]="contentPage"></ish-content-page>
+  <ish-content-pagelet
+    *ngIf="contentPage.pageletIDs.length"
+    [pageletId]="contentPage.pageletIDs[0]"
+  ></ish-content-pagelet>
 </ng-container>
 
 <ish-loading *ngIf="contentPageLoading$ | async"></ish-loading>

@@ -1,4 +1,5 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 
 import { getProductEntities } from 'ish-core/store/shopping/products';
 
@@ -54,7 +55,9 @@ export const getActiveQuoteRequest = createSelector(
 /**
  * Select the selected quote request with the appended line item and product data if available.
  */
-export const getSelectedQuoteRequest = createSelector(
+export const getSelectedQuoteRequest = createSelectorFactory(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(
   createSelector(
     getCurrentQuoteRequests,
     getSelectedQuoteRequestId,

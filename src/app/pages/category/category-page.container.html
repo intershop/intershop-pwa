@@ -1,13 +1,13 @@
 <ng-container *ngIf="category$ | async as category">
   <!-- category with subcategories -->
   <ng-container *ngIf="category.hasChildren(); else productListing">
-    <ish-category-page [category]="category" [deviceType]="deviceType$ | async"></ish-category-page>
+    <ish-category-categories [category]="category" [deviceType]="deviceType$ | async"></ish-category-categories>
   </ng-container>
 
   <!-- category with products -->
   <ng-template #productListing>
     <ng-container *ngIf="category.hasOnlineProducts">
-      <ish-family-page [category]="category" [deviceType]="deviceType$ | async"></ish-family-page>
+      <ish-category-products [category]="category" [deviceType]="deviceType$ | async"></ish-category-products>
     </ng-container>
   </ng-template>
 

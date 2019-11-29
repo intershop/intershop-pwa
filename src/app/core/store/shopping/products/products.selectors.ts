@@ -1,4 +1,3 @@
-import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 import { memoize } from 'lodash-es';
 
@@ -14,7 +13,6 @@ import {
   createVariationProductMasterView,
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
-import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
@@ -128,7 +126,7 @@ export const getSelectedProductVariationOptions = createSelector(
 
 export const getProductBundleParts = createSelector(
   getProductEntities,
-  (entities: Dictionary<ProductBundle>, props: { sku: string }) =>
+  (entities, props: { sku: string }): { product: Product; quantity: number }[] =>
     !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
       ? []
       : entities[props.sku].bundledProducts

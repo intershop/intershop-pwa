@@ -59,6 +59,7 @@ describe('Product Image Component', () => {
     translate.set('product.image.text.alttext', 'product photo');
     fixture = TestBed.createComponent(ProductImageComponent);
     component = fixture.componentInstance;
+    component.showImage = true;
     component.imageType = 'S';
     component.product = product;
     element = fixture.nativeElement;

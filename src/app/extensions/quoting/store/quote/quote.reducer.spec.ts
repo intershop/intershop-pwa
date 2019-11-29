@@ -1,4 +1,5 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Link } from 'ish-core/models/link/link.model';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../models/quote/quote.interface';
@@ -149,6 +150,39 @@ describe('Quote Reducer', () => {
         const state = quoteReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('AddQuoteToBasket actions', () => {
+    describe('AddQuoteToBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.AddQuoteToBasket({ quoteId: 'QID' });
+        const state = quoteReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('AddQuoteToBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.AddQuoteToBasketFail({ error });
+        const state = quoteReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('AddQuoteToBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const link = {} as Link;
+        const action = new fromActions.AddQuoteToBasketSuccess({ link });
+        const state = quoteReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });

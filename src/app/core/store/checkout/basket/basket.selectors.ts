@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
 import { getCheckoutState } from 'ish-core/store/checkout/checkout-store';
 import { getProductEntities } from 'ish-core/store/shopping/products';
@@ -11,7 +12,42 @@ const getBasketState = createSelector(
 
 export const getBasketValidationResults = createSelector(
   getBasketState,
-  basket => basket.validationResults
+  getProductEntities,
+  (basket, products): BasketValidationResultType => {
+    if (!basket || !basket.validationResults) {
+      return;
+    }
+
+    const basketResults = basket.validationResults;
+    return {
+      ...basketResults,
+      infos: basketResults.infos
+        ? basketResults.infos.map(info => ({
+            ...info,
+            product: info.parameters && products[info.parameters.productSku],
+          }))
+        : [],
+      errors: basketResults.errors
+        ? basketResults.errors.map(error => ({
+            ...error,
+            lineItem: error.parameters &&
+              error.parameters.lineItemId && {
+                ...basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId),
+              },
+            product:
+              error.parameters &&
+              error.parameters.lineItemId &&
+              basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId) &&
+              products[basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId).productSKU],
+          }))
+        : [],
+    };
+  }
+);
+
+export const getBasketInfo = createSelector(
+  getBasketState,
+  basket => basket.info
 );
 
 /**
@@ -21,7 +57,9 @@ export const getCurrentBasket = createSelector(
   getBasketState,
   getProductEntities,
   getBasketValidationResults,
-  (basket, products, validationResults): BasketView => createBasketView(basket.basket, products, validationResults)
+  getBasketInfo,
+  (basket, products, validationResults, basketInfo): BasketView =>
+    createBasketView(basket.basket, products, validationResults, basketInfo)
 );
 
 export const getCurrentBasketId = createSelector(

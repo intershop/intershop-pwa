@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -30,6 +31,7 @@ import {
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
+  getBasketInfo,
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
@@ -61,11 +63,11 @@ describe('Basket Selectors', () => {
     });
 
     it('should not select any shipping methods if it is in initial state', () => {
-      expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+      expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
     });
 
     it('should not select any payment methods if it is in initial state', () => {
-      expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+      expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
     });
 
     it('should not select loading, error and lastTimeProductAdded if it is in initial state', () => {
@@ -194,7 +196,7 @@ describe('Basket Selectors', () => {
 
       it('should not have loaded shipping methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+        expect(getBasketEligibleShippingMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toEqual({ message: 'error' });
       });
     });
@@ -229,23 +231,27 @@ describe('Basket Selectors', () => {
 
       it('should not have loaded payment methods on error', () => {
         expect(getBasketLoading(store$.state)).toBeFalse();
-        expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+        expect(getBasketEligiblePaymentMethods(store$.state)).toBeUndefined();
         expect(getBasketError(store$.state)).toEqual({ message: 'error' });
       });
     });
   });
 
-  describe('loading last time a product has been added to basket', () => {
+  describe('loading last time and info when a product has been added to basket', () => {
     beforeEach(() => {
-      store$.dispatch(new AddItemsToBasketSuccess());
+      store$.dispatch(new AddItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo] }));
     });
 
     it('should get the last time when a product was added', () => {
       const firstTimeAdded = new Date(getBasketLastTimeProductAdded(store$.state));
 
       expect(firstTimeAdded).toBeDate();
-      store$.dispatch(new AddItemsToBasketSuccess());
+      store$.dispatch(new AddItemsToBasketSuccess({ info: undefined }));
       expect(getBasketLastTimeProductAdded(store$.state)).not.toEqual(firstTimeAdded);
+    });
+
+    it('should get the info when a product was added', () => {
+      expect(getBasketInfo(store$.state)).toHaveLength(1);
     });
   });
 
@@ -269,17 +275,22 @@ describe('Basket Selectors', () => {
           {
             message: 'error occured',
             code: '4711',
+            parameters: {
+              lineItemId: '4712',
+            },
           },
         ],
       },
     };
     beforeEach(() => {
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
       store$.dispatch(new ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation }));
     });
 
     it('should reporting the validation results when called', () => {
       expect(getBasketValidationResults(store$.state).valid).toBeFalse();
       expect(getBasketValidationResults(store$.state).errors[0].message).toEqual('error occured');
+      expect(getBasketValidationResults(store$.state).errors[0].lineItem.id).toEqual('4712');
     });
   });
 });

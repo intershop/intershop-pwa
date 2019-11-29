@@ -1,13 +1,16 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { BasketValidationItemsComponent } from 'ish-shared/basket/components/basket-validation-items/basket-validation-items.component';
+import { BasketValidationProductsComponent } from 'ish-shared/basket/components/basket-validation-products/basket-validation-products.component';
 
 import { BasketValidationResultsComponent } from './basket-validation-results.component';
 
@@ -22,9 +25,13 @@ describe('Basket Validation Results Component', () => {
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      declarations: [BasketValidationResultsComponent],
+      declarations: [
+        BasketValidationResultsComponent,
+        MockComponent(BasketValidationItemsComponent),
+        MockComponent(BasketValidationProductsComponent),
+      ],
       imports: [
-        TranslateModule,
+        TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
             checkout: combineReducers(checkoutReducers),
@@ -53,7 +60,9 @@ describe('Basket Validation Results Component', () => {
   });
 
   it('should display a validation message if there is a validation message', () => {
-    const validationMessage = { errors: [{ message: 'validation message' }] } as BasketValidationResultType;
+    const validationMessage = {
+      errors: [{ message: 'validation message', code: 'xyz' }],
+    } as BasketValidationResultType;
 
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
     fixture.detectChanges();
@@ -72,5 +81,53 @@ describe('Basket Validation Results Component', () => {
     expect(element.querySelector('[data-testing-id=validation-message]').innerHTML).toContain(
       'shipping restriction message'
     );
+  });
+
+  it('should not display a removed item message if there are infos without product', () => {
+    const validationMessage = { infos: [{ message: 'info message' }] } as BasketValidationResultType;
+
+    when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id=validation-removed-message]')).toBeFalsy();
+  });
+
+  it('should display a removed item message if there is a removed item', () => {
+    const validationMessage = {
+      infos: [{ message: 'info message', product: { sku: '43242' } }],
+    } as BasketValidationResultType;
+
+    when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id=validation-removed-message]')).toBeTruthy();
+    expect(element.querySelector('ish-basket-validation-products')).toBeTruthy();
+  });
+
+  it('should display an undeliverable items message if there are undeliverable items', () => {
+    const validationMessage = {
+      errors: [
+        {
+          message: 'undeliverable items message',
+          code: 'basket.validation.line_item_shipping_restrictions.error',
+          lineItem: {},
+          product: {},
+        },
+      ],
+    } as BasketValidationResultType;
+
+    when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id=undeliverable-items-message]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=validation-message]')).toBeFalsy();
+  });
+
+  it('should delete an item if called', () => {
+    when(checkoutFacadeMock.deleteBasketItem(anyString())).thenReturn(undefined);
+
+    component.deleteItem('4713');
+
+    verify(checkoutFacadeMock.deleteBasketItem('4713')).once();
   });
 });

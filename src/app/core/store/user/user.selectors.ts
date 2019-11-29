@@ -41,6 +41,10 @@ export const getAPIToken = createSelector(
   getUserState,
   state => state._authToken
 );
+export const getLastAPITokenBeforeLogin = createSelector(
+  getUserState,
+  state => state._lastAuthTokenBeforeLogin
+);
 export const getPGID = createSelector(
   getUserState,
   state => state.pgid

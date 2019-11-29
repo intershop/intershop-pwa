@@ -106,6 +106,7 @@ export class ProductMapper {
     const mastered = retrieveStubAttributeValue<boolean>(data, 'mastered');
     const productMaster = retrieveStubAttributeValue<boolean>(data, 'productMaster');
     const productMasterSKU = retrieveStubAttributeValue<string>(data, 'productMasterSKU');
+    const retailSet = retrieveStubAttributeValue<boolean>(data, 'retailSet');
 
     const product: Partial<Product> = {
       shortDescription: data.description,
@@ -163,6 +164,11 @@ export class ProductMapper {
         productMasterSKU,
         type: 'VariationProduct',
       };
+    } else if (retailSet) {
+      return {
+        ...product,
+        type: 'RetailSet',
+      };
     } else {
       return product;
     }
@@ -198,6 +204,7 @@ export class ProductMapper {
       promotionIds: mapPromotionIds(data.promotions),
       completenessLevel: 3,
       failed: false,
+      seoAttributes: data.seoAttributes,
     };
 
     if (data.productMaster) {

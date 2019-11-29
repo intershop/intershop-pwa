@@ -15,10 +15,12 @@
 </div>
 
 <div *ngIf="basket" class="row">
-  <div class="col-md-12 col-lg-8">
-    <!-- Error Message-->
+  <!-- Error Message-->
+  <div class="col-md-12">
     <ish-error-message [error]="error"></ish-error-message>
+  </div>
 
+  <div class="col-md-12 col-lg-8">
     <div class="row">
       <p class="col-md-9">{{ 'checkout.order_review.heading.text' | translate }}</p>
       <p class="col-md-3 text-right">
@@ -101,7 +103,15 @@
         </ish-checkbox>
       </form>
 
-      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="formDisabled" (click)="submitOrder()">
+      <button
+        class="btn btn-lg btn-block btn-primary"
+        type="button"
+        [disabled]="formDisabled || submitting"
+        (click)="submitOrder()"
+      >
+        <ng-container *ngIf="submitting">
+          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" class="pr-3"></fa-icon>
+        </ng-container>
         {{ 'checkout.order_review.send.button' | translate }}
       </button>
     </div>

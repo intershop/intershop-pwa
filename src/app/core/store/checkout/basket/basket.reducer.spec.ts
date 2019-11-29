@@ -1,3 +1,4 @@
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import {
   BasketValidation,
   BasketValidationResultType,
@@ -5,7 +6,6 @@ import {
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { Order } from 'ish-core/models/order/order.model';
 import { CreateOrderSuccess } from 'ish-core/store/orders';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -145,6 +145,19 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('ContinueCheckoutWithIssues action', () => {
+      it('should save validationResults when called', () => {
+        const action = new fromActions.ContinueCheckoutWithIssues({
+          targetRoute: '/checkout/address',
+          basketValidation,
+        });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.validationResults.valid).toBeTrue();
+      });
+    });
+
     describe('ContinueCheckoutFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpError;
@@ -181,45 +194,13 @@ describe('Basket Reducer', () => {
 
     describe('AddItemsToBasketSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddItemsToBasketSuccess();
+        const action = new fromActions.AddItemsToBasketSuccess({ info: [{ message: 'info' } as BasketInfo] });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
+        expect(state.info[0].message).toEqual('info');
         expect(state.lastTimeProductAdded).toBeNumber();
-      });
-    });
-  });
-
-  describe('AddQuoteToBasket actions', () => {
-    describe('AddQuoteToBasket action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.AddQuoteToBasket({ quoteId: 'QID' });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
-    describe('AddQuoteToBasketFail action', () => {
-      it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpError;
-        const action = new fromActions.AddQuoteToBasketFail({ error });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toEqual(error);
-      });
-    });
-
-    describe('AddQuoteToBasketSuccess action', () => {
-      it('should set loading to false', () => {
-        const link = {} as Link;
-        const action = new fromActions.AddQuoteToBasketSuccess({ link });
-        const state = basketReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-        expect(state.error).toBeUndefined();
       });
     });
   });
@@ -254,9 +235,10 @@ describe('Basket Reducer', () => {
 
     describe('UpdateBasketItemsSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.UpdateBasketItemsSuccess();
+        const action = new fromActions.UpdateBasketItemsSuccess({ info: [{ message: 'info' } as BasketInfo] });
         const state = basketReducer(initialState, action);
 
+        expect(state.info[0].message).toEqual('info');
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
       });
@@ -286,9 +268,10 @@ describe('Basket Reducer', () => {
 
     describe('DeleteBasketItemSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.DeleteBasketItemSuccess();
+        const action = new fromActions.DeleteBasketItemSuccess({ info: [{ message: 'info' } as BasketInfo] });
         const state = basketReducer(initialState, action);
 
+        expect(state.info[0].message).toEqual('info');
         expect(state.loading).toBeFalse();
         expect(state.error).toBeUndefined();
       });

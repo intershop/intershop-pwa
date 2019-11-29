@@ -3,9 +3,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { CAPTCHA_SITE_KEY } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -13,7 +12,10 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/containers/address-form/address-form.container';
+import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
+import { ModalDialogLinkComponent } from 'ish-shared/common/components/modal-dialog-link/modal-dialog-link.component';
 import { CaptchaComponent } from 'ish-shared/forms/components/captcha/captcha.component';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
 import { RegistrationCompanyFormComponent } from '../registration-company-form/registration-company-form.component';
 import { RegistrationCredentialsFormComponent } from '../registration-credentials-form/registration-credentials-form.component';
@@ -25,8 +27,6 @@ describe('Registration Form Component', () => {
   let component: RegistrationFormComponent;
   let element: HTMLElement;
   let fb: FormBuilder;
-  const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-  const captchaReponse = 'FAKE_CAPTCHA_RESPONSE';
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
@@ -39,14 +39,14 @@ describe('Registration Form Component', () => {
       declarations: [
         MockComponent(AddressFormContainerComponent),
         MockComponent(CaptchaComponent),
+        MockComponent(CheckboxComponent),
+        MockComponent(ContentIncludeContainerComponent),
+        MockComponent(ModalDialogLinkComponent),
         MockComponent(RegistrationCompanyFormComponent),
         MockComponent(RegistrationCredentialsFormComponent),
         RegistrationFormComponent,
       ],
-      providers: [
-        { provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) },
-        { provide: CAPTCHA_SITE_KEY, useValue: captchaSiteKey },
-      ],
+      providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],
       imports: [
         FeatureToggleModule,
         ReactiveFormsModule,
@@ -127,7 +127,8 @@ describe('Registration Form Component', () => {
       control: new FormControl('foo', Validators.required),
       credentials: fb.group({}),
       address: fb.group({}),
-      captchaResponse: captchaReponse,
+      captcha: 'FAKE_CAPTCHA_RESPONSE',
+      captchaAction: 'create_account',
     });
 
     component.create.subscribe(() => {
@@ -151,5 +152,30 @@ describe('Registration Form Component', () => {
     expect(element.querySelector('[role="alert"]').textContent).toContain(
       'customer.credentials.login.not_unique.error'
     );
+  });
+
+  it('should throw create event if t&c checkbox is checked', done => {
+    component.form = fb.group({
+      control: new FormControl('foo', Validators.required),
+      credentials: fb.group({}),
+      address: fb.group({}),
+      termsAndConditions: true,
+      captcha: 'FAKE_CAPTCHA_RESPONSE',
+      captchaAction: 'create_account',
+    });
+    component.create.subscribe(() => {
+      done();
+    });
+
+    component.submitForm();
+    fixture.detectChanges();
+  });
+
+  it('should not emit an event if t&c checkbox is empty', () => {
+    const emitter = spy(component.create);
+
+    fixture.detectChanges();
+    component.submitForm();
+    verify(emitter.emit(anything())).never();
   });
 });

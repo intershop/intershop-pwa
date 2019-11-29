@@ -1,3 +1,4 @@
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -14,6 +15,7 @@ export interface BasketState {
   loading: boolean;
   promotionError: HttpError; // for promotion-errors
   error: HttpError; // add, update and delete errors
+  info: BasketInfo[];
   lastTimeProductAdded: number;
   validationResults: BasketValidationResultType;
 }
@@ -26,10 +28,11 @@ const initialValidationResults: BasketValidationResultType = {
 
 export const initialState: BasketState = {
   basket: undefined,
-  eligibleShippingMethods: [],
-  eligiblePaymentMethods: [],
+  eligibleShippingMethods: undefined,
+  eligiblePaymentMethods: undefined,
   loading: false,
   error: undefined,
+  info: undefined,
   promotionError: undefined,
   lastTimeProductAdded: undefined,
   validationResults: initialValidationResults,
@@ -43,7 +46,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddPromotionCodeToBasket:
-    case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.MergeBasket:
     case BasketActionTypes.ContinueCheckout:
@@ -58,7 +60,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       return {
         ...state,
         loading: true,
-        validationResults: initialValidationResults,
       };
     }
 
@@ -67,7 +68,6 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.ContinueCheckoutFail:
     case BasketActionTypes.AddItemsToBasketFail:
-    case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
     case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
@@ -103,9 +103,16 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
-    case BasketActionTypes.DeleteBasketItemSuccess:
+    case BasketActionTypes.DeleteBasketItemSuccess: {
+      return {
+        ...state,
+        loading: false,
+        error: undefined,
+        info: action.payload.info,
+      };
+    }
+
     case BasketActionTypes.SetBasketPaymentSuccess:
     case BasketActionTypes.CreateBasketPaymentSuccess:
     case BasketActionTypes.UpdateBasketPaymentSuccess:
@@ -122,6 +129,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         loading: false,
         error: undefined,
+        info: action.payload.info,
         lastTimeProductAdded: new Date().getTime(),
       };
     }
@@ -140,18 +148,17 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       };
     }
 
-    case BasketActionTypes.ContinueCheckoutSuccess: {
-      const basket =
-        action.payload.basketValidation.results.adjusted && action.payload.basketValidation.basket
-          ? action.payload.basketValidation.basket
-          : state.basket;
+    case BasketActionTypes.ContinueCheckoutSuccess:
+    case BasketActionTypes.ContinueCheckoutWithIssues: {
+      const validation = action.payload.basketValidation;
+      const basket = validation && validation.results.adjusted && validation.basket ? validation.basket : state.basket;
 
       return {
         ...state,
         basket,
         loading: false,
         error: undefined,
-        validationResults: action.payload.basketValidation.results,
+        validationResults: validation && validation.results,
       };
     }
 
@@ -182,6 +189,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
       return {
         ...state,
         error: undefined,
+        info: undefined,
         promotionError: undefined,
         validationResults: initialValidationResults,
       };

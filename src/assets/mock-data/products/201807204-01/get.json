@@ -2,14 +2,14 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Warranty",
-      "type": "String",
-      "value": "1-year limited hardware warranty"
-    },
-    {
       "name": "Processor",
       "type": "String",
       "value": "7th Generation Intel Core i7"
+    },
+    {
+      "name": "Warranty",
+      "type": "String",
+      "value": "1-year limited hardware warranty"
     },
     {
       "name": "Memory",
@@ -22,14 +22,14 @@
       "value": "Up to 14.5 hours video playback"
     },
     {
-      "name": "Dimensions",
-      "type": "String",
-      "value": "308.02*223.20*14.47 mm"
-    },
-    {
       "name": "Ports",
       "type": "String",
       "value": "USB 3.0, 3.5mm Headset jack, mini DisplayPort, Surface Connect"
+    },
+    {
+      "name": "Dimensions",
+      "type": "String",
+      "value": "308.02*223.20*14.47 mm"
     },
     {
       "name": "Software",
@@ -52,14 +52,14 @@
       "value": "1.25 kg"
     },
     {
-      "name": "Colour_of_product",
-      "type": "String",
-      "value": "Platinum"
-    },
-    {
       "name": "Display",
       "type": "String",
       "value": "13.5 in PixelSense Display, 2256*1504 (201 PPI)"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Platinum"
     }
   ],
   "availability": true,

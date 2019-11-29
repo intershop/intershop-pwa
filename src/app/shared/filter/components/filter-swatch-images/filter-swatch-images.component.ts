@@ -1,7 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -20,32 +17,34 @@ import { Filter } from 'ish-core/models/filter/filter.model';
   templateUrl: './filter-swatch-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterSwatchImagesComponent implements OnInit {
+// tslint:disable-next-line:ccp-no-intelligence-in-components
+export class FilterSwatchImagesComponent {
   /**
    * The filter group.
    */
   @Input() filterElement: Filter;
   @Output() applyFilter: EventEmitter<{ searchParameter: string }> = new EventEmitter();
 
-  filterForm: FormGroup;
-
-  private destroy$ = new Subject();
-
-  ngOnInit() {
-    this.filterForm = new FormGroup({
-      filterDropdown: new FormControl(''),
-    });
-
-    this.filterForm
-      .get('filterDropdown')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(filterDropdown => this.filter(filterDropdown));
-  }
-
   /**
    * Applies a facet of the filter group and shows the new filtered result.
    */
   filter(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
+  }
+
+  getBackgroundColor(facet: Facet) {
+    return this.filterElement.filterValueMap[facet.displayName] &&
+      this.filterElement.filterValueMap[facet.displayName].type
+      ? this.filterElement.filterValueMap[facet.displayName].type === 'colorcode'
+        ? this.filterElement.filterValueMap[facet.displayName].mapping
+        : undefined
+      : facet.displayName.toLowerCase();
+  }
+
+  getBackgroundImage(facet: Facet) {
+    return this.filterElement.filterValueMap[facet.displayName] &&
+      this.filterElement.filterValueMap[facet.displayName].type === 'image'
+      ? this.filterElement.filterValueMap[facet.displayName].mapping
+      : undefined;
   }
 }

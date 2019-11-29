@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { createSimplePageletView } from 'ish-core/utils/dev/test-data-utils';
+import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 import { CMSImageComponent } from './cms-image.component';
 
@@ -34,7 +34,8 @@ describe('Cms Image Component', () => {
         LinkTitle: 'bar',
       },
     };
-    component.pagelet = createSimplePageletView(pagelet);
+    component.pagelet = createContentPageletView(pagelet);
+    component.showImage = true;
   });
 
   it('should be created', () => {
@@ -43,8 +44,13 @@ describe('Cms Image Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a class="teaser-link" href="http://example.com" title="bar"
-        ><img class="foo" ng-reflect-ng-class="foo" src="http://example.com/foo/bar.png" alt="foo"
-      /></a>
+        ><span
+          ><img
+            class="foo"
+            ng-reflect-ng-class="foo"
+            src="http://example.com/foo/bar.png"
+            alt="foo"/></span
+      ></a>
     `);
   });
 });

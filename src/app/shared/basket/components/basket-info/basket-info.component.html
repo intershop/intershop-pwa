@@ -1,0 +1,8 @@
+<div *ngFor="let info of infoMessages$ | async" class="alert alert-info" data-testing-id="info-messages">
+  {{ info.message }}
+  <ng-container *ngIf="info.causes">
+    <p *ngFor="let cause of info.causes">
+      {{ cause.message }}
+    </p>
+  </ng-container>
+</div>

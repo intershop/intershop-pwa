@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
 interface ScriptType {
-  name: string;
   src: string;
   loaded: boolean;
 }
@@ -10,20 +9,19 @@ interface ScriptType {
 @Injectable({ providedIn: 'root' })
 export class ScriptLoaderService {
   // registered scripts
-  private scripts: ScriptType[] = [
-    {
-      name: 'concardis-payengine',
-      src: 'https://pptest.payengine.de/bridge/1.0/payengine.min.js',
-      loaded: false,
-    },
-  ];
+  private scripts: ScriptType[] = [];
 
   /**
    * load a script, if it has not already been loaded
+   * @param url  script url, e.g. https://pptest.payengine.de/bridge/1.0/payengine.min.js
    */
-  load(name: string): Observable<ScriptType> {
+  load(url: string): Observable<ScriptType> {
     return new Observable<ScriptType>((observer: Observer<ScriptType>) => {
-      const script = this.scripts.find(s => s.name === name);
+      let script = this.scripts.find(s => s.src === url);
+      if (!script) {
+        script = { src: url, loaded: false };
+        this.scripts.push(script);
+      }
 
       // Complete if already loaded
       if (script && script.loaded) {

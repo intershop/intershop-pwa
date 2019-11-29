@@ -1,16 +1,20 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { User } from 'ish-core/models/user/user.model';
 import { LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
+import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
@@ -25,15 +29,20 @@ describe('Checkout Address Page Container', () => {
   let store$: TestStore;
 
   beforeEach(async(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressPageContainerComponent,
+        DummyComponent,
         MockComponent(CheckoutAddressAnonymousComponent),
         MockComponent(CheckoutAddressComponent),
         MockComponent(LoadingComponent),
       ],
 
       imports: [
+        RouterTestingModule.withRoutes([{ path: 'basket', component: DummyComponent }]),
         TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
@@ -52,7 +61,9 @@ describe('Checkout Address Page Container', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$.dispatch(new LoadBasketSuccess({ basket: { lineItems: [] } as Basket }));
+    store$.dispatch(
+      new LoadBasketSuccess({ basket: { lineItems: [BasketMockData.getBasketItem() as LineItem] } as Basket })
+    );
   });
 
   it('should be created', () => {

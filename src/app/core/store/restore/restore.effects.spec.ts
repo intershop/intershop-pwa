@@ -11,12 +11,12 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { BasketActionTypes, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { BasketActionTypes, LoadBasketSuccess, ResetBasket } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/orders';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
+import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -201,11 +201,38 @@ describe('Restore Effects', () => {
       cookieLawSubject$.next(true);
 
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
-      expect(getLoggedInUser(store$.state)).toBeTruthy();
 
-      restoreEffects.logOutUserIfTokenVanishes$.subscribe({
-        next: action => {
+      restoreEffects.logOutUserIfTokenVanishes$.subscribe(
+        action => {
           expect(action.type).toEqual(UserActionTypes.LogoutUser);
+          done();
+        },
+        fail,
+        fail
+      );
+    });
+
+    it('should do nothing when cookie law was not yet accepted', done => {
+      cookieLawSubject$.next(false);
+
+      store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
+
+      restoreEffects.logOutUserIfTokenVanishes$.subscribe(fail, fail, fail);
+
+      // terminate checking
+      setTimeout(done, 3000);
+    });
+  });
+
+  describe('removeAnonymousBasketIfTokenVanishes$', () => {
+    it('should remove basket when token is not available and cookie law was accepted', done => {
+      cookieLawSubject$.next(true);
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+
+      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe({
+        next: action => {
+          expect(action.type).toEqual(BasketActionTypes.ResetBasket);
           done();
         },
         complete: fail,
@@ -215,13 +242,63 @@ describe('Restore Effects', () => {
     it('should do nothing when cookie law was not yet accepted', done => {
       cookieLawSubject$.next(false);
 
-      store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
-      expect(getLoggedInUser(store$.state)).toBeTruthy();
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
 
-      restoreEffects.logOutUserIfTokenVanishes$.subscribe(fail, fail, fail);
+      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
 
       // terminate checking
       setTimeout(done, 3000);
+    });
+
+    it('should do nothing when user is available', done => {
+      cookieLawSubject$.next(true);
+
+      store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+
+      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
+
+      // terminate checking
+      setTimeout(done, 3000);
+    });
+  });
+
+  describe('sessionKeepAlive$', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    it('should occasionally refresh the basket if it is available', done => {
+      restoreEffects.sessionKeepAlive$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Basket Internal] Load Basket`);
+        done();
+      });
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
+    });
+
+    it('should not refresh the basket if it is getting unavailable', done => {
+      restoreEffects.sessionKeepAlive$.subscribe(fail);
+
+      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE / 2);
+
+      store$.dispatch(new ResetBasket());
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
+
+      done();
+    });
+
+    it('should do nothing if basket is unavailable', done => {
+      restoreEffects.sessionKeepAlive$.subscribe(fail);
+
+      jest.advanceTimersByTime(RestoreEffects.SESSION_KEEP_ALIVE + 100);
+
+      done();
     });
   });
 });

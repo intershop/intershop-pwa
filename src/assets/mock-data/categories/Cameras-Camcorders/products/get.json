@@ -6,7 +6,7 @@
         {
           "name": "sku",
           "type": "String",
-          "value": "3957278"
+          "value": "4905524961133"
         },
         {
           "name": "minOrderQuantity",
@@ -49,7 +49,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 129.85
+            "value": 49.63
           }
         },
         {
@@ -59,331 +59,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 129.85
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Kodak"
-        }
-      ],
-      "description": "EasyShare M575 14 MP, 5X optical, Blue",
-      "title": "Kodak M series EasyShare M575",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957278"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "4584970"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 27.83
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 27.83
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Fujifilm"
-        }
-      ],
-      "description": "SC-Z70 - Soft Case for FinePix Z70, red",
-      "title": "Fujifilm SC-Z70",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4584970"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "3957277"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 130.33
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 130.33
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Kodak"
-        }
-      ],
-      "description": "EasyShare M575 14 MP, 5X optical, Brown",
-      "title": "Kodak M series EasyShare M575",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957277"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "347443"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 27.51
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 27.51
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Dicota"
-        }
-      ],
-      "description": "CamPocket Film - Practical camera bag for digital equipment",
-      "title": "Dicota CamPocket Film",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/347443"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "0027242882539"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 22.82
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 22.82
+            "value": 49.63
           }
         },
         {
@@ -402,16 +78,16 @@
           "value": "Sony"
         }
       ],
-      "description": "Sony NP-BY1, 640 mAh, Digital camera, Lithium-Ion, 15g",
-      "title": "Sony NP-BY1",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/0027242882539"
+      "description": "Underwater Housing For Action Cam",
+      "title": "Sony MPK-AS3",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4905524961133"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "3957275"
+          "value": "4144132"
         },
         {
           "name": "minOrderQuantity",
@@ -454,7 +130,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 90.9
+            "value": 409.43
           }
         },
         {
@@ -464,7 +140,280 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 90.9
+            "value": 409.43
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Pentax"
+        }
+      ],
+      "description": "Optio W90 digital cameras 12.1 Mp",
+      "title": "Pentax Optio W90",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4144132"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "0818279012576"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.34
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 22.34
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "GoPro"
+        },
+        {
+          "name": "promotions",
+          "type": "LinkResourceCollectionRO",
+          "value": {
+            "elements": [
+              {
+                "itemId": "5PercentOnActionCams",
+                "title": "5 % discount on action cameras and accessories",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
+              }
+            ],
+            "type": "ResourceCollection"
+          }
+        }
+      ],
+      "description": "Floating GoPro hand grip for stable shooting in and out of the water.",
+      "title": "GoPro The Handler",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/0818279012576"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "4548736000919"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 365.32
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 365.32
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Sony"
+        },
+        {
+          "name": "promotions",
+          "type": "LinkResourceCollectionRO",
+          "value": {
+            "elements": [
+              {
+                "itemId": "5PercentOnActionCams",
+                "title": "5 % discount on action cameras and accessories",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
+              }
+            ],
+            "type": "ResourceCollection"
+          }
+        }
+      ],
+      "description": "FDR-X1000V - 1/2.3\" 8.8MP (16:9), ZEISS Tessar Len, F2.8, 6lux, BIONZ X,",
+      "title": "Sony FDR-X1000V",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4548736000919"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957284"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 281.95
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 281.95
           }
         },
         {
@@ -483,16 +432,16 @@
           "value": "Kodak"
         }
       ],
-      "description": "EasyShare M550 12 MP, 5X optical",
-      "title": "Kodak M series EasyShare M550",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957275"
+      "description": "Slice - 14MP, 5x optisch, 16:9, nickel",
+      "title": "Kodak Slice ",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957284"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "3957288"
+          "value": "4852575"
         },
         {
           "name": "minOrderQuantity",
@@ -535,7 +484,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 106.27
+            "value": 18.01
           }
         },
         {
@@ -545,13 +494,94 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 106.27
+            "value": 18.01
           }
         },
         {
           "name": "roundedAverageRating",
           "type": "String",
-          "value": "4.0"
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Canyon"
+        }
+      ],
+      "description": "CNR-CP2G, 0.3Mpixel CMOS, USB 2.0",
+      "title": "Canyon CNR-CP2G",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4852575"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3957286"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/mock-img/product/a.jpg"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 106
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 106
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
         },
         {
           "name": "availability",
@@ -566,14 +596,14 @@
       ],
       "description": "EasyShare C142, 10.3Mp, 1/ 6.35 cm (2.5 \") CCD, 3x opt, SD/SDHC, USB 2.0",
       "title": "Kodak C series EasyShare C142",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957288"
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957286"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "3957279"
+          "value": "11028788"
         },
         {
           "name": "minOrderQuantity",
@@ -616,7 +646,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 129.85
+            "value": 587.51
           }
         },
         {
@@ -626,7 +656,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 103.88
+            "value": 587.51
           }
         },
         {
@@ -642,19 +672,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Kodak"
+          "value": "Canon"
         }
       ],
-      "description": "EasyShare M575 14 MP, 5X optical, Red",
-      "title": "Kodak M series EasyShare M575",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957279"
+      "description": "PowerShot S100 - 12.1MP, 1/ 4.318 cm (1.7 \") CMOS, 4000 x 3000, 5x Optical zoom",
+      "title": "Canon PowerShot S100",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/11028788"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "3998290"
+          "value": "M1610689"
         },
         {
           "name": "minOrderQuantity",
@@ -697,7 +727,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 141.78
+            "value": 253.33
           }
         },
         {
@@ -707,7 +737,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 141.78
+            "value": 253.33
           }
         },
         {
@@ -723,12 +753,12 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Toshiba"
+          "value": "Benq"
         }
       ],
-      "description": "Camileo S20, 5MP, CMOS, 7.62 cm (3 \") LCD, HDMI, USB 2.0, SD/SDHC, 115g, Red",
-      "title": "Toshiba Camileo S20",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3998290"
+      "description": "Retail Set: Benq T850 Red and Dicota CamPocket Zoom ",
+      "title": "Benq T850 Red + Dicota CamPocket Zoom",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/M1610689"
     }
   ],
   "name": "products",

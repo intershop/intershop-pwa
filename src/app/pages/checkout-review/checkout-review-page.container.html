@@ -2,6 +2,7 @@
   <ish-checkout-review
     [basket]="basket$ | async"
     [error]="error$ | async"
+    [submitting]="orderLoading$ | async"
     (createOrder)="onCreateOrder($event)"
   ></ish-checkout-review>
 

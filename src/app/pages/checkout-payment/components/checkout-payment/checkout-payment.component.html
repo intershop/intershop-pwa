@@ -1,5 +1,5 @@
 <div class="row" *ngIf="basket">
-  <div class="col-md-12 col-lg-8">
+  <div class="col-md-12">
     <!-- Messages -->
     <ish-error-message [error]="error"></ish-error-message>
     <ish-basket-validation-results></ish-basket-validation-results>
@@ -14,6 +14,8 @@
       }}</ng-container>
       <ng-container *ngIf="redirectStatus === 'failure'">{{ 'checkout.payment.failed.text' | translate }}</ng-container>
     </div>
+  </div>
+  <div class="col-md-12 col-lg-8">
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
 
     <!-- display all payment methods -->
@@ -71,7 +73,7 @@
           </li>
           <!-- Payment parameter form -->
           <div
-            *ngIf="!!paymentMethod.parameters"
+            *ngIf="paymentMethod.parameters"
             class="section"
             [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id"
           >

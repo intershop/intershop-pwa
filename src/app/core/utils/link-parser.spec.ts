@@ -1,4 +1,5 @@
 import * as using from 'jasmine-data-provider';
+import { noop } from 'rxjs';
 
 import { LinkParser } from './link-parser';
 
@@ -16,7 +17,6 @@ describe('Link Parser', () => {
       { input: 'page://mypage', output: '/page/mypage' },
       { input: 'category://Computers@inSPIRED-Computers', output: '/category/Computers' },
       { input: '/product/ABC', output: '/product/ABC' },
-      { input: 'dummy://something', output: 'dummy://something' },
       { input: undefined, output: undefined },
     ],
     ({ input, output }) => {
@@ -25,4 +25,10 @@ describe('Link Parser', () => {
       });
     }
   );
+
+  it('should log if no mapping could be found', () => {
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementationOnce(noop);
+    expect(LinkParser.parseLink('dummy://something')).toMatchInlineSnapshot(`"dummy://something"`);
+    expect(consoleSpy).toHaveBeenCalledWith('Unknown link type:', 'dummy://something');
+  });
 });

@@ -12,8 +12,7 @@ import { Basket } from './basket.model';
 
 export class BasketMapper {
   static fromData(payload: BasketData): Basket {
-    const data = payload.data;
-    const included = payload.included;
+    const { data, included, infos } = payload;
 
     const totals = data.calculated
       ? BasketMapper.getTotals(data, included ? included.discounts : undefined)
@@ -24,6 +23,7 @@ export class BasketMapper {
 
     return {
       id: data.id,
+      bucketId: data.buckets && data.buckets.length === 1 && data.buckets[0],
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.discounts ? data.discounts.dynamicMessages : undefined,
       invoiceToAddress:
@@ -60,6 +60,7 @@ export class BasketMapper {
           : undefined,
       promotionCodes: data.promotionCodes,
       totals,
+      infos: infos && infos.filter(info => info.code !== 'include.not_resolved.error'),
     };
   }
 
@@ -97,13 +98,22 @@ export class BasketMapper {
                 )
               : undefined,
 
-          itemSurchargeTotalsByType: data.surcharges
-            ? data.surcharges.itemSurcharges.map(surcharge => ({
-                amount: PriceMapper.fromPriceItem(surcharge.amount),
-                displayName: surcharge.name,
-                description: surcharge.description,
-              }))
-            : undefined,
+          itemSurchargeTotalsByType:
+            data.surcharges && data.surcharges.itemSurcharges
+              ? data.surcharges.itemSurcharges.map(surcharge => ({
+                  amount: PriceMapper.fromPriceItem(surcharge.amount),
+                  displayName: surcharge.name,
+                  description: surcharge.description,
+                }))
+              : undefined,
+          bucketSurchargeTotalsByType:
+            data.surcharges && data.surcharges.bucketSurcharges
+              ? data.surcharges.bucketSurcharges.map(surcharge => ({
+                  amount: PriceMapper.fromPriceItem(surcharge.amount),
+                  displayName: surcharge.name,
+                  description: surcharge.description,
+                }))
+              : undefined,
           isEstimated: false,
         }
       : undefined;

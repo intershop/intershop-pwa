@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { DeferLoadModule } from '@trademe/ng-defer-load';
+import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -14,16 +16,10 @@ import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-expo
 
 import { FooterComponent } from './footer/components/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
-import { HeaderNavigationComponent } from './header/components/header-navigation/header-navigation.component';
+import { HeaderDefaultComponent } from './header/components/header-default/header-default.component';
 import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
-import { HeaderComponent } from './header/components/header/header.component';
-import { LanguageSwitchComponent } from './header/components/language-switch/language-switch.component';
-import { LoginStatusComponent } from './header/components/login-status/login-status.component';
-import { LogoutComponent } from './header/components/logout/logout.component';
-import { MiniBasketComponent } from './header/components/mini-basket/mini-basket.component';
-import { ProductCompareStatusComponent } from './header/components/product-compare-status/product-compare-status.component';
+import { LazyLoginModalComponent } from './header/components/lazy-login-modal/lazy-login-modal.component';
 import { ProductImageComponent } from './header/components/product-image/product-image.component';
-import { SearchBoxComponent } from './header/components/search-box/search-box.component';
 import { SubCategoryNavigationComponent } from './header/components/sub-category-navigation/sub-category-navigation.component';
 import { UserInformationMobileComponent } from './header/components/user-information-mobile/user-information-mobile.component';
 import { HeaderNavigationContainerComponent } from './header/containers/header-navigation/header-navigation.container';
@@ -45,12 +41,18 @@ const exportedComponents = [
 @NgModule({
   imports: [
     CommonModule,
+    DeferLoadModule,
     FeatureToggleModule,
     IconModule,
     NgbCollapseModule,
     NgbDropdownModule,
+    NgbModalModule,
     PipesModule.forRoot(),
     QuotingExportsModule,
+    ReactiveComponentLoaderModule.withModule({
+      moduleId: 'ish-shared',
+      loadChildren: '../shared/shared.module#SharedModule',
+    }),
     RouterModule,
     TranslateModule,
   ],
@@ -58,23 +60,18 @@ const exportedComponents = [
     ...exportedComponents,
     ClickOutsideDirective,
     HeaderCheckoutComponent,
-    HeaderComponent,
-    HeaderNavigationComponent,
+    HeaderDefaultComponent,
     HeaderNavigationContainerComponent,
     HeaderSimpleComponent,
-    LanguageSwitchComponent,
     LanguageSwitchContainerComponent,
-    LoginStatusComponent,
+    LazyLoginModalComponent,
     LoginStatusContainerComponent,
-    LogoutComponent,
-    MiniBasketComponent,
     MiniBasketContainerComponent,
-    ProductCompareStatusComponent,
     ProductCompareStatusContainerComponent,
-    SearchBoxComponent,
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
   ],
   exports: [...exportedComponents],
+  entryComponents: [LazyLoginModalComponent],
 })
 export class ShellModule {}

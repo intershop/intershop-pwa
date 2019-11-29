@@ -3,14 +3,26 @@ import { ApplicationRef, Inject, PLATFORM_ID } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { combineLatest, interval } from 'rxjs';
-import { filter, map, mapTo, switchMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, combineLatest, interval } from 'rxjs';
+import {
+  concatMapTo,
+  filter,
+  first,
+  map,
+  mapTo,
+  mergeMapTo,
+  switchMap,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { LoadBasketByAPIToken, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { LoadBasket, LoadBasketByAPIToken, ResetBasket, getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadOrderByAPIToken, getSelectedOrderId } from 'ish-core/store/orders';
 import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
 interface CookieType {
   apiToken: string;
@@ -19,13 +31,15 @@ interface CookieType {
 }
 
 export class RestoreEffects {
+  static readonly SESSION_KEEP_ALIVE = 600000;
   constructor(
     private actions$: Actions,
     private store$: Store<{}>,
     private router: Router,
     private cookieService: CookiesService,
     @Inject(PLATFORM_ID) private platformId: string,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private sfeAdapterService: SfeAdapterService
   ) {}
 
   /**
@@ -69,7 +83,7 @@ export class RestoreEffects {
   @Effect()
   restoreUserOrBasketOrOrderByToken$ = this.router.events.pipe(
     filter(event => event instanceof NavigationStart),
-    take(1),
+    first(),
     map(() => this.cookieService.get('apiToken')),
     whenTruthy(),
     map(c => this.parseCookie(c)),
@@ -91,8 +105,8 @@ export class RestoreEffects {
   @Effect()
   logOutUserIfTokenVanishes$ = this.appRef.isStable.pipe(
     whenTruthy(),
-    take(1),
-    switchMap(() =>
+    first(),
+    concatMapTo(
       interval(1000).pipe(
         takeWhile(() => isPlatformBrowser(this.platformId)),
         withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.cookieService.cookieLawSeen$),
@@ -100,6 +114,43 @@ export class RestoreEffects {
         map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
         filter(({ user, apiToken }) => user && !apiToken),
         mapTo(new LogoutUser())
+      )
+    )
+  );
+
+  @Effect()
+  removeAnonymousBasketIfTokenVanishes$ = this.appRef.isStable.pipe(
+    whenTruthy(),
+    first(),
+    concatMapTo(
+      interval(1000).pipe(
+        takeWhile(() => isPlatformBrowser(this.platformId)),
+        withLatestFrom(
+          this.store$.pipe(select(getLoggedInUser)),
+          this.store$.pipe(select(getCurrentBasket)),
+          this.cookieService.cookieLawSeen$
+        ),
+        filter(([, , , cookieLawAccepted]) => cookieLawAccepted),
+        map(([, user, basket]) => ({ user, basket, apiToken: this.cookieService.get('apiToken') })),
+        filter(({ user, basket, apiToken }) => !user && basket && !apiToken),
+        mapTo(new ResetBasket())
+      )
+    )
+  );
+
+  @Effect()
+  sessionKeepAlive$ = this.appRef.isStable.pipe(
+    takeWhile(() => isPlatformBrowser(this.platformId)),
+    whenTruthy(),
+    first(),
+    concatMapTo(
+      this.store$.pipe(
+        select(getCurrentBasket),
+        switchMap(basket =>
+          this.sfeAdapterService.isInitialized()
+            ? EMPTY
+            : interval(RestoreEffects.SESSION_KEEP_ALIVE).pipe(mergeMapTo(basket ? [new LoadBasket()] : []))
+        )
       )
     )
   );

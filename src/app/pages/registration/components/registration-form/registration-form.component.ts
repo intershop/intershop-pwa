@@ -37,7 +37,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   /* switch for business customer registration */
   businessCustomerRegistration: boolean;
-  captchaRegistration: boolean;
   securityQuestionEnabled: boolean;
 
   form: FormGroup;
@@ -52,7 +51,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     // toggles business / private customer registration
     this.businessCustomerRegistration = this.featureToggle.enabled('businessCustomerRegistration');
-    this.captchaRegistration = this.featureToggle.enabled('captcha');
     this.securityQuestionEnabled = this.featureToggle.enabled('securityQuestion');
 
     this.createRegistrationForm();
@@ -76,7 +74,9 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
-      captcha: this.captchaRegistration ? ['', [Validators.required]] : [''],
+      termsAndConditions: [false, [Validators.required, Validators.pattern('true')]],
+      captcha: [''],
+      captchaAction: ['create_account'],
       address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
     });
 
@@ -149,9 +149,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     }
 
     const registration: CustomerRegistrationType = { customer, user, credentials, address };
-    if (this.captchaRegistration) {
-      registration.captchaResponse = this.form.get('captcha').value;
-    }
+    registration.captchaResponse = this.form.get('captcha').value;
+    registration.captchaAction = this.form.get('captchaAction').value;
 
     this.create.emit(registration);
   }

@@ -12,9 +12,6 @@ try {
 }
 
 var parserOpts = {
-  // gitRawCommitsOpts: {
-  //   merges: true
-  // },
   headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
   headerCorrespondence: ['type', 'scope', 'subject'],
   noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
@@ -101,7 +98,7 @@ module.exports = Q.all([
   writerOpts.footerPartial = footer;
 
   return {
-    gitRawCommitsOpts: { merges: true },
+    gitRawCommitsOpts: { merges: null },
     parserOpts: parserOpts,
     writerOpts: writerOpts,
   };

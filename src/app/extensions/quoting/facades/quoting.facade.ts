@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
 
 import { QuoteRequest } from '../models/quote-request/quote-request.model';
 import { Quote } from '../models/quote/quote.model';
 import {
+  AddQuoteToBasket,
   CreateQuoteRequestFromQuote,
   DeleteQuote,
   LoadQuotes,
@@ -27,6 +29,7 @@ import {
   SubmitQuoteRequest,
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
+  UpdateSubmitQuoteRequest,
   getActiveQuoteRequest,
   getCurrentQuoteRequests,
   getQuoteRequestError,
@@ -37,7 +40,7 @@ import {
 const getQuotesAndQuoteRequests = createSelector(
   getCurrentQuotes,
   getCurrentQuoteRequests,
-  (quotes, quoteRequests) => [...quotes, ...quoteRequests]
+  (quotes, quoteRequests): (Quote | QuoteRequest)[] => [...quotes, ...quoteRequests]
 );
 
 // tslint:disable:member-ordering
@@ -102,6 +105,10 @@ export class QuotingFacade {
     this.store.dispatch(new SubmitQuoteRequest());
   }
 
+  updateSubmitQuoteRequest(payload: { displayName?: string; description?: string }) {
+    this.store.dispatch(new UpdateSubmitQuoteRequest(payload));
+  }
+
   copyQuoteRequest() {
     this.store.dispatch(new CreateQuoteRequestFromQuoteRequest());
   }
@@ -128,6 +135,10 @@ export class QuotingFacade {
     this.loadQuoteRequests();
     return this.store.pipe(select(getQuotesAndQuoteRequests));
   }
+
+  quotesOrQuoteRequestsLoading$ = combineLatest([this.quoteLoading$, this.quoteRequestLoading$]).pipe(
+    map(([l1, l2]) => l1 || l2)
+  );
 
   deleteQuoteOrRequest(item: Quote | QuoteRequest) {
     if (item.type === 'QuoteRequest') {

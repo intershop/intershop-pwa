@@ -2,11 +2,11 @@ import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
+import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
-import { Link } from 'ish-core/models/link/link.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
@@ -32,15 +32,14 @@ export enum BasketActionTypes {
   MergeBasket = '[Basket Internal] Merge two baskets',
   MergeBasketFail = '[Basket API] Merge two baskets Fail',
   MergeBasketSuccess = '[Basket API] Merge two baskets Success',
+  ValidateBasket = '[Basket] Validate Basket',
   ContinueCheckout = '[Basket] Validate Basket and continue checkout',
   ContinueCheckoutFail = '[Basket API] Validate Basket and continue checkout Fail',
-  ContinueCheckoutSuccess = '[Basket API] Validate Basket and continue checkout Success',
+  ContinueCheckoutSuccess = '[Basket API] Validate Basket and continue with success',
+  ContinueCheckoutWithIssues = '[Basket API] Validate Basket and continue with issues',
   AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
   AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
   AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
-  AddQuoteToBasket = '[Basket] Add Quote To Basket',
-  AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
-  AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
   UpdateBasketItems = '[Basket] Update Basket Items',
   UpdateBasketItemsFail = '[Basket API] Update Basket Items Fail',
   UpdateBasketItemsSuccess = '[Basket API] Update Basket Items Success',
@@ -147,6 +146,7 @@ export class AddItemsToBasketFail implements Action {
 
 export class AddItemsToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketSuccess;
+  constructor(public payload: { info: BasketInfo[] }) {}
 }
 
 export class MergeBasket implements Action {
@@ -161,6 +161,11 @@ export class MergeBasketFail implements Action {
 export class MergeBasketSuccess implements Action {
   readonly type = BasketActionTypes.MergeBasketSuccess;
   constructor(public payload: { basket: Basket }) {}
+}
+
+export class ValidateBasket implements Action {
+  readonly type = BasketActionTypes.ValidateBasket;
+  constructor(public payload: { scopes: BasketValidationScopeType[] }) {}
 }
 
 export class ContinueCheckout implements Action {
@@ -178,19 +183,9 @@ export class ContinueCheckoutSuccess implements Action {
   constructor(public payload: { targetRoute: string; basketValidation: BasketValidation }) {}
 }
 
-export class AddQuoteToBasket implements Action {
-  readonly type = BasketActionTypes.AddQuoteToBasket;
-  constructor(public payload: { quoteId: string; basketId?: string }) {}
-}
-
-export class AddQuoteToBasketFail implements Action {
-  readonly type = BasketActionTypes.AddQuoteToBasketFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class AddQuoteToBasketSuccess implements Action {
-  readonly type = BasketActionTypes.AddQuoteToBasketSuccess;
-  constructor(public payload: { link: Link }) {}
+export class ContinueCheckoutWithIssues implements Action {
+  readonly type = BasketActionTypes.ContinueCheckoutWithIssues;
+  constructor(public payload: { targetRoute: string; basketValidation: BasketValidation }) {}
 }
 
 export class UpdateBasketItems implements Action {
@@ -205,6 +200,7 @@ export class UpdateBasketItemsFail implements Action {
 
 export class UpdateBasketItemsSuccess implements Action {
   readonly type = BasketActionTypes.UpdateBasketItemsSuccess;
+  constructor(public payload: { info: BasketInfo[] }) {}
 }
 
 export class DeleteBasketItem implements Action {
@@ -219,6 +215,7 @@ export class DeleteBasketItemFail implements Action {
 
 export class DeleteBasketItemSuccess implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemSuccess;
+  constructor(public payload: { info: BasketInfo[] }) {}
 }
 
 export class AddPromotionCodeToBasket implements Action {
@@ -346,15 +343,14 @@ export type BasketAction =
   | MergeBasket
   | MergeBasketFail
   | MergeBasketSuccess
+  | ValidateBasket
   | ContinueCheckout
   | ContinueCheckoutFail
   | ContinueCheckoutSuccess
+  | ContinueCheckoutWithIssues
   | AddPromotionCodeToBasket
   | AddPromotionCodeToBasketFail
   | AddPromotionCodeToBasketSuccess
-  | AddQuoteToBasket
-  | AddQuoteToBasketFail
-  | AddQuoteToBasketSuccess
   | UpdateBasketItems
   | UpdateBasketItemsFail
   | UpdateBasketItemsSuccess

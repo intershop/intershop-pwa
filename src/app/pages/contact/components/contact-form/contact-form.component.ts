@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Contact } from 'ish-core/models/contact/contact.model';
+import { User } from 'ish-core/models/user/user.model';
 import { SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -20,6 +20,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 export class ContactFormComponent implements OnChanges, OnInit {
   /** Possible subjects to show to the customer in a select box. */
   @Input() subjects: string[] = [];
+  @Input() user: User;
   /** The contact request to send. */
   @Output() request = new EventEmitter<{ contact: Contact; captcha?: string }>();
 
@@ -29,7 +30,7 @@ export class ContactFormComponent implements OnChanges, OnInit {
   contactForm: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder, private featureToggle: FeatureToggleService) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
@@ -52,9 +53,8 @@ export class ContactFormComponent implements OnChanges, OnInit {
         order: formValue.order,
       };
 
-      this.featureToggle.enabled('captcha')
-        ? this.request.emit({ contact, captcha: formValue.captcha })
-        : this.request.emit({ contact });
+      /* ToDo: send captcha data if captcha is supported by REST, see #IS-28299 */
+      this.request.emit({ contact });
     } else {
       markAsDirtyRecursive(this.contactForm);
       this.submitted = true;
@@ -63,20 +63,23 @@ export class ContactFormComponent implements OnChanges, OnInit {
 
   /** map subjects to select box options */
   private mapSubjectOptions(subjects: string[]): SelectOption[] {
-    const options: SelectOption[] = [];
-    subjects.map(subject => options.push({ value: subject, label: subject }));
-    return options;
+    return subjects.map(subject => ({ value: subject, label: subject }));
   }
 
   private initForm() {
+    const name = this.user && `${this.user.firstName} ${this.user.lastName}`;
+    const email = this.user && this.user.email;
+    const phone = this.user && (this.user.phoneBusiness || this.user.phoneMobile || this.user.phoneHome);
+
     this.contactForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      name: [name, Validators.required],
+      email: [email, [Validators.required, Validators.email]],
+      phone: [phone, Validators.required],
       order: [''],
       subject: ['', Validators.required],
       comments: ['', Validators.required],
-      captcha: this.featureToggle.enabled('captcha') ? ['', [Validators.required]] : [''],
+      captcha: [''],
+      captchaAction: ['contact_us'],
     });
   }
 

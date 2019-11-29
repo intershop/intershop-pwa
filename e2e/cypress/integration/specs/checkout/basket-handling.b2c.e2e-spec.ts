@@ -14,14 +14,14 @@ const _ = {
     login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
   },
-  catalog: 'Cameras-Camcorders',
+  catalog: 'Home-Entertainment',
   category: {
-    id: 'Cameras-Camcorders.584',
-    name: 'Camcorders',
+    id: 'Home-Entertainment.SmartHome',
+    name: 'Smart Home',
   },
   product: {
-    sku: '3953312',
-    price: 303.62,
+    sku: '201807171',
+    price: 185.5,
   },
 };
 
@@ -76,7 +76,9 @@ describe('Basket Handling', () => {
         .should('equal', 200);
       cy.wait(1000);
     });
-    at(MyAccountPage, page => page.header.miniCart.total.should('contain', _.product.price * 2));
+    at(MyAccountPage, page => {
+      page.header.miniCart.total.should('contain', _.product.price * 2);
+    });
   });
 
   it('user adds one more product to basket when logged in', () => {
@@ -93,7 +95,6 @@ describe('Basket Handling', () => {
   });
 
   it('user should be able to modify the amount of products', () => {
-    at(ProductDetailPage, page => page.header.miniCart.goToCart());
     at(CartPage, page => {
       page.lineItems.should('have.length', 1);
       page.summary.subtotal.should('contain', _.product.price * 3);

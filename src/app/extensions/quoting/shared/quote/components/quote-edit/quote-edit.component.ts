@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, merge, of, timer } from 'rxjs';
@@ -45,6 +53,7 @@ export class QuoteEditComponent implements OnChanges {
 
   @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() submitQuoteRequest = new EventEmitter<void>();
+  @Output() updateSubmitQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
   @Output() deleteQuoteRequest = new EventEmitter<string>();
@@ -62,19 +71,21 @@ export class QuoteEditComponent implements OnChanges {
 
   constructor(private router: Router) {
     this.form = new FormGroup({
-      displayName: new FormControl(undefined, [Validators.required, Validators.maxLength(255)]),
+      displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(c: SimpleChanges) {
     const quote = this.quote as Quote;
 
     this.sellerComment = quote.sellerComment;
     this.validFromDate = quote.validFromDate;
     this.validToDate = quote.validToDate;
 
-    this.patchForm(quote);
+    if (c.quote) {
+      this.patchForm(quote);
+    }
 
     this.toggleSaveMessage();
   }
@@ -122,10 +133,18 @@ export class QuoteEditComponent implements OnChanges {
   }
 
   /**
-   * Throws submitQuoteRequest event when submit button was clicked.
+   * Throws submitQuoteRequest event or if neccessary updateSubmitQuoteRequest event
+   * when submit button was clicked.
    */
   submit() {
-    this.submitQuoteRequest.emit();
+    if (this.form && this.form.dirty) {
+      this.updateSubmitQuoteRequest.emit({
+        displayName: this.form.value.displayName,
+        description: this.form.value.description,
+      });
+    } else {
+      this.submitQuoteRequest.emit();
+    }
   }
 
   /**
@@ -170,5 +189,13 @@ export class QuoteEditComponent implements OnChanges {
 
   get isQuoteStarted(): boolean {
     return Date.now() > this.validFromDate;
+  }
+
+  /**
+   * returns a value to be displayed as quote name
+   * @return display name of the quote if exists, quote number otherwise
+   */
+  get displayName(): string {
+    return this.quote.displayName ? this.quote.displayName : this.quote.number;
   }
 }

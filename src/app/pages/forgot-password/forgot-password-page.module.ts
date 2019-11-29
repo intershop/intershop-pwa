@@ -3,14 +3,29 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { ForgotPasswordFormComponent } from './components/forgot-password-form/forgot-password-form.component';
-import { ForgotPasswordPageComponent } from './components/forgot-password-page/forgot-password-page.component';
-import { ForgotPasswordPageContainerComponent } from './forgot-password-page.container';
+import { RequestReminderFormComponent } from './components/request-reminder-form/request-reminder-form.component';
+import { RequestReminderComponent } from './components/request-reminder/request-reminder.component';
+import { UpdatePasswordFormComponent } from './components/update-password-form/update-password-form.component';
+import { UpdatePasswordComponent } from './components/update-password/update-password.component';
 
-const forgotPasswordPageRoutes: Routes = [{ path: '', component: ForgotPasswordPageContainerComponent }];
+const forgotPasswordPageRoutes: Routes = [
+  {
+    path: '',
+    component: RequestReminderComponent,
+  },
+  {
+    path: 'updatePassword',
+    component: UpdatePasswordComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(forgotPasswordPageRoutes), SharedModule],
-  declarations: [ForgotPasswordFormComponent, ForgotPasswordPageComponent, ForgotPasswordPageContainerComponent],
+  declarations: [
+    RequestReminderComponent,
+    RequestReminderFormComponent,
+    UpdatePasswordComponent,
+    UpdatePasswordFormComponent,
+  ],
 })
 export class ForgotPasswordPageModule {}

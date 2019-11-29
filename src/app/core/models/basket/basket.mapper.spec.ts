@@ -48,7 +48,7 @@ describe('Basket Mapper', () => {
     surcharges: {
       itemSurcharges: [
         {
-          name: 'surcharge',
+          name: 'item_surcharge',
           amount: {
             gross: {
               value: 654.56,
@@ -60,6 +60,22 @@ describe('Basket Mapper', () => {
             },
           },
           description: 'Surcharge for battery deposit',
+        },
+      ],
+      bucketSurcharges: [
+        {
+          name: 'bucket_surcharge',
+          amount: {
+            gross: {
+              value: 64.56,
+              currency: 'USD',
+            },
+            net: {
+              value: 61.86,
+              currency: 'USD',
+            },
+          },
+          description: 'Bucket Surcharge for hazardous material',
         },
       ],
     },
@@ -135,6 +151,12 @@ describe('Basket Mapper', () => {
         data: { ...basketBaseData },
 
         included: { ...basketIncludedData },
+        infos: [
+          {
+            message: 'infoMessage',
+            code: 'infoCode',
+          },
+        ],
       } as BasketData;
     });
 
@@ -150,6 +172,9 @@ describe('Basket Mapper', () => {
       expect(basket.totals.itemTotal.value).toBe(basketData.data.totals.itemTotal.gross.value);
       expect(basket.totals.itemSurchargeTotalsByType[0].amount.value).toBe(
         basketData.data.surcharges.itemSurcharges[0].amount.gross.value
+      );
+      expect(basket.totals.bucketSurchargeTotalsByType[0].amount.value).toBe(
+        basketData.data.surcharges.bucketSurcharges[0].amount.gross.value
       );
       expect(basket.totals.isEstimated).toBeTrue();
     });
@@ -190,6 +215,12 @@ describe('Basket Mapper', () => {
       basket = BasketMapper.fromData(basketData);
 
       expect(basket.lineItems).toBeArrayOfSize(1);
+    });
+
+    it('should return infos if included', () => {
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.infos).toBeArrayOfSize(1);
     });
 
     it('should return discounts if included', () => {

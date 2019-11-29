@@ -5,6 +5,7 @@
   </label>
   <div [ngClass]="inputClass">
     <textarea
+      [attr.data-testing-id]="controlName"
       class="form-control"
       [id]="uuid"
       [formControlName]="controlName"

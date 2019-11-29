@@ -2,6 +2,7 @@ import { Dictionary } from '@ngrx/entity';
 import { memoize } from 'lodash-es';
 
 import { Address } from 'ish-core/models/address/address.model';
+import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
@@ -23,6 +24,8 @@ interface AbstractBasket<T> {
   promotionCodes?: string[];
   totals: BasketTotal;
   totalProductQuantity?: number;
+  bucketId?: string;
+  infos?: BasketInfo[];
 }
 
 export interface Basket extends AbstractBasket<LineItem> {}
@@ -30,7 +33,7 @@ export interface Basket extends AbstractBasket<LineItem> {}
 export interface BasketView extends AbstractBasket<LineItemView> {}
 
 export const createBasketView = memoize(
-  (basket, products, validationResults): BasketView => {
+  (basket, products, validationResults, basketInfo): BasketView => {
     if (!basket) {
       return;
     }
@@ -48,6 +51,10 @@ export const createBasketView = memoize(
               validationResults && !validationResults.valid && validationResults.errors
                 ? validationResults.errors.find(error => error.parameters && error.parameters.lineItemId === li.id)
                 : undefined,
+            info:
+              basketInfo && basketInfo.length && basketInfo[0].causes
+                ? basketInfo[0].causes.find(cause => cause.parameters && cause.parameters.lineItemId === li.id)
+                : undefined,
           }))
         : [],
     };
@@ -56,8 +63,9 @@ export const createBasketView = memoize(
   (
     basket: Basket,
     products: Dictionary<Product | VariationProduct | VariationProductMaster>,
-    validationResults: BasketValidationResultType
+    validationResults: BasketValidationResultType,
+    basketInfo: BasketInfo[]
   ): string =>
     basket &&
-    JSON.stringify([basket, ...basket.lineItems.map(li => products[li.productSKU])]) + JSON.stringify(validationResults)
+    JSON.stringify([basket, validationResults, basketInfo, ...basket.lineItems.map(li => products[li.productSKU])])
 );

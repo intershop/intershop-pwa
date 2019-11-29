@@ -4,7 +4,19 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest, concat, forkJoin } from 'rxjs';
-import { concatMap, defaultIfEmpty, filter, last, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  defaultIfEmpty,
+  filter,
+  first,
+  last,
+  map,
+  mapTo,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import {
@@ -106,6 +118,27 @@ export class QuoteRequestEffects {
       this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
         map(id => new actions.SubmitQuoteRequestSuccess({ id })),
         mapErrorToAction(actions.SubmitQuoteRequestFail)
+      )
+    )
+  );
+
+  /**
+   * Update quote request before submitting the quote request.
+   */
+  @Effect()
+  updateSubmitQuoteRequest$ = this.actions$.pipe(
+    ofType(actions.QuoteRequestActionTypes.UpdateSubmitQuoteRequest),
+    mapToPayload(),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
+    concatMap(([payload, quoteRequestId]) =>
+      this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
+        switchMap(quoteRequest =>
+          this.quoteRequestService.submitQuoteRequest(quoteRequest.id).pipe(
+            map(id => new actions.SubmitQuoteRequestSuccess({ id })),
+            mapErrorToAction(actions.SubmitQuoteRequestFail)
+          )
+        ),
+        mapErrorToAction(actions.UpdateQuoteRequestFail)
       )
     )
   );
@@ -262,7 +295,12 @@ export class QuoteRequestEffects {
       actions.QuoteRequestActionTypes.AddProductToQuoteRequest,
       actions.QuoteRequestActionTypes.AddBasketToQuoteRequest
     ),
-    mergeMap(() => this.store.pipe(select(getUserAuthorized))),
+    mergeMap(() =>
+      this.store.pipe(
+        select(getUserAuthorized),
+        first()
+      )
+    ),
     whenFalsy(),
     tap(() => {
       const queryParams = { returnUrl: this.router.routerState.snapshot.url, messageKey: 'quotes' };

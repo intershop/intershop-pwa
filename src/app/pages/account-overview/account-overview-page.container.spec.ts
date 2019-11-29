@@ -11,7 +11,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 
 import { AccountOverviewPageContainerComponent } from './account-overview-page.container';
-import { AccountOverviewPageComponent } from './components/account-overview-page/account-overview-page.component';
+import { AccountOverviewComponent } from './components/account-overview/account-overview.component';
 
 describe('Account Overview Page Container', () => {
   let fixture: ComponentFixture<AccountOverviewPageContainerComponent>;
@@ -25,7 +25,7 @@ describe('Account Overview Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountOverviewPageContainerComponent,
-        MockComponent(AccountOverviewPageComponent),
+        MockComponent(AccountOverviewComponent),
         MockComponent(LoadingComponent),
       ],
       imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
@@ -49,6 +49,6 @@ describe('Account Overview Page Container', () => {
     when(accountFacadeMock.user$).thenReturn(of({ firstName: 'Patricia' } as User));
     fixture.detectChanges();
 
-    expect(element.querySelector('ish-account-overview-page')).toBeTruthy();
+    expect(element.querySelector('ish-account-overview')).toBeTruthy();
   });
 });

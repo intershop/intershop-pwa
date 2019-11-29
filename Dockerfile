@@ -1,11 +1,11 @@
-FROM node:10-alpine as buildstep
+FROM node:12-alpine as buildstep
 COPY . /workspace/
 WORKDIR /workspace
 RUN npm ci
 RUN npm run build
 RUN egrep -o '^\s*(mockServerAPI: true|mustMockPaths)' src/environments/environment.prod.ts || rm -Rf dist/browser/assets/mock*
 
-FROM node:10-alpine
+FROM node:12-alpine
 COPY --from=buildstep /workspace/dist /dist
 ARG displayVersion=
 ENV DISPLAY_VERSION=$displayVersion

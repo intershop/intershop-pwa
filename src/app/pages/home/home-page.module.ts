@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { HomePageComponent } from './components/home-page/home-page.component';
 import { HomePageContainerComponent } from './home-page.container';
 
 const homePageRoutes: Routes = [
@@ -12,6 +11,6 @@ const homePageRoutes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(homePageRoutes), SharedModule],
-  declarations: [HomePageComponent, HomePageContainerComponent],
+  declarations: [HomePageContainerComponent],
 })
 export class HomePageModule {}

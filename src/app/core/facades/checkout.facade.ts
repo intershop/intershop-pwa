@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { merge } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -25,6 +25,7 @@ import {
   getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketError,
+  getBasketInfo,
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
@@ -50,8 +51,14 @@ export class CheckoutFacade {
   basket$ = this.store.pipe(select(getCurrentBasket));
   basketChange$ = this.store.pipe(select(getBasketLastTimeProductAdded));
   basketError$ = this.store.pipe(select(getBasketError));
+  basketInfo$ = this.store.pipe(select(getBasketInfo));
   basketLoading$ = this.store.pipe(select(getBasketLoading));
   basketValidationResults$ = this.store.pipe(select(getBasketValidationResults));
+  basketItemCount$ = this.basket$.pipe(map(basket => (basket && basket.totalProductQuantity) || 0));
+  basketItemTotal$ = this.basket$.pipe(map(basket => basket && basket.totals && basket.totals.itemTotal));
+  basketLineItems$ = this.basket$.pipe(
+    map(basket => (basket && basket.lineItems && basket.lineItems.length ? basket.lineItems : undefined))
+  );
 
   deleteBasketItem(itemId: string) {
     this.store.dispatch(new DeleteBasketItem({ itemId }));

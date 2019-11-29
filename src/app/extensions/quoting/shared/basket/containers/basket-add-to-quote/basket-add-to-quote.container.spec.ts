@@ -1,13 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, combineReducers } from '@ngrx/store';
-import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { TranslateModule } from '@ngx-translate/core';
+import { instance, mock, verify } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-
-import { quotingReducers } from '../../../../store/quoting-store.module';
-import { BasketAddToQuoteComponent } from '../../components/basket-add-to-quote/basket-add-to-quote.component';
+import { QuotingFacade } from '../../../../facades/quoting.facade';
 
 import { BasketAddToQuoteContainerComponent } from './basket-add-to-quote.container';
 
@@ -15,19 +10,21 @@ describe('Basket Add To Quote Container', () => {
   let component: BasketAddToQuoteContainerComponent;
   let fixture: ComponentFixture<BasketAddToQuoteContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let quotingFacade: QuotingFacade;
 
   beforeEach(async(() => {
+    quotingFacade = mock(QuotingFacade);
+
     TestBed.configureTestingModule({
-      imports: [ngrxTesting({ reducers: { ...coreReducers, quoting: combineReducers(quotingReducers) } })],
-      declarations: [BasketAddToQuoteContainerComponent, MockComponent(BasketAddToQuoteComponent)],
+      declarations: [BasketAddToQuoteContainerComponent],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(BasketAddToQuoteContainerComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-        store$ = TestBed.get(Store);
       });
   }));
 
@@ -38,10 +35,8 @@ describe('Basket Add To Quote Container', () => {
   });
 
   it('should dispatch action when addToQuote is triggered.', () => {
-    const storeSpy$ = spy(store$);
-
     component.addToQuote();
 
-    verify(storeSpy$.dispatch(anything())).once();
+    verify(quotingFacade.addBasketToQuoteRequest()).once();
   });
 });

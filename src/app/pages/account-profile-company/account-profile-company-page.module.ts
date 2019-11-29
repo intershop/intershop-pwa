@@ -4,12 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountProfileCompanyPageContainerComponent } from './account-profile-company-page.container';
-import { AccountProfileCompanyPageComponent } from './components/account-profile-company-page/account-profile-company-page.component';
+import { AccountProfileCompanyComponent } from './components/account-profile-company/account-profile-company.component';
 
 const accountProfileCompanyPageRoutes: Routes = [{ path: '', component: AccountProfileCompanyPageContainerComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(accountProfileCompanyPageRoutes), SharedModule],
-  declarations: [AccountProfileCompanyPageComponent, AccountProfileCompanyPageContainerComponent],
+  declarations: [AccountProfileCompanyComponent, AccountProfileCompanyPageContainerComponent],
 })
 export class AccountProfileCompanyPageModule {}

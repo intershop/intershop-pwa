@@ -1,0 +1,25 @@
+<h1>{{ 'account.forgotdata.password_retrieval.heading' | translate }}</h1>
+
+<ng-container *ngIf="success$ | async; else forgotPasswordForm">
+  <p>{{ 'account.send_password.message' | translate }}</p>
+</ng-container>
+
+<ng-template #forgotPasswordForm>
+  <p [ishServerHtml]="'account.forgotdata.password_retrieval_info.text' | translate"></p>
+
+  <div *ngIf="error$ | async as error" role="alert" class="alert alert-danger">
+    <ng-container [ngSwitch]="error.status">
+      <span *ngSwitchCase="'401'">{{ 'captcha.incorrect' | translate }}</span>
+      <span *ngSwitchCase="'500'">{{ 'servererror.mailServer.error' | translate }}</span>
+      <span *ngSwitchDefault>{{ 'account.forgotdata.email.invalid_login_or_name.error' | translate }}</span>
+    </ng-container>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 col-lg-8 col-xl-6">
+      <ish-request-reminder-form (submitPasswordReminder)="requestPasswordReminder($event)"></ish-request-reminder-form>
+    </div>
+  </div>
+</ng-template>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>

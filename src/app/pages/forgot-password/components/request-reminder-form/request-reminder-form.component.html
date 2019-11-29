@@ -1,0 +1,51 @@
+<form name="LoginUserForm" [formGroup]="form" class="form-horizontal" (ngSubmit)="submitForm()">
+  <ish-input
+    [form]="form"
+    controlName="email"
+    type="email"
+    label="account.forgotdata.email.label"
+    markRequiredLabel="off"
+    [errorMessages]="{
+      required: 'account.email.error.required',
+      email: 'account.email.error.email'
+    }"
+  ></ish-input>
+
+  <ish-input
+    [form]="form"
+    controlName="firstName"
+    type="text"
+    label="account.forgotdata.firstname.label"
+    markRequiredLabel="off"
+    [errorMessages]="{
+      required: 'account.firstname.error.required'
+    }"
+  ></ish-input>
+
+  <ish-input
+    [form]="form"
+    controlName="lastName"
+    type="text"
+    label="account.forgotdata.lastname.label"
+    markRequiredLabel="off"
+    [errorMessages]="{
+      required: 'account.lastname.error.required'
+    }"
+  ></ish-input>
+
+  <ish-captcha [form]="form" cssClass="offset-md-4 col-md-8"></ish-captcha>
+
+  <div class="row form-group">
+    <div class="offset-md-4 col-md-8">
+      <button
+        type="submit"
+        value="PasswordReminder"
+        name="passwordReminder"
+        class="btn btn-primary"
+        [disabled]="buttonDisabled"
+      >
+        {{ 'forgot_password.form.send.button.label' | translate }}
+      </button>
+    </div>
+  </div>
+</form>

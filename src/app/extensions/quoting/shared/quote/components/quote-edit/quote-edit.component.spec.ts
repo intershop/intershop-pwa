@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
@@ -47,6 +47,7 @@ describe('Quote Edit Component', () => {
 
     const translateService = TestBed.get(TranslateService);
     translateService.use('en');
+    translateService.set('quote.edit.unsubmitted.quote_request_details.text', 'Quote Request Details');
 
     component.quote = {} as Quote;
   });
@@ -62,6 +63,7 @@ describe('Quote Edit Component', () => {
       component.quote = {
         id: 'QRID',
         type: 'QuoteRequest',
+        number: 'QRNUMBER',
         displayName: 'DNAME',
         description: 'DESC',
         state: 'New',
@@ -79,6 +81,19 @@ describe('Quote Edit Component', () => {
         ],
       } as QuoteRequest;
       component.user = {} as User;
+    });
+
+    describe('heading', () => {
+      it('should render the heading with the quote request display name if available', () => {
+        fixture.detectChanges();
+        expect(element.querySelector('h1')).toMatchInlineSnapshot(`<h1>Quote Request Details - DNAME</h1>`);
+      });
+
+      it('should render the heading with the quote request number if the display name is not available', () => {
+        component.quote.displayName = undefined;
+        fixture.detectChanges();
+        expect(element.querySelector('h1')).toMatchInlineSnapshot(`<h1>Quote Request Details - QRNUMBER</h1>`);
+      });
     });
 
     describe('displayName', () => {
@@ -154,6 +169,24 @@ describe('Quote Edit Component', () => {
 
       component.update();
     });
+
+    it('should throw updateSubmitQuoteRequest event when submit is clicked and the form values were changed before ', () => {
+      const emitter = spy(component.updateSubmitQuoteRequest);
+
+      component.form.value.displayName = 'DNAME';
+      component.form.value.description = 'DESC';
+      component.form.markAsDirty();
+
+      component.submit();
+      verify(emitter.emit(anything())).once();
+      const [arg] = capture(emitter.emit).last();
+      expect(arg).toMatchInlineSnapshot(`
+        Object {
+          "description": "DESC",
+          "displayName": "DNAME",
+        }
+      `);
+    });
   });
 
   describe('Quote', () => {
@@ -168,34 +201,34 @@ describe('Quote Edit Component', () => {
     });
 
     it('should render sellerComment if type Quote and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       fixture.detectChanges();
       expect(element.textContent).toContain('SCOM');
     });
 
     it('should render validFromDate if state === Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/1/70');
     });
 
     it('should not render validFromDate if state is !== Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/1/70');
     });
 
     it('should render validToDate if state state === Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/2/70');
     });
 
     it('should not render validToDate if state is  !== Responded and ngOnChanges fired', () => {
-      component.ngOnChanges();
+      component.ngOnChanges({});
       component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/2/70');

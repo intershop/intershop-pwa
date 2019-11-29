@@ -217,8 +217,9 @@ describe('Basket Addresses Effects', () => {
       const action = new basketActions.UpdateBasketAddress({ address });
       const completion1 = new UpdateCustomerAddressSuccess({ address });
       const completion2 = new basketActions.LoadBasket();
+      const completion3 = new basketActions.ResetBasketErrors();
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+      const expected$ = cold('-(cde)', { c: completion1, d: completion2, e: completion3 });
 
       expect(effects.updateBasketAddress$).toBeObservable(expected$);
     });
@@ -259,8 +260,9 @@ describe('Basket Addresses Effects', () => {
       const action = new basketActions.UpdateBasketAddress({ address });
       const completion1 = new UpdateCustomerAddressSuccess({ address });
       const completion2 = new basketActions.LoadBasket();
+      const completion3 = new basketActions.ResetBasketErrors();
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+      const expected$ = cold('-(cde)', { c: completion1, d: completion2, e: completion3 });
 
       expect(effects.updateBasketAddress$).toBeObservable(expected$);
     });

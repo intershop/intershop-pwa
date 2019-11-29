@@ -11,6 +11,7 @@ export enum UserActionTypes {
   LoginUserSuccess = '[Account API] Login User Success',
   LoginUserFail = '[Account API] Login User Failed',
   SetAPIToken = '[Account Internal] Set API Token',
+  ResetAPIToken = '[Account Internal] Reset API Token',
   LoadCompanyUser = '[Account Internal] Load Company User',
   LoadCompanyUserFail = '[Account API] Load Company User Fail',
   LoadCompanyUserSuccess = '[Account API] Load Company User Success',
@@ -34,6 +35,9 @@ export enum UserActionTypes {
   RequestPasswordReminderFail = '[Password Reminder API] Request Password Reminder Fail',
   RequestPasswordReminderSuccess = '[Password Reminder API] Request Password Reminder Success',
   ResetPasswordReminder = '[Password Reminder Internal] Reset Password Reminder Data',
+  UpdateUserPasswordByPasswordReminder = '[Password Reminder] Update User Password',
+  UpdateUserPasswordByPasswordReminderSuccess = '[Password Reminder] Update User Password Succeeded',
+  UpdateUserPasswordByPasswordReminderFail = '[Password Reminder] Update User Password Failed',
 }
 
 export class LoginUser implements Action {
@@ -54,6 +58,10 @@ export class LoginUserSuccess implements Action {
 export class SetAPIToken implements Action {
   readonly type = UserActionTypes.SetAPIToken;
   constructor(public payload: { apiToken: string }) {}
+}
+
+export class ResetAPIToken implements Action {
+  readonly type = UserActionTypes.ResetAPIToken;
 }
 
 export class LoadCompanyUser implements Action {
@@ -165,11 +173,26 @@ export class ResetPasswordReminder implements Action {
   readonly type = UserActionTypes.ResetPasswordReminder;
 }
 
+export class UpdateUserPasswordByPasswordReminder implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminder;
+  constructor(public payload: { password: string; userID: string; secureCode: string }) {}
+}
+
+export class UpdateUserPasswordByPasswordReminderSuccess implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess;
+}
+
+export class UpdateUserPasswordByPasswordReminderFail implements Action {
+  readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminderFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
 export type UserAction =
   | LoginUser
   | LoginUserFail
   | LoginUserSuccess
   | SetAPIToken
+  | ResetAPIToken
   | LoadCompanyUser
   | LoadCompanyUserFail
   | LoadCompanyUserSuccess
@@ -192,4 +215,7 @@ export type UserAction =
   | RequestPasswordReminder
   | RequestPasswordReminderSuccess
   | RequestPasswordReminderFail
-  | ResetPasswordReminder;
+  | ResetPasswordReminder
+  | UpdateUserPasswordByPasswordReminder
+  | UpdateUserPasswordByPasswordReminderSuccess
+  | UpdateUserPasswordByPasswordReminderFail;

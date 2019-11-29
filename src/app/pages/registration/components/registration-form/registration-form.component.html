@@ -5,7 +5,7 @@
   <span>{{ error.headers['error-key'] | translate }}</span>
 </div>
 
-<div class="section" data-testing-id="account-create-full-page">
+<div class="registration-form section" data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
     <h2>{{ 'account.register.email_password.heading' | translate }}</h2>
     <p>{{ 'account.register.email_password.message' | translate }}</p>
@@ -50,9 +50,35 @@
             [customerForm]="form"
           ></ish-registration-company-form>
 
-          <div *ngIf="captchaRegistration" class="row form-group">
+          <ish-captcha [form]="form"></ish-captcha>
+
+          <div class="row form-group form-group-tc">
             <div class="offset-md-4 col-md-8">
-              <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
+              <ish-checkbox
+                [form]="form"
+                controlName="termsAndConditions"
+                [errorMessages]="{ pattern: 'registration.tac.error.tip' }"
+              >
+                <span>{{ 'registration.tac_privacy_policy.begin.text' | translate }} </span>
+                <ish-modal-dialog-link
+                  linkText="registration.tac.link"
+                  [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
+                >
+                  <ish-content-include
+                    includeId="systeminclude.dialog.termsAndConditions.pagelet2-Include"
+                  ></ish-content-include>
+                </ish-modal-dialog-link>
+                <span>{{ 'registration.tac_privacy_policy.between.text' | translate }} </span>
+                <ish-modal-dialog-link
+                  linkText="registration.privacy_policy.link"
+                  [options]="{ titleText: 'registration.privacy_policy.details.title' | translate, size: 'lg' }"
+                >
+                  <ish-content-include
+                    includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"
+                  ></ish-content-include>
+                </ish-modal-dialog-link>
+                <span>{{ 'registration.tac_privacy_policy.end.text' | translate }}</span>
+              </ish-checkbox>
             </div>
           </div>
 

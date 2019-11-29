@@ -3,16 +3,20 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToQueryParam, ofRoute } from 'ngrx-router';
-import { EMPTY, Observable, merge, of } from 'rxjs';
+import { EMPTY, Observable, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
+  debounce,
+  debounceTime,
   delay,
   filter,
+  first,
   map,
   mapTo,
   mergeMap,
   switchMap,
+  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -22,6 +26,7 @@ import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/error';
+import { SuccessMessage } from 'ish-core/store/messages';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -81,9 +86,27 @@ export class UserEffects {
   );
 
   @Effect({ dispatch: false })
-  goToHomeAfterLogout$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LogoutUser),
-    tap(() => this.router.navigate(['/home']))
+  goToLoginAfterLogoutBySessionTimeout$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.ResetAPIToken),
+    switchMapTo(
+      race(
+        // wait for immediate LogoutUser
+        this.actions$.pipe(ofType(userActions.UserActionTypes.LogoutUser)),
+        // or stop flow
+        timer(1000).pipe(switchMapTo(EMPTY))
+      )
+    ),
+    debounce(() =>
+      this.actions$.pipe(
+        debounceTime(2000),
+        first()
+      )
+    ),
+    tap(() => {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
+      });
+    })
   );
 
   /*
@@ -235,13 +258,40 @@ export class UserEffects {
 
   @Effect()
   requestPasswordReminder$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.RequestPasswordReminder),
+    ofType<userActions.RequestPasswordReminder>(userActions.UserActionTypes.RequestPasswordReminder),
     mapToPayloadProperty('data'),
     concatMap(data =>
       this.userService.requestPasswordReminder(data).pipe(
         map(() => new userActions.RequestPasswordReminderSuccess()),
         mapErrorToAction(userActions.RequestPasswordReminderFail)
       )
+    )
+  );
+
+  @Effect()
+  updateUserPasswordByPasswordReminder$ = this.actions$.pipe(
+    ofType<userActions.UpdateUserPasswordByPasswordReminder>(
+      userActions.UserActionTypes.UpdateUserPasswordByPasswordReminder
+    ),
+    mapToPayload(),
+    concatMap(data =>
+      this.userService.updateUserPasswordByReminder(data).pipe(
+        map(() => new userActions.UpdateUserPasswordByPasswordReminderSuccess()),
+        mapErrorToAction(userActions.UpdateUserPasswordByPasswordReminderFail)
+      )
+    )
+  );
+
+  @Effect()
+  updateUserPasswordByPasswordReminderSuccess$ = this.actions$.pipe(
+    ofType<userActions.UpdateUserPasswordByPasswordReminderSuccess>(
+      userActions.UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess
+    ),
+    map(
+      () =>
+        new SuccessMessage({
+          message: 'account.profile.update_password.message',
+        })
     )
   );
 }

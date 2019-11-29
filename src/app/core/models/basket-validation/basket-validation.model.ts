@@ -1,19 +1,5 @@
+import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-
-export interface BasketValidationErrorType {
-  code: string;
-  message: string;
-  parameters?: {
-    lineItemId?: string;
-    shippingRestriction?: string;
-  };
-}
-
-export interface BasketValidationResultType {
-  valid: boolean;
-  adjusted: boolean;
-  errors?: BasketValidationErrorType[];
-}
 
 export type BasketValidationScopeType =
   | 'Products'
@@ -26,6 +12,13 @@ export type BasketValidationScopeType =
   | 'Promotion'
   | 'All'
   | ''; // no scope: a minimum is validated
+
+export interface BasketValidationResultType {
+  valid: boolean;
+  adjusted: boolean;
+  errors?: BasketFeedbackView[];
+  infos?: BasketFeedbackView[];
+}
 
 export interface BasketValidation {
   basket: Basket;

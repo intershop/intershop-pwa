@@ -9,6 +9,7 @@ export interface UserState {
   user: User;
   authorized: boolean;
   _authToken: string;
+  _lastAuthTokenBeforeLogin: string;
   loading: boolean;
   successMessage: string;
   error: HttpError;
@@ -22,6 +23,7 @@ export const initialState: UserState = {
   user: undefined,
   authorized: false,
   _authToken: undefined,
+  _lastAuthTokenBeforeLogin: undefined,
   loading: false,
   successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
@@ -46,7 +48,13 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
-    case UserActionTypes.LoginUser:
+    case UserActionTypes.LoginUser: {
+      return {
+        ...initialState,
+        _authToken: state._authToken,
+        _lastAuthTokenBeforeLogin: state._authToken,
+      };
+    }
     case UserActionTypes.LogoutUser: {
       return initialState;
     }
@@ -55,6 +63,13 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return {
         ...state,
         _authToken: action.payload.apiToken,
+      };
+    }
+
+    case UserActionTypes.ResetAPIToken: {
+      return {
+        ...state,
+        _authToken: undefined,
       };
     }
 
@@ -79,6 +94,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
         ...initialState,
         loading: false,
         error,
+        _authToken: state._authToken,
       };
     }
 
@@ -163,6 +179,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.UpdateUserPasswordByPasswordReminder:
     case UserActionTypes.RequestPasswordReminder: {
       return {
         ...state,
@@ -172,6 +189,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.UpdateUserPasswordByPasswordReminderSuccess:
     case UserActionTypes.RequestPasswordReminderSuccess: {
       return {
         ...state,
@@ -181,6 +199,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
+    case UserActionTypes.UpdateUserPasswordByPasswordReminderFail:
     case UserActionTypes.RequestPasswordReminderFail: {
       return {
         ...state,

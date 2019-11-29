@@ -13,11 +13,11 @@ export const environment: Environment = {
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmChannel: 'inSPIRED-inTRONICS-Site',
-  // icmApplication: 'pwa',
+
   mockServerAPI: true,
 
   /* FEATURE TOOGLES */
-  features: ['compare', 'recently', 'rating', 'experimental'],
+  features: ['compare', 'recently', 'rating'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

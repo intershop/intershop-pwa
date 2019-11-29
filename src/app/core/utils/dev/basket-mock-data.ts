@@ -28,8 +28,8 @@ export class BasketMockData {
       quantity: { value: 10 },
       productSKU: '4713',
       product: { sku: '4713', availability: true, inStock: true },
-      singleBasePrice: { value: 3, currency: 'USD' },
-      price: { value: 3, currency: 'USD' },
+      singleBasePrice: { value: 3, currency: 'USD', type: 'Money' },
+      price: { value: 3, currency: 'USD', type: 'Money' },
       itemSurcharges: [
         {
           amount: {},
@@ -121,44 +121,54 @@ export class BasketMockData {
       itemTotal: {
         value: 141796.98,
         currency: 'USD',
+        type: 'Money',
       },
       itemRebatesTotal: {
         value: 4446,
         currency: 'USD',
+        type: 'Money',
       },
       shippingTotal: {
         value: 87.06,
         currency: 'USD',
+        type: 'Money',
       },
       itemShippingRebatesTotal: {
         value: 0,
         currency: 'USD',
+        type: 'Money',
       },
       valueRebatesTotal: {
         value: 4457.9,
         currency: 'USD',
+        type: 'Money',
       },
       shippingRebatesTotal: {
         value: 0,
         currency: 'USD',
+        type: 'Money',
       },
       paymentCostsTotal: {
         value: 3.57,
         currency: 'USD',
+        type: 'Money',
       },
       taxTotal: {
         value: 22747.55,
         currency: 'USD',
+        type: 'Money',
       },
       total: {
         value: 142470.71,
         currency: 'USD',
+        type: 'Money',
       },
       valueRebates: [
         {
           amount: {
             value: 11.9,
             currency: 'USD',
+            type: 'Money',
           },
           rebateType: 'OrderValueOffDiscount',
         } as BasketRebate,
@@ -168,6 +178,7 @@ export class BasketMockData {
           amount: {
             value: 595,
             currency: 'USD',
+            type: 'Money',
           },
           description: 'Surcharge for battery deposit',
           displayName: 'Battery Deposit Surcharge',

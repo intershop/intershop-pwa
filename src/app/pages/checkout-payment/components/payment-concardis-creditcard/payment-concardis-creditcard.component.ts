@@ -117,9 +117,14 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
         return;
       }
 
+      const url =
+        this.getParamValue('ConcardisPaymentService.Environment', '') === 'LIVE'
+          ? 'https://pp.payengine.de/bridge/1.0/payengine.min.js'
+          : 'https://pptest.payengine.de/bridge/1.0/payengine.min.js';
+
       this.scriptLoaded = true;
       this.scriptLoader
-        .load('concardis-payengine')
+        .load(url)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           () => {
@@ -172,7 +177,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
    * call back function to submit data, get a response token from provider and send data in case of success
    */
   submitCallback(
-    error: { message: { properties: { key: string; code: number; message: string; messageKey: string }[] } },
+    error: { message: { properties: { key: string; code: number; message: string; messageKey: string }[] } | string },
     result: {
       paymentInstrumentId: string;
       attributes: { brand: string; cardNumber: string; expiryMonth: string; expiryYear: string };
@@ -186,33 +191,40 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
     this.resetErrors();
     if (error) {
       // map error messages
-      this.errorMessage.cardNumber = error.message.properties.find(prop => prop.key === 'cardNumber');
-      if (this.errorMessage.cardNumber && this.errorMessage.cardNumber.code) {
-        this.errorMessage.cardNumber.messageKey = this.getErrorMessage(
-          this.errorMessage.cardNumber.code,
-          'number',
-          this.errorMessage.cardNumber.message
-        );
-      }
-
-      this.errorMessage.cvc = error.message.properties.find(prop => prop.key === 'verification');
-      if (this.errorMessage.cvc && this.errorMessage.cvc.code) {
-        this.errorMessage.cvc.messageKey = this.getErrorMessage(
-          this.errorMessage.cvc.code,
-          'cvc',
-          this.errorMessage.cvc.message
-        );
-      }
-
-      if (!this.parameterForm.invalid) {
-        this.errorMessage.expiryMonth = error.message.properties.find(prop => prop.key === 'expiryMonth');
-        if (this.errorMessage.expiryMonth && this.errorMessage.expiryMonth.code) {
-          this.errorMessage.expiryMonth.messageKey = this.getErrorMessage(
-            this.errorMessage.expiryMonth.code,
-            'expiryMonth',
-            this.errorMessage.expiryMonth.message
+      if (typeof error.message !== 'string' && error.message.properties) {
+        this.errorMessage.cardNumber =
+          error.message.properties && error.message.properties.find(prop => prop.key === 'cardNumber');
+        if (this.errorMessage.cardNumber && this.errorMessage.cardNumber.code) {
+          this.errorMessage.cardNumber.messageKey = this.getErrorMessage(
+            this.errorMessage.cardNumber.code,
+            'number',
+            this.errorMessage.cardNumber.message
           );
         }
+
+        this.errorMessage.cvc =
+          error.message.properties && error.message.properties.find(prop => prop.key === 'verification');
+        if (this.errorMessage.cvc && this.errorMessage.cvc.code) {
+          this.errorMessage.cvc.messageKey = this.getErrorMessage(
+            this.errorMessage.cvc.code,
+            'cvc',
+            this.errorMessage.cvc.message
+          );
+        }
+
+        if (!this.parameterForm.invalid) {
+          this.errorMessage.expiryMonth =
+            error.message.properties && error.message.properties.find(prop => prop.key === 'expiryMonth');
+          if (this.errorMessage.expiryMonth && this.errorMessage.expiryMonth.code) {
+            this.errorMessage.expiryMonth.messageKey = this.getErrorMessage(
+              this.errorMessage.expiryMonth.code,
+              'expiryMonth',
+              this.errorMessage.expiryMonth.message
+            );
+          }
+        }
+      } else if (typeof error.message === 'string') {
+        this.errorMessage.general.message = error.message;
       }
     } else if (!this.parameterForm.invalid) {
       this.submit.emit([

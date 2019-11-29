@@ -5,13 +5,13 @@ export class HeaderModule {
 
   get numberOfCompareItems() {
     cy.get('header').then(header => {
-      if (!header.find('[data-testing-id="compare-status-desktop"]').length) {
+      if (!header.find('[data-testing-id="product-compare-count"]').length) {
         return cy.scrollTo('top');
       }
     });
     return cy
-      .get('[data-testing-id="compare-status-desktop"]')
-      .find('.badge')
+      .get('[data-testing-id="product-compare-count"]')
+      .eq(0)
       .then(el => parseInt(el.text(), 10));
   }
 

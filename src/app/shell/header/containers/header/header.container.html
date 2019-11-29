@@ -3,6 +3,10 @@
   <ish-header-checkout *ngSwitchCase="'checkout'"></ish-header-checkout>
 
   <ng-container *ngSwitchDefault>
-    <ish-header [isSticky]="isSticky$ | async" [deviceType]="deviceType$ | async" [reset]="reset$ | async"></ish-header>
+    <ish-header-default
+      [isSticky]="isSticky$ | async"
+      [deviceType]="deviceType$ | async"
+      [reset]="reset$ | async"
+    ></ish-header-default>
   </ng-container>
 </ng-container>

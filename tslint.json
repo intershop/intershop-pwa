@@ -5,10 +5,13 @@
     "tslint-consistent-codestyle",
     "tslint-etc",
     "tslint-eslint-rules",
-    "intershop-tslint-rules"
+    "intershop-tslint-rules",
+    "tslint-plugin-prettier",
+    "tslint-config-prettier"
   ],
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
+    "prettier": true,
     "no-extra-boolean-cast": true,
     "no-static-this": true,
     "no-unnecessary-type-annotation": true,
@@ -300,13 +303,13 @@
         },
         {
           "starImport": true,
-          "from": "\\.\\..*",
+          "from": "(\\.\\.|ish).*",
           "filePattern": ".*src/app.*",
           "message": "use star imports only for aggregation of deeper lying imports"
         },
         { "starImport": true, "from": "lodash.*" },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|flatten|isEqual)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual)$).*",
           "from": "lodash.*"
         },
         {
@@ -433,7 +436,7 @@
           "ngrx": false,
           "service": false,
           "router": true,
-          "facade": false
+          "facade": true
         },
         "container": {
           "ngrx": false,
@@ -445,7 +448,6 @@
         }
       }
     },
-    "ccp-no-markup-in-containers": { "severity": "warning" },
     "initialize-observables-in-ngoninit": true,
     "project-structure": {
       "severity": "warning",
@@ -648,13 +650,13 @@
           }
         ],
         "ignoredFiles": [
-          "/server.ts$",
+          "server.ts$",
           "src/[^/]*.ts$",
           ".*.spec.ts$",
-          "/tslint-rules/",
-          "/schematics/",
-          "/utils/dev/",
-          "/core/utils/",
+          "tslint-rules/",
+          "schematics/",
+          "utils/dev/",
+          "core/utils/",
           ".*.actions.ts$",
           ".*.model.ts$"
         ]

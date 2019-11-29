@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ofRoute } from 'ngrx-router';
+import { mapToQueryParam, ofRoute } from 'ngrx-router';
 import {
   concatMap,
   filter,
@@ -19,9 +19,9 @@ import {
 import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
-import { UserActionTypes } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/user';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
@@ -65,7 +65,10 @@ export class BasketEffects {
    */
   @Effect()
   loadProductsForBasket$ = this.actions$.pipe(
-    ofType<basketActions.LoadBasketSuccess>(basketActions.BasketActionTypes.LoadBasketSuccess),
+    ofType<basketActions.LoadBasketSuccess>(
+      basketActions.BasketActionTypes.LoadBasketSuccess,
+      basketActions.BasketActionTypes.MergeBasketSuccess
+    ),
     mapToPayloadProperty('basket'),
     switchMap(basket => [
       ...basket.lineItems.map(
@@ -80,9 +83,9 @@ export class BasketEffects {
   @Effect()
   loadBasketEligibleShippingMethods$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([, basketId]) =>
-      this.basketService.getBasketEligibleShippingMethods(basketId).pipe(
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([, basket]) =>
+      this.basketService.getBasketEligibleShippingMethods(basket.id, basket.bucketId).pipe(
         map(result => new basketActions.LoadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
         mapErrorToAction(basketActions.LoadBasketEligibleShippingMethodsFail)
       )
@@ -99,7 +102,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([update, currentBasketId]) =>
       this.basketService.updateBasket(currentBasketId, update).pipe(
-        map(basket => new basketActions.LoadBasketSuccess({ basket })),
+        concatMap(basket => [new basketActions.LoadBasketSuccess({ basket }), new basketActions.ResetBasketErrors()]),
         mapErrorToAction(basketActions.UpdateBasketFail)
       )
     )
@@ -114,54 +117,6 @@ export class BasketEffects {
     ofType<basketActions.UpdateBasketShippingMethod>(basketActions.BasketActionTypes.UpdateBasketShippingMethod),
     mapToPayloadProperty('shippingId'),
     map(commonShippingMethod => new basketActions.UpdateBasket({ update: { commonShippingMethod } }))
-  );
-
-  /**
-   * Add quote to the current basket.
-   * Only triggers if the user has a basket.
-   */
-  @Effect()
-  addQuoteToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([payload, currentBasketId]) => !!currentBasketId || !!payload.basketId),
-    concatMap(([payload, currentBasketId]) =>
-      this.basketService.addQuoteToBasket(payload.quoteId, currentBasketId || payload.basketId).pipe(
-        map(link => new basketActions.AddQuoteToBasketSuccess({ link })),
-        mapErrorToAction(basketActions.AddQuoteToBasketFail)
-      )
-    )
-  );
-
-  /**
-   * Get current basket if missing and call AddQuoteToBasketAction
-   * Only triggers if the user has not yet a basket
-   */
-  @Effect()
-  getBasketBeforeAddQuoteToBasket$ = this.actions$.pipe(
-    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
-    mapToPayload(),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    filter(([payload, basketId]) => !basketId && !payload.basketId),
-    mergeMap(([{ quoteId }]) =>
-      this.basketService
-        .createBasket()
-        .pipe(map(basket => new basketActions.AddQuoteToBasket({ quoteId, basketId: basket.id })))
-    )
-  );
-
-  /**
-   * Triggers a Caluculate Basket action after adding a quote to basket.
-   * ToDo: This is only necessary as long as api v0 is used for addQuote and addPayment
-   */
-  @Effect()
-  calculateBasketAfterAddToQuote = this.actions$.pipe(
-    ofType(
-      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
-      basketActions.BasketActionTypes.AddQuoteToBasketFail
-    ),
-    mapTo(new basketActions.UpdateBasket({ update: { calculated: true } }))
   );
 
   /**
@@ -181,7 +136,7 @@ export class BasketEffects {
   );
 
   /**
-   * Merge anonymous basket into current basket of a registered user.
+   * Merge basket into current basket of a registered user.
    * If the user has not yet a basket a new basket is created before the merge
    */
   @Effect()
@@ -193,10 +148,29 @@ export class BasketEffects {
         take(1)
       )
     ),
-    concatMap(sourceBasket =>
-      this.basketService.mergeBasket(sourceBasket.id).pipe(
+    withLatestFrom(this.store.pipe(select(getLastAPITokenBeforeLogin))),
+    concatMap(([sourceBasket, authToken]) =>
+      this.basketService.mergeBasket(sourceBasket.id, authToken).pipe(
         map(basket => new basketActions.MergeBasketSuccess({ basket })),
         mapErrorToAction(basketActions.MergeBasketFail)
+      )
+    )
+  );
+
+  @Effect()
+  validateBasket$ = this.actions$.pipe(
+    ofType<basketActions.ValidateBasket>(basketActions.BasketActionTypes.ValidateBasket),
+    mapToPayloadProperty('scopes'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
+    whenTruthy(),
+    concatMap(([scopes, basketId]) =>
+      this.basketService.validateBasket(basketId, scopes).pipe(
+        map(basketValidation =>
+          basketValidation.results.valid
+            ? new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation })
+            : new basketActions.ContinueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
+        ),
+        mapErrorToAction(basketActions.ContinueCheckoutFail)
       )
     )
   );
@@ -205,7 +179,7 @@ export class BasketEffects {
    * Validates the basket before the user is allowed to jump to the next basket step
    */
   @Effect()
-  validateBasket$ = this.actions$.pipe(
+  validateBasketAndContinueCheckout$ = this.actions$.pipe(
     ofType<basketActions.ContinueCheckout>(basketActions.BasketActionTypes.ContinueCheckout),
     mapToPayloadProperty('targetStep'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
@@ -236,24 +210,48 @@ export class BasketEffects {
         }
       }
       return this.basketService.validateBasket(basketId, scopes).pipe(
-        map(basketValidation => new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })),
+        map(basketValidation =>
+          basketValidation.results.valid
+            ? new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })
+            : new basketActions.ContinueCheckoutWithIssues({ targetRoute, basketValidation })
+        ),
         mapErrorToAction(basketActions.ContinueCheckoutFail)
       );
     })
   );
 
   /**
-   * After order creation either redirect to a payment provider or show checkout receipt page.
+   * Jumps to the next checkout step after basket validation. In case of adjustments the product data of removed items are loaded.
    */
-  @Effect({ dispatch: false })
+  @Effect()
   jumpToNextCheckoutStep$ = this.actions$.pipe(
-    ofType<basketActions.ContinueCheckoutSuccess>(basketActions.BasketActionTypes.ContinueCheckoutSuccess),
+    ofType<basketActions.ContinueCheckoutSuccess>(
+      basketActions.BasketActionTypes.ContinueCheckoutSuccess,
+      basketActions.BasketActionTypes.ContinueCheckoutWithIssues
+    ),
     mapToPayload(),
     tap(payload => {
-      if (payload.targetRoute && payload.basketValidation && payload.basketValidation.results.valid) {
+      if (
+        payload.targetRoute &&
+        payload.basketValidation &&
+        payload.basketValidation.results.valid &&
+        !payload.basketValidation.results.adjusted
+      ) {
         this.router.navigate([payload.targetRoute]);
       }
-    })
+    }),
+    filter(
+      payload =>
+        payload.basketValidation &&
+        payload.basketValidation.results.adjusted &&
+        !!payload.basketValidation.results.infos
+    ),
+    map(payload => payload.basketValidation.results.infos),
+    concatMap(infos =>
+      infos
+        .filter(info => info.parameters && info.parameters.productSku)
+        .map(info => new LoadProduct({ sku: info.parameters.productSku }))
+    )
   );
 
   /**
@@ -282,11 +280,15 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route.
+   * Trigger ResetBasketErrors after the user navigated to another basket/checkout route
+   * Add queryParam error=true to the route to prevent resetting errors.
+   *
    */
   @Effect()
   routeListenerForResettingBasketErrors$ = this.actions$.pipe(
     ofRoute(/^(basket|checkout.*)/),
+    mapToQueryParam<string>('error'),
+    whenFalsy(),
     mapTo(new basketActions.ResetBasketErrors())
   );
 }

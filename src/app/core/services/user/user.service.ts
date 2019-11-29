@@ -9,6 +9,7 @@ import { Credentials, LoginCredentials } from 'ish-core/models/credentials/crede
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
@@ -95,12 +96,10 @@ export class UserService {
     }
 
     if (body.captchaResponse) {
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      const headers = new HttpHeaders().set(
-        ApiService.AUTHORIZATION_HEADER_KEY,
-        `CAPTCHA g-recaptcha-response=${body.captchaResponse} foo=bar`
-      );
-      return this.apiService.post<void>('customers', newCustomer, { headers });
+      return this.apiService.post<void>('customers', newCustomer, {
+        headers: this.appendCaptchaHeaders(body.captchaResponse, body.captchaAction),
+      });
+      // without captcha
     } else {
       return this.apiService.post<void>('customers', newCustomer);
     }
@@ -137,12 +136,12 @@ export class UserService {
 
   /**
    * Updates the password of the currently logged in user.
-   * @param customer    The current customer.
-   * @param user        The current user.
-   * @param password    The new password to update to.
-   * @param oldPassword The users old password for verification.
+   * @param customer         The current customer.
+   * @param user             The current user.
+   * @param password         The new password to update to.
+   * @param currentPassword  The users old password for verification.
    */
-  updateUserPassword(customer: Customer, user: User, password: string, oldPassword: string): Observable<void> {
+  updateUserPassword(customer: Customer, user: User, password: string, currentPassword: string): Observable<void> {
     if (!customer) {
       return throwError('updateUserPassword() called without customer');
     }
@@ -152,19 +151,14 @@ export class UserService {
     if (!password) {
       return throwError('updateUserPassword() called without password');
     }
-    if (!oldPassword) {
-      return throwError('updateUserPassword() called without oldPassword');
+    if (!currentPassword) {
+      return throwError('updateUserPassword() called without currentPassword');
     }
 
-    const headers = new HttpHeaders().set(
-      ApiService.AUTHORIZATION_HEADER_KEY,
-      'BASIC ' + b64u.toBase64(b64u.encode(`${user.email}:${oldPassword}`))
-    );
-
     if (customer.type === 'PrivateCustomer') {
-      return this.apiService.put('customers/-/credentials/password', { password }, { headers });
+      return this.apiService.put('customers/-/credentials/password', { password, currentPassword });
     } else {
-      return this.apiService.put('customers/-/users/-/credentials/password', { password }, { headers });
+      return this.apiService.put('customers/-/users/-/credentials/password', { password, currentPassword });
     }
   }
 
@@ -194,7 +188,7 @@ export class UserService {
 
   /**
    * Request an email for the given datas user with a link to reset the users password.
-   * @param data  The user data (email, firstName, lastName, answer) to identify the user.
+   * @param data  The user data (email, firstName, lastName ) to identify the user.
    */
   requestPasswordReminder(data: PasswordReminder) {
     const options: AvailableOptions = {
@@ -202,10 +196,37 @@ export class UserService {
     };
 
     if (data.captcha) {
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      options.headers = new HttpHeaders().set('Authorization', `CAPTCHA g-recaptcha-response=${data.captcha} foo=bar`);
+      options.headers = this.appendCaptchaHeaders(data.captcha, data.captchaAction);
     }
 
     return this.apiService.post('security/reminder', { answer: '', ...data }, options);
+  }
+
+  /**
+   * set new password with data based on requestPasswordReminder generated email
+   * @param data  password, userID, secureCode
+   */
+  updateUserPasswordByReminder(data: PasswordReminderUpdate) {
+    const options: AvailableOptions = {
+      skipApiErrorHandling: true,
+    };
+    return this.apiService.post('security/password', data, options);
+  }
+
+  // provides the request header for the appropriate captcha service
+  private appendCaptchaHeaders(captcha: string, captchaAction: string): HttpHeaders {
+    let headers = new HttpHeaders();
+    // captcha V3
+    if (captchaAction) {
+      headers = headers.set(
+        ApiService.AUTHORIZATION_HEADER_KEY,
+        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
+      );
+      // captcha V2
+    } else {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      headers = headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
+    }
+    return headers;
   }
 }

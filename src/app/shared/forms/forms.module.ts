@@ -3,16 +3,18 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule, RecaptchaV3Module } from 'ng-recaptcha';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 
+import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component';
+import { CaptchaV3Component } from './components/captcha-v3/captcha-v3.component';
 import { CaptchaComponent } from './components/captcha/captcha.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputBirthdayComponent } from './components/input-birthday/input-birthday.component';
 import { InputComponent } from './components/input/input.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SelectAddressComponent } from './components/select-address/select-address.component';
 import { SelectCountryComponent } from './components/select-country/select-country.component';
 import { SelectLanguageComponent } from './components/select-language/select-language.component';
@@ -25,7 +27,7 @@ import { TextareaComponent } from './components/textarea/textarea.component';
 import { LoginFormContainerComponent } from './containers/login-form/login-form.container';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
-const declaredComponents = [LoginFormComponent];
+const declaredComponents = [CaptchaV2Component, CaptchaV3Component];
 
 const exportedComponents = [
   CaptchaComponent,
@@ -46,7 +48,16 @@ const exportedComponents = [
   TextareaComponent,
 ];
 @NgModule({
-  imports: [CommonModule, IconModule, ReactiveFormsModule, RecaptchaModule, RouterModule, TranslateModule],
+  imports: [
+    CommonModule,
+    FeatureToggleModule,
+    IconModule,
+    ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaV3Module,
+    RouterModule,
+    TranslateModule,
+  ],
   declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents],
 })

@@ -58,6 +58,10 @@ export class RegistrationPage {
     };
   }
 
+  acceptTAC() {
+    cy.get('input[data-testing-id="termsAndConditions"]').check();
+  }
+
   fillForm(register: Partial<Registration>) {
     if (register.loginConfirmation === undefined) {
       register.loginConfirmation = register.login;

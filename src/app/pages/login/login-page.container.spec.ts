@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { LoginFormContainerComponent } from 'ish-shared/forms/containers/login-form/login-form.container';
 
-import { LoginPageComponent } from './components/login-page/login-page.component';
 import { LoginPageContainerComponent } from './login-page.container';
 
 describe('Login Page Container', () => {
@@ -14,8 +16,9 @@ describe('Login Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginPageContainerComponent, MockComponent(LoginPageComponent)],
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [LoginPageContainerComponent, MockComponent(LoginFormContainerComponent)],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   }));
 
@@ -31,8 +34,8 @@ describe('Login Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render login form on Login page', () => {
+  it('should render login form container on Login page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-login-page')).toBeTruthy();
+    expect(element.querySelector('ish-login-form-container')).toBeTruthy();
   });
 });

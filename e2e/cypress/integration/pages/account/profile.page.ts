@@ -1,7 +1,7 @@
 import { HeaderModule } from '../header.module';
 
 export class ProfilePage {
-  readonly tag = 'ish-account-profile-page';
+  readonly tag = 'ish-account-profile';
 
   readonly header = new HeaderModule();
 

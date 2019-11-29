@@ -1,1 +1,6 @@
-<ish-product-bundle-display [productBundleParts]="productBundleParts$ | async"></ish-product-bundle-display>
+<ng-container *ngIf="productBundleParts$ | async as productBundleParts">
+  <ul>
+    <!-- display: inline -->
+    <li *ngFor="let item of productBundleParts">{{ item.quantity }} x {{ item.product.name }}</li>
+  </ul>
+</ng-container>

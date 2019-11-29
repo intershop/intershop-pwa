@@ -197,7 +197,7 @@ describe('Checkout Store', () => {
       return of(newBaskets);
     });
 
-    when(basketServiceMock.mergeBasket(anything())).thenCall(() => {
+    when(basketServiceMock.mergeBasket(anything(), anything())).thenCall(() => {
       const newBasket = {
         ...basket,
       };
@@ -296,7 +296,8 @@ describe('Checkout Store', () => {
           [Basket Internal] Add Items To Basket:
             items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             basketId: "test"
-          [Basket API] Add Items To Basket Success
+          [Basket API] Add Items To Basket Success:
+            info: undefined
           [Basket Internal] Load Basket
           [Basket API] Load Basket Success:
             basket: {"id":"test","lineItems":[1]}
@@ -321,6 +322,9 @@ describe('Checkout Store', () => {
           [Basket Internal] Merge two baskets
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
+          [Shopping] Load Product if not Loaded:
+            sku: "test"
+            level: 2
         `);
       }));
     });
