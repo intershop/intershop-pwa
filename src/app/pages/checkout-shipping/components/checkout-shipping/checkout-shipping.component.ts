@@ -53,13 +53,27 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   private getCommonShippingMethod(): string {
     return this.basket && this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : '';
   }
-
-  /**
+  ngOnChanges(c: SimpleChanges) {
+    if (this.shippingForm) {
+      this.preSelectShippingMethod(c);
+    }
+  }
+  /*
    * set shipping selection to the corresponding basket value (important in case of an error)
    */
-  ngOnChanges(c: SimpleChanges) {
-    if (c.basket && this.shippingForm) {
+  private preSelectShippingMethod(c: SimpleChanges) {
+    if (c.basket) {
       this.shippingForm.get('id').setValue(this.getCommonShippingMethod(), { emitEvent: false });
+    }
+
+    // if there is no shipping method at basket or this basket shipping method is not valid anymore select automatically the 1st valid shipping method
+    if (
+      this.shippingMethods &&
+      this.shippingMethods.length &&
+      (!this.getCommonShippingMethod() ||
+        !this.shippingMethods.find(method => method.id === this.getCommonShippingMethod()))
+    ) {
+      this.shippingForm.get('id').setValue(this.shippingMethods[0].id);
     }
   }
 

@@ -34,6 +34,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   hasGeneralBasketError$: Observable<boolean>;
   errorMessages$: Observable<string[]>;
+  infoMessages$: Observable<string[]>;
   undeliverableItems$: Observable<LineItemView[]>;
   removedItems$: Observable<{ message: string; product: Product }[]>;
 
@@ -107,6 +108,14 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
               product: info.product,
             }))
             .filter(info => info.product)
+      )
+    );
+
+    this.infoMessages$ = this.validationResults$.pipe(
+      map(results =>
+        uniq(results && results.infos && results.infos.filter(info => !info.product).map(info => info.message)).filter(
+          message => !!message
+        )
       )
     );
   }

@@ -246,12 +246,17 @@ export class BasketEffects {
         payload.basketValidation.results.adjusted &&
         !!payload.basketValidation.results.infos
     ),
-    map(payload => payload.basketValidation.results.infos),
-    concatMap(infos =>
-      infos
-        .filter(info => info.parameters && info.parameters.productSku)
-        .map(info => new LoadProduct({ sku: info.parameters.productSku }))
-    )
+    map(payload => payload.basketValidation),
+    // Load eligible shipping methods if shipping infos are available
+    concatMap(validation => {
+      if (validation.scopes.includes('Shipping')) {
+        return [new basketActions.LoadBasketEligibleShippingMethods()];
+      } else {
+        return validation.results.infos
+          .filter(info => info.parameters && info.parameters.productSku)
+          .map(info => new LoadProduct({ sku: info.parameters.productSku }));
+      }
+    })
   );
 
   /**

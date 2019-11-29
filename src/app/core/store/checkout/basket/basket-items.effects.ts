@@ -23,7 +23,7 @@ import {
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
@@ -90,6 +90,16 @@ export class BasketItemsEffects {
         mapErrorToAction(basketActions.AddItemsToBasketFail)
       );
     })
+  );
+
+  /**
+   * Reload products when they are added to basket to update price and inStock information
+   */
+  @Effect()
+  loadProductsForAddItemsToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    mapToPayload(),
+    concatMap(payload => [...payload.items.map(item => new LoadProduct({ sku: item.sku }))])
   );
 
   /**
