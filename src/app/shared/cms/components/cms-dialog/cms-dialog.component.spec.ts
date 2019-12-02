@@ -63,7 +63,7 @@ describe('Cms Dialog Component', () => {
       slots: [
         {
           displayName: 'dialog',
-          definitionQualifiedName: 'app_sf_responsive_cm:slot.dialog.content.pagelet2-Slot',
+          definitionQualifiedName: 'app_sf_base_cm:slot.dialog.content.pagelet2-Slot',
           pageletIDs: ['dialogId'],
         },
       ],
@@ -73,7 +73,7 @@ describe('Cms Dialog Component', () => {
 
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(
-      `<ish-content-slot ng-reflect-slot="app_sf_responsive_cm:slot.dial"></ish-content-slot>`
+      `<ish-content-slot ng-reflect-slot="app_sf_base_cm:slot.dialog.con"></ish-content-slot>`
     );
   });
 });
