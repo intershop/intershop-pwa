@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { AddressFormsSharedModule } from 'ish-shared/address-forms/address-forms.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
@@ -8,7 +7,7 @@ import { CheckoutAddressAnonymousComponent } from './components/checkout-address
 import { CheckoutAddressComponent } from './components/checkout-address/checkout-address.component';
 
 @NgModule({
-  imports: [AddressFormsSharedModule, SharedModule],
+  imports: [SharedModule],
   declarations: [CheckoutAddressAnonymousComponent, CheckoutAddressComponent, CheckoutAddressPageContainerComponent],
 })
 export class CheckoutAddressPageModule {

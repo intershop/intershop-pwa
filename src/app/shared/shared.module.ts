@@ -22,6 +22,7 @@ import { ShellModule } from 'ish-shell/shell.module';
 
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 
+import { AddressFormsSharedModule } from './address-forms/address-forms.module';
 import { AddressComponent } from './address/components/address/address.component';
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
@@ -99,6 +100,7 @@ import { PromotionDetailsComponent } from './promotion/components/promotion-deta
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
 const importExportModules = [
+  AddressFormsSharedModule,
   CMSModule,
   CommonModule,
   DeferLoadModule,
