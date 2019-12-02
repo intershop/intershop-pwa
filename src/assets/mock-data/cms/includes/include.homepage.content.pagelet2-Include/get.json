@@ -13,18 +13,18 @@
     {
       "configurationParameters": {
         "CSSClass": {
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+          "definitionQualifiedName": "app_sf_base_cm:component.common.container.pagelet2-Component-CSSClass",
           "type": "bc_pmc:types.pagelet2-Text",
           "value": "clearfix px-2"
         },
         "Grid": {
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+          "definitionQualifiedName": "app_sf_base_cm:component.common.container.pagelet2-Component-Grid",
           "type": "sld_mcm:parametertype.bootstrap.grid.pagelet2-Grid",
           "value": "ExtraSmall:0,Small:0,Medium:0,Large:0"
         }
       },
       "customAttributes": {},
-      "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
+      "definitionQualifiedName": "app_sf_base_cm:component.common.container.pagelet2-Component",
       "displayName": "PWA Homepage Grid",
       "domain": "inSPIRED-inTRONICS-b2c-responsive",
       "id": "pwa_homepage_grid",
@@ -34,12 +34,12 @@
         "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid"
       },
       "slots": {
-        "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
+        "app_sf_base_cm:slot.container.content.pagelet2-Slot": {
           "customAttributes": {},
-          "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
+          "definitionQualifiedName": "app_sf_base_cm:slot.container.content.pagelet2-Slot",
           "displayName": "Container Content",
           "link": {
-            "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
+            "title": "app_sf_base_cm:slot.container.content.pagelet2-Slot",
             "type": "Link",
             "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
           },
@@ -47,18 +47,18 @@
             {
               "configurationParameters": {
                 "CSSClass": {
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+                  "definitionQualifiedName": "app_sf_base_cm:component.common.container.pagelet2-Component-CSSClass",
                   "type": "bc_pmc:types.pagelet2-Text",
                   "value": "pt-4"
                 },
                 "Grid": {
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+                  "definitionQualifiedName": "app_sf_base_cm:component.common.container.pagelet2-Component-Grid",
                   "type": "sld_mcm:parametertype.bootstrap.grid.pagelet2-Grid",
                   "value": "ExtraSmall:12,Small:0,Medium:0,Large:0"
                 }
               },
               "customAttributes": {},
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
+              "definitionQualifiedName": "app_sf_base_cm:component.common.container.pagelet2-Component",
               "displayName": "PWA Homepage Grid - Full Width Multiple Slot",
               "domain": "inSPIRED-inTRONICS-b2c-responsive",
               "id": "pwa_homepage_grid_5",
@@ -68,40 +68,40 @@
                 "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5"
               },
               "slots": {
-                "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
+                "app_sf_base_cm:slot.container.content.pagelet2-Slot": {
                   "customAttributes": {},
-                  "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
+                  "definitionQualifiedName": "app_sf_base_cm:slot.container.content.pagelet2-Slot",
                   "displayName": "Container Content",
                   "link": {
-                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
+                    "title": "app_sf_base_cm:slot.container.content.pagelet2-Slot",
                     "type": "Link",
-                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5/app_sf_base_cm:slot.container.content.pagelet2-Slot"
                   },
                   "pagelets": [
                     {
                       "configurationParameters": {
                         "CSSClass": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-CSSClass",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-CSSClass",
                           "type": "bc_pmc:types.pagelet2-Text",
                           "value": "container"
                         },
                         "ListItemCSSClass": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ListItemCSSClass",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-ListItemCSSClass",
                           "type": "bc_pmc:types.pagelet2-Text",
                           "value": "col-12 col-sm-6 col-lg-3"
                         },
                         "ListStyle": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ListStyle",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-ListStyle",
                           "type": "bc_pmc:types.pagelet2-DropDownBox",
                           "value": "none"
                         },
                         "ProductView": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ProductView",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-ProductView",
                           "type": "bc_pmc:types.pagelet2-ViewContext",
                           "value": "app_sf_responsive:vc_productTile@inSPIRED-MasterRepository"
                         },
                         "Products": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-Products",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-Products",
                           "type": "bc_product:types.pagelet2-ProductBO",
                           "value": [
                             "201807171@inSPIRED-inTRONICS",
@@ -111,18 +111,18 @@
                           ]
                         },
                         "SlideItems": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-SlideItems",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-SlideItems",
                           "type": "bc_pmc:types.pagelet2-DropDownBox",
                           "value": "4"
                         },
                         "Title": {
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-Title",
+                          "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component-Title",
                           "type": "bc_pmc:types.pagelet2-Text",
                           "value": "Featured Products"
                         }
                       },
                       "customAttributes": {},
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component",
+                      "definitionQualifiedName": "app_sf_base_cm:component.common.productListManual.pagelet2-Component",
                       "displayName": "PWA Featured Products",
                       "domain": "inSPIRED-inTRONICS-b2c-responsive",
                       "id": "pwa_featured_products",

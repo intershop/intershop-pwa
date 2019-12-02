@@ -15,7 +15,7 @@ export class CMSContainerComponent implements CMSComponent, OnChanges {
   containerClasses = '';
 
   ngOnChanges() {
-    let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pageletIDs;
+    let contentSlotPagelets = this.pagelet.slot('app_sf_base_cm:slot.container.content.pagelet2-Slot').pageletIDs;
     if (this.pagelet.hasParam('UpperBound')) {
       contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
     }

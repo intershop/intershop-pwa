@@ -1,9 +1,5 @@
 <div *ngIf="pagelet" [ngClass]="pagelet.stringParam('CSSClass')">
-  <ish-content-slot
-    [wrapper]="true"
-    [slot]="'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot'"
-    [pagelet]="pagelet"
-  >
+  <ish-content-slot [wrapper]="true" [slot]="'app_sf_base_cm:slot.carousel.items.pagelet2-Slot'" [pagelet]="pagelet">
     <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
       <ngb-carousel
         #ngbCarousel

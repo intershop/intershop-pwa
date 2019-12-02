@@ -9,7 +9,7 @@ describe('CMS Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
   const defaultOptions: Options = {
     name: 'foo',
-    definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
+    definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
     styleFile: false,
     module: undefined,
     export: false,
@@ -45,7 +45,7 @@ describe('CMS Component Schematic', () => {
         providers: [{
             provide: CMS_COMPONENT,
             useValue: {
-              definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
+              definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
               class: CMSFooComponent,
             },
             multi: true,
@@ -90,7 +90,7 @@ describe('CMS Component Schematic', () => {
         providers: [{
             provide: CMS_COMPONENT,
             useValue: {
-              definitionQualifiedName: 'app_sf_responsive_cm:component.common.foo.pagelet2-Component',
+              definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
               class: FooComponent,
             },
             multi: true,

@@ -158,14 +158,14 @@ describe('Content Pagelet Mapper', () => {
 
   it('should have special handling for image pagelet configuration parmeters', () => {
     const input = {
-      definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component',
+      definitionQualifiedName: 'app_sf_base_cm:component.common.image.pagelet2-Component',
       displayName: 'Brand Image 5',
       domain: 'domain',
       id: 'cmp_brandImage_5',
       configurationParameters: {
         Image: {
           value: 'inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg',
-          definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component-Image',
+          definitionQualifiedName: 'app_sf_base_cm:component.common.image.pagelet2-Component-Image',
         },
       },
     } as ContentPageletData;
