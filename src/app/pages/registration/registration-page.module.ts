@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AddressFormsSharedModule } from 'ish-shared/address-forms/address-forms.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { RegistrationCompanyFormComponent } from './components/registration-company-form/registration-company-form.component';
@@ -13,7 +12,7 @@ import { RegistrationPageContainerComponent } from './registration-page.containe
 const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageContainerComponent }];
 
 @NgModule({
-  imports: [AddressFormsSharedModule, RouterModule.forChild(registrationPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(registrationPageRoutes), SharedModule],
   declarations: [
     RegistrationCompanyFormComponent,
     RegistrationCredentialsFormComponent,
