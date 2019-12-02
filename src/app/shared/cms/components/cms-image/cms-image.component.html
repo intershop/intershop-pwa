@@ -12,14 +12,14 @@
 </ng-container>
 
 <ng-template #image>
-  <span (deferLoad)="showImage = true">
+  <div (deferLoad)="showImage = true">
     <img
       *ngIf="showImage"
       [src]="pagelet.stringParam('Image')"
       [attr.alt]="pagelet.stringParam('AlternateText')"
       [ngClass]="pagelet.stringParam('CSSClass')"
     />
-  </span>
+  </div>
 </ng-template>
 
 <!-- TODO: (CMS Component Configuration)

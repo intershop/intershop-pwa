@@ -1,4 +1,4 @@
-<span (deferLoad)="showImage = true">
+<div (deferLoad)="showImage = true">
   <img
     *ngIf="showImage"
     [src]="imageSourceUrl()"
@@ -10,4 +10,4 @@
     [attr.alt]="getImgAltText()"
     itemprop="image"
   />
-</span>
+</div>
