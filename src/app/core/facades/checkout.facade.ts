@@ -4,7 +4,6 @@ import { merge } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import {
@@ -77,8 +76,8 @@ export class CheckoutFacade {
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
 
-  createOrder(basket: Basket) {
-    this.store.dispatch(new CreateOrder({ basket }));
+  createOrder(basketId: string) {
+    this.store.dispatch(new CreateOrder({ basketId }));
   }
 
   // SHIPPING

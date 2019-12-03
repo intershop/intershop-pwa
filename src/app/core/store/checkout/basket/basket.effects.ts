@@ -1,39 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToQueryParam, ofRoute } from 'ngrx-router';
-import {
-  concatMap,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  mergeMapTo,
-  switchMap,
-  take,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { LoadProduct, LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
+import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/user';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketEffects {
-  constructor(
-    private actions$: Actions,
-    private router: Router,
-    private store: Store<{}>,
-    private basketService: BasketService
-  ) {}
+  constructor(private actions$: Actions, private store: Store<{}>, private basketService: BasketService) {}
 
   /**
    * The load basket effect.
@@ -155,112 +137,6 @@ export class BasketEffects {
         mapErrorToAction(basketActions.MergeBasketFail)
       )
     )
-  );
-
-  @Effect()
-  validateBasket$ = this.actions$.pipe(
-    ofType<basketActions.ValidateBasket>(basketActions.BasketActionTypes.ValidateBasket),
-    mapToPayloadProperty('scopes'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    whenTruthy(),
-    concatMap(([scopes, basketId]) =>
-      this.basketService.validateBasket(basketId, scopes).pipe(
-        map(basketValidation =>
-          basketValidation.results.valid
-            ? new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation })
-            : new basketActions.ContinueCheckoutWithIssues({ targetRoute: undefined, basketValidation })
-        ),
-        mapErrorToAction(basketActions.ContinueCheckoutFail)
-      )
-    )
-  );
-
-  /**
-   * Validates the basket before the user is allowed to jump to the next basket step
-   */
-  @Effect()
-  validateBasketAndContinueCheckout$ = this.actions$.pipe(
-    ofType<basketActions.ContinueCheckout>(basketActions.BasketActionTypes.ContinueCheckout),
-    mapToPayloadProperty('targetStep'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    whenTruthy(),
-    concatMap(([targetStep, basketId]) => {
-      let scopes: BasketValidationScopeType[] = [''];
-      let targetRoute = '';
-      switch (targetStep) {
-        case 1: {
-          scopes = ['Products', 'Value'];
-          targetRoute = '/checkout/address';
-          break;
-        }
-        case 2: {
-          scopes = ['InvoiceAddress', 'ShippingAddress', 'Addresses'];
-          targetRoute = '/checkout/shipping';
-          break;
-        }
-        case 3: {
-          scopes = ['Shipping'];
-          targetRoute = '/checkout/payment';
-          break;
-        }
-        case 4: {
-          scopes = ['Payment'];
-          targetRoute = '/checkout/review';
-          break;
-        }
-      }
-      return this.basketService.validateBasket(basketId, scopes).pipe(
-        map(basketValidation =>
-          basketValidation.results.valid
-            ? new basketActions.ContinueCheckoutSuccess({ targetRoute, basketValidation })
-            : new basketActions.ContinueCheckoutWithIssues({ targetRoute, basketValidation })
-        ),
-        mapErrorToAction(basketActions.ContinueCheckoutFail)
-      );
-    })
-  );
-
-  /**
-   * Jumps to the next checkout step after basket validation. In case of adjustments the product data of removed items are loaded.
-   */
-  @Effect()
-  jumpToNextCheckoutStep$ = this.actions$.pipe(
-    ofType<basketActions.ContinueCheckoutSuccess>(
-      basketActions.BasketActionTypes.ContinueCheckoutSuccess,
-      basketActions.BasketActionTypes.ContinueCheckoutWithIssues
-    ),
-    mapToPayload(),
-    tap(payload => {
-      if (
-        payload.targetRoute &&
-        payload.basketValidation &&
-        payload.basketValidation.results.valid &&
-        !payload.basketValidation.results.adjusted
-      ) {
-        this.router.navigate([payload.targetRoute]);
-      }
-    }),
-    filter(
-      payload =>
-        payload.basketValidation &&
-        payload.basketValidation.results.adjusted &&
-        !!payload.basketValidation.results.infos
-    ),
-    map(payload => payload.basketValidation),
-    concatMap(validation => {
-      // Load eligible shipping methods if shipping infos are available
-      if (validation.scopes.includes('Shipping')) {
-        return [new basketActions.LoadBasketEligibleShippingMethods()];
-        // Load eligible payment methods if payment infos are available
-      } else if (validation.scopes.includes('Payment')) {
-        return [new basketActions.LoadBasketEligiblePaymentMethods()];
-      } else {
-        // Load products if product related infos are available
-        return validation.results.infos
-          .filter(info => info.parameters && info.parameters.productSku)
-          .map(info => new LoadProduct({ sku: info.parameters.productSku }));
-      }
-    })
   );
 
   /**

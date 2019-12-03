@@ -75,8 +75,8 @@ describe('Orders Effects', () => {
   describe('createOrder$', () => {
     it('should call the orderService for createOrder', done => {
       when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(undefined));
-      const payload = BasketMockData.getBasket();
-      const action = new orderActions.CreateOrder({ basket: payload });
+      const payload = BasketMockData.getBasket().id;
+      const action = new orderActions.CreateOrder({ basketId: payload });
       actions$ = of(action);
 
       effects.createOrder$.subscribe(() => {
@@ -89,9 +89,9 @@ describe('Orders Effects', () => {
       when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
         of({ id: BasketMockData.getBasket().id } as Order)
       );
-      const basket = BasketMockData.getBasket();
-      const newOrder = { id: basket.id } as Order;
-      const action = new orderActions.CreateOrder({ basket });
+      const basketId = BasketMockData.getBasket().id;
+      const newOrder = { id: basketId } as Order;
+      const action = new orderActions.CreateOrder({ basketId });
       const completion = new orderActions.CreateOrderSuccess({ order: newOrder });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -101,8 +101,8 @@ describe('Orders Effects', () => {
 
     it('should map an invalid request to action of type CreateOrderFail', () => {
       when(orderServiceMock.createOrder(anything(), anything())).thenReturn(throwError({ message: 'invalid' }));
-      const basket = BasketMockData.getBasket();
-      const action = new orderActions.CreateOrder({ basket });
+      const basketId = BasketMockData.getBasket().id;
+      const action = new orderActions.CreateOrder({ basketId });
       const completion = new orderActions.CreateOrderFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

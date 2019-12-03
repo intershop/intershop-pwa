@@ -3,12 +3,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { spy, verify } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { AddressComponent } from 'ish-shared/address/components/address/address.component';
 import { BasketCostSummaryComponent } from 'ish-shared/basket/components/basket-cost-summary/basket-cost-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
 import { ContentIncludeContainerComponent } from 'ish-shared/cms/containers/content-include/content-include.container';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
@@ -29,6 +30,7 @@ describe('Checkout Review Component', () => {
         CheckoutReviewComponent,
         MockComponent(AddressComponent),
         MockComponent(BasketCostSummaryComponent),
+        MockComponent(BasketValidationResultsComponent),
         MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeContainerComponent),
         MockComponent(ErrorMessageComponent),
@@ -55,14 +57,13 @@ describe('Checkout Review Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit an event if t&c checkbox is checked', done => {
-    component.createOrder.subscribe(basket => {
-      expect(basket.id).toEqual(component.basket.id);
-      done();
-    });
+  it('should emit an event if t&c checkbox is checked', () => {
+    const emitter = spy(component.createOrder);
+
     fixture.detectChanges();
     component.form.get('termsAndConditions').setValue('true');
     component.submitOrder();
+    verify(emitter.emit()).once();
   });
 
   it('should not emit an event if t&c checkbox is empty', () => {
@@ -70,7 +71,7 @@ describe('Checkout Review Component', () => {
 
     fixture.detectChanges();
     component.submitOrder();
-    verify(emitter.emit(anything())).never();
+    verify(emitter.emit()).never();
   });
 
   it('should display a message if an error occurs', () => {

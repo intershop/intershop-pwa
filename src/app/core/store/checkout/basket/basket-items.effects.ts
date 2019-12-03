@@ -158,7 +158,7 @@ export class BasketItemsEffects {
   );
 
   /**
-   * Validates the basket after and update item error occurred
+   * Validates the basket after an update item error occurred
    */
   @Effect()
   validateBasketAfterUpdateFailure$ = this.actions$.pipe(

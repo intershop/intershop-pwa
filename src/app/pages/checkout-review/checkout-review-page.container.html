@@ -3,7 +3,7 @@
     [basket]="basket$ | async"
     [error]="error$ | async"
     [submitting]="orderLoading$ | async"
-    (createOrder)="onCreateOrder($event)"
+    (createOrder)="onCreateOrder()"
   ></ish-checkout-review>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
