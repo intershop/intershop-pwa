@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -230,11 +231,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get sameShippingAndInvoiceAddress() {
-    return (
-      this.basket &&
-      this.basket.invoiceToAddress &&
-      this.basket.commonShipToAddress.urn === this.basket.invoiceToAddress.urn
-    );
+    return this.basket && AddressHelper.equal(this.basket.invoiceToAddress, this.basket.commonShipToAddress);
   }
 
   ngOnDestroy() {
