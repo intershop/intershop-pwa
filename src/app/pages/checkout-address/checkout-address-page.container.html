@@ -8,14 +8,8 @@
     >
       <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
       <ish-checkout-address
-        [currentUser]="currentUser$ | async"
         [basket]="basket"
-        [addresses]="addresses$ | async"
         [error]="(basketError$ | async) || (addressesError$ | async)"
-        (assignAddressToBasket)="assignAddressToBasket($event)"
-        (updateAddress)="updateAddress($event)"
-        (createAddress)="createAddress($event)"
-        (deleteShippingAddress)="deleteCustomerAddress($event)"
         (nextStep)="nextStep()"
       ></ish-checkout-address>
     </ng-container>
@@ -25,7 +19,6 @@
       <ish-checkout-address-anonymous
         [basket]="basket"
         [error]="(basketError$ | async) || (addressesError$ | async)"
-        (createBasketAddress)="createAddress($event)"
         (nextStep)="nextStep()"
       ></ish-checkout-address-anonymous>
     </ng-template>
