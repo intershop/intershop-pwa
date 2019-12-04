@@ -35,6 +35,8 @@ import { BasketValidationResultsComponent } from './basket/components/basket-val
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
 import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
+import { BasketInvoiceAddressWidgetContainerComponent } from './checkout/containers/basket-invoice-address-widget/basket-invoice-address-widget.container';
+import { BasketShippingAddressWidgetContainerComponent } from './checkout/containers/basket-shipping-address-widget/basket-shipping-address-widget.container';
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
@@ -168,9 +170,11 @@ const exportedComponents = [
   BasketAddressSummaryComponent,
   BasketCostSummaryComponent,
   BasketInfoComponent,
+  BasketInvoiceAddressWidgetContainerComponent,
   BasketItemsSummaryComponent,
   BasketPromotionCodeComponent,
   BasketPromotionContainerComponent,
+  BasketShippingAddressWidgetContainerComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
   ContentIncludeContainerComponent,

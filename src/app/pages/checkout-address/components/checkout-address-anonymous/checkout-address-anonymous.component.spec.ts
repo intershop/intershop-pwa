@@ -7,8 +7,10 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -25,10 +27,13 @@ describe('Checkout Address Anonymous Component', () => {
   let fixture: ComponentFixture<CheckoutAddressAnonymousComponent>;
   let element: HTMLElement;
   let fb: FormBuilder;
+  let checkoutFacade: CheckoutFacade;
 
   beforeEach(async(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
+
+    checkoutFacade = mock(CheckoutFacade);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -52,7 +57,10 @@ describe('Checkout Address Anonymous Component', () => {
           },
         }),
       ],
-      providers: [{ provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }],
+      providers: [
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+      ],
     }).compileComponents();
   }));
 
@@ -123,23 +131,18 @@ describe('Checkout Address Anonymous Component', () => {
     });
   }));
 
-  it('should NOT throw create event for invalid form', done => {
+  it('should NOT create address for invalid form', () => {
     component.form = new FormGroup({
       email: new FormControl('', Validators.required),
-    });
-
-    component.createBasketAddress.subscribe(() => {
-      fail();
-      done();
     });
 
     component.submitAddressForm();
     fixture.detectChanges();
 
-    done();
+    verify(checkoutFacade.createBasketAddress(anything(), anything())).never();
   });
 
-  it('should throw create event for valid invoice address form', done => {
+  it('should create address for valid invoice address form', () => {
     component.form = fb.group({
       email: new FormControl(''),
       shipOption: new FormControl('shipToInvoiceAddress'),
@@ -148,11 +151,9 @@ describe('Checkout Address Anonymous Component', () => {
       address: new FormControl({}),
     });
 
-    component.createBasketAddress.subscribe(() => {
-      done();
-    });
-
     component.submitAddressForm();
     fixture.detectChanges();
+
+    verify(checkoutFacade.createBasketAddress(anything(), anything())).once();
   });
 });

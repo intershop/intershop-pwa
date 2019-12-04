@@ -9,12 +9,11 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Address } from 'ish-core/models/address/address.model';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -39,7 +38,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
   @Input() basket: Basket;
   @Input() error: HttpError;
 
-  @Output() createBasketAddress = new EventEmitter<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>();
   @Output() nextStep = new EventEmitter<void>();
 
   form: FormGroup;
@@ -51,7 +49,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
 
   private destroy$ = new Subject();
 
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(private checkoutFacade: CheckoutFacade, private fb: FormBuilder) {}
 
   ngOnInit() {
     // create address form for basket addresses
@@ -129,10 +127,10 @@ export class CheckoutAddressAnonymousComponent implements OnChanges, OnInit, OnD
         : this.shippingAddressForm.get('address').value;
 
     if (shippingAddress) {
-      this.createBasketAddress.emit({ address: invoiceAddress, scope: 'invoice' });
-      this.createBasketAddress.emit({ address: shippingAddress, scope: 'shipping' });
+      this.checkoutFacade.createBasketAddress(invoiceAddress, 'invoice');
+      this.checkoutFacade.createBasketAddress(shippingAddress, 'shipping');
     } else {
-      this.createBasketAddress.emit({ address: invoiceAddress, scope: 'any' });
+      this.checkoutFacade.createBasketAddress(invoiceAddress, 'any');
     }
   }
 

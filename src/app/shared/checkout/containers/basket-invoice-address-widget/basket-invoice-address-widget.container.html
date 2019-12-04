@@ -1,0 +1,58 @@
+<h2>{{ 'checkout.address.billing.label' | translate }}</h2>
+<ng-container *ngIf="invoiceAddress$ | async as address">
+  <div class="address-box">
+    <!-- edit invoice address -->
+    <a
+      *ngIf="collapseChange | async"
+      class="btn-tool float-right"
+      title="{{ 'checkout.address.update.button.label' | translate }}"
+      (click)="showAddressForm(address)"
+      data-testing-id="edit-invoice-address-link"
+    >
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
+    </a>
+
+    <!-- display invoice address -->
+    <ish-address [address]="address"></ish-address>
+  </div>
+  <p *ngIf="!address && showErrors" class="text-danger">
+    {{ 'checkout.addresses.no_Selection.invoice.error' | translate }}
+  </p>
+</ng-container>
+
+<!-- invoice address selection -->
+<ng-container *ngIf="addresses$ | async as addresses">
+  <form *ngIf="addresses.length" [formGroup]="form">
+    <ish-select-address
+      [form]="form"
+      controlName="id"
+      [addresses]="addresses"
+      [emptyOptionLabel]="emptyOptionLabel$ | async"
+      inputClass="col-12"
+    ></ish-select-address>
+  </form>
+</ng-container>
+
+<!-- Add a new Invoice to address -->
+<div class="row" *ngIf="collapseChange | async">
+  <button
+    data-testing-id="create-invoice-address-link"
+    class="btn btn-link"
+    (click)="showAddressForm()"
+    [attr.aria-expanded]="!(collapseChange | async)"
+    aria-controls="collapseBasic"
+  >
+    {{ 'checkout.create_address.link' | translate }}
+  </button>
+</div>
+
+<!-- invoice address form -->
+<div id="collapseBasic" [ngbCollapse]="collapseChange | async" data-testing-id="invoice-address-form">
+  <ish-customer-address-form
+    [address]="editAddress"
+    [resetForm]="!(collapseChange | async)"
+    (save)="saveAddress($event)"
+    (cancel)="cancelEditAddress()"
+  >
+  </ish-customer-address-form>
+</div>
