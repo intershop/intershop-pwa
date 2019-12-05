@@ -24,7 +24,7 @@ import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
+import { LoadCompanyUser, LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -1036,6 +1036,23 @@ describe('Quote Request Effects', () => {
 
       actions$ = hot('a--b--a', { a: selectQuoteRequestAction, b: loadQuoteRequestSuccessAction });
       expect(effects.loadQuoteRequestItemsAfterSelectQuoteRequest$).toBeObservable(cold('---a--a', { a: expected }));
+    });
+  });
+
+  describe('loadQuoteRequestsOnLogin', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new LoginUserSuccess({
+          customer: {} as Customer,
+          user: {} as User,
+        })
+      );
+    });
+    it('should fire LoadQuoteRequests if getLoggedInCustomer selector streams true.', () => {
+      actions$ = hot('a', { a: new LoadCompanyUser() });
+      expect(effects.loadQuoteRequestsOnLogin$).toBeObservable(
+        cold('(a|)', { a: new quoteRequestActions.LoadQuoteRequests() })
+      );
     });
   });
 });
