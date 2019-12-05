@@ -54,8 +54,8 @@ export class RestoreEffects {
     this.store$.pipe(select(getCurrentBasket)),
     this.store$.pipe(select(getSelectedOrderId)),
     this.store$.pipe(select(getAPIToken)),
-    this.cookieService.cookieLawSeen$,
   ]).pipe(
+    filter(() => isPlatformBrowser(this.platformId)),
     filter(([user, basket, orderId]) => !!user || !!basket || !!orderId),
     map(([user, basket, orderId, apiToken]) =>
       this.makeCookie({ apiToken, type: user ? 'user' : basket ? 'basket' : 'order', orderId })
@@ -82,6 +82,7 @@ export class RestoreEffects {
    */
   @Effect()
   restoreUserOrBasketOrOrderByToken$ = this.router.events.pipe(
+    filter(() => isPlatformBrowser(this.platformId)),
     filter(event => event instanceof NavigationStart),
     first(),
     map(() => this.cookieService.get('apiToken')),
@@ -109,8 +110,7 @@ export class RestoreEffects {
     concatMapTo(
       interval(1000).pipe(
         takeWhile(() => isPlatformBrowser(this.platformId)),
-        withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.cookieService.cookieLawSeen$),
-        filter(([, , cookieLawAccepted]) => cookieLawAccepted),
+        withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
         map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
         filter(({ user, apiToken }) => user && !apiToken),
         mapTo(new LogoutUser())
@@ -125,12 +125,7 @@ export class RestoreEffects {
     concatMapTo(
       interval(1000).pipe(
         takeWhile(() => isPlatformBrowser(this.platformId)),
-        withLatestFrom(
-          this.store$.pipe(select(getLoggedInUser)),
-          this.store$.pipe(select(getCurrentBasket)),
-          this.cookieService.cookieLawSeen$
-        ),
-        filter(([, , , cookieLawAccepted]) => cookieLawAccepted),
+        withLatestFrom(this.store$.pipe(select(getLoggedInUser)), this.store$.pipe(select(getCurrentBasket))),
         map(([, user, basket]) => ({ user, basket, apiToken: this.cookieService.get('apiToken') })),
         filter(({ user, basket, apiToken }) => !user && basket && !apiToken),
         mapTo(new ResetBasket())
