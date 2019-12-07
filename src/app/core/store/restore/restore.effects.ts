@@ -140,7 +140,7 @@ export class RestoreEffects {
 
   @Effect()
   sessionKeepAlive$ = this.appRef.isStable.pipe(
-    takeWhile(() => isPlatformBrowser(this.platformId)),
+    filter(() => isPlatformBrowser(this.platformId)),
     whenTruthy(),
     first(),
     concatMapTo(
