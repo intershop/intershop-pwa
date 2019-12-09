@@ -31,10 +31,16 @@
           [showPriceSavings]="true"
         ></ish-product-price>
 
-        <ish-product-inventory *ngIf="!isRetailSet(product)" [product]="product"></ish-product-inventory>
+        <ish-product-inventory
+          *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
+          [product]="product"
+        ></ish-product-inventory>
       </div>
 
-      <ish-product-shipment *ngIf="!isRetailSet(product)" [product]="product"></ish-product-shipment>
+      <ish-product-shipment
+        *ngIf="!isRetailSet(product) && !isMasterProduct(product)"
+        [product]="product"
+      ></ish-product-shipment>
 
       <ish-product-variation-select
         *ngIf="isVariationProduct(product)"
@@ -83,7 +89,11 @@
       >
         <ish-product-attributes [product]="product"></ish-product-attributes>
       </ish-accordion-item>
-      <ish-accordion-item [heading]="'product.shipping.heading' | translate" dataTestingId="section-shipping-tab">
+      <ish-accordion-item
+        *ngIf="!isMasterProduct(product)"
+        [heading]="'product.shipping.heading' | translate"
+        dataTestingId="section-shipping-tab"
+      >
         <ish-product-shipment [product]="product"></ish-product-shipment>
       </ish-accordion-item>
     </ish-accordion>
