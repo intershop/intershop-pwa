@@ -1985,6 +1985,8 @@
   "product.quantity.lessthan.text": "Please enter {{0}} or less.",
   "product.quantity.message.text": "Please enter a number.",
   "product.quantity.notempty.text": "Please enter a number.",
+  "product.quantity.increase.text": "+",
+  "product.quantity.decrease.text": "–",
   "product.rating.five.text": "5",
   "product.rating.four.text": "4",
   "product.rating.not_rated": "This product hasn''t been rated yet.",

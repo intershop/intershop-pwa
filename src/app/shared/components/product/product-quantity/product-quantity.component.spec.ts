@@ -5,6 +5,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { Product } from 'ish-core/models/product/product.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
+import { CounterComponent } from 'ish-shared/forms/components/counter/counter.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectComponent } from 'ish-shared/forms/components/select/select.component';
 
@@ -19,7 +20,12 @@ describe('Product Quantity Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(InputComponent), MockComponent(SelectComponent), ProductQuantityComponent],
+      declarations: [
+        MockComponent(CounterComponent),
+        MockComponent(InputComponent),
+        MockComponent(SelectComponent),
+        ProductQuantityComponent,
+      ],
     }).compileComponents();
   }));
 
