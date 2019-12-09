@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
+
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty.component';
 
@@ -10,7 +13,7 @@ describe('Shopping Basket Empty Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ShoppingBasketEmptyComponent],
+      declarations: [MockComponent(ErrorMessageComponent), ShoppingBasketEmptyComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
