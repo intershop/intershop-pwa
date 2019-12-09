@@ -32,7 +32,7 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
   @Input() product: Product;
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
-  @Input() type?: 'select' | 'input';
+  @Input() type?: 'input' | 'select' | 'counter';
   @Input() class?: string;
 
   quantityOptions: SelectOption[];
@@ -56,7 +56,7 @@ export class ProductQuantityComponent implements OnInit, OnChanges {
   }
 
   getValidations(): ValidatorFn {
-    if (this.type !== 'select') {
+    if (this.type === 'input') {
       return Validators.compose([
         Validators.required,
         Validators.min(this.allowZeroQuantity ? 0 : this.product.minOrderQuantity),

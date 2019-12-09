@@ -1903,6 +1903,8 @@
   "product.quantity.lessthan.text": "Veuillez entrer {{0}} ou moins.",
   "product.quantity.message.text": "Veuillez entrer un numéro.",
   "product.quantity.notempty.text": "Veuillez entrer un numéro.",
+  "product.quantity.increase.text": "+",
+  "product.quantity.decrease.text": "–",
   "product.rating.five.text": "5",
   "product.rating.four.text": "4",
   "product.rating.not_rated": "Ce produit n'a pas encore été évalué.",

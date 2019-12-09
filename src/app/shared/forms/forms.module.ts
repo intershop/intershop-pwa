@@ -12,6 +12,7 @@ import { CaptchaV2Component } from './components/captcha-v2/captcha-v2.component
 import { CaptchaV3Component } from './components/captcha-v3/captcha-v3.component';
 import { CaptchaComponent } from './components/captcha/captcha.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { CounterComponent } from './components/counter/counter.component';
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputBirthdayComponent } from './components/input-birthday/input-birthday.component';
 import { InputComponent } from './components/input/input.component';
@@ -32,6 +33,7 @@ const declaredComponents = [CaptchaV2Component, CaptchaV3Component];
 const exportedComponents = [
   CaptchaComponent,
   CheckboxComponent,
+  CounterComponent,
   FormControlFeedbackComponent,
   InputBirthdayComponent,
   InputComponent,
