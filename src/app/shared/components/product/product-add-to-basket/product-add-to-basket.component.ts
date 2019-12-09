@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 import { whenFalsy } from 'ish-core/utils/operators';
 
 /**
@@ -51,6 +51,8 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    * button was clicked event
    */
   @Output() productToBasket = new EventEmitter<void>();
+
+  showAddToCart = ProductHelper.showAddToCart;
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 

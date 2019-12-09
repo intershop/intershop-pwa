@@ -39,7 +39,13 @@ describe('Product Add To Basket Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = { sku: 'sku' } as Product;
+    product = {
+      sku: 'sku',
+      salePrice: {
+        value: 123.45,
+        currency: '$',
+      },
+    } as Product;
     product.inStock = true;
     product.minOrderQuantity = 1;
     product.availability = true;

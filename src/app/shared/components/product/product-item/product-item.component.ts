@@ -38,7 +38,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   displayPromotions: () => true,
   displayVariations: () => true,
   displayShipment: () => false,
-  displayAddToBasket: product => !ProductHelper.isMasterProduct(product),
+  displayAddToBasket: product => ProductHelper.showAddToCart(product),
   displayAddToCompare: product => !ProductHelper.isMasterProduct(product),
   displayAddToQuote: product => !ProductHelper.isMasterProduct(product),
   displayType: 'tile',
