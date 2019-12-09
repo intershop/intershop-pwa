@@ -10,7 +10,9 @@
   </ng-container>
 </ng-container>
 
-<ng-template #emptyBasket> <ish-shopping-basket-empty></ish-shopping-basket-empty> </ng-template>
+<ng-template #emptyBasket>
+  <ish-shopping-basket-empty [error]="basketError$ | async"></ish-shopping-basket-empty>
+</ng-template>
 
 <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
 
