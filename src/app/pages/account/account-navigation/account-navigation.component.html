@@ -1,13 +1,13 @@
 <ng-container *ngIf="!isMobileView; else mobileNavigation">
   <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
-    <ng-container *ngFor="let item of navigationItems">
+    <ng-container *ngFor="let item of navigationItems; let first = first">
       <ng-container *ngIf="item.feature; else unrestricted">
         <li *ishFeature="item.feature" routerLinkActive="active">
           <a [routerLink]="item.link">{{ item.localizationKey | translate }}</a>
         </li>
       </ng-container>
       <ng-template #unrestricted>
-        <li routerLinkActive="active">
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: first }">
           <a [routerLink]="item.link" [attr.data-testing-id]="item.dataTestingId">{{
             item.localizationKey | translate
           }}</a>

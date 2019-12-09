@@ -38,11 +38,6 @@ const accountPageRoutes: Routes = [
         loadChildren: () => import('../account-order/account-order-page.module').then(m => m.AccountOrderPageModule),
       },
       {
-        path: 'overview',
-        data: { breadcrumbData: [{ key: 'account.overview.link' }] },
-        component: AccountOverviewPageModule.component,
-      },
-      {
         path: 'profile',
         data: { breadcrumbData: [{ key: 'account.profile.link' }] },
         loadChildren: () =>
@@ -75,8 +70,8 @@ const accountPageRoutes: Routes = [
       },
       {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'overview',
+        data: { breadcrumbData: [] },
+        component: AccountOverviewPageModule.component,
       },
     ],
   },
