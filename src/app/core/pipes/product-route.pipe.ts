@@ -14,7 +14,7 @@ function generateProductSlug(product: Product) {
  * @returns         Product route string
  */
 
-function generateProductRoute(product: Product, category?: Category): string {
+export function generateProductRoute(product: Product, category?: Category): string {
   if (!(product && product.sku)) {
     return '/';
   }
