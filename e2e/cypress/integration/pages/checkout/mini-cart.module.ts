@@ -14,6 +14,12 @@ export class MiniCartModule {
       .then(el => el.text());
   }
 
+  get error() {
+    return this.miniBasketLink()
+      .find('.text-danger')
+      .then(el => el.text());
+  }
+
   goToCart() {
     this.miniBasketLink().then(miniBasket => {
       if (miniBasket.hasClass('mini-cart-active')) {

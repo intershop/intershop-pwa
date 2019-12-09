@@ -20,6 +20,7 @@ describe('Shopping User', () => {
   it('adding retail set to cart', () => {
     at(ProductDetailPage, page => {
       page.addProductToCart();
+      cy.wait(2000);
       page.header.miniCart.goToCart();
     });
   });
