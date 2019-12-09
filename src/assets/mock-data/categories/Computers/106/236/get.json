@@ -25,7 +25,7 @@
   "id": "236",
   "images": [
     {
-      "effectiveUrl": "assets/mock-img/product/a.jpg",
+      "effectiveUrl": "assets/img/not_available.png",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
       "name": "front M",
@@ -77,7 +77,7 @@
       "id": "921",
       "images": [
         {
-          "effectiveUrl": "assets/mock-img/product/a.jpg",
+          "effectiveUrl": "assets/img/not_available.png",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -126,7 +126,7 @@
       "id": "1007",
       "images": [
         {
-          "effectiveUrl": "assets/mock-img/product/a.jpg",
+          "effectiveUrl": "assets/img/not_available.png",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",
@@ -211,7 +211,7 @@
       "id": "862",
       "images": [
         {
-          "effectiveUrl": "assets/mock-img/product/a.jpg",
+          "effectiveUrl": "assets/img/not_available.png",
           "imageActualHeight": 270,
           "imageActualWidth": 270,
           "name": "front M",

@@ -30,7 +30,7 @@
         {
           "name": "image",
           "type": "String",
-          "value": "assets/mock-img/product/a.jpg"
+          "value": "assets/img/not_available.png"
         },
         {
           "name": "productMaster",

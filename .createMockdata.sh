@@ -28,5 +28,5 @@ do
     mkdir -p src/assets/mock-data/$path
 
     echo "  to src/assets/mock-data/$path/get.json"
-    curl -sf -H "$header" "http://10.0.206.226:4322/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%assets/mock-img/product/a.jpg%' | sed -e 's%inSPIRED-inTRONICS-b2c-responsive:%assets/mock-img%' > src/assets/mock-data/$path/get.json
+    curl -sf -H "$header" "http://10.0.206.226:4322/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%assets/img/not_available.png%' > src/assets/mock-data/$path/get.json
 done
