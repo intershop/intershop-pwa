@@ -1,5 +1,3 @@
-<img src="./intershop-logo.png">
-
 # Intershop Progressive Web App
 
 Welcome to the Intershop PWA project!
@@ -9,8 +7,6 @@ The Intershop PWA is an Angular-based progressive web app storefront for the Int
 Accompany us on a journey for great cutting-edge eCommerce and take the chance to make it your journey, too.
 
 If you want to get a first impression, please visit our [public demo](https://intershoppwa.azurewebsites.net/home).
-
-<img src="./intershop-pwa-screenshot.png">
 
 More information on the PWA can be found [here](https://www.intershop.com/en/progressive-web-app).
 
