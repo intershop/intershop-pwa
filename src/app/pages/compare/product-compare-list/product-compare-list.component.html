@@ -96,7 +96,9 @@
         <tr>
           <th>{{ 'product.specific_attributes.label' | translate }}</th>
           <td *ngFor="let product of visibleProducts">
-            <ish-product-attributes [product]="getProductWithSpecificAttributesOnly(product)"></ish-product-attributes>
+            <ish-product-attributes
+              [product]="getProductWithoutCommonAttributes(product, visibleProducts)"
+            ></ish-product-attributes>
           </td>
         </tr>
       </tbody>

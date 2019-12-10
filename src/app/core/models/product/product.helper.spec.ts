@@ -3,6 +3,7 @@ import * as using from 'jasmine-data-provider';
 import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 
 import { ProductDataStub } from './product.interface';
 import { Product, ProductCompletenessLevel, ProductHelper } from './product.model';
@@ -255,6 +256,136 @@ describe('Product Helper', () => {
           },
         }
       `);
+    });
+  });
+
+  describe('compare', () => {
+    let product: Product;
+    let compareProduct1: Product;
+    let compareProduct2: Product;
+
+    beforeEach(() => {
+      product = { sku: '110', inStock: true, availability: true } as Product;
+      product.attributes = [
+        {
+          name: 'Optical zoom',
+        },
+        {
+          name: 'Focal length (35mm film equivalent)',
+        },
+        {
+          name: 'Image formats supported',
+        },
+      ] as Attribute[];
+      compareProduct1 = {
+        ...product,
+        sku: '111',
+        attributes: [
+          {
+            name: 'Optical zoom',
+          },
+        ] as Attribute[],
+      };
+      compareProduct2 = {
+        ...product,
+        sku: '112',
+        attributes: [
+          {
+            name: 'Optical zoom',
+          },
+          {
+            name: 'Image formats supported',
+          },
+        ] as Attribute[],
+      };
+    });
+
+    describe('getCommonAttributeNames()', () => {
+      it('should return empty object when no products are supplied', () => {
+        expect(ProductHelper.getCommonAttributeNames(undefined)).toBeEmpty();
+        expect(ProductHelper.getCommonAttributeNames([])).toBeEmpty();
+      });
+
+      it('should return all attribute names of product if only one element is supplied', () => {
+        expect(ProductHelper.getCommonAttributeNames([product])).toMatchInlineSnapshot(`
+          Array [
+            "Optical zoom",
+            "Focal length (35mm film equivalent)",
+            "Image formats supported",
+          ]
+        `);
+      });
+      it('should return the correct set of attributes for different list of products', () => {
+        expect(ProductHelper.getCommonAttributeNames([product, compareProduct1])).toMatchInlineSnapshot(`
+          Array [
+            "Optical zoom",
+          ]
+        `);
+        expect(ProductHelper.getCommonAttributeNames([product, compareProduct2])).toMatchInlineSnapshot(`
+          Array [
+            "Optical zoom",
+            "Image formats supported",
+          ]
+        `);
+        expect(ProductHelper.getCommonAttributeNames([product, compareProduct1, compareProduct2]))
+          .toMatchInlineSnapshot(`
+          Array [
+            "Optical zoom",
+          ]
+        `);
+      });
+    });
+
+    describe('getProductWithoutCommonAttributes()', () => {
+      it('should return undefined when no product or no compare products are supplied', () => {
+        expect(ProductHelper.getProductWithoutCommonAttributes(undefined, undefined)).toBeUndefined();
+      });
+
+      it('should return product with correct filtered attributes for different list of compare products', () => {
+        expect(ProductHelper.getProductWithoutCommonAttributes(product, [compareProduct1])).toMatchInlineSnapshot(`
+          Object {
+            "attributes": Array [
+              Object {
+                "name": "Focal length (35mm film equivalent)",
+              },
+              Object {
+                "name": "Image formats supported",
+              },
+            ],
+            "availability": true,
+            "inStock": true,
+            "sku": "110",
+          }
+        `);
+        expect(ProductHelper.getProductWithoutCommonAttributes(product, [compareProduct2])).toMatchInlineSnapshot(`
+          Object {
+            "attributes": Array [
+              Object {
+                "name": "Focal length (35mm film equivalent)",
+              },
+            ],
+            "availability": true,
+            "inStock": true,
+            "sku": "110",
+          }
+        `);
+        expect(ProductHelper.getProductWithoutCommonAttributes(product, [compareProduct1, compareProduct2]))
+          .toMatchInlineSnapshot(`
+          Object {
+            "attributes": Array [
+              Object {
+                "name": "Focal length (35mm film equivalent)",
+              },
+              Object {
+                "name": "Image formats supported",
+              },
+            ],
+            "availability": true,
+            "inStock": true,
+            "sku": "110",
+          }
+        `);
+      });
     });
   });
 });

@@ -118,10 +118,6 @@ describe('Product Compare List Component', () => {
     component.addToBasket('111', 1);
   });
 
-  it('should return 1 as the number of Common Attribute Names for the compared products', () => {
-    expect(new Set(component.getCommonAttributeNames()).size).toEqual(1);
-  });
-
   it('should switch to lower page when number of products is reduced', () => {
     component.compareProducts = [compareProduct1, compareProduct1, compareProduct1, compareProduct1];
     component.changeCurrentPage(2);
