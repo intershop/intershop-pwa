@@ -16,7 +16,7 @@ import {
   getCurrentQuotes,
   getQuoteError,
   getQuoteLoading,
-  getSelectedQuote,
+  getSelectedQuoteWithProducts,
 } from '../store/quote';
 import {
   AddBasketToQuoteRequest,
@@ -30,11 +30,11 @@ import {
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
   UpdateSubmitQuoteRequest,
-  getActiveQuoteRequest,
+  getActiveQuoteRequestWithProducts,
   getCurrentQuoteRequests,
   getQuoteRequestError,
   getQuoteRequestLoading,
-  getSelectedQuoteRequest,
+  getSelectedQuoteRequestWithProducts,
 } from '../store/quote-request';
 
 const getQuotesAndQuoteRequests = createSelector(
@@ -49,7 +49,7 @@ export class QuotingFacade {
   constructor(private store: Store<{}>) {}
 
   // QUOTE
-  quote$ = this.store.pipe(select(getSelectedQuote));
+  quote$ = this.store.pipe(select(getSelectedQuoteWithProducts));
   quoteLoading$ = this.store.pipe(select(getQuoteLoading));
   quoteError$ = this.store.pipe(select(getQuoteError));
 
@@ -75,10 +75,10 @@ export class QuotingFacade {
   }
 
   // QUOTE REQUEST
-  quoteRequest$ = this.store.pipe(select(getSelectedQuoteRequest));
+  quoteRequest$ = this.store.pipe(select(getSelectedQuoteRequestWithProducts));
   quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
   quoteRequestError$ = this.store.pipe(select(getQuoteRequestError));
-  activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));
+  activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequestWithProducts));
 
   quoteRequests$() {
     this.loadQuoteRequests();
