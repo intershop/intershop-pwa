@@ -1,7 +1,7 @@
 <div
   *ngIf="pagelet.hasParam('Video')"
   (deferLoad)="showVideo = true"
-  class="video-container"
+  class="video-container defer-load"
   [ngClass]="pagelet.stringParam('CSSClass')"
   [ngStyle]="{ 'width.px': videoWidth, 'height.px': videoHeight }"
 >
