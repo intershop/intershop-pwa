@@ -49,7 +49,8 @@ describe('Quote Request Reducer', () => {
         const action = new fromActions.LoadQuoteRequestsSuccess({ quoteRequests });
         const state = quoteRequestReducer(initialState, action);
 
-        expect(state.quoteRequests).toEqual(quoteRequests);
+        expect(state.ids).toEqual(['test']);
+        expect(state.entities).toEqual({ test: quoteRequests[0] });
         expect(state.loading).toBeFalse();
       });
     });

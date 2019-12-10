@@ -4,79 +4,69 @@ import { isEqual } from 'lodash-es';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 
 import { QuoteRequestHelper } from '../../models/quote-request/quote-request.helper';
+import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { getQuotingState } from '../quoting-store';
 
-import { initialState } from './quote-request.reducer';
+import { initialState, quoteRequestAdapter } from './quote-request.reducer';
 
 const getQuoteRequestState = createSelector(
   getQuotingState,
   state => (state ? state.quoteRequest : initialState)
 );
 
+const { selectAll, selectEntities } = quoteRequestAdapter.getSelectors(getQuoteRequestState);
+
 export const getSelectedQuoteRequestId = createSelector(
   getQuoteRequestState,
   state => state.selected
 );
 
-export const getCurrentQuoteRequests = createSelector(
-  getQuoteRequestState,
-  state =>
-    state.quoteRequests.map(item => ({
-      ...item,
-      state: QuoteRequestHelper.getQuoteRequestState(item),
-    }))
+export const getSelectedQuoteRequest = createSelector(
+  selectEntities,
+  getSelectedQuoteRequestId,
+  (entities, id) => id && addStateToQuoteRequest(entities[id])
 );
 
-export const getQuoteRequstItems = createSelector(
+export const getCurrentQuoteRequests = createSelector(
+  selectAll,
+  quoteRequests => quoteRequests.map(addStateToQuoteRequest)
+);
+
+export const getQuoteRequestItems = createSelector(
   getQuoteRequestState,
   state => state.quoteRequestItems
 );
 
-export const getActiveQuoteRequest = createSelector(
-  createSelector(
-    getCurrentQuoteRequests,
-    quoteRequests => quoteRequests.filter(item => item.editable).pop() || undefined
-  ),
-  getQuoteRequstItems,
+export const getQuoteRequestItemsWithProducts = createSelector(
+  getQuoteRequestItems,
   getProductEntities,
-  (quoteRequest, quoteRequestItems, products) =>
-    !quoteRequest
-      ? undefined
-      : {
-          ...quoteRequest,
-          state: QuoteRequestHelper.getQuoteRequestState(quoteRequest),
-          items: quoteRequestItems.map(item => ({
-            ...item,
-            product: item.productSKU ? products[item.productSKU] : undefined,
-          })),
-        }
+  (items, products) =>
+    items.map(item => ({
+      ...item,
+      product: item.productSKU ? products[item.productSKU] : undefined,
+    }))
+);
+
+export const getActiveQuoteRequest = createSelector(
+  getCurrentQuoteRequests,
+  quoteRequests => {
+    const quoteRequest = quoteRequests.reverse().find(item => item.editable);
+    return addStateToQuoteRequest(quoteRequest);
+  }
+);
+
+export const getActiveQuoteRequestWithProducts = createSelector(
+  getActiveQuoteRequest,
+  getQuoteRequestItemsWithProducts,
+  (quoteRequest, items) => quoteRequest && { ...quoteRequest, items }
 );
 
 /**
  * Select the selected quote request with the appended line item and product data if available.
  */
-export const getSelectedQuoteRequest = createSelectorFactory(projector =>
+export const getSelectedQuoteRequestWithProducts = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)
-)(
-  createSelector(
-    getCurrentQuoteRequests,
-    getSelectedQuoteRequestId,
-    (items, id) => items.filter(item => item.id === id).pop()
-  ),
-  getQuoteRequstItems,
-  getProductEntities,
-  (quote, quoteRequestItems, products) =>
-    !quote
-      ? undefined
-      : {
-          ...quote,
-          state: QuoteRequestHelper.getQuoteRequestState(quote),
-          items: quoteRequestItems.map(item => ({
-            ...item,
-            product: item.productSKU ? products[item.productSKU] : undefined,
-          })),
-        }
-);
+)(getSelectedQuoteRequest, getQuoteRequestItemsWithProducts, (quote, items) => quote && { ...quote, items });
 
 export const getQuoteRequestLoading = createSelector(
   getQuoteRequestState,
@@ -87,3 +77,12 @@ export const getQuoteRequestError = createSelector(
   getQuoteRequestState,
   state => state.error
 );
+
+function addStateToQuoteRequest(quote: QuoteRequestData) {
+  return (
+    quote && {
+      ...quote,
+      state: QuoteRequestHelper.getQuoteRequestState(quote),
+    }
+  );
+}

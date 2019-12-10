@@ -1,22 +1,24 @@
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { QuoteData } from '../../models/quote/quote.interface';
 
 import { QuoteAction, QuoteActionTypes } from './quote.actions';
 
-export interface QuoteState {
-  quotes: QuoteData[];
+export const quoteAdapter = createEntityAdapter<QuoteData>();
+
+export interface QuoteState extends EntityState<QuoteData> {
   loading: boolean;
   error: HttpError;
   selected: string;
 }
 
-export const initialState: QuoteState = {
-  quotes: [],
+export const initialState: QuoteState = quoteAdapter.getInitialState({
   loading: false,
   error: undefined,
   selected: undefined,
-};
+});
 
 export function quoteReducer(state = initialState, action: QuoteAction): QuoteState {
   switch (action.type) {
@@ -54,10 +56,12 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
 
     case QuoteActionTypes.LoadQuotesSuccess: {
       const quotes = action.payload.quotes;
+      if (!state) {
+        return;
+      }
 
       return {
-        ...state,
-        quotes,
+        ...quoteAdapter.addAll(quotes, state),
         loading: false,
       };
     }

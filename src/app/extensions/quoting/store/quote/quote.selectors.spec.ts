@@ -16,8 +16,8 @@ import {
   getCurrentQuotes,
   getQuoteError,
   getQuoteLoading,
-  getSelectedQuote,
   getSelectedQuoteId,
+  getSelectedQuoteWithProducts,
 } from './quote.selectors';
 
 describe('Quote Selectors', () => {
@@ -66,7 +66,7 @@ describe('Quote Selectors', () => {
       };
 
       expect(getSelectedQuoteId(store$.state)).toEqual('test');
-      expect(getSelectedQuote(store$.state)).toEqual(expected);
+      expect(getSelectedQuoteWithProducts(store$.state)).toEqual(expected);
     });
   });
 

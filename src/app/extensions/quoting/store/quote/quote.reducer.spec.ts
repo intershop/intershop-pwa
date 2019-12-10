@@ -51,7 +51,8 @@ describe('Quote Reducer', () => {
         const action = new fromActions.LoadQuotesSuccess(quotes);
         const state = quoteReducer(initialState, action);
 
-        expect(state.quotes).toEqual(quotes.quotes);
+        expect(state.ids).toEqual(['test']);
+        expect(state.entities).toEqual({ test: quotes.quotes[0] });
         expect(state.loading).toBeFalse();
       });
     });

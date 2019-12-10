@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
-import { concatMap, filter, map, mapTo, shareReplay, take } from 'rxjs/operators';
+import { concatMap, map, mapTo, shareReplay, take } from 'rxjs/operators';
 
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
+import { whenFalsy } from 'ish-core/utils/operators';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
@@ -14,7 +15,7 @@ import { QuoteRequestItemMapper } from '../../models/quote-request-item/quote-re
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
-import { getActiveQuoteRequest } from '../../store/quote-request';
+import { getActiveQuoteRequestWithProducts } from '../../store/quote-request';
 
 /**
  * The Quote Request Service handles the interaction with the 'quoteRequest' related REST API.
@@ -46,8 +47,8 @@ export class QuoteRequestService {
     // rebuild the stream everytime the selected id switches back to undefined
     store
       .pipe(
-        select(getActiveQuoteRequest),
-        filter(x => !x)
+        select(getActiveQuoteRequestWithProducts),
+        whenFalsy()
       )
       .subscribe(() => this.buildActiveQuoteRequestStream());
 
@@ -252,7 +253,7 @@ export class QuoteRequestService {
    * selects or creates editable quote request
    */
   private buildActiveQuoteRequestStream() {
-    this.quoteRequest$ = this.store.pipe(select(getActiveQuoteRequest)).pipe(
+    this.quoteRequest$ = this.store.pipe(select(getActiveQuoteRequestWithProducts)).pipe(
       take(1),
       concatMap(quoteRequest => (quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
       shareReplay(1)

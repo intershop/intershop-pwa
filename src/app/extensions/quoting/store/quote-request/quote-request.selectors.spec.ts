@@ -22,12 +22,13 @@ import {
 } from './quote-request.actions';
 import {
   getActiveQuoteRequest,
+  getActiveQuoteRequestWithProducts,
   getCurrentQuoteRequests,
   getQuoteRequestError,
+  getQuoteRequestItemsWithProducts,
   getQuoteRequestLoading,
-  getQuoteRequstItems,
-  getSelectedQuoteRequest,
   getSelectedQuoteRequestId,
+  getSelectedQuoteRequestWithProducts,
 } from './quote-request.selectors';
 
 describe('Quote Request Selectors', () => {
@@ -79,7 +80,7 @@ describe('Quote Request Selectors', () => {
       };
 
       expect(getSelectedQuoteRequestId(store$.state)).toEqual('test');
-      expect(getSelectedQuoteRequest(store$.state)).toEqual(expected);
+      expect(getSelectedQuoteRequestWithProducts(store$.state)).toEqual(expected);
     });
   });
 
@@ -124,14 +125,14 @@ describe('Quote Request Selectors', () => {
       store$.dispatch(new LoadQuoteRequestItemsSuccess({ quoteRequestItems }));
 
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
-      expect(getQuoteRequstItems(store$.state)).toEqual(quoteRequestItems);
+      expect(getQuoteRequestItemsWithProducts(store$.state)).toEqual(quoteRequestItems);
       expect(getActiveQuoteRequest(store$.state)).toBeUndefined();
     });
 
     it('should set loading to false and set error state', () => {
       store$.dispatch(new LoadQuoteRequestItemsFail({ error: { message: 'invalid' } as HttpError }));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
-      expect(getQuoteRequstItems(store$.state)).toBeEmpty();
+      expect(getQuoteRequestItemsWithProducts(store$.state)).toBeEmpty();
       expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
     });
   });
@@ -149,7 +150,7 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should have a product on the active quote request', () => {
-      const activeQuoteRequest = getActiveQuoteRequest(store$.state);
+      const activeQuoteRequest = getActiveQuoteRequestWithProducts(store$.state);
       expect(activeQuoteRequest).toBeTruthy();
       const items = activeQuoteRequest.items;
       expect(items).toHaveLength(1);

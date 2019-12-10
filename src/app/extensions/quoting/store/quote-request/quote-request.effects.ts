@@ -35,7 +35,11 @@ import { QuoteRequestService } from '../../services/quote-request/quote-request.
 import { QuoteActionTypes } from '../quote/quote.actions';
 
 import * as actions from './quote-request.actions';
-import { getCurrentQuoteRequests, getSelectedQuoteRequest, getSelectedQuoteRequestId } from './quote-request.selectors';
+import {
+  getCurrentQuoteRequests,
+  getSelectedQuoteRequestId,
+  getSelectedQuoteRequestWithProducts,
+} from './quote-request.selectors';
 
 @Injectable()
 export class QuoteRequestEffects {
@@ -149,7 +153,7 @@ export class QuoteRequestEffects {
   @Effect()
   createQuoteRequestFromQuoteRequest$ = this.actions$.pipe(
     ofType(actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest),
-    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestWithProducts))),
     concatMap(([, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuoteRequest(currentQuoteRequest).pipe(
         map(quoteLineItemResult => new actions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult })),
@@ -250,7 +254,7 @@ export class QuoteRequestEffects {
   updateQuoteRequestItems$ = this.actions$.pipe(
     ofType<actions.UpdateQuoteRequestItems>(actions.QuoteRequestActionTypes.UpdateQuoteRequestItems),
     mapToPayloadProperty('lineItemUpdates'),
-    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestWithProducts))),
     map(([lineItemUpdates, selectedQuoteRequest]) => ({
       quoteRequestId: selectedQuoteRequest.id,
       updatedItems: this.filterQuoteRequestsForChanges(lineItemUpdates, selectedQuoteRequest),
