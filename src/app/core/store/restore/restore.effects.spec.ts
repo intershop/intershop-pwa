@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
-import { Observable, ReplaySubject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
@@ -28,12 +28,9 @@ describe('Restore Effects', () => {
   let actions$: Observable<Action>;
   let cookiesServiceMock: CookiesService;
   let store$: TestStore;
-  let cookieLawSubject$: ReplaySubject<boolean>;
 
   beforeEach(() => {
     cookiesServiceMock = mock(CookiesService);
-    cookieLawSubject$ = new ReplaySubject(1);
-    when(cookiesServiceMock.cookieLawSeen$).thenReturn(cookieLawSubject$);
 
     TestBed.configureTestingModule({
       imports: [
@@ -118,10 +115,6 @@ describe('Restore Effects', () => {
   });
 
   describe('saveAPITokenToCookie$', () => {
-    beforeEach(() => {
-      cookieLawSubject$.next(true);
-    });
-
     it('should not save token when neither basket nor user nor order is available', () => {
       store$.dispatch(new SetAPIToken({ apiToken: 'dummy' }));
 
@@ -197,9 +190,7 @@ describe('Restore Effects', () => {
   });
 
   describe('logOutUserIfTokenVanishes$', () => {
-    it('should log out user when token is not available and cookie law was accepted', done => {
-      cookieLawSubject$.next(true);
-
+    it('should log out user when token is not available', done => {
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
 
       restoreEffects.logOutUserIfTokenVanishes$.subscribe(
@@ -211,23 +202,10 @@ describe('Restore Effects', () => {
         fail
       );
     });
-
-    it('should do nothing when cookie law was not yet accepted', done => {
-      cookieLawSubject$.next(false);
-
-      store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
-
-      restoreEffects.logOutUserIfTokenVanishes$.subscribe(fail, fail, fail);
-
-      // terminate checking
-      setTimeout(done, 3000);
-    });
   });
 
   describe('removeAnonymousBasketIfTokenVanishes$', () => {
-    it('should remove basket when token is not available and cookie law was accepted', done => {
-      cookieLawSubject$.next(true);
-
+    it('should remove basket when token is not available', done => {
       store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
 
       restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe({
@@ -239,20 +217,7 @@ describe('Restore Effects', () => {
       });
     });
 
-    it('should do nothing when cookie law was not yet accepted', done => {
-      cookieLawSubject$.next(false);
-
-      store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
-
-      restoreEffects.removeAnonymousBasketIfTokenVanishes$.subscribe(fail, fail, fail);
-
-      // terminate checking
-      setTimeout(done, 3000);
-    });
-
     it('should do nothing when user is available', done => {
-      cookieLawSubject$.next(true);
-
       store$.dispatch(new LoginUserSuccess({ user: { email: 'test@intershop.de' } as User, customer: undefined }));
       store$.dispatch(new LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
 
