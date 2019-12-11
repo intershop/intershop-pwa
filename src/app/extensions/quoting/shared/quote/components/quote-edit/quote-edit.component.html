@@ -36,7 +36,7 @@
     {{ 'quote.edit.saved.your_quote_request_has_been_saved.text' | translate }}
   </div>
 
-  <div *ngIf="error" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>
+  <ish-error-message [error]="error"></ish-error-message>
 
   <!-- Description -->
   <!-- Quote Header ( shown once if quote request submitted ) -->

@@ -9,6 +9,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { LineItemListComponent } from 'ish-shared/basket/components/line-item-list/line-item-list.component';
+import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
@@ -28,6 +29,7 @@ describe('Quote Edit Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         DatePipe,
+        MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
         MockComponent(LineItemListComponent),
         MockComponent(LoadingComponent),
