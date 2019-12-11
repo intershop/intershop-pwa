@@ -81,6 +81,8 @@
     "ngx-toastr": "^10.2.0",
     "rxjs": "~6.5.3",
     "tslib": "^1.10.0",
+    "typeface-roboto": "0.0.75",
+    "typeface-roboto-condensed": "0.0.75",
     "url-polyfill": "^1.1.7",
     "zone.js": "~0.9.1"
   },

@@ -43,3 +43,4 @@ LICENSE
 /charts/**/templates/*
 *~
 /.github
+roboto.scss
