@@ -2667,5 +2667,9 @@
   "account.login.register_now": "You don't have an account yet?<br/><a href=\"{{0}}\">Register now</a>",
   "account.payment.further_payments.heading": "Further Saved Payment Instruments",
   "account.payment.no_entries": "Currently, you do not have any saved payment instruments.",
-  "account.payment.preferred.link": "Save as Preferred Payment Instrument"
+  "account.payment.preferred.link": "Save as Preferred Payment Instrument",
+  "basket.add_quotelineitem.error": "The quote cannot be added to the shopping cart. It contains invalid products.",
+  "quote.already_in_basket.error": "The quote is already in the cart.",
+  "quote.not_found.error": "The quote could not be found.",
+  "basket.add_quote.error": "The quote could not be added to the cart."
 }

@@ -2665,5 +2665,9 @@
   "account.login.register_now": "Vous n’avez pas encore de compte??<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>",
   "account.payment.further_payments.heading": "Autres instruments de paiement sauvegardés",
   "account.payment.no_entries": "Actuellement, vous n’avez aucun instrument de paiement sauvegardé.",
-  "account.payment.preferred.link": "Enregistrer comme instrument de paiement par défaut"
+  "account.payment.preferred.link": "Enregistrer comme instrument de paiement par défaut",
+  "basket.add_quotelineitem.error": "Le devis ne peut pas être ajouté au panier. Il contient des produits non valides.",
+  "quote.already_in_basket.error": "Le devis se trouve déjà dans le panier.",
+  "quote.not_found.error": "Le devis n’a pas pu être trouvé.",
+  "basket.add_quote.error": "Le devis n’a pas pu être ajouté au panier."
 }
