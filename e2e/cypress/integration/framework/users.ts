@@ -46,7 +46,11 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
     },
   }).then(basketCreationResponse => {
     expect(basketCreationResponse.status).to.equal(201);
-    const basketUrl = basketCreationResponse.body.links.self;
+
+    const basketUrl = basketCreationResponse.body.links.self.replace(
+      /.*\/INTERSHOP/,
+      Cypress.env('ICM_BASE_URL') + '/INTERSHOP'
+    );
     // tslint:disable-next-line:no-unused-expression
     expect(basketUrl).not.to.be.empty;
     const authToken = basketCreationResponse.headers['authentication-token'];
@@ -54,6 +58,17 @@ export function createBasketViaREST(user: Partial<Registration>, lineItems: { [s
     expect(authToken).not.to.be.empty;
 
     const body = Object.keys(lineItems).map(product => ({ product, quantity: { value: lineItems[product] } }));
+
+    cy.request({
+      method: 'GET',
+      url: basketUrl + '/items',
+      headers: {
+        'authentication-token': authToken,
+        Accept: 'application/vnd.intershop.basket.v1+json',
+      },
+    }).then(data => {
+      expect(data.status).to.equal(200);
+    });
 
     cy.request({
       method: 'POST',
