@@ -1,4 +1,4 @@
-import { at } from '../../framework';
+import { at, waitLoadingEnd } from '../../framework';
 import { LoginPage } from '../../pages/account/login.page';
 import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
@@ -62,6 +62,8 @@ describe('Server Html', () => {
         .contains('product')
         .click();
 
+      waitLoadingEnd();
+
       at(ProductDetailPage, page => page.sku.should('have.text', _.productSku));
     });
   });
@@ -72,6 +74,8 @@ describe('Server Html', () => {
         .contains('category')
         .click();
 
+      waitLoadingEnd();
+
       at(CategoryPage, page => page.categoryId.should('equal', _.categoryId));
     });
   });
@@ -81,6 +85,8 @@ describe('Server Html', () => {
       cy.get('a')
         .contains('page')
         .click();
+
+      waitLoadingEnd();
 
       cy.location()
         .its('pathname')
@@ -93,6 +99,8 @@ describe('Server Html', () => {
       cy.get('a')
         .contains('route')
         .click();
+
+      waitLoadingEnd();
 
       cy.location()
         .its('pathname')
