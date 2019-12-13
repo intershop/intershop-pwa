@@ -657,7 +657,7 @@
   "account.security_question.maiden_name.text": "Quel est le nom de jeune fille de votre mère ?",
   "account.security_question.pet_name.text": "Comment s'appelle votre animal domestique ?",
   "account.security_question.street_name.text": "Dans quelle rue avez-vous vécu pendant votre enfance ?",
-  "account.send_password.heading": "Vous avez oublié votre mot de passe ?",
+  "account.send_password.heading": "Mot de passe oublié ?",
   "account.send_password.message": "Un e-mail contenant un lien a été envoyé à votre adresse e-mail. Veuillez suivre ce lien pour modifier votre mot de passe.",
   "account.signin.button.label": "Se connecter",
   "account.submit.button.label": "OK",
