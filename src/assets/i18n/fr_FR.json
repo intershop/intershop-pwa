@@ -2538,11 +2538,6 @@
   "forgot_password.form.send.button.label": "Envoyer",
   "basket.validation.general.error": "Votre panier n'est plus valide. Corrigez les erreurs signalées ci-dessous.",
   "servererror.mailServer.error": "Votre courriel n’a pas pu être envoyé. Nous nous excusons pour les inconvénients. Veuillez réessayer plus tard.",
-  "registration.tac_privacy_policy.begin.text": "J’accepte les",
-  "registration.tac.link": "Conditions générales",
-  "registration.tac_privacy_policy.between.text": " et",
-  "registration.privacy_policy.link": "la Politique de confidentialité",
-  "registration.tac_privacy_policy.end.text": ".",
   "registration.tac.error.tip": "Veuillez accepter les conditions pour continuer.",
   "registration.privacy_policy.details.title": "Politique de confidentialité",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Le mot de passe doit comporter un minimum de 7\u00A0caract\u00E8res, comprenant des chiffres et des lettres, sans espaces.",
@@ -2555,5 +2550,6 @@
   "seo.defaults.title": "Intershop Progressive Web App",
   "seo.defaults.description": "Intershop - Progressive Web App - Démo PWA",
   "account.login.session_timeout.message": "Vous avez été déconnecté automatiquement en raison d’une longue période d’inactivité. Veuillez vous connecter à nouveau pour continuer vos achats.",
-  "account.login.register_now": "Vous n’avez pas encore de compte ?<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>"
+  "account.login.register_now": "Vous n’avez pas encore de compte ?<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>",
+  "registration.tac_privacy_policy.label": "J’accepte les <a callback=\"callbackTAC\">Conditions générales</a> et <a callback=\"callbackPP\">la Politique de confidentialité</a>."
 }

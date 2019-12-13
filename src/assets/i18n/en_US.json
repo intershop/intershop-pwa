@@ -2648,11 +2648,6 @@
   "forgot_password.form.send.button.label": "Send",
   "basket.validation.general.error": "Your shopping cart is not valid anymore. Please correct the errors indicated below.",
   "servererror.mailServer.error": "Your mail couldn't be sent. We apologize for the inconvenience. Please try again later.",
-  "registration.tac_privacy_policy.begin.text": "I agree to the",
-  "registration.tac.link": "Terms & Conditions",
-  "registration.tac_privacy_policy.between.text": " and",
-  "registration.privacy_policy.link": "Privacy Policy",
-  "registration.tac_privacy_policy.end.text": ".",
   "registration.tac.error.tip": "Please agree to the terms to continue.",
   "registration.privacy_policy.details.title": "Privacy Policy",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "The password must include 7 characters minimum, containing numbers and letters, no spaces.",
@@ -2665,5 +2660,6 @@
   "seo.defaults.title": "Intershop Progressive Web App",
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "account.login.session_timeout.message": "You have been logged out automatically due to a long period of inactivity. Please log in again to continue shopping.",
-  "account.login.register_now": "You don't have an account yet?<br/><a href=\"{{0}}\">Register now</a>"
+  "account.login.register_now": "You don't have an account yet?<br/><a href=\"{{0}}\">Register now</a>",
+  "registration.tac_privacy_policy.label": "I agree to the <a callback=\"callbackTAC\">Terms & Conditions</a> and <a callback=\"callbackPP\">Privacy Policy</a>."
 }
