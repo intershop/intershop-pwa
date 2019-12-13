@@ -5,6 +5,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { BasketPaymentService } from './basket-payment.service';
@@ -39,6 +40,7 @@ describe('Basket Payment Service', () => {
         ngrxTesting({
           reducers: {
             checkout: combineReducers(checkoutReducers),
+            locale: localeReducer,
           },
         }),
       ],

@@ -1,8 +1,9 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { concatMap, map, mapTo } from 'rxjs/operators';
+import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
@@ -10,13 +11,14 @@ import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-meth
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getCurrentLocale } from 'ish-core/store/locale';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  */
 @Injectable({ providedIn: 'root' })
 export class BasketPaymentService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private store: Store<{}>) {}
 
   // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
@@ -70,42 +72,57 @@ export class BasketPaymentService {
         map(({ data, included }) =>
           data && data.paymentMethod && included ? included.paymentMethod[data.paymentMethod] : undefined
         ),
-        concatMap(pm => {
-          if (
-            !pm ||
-            !pm.capabilities ||
-            !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data)) // ToDo: add RedirectAfterCheckout here, if placeholders are supported by the ICM server
-          ) {
-            return of(paymentInstrument);
-            // send redirect urls if there is a redirect required
-          } else {
-            const redirect = {
-              successUrl: `${location.origin}/checkout/review?redirect=success`,
-              cancelUrl: `${location.origin}/checkout/payment?redirect=cancel`,
-              failureUrl: `${location.origin}/checkout/payment?redirect=failure`,
-            };
-
-            if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {
-              redirect.successUrl = `${location.origin}/checkout/receipt?redirect=success&orderId=*orderID*`; // *OrderID* will be replaced by the ICM server
-              redirect.cancelUrl = `${location.origin}/checkout/payment?redirect=cancel&orderId=*orderID*`;
-              redirect.failureUrl = `${location.origin}/checkout/payment?redirect=failure&orderId=*orderID*`;
-            }
-
-            const body = {
-              paymentInstrument,
-              redirect,
-            };
-
-            return this.apiService
-              .put(`baskets/${basketId}/payments/open-tender`, body, {
-                headers: this.basketHeaders,
-              })
-              .pipe(mapTo(paymentInstrument));
-          }
-        })
+        withLatestFrom(this.store.pipe(select(getCurrentLocale))),
+        concatMap(([pm, currentLocale]) =>
+          this.sendRedirectUrlsIfRequired(pm, paymentInstrument, basketId, currentLocale && currentLocale.lang)
+        )
       );
   }
 
+  /**
+   *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
+   * @param pm                The payment method to determine if redirect is required.
+   * @param paymentInstrument The payment instrument id.
+   * @param basketId          The basket id.
+   * @param lang              The language code of the current locale, e.g. en_US
+   * @returns                 The payment instrument id.
+   */
+  private sendRedirectUrlsIfRequired(
+    pm: PaymentMethodBaseData,
+    paymentInstrument: string,
+    basketId: string,
+    lang: string
+  ): Observable<string> {
+    const loc = location.origin;
+    if (!pm || !pm.capabilities || !pm.capabilities.some(data => ['RedirectBeforeCheckout'].includes(data))) {
+      return of(paymentInstrument);
+      // send redirect urls if there is a redirect required
+    } else {
+      const redirect = {
+        successUrl: `${loc}/checkout/review;lang=${lang}?redirect=success`,
+        cancelUrl: `${loc}/checkout/payment;lang=${lang}?redirect=cancel`,
+        failureUrl: `${loc}/checkout/payment;lang=${lang}?redirect=failure`,
+      };
+
+      if (pm.capabilities.some(data => ['RedirectAfterCheckout'].includes(data))) {
+        // *OrderID* will be replaced by the ICM server
+        redirect.successUrl = `${loc}/checkout/receipt;lang=${lang}?redirect=success&orderId=*orderID*`;
+        redirect.cancelUrl = `${loc}/checkout/payment;lang=${lang}?redirect=cancel&orderId=*orderID*`;
+        redirect.failureUrl = `${loc}/checkout/payment;lang=${lang}?redirect=failure&orderId=*orderID*`;
+      }
+
+      const body = {
+        paymentInstrument,
+        redirect,
+      };
+
+      return this.apiService
+        .put(`baskets/${basketId}/payments/open-tender`, body, {
+          headers: this.basketHeaders,
+        })
+        .pipe(mapTo(paymentInstrument));
+    }
+  }
   /**
    * Creates a payment instrument for the selected basket.
    * @param basketId          The basket id.
