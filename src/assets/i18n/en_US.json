@@ -2503,7 +2503,7 @@
   "quote.edit.unsubmitted.provide_comment.text": "Provide a comment for your quote request",
   "quote.edit.unsubmitted.seller_comment.label": "Seller Comment:",
   "quote.edit.submitted.your_quote_request_has_been_submitted.text": "Your quote request has been submitted at {{0}}. You will be informed about a quotation via e-mail.",
-  "quote.edit.saved.your_quote_request_has_been_saved.text": "Your quote request has been saved.",
+  "quote.edit.saved.your_quote_request_has_been_saved.text": "Your quote request \"{{0}}\" has been saved.",
   "quote.edit.submitted.your_quote_expired.text": "Your quote expired at {{0}} {{1}}.",
   "quote.edit.back_to_shopping.link": "Back to Shopping",
   "quote.edit.back_to_quotes.link": "Back to Quotes",
