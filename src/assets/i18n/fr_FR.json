@@ -2502,7 +2502,7 @@
   "quote.edit.unsubmitted.provide_comment.text": "Entrez un commentaire pour votre demande de devis",
   "quote.edit.unsubmitted.seller_comment.label": "Commentaire du vendeur :",
   "quote.edit.submitted.your_quote_request_has_been_submitted.text": "Votre demande de devis a été soumise à {{0}}. Vous serez informé sur votre demande de devis par courriel.",
-  "quote.edit.saved.your_quote_request_has_been_saved.text": "Votre demande de devis a été enregistrée.",
+  "quote.edit.saved.your_quote_request_has_been_saved.text": "Votre demande de devis \"{{0}}\" a été enregistrée.",
   "quote.edit.submitted.your_quote_expired.text": "Votre devis a expiré à {{0}} {{1}}.",
   "quote.edit.back_to_shopping.link": "Retour au magasin",
   "quote.edit.back_to_quotes.link": "Retour aux devis",

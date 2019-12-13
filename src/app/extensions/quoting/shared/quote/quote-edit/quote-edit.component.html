@@ -33,7 +33,7 @@
   </div>
 
   <div *ngIf="displaySavedMessage$ | async" data-testing-id="success-message" class="alert alert-success alert-fade">
-    {{ 'quote.edit.saved.your_quote_request_has_been_saved.text' | translate }}
+    {{ 'quote.edit.saved.your_quote_request_has_been_saved.text' | translate: { '0': displayName } }}
   </div>
 
   <div *ngIf="error" role="alert" class="alert alert-danger">{{ error.status }}: {{ error.error }}</div>

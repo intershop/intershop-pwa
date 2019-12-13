@@ -36,7 +36,7 @@ export class HeaderModule {
   }
 
   get myAccountLink() {
-    return cy.get('[data-testing-id="user-status-desktop"] [data-testing-id="link-myaccount"]');
+    return cy.get('[data-testing-id="link-myaccount"]:visible');
   }
 
   goToMyAccount() {
