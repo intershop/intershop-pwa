@@ -234,4 +234,19 @@ describe('User Service', () => {
       done();
     });
   });
+
+  it("should get a user's payment method data when 'getUserPaymentMethods' is called", done => {
+    when(apiServiceMock.get(anyString())).thenReturn(of([]));
+    when(apiServiceMock.options(anyString())).thenReturn(of([]));
+    const customer = {
+      customerNo: '4711',
+      type: 'PrivateCustomer',
+    } as Customer;
+
+    userService.getUserPaymentMethods(customer).subscribe(() => {
+      verify(apiServiceMock.get('customers/4711/payments')).once();
+      verify(apiServiceMock.options('customers/4711/payments')).once();
+      done();
+    });
+  });
 });

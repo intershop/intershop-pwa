@@ -257,6 +257,19 @@ export class UserEffects {
   );
 
   @Effect()
+  loadUserPaymentMethods$ = this.actions$.pipe(
+    ofType<userActions.LoadUserPaymentMethods>(userActions.UserActionTypes.LoadUserPaymentMethods),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, customer]) => !!customer),
+    concatMap(([, customer]) =>
+      this.userService.getUserPaymentMethods(customer).pipe(
+        map(result => new userActions.LoadUserPaymentMethodsSuccess({ paymentMethods: result })),
+        mapErrorToAction(userActions.LoadUserPaymentMethodsFail)
+      )
+    )
+  );
+
+  @Effect()
   requestPasswordReminder$ = this.actions$.pipe(
     ofType<userActions.RequestPasswordReminder>(userActions.UserActionTypes.RequestPasswordReminder),
     mapToPayloadProperty('data'),

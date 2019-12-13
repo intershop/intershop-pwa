@@ -2662,5 +2662,6 @@
   "seo.defaults.title": "Intershop Progressive Web App",
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "account.login.session_timeout.message": "Sie wurden aufgrund einer langen Inaktivitätsdauer automatisch abgemeldet. Bitte melden Sie sich erneut an, um den Einkauf fortzusetzen.",
-  "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt anmelden</a>"
+  "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt anmelden</a>",
+  "account.payment.no_entries": "Sie haben derzeit keine gespeicherten Zahlungsmittel."
 }

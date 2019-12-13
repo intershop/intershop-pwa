@@ -27,6 +27,7 @@ import {
 import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/orders';
 import {
   CreateUser,
+  LoadUserPaymentMethods,
   LoginUser,
   RequestPasswordReminder,
   ResetPasswordReminder,
@@ -41,6 +42,7 @@ import {
   getUserAuthorized,
   getUserError,
   getUserLoading,
+  getUserPaymentMethods,
   getUserSuccessMessage,
   isBusinessCustomer,
 } from 'ish-core/store/user';
@@ -114,6 +116,12 @@ export class AccountFacade {
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
+
+  // PAYMENT
+  paymentMethods$() {
+    this.store.dispatch(new LoadUserPaymentMethods());
+    return this.store.pipe(select(getUserPaymentMethods));
+  }
 
   // ADDRESSES
   addresses$() {

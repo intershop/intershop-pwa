@@ -2,18 +2,23 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Credentials, LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
+import { PaymentMethodOptionsDataType } from 'ish-core/models/payment-method/payment-method.interface';
+import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
-import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
  */
@@ -211,6 +216,27 @@ export class UserService {
       skipApiErrorHandling: true,
     };
     return this.apiService.post('security/password', data, options);
+  }
+
+  /**
+   * Updates the data of the currently logged in user.
+   * @param body  The user data (customer, user ) to update the user.
+   */
+  getUserPaymentMethods(customer: Customer): Observable<PaymentMethod[]> {
+    if (!customer) {
+      return throwError('getUserPaymentMethods called without required body data');
+    }
+
+    return this.apiService.get(`customers/${customer.customerNo}/payments`).pipe(
+      unpackEnvelope<Link>(),
+      resolveLinks<PaymentInstrumentData>(this.apiService),
+      concatMap(instruments =>
+        this.apiService.options(`customers/${customer.customerNo}/payments`).pipe(
+          unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
+          map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
+        )
+      )
+    );
   }
 
   // provides the request header for the appropriate captcha service

@@ -1,12 +1,16 @@
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 
 import {
   CreateUserFail,
   LoadCompanyUserFail,
   LoadCompanyUserSuccess,
+  LoadUserPaymentMethods,
+  LoadUserPaymentMethodsFail,
+  LoadUserPaymentMethodsSuccess,
   LoginUser,
   LoginUserFail,
   LoginUserSuccess,
@@ -45,6 +49,10 @@ describe('User Reducer', () => {
 
     it('should not have a user when unmodified', () => {
       expect(initialState.user).toBeUndefined();
+    });
+
+    it('should not have payment methods when unmodified', () => {
+      expect(initialState.paymentMethods).toBeUndefined();
     });
 
     it('should not have an error when unmodified', () => {
@@ -246,6 +254,38 @@ describe('User Reducer', () => {
 
       expect(state.loading).toBeFalse();
       expect(state.error).toEqual(error);
+    });
+  });
+});
+
+describe('User Reducer for loading payment methods', () => {
+  describe('LoadUserPaymentMethods action', () => {
+    it('should set loading when reduced', () => {
+      const action = new LoadUserPaymentMethods();
+      const response = userReducer(initialState, action);
+
+      expect(response.loading).toBeTrue();
+    });
+  });
+
+  describe('LoadUserPaymentMethodsSuccess action', () => {
+    it('should set success when reduced', () => {
+      const action = new LoadUserPaymentMethodsSuccess({ paymentMethods: [{ id: 'ISH_CREDITCARD' } as PaymentMethod] });
+      const response = userReducer(initialState, action);
+
+      expect(response.paymentMethods).toHaveLength(1);
+      expect(response.loading).toBeFalse();
+    });
+  });
+
+  describe('LoadUserPaymentMethodsFail action', () => {
+    it('should set error when reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new LoadUserPaymentMethodsFail({ error });
+      const response = userReducer(initialState, action);
+
+      expect(response.error).toMatchObject(error);
+      expect(response.loading).toBeFalse();
     });
   });
 });

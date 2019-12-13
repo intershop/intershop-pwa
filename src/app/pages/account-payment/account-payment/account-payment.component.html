@@ -1,0 +1,19 @@
+<h1>{{ 'account.payment.heading' | translate }}</h1>
+
+<ish-error-message [error]="error"></ish-error-message>
+
+<ng-container *ngIf="paymentMethods && paymentMethods.length; else noPaymentMethods">
+  <p>{{ 'account.payment.message' | translate }}</p>
+
+  <!--<h3>{{ 'account.payment.preferred_method' | translate }}</h3>-->
+
+  <div *ngFor="let method of paymentMethods" class="section" data-testing-id="paymentMethodList">
+    <h5>{{ method.displayName }}</h5>
+    <ng-container *ngFor="let payment of method.paymentInstruments">
+      <p>{{ payment.accountIdentifier }}</p>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-template #noPaymentMethods>
+  <p data-testing-id="emptyMessage">{{ 'account.payment.no_entries' | translate }}</p>
+</ng-template>

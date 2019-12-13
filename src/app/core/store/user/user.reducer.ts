@@ -1,5 +1,6 @@
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 
 import { UserAction, UserActionTypes } from './user.actions';
@@ -10,6 +11,7 @@ export interface UserState {
   authorized: boolean;
   _authToken: string;
   _lastAuthTokenBeforeLogin: string;
+  paymentMethods: PaymentMethod[];
   loading: boolean;
   successMessage: string;
   error: HttpError;
@@ -24,6 +26,7 @@ export const initialState: UserState = {
   authorized: false,
   _authToken: undefined,
   _lastAuthTokenBeforeLogin: undefined,
+  paymentMethods: undefined,
   loading: false,
   successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
@@ -77,7 +80,8 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.CreateUser:
     case UserActionTypes.UpdateUser:
     case UserActionTypes.UpdateUserPassword:
-    case UserActionTypes.UpdateCustomer: {
+    case UserActionTypes.UpdateCustomer:
+    case UserActionTypes.LoadUserPaymentMethods: {
       return {
         ...state,
         loading: true,
@@ -100,7 +104,8 @@ export function userReducer(state = initialState, action: UserAction): UserState
 
     case UserActionTypes.UpdateUserFail:
     case UserActionTypes.UpdateUserPasswordFail:
-    case UserActionTypes.UpdateCustomerFail: {
+    case UserActionTypes.UpdateCustomerFail:
+    case UserActionTypes.LoadUserPaymentMethodsFail: {
       const error = action.payload.error;
 
       return {
@@ -176,6 +181,15 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return {
         ...state,
         pgid: action.payload.pgid,
+      };
+    }
+
+    case UserActionTypes.LoadUserPaymentMethodsSuccess: {
+      return {
+        ...state,
+        paymentMethods: action.payload.paymentMethods,
+        loading: false,
+        error: undefined,
       };
     }
 

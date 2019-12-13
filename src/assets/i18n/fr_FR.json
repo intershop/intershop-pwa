@@ -2553,5 +2553,6 @@
   "seo.defaults.title": "Intershop Progressive Web App",
   "seo.defaults.description": "Intershop - Progressive Web App - Démo PWA",
   "account.login.session_timeout.message": "Vous avez été déconnecté automatiquement en raison d’une longue période d’inactivité. Veuillez vous connecter à nouveau pour continuer vos achats.",
-  "account.login.register_now": "Vous n’avez pas encore de compte ?<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>"
+  "account.login.register_now": "Vous n’avez pas encore de compte ?<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>",
+  "account.payment.no_entries": "Vous n'avez pas d'instruments de paiement actuellement."
 }

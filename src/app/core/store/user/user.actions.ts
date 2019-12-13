@@ -4,6 +4,7 @@ import { LoginCredentials } from 'ish-core/models/credentials/credentials.model'
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
 
 export enum UserActionTypes {
@@ -31,6 +32,9 @@ export enum UserActionTypes {
   UserErrorReset = '[Account Internal] Reset User Error',
   LoadUserByAPIToken = '[Account] Load User by API Token',
   SetPGID = '[Personalization Internal] Set PGID',
+  LoadUserPaymentMethods = '[Account] Load User Payment Methods',
+  LoadUserPaymentMethodsFail = '[Account API] Load User Payment Methods Fail',
+  LoadUserPaymentMethodsSuccess = '[Account API] Load User Payment Methods Success',
   RequestPasswordReminder = '[Password Reminder] Request Password Reminder',
   RequestPasswordReminderFail = '[Password Reminder API] Request Password Reminder Fail',
   RequestPasswordReminderSuccess = '[Password Reminder API] Request Password Reminder Success',
@@ -155,6 +159,20 @@ export class SetPGID implements Action {
   constructor(public payload: { pgid: string }) {}
 }
 
+export class LoadUserPaymentMethods implements Action {
+  readonly type = UserActionTypes.LoadUserPaymentMethods;
+}
+
+export class LoadUserPaymentMethodsFail implements Action {
+  readonly type = UserActionTypes.LoadUserPaymentMethodsFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class LoadUserPaymentMethodsSuccess implements Action {
+  readonly type = UserActionTypes.LoadUserPaymentMethodsSuccess;
+  constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
+}
+
 export class RequestPasswordReminder implements Action {
   readonly type = UserActionTypes.RequestPasswordReminder;
   constructor(public payload: { data: PasswordReminder }) {}
@@ -212,6 +230,9 @@ export type UserAction =
   | UserErrorReset
   | LoadUserByAPIToken
   | SetPGID
+  | LoadUserPaymentMethods
+  | LoadUserPaymentMethodsFail
+  | LoadUserPaymentMethodsSuccess
   | RequestPasswordReminder
   | RequestPasswordReminderSuccess
   | RequestPasswordReminderFail

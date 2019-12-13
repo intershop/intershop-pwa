@@ -1,8 +1,14 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
-import { PaymentMethodBaseData, PaymentMethodData, PaymentMethodParameterType } from './payment-method.interface';
+import {
+  PaymentMethodBaseData,
+  PaymentMethodData,
+  PaymentMethodOptionsDataType,
+  PaymentMethodParameterType,
+} from './payment-method.interface';
 import { PaymentMethod } from './payment-method.model';
 
 export class PaymentMethodMapper {
@@ -36,6 +42,40 @@ export class PaymentMethodMapper {
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
         hostedPaymentPageParameters: data.hostedPaymentPageParameters,
       }));
+  }
+
+  // is needed for getting a user's eligible payment methods
+  static fromOptions(options: {
+    methods: PaymentMethodOptionsDataType[];
+    instruments: PaymentInstrumentData[];
+  }): PaymentMethod[] {
+    if (!options) {
+      throw new Error(`'paymentMethodOptions' are required`);
+    }
+
+    if (!options.methods || !options.methods.length) {
+      return [];
+    }
+
+    // return only payment methods that have also a payment instrument
+    return options.methods[0].payments
+      .map(pm => ({
+        id: pm.id,
+        serviceId: pm.id, // is missing
+        displayName: pm.displayName,
+        restrictionCauses: pm.restrictions,
+        paymentInstruments: options.instruments
+          .filter(i => i.name === pm.id)
+          .map(i => ({
+            id: i.id,
+            parameters: i.attributes,
+            accountIdentifier:
+              i.attributes &&
+              i.attributes.length &&
+              i.attributes.map(attr => attr.value).reduce((acc, val) => (val ? `${acc}  ${val}` : acc)), //  ToDo: should be improved
+          })),
+      }))
+      .filter(x => x.paymentInstruments && x.paymentInstruments.length);
   }
 
   /**

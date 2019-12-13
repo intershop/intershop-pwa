@@ -57,6 +57,7 @@ describe('User Effects', () => {
     when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(of(undefined));
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
+    when(userServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
@@ -511,6 +512,52 @@ describe('User Effects', () => {
       actions$ = hot('a-a-a-', { a: new ua.LoadUserByAPIToken({ apiToken: 'dummy' }) });
 
       expect(effects.loadUserByAPIToken$).toBeObservable(cold('------'));
+    });
+  });
+
+  describe('loadUserPaymentMethods$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+
+    it('should call the api service when LoadUserPaymentMethods event is called', done => {
+      const action = new ua.LoadUserPaymentMethods();
+      actions$ = of(action);
+      effects.loadUserPaymentMethods$.subscribe(() => {
+        verify(userServiceMock.getUserPaymentMethods(anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a LoadUserPaymentMethodsSuccess action on successful', () => {
+      const action = new ua.LoadUserPaymentMethods();
+      const completion = new ua.LoadUserPaymentMethodsSuccess({ paymentMethods: [] });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-b-b-b', { b: completion });
+
+      expect(effects.loadUserPaymentMethods$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a LoadUserPaymentMethodsFail action on failed', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+
+      when(userServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
+
+      const action = new ua.LoadUserPaymentMethods();
+      const completion = new ua.LoadUserPaymentMethodsFail({
+        error: HttpErrorMapper.fromError(error),
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.loadUserPaymentMethods$).toBeObservable(expected$);
     });
   });
 
