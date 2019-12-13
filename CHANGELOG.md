@@ -1,3 +1,21 @@
+# [0.16.1](https://github.com/intershop/intershop-pwa/releases/tag/0.16.1) (2019-12-13)
+
+> NOTE: To address the issue with trademarked content or content of questionable origin it was neccessary to clean the complete GitHub repository resulting in a rewritten history. Because of that change it is advisable to work with a new clone of the repository.
+
+> NOTE: Release 0.16.1 is the first release that contains all necessary assets again to run "out of the box". Older releases will miss some referenced assets that had to be removed from an Open Source project.
+
+**required Intershop Commerce Management version: 7.10.15.2**
+
+### Bug Fixes
+
+- remove trademark content from open source project (#39)
+- always write apiToken cookie as it is a functional cookie (#36)
+
+### Code Refactoring
+
+- switch from roboto font files contained in the sources to ones provided via npm packages
+- move all used images to a central img folder for a better overview
+
 # [0.16.0](https://github.com/intershop/intershop-pwa/releases/tag/0.16.0) (2019-11-29)
 
 **required Intershop Commerce Management version: 7.10.15.2**

@@ -1,31 +1,53 @@
+/* use Roboto fonts via https://github.com/KyleAMathews/typefaces NPM packages */
+
+/* roboto-400normal - latin */
 @font-face {
   font-family: 'robotoregular';
   font-style: normal;
-  font-weight: normal;
   font-display: swap;
-  src: url('/assets/fonts/roboto/roboto-regular-webfont.woff') format('woff');
+  font-weight: 400;
+  src:
+    local('Roboto Regular '),
+    local('Roboto-Regular'),
+    url('~typeface-roboto/files/roboto-latin-400.woff2') format('woff2'), /* Super Modern Browsers */
+    url('~typeface-roboto/files/roboto-latin-400.woff') format('woff'); /* Modern Browsers */
 }
 
+/* roboto-700normal - latin */
 @font-face {
   font-family: 'robotobold';
   font-style: normal;
-  font-weight: normal;
   font-display: swap;
-  src: url('/assets/fonts/roboto/roboto-bold-webfont.woff') format('woff');
+  font-weight: 700;
+  src:
+    local('Roboto Bold '),
+    local('Roboto-Bold'),
+    url('~typeface-roboto/files/roboto-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+    url('~typeface-roboto/files/roboto-latin-700.woff') format('woff'); /* Modern Browsers */
 }
 
+/* roboto-condensed-400normal - latin */
 @font-face {
   font-family: 'roboto_condensedregular';
   font-style: normal;
-  font-weight: normal;
   font-display: swap;
-  src: url('/assets/fonts/roboto/robotocondensed-regular-webfont.woff') format('woff');
+  font-weight: 400;
+  src:
+    local('Roboto Condensed Regular '),
+    local('Roboto Condensed-Regular'),
+    url('~typeface-roboto-condensed/files/roboto-condensed-latin-400.woff2') format('woff2'), /* Super Modern Browsers */
+    url('~typeface-roboto-condensed/files/roboto-condensed-latin-400.woff') format('woff'); /* Modern Browsers */
 }
 
+/* roboto-condensed-700normal - latin */
 @font-face {
   font-family: 'roboto_condensedbold';
   font-style: normal;
-  font-weight: normal;
   font-display: swap;
-  src: url('/assets/fonts/roboto/robotocondensed-bold-webfont.woff') format('woff');
+  font-weight: 700;
+  src:
+    local('Roboto Condensed Bold '),
+    local('Roboto Condensed-Bold'),
+    url('~typeface-roboto-condensed/files/roboto-condensed-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+    url('~typeface-roboto-condensed/files/roboto-condensed-latin-700.woff') format('woff'); /* Modern Browsers */
 }
