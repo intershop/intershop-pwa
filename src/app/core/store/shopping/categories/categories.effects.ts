@@ -11,7 +11,6 @@ import {
   mergeMap,
   switchMap,
   switchMapTo,
-  take,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -117,13 +116,8 @@ export class CategoriesEffects {
   @Effect()
   loadTopLevelWhenUnavailable$ = this.actions$.pipe(
     ofRoute(),
-    take(1),
-    switchMapTo(
-      this.store.pipe(
-        select(selectors.isTopLevelCategoriesLoaded),
-        whenFalsy()
-      )
-    ),
+    switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded))),
+    whenFalsy(),
     mapTo(new actions.LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
   );
 
@@ -131,7 +125,7 @@ export class CategoriesEffects {
   loadTopLevelCategories$ = this.actions$.pipe(
     ofType<actions.LoadTopLevelCategories>(actions.CategoriesActionTypes.LoadTopLevelCategories),
     mapToPayloadProperty('depth'),
-    mergeMap(limit =>
+    switchMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
         map(categories => new actions.LoadTopLevelCategoriesSuccess({ categories })),
         mapErrorToAction(actions.LoadTopLevelCategoriesFail)
