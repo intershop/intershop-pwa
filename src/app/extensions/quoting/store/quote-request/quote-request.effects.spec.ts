@@ -24,7 +24,7 @@ import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { LoadCompanyUser, LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -1040,19 +1040,18 @@ describe('Quote Request Effects', () => {
   });
 
   describe('loadQuoteRequestsOnLogin', () => {
-    beforeEach(() => {
+    it('should fire LoadQuoteRequests if getLoggedInCustomer selector streams true.', done => {
       store$.dispatch(
         new LoginUserSuccess({
           customer: {} as Customer,
           user: {} as User,
         })
       );
-    });
-    it('should fire LoadQuoteRequests if getLoggedInCustomer selector streams true.', () => {
-      actions$ = hot('a', { a: new LoadCompanyUser() });
-      expect(effects.loadQuoteRequestsOnLogin$).toBeObservable(
-        cold('(a|)', { a: new quoteRequestActions.LoadQuoteRequests() })
-      );
+
+      effects.loadQuoteRequestsOnLogin$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Quote Internal] Load QuoteRequests`);
+        done();
+      });
     });
   });
 });
