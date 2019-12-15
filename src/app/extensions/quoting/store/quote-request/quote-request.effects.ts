@@ -27,7 +27,7 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
-import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
+import { UserActionTypes, getLoggedInCustomer, getUserAuthorized } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
@@ -368,6 +368,14 @@ export class QuoteRequestEffects {
   ]).pipe(
     filter(([quoteId]) => !!quoteId),
     map(([quoteId]) => new actions.LoadQuoteRequestItems({ id: quoteId }))
+  );
+
+  @Effect()
+  loadQuoteRequestsOnLogin$ = this.store.pipe(
+    select(getLoggedInCustomer),
+    whenTruthy(),
+    first(),
+    mapTo(new actions.LoadQuoteRequests())
   );
 
   /**
