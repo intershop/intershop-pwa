@@ -10,7 +10,7 @@
   "dependencies": {
     "@cypress/webpack-preprocessor": "^4.1.0",
     "@types/node": "^10.12.18",
-    "cypress": "^3.6.1",
+    "cypress": "^3.8.0",
     "cypress-failed-log": "^2.5.0",
     "ts-loader": "5.3.2",
     "typescript": "~3.2.2",
