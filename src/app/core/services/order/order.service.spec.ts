@@ -1,18 +1,24 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { SelectLocale, SetAvailableLocales } from 'ish-core/store/locale';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { OrderService } from './order.service';
 
 describe('Order Service', () => {
   let orderService: OrderService;
   let apiService: ApiService;
+  let store$: Store<{}>;
   const basketMock = BasketMockData.getBasket();
   const orderMockData = {
     data: {
@@ -28,13 +34,21 @@ describe('Order Service', () => {
     when(apiService.icmServerURL).thenReturn('http://server');
 
     TestBed.configureTestingModule({
+      imports: ngrxTesting({
+        reducers: { locale: localeReducer },
+      }),
       providers: [OrderService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
 
     orderService = TestBed.get(OrderService);
+    store$ = TestBed.get(Store);
   });
 
   describe('createOrder', () => {
+    beforeEach(() => {
+      store$.dispatch(new SetAvailableLocales({ locales: [{ lang: 'en_US' } as Locale] }));
+      store$.dispatch(new SelectLocale({ lang: 'en_US' }));
+    });
     it('should create an order when it is called', done => {
       when(apiService.post(anything(), anything(), anything())).thenReturn(of(orderMockData));
       when(apiService.patch(anything(), anything(), anything())).thenReturn(of(orderMockData));
