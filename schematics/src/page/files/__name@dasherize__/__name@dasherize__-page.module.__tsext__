@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 <% if (!extension) { %>import { SharedModule } from '../../shared/shared.module';<% } else { %>import { <%= classify(extension) %>Module } from '../../<%= dasherize(extension) %>.module';<% } %>
 
-const <%= camelize(artifactName) %>Routes: Routes = [{ path: '', component: <%= artifactName %>ContainerComponent }];
+const <%= camelize(artifactName) %>Routes: Routes = [{ path: '', component: <%= artifactName %>Component }];
 
 @NgModule({
   imports: [RouterModule.forChild(<%= camelize(artifactName) %>Routes), <% if (!extension) { %>SharedModule<% } else { %><%= classify(extension) %>Module<% } %>],

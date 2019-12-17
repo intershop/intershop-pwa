@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
-describe('Component Schematic', () => {
+describe('move-component Schematic', () => {
   const schematicRunner = createSchematicRunner();
 
   let appTree: UnitTestTree;
@@ -19,9 +19,9 @@ describe('Component Schematic', () => {
       .toPromise();
 
     appTree.overwrite(
-      '/projects/bar/src/app/shared/components/dummy-two/dummy-two.component.ts',
+      '/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts',
       `import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DummyComponent } from '../../../foo/components/dummy/dummy.component';
+import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
 @Component({
   selector: 'ish-dummy-two',
@@ -37,14 +37,13 @@ export class DummyTwoComponent {}
     expect(appTree.files.filter(f => f.endsWith('component.ts'))).toMatchInlineSnapshot(`
       Array [
         "/projects/bar/src/app/app.component.ts",
-        "/projects/bar/src/app/shared/components/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/foo/components/dummy/dummy.component.ts",
+        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
       ]
     `);
-    expect(appTree.readContent('/projects/bar/src/app/shared/components/dummy-two/dummy-two.component.ts'))
-      .toMatchInlineSnapshot(`
+    expect(appTree.readContent('/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
-      import { DummyComponent } from '../../../foo/components/dummy/dummy.component';
+      import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
       @Component({
         selector: 'ish-dummy-two',
@@ -58,7 +57,7 @@ export class DummyTwoComponent {}
 
   it('should move component from a to b', async () => {
     appTree = await schematicRunner
-      .runSchematicAsync('move-component', { project: 'bar', from: 'foo/components/dummy', to: 'foo' }, appTree)
+      .runSchematicAsync('move-component', { project: 'bar', from: 'foo/dummy', to: 'foo' }, appTree)
       .toPromise();
 
     expect(appTree.files.filter(x => x.includes('/src/app/'))).toMatchInlineSnapshot(`
@@ -70,9 +69,9 @@ export class DummyTwoComponent {}
         "/projects/bar/src/app/app.component.spec.ts",
         "/projects/bar/src/app/app.component.ts",
         "/projects/bar/src/app/shared/shared.module.ts",
-        "/projects/bar/src/app/shared/components/dummy-two/dummy-two.component.ts",
-        "/projects/bar/src/app/shared/components/dummy-two/dummy-two.component.html",
-        "/projects/bar/src/app/shared/components/dummy-two/dummy-two.component.spec.ts",
+        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.ts",
+        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.html",
+        "/projects/bar/src/app/shared/dummy-two/dummy-two.component.spec.ts",
         "/projects/bar/src/app/foo/foo.component.ts",
         "/projects/bar/src/app/foo/foo.component.html",
         "/projects/bar/src/app/foo/foo.component.spec.ts",
@@ -82,7 +81,7 @@ export class DummyTwoComponent {}
 
   it('should rename component everywhere when moving', async () => {
     appTree = await schematicRunner
-      .runSchematicAsync('move-component', { project: 'bar', from: 'foo/components/dummy', to: 'foo' }, appTree)
+      .runSchematicAsync('move-component', { project: 'bar', from: 'foo/dummy', to: 'foo' }, appTree)
       .toPromise();
 
     expect(appTree.readContent('/projects/bar/src/app/app.module.ts')).toMatchInlineSnapshot(`
@@ -158,8 +157,8 @@ export class DummyTwoComponent {}
   });
 
   it.each([
-    { from: 'shared/components/dummy-two', to: 'shared/foo' },
-    { from: 'src/app/shared/components/dummy-two', to: 'src/app/shared/foo' },
+    { from: 'shared/dummy-two', to: 'shared/foo' },
+    { from: 'src/app/shared/dummy-two', to: 'src/app/shared/foo' },
   ])('should rename component everywhere when moving %j', async ({ from, to }) => {
     appTree = await schematicRunner
       .runSchematicAsync('move-component', { project: 'bar', from, to }, appTree)
@@ -183,13 +182,13 @@ export class DummyTwoComponent {}
       Array [
         "/projects/bar/src/app/app.component.ts",
         "/projects/bar/src/app/shared/foo/foo.component.ts",
-        "/projects/bar/src/app/foo/components/dummy/dummy.component.ts",
+        "/projects/bar/src/app/foo/dummy/dummy.component.ts",
       ]
     `);
 
     expect(appTree.readContent('/projects/bar/src/app/shared/foo/foo.component.ts')).toMatchInlineSnapshot(`
       "import { ChangeDetectionStrategy, Component } from '@angular/core';
-      import { DummyComponent } from '../../foo/components/dummy/dummy.component';
+      import { DummyComponent } from '../../../foo/dummy/dummy.component';
 
       @Component({
         selector: 'ish-foo',
@@ -204,7 +203,7 @@ export class DummyTwoComponent {}
       `import { FooComponent } from './foo.component';`
     );
 
-    expect(appTree.readContent('/projects/bar/src/app/foo/components/dummy/dummy.component.spec.ts')).toContain(
+    expect(appTree.readContent('/projects/bar/src/app/foo/dummy/dummy.component.spec.ts')).toContain(
       `import { DummyComponent } from './dummy.component';`
     );
   });

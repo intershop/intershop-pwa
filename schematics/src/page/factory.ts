@@ -124,17 +124,7 @@ export function createPage(options: Options): Rule {
         ...options,
         name: `${options.name}-page`,
         path: `${options.path}${options.name}`,
-      })
-    );
-    operations.push(
-      schematic('container', {
-        ...options,
-        name: `${options.name}-page`,
-        path: `${options.path}${options.name}`,
         flat: true,
-        referenceSelector: `ish-${options.name}-page`,
-        referenceComponent: `${options.name}-page`,
-        referenceComponentPath: `./components/${options.name}-page/${options.name}-page.component`,
       })
     );
     operations.push(addRouteToRoutingModule(options));
