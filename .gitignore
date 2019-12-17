@@ -1,9 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled or cached output
-/dist/**/*
-!/dist/*.sh
-!/dist/healthcheck.js
 /tmp
 /out-tsc
 /bin
