@@ -1967,6 +1967,8 @@
   "promotion.status.applied": "appliqué",
   "promotion.detailslink.text": "Détails",
   "promotion.status.notapplied": "non appliqué",
+  "promotion.removelink.label": "Supprimer promotion",
+  "promotion.removelink.text": "Supprimer",
   "promotion.viewEligibleItemsLink": "Afficher les articles eligibles",
   "rest.account.product.notification.email.error": "erreur.e-mail.de.notification.de.produits.nonvalide",
   "rest.account.product.notification.price.error": "erreur.prix.de.notification.de.produits.nonvalide",

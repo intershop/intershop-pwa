@@ -2047,6 +2047,8 @@
   "promotion.detaillist.title": "Applied Promotion",
   "promotion.detailslink.label": "Promotion Details",
   "promotion.detailslink.text": "Details",
+  "promotion.removelink.label": "Remove Promotion",
+  "promotion.removelink.text": "Remove",
   "promotion.status.applied": "applied",
   "promotion.status.notapplied": "not applied",
   "promotion.viewEligibleItemsLink": "View Eligible Items",

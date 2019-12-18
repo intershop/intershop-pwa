@@ -2047,6 +2047,8 @@
   "promotion.detaillist.title": "Angewendete Aktion",
   "promotion.detailslink.label": "Aktionsdetails",
   "promotion.detailslink.text": "Details",
+  "promotion.removelink.label": "Aktion entfernen",
+  "promotion.removelink.text": "Entfernen",
   "promotion.status.applied": "verwendet",
   "promotion.status.notapplied": "nicht verwendet",
   "promotion.viewEligibleItemsLink": "Wählbare Artikel anzeigen",

@@ -18,6 +18,7 @@ import {
   DeleteBasketShippingAddress,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligibleShippingMethods,
+  RemovePromotionCodeFromBasket,
   SetBasketPayment,
   UpdateBasketAddress,
   UpdateBasketItems,
@@ -162,5 +163,9 @@ export class CheckoutFacade {
 
   addPromotionCodeToBasket(code: string) {
     this.store.dispatch(new AddPromotionCodeToBasket({ code }));
+  }
+
+  removePromotionCodeFromBasket(code: string) {
+    this.store.dispatch(new RemovePromotionCodeFromBasket({ code }));
   }
 }

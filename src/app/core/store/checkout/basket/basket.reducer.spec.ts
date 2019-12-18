@@ -309,6 +309,38 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('RemovePromotionCodeFromBasket actions', () => {
+      describe('RemovePromotionCodeFromBasket action', () => {
+        it('should set loading to true', () => {
+          const action = new fromActions.RemovePromotionCodeFromBasket({ code: 'test' });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeTrue();
+        });
+      });
+
+      describe('RemovePromotionCodeFromBasketFail action', () => {
+        it('should set loading to false', () => {
+          const error = undefined as HttpError;
+          const action = new fromActions.RemovePromotionCodeFromBasketFail({ error });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.promotionError).toEqual(error);
+        });
+      });
+
+      describe('RemovePromotionCodeFromBasketSuccess action', () => {
+        it('should set loading to false', () => {
+          const action = new fromActions.RemovePromotionCodeFromBasketSuccess();
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.error).toBeUndefined();
+        });
+      });
+    });
+
     describe('ResetBasket action', () => {
       it('should reset to initial state', () => {
         const oldState = {

@@ -11,6 +11,7 @@ import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model'
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
+import { PromotionRemoveComponent } from 'ish-shared/components/promotion/promotion-remove/promotion-remove.component';
 
 import { BasketPromotionComponent } from './basket-promotion.component';
 
@@ -24,7 +25,12 @@ describe('Basket Promotion Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     TestBed.configureTestingModule({
-      declarations: [BasketPromotionComponent, MockComponent(PromotionDetailsComponent), ServerHtmlDirective],
+      declarations: [
+        BasketPromotionComponent,
+        MockComponent(PromotionDetailsComponent),
+        MockComponent(PromotionRemoveComponent),
+        ServerHtmlDirective,
+      ],
       imports: [RouterTestingModule],
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
@@ -64,7 +70,9 @@ describe('Basket Promotion Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div>
         <div class="promotion-title">MyPromotionTitle</div>
-        <ish-promotion-details></ish-promotion-details>
+        <div class="promotion-details-and-remove-links">
+          <ish-promotion-details></ish-promotion-details><ish-promotion-remove></ish-promotion-remove>
+        </div>
       </div>
     `);
   });

@@ -300,6 +300,17 @@ export class BasketService {
   }
 
   /**
+   * Remove a promotion code from basket.
+   * @param basketId  The id of the basket where the promotion code should be removed.
+   * @param codeStr   The code string of the promotion code that should be removed from basket.
+   */
+  removePromotionCodeFromBasket(basketId: string = 'current', codeStr: string): Observable<string> {
+    return this.apiService.delete(`baskets/${basketId}/promotioncodes/${codeStr}`, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
    * Updates specific line items (quantity/shipping method) for the given basket.
    * @param basketId  The id of the basket in which the item should be updated.
    * @param itemId    The id of the line item that should be updated.
