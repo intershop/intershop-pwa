@@ -1,16 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { ofRoute } from 'ngrx-router';
-import { filter, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
+import { mapTo, take, tap } from 'rxjs/operators';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as fromActions from './locale.actions';
-import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
+import { getCurrentLocale } from './locale.selectors';
 
 @Injectable()
 export class LocaleEffects {
@@ -34,14 +33,8 @@ export class LocaleEffects {
    */
   @Effect()
   loadAllLocales$ = this.actions$.pipe(
-    ofRoute(),
+    ofType(ROOT_EFFECTS_INIT),
     take(1),
-    mergeMapTo(
-      this.store.pipe(
-        select(getAvailableLocales),
-        filter(locales => !locales.length)
-      )
-    ),
     mapTo(new fromActions.SetAvailableLocales({ locales: this.availableLocales }))
   );
 }
