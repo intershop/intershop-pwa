@@ -1,5 +1,5 @@
 export class LineItemDialogPage {
-  readonly tag = 'ish-line-item-edit-dialog-container';
+  readonly tag = 'ish-line-item-edit-dialog';
 
   changeVariationSelection(values: { attr: string; value: string }[]) {
     for (const x of values) {

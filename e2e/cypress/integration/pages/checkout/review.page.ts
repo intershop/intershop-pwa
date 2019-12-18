@@ -1,5 +1,5 @@
 export class ReviewPage {
-  readonly tag = 'ish-checkout-review-page-container';
+  readonly tag = 'ish-checkout-review-page';
 
   acceptTAC() {
     cy.get('input[data-testing-id="termsAndConditions"]').check();

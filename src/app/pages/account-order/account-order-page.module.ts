@@ -3,23 +3,23 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { AccountOrderPageContainerComponent } from './account-order-page.container';
-import { AccountOrderComponent } from './components/account-order/account-order.component';
+import { AccountOrderPageComponent } from './account-order-page.component';
+import { AccountOrderComponent } from './account-order/account-order.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AccountOrderPageContainerComponent,
+    component: AccountOrderPageComponent,
     children: [
       {
         path: '**',
-        component: AccountOrderPageContainerComponent,
+        component: AccountOrderPageComponent,
       },
     ],
   },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
-  declarations: [AccountOrderComponent, AccountOrderPageContainerComponent],
+  declarations: [AccountOrderComponent, AccountOrderPageComponent],
 })
 export class AccountOrderPageModule {}

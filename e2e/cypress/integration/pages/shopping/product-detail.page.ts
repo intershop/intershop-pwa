@@ -4,7 +4,7 @@ import { HeaderModule } from '../header.module';
 import { ProductListModule } from './product-list.module';
 
 export class ProductDetailPage {
-  readonly tag = 'ish-product-page-container';
+  readonly tag = 'ish-product-page';
 
   readonly header = new HeaderModule();
   readonly breadcrumb = new BreadcrumbModule();

@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { QuotingModule } from '../../quoting.module';
 
-import { QuoteListComponent } from './components/quote-list/quote-list.component';
-import { QuoteListPageContainerComponent } from './quote-list-page.container';
+import { QuoteListPageComponent } from './quote-list-page.component';
+import { QuoteListComponent } from './quote-list/quote-list.component';
 
-const quoteListPageRoutes: Routes = [{ path: '', component: QuoteListPageContainerComponent }];
+const quoteListPageRoutes: Routes = [{ path: '', component: QuoteListPageComponent }];
 
 @NgModule({
-  declarations: [QuoteListComponent, QuoteListPageContainerComponent],
+  declarations: [QuoteListComponent, QuoteListPageComponent],
   imports: [QuotingModule, RouterModule.forChild(quoteListPageRoutes)],
 })
 export class QuoteListPageModule {}

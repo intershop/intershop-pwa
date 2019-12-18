@@ -7,7 +7,7 @@ import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
-import { ContentSlotContainerComponent } from 'ish-shared/cms/containers/content-slot/content-slot.container';
+import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
 
 import { CMSDialogComponent } from './cms-dialog.component';
 
@@ -19,7 +19,7 @@ describe('Cms Dialog Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
-      declarations: [CMSDialogComponent, MockComponent(ContentSlotContainerComponent), ServerHtmlDirective],
+      declarations: [CMSDialogComponent, MockComponent(ContentSlotComponent), ServerHtmlDirective],
     }).compileComponents();
   }));
 

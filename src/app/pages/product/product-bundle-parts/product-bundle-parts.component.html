@@ -1,0 +1,33 @@
+<div class="col-xs-12 bundled-product-list">
+  <h3>{{ 'product.productBundle.products.heading' | translate }}</h3>
+
+  <div class="product-list row">
+    <ng-container *ngFor="let part of product.bundledProducts">
+      <div class="col-lg-8 product-list-item list-view">
+        <ish-product-item
+          [productSku]="part.sku"
+          [quantity]="part.quantity"
+          [configuration]="{
+            readOnly: true,
+            quantityLabel: 'product.quantity.label',
+            displayType: 'row',
+            displayPrice: false,
+            displayInventory: false,
+            displayPromotions: false,
+            displayAddToBasket: false,
+            displayAddToQuote: false,
+            displayAddToCompare: false
+          }"
+        ></ish-product-item>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row product-info">
+    <div class="col align-self-start no-gutters">
+      <ish-product-add-to-basket
+        [product]="product"
+        (productToBasket)="productToBasket.emit()"
+      ></ish-product-add-to-basket>
+    </div>
+  </div>
+</div>

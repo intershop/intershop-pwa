@@ -3,7 +3,7 @@ import { MockComponent } from 'ng-mocks';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { ContentSlotContainerComponent } from 'ish-shared/cms/containers/content-slot/content-slot.container';
+import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
 
 import { CMSStaticPageComponent } from './cms-static-page.component';
 
@@ -16,7 +16,7 @@ describe('Cms Static Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CMSStaticPageComponent, MockComponent(ContentSlotContainerComponent)],
+      declarations: [CMSStaticPageComponent, MockComponent(ContentSlotComponent)],
     }).compileComponents();
   }));
 

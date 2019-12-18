@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { RequestReminderFormComponent } from './components/request-reminder-form/request-reminder-form.component';
-import { RequestReminderComponent } from './components/request-reminder/request-reminder.component';
-import { UpdatePasswordFormComponent } from './components/update-password-form/update-password-form.component';
-import { UpdatePasswordComponent } from './components/update-password/update-password.component';
+import { RequestReminderFormComponent } from './request-reminder-form/request-reminder-form.component';
+import { RequestReminderComponent } from './request-reminder/request-reminder.component';
+import { UpdatePasswordFormComponent } from './update-password-form/update-password-form.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
 
 const forgotPasswordPageRoutes: Routes = [
   {

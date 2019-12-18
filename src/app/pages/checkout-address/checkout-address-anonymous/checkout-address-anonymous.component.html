@@ -1,0 +1,96 @@
+<div class="row">
+  <!-- Error message -->
+  <div class="col-md-12">
+    <ish-error-message [error]="error"></ish-error-message>
+  </div>
+
+  <!--- login --->
+  <div class="col-lg-6">
+    <h2>{{ 'checkout.account.login.returning_customer.heading' | translate }}</h2>
+    <ish-login-form></ish-login-form>
+  </div>
+  <!-- checkout as guest -->
+  <div class="col-lg-6">
+    <h2>{{ 'checkout.addresses.checkout_as_guest.heading' | translate }}</h2>
+    <p>{{ 'checkout.address.anonymous.guestcheckout.text' | translate }}</p>
+    <button
+      *ngIf="isAddressFormCollapsed"
+      class="btn btn-secondary"
+      type="button"
+      (click)="showAddressForm()"
+      [attr.aria-expanded]="!isAddressFormCollapsed"
+      aria-controls="collapseBasic"
+      data-testing-id="guest-checkout-button"
+    >
+      {{ 'checkout.addresses.checkout_as_guest.heading' | translate }}
+    </button>
+
+    <!-- create address form -->
+    <div
+      id="collapseBasic"
+      class="section"
+      [ngbCollapse]="isAddressFormCollapsed"
+      data-testing-id="create-address-form"
+    >
+      <form [formGroup]="form" (ngSubmit)="submitAddressForm()" class="form-horizontal" novalidate="novalidate">
+        <h3 class="subheading">{{ 'checkout.addresses.billing_address.heading' | translate }}</h3>
+        <p class="indicates-required">
+          <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+        </p>
+        <!-- Invoice Address -->
+        <ish-address-form-container
+          data-testing-id="invoiceAddressForm"
+          [parentForm]="invoiceAddressForm"
+        ></ish-address-form-container>
+        <!-- Email address input field-->
+        <ish-input
+          [form]="form"
+          controlName="email"
+          type="email"
+          label="checkout.addresses.email.label"
+          [errorMessages]="{
+            required: 'account.email.error.email',
+            email: 'checkout.addresses.email.invalid.error'
+          }"
+        ></ish-input>
+        <div class="offset-md-4 col-md-8">
+          <small class="form-text">{{ 'account.address.email.hint' | translate }}</small>
+        </div>
+
+        <!-- Shipping Address Selection Radio boxes-->
+        <div class="section">
+          <h3>{{ 'checkout.addresses.shipping_address.heading' | translate }}</h3>
+          <div class="radio">
+            <label for="shipOption1">
+              <input type="radio" formControlName="shipOption" value="shipToInvoiceAddress" id="shipOption1" />
+              {{ 'checkout.addresses.shipping_address.option1.text' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="shipOption2">
+              <input type="radio" formControlName="shipOption" value="shipToDifferentAddress" id="shipOption2" />
+              {{ 'checkout.addresses.shipping_address.option2.text' | translate }}
+            </label>
+          </div>
+        </div>
+        <div [ngbCollapse]="!isShippingAddressFormExpanded" data-testing-id="shipping-address-form">
+          <!-- Shipping Address -->
+          <ish-address-form-container
+            data-testing-id="shippingAddressForm"
+            [parentForm]="shippingAddressForm"
+          ></ish-address-form-container>
+        </div>
+        <div [ngClass]="{ 'row form-group': isShippingAddressFormExpanded }">
+          <div [ngClass]="{ 'offset-md-4 col-md-8': isShippingAddressFormExpanded }">
+            <button class="btn btn-primary" type="submit" [disabled]="nextDisabled">
+              {{ 'checkout.button.label' | translate }}
+            </button>
+            <button (click)="cancelAddressForm()" type="button" class="btn btn-secondary">
+              {{ 'checkout.address.cancel.button.label' | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

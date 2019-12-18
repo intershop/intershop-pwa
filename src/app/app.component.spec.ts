@@ -11,8 +11,8 @@ import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AppComponent } from './app.component';
-import { FooterComponent } from './shell/footer/components/footer/footer.component';
-import { HeaderContainerComponent } from './shell/header/containers/header/header.container';
+import { FooterComponent } from './shell/footer/footer/footer.component';
+import { HeaderComponent } from './shell/header/header/header.component';
 
 let translate: TranslateService;
 
@@ -26,7 +26,7 @@ describe('App Component', () => {
       declarations: [
         AppComponent,
         MockComponent(FooterComponent),
-        MockComponent(HeaderContainerComponent),
+        MockComponent(HeaderComponent),
         MockComponent(ServerHtmlDirective),
       ],
       imports: [
@@ -57,6 +57,6 @@ describe('App Component', () => {
   });
 
   it('should render header component on page', async(() => {
-    expect(findAllIshElements(element)).toContain('ish-header-container');
+    expect(findAllIshElements(element)).toContain('ish-header');
   }));
 });

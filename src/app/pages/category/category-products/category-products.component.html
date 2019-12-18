@@ -1,0 +1,26 @@
+<div
+  class="family-page product-search-result"
+  [attr.data-testing-id]="'family-page-' + category.uniqueId"
+  id="family-page-top"
+>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="navigation-panel" [ngbCollapse]="isCollapsed">
+        <ish-filter-navigation></ish-filter-navigation>
+      </div>
+      <a class="d-md-none mobile-filter-toggle" (click)="toggle()">
+        {{ 'search.mobile.filter.trigger' | translate }}
+        <fa-icon [icon]="['fas', isCollapsed ? 'angle-down' : 'angle-up']"></fa-icon>
+      </a>
+    </div>
+    <div class="col-md-9">
+      <ish-breadcrumb [category]="category"></ish-breadcrumb>
+      <h1>{{ category.name }}</h1>
+      <ish-product-listing
+        [category]="category"
+        [id]="{ type: 'category', value: category.uniqueId }"
+        fragmentOnRouting="family-page-top"
+      ></ish-product-listing>
+    </div>
+  </div>
+</div>

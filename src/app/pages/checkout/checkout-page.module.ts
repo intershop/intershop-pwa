@@ -9,13 +9,13 @@ import { CheckoutReceiptPageModule } from '../checkout-receipt/checkout-receipt-
 import { CheckoutReviewPageModule } from '../checkout-review/checkout-review-page.module';
 import { CheckoutShippingPageModule } from '../checkout-shipping/checkout-shipping-page.module';
 
-import { CheckoutPageContainerComponent } from './checkout-page.container';
-import { CheckoutProgressBarComponent } from './components/checkout-progress-bar/checkout-progress-bar.component';
+import { CheckoutPageComponent } from './checkout-page.component';
+import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
 
 const checkoutPageRoutes: Routes = [
   {
     path: '',
-    component: CheckoutPageContainerComponent,
+    component: CheckoutPageComponent,
     children: [
       {
         path: 'address',
@@ -61,6 +61,6 @@ const checkoutPageRoutes: Routes = [
     RouterModule.forChild(checkoutPageRoutes),
     SharedModule,
   ],
-  declarations: [CheckoutPageContainerComponent, CheckoutProgressBarComponent],
+  declarations: [CheckoutPageComponent, CheckoutProgressBarComponent],
 })
 export class CheckoutPageModule {}

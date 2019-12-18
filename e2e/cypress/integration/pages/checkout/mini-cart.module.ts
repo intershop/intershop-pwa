@@ -1,5 +1,5 @@
 export class MiniCartModule {
-  private readonly selector = 'ish-mini-basket-container[data-testing-id="mini-basket-desktop"]';
+  private readonly selector = 'ish-mini-basket[data-testing-id="mini-basket-desktop"]';
 
   private miniBasketLink = () => cy.get(this.selector).find('.quick-cart-link.d-md-block');
   private viewCartButton = () =>

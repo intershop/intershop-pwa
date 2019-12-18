@@ -3,19 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { SearchNoResultComponent } from './components/search-no-result/search-no-result.component';
-import { SearchResultComponent } from './components/search-result/search-result.component';
-import { SearchPageContainerComponent } from './search-page.container';
+import { SearchNoResultComponent } from './search-no-result/search-no-result.component';
+import { SearchPageComponent } from './search-page.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 const searchPageRoutes: Routes = [
   {
     path: ':searchTerm',
-    component: SearchPageContainerComponent,
+    component: SearchPageComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(searchPageRoutes), SharedModule],
-  declarations: [SearchNoResultComponent, SearchPageContainerComponent, SearchResultComponent],
+  declarations: [SearchNoResultComponent, SearchPageComponent, SearchResultComponent],
 })
 export class SearchPageModule {}

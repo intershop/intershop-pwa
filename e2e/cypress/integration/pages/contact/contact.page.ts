@@ -1,7 +1,7 @@
 import { BreadcrumbModule } from '../breadcrumb.module';
 
 export class ContactPage {
-  readonly tag = 'ish-contact-page-container';
+  readonly tag = 'ish-contact-page';
   readonly breadcrumb = new BreadcrumbModule();
 
   static navigateTo() {

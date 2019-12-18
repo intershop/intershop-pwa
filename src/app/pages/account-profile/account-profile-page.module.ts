@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { AccountProfilePageContainerComponent } from './account-profile-page.container';
-import { AccountProfileComponent } from './components/account-profile/account-profile.component';
+import { AccountProfilePageComponent } from './account-profile-page.component';
+import { AccountProfileComponent } from './account-profile/account-profile.component';
 
 const routes: Routes = [
-  { path: '', component: AccountProfilePageContainerComponent },
+  { path: '', component: AccountProfilePageComponent },
   {
     path: 'email',
     data: {
@@ -59,6 +59,6 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
-  declarations: [AccountProfileComponent, AccountProfilePageContainerComponent],
+  declarations: [AccountProfileComponent, AccountProfilePageComponent],
 })
 export class AccountProfilePageModule {}

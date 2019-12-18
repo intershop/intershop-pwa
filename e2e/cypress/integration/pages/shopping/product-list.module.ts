@@ -4,13 +4,13 @@ export class ProductListModule {
   constructor(private contextSelector: string) {}
 
   get visibleProducts() {
-    return cy.get(this.contextSelector).find('ish-product-item-container');
+    return cy.get(this.contextSelector).find('ish-product-item');
   }
 
   get visibleProductSKUs() {
     return cy
       .get(this.contextSelector)
-      .find('ish-product-item-container [data-testing-sku]')
+      .find('ish-product-item [data-testing-sku]')
       .then(array => {
         const skus = [];
         for (let index = 0; index < array.length; index++) {
@@ -29,24 +29,24 @@ export class ProductListModule {
   }
 
   productTile(sku: string) {
-    return cy.get(this.contextSelector).find(`ish-product-item-container div[data-testing-sku="${sku}"]`);
+    return cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"]`);
   }
 
   gotoProductDetailPageBySku(sku: string) {
     cy.get(this.contextSelector)
-      .find(`ish-product-item-container div[data-testing-sku="${sku}"]`)
+      .find(`ish-product-item div[data-testing-sku="${sku}"]`)
       .click();
   }
 
   addProductToCompareBySku(sku: string) {
     cy.get(this.contextSelector)
-      .find(`ish-product-item-container div[data-testing-sku="${sku}"] button.add-to-compare`)
+      .find(`ish-product-item div[data-testing-sku="${sku}"] button.add-to-compare`)
       .click();
   }
 
   addProductToQuoteRequest(sku: string) {
     cy.get(this.contextSelector)
-      .find(`ish-product-item-container div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`)
+      .find(`ish-product-item div[data-testing-sku="${sku}"] [data-testing-id="addToQuoteButton"]`)
       .click();
   }
 

@@ -1,0 +1,32 @@
+<h1>&nbsp;</h1>
+
+<div class="row" data-testing-id="account-login-page">
+  <div class="col-lg-6">
+    <div class="section">
+      <div *ngIf="!(isLoggedIn$ | async)">
+        <h2>{{ 'account.login.signin.heading' | translate }}</h2>
+        <p *ngIf="loginMessageKey$ | async as loginMessageKey" class="alert alert-info">
+          {{ loginMessageKey | translate }}
+        </p>
+
+        <ish-login-form></ish-login-form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <h2>{{ 'account.new_user.heading' | translate }}</h2>
+    <p>{{ 'account.create.benefit.text' | translate }}</p>
+    <ul>
+      <li>{{ 'account.create.benefit1.text' | translate }}</li>
+      <li>{{ 'account.create.benefit2.text' | translate }}</li>
+      <li>{{ 'account.create.benefit3.text' | translate }}</li>
+      <li>{{ 'account.create.benefit4.text' | translate }}</li>
+      <li>{{ 'account.create.benefit5.text' | translate }}</li>
+    </ul>
+
+    <a class="btn btn-primary" routerLink="/register" [queryParams]="{ returnUrl: '/account' }"
+      >{{ 'account.create.button.label' | translate }}
+    </a>
+  </div>
+</div>

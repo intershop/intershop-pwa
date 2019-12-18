@@ -1,7 +1,7 @@
 import { fillFormField } from '../../framework';
 
 export class ProfileEditEmailPage {
-  readonly tag = 'ish-account-profile-email-page-container';
+  readonly tag = 'ish-account-profile-email-page';
 
   fillForm(data: { email: string; emailConfirmation?: string }) {
     fillFormField(this.tag, 'email', data.email);

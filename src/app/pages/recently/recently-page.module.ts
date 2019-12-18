@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { RecentlyViewedAllComponent } from './components/recently-viewed-all/recently-viewed-all.component';
-import { RecentlyPageContainerComponent } from './recently-page.container';
+import { RecentlyPageComponent } from './recently-page.component';
+import { RecentlyViewedAllComponent } from './recently-viewed-all/recently-viewed-all.component';
 
-const recentlyPageRoutes: Routes = [{ path: '', component: RecentlyPageContainerComponent }];
+const recentlyPageRoutes: Routes = [{ path: '', component: RecentlyPageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(recentlyPageRoutes), SharedModule],
-  declarations: [RecentlyPageContainerComponent, RecentlyViewedAllComponent],
+  declarations: [RecentlyPageComponent, RecentlyViewedAllComponent],
 })
 export class RecentlyPageModule {}

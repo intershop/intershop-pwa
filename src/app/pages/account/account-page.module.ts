@@ -5,13 +5,13 @@ import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
 
-import { AccountPageContainerComponent } from './account-page.container';
-import { AccountNavigationComponent } from './components/account-navigation/account-navigation.component';
+import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
+import { AccountPageComponent } from './account-page.component';
 
 const accountPageRoutes: Routes = [
   {
     path: '',
-    component: AccountPageContainerComponent,
+    component: AccountPageComponent,
     children: [
       {
         path: 'addresses',
@@ -83,6 +83,6 @@ const accountPageRoutes: Routes = [
 ];
 @NgModule({
   imports: [AccountOverviewPageModule, RouterModule.forChild(accountPageRoutes), SharedModule],
-  declarations: [AccountNavigationComponent, AccountPageContainerComponent],
+  declarations: [AccountNavigationComponent, AccountPageComponent],
 })
 export class AccountPageModule {}

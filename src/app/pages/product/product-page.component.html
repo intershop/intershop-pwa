@@ -1,0 +1,44 @@
+<div class="clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
+  <ish-loading *ngIf="productLoading$ | async; else productDetail"></ish-loading>
+
+  <ng-template #productDetail>
+    <ng-container *ngIf="product$ | async as product">
+      <ish-breadcrumb [product]="product" [category]="category$ | async"></ish-breadcrumb>
+
+      <ish-product-detail
+        [product]="product"
+        [price]="price$ | async"
+        [(quantity)]="quantity"
+        [currentUrl]="currentUrl$ | async"
+        [variationOptions]="productVariationOptions$ | async"
+        (productToBasket)="addToBasket()"
+        (productToCompare)="addToCompare($event)"
+        (selectVariation)="variationSelected($event, product)"
+      ></ish-product-detail>
+
+      <ish-product-master-variations
+        *ngIf="isMasterProduct(product)"
+        [product]="product"
+        [category]="category$ | async"
+      ></ish-product-master-variations>
+
+      <ish-product-bundle-parts
+        *ngIf="isProductBundle(product)"
+        [product]="product"
+        (productToBasket)="addToBasket()"
+      ></ish-product-bundle-parts>
+
+      <ish-retail-set-parts
+        *ngIf="isRetailSet(product)"
+        [product]="product"
+        [parts]="retailSetParts$ | async"
+        (partsChange)="retailSetParts$.next($event)"
+        (productToBasket)="addToBasket()"
+      ></ish-retail-set-parts>
+
+      <ish-product-links [sku]="product.sku"></ish-product-links>
+    </ng-container>
+  </ng-template>
+</div>
+
+<ng-container *ishFeature="'recently'"> <ish-recently-viewed></ish-recently-viewed> </ng-container>
