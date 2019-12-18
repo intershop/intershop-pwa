@@ -8,6 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
+import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
 
@@ -51,7 +52,7 @@ describe('Basket Promotion Component', () => {
         id: 'PROMO_UUID',
         title: 'MyPromotionTitle',
         disableMessages: false,
-      })
+      } as Promotion)
     );
 
     component.rebate = {
@@ -74,7 +75,7 @@ describe('Basket Promotion Component', () => {
         id: 'PROMO_UUID',
         title: 'MyPromotionTitle',
         disableMessages: true,
-      })
+      } as Promotion)
     );
 
     component.rebate = {

@@ -63,16 +63,39 @@ describe('Promotions Selectors', () => {
   describe('state with a promotion', () => {
     beforeEach(() => {
       store$.dispatch(new LoadPromotionSuccess({ promotion: promo }));
+      store$.dispatch(new LoadPromotionSuccess({ promotion: promo1 }));
     });
 
     describe('but no current router state', () => {
       it('should return the promotion information when used', () => {
-        expect(getPromotionEntities(store$.state)).toEqual({ [promo.id]: promo });
+        expect(getPromotionEntities(store$.state)).toMatchInlineSnapshot(`
+          Object {
+            "id": Object {
+              "id": "id",
+            },
+            "id1": Object {
+              "id": "id1",
+            },
+          }
+        `);
       });
 
       it('should return a promotion stub if promotion is selected', () => {
-        expect(getPromotion(store$.state, { promoId: promo.id })).toBeTruthy();
-        expect(getPromotions(store$.state, { promotionIds: [promo.id, promo1.id] })).toBeTruthy();
+        expect(getPromotion()(store$.state, { promoId: promo.id })).toMatchInlineSnapshot(`
+          Object {
+            "id": "id",
+          }
+        `);
+        expect(getPromotions()(store$.state, { promotionIds: [promo.id, promo1.id] })).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "id": "id",
+            },
+            Object {
+              "id": "id1",
+            },
+          ]
+        `);
       });
     });
   });
