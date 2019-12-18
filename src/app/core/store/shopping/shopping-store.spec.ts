@@ -233,8 +233,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "home"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -399,8 +397,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "category/:categoryUniqueId"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -474,8 +470,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "category/:categoryUniqueId"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -718,8 +712,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "category/:categoryUniqueId/product/:sku"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -868,8 +860,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "product/:sku"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -941,8 +931,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "category/:categoryUniqueId/product/:sku"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -1014,8 +1002,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "category/:categoryUniqueId"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
@@ -1062,8 +1048,6 @@ describe('Shopping Store', () => {
           queryParams: {}
           data: {}
           path: "search/:searchTerm"
-        [Locale] Set Available Locales:
-          locales: [{"lang":"en_US","currency":"USD","value":"en"},{"lang":"de_...
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
