@@ -18,7 +18,7 @@ describe('Orders Reducer', () => {
   describe('CreateOrder actions', () => {
     describe('CreateOrder action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.CreateOrder({ basket: BasketMockData.getBasket() });
+        const action = new fromActions.CreateOrder({ basketId: BasketMockData.getBasket().id });
         const state = ordersReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

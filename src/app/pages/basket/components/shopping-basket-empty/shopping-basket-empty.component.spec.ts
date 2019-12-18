@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { BasketInfoComponent } from 'ish-shared/basket/components/basket-info/basket-info.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/components/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/common/components/error-message/error-message.component';
 
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty.component';
@@ -13,7 +16,12 @@ describe('Shopping Basket Empty Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MockComponent(ErrorMessageComponent), ShoppingBasketEmptyComponent],
+      declarations: [
+        MockComponent(BasketInfoComponent),
+        MockComponent(BasketValidationResultsComponent),
+        MockComponent(ErrorMessageComponent),
+        ShoppingBasketEmptyComponent,
+      ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
@@ -28,5 +36,17 @@ describe('Shopping Basket Empty Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should not render an error if no error occurs', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('[role="alert"]')).toBeFalsy();
+  });
+
+  it('should render an error if an error occurs', () => {
+    component.error = { status: 404 } as HttpError;
+
+    fixture.detectChanges();
+    expect(element.querySelector('ish-error-message')).toBeTruthy();
   });
 });

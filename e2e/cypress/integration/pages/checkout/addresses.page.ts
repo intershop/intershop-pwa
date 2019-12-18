@@ -50,4 +50,25 @@ export class AddressesPage {
       .contains('Continue Checkout')
       .click();
   }
+
+  editInvoiceAddress() {
+    cy.get(`[data-testing-id="edit-invoice-address-link"]`).click();
+  }
+
+  changeInvoiceAddressRegion(regionCode) {
+    this.editInvoiceAddress();
+    cy.get(`[data-testing-id="invoice-address-form"]`)
+      .find('select[data-testing-id="mainDivisionCode"]')
+      .first()
+      // tslint:disable-next-line:ban
+      .select(regionCode);
+    cy.get(`[data-testing-id="invoice-address-form"]`)
+      .find('button.btn-primary')
+      .first()
+      .click();
+  }
+
+  get validationMessage() {
+    return cy.get('ish-basket-validation-results').find('.alert-box');
+  }
 }

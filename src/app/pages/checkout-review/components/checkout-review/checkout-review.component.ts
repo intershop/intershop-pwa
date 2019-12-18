@@ -14,7 +14,7 @@ export class CheckoutReviewComponent implements OnInit {
   @Input() basket: Basket;
   @Input() error: HttpError;
   @Input() submitting: boolean;
-  @Output() createOrder = new EventEmitter<Basket>();
+  @Output() createOrder = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;
@@ -35,7 +35,7 @@ export class CheckoutReviewComponent implements OnInit {
       markAsDirtyRecursive(this.form);
       return;
     }
-    this.createOrder.emit(this.basket);
+    this.createOrder.emit();
   }
 
   get formDisabled() {

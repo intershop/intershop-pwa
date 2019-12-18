@@ -63,4 +63,15 @@ export class CartPage {
         .first(),
     };
   }
+  get infoMessage() {
+    return {
+      message: cy.get('ish-basket-info').find('.alert-info'),
+    };
+  }
+
+  get errorMessage() {
+    return {
+      message: cy.get('ish-error-message').find('.alert-error'),
+    };
+  }
 }

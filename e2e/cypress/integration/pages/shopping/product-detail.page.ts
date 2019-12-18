@@ -47,7 +47,7 @@ export class ProductDetailPage {
   addProductToCart() {
     cy.wait(1000);
     cy.server()
-      .route('GET', '**/baskets/current*')
+      .route('POST', '**/baskets/*/items')
       .as('basket');
     this.addToCartButton().click();
     return cy.wait('@basket');

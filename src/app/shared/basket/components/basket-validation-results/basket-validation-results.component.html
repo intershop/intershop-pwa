@@ -3,7 +3,17 @@
   *ngFor="let message of errorMessages$ | async"
   class="alert alert-danger"
   role="alert"
-  data-testing-id="validation-message"
+  data-testing-id="validation-error-message"
+>
+  {{ message }}
+</div>
+
+<!-- info messages -->
+<div
+  *ngFor="let message of infoMessages$ | async"
+  class="alert alert-info"
+  role="alert"
+  data-testing-id="validation-info-message"
 >
   {{ message }}
 </div>

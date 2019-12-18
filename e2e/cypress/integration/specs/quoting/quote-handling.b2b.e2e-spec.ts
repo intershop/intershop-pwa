@@ -79,7 +79,7 @@ describe('Quote Handling', () => {
       page
         .addProductToCart()
         .its('status')
-        .should('equal', 200);
+        .should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {

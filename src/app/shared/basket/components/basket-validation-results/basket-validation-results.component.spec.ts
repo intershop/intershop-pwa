@@ -54,12 +54,13 @@ describe('Basket Validation Results Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should not display a message if there are no validation messages', () => {
+  it('should not display an error nor an info message if there are no validation messages', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id=validation-message]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=validation-error-message]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=validation-info-message]')).toBeFalsy();
   });
 
-  it('should display a validation message if there is a validation message', () => {
+  it('should display a validation error message if there is a validation error message', () => {
     const validationMessage = {
       errors: [{ message: 'validation message', code: 'xyz' }],
     } as BasketValidationResultType;
@@ -67,7 +68,9 @@ describe('Basket Validation Results Component', () => {
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id=validation-message]').innerHTML).toContain('validation message');
+    expect(element.querySelector('[data-testing-id=validation-error-message]').innerHTML).toContain(
+      'validation message'
+    );
   });
 
   it('should display a shipping restriction message if there is a shipping restriction message', () => {
@@ -78,9 +81,20 @@ describe('Basket Validation Results Component', () => {
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id=validation-message]').innerHTML).toContain(
+    expect(element.querySelector('[data-testing-id=validation-error-message]').innerHTML).toContain(
       'shipping restriction message'
     );
+  });
+
+  it('should display a validation info message if there is a validation info message', () => {
+    const validationMessage = {
+      infos: [{ message: 'info message', code: 'abc' }],
+    } as BasketValidationResultType;
+
+    when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(validationMessage));
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id=validation-info-message]').innerHTML).toContain('info message');
   });
 
   it('should not display a removed item message if there are infos without product', () => {

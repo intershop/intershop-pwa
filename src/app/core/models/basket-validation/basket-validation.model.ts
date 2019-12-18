@@ -23,4 +23,5 @@ export interface BasketValidationResultType {
 export interface BasketValidation {
   basket: Basket;
   results: BasketValidationResultType;
+  scopes?: BasketValidationScopeType[];
 }

@@ -83,7 +83,10 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
         filter(paymentInstrumentId => paymentInstrumentId !== this.getBasketPayment()),
         takeUntil(this.destroy$)
       )
-      .subscribe(id => this.updatePaymentMethod.emit(id));
+      .subscribe(id => {
+        this.redirectStatus = undefined;
+        this.updatePaymentMethod.emit(id);
+      });
 
     // if page is shown after cancelled/faulty redirect determine error message variable
     this.route.queryParamMap.pipe(take(1)).subscribe(params => {

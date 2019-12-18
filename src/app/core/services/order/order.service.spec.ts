@@ -53,7 +53,7 @@ describe('Order Service', () => {
       when(apiService.post(anything(), anything(), anything())).thenReturn(of(orderMockData));
       when(apiService.patch(anything(), anything(), anything())).thenReturn(of(orderMockData));
 
-      orderService.createOrder(basketMock, true).subscribe(data => {
+      orderService.createOrder(basketMock.id, true).subscribe(data => {
         verify(apiService.post('orders', anything(), anything())).once();
         verify(apiService.patch(`orders/${orderMockData.data.id}`, anything(), anything())).never();
         expect(data).toHaveProperty('id', 'test');
@@ -71,7 +71,7 @@ describe('Order Service', () => {
       when(apiService.post(anything(), anything(), anything())).thenReturn(of(extOrderMockData));
       when(apiService.patch(anything(), anything(), anything())).thenReturn(of(orderMockData));
 
-      orderService.createOrder(basketMock, true).subscribe(() => {
+      orderService.createOrder(basketMock.id, true).subscribe(() => {
         verify(apiService.post('orders', anything(), anything())).once();
         verify(apiService.patch(`orders/${orderMockData.data.id}`, anything(), anything())).once();
         done();

@@ -31,9 +31,9 @@ export class OrdersEffects {
   @Effect()
   createOrder$ = this.actions$.pipe(
     ofType<ordersActions.CreateOrder>(ordersActions.OrdersActionTypes.CreateOrder),
-    mapToPayloadProperty('basket'),
-    mergeMap(basket =>
-      this.orderService.createOrder(basket, true).pipe(
+    mapToPayloadProperty('basketId'),
+    mergeMap(basketId =>
+      this.orderService.createOrder(basketId, true).pipe(
         map(order => new ordersActions.CreateOrderSuccess({ order })),
         mapErrorToAction(ordersActions.CreateOrderFail)
       )

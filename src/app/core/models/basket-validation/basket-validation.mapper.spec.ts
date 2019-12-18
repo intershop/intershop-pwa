@@ -134,6 +134,7 @@ describe('Basket Validation Mapper', () => {
     beforeEach(() => {
       basketValidationData = {
         data: {
+          scopes: ['Shipping'],
           basket: basketBaseData.id,
           results: {
             valid: false,
@@ -165,6 +166,7 @@ describe('Basket Validation Mapper', () => {
       expect(basketValidation.results.adjusted).toBeFalse();
       expect(basketValidation.results.errors[0].message).toEqual('error');
       expect(basketValidation.results.infos[0].message).toEqual('info');
+      expect((basketValidation.scopes[0] = 'Shipping'));
     });
 
     it('should return (adjusted) Basket when basket was included', () => {

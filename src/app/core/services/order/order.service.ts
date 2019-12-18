@@ -5,7 +5,6 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
@@ -54,18 +53,18 @@ export class OrderService {
    * @param termsAndConditionsAccepted  indicates whether the user has accepted terms and conditions
    * @returns                           The order.
    */
-  createOrder(basket: Basket, termsAndConditionsAccepted: boolean = false): Observable<Order> {
+  createOrder(basketId: string, termsAndConditionsAccepted: boolean = false): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
-    if (!basket) {
-      return throwError('createOrder() called without basket');
+    if (!basketId) {
+      return throwError('createOrder() called without basketId');
     }
 
     return this.apiService
       .post<OrderData>(
         'orders',
         {
-          basket: basket.id,
+          basket: basketId,
           termsAndConditionsAccepted,
         },
         {

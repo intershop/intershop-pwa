@@ -110,6 +110,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         loading: false,
         error: undefined,
         info: action.payload.info,
+        validationResults: initialValidationResults,
       };
     }
 
@@ -121,6 +122,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         loading: false,
         error: undefined,
+        validationResults: initialValidationResults,
       };
     }
 
@@ -158,6 +160,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         basket,
         loading: false,
         error: undefined,
+        info: undefined,
         validationResults: validation && validation.results,
       };
     }

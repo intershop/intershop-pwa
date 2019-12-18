@@ -1,15 +1,13 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
@@ -17,9 +15,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { OrderService } from 'ish-core/services/order/order.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductIfNotLoaded, LoadProductSuccess } from 'ish-core/store/shopping/products';
@@ -34,26 +30,15 @@ import { BasketEffects } from './basket.effects';
 describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
-  let orderServiceMock: OrderService;
-  let addressServiceMock: AddressService;
   let effects: BasketEffects;
   let store$: Store<{}>;
-  let location: Location;
-
-  @Component({ template: 'dummy' })
-  class DummyComponent {}
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
-    orderServiceMock = mock(OrderService);
-    addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
-      declarations: [DummyComponent],
       imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'checkout', children: [{ path: 'address', component: DummyComponent }] },
-        ]),
+        RouterTestingModule.withRoutes([]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
@@ -66,8 +51,6 @@ describe('Basket Effects', () => {
         BasketEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
-        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
       ],
     });
 
@@ -411,151 +394,6 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c', { c: completion });
 
       expect(effects.loadBasketAfterLogin$).toBeObservable(expected$);
-    });
-  });
-
-  describe('validateBasket$', () => {
-    const basketValidation: BasketValidation = {
-      basket: BasketMockData.getBasket(),
-      results: {
-        valid: true,
-        adjusted: false,
-      },
-    };
-
-    beforeEach(() => {
-      when(basketServiceMock.validateBasket(anything(), anything())).thenReturn(of(basketValidation));
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: BasketMockData.getBasket(),
-        })
-      );
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
-    });
-
-    it('should call the basketService for validateBasket', done => {
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
-      actions$ = of(action);
-
-      effects.validateBasket$.subscribe(() => {
-        verify(basketServiceMock.validateBasket(BasketMockData.getBasket().id, anything())).once();
-        done();
-      });
-    });
-
-    it('should map to action of type ContinueCheckoutSuccess', () => {
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
-      const completion = new basketActions.ContinueCheckoutSuccess({
-        targetRoute: undefined,
-        basketValidation,
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.validateBasket$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type ContinueCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
-
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
-      const completion = new basketActions.ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.validateBasket$).toBeObservable(expected$);
-    });
-
-    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
-      const action = new basketActions.ValidateBasket({ scopes: ['Products'] });
-      basketValidation.results.valid = false;
-      const completion = new basketActions.ContinueCheckoutWithIssues({
-        targetRoute: undefined,
-        basketValidation,
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.validateBasket$).toBeObservable(expected$);
-    });
-  });
-
-  describe('continueCheckoutIfBasketIsValid$', () => {
-    const basketValidation: BasketValidation = {
-      basket: BasketMockData.getBasket(),
-      results: {
-        valid: true,
-        adjusted: false,
-      },
-    };
-
-    beforeEach(() => {
-      when(basketServiceMock.validateBasket(anything(), anything())).thenReturn(of(basketValidation));
-
-      store$.dispatch(
-        new basketActions.LoadBasketSuccess({
-          basket: BasketMockData.getBasket(),
-        })
-      );
-      store$.dispatch(new LoadProductSuccess({ product: { sku: 'SKU' } as Product }));
-    });
-
-    it('should call the basketService for validateBasketAndContinueCheckout', done => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
-      actions$ = of(action);
-
-      effects.validateBasketAndContinueCheckout$.subscribe(() => {
-        verify(basketServiceMock.validateBasket(BasketMockData.getBasket().id, anything())).once();
-        done();
-      });
-    });
-
-    it('should map to action of type ContinueCheckoutSuccess', () => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
-      const completion = new basketActions.ContinueCheckoutSuccess({
-        targetRoute: '/checkout/address',
-        basketValidation,
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
-    });
-
-    it('should map invalid request to action of type ContinueCheckoutFail', () => {
-      when(basketServiceMock.validateBasket(anyString(), anything())).thenReturn(throwError({ message: 'invalid' }));
-
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
-      const completion = new basketActions.ContinueCheckoutFail({ error: { message: 'invalid' } as HttpError });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
-    });
-
-    it('should navigate to the next checkout route after ContinueCheckoutSuccess if the basket is valid', fakeAsync(() => {
-      const action = new basketActions.ContinueCheckoutSuccess({ targetRoute: '/checkout/address', basketValidation });
-      actions$ = of(action);
-
-      effects.jumpToNextCheckoutStep$.subscribe(noop, fail, noop);
-
-      tick(500);
-
-      expect(location.path()).toEqual('/checkout/address');
-    }));
-
-    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
-      const action = new basketActions.ContinueCheckout({ targetStep: 1 });
-      basketValidation.results.valid = false;
-      const completion = new basketActions.ContinueCheckoutWithIssues({
-        targetRoute: '/checkout/address',
-        basketValidation,
-      });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
-
-      expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
     });
   });
 

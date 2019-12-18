@@ -16,7 +16,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { LoadProduct, LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -183,6 +183,21 @@ describe('Basket Items Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.addItemsToBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadProductsForAddItemsToBasket$', () => {
+    it('should trigger product loading actions for line items if AddItemsToBasket action is triggered', () => {
+      when(basketServiceMock.getBasket(anything())).thenReturn(of());
+
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
+      const action = new basketActions.AddItemsToBasket({ items });
+
+      const completion = new LoadProduct({ sku: 'SKU' });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadProductsForAddItemsToBasket$).toBeObservable(expected$);
     });
   });
 

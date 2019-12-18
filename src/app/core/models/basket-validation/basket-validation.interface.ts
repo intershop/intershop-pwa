@@ -7,12 +7,13 @@ import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-me
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
-import { BasketValidationResultType } from './basket-validation.model';
+import { BasketValidationResultType, BasketValidationScopeType } from './basket-validation.model';
 
 export interface BasketValidationData {
   data: {
     basket: string;
     results: BasketValidationResultType;
+    scopes?: BasketValidationScopeType[];
   };
   included?: {
     basket: { [id: string]: BasketBaseData };

@@ -44,6 +44,7 @@ describe('Anonymous Sleeping User', () => {
       ProductDetailPage.navigateTo(_.product);
       at(ProductDetailPage, page => {
         page.addProductToCart();
+        cy.wait(1000);
         page.header.miniCart.text.should('contain', '1 item');
       });
     });
