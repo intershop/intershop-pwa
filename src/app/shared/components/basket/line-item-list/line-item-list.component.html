@@ -1,0 +1,168 @@
+<form [formGroup]="form" class="container">
+  <!-- Line Items Overview -->
+  <div class="row list-header d-none d-md-flex">
+    <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
+      {{ 'shopping_cart.product_description.heading' | translate }}
+    </div>
+    <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable }">
+      {{ 'shopping_cart.qty.heading' | translate }}
+    </div>
+    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
+    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
+  </div>
+  <div *ngIf="form.get('items')" class="list-body" formArrayName="items">
+    <ng-container *ngFor="let pli of lineItems; index as i; trackBy: trackByFn">
+      <div *ngIf="pli.product" class="row list-item-row list-item-row-big">
+        <!-- Errors and Infos -->
+        <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
+          {{ pli.validationError.message }}
+        </div>
+        <div *ngIf="pli.info?.message" class="alert alert-inline alert-info col-12">
+          {{ pli.info.message }}
+        </div>
+
+        <!-- Product Image -->
+        <div class="col-2 list-item">
+          <a [routerLink]="pli.product | ishProductRoute">
+            <ish-product-image [product]="pli.product" imageType="S" class="product-image"></ish-product-image>
+          </a>
+        </div>
+
+        <div *ngIf="form.get(['items', i])" class="col-7 col-md-6 col-xl-4 list-item">
+          <!--Product Description -->
+          <div class="pli-description">
+            <a class="product-title" [routerLink]="pli.product | ishProductRoute">{{ pli.name }}</a>
+
+            <ish-line-item-description
+              [pli]="pli"
+              [editable]="editable"
+              [lineItemViewType]="lineItemViewType"
+              (updateItem)="onUpdateItem($event)"
+            ></ish-line-item-description>
+
+            <!-- promotions -->
+            <div *ngIf="pli.valueRebates && pli.valueRebates.length">
+              <ng-container *ngFor="let rebate of pli.valueRebates">
+                <ish-basket-promotion [rebate]="rebate" class="list-item-promo"></ish-basket-promotion>
+              </ng-container>
+            </div>
+
+            <a
+              class="btn-tool"
+              *ngIf="!pli.isFreeGift && editable"
+              [attr.data-testing-id]="'remove-pli-' + pli.id + '-element'"
+              [attr.data-id]="pli.id"
+              title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+              (click)="onDeleteItem(pli.id)"
+            >
+              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+            </a>
+          </div>
+
+          <!-- mobile quantity -->
+          <div *ngIf="formLength > i" class="quantity d-xl-none" [formGroupName]="i">
+            <div class="form-group">
+              <ng-container
+                *ngTemplateOutlet="
+                  quantityInputTemplate;
+                  context: {
+                    pli: pli,
+                    editable: editable,
+                    form: form,
+                    i: i
+                  }
+                "
+              ></ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- desktop quantity -->
+        <div *ngIf="formLength > i" class="quantity col-xl-2 list-item d-none d-xl-flex" [formGroupName]="i">
+          <div class="form-group w-100" [ngClass]="{ 'text-right': editable }">
+            <ng-container
+              *ngTemplateOutlet="
+                quantityInputTemplate;
+                context: {
+                  pli: pli,
+                  editable: editable,
+                  form: form,
+                  i: i
+                }
+              "
+            ></ng-container>
+          </div>
+        </div>
+
+        <!-- Prices -->
+        <div class="col-md-2 d-none d-md-block list-item column-price single-price">
+          <!-- Original Single Base Price  -->
+          <p *ngIf="pli.originSingleBasePrice" class="text-nowrap">
+            {{ 'quote.items.original_price.label' | translate }} {{ pli.originSingleBasePrice | ishPrice }}
+          </p>
+
+          <!-- (Suggested) Single Base Price  -->
+          <p class="text-nowrap">
+            <ng-container *ngIf="pli.originSingleBasePrice">{{
+              'quote.items.suggested_price.label' | translate
+            }}</ng-container>
+            {{ pli.singleBasePrice | ishPrice }}
+          </p>
+        </div>
+        <div *ngIf="pli.totals" class="col-3 col-md-2 list-item column-price">
+          <div>
+            <p *ngIf="pli.totals.originTotal" class="text-nowrap">{{ pli.totals.originTotal | ishPrice }}</p>
+
+            <!-- (Suggested) Total Price  -->
+            <div class="text-nowrap" data-testing-id="total-price">{{ pli.totals.total | ishPrice }}</div>
+          </div>
+
+          <!-- Value Rebates Total -->
+          <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
+            {{ pli.totals.undiscountedTotal | ishPrice }}
+          </div>
+
+          <!-- Gift -->
+          <div *ngIf="pli.isFreeGift" class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="total && total.value && form.get('items') && lineItems.length > 0" class="clearfix section">
+    <div class="row justify-content-end list-body">
+      <!-- TODO: remove style attribute -->
+      <div class="col-sm-4 col-md-3 col-lg-2 text-right  pr-0">{{ 'quote.items.total.label' | translate }}</div>
+      <!-- TODO: remove style attribute -->
+      <div class="col-sm-4 col-md-2 pr-0">
+        <div class="total-price text-right">{{ total | ishPrice }}</div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- template (ngTemplateOutlet) for quantity-input -->
+<ng-template #quantityInputTemplate let-pli="pli" let-editable="editable" let-form="form" let-i="i">
+  <ng-container *ngIf="!pli.isFreeGift && editable; else readonlyQuantity">
+    <ish-input
+      [form]="form.get(['items', i])"
+      controlName="quantity"
+      type="number"
+      label="shopping_cart.pli.qty.label"
+      labelClass="d-xl-none col-form-label"
+      inputClass="w-100"
+      min="0"
+      markRequiredLabel="off"
+      [max]="pli.product.maxOrderQuantity"
+      [errorMessages]="{
+        required: 'shopping_cart.quantity.invalid.error',
+        max: 'shopping_cart.quantity.invalid.error.maxvalue',
+        integer: 'shopping_cart.quantity.invalid.error'
+      }"
+    ></ish-input>
+  </ng-container>
+  <ng-template #readonlyQuantity>
+    <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+    {{ pli.quantity.value | number }}
+  </ng-template>
+</ng-template>

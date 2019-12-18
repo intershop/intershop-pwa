@@ -1,7 +1,7 @@
 import { HeaderModule } from './header.module';
 
 export class HomePage {
-  readonly tag = 'ish-home-page-container';
+  readonly tag = 'ish-home-page';
 
   readonly header = new HeaderModule();
 

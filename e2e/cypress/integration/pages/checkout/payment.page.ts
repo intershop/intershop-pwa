@@ -1,7 +1,7 @@
 import { fillFormField, waitLoadingEnd } from '../../framework';
 
 export class PaymentPage {
-  readonly tag = 'ish-checkout-payment-page-container';
+  readonly tag = 'ish-checkout-payment-page';
 
   get content() {
     return cy.get(this.tag);

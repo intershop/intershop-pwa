@@ -1,0 +1,84 @@
+<div class="clearfix">
+  <dl class="row dl-horizontal">
+    <!-- SubTotal -->
+    <dt class="col-6">{{ 'checkout.cart.subtotal.heading' | translate }}</dt>
+    <dd class="col-6">{{ totals.itemTotal | ishPrice }}</dd>
+
+    <!-- list all applied order level promotions -->
+    <ng-container *ngIf="totals.valueRebates && totals.valueRebates.length > 0">
+      <ng-container *ngFor="let rebate of totals.valueRebates">
+        <dt *ngIf="rebate.promotionId" class="col-6">
+          <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
+          <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
+        </dt>
+        <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
+      </ng-container>
+    </ng-container>
+
+    <!-- Shipping -->
+    <dt class="col-6">
+      <span *ngIf="totals.isEstimated">{{ 'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
+      <span *ngIf="!totals.isEstimated">{{ 'checkout.order.shipping.label' | translate }}</span>
+    </dt>
+    <dd class="col-6">{{ totals.undiscountedShippingTotal | ishPrice }}</dd>
+
+    <!-- Shipping promotions -->
+    <ng-container *ngIf="totals.shippingRebates && totals.shippingRebates.length > 0">
+      <ng-container *ngFor="let rebate of totals.shippingRebates">
+        <dt class="col-6">
+          <ish-basket-promotion [rebate]="rebate"></ish-basket-promotion>
+          <ng-template #default>{{ 'checkout.widget.promotion.discount' | translate }}</ng-template>
+        </dt>
+        <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
+      </ng-container>
+    </ng-container>
+
+    <!-- Item Surcharges -->
+    <ng-container *ngFor="let surcharge of totals.itemSurchargeTotalsByType">
+      <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }"></ng-container>
+    </ng-container>
+
+    <!-- Bucket Surcharges -->
+    <ng-container *ngFor="let surcharge of totals.bucketSurchargeTotalsByType">
+      <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }"></ng-container>
+    </ng-container>
+
+    <!-- Payment costs -->
+    <ng-container *ngIf="totals.paymentCostsTotal && totals.paymentCostsTotal.value">
+      <dt class="col-6">{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
+      <dd class="col-6">{{ totals.paymentCostsTotal | ishPrice }}</dd>
+    </ng-container>
+
+    <!-- Tax -->
+    <!-- ToDo: display tax in dependence of price calculation preferences -->
+    <ng-container *ngIf="totals.taxTotal && totals.taxTotal.value">
+      <dt class="col-6">{{ 'checkout.tax.text' | translate }}</dt>
+      <dd class="col-6">{{ totals.taxTotal | ishPrice }}</dd>
+    </ng-container>
+
+    <!-- Cart total -->
+    <dt class="col-6 total-price">
+      <span *ngIf="totals.isEstimated">{{ 'checkout.cart.estimated_total.label' | translate }}</span>
+      <span *ngIf="!totals.isEstimated">{{ 'checkout.order.total_cost.label' | translate }}</span>
+    </dt>
+    <dd class="col-6 total-price">{{ totals.total | ishPrice }}</dd>
+  </dl>
+</div>
+
+<!-- surcharge outlet template -->
+<ng-template #surchargeItemTemplate let-surcharge="surcharge">
+  <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
+  <dt class="col-6">
+    {{ surcharge.displayName }}
+    <a
+      class="details-tooltip"
+      [ngbPopover]="SurchargeDescription"
+      [popoverTitle]="surcharge.displayName"
+      placement="top"
+    >
+      {{ 'shopping_cart.detail.text' | translate }}
+      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+    </a>
+  </dt>
+  <dd class="col-6">{{ surcharge.amount | ishPrice }}</dd>
+</ng-template>

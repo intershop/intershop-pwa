@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { AccountProfilePasswordPageContainerComponent } from './account-profile-password-page.container';
-import { AccountProfilePasswordComponent } from './components/account-profile-password/account-profile-password.component';
+import { AccountProfilePasswordPageComponent } from './account-profile-password-page.component';
+import { AccountProfilePasswordComponent } from './account-profile-password/account-profile-password.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AccountProfilePasswordPageContainerComponent,
+    component: AccountProfilePasswordPageComponent,
   },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
-  declarations: [AccountProfilePasswordComponent, AccountProfilePasswordPageContainerComponent],
+  declarations: [AccountProfilePasswordComponent, AccountProfilePasswordPageComponent],
 })
 export class AccountProfilePasswordPageModule {}

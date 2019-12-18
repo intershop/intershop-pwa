@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { ProductBundlePartsComponent } from './components/product-bundle-parts/product-bundle-parts.component';
-import { ProductDetailActionsComponent } from './components/product-detail-actions/product-detail-actions.component';
-import { ProductDetailComponent } from './components/product-detail/product-detail.component';
-import { ProductImagesComponent } from './components/product-images/product-images.component';
-import { ProductLinksCarouselComponent } from './components/product-links-carousel/product-links-carousel.component';
-import { ProductLinksListComponent } from './components/product-links-list/product-links-list.component';
-import { ProductMasterVariationsComponent } from './components/product-master-variations/product-master-variations.component';
-import { RetailSetPartsComponent } from './components/retail-set-parts/retail-set-parts.component';
-import { ProductLinksContainerComponent } from './containers/product-links/product-links.container';
-import { ProductPageContainerComponent } from './product-page.container';
+import { ProductBundlePartsComponent } from './product-bundle-parts/product-bundle-parts.component';
+import { ProductDetailActionsComponent } from './product-detail-actions/product-detail-actions.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductImagesComponent } from './product-images/product-images.component';
+import { ProductLinksCarouselComponent } from './product-links-carousel/product-links-carousel.component';
+import { ProductLinksListComponent } from './product-links-list/product-links-list.component';
+import { ProductLinksComponent } from './product-links/product-links.component';
+import { ProductMasterVariationsComponent } from './product-master-variations/product-master-variations.component';
+import { ProductPageComponent } from './product-page.component';
+import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.component';
 
 const productPageRoutes: Routes = [
   {
@@ -20,7 +20,7 @@ const productPageRoutes: Routes = [
     children: [
       {
         path: '**',
-        component: ProductPageContainerComponent,
+        component: ProductPageComponent,
       },
     ],
   },
@@ -34,10 +34,10 @@ const productPageRoutes: Routes = [
     ProductDetailComponent,
     ProductImagesComponent,
     ProductLinksCarouselComponent,
-    ProductLinksContainerComponent,
+    ProductLinksComponent,
     ProductLinksListComponent,
     ProductMasterVariationsComponent,
-    ProductPageContainerComponent,
+    ProductPageComponent,
     RetailSetPartsComponent,
   ],
 })

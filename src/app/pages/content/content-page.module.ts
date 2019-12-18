@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { ContentPageContainerComponent } from './content-page.container';
+import { ContentPageComponent } from './content-page.component';
 
 const contentPageRoutes: Routes = [
   {
     path: ':contentPageId',
-    component: ContentPageContainerComponent,
+    component: ContentPageComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(contentPageRoutes), SharedModule],
-  declarations: [ContentPageContainerComponent],
+  declarations: [ContentPageComponent],
 })
 export class ContentPageModule {}

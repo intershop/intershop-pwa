@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { ErrorComponent } from './components/error/error.component';
-import { ServerErrorComponent } from './components/server-error/server-error.component';
-import { ErrorPageContainerComponent } from './error-page.container';
+import { ErrorPageComponent } from './error-page.component';
+import { ErrorComponent } from './error/error.component';
+import { ServerErrorComponent } from './server-error/server-error.component';
 
 const errorPageRoutes: Routes = [
-  { path: '', component: ErrorPageContainerComponent, data: { wrapperClass: 'errorpage', headerType: 'simple' } },
+  { path: '', component: ErrorPageComponent, data: { wrapperClass: 'errorpage', headerType: 'simple' } },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(errorPageRoutes), SharedModule],
-  declarations: [ErrorComponent, ErrorPageContainerComponent, ServerErrorComponent],
+  declarations: [ErrorComponent, ErrorPageComponent, ServerErrorComponent],
 })
 export class ErrorPageModule {}

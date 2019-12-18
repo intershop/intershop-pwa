@@ -2,30 +2,30 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { QuoteWidgetContainerComponent } from './shared/account/containers/quote-widget/quote-widget.container';
-import { BasketAddToQuoteContainerComponent } from './shared/basket/containers/basket-add-to-quote/basket-add-to-quote.container';
-import { ProductAddToQuoteDialogContainerComponent } from './shared/product/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
-import { ProductAddToQuoteContainerComponent } from './shared/product/containers/product-add-to-quote/product-add-to-quote.container';
-import { QuoteEditComponent } from './shared/quote/components/quote-edit/quote-edit.component';
-import { QuoteStateComponent } from './shared/quote/components/quote-state/quote-state.component';
+import { QuoteWidgetComponent } from './shared/account/quote-widget/quote-widget.component';
+import { BasketAddToQuoteComponent } from './shared/basket/basket-add-to-quote/basket-add-to-quote.component';
+import { ProductAddToQuoteDialogComponent } from './shared/product/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
+import { ProductAddToQuoteComponent } from './shared/product/product-add-to-quote/product-add-to-quote.component';
+import { QuoteEditComponent } from './shared/quote/quote-edit/quote-edit.component';
+import { QuoteStateComponent } from './shared/quote/quote-state/quote-state.component';
 import { QuotingStoreModule } from './store/quoting-store.module';
 
 @NgModule({
   imports: [QuotingStoreModule, SharedModule],
   declarations: [
-    BasketAddToQuoteContainerComponent,
-    ProductAddToQuoteContainerComponent,
-    ProductAddToQuoteDialogContainerComponent,
+    BasketAddToQuoteComponent,
+    ProductAddToQuoteComponent,
+    ProductAddToQuoteDialogComponent,
     QuoteEditComponent,
     QuoteStateComponent,
-    QuoteWidgetContainerComponent,
+    QuoteWidgetComponent,
   ],
   exports: [QuoteEditComponent, QuoteStateComponent, SharedModule],
   entryComponents: [
-    BasketAddToQuoteContainerComponent,
-    ProductAddToQuoteContainerComponent,
-    ProductAddToQuoteDialogContainerComponent,
-    QuoteWidgetContainerComponent,
+    BasketAddToQuoteComponent,
+    ProductAddToQuoteComponent,
+    ProductAddToQuoteDialogComponent,
+    QuoteWidgetComponent,
   ],
 })
 export class QuotingModule {}

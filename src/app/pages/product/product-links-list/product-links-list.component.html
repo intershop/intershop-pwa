@@ -1,0 +1,11 @@
+<div *ngIf="links.productSKUs.length" class="product-list-container">
+  <h2>{{ productLinkTitle }}</h2>
+  <div class="product-list">
+    <div *ngFor="let sku of links.productSKUs" class="product-list-item list-view">
+      <ish-product-item
+        [productSku]="sku"
+        [configuration]="{ displayType: 'row', quantityLabel: 'product.product_links.quantity.label' | translate }"
+      ></ish-product-item>
+    </div>
+  </div>
+</div>

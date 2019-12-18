@@ -1,5 +1,5 @@
 export class ShippingPage {
-  readonly tag = 'ish-checkout-shipping-page-container';
+  readonly tag = 'ish-checkout-shipping-page';
 
   continueCheckout() {
     cy.get('button')

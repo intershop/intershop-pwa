@@ -7,7 +7,7 @@ import { filter, first } from 'rxjs/operators';
 import { getUserAuthorized } from 'ish-core/store/user';
 import { getDeviceType } from 'ish-core/store/viewconf';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { LazyLoginModalComponent } from 'ish-shell/header/components/lazy-login-modal/lazy-login-modal.component';
+import { LazyLoginModalComponent } from 'ish-shell/header/lazy-login-modal/lazy-login-modal.component';
 
 @Injectable({ providedIn: 'root' })
 export class LoginGuard implements CanActivate {

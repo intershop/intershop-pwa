@@ -6,7 +6,7 @@ export type AddressDetailsTypes = Partial<
 >;
 
 export class AddressesPage {
-  readonly tag = 'ish-checkout-address-page-container';
+  readonly tag = 'ish-checkout-address-page';
 
   // guest checkout
   guestCheckout() {

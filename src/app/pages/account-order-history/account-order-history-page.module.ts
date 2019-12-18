@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
+import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
-const routes: Routes = [{ path: '', component: AccountOrderHistoryPageContainerComponent }];
+const routes: Routes = [{ path: '', component: AccountOrderHistoryPageComponent }];
 @NgModule({
   imports: [RouterModule.forChild(routes), SharedModule],
-  declarations: [AccountOrderHistoryPageContainerComponent],
+  declarations: [AccountOrderHistoryPageComponent],
 })
 export class AccountOrderHistoryPageModule {}

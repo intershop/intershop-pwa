@@ -1,0 +1,11 @@
+<div *ngIf="links.productSKUs.length" class="product-list-container">
+  <h2>{{ productLinkTitle }}</h2>
+
+  <div class="product-list">
+    <swiper [config]="swiperConfig">
+      <div *ngFor="let sku of links.productSKUs" class="swiper-slide">
+        <ish-product-item [productSku]="sku"></ish-product-item>
+      </div>
+    </swiper>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<ng-container *ngIf="editable && lineItem && isVariationProduct(lineItem.product)">
+  <!-- edit-link -->
+  <a
+    (click)="modalDialog.show()"
+    class="line-item-edit-link"
+    rel="nofollow"
+    title="{{ 'checkout.variation.edit.button.label' | translate }}"
+    >{{ 'checkout.variation.edit.button.label' | translate }}</a
+  >
+
+  <ish-modal-dialog
+    #modalDialog
+    [options]="{
+      titleText: lineItem.product.name,
+      confirmText: 'shopping_cart.variation.save.button.label' | translate,
+      confirmDisabled: lineItem.product.availability && !lineItem.product.inStock,
+      rejectText: 'shopping_cart.button.cancel' | translate,
+      size: 'lg'
+    }"
+  >
+    <ish-line-item-edit-dialog
+      [lineItem]="lineItem"
+      [modalDialogRef]="modalDialog"
+      (updateItem)="onUpdateItem($event)"
+    ></ish-line-item-edit-dialog>
+  </ish-modal-dialog>
+</ng-container>

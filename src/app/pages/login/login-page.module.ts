@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { LoginPageContainerComponent } from './login-page.container';
+import { LoginPageComponent } from './login-page.component';
 
-const loginPageRoutes: Routes = [{ path: '', component: LoginPageContainerComponent }];
+const loginPageRoutes: Routes = [{ path: '', component: LoginPageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(loginPageRoutes), SharedModule],
-  declarations: [LoginPageContainerComponent],
+  declarations: [LoginPageComponent],
 })
 export class LoginPageModule {}
