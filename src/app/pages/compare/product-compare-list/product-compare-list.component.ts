@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { Product } from 'ish-core/models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Compare List Component
@@ -41,14 +41,16 @@ export class ProductCompareListComponent implements OnChanges {
    */
   @Output() removeProductCompare = new EventEmitter<string>();
 
-  commonAttributeNames: Set<string>;
+  commonAttributeNames: string[];
   visibleProducts: Product[] = [];
   currentPage = 1;
 
   getAttributeByAttributeName = AttributeHelper.getAttributeByAttributeName;
 
+  getProductWithoutCommonAttributes = ProductHelper.getProductWithoutCommonAttributes;
+
   ngOnChanges() {
-    this.commonAttributeNames = this.getCommonAttributeNames();
+    this.commonAttributeNames = ProductHelper.getCommonAttributeNames(this.compareProducts);
     // decrease the current page value if the current page would be empty because of removing a product from compare
     if ((this.currentPage - 1) * this.itemsPerPage >= this.compareProducts.length) {
       this.currentPage = this.currentPage - 1;
@@ -73,32 +75,6 @@ export class ProductCompareListComponent implements OnChanges {
       (this.currentPage - 1) * this.itemsPerPage,
       this.currentPage * this.itemsPerPage
     );
-  }
-
-  /**
-   * Determines the set of common attribute names for the compare products.
-   * @returns A set of the common attribute names.
-   */
-  getCommonAttributeNames(): Set<string> {
-    const result = this.compareProducts.reduce((commonAttributeNameList, current) => {
-      commonAttributeNameList.push(current.attributes.map(x => x.name));
-      return commonAttributeNameList;
-    }, []);
-
-    return new Set(result.shift().filter(attribute => result.every(x => x.indexOf(attribute) !== -1)));
-  }
-
-  /**
-   * Get a product with only specific attributes. All attributes that are common between the compare products are filtered out.
-   * @param product The Products that should be stripped of its common attributes
-   * @returns       A Product with specific attributes only compared to the common attributes.
-   */
-  getProductWithSpecificAttributesOnly(product: Product): Product {
-    const specificAttributesProduct: Product = { ...product };
-    specificAttributesProduct.attributes = product.attributes.filter(
-      attribute => !this.commonAttributeNames.has(attribute.name)
-    );
-    return specificAttributesProduct;
   }
 
   /**

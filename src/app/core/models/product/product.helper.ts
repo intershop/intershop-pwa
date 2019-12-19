@@ -1,3 +1,5 @@
+import { intersection } from 'lodash-es';
+
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
@@ -150,5 +152,33 @@ export class ProductHelper {
         summedUpSalePrice: products.map(p => p.salePrice).reduce(PriceHelper.sum),
       };
     }
+  }
+
+  /**
+   * Determines the set of common attribute names for the compare products.
+   * @param products List of products to be compared
+   * @returns        A set of the common attribute names
+   */
+  static getCommonAttributeNames(products: Product[]): string[] {
+    if (!products || !products.length) {
+      return [];
+    }
+    const result = products.filter(x => !!x).map(product => product.attributes.map(x => x.name));
+    return intersection(...result);
+  }
+
+  /**
+   * Get a product with only specific attributes. All attributes that are common between the compare products are filtered out.
+   * @param product         The product that should be stripped of its common attributes
+   * @param visibleProducts List of products to be compared
+   * @returns               A Product with specific attributes only compared to the common attributes
+   */
+  static getProductWithoutCommonAttributes(product: Product, visibleProducts: Product[]): Product {
+    if (!product || !product.sku || !visibleProducts || !visibleProducts.length) {
+      return;
+    }
+    const common = ProductHelper.getCommonAttributeNames(visibleProducts);
+    const attributes = product.attributes.filter(att => !common.includes(att.name));
+    return { ...product, attributes };
   }
 }
