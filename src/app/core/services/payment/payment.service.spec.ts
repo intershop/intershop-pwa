@@ -3,15 +3,16 @@ import { combineReducers } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
-import { BasketPaymentService } from './basket-payment.service';
+import { PaymentService } from './payment.service';
 
-describe('Basket Payment Service', () => {
-  let basketPaymentService: BasketPaymentService;
+describe('Payment Service', () => {
+  let paymentService: PaymentService;
   let apiService: ApiService;
 
   const basketMockData = {
@@ -46,13 +47,13 @@ describe('Basket Payment Service', () => {
       ],
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
-    basketPaymentService = TestBed.get(BasketPaymentService);
+    paymentService = TestBed.get(PaymentService);
   });
 
   it("should get basket eligible payment methods for a basket when 'getBasketEligiblePaymentMethods' is called", done => {
     when(apiService.get(anything(), anything())).thenReturn(of({ data: [] }));
 
-    basketPaymentService.getBasketEligiblePaymentMethods(basketMockData.data.id).subscribe(() => {
+    paymentService.getBasketEligiblePaymentMethods(basketMockData.data.id).subscribe(() => {
       verify(apiService.get(`baskets/${basketMockData.data.id}/eligible-payment-methods`, anything())).once();
       done();
     });
@@ -67,7 +68,7 @@ describe('Basket Payment Service', () => {
       )
     ).thenReturn(of([]));
 
-    basketPaymentService.setBasketPayment(basketMockData.data.id, basketMockData.data.payment.name).subscribe(() => {
+    paymentService.setBasketPayment(basketMockData.data.id, basketMockData.data.payment.name).subscribe(() => {
       verify(
         apiService.put(
           `baskets/${basketMockData.data.id}/payments/open-tender?include=paymentMethod`,
@@ -103,7 +104,7 @@ describe('Basket Payment Service', () => {
       ],
     };
 
-    basketPaymentService.createBasketPayment(basketMockData.data.id, paymentInstrument).subscribe(() => {
+    paymentService.createBasketPayment(basketMockData.data.id, paymentInstrument).subscribe(() => {
       verify(
         apiService.post(
           `baskets/${basketMockData.data.id}/payment-instruments?include=paymentMethod`,
@@ -126,7 +127,7 @@ describe('Basket Payment Service', () => {
       param2: '456',
     };
 
-    basketPaymentService.updateBasketPayment(basketMockData.data.id, params).subscribe(() => {
+    paymentService.updateBasketPayment(basketMockData.data.id, params).subscribe(() => {
       verify(apiService.patch(`baskets/${basketMockData.data.id}/payments/open-tender`, anything(), anything())).once();
       done();
     });
@@ -135,10 +136,25 @@ describe('Basket Payment Service', () => {
   it("should delete a payment instrument from basket when 'deleteBasketInstrument' is called", done => {
     when(apiService.delete(anyString(), anything())).thenReturn(of({}));
 
-    basketPaymentService.deleteBasketPaymentInstrument(basketMockData.data.id, 'paymentInstrumentId').subscribe(() => {
+    paymentService.deleteBasketPaymentInstrument(basketMockData.data.id, 'paymentInstrumentId').subscribe(() => {
       verify(
         apiService.delete(`baskets/${basketMockData.data.id}/payment-instruments/paymentInstrumentId`, anything())
       ).once();
+      done();
+    });
+  });
+
+  it("should get a user's payment method data when 'getUserPaymentMethods' is called", done => {
+    when(apiService.get(anyString())).thenReturn(of([]));
+    when(apiService.options(anyString())).thenReturn(of([]));
+    const customer = {
+      customerNo: '4711',
+      type: 'PrivateCustomer',
+    } as Customer;
+
+    paymentService.getUserPaymentMethods(customer).subscribe(() => {
+      verify(apiService.get('customers/4711/payments')).once();
+      verify(apiService.options('customers/4711/payments')).once();
       done();
     });
   });

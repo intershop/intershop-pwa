@@ -17,6 +17,7 @@ import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -30,6 +31,7 @@ describe('User Effects', () => {
   let effects: UserEffects;
   let store$: Store<{}>;
   let userServiceMock: UserService;
+  let paymentServiceMock: PaymentService;
   let router: Router;
   let location: Location;
 
@@ -51,14 +53,15 @@ describe('User Effects', () => {
 
   beforeEach(() => {
     userServiceMock = mock(UserService);
+    paymentServiceMock = mock(PaymentService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.updateUserPassword(anything(), anything(), anything(), anyString())).thenReturn(of(undefined));
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
-    when(userServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
+    when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -75,6 +78,7 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
       ],
     });
@@ -529,7 +533,7 @@ describe('User Effects', () => {
       const action = new ua.LoadUserPaymentMethods();
       actions$ = of(action);
       effects.loadUserPaymentMethods$.subscribe(() => {
-        verify(userServiceMock.getUserPaymentMethods(anything())).once();
+        verify(paymentServiceMock.getUserPaymentMethods(anything())).once();
         done();
       });
     });
@@ -548,7 +552,7 @@ describe('User Effects', () => {
       // tslint:disable-next-line:ban-types
       const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
 
-      when(userServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
+      when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
 
       const action = new ua.LoadUserPaymentMethods();
       const completion = new ua.LoadUserPaymentMethodsFail({

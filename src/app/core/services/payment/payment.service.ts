@@ -5,19 +5,25 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
-import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
+import {
+  PaymentMethodBaseData,
+  PaymentMethodOptionsDataType,
+} from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/locale';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  */
 @Injectable({ providedIn: 'root' })
-export class BasketPaymentService {
+export class PaymentService {
   constructor(private apiService: ApiService, private store: Store<{}>) {}
 
   // http header for Basket API v1
@@ -200,5 +206,26 @@ export class BasketPaymentService {
     return this.apiService.delete(`baskets/${basketId}/payment-instruments/${paymentInstrumentId}`, {
       headers: this.basketHeaders,
     });
+  }
+
+  /**
+   * Gets the payment data of the customer.
+   * @param customer  The customer data.
+   */
+  getUserPaymentMethods(customer: Customer): Observable<PaymentMethod[]> {
+    if (!customer) {
+      return throwError('getUserPaymentMethods called without required body data');
+    }
+
+    return this.apiService.get(`customers/${customer.customerNo}/payments`).pipe(
+      unpackEnvelope<Link>(),
+      resolveLinks<PaymentInstrumentData>(this.apiService),
+      concatMap(instruments =>
+        this.apiService.options(`customers/${customer.customerNo}/payments`).pipe(
+          unpackEnvelope<PaymentMethodOptionsDataType>('methods'),
+          map(methods => PaymentMethodMapper.fromOptions({ methods, instruments }))
+        )
+      )
+    );
   }
 }

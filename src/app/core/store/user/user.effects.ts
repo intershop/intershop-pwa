@@ -23,6 +23,7 @@ import {
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/error';
@@ -58,6 +59,7 @@ export class UserEffects {
     private actions$: Actions,
     private store$: Store<{}>,
     private userService: UserService,
+    private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
     private router: Router
   ) {}
@@ -262,7 +264,7 @@ export class UserEffects {
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     filter(([, customer]) => !!customer),
     concatMap(([, customer]) =>
-      this.userService.getUserPaymentMethods(customer).pipe(
+      this.paymentService.getUserPaymentMethods(customer).pipe(
         map(result => new userActions.LoadUserPaymentMethodsSuccess({ paymentMethods: result })),
         mapErrorToAction(userActions.LoadUserPaymentMethodsFail)
       )
