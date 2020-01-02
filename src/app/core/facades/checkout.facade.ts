@@ -110,8 +110,8 @@ export class CheckoutFacade {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));
   }
 
-  createBasketPayment(paymentInstrument: PaymentInstrument) {
-    this.store.dispatch(new CreateBasketPayment({ paymentInstrument }));
+  createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {
+    this.store.dispatch(new CreateBasketPayment({ paymentInstrument, saveForLater }));
   }
 
   deleteBasketPayment(paymentInstrumentId: string) {

@@ -92,7 +92,7 @@ describe('Payment Service', () => {
     const paymentInstrument = {
       id: undefined,
       paymentMethod: 'ISH_DirectDebit',
-      parameters_: [
+      parameters: [
         {
           name: 'accountHolder',
           value: 'Patricia Miller',
@@ -155,6 +155,35 @@ describe('Payment Service', () => {
     paymentService.getUserPaymentMethods(customer).subscribe(() => {
       verify(apiService.get('customers/4711/payments')).once();
       verify(apiService.options('customers/4711/payments')).once();
+      done();
+    });
+  });
+
+  it("should create a payment instrument for the user when 'createUserPayment' is called", done => {
+    const customerNo = '12345';
+
+    when(apiService.post(`customers/${customerNo}/payments`, anything())).thenReturn(
+      of({ type: 'Link', uri: 'site/-/customers/-/payments/paymentid' })
+    );
+    when(apiService.get(anything())).thenReturn(of(undefined));
+
+    const paymentInstrument = {
+      id: undefined,
+      paymentMethod: 'ISH_DirectDebit',
+      parameters: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+
+    paymentService.createUserPayment(customerNo, paymentInstrument).subscribe(() => {
+      verify(apiService.post(`customers/${customerNo}/payments`, anything())).once();
       done();
     });
   });

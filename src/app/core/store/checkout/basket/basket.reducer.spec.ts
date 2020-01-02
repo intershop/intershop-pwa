@@ -485,7 +485,7 @@ describe('Basket Reducer', () => {
     };
     describe('CreateBasketPayment action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.CreateBasketPayment({ paymentInstrument });
+        const action = new fromActions.CreateBasketPayment({ paymentInstrument, saveForLater: false });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

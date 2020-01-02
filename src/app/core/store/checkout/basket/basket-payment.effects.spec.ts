@@ -7,6 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -15,6 +16,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -67,7 +69,7 @@ describe('Basket Payment Effects', () => {
       );
     });
 
-    it('should call the basketService for loadBasketEligiblePaymentMethods', done => {
+    it('should call the paymentService for loadBasketEligiblePaymentMethods', done => {
       const action = new basketActions.LoadBasketEligiblePaymentMethods();
       actions$ = of(action);
 
@@ -120,7 +122,7 @@ describe('Basket Payment Effects', () => {
       );
     });
 
-    it('should call the basketService for setPaymentAtBasket', done => {
+    it('should call the paymentService for setPaymentAtBasket', done => {
       const id = 'newPayment';
       const action = new basketActions.SetBasketPayment({ id });
       actions$ = of(action);
@@ -161,7 +163,7 @@ describe('Basket Payment Effects', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess({ basket: BasketMockData.getBasket() }));
     });
 
-    it('should call the basketService for setPaymentAtBasket', done => {
+    it('should call the paymentService for setPaymentAtBasket', done => {
       const id = 'newPayment';
       const action = new basketActions.SetBasketPayment({ id });
       actions$ = of(action);
@@ -210,9 +212,13 @@ describe('Basket Payment Effects', () => {
         },
       ],
     };
+    const customer = { customerNo: 'patricia' } as Customer;
 
     beforeEach(() => {
       when(paymentServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
+        of({ id: 'newPaymentInstrumentId' } as PaymentInstrument)
+      );
+      when(paymentServiceMock.createUserPayment(anyString(), anything())).thenReturn(
         of({ id: 'newPaymentInstrumentId' } as PaymentInstrument)
       );
 
@@ -225,10 +231,11 @@ describe('Basket Payment Effects', () => {
           } as Basket,
         })
       );
+      store$.dispatch(new LoginUserSuccess({ customer }));
     });
 
-    it('should call the basketService for createBasketPayment', done => {
-      const action = new basketActions.CreateBasketPayment({ paymentInstrument });
+    it('should call the paymentService if payment instrument is saved at basket', done => {
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument, saveForLater: false });
       actions$ = of(action);
 
       effects.createBasketPaymentInstrument$.subscribe(() => {
@@ -237,8 +244,17 @@ describe('Basket Payment Effects', () => {
       });
     });
 
+    it('should call the paymentService if payment instrument is saved at user', done => {
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument, saveForLater: true });
+      actions$ = of(action);
+
+      effects.createBasketPaymentInstrument$.subscribe(() => {
+        verify(paymentServiceMock.createUserPayment(customer.customerNo, anything())).once();
+        done();
+      });
+    });
     it('should map to action of type SetBasketPayment and CreateBasketPaymentSuccess', () => {
-      const action = new basketActions.CreateBasketPayment({ paymentInstrument });
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument, saveForLater: false });
       const completion1 = new basketActions.SetBasketPayment({ id: 'newPaymentInstrumentId' });
       const completion2 = new basketActions.CreateBasketPaymentSuccess();
       actions$ = hot('-a', { a: action });
@@ -251,7 +267,7 @@ describe('Basket Payment Effects', () => {
       when(paymentServiceMock.createBasketPayment(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new basketActions.CreateBasketPayment({ paymentInstrument });
+      const action = new basketActions.CreateBasketPayment({ paymentInstrument, saveForLater: false });
       const completion = new basketActions.CreateBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -339,7 +355,7 @@ describe('Basket Payment Effects', () => {
       );
     });
 
-    it('should call the basketService for updateBasketPayment', done => {
+    it('should call the paymentService for updateBasketPayment', done => {
       const action = new basketActions.UpdateBasketPayment({ params });
       actions$ = of(action);
 
@@ -396,7 +412,7 @@ describe('Basket Payment Effects', () => {
       );
     });
 
-    it('should call the basketService for deleteBasketPayment', done => {
+    it('should call the paymentService for deleteBasketPayment', done => {
       const id = 'paymentInstrumentId';
       const action = new basketActions.DeleteBasketPayment({ id });
       actions$ = of(action);

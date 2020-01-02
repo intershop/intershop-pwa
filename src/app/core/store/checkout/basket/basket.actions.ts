@@ -292,7 +292,7 @@ export class SetBasketPaymentSuccess implements Action {
 
 export class CreateBasketPayment implements Action {
   readonly type = BasketActionTypes.CreateBasketPayment;
-  constructor(public payload: { paymentInstrument: PaymentInstrument }) {}
+  constructor(public payload: { paymentInstrument: PaymentInstrument; saveForLater: boolean }) {}
 }
 
 export class CreateBasketPaymentFail implements Action {

@@ -36,6 +36,7 @@ describe('Payment Method Mapper', () => {
               currency: 'USD',
             },
           },
+          saveAllowed: true,
           restricted: false,
         },
       ],
@@ -97,6 +98,7 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethod.paymentCosts.value).toBePositive();
       expect(paymentMethod.paymentCostsThreshold.value).toBePositive();
       expect(paymentMethod.isRestricted).toBeFalse();
+      expect(paymentMethod.saveAllowed).toBeFalse();
     });
 
     it(`should return a restricted PaymentMethod when getting restricted PaymentMethodData`, () => {
@@ -116,6 +118,7 @@ describe('Payment Method Mapper', () => {
       paymentMethodData.data[0].parameterDefinitions = parametersData;
       const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
 
+      expect(paymentMethod.saveAllowed).toBeTrue();
       expect(paymentMethod.parameters).toHaveLength(3);
       expect(paymentMethod.parameters[0].type).toEqual('input');
       expect(paymentMethod.parameters[0].key).toEqual('holder');

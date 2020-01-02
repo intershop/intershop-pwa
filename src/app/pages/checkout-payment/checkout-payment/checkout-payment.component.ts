@@ -46,7 +46,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() error: HttpError;
 
   @Output() updatePaymentMethod = new EventEmitter<string>();
-  @Output() createPaymentInstrument = new EventEmitter<PaymentInstrument>();
+  @Output() createBasketPaymentInstrument = new EventEmitter<PaymentInstrument>();
+  @Output() createUserPaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() deletePaymentInstrument = new EventEmitter<string>();
   @Output() nextStep = new EventEmitter<void>();
 
@@ -179,11 +180,18 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * creates a new payment instrument
    */
   createNewPaymentInstrument(parameters: { name: string; value: string }[]) {
-    this.createPaymentInstrument.emit({
+    const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
+    const paymentInstrument: PaymentInstrument = {
       id: undefined,
-      paymentMethod: this.filteredPaymentMethods[this.openFormIndex].id,
+      paymentMethod: paymentMethod.id,
       parameters,
-    });
+    };
+
+    if (paymentMethod.saveAllowed) {
+      this.createUserPaymentInstrument.emit(paymentInstrument);
+    } else {
+      this.createBasketPaymentInstrument.emit(paymentInstrument);
+    }
   }
 
   /**

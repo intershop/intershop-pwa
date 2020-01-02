@@ -74,11 +74,19 @@ describe('Checkout Payment Component', () => {
         id: 'ISH_INVOICE',
         serviceId: 'ISH_INVOICE',
         displayName: 'Invoice',
+        saveAllowed: false,
       },
       {
         id: 'Concardis_CreditCard',
         serviceId: 'Concardis_CreditCard',
         displayName: 'Concardis Credit Card',
+        saveAllowed: false,
+      },
+      {
+        id: 'ISH_CreditCard',
+        serviceId: 'ISH_CreditCard',
+        displayName: 'Intershop Credit Card',
+        saveAllowed: true,
       },
       BasketMockData.getPaymentMethod(),
     ];
@@ -169,16 +177,35 @@ describe('Checkout Payment Component', () => {
       expect(component.formIsOpen(-1)).toBeTrue();
     });
 
-    it('should throw createPaymentInstrument event when the user submits a valid parameter form', done => {
+    it('should throw createBasketPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
       component.ngOnChanges(paymentMethodChange);
-      component.openPaymentParameterForm(2);
+      component.openPaymentParameterForm(1);
 
-      component.createPaymentInstrument.subscribe(formValue => {
-        expect(formValue).toEqual({ paymentMethod: 'ISH_CreditCard', parameters: [{ name: 'IBAN', value: 'DE123' }] });
+      component.createBasketPaymentInstrument.subscribe(formValue => {
+        expect(formValue).toEqual({
+          paymentMethod: 'Concardis_CreditCard',
+          parameters: [{ name: 'creditCardNumber', value: '123' }],
+        });
         done();
       });
 
-      component.parameterForm.addControl('IBAN', new FormControl('DE123', Validators.required));
+      component.parameterForm.addControl('creditCardNumber', new FormControl('123', Validators.required));
+      component.submitParameterForm();
+    });
+
+    it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', done => {
+      component.ngOnChanges(paymentMethodChange);
+      component.openPaymentParameterForm(2);
+
+      component.createUserPaymentInstrument.subscribe(formValue => {
+        expect(formValue).toEqual({
+          paymentMethod: 'ISH_CreditCard',
+          parameters: [{ name: 'creditCardNumber', value: '456' }],
+        });
+        done();
+      });
+
+      component.parameterForm.addControl('creditCardNumber', new FormControl('456', Validators.required));
       component.submitParameterForm();
     });
 

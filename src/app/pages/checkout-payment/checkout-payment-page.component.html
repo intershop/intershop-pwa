@@ -6,7 +6,8 @@
     [paymentMethods]="paymentMethods$ | async"
     [error]="basketError$ | async"
     (updatePaymentMethod)="updateBasketPaymentMethod($event)"
-    (createPaymentInstrument)="createBasketPaymentInstrument($event)"
+    (createBasketPaymentInstrument)="createBasketPaymentInstrument($event)"
+    (createUserPaymentInstrument)="createUserPaymentInstrument($event)"
     (deletePaymentInstrument)="deletePaymentInstrument($event)"
     (nextStep)="nextStep()"
   ></ish-checkout-payment>

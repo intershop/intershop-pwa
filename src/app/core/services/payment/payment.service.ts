@@ -16,7 +16,7 @@ import {
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
-import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getCurrentLocale } from 'ish-core/store/locale';
 
 /**
@@ -211,6 +211,7 @@ export class PaymentService {
   /**
    * Gets the payment data of the customer.
    * @param customer  The customer data.
+   * @returns         The customer's payments.
    */
   getUserPaymentMethods(customer: Customer): Observable<PaymentMethod[]> {
     if (!customer) {
@@ -227,5 +228,39 @@ export class PaymentService {
         )
       )
     );
+  }
+
+  /**
+   * Creates a payment instrument at the customer.
+   * @param customerNo          The customer data.
+   * @param paymentInstrument   The payment instrument data.
+   * @returns                   The created payment instrument.
+   */
+  createUserPayment(customerNo: string, paymentInstrument: PaymentInstrument): Observable<PaymentInstrument> {
+    if (!customerNo) {
+      return throwError('createUserPayment called without required customer number');
+    }
+    if (!paymentInstrument) {
+      return throwError('createUserPayment called without required payment instrument');
+    }
+
+    if (!paymentInstrument.parameters || !paymentInstrument.parameters.length) {
+      return throwError('createUserPayment called without required payment parameters');
+    }
+
+    const body: {
+      name: string;
+      parameters?: {
+        key: string;
+        property: string;
+      }[];
+    } = {
+      name: paymentInstrument.paymentMethod,
+      parameters: paymentInstrument.parameters.map(attr => ({ key: attr.name, property: attr.value })),
+    };
+
+    return this.apiService
+      .post(`customers/${customerNo}/payments`, body)
+      .pipe(resolveLink<PaymentInstrument>(this.apiService));
   }
 }

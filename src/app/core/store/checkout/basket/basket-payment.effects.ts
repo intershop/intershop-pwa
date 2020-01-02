@@ -5,7 +5,8 @@ import { ofRoute } from 'ngrx-router';
 import { concatMap, filter, map, mapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { getLoggedInCustomer } from 'ish-core/store/user';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasketId } from './basket.selectors';
@@ -46,22 +47,33 @@ export class BasketPaymentEffects {
   );
 
   /**
-   * Creates a payment at the current basket.
+   * Creates a payment at the current basket and saves it at basket.
    */
   @Effect()
   createBasketPaymentInstrument$ = this.actions$.pipe(
     ofType<basketActions.CreateBasketPayment>(basketActions.BasketActionTypes.CreateBasketPayment),
-    mapToPayloadProperty('paymentInstrument'),
+    mapToPayload(),
+    withLatestFrom(this.store.pipe(select(getLoggedInCustomer))),
+    map(([payload, customer]) => ({
+      saveForLater: payload.saveForLater,
+      paymentInstrument: payload.paymentInstrument,
+      customerNo: customer && customer.customerNo,
+    })),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([paymentInstrument, basketid]) =>
-      this.paymentService.createBasketPayment(basketid, paymentInstrument).pipe(
-        concatMap(payload => [
-          new basketActions.SetBasketPayment({ id: payload.id }),
+    concatMap(([payload, basketid]) => {
+      const createPayment$ =
+        payload.customerNo && payload.saveForLater
+          ? this.paymentService.createUserPayment(payload.customerNo, payload.paymentInstrument)
+          : this.paymentService.createBasketPayment(basketid, payload.paymentInstrument);
+
+      return createPayment$.pipe(
+        concatMap(pi => [
+          new basketActions.SetBasketPayment({ id: pi.id }),
           new basketActions.CreateBasketPaymentSuccess(),
         ]),
         mapErrorToAction(basketActions.CreateBasketPaymentFail)
-      )
-    )
+      );
+    })
   );
 
   /**

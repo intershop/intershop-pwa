@@ -31,8 +31,12 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.checkoutFacade.setBasketPayment(paymentName);
   }
 
+  createUserPaymentInstrument(instrument: PaymentInstrument) {
+    this.checkoutFacade.createBasketPayment(instrument, true);
+  }
+
   createBasketPaymentInstrument(instrument: PaymentInstrument) {
-    this.checkoutFacade.createBasketPayment(instrument);
+    this.checkoutFacade.createBasketPayment(instrument, false);
   }
 
   deletePaymentInstrument(instrumentId: string) {
