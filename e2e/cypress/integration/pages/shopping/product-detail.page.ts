@@ -80,7 +80,7 @@ export class ProductDetailPage {
 
   changeVariationWithSelect(id: string, value: string) {
     // tslint:disable-next-line:ban
-    cy.get('#' + id).select(value);
+    cy.get(`[data-testing-id="${id}"]`).select(value);
   }
 
   gotoMasterProduct() {
