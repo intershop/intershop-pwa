@@ -3,6 +3,7 @@
  */
 export interface PaymentInstrument {
   id: string;
+  urn?: string;
   accountIdentifier?: string;
   parameters?: {
     name: string;

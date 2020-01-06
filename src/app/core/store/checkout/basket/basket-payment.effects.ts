@@ -9,7 +9,7 @@ import { getLoggedInCustomer } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
-import { getCurrentBasketId } from './basket.selectors';
+import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
@@ -117,10 +117,10 @@ export class BasketPaymentEffects {
   @Effect()
   deleteBasketPaymentInstrument$ = this.actions$.pipe(
     ofType<basketActions.DeleteBasketPayment>(basketActions.BasketActionTypes.DeleteBasketPayment),
-    mapToPayloadProperty('id'),
-    withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
-    concatMap(([paymentInstrumentId, basketid]) =>
-      this.paymentService.deleteBasketPaymentInstrument(basketid, paymentInstrumentId).pipe(
+    mapToPayloadProperty('paymentInstrument'),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([paymentInstrument, basket]) =>
+      this.paymentService.deleteBasketPaymentInstrument(basket, paymentInstrument).pipe(
         mapTo(new basketActions.DeleteBasketPaymentSuccess()),
         mapErrorToAction(basketActions.DeleteBasketPaymentFail)
       )

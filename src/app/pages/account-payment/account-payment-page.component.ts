@@ -22,4 +22,8 @@ export class AccountPaymentPageComponent implements OnInit {
     this.error$ = this.accountFacade.userError$;
     this.loading$ = this.accountFacade.userLoading$;
   }
+
+  deletePaymentInstrument(instrumentId: string) {
+    this.accountFacade.deletePayment(instrumentId);
+  }
 }

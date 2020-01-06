@@ -62,6 +62,7 @@ describe('User Effects', () => {
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
+    when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -565,6 +566,52 @@ describe('User Effects', () => {
     });
   });
 
+  describe('deleteUserPayment$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+
+    it('should call the api service when DeleteUserPayment event is called', done => {
+      const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
+      actions$ = of(action);
+      effects.deleteUserPayment$.subscribe(() => {
+        verify(paymentServiceMock.deleteUserPaymentInstrument(customer.customerNo, 'paymentInstrumentId')).once();
+        done();
+      });
+    });
+
+    it('should dispatch a DeleteUserPaymentSuccess action on successful', () => {
+      const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
+      const completion1 = new ua.DeleteUserPaymentSuccess();
+      const completion2 = new ua.LoadUserPaymentMethods();
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.deleteUserPayment$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a DeleteUserPaymentFail action on failed', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+
+      when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
+
+      const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
+      const completion = new ua.DeleteUserPaymentFail({
+        error: HttpErrorMapper.fromError(error),
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.deleteUserPayment$).toBeObservable(expected$);
+    });
+  });
   describe('requestPasswordReminder$', () => {
     const data: PasswordReminder = {
       email: 'patricia@test.intershop.de',

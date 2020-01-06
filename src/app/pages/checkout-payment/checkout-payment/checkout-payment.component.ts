@@ -48,7 +48,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() updatePaymentMethod = new EventEmitter<string>();
   @Output() createBasketPaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() createUserPaymentInstrument = new EventEmitter<PaymentInstrument>();
-  @Output() deletePaymentInstrument = new EventEmitter<string>();
+  @Output() deletePaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() nextStep = new EventEmitter<void>();
 
   paymentForm: FormGroup;
@@ -74,6 +74,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.paymentForm = new FormGroup({
       name: new FormControl(this.getBasketPayment()),
+      saveForLater: new FormControl(true),
       parameters: new FormGroup({}),
     });
 
@@ -187,7 +188,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
       parameters,
     };
 
-    if (paymentMethod.saveAllowed) {
+    if (paymentMethod.saveAllowed && this.paymentForm.get('saveForLater').value) {
       this.createUserPaymentInstrument.emit(paymentInstrument);
     } else {
       this.createBasketPaymentInstrument.emit(paymentInstrument);
@@ -219,9 +220,9 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * deletes a basket instrument and related payment
    */
-  deleteBasketPayment(paymentInstrumentId: string) {
-    if (paymentInstrumentId) {
-      this.deletePaymentInstrument.emit(paymentInstrumentId);
+  deleteBasketPayment(paymentInstrument: PaymentInstrument) {
+    if (paymentInstrument) {
+      this.deletePaymentInstrument.emit(paymentInstrument);
     }
   }
 

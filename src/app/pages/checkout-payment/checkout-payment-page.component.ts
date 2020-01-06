@@ -39,8 +39,8 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.checkoutFacade.createBasketPayment(instrument, false);
   }
 
-  deletePaymentInstrument(instrumentId: string) {
-    this.checkoutFacade.deleteBasketPayment(instrumentId);
+  deletePaymentInstrument(instrument: PaymentInstrument) {
+    this.checkoutFacade.deleteBasketPayment(instrument);
   }
 
   /**

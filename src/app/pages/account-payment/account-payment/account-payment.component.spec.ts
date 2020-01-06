@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -16,7 +17,7 @@ describe('Account Payment Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [AccountPaymentComponent, MockComponent(ErrorMessageComponent)],
+      declarations: [AccountPaymentComponent, MockComponent(ErrorMessageComponent), MockComponent(FaIconComponent)],
     }).compileComponents();
   }));
 
@@ -72,6 +73,20 @@ describe('Account Payment Component', () => {
       component.error = { status: 404 } as HttpError;
       fixture.detectChanges();
       expect(element.querySelector('ish-error-message')).toBeTruthy();
+    });
+  });
+
+  describe('delete payment instrument', () => {
+    it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {
+      const id = 'paymentInstrumentId';
+
+      fixture.detectChanges();
+
+      component.deletePaymentInstrument.subscribe(paymentInstrumentId => {
+        expect(paymentInstrumentId).toEqual(id);
+        done();
+      });
+      component.deleteUserPayment(id);
     });
   });
 });

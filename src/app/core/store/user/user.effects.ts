@@ -7,6 +7,7 @@ import { EMPTY, Observable, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
+  concatMapTo,
   debounce,
   debounceTime,
   delay,
@@ -267,6 +268,20 @@ export class UserEffects {
       this.paymentService.getUserPaymentMethods(customer).pipe(
         map(result => new userActions.LoadUserPaymentMethodsSuccess({ paymentMethods: result })),
         mapErrorToAction(userActions.LoadUserPaymentMethodsFail)
+      )
+    )
+  );
+
+  @Effect()
+  deleteUserPayment$ = this.actions$.pipe(
+    ofType<userActions.DeleteUserPayment>(userActions.UserActionTypes.DeleteUserPayment),
+    mapToPayloadProperty('id'),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, customer]) => !!customer),
+    concatMap(([id, customer]) =>
+      this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
+        concatMapTo([new userActions.DeleteUserPaymentSuccess(), new userActions.LoadUserPaymentMethods()]),
+        mapErrorToAction(userActions.DeleteUserPaymentFail)
       )
     )
   );

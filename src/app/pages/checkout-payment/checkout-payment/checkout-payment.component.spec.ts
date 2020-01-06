@@ -19,6 +19,7 @@ import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/baske
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
@@ -43,6 +44,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
+        MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
@@ -242,15 +244,27 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {
-      const id = 'paymentInstrumentId';
-
+      const paymentInstrument = {
+        id: '4321',
+        paymentMethod: 'ISH_DirectDebit',
+        parameters: [
+          {
+            name: 'accountHolder',
+            value: 'Patricia Miller',
+          },
+          {
+            name: 'IBAN',
+            value: 'DE430859340859340',
+          },
+        ],
+      };
       fixture.detectChanges();
 
-      component.deletePaymentInstrument.subscribe(paymentInstrumentId => {
-        expect(paymentInstrumentId).toEqual(id);
+      component.deletePaymentInstrument.subscribe(instrument => {
+        expect(instrument.id).toEqual(paymentInstrument.id);
         done();
       });
-      component.deleteBasketPayment(id);
+      component.deleteBasketPayment(paymentInstrument);
     });
   });
 });

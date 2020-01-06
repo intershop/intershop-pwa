@@ -90,7 +90,7 @@
                 <label class="form-check-label " [for]="'paymentOption_' + paymentInstrument.id">
                   {{ paymentInstrument.accountIdentifier }}
                 </label>
-                <a class="float-right" (click)="deleteBasketPayment(paymentInstrument.id)">{{
+                <a class="float-right" (click)="deleteBasketPayment(paymentInstrument)">{{
                   'checkout.payment.method.delete.link' | translate
                 }}</a>
               </div>
@@ -114,6 +114,9 @@
                   [fields]="paymentMethod.parameters"
                 >
                   <div class="offset-md-4 col-md-8">
+                    <ng-container *ngIf="paymentMethod.saveAllowed">
+                      <ng-container *ngTemplateOutlet="saveForLaterTemplate"></ng-container>
+                    </ng-container>
                     <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
                       {{ 'checkout.account.submit.button.label' | translate }}
                     </button>
@@ -135,6 +138,11 @@
           </div>
         </ng-container>
       </ul>
+      <!-- saveForLater checkbox - outlet template -->
+      <ng-template #saveForLaterTemplate>
+        <ish-checkbox [form]="paymentForm" controlName="saveForLater" label="checkout.save_edit.checkbox.label">
+        </ish-checkbox>
+      </ng-template>
     </form>
   </div>
   <!-- basket summary -->

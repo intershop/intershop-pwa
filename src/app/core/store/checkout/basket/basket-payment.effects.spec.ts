@@ -398,34 +398,48 @@ describe('Basket Payment Effects', () => {
   });
 
   describe('deleteBasketPaymentInstrument$', () => {
+    const paymentInstrument = {
+      id: '12345',
+      paymentMethod: 'ISH_DirectDebit',
+      parameters_: [
+        {
+          name: 'accountHolder',
+          value: 'Patricia Miller',
+        },
+        {
+          name: 'IBAN',
+          value: 'DE430859340859340',
+        },
+      ],
+    };
+
+    const basket = {
+      id: 'BID',
+      lineItems: [],
+      payment: undefined,
+    } as Basket;
     beforeEach(() => {
-      when(paymentServiceMock.deleteBasketPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
+      when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
-          basket: {
-            id: 'BID',
-            lineItems: [],
-            payment: undefined,
-          } as Basket,
+          basket,
         })
       );
     });
 
     it('should call the paymentService for deleteBasketPayment', done => {
-      const id = 'paymentInstrumentId';
-      const action = new basketActions.DeleteBasketPayment({ id });
+      const action = new basketActions.DeleteBasketPayment({ paymentInstrument });
       actions$ = of(action);
 
       effects.deleteBasketPaymentInstrument$.subscribe(() => {
-        verify(paymentServiceMock.deleteBasketPaymentInstrument('BID', id)).once();
+        verify(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).once();
         done();
       });
     });
 
     it('should map to action of type DeleteBasketPaymentSuccess', () => {
-      const id = 'paymentInstrumentId';
-      const action = new basketActions.DeleteBasketPayment({ id });
+      const action = new basketActions.DeleteBasketPayment({ paymentInstrument });
       const completion = new basketActions.DeleteBasketPaymentSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -434,10 +448,10 @@ describe('Basket Payment Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketPaymentFail', () => {
-      when(paymentServiceMock.deleteBasketPaymentInstrument(anyString(), anyString())).thenReturn(
+      when(paymentServiceMock.deleteBasketPaymentInstrument(anything(), anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
-      const action = new basketActions.DeleteBasketPayment({ id: 'newPayment' });
+      const action = new basketActions.DeleteBasketPayment({ paymentInstrument });
       const completion = new basketActions.DeleteBasketPaymentFail({ error: { message: 'invalid' } as HttpError });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

@@ -35,6 +35,9 @@ export enum UserActionTypes {
   LoadUserPaymentMethods = '[Account] Load User Payment Methods',
   LoadUserPaymentMethodsFail = '[Account API] Load User Payment Methods Fail',
   LoadUserPaymentMethodsSuccess = '[Account API] Load User Payment Methods Success',
+  DeleteUserPayment = '[Account] Delete User Payment ',
+  DeleteUserPaymentFail = '[Account API] Delete User Payment Fail',
+  DeleteUserPaymentSuccess = '[Account API] Delete User Payment Success',
   RequestPasswordReminder = '[Password Reminder] Request Password Reminder',
   RequestPasswordReminderFail = '[Password Reminder API] Request Password Reminder Fail',
   RequestPasswordReminderSuccess = '[Password Reminder API] Request Password Reminder Success',
@@ -173,6 +176,20 @@ export class LoadUserPaymentMethodsSuccess implements Action {
   constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
 }
 
+export class DeleteUserPayment implements Action {
+  readonly type = UserActionTypes.DeleteUserPayment;
+  constructor(public payload: { id: string }) {}
+}
+
+export class DeleteUserPaymentFail implements Action {
+  readonly type = UserActionTypes.DeleteUserPaymentFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class DeleteUserPaymentSuccess implements Action {
+  readonly type = UserActionTypes.DeleteUserPaymentSuccess;
+}
+
 export class RequestPasswordReminder implements Action {
   readonly type = UserActionTypes.RequestPasswordReminder;
   constructor(public payload: { data: PasswordReminder }) {}
@@ -204,7 +221,6 @@ export class UpdateUserPasswordByPasswordReminderFail implements Action {
   readonly type = UserActionTypes.UpdateUserPasswordByPasswordReminderFail;
   constructor(public payload: { error: HttpError }) {}
 }
-
 export type UserAction =
   | LoginUser
   | LoginUserFail
@@ -233,6 +249,9 @@ export type UserAction =
   | LoadUserPaymentMethods
   | LoadUserPaymentMethodsFail
   | LoadUserPaymentMethodsSuccess
+  | DeleteUserPayment
+  | DeleteUserPaymentFail
+  | DeleteUserPaymentSuccess
   | RequestPasswordReminder
   | RequestPasswordReminderSuccess
   | RequestPasswordReminderFail

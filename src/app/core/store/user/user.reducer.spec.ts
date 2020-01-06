@@ -6,6 +6,9 @@ import { User } from 'ish-core/models/user/user.model';
 
 import {
   CreateUserFail,
+  DeleteUserPayment,
+  DeleteUserPaymentFail,
+  DeleteUserPaymentSuccess,
   LoadCompanyUserFail,
   LoadCompanyUserSuccess,
   LoadUserPaymentMethods,
@@ -282,6 +285,37 @@ describe('User Reducer for loading payment methods', () => {
     it('should set error when reduced', () => {
       const error = { message: 'invalid' } as HttpError;
       const action = new LoadUserPaymentMethodsFail({ error });
+      const response = userReducer(initialState, action);
+
+      expect(response.error).toMatchObject(error);
+      expect(response.loading).toBeFalse();
+    });
+  });
+});
+
+describe('User Reducer for deleting payments', () => {
+  describe('DeleteUserPayment action', () => {
+    it('should set loading when reduced', () => {
+      const action = new DeleteUserPayment({ id: 'paymentInstrumentId' });
+      const response = userReducer(initialState, action);
+
+      expect(response.loading).toBeTrue();
+    });
+  });
+
+  describe('DeleteUserPaymentSuccess action', () => {
+    it('should set loading to false when reduced', () => {
+      const action = new DeleteUserPaymentSuccess();
+      const response = userReducer(initialState, action);
+
+      expect(response.loading).toBeFalse();
+    });
+  });
+
+  describe('DeleteUserPaymentFail action', () => {
+    it('should set error when reduced', () => {
+      const error = { message: 'invalid' } as HttpError;
+      const action = new DeleteUserPaymentFail({ error });
       const response = userReducer(initialState, action);
 
       expect(response.error).toMatchObject(error);

@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
@@ -20,7 +21,7 @@ import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/
 import { getCurrentLocale } from 'ish-core/store/locale';
 
 /**
- * The Basket Service handles the interaction with the 'baskets' REST API.
+ * The Payment Service handles the interaction with the 'baskets' and 'users' REST API concerning payment functionality.
  */
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
@@ -191,19 +192,50 @@ export class PaymentService {
   }
 
   /**
-   * Deletes a payment instrument and the related payment from the selected basket.
-   * @param basketId          The basket id.
-   * @param paymentId         The (uu)id of the payment instrument
+   * Deletes a (basket/user) payment instrument.
+   * If the payment instrument is used at basket the related payment is also deleted from the selected basket.
+   * @param basket            The basket.
+   * @param paymentInstrument The payment instrument, that is to be deleted
    */
-  deleteBasketPaymentInstrument(basketId: string, paymentInstrumentId: string): Observable<void> {
-    if (!basketId) {
-      return throwError('deleteBasketPayment() called without basketId');
+  deleteBasketPaymentInstrument(basket: Basket, paymentInstrument: PaymentInstrument): Observable<void> {
+    if (!basket) {
+      return throwError('deleteBasketPayment() called without basket');
     }
-    if (!paymentInstrumentId) {
-      return throwError('deleteBasketPayment() called without paymentInstrumentId');
+    if (!paymentInstrument) {
+      return throwError('deleteBasketPayment() called without paymentInstrument');
     }
 
-    return this.apiService.delete(`baskets/${basketId}/payment-instruments/${paymentInstrumentId}`, {
+    const deletePayment =
+      basket.payment &&
+      basket.payment.paymentInstrument &&
+      basket.payment.paymentInstrument.id === paymentInstrument.id;
+
+    // user payment instrument
+    if (paymentInstrument.urn && paymentInstrument.urn.includes('user')) {
+      return this.deleteUserPaymentInstrument('-', paymentInstrument.id).pipe(
+        concatMap(() => (deletePayment ? this.deleteBasketPayment(basket) : of(undefined)))
+      );
+    }
+
+    // basket payment instrument, payment will be deleted automatically, if necessary
+    return this.apiService.delete(`baskets/${basket.id}/payment-instruments/${paymentInstrument.id}`, {
+      headers: this.basketHeaders,
+    });
+  }
+
+  /**
+   * Deletes the basket payment.
+   * @param basket          The basket.
+   */
+  deleteBasketPayment(basket: Basket): Observable<void> {
+    if (!basket) {
+      return throwError('deleteBasketPayment() called without basket');
+    }
+    if (!basket.payment) {
+      return of();
+    }
+
+    return this.apiService.delete(`baskets/${basket.id}/payments/${basket.payment.id}`, {
       headers: this.basketHeaders,
     });
   }
@@ -262,5 +294,21 @@ export class PaymentService {
     return this.apiService
       .post(`customers/${customerNo}/payments`, body)
       .pipe(resolveLink<PaymentInstrument>(this.apiService));
+  }
+
+  /**
+   * Deletes a payment instrument and the related payment from the given user.
+   * @param customerNo            The customer number.
+   * @param paymentInstrumentId   The (uu)id of the payment instrument.
+   */
+  deleteUserPaymentInstrument(customerNo: string, paymentInstrumentId: string): Observable<void> {
+    if (!customerNo) {
+      return throwError('deleteUserPayment() called without customerNo');
+    }
+    if (!paymentInstrumentId) {
+      return throwError('deleteUserPayment() called without paymentInstrumentId');
+    }
+
+    return this.apiService.delete(`customers/${customerNo}/payments/${paymentInstrumentId}`);
   }
 }

@@ -64,7 +64,7 @@ export enum BasketActionTypes {
   UpdateBasketPayment = '[Basket] Update a Basket Payment with Redirect Data',
   UpdateBasketPaymentFail = '[Basket API] Update a Basket Payment Fail',
   UpdateBasketPaymentSuccess = '[Basket API] Update a Basket Payment Success',
-  DeleteBasketPayment = '[Basket] Delete Basket Payment ',
+  DeleteBasketPayment = '[Basket] Delete Basket Payment',
   DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
   DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
@@ -320,7 +320,7 @@ export class UpdateBasketPaymentSuccess implements Action {
 
 export class DeleteBasketPayment implements Action {
   readonly type = BasketActionTypes.DeleteBasketPayment;
-  constructor(public payload: { id: string }) {}
+  constructor(public payload: { paymentInstrument: PaymentInstrument }) {}
 }
 
 export class DeleteBasketPaymentFail implements Action {
