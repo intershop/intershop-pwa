@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -20,6 +21,7 @@ export class ProductVariationSelectComponent implements OnChanges, OnDestroy {
 
   form: FormGroup;
   advancedVariationHandling: boolean;
+  uuid = UUID.UUID();
 
   private destroy$ = new Subject();
 

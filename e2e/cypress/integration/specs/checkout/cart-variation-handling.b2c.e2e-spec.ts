@@ -8,7 +8,7 @@ const _ = {
   productSkuTarget: '201807231-02',
   selections: [
     {
-      attr: '#Attr_harddrivesize',
+      attr: '[data-testing-id="Attr_harddrivesize"]',
       value: '512GB',
     },
   ],

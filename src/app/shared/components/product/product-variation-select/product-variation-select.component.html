@@ -19,8 +19,13 @@
   <form *ngIf="form" [formGroup]="form" class="product-variation-container">
     <div *ngFor="let group of variationOptions" class="product-variation">
       <div class="form-group">
-        <label [for]="group.id" class="col-form-label">{{ group.label }}</label>
-        <select class="form-control" [id]="group.id" [formControlName]="group.id" [attr.data-testing-id]="group.id">
+        <label [for]="uuid + '__' + group.id" class="col-form-label">{{ group.label }}</label>
+        <select
+          class="form-control"
+          [id]="uuid + '__' + group.id"
+          [formControlName]="group.id"
+          [attr.data-testing-id]="group.id"
+        >
           <option *ngFor="let option of group.options" [value]="option.value">
             {{ option.label }}
             <ng-container *ngIf="option.alternativeCombination">
