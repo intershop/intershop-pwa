@@ -327,7 +327,7 @@
         },
         {
           "starImport": true,
-          "from": "(\\.\\.|ish).*",
+          "from": "^(\\.\\.|ish).*",
           "filePattern": ".*src/app.*",
           "message": "use star imports only for aggregation of deeper lying imports"
         },

@@ -1,0 +1,72 @@
+<ng-container *ngIf="product$ | async as product">
+  <div class="d-flex">
+    <div class="col-sm-2 col-3 list-item">
+      <a [routerLink]="product | ishProductRoute">
+        <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+      </a>
+    </div>
+    <div class="col-sm-10 col-9 list-item column-price">
+      <div class="row">
+        <div class="col-sm-6 text-left">
+          <div class="pli-description">
+            <a [routerLink]="product | ishProductRoute" class="product-title" data-testing-id="wishlist-product-link">
+              {{ product.name }}
+            </a>
+            <ish-product-id [product]="product"></ish-product-id>
+            <ish-product-variation-display [product]="product"></ish-product-variation-display>
+            <ish-product-bundle-display
+              *ngIf="product.type === 'Bundle'"
+              [productBundleSKU]="product.sku"
+            ></ish-product-bundle-display>
+            <p class="hidden-xs">
+              <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
+              {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
+            </p>
+            <p>
+              <a class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-wishlist">
+                <fa-icon
+                  [icon]="['fas', 'arrows-alt']"
+                  [title]="'account.wishlist.table.options.move_to_another_wishlist' | translate"
+                ></fa-icon>
+              </a>
+              <a class="btn-tool" (click)="removeProductFromWishlist(product?.sku)" data-testing-id="delete-wishlist">
+                <fa-icon
+                  [icon]="['fas', 'trash-alt']"
+                  [title]="'account.wishlist.table.options.remove' | translate"
+                ></fa-icon>
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <ish-product-price [product]="product"></ish-product-price>
+          <p *ngIf="product.inStock; else noInStock">{{ 'account.wishlist.table.in_stock' | translate }}</p>
+          <ng-template #noInStock>
+            <p>{{ 'account.wishlist.table.not_accessible' | translate }}</p>
+          </ng-template>
+          <form [formGroup]="addToCartForm">
+            <ish-input
+              [form]="addToCartForm"
+              controlName="quantity"
+              label="account.wishlist.table.options.add_to_cart_quantity_label"
+              labelClass="col-6 col-form-label"
+              inputClass="col-6"
+              type="number"
+            ></ish-input>
+            <ish-product-add-to-basket
+              [product]="product"
+              (productToBasket)="addToCart(product.sku)"
+            ></ish-product-add-to-basket>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ish-select-wishlist-modal
+    #moveDialog
+    addMoveProduct="move"
+    [product]="product"
+    (submitEmitter)="moveItemToOtherWishlist(product.sku, $event)"
+  ></ish-select-wishlist-modal>
+</ng-container>

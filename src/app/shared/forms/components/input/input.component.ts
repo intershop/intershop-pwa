@@ -18,6 +18,8 @@ export class InputComponent extends FormElementComponent implements OnInit {
   @Input() max?: number;
 
   @Input() placeholder = '';
+  /** set the input field disabled when it is true and enabled when it is undefined */
+  @Input() disabled = undefined;
 
   calculatedAutocomplete: string;
 

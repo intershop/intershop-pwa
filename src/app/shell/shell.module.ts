@@ -13,6 +13,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { FooterComponent } from './footer/footer/footer.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
@@ -55,6 +56,7 @@ const exportedComponents = [
     }),
     RouterModule,
     TranslateModule,
+    WishlistsExportsModule,
   ],
   declarations: [
     ...exportedComponents,

@@ -19,6 +19,12 @@ export class AccountNavigationComponent implements OnInit, OnChanges {
   navigationItems: { link: string; localizationKey: string; dataTestingId?: string; feature?: string }[] = [
     { link: '/account', localizationKey: 'account.my_account.link' },
     { link: '/account/orders', localizationKey: 'account.order_history.link' },
+    {
+      link: '/account/wishlists',
+      localizationKey: 'account.wishlists.link',
+      feature: 'wishlists',
+      dataTestingId: 'wishlists-link',
+    },
     { link: '/account/payment', localizationKey: 'account.payment.link' },
     { link: '/account/addresses', localizationKey: 'account.saved_addresses.link', dataTestingId: 'addresses-link' },
     { link: '/account/profile', localizationKey: 'account.profile.link' },

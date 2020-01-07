@@ -153,6 +153,8 @@
     .add-to-cart,
     .add-to-wishlist,
     .add-to-compare {
+      margin-right: 0;
+
       &.is-selected {
         color: $text-muted;
       }

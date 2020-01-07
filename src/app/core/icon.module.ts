@@ -6,11 +6,13 @@ import {
   faAngleDown,
   faAngleRight,
   faAngleUp,
+  faArrowsAlt,
   faBars,
   faCheck,
   faCog,
   faColumns,
   faGlobeAmericas,
+  faHeart,
   faHome,
   faInbox,
   faInfoCircle,
@@ -48,6 +50,7 @@ export class IconModule {
       faAngleDown,
       faAngleRight,
       faAngleUp,
+      faArrowsAlt,
       faBars,
       faCheck,
       faCog,
@@ -75,7 +78,8 @@ export class IconModule {
       faTrashAlt,
       faUser,
       faStar,
-      faStarHalf
+      faStarHalf,
+      faHeart
     );
   }
 }
