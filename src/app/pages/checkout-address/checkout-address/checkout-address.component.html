@@ -45,11 +45,11 @@
       </button>
     </div>
     <!-- Privacy policy link -->
-    <ish-modal-dialog-link
-      linkText="checkout.widget.security_privacy_policy.link"
-      [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
-    >
-      <ish-content-include includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"></ish-content-include>
-    </ish-modal-dialog-link>
+    <span
+      [ishServerHtml]="
+        'checkout.widget.security_privacy_policy.link'
+          | translate: { '0': 'route://page/systempage.privacyPolicy.pagelet2-Page' }
+      "
+    ></span>
   </div>
 </div>
