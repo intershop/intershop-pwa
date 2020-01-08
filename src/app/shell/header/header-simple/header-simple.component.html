@@ -1,19 +1,10 @@
-<div class="top-header">
-  <nav class="container">
-    <div class="row">
-      <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
-        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41" />
-      </a>
+<div class="header header-simple container">
+  <div class="mid-header">
+    <div class="logo-wrapper d-none d-md-block">
+      <a rel="home" routerLink="/home" class="logo" data-testing-id="link-home"></a>
     </div>
-  </nav>
-</div>
-
-<div class="mid-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3 logo-wrapper d-none d-md-block">
-        <a rel="home" routerLink="/home"> <img src="assets/img/logo.png" alt="Logo" /> </a>
-      </div>
+    <div class="logo-wrapper d-md-none">
+      <a rel="home" routerLink="/home" class="mobile-logo" data-testing-id="link-home"></a>
     </div>
   </div>
 </div>
