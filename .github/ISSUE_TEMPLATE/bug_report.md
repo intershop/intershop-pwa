@@ -1,7 +1,6 @@
 ---
 name: Bug report
 about: Create a bug report to help us improve.
-title: '[Bug]'
 labels: bug
 assignees: rkarl-ish
 
@@ -44,10 +43,4 @@ Steps to reproduce the behavior:
 
 **Additional Context, like Screenshots, Log File Snippets etc.**
 <!-- Add any other context about the problem here.-->
-
-
-**Will you handle the bug fix?**
-
-[ ] Yes
-[ ] No
-
+<!-- If you will handle the bug fix yourself, you can let us know here.-->

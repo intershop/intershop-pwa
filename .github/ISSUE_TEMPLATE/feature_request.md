@@ -1,7 +1,6 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: '[FR]'
 labels: enhancement
 assignees: rkarl-ish
 
@@ -21,9 +20,6 @@ assignees: rkarl-ish
 
 **Provide additional context.**
 <!-- Add any other context or screenshots about the feature request here.-->
+<!-- If you will handle the feature request yourself, you can let us know here.-->
 
 
-**Will you handle the feature request?**
-
-[ ] Yes
-[ ] No
