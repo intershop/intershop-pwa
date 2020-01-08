@@ -55,6 +55,22 @@ When **adding new functionality**, it is better to encapsulate it in **new compo
 
 When **heavily customizing** existing components it is better to **copy components** and change all references. If 20% of the component has to be changed it is already a good idea to duplicate it. That way incoming changes will not affect your customizations. Typical hot-spots where copying is a good idea are header-related or product-detail page related customizations.
 
+We are supplying a the schematic `customized-copy` for copying components and replacing all usages.
+
+```bash
+$ node schematics/customization custom
+$ ng g customized-copy shared/components/product/product-price
+CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.html (1591 bytes)
+CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.spec.ts (7632 bytes)
+CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.ts (1370 bytes)
+UPDATE src/app/shared/shared.module.ts (12676 bytes)
+UPDATE src/app/shared/components/product/product-row/product-row.component.html (4110 bytes)
+UPDATE src/app/shared/components/product/product-row/product-row.component.spec.ts (5038 bytes)
+UPDATE src/app/shared/components/product/product-tile/product-tile.component.html (2140 bytes)
+UPDATE src/app/shared/components/product/product-tile/product-tile.component.spec.ts (4223 bytes)
+...
+```
+
 ### Existing Features
 
 When you want to **disable code** provided by Intershop, it is better to **comment it out instead of deleting** it. This allows Git to merge changes more predictably since original and incoming passages are still similar to each other. Commenting out should be done in the form of block comments starting a line above and ending in an additional line below the code. Use `<!--` and `-->` for HTML and `/*` and `*/` for SCSS and TypeScript.

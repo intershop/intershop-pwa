@@ -94,29 +94,12 @@ function move(options) {
                 if (file.includes(from + '/')) {
                     renames.push([file, replacePath(file)]);
                     if (fromName !== toName && file.endsWith('.component.ts')) {
-                        const updater = host.beginUpdate(file);
-                        tsquery_1.tsquery(filesystem_1.readIntoSourceFile(host, file), 'Decorator Identifier[name=Component]')
-                            .map(x => x.parent)
-                            .forEach(componentDecorator => {
-                            tsquery_1.tsquery(componentDecorator, 'PropertyAssignment')
-                                .map((pa) => pa.initializer)
-                                .forEach(x => {
-                                updater.remove(x.pos, x.end - x.pos).insertLeft(x.pos, x.getFullText().replace(fromName, toName));
-                            });
-                        });
-                        host.commitUpdate(updater);
+                        updateComponentDecorator(host, file, fromName, toName);
                     }
                 }
                 if (file.endsWith('.ts')) {
                     if (fromClassName !== toClassName) {
-                        const identifiers = tsquery_1.tsquery(filesystem_1.readIntoSourceFile(host, file), `Identifier[name=${fromClassName}]`);
-                        if (identifiers.length) {
-                            const updater = host.beginUpdate(file);
-                            identifiers.forEach(x => updater
-                                .remove(x.pos, x.end - x.pos)
-                                .insertLeft(x.pos, x.getFullText().replace(fromClassName, toClassName)));
-                            host.commitUpdate(updater);
-                        }
+                        updateComponentClassName(host, file, fromClassName, toClassName);
                     }
                     const imports = tsquery_1.tsquery(filesystem_1.readIntoSourceFile(host, file), file.includes(fromName) ? `ImportDeclaration` : `ImportDeclaration[text=/.*${fromName}.*/]`).filter((x) => file.includes(fromName) || x.getText().includes(`/${fromName}/`));
                     if (imports.length) {
@@ -139,11 +122,7 @@ function move(options) {
                     }
                 }
                 else if (fromName !== toName && file.endsWith('.html')) {
-                    const content = host.read(file).toString();
-                    const replacement = content.replace(new RegExp(`(?!.*${fromName}[a-z-]+.*)ish-${fromName}`, 'g'), 'ish-' + toName);
-                    if (content !== replacement) {
-                        host.overwrite(file, replacement);
-                    }
+                    updateComponentSelector(host, file, fromName, toName);
                 }
             }
         });
@@ -154,3 +133,34 @@ function move(options) {
     };
 }
 exports.move = move;
+function updateComponentSelector(host, file, fromName, toName, includePrefix = true) {
+    const content = host.read(file).toString();
+    const replacement = content.replace(new RegExp(`(?!.*${fromName}[a-z-]+.*)ish-${fromName}`, 'g'), (includePrefix ? 'ish-' : '') + toName);
+    if (content !== replacement) {
+        host.overwrite(file, replacement);
+    }
+}
+exports.updateComponentSelector = updateComponentSelector;
+function updateComponentClassName(host, file, fromClassName, toClassName) {
+    const identifiers = tsquery_1.tsquery(filesystem_1.readIntoSourceFile(host, file), `Identifier[name=${fromClassName}]`);
+    if (identifiers.length) {
+        const updater = host.beginUpdate(file);
+        identifiers.forEach(x => updater.remove(x.pos, x.end - x.pos).insertLeft(x.pos, x.getFullText().replace(fromClassName, toClassName)));
+        host.commitUpdate(updater);
+    }
+}
+exports.updateComponentClassName = updateComponentClassName;
+function updateComponentDecorator(host, file, fromName, toName) {
+    const updater = host.beginUpdate(file);
+    tsquery_1.tsquery(filesystem_1.readIntoSourceFile(host, file), 'Decorator Identifier[name=Component]')
+        .map(x => x.parent)
+        .forEach(componentDecorator => {
+        tsquery_1.tsquery(componentDecorator, 'PropertyAssignment')
+            .map((pa) => pa.initializer)
+            .forEach(x => {
+            updater.remove(x.pos, x.end - x.pos).insertLeft(x.pos, x.getFullText().replace(fromName, toName));
+        });
+    });
+    host.commitUpdate(updater);
+}
+exports.updateComponentDecorator = updateComponentDecorator;
