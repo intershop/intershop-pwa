@@ -32,8 +32,8 @@ describe('Home Page Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <ish-content-include
-        includeid="pwa.include.homepage.pagelet2-Include"
-        ng-reflect-include-id="pwa.include.homepage.pagelet2-"
+        includeid="include.homepage.content.pagelet2-Include"
+        ng-reflect-include-id="include.homepage.content.pagel"
       ></ish-content-include>
     `);
   });
