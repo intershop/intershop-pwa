@@ -12,7 +12,11 @@
 </ng-container>
 
 <ng-template #imageEnhanced>
-  <div (deferLoad)="showImage = true" class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
+  <div
+    (deferLoad)="showImage = true"
+    class="enhanced-image-container defer-load"
+    [ngClass]="pagelet.stringParam('CSSClass')"
+  >
     <picture *ngIf="showImage" class="enhanced-image">
       <source
         *ngIf="pagelet.hasParam('ImageXS')"

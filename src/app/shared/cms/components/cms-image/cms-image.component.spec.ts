@@ -44,7 +44,7 @@ describe('Cms Image Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a class="teaser-link" href="http://example.com" title="bar"
-        ><div>
+        ><div class="defer-load">
           <img
             class="foo"
             ng-reflect-ng-class="foo"
