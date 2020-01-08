@@ -1,15 +1,15 @@
 import { strings } from '@angular-devkit/core';
 
-export function buildSelector(artifact: string, options: { name?: string; prefix?: string }, projectPrefix: string) {
-  let selector = strings.dasherize(options.name);
-  if (options.prefix) {
-    selector = `${options.prefix}-${selector}`;
-  } else if (options.prefix === undefined && projectPrefix) {
-    selector = `${projectPrefix}-${selector}`;
+export function buildSelector(options: { name?: string; prefix?: string }, projectPrefix: string) {
+  const selector = strings.dasherize(options.name);
+  if (options.prefix === '') {
+    return selector;
   }
 
-  if (artifact === 'container') {
-    selector += '-container';
+  const prefix = options.prefix || projectPrefix;
+
+  if (!selector.startsWith(`${prefix}-`)) {
+    return `${prefix}-${selector}`;
   }
 
   return selector;

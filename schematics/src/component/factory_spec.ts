@@ -248,6 +248,13 @@ describe('Component Schematic', () => {
     expect(content).toMatch(/selector: 'ish-test'/);
   });
 
+  it('should create include selector prefix in name but not duplicate in selector if requested', async () => {
+    const options = { ...defaultOptions, name: 'sub/ish-test' };
+    appTree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
+    const content = appTree.readContent('/projects/bar/src/app/sub/ish-test/ish-test.component.ts');
+    expect(content).toMatch(/selector: 'ish-test'/);
+  });
+
   it('should respect the sourceRoot value', async () => {
     const config = JSON.parse(appTree.readContent('/angular.json'));
     config.projects.bar.sourceRoot = 'projects/bar/custom';

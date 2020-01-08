@@ -12,7 +12,7 @@ function createComponent(options) {
         // tslint:disable:no-parameter-reassignment
         options = common_1.applyNameAndPath('component', host, options);
         options = common_1.determineArtifactName('component', host, options);
-        options = common_1.generateSelector('component', host, options);
+        options = common_1.generateSelector(host, options);
         options = common_1.findDeclaringModule(host, options);
         const operations = [];
         if (!options.skipImport) {

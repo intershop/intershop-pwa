@@ -25,7 +25,7 @@ export function createComponent(options: Options): Rule {
     // tslint:disable:no-parameter-reassignment
     options = applyNameAndPath('component', host, options);
     options = determineArtifactName('component', host, options);
-    options = generateSelector('component', host, options);
+    options = generateSelector(host, options);
     options = findDeclaringModule(host, options);
 
     const operations = [];
