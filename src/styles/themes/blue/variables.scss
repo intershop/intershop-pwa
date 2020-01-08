@@ -6,6 +6,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+//
+// LOGOS
+
+$logo: url('/assets/img/themes/blue/logo.png');
+$logo-width: 114px;
+$logo-height: 40px;
+$logo-mobile: url('/assets/img/themes/blue/logo_mobile.png');
+$logo-mobile-width: 41px;
+$logo-mobile-height: 41px;
+
 // General spaces
 $space-default: 15px;
 
@@ -28,7 +38,7 @@ $font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1r
 //
 //CORPORATE DESIGN COLORS
 
-$CORPORATE-PRIMARY: #00abea; // BLUE
+$CORPORATE-PRIMARY: #688dc3; // BLUE
 $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
 
 //

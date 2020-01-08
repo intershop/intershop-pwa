@@ -19,7 +19,6 @@ header {
   }
 
   .logo-wrapper {
-    max-width: 25%;
     padding-top: ($space-default * 2);
     padding-bottom: 20px;
 
@@ -165,10 +164,24 @@ header {
   }
 }
 
-.mobile-logo {
-  padding: 0 $space-default * 2 0 $space-default;
+.logo {
+  display: block;
+  width: $logo-width;
+  height: $logo-height;
+  background: $logo left no-repeat;
+  background-size: contain;
 }
 
+.mobile-logo {
+  display: block;
+  width: $logo-mobile-width;
+  height: $logo-mobile-height;
+  margin: 0 $space-default * 2 0 $space-default;
+  background: $logo-mobile left no-repeat;
+  background-size: $logo-mobile-width $logo-mobile-height;
+}
+
+header .header-simple,
 header .header-checkout {
   .header-utility {
     justify-content: flex-start;
@@ -190,7 +203,6 @@ header .header-checkout {
         height: $header-height-mobile;
         padding-top: 0;
         padding-bottom: 0;
-        padding-left: $space-default;
       }
 
       .mobile-logo {

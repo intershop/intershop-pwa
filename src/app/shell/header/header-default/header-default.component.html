@@ -63,17 +63,14 @@
       routerLink="/home"
       class="logo"
       data-testing-id="header-home-link-desktop"
-    >
-      <img src="assets/img/logo.png" alt="Logo" />
-    </a>
+    ></a>
     <a
       *ngIf="showMobileLogoLink"
       rel="home"
       routerLink="/home"
       class="mobile-logo"
       data-testing-id="header-home-link-mobile"
-      ><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"
-    /></a>
+    ></a>
   </div>
 
   <button class="navbar-toggler" type="button" (click)="toggle('navbar')">
