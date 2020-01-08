@@ -6,7 +6,7 @@
     "prebuild": "npm ci && npm run generate:schemas && npm test",
     "build": "tsc",
     "postbuild": "rimraf node_modules",
-    "test": "jest",
+    "test": "jest --ci -i",
     "generate:schemas": "node scripts/generate-schema-defs.js"
   },
   "keywords": [

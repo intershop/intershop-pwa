@@ -45,7 +45,7 @@ export function createCMSComponent(options: Options): Rule {
     if (!options.noCMSPrefixing) {
       options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
     }
-    options = generateSelector('component', host, options);
+    options = generateSelector(host, options);
     options.module = 'shared/shared.module';
     options = findDeclaringModule(host, options);
 

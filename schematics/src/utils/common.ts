@@ -126,12 +126,11 @@ export function findDeclaringModule(host: Tree, options: { name?: string }) {
 }
 
 export function generateSelector(
-  artifact: string,
   host: Tree,
   options: { project?: string; selector?: string; name?: string; prefix?: string }
 ) {
   const project = getProject(host, options.project);
-  const selector = options.selector || buildSelector(artifact, options, project.prefix);
+  const selector = options.selector || buildSelector(options, project.prefix);
   validateHtmlSelector(selector);
 
   return {

@@ -78,9 +78,9 @@ function findDeclaringModule(host, options) {
     return Object.assign({}, options, { module });
 }
 exports.findDeclaringModule = findDeclaringModule;
-function generateSelector(artifact, host, options) {
+function generateSelector(host, options) {
     const project = project_1.getProject(host, options.project);
-    const selector = options.selector || selector_1.buildSelector(artifact, options, project.prefix);
+    const selector = options.selector || selector_1.buildSelector(options, project.prefix);
     validation_1.validateHtmlSelector(selector);
     return Object.assign({}, options, { selector });
 }

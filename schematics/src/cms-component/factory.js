@@ -22,7 +22,7 @@ function createCMSComponent(options) {
         if (!options.noCMSPrefixing) {
             options.artifactName = 'CMS' + options.artifactName.replace('Cms', '');
         }
-        options = common_1.generateSelector('component', host, options);
+        options = common_1.generateSelector(host, options);
         options.module = 'shared/shared.module';
         options = common_1.findDeclaringModule(host, options);
         const operations = [];
