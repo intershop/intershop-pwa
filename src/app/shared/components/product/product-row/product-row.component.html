@@ -66,40 +66,46 @@
           (selectVariation)="variationSelected($event)"
         ></ish-product-variation-select>
 
-        <div *ngIf="!isMasterProduct(product)" class="product-list-actions-container">
-          <form [formGroup]="productItemForm" class="product-form form-horizontal row">
-            <div
-              [ngClass]="
-                configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
-              "
-            >
-              <ish-product-quantity
-                *ngIf="configuration.displayQuantity"
-                [readOnly]="configuration.readOnly"
-                [allowZeroQuantity]="configuration.allowZeroQuantity"
-                [quantityLabel]="configuration.quantityLabel"
-                [product]="product"
-                [parentForm]="productItemForm"
-                [controlName]="quantityControlName"
-              ></ish-product-quantity>
-            </div>
+        <div class="product-list-actions-container">
+          <ng-container *ngIf="!isMasterProduct(product); else masterProductAtions">
+            <form [formGroup]="productItemForm" class="product-form form-horizontal row">
+              <div
+                class="action-container"
+                [ngClass]="
+                  configuration.quantityLabel === ' ' ? 'col-6 offset-md-6 col-lg-5 offset-lg-0' : 'col-12 col-xl-7'
+                "
+              >
+                <ish-product-quantity
+                  *ngIf="configuration.displayQuantity"
+                  [readOnly]="configuration.readOnly"
+                  [allowZeroQuantity]="configuration.allowZeroQuantity"
+                  [quantityLabel]="configuration.quantityLabel"
+                  [product]="product"
+                  [parentForm]="productItemForm"
+                  [controlName]="quantityControlName"
+                ></ish-product-quantity>
+              </div>
 
-            <div
-              class="addtocart-container"
-              [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
-            >
-              <ish-product-add-to-basket
-                *ngIf="configuration.displayAddToBasket"
-                [product]="product"
-                (productToBasket)="addToBasket()"
-              ></ish-product-add-to-basket>
+              <div
+                class="action-container addtocart-container"
+                [ngClass]="configuration.quantityLabel === ' ' ? 'col-12 col-lg-7' : 'col-12 col-xl-5'"
+              >
+                <ish-product-add-to-basket
+                  *ngIf="configuration.displayAddToBasket"
+                  [product]="product"
+                  (productToBasket)="addToBasket()"
+                ></ish-product-add-to-basket>
+              </div>
+            </form>
+          </ng-container>
+
+          <ng-template #masterProductAtions>
+            <div class="action-container">
+              <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">
+                {{ 'product.choose_variation.link' | translate }}
+              </a>
             </div>
-          </form>
-        </div>
-        <div *ngIf="isMasterProduct(product)" class="addtocart-container">
-          <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">{{
-            'product.choose_variation.link' | translate
-          }}</a>
+          </ng-template>
         </div>
       </div>
     </div>

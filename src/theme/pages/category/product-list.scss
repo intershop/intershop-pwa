@@ -61,8 +61,7 @@
     }
 
     .product-list-actions-container {
-      * ~ *,
-      label {
+      .action-container {
         margin-top: $space-default/2;
       }
 
