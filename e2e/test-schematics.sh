@@ -74,6 +74,14 @@ stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
 
+
+node schematics/customization custom
+npx ng g customized-copy shell/footer/footer
+
+stat src/app/shell/footer/custom-footer/custom-footer.component.ts
+grep 'custom-footer' src/app/app.component.html
+
+
 git add -A
 npx lint-staged
 npx tsc --project tsconfig.spec.json

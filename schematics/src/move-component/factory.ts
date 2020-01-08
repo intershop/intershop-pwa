@@ -115,31 +115,12 @@ export function move(options: Options): Rule {
           renames.push([file, replacePath(file)]);
 
           if (fromName !== toName && file.endsWith('.component.ts')) {
-            const updater = host.beginUpdate(file);
-            tsquery(readIntoSourceFile(host, file), 'Decorator Identifier[name=Component]')
-              .map(x => x.parent)
-              .forEach(componentDecorator => {
-                tsquery(componentDecorator, 'PropertyAssignment')
-                  .map((pa: ts.PropertyAssignment) => pa.initializer)
-                  .forEach(x => {
-                    updater.remove(x.pos, x.end - x.pos).insertLeft(x.pos, x.getFullText().replace(fromName, toName));
-                  });
-              });
-            host.commitUpdate(updater);
+            updateComponentDecorator(host, file, fromName, toName);
           }
         }
         if (file.endsWith('.ts')) {
           if (fromClassName !== toClassName) {
-            const identifiers = tsquery(readIntoSourceFile(host, file), `Identifier[name=${fromClassName}]`);
-            if (identifiers.length) {
-              const updater = host.beginUpdate(file);
-              identifiers.forEach(x =>
-                updater
-                  .remove(x.pos, x.end - x.pos)
-                  .insertLeft(x.pos, x.getFullText().replace(fromClassName, toClassName))
-              );
-              host.commitUpdate(updater);
-            }
+            updateComponentClassName(host, file, fromClassName, toClassName);
           }
 
           const imports = tsquery(
@@ -165,14 +146,7 @@ export function move(options: Options): Rule {
             }
           }
         } else if (fromName !== toName && file.endsWith('.html')) {
-          const content = host.read(file).toString();
-          const replacement = content.replace(
-            new RegExp(`(?!.*${fromName}[a-z-]+.*)ish-${fromName}`, 'g'),
-            'ish-' + toName
-          );
-          if (content !== replacement) {
-            host.overwrite(file, replacement);
-          }
+          updateComponentSelector(host, file, fromName, toName);
         }
       }
     });
@@ -182,4 +156,40 @@ export function move(options: Options): Rule {
       host.delete(source);
     });
   };
+}
+
+export function updateComponentSelector(host, file, fromName: string, toName: string, includePrefix: boolean = true) {
+  const content = host.read(file).toString();
+  const replacement = content.replace(
+    new RegExp(`(?!.*${fromName}[a-z-]+.*)ish-${fromName}`, 'g'),
+    (includePrefix ? 'ish-' : '') + toName
+  );
+  if (content !== replacement) {
+    host.overwrite(file, replacement);
+  }
+}
+
+export function updateComponentClassName(host, file, fromClassName: string, toClassName: string) {
+  const identifiers = tsquery(readIntoSourceFile(host, file), `Identifier[name=${fromClassName}]`);
+  if (identifiers.length) {
+    const updater = host.beginUpdate(file);
+    identifiers.forEach(x =>
+      updater.remove(x.pos, x.end - x.pos).insertLeft(x.pos, x.getFullText().replace(fromClassName, toClassName))
+    );
+    host.commitUpdate(updater);
+  }
+}
+
+export function updateComponentDecorator(host, file, fromName: string, toName: string) {
+  const updater = host.beginUpdate(file);
+  tsquery(readIntoSourceFile(host, file), 'Decorator Identifier[name=Component]')
+    .map(x => x.parent)
+    .forEach(componentDecorator => {
+      tsquery(componentDecorator, 'PropertyAssignment')
+        .map((pa: ts.PropertyAssignment) => pa.initializer)
+        .forEach(x => {
+          updater.remove(x.pos, x.end - x.pos).insertLeft(x.pos, x.getFullText().replace(fromName, toName));
+        });
+    });
+  host.commitUpdate(updater);
 }
