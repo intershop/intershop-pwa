@@ -28,7 +28,9 @@
     "arrow-parens": [true, "ban-single-arg-parens"],
     "no-unnecessary-callback-wrapper": true,
     "no-unsafe-callback-scope": false,
-    "no-commented-out-code": { "severity": "warning" },
+    "no-commented-out-code": {
+      "severity": "warning"
+    },
     "no-consecutive-blank-lines": true,
     "callable-types": true,
     "class-name": true,
@@ -64,8 +66,14 @@
         "modifiers": ["export", "const"],
         "format": "camelCase"
       },
-      { "type": "type", "format": "PascalCase" },
-      { "type": "enumMember", "format": "PascalCase" }
+      {
+        "type": "type",
+        "format": "PascalCase"
+      },
+      {
+        "type": "enumMember",
+        "format": "PascalCase"
+      }
     ],
     "no-arg": true,
     "no-bitwise": true,
@@ -125,16 +133,28 @@
     "rxjs-no-ignored-subscribe": true,
     "rxjs-no-unsafe-switchmap": true,
     "rxjs-no-unsafe-catch": true,
-    "rxjs-no-unsafe-first": { "severity": "off" },
-    "rxjs-no-unsafe-scope": { "severity": "off" },
+    "rxjs-no-unsafe-first": {
+      "severity": "off"
+    },
+    "rxjs-no-unsafe-scope": {
+      "severity": "off"
+    },
     "rxjs-no-unsafe-takeuntil": true,
     "rxjs-no-subject-value": true,
     "rxjs-no-subject-unsubscribe": true,
-    "rxjs-no-exposed-subjects": { "severity": "off" },
-    "rxjs-no-explicit-generics": { "severity": "off" },
+    "rxjs-no-exposed-subjects": {
+      "severity": "off"
+    },
+    "rxjs-no-explicit-generics": {
+      "severity": "off"
+    },
     "rxjs-no-ignored-replay-buffer": true,
-    "rxjs-prefer-async-pipe": { "severity": "off" },
-    "rxjs-throw-error": { "severity": "off" },
+    "rxjs-prefer-async-pipe": {
+      "severity": "off"
+    },
+    "rxjs-throw-error": {
+      "severity": "off"
+    },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
@@ -166,12 +186,14 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [true, "attribute", "ish", "camelCase"],
-    "component-selector": [true, "element", "ish", "kebab-case"],
+    "directive-selector": [true, "attribute", ["ish"], "camelCase"],
+    "component-selector": [true, "element", ["ish"], "kebab-case"],
     "no-inputs-metadata-property": true,
     "no-assignement-to-inputs": true,
     "no-outputs-metadata-property": true,
-    "use-component-change-detection": { "severity": "warning" },
+    "use-component-change-detection": {
+      "severity": "warning"
+    },
     "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-output-rename": true,
@@ -213,7 +235,10 @@
         "name": ["*", "toBeDefined"],
         "message": "Most of the time this is the wrong assertion in tests!"
       },
-      { "name": ["spyOn"], "message": "Use ts-mockito instead!" },
+      {
+        "name": ["spyOn"],
+        "message": "Use ts-mockito instead!"
+      },
       {
         "name": ["*", "select"],
         "message": "Use store.pipe(select()) instead!"
@@ -307,7 +332,10 @@
           "filePattern": ".*src/app.*",
           "message": "use star imports only for aggregation of deeper lying imports"
         },
-        { "starImport": true, "from": "lodash.*" },
+        {
+          "starImport": true,
+          "from": "lodash.*"
+        },
         {
           "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection)$).*",
           "from": "lodash.*"
@@ -412,7 +440,9 @@
         "exclude": ["actions$"]
       }
     },
-    "meaningful-naming-in-tests": { "severity": "warning" },
+    "meaningful-naming-in-tests": {
+      "severity": "warning"
+    },
     "prefer-method-signature": true,
     "prefer-switch": true,
     "prefer-template": {
@@ -421,10 +451,14 @@
     },
     "use-async-synchronisation-in-tests": true,
     "use-jest-extended-matchers-in-tests": true,
-    "no-any": { "severity": "warning" },
+    "no-any": {
+      "severity": "warning"
+    },
     "no-commented-out-tests": true,
     "no-focused-tests": true,
-    "no-disabled-tests": { "severity": "warning" },
+    "no-disabled-tests": {
+      "severity": "warning"
+    },
     "no-barrel-files": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,
@@ -553,7 +587,6 @@
             "name": "^([A-Z].*)Service$",
             "file": "(/utils.*|/services/([a-z][a-z0-9-]+/|))[a-z][a-z0-9-]+/<kebab>\\.service\\.ts$"
           },
-
           // modules and routing
           {
             "name": "^([A-Z].+)ExportsModule$",
@@ -583,7 +616,10 @@
             "name": "^(.*)Module$",
             "file": ".*(cypress.*|/<kebab>/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
-          { "name": "^(.*)Routes$", "file": ".*/<kebab>\\.module\\.ts$" },
+          {
+            "name": "^(.*)Routes$",
+            "file": ".*/<kebab>\\.module\\.ts$"
+          },
           // factory pattern
           {
             "name": "^([A-Z].*)Helper$",
@@ -623,12 +659,18 @@
             "name": "^([A-Z].*)State$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)(<kebab>/<kebab>\\.reducer|(<kebab>/|)<kebab>-store)\\.ts$"
           },
-          { "name": "^(initialState)$", "file": ".*/store/.*\\.reducer\\.ts$" },
+          {
+            "name": "^(initialState)$",
+            "file": ".*/store/.*\\.reducer\\.ts$"
+          },
           {
             "name": "^([a-z].*)Reducer$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
           },
-          { "name": "^(metaReducers)$", "file": ".*\\.module\\.ts$" },
+          {
+            "name": "^(metaReducers)$",
+            "file": ".*\\.module\\.ts$"
+          },
           {
             "name": "^([a-z].*)Reducers$",
             "file": ".*/store/(<kebab>/|)<kebab>-store\\.module\\.ts$"
