@@ -31,10 +31,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';
 
-  showAddToCart = ProductHelper.showAddToCart;
   isVariationProduct = ProductHelper.isVariationProduct;
-  isRetailSet = ProductHelper.isRetailSet;
   isMasterProduct = ProductHelper.isMasterProduct;
+  isRetailSet = ProductHelper.isRetailSet;
 
   private destroy$ = new Subject();
 
@@ -65,5 +64,14 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   variationSelected(selection: VariationSelection) {
     this.selectVariation.emit(selection);
+  }
+
+  hasAddToBasketButton() {
+    return !!(
+      this.product.inStock &&
+      this.product.availability &&
+      !ProductHelper.isMasterProduct(this.product) &&
+      (this.product.salePrice || ProductHelper.isRetailSet(this.product))
+    );
   }
 }

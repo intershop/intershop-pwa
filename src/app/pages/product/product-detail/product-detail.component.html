@@ -49,7 +49,7 @@
         (selectVariation)="variationSelected($event)"
       ></ish-product-variation-select>
 
-      <form *ngIf="showAddToCart(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
+      <form *ngIf="hasAddToBasketButton()" [formGroup]="productDetailForm" class="product-form form-horizontal">
         <div class="row">
           <div class="w-100">
             <ish-product-quantity

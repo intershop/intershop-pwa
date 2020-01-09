@@ -52,8 +52,6 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
    */
   @Output() productToBasket = new EventEmitter<void>();
 
-  showAddToCart = ProductHelper.showAddToCart;
-
   constructor(private checkoutFacade: CheckoutFacade) {}
 
   // fires 'true' after add To Cart is clicked and basket is loading
@@ -84,5 +82,14 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+  }
+
+  hasAddToBasketButton() {
+    return !!(
+      this.product.inStock &&
+      this.product.availability &&
+      !ProductHelper.isMasterProduct(this.product) &&
+      (this.product.salePrice || ProductHelper.isRetailSet(this.product))
+    );
   }
 }

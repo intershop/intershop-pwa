@@ -181,13 +181,4 @@ export class ProductHelper {
     const attributes = product.attributes.filter(att => !common.includes(att.name));
     return { ...product, attributes };
   }
-
-  static showAddToCart(product: Product): boolean {
-    return !!(
-      product.inStock &&
-      product.availability &&
-      !ProductHelper.isMasterProduct(product) &&
-      (product.salePrice || ProductHelper.isRetailSet(product))
-    );
-  }
 }
