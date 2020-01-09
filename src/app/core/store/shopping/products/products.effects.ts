@@ -19,6 +19,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { productRoute } from 'ish-core/custom-routes/product.route';
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
@@ -37,7 +38,6 @@ import {
 
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
-import { productRoute } from 'ish-core/custom-routes/product.route';
 
 @Injectable()
 export class ProductsEffects {

@@ -16,6 +16,7 @@ import {
 } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
+import { categoryRoute } from 'ish-core/custom-routes/category.route';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
@@ -30,7 +31,6 @@ import {
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
-import { categoryRoute } from 'ish-core/custom-routes/category.route';
 
 @Injectable()
 export class CategoriesEffects {
