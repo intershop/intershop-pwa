@@ -101,6 +101,25 @@ jobs:
           name: dist
           path: dist
 
+  Schematics:
+    needs: [Build, Quality, Jest]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Test Schematics
+        run: |
+          bash e2e/test-schematics.sh
+          sh scripts/ci-check-no-additional-warnings.sh
+
   Cypress:
     needs: Build
     runs-on: ubuntu-latest
