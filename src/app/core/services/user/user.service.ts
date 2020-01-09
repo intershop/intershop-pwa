@@ -123,8 +123,10 @@ export class UserService {
       ...body.user,
       preferredInvoiceToAddress: { urn: body.user.preferredInvoiceToAddressUrn },
       preferredShipToAddress: { urn: body.user.preferredShipToAddressUrn },
+      preferredPaymentInstrument: { id: body.user.preferredPaymentInstrumentId },
       preferredInvoiceToAddressUrn: undefined,
       preferredShipToAddressUrn: undefined,
+      preferredPaymentInstrumentId: undefined,
     };
 
     if (body.customer.type === 'PrivateCustomer') {

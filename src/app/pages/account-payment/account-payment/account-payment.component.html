@@ -5,26 +5,44 @@
 <ng-container *ngIf="paymentMethods && paymentMethods.length; else noPaymentMethods">
   <p>{{ 'account.payment.message' | translate }}</p>
 
-  <!--<h3>{{ 'account.payment.preferred_method' | translate }}</h3>-->
-
-  <div *ngFor="let method of paymentMethods" class="section" data-testing-id="paymentMethodList">
-    <h5 class="section">{{ method.displayName }}</h5>
-    <div *ngFor="let payment of method.paymentInstruments" class="section row">
-      <div class="col-xs-11 col-sm-7 col-md-5">
-        <div class="float-right">
-          <a
-            class="btn-tool"
-            title="{{ 'checkout.payment.method.delete.link' | translate }}"
-            (click)="deleteUserPayment(payment.id)"
-          >
-            <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
-          </a>
-        </div>
-        <p>{{ payment.accountIdentifier }}</p>
-      </div>
+  <div *ngIf="preferredPaymentInstrument" class="section">
+    <h3>{{ 'account.payment.preferred_method' | translate }}</h3>
+    <div class="row pb-3" data-testing-id="preferred-payment-instrument">
+      <ng-container
+        *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"
+      ></ng-container>
     </div>
   </div>
+
+  <ng-container *ngIf="savedPaymentMethods && savedPaymentMethods.length">
+    <h3>{{ 'account.payment.further_payments.heading' | translate }}</h3>
+    <div *ngFor="let method of savedPaymentMethods" class="section" data-testing-id="paymentMethodList">
+      <h4>
+        <b>{{ method.displayName }}</b>
+      </h4>
+      <div *ngFor="let payment of method.paymentInstruments" class="section row">
+        <ng-container *ngTemplateOutlet="paymentWidget; context: { pi: payment, isPreferred: false }"></ng-container>
+      </div>
+    </div>
+  </ng-container>
 </ng-container>
+
 <ng-template #noPaymentMethods>
   <p data-testing-id="emptyMessage">{{ 'account.payment.no_entries' | translate }}</p>
+</ng-template>
+
+<ng-template #paymentWidget let-pi="pi" let-isPreferred="isPreferred">
+  <div class="col-xs-11 col-sm-7 col-md-5">
+    <div class="float-right">
+      <a
+        class="btn-tool"
+        title="{{ 'checkout.payment.method.delete.link' | translate }}"
+        (click)="deleteUserPayment(pi.id)"
+      >
+        <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+      </a>
+    </div>
+    <p>{{ pi.accountIdentifier }}</p>
+    <a *ngIf="!isPreferred" (click)="setAsDefaultPayment(pi.id)">{{ 'account.payment.preferred.link' | translate }}</a>
+  </div>
 </ng-template>

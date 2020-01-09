@@ -70,13 +70,69 @@ export class PaymentMethodMapper {
           .map(i => ({
             id: i.id,
             parameters: i.attributes,
-            accountIdentifier:
-              i.attributes &&
-              i.attributes.length &&
-              i.attributes.map(attr => attr.value).reduce((acc, val) => (val ? `${acc}  ${val}` : acc)), //  ToDo: should be improved
+            accountIdentifier: PaymentMethodMapper.determineAccountIdentifier(pm, i),
+            paymentMethod: pm.id,
           })),
       }))
       .filter(x => x.paymentInstruments && x.paymentInstruments.length);
+  }
+
+  /**
+   * determines the accountIdentifier - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
+   * the general identifier returns all payment instrument attributes
+   * a specific identifier is only returned for ISH_CREDITCARD, add further special functionality here, if needed
+   */
+  private static determineAccountIdentifier(pm: PaymentMethodBaseData, pi: PaymentInstrumentData): string {
+    let identifier: string;
+
+    switch (pm.id) {
+      case 'ISH_CREDITCARD': {
+        identifier = `${PaymentMethodMapper.mapCreditCardCode(pi.attributes[1].value)} ${pi.attributes[0].value} ${
+          pi.attributes[2].value
+        }`;
+        break;
+      }
+      default: {
+        identifier =
+          pi.attributes &&
+          pi.attributes.length &&
+          pi.attributes
+            .filter(attr => attr.name !== 'paymentInstrumentId')
+            .map(attr => attr.value)
+            .reduce((acc, val) => (val ? `${acc}  ${val}` : acc));
+      }
+    }
+
+    return identifier;
+  }
+
+  /**
+   * maps the credit card code for ISH_CREDITCARD - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
+   */
+  private static mapCreditCardCode(code: string): string {
+    let creditCardType: string;
+    switch (code) {
+      case 'amx': {
+        creditCardType = 'American Express';
+        break;
+      }
+      case 'mas': {
+        creditCardType = 'Master Card';
+        break;
+      }
+      case 'vsa': {
+        creditCardType = 'VISA';
+        break;
+      }
+      case 'dcv': {
+        creditCardType = 'Discover';
+        break;
+      }
+      default: {
+        creditCardType = code;
+      }
+    }
+    return creditCardType;
   }
 
   /**

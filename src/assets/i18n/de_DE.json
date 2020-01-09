@@ -491,7 +491,7 @@
   "account.payment.error.noselection": "Wählen Sie eine bevorzugte Zahlungsart aus.",
   "account.payment.heading": "Gespeicherte Zahlungsdaten",
   "account.payment.link": "Zahlung",
-  "account.payment.message": "Wählen Sie eine bevorzugte Zahlungsart für eine schneller Zahlung bei zukünftigen Einkäufen.",
+  "account.payment.message": "Wählen Sie ein bevorzugtes Zahlungsmittel für eine schnellere Zahlung bei zukünftigen Einkäufen.",
   "account.payment.payment_cancel.txt": "Abbrechen",
   "account.payment.payment_changes.txt": "Änderungen: ",
   "account.payment.payment_created.message": "Die bevorzugte Zahlungsart wurde in Ihrem Konto gespeichert.",
@@ -502,7 +502,7 @@
   "account.payment.payment_minOrderValue_pre.text": "verfügbar ab",
   "account.payment.payment_save_changes.txt": "Änderungen speichern",
   "account.payment.payment_threshold.text": "kostenlos über einem Gesamtbestellwert von",
-  "account.payment.preferred_method": "Bevorzugte Zahlungsart",
+  "account.payment.preferred_method": "Bevorzugtes Zahlungsmittel",
   "account.personal_message.bonus_point.heading": "Bonuspunkte",
   "account.personal_message.bonus_point.how_to_redeem.link": "Wie Sie Punkte einlösen",
   "account.personal_message.bonus_point.value.text": "79",
@@ -2610,7 +2610,7 @@
   "checkout.address.anonymous.guestcheckout.text": "Sie m\u00F6chten als Gast einkaufen und kein Profil erstellen? Kein Problem.",
   "account.login.signin.heading": "Anmelden",
   "account.overview.personal_message_b2b.text": "Hallo, {{0}} ({{1}}).<br />Willkommen zurück!",
-  "checkout.payment.addPayment.link": "Zahlungsquelle hinzufügen",
+  "checkout.payment.addPayment.link": "Zahlungsmittel hinzufügen",
   "checkout.credit_card.cvc.label": "Kartenprüfnummer (CVC)",
   "checkout.credit_card.user.name": "Name des Karteninhabers",
   "checkout.credit_card.user.name.missing.error": "Bitte geben Sie den Namen des Karteninhabers an.",
@@ -2663,5 +2663,7 @@
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "account.login.session_timeout.message": "Sie wurden aufgrund einer langen Inaktivitätsdauer automatisch abgemeldet. Bitte melden Sie sich erneut an, um den Einkauf fortzusetzen.",
   "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt anmelden</a>",
-  "account.payment.no_entries": "Sie haben derzeit keine gespeicherten Zahlungsmittel."
+  "account.payment.further_payments.heading": "Weitere gespeicherte Zahlungsmittel",
+  "account.payment.no_entries": "Derzeit haben Sie keine gespeicherten Zahlungsmittel.",
+  "account.payment.preferred.link": "Als bevorzugtes Zahlungsmittel speichern"
 }

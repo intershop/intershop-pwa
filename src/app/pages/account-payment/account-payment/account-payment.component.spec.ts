@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { User } from 'ish-core/models/user/user.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -40,6 +41,11 @@ describe('Account Payment Component', () => {
       },
       BasketMockData.getPaymentMethod(),
     ];
+    component.user = {
+      firstName: 'Paticia',
+      lastName: 'Miller',
+      preferredPaymentInstrumentId: '123',
+    } as User;
   });
 
   it('should be created', () => {
@@ -50,6 +56,7 @@ describe('Account Payment Component', () => {
 
   describe('payment method display', () => {
     it('should render available payment methods on page', () => {
+      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('[data-testing-id="paymentMethodList"]')).toBeTruthy();
       expect(element.querySelector('[data-testing-id="emptyMessage"]')).toBeFalsy();
@@ -60,6 +67,21 @@ describe('Account Payment Component', () => {
       fixture.detectChanges();
       expect(element.querySelector('[data-testing-id="paymentMethodList"]')).toBeFalsy();
       expect(element.querySelector('[data-testing-id="emptyMessage"]')).toBeTruthy();
+    });
+  });
+
+  describe('preferred payment method', () => {
+    it('should render a preferred payment instrument if there is one', () => {
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(element.querySelector('[data-testing-id="preferred-payment-instrument"]')).toBeTruthy();
+    });
+
+    it('should not render a preferred payment instrument if there is no prefered instrument at user', () => {
+      component.user.preferredPaymentInstrumentId = undefined;
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(element.querySelector('[data-testing-id="preferred-payment-instrument"]')).toBeFalsy();
     });
   });
 
@@ -87,6 +109,21 @@ describe('Account Payment Component', () => {
         done();
       });
       component.deleteUserPayment(id);
+    });
+  });
+
+  describe('update default payment instrument', () => {
+    it('should throw updateDefaultPaymentInstrument event when the user changes his preferred payment instrument', done => {
+      const id = 'paymentInstrumentId';
+      component.user = { firstName: 'Patricia', lastName: 'Miller' } as User;
+
+      fixture.detectChanges();
+
+      component.updateDefaultPaymentInstrument.subscribe(user => {
+        expect(user.preferredPaymentInstrumentId).toBe(id);
+        done();
+      });
+      component.setAsDefaultPayment(id);
     });
   });
 });

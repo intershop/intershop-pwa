@@ -495,7 +495,7 @@
   "account.payment.error.noselection": "Veuillez sélectionner un mode de paiement par défaut.",
   "account.payment.heading": "Informations de paiement enregistrés",
   "account.payment.link": "Paiement",
-  "account.payment.message": "Sélectionnez votre mode de paiement par défaut pour un paiement plus rapide en vue d'achats futurs.",
+  "account.payment.message": "Choisissez un instrument de paiement préféré pour un paiement plus rapide de vos achats futurs.",
   "account.payment.payment_cancel.txt": "Annuler",
   "account.payment.payment_changes.txt": "Modifications : ",
   "account.payment.payment_created.message": "Le mode de paiement par défaut a été enregistré sur votre compte.",
@@ -506,7 +506,7 @@
   "account.payment.payment_minOrderValue_pre.text": "disponible de",
   "account.payment.payment_save_changes.txt": "Enregistrer les modifications",
   "account.payment.payment_threshold.text": "gratuit sur un montant total de la commande plus de",
-  "account.payment.preferred_method": "Mode par défaut",
+  "account.payment.preferred_method": "Instrument de paiement préféré",
   "account.personal_message.bonus_point.heading": "Bonus",
   "account.personal_message.bonus_point.how_to_redeem.link": "Comment utiliser",
   "account.personal_message.bonus_point.value.text": "79",
@@ -2501,7 +2501,7 @@
   "checkout.address.anonymous.guestcheckout.text": "Vous voulez faire des achats en tant qu’invit\u00E9 et ne voulez pas cr\u00E9er de profil ? Pas de problème.",
   "account.login.signin.heading": "Se connecter",
   "account.overview.personal_message_b2b.text": "Bonjour, {{0}} ({{1}}).<br />Bienvenue !",
-  "checkout.payment.addPayment.link": "Ajouter une source de paiement",
+  "checkout.payment.addPayment.link": "Ajouter un instrument de paiement",
   "checkout.credit_card.cvc.label": "Code de validation de la carte",
   "checkout.credit_card.user.name": "Nom du détenteur de la carte",
   "checkout.credit_card.user.name.missing.error": "Veuillez entrer le nom du détenteur de la carte.",
@@ -2554,5 +2554,7 @@
   "seo.defaults.description": "Intershop - Progressive Web App - Démo PWA",
   "account.login.session_timeout.message": "Vous avez été déconnecté automatiquement en raison d’une longue période d’inactivité. Veuillez vous connecter à nouveau pour continuer vos achats.",
   "account.login.register_now": "Vous n’avez pas encore de compte ?<br/><a href=\"{{0}}\">Enregistrez-vous maintenant</a>",
-  "account.payment.no_entries": "Vous n'avez pas d'instruments de paiement actuellement."
+  "account.payment.further_payments.heading": "Autres instruments de paiement sauvegardés",
+  "account.payment.no_entries": "Actuellement, vous n’avez aucun instrument de paiement sauvegardé.",
+  "account.payment.preferred.link": "Enregistrer comme instrument de paiement préféré"
 }

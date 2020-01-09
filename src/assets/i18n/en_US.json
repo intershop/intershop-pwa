@@ -491,7 +491,7 @@
   "account.payment.error.noselection": "Please select a preferred payment method.",
   "account.payment.heading": "Saved Payment Information",
   "account.payment.link": "Payment",
-  "account.payment.message": "Select a preferred payment method for quicker checkout on future purchases.",
+  "account.payment.message": "Select a preferred payment instrument for quicker checkout on future purchases.",
   "account.payment.payment_cancel.txt": "Cancel",
   "account.payment.payment_changes.txt": "Changes: ",
   "account.payment.payment_created.message": "The preferred payment method has been saved to your account.",
@@ -502,7 +502,7 @@
   "account.payment.payment_minOrderValue_pre.text": "available from",
   "account.payment.payment_save_changes.txt": "Save Changes",
   "account.payment.payment_threshold.text": "free of charge over total order value of",
-  "account.payment.preferred_method": "Preferred Method",
+  "account.payment.preferred_method": "Preferred Payment Instrument",
   "account.personal_message.bonus_point.heading": "Bonus Points",
   "account.personal_message.bonus_point.how_to_redeem.link": "How to Redeem",
   "account.personal_message.bonus_point.value.text": "79",
@@ -2608,7 +2608,7 @@
   "checkout.address.anonymous.guestcheckout.text": "You want to shop as a guest and do not want to create a profile? No problem.",
   "account.login.signin.heading": "Sign In",
   "account.overview.personal_message_b2b.text": "Hi, {{0}} ({{1}}).<br />Welcome back!",
-  "checkout.payment.addPayment.link": "Add Source of Payment",
+  "checkout.payment.addPayment.link": "Add Payment Instrument",
   "checkout.credit_card.cvc.label": "Card Validation Code (CVC)",
   "checkout.credit_card.user.name": "Cardholder Name",
   "checkout.credit_card.user.name.missing.error": "Please enter a cardholder name.",
@@ -2664,5 +2664,7 @@
   "seo.defaults.description": "Intershop - Progressive Web App - Demo PWA",
   "account.login.session_timeout.message": "You have been logged out automatically due to a long period of inactivity. Please log in again to continue shopping.",
   "account.login.register_now": "You don't have an account yet?<br/><a href=\"{{0}}\">Register now</a>",
-  "account.payment.no_entries": "Currently, you do not have any saved payment instruments."
+  "account.payment.further_payments.heading": "Further Saved Payment Instruments",
+  "account.payment.no_entries": "Currently, you do not have any saved payment instruments.",
+  "account.payment.preferred.link": "Save as Preferred Payment Instrument"
 }

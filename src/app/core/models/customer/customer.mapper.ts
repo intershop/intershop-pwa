@@ -23,10 +23,9 @@ export class CustomerMapper {
             phoneMobile: data.phoneMobile,
             fax: data.fax,
             email: data.email,
-            preferredInvoiceToAddressUrn: data.preferredInvoiceToAddress
-              ? data.preferredInvoiceToAddress.urn
-              : undefined,
-            preferredShipToAddressUrn: data.preferredShipToAddress ? data.preferredShipToAddress.urn : undefined,
+            preferredInvoiceToAddressUrn: data.preferredInvoiceToAddress && data.preferredInvoiceToAddress.urn,
+            preferredShipToAddressUrn: data.preferredShipToAddress && data.preferredShipToAddress.urn,
+            preferredPaymentInstrumentId: data.preferredPaymentInstrument && data.preferredPaymentInstrument.id,
             birthday: data.birthday,
           },
         };

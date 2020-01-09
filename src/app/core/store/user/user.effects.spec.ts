@@ -21,6 +21,7 @@ import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { SuccessMessage } from 'ish-core/store/messages';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as ua from './user.actions';
@@ -589,9 +590,12 @@ describe('User Effects', () => {
       const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
       const completion1 = new ua.DeleteUserPaymentSuccess();
       const completion2 = new ua.LoadUserPaymentMethods();
+      const completion3 = new SuccessMessage({
+        message: 'account.payment.payment_deleted.message',
+      });
 
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+      const expected$ = cold('-(cde)', { c: completion1, d: completion2, e: completion3 });
 
       expect(effects.deleteUserPayment$).toBeObservable(expected$);
     });
