@@ -13,6 +13,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
@@ -50,7 +51,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
   @Input() activated = false;
 
   @Output() cancel = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<{ name: string; value: string }[]>();
+  @Output() submit = new EventEmitter<{ parameters: Attribute[]; saveAllowed: boolean }>();
 
   scriptLoaded = false; // flag to make sure that the init script is executed only once
   formSubmitted = false; // flag for displaying error messages after form submit
@@ -82,6 +83,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
     this.parameterForm = new FormGroup({
       expirationMonth: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
       expirationYear: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
+      saveForLater: new FormControl(true),
     });
   }
 
@@ -227,12 +229,15 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
         this.errorMessage.general.message = error.message;
       }
     } else if (!this.parameterForm.invalid) {
-      this.submit.emit([
-        { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
-        { name: 'maskedCardNumber', value: result.attributes.cardNumber },
-        { name: 'cardType', value: result.attributes.brand },
-        { name: 'expirationDate', value: `${result.attributes.expiryMonth}/${result.attributes.expiryYear}` },
-      ]);
+      this.submit.emit({
+        parameters: [
+          { name: 'paymentInstrumentId', value: result.paymentInstrumentId },
+          { name: 'maskedCardNumber', value: result.attributes.cardNumber },
+          { name: 'cardType', value: result.attributes.brand },
+          { name: 'expirationDate', value: `${result.attributes.expiryMonth}/${result.attributes.expiryYear}` },
+        ],
+        saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
+      });
     }
     this.cd.detectChanges();
   }
@@ -313,6 +318,7 @@ export class PaymentConcardisCreditcardComponent implements OnInit, OnChanges, O
    */
   cancelNewPaymentInstrument() {
     this.parameterForm.reset();
+    this.parameterForm.get('saveForLater').setValue(true);
     this.resetErrors();
     this.cancel.emit();
   }

@@ -83,12 +83,14 @@ describe('Checkout Payment Component', () => {
         serviceId: 'Concardis_CreditCard',
         displayName: 'Concardis Credit Card',
         saveAllowed: false,
+        parameters: [{ key: 'key1', name: 'name' }],
       },
       {
         id: 'ISH_CreditCard',
         serviceId: 'ISH_CreditCard',
         displayName: 'Intershop Credit Card',
         saveAllowed: true,
+        parameters: [{ key: 'key1', name: 'name' }],
       },
       BasketMockData.getPaymentMethod(),
     ];
@@ -222,12 +224,11 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should render standard parameter form for standard parametrized form', () => {
-      component.openPaymentParameterForm(2);
+      component.openPaymentParameterForm(1);
 
       component.ngOnChanges(paymentMethodChange);
       fixture.detectChanges();
       expect(element.querySelector('formly-form')).toBeTruthy();
-      expect(element.querySelector('ish-payment-concardis-creditcard')).toBeFalsy();
     });
   });
 
