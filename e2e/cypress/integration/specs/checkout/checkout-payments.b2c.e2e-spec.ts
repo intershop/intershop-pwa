@@ -2,9 +2,9 @@ import { at } from '../../framework';
 import { createBasketViaREST, createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
-import { AddressesPage } from '../../pages/checkout/addresses.page';
-import { PaymentPage } from '../../pages/checkout/payment.page';
-import { ShippingPage } from '../../pages/checkout/shipping.page';
+import { CheckoutAddressesPage } from '../../pages/checkout/checkout-addresses.page';
+import { CheckoutPaymentPage } from '../../pages/checkout/checkout-payment.page';
+import { CheckoutShippingPage } from '../../pages/checkout/checkout-shipping.page';
 
 const _ = {
   user: {
@@ -37,21 +37,21 @@ describe('Shopping User', () => {
   });
 
   it('should set first addresses automatically', () => {
-    at(AddressesPage, page => {
+    at(CheckoutAddressesPage, page => {
       cy.wait(1000);
       page.continueCheckout();
     });
   });
 
   it('should accept default shipping option', () => {
-    at(ShippingPage, page => page.continueCheckout());
+    at(CheckoutShippingPage, page => page.continueCheckout());
   });
 
   it('should fill in form for cypress credit card incorrectly and see errors', () => {
-    at(PaymentPage, page => {
+    at(CheckoutPaymentPage, page => {
       page.addPaymentInstrument('ISH_DEBIT_TRANSFER');
     });
-    at(PaymentPage, page => {
+    at(CheckoutPaymentPage, page => {
       page.paymentInstrument('ISH_DEBIT_TRANSFER').fillForm({
         IBAN: '1',
         BIC: 'A',
@@ -70,7 +70,7 @@ describe('Shopping User', () => {
   });
 
   it('should fill in form for cypress credit card correctly and submit', () => {
-    at(PaymentPage, page => {
+    at(CheckoutPaymentPage, page => {
       page.paymentInstrument('ISH_DEBIT_TRANSFER').fillForm({
         holder: 'Peter Parker',
         IBAN: 'DE 000000000000000000',
@@ -93,6 +93,6 @@ describe('Shopping User', () => {
   });
 
   it('should contain entered payment instrument', () => {
-    at(PaymentPage, page => page.content.should('contain', '*****************0000'));
+    at(CheckoutPaymentPage, page => page.content.should('contain', '*****************0000'));
   });
 });

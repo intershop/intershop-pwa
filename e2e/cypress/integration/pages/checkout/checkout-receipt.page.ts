@@ -1,4 +1,4 @@
-export class ReceiptPage {
+export class CheckoutReceiptPage {
   readonly tag = 'ish-checkout-receipt-page';
 
   continueShopping() {

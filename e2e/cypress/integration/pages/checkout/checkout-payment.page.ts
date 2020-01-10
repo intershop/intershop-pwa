@@ -1,6 +1,6 @@
 import { fillFormField, waitLoadingEnd } from '../../framework';
 
-export class PaymentPage {
+export class CheckoutPaymentPage {
   readonly tag = 'ish-checkout-payment-page';
 
   get content() {

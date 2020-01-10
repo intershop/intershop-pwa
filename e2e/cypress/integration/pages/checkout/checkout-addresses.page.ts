@@ -5,7 +5,7 @@ export type AddressDetailsTypes = Partial<
   Pick<Registration, 'countryCodeSwitch' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
 >;
 
-export class AddressesPage {
+export class CheckoutAddressesPage {
   readonly tag = 'ish-checkout-address-page';
 
   // guest checkout

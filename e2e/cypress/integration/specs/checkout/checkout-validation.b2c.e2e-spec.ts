@@ -2,8 +2,8 @@ import { at } from '../../framework';
 import { createBasketViaREST, createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
-import { AddressesPage } from '../../pages/checkout/addresses.page';
-import { ShippingPage } from '../../pages/checkout/shipping.page';
+import { CheckoutAddressesPage } from '../../pages/checkout/checkout-addresses.page';
+import { CheckoutShippingPage } from '../../pages/checkout/checkout-shipping.page';
 
 const _ = {
   user: {
@@ -38,18 +38,18 @@ describe('Shopping User', () => {
   });
 
   it('should display invalid items if the invoice/shipping address is invalid', () => {
-    at(AddressesPage, page => {
+    at(CheckoutAddressesPage, page => {
       cy.wait(1000);
       page.continueCheckout();
       cy.wait(1000);
     });
-    at(AddressesPage, page => {
+    at(CheckoutAddressesPage, page => {
       page.validationMessage.should('contain', 'There is no shipping method available for this location');
     });
   });
 
   it('should remove validation messages after customer address changed', () => {
-    at(AddressesPage, page => {
+    at(CheckoutAddressesPage, page => {
       page.changeInvoiceAddressRegion('CA');
       cy.wait(1000);
       page.validationMessage.should('not.exist');
@@ -57,11 +57,11 @@ describe('Shopping User', () => {
   });
 
   it('should continue checkout if validation problem has been solved', () => {
-    at(AddressesPage, page => {
+    at(CheckoutAddressesPage, page => {
       page.continueCheckout();
       cy.wait(1000);
     });
-    at(ShippingPage, () => {
+    at(CheckoutShippingPage, () => {
       cy.contains('Select a Shipping Method');
     });
   });
