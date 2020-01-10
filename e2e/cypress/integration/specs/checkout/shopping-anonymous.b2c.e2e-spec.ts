@@ -70,6 +70,12 @@ describe('Anonymous Checkout', () => {
     at(CheckoutShippingPage, page => page.continueCheckout());
   });
 
+  it('should not display the save for later option on payment page', () => {
+    at(CheckoutPaymentPage, page => {
+      page.addPaymentInstrument('ISH_CREDITCARD');
+      page.saveForLaterCheckbox.should('not.be.visible');
+    });
+  });
   it('should select invoice payment', () => {
     at(CheckoutPaymentPage, page => {
       page.selectPayment('INVOICE');
