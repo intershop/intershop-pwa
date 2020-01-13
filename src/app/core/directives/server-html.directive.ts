@@ -99,7 +99,11 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
         }
 
         if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
+          // handle links with callback functions, e.g. <a callback="availableCallbackFunction">
           this.callbacks[cb]();
+        } else if (href.startsWith('#')) {
+          // handle fragment links / anchor navigation
+          document.getElementById(href.replace('#', '')).scrollIntoView({ block: 'start', behavior: 'smooth' });
         } else {
           // otherwise handle as routerLink
           this.router.navigateByUrl(href);
