@@ -6,15 +6,15 @@ This section describes how [NgRx](https://ngrx.io/) is integrated into the Inter
 
 ![State Management](./state-management.svg)
 
-NgRx is a Framework for handling state information in Angular applications following the Redux pattern. It consist of a few basic parts:
+NgRx is a framework for handling state information in Angular applications following the Redux pattern. It consist of a few basic parts:
 
 ### State
 
-The State is seen as the single source of truth for getting information of the current application state. There is only one immutable state per application, which is composed of sub-states. To get information out of the state, selectors have to be used. Changing the state can only be done by dispatching actions.
+The state is seen as the single source of truth for getting information of the current application state. There is only one immutable state per application, which is composed of substates. To get information out of the state, selectors have to be used. Changing the state can only be done by dispatching actions.
 
 ### Selectors
 
-Selectors are functions used to retrieve information about the current state from the store. The selectors are grouped in a separate file. They always start the query from the root of the state tree and navigate to the required information. Selectors return Observables which can be held in containers and be bound to in templates.
+Selectors are functions used to retrieve information about the current state from the store. The selectors are grouped in a separate file. They always start the query from the root of the state tree and navigate to the required information. Selectors return observables which can be held in containers and be bound to in templates.
 
 ### Actions
 
@@ -30,11 +30,11 @@ Effects use incoming actions to trigger asynchronous tasks like querying REST re
 
 ### Facades
 
-Facades are injectable instances which provide simplified access to the store via exposed Observables and action dispatcher methods. They should be used in Angular components but not within NgRx Artifacts themselves.
+Facades are injectable instances which provide simplified access to the store via exposed observables and action dispatcher methods. They should be used in Angular components but not within NgRx artifacts themselves.
 
 ## File Structure
 
-After trying out various file structures and naming patterns we decided the following:
+The file structure looks like this:
 
 ```
 src/app/core
@@ -54,7 +54,7 @@ src/app/core
               └─ foobar.system.ts
 ```
 
-An application module named `foobar` with sub-states named `foo` and `bar` serves as an example. The files handling NgRx store should then be contained in the folder `foobar`. Each sub-state should aggregate its store components in separate subfolders correspondingly named `foo` and `bar`:
+An application module named `foobar` with substates named `foo` and `bar` serves as an example. The files handling NgRx store should then be contained in the folder `foobar`. Each substate should aggregate its store components in separate subfolders correspondingly named `foo` and `bar`:
 
 - *foo.actions.ts*: This file contains all action creators for the `foo` state. Additionally, a bundle type aggregating all action creators and an enum type with all action types is contained here.
 
@@ -64,13 +64,13 @@ An application module named `foobar` with sub-states named `foo` and `bar` serve
 
 - *foo.selectors.ts*: This file exports all selectors working on the state of `foo`.
 
-- *index.ts*: This file exports the public API for the state of the `foo` sub-state. In here all specific selectors and actions are exported.
+- *index.ts*: This file exports the public API for the state of the `foo` substate. In here all specific selectors and actions are exported.
 
 Furthermore, the state of foobar is aggregated in two files:
 
 - *foobar.state.ts*: Contains the `FoobarState` as an aggregate of the `foo` and `bar` states.
 
-- *foobar.system.ts*: Contains aggregations for `foobarReducers` and `foobarEffects` of the corresponding sub-states to be used in modules and `TestBed` declarations.
+- *foobar.system.ts*: Contains aggregations for `foobarReducers` and `foobarEffects` of the corresponding substates to be used in modules and `TestBed` declarations.
 
 Access to the state slice of `foobar` is provided with the `FoobarFacade` located in *foobar.facade.ts*
 
@@ -80,7 +80,7 @@ Related to the example in the previous paragraph we want to establish a particul
 
 ### Actions - Types
 
-Action types should be aggregated in an enum type. The enum should be composed of the sub-state name and 'ActionTypes'. The key of the type should be written in PascalCase. The string value of the type should contain the feature in brackets and a readable action description. The description should give hints about the dispatcher of the said action, i.e., actions dispatched due to a HTTP service response should have 'API' in their name, actions dispatched by other actions should have 'Internal' in their description.
+Action types should be aggregated in an enum type. The enum should be composed of the substate name and 'ActionTypes'. The key of the type should be written in PascalCase. The string value of the type should contain the feature in brackets and a readable action description. The description should give hints about the dispatcher of the said action, i.e., actions dispatched due to a HTTP service response should have 'API' in their name, actions dispatched by other actions should have 'Internal' in their description.
 
 ```typescript
 export enum FooActionTypes {
@@ -104,7 +104,7 @@ export class LoadFoo implements Action {
 
 ### Actions - Bundle
 
-The file actions.ts should also contain an action bundle type with the name of the sub-state + 'Action', which is to be used in the reducer and tests.
+The file *actions.ts* should also contain an action bundle type with the name of the substate + 'Action', which is to be used in the reducer and tests.
 
 ```typescript
 export type FooAction = LoadFoo | SaveFoo | ...
@@ -112,7 +112,7 @@ export type FooAction = LoadFoo | SaveFoo | ...
 
 ### Reducer
 
-The exported function for the reducer should be named like the sub-state + 'Reducer' in camelCase.
+The exported function for the reducer should be named like the substate + 'Reducer' in camelCase.
 
 ```typescript
 export function fooReducer(state = initialState, action: FooAction): FooState {
@@ -161,9 +161,9 @@ see: [NgRx: Normalizing state](https://medium.com/@timdeschryver/ngrx-normalizin
 
 ### Using Services and catchError
 
-The operator handling the possible error of a service call must always be contained in the returned Observable of the service call, otherwise the effect dies.
+The operator handling the possible error of a service call must always be contained in the returned observable of the service call, otherwise it has no effect.
 
-see: [Handling Errors in NgRx Effects](https://medium.com/city-pantry/handling-errors-in-ngrx-effects-a95d918490d9)
+See: [Handling Errors in NgRx Effects](https://medium.com/city-pantry/handling-errors-in-ngrx-effects-a95d918490d9)
 
 ```typescript
 @Effect()
@@ -176,12 +176,12 @@ effect = this.actions$.pipe(
 )
 ```
 
-### Using `switchMap` can lead to race conditions
+### Using `switchMap` can Lead to Race Conditions
 
 If in doubt, use `concatMap`.
 
 See [RxJS: Avoiding switchMap-Related Bugs](https://medium.com/angular-in-depth/switchmap-bugs-b6de69155524)
 
-### Should I put XYZ into the store or the component?
+### Should I put XYZ into the Store or the Component?
 
 See: [SHARI-Principle](https://ngrx.io/docs#when-should-i-use-ngrx-for-state-management)
