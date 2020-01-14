@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
@@ -23,7 +23,7 @@ describe('Address Form Business Component', () => {
         FormControlFeedbackComponent,
         InputComponent,
         MockComponent(FaIconComponent),
-        MockComponent(ShowFormFeedbackDirective),
+        MockDirective(ShowFormFeedbackDirective),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();

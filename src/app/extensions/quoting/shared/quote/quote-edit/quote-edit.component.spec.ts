@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -33,7 +33,7 @@ describe('Quote Edit Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(QuoteStateComponent),
         MockComponent(RecentlyViewedComponent),
-        MockComponent(ServerHtmlDirective),
+        MockDirective(ServerHtmlDirective),
         QuoteEditComponent,
       ],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],

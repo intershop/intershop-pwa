@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -31,7 +31,7 @@ describe('Account Profile Component', () => {
       declarations: [
         AccountProfileComponent,
         MockComponent(FaIconComponent),
-        MockComponent(ServerHtmlDirective),
+        MockDirective(ServerHtmlDirective),
         MockPipe(DatePipe),
       ],
       imports: [TranslateModule.forRoot()],

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -27,7 +27,7 @@ describe('Account Overview Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(LazyQuoteWidgetComponent),
         MockComponent(OrderWidgetComponent),
-        MockComponent(ServerHtmlDirective),
+        MockDirective(ServerHtmlDirective),
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();

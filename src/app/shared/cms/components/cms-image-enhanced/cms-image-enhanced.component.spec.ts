@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -15,7 +15,7 @@ describe('Cms Image Enhanced Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [CMSImageEnhancedComponent, MockComponent(ServerHtmlDirective)],
+      declarations: [CMSImageEnhancedComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   }));
 

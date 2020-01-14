@@ -3,7 +3,7 @@ import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -24,7 +24,7 @@ describe('Footer Component', () => {
         TranslateModule.forRoot(),
         ngrxTesting({ reducers: coreReducers }),
       ],
-      declarations: [FooterComponent, MockComponent(FaIconComponent), MockComponent(ServerHtmlDirective)],
+      declarations: [FooterComponent, MockComponent(FaIconComponent), MockDirective(ServerHtmlDirective)],
     })
       .compileComponents()
       .then(() => {
