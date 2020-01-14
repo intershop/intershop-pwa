@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
@@ -19,7 +19,7 @@ describe('Promotion Details Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(ModalDialogLinkComponent),
-        MockComponent(ServerHtmlDirective),
+        MockDirective(ServerHtmlDirective),
         PromotionDetailsComponent,
       ],
       imports: [

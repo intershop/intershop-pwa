@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -24,7 +24,7 @@ describe('Product Promotion Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(PromotionDetailsComponent),
-        MockComponent(ServerHtmlDirective),
+        MockDirective(ServerHtmlDirective),
         ProductPromotionComponent,
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],

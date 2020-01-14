@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { coreReducers } from 'ish-core/store/core-store.module';
@@ -23,8 +23,8 @@ describe('Update Password Component', () => {
       declarations: [
         MockComponent(LoadingComponent),
         MockComponent(RequestReminderFormComponent),
-        MockComponent(ServerHtmlDirective),
         MockComponent(UpdatePasswordFormComponent),
+        MockDirective(ServerHtmlDirective),
         UpdatePasswordComponent,
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],

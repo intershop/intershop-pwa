@@ -2,7 +2,7 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
@@ -19,7 +19,7 @@ describe('Select Address Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
-        MockComponent(ShowFormFeedbackDirective),
+        MockDirective(ShowFormFeedbackDirective),
         SelectAddressComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
