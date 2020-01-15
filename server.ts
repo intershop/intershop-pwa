@@ -110,11 +110,21 @@ app.get('*', (req: express.Request, res: express.Response) => {
   );
 });
 
-// Start up the Node server
-app.listen(PORT, () => {
-  console.log(`Node Express server listening on http://localhost:${PORT}`);
-  const icmBaseUrl = process.env.ICM_BASE_URL;
-  if (icmBaseUrl) {
-    console.log('ICM_BASE_URL is', icmBaseUrl);
-  }
-});
+if (process.env.SSL) {
+  const https = require('https');
+  const privateKey = fs.readFileSync(join(DIST_FOLDER, 'server.key'), 'utf8');
+  const certificate = fs.readFileSync(join(DIST_FOLDER, 'server.crt'), 'utf8');
+  const credentials = { key: privateKey, cert: certificate };
+
+  https.createServer(credentials, app).listen(PORT);
+
+  console.log(`Node Express server listening on https://${require('os').hostname()}:${PORT}`);
+} else {
+  const http = require('http');
+
+  http.createServer(app).listen(PORT);
+
+  console.log(`Node Express server listening on http://${require('os').hostname()}:${PORT}`);
+}
+
+console.log('ICM_BASE_URL is', ICM_BASE_URL);
