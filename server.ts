@@ -22,6 +22,14 @@ import * as express from 'express';
 import { join } from 'path';
 import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
+import * as proxy from 'express-http-proxy';
+
+// * NOTE :: leave this as require() since this file is built Dynamically from webpack
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap } = require('./dist/server/main');
+
+// tslint:disable-next-line: ban-specific-imports
+import { Environment } from 'src/environments/environment.model';
+const environment: Environment = require('./dist/server/main').environment;
 
 const logging = !!process.env.LOGGING;
 
@@ -31,8 +39,19 @@ const app = express();
 const PORT = process.env.PORT || 4200;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-// * NOTE :: leave this as require() since this file is built Dynamically from webpack
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap } = require('./dist/server/main');
+const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
+if (!ICM_BASE_URL) {
+  console.error('ICM_BASE_URL not set');
+  process.exit(1);
+}
+
+if (process.env.TRUST_ICM) {
+  // trust https certificate if self-signed
+  // see also https://medium.com/nodejs-tips/ssl-certificate-explained-fc86f8aa43d4
+  // and https://github.com/angular/universal/issues/856#issuecomment-436364729
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  console.warn("ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!");
+}
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine(
@@ -95,6 +114,26 @@ app.get(
   })
 );
 
+const icmProxy = proxy(ICM_BASE_URL, {
+  // preserve original path
+  proxyReqPathResolver: req => req.originalUrl,
+  proxyReqOptDecorator: options => {
+    if (process.env.TRUST_ICM) {
+      // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
+      options.rejectUnauthorized = false;
+    }
+    return options;
+  },
+  // fool ICM so it thinks it's running here
+  // https://www.npmjs.com/package/express-http-proxy#preservehosthdr
+  preserveHostHdr: true,
+});
+
+if (process.env.PROXY_ICM) {
+  console.log("making ICM available for all requests to '/INTERSHOP'");
+  app.use('/INTERSHOP', icmProxy);
+}
+
 // All regular routes use the Universal engine
 app.get('*', (req: express.Request, res: express.Response) => {
   if (logging) {
@@ -107,7 +146,15 @@ app.get('*', (req: express.Request, res: express.Response) => {
       res,
     },
     (err: Error, html: string) => {
-      res.status(html ? res.statusCode : 500).send(html || err.message);
+      if (html) {
+        let newHtml: string;
+        if (process.env.PROXY_ICM && req.get('host')) {
+          newHtml = html.replace(new RegExp(ICM_BASE_URL, 'g'), `${req.protocol}://${req.get('host')}`);
+        }
+        res.status(res.statusCode).send(newHtml || html);
+      } else {
+        res.status(500).send(err.message);
+      }
       if (logging) {
         console.log(`RES ${res.statusCode} ${req.url}`);
         if (err) {
