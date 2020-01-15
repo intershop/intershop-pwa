@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ProductBundle } from 'ish-core/models/product/product-bundle.model';
+import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { ProductItemContainerConfiguration } from 'ish-shared/components/product/product-item/product-item.component';
 
 @Component({
@@ -18,7 +19,7 @@ export class ProductBundlePartsComponent {
     displayType: 'row',
     readOnly: () => true,
     displayPrice: () => false,
-    displayInventory: () => false,
+    displayInventory: product => false && !ProductHelper.isMasterProduct(product),
     displayPromotions: () => false,
     displayAddToBasket: () => false,
     displayAddToQuote: () => false,

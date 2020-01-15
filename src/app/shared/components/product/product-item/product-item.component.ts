@@ -32,13 +32,13 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   displayName: () => true,
   displayDescription: () => true,
   displaySKU: () => true,
-  displayInventory: () => true,
+  displayInventory: product => !ProductHelper.isMasterProduct(product),
   displayQuantity: () => true,
   displayRating: () => true,
   displayPrice: () => true,
   displayPromotions: () => true,
   displayVariations: () => true,
-  displayShipment: () => false,
+  displayShipment: product => false && !ProductHelper.isMasterProduct(product),
   displayAddToBasket: product =>
     !!(
       product.inStock &&

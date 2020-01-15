@@ -52,14 +52,8 @@
           [product]="product"
           [showInformationalPrice]="true"
         ></ish-product-price>
-        <ish-product-inventory
-          *ngIf="is('displayInventory') && !isMasterProduct(product)"
-          [product]="product"
-        ></ish-product-inventory>
-        <ish-product-shipment
-          *ngIf="is('displayShipment') && !isMasterProduct(product)"
-          [product]="product"
-        ></ish-product-shipment>
+        <ish-product-inventory *ngIf="is('displayInventory')" [product]="product"></ish-product-inventory>
+        <ish-product-shipment *ngIf="is('displayShipment')" [product]="product"></ish-product-shipment>
 
         <ish-product-variation-select
           *ngIf="variationOptions && is('displayVariations')"
@@ -69,7 +63,7 @@
         ></ish-product-variation-select>
 
         <div class="product-list-actions-container">
-          <ng-container *ngIf="!isMasterProduct(product); else masterProductAtions">
+          <ng-container *ngIf="!isMasterProduct(product); else masterProductActions">
             <form [formGroup]="productItemForm" class="product-form form-horizontal row">
               <div
                 class="action-container"
@@ -101,7 +95,7 @@
             </form>
           </ng-container>
 
-          <ng-template #masterProductAtions>
+          <ng-template #masterProductActions>
             <div class="action-container">
               <a [routerLink]="product | ishProductRoute: category" class="btn btn-primary" role="button">
                 {{ 'product.choose_variation.link' | translate }}

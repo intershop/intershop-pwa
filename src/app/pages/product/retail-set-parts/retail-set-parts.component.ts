@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
-import { SkuQuantityType } from 'ish-core/models/product/product.model';
+import { ProductHelper, SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ProductItemContainerConfiguration } from 'ish-shared/components/product/product-item/product-item.component';
 
 type DisplayType = 'tile' | 'row';
@@ -29,7 +29,7 @@ export class RetailSetPartsComponent {
     displayType: 'row',
     displayAddToCompare: () => false,
     displayAddToQuote: () => false,
-    displayShipment: () => true,
+    displayShipment: product => !ProductHelper.isMasterProduct(product),
   };
 
   /**
