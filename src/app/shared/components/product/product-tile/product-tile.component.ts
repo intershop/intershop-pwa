@@ -16,6 +16,7 @@ export interface ProductTileComponentConfiguration {
   displayVariations(p: Product): boolean;
   displayPrice(p: Product): boolean;
   displayPromotions(p: Product): boolean;
+  displayRating(p: Product): boolean;
   displayAddToBasket(p: Product): boolean;
   displayAddToCompare(p: Product): boolean;
   displayAddToQuote(p: Product): boolean;

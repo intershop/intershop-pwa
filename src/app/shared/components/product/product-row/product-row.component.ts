@@ -24,6 +24,7 @@ export interface ProductRowComponentConfiguration {
   displayPrice(p: Product): boolean;
   displayPromotions(p: Product): boolean;
   displayQuantity(p: Product): boolean;
+  displayRating(p: Product): boolean;
   displayVariations(p: Product): boolean;
   displayShipment(p: Product): boolean;
   displayAddToBasket(p: Product): boolean;

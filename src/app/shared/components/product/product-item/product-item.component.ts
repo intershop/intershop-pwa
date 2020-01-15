@@ -34,6 +34,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   displaySKU: () => true,
   displayInventory: () => true,
   displayQuantity: () => true,
+  displayRating: () => true,
   displayPrice: () => true,
   displayPromotions: () => true,
   displayVariations: () => true,
