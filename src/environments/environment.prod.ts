@@ -22,7 +22,7 @@ export const environment: Environment = {
   mainNavigationMaxSubCategoriesDepth: 2,
   productListingItemsPerPage: 9,
   defaultProductListingViewType: 'grid',
-  serviceWorker: true,
+  serviceWorker: false,
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
