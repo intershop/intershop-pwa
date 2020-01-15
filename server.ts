@@ -22,6 +22,16 @@ import * as express from 'express';
 import { join } from 'path';
 import * as robots from 'express-robots-txt';
 import * as fs from 'fs';
+import * as proxy from 'express-http-proxy';
+
+// * NOTE :: leave this as require() since this file is built Dynamically from webpack
+const {
+  AppServerModuleNgFactory,
+  LAZY_MODULE_MAP,
+  ngExpressEngine,
+  provideModuleMap,
+  environment,
+} = require('./dist/server/main');
 
 const logging = !!process.env.LOGGING;
 
@@ -31,8 +41,18 @@ const app = express();
 const PORT = process.env.PORT || 4200;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-// * NOTE :: leave this as require() since this file is built Dynamically from webpack
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap } = require('./dist/server/main');
+const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
+if (!ICM_BASE_URL) {
+  console.error('ICM_BASE_URL not set');
+  process.exit(1);
+}
+
+if (process.env.TRUST_ICM) {
+  // trust https certificate if self-signed
+  // see also https://medium.com/nodejs-tips/ssl-certificate-explained-fc86f8aa43d4
+  // and https://github.com/angular/universal/issues/856#issuecomment-436364729
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine(
@@ -70,6 +90,24 @@ if (fs.existsSync(pathToRobotsTxt)) {
     })
   );
 }
+
+app.use(
+  '/' + environment.icmURLPrefix,
+  proxy(ICM_BASE_URL, {
+    proxyReqOptDecorator: (proxyReqOpts, originalReq) => {
+      originalReq.url = `/${environment.icmURLPrefix}${originalReq.url}`;
+
+      if (process.env.TRUST_ICM) {
+        // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
+        proxyReqOpts.rejectUnauthorized = false;
+      }
+      return proxyReqOpts;
+    },
+    // fool ICM so it thinks it's running here
+    // https://www.npmjs.com/package/express-http-proxy#preservehosthdr
+    preserveHostHdr: true,
+  })
+);
 
 // Serve static files from /browser
 app.get(
