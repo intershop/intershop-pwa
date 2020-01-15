@@ -49,6 +49,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   displayAddToCompare: product => !ProductHelper.isMasterProduct(product),
   displayAddToQuote: product => !ProductHelper.isMasterProduct(product),
   displayType: 'tile',
+  displayVariationCount: product => ProductHelper.isMasterProduct(product),
 };
 
 /**

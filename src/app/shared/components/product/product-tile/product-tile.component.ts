@@ -20,6 +20,7 @@ export interface ProductTileComponentConfiguration {
   displayAddToBasket(p: Product): boolean;
   displayAddToCompare(p: Product): boolean;
   displayAddToQuote(p: Product): boolean;
+  displayVariationCount(p: Product): boolean;
 }
 
 @Component({
