@@ -26,12 +26,24 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
+            "extractCss": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest"
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              {
+                "input": "src/styles/themes/default/style.scss",
+                "lazy": true,
+                "bundleName": "default"
+              },
+              {
+                "input": "src/styles/themes/blue/style.scss",
+                "lazy": true,
+                "bundleName": "blue"
+              }
+            ],
             "scripts": []
           },
           "configurations": {
