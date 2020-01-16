@@ -25,10 +25,11 @@ do
   eval "export APPLICATION=\${PWA_${i}_APPLICATION:-'-'}"
   eval "export LANG=\${PWA_${i}_LANG:-'default'}"
   eval "export FEATURES=\${PWA_${i}_FEATURES:-'default'}"
+  eval "export THEME=\${PWA_${i}_THEME:-''}"
 
   echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
 
-  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$ICM_INCLUDE' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
+  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME,$ICM_INCLUDE' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
 
   i=$((i+1))
 done

@@ -612,6 +612,7 @@ deploy_review_b2b:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
+      -e THEME=blue
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       --add-host $ICM_HOST:$ICM_IP

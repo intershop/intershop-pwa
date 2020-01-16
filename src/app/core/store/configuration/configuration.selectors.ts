@@ -46,3 +46,8 @@ export const getGTMToken = createSelector(
   getConfigurationState,
   state => state.gtmToken
 );
+
+export const getTheme = createSelector(
+  getConfigurationState,
+  state => state.theme
+);
