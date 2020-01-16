@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 
 import * as injectionKeys from './configurations/injection-keys';
 import { FeatureToggleModule } from './feature-toggle.module';
+import { ThemeService } from './utils/theme/theme.service';
 
 @NgModule({
   imports: [FeatureToggleModule],
@@ -34,10 +35,12 @@ import { FeatureToggleModule } from './feature-toggle.module';
     { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
     { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },
     { provide: injectionKeys.EXTRALARGE_BREAKPOINT_WIDTH, useValue: environment.extralargeBreakpointWidth },
+    { provide: injectionKeys.THEME, useValue: environment.theme },
   ],
 })
 export class ConfigurationModule {
-  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
+  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService, themeService: ThemeService) {
+    themeService.init();
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
 

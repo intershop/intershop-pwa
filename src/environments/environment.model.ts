@@ -73,4 +73,7 @@ export interface Environment {
 
   // configuration of the available locales - hard coded for now
   locales: Locale[];
+
+  // configuration of the styling theme ('default' if not configured)
+  theme?: string;
 }

@@ -8,6 +8,7 @@ export interface ConfigurationState {
   application?: string;
   features?: string[];
   gtmToken?: string;
+  theme?: string;
 }
 
 const initialState: ConfigurationState = {
@@ -18,6 +19,7 @@ const initialState: ConfigurationState = {
   application: undefined,
   features: [],
   gtmToken: undefined,
+  theme: undefined,
 };
 
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {

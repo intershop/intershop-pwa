@@ -28,6 +28,7 @@ Setup at least one PWA channel configuration:
 - use optional `PWA_X_APPLICATION` for the application name
 - use optional `PWA_X_LANG` for the default locale in the form of `lang_COUNTRY`
 - use optional `PWA_X_FEATURES` for a comma separated list of active feature toggles
+- use optional `PWA_X_THEME` for setting the theme of the channel
 
 Temper with the default Page Speed configuration:
 

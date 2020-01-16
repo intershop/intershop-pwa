@@ -49,11 +49,12 @@ export class ConfigurationEffects {
       this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
       this.stateProperties
         .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
-        .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x)))
+        .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
+      this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default'))
     ),
     map(
-      ([, baseURL, server, serverStatic, channel, application, features]) =>
-        new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features })
+      ([, baseURL, server, serverStatic, channel, application, features, theme]) =>
+        new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
     )
   );
 
@@ -85,6 +86,10 @@ export class ConfigurationEffects {
       } else {
         properties.features = paramMap.get('features').split(/,/g);
       }
+    }
+
+    if (paramMap.has('theme')) {
+      properties.theme = paramMap.get('theme');
     }
 
     return Object.keys(properties).length ? [new ApplyConfiguration(properties)] : [];

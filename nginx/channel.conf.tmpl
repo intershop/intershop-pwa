@@ -29,7 +29,7 @@ server {
         if (-f /etc/nginx/conf.d/icm.conf) {
             rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(?!.*\.webmanifest$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
         }
-        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(?!.*\.webmanifest$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES" break;
+        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(?!.*\.webmanifest$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME" break;
 
         proxy_pass $UPSTREAM_PWA;
     }
