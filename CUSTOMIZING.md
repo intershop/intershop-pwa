@@ -36,7 +36,7 @@ When modifying components it is most likely that related test cases will fail. I
 
 ## Styling
 
-Changing the styling of **existing components** can be done by changing relevant information in the global style files under `src/theme`. If too many changes have to be made, it is better to **add the styling in additional files on global or component level**.
+Changing the styling of **existing components** can be done by changing relevant information in the global style files under `src/styles`. If too many changes have to be made, it is better to **add the styling in additional files on global or component level**.
 
 When styling on component level, all styling is encapsulated to exactly this component (default behavior). You can re-use variables from global styling on component level by adding imports like `@import '~theme/variables.scss';`.
 

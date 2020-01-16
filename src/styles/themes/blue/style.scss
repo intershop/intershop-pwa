@@ -1,0 +1,21 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// THEME SPECIFIC CONFIGURATION
+//
+///////////////////////////////////////////////////////////////////////////////
+
+// set theme specific variables
+@import 'variables';
+
+// import general main theme
+@import '../../main';
+
+// customizations
+
+.logo {
+  background-image: url('/assets/img/logo_blue.png');
+}
+
+.mobile-logo {
+  background-image: url('/assets/img/logo_mobile_blue.png');
+}
