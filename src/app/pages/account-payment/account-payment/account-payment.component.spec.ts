@@ -31,13 +31,15 @@ describe('Account Payment Component', () => {
         id: 'ISH_INVOICE',
         serviceId: 'ISH_INVOICE',
         displayName: 'Invoice',
-        paymentInstruments: [{ id: '123' }],
+        paymentInstruments: [{ id: '123', paymentMethod: 'ISH_INVOICE' }],
       },
       {
         id: 'Concardis_CreditCard',
         serviceId: 'Concardis_CreditCard',
         displayName: 'Concardis Credit Card',
-        paymentInstruments: [{ id: '456', accountIdentifier: '**************1111' }],
+        paymentInstruments: [
+          { id: '456', paymentMethod: 'Concardis_CreditCard', accountIdentifier: '**************1111' },
+        ],
       },
       BasketMockData.getPaymentMethod(),
     ];

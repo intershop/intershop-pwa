@@ -41,7 +41,7 @@
       <div id="a_verification_container" class="iframe-container"></div>
       <small *ngIf="errorMessage.cvc?.message" class="form-text">{{ errorMessage.cvc.messageKey | translate }}</small>
     </div>
-    <div class="col-xs-2 col-sm-3">
+    <div class="pull-left">
       <ng-template #CVCHelp>
         <span [innerHTML]="'checkout.credit_card.cvc.popover.content' | translate"></span>
       </ng-template>
@@ -53,21 +53,24 @@
 </div>
 
 <div class="offset-md-4 col-md-8">
-  <ish-checkbox
-    *ngIf="paymentMethod && paymentMethod.saveAllowed"
-    [form]="parameterForm"
-    controlName="saveForLater"
-    label="checkout.save_edit.checkbox.label"
-    data-testing-id="save-for-later-input"
-  >
-  </ish-checkbox>
-  <input
-    type="button"
-    (click)="submitNewPaymentInstrument()"
-    class="btn btn-primary"
-    value="{{ 'checkout.account.submit.button.label' | translate }}"
-  />
-  <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
-    {{ 'checkout.cancel.button.label' | translate }}
-  </button>
+  <div class="form-group">
+    <ish-checkbox
+      *ngIf="paymentMethod && paymentMethod.saveAllowed"
+      [form]="parameterForm"
+      controlName="saveForLater"
+      label="checkout.save_edit.checkbox.label"
+      data-testing-id="save-for-later-input"
+    ></ish-checkbox>
+  </div>
+  <div class="form-group">
+    <input
+      type="button"
+      (click)="submitNewPaymentInstrument()"
+      class="btn btn-primary"
+      value="{{ 'checkout.account.submit.button.label' | translate }}"
+    />
+    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+      {{ 'checkout.cancel.button.label' | translate }}
+    </button>
+  </div>
 </div>

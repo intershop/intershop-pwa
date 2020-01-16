@@ -2611,6 +2611,7 @@
   "account.login.signin.heading": "Anmelden",
   "account.overview.personal_message_b2b.text": "Hallo, {{0}} ({{1}}).<br />Willkommen zurück!",
   "checkout.payment.addPayment.link": "Zahlungsmittel hinzufügen",
+  "checkout.payment.payWith.link": "Mit {{0}} bezahlen",
   "checkout.credit_card.cvc.label": "Kartenprüfnummer (CVC)",
   "checkout.credit_card.user.name": "Name des Karteninhabers",
   "checkout.credit_card.user.name.missing.error": "Bitte geben Sie den Namen des Karteninhabers an.",

@@ -2609,6 +2609,7 @@
   "account.login.signin.heading": "Sign In",
   "account.overview.personal_message_b2b.text": "Hi, {{0}} ({{1}}).<br />Welcome back!",
   "checkout.payment.addPayment.link": "Add Payment Instrument",
+  "checkout.payment.payWith.link": "Pay with {{0}}",
   "checkout.credit_card.cvc.label": "Card Validation Code (CVC)",
   "checkout.credit_card.user.name": "Cardholder Name",
   "checkout.credit_card.user.name.missing.error": "Please enter a cardholder name.",

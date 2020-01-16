@@ -2502,6 +2502,7 @@
   "account.login.signin.heading": "Se connecter",
   "account.overview.personal_message_b2b.text": "Bonjour, {{0}} ({{1}}).<br />Bienvenue !",
   "checkout.payment.addPayment.link": "Ajouter un instrument de paiement",
+  "checkout.payment.payWith.link": "Payer par {{0}}",
   "checkout.credit_card.cvc.label": "Code de validation de la carte",
   "checkout.credit_card.user.name": "Nom du détenteur de la carte",
   "checkout.credit_card.user.name.missing.error": "Veuillez entrer le nom du détenteur de la carte.",

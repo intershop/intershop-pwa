@@ -5,8 +5,11 @@
 <ng-container *ngIf="paymentMethods && paymentMethods.length; else noPaymentMethods">
   <p>{{ 'account.payment.message' | translate }}</p>
 
-  <div *ngIf="preferredPaymentInstrument" class="section">
+  <div *ngIf="preferredPaymentInstrument && preferredPaymentMethod" class="section">
     <h3>{{ 'account.payment.preferred_method' | translate }}</h3>
+    <h4>
+      <b>{{ preferredPaymentMethod.displayName }}</b>
+    </h4>
     <div class="row pb-3" data-testing-id="preferred-payment-instrument">
       <ng-container
         *ngTemplateOutlet="paymentWidget; context: { pi: preferredPaymentInstrument, isPreferred: true }"

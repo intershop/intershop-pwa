@@ -5,9 +5,14 @@
 #payment-accordion {
   margin-bottom: $space-default * 2;
 
+  & > .panel {
+    padding: $space-default / 2;
+    margin-top: $space-default;
+  }
   .panel {
     margin-top: $space-default / 2;
     margin-bottom: 0;
+    background-color: #f7f7f7;
 
     @include box-shadow(none);
 
@@ -17,10 +22,6 @@
 
     .form-check > label {
       display: inline-block;
-      margin-bottom: $space-default;
-    }
-
-    p {
       margin-bottom: $space-default / 2;
     }
   }

@@ -25,6 +25,7 @@ export class AccountPaymentComponent implements OnChanges {
   @Output() updateDefaultPaymentInstrument = new EventEmitter<User>();
 
   preferredPaymentInstrument: PaymentInstrument;
+  preferredPaymentMethod: PaymentMethod;
   savedPaymentMethods: PaymentMethod[];
 
   /**
@@ -48,14 +49,18 @@ export class AccountPaymentComponent implements OnChanges {
   }
 
   determinePreferredPaymentInstrument() {
+    this.preferredPaymentInstrument = undefined;
+    this.preferredPaymentMethod = undefined;
     if (this.paymentMethods && this.user) {
-      this.preferredPaymentInstrument = undefined;
       this.paymentMethods.forEach(pm => {
         this.preferredPaymentInstrument =
           (pm.paymentInstruments &&
             pm.paymentInstruments.find(pi => pi.id === this.user.preferredPaymentInstrumentId)) ||
           this.preferredPaymentInstrument;
       });
+      this.preferredPaymentMethod =
+        this.preferredPaymentInstrument &&
+        this.paymentMethods.find(pm => pm.id === this.preferredPaymentInstrument.paymentMethod);
     }
   }
 

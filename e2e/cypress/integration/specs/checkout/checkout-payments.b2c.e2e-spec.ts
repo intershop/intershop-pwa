@@ -104,7 +104,7 @@ describe('Checkout Payment', () => {
       at(CheckoutPaymentPage, page => page.content.should('contain', '****************0001'));
     });
 
-    it('should delete a direct debit transfer and submit another payment instrument', () => {
+    xit('should delete a direct debit transfer and submit another payment instrument', () => {
       at(CheckoutPaymentPage, page => {
         page.paymentInstrument('ISH_DEBIT_TRANSFER').delete();
 
