@@ -500,7 +500,7 @@
   "account.payment.payment_changes.txt": "Modifications : ",
   "account.payment.payment_created.message": "Le mode de paiement par défaut a été enregistré sur votre compte.",
   "account.payment.payment_delete.txt": "Supprimer",
-  "account.payment.payment_deleted.message": "Le paiement par défaut a été supprimé de votre compte.",
+  "account.payment.payment_deleted.message": "L’instrument de paiement a été supprimé de votre compte.",
   "account.payment.payment_edit.txt": "Modifier",
   "account.payment.payment_minOrderValue_post.text": ", ",
   "account.payment.payment_minOrderValue_pre.text": "disponible de",

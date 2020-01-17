@@ -496,7 +496,7 @@
   "account.payment.payment_changes.txt": "Changes: ",
   "account.payment.payment_created.message": "The preferred payment method has been saved to your account.",
   "account.payment.payment_delete.txt": "Delete",
-  "account.payment.payment_deleted.message": "The payment has been deleted from your account.",
+  "account.payment.payment_deleted.message": "The payment instrument has been deleted from your account.",
   "account.payment.payment_edit.txt": "Edit",
   "account.payment.payment_minOrderValue_post.text": ", ",
   "account.payment.payment_minOrderValue_pre.text": "available from",

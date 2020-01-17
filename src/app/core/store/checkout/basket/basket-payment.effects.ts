@@ -47,7 +47,7 @@ export class BasketPaymentEffects {
   );
 
   /**
-   * Creates a payment at the current basket and saves it at basket.
+   * Creates a payment instrument at the current basket or user respectively - and saves it as payment at basket.
    */
   @Effect()
   createBasketPaymentInstrument$ = this.actions$.pipe(

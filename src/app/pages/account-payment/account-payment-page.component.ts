@@ -30,7 +30,7 @@ export class AccountPaymentPageComponent implements OnInit {
   }
 
   deletePaymentInstrument(instrumentId: string) {
-    this.accountFacade.deletePayment(instrumentId);
+    this.accountFacade.deletePaymentInstrument(instrumentId);
   }
 
   updateDefaultPaymentInstrument(user: User) {

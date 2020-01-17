@@ -8,7 +8,7 @@ import { User } from 'ish-core/models/user/user.model';
 /**
  * The Account Payment Component displays the preferred payment instrument of the user
  * and any further payment instruments. The user can delete payment instruments and change the preferred payment instrument.
- * Adding an payment instrument is only possible during the checkout.
+ * Adding a payment instrument is only possible during the checkout.
  * see also: {@link AccountPaymentPageComponent}
  */
 @Component({

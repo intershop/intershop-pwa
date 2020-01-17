@@ -27,7 +27,7 @@ import {
 import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/orders';
 import {
   CreateUser,
-  DeleteUserPayment,
+  DeleteUserPaymentInstrument,
   LoadUserPaymentMethods,
   LoginUser,
   RequestPasswordReminder,
@@ -126,8 +126,8 @@ export class AccountFacade {
     return this.eligiblePaymentMethods$;
   }
 
-  deletePayment(paymentInstrumentId: string) {
-    this.store.dispatch(new DeleteUserPayment({ id: paymentInstrumentId }));
+  deletePaymentInstrument(paymentInstrumentId: string) {
+    this.store.dispatch(new DeleteUserPaymentInstrument({ id: paymentInstrumentId }));
   }
 
   // ADDRESSES

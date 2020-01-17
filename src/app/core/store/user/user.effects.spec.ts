@@ -578,7 +578,7 @@ describe('User Effects', () => {
     });
 
     it('should call the api service when DeleteUserPayment event is called', done => {
-      const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
+      const action = new ua.DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
       actions$ = of(action);
       effects.deleteUserPayment$.subscribe(() => {
         verify(paymentServiceMock.deleteUserPaymentInstrument(customer.customerNo, 'paymentInstrumentId')).once();
@@ -587,8 +587,8 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a DeleteUserPaymentSuccess action on successful', () => {
-      const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
-      const completion1 = new ua.DeleteUserPaymentSuccess();
+      const action = new ua.DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const completion1 = new ua.DeleteUserPaymentInstrumentSuccess();
       const completion2 = new ua.LoadUserPaymentMethods();
       const completion3 = new SuccessMessage({
         message: 'account.payment.payment_deleted.message',
@@ -606,8 +606,8 @@ describe('User Effects', () => {
 
       when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
 
-      const action = new ua.DeleteUserPayment({ id: 'paymentInstrumentId' });
-      const completion = new ua.DeleteUserPaymentFail({
+      const action = new ua.DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const completion = new ua.DeleteUserPaymentInstrumentFail({
         error: HttpErrorMapper.fromError(error),
       });
 

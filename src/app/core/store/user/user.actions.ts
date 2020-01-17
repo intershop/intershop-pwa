@@ -35,9 +35,9 @@ export enum UserActionTypes {
   LoadUserPaymentMethods = '[Account] Load User Payment Methods',
   LoadUserPaymentMethodsFail = '[Account API] Load User Payment Methods Fail',
   LoadUserPaymentMethodsSuccess = '[Account API] Load User Payment Methods Success',
-  DeleteUserPayment = '[Account] Delete User Payment ',
-  DeleteUserPaymentFail = '[Account API] Delete User Payment Fail',
-  DeleteUserPaymentSuccess = '[Account API] Delete User Payment Success',
+  DeleteUserPaymentInstrument = '[Account] Delete User Instrument Payment ',
+  DeleteUserPaymentInstrumentFail = '[Account API] Delete User Payment Instrument Fail',
+  DeleteUserPaymentInstrumentSuccess = '[Account API] Delete User Payment Instrument Success',
   RequestPasswordReminder = '[Password Reminder] Request Password Reminder',
   RequestPasswordReminderFail = '[Password Reminder API] Request Password Reminder Fail',
   RequestPasswordReminderSuccess = '[Password Reminder API] Request Password Reminder Success',
@@ -176,18 +176,18 @@ export class LoadUserPaymentMethodsSuccess implements Action {
   constructor(public payload: { paymentMethods: PaymentMethod[] }) {}
 }
 
-export class DeleteUserPayment implements Action {
-  readonly type = UserActionTypes.DeleteUserPayment;
+export class DeleteUserPaymentInstrument implements Action {
+  readonly type = UserActionTypes.DeleteUserPaymentInstrument;
   constructor(public payload: { id: string }) {}
 }
 
-export class DeleteUserPaymentFail implements Action {
-  readonly type = UserActionTypes.DeleteUserPaymentFail;
+export class DeleteUserPaymentInstrumentFail implements Action {
+  readonly type = UserActionTypes.DeleteUserPaymentInstrumentFail;
   constructor(public payload: { error: HttpError }) {}
 }
 
-export class DeleteUserPaymentSuccess implements Action {
-  readonly type = UserActionTypes.DeleteUserPaymentSuccess;
+export class DeleteUserPaymentInstrumentSuccess implements Action {
+  readonly type = UserActionTypes.DeleteUserPaymentInstrumentSuccess;
 }
 
 export class RequestPasswordReminder implements Action {
@@ -249,9 +249,9 @@ export type UserAction =
   | LoadUserPaymentMethods
   | LoadUserPaymentMethodsFail
   | LoadUserPaymentMethodsSuccess
-  | DeleteUserPayment
-  | DeleteUserPaymentFail
-  | DeleteUserPaymentSuccess
+  | DeleteUserPaymentInstrument
+  | DeleteUserPaymentInstrumentFail
+  | DeleteUserPaymentInstrumentSuccess
   | RequestPasswordReminder
   | RequestPasswordReminderSuccess
   | RequestPasswordReminderFail

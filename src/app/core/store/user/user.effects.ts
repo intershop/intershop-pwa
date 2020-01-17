@@ -274,20 +274,20 @@ export class UserEffects {
 
   @Effect()
   deleteUserPayment$ = this.actions$.pipe(
-    ofType<userActions.DeleteUserPayment>(userActions.UserActionTypes.DeleteUserPayment),
+    ofType<userActions.DeleteUserPaymentInstrument>(userActions.UserActionTypes.DeleteUserPaymentInstrument),
     mapToPayloadProperty('id'),
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     filter(([, customer]) => !!customer),
     concatMap(([id, customer]) =>
       this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
         concatMapTo([
-          new userActions.DeleteUserPaymentSuccess(),
+          new userActions.DeleteUserPaymentInstrumentSuccess(),
           new userActions.LoadUserPaymentMethods(),
           new SuccessMessage({
             message: 'account.payment.payment_deleted.message',
           }),
         ]),
-        mapErrorToAction(userActions.DeleteUserPaymentFail)
+        mapErrorToAction(userActions.DeleteUserPaymentInstrumentFail)
       )
     )
   );

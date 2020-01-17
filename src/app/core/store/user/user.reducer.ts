@@ -82,7 +82,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.UpdateUserPassword:
     case UserActionTypes.UpdateCustomer:
     case UserActionTypes.LoadUserPaymentMethods:
-    case UserActionTypes.DeleteUserPayment: {
+    case UserActionTypes.DeleteUserPaymentInstrument: {
       return {
         ...state,
         loading: true,
@@ -107,7 +107,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
     case UserActionTypes.UpdateUserPasswordFail:
     case UserActionTypes.UpdateCustomerFail:
     case UserActionTypes.LoadUserPaymentMethodsFail:
-    case UserActionTypes.DeleteUserPaymentFail: {
+    case UserActionTypes.DeleteUserPaymentInstrumentFail: {
       const error = action.payload.error;
 
       return {
@@ -195,7 +195,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
       };
     }
 
-    case UserActionTypes.DeleteUserPaymentSuccess: {
+    case UserActionTypes.DeleteUserPaymentInstrumentSuccess: {
       return {
         ...state,
         loading: false,

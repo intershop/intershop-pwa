@@ -181,15 +181,16 @@ describe('Checkout Payment Component', () => {
       expect(component.formIsOpen(-1)).toBeTrue();
     });
 
-    it('should throw createBasketPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
+    it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(1);
 
-      component.createBasketPaymentInstrument.subscribe(formValue => {
-        expect(formValue).toEqual({
+      component.createPaymentInstrument.subscribe(formValue => {
+        expect(formValue.paymentInstrument).toEqual({
           paymentMethod: 'Concardis_CreditCard',
           parameters: [{ name: 'creditCardNumber', value: '123' }],
         });
+        expect(formValue.saveForLater).toBeFalse();
         done();
       });
 
@@ -201,11 +202,12 @@ describe('Checkout Payment Component', () => {
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(2);
 
-      component.createUserPaymentInstrument.subscribe(formValue => {
-        expect(formValue).toEqual({
+      component.createPaymentInstrument.subscribe(formValue => {
+        expect(formValue.paymentInstrument).toEqual({
           paymentMethod: 'ISH_CreditCard',
           parameters: [{ name: 'creditCardNumber', value: '456' }],
         });
+        expect(formValue.saveForLater).toBeTrue();
         done();
       });
 
