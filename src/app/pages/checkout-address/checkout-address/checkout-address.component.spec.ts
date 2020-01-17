@@ -4,8 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -40,6 +41,7 @@ describe('Checkout Address Component', () => {
         MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockDirective(ServerHtmlDirective),
       ],
       imports: [
         NgbCollapseModule,

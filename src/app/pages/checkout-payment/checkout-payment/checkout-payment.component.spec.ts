@@ -5,8 +5,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -48,6 +49,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
       ],
       imports: [

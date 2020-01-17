@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -38,6 +39,7 @@ describe('Checkout Review Component', () => {
         MockComponent(InfoBoxComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
+        MockDirective(ServerHtmlDirective),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();

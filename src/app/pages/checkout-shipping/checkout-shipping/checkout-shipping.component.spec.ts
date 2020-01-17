@@ -5,8 +5,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -42,6 +43,7 @@ describe('Checkout Shipping Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbPopover),
+        MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
       ],
       imports: [

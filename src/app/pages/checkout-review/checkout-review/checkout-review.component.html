@@ -94,13 +94,11 @@
           controlName="termsAndConditions"
           [errorMessages]="{ pattern: 'checkout.tac.error.tip' }"
         >
-          <span>{{ 'checkout.tac' | translate }}&nbsp;</span>
-          <ish-modal-dialog-link
-            linkText="checkout.tac.link"
-            [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, size: 'lg' }"
-          >
-            <ish-content-include includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"></ish-content-include>
-          </ish-modal-dialog-link>
+          <span
+            [ishServerHtml]="
+              'checkout.tac.text' | translate: { '0': '/page/systempage.termsAndConditions.pagelet2-Page' }
+            "
+          ></span>
         </ish-checkbox>
       </form>
 

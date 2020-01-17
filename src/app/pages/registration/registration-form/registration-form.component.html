@@ -60,26 +60,15 @@
                 [errorMessages]="{ pattern: 'registration.tac.error.tip' }"
               >
                 <span
-                  [ishServerHtml]="'registration.tac_privacy_policy.label' | translate"
-                  [callbacks]="{
-                    callbackTAC: showModalDialog(modalDialogTAC),
-                    callbackPP: showModalDialog(modalDialogPP)
-                  }"
+                  [ishServerHtml]="
+                    'registration.tac_privacy_policy.text'
+                      | translate
+                        : {
+                            '0': '/page/systempage.termsAndConditions.pagelet2-Page',
+                            '1': '/page/systempage.privacyPolicy.pagelet2-Page'
+                          }
+                  "
                 ></span>
-
-                <!-- modal terms and conditions -->
-                <ish-modal-dialog #modalDialogTAC [options]="{ size: 'lg' }">
-                  <ish-content-include
-                    includeId="systeminclude.dialog.termsAndConditions.pagelet2-Include"
-                  ></ish-content-include>
-                </ish-modal-dialog>
-
-                <!-- modal privacyPolicy -->
-                <ish-modal-dialog #modalDialogPP [options]="{ size: 'lg' }">
-                  <ish-content-include
-                    includeId="systeminclude.dialog.privacyPolicy.pagelet2-Include"
-                  ></ish-content-include>
-                </ish-modal-dialog>
               </ish-checkbox>
             </div>
           </div>
