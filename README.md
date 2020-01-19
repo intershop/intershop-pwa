@@ -30,7 +30,7 @@ The project can alternatively be run in production mode with `npm start`.
 
 ## Customization
 
-Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./CUSTOMIZING.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
+Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./docs/customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
 
 ## Development Server
 
