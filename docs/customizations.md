@@ -4,11 +4,11 @@ When customizing the PWA, always keep in mind that you probably want to upgrade 
 
 > Keep modifications on existing files as minimal as possible!
 
-It can be tempting to always modify existing templates, component and style files inline when doing customization. However, when merging incoming upgrades the number of merge conflicts can possibly be big. So if you want to upgrade to new PWA versions later, stick to the following recommendations.
+It can be tempting to always modify existing templates, component and style files inline when doing customization. However, when merging incoming upgrades the number of merge conflicts can possibly be large. So if you want to upgrade to new PWA versions later, stick to the following recommendations.
 
 ## Start Customization
 
-To start customizing **set a prefix** for your custom components with the script `node schematics/customization <prefix>`. After that we recommend to additionally use the prefix in every component to further help identifying customized components.
+To start customizing, **set a prefix** for your custom components with the script `node schematics/customization <prefix>`. After that we recommend to additionally use the prefix in every component to further help identifying customized components.
 
 ```bash
 $ node schematics/customization custom
@@ -17,45 +17,45 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 ...
 ```
 
-The script also creates an **additional theme** under `src/styles/themes`. Here you can adjust colors and add overrides to existing styling.
+The script also creates an **additional theme** under `src/styles/themes`. Here you can adjust colors and add overrides to the existing styling.
 
-## Import Changes from new Release
+## Import Changes from New Release
 
-> Prior to 0.16.1 the whole of the git history changed entirely. Please see https://github.com/intershop/intershop-pwa/issues/62 for suggestions on importing the new history.
+> Prior to 0.16.1 the entire git history changed completely. Please see https://github.com/intershop/intershop-pwa/issues/62 for suggestions on importing the new history.
 
-Importing changes of new releases is done with `git` tooling. If you stick to the guidelines in this chapter the problems arising in the process of updating will not be as impacting as you might fear. Also remember to `npm install` after you are importing a change that modified the `package-lock.json` and run tests and linting in the process.
+Importing changes of new releases is done with `git` tooling. If you stick to the guidelines in this chapter, the problems arising in the process of updating will not be as impacting as you might fear. Also remember to `npm install` after you are importing a change that modified the `package-lock.json` and run tests and linting in the process.
 
 For importing changes from the current Release you can use different approaches:
 
-### 1. Merge the new release in its entirety.
+### 1. Merge the New Release in Its Entirety
 
 This way your development will not deviate that much from the current PWA development, but you will have to resolve all appearing conflicts at once.
 
 Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
 
-### 2. Cherry-Pick individual changes from the new release.
+### 2. Cherry-Pick Individual Changes From the New Release
 
 By cherry-picking changes individually you can decide to skip certain changes and you will get smaller amounts of merge conflicts. However, that way the histories will deviate more and more over time.
 
-To execute this add the Intershop PWA GitHub repository as a second remote in your project and `git cherry-pick` the range of commits for this release.
+To execute this, add the Intershop PWA GitHub repository as a second remote in your project and `git cherry-pick` the range of commits for this release.
 
-### 3. Rebase your changes onto the new release.
+### 3. Rebase Your Changes Onto the New Release
 
 This way your project code will always be up-to-date with the current Intershop PWA history, as this history will stay the base of the project over all releases.
 
-To perform this update use `git rebase --onto <new release tag> <old release hash>` on your projects main branch. Your running feature branches must then be rebased the same way onto the new development branch.
+To perform this update, use `git rebase --onto <new release tag> <old release hash>` on your project's main branch. Your running feature branches must then be rebased the same way onto the new development branch.
 
-As it may be the best way to keep the original history intact, the upgrade process can be quite challenging. By rebasing every single one of your customizations commits, every commit is virtually re-applied onto the current PWA history. You can imagine it as pretending to start the custom project anew onto the current version. If your projects history is clean and every commit is well-described and concise, this might be a way to go.
+As it may be the best way to keep the original history intact, the upgrade process can be quite challenging. By rebasing every single one of your customizations commits, every commit is virtually re-applied onto the current PWA history. You can imagine it as pretending to start the custom project anew onto the current version. If your project's history is clean and every commit is well-described and concise, this might be a way to go.
 
 ## Specific Concerns
 
 ### Components
 
-When **adding new functionality**, it is better to encapsulate it in **new components** that handle every aspect of the customization and just **use them in existing templates**. That way the modifications on existing code is most often kept to a single line change only.
+When **adding new functionality**, it is better to encapsulate it in **new components** that handle every aspect of the customization and just **use them in existing templates**. That way the modifications on existing code are most often kept to a single line change only.
 
-When **heavily customizing** existing components it is better to **copy components** and change all references. If 20% of the component has to be changed it is already a good idea to duplicate it. That way incoming changes will not affect your customizations. Typical hot-spots where copying is a good idea are header-related or product-detail page related customizations.
+When **heavily customizing** existing components it is better to **copy components** and change all references. If 20 % of the component has to be changed, it is already a good idea to duplicate it. That way incoming changes will not affect your customizations. Typical hot-spots where copying is a good idea are header-related or product-detail-page related customizations.
 
-We are supplying a the schematic `customized-copy` for copying components and replacing all usages.
+We are supplying a schematic `customized-copy` for copying components and replacing all usages.
 
 ```bash
 $ node schematics/customization custom
@@ -83,7 +83,7 @@ When adding new independent features to the PWA, it might be a good idea to **ad
 
 ### Data
 
-When **adding new fields** to PWA data models, add them to interfaces and **map them as early as possible** in mapper classes to model classes. That way the data can be readily used on templates. If improving and parsing improper data too late it could lead to more modifications on components and templates which will be harder to upgrade later on.
+When **adding new fields** to PWA data models, add them to interfaces and **map them as early as possible** in mapper classes to model classes. That way the data can be readily used on templates. Improving and parsing improper data too late could lead to more modifications on components and templates which will be harder to upgrade later on.
 
 ### NgRx
 
@@ -97,7 +97,7 @@ When modifying components it is most likely that related test cases will fail. I
 
 Changing the styling of **existing components** should be done by adding overrides in the custom theme folder under `src/styles/themes`. You can also change relevant information in the global style files under `src/styles`. If too many changes have to be made, it is better to **add the styling in additional files on global or component level**.
 
-When styling on component level, all styling is encapsulated to exactly this component (default behavior). You can re-use variables from global styling on component level by adding imports like `@import '~theme/variables.scss';`.
+When styling is done on component level, all styling is encapsulated to exactly this component (default behavior). You can re-use variables from global styling on component level by adding imports like `@import '~theme/variables.scss';`.
 
 ### Dependencies
 
