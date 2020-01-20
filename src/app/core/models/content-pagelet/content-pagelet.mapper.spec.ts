@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { getICMStaticURL } from 'ish-core/store/configuration';
 
 import { ContentPageletData } from './content-pagelet.interface';
 import { ContentPageletMapper } from './content-pagelet.mapper';
@@ -11,18 +11,9 @@ describe('Content Pagelet Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: {
-              configuration: {
-                baseURL: 'http://www.example.org',
-                serverStatic: 'static',
-                channel: 'channel',
-              },
-            },
-          },
+      providers: [
+        provideMockStore({
+          selectors: [{ selector: getICMStaticURL, value: 'http://www.example.org/static/channel/-' }],
         }),
       ],
     });

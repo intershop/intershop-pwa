@@ -2,8 +2,10 @@ import { ConfigurationAction, ConfigurationActionTypes } from './configuration.a
 
 export interface ConfigurationState {
   baseURL?: string;
-  server?: string;
-  serverStatic?: string;
+  urlPrefix?: string;
+  serverGroup?: string;
+  restURLPath?: string;
+  staticURLPath?: string;
   channel?: string;
   application?: string;
   features?: string[];
@@ -13,8 +15,10 @@ export interface ConfigurationState {
 
 const initialState: ConfigurationState = {
   baseURL: undefined,
-  server: undefined,
-  serverStatic: undefined,
+  urlPrefix: undefined,
+  serverGroup: undefined,
+  restURLPath: undefined,
+  staticURLPath: undefined,
   channel: undefined,
   application: undefined,
   features: [],

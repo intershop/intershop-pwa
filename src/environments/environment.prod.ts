@@ -5,8 +5,10 @@ export const environment: Environment = {
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
   icmBaseURL: 'https://intershoppwa.azurewebsites.net',
-  icmServer: 'INTERSHOP/rest/WFS',
-  icmServerStatic: 'INTERSHOP/static/WFS',
+  icmURLPrefix: 'INTERSHOP',
+  icmServerGroup: 'WFS',
+  icmRestURLPath: 'rest',
+  icmStaticURLPath: 'static',
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
   /* FEATURE TOOGLES */

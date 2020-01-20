@@ -361,7 +361,7 @@
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {
-          "from": "(.*environments/environment).+",
+          "from": "(?!.*environments/environment.model)(.*environments/environment).+",
           "message": "Importing specific environments is not allowed. Use the default one.",
           "fix": "$1"
         },

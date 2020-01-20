@@ -42,19 +42,31 @@ export class ConfigurationEffects {
     ofType(ROOT_EFFECTS_INIT),
     take(1),
     withLatestFrom(
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_BASE_URL', 'icmBaseURL'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER', 'icmServer'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_SERVER_STATIC', 'icmServerStatic'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_CHANNEL', 'icmChannel'),
-      this.stateProperties.getStateOrEnvOrDefault<string>('ICM_APPLICATION', 'icmApplication'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmBaseURL', 'ICM_BASE_URL'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmURLPrefix'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmServerGroup'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmRestURLPath'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmStaticURLPath'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmChannel', 'ICM_CHANNEL'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmApplication', 'ICM_APPLICATION'),
       this.stateProperties
-        .getStateOrEnvOrDefault<string | string[]>('FEATURES', 'features')
+        .getStateOrEnvOrDefault<string | string[]>('features', 'FEATURES')
         .pipe(map(x => (typeof x === 'string' ? x.split(/,/g) : x))),
-      this.stateProperties.getStateOrEnvOrDefault<string>('THEME', 'theme').pipe(map(x => x || 'default'))
+      this.stateProperties.getStateOrEnvOrDefault<string>('theme', 'THEME').pipe(map(x => x || 'default'))
     ),
     map(
-      ([, baseURL, server, serverStatic, channel, application, features, theme]) =>
-        new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
+      ([, baseURL, urlPrefix, serverGroup, restURLPath, staticURLPath, channel, application, features, theme]) =>
+        new ApplyConfiguration({
+          baseURL,
+          urlPrefix,
+          serverGroup,
+          restURLPath,
+          staticURLPath,
+          channel,
+          application,
+          features,
+          theme,
+        })
     )
   );
 
@@ -63,7 +75,7 @@ export class ConfigurationEffects {
     takeWhile(() => isPlatformServer(this.platformId)),
     ofType(ROOT_EFFECTS_INIT),
     take(1),
-    withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
+    withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('gtmToken', 'GTM_TOKEN')),
     map(([, gtmToken]) => gtmToken),
     whenTruthy(),
     map(gtmToken => new SetGTMToken({ gtmToken }))

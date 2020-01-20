@@ -2,17 +2,16 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
 import { ErrorActionTypes, ServerError } from 'ish-core/store/error';
-import { SetAPIToken } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { getAPIToken } from 'ish-core/store/user';
 
 import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -29,16 +28,12 @@ describe('Api Service', () => {
         imports: [
           // https://angular.io/guide/http#testing-http-requests
           HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
-          }),
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({ selectors: [{ selector: getRestEndpoint, value: REST_URL }] }),
+        ],
       });
 
       apiService = TestBed.get(ApiService);
@@ -211,7 +206,8 @@ describe('Api Service', () => {
     let httpTestingController: HttpTestingController;
     let apiService: ApiService;
 
-    const REST_URL = 'http://www.example.org/WFS/site/-';
+    const SERVER_URL = 'http://www.example.org/WFS';
+    const REST_URL = `${SERVER_URL}/site/-`;
     const categoriesPath = `${REST_URL}/categories`;
     const webcamsPath = `${categoriesPath}/Cameras-Camcorders/577`;
     const webcamResponse = {
@@ -230,18 +226,17 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({
+            selectors: [
+              { selector: getRestEndpoint, value: REST_URL },
+              { selector: getICMServerURL, value: SERVER_URL },
+            ],
           }),
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
       apiService = TestBed.get(ApiService);
       httpTestingController = TestBed.get(HttpTestingController);
@@ -395,103 +390,121 @@ describe('Api Service', () => {
   describe('API Service Headers', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
-    let store$: Store<{}>;
     let httpTestingController: HttpTestingController;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          // https://angular.io/guide/http#testing-http-requests
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer, user: userReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
-          }),
-        ],
-        providers: [ApiServiceErrorHandler, ApiService],
+    describe('without token in store', () => {
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [
+            // https://angular.io/guide/http#testing-http-requests
+            HttpClientTestingModule,
+          ],
+          providers: [
+            ApiServiceErrorHandler,
+            ApiService,
+            provideMockStore({ selectors: [{ selector: getRestEndpoint, value: REST_URL }] }),
+          ],
+        });
+
+        apiService = TestBed.get(ApiService);
+        httpTestingController = TestBed.get(HttpTestingController);
       });
 
-      apiService = TestBed.get(ApiService);
-      httpTestingController = TestBed.get(HttpTestingController);
-      store$ = TestBed.get(Store);
+      afterEach(() => {
+        // After every test, assert that there are no more pending requests.
+        httpTestingController.verify();
+      });
+
+      it('should always have default headers', () => {
+        apiService.get('dummy').subscribe(fail, fail, fail);
+
+        const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+        expect(req.request.headers.keys()).not.toBeEmpty();
+        expect(req.request.headers.get('content-type')).toEqual('application/json');
+        expect(req.request.headers.get('Accept')).toEqual('application/json');
+      });
+
+      it('should always append additional headers', () => {
+        apiService
+          .get('dummy', {
+            headers: new HttpHeaders({
+              dummy: 'test',
+            }),
+          })
+          .subscribe(fail, fail, fail);
+
+        const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+        expect(req.request.headers.keys()).not.toBeEmpty();
+        expect(req.request.headers.has('dummy')).toBeTrue();
+        expect(req.request.headers.get('content-type')).toEqual('application/json');
+        expect(req.request.headers.get('Accept')).toEqual('application/json');
+      });
+
+      it('should always have overridable default headers', () => {
+        apiService
+          .get('dummy', {
+            headers: new HttpHeaders({
+              Accept: 'application/xml',
+              'content-type': 'application/xml',
+            }),
+          })
+          .subscribe(fail, fail, fail);
+
+        const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+        expect(req.request.headers.keys()).not.toBeEmpty();
+        expect(req.request.headers.get('content-type')).toEqual('application/xml');
+        expect(req.request.headers.get('Accept')).toEqual('application/xml');
+      });
+
+      it('should not have a token, when no token is in store', () => {
+        apiService.get('dummy').subscribe(fail, fail, fail);
+
+        const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+        expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+      });
     });
 
-    afterEach(() => {
-      // After every test, assert that there are no more pending requests.
-      httpTestingController.verify();
-    });
+    describe('with token in store', () => {
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [
+            // https://angular.io/guide/http#testing-http-requests
+            HttpClientTestingModule,
+          ],
+          providers: [
+            ApiServiceErrorHandler,
+            ApiService,
+            provideMockStore({
+              selectors: [{ selector: getRestEndpoint, value: REST_URL }, { selector: getAPIToken, value: 'blubb' }],
+            }),
+          ],
+        });
 
-    it('should always have default headers', () => {
-      apiService.get('dummy').subscribe(fail, fail, fail);
+        apiService = TestBed.get(ApiService);
+        httpTestingController = TestBed.get(HttpTestingController);
+      });
 
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.keys()).not.toBeEmpty();
-      expect(req.request.headers.get('content-type')).toEqual('application/json');
-      expect(req.request.headers.get('Accept')).toEqual('application/json');
-    });
+      afterEach(() => {
+        // After every test, assert that there are no more pending requests.
+        httpTestingController.verify();
+      });
 
-    it('should always append additional headers', () => {
-      apiService
-        .get('dummy', {
-          headers: new HttpHeaders({
-            dummy: 'test',
-          }),
-        })
-        .subscribe(fail, fail, fail);
+      it('should have a token, when token is in store', () => {
+        apiService.get('dummy').subscribe(fail, fail, fail);
 
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.keys()).not.toBeEmpty();
-      expect(req.request.headers.has('dummy')).toBeTrue();
-      expect(req.request.headers.get('content-type')).toEqual('application/json');
-      expect(req.request.headers.get('Accept')).toEqual('application/json');
-    });
+        const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+        expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeTrue();
+        expect(req.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('blubb');
+      });
 
-    it('should always have overridable default headers', () => {
-      apiService
-        .get('dummy', {
-          headers: new HttpHeaders({
-            Accept: 'application/xml',
-            'content-type': 'application/xml',
-          }),
-        })
-        .subscribe(fail, fail, fail);
+      it('should not have a token, when request is authorization request', () => {
+        apiService
+          .get('dummy', { headers: new HttpHeaders().set(ApiService.AUTHORIZATION_HEADER_KEY, 'dummy') })
+          .subscribe(fail, fail, fail);
 
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.keys()).not.toBeEmpty();
-      expect(req.request.headers.get('content-type')).toEqual('application/xml');
-      expect(req.request.headers.get('Accept')).toEqual('application/xml');
-    });
-
-    it('should not have a token, when no token is in store', () => {
-      apiService.get('dummy').subscribe(fail, fail, fail);
-
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
-    });
-
-    it('should have a token, when token is in store', () => {
-      const apiToken = 'blubb';
-      store$.dispatch(new SetAPIToken({ apiToken }));
-      apiService.get('dummy').subscribe(fail, fail, fail);
-
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeTrue();
-      expect(req.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(apiToken);
-    });
-
-    it('should not have a token, when request is authorization request', () => {
-      const apiToken = 'blubb';
-      store$.dispatch(new SetAPIToken({ apiToken }));
-      apiService
-        .get('dummy', { headers: new HttpHeaders().set(ApiService.AUTHORIZATION_HEADER_KEY, 'dummy') })
-        .subscribe(fail, fail, fail);
-
-      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
-      expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+        const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+        expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+      });
     });
   });
 });

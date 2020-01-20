@@ -8,6 +8,7 @@ import { getConfigurationState } from 'ish-core/store/configuration';
 import { mapToProperty } from 'ish-core/utils/operators';
 
 import { environment } from '../../../../environments/environment';
+import { Environment } from '../../../../environments/environment.model';
 
 /**
  * Service for retrieving injection properties {@link ICM_BASE_URL} and {@link REST_ENDPOINT}.
@@ -20,7 +21,7 @@ export class StatePropertiesService {
   /**
    * Retrieve property from first set property of server state, system environment or environment.ts
    */
-  getStateOrEnvOrDefault<T>(envKey: string, envPropKey: string): Observable<T> {
+  getStateOrEnvOrDefault<T>(envPropKey: keyof Environment, envKey?: string): Observable<T> {
     return this.store.pipe(
       select(getConfigurationState),
       // tslint:disable-next-line:no-any
@@ -28,7 +29,7 @@ export class StatePropertiesService {
       map(value => {
         if (value && value.length) {
           return value;
-        } else if (isPlatformServer(this.platformId) && process.env[envKey]) {
+        } else if (isPlatformServer(this.platformId) && envKey && process.env[envKey]) {
           return process.env[envKey];
         } else {
           return environment[envPropKey];

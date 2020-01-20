@@ -1,12 +1,12 @@
 import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { MOCK_SERVER_API, MUST_MOCK_PATHS } from 'ish-core/configurations/injection-keys';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { getRestEndpoint } from 'ish-core/store/configuration';
 
 import { MockInterceptor } from './mock.interceptor';
 
@@ -18,20 +18,11 @@ describe('Mock Interceptor', () => {
     jest.spyOn(console, 'log').mockImplementation(() => undefined);
 
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: {
-              configuration: { baseURL: 'http://example.org', server: 'WFS', channel: 'site' },
-            },
-          },
-        }),
-      ],
       providers: [
         MockInterceptor,
         { provide: MOCK_SERVER_API, useValue: true },
         { provide: MUST_MOCK_PATHS, useValue: [] },
+        provideMockStore({ selectors: [{ selector: getRestEndpoint, value: BASE_URL }] }),
       ],
     });
     mockInterceptor = TestBed.get(MockInterceptor);

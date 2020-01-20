@@ -39,8 +39,10 @@ describe('Configuration Selectors', () => {
         store$.dispatch(
           new ApplyConfiguration({
             baseURL: 'http://example.org',
-            server: 'api',
-            serverStatic: 'static',
+            urlPrefix: 'INTERSHOP',
+            restURLPath: 'api',
+            staticURLPath: 'static',
+            serverGroup: 'WFS',
             channel: 'site',
             features: ['compare', 'recently'],
           })
@@ -48,10 +50,10 @@ describe('Configuration Selectors', () => {
       });
 
       it('should have defined values for all selectors', () => {
-        expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/-');
-        expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
-        expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
-        expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/-');
+        expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/api/WFS/site/-"`);
+        expect(getICMBaseURL(store$.state)).toMatchInlineSnapshot(`"http://example.org"`);
+        expect(getICMServerURL(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/api/WFS"`);
+        expect(getICMStaticURL(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/static/WFS/site/-"`);
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       });
 
@@ -65,10 +67,14 @@ describe('Configuration Selectors', () => {
         });
 
         it('should have defined values for all selectors', () => {
-          expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
-          expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
-          expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
-          expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
+          expect(getRestEndpoint(store$.state)).toMatchInlineSnapshot(
+            `"http://example.org/INTERSHOP/api/WFS/site/app"`
+          );
+          expect(getICMBaseURL(store$.state)).toMatchInlineSnapshot(`"http://example.org"`);
+          expect(getICMServerURL(store$.state)).toMatchInlineSnapshot(`"http://example.org/INTERSHOP/api/WFS"`);
+          expect(getICMStaticURL(store$.state)).toMatchInlineSnapshot(
+            `"http://example.org/INTERSHOP/static/WFS/site/app"`
+          );
           expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
         });
       });

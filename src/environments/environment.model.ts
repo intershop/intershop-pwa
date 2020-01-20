@@ -6,9 +6,14 @@ export interface Environment {
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
 
+  // base server url mapping, see appserver.properties
   icmBaseURL: string;
-  icmServer: string;
-  icmServerStatic: string;
+  icmURLPrefix: string;
+  icmServerGroup: string;
+  icmRestURLPath: string;
+  icmStaticURLPath: string;
+
+  // application specific
   icmChannel: string;
   icmApplication?: string;
 

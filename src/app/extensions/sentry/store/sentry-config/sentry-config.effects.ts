@@ -46,7 +46,7 @@ export class SentryConfigEffects {
     ofType<{ features: string[] } & Action>(UPDATE),
     filter(action => action.features.includes('sentry')),
     take(1),
-    withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('SENTRY_DSN', 'sentryDSN')),
+    withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('sentryDSN', 'SENTRY_DSN')),
     map(([, sentryDSN]) => sentryDSN),
     whenTruthy(),
     map(dsn => new SetSentryConfig({ dsn }))

@@ -10,8 +10,10 @@ export const environment: Environment = {
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
   icmBaseURL: 'http://localhost:4200',
-  icmServer: 'INTERSHOP/rest/WFS',
-  icmServerStatic: 'INTERSHOP/static/WFS',
+  icmURLPrefix: 'INTERSHOP',
+  icmServerGroup: 'WFS',
+  icmRestURLPath: 'rest',
+  icmStaticURLPath: 'static',
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
   mockServerAPI: true,
