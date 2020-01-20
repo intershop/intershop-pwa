@@ -57,7 +57,7 @@
 
         <ish-product-variation-select
           *ngIf="variationOptions && is('displayVariations')"
-          [readOnly]="configuration.readOnly"
+          [readOnly]="is('readOnly')"
           [variationOptions]="variationOptions"
           (selectVariation)="variationSelected($event)"
         ></ish-product-variation-select>
@@ -73,7 +73,7 @@
               >
                 <ish-product-quantity
                   *ngIf="is('displayQuantity')"
-                  [readOnly]="configuration.readOnly"
+                  [readOnly]="is('readOnly')"
                   [allowZeroQuantity]="configuration.allowZeroQuantity"
                   [quantityLabel]="configuration.quantityLabel"
                   [product]="product"
