@@ -91,23 +91,25 @@ if (fs.existsSync(pathToRobotsTxt)) {
   );
 }
 
-app.use(
-  '/' + environment.icmURLPrefix,
-  proxy(ICM_BASE_URL, {
-    proxyReqOptDecorator: (proxyReqOpts, originalReq) => {
-      originalReq.url = `/${environment.icmURLPrefix}${originalReq.url}`;
+if (process.env.PROXY_ICM) {
+  app.use(
+    '/' + environment.icmURLPrefix,
+    proxy(ICM_BASE_URL, {
+      proxyReqOptDecorator: (proxyReqOpts, originalReq) => {
+        originalReq.url = `/${environment.icmURLPrefix}${originalReq.url}`;
 
-      if (process.env.TRUST_ICM) {
-        // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
-        proxyReqOpts.rejectUnauthorized = false;
-      }
-      return proxyReqOpts;
-    },
-    // fool ICM so it thinks it's running here
-    // https://www.npmjs.com/package/express-http-proxy#preservehosthdr
-    preserveHostHdr: true,
-  })
-);
+        if (process.env.TRUST_ICM) {
+          // https://github.com/villadora/express-http-proxy#q-how-to-ignore-self-signed-certificates-
+          proxyReqOpts.rejectUnauthorized = false;
+        }
+        return proxyReqOpts;
+      },
+      // fool ICM so it thinks it's running here
+      // https://www.npmjs.com/package/express-http-proxy#preservehosthdr
+      preserveHostHdr: true,
+    })
+  );
+}
 
 // Serve static files from /browser
 app.get(
