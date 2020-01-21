@@ -494,7 +494,7 @@
   "account.payment.message": "Wählen Sie ein bevorzugtes Zahlungsmittel für eine schnellere Zahlung bei zukünftigen Einkäufen.",
   "account.payment.payment_cancel.txt": "Abbrechen",
   "account.payment.payment_changes.txt": "Änderungen: ",
-  "account.payment.payment_created.message": "Die bevorzugte Zahlungsart wurde in Ihrem Konto gespeichert.",
+  "account.payment.payment_created.message": "Das bevorzugte Zahlungsmittel wurde in Ihrem Konto gespeichert.",
   "account.payment.payment_delete.txt": "Löschen",
   "account.payment.payment_deleted.message": "Das Zahlungsmittel wurde von Ihrem Konto gelöscht.",
   "account.payment.payment_edit.txt": "Bearbeiten",

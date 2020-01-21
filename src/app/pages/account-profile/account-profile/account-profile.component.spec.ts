@@ -55,7 +55,6 @@ describe('Account Profile Component', () => {
 
   it('should display customer data and edit links after creation ', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id="success-message"]')).toBeFalsy();
     expect(element.querySelector('[data-testing-id="email-field"]').innerHTML).toBe('patricia@test.intershop.de');
     expect(element.querySelector('[data-testing-id="edit-email"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="edit-password"]')).toBeTruthy();
@@ -71,11 +70,5 @@ describe('Account Profile Component', () => {
 
     expect(element.querySelector('[data-testing-id="company-info"]')).toBeTruthy();
     expect(element.querySelector('[data-testing-id="edit-company"]')).toBeTruthy();
-  });
-
-  it('should show a success message if the input parameter successMessage is set', () => {
-    component.successMessage = 'success';
-    fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id="success-message"]')).toBeTruthy();
   });
 });

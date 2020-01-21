@@ -28,7 +28,6 @@ export enum UserActionTypes {
   UpdateCustomer = '[Account] Update Customer',
   UpdateCustomerSuccess = '[Account API] Update Customer Succeeded',
   UpdateCustomerFail = '[Account API] Update Customer Failed',
-  UserSuccessMessageReset = '[Account Internal] Reset Update Success Message',
   UserErrorReset = '[Account Internal] Reset User Error',
   LoadUserByAPIToken = '[Account] Load User by API Token',
   SetPGID = '[Personalization Internal] Set PGID',
@@ -101,7 +100,7 @@ export class CreateUserFail implements Action {
 
 export class UpdateUser implements Action {
   readonly type = UserActionTypes.UpdateUser;
-  constructor(public payload: { user: User; successMessage?: string }) {}
+  constructor(public payload: { user: User; successMessage?: string; successRouterLink?: string }) {}
 }
 
 export class UpdateUserSuccess implements Action {
@@ -131,7 +130,7 @@ export class UpdateUserPasswordFail implements Action {
 
 export class UpdateCustomer implements Action {
   readonly type = UserActionTypes.UpdateCustomer;
-  constructor(public payload: { customer: Customer; successMessage?: string }) {}
+  constructor(public payload: { customer: Customer; successMessage?: string; successRouterLink?: string }) {}
 }
 
 export class UpdateCustomerSuccess implements Action {
@@ -142,10 +141,6 @@ export class UpdateCustomerSuccess implements Action {
 export class UpdateCustomerFail implements Action {
   readonly type = UserActionTypes.UpdateCustomerFail;
   constructor(public payload: { error: HttpError }) {}
-}
-
-export class UserSuccessMessageReset implements Action {
-  readonly type = UserActionTypes.UserSuccessMessageReset;
 }
 
 export class UserErrorReset implements Action {
@@ -242,7 +237,6 @@ export type UserAction =
   | UpdateCustomer
   | UpdateCustomerSuccess
   | UpdateCustomerFail
-  | UserSuccessMessageReset
   | UserErrorReset
   | LoadUserByAPIToken
   | SetPGID

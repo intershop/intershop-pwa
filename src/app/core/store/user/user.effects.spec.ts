@@ -326,6 +326,18 @@ describe('User Effects', () => {
       expect(effects.updateUser$).toBeObservable(expected$);
     });
 
+    it('should dispatch a SuccessMessage action if update succeeded', () => {
+      // tslint:disable-next-line:ban-types
+
+      const action = new ua.UpdateUserSuccess({ user: {} as User, successMessage: 'success' });
+      const completion = new SuccessMessage({ message: 'success' });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-b-b-b', { b: completion });
+
+      expect(effects.displayUpdateUserSuccessMessage$).toBeObservable(expected$);
+    });
+
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       // tslint:disable-next-line:ban-types
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;

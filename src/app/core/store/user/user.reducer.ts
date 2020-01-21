@@ -13,7 +13,6 @@ export interface UserState {
   _lastAuthTokenBeforeLogin: string;
   paymentMethods: PaymentMethod[];
   loading: boolean;
-  successMessage: string;
   error: HttpError;
   pgid: string;
   passwordReminderSuccess: boolean;
@@ -28,7 +27,6 @@ export const initialState: UserState = {
   _lastAuthTokenBeforeLogin: undefined,
   paymentMethods: undefined,
   loading: false,
-  successMessage: undefined, // ToDo: check this implementation if toasts are available
   error: undefined,
   pgid: undefined,
   passwordReminderSuccess: undefined,
@@ -37,13 +35,6 @@ export const initialState: UserState = {
 
 export function userReducer(state = initialState, action: UserAction): UserState {
   switch (action.type) {
-    case UserActionTypes.UserSuccessMessageReset: {
-      return {
-        ...state,
-        successMessage: undefined,
-      };
-    }
-
     case UserActionTypes.UserErrorReset: {
       return {
         ...state,
@@ -86,7 +77,6 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return {
         ...state,
         loading: true,
-        successMessage: undefined,
       };
     }
 
@@ -144,38 +134,31 @@ export function userReducer(state = initialState, action: UserAction): UserState
 
     case UserActionTypes.UpdateUserSuccess: {
       const user = action.payload.user;
-      const successMessage = action.payload.successMessage;
 
       return {
         ...state,
         user,
         loading: false,
         error: undefined,
-        successMessage,
       };
     }
 
     case UserActionTypes.UpdateUserPasswordSuccess: {
-      const successMessage = action.payload.successMessage;
-
       return {
         ...state,
         loading: false,
         error: undefined,
-        successMessage,
       };
     }
 
     case UserActionTypes.UpdateCustomerSuccess: {
       const customer = action.payload.customer;
-      const successMessage = action.payload.successMessage;
 
       return {
         ...state,
         customer,
         loading: false,
         error: undefined,
-        successMessage,
       };
     }
 

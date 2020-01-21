@@ -62,10 +62,6 @@ describe('User Reducer', () => {
       expect(initialState.error).toBeFalsy();
     });
 
-    it('should not have a success message when unmodified', () => {
-      expect(initialState.successMessage).toBeUndefined();
-    });
-
     it('should not be in loading mode when unmodified', () => {
       expect(initialState.loading).toBeFalse();
     });
@@ -189,7 +185,6 @@ describe('User Reducer', () => {
       const state = userReducer(initialState, action);
 
       expect(state.user).toEqual(changedUser);
-      expect(state.successMessage).toEqual('success');
       expect(state.loading).toBeFalse();
     });
 
@@ -215,7 +210,6 @@ describe('User Reducer', () => {
       const action = new UpdateUserPasswordSuccess({ successMessage: 'success' });
       const state = userReducer(initialState, action);
 
-      expect(state.successMessage).toEqual('success');
       expect(state.loading).toBeFalse();
     });
 
@@ -246,7 +240,6 @@ describe('User Reducer', () => {
       const state = userReducer(initialState, action);
 
       expect(state.customer).toEqual(changedCustomer);
-      expect(state.successMessage).toEqual('success');
       expect(state.loading).toBeFalse();
     });
 

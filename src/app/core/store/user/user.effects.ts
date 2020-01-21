@@ -10,7 +10,6 @@ import {
   concatMapTo,
   debounce,
   debounceTime,
-  delay,
   filter,
   first,
   map,
@@ -38,7 +37,7 @@ import {
 } from 'ish-core/utils/operators';
 
 import * as userActions from './user.actions';
-import { getLoggedInCustomer, getLoggedInUser, getUserError, getUserSuccessMessage } from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
   return (source$: Observable<T>) =>
@@ -162,6 +161,11 @@ export class UserEffects {
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     concatMap(([payload, customer]) =>
       this.userService.updateUser({ user: payload.user, customer }).pipe(
+        tap(() => {
+          if (payload.successRouterLink) {
+            this.router.navigateByUrl(payload.successRouterLink);
+          }
+        }),
         map(
           changedUser =>
             new userActions.UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })
@@ -179,6 +183,7 @@ export class UserEffects {
     withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
     concatMap(([[payload, customer], user]) =>
       this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
+        tap(() => this.router.navigateByUrl('/account/profile')),
         mapTo(
           new userActions.UpdateUserPasswordSuccess({
             successMessage: payload.successMessage || 'account.profile.update_password.message',
@@ -197,6 +202,11 @@ export class UserEffects {
     filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
     concatMap(([payload]) =>
       this.userService.updateCustomer(payload.customer).pipe(
+        tap(() => {
+          if (payload.successRouterLink) {
+            this.router.navigateByUrl(payload.successRouterLink);
+          }
+        }),
         map(
           changedCustomer =>
             new userActions.UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
@@ -206,20 +216,22 @@ export class UserEffects {
     )
   );
 
-  /* ToDo: should be partly replaced by the toast implementation */
-  /* Navigates the user to the Accouont Profile page and deletes the update user success message from store after 5 sec */
+  /* Displays a success message after an user/customer update action */
   @Effect()
-  resetUpdateUserSuccessMessage$ = this.actions$.pipe(
+  displayUpdateUserSuccessMessage$ = this.actions$.pipe(
     ofType(
       userActions.UserActionTypes.UpdateUserPasswordSuccess,
       userActions.UserActionTypes.UpdateUserSuccess,
       userActions.UserActionTypes.UpdateCustomerSuccess
     ),
-    withLatestFrom(this.store$.pipe(select(getUserSuccessMessage))),
-    filter(([, successMessage]) => !!successMessage),
-    tap(() => this.router.navigateByUrl('/account/profile')),
-    delay(5000),
-    mapTo(new userActions.UserSuccessMessageReset())
+    mapToPayloadProperty('successMessage'),
+    filter(successMessage => !!successMessage),
+    map(
+      successMessage =>
+        new SuccessMessage({
+          message: successMessage,
+        })
+    )
   );
 
   @Effect()

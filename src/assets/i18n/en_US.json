@@ -494,7 +494,7 @@
   "account.payment.message": "Select a preferred payment instrument for quicker checkout on future purchases.",
   "account.payment.payment_cancel.txt": "Cancel",
   "account.payment.payment_changes.txt": "Changes: ",
-  "account.payment.payment_created.message": "The preferred payment method has been saved to your account.",
+  "account.payment.payment_created.message": "The preferred payment instrument has been saved to your account.",
   "account.payment.payment_delete.txt": "Delete",
   "account.payment.payment_deleted.message": "The payment instrument has been deleted from your account.",
   "account.payment.payment_edit.txt": "Edit",
