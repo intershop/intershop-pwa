@@ -16,12 +16,12 @@ Official Documentation for Angular Universal can be found at https://angular.io/
 
 We use the library [express-robots-txt](https://github.com/modosc/express-robots-txt) in the express.js server (`server.ts` in the project root) to supply a response to `robots.txt` for crawlers.
 
-By default the universal server provides a response with access to all pages excepted some restricted paths (e.g. `/error` or `/account`). To use a custom `robots.txt` place it as a file in `dist` folder.
+By default the universal server provides a response with access to all pages except some restricted paths (e.g. `/error` or `/account`). To use a custom `robots.txt` place it as a file in the `dist` folder.
 
 ## Page Metadata
 
-The PWA uses the library [@ngx-meta/core](https://www.npmjs.com/package/@ngx-meta/core) for setting tags in page header for title, meta description, robots, canonical links and open graph infos. It is possible to use translations here.
+The PWA uses the library [@ngx-meta/core](https://www.npmjs.com/package/@ngx-meta/core) for setting tags for title, meta description, robots, canonical links and open graph infos in page headers. It is also possible to use translation keys here.
 
-This process is triggered by adding a guard to the routing, see [Project Documentation](https://www.npmjs.com/package/@ngx-meta/core#route-configuration). The default `MetaSettings` are configured in SEO extension of the PWA and documented in @ngx-meta/core.
+The process is triggered by adding a guard to the routing, see [Project Documentation](https://www.npmjs.com/package/@ngx-meta/core#route-configuration). The default `MetaSettings` are configured in the SEO extension of the PWA and documented in @ngx-meta/core.
 
 `seo.effects.ts` is the central place for customizations concerning dynamic content, e.g. names of products or categories (asynchronous data from the API). Effects are an essential part of our [State Management](./state-management.md).
