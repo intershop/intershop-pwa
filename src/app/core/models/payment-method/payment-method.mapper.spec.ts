@@ -1,4 +1,10 @@
-import { PaymentMethodData, PaymentMethodParameterType } from './payment-method.interface';
+import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
+
+import {
+  PaymentMethodData,
+  PaymentMethodOptionsDataType,
+  PaymentMethodParameterType,
+} from './payment-method.interface';
 import { PaymentMethodMapper } from './payment-method.mapper';
 
 describe('Payment Method Mapper', () => {
@@ -30,6 +36,7 @@ describe('Payment Method Mapper', () => {
               currency: 'USD',
             },
           },
+          saveAllowed: true,
           restricted: false,
         },
       ],
@@ -91,6 +98,7 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethod.paymentCosts.value).toBePositive();
       expect(paymentMethod.paymentCostsThreshold.value).toBePositive();
       expect(paymentMethod.isRestricted).toBeFalse();
+      expect(paymentMethod.saveAllowed).toBeFalse();
     });
 
     it(`should return a restricted PaymentMethod when getting restricted PaymentMethodData`, () => {
@@ -110,6 +118,7 @@ describe('Payment Method Mapper', () => {
       paymentMethodData.data[0].parameterDefinitions = parametersData;
       const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
 
+      expect(paymentMethod.saveAllowed).toBeTrue();
       expect(paymentMethod.parameters).toHaveLength(3);
       expect(paymentMethod.parameters[0].type).toEqual('input');
       expect(paymentMethod.parameters[0].key).toEqual('holder');
@@ -120,6 +129,78 @@ describe('Payment Method Mapper', () => {
       expect(paymentMethod.parameters[1].templateOptions.minLength).toBe(15);
       expect(paymentMethod.parameters[1].templateOptions.maxLength).toBe(34);
       expect(paymentMethod.parameters[1].templateOptions.attributes).toBeObject();
+    });
+  });
+
+  describe('fromOptions', () => {
+    const paymentMethodsData = {
+      payments: [
+        {
+          id: 'ISH_CreditCard',
+          serviceID: 'ISH_CreditCard',
+          displayName: 'Credit Card',
+          paymentCosts: {
+            net: {
+              value: 40.34,
+              currency: 'USD',
+            },
+            gross: {
+              value: 40.34,
+              currency: 'USD',
+            },
+          },
+          paymentCostsThreshold: {
+            net: {
+              value: 40.34,
+              currency: 'USD',
+            },
+            gross: {
+              value: 40.34,
+              currency: 'USD',
+            },
+          },
+          restricted: false,
+        },
+      ],
+    } as PaymentMethodOptionsDataType;
+
+    const paymentInstrumentsData = [
+      {
+        id: 'abc',
+        name: 'ISH_CreditCard',
+        attributes: [
+          {
+            name: 'cardNumber',
+            value: '************1111',
+          },
+          { name: 'cardType', value: 'vsa' },
+        ],
+      } as PaymentInstrumentData,
+      {
+        id: 'xyz',
+        name: 'ISH_CreditCard',
+        attributes: [
+          {
+            name: 'cardNumber',
+            value: '************4444',
+          },
+          { name: 'cardType', value: 'msa' },
+        ],
+      } as PaymentInstrumentData,
+    ];
+
+    it(`should return PaymentMethods when getting a PaymentMethodData`, () => {
+      const paymentMethods = PaymentMethodMapper.fromOptions({
+        methods: [paymentMethodsData],
+        instruments: paymentInstrumentsData,
+      });
+
+      expect(paymentMethods).toHaveLength(1);
+      expect(paymentMethods[0].id).toEqual('ISH_CreditCard');
+      expect(paymentMethods[0].paymentInstruments).toHaveLength(2);
+      expect(paymentMethods[0].paymentInstruments[0].id).toEqual('abc');
+      expect(paymentMethods[0].paymentInstruments[0].parameters).toHaveLength(2);
+      expect(paymentMethods[0].paymentInstruments[0].parameters[0].value).toEqual('************1111');
     });
   });
 });

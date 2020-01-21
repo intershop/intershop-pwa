@@ -6,6 +6,7 @@ import { BasketValidationResultType } from 'ish-core/models/basket-validation/ba
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
 import { getCheckoutState } from 'ish-core/store/checkout/checkout-store';
 import { getProductEntities } from 'ish-core/store/shopping/products';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 const getBasketState = createSelector(
   getCheckoutState,
@@ -96,7 +97,11 @@ export const getBasketEligibleShippingMethods = createSelector(
 
 export const getBasketEligiblePaymentMethods = createSelector(
   getBasketState,
-  basket => basket.eligiblePaymentMethods
+  getLoggedInCustomer,
+  (basket, customer) =>
+    basket &&
+    basket.eligiblePaymentMethods &&
+    basket.eligiblePaymentMethods.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
 );
 
 export const getBasketInvoiceAddress = createSelectorFactory(projector =>

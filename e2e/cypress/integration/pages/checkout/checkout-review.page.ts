@@ -1,4 +1,4 @@
-export class ReviewPage {
+export class CheckoutReviewPage {
   readonly tag = 'ish-checkout-review-page';
 
   acceptTAC() {

@@ -13,7 +13,6 @@ import { User } from 'ish-core/models/user/user.model';
 export class AccountProfileComponent {
   @Input() user: User;
   @Input() customer: Customer;
-  @Input() successMessage: string;
 
   constructor(@Inject(AVAILABLE_LOCALES) public locales: Locale[]) {}
 

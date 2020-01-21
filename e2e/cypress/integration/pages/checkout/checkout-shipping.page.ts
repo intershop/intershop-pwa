@@ -1,4 +1,4 @@
-export class ShippingPage {
+export class CheckoutShippingPage {
   readonly tag = 'ish-checkout-shipping-page';
 
   continueCheckout() {

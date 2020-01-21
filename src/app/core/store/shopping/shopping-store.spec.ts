@@ -26,6 +26,7 @@ import { CategoriesService } from 'ish-core/services/categories/categories.servi
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
@@ -196,6 +197,7 @@ describe('Shopping Store', () => {
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
         { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: UserService, useFactory: () => instance(mock(UserService)) },
+        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },

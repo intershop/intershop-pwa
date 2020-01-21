@@ -22,6 +22,7 @@ export interface PaymentMethodBaseData {
   displayName: string;
   description?: string;
   capabilities?: string[];
+  saveAllowed: boolean;
   restricted?: boolean;
   restrictions?: PaymentRestriction[];
   paymentCosts?: PriceItem;
@@ -38,4 +39,9 @@ export interface PaymentMethodData {
       [id: string]: PaymentInstrument;
     };
   };
+}
+
+// user payment interface
+export interface PaymentMethodOptionsDataType {
+  payments: PaymentMethodBaseData[];
 }

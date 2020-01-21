@@ -22,18 +22,8 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
- * The Checkout Payment Component renders the checkout payment page. On this page the user can select a payment method. Some payment methods require the user to enter some additional data, like credit card data. For some payment methods there is special javascript functionality necessary provided by an external payment host. See also {@link CheckoutPaymentPageContainerComponent}
+ * The Checkout Payment Component renders the checkout payment page. On this page the user can select a payment method. Some payment methods require the user to enter some additional data, like credit card data. For some payment methods there is special javascript functionality necessary provided by an external payment host. See also {@link CheckoutPaymentPageComponent}
  *
- * @example
- * <ish-checkout-payment
- [basket]="basket$ | async"
- [paymentMethods]="paymentMethods$ | async"
- [error]="basketError$ | async"
- (updatePaymentMethod)="updateBasketPaymentMethod($event)"
- (createPaymentInstrument)="createBasketPaymentInstrument($event)"
- (deletePaymentInstrument)="deletePaymentInstrument($event)"
- (nextStep)="nextStep()"
-></ish-checkout-payment>
  */
 @Component({
   selector: 'ish-checkout-payment',
@@ -46,8 +36,11 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() error: HttpError;
 
   @Output() updatePaymentMethod = new EventEmitter<string>();
-  @Output() createPaymentInstrument = new EventEmitter<PaymentInstrument>();
-  @Output() deletePaymentInstrument = new EventEmitter<string>();
+  @Output() createPaymentInstrument = new EventEmitter<{
+    paymentInstrument: PaymentInstrument;
+    saveForLater: boolean;
+  }>();
+  @Output() deletePaymentInstrument = new EventEmitter<PaymentInstrument>();
   @Output() nextStep = new EventEmitter<void>();
 
   paymentForm: FormGroup;
@@ -73,6 +66,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.paymentForm = new FormGroup({
       name: new FormControl(this.getBasketPayment()),
+      saveForLater: new FormControl(true),
       parameters: new FormGroup({}),
     });
 
@@ -178,12 +172,15 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * creates a new payment instrument
    */
-  createNewPaymentInstrument(parameters: { name: string; value: string }[]) {
-    this.createPaymentInstrument.emit({
+  createNewPaymentInstrument(body: { parameters: { name: string; value: string }[]; saveAllowed: boolean }) {
+    const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
+    const paymentInstrument: PaymentInstrument = {
       id: undefined,
-      paymentMethod: this.filteredPaymentMethods[this.openFormIndex].id,
-      parameters,
-    });
+      paymentMethod: paymentMethod.id,
+      parameters: body.parameters,
+    };
+
+    this.createPaymentInstrument.emit({ paymentInstrument, saveForLater: body.saveAllowed });
   }
 
   /**
@@ -197,23 +194,25 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (this.openFormIndex === -1) {
-      // should never happen
       return;
     }
-
+    const paymentMethod = this.filteredPaymentMethods[this.openFormIndex];
     const parameters = Object.entries(this.parameterForm.controls)
       .filter(([, control]) => control.enabled && control.value)
       .map(([key, control]) => ({ name: key, value: control.value }));
 
-    this.createNewPaymentInstrument(parameters);
+    this.createNewPaymentInstrument({
+      parameters,
+      saveAllowed: paymentMethod.saveAllowed && this.paymentForm.get('saveForLater').value,
+    });
   }
 
   /**
    * deletes a basket instrument and related payment
    */
-  deleteBasketPayment(paymentInstrumentId: string) {
-    if (paymentInstrumentId) {
-      this.deletePaymentInstrument.emit(paymentInstrumentId);
+  deleteBasketPayment(paymentInstrument: PaymentInstrument) {
+    if (paymentInstrument) {
+      this.deletePaymentInstrument.emit(paymentInstrument);
     }
   }
 

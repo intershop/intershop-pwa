@@ -38,6 +38,12 @@ const accountPageRoutes: Routes = [
         loadChildren: () => import('../account-order/account-order-page.module').then(m => m.AccountOrderPageModule),
       },
       {
+        path: 'payment',
+        data: { breadcrumbData: [{ key: 'account.payment.link' }] },
+        loadChildren: () =>
+          import('../account-payment/account-payment-page.module').then(m => m.AccountPaymentPageModule),
+      },
+      {
         path: 'profile',
         data: { breadcrumbData: [{ key: 'account.profile.link' }] },
         loadChildren: () =>

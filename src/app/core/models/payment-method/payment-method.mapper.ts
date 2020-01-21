@@ -1,8 +1,14 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
+import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
-import { PaymentMethodBaseData, PaymentMethodData, PaymentMethodParameterType } from './payment-method.interface';
+import {
+  PaymentMethodBaseData,
+  PaymentMethodData,
+  PaymentMethodOptionsDataType,
+  PaymentMethodParameterType,
+} from './payment-method.interface';
 import { PaymentMethod } from './payment-method.model';
 
 export class PaymentMethodMapper {
@@ -26,6 +32,7 @@ export class PaymentMethodMapper {
         description: data.description,
         capabilities: data.capabilities,
         isRestricted: data.restricted,
+        saveAllowed: data.saveAllowed && !!data.parameterDefinitions && !!data.parameterDefinitions.length,
         restrictionCauses: data.restrictions,
         paymentCosts: PriceMapper.fromPriceItem(data.paymentCosts, 'net'),
         paymentCostsThreshold: PriceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
@@ -36,6 +43,96 @@ export class PaymentMethodMapper {
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
         hostedPaymentPageParameters: data.hostedPaymentPageParameters,
       }));
+  }
+
+  // is needed for getting a user's eligible payment methods
+  static fromOptions(options: {
+    methods: PaymentMethodOptionsDataType[];
+    instruments: PaymentInstrumentData[];
+  }): PaymentMethod[] {
+    if (!options) {
+      throw new Error(`'paymentMethodOptions' are required`);
+    }
+
+    if (!options.methods || !options.methods.length) {
+      return [];
+    }
+
+    // return only payment methods that have also a payment instrument
+    return options.methods[0].payments
+      .map(pm => ({
+        id: pm.id,
+        serviceId: pm.id, // is missing
+        displayName: pm.displayName,
+        restrictionCauses: pm.restrictions,
+        paymentInstruments: options.instruments
+          .filter(i => i.name === pm.id)
+          .map(i => ({
+            id: i.id,
+            parameters: i.attributes,
+            accountIdentifier: PaymentMethodMapper.determineAccountIdentifier(pm, i),
+            paymentMethod: pm.id,
+          })),
+      }))
+      .filter(x => x.paymentInstruments && x.paymentInstruments.length);
+  }
+
+  /**
+   * determines the accountIdentifier - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
+   * the general identifier returns all payment instrument attributes
+   * a specific identifier is only returned for ISH_CREDITCARD, add further special functionality here, if needed
+   */
+  private static determineAccountIdentifier(pm: PaymentMethodBaseData, pi: PaymentInstrumentData): string {
+    let identifier: string;
+
+    switch (pm.id) {
+      case 'ISH_CREDITCARD': {
+        identifier = `${PaymentMethodMapper.mapCreditCardCode(pi.attributes[1].value)} ${pi.attributes[0].value} ${
+          pi.attributes[2].value
+        }`;
+        break;
+      }
+      default: {
+        identifier =
+          pi.attributes &&
+          pi.attributes.length &&
+          pi.attributes
+            .filter(attr => attr.name !== 'paymentInstrumentId')
+            .map(attr => attr.value)
+            .reduce((acc, val) => (val ? `${acc}  ${val}` : acc));
+      }
+    }
+
+    return identifier;
+  }
+
+  /**
+   * maps the credit card code for ISH_CREDITCARD - this temporary method will be obsolete, if #IS-29004, #IS-29006 have been fixed
+   */
+  private static mapCreditCardCode(code: string): string {
+    let creditCardType: string;
+    switch (code) {
+      case 'amx': {
+        creditCardType = 'American Express';
+        break;
+      }
+      case 'mas': {
+        creditCardType = 'Master Card';
+        break;
+      }
+      case 'vsa': {
+        creditCardType = 'VISA';
+        break;
+      }
+      case 'dcv': {
+        creditCardType = 'Discover';
+        break;
+      }
+      default: {
+        creditCardType = code;
+      }
+    }
+    return creditCardType;
   }
 
   /**

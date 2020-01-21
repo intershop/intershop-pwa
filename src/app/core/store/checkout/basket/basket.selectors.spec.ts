@@ -4,12 +4,15 @@ import { combineReducers } from '@ngrx/store';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { LoginUserSuccess } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -47,6 +50,7 @@ describe('Basket Selectors', () => {
     TestBed.configureTestingModule({
       imports: ngrxTesting({
         reducers: {
+          ...coreReducers,
           checkout: combineReducers(checkoutReducers),
           shopping: combineReducers(shoppingReducers),
         },
@@ -218,9 +222,17 @@ describe('Basket Selectors', () => {
         );
       });
 
-      it('should set loading to false', () => {
+      it('should set load data when user is logged in', () => {
+        store$.dispatch(new LoginUserSuccess({ customer: {} as Customer }));
         expect(getBasketLoading(store$.state)).toBeFalse();
         expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([BasketMockData.getPaymentMethod()]);
+      });
+
+      it('should set load data and set saveForLater to false if user is logged out', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([
+          { ...BasketMockData.getPaymentMethod(), saveAllowed: false },
+        ]);
       });
     });
 

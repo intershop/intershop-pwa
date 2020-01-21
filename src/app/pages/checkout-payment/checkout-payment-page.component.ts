@@ -31,12 +31,19 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.checkoutFacade.setBasketPayment(paymentName);
   }
 
-  createBasketPaymentInstrument(instrument: PaymentInstrument) {
-    this.checkoutFacade.createBasketPayment(instrument);
+  createUserPaymentInstrument(instrument: PaymentInstrument) {
+    this.checkoutFacade.createBasketPayment(instrument, true);
   }
 
-  deletePaymentInstrument(instrumentId: string) {
-    this.checkoutFacade.deleteBasketPayment(instrumentId);
+  createPaymentInstrument(body: { paymentInstrument: PaymentInstrument; saveForLater: boolean }) {
+    if (!body || !body.paymentInstrument) {
+      return;
+    }
+    this.checkoutFacade.createBasketPayment(body.paymentInstrument, body.saveForLater);
+  }
+
+  deletePaymentInstrument(instrument: PaymentInstrument) {
+    this.checkoutFacade.deleteBasketPayment(instrument);
   }
 
   /**

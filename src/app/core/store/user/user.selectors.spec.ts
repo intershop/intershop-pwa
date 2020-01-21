@@ -4,6 +4,7 @@ import { combineReducers } from '@ngrx/store';
 import { CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
@@ -14,13 +15,14 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
   LoadCompanyUserSuccess,
+  LoadUserPaymentMethods,
+  LoadUserPaymentMethodsSuccess,
   LoginUserFail,
   LoginUserSuccess,
   RequestPasswordReminder,
   RequestPasswordReminderFail,
   RequestPasswordReminderSuccess,
   UpdateUserPassword,
-  UpdateUserPasswordSuccess,
 } from './user.actions';
 import {
   getLoggedInCustomer,
@@ -30,7 +32,7 @@ import {
   getUserAuthorized,
   getUserError,
   getUserLoading,
-  getUserSuccessMessage,
+  getUserPaymentMethods,
   isBusinessCustomer,
 } from './user.selectors';
 
@@ -56,10 +58,10 @@ describe('User Selectors', () => {
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();
     expect(isBusinessCustomer(store$.state)).toBeFalse();
     expect(getLoggedInUser(store$.state)).toBeUndefined();
+    expect(getUserPaymentMethods(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
     expect(getUserLoading(store$.state)).toBeFalsy();
-    expect(getUserSuccessMessage(store$.state)).toBeUndefined();
   });
 
   it('should select the customer when logging in successfully', () => {
@@ -78,7 +80,6 @@ describe('User Selectors', () => {
     expect(getUserAuthorized(store$.state)).toBeTrue();
     expect(getUserError(store$.state)).toBeFalsy();
     expect(getUserLoading(store$.state)).toBeFalsy();
-    expect(getUserSuccessMessage(store$.state)).toBeUndefined();
   });
 
   it('should select the user when logging in as private customer successfully', () => {
@@ -148,17 +149,27 @@ describe('User Selectors', () => {
     expect(err.status).toEqual(401);
   });
 
+  describe('loading payment methods', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadUserPaymentMethods());
+    });
+    it('should set the state to loading', () => {
+      expect(getUserLoading(store$.state)).toBeTrue();
+    });
+    it('should select  payment methods when the user has saved payment instruments', () => {
+      store$.dispatch(
+        new LoadUserPaymentMethodsSuccess({ paymentMethods: [{ id: 'ISH_CREDITCARD' } as PaymentMethod] })
+      );
+
+      expect(getUserPaymentMethods(store$.state)).toHaveLength(1);
+      expect(getUserLoading(store$.state)).toBeFalse();
+    });
+  });
+
   it('should select loading when the user starts to update his password', () => {
     store$.dispatch(new UpdateUserPassword({ password: '123', currentPassword: '1234' }));
 
     expect(getUserLoading(store$.state)).toBeTrue();
-  });
-
-  it('should select update success message when the user updated his password', () => {
-    store$.dispatch(new UpdateUserPasswordSuccess({ successMessage: 'success' }));
-
-    expect(getUserSuccessMessage(store$.state)).toBe('success');
-    expect(getUserLoading(store$.state)).toBeFalse();
   });
 
   it('should be initial-state for password reminder when no event or reset was sent', () => {

@@ -12,13 +12,11 @@ import { User } from 'ish-core/models/user/user.model';
 export class AccountProfilePageComponent implements OnInit {
   user$: Observable<User>;
   customer$: Observable<Customer>;
-  userSuccessMessage$: Observable<string>;
 
   constructor(private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.user$ = this.accountFacade.user$;
     this.customer$ = this.accountFacade.customer$;
-    this.userSuccessMessage$ = this.accountFacade.userSuccessMessage$;
   }
 }

@@ -1,4 +1,5 @@
 import { Address } from 'ish-core/models/address/address.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { CustomerData } from './customer.interface';
@@ -14,7 +15,9 @@ describe('Customer Mapper', () => {
         lastName: 'Miller',
         preferredInvoiceToAddress: BasketMockData.getAddress(),
         preferredShipToAddress: { urn: 'urn:1234' } as Address,
+        preferredPaymentInstrument: { id: '1234' } as PaymentInstrument,
       } as CustomerData;
+
       const loginData = CustomerMapper.mapLoginData(customerData);
       const customer = loginData.customer;
       const user = loginData.user;
@@ -27,6 +30,7 @@ describe('Customer Mapper', () => {
       expect(user.lastName).toBe(customerData.lastName);
       expect(user.preferredInvoiceToAddressUrn).toBe(BasketMockData.getAddress().urn);
       expect(user.preferredShipToAddressUrn).toBe('urn:1234');
+      expect(user.preferredPaymentInstrumentId).toBe('1234');
     });
 
     it(`should return only Customer when getting  CustomerData of a business Customer`, () => {

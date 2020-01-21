@@ -17,9 +17,11 @@ import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { User } from 'ish-core/models/user/user.model';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { SuccessMessage } from 'ish-core/store/messages';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as ua from './user.actions';
@@ -30,6 +32,7 @@ describe('User Effects', () => {
   let effects: UserEffects;
   let store$: Store<{}>;
   let userServiceMock: UserService;
+  let paymentServiceMock: PaymentService;
   let router: Router;
   let location: Location;
 
@@ -51,6 +54,7 @@ describe('User Effects', () => {
 
   beforeEach(() => {
     userServiceMock = mock(UserService);
+    paymentServiceMock = mock(PaymentService);
     when(userServiceMock.signinUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything())).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -58,6 +62,8 @@ describe('User Effects', () => {
     when(userServiceMock.updateCustomer(anything())).thenReturn(of(customer));
     when(userServiceMock.getCompanyUserData()).thenReturn(of({ firstName: 'Patricia' } as User));
     when(userServiceMock.requestPasswordReminder(anything())).thenReturn(of({}));
+    when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
+    when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -74,6 +80,7 @@ describe('User Effects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: UserService, useFactory: () => instance(userServiceMock) },
+        { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
       ],
     });
@@ -319,6 +326,18 @@ describe('User Effects', () => {
       expect(effects.updateUser$).toBeObservable(expected$);
     });
 
+    it('should dispatch a SuccessMessage action if update succeeded', () => {
+      // tslint:disable-next-line:ban-types
+
+      const action = new ua.UpdateUserSuccess({ user: {} as User, successMessage: 'success' });
+      const completion = new SuccessMessage({ message: 'success' });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-b-b-b', { b: completion });
+
+      expect(effects.displayUpdateUserSuccessMessage$).toBeObservable(expected$);
+    });
+
     it('should dispatch an UpdateUserFail action on failed user update', () => {
       // tslint:disable-next-line:ban-types
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
@@ -514,6 +533,101 @@ describe('User Effects', () => {
     });
   });
 
+  describe('loadUserPaymentMethods$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+
+    it('should call the api service when LoadUserPaymentMethods event is called', done => {
+      const action = new ua.LoadUserPaymentMethods();
+      actions$ = of(action);
+      effects.loadUserPaymentMethods$.subscribe(() => {
+        verify(paymentServiceMock.getUserPaymentMethods(anything())).once();
+        done();
+      });
+    });
+
+    it('should dispatch a LoadUserPaymentMethodsSuccess action on successful', () => {
+      const action = new ua.LoadUserPaymentMethods();
+      const completion = new ua.LoadUserPaymentMethodsSuccess({ paymentMethods: [] });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-b-b-b', { b: completion });
+
+      expect(effects.loadUserPaymentMethods$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a LoadUserPaymentMethodsFail action on failed', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+
+      when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(throwError(error));
+
+      const action = new ua.LoadUserPaymentMethods();
+      const completion = new ua.LoadUserPaymentMethodsFail({
+        error: HttpErrorMapper.fromError(error),
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.loadUserPaymentMethods$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteUserPayment$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ua.LoginUserSuccess({
+          customer,
+          user: {} as User,
+        })
+      );
+    });
+
+    it('should call the api service when DeleteUserPayment event is called', done => {
+      const action = new ua.DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      actions$ = of(action);
+      effects.deleteUserPayment$.subscribe(() => {
+        verify(paymentServiceMock.deleteUserPaymentInstrument(customer.customerNo, 'paymentInstrumentId')).once();
+        done();
+      });
+    });
+
+    it('should dispatch a DeleteUserPaymentSuccess action on successful', () => {
+      const action = new ua.DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const completion1 = new ua.DeleteUserPaymentInstrumentSuccess();
+      const completion2 = new ua.LoadUserPaymentMethods();
+      const completion3 = new SuccessMessage({
+        message: 'account.payment.payment_deleted.message',
+      });
+
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cde)', { c: completion1, d: completion2, e: completion3 });
+
+      expect(effects.deleteUserPayment$).toBeObservable(expected$);
+    });
+
+    it('should dispatch a DeleteUserPaymentFail action on failed', () => {
+      // tslint:disable-next-line:ban-types
+      const error = { status: 400, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+
+      when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(throwError(error));
+
+      const action = new ua.DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
+      const completion = new ua.DeleteUserPaymentInstrumentFail({
+        error: HttpErrorMapper.fromError(error),
+      });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+      expect(effects.deleteUserPayment$).toBeObservable(expected$);
+    });
+  });
   describe('requestPasswordReminder$', () => {
     const data: PasswordReminder = {
       email: 'patricia@test.intershop.de',

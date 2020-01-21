@@ -19,6 +19,7 @@ import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/baske
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
 import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
 
@@ -43,6 +44,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(BasketItemsSummaryComponent),
         MockComponent(BasketPromotionCodeComponent),
         MockComponent(BasketValidationResultsComponent),
+        MockComponent(CheckboxComponent),
         MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(FormlyForm),
@@ -74,11 +76,21 @@ describe('Checkout Payment Component', () => {
         id: 'ISH_INVOICE',
         serviceId: 'ISH_INVOICE',
         displayName: 'Invoice',
+        saveAllowed: false,
       },
       {
         id: 'Concardis_CreditCard',
         serviceId: 'Concardis_CreditCard',
         displayName: 'Concardis Credit Card',
+        saveAllowed: false,
+        parameters: [{ key: 'key1', name: 'name' }],
+      },
+      {
+        id: 'ISH_CreditCard',
+        serviceId: 'ISH_CreditCard',
+        displayName: 'Intershop Credit Card',
+        saveAllowed: true,
+        parameters: [{ key: 'key1', name: 'name' }],
       },
       BasketMockData.getPaymentMethod(),
     ];
@@ -169,16 +181,37 @@ describe('Checkout Payment Component', () => {
       expect(component.formIsOpen(-1)).toBeTrue();
     });
 
-    it('should throw createPaymentInstrument event when the user submits a valid parameter form', done => {
+    it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
+      component.ngOnChanges(paymentMethodChange);
+      component.openPaymentParameterForm(1);
+
+      component.createPaymentInstrument.subscribe(formValue => {
+        expect(formValue.paymentInstrument).toEqual({
+          paymentMethod: 'Concardis_CreditCard',
+          parameters: [{ name: 'creditCardNumber', value: '123' }],
+        });
+        expect(formValue.saveForLater).toBeFalse();
+        done();
+      });
+
+      component.parameterForm.addControl('creditCardNumber', new FormControl('123', Validators.required));
+      component.submitParameterForm();
+    });
+
+    it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', done => {
       component.ngOnChanges(paymentMethodChange);
       component.openPaymentParameterForm(2);
 
       component.createPaymentInstrument.subscribe(formValue => {
-        expect(formValue).toEqual({ paymentMethod: 'ISH_CreditCard', parameters: [{ name: 'IBAN', value: 'DE123' }] });
+        expect(formValue.paymentInstrument).toEqual({
+          paymentMethod: 'ISH_CreditCard',
+          parameters: [{ name: 'creditCardNumber', value: '456' }],
+        });
+        expect(formValue.saveForLater).toBeTrue();
         done();
       });
 
-      component.parameterForm.addControl('IBAN', new FormControl('DE123', Validators.required));
+      component.parameterForm.addControl('creditCardNumber', new FormControl('456', Validators.required));
       component.submitParameterForm();
     });
 
@@ -193,12 +226,11 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should render standard parameter form for standard parametrized form', () => {
-      component.openPaymentParameterForm(2);
+      component.openPaymentParameterForm(1);
 
       component.ngOnChanges(paymentMethodChange);
       fixture.detectChanges();
       expect(element.querySelector('formly-form')).toBeTruthy();
-      expect(element.querySelector('ish-payment-concardis-creditcard')).toBeFalsy();
     });
   });
 
@@ -215,15 +247,27 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw deletePaymentInstrument event when the user deletes a payment instrument', done => {
-      const id = 'paymentInstrumentId';
-
+      const paymentInstrument = {
+        id: '4321',
+        paymentMethod: 'ISH_DirectDebit',
+        parameters: [
+          {
+            name: 'accountHolder',
+            value: 'Patricia Miller',
+          },
+          {
+            name: 'IBAN',
+            value: 'DE430859340859340',
+          },
+        ],
+      };
       fixture.detectChanges();
 
-      component.deletePaymentInstrument.subscribe(paymentInstrumentId => {
-        expect(paymentInstrumentId).toEqual(id);
+      component.deletePaymentInstrument.subscribe(instrument => {
+        expect(instrument.id).toEqual(paymentInstrument.id);
         done();
       });
-      component.deleteBasketPayment(id);
+      component.deleteBasketPayment(paymentInstrument);
     });
   });
 });

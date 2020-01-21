@@ -2,12 +2,12 @@ import { at } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
-import { AddressesPage } from '../../pages/checkout/addresses.page';
 import { CartPage } from '../../pages/checkout/cart.page';
-import { PaymentPage } from '../../pages/checkout/payment.page';
-import { ReceiptPage } from '../../pages/checkout/receipt.page';
-import { ReviewPage } from '../../pages/checkout/review.page';
-import { ShippingPage } from '../../pages/checkout/shipping.page';
+import { CheckoutAddressesPage } from '../../pages/checkout/checkout-addresses.page';
+import { CheckoutPaymentPage } from '../../pages/checkout/checkout-payment.page';
+import { CheckoutReceiptPage } from '../../pages/checkout/checkout-receipt.page';
+import { CheckoutReviewPage } from '../../pages/checkout/checkout-review.page';
+import { CheckoutShippingPage } from '../../pages/checkout/checkout-shipping.page';
 import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
@@ -76,32 +76,32 @@ describe('Shopping User', () => {
     });
 
     it('should set first addresses automatically', () => {
-      at(AddressesPage, page => {
+      at(CheckoutAddressesPage, page => {
         cy.wait(1000);
         page.continueCheckout();
       });
     });
 
     it('should accept default shipping option', () => {
-      at(ShippingPage, page => page.continueCheckout());
+      at(CheckoutShippingPage, page => page.continueCheckout());
     });
 
     it('should select invoice payment', () => {
-      at(PaymentPage, page => {
+      at(CheckoutPaymentPage, page => {
         page.selectPayment('INVOICE');
         page.continueCheckout();
       });
     });
 
     it('should review order and submit', () => {
-      at(ReviewPage, page => {
+      at(CheckoutReviewPage, page => {
         page.acceptTAC();
         page.submitOrder();
       });
     });
 
     it('should check the receipt and continue shopping', () => {
-      at(ReceiptPage, page => {
+      at(CheckoutReceiptPage, page => {
         page.continueShopping();
       });
       at(HomePage);

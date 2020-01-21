@@ -13,6 +13,7 @@ export interface User {
 
   preferredInvoiceToAddressUrn?: string;
   preferredShipToAddressUrn?: string;
+  preferredPaymentInstrumentId?: string;
 
   // Business User only
   businessPartnerNo?: string;
