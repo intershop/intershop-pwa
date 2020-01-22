@@ -31,6 +31,11 @@ const { AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModul
 import { Environment } from 'src/environments/environment.model';
 const environment: Environment = require('./dist/server/main').environment;
 
+// tslint:disable-next-line: ban-specific-imports
+import { HybridMappingEntry } from 'src/hybrid/default-url-mapping-table';
+const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = require('./dist/server/main').HYBRID_MAPPING_TABLE;
+const ICM_WEB_URL: string = require('./dist/server/main').ICM_WEB_URL;
+
 const logging = !!process.env.LOGGING;
 
 // Express server
@@ -58,7 +63,7 @@ app.engine(
   'html',
   ngExpressEngine({
     bootstrap: AppServerModuleNgFactory,
-    providers: [provideModuleMap(LAZY_MODULE_MAP)],
+    providers: [provideModuleMap(LAZY_MODULE_MAP), { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID }],
   })
 );
 
@@ -129,15 +134,9 @@ const icmProxy = proxy(ICM_BASE_URL, {
   preserveHostHdr: true,
 });
 
-if (process.env.PROXY_ICM) {
-  console.log("making ICM available for all requests to '/INTERSHOP'");
-  app.use('/INTERSHOP', icmProxy);
-}
-
-// All regular routes use the Universal engine
-app.get('*', (req: express.Request, res: express.Response) => {
+const angularUniversal = (req: express.Request, res: express.Response) => {
   if (logging) {
-    console.log(`GET ${req.url}`);
+    console.log(`SSR ${req.originalUrl}`);
   }
   res.render(
     'index',
@@ -156,14 +155,79 @@ app.get('*', (req: express.Request, res: express.Response) => {
         res.status(500).send(err.message);
       }
       if (logging) {
-        console.log(`RES ${res.statusCode} ${req.url}`);
+        console.log(`RES ${res.statusCode} ${req.originalUrl}`);
         if (err) {
           console.log(err);
         }
       }
     }
   );
-});
+};
+
+const hybridRedirect = (req, res, next) => {
+  const url = req.originalUrl;
+  let newUrl: string;
+  for (const entry of HYBRID_MAPPING_TABLE) {
+    const icmUrlRegex = new RegExp(entry.icm);
+    const pwaUrlRegex = new RegExp(entry.pwa);
+    if (icmUrlRegex.exec(url) && entry.handledBy === 'pwa') {
+      newUrl = url.replace(icmUrlRegex, '/' + entry.pwaBuild);
+      break;
+    } else if (pwaUrlRegex.exec(url) && entry.handledBy === 'icm') {
+      const config: { [is: string]: string } = {};
+      let locale;
+      if (/;lang=[\w_]+/.test(url)) {
+        const [, lang] = /;lang=([\w_]+)/.exec(url);
+        if (lang !== 'default') {
+          locale = environment.locales.find(loc => loc.lang === lang);
+        }
+      }
+      if (!locale) {
+        locale = environment.locales[0];
+      }
+      config.lang = locale.lang;
+      config.currency = locale.currency;
+
+      if (/;channel=[^;]*/.test(url)) {
+        config.channel = /;channel=([^;]*)/.exec(url)[1];
+      } else {
+        config.channel = environment.icmChannel;
+      }
+
+      if (/;application=[^;]*/.test(url)) {
+        config.application = /;application=([^;]*)/.exec(url)[1];
+      } else {
+        config.application = environment.icmApplication || '-';
+      }
+
+      const build = [ICM_WEB_URL, entry.icmBuild]
+        .join('/')
+        .replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
+      newUrl = url.replace(pwaUrlRegex, build).replace(/;.*/g, '');
+      break;
+    }
+  }
+  if (newUrl) {
+    if (logging) {
+      console.log('RED', newUrl);
+    }
+    res.redirect(301, newUrl);
+  } else {
+    next();
+  }
+};
+
+if (process.env.SSR_HYBRID) {
+  app.use('*', hybridRedirect);
+}
+
+if (process.env.PROXY_ICM || process.env.SSR_HYBRID) {
+  console.log("making ICM available for all requests to '/INTERSHOP'");
+  app.use('/INTERSHOP', icmProxy);
+}
+
+// All regular routes use the Universal engine
+app.use('*', angularUniversal);
 
 if (process.env.SSL) {
   const https = require('https');
