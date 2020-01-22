@@ -12,6 +12,7 @@ export interface Environment {
   icmServerGroup: string;
   icmRestURLPath: string;
   icmStaticURLPath: string;
+  icmWebURLPath: string;
 
   // application specific
   icmChannel: string;

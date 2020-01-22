@@ -9,6 +9,7 @@ export const environment: Environment = {
   icmServerGroup: 'WFS',
   icmRestURLPath: 'rest',
   icmStaticURLPath: 'static',
+  icmWebURLPath: 'web',
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
   /* FEATURE TOOGLES */
