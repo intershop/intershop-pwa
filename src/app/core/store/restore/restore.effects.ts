@@ -19,6 +19,7 @@ import {
 
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { LoadBasket, LoadBasketByAPIToken, ResetBasket, getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { getICMWebURL } from 'ish-core/store/configuration';
 import { LoadOrderByAPIToken, getSelectedOrderId } from 'ish-core/store/orders';
 import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -148,6 +149,20 @@ export class RestoreEffects {
         )
       )
     )
+  );
+
+  @Effect({ dispatch: false })
+  hybridApproachRedirectToICM$ = this.router.events.pipe(
+    filter(() => isPlatformBrowser(this.platformId)),
+    filter(event => event instanceof NavigationStart),
+    map((event: NavigationStart) => event.url),
+    withLatestFrom(this.store$.pipe(select(getICMWebURL))),
+    tap(([url, icmWebUrl]) => {
+      if (url === '/home') {
+        this.router.dispose();
+        location.assign(icmWebUrl + 'Default-Start');
+      }
+    })
   );
 
   private makeCookie(cookie: CookieType): string {

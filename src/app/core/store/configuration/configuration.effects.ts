@@ -47,6 +47,7 @@ export class ConfigurationEffects {
       this.stateProperties.getStateOrEnvOrDefault<string>('icmServerGroup'),
       this.stateProperties.getStateOrEnvOrDefault<string>('icmRestURLPath'),
       this.stateProperties.getStateOrEnvOrDefault<string>('icmStaticURLPath'),
+      this.stateProperties.getStateOrEnvOrDefault<string>('icmWebURLPath'),
       this.stateProperties.getStateOrEnvOrDefault<string>('icmChannel', 'ICM_CHANNEL'),
       this.stateProperties.getStateOrEnvOrDefault<string>('icmApplication', 'ICM_APPLICATION'),
       this.stateProperties
@@ -55,13 +56,26 @@ export class ConfigurationEffects {
       this.stateProperties.getStateOrEnvOrDefault<string>('theme', 'THEME').pipe(map(x => x || 'default'))
     ),
     map(
-      ([, baseURL, urlPrefix, serverGroup, restURLPath, staticURLPath, channel, application, features, theme]) =>
+      ([
+        ,
+        baseURL,
+        urlPrefix,
+        serverGroup,
+        restURLPath,
+        staticURLPath,
+        webURLPath,
+        channel,
+        application,
+        features,
+        theme,
+      ]) =>
         new ApplyConfiguration({
           baseURL,
           urlPrefix,
           serverGroup,
           restURLPath,
           staticURLPath,
+          webURLPath,
           channel,
           application,
           features,

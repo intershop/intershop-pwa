@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { getCoreState } from 'ish-core/store/core-store';
+import { getCurrentLocale } from 'ish-core/store/locale';
 
 export const getConfigurationState = createSelector(
   getCoreState,
@@ -34,6 +35,23 @@ export const getICMStaticURL = createSelector(
       state.application || '-',
     ];
     return parts.every(x => !!x) ? parts.join('/') : undefined;
+  }
+);
+
+export const getICMWebURL = createSelector(
+  getConfigurationState,
+  getCurrentLocale,
+  (state, locale) => {
+    const parts = [
+      state.urlPrefix,
+      state.webURLPath,
+      state.serverGroup,
+      state.channel,
+      locale.lang,
+      state.application || '-',
+      locale.currency,
+    ];
+    return parts.every(x => !!x) ? `/${parts.join('/')}` : undefined;
   }
 );
 

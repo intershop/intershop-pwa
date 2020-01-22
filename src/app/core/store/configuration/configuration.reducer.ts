@@ -6,6 +6,7 @@ export interface ConfigurationState {
   serverGroup?: string;
   restURLPath?: string;
   staticURLPath?: string;
+  webURLPath?: string;
   channel?: string;
   application?: string;
   features?: string[];
@@ -19,6 +20,7 @@ const initialState: ConfigurationState = {
   serverGroup: undefined,
   restURLPath: undefined,
   staticURLPath: undefined,
+  webURLPath: undefined,
   channel: undefined,
   application: undefined,
   features: [],

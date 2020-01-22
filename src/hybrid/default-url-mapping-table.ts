@@ -1,4 +1,4 @@
-import { environment } from './environments/environment';
+import { environment } from '../environments/environment';
 
 const ICM_CONFIG_MATCH = `^/${environment.icmURLPrefix}/${environment.icmWebURLPath}/${environment.icmServerGroup}/(?<channel>[\\w-]+)/(?<lang>\\w+)/(?<application>[\\w-]+)/\\w+`;
 const PWA_CONFIG_BUILD = ';channel=$<channel>;lang=$<lang>;application=$<application>;redirect=1';
