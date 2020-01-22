@@ -38,7 +38,7 @@ The `src/app` folder contains all TypeScript code (sources and tests) and HTML t
   - `core/models` contains models for all data entities for the B2C store.
   <!-- TODO: see Data Handling with Mappers. -->
   - `core/utils` contains all utility functions that are used in multiple cases.
-  - `core/store` contains the main [state management](./state-management.md), `core/facades` contains facades for accessing the state in the application.
+  - `core/store` contains the main [State Management](./state-management.md), `core/facades` contains facades for accessing the state in the application.
 - `shell` contains the synchronously loaded application shell (header and footer).
 - `pages` contains  a flat folder list of page modules and components that are only used on that corresponding page.
 - `shared` contains code which is shared across multiple modules and pages.
