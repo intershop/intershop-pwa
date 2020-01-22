@@ -4,7 +4,7 @@ This section describes how [NgRx](https://ngrx.io/) is integrated into the Inter
 
 ## Architecture
 
-![State Management](./state-management.svg)
+![State Management](state-management.svg "State Management")
 
 NgRx is a framework for handling state information in Angular applications following the Redux pattern. It consist of a few basic parts:
 
