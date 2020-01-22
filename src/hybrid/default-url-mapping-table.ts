@@ -31,7 +31,7 @@ export const HYBRID_MAPPING_TABLE: {
   {
     id: 'PDP',
     icm: `${ICM_CONFIG_MATCH}/ViewProduct-Start.*(\\?|&)SKU=(?<sku>\\w+)`,
-    icmBuild: `ViewProduct-Start.*(\\?|&)SKU=(?<sku>\\w+)`,
+    icmBuild: `ViewProduct-Start?SKU=$<sku>`,
     pwa: `^/product/(?<sku>\\w+)`,
     pwaBuild: `product/$<sku>${PWA_CONFIG_BUILD}`,
     handledBy: 'pwa',

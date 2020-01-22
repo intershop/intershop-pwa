@@ -25,6 +25,8 @@ import { LoadUserByAPIToken, LogoutUser, UserActionTypes, getAPIToken, getLogged
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
 
+import { HYBRID_MAPPING_TABLE } from '../../../../hybrid/default-url-mapping-table';
+
 interface CookieType {
   apiToken: string;
   type: 'user' | 'basket' | 'order';
@@ -158,9 +160,17 @@ export class RestoreEffects {
     map((event: NavigationStart) => event.url),
     withLatestFrom(this.store$.pipe(select(getICMWebURL))),
     tap(([url, icmWebUrl]) => {
-      if (url === '/home') {
-        this.router.dispose();
-        location.assign(icmWebUrl + 'Default-Start');
+      for (const entry of HYBRID_MAPPING_TABLE) {
+        if (entry.handledBy === 'pwa') {
+          continue;
+        }
+        const regex = new RegExp(entry.pwa);
+        if (regex.exec(url)) {
+          this.router.dispose();
+          const newUrl = url.replace(regex, `${icmWebUrl}/${entry.icmBuild}`);
+          location.assign(newUrl);
+          break;
+        }
       }
     })
   );
