@@ -9,6 +9,8 @@ export interface Environment {
   icmBaseURL: string;
   icmServer: string;
   icmServerStatic: string;
+
+  // application specific
   icmChannel: string;
   icmApplication?: string;
 

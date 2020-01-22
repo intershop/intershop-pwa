@@ -493,6 +493,7 @@
           "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/ngrx-router/.*$",
+          "^.*/src/hybrid/default-url-mapping-table.ts$",
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",

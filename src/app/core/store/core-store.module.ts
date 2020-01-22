@@ -18,6 +18,7 @@ import { CountriesEffects } from './countries/countries.effects';
 import { countriesReducer } from './countries/countries.reducer';
 import { ErrorEffects } from './error/error.effects';
 import { errorReducer } from './error/error.reducer';
+import { HybridStoreModule } from './hybrid/hybrid-store.module';
 import { LocaleEffects } from './locale/locale.effects';
 import { localeReducer } from './locale/locale.reducer';
 import { MessagesEffects } from './messages/messages.effects';
@@ -66,6 +67,7 @@ export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
     CheckoutStoreModule,
     ContentStoreModule,
     EffectsModule.forRoot(coreEffects),
+    HybridStoreModule,
     RestoreStoreModule,
     ShoppingStoreModule,
     StoreModule.forRoot(coreReducers, {
