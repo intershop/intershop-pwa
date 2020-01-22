@@ -6,6 +6,7 @@
     "module": "commonjs",
     "target": "es5",
     "allowJs": true,
+    "typeRoots": ["node_modules/jest-extended"],
     "types": ["jest", "jest-extended", "node"]
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]

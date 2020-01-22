@@ -7,7 +7,7 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
@@ -17,7 +17,6 @@
       "ish-shell/*": ["src/app/shell/*"],
       "ngrx-router": ["src/ngrx-router"]
     },
-    "typeRoots": ["node_modules/@types", "node_modules/jest-extended"],
     "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
