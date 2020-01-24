@@ -72,7 +72,7 @@ var writerOpts = {
   },
   groupBy: 'type',
   commitGroupsSort: function(arg1, arg2) {
-    var order = ['Features', 'Bug Fixes', 'Performance Improvements', 'Documentation'];
+    var order = ['Features', 'Bug Fixes', 'Performance Improvements', 'Documentation', 'Code Refactoring'];
     if (order.indexOf(arg1.title) < order.indexOf(arg2.title)) {
       return -1;
     }
