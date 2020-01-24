@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 
-import { AddressFormsSharedModule } from 'ish-shared/address-forms/address-forms.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
-import { CheckoutAddressAnonymousComponent } from './components/checkout-address-anonymous/checkout-address-anonymous.component';
-import { CheckoutAddressComponent } from './components/checkout-address/checkout-address.component';
+import { CheckoutAddressAnonymousComponent } from './checkout-address-anonymous/checkout-address-anonymous.component';
+import { CheckoutAddressPageComponent } from './checkout-address-page.component';
+import { CheckoutAddressComponent } from './checkout-address/checkout-address.component';
 
 @NgModule({
-  imports: [AddressFormsSharedModule, SharedModule],
-  declarations: [CheckoutAddressAnonymousComponent, CheckoutAddressComponent, CheckoutAddressPageContainerComponent],
+  imports: [SharedModule],
+  declarations: [CheckoutAddressAnonymousComponent, CheckoutAddressComponent, CheckoutAddressPageComponent],
 })
 export class CheckoutAddressPageModule {
-  static component = CheckoutAddressPageContainerComponent;
+  static component = CheckoutAddressPageComponent;
 }

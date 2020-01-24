@@ -218,17 +218,16 @@ export class BasketService {
   /**
    * Validates the basket for the given basket id.
    * @param basketId  The basket id. (default: current)
-   * @param scope     Basket scopes which should be validated ( see also BasketValidationScopeType ), default: minimal scope (max items limit, empty basket)
-   * @returns         The basket and the validation results.
+   * @param scopes    Basket scopes which should be validated ( see also BasketValidationScopeType ), default: minimal scope (max items limit, empty basket)
+   * @returns         The (adjusted) basket and the validation results.
    */
   validateBasket(
     basketId: string = 'current',
     scopes: BasketValidationScopeType[] = ['']
   ): Observable<BasketValidation> {
-    const scopesWithAdjustmentsAllowed = ['Products', 'Addresses'];
     const body = {
       basket: basketId,
-      adjustmentsAllowed: scopes.some(scope => scopesWithAdjustmentsAllowed.includes(scope)),
+      adjustmentsAllowed: !scopes.some(scope => scope === 'All'), // don't allow adjustments for 'All' validation steps, because you cannot show them to the user at once
       scopes,
     };
 
@@ -298,6 +297,17 @@ export class BasketService {
         headers: this.basketHeaders,
       })
       .pipe(map(({ infos }) => infos && infos[0] && infos[0].message));
+  }
+
+  /**
+   * Remove a promotion code from basket.
+   * @param basketId  The id of the basket where the promotion code should be removed.
+   * @param codeStr   The code string of the promotion code that should be removed from basket.
+   */
+  removePromotionCodeFromBasket(basketId: string = 'current', codeStr: string): Observable<string> {
+    return this.apiService.delete(`baskets/${basketId}/promotioncodes/${codeStr}`, {
+      headers: this.basketHeaders,
+    });
   }
 
   /**

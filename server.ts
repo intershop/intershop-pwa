@@ -20,6 +20,8 @@ import 'zone.js/dist/zone-node';
 
 import * as express from 'express';
 import { join } from 'path';
+import * as robots from 'express-robots-txt';
+import * as fs from 'fs';
 
 const logging = !!process.env.LOGGING;
 
@@ -43,6 +45,31 @@ app.engine(
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
+
+// seo robots.txt
+const pathToRobotsTxt = join(DIST_FOLDER, 'robots.txt');
+if (fs.existsSync(pathToRobotsTxt)) {
+  app.use(robots(pathToRobotsTxt));
+} else {
+  app.use(
+    robots({
+      UserAgent: '*',
+      Disallow: [
+        '/error',
+        '/account',
+        '/compare',
+        '/recently',
+        '/basket',
+        '/checkout',
+        '/register',
+        '/login',
+        '/logout',
+        '/forgotPassword',
+        '/contact',
+      ],
+    })
+  );
+}
 
 // Serve static files from /browser
 app.get(

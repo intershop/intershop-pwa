@@ -71,12 +71,9 @@ describe('Page Schematic', () => {
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/projects/bar/src/app/pages/foo/foo-page.module.ts",
-        "/projects/bar/src/app/pages/foo/foo-page.container.ts",
-        "/projects/bar/src/app/pages/foo/foo-page.container.html",
-        "/projects/bar/src/app/pages/foo/foo-page.container.spec.ts",
-        "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.ts",
-        "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.html",
-        "/projects/bar/src/app/pages/foo/components/foo-page/foo-page.component.spec.ts",
+        "/projects/bar/src/app/pages/foo/foo-page.component.ts",
+        "/projects/bar/src/app/pages/foo/foo-page.component.html",
+        "/projects/bar/src/app/pages/foo/foo-page.component.spec.ts",
       ]
     `);
     expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.module.ts')).toMatchInlineSnapshot(`
@@ -84,33 +81,31 @@ describe('Page Schematic', () => {
       import { RouterModule, Routes } from '@angular/router';
 
       import { SharedModule } from '../../shared/shared.module';
-      import { FooPageComponent } from './components/foo-page/foo-page.component';
-      import { FooPageContainerComponent } from './foo-page.container';
+      import { FooPageComponent } from './foo-page.component';
 
-      const fooPageRoutes: Routes = [{ path: '', component: FooPageContainerComponent }];
+      const fooPageRoutes: Routes = [{ path: '', component: FooPageComponent }];
 
       @NgModule({
         imports: [RouterModule.forChild(fooPageRoutes), SharedModule],
-        declarations: [FooPageComponent, FooPageContainerComponent],
+        declarations: [FooPageComponent],
       })
       export class FooPageModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.container.html')).toMatchInlineSnapshot(`
-      "<ish-foo-page></ish-foo-page>
+    expect(tree.readContent('/projects/bar/src/app/pages/foo/foo-page.component.html')).toMatchInlineSnapshot(`
+      "<p>
+        foo-page works!
+      </p>
       "
     `);
   });
 
-  it('should create a correct test for the container', async () => {
+  it('should create a correct test for the component', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('page', options, appTree).toPromise();
-    const containerSpecContent = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.container.spec.ts');
-    expect(containerSpecContent).toContain(
-      `import { FooPageComponent } from './components/foo-page/foo-page.component'`
-    );
-    expect(containerSpecContent).toContain(`MockComponent(FooPageComponent)`);
+    const componentSpecContent = tree.readContent('/projects/bar/src/app/pages/foo/foo-page.component.spec.ts');
+    expect(componentSpecContent).toContain(`import { FooPageComponent } from './foo-page.component'`);
   });
 
   it('should register route in app routing module by default', async () => {
@@ -131,12 +126,9 @@ describe('Page Schematic', () => {
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.spec.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.html",
-        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.spec.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.html",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts",
       ]
     `);
     expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts'))
@@ -145,21 +137,22 @@ describe('Page Schematic', () => {
       import { RouterModule, Routes } from '@angular/router';
 
       import { FeatureModule } from '../../feature.module';
-      import { FooPageComponent } from './components/foo-page/foo-page.component';
-      import { FooPageContainerComponent } from './foo-page.container';
+      import { FooPageComponent } from './foo-page.component';
 
-      const fooPageRoutes: Routes = [{ path: '', component: FooPageContainerComponent }];
+      const fooPageRoutes: Routes = [{ path: '', component: FooPageComponent }];
 
       @NgModule({
         imports: [RouterModule.forChild(fooPageRoutes), FeatureModule],
-        declarations: [FooPageComponent, FooPageContainerComponent],
+        declarations: [FooPageComponent],
       })
       export class FooPageModule { }
       "
     `);
-    expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html'))
+    expect(tree.readContent('/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.html'))
       .toMatchInlineSnapshot(`
-      "<ish-foo-page></ish-foo-page>
+      "<p>
+        foo-page works!
+      </p>
       "
     `);
   });
@@ -172,12 +165,9 @@ describe('Page Schematic', () => {
     expect(files).toMatchInlineSnapshot(`
       Array [
         "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.module.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.html",
-        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.container.spec.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.ts",
-        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.html",
-        "/projects/bar/src/app/extensions/feature/pages/foo/components/foo-page/foo-page.component.spec.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.ts",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.html",
+        "/projects/bar/src/app/extensions/feature/pages/foo/foo-page.component.spec.ts",
       ]
     `);
   });

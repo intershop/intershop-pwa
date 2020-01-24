@@ -14,9 +14,14 @@ export class PricePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   transform(data: Price): string {
-    if (!data || !this.translateService.currentLang) {
-      return 'undefined';
+    if (!data) {
+      return this.translateService.instant('product.price.na.text');
     }
+
+    if (!this.translateService.currentLang) {
+      return 'N/A';
+    }
+
     switch (data.type) {
       case 'Money':
       case 'ProductPrice':

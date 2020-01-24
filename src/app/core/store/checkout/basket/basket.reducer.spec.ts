@@ -7,6 +7,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { CreateOrderSuccess } from 'ish-core/store/orders';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -309,6 +310,38 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('RemovePromotionCodeFromBasket actions', () => {
+      describe('RemovePromotionCodeFromBasket action', () => {
+        it('should set loading to true', () => {
+          const action = new fromActions.RemovePromotionCodeFromBasket({ code: 'test' });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeTrue();
+        });
+      });
+
+      describe('RemovePromotionCodeFromBasketFail action', () => {
+        it('should set loading to false', () => {
+          const error = undefined as HttpError;
+          const action = new fromActions.RemovePromotionCodeFromBasketFail({ error });
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.promotionError).toEqual(error);
+        });
+      });
+
+      describe('RemovePromotionCodeFromBasketSuccess action', () => {
+        it('should set loading to false', () => {
+          const action = new fromActions.RemovePromotionCodeFromBasketSuccess();
+          const state = basketReducer(initialState, action);
+
+          expect(state.loading).toBeFalse();
+          expect(state.error).toBeUndefined();
+        });
+      });
+    });
+
     describe('ResetBasket action', () => {
       it('should reset to initial state', () => {
         const oldState = {
@@ -453,7 +486,7 @@ describe('Basket Reducer', () => {
     };
     describe('CreateBasketPayment action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.CreateBasketPayment({ paymentInstrument });
+        const action = new fromActions.CreateBasketPayment({ paymentInstrument, saveForLater: false });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();
@@ -523,7 +556,22 @@ describe('Basket Reducer', () => {
   describe('DeleteBasketPayment actions', () => {
     describe('DeleteBasketPayment action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.DeleteBasketPayment({ id: 'testPayment' });
+        const action = new fromActions.DeleteBasketPayment({
+          paymentInstrument: {
+            id: '12345',
+            paymentMethod: 'ISH_DirectDebit',
+            parameters_: [
+              {
+                name: 'accountHolder',
+                value: 'Patricia Miller',
+              },
+              {
+                name: 'IBAN',
+                value: 'DE430859340859340',
+              },
+            ],
+          } as PaymentInstrument,
+        });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeTrue();

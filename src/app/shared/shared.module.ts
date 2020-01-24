@@ -22,18 +22,7 @@ import { ShellModule } from 'ish-shell/shell.module';
 
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 
-import { AddressComponent } from './address/components/address/address.component';
-import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
-import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';
-import { BasketInfoComponent } from './basket/components/basket-info/basket-info.component';
-import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
-import { BasketPromotionCodeComponent } from './basket/components/basket-promotion-code/basket-promotion-code.component';
-import { BasketValidationItemsComponent } from './basket/components/basket-validation-items/basket-validation-items.component';
-import { BasketValidationProductsComponent } from './basket/components/basket-validation-products/basket-validation-products.component';
-import { BasketValidationResultsComponent } from './basket/components/basket-validation-results/basket-validation-results.component';
-import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
-import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
-import { BasketPromotionContainerComponent } from './basket/containers/basket-promotion/basket-promotion.container';
+import { AddressFormsSharedModule } from './address-forms/address-forms.module';
 import { CMSModule } from './cms/cms.module';
 import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './cms/components/cms-container/cms-container.component';
@@ -46,59 +35,75 @@ import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './cms/components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './cms/components/cms-video/cms-video.component';
-import { ContentIncludeContainerComponent } from './cms/containers/content-include/content-include.container';
-import { ContentPageletContainerComponent } from './cms/containers/content-pagelet/content-pagelet.container';
-import { ContentSlotContainerComponent } from './cms/containers/content-slot/content-slot.container';
-import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
-import { AccordionComponent } from './common/components/accordion/accordion.component';
-import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
-import { ErrorMessageComponent } from './common/components/error-message/error-message.component';
-import { InfoBoxComponent } from './common/components/info-box/info-box.component';
-import { LoadingComponent } from './common/components/loading/loading.component';
-import { ModalDialogLinkComponent } from './common/components/modal-dialog-link/modal-dialog-link.component';
-import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
-import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
-import { FilterCollapsableComponent } from './filter/components/filter-collapsable/filter-collapsable.component';
-import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
-import { FilterNavigationBadgesComponent } from './filter/components/filter-navigation-badges/filter-navigation-badges.component';
-import { FilterNavigationHorizontalComponent } from './filter/components/filter-navigation-horizontal/filter-navigation-horizontal.component';
-import { FilterNavigationSidebarComponent } from './filter/components/filter-navigation-sidebar/filter-navigation-sidebar.component';
-import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
-import { FilterTextComponent } from './filter/components/filter-text/filter-text.component';
-import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
+import { ContentIncludeComponent } from './cms/components/content-include/content-include.component';
+import { ContentPageletComponent } from './cms/components/content-pagelet/content-pagelet.component';
+import { ContentSlotComponent } from './cms/components/content-slot/content-slot.component';
+import { AddressComponent } from './components/address/address/address.component';
+import { BasketAddressSummaryComponent } from './components/basket/basket-address-summary/basket-address-summary.component';
+import { BasketCostSummaryComponent } from './components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketInfoComponent } from './components/basket/basket-info/basket-info.component';
+import { BasketItemsSummaryComponent } from './components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketPromotionCodeComponent } from './components/basket/basket-promotion-code/basket-promotion-code.component';
+import { BasketPromotionComponent } from './components/basket/basket-promotion/basket-promotion.component';
+import { BasketValidationItemsComponent } from './components/basket/basket-validation-items/basket-validation-items.component';
+import { BasketValidationProductsComponent } from './components/basket/basket-validation-products/basket-validation-products.component';
+import { BasketValidationResultsComponent } from './components/basket/basket-validation-results/basket-validation-results.component';
+import { LineItemDescriptionComponent } from './components/basket/line-item-description/line-item-description.component';
+import { LineItemListComponent } from './components/basket/line-item-list/line-item-list.component';
+import { BasketInvoiceAddressWidgetComponent } from './components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
+import { BasketShippingAddressWidgetComponent } from './components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
+import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
+import { AccordionComponent } from './components/common/accordion/accordion.component';
+import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
+import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
+import { InfoBoxComponent } from './components/common/info-box/info-box.component';
+import { LoadingComponent } from './components/common/loading/loading.component';
+import { ModalDialogLinkComponent } from './components/common/modal-dialog-link/modal-dialog-link.component';
+import { ModalDialogComponent } from './components/common/modal-dialog/modal-dialog.component';
+import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
+import { FilterCollapsableComponent } from './components/filter/filter-collapsable/filter-collapsable.component';
+import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
+import { FilterNavigationBadgesComponent } from './components/filter/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationHorizontalComponent } from './components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
+import { FilterNavigationSidebarComponent } from './components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
+import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
+import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
+import { FilterTextComponent } from './components/filter/filter-text/filter-text.component';
+import { LineItemEditDialogComponent } from './components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
+import { LineItemEditComponent } from './components/line-item/line-item-edit/line-item-edit.component';
+import { LoginModalComponent } from './components/login/login-modal/login-modal.component';
+import { OrderListComponent } from './components/order/order-list/order-list.component';
+import { OrderWidgetComponent } from './components/order/order-widget/order-widget.component';
+import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductAddToCompareComponent } from './components/product/product-add-to-compare/product-add-to-compare.component';
+import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
+import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
+import { ProductIdComponent } from './components/product/product-id/product-id.component';
+import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
+import { ProductItemComponent } from './components/product/product-item/product-item.component';
+import { ProductLabelComponent } from './components/product/product-label/product-label.component';
+import { ProductListPagingComponent } from './components/product/product-list-paging/product-list-paging.component';
+import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
+import { ProductListComponent } from './components/product/product-list/product-list.component';
+import { ProductListingComponent } from './components/product/product-listing/product-listing.component';
+import { ProductPriceComponent } from './components/product/product-price/product-price.component';
+import { ProductPromotionComponent } from './components/product/product-promotion/product-promotion.component';
+import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
+import { ProductRatingStarComponent } from './components/product/product-rating-star/product-rating-star.component';
+import { ProductRatingComponent } from './components/product/product-rating/product-rating.component';
+import { ProductRowComponent } from './components/product/product-row/product-row.component';
+import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
+import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
+import { ProductVariationDisplayComponent } from './components/product/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from './components/product/product-variation-select/product-variation-select.component';
+import { PromotionDetailsComponent } from './components/promotion/promotion-details/promotion-details.component';
+import { PromotionRemoveComponent } from './components/promotion/promotion-remove/promotion-remove.component';
+import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { FormsDynamicModule } from './forms-dynamic/forms-dynamic.module';
 import { FormsSharedModule } from './forms/forms.module';
-import { LineItemEditComponent } from './line-item/components/line-item-edit/line-item-edit.component';
-import { LineItemEditDialogContainerComponent } from './line-item/containers/line-item-edit-dialog/line-item-edit-dialog.container';
-import { LoginModalComponent } from './login/components/login-modal/login-modal.component';
-import { OrderWidgetComponent } from './order/components/order-widget/order-widget.component';
-import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
-import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
-import { ProductAddToCompareComponent } from './product/components/product-add-to-compare/product-add-to-compare.component';
-import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
-import { ProductIdComponent } from './product/components/product-id/product-id.component';
-import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
-import { ProductLabelComponent } from './product/components/product-label/product-label.component';
-import { ProductListPagingComponent } from './product/components/product-list-paging/product-list-paging.component';
-import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
-import { ProductListComponent } from './product/components/product-list/product-list.component';
-import { ProductPriceComponent } from './product/components/product-price/product-price.component';
-import { ProductQuantityComponent } from './product/components/product-quantity/product-quantity.component';
-import { ProductRatingStarComponent } from './product/components/product-rating-star/product-rating-star.component';
-import { ProductRatingComponent } from './product/components/product-rating/product-rating.component';
-import { ProductRowComponent } from './product/components/product-row/product-row.component';
-import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
-import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
-import { ProductVariationDisplayComponent } from './product/components/product-variation-display/product-variation-display.component';
-import { ProductVariationSelectComponent } from './product/components/product-variation-select/product-variation-select.component';
-import { ProductBundleDisplayContainerComponent } from './product/containers/product-bundle-display/product-bundle-display.container';
-import { ProductItemContainerComponent } from './product/containers/product-item/product-item.container';
-import { ProductListingContainerComponent } from './product/containers/product-listing/product-listing.container';
-import { ProductPromotionContainerComponent } from './product/containers/product-promotion/product-promotion.container';
-import { PromotionDetailsComponent } from './promotion/components/promotion-details/promotion-details.component';
-import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 
 const importExportModules = [
+  AddressFormsSharedModule,
   CMSModule,
   CommonModule,
   DeferLoadModule,
@@ -136,7 +141,7 @@ const declaredComponents = [
   CMSStaticPageComponent,
   CMSTextComponent,
   CMSVideoComponent,
-  ContentSlotContainerComponent,
+  ContentSlotComponent,
   FilterCheckboxComponent,
   FilterCollapsableComponent,
   FilterDropdownComponent,
@@ -147,7 +152,7 @@ const declaredComponents = [
   FilterTextComponent,
   LineItemDescriptionComponent,
   LineItemEditComponent,
-  LineItemEditDialogContainerComponent,
+  LineItemEditDialogComponent,
   LoginModalComponent,
   ProductIdComponent,
   ProductLabelComponent,
@@ -166,40 +171,43 @@ const exportedComponents = [
   BasketAddressSummaryComponent,
   BasketCostSummaryComponent,
   BasketInfoComponent,
+  BasketInvoiceAddressWidgetComponent,
   BasketItemsSummaryComponent,
   BasketPromotionCodeComponent,
-  BasketPromotionContainerComponent,
+  BasketPromotionComponent,
+  BasketShippingAddressWidgetComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
-  ContentIncludeContainerComponent,
-  ContentPageletContainerComponent,
+  ContentIncludeComponent,
+  ContentPageletComponent,
   ErrorMessageComponent,
-  FilterNavigationContainerComponent,
+  FilterNavigationComponent,
   InfoBoxComponent,
   LineItemListComponent,
   LoadingComponent,
   ModalDialogComponent,
   ModalDialogLinkComponent,
-  OrderListContainerComponent,
+  OrderListComponent,
   OrderWidgetComponent,
   ProductAddToBasketComponent,
   ProductAddToCompareComponent,
   ProductAttributesComponent,
-  ProductBundleDisplayContainerComponent,
+  ProductBundleDisplayComponent,
   ProductIdComponent,
   ProductInventoryComponent,
-  ProductItemContainerComponent,
+  ProductItemComponent,
   ProductLabelComponent,
-  ProductListingContainerComponent,
+  ProductListingComponent,
   ProductPriceComponent,
-  ProductPromotionContainerComponent,
+  ProductPromotionComponent,
   ProductQuantityComponent,
   ProductRatingComponent,
   ProductShipmentComponent,
   ProductVariationDisplayComponent,
   ProductVariationSelectComponent,
   PromotionDetailsComponent,
-  RecentlyViewedContainerComponent,
+  PromotionRemoveComponent,
+  RecentlyViewedComponent,
 ];
 
 @NgModule({

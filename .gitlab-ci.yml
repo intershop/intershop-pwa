@@ -37,7 +37,7 @@ setup:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -52,6 +52,26 @@ setup:
     - bash scripts/ci-test-no-changes.sh 'you probably did not commit package-lock.json correctly after installing packages, run npm i again'
     - echo "setup complete"
 
+migration:
+  image: node:10
+  stage: setup
+  allow_failure: true
+  timeout: 3h
+  only:
+    - merge_requests
+  except:
+    refs:
+      - develop
+      - master
+  tags:
+    - docker-executor
+    - performance
+  script:
+    - npm ci
+    - node schematics/migration/0.16-to-0.17
+    - node schematics/migration/0.16-to-0.17 | grep -q "Nothing to be done."
+    - npm run check
+
 start_review_server:
   cache: {}
   dependencies: []
@@ -59,7 +79,7 @@ start_review_server:
   only:
     refs:
       - merge_requests
-      - develop
+      - github-develop
       - master
   tags:
     - shell-executor
@@ -86,7 +106,7 @@ jest_test:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -111,7 +131,7 @@ compile:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -130,7 +150,7 @@ code_quality:
   stage: build
   only:
     refs:
-      - develop
+      - github-develop
       - merge_requests
   tags:
     - docker-executor
@@ -203,7 +223,7 @@ publish_pwa:
   stage: build
   only:
     refs:
-      - develop
+      - github-develop
       - master
       - demo
       - tags
@@ -255,7 +275,7 @@ publish_nginx:
   stage: publish
   only:
     refs:
-      - develop
+      - github-develop
       - master
       - demo
       - tags
@@ -279,7 +299,7 @@ push_reports:
   cache: {}
   only:
     refs:
-      - develop
+      - github-develop
   allow_failure: true
   tags:
     - shell-executor
@@ -301,14 +321,14 @@ deploy_demo:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   tags:
     - shell-executor
     - docker
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'develop-pwa-b2c'
+    SERVICE: 'github-develop-pwa-b2c'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}'
   script:
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
@@ -339,14 +359,14 @@ deploy_demo_b2b:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   tags:
     - shell-executor
     - docker
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'develop-pwa-b2b'
+    SERVICE: 'github-develop-pwa-b2b'
     IMAGE: '${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -373,14 +393,14 @@ deploy_demo_nginx:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   tags:
     - shell-executor
     - docker
     - demoserver
   variables:
     GIT_STRATEGY: none
-    SERVICE: 'develop-nginx'
+    SERVICE: 'github-develop-nginx'
     IMAGE: '${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}'
   script:
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
@@ -419,7 +439,7 @@ deploy_demo_BO:
     - shell-executor
   only:
     - merge_requests
-    - develop
+    - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -436,7 +456,7 @@ deploy_demo_MAIL:
     - shell-executor
   only:
     - merge_requests
-    - develop
+    - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -451,7 +471,7 @@ deploy_reports:
   dependencies: []
   only:
     refs:
-      - develop
+      - github-develop
   allow_failure: true
   tags:
     - shell-executor
@@ -527,6 +547,7 @@ deploy_review_b2c:
       -e PWA_2_SUBDOMAIN=b2b
       -e PWA_2_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
+      -e PWA_2_THEME=blue
       -e PWA_3_SUBDOMAIN=de
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_3_LANG=de_DE
@@ -535,6 +556,7 @@ deploy_review_b2c:
       -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_4_APPLICATION=smb-responsive
       -e PWA_4_FEATURES=quoting
+      -e PWA_4_THEME=blue
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
     - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
@@ -592,6 +614,7 @@ deploy_review_b2b:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
+      -e THEME=blue
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       --add-host $ICM_HOST:$ICM_IP
@@ -631,7 +654,7 @@ build_e2e_image:
   image: docker:stable
   only:
     refs:
-      - develop
+      - github-develop
       - merge_requests
   tags:
     - shell-executor
@@ -685,7 +708,7 @@ schematics:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -694,6 +717,7 @@ schematics:
   script:
     - npm install
     - bash e2e/test-schematics.sh
+    - sh scripts/ci-check-no-additional-warnings.sh
     - echo "schematics complete"
 
 .universal_template: &universal_definition
@@ -818,7 +842,7 @@ housekeeping_images:
     - shell-executor
   only:
     refs:
-      - develop
+      - github-develop
   variables:
     GIT_STRATEGY: none
   script:
@@ -831,7 +855,7 @@ housekeeping_environments:
   image: endeveit/docker-jq
   stage: verify
   only:
-    - develop
+    - github-develop
   tags:
     - docker-executor
   script:

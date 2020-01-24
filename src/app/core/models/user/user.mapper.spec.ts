@@ -1,4 +1,5 @@
 import { Address } from 'ish-core/models/address/address.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { UserData } from './user.interface';
@@ -12,6 +13,7 @@ describe('User Mapper', () => {
         lastName: 'Miller',
         preferredInvoiceToAddress: BasketMockData.getAddress(),
         preferredShipToAddress: { urn: 'urn:1234' } as Address,
+        preferredPaymentInstrument: { id: '1234' } as PaymentInstrument,
       } as UserData;
       const user = UserMapper.fromData(userData);
 
@@ -20,6 +22,7 @@ describe('User Mapper', () => {
       expect(user.lastName).toBe(userData.lastName);
       expect(user.preferredInvoiceToAddressUrn).toBe(BasketMockData.getAddress().urn);
       expect(user.preferredShipToAddressUrn).toBe('urn:1234');
+      expect(user.preferredPaymentInstrumentId).toBe('1234');
     });
   });
 });

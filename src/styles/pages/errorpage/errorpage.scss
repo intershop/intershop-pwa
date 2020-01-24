@@ -1,0 +1,68 @@
+//
+// ERROR PAGE
+
+.errorpage {
+  header {
+    margin-bottom: 0;
+
+    .logo-wrapper {
+      padding-top: $space-default * 2 + $top-header-height;
+      padding-bottom: 20px;
+    }
+  }
+
+  .wrapper {
+    padding: 0;
+    // background: url('/assets/img/error_bg.jpg') center;
+
+    .main-container {
+      background: none;
+    }
+  }
+
+  .errorpage-content {
+    padding: ($space-default * 5) 0 ($space-default * 8);
+    color: $text-color-primary;
+
+    h1 {
+      font-size: 70px;
+      opacity: 0.85;
+    }
+
+    .error-text {
+      padding: $space-default;
+      background: rgba(238, 238, 238, 0.8);
+    }
+
+    input {
+      &.form-control {
+        height: $search-container-height;
+        color: $white;
+        background: $color-primary;
+        border: $border-width-default solid $border-color-default;
+
+        &:focus {
+          color: $text-color-primary;
+          background: $color-inverse;
+          border: $border-width-default solid $border-color-light;
+          box-shadow: none;
+
+          + button {
+            &.btn-search {
+              span::before {
+                color: $text-color-primary;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .btn-primary {
+      right: 0;
+      bottom: 1px;
+      margin-bottom: 0;
+      font-weight: normal;
+    }
+  }
+}

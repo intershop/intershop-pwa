@@ -5,13 +5,13 @@ import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOverviewPageModule } from '../account-overview/account-overview-page.module';
 
-import { AccountPageContainerComponent } from './account-page.container';
-import { AccountNavigationComponent } from './components/account-navigation/account-navigation.component';
+import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
+import { AccountPageComponent } from './account-page.component';
 
 const accountPageRoutes: Routes = [
   {
     path: '',
-    component: AccountPageContainerComponent,
+    component: AccountPageComponent,
     children: [
       {
         path: 'addresses',
@@ -38,9 +38,10 @@ const accountPageRoutes: Routes = [
         loadChildren: () => import('../account-order/account-order-page.module').then(m => m.AccountOrderPageModule),
       },
       {
-        path: 'overview',
-        data: { breadcrumbData: [{ key: 'account.overview.link' }] },
-        component: AccountOverviewPageModule.component,
+        path: 'payment',
+        data: { breadcrumbData: [{ key: 'account.payment.link' }] },
+        loadChildren: () =>
+          import('../account-payment/account-payment-page.module').then(m => m.AccountPaymentPageModule),
       },
       {
         path: 'profile',
@@ -75,14 +76,14 @@ const accountPageRoutes: Routes = [
       },
       {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'overview',
+        data: { breadcrumbData: [] },
+        component: AccountOverviewPageModule.component,
       },
     ],
   },
 ];
 @NgModule({
   imports: [AccountOverviewPageModule, RouterModule.forChild(accountPageRoutes), SharedModule],
-  declarations: [AccountNavigationComponent, AccountPageContainerComponent],
+  declarations: [AccountNavigationComponent, AccountPageComponent],
 })
 export class AccountPageModule {}

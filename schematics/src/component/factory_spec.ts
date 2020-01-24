@@ -26,9 +26,9 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/components/foo/foo.component.ts",
-        "/projects/bar/src/app/components/foo/foo.component.html",
-        "/projects/bar/src/app/components/foo/foo.component.spec.ts",
+        "/projects/bar/src/app/foo/foo.component.ts",
+        "/projects/bar/src/app/foo/foo.component.html",
+        "/projects/bar/src/app/foo/foo.component.spec.ts",
       ]
     `);
     const moduleContent = tree.readContent('/projects/bar/src/app/app.module.ts');
@@ -38,7 +38,7 @@ describe('Component Schematic', () => {
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';
-      import { FooComponent } from './components/foo/foo.component';
+      import { FooComponent } from './foo/foo.component';
 
       @NgModule({
         declarations: [
@@ -61,7 +61,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const tsContent = tree.readContent('/projects/bar/src/app/components/foo/foo.component.ts');
+    const tsContent = tree.readContent('/projects/bar/src/app/foo/foo.component.ts');
     expect(tsContent).toContain('changeDetection: ChangeDetectionStrategy.OnPush');
   });
 
@@ -87,7 +87,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions, name: 'test-component' };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const tsContent = tree.readContent('/projects/bar/src/app/components/test/test.component.ts');
+    const tsContent = tree.readContent('/projects/bar/src/app/test/test.component.ts');
     expect(tsContent).not.toBeEmpty();
   });
 
@@ -96,19 +96,19 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     expect(tree.files.filter(x => x.search('foo.component') >= 0)).toMatchInlineSnapshot(`
       Array [
-        "/projects/bar/src/app/components/foo/foo.component.scss",
-        "/projects/bar/src/app/components/foo/foo.component.ts",
-        "/projects/bar/src/app/components/foo/foo.component.html",
-        "/projects/bar/src/app/components/foo/foo.component.spec.ts",
+        "/projects/bar/src/app/foo/foo.component.scss",
+        "/projects/bar/src/app/foo/foo.component.ts",
+        "/projects/bar/src/app/foo/foo.component.html",
+        "/projects/bar/src/app/foo/foo.component.spec.ts",
       ]
     `);
-    const componentSource = tree.readContent('/projects/bar/src/app/components/foo/foo.component.ts');
+    const componentSource = tree.readContent('/projects/bar/src/app/foo/foo.component.ts');
     expect(componentSource).toContain(`styleUrls: ['./foo.component.scss']`);
   });
 
   it('should find the closest module', async () => {
     const options = { ...defaultOptions };
-    const fooModule = '/projects/bar/src/app/components/foo/foo.module.ts';
+    const fooModule = '/projects/bar/src/app/foo/foo.module.ts';
     appTree.create(
       fooModule,
       `
@@ -149,7 +149,7 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const appModule = tree.readContent('/projects/bar/src/app/app.module.ts');
 
-    expect(appModule).toMatch(/import { FooComponent } from '.\/components\/foo\/foo.component'/);
+    expect(appModule).toMatch(/import { FooComponent } from '.\/foo\/foo.component'/);
   });
 
   it('should fail if specified module does not exist', done => {
@@ -158,12 +158,11 @@ describe('Component Schematic', () => {
       expect(err).toMatchInlineSnapshot(`
         [Error: Specified module '/projects/bar/src/app.moduleXXX.ts' does not exist.
         Looked in the following directories:
-            /projects/bar/src/app/components/projects/bar/src/app.moduleXXX.ts
-            /projects/bar/src/app/components/projects/bar/src
-            /projects/bar/src/app/components/projects/bar
-            /projects/bar/src/app/components/projects
-            /projects/bar/src/app/components/foo
-            /projects/bar/src/app/components
+            /projects/bar/src/app/projects/bar/src/app.moduleXXX.ts
+            /projects/bar/src/app/projects/bar/src
+            /projects/bar/src/app/projects/bar
+            /projects/bar/src/app/projects
+            /projects/bar/src/app/foo
             /projects/bar/src/app
             /projects/bar/src
             /projects/bar
@@ -179,13 +178,13 @@ describe('Component Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     let files = tree.files;
-    let root = `/${pathOption}/components/foo/foo.component`;
+    let root = `/${pathOption}/foo/foo.component`;
     expect(files).toIncludeAllMembers([`${root}.html`, `${root}.spec.ts`, `${root}.ts`]);
 
     const options2 = { ...options, name: 'BAR' };
     const tree2 = await schematicRunner.runSchematicAsync('component', options2, tree).toPromise();
     files = tree2.files;
-    root = `/${pathOption}/components/bar/bar.component`;
+    root = `/${pathOption}/bar/bar.component`;
     expect(files).toIncludeAllMembers([`${root}.html`, `${root}.spec.ts`, `${root}.ts`]);
   });
 
@@ -194,7 +193,7 @@ describe('Component Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const files = tree.files.filter(x => x.search('foo.component') >= 0);
-    const root = `/${options.path}/components/foo/foo.component`;
+    const root = `/${options.path}/foo/foo.component`;
     expect(files).toIncludeAllMembers([`${root}.html`, `${root}.spec.ts`, `${root}.ts`]);
   });
 
@@ -202,7 +201,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions, prefix: 'pre' };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const content = tree.readContent('/projects/bar/src/app/components/foo/foo.component.ts');
+    const content = tree.readContent('/projects/bar/src/app/foo/foo.component.ts');
     expect(content).toMatch(/selector: 'pre-foo'/);
   });
 
@@ -210,7 +209,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions, prefix: undefined };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const content = tree.readContent('/projects/bar/src/app/components/foo/foo.component.ts');
+    const content = tree.readContent('/projects/bar/src/app/foo/foo.component.ts');
     expect(content).toMatch(/selector: 'ish-foo'/);
   });
 
@@ -218,7 +217,7 @@ describe('Component Schematic', () => {
     const options = { ...defaultOptions, prefix: '' };
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const content = tree.readContent('/projects/bar/src/app/components/foo/foo.component.ts');
+    const content = tree.readContent('/projects/bar/src/app/foo/foo.component.ts');
     expect(content).toMatch(/selector: 'foo'/);
   });
 
@@ -227,7 +226,7 @@ describe('Component Schematic', () => {
 
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const content = tree.readContent('/projects/bar/src/app/app.module.ts');
-    expect(content).toMatch(/import { TestComponent } from '\.\/dir\/components\/test\/test.component'/);
+    expect(content).toMatch(/import { TestComponent } from '\.\/dir\/test\/test.component'/);
   });
 
   it('should handle a path in the name and module options', async () => {
@@ -239,13 +238,20 @@ describe('Component Schematic', () => {
     appTree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
 
     const content = appTree.readContent('/projects/bar/src/app/other/test.module.ts');
-    expect(content).toMatch(/import { TestComponent } from '.\/components\/test\/test.component'/);
+    expect(content).toMatch(/import { TestComponent } from '.\/test\/test.component'/);
   });
 
   it('should create the right selector with a path in the name', async () => {
     const options = { ...defaultOptions, name: 'sub/test' };
     appTree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const content = appTree.readContent('/projects/bar/src/app/sub/components/test/test.component.ts');
+    const content = appTree.readContent('/projects/bar/src/app/sub/test/test.component.ts');
+    expect(content).toMatch(/selector: 'ish-test'/);
+  });
+
+  it('should create include selector prefix in name but not duplicate in selector if requested', async () => {
+    const options = { ...defaultOptions, name: 'sub/ish-test' };
+    appTree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
+    const content = appTree.readContent('/projects/bar/src/app/sub/ish-test/ish-test.component.ts');
     expect(content).toMatch(/selector: 'ish-test'/);
   });
 
@@ -264,6 +270,6 @@ describe('Component Schematic', () => {
     // move the module
     appTree.rename('/projects/bar/src/app/app.module.ts', '/projects/bar/custom/app/app.module.ts');
     appTree = await schematicRunner.runSchematicAsync('component', defaultOptions, appTree).toPromise();
-    expect(appTree.files).toContain('/projects/bar/custom/app/components/foo/foo.component.ts');
+    expect(appTree.files).toContain('/projects/bar/custom/app/foo/foo.component.ts');
   });
 });

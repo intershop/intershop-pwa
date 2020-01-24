@@ -25,12 +25,12 @@ import { Product, ProductCompletenessLevel } from 'ish-core/models/product/produ
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
-import { BasketPaymentService } from 'ish-core/services/basket/basket-payment.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
@@ -244,7 +244,7 @@ describe('Checkout Store', () => {
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: BasketPaymentService, useFactory: () => instance(mock(BasketPaymentService)) },
+        { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
@@ -293,17 +293,29 @@ describe('Checkout Store', () => {
             quantity: 1
           [Basket Internal] Add Items To Basket:
             items: [{"sku":"test","quantity":1,"unit":"pcs."}]
+          [Shopping] Load Product:
+            sku: "test"
           [Basket Internal] Add Items To Basket:
             items: [{"sku":"test","quantity":1,"unit":"pcs."}]
             basketId: "test"
+          [Shopping] Load Product Success:
+            product: {"name":"test","shortDescription":"test","longDescription":"...
           [Basket API] Add Items To Basket Success:
             info: undefined
+          [Shopping] Load Product:
+            sku: "test"
           [Basket Internal] Load Basket
+          [Shopping] Load Product Success:
+            product: {"name":"test","shortDescription":"test","longDescription":"...
           [Basket API] Load Basket Success:
             basket: {"id":"test","lineItems":[1]}
           [Shopping] Load Product if not Loaded:
             sku: "test"
             level: 2
+          [Shopping] Load Product:
+            sku: "test"
+          [Shopping] Load Product Success:
+            product: {"name":"test","shortDescription":"test","longDescription":"...
         `);
       }));
     });
@@ -325,7 +337,12 @@ describe('Checkout Store', () => {
           [Shopping] Load Product if not Loaded:
             sku: "test"
             level: 2
+          [Shopping] Load Product:
+            sku: "test"
+          [Shopping] Load Product Success:
+            product: {"name":"test","shortDescription":"test","longDescription":"...
         `);
+        tick(5000);
       }));
     });
 

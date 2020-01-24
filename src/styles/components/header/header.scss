@@ -1,0 +1,231 @@
+/************************  Global Header ******************************/
+header {
+  margin-bottom: $space-default;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: $top-header-height;
+    content: '';
+    background-color: $color-primary;
+
+    @include media-breakpoint-down(sm) {
+      background-color: $color-inverse;
+    }
+  }
+
+  .logo-wrapper {
+    padding-top: ($space-default * 2);
+    padding-bottom: 20px;
+
+    @include media-breakpoint-down(sm) {
+      align-self: center;
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .navbar-toggler {
+        display: block;
+      }
+    }
+  }
+
+  .navbar-toggler {
+    display: none;
+
+    @include media-breakpoint-down(sm) {
+      display: block;
+    }
+  }
+
+  .quick-cart-link,
+  .item-count-container {
+    &.small {
+      display: none;
+    }
+
+    @include media-breakpoint-down(sm) {
+      &.small {
+        display: block;
+      }
+
+      &.full {
+        display: none;
+      }
+    }
+  }
+
+  .main-navigation {
+    position: relative;
+
+    .navbar-nav {
+      @include media-breakpoint-down(sm) {
+        display: flex;
+        background-color: $color-inverse;
+      }
+    }
+  }
+
+  &.homepage {
+    margin-bottom: 0;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 0;
+  }
+}
+
+.header {
+  @include media-breakpoint-down(sm) {
+    display: flex;
+    flex-wrap: wrap;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    background: $color-inverse;
+  }
+
+  a span:hover {
+    color: $text-color-quarternary;
+  }
+
+  .navbar-toggler {
+    order: 20;
+  }
+}
+
+.header-utility {
+  display: flex;
+  flex-grow: 2;
+  align-self: center;
+  justify-content: flex-end;
+  line-height: $top-header-height;
+
+  @include media-breakpoint-down(sm) {
+    order: 10;
+    line-height: $header-height-mobile;
+  }
+}
+
+.user-links {
+  padding: 0;
+  margin: 0;
+  line-height: $top-header-height;
+
+  @include media-breakpoint-down(sm) {
+    align-self: center;
+  }
+
+  li {
+    float: left;
+    padding-right: ($space-default * 2);
+    font-family: $font-family-bold;
+    font-size: 12px;
+    color: $text-color-quarternary;
+    text-transform: uppercase;
+    list-style: none;
+
+    &:first-child .ng-fa-icon.header-icon {
+      padding-left: 0;
+    }
+
+    a {
+      color: $text-color-quinary;
+    }
+
+    .login-name {
+      color: $text-color-corporate;
+    }
+
+    .wishlist-count,
+    .compare-status {
+      position: relative;
+    }
+  }
+}
+
+.separator {
+  padding-right: ($space-default / 2);
+  padding-left: ($space-default / 2);
+}
+
+.ng-fa-icon.header-icon {
+  position: relative;
+  padding: 0 $space-default;
+  font-size: 17px;
+  color: $text-color-quarternary;
+
+  @include media-breakpoint-down(sm) {
+    color: $text-color-primary;
+  }
+}
+
+.logo {
+  display: block;
+  width: $logo-width;
+  height: $logo-height;
+  background: $logo left no-repeat;
+  background-size: contain;
+}
+
+.mobile-logo {
+  display: block;
+  width: $logo-mobile-width;
+  height: $logo-mobile-height;
+  margin: 0 $space-default * 2 0 $space-default;
+  background: $logo-mobile left no-repeat;
+  background-size: $logo-mobile-width $logo-mobile-height;
+}
+
+header .header-simple,
+header .header-checkout {
+  .header-utility {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .mid-header {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  @include media-breakpoint-down(sm) {
+    .mid-header {
+      float: left;
+
+      .logo-wrapper {
+        display: flex;
+        height: $header-height-mobile;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .mobile-logo {
+        align-self: center;
+        padding: 0;
+      }
+    }
+
+    .header-utility {
+      justify-content: flex-end;
+      float: right;
+      height: $header-height-mobile;
+      padding-right: $space-default;
+
+      .user-links {
+        li {
+          padding-right: 0;
+        }
+
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+}

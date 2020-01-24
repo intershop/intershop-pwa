@@ -104,6 +104,7 @@ export class BasketMockData {
           accountIdentifier: '*******4321',
         },
       ],
+      saveAllowed: true,
     } as PaymentMethod;
   }
 

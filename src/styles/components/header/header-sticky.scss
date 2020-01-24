@@ -1,0 +1,124 @@
+.sticky-header {
+  .wrapper {
+    margin-top: 185px;
+
+    @include media-breakpoint-down(md) {
+      padding-top: 0;
+      margin-top: $header-height-mobile + $search-container-height;
+    }
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    display: block;
+    width: 100%;
+    background-color: $color-inverse;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+
+    &::before {
+      background-color: $color-inverse;
+    }
+
+    .header {
+      position: relative;
+      display: flex;
+
+      @include media-breakpoint-down(md) {
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+        margin-right: 0;
+        margin-left: 0;
+      }
+
+      .logo-wrapper {
+        display: flex;
+        align-self: center;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .logo {
+          height: 25px;
+          padding-right: $space-default * 2;
+        }
+      }
+
+      .navbar-toggler {
+        @include media-breakpoint-down(md) {
+          display: block;
+        }
+      }
+
+      .main-navigation {
+        position: static;
+
+        @include media-breakpoint-down(md) {
+          height: calc(100vh - #{$header-height-mobile});
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .main-navigation-list {
+          .category-level1 {
+            left: 15px;
+          }
+
+          li a {
+            @include media-breakpoint-only(lg) {
+              font-size: $font-size-corporate;
+            }
+          }
+        }
+      }
+
+      .header-utility {
+        order: 10;
+        background: $color-inverse;
+
+        @include media-breakpoint-down(md) {
+          line-height: $header-height-mobile;
+        }
+
+        .header-search-container {
+          &.show {
+            height: $search-container-height;
+            overflow: unset;
+            transition: height 500ms ease-in-out;
+          }
+
+          &:not(.show) {
+            display: block; //required for animation
+            height: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .user-info-box {
+    @include media-breakpoint-only(md) {
+      display: block;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    @include mobile-navigation;
+  }
+}
+
+.homepage.sticky-header {
+  header {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .wrapper {
+    margin-top: 172px;
+
+    @include media-breakpoint-down(md) {
+      padding-top: $space-default;
+      margin-top: $header-height-mobile + $search-container-height;
+    }
+  }
+}

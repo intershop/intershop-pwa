@@ -13,18 +13,6 @@
       "description": "Create a presentation component.",
       "schema": "./component/schema.json"
     },
-    "container": {
-      "aliases": ["cc"],
-      "factory": "./container/factory#createContainer",
-      "description": "Create a smart component.",
-      "schema": "./container/schema.json"
-    },
-    "container-component-pair": {
-      "aliases": ["ccp"],
-      "factory": "./container-component-pair/factory#createContainerComponentPair",
-      "description": "Create a presentational and smart component.",
-      "schema": "./container-component-pair/schema.json"
-    },
     "module": {
       "aliases": ["m"],
       "factory": "./module/factory#createModule",
@@ -72,12 +60,31 @@
     "kubernetes-deployment": {
       "factory": "./kubernetes-deployment/factory#createKubernetesDeployment",
       "description": "Create Kubernetes Charts.",
-      "schema": "./kubernetes-deployment/schema.json"
+      "schema": "./kubernetes-deployment/schema.json",
+      "hidden": true
     },
     "azure-pipeline": {
       "factory": "./azure-pipeline/factory#createAzurePipeline",
       "description": "Create Azure Pipeline.",
-      "schema": "./azure-pipeline/schema.json"
+      "schema": "./azure-pipeline/schema.json",
+      "hidden": true
+    },
+    "move-component": {
+      "factory": "./move-component/factory#move",
+      "description": "Move Component.",
+      "schema": "./move-component/schema.json",
+      "hidden": true
+    },
+    "decontainerize-0.16-to-0.17": {
+      "factory": "./migration/decontainerize-0.16-to-0.17/factory#decontainerize",
+      "description": "Perform de-containerization from 0.15 to 0.16.",
+      "schema": "./migration/decontainerize-0.16-to-0.17/schema.json",
+      "hidden": true
+    },
+    "customized-copy": {
+      "factory": "./customized-copy/factory#customize",
+      "description": "Create a copy of Component for customization.",
+      "schema": "./customized-copy/schema.json"
     }
   }
 }

@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { AccountProfileCompanyPageContainerComponent } from './account-profile-company-page.container';
-import { AccountProfileCompanyComponent } from './components/account-profile-company/account-profile-company.component';
+import { AccountProfileCompanyPageComponent } from './account-profile-company-page.component';
+import { AccountProfileCompanyComponent } from './account-profile-company/account-profile-company.component';
 
-const accountProfileCompanyPageRoutes: Routes = [{ path: '', component: AccountProfileCompanyPageContainerComponent }];
+const accountProfileCompanyPageRoutes: Routes = [{ path: '', component: AccountProfileCompanyPageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(accountProfileCompanyPageRoutes), SharedModule],
-  declarations: [AccountProfileCompanyComponent, AccountProfileCompanyPageContainerComponent],
+  declarations: [AccountProfileCompanyComponent, AccountProfileCompanyPageComponent],
 })
 export class AccountProfileCompanyPageModule {}

@@ -28,7 +28,9 @@
     "arrow-parens": [true, "ban-single-arg-parens"],
     "no-unnecessary-callback-wrapper": true,
     "no-unsafe-callback-scope": false,
-    "no-commented-out-code": { "severity": "warning" },
+    "no-commented-out-code": {
+      "severity": "warning"
+    },
     "no-consecutive-blank-lines": true,
     "callable-types": true,
     "class-name": true,
@@ -64,8 +66,14 @@
         "modifiers": ["export", "const"],
         "format": "camelCase"
       },
-      { "type": "type", "format": "PascalCase" },
-      { "type": "enumMember", "format": "PascalCase" }
+      {
+        "type": "type",
+        "format": "PascalCase"
+      },
+      {
+        "type": "enumMember",
+        "format": "PascalCase"
+      }
     ],
     "no-arg": true,
     "no-bitwise": true,
@@ -125,16 +133,28 @@
     "rxjs-no-ignored-subscribe": true,
     "rxjs-no-unsafe-switchmap": true,
     "rxjs-no-unsafe-catch": true,
-    "rxjs-no-unsafe-first": { "severity": "off" },
-    "rxjs-no-unsafe-scope": { "severity": "off" },
+    "rxjs-no-unsafe-first": {
+      "severity": "off"
+    },
+    "rxjs-no-unsafe-scope": {
+      "severity": "off"
+    },
     "rxjs-no-unsafe-takeuntil": true,
     "rxjs-no-subject-value": true,
     "rxjs-no-subject-unsubscribe": true,
-    "rxjs-no-exposed-subjects": { "severity": "off" },
-    "rxjs-no-explicit-generics": { "severity": "off" },
+    "rxjs-no-exposed-subjects": {
+      "severity": "off"
+    },
+    "rxjs-no-explicit-generics": {
+      "severity": "off"
+    },
     "rxjs-no-ignored-replay-buffer": true,
-    "rxjs-prefer-async-pipe": { "severity": "off" },
-    "rxjs-throw-error": { "severity": "off" },
+    "rxjs-prefer-async-pipe": {
+      "severity": "off"
+    },
+    "rxjs-throw-error": {
+      "severity": "off"
+    },
     "private-destroy-field": true,
     "ngrx-use-empty-store-type": true,
     "ngrx-use-oftype-with-type": true,
@@ -166,12 +186,14 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [true, "attribute", "ish", "camelCase"],
-    "component-selector": [true, "element", "ish", "kebab-case"],
+    "directive-selector": [true, "attribute", ["ish"], "camelCase"],
+    "component-selector": [true, "element", ["ish"], "kebab-case"],
     "no-inputs-metadata-property": true,
     "no-assignement-to-inputs": true,
     "no-outputs-metadata-property": true,
-    "use-component-change-detection": { "severity": "warning" },
+    "use-component-change-detection": {
+      "severity": "warning"
+    },
     "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-output-rename": true,
@@ -213,7 +235,10 @@
         "name": ["*", "toBeDefined"],
         "message": "Most of the time this is the wrong assertion in tests!"
       },
-      { "name": ["spyOn"], "message": "Use ts-mockito instead!" },
+      {
+        "name": ["spyOn"],
+        "message": "Use ts-mockito instead!"
+      },
       {
         "name": ["*", "select"],
         "message": "Use store.pipe(select()) instead!"
@@ -298,8 +323,8 @@
         },
         {
           "from": "@angular/common/http",
-          "message": "http classes should not propagate to components and containers",
-          "filePattern": ".*\\.(container|component)\\..*ts"
+          "message": "http classes should not propagate to components",
+          "filePattern": ".*\\.component\\..*ts"
         },
         {
           "starImport": true,
@@ -307,9 +332,12 @@
           "filePattern": ".*src/app.*",
           "message": "use star imports only for aggregation of deeper lying imports"
         },
-        { "starImport": true, "from": "lodash.*" },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual)$).*",
+          "starImport": true,
+          "from": "lodash.*"
+        },
+        {
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection)$).*",
           "from": "lodash.*"
         },
         {
@@ -329,7 +357,7 @@
           "message": "This module is for the template-driven approach which we don't use."
         },
         {
-          "from": "^\\.\\..*(component|container|reducer|effects|store)",
+          "from": "^\\.\\..*(component|reducer|effects|store)",
           "filePattern": ".*.module.ts",
           "message": "Modules should only aggregate deeper lying components."
         },
@@ -412,7 +440,9 @@
         "exclude": ["actions$"]
       }
     },
-    "meaningful-naming-in-tests": { "severity": "warning" },
+    "meaningful-naming-in-tests": {
+      "severity": "warning"
+    },
     "prefer-method-signature": true,
     "prefer-switch": true,
     "prefer-template": {
@@ -421,30 +451,31 @@
     },
     "use-async-synchronisation-in-tests": true,
     "use-jest-extended-matchers-in-tests": true,
-    "no-any": { "severity": "warning" },
+    "no-any": {
+      "severity": "warning"
+    },
     "no-commented-out-tests": true,
     "no-focused-tests": true,
-    "no-disabled-tests": { "severity": "warning" },
+    "no-disabled-tests": {
+      "severity": "warning"
+    },
     "no-barrel-files": true,
     "use-camel-case-environment-properties": true,
     "component-creation-test": true,
-    "ccp-no-intelligence-in-components": {
+    "no-intelligence-in-artifacts": {
       "severity": "warning",
       "options": {
-        // forbid every logic in components
         "component": {
           "ngrx": false,
           "service": false,
           "router": true,
           "facade": true
         },
-        "container": {
-          "ngrx": false,
-          // services should only be used by effects
-          "service": false,
-          // explicit router navigation should only be done in effects
+        "effects": {
+          "ngrx": true,
+          "service": true,
           "router": true,
-          "facade": true
+          "facade": false
         }
       }
     },
@@ -477,23 +508,25 @@
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
-          "^.*/src/app/shell/[a-z][a-z0-9-]+/(component|container)s/([a-z][a-z0-9-]+)/\\2\\.\\1\\.ts$",
+          "^.*/src/app/shell/(header|footer)/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/shell/[a-z][a-z0-9-]+/configurations/.*\\.ts$",
           // specific (lazy loaded) page modules
-          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|container)\\.ts$",
-          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)pages/[a-z][a-z0-9-]+/(container|component)s/([a-z][a-z0-9-]+)/\\3\\.\\2\\.ts$",
+          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)pages/([a-z][a-z0-9-]+)/\\2-page\\.(module|component)\\.ts$",
+          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)pages/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\2\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/pages/\\1-routing\\.module\\.ts$",
           "^.*/src/app/pages/app[a-z0-9-]*-routing\\.module\\.ts$",
           // enforce folder structure for shared components
-          "^.*/src/app/(|extensions/[a-z][a-z0-9-]+/)shared/[a-z][a-z0-9-]+/(component|container)s/([a-z][a-z0-9-]+)/\\3\\.\\2\\.ts$",
+          "^.*/src/app/extensions/[a-z][a-z0-9-]+/shared/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
+          "^.*/src/app/shared/components/[a-z][a-z0-9-]+/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           "^.*/src/app/shared/[a-z][a-z0-9-]+/(configurations|pipes|utils|validators|directives)/.*$",
+          "^.*/src/app/shared/[a-z][a-z0-9-]+/components/([a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/shared/address-forms/components/([a-z][a-z0-9-]+)/\\1\\.factory\\.ts$",
           // aggregation modules
           "^.*/src/app/(shell|shared)/\\1\\.module\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/\\1\\.module\\.ts$",
           // extension exports
-          "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/[a-z][a-z0-9-]+/components/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
+          "^.*/src/app/extensions/[a-z][a-z0-9-]+/exports/[a-z][a-z0-9-]+/(lazy-[a-z][a-z0-9-]+)/\\1\\.component\\.ts$",
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$"
         ],
         "patterns": [
@@ -517,21 +550,17 @@
           },
           // cms
           {
-            "name": "^CMSContainerComponent$",
-            "file": ".*/shared/cms/components/cms-container/cms-container\\.component\\.ts$"
-          },
-          {
             "name": "^Sfe.*$",
             "file": ".*/shared/cms/sfe-adapter/.*\\.ts$"
           },
+          {
+            "name": "^(CMS[A-Z].*Page)Component$",
+            "file": ".*/<kebab>/<kebab>\\.component\\.ts$"
+          },
           // angular components
           {
-            "name": "^([A-Z].*)PageContainerComponent$",
-            "file": ".*/pages/<kebab>/<kebab>-page\\.container\\.ts$"
-          },
-          {
-            "name": "^([A-Z].*)ContainerComponent$",
-            "file": ".*/containers/<kebab>/<kebab>\\.container\\.ts$"
+            "name": "^([A-Z].*)PageComponent$",
+            "file": ".*/pages/<kebab>/<kebab>-page\\.component\\.ts$"
           },
           {
             "name": "^(Test|Dummy)Component$",
@@ -539,7 +568,7 @@
           },
           {
             "name": "^([A-Z].*)Component$",
-            "file": ".*/components/<kebab>/<kebab>\\.component\\.ts$"
+            "file": ".*/<kebab>/<kebab>\\.component\\.ts$"
           },
           {
             "name": "^([A-Z].*)Directive$",
@@ -558,7 +587,6 @@
             "name": "^([A-Z].*)Service$",
             "file": "(/utils.*|/services/([a-z][a-z0-9-]+/|))[a-z][a-z0-9-]+/<kebab>\\.service\\.ts$"
           },
-
           // modules and routing
           {
             "name": "^([A-Z].+)ExportsModule$",
@@ -588,7 +616,10 @@
             "name": "^(.*)Module$",
             "file": ".*(cypress.*|/<kebab>/<kebab>|/core/[a-z][a-z0-9-]+)\\.module\\.ts$"
           },
-          { "name": "^(.*)Routes$", "file": ".*/<kebab>\\.module\\.ts$" },
+          {
+            "name": "^(.*)Routes$",
+            "file": ".*/<kebab>\\.module\\.ts$"
+          },
           // factory pattern
           {
             "name": "^([A-Z].*)Helper$",
@@ -628,12 +659,18 @@
             "name": "^([A-Z].*)State$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)(<kebab>/<kebab>\\.reducer|(<kebab>/|)<kebab>-store)\\.ts$"
           },
-          { "name": "^(initialState)$", "file": ".*/store/.*\\.reducer\\.ts$" },
+          {
+            "name": "^(initialState)$",
+            "file": ".*/store/.*\\.reducer\\.ts$"
+          },
           {
             "name": "^([a-z].*)Reducer$",
             "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
           },
-          { "name": "^(metaReducers)$", "file": ".*\\.module\\.ts$" },
+          {
+            "name": "^(metaReducers)$",
+            "file": ".*\\.module\\.ts$"
+          },
           {
             "name": "^([a-z].*)Reducers$",
             "file": ".*/store/(<kebab>/|)<kebab>-store\\.module\\.ts$"

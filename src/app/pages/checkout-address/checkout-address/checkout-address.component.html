@@ -1,0 +1,55 @@
+<div *ngIf="basket" class="row checkout-address-book">
+  <!-- Error Message -->
+  <div *ngIf="error" class="col-md-12">
+    <ish-error-message [error]="error"></ish-error-message>
+  </div>
+
+  <div *ngIf="nextDisabled && !error" class="col-md-12">
+    <div class="alert alert-danger">{{ 'checkout.addresses.no_Selection.error' | translate }}</div>
+  </div>
+
+  <!-- Validation messages-->
+  <div class="col-md-12">
+    <ish-basket-validation-results (continueCheckout)="goToNextStep()"></ish-basket-validation-results>
+  </div>
+
+  <!-- ------------------------------- invoice address ---------------------------------- -->
+  <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
+    <ish-basket-invoice-address-widget
+      [showErrors]="nextDisabled"
+      [collapse]="active === 'shipping'"
+      (collapseChange)="invoiceCollapsed($event)"
+    ></ish-basket-invoice-address-widget>
+  </div>
+
+  <!-- ------------------------------ shipping address ----------------------------------------- -->
+  <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
+    <ish-basket-shipping-address-widget
+      [showErrors]="nextDisabled"
+      [collapse]="active === 'invoice'"
+      (collapseChange)="shippingCollapsed($event)"
+    ></ish-basket-shipping-address-widget>
+  </div>
+
+  <!-- Cart Summary -->
+  <div class="col-md-12 col-lg-4">
+    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+
+    <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+    <div class="cost-summary">
+      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
+
+      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="nextDisabled" (click)="goToNextStep()">
+        {{ 'checkout.button.label' | translate }}
+      </button>
+    </div>
+    <!-- Privacy policy link -->
+    <span
+      [ishServerHtml]="
+        'checkout.widget.security_privacy_policy.link'
+          | translate: { '0': 'route://page/systempage.privacyPolicy.pagelet2-Page' }
+      "
+    ></span>
+  </div>
+</div>

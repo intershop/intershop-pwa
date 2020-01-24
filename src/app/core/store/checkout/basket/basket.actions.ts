@@ -40,6 +40,9 @@ export enum BasketActionTypes {
   AddPromotionCodeToBasket = '[Basket Internal] Add Promotion Code To Basket',
   AddPromotionCodeToBasketFail = '[Basket API] Add Promotion Code To Basket Fail',
   AddPromotionCodeToBasketSuccess = '[Basket API] Add Promotion Code To Basket Success',
+  RemovePromotionCodeFromBasket = '[Basket Internal] Remove Promotion Code From Basket',
+  RemovePromotionCodeFromBasketFail = '[Basket API] Remove Promotion Code From Basket Fail',
+  RemovePromotionCodeFromBasketSuccess = '[Basket API] Remove Promotion Code From Basket Success',
   UpdateBasketItems = '[Basket] Update Basket Items',
   UpdateBasketItemsFail = '[Basket API] Update Basket Items Fail',
   UpdateBasketItemsSuccess = '[Basket API] Update Basket Items Success',
@@ -61,7 +64,7 @@ export enum BasketActionTypes {
   UpdateBasketPayment = '[Basket] Update a Basket Payment with Redirect Data',
   UpdateBasketPaymentFail = '[Basket API] Update a Basket Payment Fail',
   UpdateBasketPaymentSuccess = '[Basket API] Update a Basket Payment Success',
-  DeleteBasketPayment = '[Basket] Delete Basket Payment ',
+  DeleteBasketPayment = '[Basket] Delete Basket Payment',
   DeleteBasketPaymentFail = '[Basket API] Delete Basket Payment Fail',
   DeleteBasketPaymentSuccess = '[Basket API] Delete Basket Payment Success',
   ResetBasket = '[Basket Internal] Reset Basket',
@@ -218,6 +221,20 @@ export class DeleteBasketItemSuccess implements Action {
   constructor(public payload: { info: BasketInfo[] }) {}
 }
 
+export class RemovePromotionCodeFromBasket implements Action {
+  readonly type = BasketActionTypes.RemovePromotionCodeFromBasket;
+  constructor(public payload: { code: string }) {}
+}
+
+export class RemovePromotionCodeFromBasketFail implements Action {
+  readonly type = BasketActionTypes.RemovePromotionCodeFromBasketFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class RemovePromotionCodeFromBasketSuccess implements Action {
+  readonly type = BasketActionTypes.RemovePromotionCodeFromBasketSuccess;
+}
+
 export class AddPromotionCodeToBasket implements Action {
   readonly type = BasketActionTypes.AddPromotionCodeToBasket;
   constructor(public payload: { code: string }) {}
@@ -275,7 +292,7 @@ export class SetBasketPaymentSuccess implements Action {
 
 export class CreateBasketPayment implements Action {
   readonly type = BasketActionTypes.CreateBasketPayment;
-  constructor(public payload: { paymentInstrument: PaymentInstrument }) {}
+  constructor(public payload: { paymentInstrument: PaymentInstrument; saveForLater: boolean }) {}
 }
 
 export class CreateBasketPaymentFail implements Action {
@@ -303,7 +320,7 @@ export class UpdateBasketPaymentSuccess implements Action {
 
 export class DeleteBasketPayment implements Action {
   readonly type = BasketActionTypes.DeleteBasketPayment;
-  constructor(public payload: { id: string }) {}
+  constructor(public payload: { paymentInstrument: PaymentInstrument }) {}
 }
 
 export class DeleteBasketPaymentFail implements Action {
@@ -351,6 +368,9 @@ export type BasketAction =
   | AddPromotionCodeToBasket
   | AddPromotionCodeToBasketFail
   | AddPromotionCodeToBasketSuccess
+  | RemovePromotionCodeFromBasket
+  | RemovePromotionCodeFromBasketFail
+  | RemovePromotionCodeFromBasketSuccess
   | UpdateBasketItems
   | UpdateBasketItemsFail
   | UpdateBasketItemsSuccess

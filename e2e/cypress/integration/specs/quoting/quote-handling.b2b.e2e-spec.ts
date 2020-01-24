@@ -17,14 +17,11 @@ const _ = {
     login: `test${new Date().getTime()}@testcity.de`,
     ...sensibleDefaults,
   },
-  catalog: 'presentation-conferencing',
-  category: {
-    id: 'presentation-conferencing.audio-equipment',
-    name: 'presentation',
-  },
+  catalog: 'networks',
+  categoryId: 'networks.firewalls',
   product: {
-    sku: '4011592',
-    price: 41.95,
+    sku: '859910',
+    price: 171.25,
   },
 };
 
@@ -45,7 +42,7 @@ describe('Quote Handling', () => {
 
   it('user adds one product from product detail page to quote', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.setQuantity(quantity);
@@ -62,7 +59,7 @@ describe('Quote Handling', () => {
 
   it('user adds one product from product list page to quote', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
       dialog.saveQuoteRequest();
@@ -75,14 +72,14 @@ describe('Quote Handling', () => {
 
   it('user adds one product from basket to quote', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.setQuantity(quantity);
       page
         .addProductToCart()
         .its('status')
-        .should('equal', 200);
+        .should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {
@@ -96,7 +93,7 @@ describe('Quote Handling', () => {
 
   it('user adds one product from product list page to quote and submit it', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
       dialog.submitQuoteRequest();
@@ -108,7 +105,7 @@ describe('Quote Handling', () => {
 
   it('user copy quote from account quote request detail page and logs out', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.category.id));
+    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
       dialog.submitQuoteRequest();

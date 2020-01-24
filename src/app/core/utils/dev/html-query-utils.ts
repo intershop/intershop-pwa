@@ -1,3 +1,6 @@
+import { ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
 function getAllElementTagsRecursively(el: Element): string[] {
   const returnList = [];
   returnList.push(el.tagName);
@@ -23,6 +26,13 @@ export function findAllIshElements(el: HTMLElement): string[] {
   }
 
   return returnList.sort();
+}
+
+export function findAllDataTestingIDs(fixture: ComponentFixture<unknown>) {
+  return fixture.debugElement
+    .queryAll(By.css('[data-testing-id]'))
+    .map(el => el.attributes['data-testing-id'])
+    .sort();
 }
 
 export function createDocumentFromHTML(html: string): HTMLDocument {

@@ -1,0 +1,32 @@
+<div class="login-modal">
+  <div class="modal-header">
+    <h2>{{ 'account.login.signin.heading' | translate }}</h2>
+    <button
+      type="button"
+      class="close close-modal"
+      [attr.aria-label]="'dialog.close.text' | translate"
+      (click)="hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div data-testing-id="account-login-page">
+      <p *ngIf="loginMessageKey" class="alert alert-info">
+        {{ 'account.login.' + loginMessageKey + '.message' | translate }}
+      </p>
+
+      <ish-login-form
+        labelClass="col-12"
+        inputClass="col-12"
+        signInClass="col-12 btn-group pb-3"
+        forgotPasswordClass="col-12 pb-3 text-center"
+      ></ish-login-form>
+
+      <p
+        class="text-center"
+        [ishServerHtml]="'account.login.register_now' | translate: { '0': 'route://register?returnUrl=/account' }"
+      ></p>
+    </div>
+  </div>
+</div>

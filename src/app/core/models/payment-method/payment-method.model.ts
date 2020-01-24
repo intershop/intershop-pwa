@@ -8,6 +8,7 @@ export interface PaymentMethod {
   id: string;
   displayName: string;
   serviceId: string;
+  saveAllowed?: boolean;
   description?: string;
   capabilities?: string[];
   paymentCosts?: Price;

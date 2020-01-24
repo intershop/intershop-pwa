@@ -1,0 +1,66 @@
+<!-- server side error messages -->
+<div *ngIf="loginError$ | async as error" role="alert" class="alert alert-danger">
+  <ng-container *ngIf="error.status === 401" [ngSwitch]="loginType">
+    <ng-container *ngSwitchCase="'email'">{{ 'account.login.email_password.error.invalid' | translate }}</ng-container>
+    <ng-container *ngSwitchDefault>{{ 'account.login.username_password.error.invalid' | translate }} </ng-container>
+  </ng-container>
+  <!-- TODO: Apply condition for other possible inputs -->
+</div>
+
+<form name="LoginUserForm" [formGroup]="form" class="form-horizontal" (ngSubmit)="loginUser()">
+  <!--<p>{{ 'account.login.message' | translate }}</p>--><!-- Decision is pending, whether this message should be shown or not -->
+
+  <ng-container *ngIf="loginType === 'email'; else userLoginWithUserName">
+    <ish-input
+      [form]="form"
+      controlName="login"
+      type="email"
+      label="account.login.email.label"
+      [labelClass]="labelClass || 'col-md-3'"
+      [inputClass]="inputClass || 'col-md-6'"
+      markRequiredLabel="off"
+      [errorMessages]="{
+        required: 'account.login.email.error.required',
+        email: 'account.login.email.error.invalid'
+      }"
+    ></ish-input>
+  </ng-container>
+
+  <ng-template #userLoginWithUserName>
+    <ish-input
+      [form]="form"
+      controlName="login"
+      label="account.login.username.label"
+      [labelClass]="labelClass || 'col-md-3'"
+      [inputClass]="inputClass || 'col-md-6'"
+      markRequiredLabel="off"
+      [errorMessages]="{ required: 'account.login.username.error.required' }"
+    ></ish-input>
+  </ng-template>
+
+  <ish-input
+    [form]="form"
+    controlName="password"
+    type="password"
+    label="account.login.password.label"
+    [labelClass]="labelClass || 'col-md-3'"
+    [inputClass]="inputClass || 'col-md-6'"
+    markRequiredLabel="off"
+    [errorMessages]="{
+      required: 'account.login.password.error.required',
+      pattern: 'account.update_password.new_password.error.regexp',
+      minlength: 'account.password.error.regexp'
+    }"
+  ></ish-input>
+
+  <div class="row form-group">
+    <div [ngClass]="signInClass || 'offset-md-3 col-md-auto'">
+      <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="buttonDisabled">
+        {{ 'account.signin.button.label' | translate }}
+      </button>
+    </div>
+    <div [ngClass]="forgotPasswordClass || 'col-md-auto pl-md-0'">
+      <a class="btn btn-link" [routerLink]="'/forgotPassword'">{{ 'account.send_password.heading' | translate }}</a>
+    </div>
+  </div>
+</form>

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
 import { ShowFormFeedbackDirective } from 'ish-shared/forms/directives/show-form-feedback.directive';
@@ -18,7 +18,7 @@ describe('Input Birthday Component', () => {
       declarations: [
         InputBirthdayComponent,
         MockComponent(FormControlFeedbackComponent),
-        MockComponent(ShowFormFeedbackDirective),
+        MockDirective(ShowFormFeedbackDirective),
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     })

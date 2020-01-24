@@ -1038,4 +1038,20 @@ describe('Quote Request Effects', () => {
       expect(effects.loadQuoteRequestItemsAfterSelectQuoteRequest$).toBeObservable(cold('---a--a', { a: expected }));
     });
   });
+
+  describe('loadQuoteRequestsOnLogin', () => {
+    it('should fire LoadQuoteRequests if getLoggedInCustomer selector streams true.', done => {
+      store$.dispatch(
+        new LoginUserSuccess({
+          customer: {} as Customer,
+          user: {} as User,
+        })
+      );
+
+      effects.loadQuoteRequestsOnLogin$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Quote Internal] Load QuoteRequests`);
+        done();
+      });
+    });
+  });
 });

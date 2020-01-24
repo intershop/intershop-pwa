@@ -1,0 +1,197 @@
+//
+// LAYOUT
+// contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
+.main-container {
+  background: $color-inverse;
+}
+
+.container {
+  padding-right: ($grid-gutter-width / 2);
+  padding-left: ($grid-gutter-width / 2);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.loading-container {
+  position: relative;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+// Global Styles
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+  margin-top: $space-default;
+  margin-bottom: $space-default;
+  text-transform: uppercase;
+}
+
+h4,
+.h4 h5,
+.h5 h6,
+.h6 {
+  margin-top: ($space-default * 2/3);
+  margin-bottom: $space-default;
+  font-family: $font-family-regular;
+}
+
+a,
+a:not([href]):not([tabindex]) {
+  color: $CORPORATE-PRIMARY;
+}
+
+a:not([href]):not([tabindex]) {
+  &:hover {
+    color: $CORPORATE-SECONDARY;
+  }
+}
+
+a {
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  h3:hover {
+    color: $text-color-quarternary;
+  }
+
+  &.teaser-link {
+    display: block;
+  }
+}
+
+.ng-fa-icon {
+  &.footer-icon::before {
+    font-size: 50px;
+    color: $text-color-inverse;
+  }
+}
+
+.top-header {
+  .ng-fa-icon {
+    top: 1px;
+  }
+}
+
+//
+// Main working area
+.wrapper {
+  padding: 0 0 50px 0;
+
+  @include media-breakpoint-down(sm) {
+    padding-top: $search-container-height;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.img-fluid {
+  width: 100%;
+}
+
+// General styles
+.show-inline {
+  display: inline;
+}
+
+//
+// Global Panels
+.grey-panel {
+  padding: ($space-default + ($space-default / 2)) 0;
+  background: $color-tertiary;
+}
+
+// Help Text
+.form-text {
+  margin: $space-default / 3 0 $space-default / 2;
+  color: $text-color-quarternary;
+}
+
+h4.form-text {
+  color: $text-color-quarternary;
+}
+
+.form-text-inline {
+  display: inline-block;
+  margin: 0;
+}
+
+// Marketing Area
+.marketing-area {
+  img {
+    padding-bottom: $space-default;
+  }
+}
+
+img.marketing {
+  padding-bottom: $space-default;
+}
+
+// Detail links and tooltips
+[data-toggle='popover'] {
+  .ng-fa-icon {
+    padding-left: $space-default/4;
+    font-size: 120%;
+  }
+}
+
+.popover-header {
+  margin-top: 0;
+}
+
+.details-link,
+.details-tooltip {
+  display: inline-block;
+  padding-left: $space-default/2;
+  font-family: $font-family-regular;
+  font-size: 90%;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.item-count-container {
+  position: relative;
+
+  .badge {
+    position: absolute;
+    top: -8px;
+    left: 26px;
+    font-size: 75%;
+    font-weight: inherit;
+    line-height: 1.4;
+    color: $text-color-inverse;
+    background: $CORPORATE-PRIMARY;
+
+    &:hover {
+      color: $text-color-inverse;
+      background: lighten($CORPORATE-PRIMARY, 5%);
+    }
+  }
+}
+
+.badge {
+  font-size: 85%;
+  font-weight: normal;
+}
+
+.alert {
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+}
+
+.defer-load {
+  min-height: 1px;
+}

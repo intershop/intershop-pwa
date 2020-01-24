@@ -1,0 +1,92 @@
+<ng-template #searchBoxTemplate let-icon="icon">
+  <ish-search-box
+    data-testing-id="search-box-desktop"
+    [configuration]="{
+      id: 'header',
+      placeholder: 'search.searchbox.instructional_text' | translate,
+      autoSuggest: true,
+      maxAutoSuggests: 10,
+      icon: icon,
+      showLastSearchTerm: true
+    }"
+  ></ish-search-box>
+</ng-template>
+
+<div class="header container">
+  <ul *ngIf="!isSticky" class="user-links">
+    <li *ngIf="!isSticky && deviceType !== 'mobile'">
+      <ish-login-status data-testing-id="user-status-desktop"></ish-login-status>
+    </li>
+    <li *ishFeature="'compare'" class="d-none d-md-block">
+      <ish-product-compare-status data-testing-id="compare-status-desktop"> </ish-product-compare-status>
+    </li>
+  </ul>
+
+  <div class="header-utility">
+    <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
+      <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')"></fa-icon>
+      <div
+        *ngIf="isSticky || showSearch"
+        class="search-container header-search-container"
+        [ngbCollapse]="!showSearch"
+        [ngClass]="{ show: !isSticky }"
+      >
+        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }"></ng-container>
+      </div>
+    </a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop"> </ish-language-switch>
+    </div>
+    <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small"></ish-login-status>
+
+    <ish-mini-basket
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      class="d-none"
+      [ngClass]="isSticky ? 'd-lg-block' : 'd-md-block'"
+    ></ish-mini-basket>
+    <ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
+    ></ish-mini-basket>
+  </div>
+
+  <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
+    <ng-container *ngTemplateOutlet="searchBoxTemplate"></ng-container>
+  </div>
+
+  <div class="logo-wrapper">
+    <a
+      *ngIf="showDesktopLogoLink"
+      rel="home"
+      routerLink="/home"
+      class="logo"
+      data-testing-id="header-home-link-desktop"
+    ></a>
+    <a
+      *ngIf="showMobileLogoLink"
+      rel="home"
+      routerLink="/home"
+      class="mobile-logo"
+      data-testing-id="header-home-link-mobile"
+    ></a>
+  </div>
+
+  <button class="navbar-toggler" type="button" (click)="toggle('navbar')">
+    <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
+    <div class="hamburger-menu" [ngClass]="{ open: showNavBar }">
+      <!--- strokes of the hamburger menu -->
+      <span></span> <span></span> <span></span>
+    </div>
+  </button>
+
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" [ngbCollapse]="!showNavBar">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation>
+        <ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>

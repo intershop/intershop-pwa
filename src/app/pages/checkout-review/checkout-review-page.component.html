@@ -1,0 +1,10 @@
+<div data-testing-id="checkout-review-page">
+  <ish-checkout-review
+    [basket]="basket$ | async"
+    [error]="error$ | async"
+    [submitting]="orderLoading$ | async"
+    (createOrder)="onCreateOrder()"
+  ></ish-checkout-review>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>

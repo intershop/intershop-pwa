@@ -30,11 +30,7 @@ The project can alternatively be run in production mode with `npm start`.
 
 ## Customization
 
-Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./CUSTOMIZING.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
-
-## Project Update
-
-An update of the project to a new release version might include added or updated dependencies. So in case of an update, run `npm install` before serving or building the application.
+Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./docs/customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
 
 ## Development Server
 
@@ -78,10 +74,6 @@ Run `npm test` to start an on the fly test running environment to execute the un
 Run `npm run e2e` to execute the end-to-end tests via [cypress](https://www.cypress.io/).
 You have to start your development or production server first as cypress will instruct you.
 
-## Running CI Build Jobs Locally
-
-To run the CI build of gitlab locally, you can use `gitlab-runner`. Get it [here](https://docs.gitlab.com/runner/install/). To execute the build, start `gitlab-runner exec docker <job>`.
-
 ## Code Style
 
 Use `npm run lint` to run a static code analysis.
@@ -96,11 +88,11 @@ Use `npm run format` to perform a formatting run on the code base with Prettier.
 
 Prefer using `npx lint-staged` to perform a manual quick evaluation of staged files. This also happens automatically when committing files. It is also possible to bypass verification on commit, following the suggestions of the versioning control tool of your choice.
 
-## Code Documentation
+## Documentation
 
-The project is configured to use [Compodoc](https://compodoc.github.io/website) as documentation tool. The output folder for the documentation is set to `\docs\compodoc`.
+Project documentation can be found in the [Documentation Folder](./docs).
 
-To generate the code documentation, run `npm run docs`. To generate and serve the documentation at http://localhost:8080, run `npm run docs:serve`. To serve the documentation while watching for source changes, run `npm run docs:watch`.
+The project is also configured to use [Compodoc](https://compodoc.github.io/website) as API documentation tool. The output folder for the documentation is set to `\docs\compodoc`. To generate the code documentation, run `npm run docs`. To generate and serve the documentation at http://localhost:8080, run `npm run docs:serve`. To serve the documentation while watching for source changes, run `npm run docs:watch`.
 
 ## Code Scaffolding
 

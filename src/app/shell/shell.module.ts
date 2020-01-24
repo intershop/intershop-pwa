@@ -14,27 +14,27 @@ import { PipesModule } from 'ish-core/pipes.module';
 
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 
-import { FooterComponent } from './footer/components/footer/footer.component';
-import { HeaderCheckoutComponent } from './header/components/header-checkout/header-checkout.component';
-import { HeaderDefaultComponent } from './header/components/header-default/header-default.component';
-import { HeaderSimpleComponent } from './header/components/header-simple/header-simple.component';
-import { LazyLoginModalComponent } from './header/components/lazy-login-modal/lazy-login-modal.component';
-import { ProductImageComponent } from './header/components/product-image/product-image.component';
-import { SubCategoryNavigationComponent } from './header/components/sub-category-navigation/sub-category-navigation.component';
-import { UserInformationMobileComponent } from './header/components/user-information-mobile/user-information-mobile.component';
-import { HeaderNavigationContainerComponent } from './header/containers/header-navigation/header-navigation.container';
-import { HeaderContainerComponent } from './header/containers/header/header.container';
-import { LanguageSwitchContainerComponent } from './header/containers/language-switch/language-switch.container';
-import { LoginStatusContainerComponent } from './header/containers/login-status/login-status.container';
-import { MiniBasketContainerComponent } from './header/containers/mini-basket/mini-basket.container';
-import { ProductCompareStatusContainerComponent } from './header/containers/product-compare-status/product-compare-status.container';
-import { SearchBoxContainerComponent } from './header/containers/search-box/search-box.container';
+import { FooterComponent } from './footer/footer/footer.component';
+import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
+import { HeaderDefaultComponent } from './header/header-default/header-default.component';
+import { HeaderNavigationComponent } from './header/header-navigation/header-navigation.component';
+import { HeaderSimpleComponent } from './header/header-simple/header-simple.component';
+import { HeaderComponent } from './header/header/header.component';
+import { LanguageSwitchComponent } from './header/language-switch/language-switch.component';
+import { LazyLoginModalComponent } from './header/lazy-login-modal/lazy-login-modal.component';
+import { LoginStatusComponent } from './header/login-status/login-status.component';
+import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
+import { ProductCompareStatusComponent } from './header/product-compare-status/product-compare-status.component';
+import { ProductImageComponent } from './header/product-image/product-image.component';
+import { SearchBoxComponent } from './header/search-box/search-box.component';
+import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
+import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
 
 const exportedComponents = [
   FooterComponent,
-  HeaderContainerComponent,
+  HeaderComponent,
   ProductImageComponent,
-  SearchBoxContainerComponent,
+  SearchBoxComponent,
   ServerHtmlDirective,
 ];
 
@@ -61,13 +61,13 @@ const exportedComponents = [
     ClickOutsideDirective,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
-    HeaderNavigationContainerComponent,
+    HeaderNavigationComponent,
     HeaderSimpleComponent,
-    LanguageSwitchContainerComponent,
+    LanguageSwitchComponent,
     LazyLoginModalComponent,
-    LoginStatusContainerComponent,
-    MiniBasketContainerComponent,
-    ProductCompareStatusContainerComponent,
+    LoginStatusComponent,
+    MiniBasketComponent,
+    ProductCompareStatusComponent,
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
   ],

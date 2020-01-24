@@ -1,0 +1,14 @@
+<div class="clearfix">
+  <ng-container>
+    <ish-account-payment
+      [paymentMethods]="paymentMethods$ | async"
+      [user]="user$ | async"
+      [error]="error$ | async"
+      (deletePaymentInstrument)="deletePaymentInstrument($event)"
+      (updateDefaultPaymentInstrument)="updateDefaultPaymentInstrument($event)"
+    >
+    </ish-account-payment>
+  </ng-container>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>

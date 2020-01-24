@@ -7,9 +7,9 @@ import { EMPTY, Observable, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
+  concatMapTo,
   debounce,
   debounceTime,
-  delay,
   filter,
   first,
   map,
@@ -23,6 +23,7 @@ import {
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
+import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { PersonalizationService } from 'ish-core/services/personalization/personalization.service';
 import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/error';
@@ -36,7 +37,7 @@ import {
 } from 'ish-core/utils/operators';
 
 import * as userActions from './user.actions';
-import { getLoggedInCustomer, getLoggedInUser, getUserError, getUserSuccessMessage } from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
 function mapUserErrorToActionIfPossible<T>(specific) {
   return (source$: Observable<T>) =>
@@ -58,6 +59,7 @@ export class UserEffects {
     private actions$: Actions,
     private store$: Store<{}>,
     private userService: UserService,
+    private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
     private router: Router
   ) {}
@@ -159,6 +161,11 @@ export class UserEffects {
     withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
     concatMap(([payload, customer]) =>
       this.userService.updateUser({ user: payload.user, customer }).pipe(
+        tap(() => {
+          if (payload.successRouterLink) {
+            this.router.navigateByUrl(payload.successRouterLink);
+          }
+        }),
         map(
           changedUser =>
             new userActions.UpdateUserSuccess({ user: changedUser, successMessage: payload.successMessage })
@@ -176,6 +183,7 @@ export class UserEffects {
     withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
     concatMap(([[payload, customer], user]) =>
       this.userService.updateUserPassword(customer, user, payload.password, payload.currentPassword).pipe(
+        tap(() => this.router.navigateByUrl('/account/profile')),
         mapTo(
           new userActions.UpdateUserPasswordSuccess({
             successMessage: payload.successMessage || 'account.profile.update_password.message',
@@ -194,6 +202,11 @@ export class UserEffects {
     filter(([, loggedInCustomer]) => !!loggedInCustomer && loggedInCustomer.isBusinessCustomer),
     concatMap(([payload]) =>
       this.userService.updateCustomer(payload.customer).pipe(
+        tap(() => {
+          if (payload.successRouterLink) {
+            this.router.navigateByUrl(payload.successRouterLink);
+          }
+        }),
         map(
           changedCustomer =>
             new userActions.UpdateCustomerSuccess({ customer: changedCustomer, successMessage: payload.successMessage })
@@ -203,20 +216,22 @@ export class UserEffects {
     )
   );
 
-  /* ToDo: should be partly replaced by the toast implementation */
-  /* Navigates the user to the Accouont Profile page and deletes the update user success message from store after 5 sec */
+  /* Displays a success message after an user/customer update action */
   @Effect()
-  resetUpdateUserSuccessMessage$ = this.actions$.pipe(
+  displayUpdateUserSuccessMessage$ = this.actions$.pipe(
     ofType(
       userActions.UserActionTypes.UpdateUserPasswordSuccess,
       userActions.UserActionTypes.UpdateUserSuccess,
       userActions.UserActionTypes.UpdateCustomerSuccess
     ),
-    withLatestFrom(this.store$.pipe(select(getUserSuccessMessage))),
-    filter(([, successMessage]) => !!successMessage),
-    tap(() => this.router.navigateByUrl('/account/profile')),
-    delay(5000),
-    mapTo(new userActions.UserSuccessMessageReset())
+    mapToPayloadProperty('successMessage'),
+    filter(successMessage => !!successMessage),
+    map(
+      successMessage =>
+        new SuccessMessage({
+          message: successMessage,
+        })
+    )
   );
 
   @Effect()
@@ -252,6 +267,39 @@ export class UserEffects {
         map(pgid => new userActions.SetPGID({ pgid })),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
+      )
+    )
+  );
+
+  @Effect()
+  loadUserPaymentMethods$ = this.actions$.pipe(
+    ofType<userActions.LoadUserPaymentMethods>(userActions.UserActionTypes.LoadUserPaymentMethods),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, customer]) => !!customer),
+    concatMap(([, customer]) =>
+      this.paymentService.getUserPaymentMethods(customer).pipe(
+        map(result => new userActions.LoadUserPaymentMethodsSuccess({ paymentMethods: result })),
+        mapErrorToAction(userActions.LoadUserPaymentMethodsFail)
+      )
+    )
+  );
+
+  @Effect()
+  deleteUserPayment$ = this.actions$.pipe(
+    ofType<userActions.DeleteUserPaymentInstrument>(userActions.UserActionTypes.DeleteUserPaymentInstrument),
+    mapToPayloadProperty('id'),
+    withLatestFrom(this.store$.pipe(select(getLoggedInCustomer))),
+    filter(([, customer]) => !!customer),
+    concatMap(([id, customer]) =>
+      this.paymentService.deleteUserPaymentInstrument(customer.customerNo, id).pipe(
+        concatMapTo([
+          new userActions.DeleteUserPaymentInstrumentSuccess(),
+          new userActions.LoadUserPaymentMethods(),
+          new SuccessMessage({
+            message: 'account.payment.payment_deleted.message',
+          }),
+        ]),
+        mapErrorToAction(userActions.DeleteUserPaymentInstrumentFail)
       )
     )
   );

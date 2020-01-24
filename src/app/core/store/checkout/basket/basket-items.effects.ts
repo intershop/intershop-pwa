@@ -23,7 +23,7 @@ import {
   LineItemUpdateHelperItem,
 } from 'ish-core/models/line-item-update/line-item-update.helper';
 import { BasketService } from 'ish-core/services/basket/basket.service';
-import { getProductEntities } from 'ish-core/store/shopping/products';
+import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
 import * as basketActions from './basket.actions';
@@ -93,6 +93,16 @@ export class BasketItemsEffects {
   );
 
   /**
+   * Reload products when they are added to basket to update price and inStock information
+   */
+  @Effect()
+  loadProductsForAddItemsToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    mapToPayload(),
+    concatMap(payload => [...payload.items.map(item => new LoadProduct({ sku: item.sku }))])
+  );
+
+  /**
    * Creates a basket if missing and call AddItemsToBasketAction
    * Only triggers if basket is unset set and action payload does not contain basketId.
    */
@@ -148,7 +158,7 @@ export class BasketItemsEffects {
   );
 
   /**
-   * Validates the basket after and update item error occurred
+   * Validates the basket after an update item error occurred
    */
   @Effect()
   validateBasketAfterUpdateFailure$ = this.actions$.pipe(

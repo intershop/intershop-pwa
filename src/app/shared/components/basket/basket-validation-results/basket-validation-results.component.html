@@ -1,0 +1,56 @@
+<!-- error messages -->
+<div
+  *ngFor="let message of errorMessages$ | async"
+  class="alert alert-danger"
+  role="alert"
+  data-testing-id="validation-error-message"
+>
+  {{ message }}
+</div>
+
+<!-- info messages -->
+<div
+  *ngFor="let message of infoMessages$ | async"
+  class="alert alert-info"
+  role="alert"
+  data-testing-id="validation-info-message"
+>
+  {{ message }}
+</div>
+
+<div *ngIf="hasGeneralBasketError$ | async" class="alert alert-danger" data-testing-id="general-validation-message">
+  {{ 'basket.validation.general.error' | translate }}
+</div>
+
+<!-- undeliverable items -->
+<ng-container *ngIf="undeliverableItems$ | async as undeliverableItems">
+  <div
+    *ngIf="undeliverableItems.length"
+    class="alert alert-box"
+    role="alert"
+    data-testing-id="undeliverable-items-message"
+  >
+    <div class="alert-box-header">
+      <p>
+        {{ 'restricted-items.error.message1' | translate }}<br />
+        {{ 'shipping.restriction.shippingMethod' | translate }} {{ 'shipping.restriction.region' | translate }}
+      </p>
+      {{ 'restricted-items.error.message2' | translate }}
+    </div>
+
+    <div class="alert-box-body">
+      <ish-basket-validation-items
+        [lineItems]="undeliverableItems"
+        (deleteItem)="deleteItem($event)"
+      ></ish-basket-validation-items>
+    </div>
+  </div>
+</ng-container>
+
+<!-- removed items messages -->
+<ng-container *ngIf="removedItems$ | async as removedItems">
+  <div *ngIf="removedItems.length" class="alert alert-danger" data-testing-id="validation-removed-message">
+    {{ 'shopping_cart.adjusted_items.warnung' | translate }}
+  </div>
+  <ish-basket-validation-products [items]="removedItems"></ish-basket-validation-products>
+</ng-container>

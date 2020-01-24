@@ -11,6 +11,7 @@ export class <%= classify(name) %>Effects {
   @Effect()
   load<%= classify(name) %>$ = this.actions$.pipe(
     ofType<actions.Load<%= classify(name) %>>(actions.<%= classify(name) %>ActionTypes.Load<%= classify(name) %>),
+    // tslint:disable-next-line:no-console
     tap(() => console.log('got Load<%= classify(name) %> in <%= classify(name) %>Effects.load<%= classify(name) %>$')),
     filter(() => false)
   );

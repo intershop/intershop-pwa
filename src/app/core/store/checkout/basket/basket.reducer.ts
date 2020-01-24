@@ -46,6 +46,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddPromotionCodeToBasket:
+    case BasketActionTypes.RemovePromotionCodeFromBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.MergeBasket:
     case BasketActionTypes.ContinueCheckout:
@@ -68,6 +69,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.ContinueCheckoutFail:
     case BasketActionTypes.AddItemsToBasketFail:
+    case BasketActionTypes.RemovePromotionCodeFromBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
     case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
@@ -110,9 +112,11 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         loading: false,
         error: undefined,
         info: action.payload.info,
+        validationResults: initialValidationResults,
       };
     }
 
+    case BasketActionTypes.RemovePromotionCodeFromBasketSuccess:
     case BasketActionTypes.SetBasketPaymentSuccess:
     case BasketActionTypes.CreateBasketPaymentSuccess:
     case BasketActionTypes.UpdateBasketPaymentSuccess:
@@ -121,6 +125,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         ...state,
         loading: false,
         error: undefined,
+        validationResults: initialValidationResults,
       };
     }
 
@@ -158,6 +163,7 @@ export function basketReducer(state = initialState, action: BasketAction | Order
         basket,
         loading: false,
         error: undefined,
+        info: undefined,
         validationResults: validation && validation.results,
       };
     }

@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from 'ish-shared/shared.module';
 
-import { ComparePageContainerComponent } from './compare-page.container';
-import { ProductCompareListComponent } from './components/product-compare-list/product-compare-list.component';
-import { ProductComparePagingComponent } from './components/product-compare-paging/product-compare-paging.component';
+import { ComparePageComponent } from './compare-page.component';
+import { ProductCompareListComponent } from './product-compare-list/product-compare-list.component';
+import { ProductComparePagingComponent } from './product-compare-paging/product-compare-paging.component';
 
-const comparePageRoutes: Routes = [{ path: '', component: ComparePageContainerComponent }];
+const comparePageRoutes: Routes = [{ path: '', component: ComparePageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(comparePageRoutes), SharedModule],
-  declarations: [ComparePageContainerComponent, ProductCompareListComponent, ProductComparePagingComponent],
+  declarations: [ComparePageComponent, ProductCompareListComponent, ProductComparePagingComponent],
 })
 export class ComparePageModule {}

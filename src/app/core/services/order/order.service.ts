@@ -1,14 +1,15 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, mapTo } from 'rxjs/operators';
+import { catchError, concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getCurrentLocale } from 'ish-core/store/locale';
 
 type OrderIncludeType =
   | 'invoiceToAddress'
@@ -26,7 +27,7 @@ type OrderIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private store: Store<{}>) {}
 
   // http header for Order API v1
   private orderHeaders = new HttpHeaders({
@@ -52,18 +53,18 @@ export class OrderService {
    * @param termsAndConditionsAccepted  indicates whether the user has accepted terms and conditions
    * @returns                           The order.
    */
-  createOrder(basket: Basket, termsAndConditionsAccepted: boolean = false): Observable<Order> {
+  createOrder(basketId: string, termsAndConditionsAccepted: boolean = false): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
-    if (!basket) {
-      return throwError('createOrder() called without basket');
+    if (!basketId) {
+      return throwError('createOrder() called without basketId');
     }
 
     return this.apiService
       .post<OrderData>(
         'orders',
         {
-          basket: basket.id,
+          basket: basketId,
           termsAndConditionsAccepted,
         },
         {
@@ -73,16 +74,21 @@ export class OrderService {
       )
       .pipe(
         map(OrderMapper.fromData),
-        concatMap(order => this.sendRedirectUrlsIfRequired(order))
+        withLatestFrom(this.store.pipe(select(getCurrentLocale))),
+        concatMap(([order, currentLocale]) =>
+          this.sendRedirectUrlsIfRequired(order, currentLocale && currentLocale.lang)
+        )
       );
   }
 
   /**
    *  Checks, if RedirectUrls are requested by the server and sends them if it is necessary.
-   * @param order       The order.
-   * @returns           The (updated) order.
+   * @param order           The order.
+   * @param lang            The language code of the current locale, e.g. en_US
+   * @returns               The (updated) order.
    */
-  private sendRedirectUrlsIfRequired(order: Order): Observable<Order> {
+  private sendRedirectUrlsIfRequired(order: Order, lang: string): Observable<Order> {
+    const loc = location.origin;
     if (
       order.orderCreation &&
       order.orderCreation.status === 'STOPPED' &&
@@ -92,9 +98,9 @@ export class OrderService {
       const body = {
         orderCreation: {
           redirect: {
-            cancelUrl: `${location.origin}/checkout/payment?redirect=cancel&orderId=${order.id}`,
-            failureUrl: `${location.origin}/checkout/payment?redirect=failure&orderId=${order.id}`,
-            successUrl: `${location.origin}/checkout/receipt?redirect=success&orderId=${order.id}`,
+            cancelUrl: `${loc}/checkout/payment;lang=${lang}?redirect=cancel&orderId=${order.id}`,
+            failureUrl: `${loc}/checkout/payment;lang=${lang}?redirect=failure&orderId=${order.id}`,
+            successUrl: `${loc}/checkout/receipt;lang=${lang}?redirect=success&orderId=${order.id}`,
           },
           status: 'CONTINUE',
         },

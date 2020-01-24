@@ -1,0 +1,9 @@
+<ng-container *ngIf="promotion$ | async as promotion"
+  ><div *ngIf="promotion && !promotion.disableMessages">
+    <div class="promotion-title" [ishServerHtml]="promotion.title"></div>
+    <div class="promotion-details-and-remove-links">
+      <ish-promotion-details [promotion]="promotion"></ish-promotion-details>
+      <ish-promotion-remove [code]="rebate.code"></ish-promotion-remove>
+    </div>
+  </div>
+</ng-container>

@@ -3,14 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { QuotingModule } from '../../quoting.module';
 
-import { QuoteRequestEditPageContainerComponent } from './quote-request-edit-page.container';
+import { QuoteRequestEditPageComponent } from './quote-request-edit-page.component';
 
-const quoteRequestEditPageRoutes: Routes = [
-  { path: ':quoteRequestId', component: QuoteRequestEditPageContainerComponent },
-];
+const quoteRequestEditPageRoutes: Routes = [{ path: ':quoteRequestId', component: QuoteRequestEditPageComponent }];
 
 @NgModule({
-  declarations: [QuoteRequestEditPageContainerComponent],
+  declarations: [QuoteRequestEditPageComponent],
   imports: [QuotingModule, RouterModule.forChild(quoteRequestEditPageRoutes)],
 })
 export class QuoteRequestEditPageModule {}

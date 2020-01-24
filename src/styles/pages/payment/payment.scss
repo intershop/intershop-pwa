@@ -1,0 +1,48 @@
+//
+// Payment
+// --------------------------------------------------
+
+#payment-accordion {
+  margin-bottom: $space-default * 2;
+
+  & > .panel {
+    padding: $space-default;
+    margin-top: $space-default;
+  }
+  .panel {
+    margin-top: $space-default / 2;
+    margin-bottom: 0;
+    background-color: #f7f7f7;
+
+    @include box-shadow(none);
+
+    .panel-collapse {
+      padding-left: 20px; // like radio buttons
+    }
+
+    .form-check > label {
+      display: inline-block;
+      margin-bottom: $space-default / 2;
+    }
+  }
+
+  .has-feedback {
+    .form-control-feedback {
+      display: none;
+    }
+  }
+
+  .propertygroup-property-noneditable {
+    margin: 0;
+
+    @media (max-width: $screen-xs-max) {
+      .propertygroup-property-content {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .iframe-container {
+    height: 35px;
+  }
+}

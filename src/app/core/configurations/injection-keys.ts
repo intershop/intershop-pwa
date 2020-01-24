@@ -45,3 +45,8 @@ export const EXTRALARGE_BREAKPOINT_WIDTH = new InjectionToken<number>('extralarg
  * The captcha configuration siteKey
  */
 export const CAPTCHA_SITE_KEY = new InjectionToken<string>('captchaSiteKey');
+
+/**
+ * The configured theme for the application (or 'default' if not configured)
+ */
+export const THEME = new InjectionToken<string>('theme');

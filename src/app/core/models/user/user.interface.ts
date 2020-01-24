@@ -1,4 +1,5 @@
 import { Address } from 'ish-core/models/address/address.model';
+import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 
 // used for business users only
 export interface UserData {
@@ -16,6 +17,7 @@ export interface UserData {
   preferredLanguage: string;
   preferredInvoiceToAddress?: Address;
   preferredShipToAddress?: Address;
+  preferredPaymentInstrument?: PaymentInstrument;
 
   businessPartnerNo?: string;
   department?: string;

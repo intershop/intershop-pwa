@@ -4,7 +4,7 @@ import { HeaderModule } from '../header.module';
 import { ProductListModule } from './product-list.module';
 
 export class ProductDetailPage {
-  readonly tag = 'ish-product-page-container';
+  readonly tag = 'ish-product-page';
 
   readonly header = new HeaderModule();
   readonly breadcrumb = new BreadcrumbModule();
@@ -47,7 +47,7 @@ export class ProductDetailPage {
   addProductToCart() {
     cy.wait(1000);
     cy.server()
-      .route('GET', '**/baskets/current*')
+      .route('POST', '**/baskets/*/items')
       .as('basket');
     this.addToCartButton().click();
     return cy.wait('@basket');
@@ -80,7 +80,7 @@ export class ProductDetailPage {
 
   changeVariationWithSelect(id: string, value: string) {
     // tslint:disable-next-line:ban
-    cy.get('#' + id).select(value);
+    cy.get(`[data-testing-id="${id}"]`).select(value);
   }
 
   gotoMasterProduct() {

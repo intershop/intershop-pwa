@@ -1,0 +1,295 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Default Component rendering should render normal header adequately for desktop 1`] = `
+<div class="header container">
+  <ul class="user-links">
+    <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
+  </ul>
+  <div class="header-utility">
+    <a class="search-toggler"></a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    </div>
+    <ish-mini-basket
+      class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      ng-reflect-ng-class="d-md-block"
+      ng-reflect-view="full"
+    ></ish-mini-basket
+    ><ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      class="d-md-none"
+      ng-reflect-ng-class="d-md-none"
+      ng-reflect-view="small"
+    ></ish-mini-basket>
+  </div>
+  <div class="search-container header-search-container">
+    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  </div>
+  <div class="logo-wrapper"></div>
+  <button class="navbar-toggler" type="button">
+    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
+  </button>
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation
+        ><ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`Header Default Component rendering should render normal header adequately for mobile devices 1`] = `
+<div class="header container">
+  <ul class="user-links">
+    <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
+  </ul>
+  <div class="header-utility">
+    <a class="search-toggler"></a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    </div>
+    <ish-mini-basket
+      class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      ng-reflect-ng-class="d-md-block"
+      ng-reflect-view="full"
+    ></ish-mini-basket
+    ><ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      class="d-md-none"
+      ng-reflect-ng-class="d-md-none"
+      ng-reflect-view="small"
+    ></ish-mini-basket>
+  </div>
+  <div class="search-container header-search-container">
+    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  </div>
+  <div class="logo-wrapper"></div>
+  <button class="navbar-toggler" type="button">
+    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
+  </button>
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation
+        ><ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`Header Default Component rendering should render normal header adequately for tablet devices 1`] = `
+<div class="header container">
+  <ul class="user-links">
+    <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
+  </ul>
+  <div class="header-utility">
+    <a class="search-toggler"></a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    </div>
+    <ish-mini-basket
+      class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      ng-reflect-ng-class="d-md-block"
+      ng-reflect-view="full"
+    ></ish-mini-basket
+    ><ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      class="d-md-none"
+      ng-reflect-ng-class="d-md-none"
+      ng-reflect-view="small"
+    ></ish-mini-basket>
+  </div>
+  <div class="search-container header-search-container">
+    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  </div>
+  <div class="logo-wrapper"></div>
+  <button class="navbar-toggler" type="button">
+    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
+  </button>
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation
+        ><ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`Header Default Component rendering should render sticky header adequately for desktop 1`] = `
+<div class="header container">
+  <ul class="user-links">
+    <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
+  </ul>
+  <div class="header-utility">
+    <a class="search-toggler"></a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    </div>
+    <ish-mini-basket
+      class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      ng-reflect-ng-class="d-md-block"
+      ng-reflect-view="full"
+    ></ish-mini-basket
+    ><ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      class="d-md-none"
+      ng-reflect-ng-class="d-md-none"
+      ng-reflect-view="small"
+    ></ish-mini-basket>
+  </div>
+  <div class="search-container header-search-container">
+    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  </div>
+  <div class="logo-wrapper"></div>
+  <button class="navbar-toggler" type="button">
+    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
+  </button>
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation
+        ><ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`Header Default Component rendering should render sticky header adequately for mobile devices 1`] = `
+<div class="header container">
+  <ul class="user-links">
+    <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
+  </ul>
+  <div class="header-utility">
+    <a class="search-toggler"></a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    </div>
+    <ish-mini-basket
+      class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      ng-reflect-ng-class="d-md-block"
+      ng-reflect-view="full"
+    ></ish-mini-basket
+    ><ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      class="d-md-none"
+      ng-reflect-ng-class="d-md-none"
+      ng-reflect-view="small"
+    ></ish-mini-basket>
+  </div>
+  <div class="search-container header-search-container">
+    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  </div>
+  <div class="logo-wrapper"></div>
+  <button class="navbar-toggler" type="button">
+    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
+  </button>
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation
+        ><ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`Header Default Component rendering should render sticky header adequately for tablet devices 1`] = `
+<div class="header container">
+  <ul class="user-links">
+    <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
+  </ul>
+  <div class="header-utility">
+    <a class="search-toggler"></a>
+    <div class="language-switch-container d-none d-md-block">
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
+    </div>
+    <ish-mini-basket
+      class="d-none d-md-block"
+      data-testing-id="mini-basket-desktop"
+      view="full"
+      ng-reflect-ng-class="d-md-block"
+      ng-reflect-view="full"
+    ></ish-mini-basket
+    ><ish-mini-basket
+      data-testing-id="mini-basket-mobile"
+      view="small"
+      class="d-md-none"
+      ng-reflect-ng-class="d-md-none"
+      ng-reflect-view="small"
+    ></ish-mini-basket>
+  </div>
+  <div class="search-container header-search-container">
+    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  </div>
+  <div class="logo-wrapper"></div>
+  <button class="navbar-toggler" type="button">
+    <span class="sr-only">common.button.navbarCollapsed.text</span>
+    <div class="hamburger-menu"><span></span><span></span><span></span></div>
+  </button>
+  <div class="global-nav-container">
+    <nav class="global-nav navbar-expand-md" ng-reflect-collapsed="true">
+      <div class="main-navigation" role="navigation">
+        <ish-header-navigation></ish-header-navigation
+        ><ish-user-information-mobile></ish-user-information-mobile>
+      </div>
+    </nav>
+  </div>
+</div>
+`;

@@ -2,7 +2,7 @@ import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { FormControlFeedbackComponent } from 'ish-shared/forms/components/form-control-feedback/form-control-feedback.component';
@@ -19,7 +19,7 @@ describe('Select Language Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(FormControlFeedbackComponent),
-        MockComponent(ShowFormFeedbackDirective),
+        MockDirective(ShowFormFeedbackDirective),
         SelectLanguageComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],

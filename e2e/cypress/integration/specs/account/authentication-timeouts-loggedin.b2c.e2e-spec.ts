@@ -1,4 +1,4 @@
-import { at, waitLoadingEnd } from '../../framework';
+import { at } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
@@ -47,7 +47,7 @@ describe('Logged in Sleeping User', () => {
           url: `**/products/${_.product}*`,
         }).as('valid');
         cy.wait('@valid');
-        waitLoadingEnd(5000);
+        cy.wait(5000);
         cy.window().screenshot();
       });
       at(LoginPage, page => {
@@ -88,7 +88,7 @@ describe('Logged in Sleeping User', () => {
           method: 'GET',
           url: `**`,
         });
-        waitLoadingEnd(5000);
+        cy.wait(5000);
         cy.window().screenshot();
       });
       at(LoginPage, page => {

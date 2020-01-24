@@ -45,6 +45,17 @@ describe('Basket Promotion Code Effects', () => {
     store$ = TestBed.get(Store);
   });
 
+  describe('loadBasketAfterAddPromotionCodeToBasket$', () => {
+    it('should map to action of type LoadBasket if AddPromotionCodeToBasketSuccess action triggered', () => {
+      const action = new basketActions.AddPromotionCodeToBasketSuccess();
+      const completion = new basketActions.LoadBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketAfterAddPromotionCodeToBasketChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
   describe('addPromotionCodeToBasket$', () => {
     beforeEach(() => {
       when(basketServiceMock.addPromotionCodeToBasket(anyString(), anyString())).thenReturn(of(undefined));
@@ -95,14 +106,66 @@ describe('Basket Promotion Code Effects', () => {
     });
   });
 
-  describe('loadBasketAfterAddPromotionCodeToBasket$', () => {
-    it('should map to action of type LoadBasket if AddPromotionCodeToBasketSuccess action triggered', () => {
-      const action = new basketActions.AddPromotionCodeToBasketSuccess();
+  describe('removePromotionCodeFromBasket$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(of(undefined));
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          basket: {
+            id: 'BID',
+            lineItems: [],
+          } as Basket,
+        })
+      );
+    });
+
+    it('should call the basketService for RemovePromotionCodeFromBasket action', done => {
+      const code = 'CODE';
+      const action = new basketActions.RemovePromotionCodeFromBasket({ code });
+      actions$ = of(action);
+
+      effects.removePromotionCodeFromBasket$.subscribe(() => {
+        verify(basketServiceMock.removePromotionCodeFromBasket('BID', 'CODE')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type RemovePromotionCodeFromBasketSuccess', () => {
+      const code = 'CODE';
+      const action = new basketActions.RemovePromotionCodeFromBasket({ code });
+      const completion = new basketActions.RemovePromotionCodeFromBasketSuccess();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.removePromotionCodeFromBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type RemovePromotionCodeFromBasketFail', () => {
+      when(basketServiceMock.removePromotionCodeFromBasket(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+
+      const code = 'CODE';
+      const action = new basketActions.RemovePromotionCodeFromBasket({ code });
+      const completion = new basketActions.RemovePromotionCodeFromBasketFail({
+        error: { message: 'invalid' } as HttpError,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.removePromotionCodeFromBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketAfterRemovePromotionCodeFromBasket$', () => {
+    it('should map to action of type LoadBasket if RemovePromotionCodeFromBasketSuccess action triggered', () => {
+      const action = new basketActions.RemovePromotionCodeFromBasketSuccess();
       const completion = new basketActions.LoadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadBasketAfterAddPromotionCodeToBasketChangeSuccess$).toBeObservable(expected$);
+      expect(effects.loadBasketAfterRemovePromotionCodeFromBasketChangeSuccess$).toBeObservable(expected$);
     });
   });
 });

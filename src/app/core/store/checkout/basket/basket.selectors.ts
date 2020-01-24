@@ -1,9 +1,12 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 
+import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
 import { getCheckoutState } from 'ish-core/store/checkout/checkout-store';
 import { getProductEntities } from 'ish-core/store/shopping/products';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 const getBasketState = createSelector(
   getCheckoutState,
@@ -94,5 +97,23 @@ export const getBasketEligibleShippingMethods = createSelector(
 
 export const getBasketEligiblePaymentMethods = createSelector(
   getBasketState,
-  basket => basket.eligiblePaymentMethods
+  getLoggedInCustomer,
+  (basket, customer) =>
+    basket &&
+    basket.eligiblePaymentMethods &&
+    basket.eligiblePaymentMethods.map(pm => (customer ? pm : { ...pm, saveAllowed: false }))
+);
+
+export const getBasketInvoiceAddress = createSelectorFactory(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(getCurrentBasket, basket => basket && basket.invoiceToAddress);
+
+export const getBasketShippingAddress = createSelectorFactory(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(getCurrentBasket, basket => basket && basket.commonShipToAddress);
+
+export const isBasketInvoiceAndShippingAddressEqual = createSelector(
+  getBasketInvoiceAddress,
+  getBasketShippingAddress,
+  AddressHelper.equal
 );

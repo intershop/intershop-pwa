@@ -8,7 +8,7 @@ const _ = {
   productSkuTarget: '201807231-02',
   selections: [
     {
-      attr: '#Attr_harddrivesize',
+      attr: '[data-testing-id="Attr_harddrivesize"]',
       value: '512GB',
     },
   ],
@@ -24,7 +24,7 @@ describe('Variation Handling in Cart', () => {
       page
         .addProductToCart()
         .its('status')
-        .should('equal', 200);
+        .should('equal', 201);
       page.header.miniCart.goToCart();
     });
     at(CartPage, page => {

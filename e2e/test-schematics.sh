@@ -30,27 +30,14 @@ npx ng g pipe warehouses
 stat src/app/core/pipes/warehouses.pipe.ts
 grep "WarehousesPipe" src/app/core/pipes.module.ts
 
-npx ng g c shared/warehouse/warehouse
-stat src/app/shared/warehouse/components/warehouse/warehouse.component.ts
+npx ng g c shared/components/inventory/warehouse
+stat src/app/shared/components/inventory/warehouse/warehouse.component.ts
 grep "WarehouseComponent" src/app/shared/shared.module.ts
-
-(cd src/app/shared/warehouse && npx ng g cc warehouse)
-stat src/app/shared/warehouse/containers/warehouse/warehouse.container.ts
-grep "WarehouseContainerComponent" src/app/shared/shared.module.ts
-
-
-npx ng g ccp shared/warehouse/stocks
-stat src/app/shared/warehouse/containers/stocks/stocks.container.ts
-stat src/app/shared/warehouse/components/stocks/stocks.component.ts
-grep "StocksContainerComponent" src/app/shared/shared.module.ts
-grep "StocksComponent" src/app/shared/shared.module.ts
 
 
 npx ng g p warehouses
 stat src/app/pages/warehouses/warehouses-page.module.ts
-stat src/app/pages/warehouses/warehouses-page.container.ts
-grep "WarehousesPageContainerComponent" src/app/pages/warehouses/warehouses-page.module.ts
-stat src/app/pages/warehouses/components/warehouses-page/warehouses-page.component.ts
+stat src/app/pages/warehouses/warehouses-page.component.ts
 grep "WarehousesPageComponent" src/app/pages/warehouses/warehouses-page.module.ts
 grep "warehouses" src/app/pages/app-routing.module.ts
 
@@ -86,6 +73,14 @@ npx ng g cms --definitionQualifiedName app:component.custom.audio.pagelet2-Compo
 stat src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
+
+
+node schematics/customization custom
+npx ng g customized-copy shell/footer/footer
+
+stat src/app/shell/footer/custom-footer/custom-footer.component.ts
+grep 'custom-footer' src/app/app.component.html
+
 
 git add -A
 npx lint-staged

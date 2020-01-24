@@ -1,0 +1,57 @@
+<div class="product-tile" [attr.data-testing-sku]="product.sku">
+  <div class="product-image-container">
+    <a [routerLink]="product | ishProductRoute: category">
+      <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
+    </a>
+    <ish-product-label [product]="product"></ish-product-label>
+  </div>
+
+  <a *ngIf="configuration.displayName" class="product-title" [routerLink]="product | ishProductRoute: category">{{
+    product.name
+  }}</a>
+
+  <ish-product-rating *ishFeature="'rating'" [product]="product"></ish-product-rating>
+
+  <ish-product-promotion
+    *ngIf="configuration.displayPromotions"
+    [product]="product"
+    displayType="simple"
+  ></ish-product-promotion>
+
+  <div *ngIf="configuration.displayPrice" class="price-container">
+    <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+  </div>
+
+  <ish-product-variation-select
+    *ngIf="variationOptions && configuration.displayVariations"
+    [readOnly]="configuration.readOnly"
+    [variationOptions]="variationOptions"
+    (selectVariation)="variationSelected($event)"
+  ></ish-product-variation-select>
+  <ng-container *ngIf="isMasterProduct(product)">
+    <span class="product-variation read-only">{{ variationCount }} {{ 'product.variations.text' | translate }}</span>
+  </ng-container>
+
+  <div class="product-tile-actions btn-group">
+    <ish-lazy-product-add-to-quote
+      *ngIf="configuration.displayAddToQuote && !isMasterProduct(product)"
+      [product]="product"
+      displayType="icon"
+      class="btn-link"
+    ></ish-lazy-product-add-to-quote>
+    <ish-product-add-to-compare
+      *ngIf="configuration.displayAddToCompare"
+      [isInCompareList]="isInCompareList"
+      displayType="icon"
+      class="btn-link"
+      (compareToggle)="toggleCompare()"
+    ></ish-product-add-to-compare>
+    <ish-product-add-to-basket
+      *ngIf="configuration.displayAddToBasket && !isMasterProduct(product)"
+      [product]="product"
+      displayType="icon"
+      class="btn-link"
+      (productToBasket)="addToBasket()"
+    ></ish-product-add-to-basket>
+  </div>
+</div>

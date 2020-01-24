@@ -1,10 +1,10 @@
 import { at } from '../../framework';
-import { AddressDetailsTypes, AddressesPage } from '../../pages/checkout/addresses.page';
 import { CartPage } from '../../pages/checkout/cart.page';
-import { PaymentPage } from '../../pages/checkout/payment.page';
-import { ReceiptPage } from '../../pages/checkout/receipt.page';
-import { ReviewPage } from '../../pages/checkout/review.page';
-import { ShippingPage } from '../../pages/checkout/shipping.page';
+import { AddressDetailsTypes, CheckoutAddressesPage } from '../../pages/checkout/checkout-addresses.page';
+import { CheckoutPaymentPage } from '../../pages/checkout/checkout-payment.page';
+import { CheckoutReceiptPage } from '../../pages/checkout/checkout-receipt.page';
+import { CheckoutReviewPage } from '../../pages/checkout/checkout-review.page';
+import { CheckoutShippingPage } from '../../pages/checkout/checkout-shipping.page';
 import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
@@ -49,7 +49,7 @@ describe('Anonymous Checkout', () => {
       page
         .addProductToCart()
         .its('status')
-        .should('equal', 200);
+        .should('equal', 201);
       page.header.miniCart.total.should('contain', _.product.price);
       page.header.miniCart.goToCart();
     });
@@ -58,34 +58,40 @@ describe('Anonymous Checkout', () => {
 
   it('should start guest checkout by filling out the address form', () => {
     at(CartPage, page => page.beginCheckout());
-    at(AddressesPage, page => {
+    at(CheckoutAddressesPage, page => {
       page.guestCheckout();
       page.fillInvoiceAddressForm(_.address, _.email);
       page.continueCheckout();
     });
-    at(ShippingPage);
+    at(CheckoutShippingPage);
   });
 
   it('should accept default shipping option', () => {
-    at(ShippingPage, page => page.continueCheckout());
+    at(CheckoutShippingPage, page => page.continueCheckout());
   });
 
+  it('should not display the save for later option on payment page', () => {
+    at(CheckoutPaymentPage, page => {
+      page.addPaymentInstrument('ISH_CREDITCARD');
+      page.saveForLaterCheckbox.should('not.be.visible');
+    });
+  });
   it('should select invoice payment', () => {
-    at(PaymentPage, page => {
+    at(CheckoutPaymentPage, page => {
       page.selectPayment('INVOICE');
       page.continueCheckout();
     });
   });
 
   it('should review order and submit', () => {
-    at(ReviewPage, page => {
+    at(CheckoutReviewPage, page => {
       page.acceptTAC();
       page.submitOrder();
     });
   });
 
   it('should check the receipt and continue shopping', () => {
-    at(ReceiptPage, page => {
+    at(CheckoutReceiptPage, page => {
       page.continueShopping();
     });
     at(HomePage);

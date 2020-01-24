@@ -27,6 +27,8 @@ import {
 import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/orders';
 import {
   CreateUser,
+  DeleteUserPaymentInstrument,
+  LoadUserPaymentMethods,
   LoginUser,
   RequestPasswordReminder,
   ResetPasswordReminder,
@@ -41,7 +43,7 @@ import {
   getUserAuthorized,
   getUserError,
   getUserLoading,
-  getUserSuccessMessage,
+  getUserPaymentMethods,
   isBusinessCustomer,
 } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -55,7 +57,6 @@ export class AccountFacade {
   user$ = this.store.pipe(select(getLoggedInUser));
   userError$ = this.store.pipe(select(getUserError));
   userLoading$ = this.store.pipe(select(getUserLoading));
-  userSuccessMessage$ = this.store.pipe(select(getUserSuccessMessage));
   isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
 
   loginUser(credentials: LoginCredentials) {
@@ -66,12 +67,18 @@ export class AccountFacade {
     this.store.dispatch(new CreateUser(body));
   }
 
-  updateUser(user: User) {
-    this.store.dispatch(new UpdateUser({ user }));
+  updateUser(user: User, successMessage?: string, successRouterLink?: string) {
+    this.store.dispatch(new UpdateUser({ user, successMessage, successRouterLink }));
   }
 
   updateUserEmail(user: User) {
-    this.store.dispatch(new UpdateUser({ user, successMessage: 'account.profile.update_email.message' }));
+    this.store.dispatch(
+      new UpdateUser({
+        user,
+        successMessage: 'account.profile.update_email.message',
+        successRouterLink: '/account/profile',
+      })
+    );
   }
 
   updateUserPassword(data: { password: string; currentPassword: string }) {
@@ -79,7 +86,13 @@ export class AccountFacade {
   }
 
   updateUserProfile(user: User) {
-    this.store.dispatch(new UpdateUser({ user, successMessage: 'account.profile.update_profile.message' }));
+    this.store.dispatch(
+      new UpdateUser({
+        user,
+        successMessage: 'account.profile.update_profile.message',
+        successRouterLink: '/account/profile',
+      })
+    );
   }
 
   // CUSTOMER
@@ -87,7 +100,13 @@ export class AccountFacade {
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
 
   updateCustomerProfile(customer: Customer) {
-    this.store.dispatch(new UpdateCustomer({ customer, successMessage: 'account.profile.update_profile.message' }));
+    this.store.dispatch(
+      new UpdateCustomer({
+        customer,
+        successMessage: 'account.profile.update_profile.message',
+        successRouterLink: '/account/profile',
+      })
+    );
   }
 
   // PASSWORD
@@ -114,6 +133,18 @@ export class AccountFacade {
 
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
+
+  // PAYMENT
+  eligiblePaymentMethods$ = this.store.pipe(select(getUserPaymentMethods));
+
+  paymentMethods$() {
+    this.store.dispatch(new LoadUserPaymentMethods());
+    return this.eligiblePaymentMethods$;
+  }
+
+  deletePaymentInstrument(paymentInstrumentId: string) {
+    this.store.dispatch(new DeleteUserPaymentInstrument({ id: paymentInstrumentId }));
+  }
 
   // ADDRESSES
   addresses$() {

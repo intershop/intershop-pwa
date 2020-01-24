@@ -8,10 +8,15 @@ describe('Address Helper', () => {
     using(
       [
         { add1: undefined, add2: undefined, expected: false },
-        { add1: { id: '1' } as Address, add2: undefined, expected: false },
-        { add1: undefined, add2: { id: '1' } as Address, expected: false },
+        { add1: { urn: '1' } as Address, add2: undefined, expected: false },
+        { add1: undefined, add2: { urn: '1' } as Address, expected: false },
+        { add1: { urn: '1' } as Address, add2: { urn: '2' } as Address, expected: false },
+        { add1: { urn: '1' } as Address, add2: { urn: '1' } as Address, expected: true },
         { add1: { id: '1' } as Address, add2: { id: '2' } as Address, expected: false },
         { add1: { id: '1' } as Address, add2: { id: '1' } as Address, expected: true },
+        { add1: { urn: '1', id: '1' } as Address, add2: { urn: '2', id: '1' } as Address, expected: false },
+        { add1: { urn: '1', id: '1' } as Address, add2: { urn: '1', id: '1' } as Address, expected: true },
+        { add1: { urn: '1', id: '1' } as Address, add2: { urn: '1', id: '2' } as Address, expected: true },
       ],
       slice => {
         it(`should yield ${slice.expected} when comparing ${JSON.stringify(slice.add1)} and ${JSON.stringify(

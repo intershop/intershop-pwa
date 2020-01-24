@@ -15,6 +15,7 @@ export class BasketValidationMapper {
           errors: data.data.results && data.data.results.errors,
           infos: data.data.results && data.data.results.infos,
         },
+        scopes: data.data.scopes,
       };
     }
   }

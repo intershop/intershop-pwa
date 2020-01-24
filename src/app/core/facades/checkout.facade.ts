@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store, createSelector, select } from '@ngrx/store';
 import { merge } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { Basket } from 'ish-core/models/basket/basket.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
+import { getAllAddresses } from 'ish-core/store/addresses';
 import {
   AddPromotionCodeToBasket,
   AssignBasketAddress,
@@ -18,6 +18,7 @@ import {
   DeleteBasketShippingAddress,
   LoadBasketEligiblePaymentMethods,
   LoadBasketEligibleShippingMethods,
+  RemovePromotionCodeFromBasket,
   SetBasketPayment,
   UpdateBasketAddress,
   UpdateBasketItems,
@@ -26,14 +27,18 @@ import {
   getBasketEligibleShippingMethods,
   getBasketError,
   getBasketInfo,
+  getBasketInvoiceAddress,
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getBasketPromotionError,
+  getBasketShippingAddress,
   getBasketValidationResults,
   getCurrentBasket,
+  isBasketInvoiceAndShippingAddressEqual,
 } from 'ish-core/store/checkout/basket';
 import { getCheckoutStep } from 'ish-core/store/checkout/viewconf';
 import { CreateOrder, getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
+import { getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
@@ -77,8 +82,8 @@ export class CheckoutFacade {
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
 
-  createOrder(basket: Basket) {
-    this.store.dispatch(new CreateOrder({ basket }));
+  createOrder(basketId: string) {
+    this.store.dispatch(new CreateOrder({ basketId }));
   }
 
   // SHIPPING
@@ -105,25 +110,44 @@ export class CheckoutFacade {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));
   }
 
-  createBasketPayment(paymentInstrument: PaymentInstrument) {
-    this.store.dispatch(new CreateBasketPayment({ paymentInstrument }));
+  createBasketPayment(paymentInstrument: PaymentInstrument, saveForLater = false) {
+    this.store.dispatch(new CreateBasketPayment({ paymentInstrument, saveForLater }));
   }
 
-  deleteBasketPayment(paymentInstrumentId: string) {
-    this.store.dispatch(new DeleteBasketPayment({ id: paymentInstrumentId }));
+  deleteBasketPayment(paymentInstrument: PaymentInstrument) {
+    this.store.dispatch(new DeleteBasketPayment({ paymentInstrument }));
   }
 
   // ADDRESSES
-  assignBasketAddress(body: { addressId: string; scope: 'invoice' | 'shipping' | 'any' }) {
-    this.store.dispatch(new AssignBasketAddress({ addressId: body.addressId, scope: body.scope }));
+  basketInvoiceAddress$ = this.store.pipe(select(getBasketInvoiceAddress));
+  basketShippingAddress$ = this.store.pipe(select(getBasketShippingAddress));
+  basketInvoiceAndShippingAddressEqual$ = this.store.pipe(select(isBasketInvoiceAndShippingAddressEqual));
+  basketShippingAddressDeletable$ = this.store.pipe(
+    select(
+      createSelector(
+        getLoggedInUser,
+        getAllAddresses,
+        getBasketShippingAddress,
+        (user, addresses, shippingAddress): boolean =>
+          !!shippingAddress &&
+          !!user &&
+          addresses.length > 1 &&
+          (!user.preferredInvoiceToAddressUrn || user.preferredInvoiceToAddressUrn !== shippingAddress.urn) &&
+          (!user.preferredShipToAddressUrn || user.preferredShipToAddressUrn !== shippingAddress.urn)
+      )
+    )
+  );
+
+  assignBasketAddress(addressId: string, scope: 'invoice' | 'shipping' | 'any') {
+    this.store.dispatch(new AssignBasketAddress({ addressId, scope }));
   }
 
-  createBasketAddress(body: { address: Address; scope: 'invoice' | 'shipping' | 'any' }) {
-    if (!body || !body.address || !body.scope) {
+  createBasketAddress(address: Address, scope: 'invoice' | 'shipping' | 'any') {
+    if (!address || !scope) {
       return;
     }
 
-    this.store.dispatch(new CreateBasketAddress({ address: body.address, scope: body.scope }));
+    this.store.dispatch(new CreateBasketAddress({ address, scope }));
   }
 
   updateBasketAddress(address: Address) {
@@ -139,5 +163,9 @@ export class CheckoutFacade {
 
   addPromotionCodeToBasket(code: string) {
     this.store.dispatch(new AddPromotionCodeToBasket({ code }));
+  }
+
+  removePromotionCodeFromBasket(code: string) {
+    this.store.dispatch(new RemovePromotionCodeFromBasket({ code }));
   }
 }

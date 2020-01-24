@@ -1,3 +1,6 @@
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+
 export interface Environment {
   production: boolean;
 
@@ -63,11 +66,14 @@ export interface Environment {
   productListingItemsPerPage: number;
 
   // default viewType used for product listings
-  defaultProductListingViewType: 'grid' | 'list';
+  defaultProductListingViewType: ViewType;
 
   // enable or disable service worker
   serviceWorker: boolean;
 
   // configuration of the available locales - hard coded for now
-  locales: { lang: string; currency: string; value: string; displayName: string; displayLong: string }[];
+  locales: Locale[];
+
+  // configuration of the styling theme ('default' if not configured)
+  theme?: string;
 }

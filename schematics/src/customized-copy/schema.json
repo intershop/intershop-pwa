@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "CustomizedCopy",
+  "title": "Customized Copy Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      },
+      "visible": false
+    },
+    "from": {
+      "type": "string",
+      "description": "The folder of the component source.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What source folder has the component? (relative to src/app/)"
+    }
+  }
+}

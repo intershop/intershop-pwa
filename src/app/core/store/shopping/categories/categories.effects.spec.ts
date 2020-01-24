@@ -15,7 +15,7 @@ import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/ca
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
-import { SelectLocale, SetAvailableLocales } from 'ish-core/store/locale';
+import { SetAvailableLocales } from 'ish-core/store/locale';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { SelectProduct } from 'ish-core/store/shopping/products/products.actions';
@@ -244,14 +244,20 @@ describe('Categories Effects', () => {
       store$.dispatch(new SetAvailableLocales({ locales: [EN_US] }));
     });
 
-    it('should trigger when language is changed after first routing action', () => {
-      const action = new SelectLocale({ lang: EN_US.lang });
+    it('should load top level categories retrying for every routing action', () => {
       const completion = new fromActions.LoadTopLevelCategories({ depth });
-      store$.dispatch(action);
 
-      actions$ = hot('----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      actions$ = hot('        ----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      const expected$ = cold('----a---a--a', { a: completion });
 
-      const expected$ = cold('----a-------', { a: completion });
+      expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
+    });
+
+    it('should not load top level categories when already available', () => {
+      store$.dispatch(new fromActions.LoadTopLevelCategoriesSuccess({ categories: categoryTree() }));
+
+      actions$ = hot('        ----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      const expected$ = cold('------------');
 
       expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
     });

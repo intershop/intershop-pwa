@@ -1,5 +1,0 @@
-<ng-container *ngIf="generalError$ | async as generalError; else businessError">
-  <ish-server-error [error]="generalError"></ish-server-error>
-</ng-container>
-
-<ng-template #businessError> <ish-error></ish-error> </ng-template>

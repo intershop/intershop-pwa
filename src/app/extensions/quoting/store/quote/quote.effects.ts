@@ -18,7 +18,7 @@ import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 
 import * as actions from './quote.actions';
-import { getSelectedQuote, getSelectedQuoteId } from './quote.selectors';
+import { getSelectedQuoteId, getSelectedQuoteWithProducts } from './quote.selectors';
 
 @Injectable()
 export class QuoteEffects {
@@ -81,7 +81,7 @@ export class QuoteEffects {
   @Effect()
   createQuoteRequestFromQuote$ = this.actions$.pipe(
     ofType(actions.QuoteActionTypes.CreateQuoteRequestFromQuote),
-    withLatestFrom(this.store.pipe(select(getSelectedQuote))),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteWithProducts))),
     concatMap(([, currentQuoteRequest]) =>
       this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(quoteLineItemRequest => new actions.CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest })),
