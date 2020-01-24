@@ -72,6 +72,7 @@ describe('User Effects', () => {
           { path: 'login', component: DummyComponent },
           { path: 'home', component: DummyComponent },
           { path: 'account', component: DummyComponent },
+          { path: 'account/profile', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
         ]),
         ngrxTesting({ reducers: coreReducers }),
