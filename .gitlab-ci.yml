@@ -379,7 +379,7 @@ deploy_demo_b2b:
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
-      --env THEME=blue
+      --env THEME=blue|688dc3
       --env FEATURES=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       --env SENTRY_DSN=${SENTRY_DSN}
@@ -547,7 +547,7 @@ deploy_review_b2c:
       -e PWA_2_SUBDOMAIN=b2b
       -e PWA_2_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e PWA_2_FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
-      -e PWA_2_THEME=blue
+      -e PWA_2_THEME=blue|688dc3
       -e PWA_3_SUBDOMAIN=de
       -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_3_LANG=de_DE
@@ -556,7 +556,7 @@ deploy_review_b2c:
       -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site
       -e PWA_4_APPLICATION=smb-responsive
       -e PWA_4_FEATURES=quoting
-      -e PWA_4_THEME=blue
+      -e PWA_4_THEME=blue|688dc3
       ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG}
     - sleep 10
     - docker run --rm --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP mwendler/wget --wait 10 --tries 10 --retry-connrefused "http://$DEMO_SERVER_NAME:3000/${CI_COMMIT_REF_SLUG}-pwa-b2c"
@@ -614,7 +614,7 @@ deploy_review_b2b:
       -e LOGGING=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
-      -e THEME=blue
+      -e THEME=blue|688dc3
       -e ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       -e FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling,sentry
       --add-host $ICM_HOST:$ICM_IP

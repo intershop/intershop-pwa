@@ -77,5 +77,6 @@ export interface Environment {
   locales: Locale[];
 
   // configuration of the styling theme ('default' if not configured)
+  // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
   theme?: string;
 }
