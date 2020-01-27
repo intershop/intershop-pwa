@@ -379,6 +379,7 @@ deploy_demo_b2b:
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
+      --env THEME=blue
       --env FEATURES=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
       --env SENTRY_DSN=${SENTRY_DSN}
