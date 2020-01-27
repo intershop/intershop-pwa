@@ -1,4 +1,4 @@
-# export appropriate ICM_BASE_URL and use with 
+# export appropriate ICM_BASE_URL and use with
 # docker-compose -f templates/docker-compose.yml up --build
 
 version: "3"
@@ -13,8 +13,6 @@ services:
     depends_on:
       - pwa
     environment:
-      # uncomment to tunnel all traffic through nginx
-      # UPSTREAM_ICM: "$ICM_BASE_URL"
       UPSTREAM_PWA: "http://pwa:4200"
       PWA_1_SUBDOMAIN: "b2c"
       PWA_1_CHANNEL: "inSPIRED-inTRONICS-Site"

@@ -2,6 +2,32 @@ server {
     server_name ~^$SUBDOMAIN\..+$;
     include /etc/nginx/conf.d/listen.conf;
 
+    # let ICM handle everything ICM related
+    location ~* ^/INTERSHOP.*$ {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header X-Cache-Status IGNORE;
+
+        proxy_pass $UPSTREAM_PWA;
+    }
+
+    # respect cache entries of static assets
+    location ~* ^/(assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+        proxy_cache my_cache;
+        proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header X-Cache-Status $upstream_cache_status;
+
+        proxy_pass $UPSTREAM_PWA;
+    }
+
+    # cache and rewriting for rendered pages
     location / {
         proxy_cache my_cache;
         proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
@@ -24,15 +50,17 @@ server {
 
         rewrite ^/$ /home;
         if ($request_uri !~* ";lang=") {
-            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(?!.*\.webmanifest$)(.*)$ "$1;lang=$LANG";
+            rewrite ^(.*)$ "$1;lang=$LANG";
         }
-        if (-f /etc/nginx/conf.d/icm.conf) {
-            rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(?!.*\.webmanifest$)(.*)$ "$1;icmScheme=$scheme;icmHost=$http_host";
-        }
-        rewrite ^(?!/INTERSHOP.*$)(?!/assets.*$)(?!.*\.js$)(?!.*\.css$)(?!.*\.ico$)(?!.*\.json$)(?!.*\.txt$)(?!.*\.webmanifest$)(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME" break;
+        rewrite ^(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME" break;
 
         proxy_pass $UPSTREAM_PWA;
     }
 
-    $ICM_INCLUDE
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
 }
