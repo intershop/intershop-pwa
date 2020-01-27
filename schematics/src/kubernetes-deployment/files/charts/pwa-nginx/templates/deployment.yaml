@@ -24,8 +24,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: UPSTREAM_ICM
-            value: "{{ .Values.upstream.icm }}"
           - name: UPSTREAM_PWA
             value: "{{ .Values.upstream.pwa }}"
           - name: PWA_1_SUBDOMAIN

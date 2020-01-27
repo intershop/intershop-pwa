@@ -24,12 +24,6 @@ fi
 
 [ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
 
-if [ -n "$UPSTREAM_ICM" ]
-then
-  envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.conf.tmpl > /etc/nginx/conf.d/icm.conf
-  export ICM_INCLUDE="include /etc/nginx/conf.d/icm.conf;"
-fi
-
 i=1
 while true
 do
@@ -46,7 +40,7 @@ do
 
   echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
 
-  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME,$ICM_INCLUDE' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
+  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
 
   i=$((i+1))
 done

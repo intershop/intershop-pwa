@@ -65,7 +65,3 @@ docker run -d --name "my-awesome-nginx" \
 And then access the PWA with `http://b2b.<your-fully-qualified-machine-name>:4199`
 
 If your DNS is not set up correctly, you have to use something like _dnsmasq_ (Linux) or _Acrylic DNS Proxy_ (Windows), or just ask your local network administrator.
-
-## Extras
-
-To fully release the potential of this nginx, also set `UPSTREAM_ICM` in the form of `http(s)://<IP>:<PORT>` to tunnel all ICM traffic through this PageSpeed optimized nginx. This will automatically point the `ICM_BASE_URL` of the deployed PWA on a request basis to it. This however is still experimental.
