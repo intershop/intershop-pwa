@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,7 +20,6 @@ describe('Quote Edit Page Component', () => {
   let fixture: ComponentFixture<QuoteEditPageComponent>;
   let element: HTMLElement;
   let store$: Store<{}>;
-  let location: Location;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,10 +57,4 @@ describe('Quote Edit Page Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
-
-  it('should navigate to basket when addToBasket is clicked', fakeAsync(() => {
-    component.addQuoteToBasket(undefined);
-    tick(50);
-    expect(location.path()).toBe('/basket');
-  }));
 });

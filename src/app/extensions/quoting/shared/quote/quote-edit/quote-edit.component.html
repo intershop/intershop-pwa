@@ -211,7 +211,7 @@
 
       <!-- ELSE ( if type === Quote ) -->
       <ng-container *ngIf="quote.type === 'Quote'">
-        <ng-container *ngIf="quote.state === 'Responded' && isQuoteValid">
+        <ng-container *ngIf="quote.state === 'Responded' && isQuoteValid && showAddQuoteToCartButton">
           <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">
             {{ 'quote.edit.button.add_quote_to_cart.label' | translate }}
           </button>

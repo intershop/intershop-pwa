@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -16,6 +17,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { User } from 'ish-core/models/user/user.model';
 
+import { QuotingFacade } from '../../../facades/quoting.facade';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 
@@ -45,7 +47,7 @@ import { Quote } from '../../../models/quote/quote.model';
   templateUrl: './quote-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteEditComponent implements OnChanges {
+export class QuoteEditComponent implements OnChanges, OnInit {
   @Input() quote: Quote | QuoteRequest;
   @Input() user: User;
   @Input() error: HttpError;
@@ -68,15 +70,22 @@ export class QuoteEditComponent implements OnChanges {
   validToDate: number;
   saved = false;
   displaySavedMessage$: Observable<boolean>;
+  showAddQuoteToCartButton = true;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private quotingFacade: QuotingFacade) {
     this.form = new FormGroup({
       displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
     });
   }
 
+  ngOnInit() {
+    this.quotingFacade.resetQuoteError();
+  }
+
   ngOnChanges(c: SimpleChanges) {
+    this.setShowAddQuoteToCartButton(c);
+
     const quote = this.quote as Quote;
 
     this.sellerComment = quote.sellerComment;
@@ -88,6 +97,12 @@ export class QuoteEditComponent implements OnChanges {
     }
 
     this.toggleSaveMessage();
+  }
+
+  private setShowAddQuoteToCartButton(c: SimpleChanges) {
+    if (c.error && c.error.currentValue && !c.error.firstChange) {
+      this.showAddQuoteToCartButton = false;
+    }
   }
 
   private toggleSaveMessage() {

@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { User } from 'ish-core/models/user/user.model';
@@ -14,6 +14,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
 import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
+import { QuotingFacade } from '../../../facades/quoting.facade';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { QuoteStateComponent } from '../quote-state/quote-state.component';
@@ -24,8 +25,10 @@ describe('Quote Edit Component', () => {
   let fixture: ComponentFixture<QuoteEditComponent>;
   let component: QuoteEditComponent;
   let element: HTMLElement;
+  let quotingFacade: QuotingFacade;
 
   beforeEach(async(() => {
+    quotingFacade = mock(QuotingFacade);
     TestBed.configureTestingModule({
       declarations: [
         DatePipe,
@@ -39,6 +42,7 @@ describe('Quote Edit Component', () => {
         QuoteEditComponent,
       ],
       imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
   }));
 

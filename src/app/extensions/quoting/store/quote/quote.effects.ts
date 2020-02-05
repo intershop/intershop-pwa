@@ -188,4 +188,15 @@ export class QuoteEffects {
     ofType(actions.QuoteActionTypes.AddQuoteToBasketSuccess, actions.QuoteActionTypes.AddQuoteToBasketFail),
     mapTo(new UpdateBasket({ update: { calculated: true } }))
   );
+
+  /**
+   * Triggers a navigation to the basket if quote successfully added to the basket.
+   */
+  @Effect({ dispatch: false })
+  gotoBasketAfterAddQuoteToBasketSuccess$ = this.actions$.pipe(
+    ofType(actions.QuoteActionTypes.AddQuoteToBasketSuccess),
+    tap(() => {
+      this.router.navigate(['/basket']);
+    })
+  );
 }

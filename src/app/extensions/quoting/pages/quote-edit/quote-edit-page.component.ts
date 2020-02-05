@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -20,7 +19,7 @@ export class QuoteEditPageComponent implements OnInit {
   quoteError$: Observable<HttpError>;
   user$: Observable<User>;
 
-  constructor(private quotingFacade: QuotingFacade, private accountFacade: AccountFacade, private router: Router) {}
+  constructor(private quotingFacade: QuotingFacade, private accountFacade: AccountFacade) {}
 
   ngOnInit() {
     this.quote$ = this.quotingFacade.quote$;
@@ -39,6 +38,5 @@ export class QuoteEditPageComponent implements OnInit {
 
   addQuoteToBasket(quoteId: string) {
     this.quotingFacade.addQuoteToBasket(quoteId);
-    this.router.navigate(['/basket']);
   }
 }
