@@ -13,6 +13,7 @@ import {
   DeleteQuote,
   LoadQuotes,
   RejectQuote,
+  ResetQuoteError,
   getCurrentQuotes,
   getQuoteError,
   getQuoteLoading,
@@ -72,6 +73,10 @@ export class QuotingFacade {
 
   addQuoteToBasket(quoteId: string) {
     this.store.dispatch(new AddQuoteToBasket({ quoteId }));
+  }
+
+  resetQuoteError() {
+    this.store.dispatch(new ResetQuoteError());
   }
 
   // QUOTE REQUEST

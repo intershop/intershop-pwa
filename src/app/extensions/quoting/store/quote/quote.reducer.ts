@@ -75,6 +75,13 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
         loading: false,
       };
     }
+
+    case QuoteActionTypes.ResetQuoteError: {
+      return {
+        ...state,
+        error: undefined,
+      };
+    }
   }
 
   return state;
