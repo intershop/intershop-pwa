@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -11,6 +12,7 @@ describe('Error Message Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [ErrorMessageComponent],
     }).compileComponents();
   }));
