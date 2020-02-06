@@ -3,8 +3,10 @@
     {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures }}
   </ng-container>
   <ng-template #generalError>
-    <span *ngIf="!error.error">{{ error.status }}: {{ error.message }}</span
-    >{{ error.error }}
+    <ng-container *ngIf="!(error.headers && error.headers['error-key']) && !error.error">
+      {{ error.status }}: {{ error.message }}
+    </ng-container>
+    {{ (error.headers && error.headers['error-key'] | translate) || error.error }}
   </ng-template>
   <ng-content></ng-content>
 </div>
