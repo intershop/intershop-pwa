@@ -164,7 +164,7 @@
       *ngIf="quote.items"
       [lineItems]="quote.items"
       [editable]="quote.state === 'New'"
-      lineItemViewType="simple"
+      lineItemViewType="availability"
       [total]="quote.total"
       (updateItem)="onUpdateItem($event)"
       (deleteItem)="onDeleteItem($event)"

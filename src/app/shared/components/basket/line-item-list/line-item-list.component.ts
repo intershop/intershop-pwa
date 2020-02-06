@@ -33,7 +33,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   @Input() lineItems: LineItemView[];
   @Input() editable = true;
   @Input() total: Price;
-  @Input() lineItemViewType?: 'simple';
+  @Input() lineItemViewType?: 'simple' | 'availability';
 
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
   @Output() deleteItem = new EventEmitter<string>();
