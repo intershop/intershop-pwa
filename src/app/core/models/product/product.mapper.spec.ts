@@ -114,6 +114,26 @@ describe('Product Mapper', () => {
       expect(product.type).toEqual('RetailSet');
       expect(ProductHelper.isRetailSet(product)).toBeTrue();
     });
+
+    it('should return attributes or detailed product attributes when PRODUCT_DETAIL_ATTRIBUTES enabled', () => {
+      const p1: Product = productMapper.fromData({
+        sku: '1',
+        attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
+      } as ProductData);
+      const p2: Product = productMapper.fromData(({
+        sku: '1',
+        attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
+        attributeGroups: {
+          PRODUCT_DETAIL_ATTRIBUTES: {
+            attributes: [{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }],
+          },
+        },
+      } as unknown) as ProductData);
+      expect(p1).toBeTruthy();
+      expect(p1.attributes).toEqual([{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }]);
+      expect(p2).toBeTruthy();
+      expect(p2.attributes).toEqual([{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }]);
+    });
   });
 
   describe('fromStubData', () => {
