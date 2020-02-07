@@ -75,6 +75,7 @@
     "express": "^4.17.1",
     "express-robots-txt": "0.4.1",
     "lodash-es": "^4.17.15",
+    "morgan": "^1.9.1",
     "ng-recaptcha": "^5.0.0",
     "ng2-validation": "^4.2.0",
     "ngx-infinite-scroll": "^8.0.1",
