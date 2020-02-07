@@ -46,6 +46,14 @@ app.engine(
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
+if (logging) {
+  app.use(
+    require('morgan')('tiny', {
+      skip: req => req.originalUrl.startsWith('/INTERSHOP/static'),
+    })
+  );
+}
+
 // seo robots.txt
 const pathToRobotsTxt = join(DIST_FOLDER, 'robots.txt');
 if (fs.existsSync(pathToRobotsTxt)) {
