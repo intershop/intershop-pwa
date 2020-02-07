@@ -17,19 +17,24 @@
       "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
     },
     {
-      "name": "Warranty",
-      "type": "String",
-      "value": "1-year limited hardware warranty"
-    },
-    {
       "name": "Battery Life",
       "type": "String",
       "value": "Up to 17 hours of video playback"
     },
     {
+      "name": "Warranty",
+      "type": "String",
+      "value": "1-year limited hardware warranty"
+    },
+    {
       "name": "Memory",
       "type": "String",
       "value": "8GB RAM"
+    },
+    {
+      "name": "Hard_disk_drive_capacity",
+      "type": "String",
+      "value": "256GB"
     },
     {
       "name": "Dimensions",
@@ -237,7 +242,7 @@
       "name": "Hard drive size",
       "type": "VariationAttribute",
       "value": "256GB",
-      "variationAttributeId": "Attr_harddrivesize"
+      "variationAttributeId": "Hard_disk_drive_capacity"
     },
     {
       "name": "Display Size",
