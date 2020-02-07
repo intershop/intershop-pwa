@@ -37,11 +37,6 @@
       "value": "2/10 s"
     },
     {
-      "name": "Video formats supported",
-      "type": "String",
-      "value": "MPEG4"
-    },
-    {
       "name": "Depth",
       "type": "ResourceAttribute",
       "value": {
@@ -51,14 +46,19 @@
       }
     },
     {
-      "name": "Battery technology",
+      "name": "Video formats supported",
       "type": "String",
-      "value": "Lithium-Ion"
+      "value": "MPEG4"
     },
     {
       "name": "Minimum processor",
       "type": "String",
       "value": "CPU Intel Core Duo E440 2.0GHz"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion"
     },
     {
       "name": "Light exposure control",
@@ -95,19 +95,14 @@
       }
     },
     {
-      "name": "Flash",
-      "type": "String",
-      "value": "LED on/off"
-    },
-    {
       "name": "Digital zoom",
       "type": "String",
       "value": "12 x"
     },
     {
-      "name": "Battery life (max)",
+      "name": "Flash",
       "type": "String",
-      "value": "0.6 h"
+      "value": "LED on/off"
     },
     {
       "name": "Width",
@@ -117,6 +112,11 @@
         "unit": "mm",
         "value": 33
       }
+    },
+    {
+      "name": "Battery life (max)",
+      "type": "String",
+      "value": "0.6 h"
     },
     {
       "name": "Normal focusing range",
@@ -193,24 +193,14 @@
       "value": "9 point AF, Spot AF, 22-step"
     },
     {
-      "name": "Total megapixels",
-      "type": "String",
-      "value": "14 MP"
-    },
-    {
       "name": "Interface",
       "type": "String",
       "value": "HDMI, mini USB 2.0, TV out"
     },
     {
-      "name": "Image stabilizer",
+      "name": "Total megapixels",
       "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Compatible operating systems",
-      "type": "String",
-      "value": "Windows XP SP3, Vista, 7"
+      "value": "14 MP"
     },
     {
       "name": "Display",
@@ -223,9 +213,19 @@
       "value": "Flash memory"
     },
     {
+      "name": "Image stabilizer",
+      "type": "String",
+      "value": "Y"
+    },
+    {
       "name": "Colour_of_product",
       "type": "String",
       "value": "Black"
+    },
+    {
+      "name": "Compatible operating systems",
+      "type": "String",
+      "value": "Windows XP SP3, Vista, 7"
     }
   ],
   "availability": true,

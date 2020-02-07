@@ -47,11 +47,6 @@
       "value": "3840 x 2160 pixels"
     },
     {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
-    },
-    {
       "name": "Video formats supported",
       "type": "String",
       "value": "H.264|MP4"
@@ -64,6 +59,11 @@
         "unit": "g",
         "value": 83
       }
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
     },
     {
       "name": "Supported video modes",

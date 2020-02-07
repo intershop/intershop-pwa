@@ -10,7 +10,7 @@
           "name": "Hard drive size",
           "type": "VariationAttribute",
           "value": "256GB",
-          "variationAttributeId": "Attr_harddrivesize"
+          "variationAttributeId": "Hard_disk_drive_capacity"
         },
         {
           "name": "Display Size",
@@ -30,7 +30,7 @@
           "name": "Hard drive size",
           "type": "VariationAttribute",
           "value": "512GB",
-          "variationAttributeId": "Attr_harddrivesize"
+          "variationAttributeId": "Hard_disk_drive_capacity"
         },
         {
           "name": "Display Size",
@@ -50,7 +50,7 @@
           "name": "Hard drive size",
           "type": "VariationAttribute",
           "value": "1TB",
-          "variationAttributeId": "Attr_harddrivesize"
+          "variationAttributeId": "Hard_disk_drive_capacity"
         },
         {
           "name": "Display Size",
@@ -77,7 +77,7 @@
           "name": "Hard drive size",
           "type": "VariationAttribute",
           "value": "256GB",
-          "variationAttributeId": "Attr_harddrivesize"
+          "variationAttributeId": "Hard_disk_drive_capacity"
         },
         {
           "name": "Display Size",
@@ -97,7 +97,7 @@
           "name": "Hard drive size",
           "type": "VariationAttribute",
           "value": "512GB",
-          "variationAttributeId": "Attr_harddrivesize"
+          "variationAttributeId": "Hard_disk_drive_capacity"
         },
         {
           "name": "Display Size",
@@ -117,7 +117,7 @@
           "name": "Hard drive size",
           "type": "VariationAttribute",
           "value": "1TB",
-          "variationAttributeId": "Attr_harddrivesize"
+          "variationAttributeId": "Hard_disk_drive_capacity"
         },
         {
           "name": "Display Size",

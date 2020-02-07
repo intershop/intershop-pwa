@@ -17,11 +17,6 @@
       "value": "8GB RAM"
     },
     {
-      "name": "Battery",
-      "type": "String",
-      "value": "Up to 14.5 hours video playback"
-    },
-    {
       "name": "Ports",
       "type": "String",
       "value": "USB 3.0, 3.5mm Headset jack, mini DisplayPort, Surface Connect"
@@ -30,6 +25,21 @@
       "name": "Dimensions",
       "type": "String",
       "value": "308.02*223.20*14.47 mm"
+    },
+    {
+      "name": "Weight",
+      "type": "String",
+      "value": "1.25 kg"
+    },
+    {
+      "name": "Battery",
+      "type": "String",
+      "value": "Up to 14.5 hours video playback"
+    },
+    {
+      "name": "Hard_disk_drive_capacity",
+      "type": "String",
+      "value": "256GB"
     },
     {
       "name": "Software",
@@ -45,11 +55,6 @@
       "name": "Camera",
       "type": "String",
       "value": "720p HD camera (front-facing)"
-    },
-    {
-      "name": "Weight",
-      "type": "String",
-      "value": "1.25 kg"
     },
     {
       "name": "Display",
@@ -223,16 +228,16 @@
   "type": "Product",
   "variableVariationAttributes": [
     {
-      "name": "Hard drive size",
-      "type": "VariationAttribute",
-      "value": "256GB",
-      "variationAttributeId": "Attr_harddrivesize"
-    },
-    {
       "name": "Color",
       "type": "VariationAttribute",
       "value": "Platinum",
       "variationAttributeId": "Colour_of_product"
+    },
+    {
+      "name": "Hard drive size",
+      "type": "VariationAttribute",
+      "value": "256GB",
+      "variationAttributeId": "Hard_disk_drive_capacity"
     }
   ]
 }

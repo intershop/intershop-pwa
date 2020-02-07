@@ -2,14 +2,14 @@
   "attributeGroups": {},
   "attributes": [
     {
-      "name": "Input voltage",
-      "type": "String",
-      "value": "220-240 V"
-    },
-    {
       "name": "Lifetime",
       "type": "String",
       "value": "25000 hours"
+    },
+    {
+      "name": "Input voltage",
+      "type": "String",
+      "value": "220-240 V"
     },
     {
       "name": "Fitting",
@@ -27,14 +27,14 @@
       "value": "9 W"
     },
     {
-      "name": "Color temperature",
-      "type": "String",
-      "value": "2700K"
-    },
-    {
       "name": "Diameter",
       "type": "String",
       "value": "62mm"
+    },
+    {
+      "name": "Color temperature",
+      "type": "String",
+      "value": "2700K"
     }
   ],
   "availability": true,
