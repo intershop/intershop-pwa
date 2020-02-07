@@ -25,7 +25,7 @@ describe('Variation Handling B2C', () => {
     });
 
     it('changing the variation should redirect to other variation', () => {
-      at(ProductDetailPage, page => page.changeVariationWithSelect('Attr_harddrivesize', '256GB'));
+      at(ProductDetailPage, page => page.changeVariationWithSelect('Hard_disk_drive_capacity', '256GB'));
       at(ProductDetailPage, page => page.sku.should('have.text', _.otherVariationSKU));
     });
 
