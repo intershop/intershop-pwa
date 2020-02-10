@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { mergeMap } from 'rxjs/operators';
 
 import {
-  createAppNotFoundRoutingModule,
+  createAppLastRoutingModule,
   createApplication,
   createModule,
   createSchematicRunner,
@@ -23,7 +23,7 @@ describe('Store Schematic', () => {
       .pipe(
         createModule(schematicRunner, { name: 'shared' }),
         createModule(schematicRunner, { name: 'shell' }),
-        createAppNotFoundRoutingModule(schematicRunner),
+        createAppLastRoutingModule(schematicRunner),
         mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree))
       )
       .toPromise();

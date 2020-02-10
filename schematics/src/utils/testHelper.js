@@ -29,12 +29,12 @@ function createModule(schematicRunner, options) {
     return (source$) => source$.pipe(operators_1.switchMap(tree => schematicRunner.runSchematicAsync('module', Object.assign({}, options, { project: 'bar' }), tree)));
 }
 exports.createModule = createModule;
-function createAppNotFoundRoutingModule(schematicRunner) {
+function createAppLastRoutingModule(schematicRunner) {
     return (source$) => source$.pipe(operators_1.switchMap(tree => schematicRunner.runExternalSchematicAsync('@schematics/angular', 'module', {
-        name: 'pages/app-not-found-routing',
+        name: 'pages/app-last-routing',
         flat: true,
         module: 'app.module',
         project: 'bar',
     }, tree)));
 }
-exports.createAppNotFoundRoutingModule = createAppNotFoundRoutingModule;
+exports.createAppLastRoutingModule = createAppLastRoutingModule;

@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { noop } from 'rxjs';
 
 import {
-  createAppNotFoundRoutingModule,
+  createAppLastRoutingModule,
   createApplication,
   createModule,
   createSchematicRunner,
@@ -23,7 +23,7 @@ describe('Extension Schematic', () => {
       .pipe(
         createModule(schematicRunner, { name: 'shared' }),
         createModule(schematicRunner, { name: 'shell' }),
-        createAppNotFoundRoutingModule(schematicRunner)
+        createAppLastRoutingModule(schematicRunner)
       )
       .toPromise();
   });
@@ -55,7 +55,7 @@ describe('Extension Schematic', () => {
 
       import { AppRoutingModule } from './app-routing.module';
       import { AppComponent } from './app.component';
-      import { AppNotFoundRoutingModule } from './pages/app-not-found-routing.module';
+      import { AppLastRoutingModule } from './pages/app-last-routing.module';
       import { FooRoutingModule } from './extensions/foo/pages/foo-routing.module';
 
       @NgModule({
@@ -65,7 +65,7 @@ describe('Extension Schematic', () => {
         imports: [
           BrowserModule,
           AppRoutingModule,
-          FooRoutingModule, AppNotFoundRoutingModule
+          FooRoutingModule, AppLastRoutingModule
         ],
         providers: [],
         bootstrap: [AppComponent]
@@ -115,7 +115,7 @@ describe('Extension Schematic', () => {
     `);
   });
 
-  it('should throw if app module does not contain AppNotFoundRoutingModule', done => {
+  it('should throw if app module does not contain AppLastRoutingModule', done => {
     appTree.overwrite(
       '/projects/bar/src/app/app.module.ts',
       `import { BrowserModule } from '@angular/platform-browser';
@@ -143,7 +143,7 @@ export class AppModule { }
 
     schematicRunner.runSchematicAsync('extension', options, appTree).subscribe(noop, err => {
       expect(err).toMatchInlineSnapshot(
-        `[Error: did not find 'AppNotFoundRoutingModule' in /projects/bar/src/app/app.module.ts]`
+        `[Error: did not find 'AppLastRoutingModule' in /projects/bar/src/app/app.module.ts]`
       );
       done();
     });
