@@ -58,11 +58,13 @@ var Rule = (function (_super) {
                     if (description.indexOf('${') >= 0) {
                         description = descriptionToken.parent.getText();
                     }
-                    if (DESCRIPTION_VIEWPOINT_ERROR_REGEX.test(description)) {
-                        ctx.addFailureAtNode(descriptionToken, "describe what the component is doing, not what the test is doing (found \"" + description + "\")");
-                    }
-                    else if (!DESCRIPTION_REGEX.test(description)) {
-                        ctx.addFailureAtNode(descriptionToken, "\"" + description + "\" does not match " + DESCRIPTION_REGEX);
+                    if (description !== 'each') {
+                        if (DESCRIPTION_VIEWPOINT_ERROR_REGEX.test(description)) {
+                            ctx.addFailureAtNode(descriptionToken, "describe what the component is doing, not what the test is doing (found \"" + description + "\")");
+                        }
+                        else if (!DESCRIPTION_REGEX.test(description)) {
+                            ctx.addFailureAtNode(descriptionToken, "\"" + description + "\" does not match " + DESCRIPTION_REGEX);
+                        }
                     }
                 }
                 else {
