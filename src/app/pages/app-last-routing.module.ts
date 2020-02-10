@@ -6,4 +6,4 @@ const routes: Routes = [{ path: '**', redirectTo: '/error' }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
 })
-export class AppNotFoundRoutingModule {}
+export class AppLastRoutingModule {}
