@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MetaGuard } from '@ngx-meta/core';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
@@ -12,7 +11,6 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
-    canActivate: [MetaGuard],
     data: {
       meta: {
         title: 'seo.title.home',
@@ -23,7 +21,6 @@ const routes: Routes = [
   {
     path: 'error',
     loadChildren: () => import('./error/error-page.module').then(m => m.ErrorPageModule),
-    canActivate: [MetaGuard],
     data: {
       meta: {
         title: 'seo.title.error',
@@ -34,17 +31,15 @@ const routes: Routes = [
   {
     path: 'product',
     loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule),
-    canActivate: [MetaGuard],
   },
   {
     path: 'category',
     loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
-    canActivate: [MetaGuard],
   },
   {
     path: 'account',
     loadChildren: () => import('./account/account-page.module').then(m => m.AccountPageModule),
-    canActivate: [MetaGuard, AuthGuard],
+    canActivate: [AuthGuard],
     data: {
       meta: {
         title: 'account.my_account.heading',
@@ -55,7 +50,7 @@ const routes: Routes = [
   {
     path: 'compare',
     loadChildren: () => import('./compare/compare-page.module').then(m => m.ComparePageModule),
-    canActivate: [MetaGuard, FeatureToggleGuard],
+    canActivate: [FeatureToggleGuard],
     data: {
       feature: 'compare',
       meta: {
@@ -67,7 +62,7 @@ const routes: Routes = [
   {
     path: 'recently',
     loadChildren: () => import('./recently/recently-page.module').then(m => m.RecentlyPageModule),
-    canActivate: [MetaGuard, FeatureToggleGuard],
+    canActivate: [FeatureToggleGuard],
     data: {
       feature: 'recently',
       meta: {
@@ -79,12 +74,10 @@ const routes: Routes = [
   {
     path: 'search',
     loadChildren: () => import('./search/search-page.module').then(m => m.SearchPageModule),
-    canActivate: [MetaGuard],
   },
   {
     path: 'basket',
     loadChildren: () => import('./basket/basket-page.module').then(m => m.BasketPageModule),
-    canActivate: [MetaGuard],
     data: {
       meta: {
         title: 'shopping_cart.heading',
@@ -95,7 +88,6 @@ const routes: Routes = [
   {
     path: 'checkout',
     loadChildren: () => import('./checkout/checkout-page.module').then(m => m.CheckoutPageModule),
-    canActivate: [MetaGuard],
     data: {
       headerType: 'checkout',
       meta: {
@@ -107,12 +99,10 @@ const routes: Routes = [
   {
     path: 'page',
     loadChildren: () => import('./content/content-page.module').then(m => m.ContentPageModule),
-    canActivate: [MetaGuard],
   },
   {
     path: 'register',
     loadChildren: () => import('./registration/registration-page.module').then(m => m.RegistrationPageModule),
-    canActivate: [MetaGuard],
     data: {
       meta: {
         title: 'account.register.link',
@@ -123,7 +113,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login-page.module').then(m => m.LoginPageModule),
-    canActivate: [LoginGuard, MetaGuard],
+    canActivate: [LoginGuard],
     data: {
       meta: {
         title: 'account.login.link',
@@ -134,7 +124,7 @@ const routes: Routes = [
   {
     path: 'logout',
     loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
-    canActivate: [MetaGuard, LogoutGuard],
+    canActivate: [LogoutGuard],
     data: {
       meta: {
         title: 'account.logout.link',
@@ -145,7 +135,6 @@ const routes: Routes = [
   {
     path: 'forgotPassword',
     loadChildren: () => import('./forgot-password/forgot-password-page.module').then(m => m.ForgotPasswordPageModule),
-    canActivate: [MetaGuard],
     data: {
       meta: {
         title: 'account.forgotdata.password_retrieval.heading',
@@ -156,7 +145,6 @@ const routes: Routes = [
   {
     path: 'contact',
     loadChildren: () => import('./contact/contact-page.module').then(m => m.ContactPageModule),
-    canActivate: [MetaGuard],
     data: {
       meta: {
         title: 'helpdesk.contact_us.heading',

@@ -421,6 +421,12 @@
           "from": "ish-core/pipes.module",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Performance: Use MockPipe or declare it individually in tests instead."
+        },
+        {
+          "import": ".*",
+          "from": "@ngx-meta.*",
+          "filePattern": "^(?!.*/extensions/seo/.*$).*$",
+          "message": "Imports from @ngx-meta are only allowed in SEO extension."
         }
       ]
     },
