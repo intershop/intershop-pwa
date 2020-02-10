@@ -32,14 +32,9 @@ function addRouteToArray(
     options.child ? '..' : '.'
   }/${dasherizedName}/${dasherizedName}-page.module').then(m => m.${strings.classify(dasherizedName)}PageModule)`;
   const path = options.child ? options.child : dasherizedName;
-  const canActivate =
-    options.routingModule === '/src/app/pages/app-routing.module.ts' ? 'canActivate: [MetaGuard],' : '';
 
   const recorder = host.beginUpdate(options.routingModule);
-  recorder.insertRight(
-    position,
-    `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren}, ${canActivate} }`
-  );
+  recorder.insertRight(position, `${insertComma ? ', ' : ''}{ path: '${path}', loadChildren: ${loadChildren} }`);
   host.commitUpdate(recorder);
 }
 
