@@ -46,7 +46,7 @@ describe('Error Reducer', () => {
       },
       {
         state: { current: {}, type: ErrorActionTypes.TimeoutError },
-        action: new RouteNavigation({ path: 'error', params: {}, queryParams: {} }),
+        action: new RouteNavigation({ path: 'error' }),
         expected: { current: {}, type: ErrorActionTypes.TimeoutError },
       },
     ];

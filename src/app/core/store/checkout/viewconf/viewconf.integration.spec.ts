@@ -30,7 +30,7 @@ describe('Viewconf Integration', () => {
 
     expect(getCheckoutStep(store$.state)).toBe(2);
 
-    store$.dispatch(new RouteNavigation({ path: 'checkout', data: {} }));
+    store$.dispatch(new RouteNavigation({ path: 'checkout' }));
 
     expect(getCheckoutStep(store$.state)).toBeUndefined();
   });

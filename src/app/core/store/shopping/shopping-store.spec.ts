@@ -234,6 +234,7 @@ describe('Shopping Store', () => {
           params: {}
           queryParams: {}
           data: {}
+          url: "/home"
           path: "home"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -269,6 +270,7 @@ describe('Shopping Store', () => {
             params: {"categoryUniqueId":"A.123"}
             queryParams: {}
             data: {}
+            url: "/category/A.123"
             path: "category/:categoryUniqueId"
           [Shopping] Select Category:
             categoryId: "A.123"
@@ -321,6 +323,7 @@ describe('Shopping Store', () => {
             params: {"searchTerm":"something"}
             queryParams: {}
             data: {}
+            url: "/search/something"
             path: "search/:searchTerm"
           [Shopping] Set Search Term:
             searchTerm: "something"
@@ -364,6 +367,7 @@ describe('Shopping Store', () => {
               params: {"sku":"P2"}
               queryParams: {}
               data: {}
+              url: "/product/P2"
               path: "product/:sku"
             [Shopping] Select Product:
               sku: "P2"
@@ -398,6 +402,7 @@ describe('Shopping Store', () => {
           params: {"categoryUniqueId":"A.123"}
           queryParams: {}
           data: {}
+          url: "/category/A.123"
           path: "category/:categoryUniqueId"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -441,6 +446,7 @@ describe('Shopping Store', () => {
             params: {}
             queryParams: {}
             data: {}
+            url: "/compare"
             path: "compare"
           [Shopping] Deselect Category
         `);
@@ -471,6 +477,7 @@ describe('Shopping Store', () => {
           params: {"categoryUniqueId":"A.123.456"}
           queryParams: {}
           data: {}
+          url: "/category/A.123.456"
           path: "category/:categoryUniqueId"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -546,6 +553,7 @@ describe('Shopping Store', () => {
             params: {"categoryUniqueId":"A.123.456","sku":"P1"}
             queryParams: {}
             data: {}
+            url: "/category/A.123.456/product/P1"
             path: "category/:categoryUniqueId/product/:sku"
           [Shopping] Select Product:
             sku: "P1"
@@ -576,6 +584,7 @@ describe('Shopping Store', () => {
               params: {"categoryUniqueId":"A.123.456"}
               queryParams: {}
               data: {}
+              url: "/category/A.123.456"
               path: "category/:categoryUniqueId"
             [ProductListing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
@@ -599,6 +608,7 @@ describe('Shopping Store', () => {
             params: {"searchTerm":"something"}
             queryParams: {}
             data: {}
+            url: "/search/something"
             path: "search/:searchTerm"
           [Shopping] Deselect Category
           [Shopping] Set Search Term:
@@ -643,6 +653,7 @@ describe('Shopping Store', () => {
               params: {"categoryUniqueId":"A.123.456"}
               queryParams: {}
               data: {}
+              url: "/category/A.123.456"
               path: "category/:categoryUniqueId"
             [Shopping] Select Category:
               categoryId: "A.123.456"
@@ -683,6 +694,7 @@ describe('Shopping Store', () => {
             params: {}
             queryParams: {}
             data: {}
+            url: "/compare"
             path: "compare"
           [Shopping] Deselect Category
         `);
@@ -713,6 +725,7 @@ describe('Shopping Store', () => {
           params: {"categoryUniqueId":"A.123.456","sku":"P1"}
           queryParams: {}
           data: {}
+          url: "/category/A.123.456/product/P1"
           path: "category/:categoryUniqueId/product/:sku"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -773,6 +786,7 @@ describe('Shopping Store', () => {
             params: {"categoryUniqueId":"A.123.456"}
             queryParams: {}
             data: {}
+            url: "/category/A.123.456"
             path: "category/:categoryUniqueId"
           [ProductListing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
@@ -829,6 +843,7 @@ describe('Shopping Store', () => {
             params: {}
             queryParams: {}
             data: {}
+            url: "/compare"
             path: "compare"
           [Shopping] Deselect Category
           [Shopping] Select Product:
@@ -861,6 +876,7 @@ describe('Shopping Store', () => {
           params: {"sku":"P1"}
           queryParams: {}
           data: {}
+          url: "/product/P1"
           path: "product/:sku"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -901,6 +917,7 @@ describe('Shopping Store', () => {
             params: {}
             queryParams: {}
             data: {}
+            url: "/compare"
             path: "compare"
           [Shopping] Select Product:
             sku: undefined
@@ -932,6 +949,7 @@ describe('Shopping Store', () => {
           params: {"categoryUniqueId":"A.123.456","sku":"P3"}
           queryParams: {}
           data: {}
+          url: "/category/A.123.456/product/P3"
           path: "category/:categoryUniqueId/product/:sku"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -968,6 +986,7 @@ describe('Shopping Store', () => {
           params: {}
           queryParams: {}
           data: {}
+          url: "/error"
           path: "error"
         [Shopping] Deselect Category
         [Shopping] Select Product:
@@ -1003,6 +1022,7 @@ describe('Shopping Store', () => {
           params: {"categoryUniqueId":"A.123.XXX"}
           queryParams: {}
           data: {}
+          url: "/category/A.123.XXX"
           path: "category/:categoryUniqueId"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
@@ -1022,6 +1042,7 @@ describe('Shopping Store', () => {
           params: {}
           queryParams: {}
           data: {}
+          url: "/error"
           path: "error"
         [Shopping] Deselect Category
       `);
@@ -1049,6 +1070,7 @@ describe('Shopping Store', () => {
           params: {"searchTerm":"something"}
           queryParams: {}
           data: {}
+          url: "/search/something"
           path: "search/:searchTerm"
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"

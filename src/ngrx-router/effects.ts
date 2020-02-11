@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivationStart, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, Router } from '@angular/router';
 import { Effect } from '@ngrx/effects';
 import { debounce, filter, map } from 'rxjs/operators';
 
@@ -17,17 +17,27 @@ export class RouterEffects {
     filter(event => event instanceof ActivationStart),
     debounce(() => this.navEnd$),
     map((event: any) => {
-      let route = event.snapshot;
+      let route = event.snapshot as ActivatedRouteSnapshot;
       const path: any[] = [];
+      const url: string[] = [];
       const { params, queryParams, data } = route;
 
       while (route.parent) {
         if (route.routeConfig && route.routeConfig.path) {
           path.push(route.routeConfig.path);
+          route.url.reverse().forEach(l => {
+            url.push(l.path);
+          });
         }
         route = route.parent;
       }
-      const routerState = { params, queryParams, data, path: path.reverse().join('/') };
+      const routerState = {
+        params: params || {},
+        queryParams: queryParams || {},
+        data: data || {},
+        url: '/' + url.reverse().join('/'),
+        path: path.reverse().join('/'),
+      };
       return new RouteNavigation(routerState);
     })
   );

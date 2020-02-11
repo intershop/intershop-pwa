@@ -290,7 +290,6 @@ describe('Orders Effects', () => {
       const action = new RouteNavigation({
         path: 'account/orders/:orderId',
         params: { orderId },
-        queryParams: {},
       });
       const expected = new orderActions.SelectOrder({ orderId });
 
@@ -299,7 +298,7 @@ describe('Orders Effects', () => {
     });
 
     it('should not fire SelectOrder when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingOrder$).toBeObservable(cold('-'));

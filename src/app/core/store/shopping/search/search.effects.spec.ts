@@ -93,7 +93,6 @@ describe('Search Effects', () => {
         const action = new RouteNavigation({
           path: 'search/:searchTerm',
           params: { searchTerm: 'dummy' },
-          queryParams: [],
         });
         actions$ = hot('a-a-|', { a: action });
 
