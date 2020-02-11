@@ -307,7 +307,6 @@ describe('Products Effects', () => {
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId/product/:sku',
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectProduct({ sku: 'foobar' });
 
@@ -319,7 +318,6 @@ describe('Products Effects', () => {
       const action = new RouteNavigation({
         path: 'product/:sku',
         params: { sku: 'foobar' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectProduct({ sku: 'foobar' });
 
@@ -328,7 +326,7 @@ describe('Products Effects', () => {
     });
 
     it('should not fire SelectProduct when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('-'));

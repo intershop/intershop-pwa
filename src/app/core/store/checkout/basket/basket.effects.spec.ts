@@ -423,11 +423,7 @@ describe('Basket Effects', () => {
 
   describe('routeListenerForResettingBasketErrors$', () => {
     it('should fire ResetBasketErrors when route basket or checkout/* is navigated', () => {
-      const action = new RouteNavigation({
-        path: 'checkout/payment',
-        params: {},
-        queryParams: {},
-      });
+      const action = new RouteNavigation({ path: 'checkout/payment' });
       const expected = new basketActions.ResetBasketErrors();
 
       actions$ = hot('a', { a: action });
@@ -435,14 +431,14 @@ describe('Basket Effects', () => {
     });
 
     it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', () => {
-      const action = new RouteNavigation({ path: 'checkout/payment', params: {}, queryParams: { error: true } });
+      const action = new RouteNavigation({ path: 'checkout/payment', queryParams: { error: true } });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('-'));
     });
 
     it('should not fire ResetBasketErrors when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('-'));

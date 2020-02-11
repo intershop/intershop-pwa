@@ -79,7 +79,6 @@ describe('Categories Effects', () => {
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId',
         params: { categoryUniqueId: 'dummy' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectCategory({ categoryId: 'dummy' });
 
@@ -91,7 +90,6 @@ describe('Categories Effects', () => {
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId/product/:sku',
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectCategory({ categoryId: 'dummy' });
 
@@ -100,11 +98,7 @@ describe('Categories Effects', () => {
     });
 
     it('should not trigger SelectCategory when /something is visited', () => {
-      const action = new RouteNavigation({
-        path: 'something',
-        params: {},
-        queryParams: {},
-      });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-'));
@@ -114,7 +108,6 @@ describe('Categories Effects', () => {
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId',
         params: { categoryUniqueId: 'dummy' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectCategory({ categoryId: 'dummy' });
 
@@ -342,7 +335,6 @@ describe('Categories Effects', () => {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
-            queryParams: {},
           }),
         });
 
@@ -359,7 +351,6 @@ describe('Categories Effects', () => {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId/product/:sku',
             params: { categoryUniqueId: category.uniqueId, sku: 'dummy' },
-            queryParams: {},
           }),
           b: new fromActions.SelectedCategoryAvailable({ categoryId: category.uniqueId }),
         });

@@ -1012,7 +1012,6 @@ describe('Quote Request Effects', () => {
       const action = new RouteNavigation({
         path: 'quote-request/:quoteRequestId',
         params: { quoteRequestId: 'QRID' },
-        queryParams: {},
       });
       const expected = new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' });
 
@@ -1021,7 +1020,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should not fire SelectQuoteRequest when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingQuote$).toBeObservable(cold('-'));

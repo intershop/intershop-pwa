@@ -218,7 +218,7 @@ describe('User Effects', () => {
 
       store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
 
-      actions$ = of(new RouteNavigation({ path: 'login', queryParams: {} }));
+      actions$ = of(new RouteNavigation({ path: 'login' }));
 
       effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
@@ -234,7 +234,7 @@ describe('User Effects', () => {
 
       store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
 
-      actions$ = of(new RouteNavigation({ path: 'home', queryParams: {} }));
+      actions$ = of(new RouteNavigation({ path: 'home' }));
 
       effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
@@ -493,7 +493,7 @@ describe('User Effects', () => {
 
   describe('resetUserError$', () => {
     it('should not dispatch UserErrorReset action on router navigation if error is not set', () => {
-      actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
+      actions$ = hot('a', { a: new RouteNavigation({ path: 'any' }) });
 
       expect(effects.resetUserError$).toBeObservable(cold('-'));
     });
@@ -501,7 +501,7 @@ describe('User Effects', () => {
     it('should dispatch UserErrorReset action on router navigation if error was set', () => {
       store$.dispatch(new ua.LoginUserFail({ error: { message: 'error' } as HttpError }));
 
-      actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
+      actions$ = hot('a', { a: new RouteNavigation({ path: 'any' }) });
 
       expect(effects.resetUserError$).toBeObservable(cold('a', { a: new ua.UserErrorReset() }));
     });
