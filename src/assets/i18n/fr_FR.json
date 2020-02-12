@@ -2489,7 +2489,7 @@
   "quote.edit.products_not_available.text": "Impossible d’ajouter les produits suivants au devis actuel car ils sont devenus obsolètes ou ne sont plus disponibles :",
   "quote.edit.submitted.heading": "Nous vous remercions pour votre demande de devis",
   "quote.edit.submitted.your_quote_number.text": "Votre numéro de devis est :",
-  "quote.edit.submitted.your_quote_request.text": "Votre demande de devis a été soumise.<br/>Vous pouvez consulter l’état de vos <a href=\"{{0}}\">devis</a> dans la section <a href=\"{{1}}\">Mon compte</a>.",
+  "quote.edit.submitted.your_quote_request.text": "Votre demande de devis a été soumise.<br/>Vous pouvez consulter l’état de vos <a callback=\"callbackHideDialogModal\" href=\"{{0}}\">devis</a> dans la section <a callback=\"callbackHideDialogModal\" href=\"{{1}}\">Mon compte</a>.",
   "quote.edit.submitted.we_will_email.text": "Nous vous enverrons un courriel à {{0}} pour vous tenir au courant de l’état de votre devis.",
   "quote.edit.unsubmitted.quote_request_details.text": "Détails de la demande de devis",
   "quote.edit.responded.quote_details.text": "Détails du devis",

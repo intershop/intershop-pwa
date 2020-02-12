@@ -44,15 +44,16 @@ describe('Quote Handling as Anonymous User', () => {
 
     it('user should be able to submit quote request', () => {
       at(ProductDetailPage, page => page.addProductToQuoteRequest());
-      at(QuoteRequestDialog, dialog => dialog.submitQuoteRequest());
-      at(QuoteDetailPage, page => {
-        page.productId.eq(0).should('contain', _.product.sku);
-        page.quoteState.should('have.text', 'Submitted');
+      at(QuoteRequestDialog, dialog => {
+        dialog.submitQuoteRequest();
+        dialog.productId.eq(0).should('contain', _.product.sku);
+        dialog.quoteState.should('have.text', 'Submitted');
+        dialog.hide();
       });
     });
 
     it('user should log out', () => {
-      at(QuoteDetailPage, page => page.header.logout());
+      at(ProductDetailPage, page => page.header.logout());
       at(HomePage);
     });
   });

@@ -114,8 +114,8 @@ export class QuotingFacade {
     this.store.dispatch(new UpdateSubmitQuoteRequest(payload));
   }
 
-  copyQuoteRequest() {
-    this.store.dispatch(new CreateQuoteRequestFromQuoteRequest());
+  copyQuoteRequest(preventRedirect?: boolean) {
+    this.store.dispatch(new CreateQuoteRequestFromQuoteRequest({ redirect: !preventRedirect }));
   }
 
   updateQuoteRequestItem(update: LineItemUpdate) {
