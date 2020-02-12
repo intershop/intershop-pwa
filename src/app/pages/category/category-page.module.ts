@@ -13,13 +13,11 @@ import { CategoryTileComponent } from './category-tile/category-tile.component';
 
 const categoryPageRoutes: Routes = [
   {
-    path: ':categoryUniqueId',
+    // compatibility to old routes
+    path: 'category/:categoryUniqueId',
     component: CategoryPageComponent,
   },
-  {
-    path: ':categoryUniqueId/product',
-    loadChildren: () => import('../product/product-page.module').then(m => m.ProductPageModule),
-  },
+  { path: '**', component: CategoryPageComponent },
 ];
 
 @NgModule({
