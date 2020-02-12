@@ -17,6 +17,7 @@ import {
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { ofCategoryRoute } from 'ish-core/routing/category/category.route';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -135,8 +136,9 @@ export class CategoriesEffects {
 
   @Effect()
   productOrCategoryChanged$ = this.actions$.pipe(
-    ofRoute('category/:categoryUniqueId'),
-    mapToParam<string>('categoryUniqueId'),
+    ofCategoryRoute(),
+    mapToParam('sku'),
+    whenFalsy(),
     switchMap(() => this.store.pipe(select(selectors.getSelectedCategory))),
     whenTruthy(),
     filter(cat => cat.hasOnlineProducts),

@@ -207,7 +207,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/Spezielles/Angebote/Black-Friday/skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/Black-Friday/skuA-catSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -226,7 +226,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product, category)).toMatchInlineSnapshot(
-            `"/Spezielles/Angebote/Black-Friday/Das-neue-Surface-Pro-7-skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/Black-Friday/Das-neue-Surface-Pro-7-skuA-catSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -250,7 +250,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/Spezielles/Angebote/Black-Friday/skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/Black-Friday/skuA-catSpecials.TopSeller.LimitedOffer"`
           );
         });
 
@@ -272,7 +272,7 @@ describe('Product Route', () => {
 
         it('should be created', () => {
           expect(generateProductUrl(product)).toMatchInlineSnapshot(
-            `"/Spezielles/Angebote/Black-Friday/Das-neue-Surface-Pro-7-skuA-catSpecials.TopSeller.LimitedOffer"`
+            `"/Black-Friday/Das-neue-Surface-Pro-7-skuA-catSpecials.TopSeller.LimitedOffer"`
           );
         });
 

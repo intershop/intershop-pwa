@@ -4,7 +4,7 @@ import { MockPipe } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { CategoryRoutePipe } from 'ish-core/pipes/category-route.pipe';
+import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryNavigationComponent } from './category-navigation.component';

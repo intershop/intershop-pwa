@@ -6,7 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { CategoryRoutePipe } from 'ish-core/pipes/category-route.pipe';
+import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { SubCategoryNavigationComponent } from './sub-category-navigation.component';

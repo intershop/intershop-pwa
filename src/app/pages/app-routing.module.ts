@@ -29,10 +29,6 @@ const routes: Routes = [
     },
   },
   {
-    path: 'category',
-    loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
-  },
-  {
     path: 'account',
     loadChildren: () => import('./account/account-page.module').then(m => m.AccountPageModule),
     canActivate: [AuthGuard],

@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
+import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 
 function generateProductSlug(product: ProductView) {
   if (!product || !product.name) {
@@ -64,10 +65,7 @@ export function generateProductUrl(product: ProductView, category?: CategoryView
   let route = '/';
 
   if (contextCategory) {
-    route += contextCategory
-      .pathCategories()
-      .map(cat => cat.name.replace(/ /g, '-'))
-      .join('/');
+    route += generateLocalizedCategorySlug(contextCategory);
     route += '/';
   }
 
