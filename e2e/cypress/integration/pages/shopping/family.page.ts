@@ -10,6 +10,6 @@ export class FamilyPage {
   readonly productList = new ProductListModule('ish-product-listing');
 
   static navigateTo(categoryUniqueId: string, page?: number) {
-    cy.visit(`/category/${categoryUniqueId}${page ? `?page=${page}` : ''}`);
+    cy.visit(`/cat${categoryUniqueId}${page ? `?page=${page}` : ''}`);
   }
 }
