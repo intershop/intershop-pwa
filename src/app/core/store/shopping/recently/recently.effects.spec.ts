@@ -5,10 +5,11 @@ import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
+import { LoadProductFail, LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -52,6 +53,13 @@ describe('Recently Effects', () => {
       store$.dispatch(new SelectProduct({ sku: 'A' }));
 
       expect(effects.viewedProduct$).toBeObservable(cold('a', { a: new AddToRecently({ sku: 'A' }) }));
+    });
+
+    it('should not fire when product failed loading', () => {
+      store$.dispatch(new LoadProductFail({ error: {} as HttpError, sku: 'A' }));
+      store$.dispatch(new SelectProduct({ sku: 'A' }));
+
+      expect(effects.viewedProduct$).toBeObservable(cold('------'));
     });
 
     it('should not fire when product is deselected', () => {

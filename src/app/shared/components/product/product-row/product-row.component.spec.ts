@@ -6,7 +6,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';

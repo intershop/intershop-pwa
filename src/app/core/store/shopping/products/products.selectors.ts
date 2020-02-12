@@ -109,9 +109,7 @@ export const getProducts = createSelector(
 export const getSelectedProduct = createSelector(
   state => state,
   getSelectedProductId,
-  getFailed,
-  (state, sku, failed): ProductView | VariationProductView | VariationProductMasterView =>
-    failed.includes(sku) ? undefined : getProduct(state, { sku })
+  (state, sku): ProductView | VariationProductView | VariationProductMasterView => getProduct(state, { sku })
 );
 
 export const getProductVariationOptions = createSelector(

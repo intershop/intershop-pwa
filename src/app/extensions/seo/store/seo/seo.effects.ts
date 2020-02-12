@@ -6,11 +6,11 @@ import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { MetaService } from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
 import { mapToParam, ofRoute } from 'ngrx-router';
-import { debounce, distinctUntilKeyChanged, first, map, switchMap, tap } from 'rxjs/operators';
+import { debounce, distinctUntilKeyChanged, filter, first, map, switchMap, tap } from 'rxjs/operators';
 
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
-import { generateProductRoute } from 'ish-core/pipes/product-route.pipe';
+import { generateProductUrl, ofProductRoute } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { CategoriesActionTypes } from 'ish-core/store/shopping/categories';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
@@ -97,17 +97,18 @@ export class SeoEffects {
 
   @Effect()
   seoProduct$ = this.actions$.pipe(
-    ofRoute(['product/:sku/**', 'category/:categoryUniqueId/product/:sku/**']),
+    ofProductRoute(),
     switchMap(() =>
       this.store.pipe(
         select(getSelectedProduct),
         whenTruthy(),
+        filter(p => !ProductHelper.isFailedLoading(p)),
         map(p => (ProductHelper.isVariationProduct(p) && p.productMaster()) || p),
         distinctUntilKeyChanged('sku'),
         map(p => {
           const productImage = ProductHelper.getPrimaryImage(p, 'L');
           const seoAttributes = {
-            canonical: generateProductRoute(p, p.defaultCategory()),
+            canonical: generateProductUrl(p),
             'og:image': productImage && productImage.effectiveUrl,
           };
           return p.seoAttributes ? { ...seoAttributes, ...p.seoAttributes } : seoAttributes;

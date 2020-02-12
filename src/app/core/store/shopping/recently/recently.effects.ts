@@ -18,6 +18,7 @@ export class RecentlyEffects {
   viewedProduct$ = this.store.pipe(
     select(getSelectedProduct),
     whenTruthy(),
+    filter(p => !ProductHelper.isFailedLoading(p)),
     distinctUntilKeyChanged('sku'),
     filter(
       product =>
