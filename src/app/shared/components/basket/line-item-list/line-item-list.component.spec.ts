@@ -9,7 +9,7 @@ import { anything, spy, verify } from 'ts-mockito';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from 'ish-shared/components/basket/line-item-description/line-item-description.component';

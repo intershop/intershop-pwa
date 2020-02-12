@@ -21,7 +21,7 @@ import {
   ProductPrices,
   SkuQuantityType,
 } from 'ish-core/models/product/product.model';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -51,7 +51,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     private appFacade: AppFacade,
     private shoppingFacade: ShoppingFacade,
     private router: Router,
-    private prodRoutePipe: ProductRoutePipe,
     private featureToggleService: FeatureToggleService,
     private appRef: ApplicationRef,
     private ngZone: NgZone
@@ -138,7 +137,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   redirectToVariation(variation: VariationProductView, replaceUrl = false) {
-    const route = variation && this.prodRoutePipe.transform(variation);
+    const route = variation && generateProductUrl(variation);
     if (route) {
       this.appRef.isStable
         .pipe(

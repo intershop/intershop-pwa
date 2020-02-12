@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import {
@@ -42,7 +42,7 @@ export class ProductRowComponent implements OnInit, OnDestroy {
   @Input() quantity: number;
   @Output() quantityChange = new EventEmitter<number>();
   @Input() variationOptions: VariationOptionGroup[];
-  @Input() category?: Category;
+  @Input() category?: CategoryView;
   @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
   @Output() productToBasket = new EventEmitter<number>();

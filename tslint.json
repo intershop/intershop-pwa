@@ -497,6 +497,9 @@
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",
+          // custom routes
+          "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\.route\\.ts",
+          "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\-route\\.pipe\\.ts",
           // extra artifacts
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
@@ -562,6 +565,23 @@
           {
             "name": "^(CMS[A-Z].*Page)Component$",
             "file": ".*/<kebab>/<kebab>\\.component\\.ts$"
+          },
+          // custom routing
+          {
+            "name": "^([A-Z].*)RoutePipe$",
+            "file": ".*/core/routing/<kebab>/<kebab>-route\\.pipe\\.ts$"
+          },
+          {
+            "name": "^generate([A-Z].*)Url$",
+            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+          },
+          {
+            "name": "^match([A-Z].*)Route$",
+            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+          },
+          {
+            "name": "^of([A-Z].*)Route$",
+            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
           },
           // angular components
           {

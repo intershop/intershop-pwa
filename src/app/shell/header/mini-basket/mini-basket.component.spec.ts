@@ -8,7 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 

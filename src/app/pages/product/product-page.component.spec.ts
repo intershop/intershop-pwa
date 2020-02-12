@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { MockComponent } from 'ng-mocks';
+import { noop } from 'rxjs';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
@@ -14,7 +15,7 @@ import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.mod
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 'ish-core/store/shopping/products';
@@ -47,7 +48,7 @@ describe('Product Page Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
@@ -144,6 +145,7 @@ describe('Product Page Component', () => {
             { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
             { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
           ],
+          defaultCategory: noop,
         },
       ],
     } as VariationProductView;
@@ -156,7 +158,7 @@ describe('Product Page Component', () => {
     component.variationSelected(selection, product);
     tick(500);
 
-    expect(location.path()).toEqual('/product/333');
+    expect(location.path()).toMatchInlineSnapshot(`"/sku333"`);
   }));
 
   describe('redirecting to default variation', () => {
@@ -190,7 +192,7 @@ describe('Product Page Component', () => {
       fixture.detectChanges();
       tick(500);
 
-      expect(location.path()).toMatchInlineSnapshot(`"/product/222"`);
+      expect(location.path()).toMatchInlineSnapshot(`"/sku222"`);
     }));
 
     it('should not redirect to default variation for master product if advanced variation handling is activated', fakeAsync(() => {

@@ -6,9 +6,9 @@ import { CategoryRoutePipe } from './pipes/category-route.pipe';
 import { DatePipe } from './pipes/date.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { MakeHrefPipe } from './pipes/make-href.pipe';
-import { ProductRoutePipe } from './pipes/product-route.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { SanitizePipe } from './pipes/sanitize.pipe';
+import { ProductRoutePipe } from './routing/product/product-route.pipe';
 
 const pipes = [
   AttributeToStringPipe,
