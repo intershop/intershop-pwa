@@ -106,7 +106,7 @@
     ></ish-input>
     <ng-template #staticDisplayName>
       <div class="row has-feedback">
-        <label for="#SHOUD_EQUAL_INPUT_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{
+        <label class="col-4 col-md-3 col-xl-2 col-form-label">{{
           'quote.edit.unsubmitted.name.label' | translate
         }}</label>
         <div class="col-8 col-md-9 col-xl-10">
@@ -120,7 +120,7 @@
       class="row"
       [ngClass]="{ 'form-group': quote.state === 'New' }"
     >
-      <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{
+      <label for="quote-description" class="col-4 col-md-3 col-xl-2 col-form-label">{{
         'quote.edit.unsubmitted.comment.label' | translate
       }}</label>
       <div class="col-8 col-md-9 col-xl-10">
@@ -129,6 +129,7 @@
             formControlName="description"
             class="form-control"
             [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
+            id="quote-description"
           >
           </textarea>
         </ng-container>

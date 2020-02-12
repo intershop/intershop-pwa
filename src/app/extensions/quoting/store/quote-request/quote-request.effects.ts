@@ -152,14 +152,19 @@ export class QuoteRequestEffects {
    */
   @Effect()
   createQuoteRequestFromQuoteRequest$ = this.actions$.pipe(
-    ofType(actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest),
+    ofType<actions.CreateQuoteRequestFromQuoteRequest>(
+      actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest
+    ),
+    mapToPayloadProperty('redirect'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestWithProducts))),
-    concatMap(([, currentQuoteRequest]) =>
+    concatMap(([redirect, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuoteRequest(currentQuoteRequest).pipe(
         map(quoteLineItemResult => new actions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult })),
-        tap(quoteLineItemResult =>
-          this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemResult.title}`])
-        ),
+        tap(quoteLineItemResult => {
+          if (redirect) {
+            this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemResult.title}`]);
+          }
+        }),
         mapErrorToAction(actions.CreateQuoteRequestFromQuoteRequestFail)
       )
     )
@@ -319,6 +324,18 @@ export class QuoteRequestEffects {
     tap(quoteRequestId => {
       this.router.navigate([`/account/quote-request/${quoteRequestId}`]);
     })
+  );
+
+  /**
+   * Triggers a SelectQuoteRequest action for the just created copy after successfully creating a quote request copy.
+   */
+  @Effect()
+  selectQuoteRequestAfterCopy$ = this.actions$.pipe(
+    ofType<actions.CreateQuoteRequestFromQuoteRequestSuccess>(
+      actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess
+    ),
+    mapToPayload(),
+    map(payload => new actions.SelectQuoteRequest({ id: payload.quoteLineItemResult.title }))
   );
 
   /**
