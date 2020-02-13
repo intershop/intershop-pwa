@@ -144,7 +144,7 @@ const angularUniversal = (req: express.Request, res: express.Response) => {
       req,
       res,
     },
-    (err: Error, html: string) => {
+    (err, html) => {
       if (html) {
         let newHtml: string;
         if (process.env.PROXY_ICM && req.get('host')) {
@@ -164,7 +164,7 @@ const angularUniversal = (req: express.Request, res: express.Response) => {
   );
 };
 
-const hybridRedirect = (req, res, next) => {
+const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const url = req.originalUrl;
   let newUrl: string;
   for (const entry of HYBRID_MAPPING_TABLE) {
