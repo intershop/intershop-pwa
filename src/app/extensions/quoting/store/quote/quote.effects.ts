@@ -86,7 +86,7 @@ export class QuoteEffects {
       this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(quoteLineItemRequest => new actions.CreateQuoteRequestFromQuoteSuccess({ quoteLineItemRequest })),
         tap(quoteLineItemResult =>
-          this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemRequest.title}`])
+          this.router.navigate([`/account/quotes/request/${quoteLineItemResult.payload.quoteLineItemRequest.title}`])
         ),
         mapErrorToAction(actions.CreateQuoteRequestFromQuoteFail)
       )

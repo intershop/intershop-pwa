@@ -61,7 +61,7 @@ describe('Quote Request Effects', () => {
         RouterTestingModule.withRoutes([
           {
             path: 'account',
-            children: [{ path: 'quote-request', children: [{ path: ':quoteRequestId', component: DummyComponent }] }],
+            children: [{ path: 'quotes', children: [{ path: 'request/:quoteRequestId', component: DummyComponent }] }],
           },
           { path: 'login', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
@@ -898,7 +898,7 @@ describe('Quote Request Effects', () => {
   });
 
   describe('goToQuoteRequestDetail$', () => {
-    it('should navigate to /account/quote-request/QRID if AddBasketToQuoteRequestSuccess called.', fakeAsync(() => {
+    it('should navigate to /account/quotes/request/QRID if AddBasketToQuoteRequestSuccess called.', fakeAsync(() => {
       const id = 'QRID';
       const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id });
       actions$ = of(action);
@@ -907,7 +907,7 @@ describe('Quote Request Effects', () => {
 
       tick(500);
 
-      expect(location.path()).toEqual('/account/quote-request/QRID');
+      expect(location.path()).toEqual('/account/quotes/request/QRID');
     }));
   });
 

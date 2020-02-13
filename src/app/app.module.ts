@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from 'ish-core/core.module';
 
 import { AppComponent } from './app.component';
-import { QuotingRoutingModule } from './extensions/quoting/pages/quoting-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
@@ -18,7 +17,6 @@ import { ShellModule } from './shell/shell.module';
     CoreModule,
     ShellModule,
     AppRoutingModule,
-    QuotingRoutingModule,
     AppLastRoutingModule,
   ],
   bootstrap: [AppComponent],

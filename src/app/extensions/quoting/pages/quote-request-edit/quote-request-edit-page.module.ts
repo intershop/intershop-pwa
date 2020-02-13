@@ -5,7 +5,7 @@ import { QuotingModule } from '../../quoting.module';
 
 import { QuoteRequestEditPageComponent } from './quote-request-edit-page.component';
 
-const quoteRequestEditPageRoutes: Routes = [{ path: ':quoteRequestId', component: QuoteRequestEditPageComponent }];
+const quoteRequestEditPageRoutes: Routes = [{ path: '', component: QuoteRequestEditPageComponent }];
 
 @NgModule({
   declarations: [QuoteRequestEditPageComponent],

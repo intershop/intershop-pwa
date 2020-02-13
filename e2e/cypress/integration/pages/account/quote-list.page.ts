@@ -6,11 +6,11 @@ export class QuoteListPage {
   readonly header = new HeaderModule();
 
   static navigateTo() {
-    cy.visit('/account/quote-list');
+    cy.visit('/account/quotes');
   }
 
   goToQuoteDetailLink(id: string) {
-    cy.get(`a[href="/account/quote-request/${id}"], a[href="/account/quote/${id}"]`)
+    cy.get(`a[href="/account/quotes/request/${id}"], a[href="/account/quotes/${id}"]`)
       .first()
       .click();
   }

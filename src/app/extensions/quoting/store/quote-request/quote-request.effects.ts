@@ -162,7 +162,7 @@ export class QuoteRequestEffects {
         map(quoteLineItemResult => new actions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult })),
         tap(quoteLineItemResult => {
           if (redirect) {
-            this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemResult.title}`]);
+            this.router.navigate([`/account/quotes/request/${quoteLineItemResult.payload.quoteLineItemResult.title}`]);
           }
         }),
         mapErrorToAction(actions.CreateQuoteRequestFromQuoteRequestFail)
@@ -322,7 +322,7 @@ export class QuoteRequestEffects {
     ofType<actions.AddBasketToQuoteRequestSuccess>(actions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess),
     mapToPayloadProperty('id'),
     tap(quoteRequestId => {
-      this.router.navigate([`/account/quote-request/${quoteRequestId}`]);
+      this.router.navigate([`/account/quotes/request/${quoteRequestId}`]);
     })
   );
 

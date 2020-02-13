@@ -128,7 +128,7 @@ export class QuoteEditComponent implements OnChanges, OnInit {
   onUpdateItem(item: LineItemUpdate) {
     if (this.quote.items.length === 1 && item.quantity === 0) {
       this.deleteQuoteRequest.emit(this.quote.id);
-      this.router.navigate(['/account/quote-list']);
+      this.router.navigate(['/account/quotes']);
     } else {
       this.updateItem.emit(item);
     }
@@ -141,7 +141,7 @@ export class QuoteEditComponent implements OnChanges, OnInit {
   onDeleteItem(itemId: string) {
     if (this.quote.items.length === 1) {
       this.deleteQuoteRequest.emit(this.quote.id);
-      this.router.navigate(['/account/quote-list']);
+      this.router.navigate(['/account/quotes']);
     } else {
       this.deleteItem.emit(itemId);
     }
