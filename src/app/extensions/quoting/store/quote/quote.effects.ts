@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
-import { concatMap, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, mergeMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
@@ -12,13 +13,14 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { UpdateBasket, getCurrentBasketId } from 'ish-core/store/checkout/basket';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
+import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 
 import * as actions from './quote.actions';
-import { getSelectedQuoteId, getSelectedQuoteWithProducts } from './quote.selectors';
+import { getSelectedQuote, getSelectedQuoteId, getSelectedQuoteWithProducts } from './quote.selectors';
 
 @Injectable()
 export class QuoteEffects {
@@ -28,7 +30,8 @@ export class QuoteEffects {
     private quoteService: QuoteService,
     private basketService: BasketService,
     private router: Router,
-    private store: Store<{}>
+    private store: Store<{}>,
+    private translateService: TranslateService
   ) {}
 
   /**
@@ -198,5 +201,26 @@ export class QuoteEffects {
     tap(() => {
       this.router.navigate(['/basket']);
     })
+  );
+
+  @Effect()
+  setQuoteRequestBreadcrumb$ = this.actions$.pipe(
+    ofRoute(),
+    mapToParam('quoteId'),
+    whenTruthy(),
+    switchMapTo(this.store.pipe(select(getSelectedQuote))),
+    whenTruthy(),
+    withLatestFrom(this.translateService.get('quote.edit.responded.quote_details.text')),
+    withLatestFrom(this.translateService.get('quote.edit.unsubmitted.quote_request_details.text')),
+    map(([[quote, x], y]) => [quote, quote.state === 'Responded' ? x : y]),
+    map(
+      ([quote, x]) =>
+        new SetBreadcrumbData({
+          breadcrumbData: [
+            { key: 'quote.quotes.link', link: '/account/quotes' },
+            { text: `${x} - ${quote.displayName}` },
+          ],
+        })
+    )
   );
 }

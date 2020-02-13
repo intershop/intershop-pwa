@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, combineReducers } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { noop, of, throwError } from 'rxjs';
@@ -66,6 +67,7 @@ describe('Quote Request Effects', () => {
           { path: 'login', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
         ]),
+        TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
             quoting: combineReducers(quotingReducers),
