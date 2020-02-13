@@ -4,6 +4,7 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, combineReducers } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -59,6 +60,7 @@ describe('Quote Effects', () => {
           { path: 'account/quotes/request/:quoteRequestId', component: DummyComponent },
           { path: 'basket', component: DummyComponent },
         ]),
+        TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
             quoting: combineReducers(quotingReducers),
