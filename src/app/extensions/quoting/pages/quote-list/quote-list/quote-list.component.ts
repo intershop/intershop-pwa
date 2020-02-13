@@ -38,10 +38,10 @@ export class QuoteListComponent implements OnChanges {
    */
   generateDetailRoute(item: Quote | QuoteRequest): string | void {
     if (item.type === 'Quote') {
-      return `/account/quote/${item.id}`;
+      return `/account/quotes/${item.id}`;
     }
     if (item.type === 'QuoteRequest') {
-      return `/account/quote-request/${item.id}`;
+      return `/account/quotes/request/${item.id}`;
     }
   }
 

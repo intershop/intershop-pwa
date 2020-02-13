@@ -43,7 +43,7 @@
   <ng-container *ngIf="submitted && quote.state === 'Submitted'; else quotePending">
     <p>
       {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
-      <a [routerLink]="['/account/quote-request', quote.id]">{{ quote.number }}</a>
+      <a [routerLink]="['/account/quotes/request', quote.id]">{{ quote.number }}</a>
     </p>
     <p
       [ishServerHtml]="
@@ -236,5 +236,5 @@
     </ng-container>
   </div>
 
-  <a class="btn btn-link" routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+  <a class="btn btn-link" routerLink="/account/quotes">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
 </form>

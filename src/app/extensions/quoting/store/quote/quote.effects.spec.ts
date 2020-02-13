@@ -56,7 +56,7 @@ describe('Quote Effects', () => {
       imports: [
         FeatureToggleModule,
         RouterTestingModule.withRoutes([
-          { path: 'account/quote-request/:quoteRequestId', component: DummyComponent },
+          { path: 'account/quotes/request/:quoteRequestId', component: DummyComponent },
           { path: 'basket', component: DummyComponent },
         ]),
         ngrxTesting({
