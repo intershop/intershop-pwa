@@ -7,7 +7,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
@@ -28,7 +28,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   errorMessages$: Observable<string[]>;
   infoMessages$: Observable<string[]>;
   undeliverableItems$: Observable<LineItemView[]>;
-  removedItems$: Observable<{ message: string; product: Product }[]>;
+  removedItems$: Observable<{ message: string; product: ProductView }[]>;
 
   itemHasBeenRemoved = false;
 

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Compare List Component
@@ -24,7 +25,7 @@ export class ProductCompareListComponent implements OnChanges {
   /**
    * The list of products to compare
    */
-  @Input() compareProducts: Product[] = [];
+  @Input() compareProducts: ProductView[] = [];
 
   /**
    * The maximum number of products to be compared on one page
@@ -42,7 +43,7 @@ export class ProductCompareListComponent implements OnChanges {
   @Output() removeProductCompare = new EventEmitter<string>();
 
   commonAttributeNames: string[];
-  visibleProducts: Product[] = [];
+  visibleProducts: ProductView[] = [];
   currentPage = 1;
 
   getAttributeByAttributeName = AttributeHelper.getAttributeByAttributeName;

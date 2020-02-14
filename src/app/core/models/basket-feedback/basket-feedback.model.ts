@@ -1,5 +1,5 @@
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 export interface BasketFeedback {
   code: string;
@@ -13,6 +13,6 @@ export interface BasketFeedback {
 }
 
 export interface BasketFeedbackView extends BasketFeedback {
-  product?: Product;
+  product?: ProductView;
   lineItem?: LineItem;
 }

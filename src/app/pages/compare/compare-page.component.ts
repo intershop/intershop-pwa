@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { AllProductTypes } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-compare-page',
@@ -10,7 +10,7 @@ import { AllProductTypes } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComparePageComponent implements OnInit {
-  compareProducts$: Observable<AllProductTypes[]>;
+  compareProducts$: Observable<ProductView[]>;
   compareProductsCount$: Observable<number>;
 
   constructor(private shoppingFacade: ShoppingFacade) {}

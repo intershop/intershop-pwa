@@ -6,10 +6,12 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
+import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -27,8 +29,8 @@ describe('Product Compare List Component', () => {
   let component: ProductCompareListComponent;
   let element: HTMLElement;
   let translate: TranslateService;
-  let compareProduct1: Product;
-  let compareProduct2: Product;
+  let compareProduct1: ProductView;
+  let compareProduct2: ProductView;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -62,7 +64,7 @@ describe('Product Compare List Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     element = fixture.nativeElement;
-    compareProduct1 = { sku: '111', inStock: true, availability: true } as Product;
+    compareProduct1 = createProductView({ sku: '111', inStock: true, availability: true } as Product, categoryTree());
     compareProduct1.attributes = [
       {
         name: 'Optical zoom',
