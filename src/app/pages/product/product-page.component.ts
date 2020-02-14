@@ -1,7 +1,7 @@
 import { ApplicationRef, ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
-import { filter, first, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -137,19 +137,19 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   redirectToVariation(variation: VariationProductView, replaceUrl = false) {
-    const route = variation && generateProductUrl(variation);
-    if (route) {
-      this.appRef.isStable
-        .pipe(
-          whenTruthy(),
-          first()
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => {
-            this.router.navigateByUrl(route, { replaceUrl });
-          });
+    this.appRef.isStable
+      .pipe(
+        filter(() => !!variation),
+        whenTruthy(),
+        take(1),
+        map(() => variation),
+        withLatestFrom(this.category$)
+      )
+      .subscribe(([product, category]) => {
+        this.ngZone.run(() => {
+          this.router.navigateByUrl(generateProductUrl(product, category), { replaceUrl });
         });
-    }
+      });
   }
 
   ngOnDestroy() {
