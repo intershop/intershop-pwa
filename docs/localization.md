@@ -80,11 +80,11 @@ Localization file:
 
 **en.json**
 
-````typescript
+````json
 { ...
   "product.items.label": {
     "=0":"0 items",
-    "=1": "1 item", 
+    "=1": "1 item",
     "other": "# items"},
   ...
 }
@@ -114,6 +114,36 @@ export class Component {
 <div>
   {{ products.length | i18nPlural: {'=0': 'product.items.label.none','=1': 'product.items.label.singular','other': 'product.items.label.plural'} | translate:{'0': products.length} }}
 </div>
+````
+
+### Localization with Formatted Dates
+
+The date pipe is used as formatter in texts with dates.
+
+Localization file:
+
+**en.json**
+
+````json
+{ ...
+  "quote.edit.submitted.your_quote_expired.text": "Your quote expired at {{0}} {{1}}.",
+  ...
+}
+````
+
+Date pipe as formatter in HTML:
+
+**\*.component.html**
+
+````html
+<span class="text-danger">{{
+  'quote.edit.submitted.your_quote_expired.text'
+    | translate
+      : {
+          '0': quote['validToDate'] | ishDate: 'shortDate',
+          '1': quote['validToDate'] | ishDate: 'mediumTime'
+        }
+}}</span>
 ````
 
 ### Localization of Text with HTML Tags
@@ -196,7 +226,7 @@ Localization file:
 }
 ````
 
-Usage in View (HTML):
+Usage in View (.html):
 
 **\*.component.html**
 
@@ -213,7 +243,7 @@ Usage in View (HTML):
 </ish-modal-dialog>
 ````
 
-Usage in ViewModel (TS)
+Usage in ViewModel (.ts)
 
 **\*.component.ts**
 
@@ -233,3 +263,7 @@ The idea is to use the existing localization properties files of the current Res
 Plugin source as zip file: [ngx-translate-plugin-master.zip](ngx-translate-plugin-master.zip)
 
 In the current state of the Intershop Progressive Web App the converted localization properties from _a\_responsive_ (without _app\_sf\_responsive_\__b2b_ and _app\_sf\_responsive\_costcenter_) were added and should be used within the HTML templates.
+
+## Extend Locales
+
+To learn how languages other than English, German and French can be used in the progressive web app, see [Configuration - Extend Localization](./configuration.md#extend-locales).
