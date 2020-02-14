@@ -68,19 +68,23 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set "selected" to selected quote item id and set selected quote request', () => {
-      const expected = {
-        id: 'test',
-        state: 'New',
-        items: [
-          {
-            productSKU: 'test',
-            product: { sku: 'test' } as Product,
-          },
-        ],
-      };
-
       expect(getSelectedQuoteRequestId(store$.state)).toEqual('test');
-      expect(getSelectedQuoteRequestWithProducts(store$.state)).toEqual(expected);
+      expect(getSelectedQuoteRequestWithProducts(store$.state)).toMatchInlineSnapshot(`
+        Object {
+          "id": "test",
+          "items": Array [
+            Object {
+              "product": Object {
+                "attributes": Array [],
+                "defaultCategory": [Function],
+                "sku": "test",
+              },
+              "productSKU": "test",
+            },
+          ],
+          "state": "New",
+        }
+      `);
     });
   });
 
@@ -154,7 +158,7 @@ describe('Quote Request Selectors', () => {
       expect(activeQuoteRequest).toBeTruthy();
       const items = activeQuoteRequest.items;
       expect(items).toHaveLength(1);
-      expect(items[0]).toHaveProperty('product', { sku: 'test' });
+      expect(items[0]).toHaveProperty('product.sku', 'test');
     });
   });
 });

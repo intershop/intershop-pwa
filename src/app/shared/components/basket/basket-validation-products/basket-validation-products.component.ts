@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
  * Displays the products that are not valid any more after basket validation and that has been removed from basket
@@ -14,5 +14,5 @@ import { Product } from 'ish-core/models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketValidationProductsComponent {
-  @Input() items: { message: string; product: Product }[];
+  @Input() items: { message: string; product: ProductView }[];
 }
