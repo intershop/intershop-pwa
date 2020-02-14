@@ -61,7 +61,7 @@ migration:
     - merge_requests
   except:
     refs:
-      - develop
+      - github-develop
       - master
   tags:
     - docker-executor
@@ -536,7 +536,7 @@ deploy_review_b2c:
       ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
     - PUBLISH_NGINX=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-nginx" 80)
     - docker rm -f "${CI_COMMIT_REF_SLUG}-nginx" || true
-    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
+    - docker pull ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG} || (docker pull ${CI_REGISTRY_IMAGE}:nginx-github-develop && docker tag ${CI_REGISTRY_IMAGE}:nginx-github-develop ${CI_REGISTRY_IMAGE}:nginx-${CI_COMMIT_REF_SLUG})
     - docker run
       --detach
       $PUBLISH_NGINX

@@ -50,7 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
           // retry request without auth token
           const retryRequest = req.clone({ headers: req.headers.delete(ApiService.TOKEN_HEADER_KEY) });
           // timer introduced for testability
-          return timer(10).pipe(switchMapTo(next.handle(retryRequest)));
+          return timer(500).pipe(switchMapTo(next.handle(retryRequest)));
         }
         return throwError(err);
       }),

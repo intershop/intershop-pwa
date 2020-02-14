@@ -90,7 +90,7 @@ describe('Auth Interceptor', () => {
       const req2 = httpTestingController.expectOne('some/url');
       expect(req2.request.headers.get(ApiService.TOKEN_HEADER_KEY)).toBeFalsy();
       req2.flush('some data');
-    }, 100);
+    }, 1000);
   });
 
   it('should re-throw errors unrelated to tokens', done => {

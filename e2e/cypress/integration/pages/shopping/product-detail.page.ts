@@ -23,7 +23,7 @@ export class ProductDetailPage {
 
   private addToCartButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToCartButton"]');
   private addToCompareButton() {
-    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="compare"]');
+    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="compare"] .share-label');
   }
   private addToQuoteRequestButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToQuoteButton"]');
   private quantityInput = () => cy.get('ish-product-detail').find('[data-testing-id="quantity"]');
@@ -44,13 +44,22 @@ export class ProductDetailPage {
     this.addToCompareButton().click();
   }
 
-  addProductToCart() {
+  addProductToCart(): Cypress.Chainable<Cypress.WaitXHR> {
     cy.wait(1000);
     cy.server()
       .route('POST', '**/baskets/*/items')
       .as('basket');
+    cy.server()
+      .route('GET', '**/baskets/current*')
+      .as('basketCurrent');
     this.addToCartButton().click();
-    return cy.wait('@basket');
+
+    return (
+      cy
+        .wait('@basket')
+        // tslint:disable-next-line: no-any
+        .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any
+    );
   }
 
   addProductToQuoteRequest() {
