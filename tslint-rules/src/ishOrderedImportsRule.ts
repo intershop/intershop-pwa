@@ -1,3 +1,4 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
 
@@ -13,20 +14,41 @@ function getFromString(node: ts.Node): string {
   return text.substring(1, text.length - 1);
 }
 
+function filterUnused(sourceFile: ts.SourceFile, identifier: string): boolean {
+  const split = identifier.split(' ');
+  const searchIdentifier = split.length > 1 ? split.pop() : identifier;
+
+  if (tsquery(sourceFile, `Identifier[name=${searchIdentifier}]`).length > 1) {
+    return true;
+  }
+
+  return (
+    tsquery(sourceFile, 'PropertyDeclaration').filter(node => node.getText().startsWith(`@${searchIdentifier}(`))
+      .length >= 1
+  );
+}
+
 function getSortedEntries(node: ts.Node, lineEnding: string): string {
   if (node.getChildAt(1).getChildAt(0) && ts.isNamedImports(node.getChildAt(1).getChildAt(0))) {
     const namedImports = node.getChildAt(1).getChildAt(0) as ts.NamedImports;
-    const elements = namedImports.elements.map(i => i.getText()).sort();
+    const elements = namedImports.elements
+      .map(i => i.getText())
+      .filter(id => filterUnused(node.getSourceFile(), id))
+      .sort();
 
-    if (node.getText().search('\n') > 0) {
-      const multilineJoinedElements = elements.join(`,${lineEnding}  `);
-      return node
-        .getText()
-        .replace(/[\n\r]/g, '')
-        .replace(/\{.*\}/, `{${lineEnding}  ${multilineJoinedElements},${lineEnding}}`);
+    if (elements.length) {
+      if (node.getText().search('\n') > 0) {
+        const multilineJoinedElements = elements.join(`,${lineEnding}  `);
+        return node
+          .getText()
+          .replace(/[\n\r]/g, '')
+          .replace(/\{.*\}/, `{${lineEnding}  ${multilineJoinedElements},${lineEnding}}`);
+      }
+
+      return node.getText().replace(/\{.*\}/, `{ ${elements.join(', ')} }`);
+    } else {
+      return;
     }
-
-    return node.getText().replace(/\{.*\}/, `{ ${elements.join(', ')} }`);
   }
   return node.getText();
 }
@@ -99,6 +121,7 @@ export class Rule extends Lint.Rules.AbstractRule {
             groups[num]
               .sort(sorter)
               .map(importStatement => getSortedEntries(importStatement, lineEnding))
+              .filter(x => !!x)
               .join(lineEnding)
           )
           .join(lineEnding + lineEnding);

@@ -99,7 +99,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-unused-declaration": true,
     "no-parameter-reassignment": true,
     "throw-error": true,
     "no-var-keyword": true,

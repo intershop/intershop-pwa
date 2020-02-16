@@ -18,7 +18,9 @@
       "ngrx-router": ["src/ngrx-router"]
     },
     "typeRoots": ["node_modules/@types", "node_modules/jest-extended"],
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
