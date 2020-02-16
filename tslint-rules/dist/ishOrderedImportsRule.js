@@ -17,6 +17,7 @@ var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cook
     return cooked;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
 var ts = require("typescript");
 function generateLineEnding(sourceFile) {
@@ -28,18 +29,35 @@ function getFromString(node) {
     var text = stringLiteral.getText();
     return text.substring(1, text.length - 1);
 }
+function filterUnused(sourceFile, identifier) {
+    var split = identifier.split(' ');
+    var searchIdentifier = split.length > 1 ? split.pop() : identifier;
+    if (tsquery_1.tsquery(sourceFile, "Identifier[name=" + searchIdentifier + "]").length > 1) {
+        return true;
+    }
+    return (tsquery_1.tsquery(sourceFile, 'PropertyDeclaration').filter(function (node) { return node.getText().startsWith("@" + searchIdentifier + "("); })
+        .length >= 1);
+}
 function getSortedEntries(node, lineEnding) {
     if (node.getChildAt(1).getChildAt(0) && ts.isNamedImports(node.getChildAt(1).getChildAt(0))) {
         var namedImports = node.getChildAt(1).getChildAt(0);
-        var elements = namedImports.elements.map(function (i) { return i.getText(); }).sort();
-        if (node.getText().search('\n') > 0) {
-            var multilineJoinedElements = elements.join("," + lineEnding + "  ");
-            return node
-                .getText()
-                .replace(/[\n\r]/g, '')
-                .replace(/\{.*\}/, "{" + lineEnding + "  " + multilineJoinedElements + "," + lineEnding + "}");
+        var elements = namedImports.elements
+            .map(function (i) { return i.getText(); })
+            .filter(function (id) { return filterUnused(node.getSourceFile(), id); })
+            .sort();
+        if (elements.length) {
+            if (node.getText().search('\n') > 0) {
+                var multilineJoinedElements = elements.join("," + lineEnding + "  ");
+                return node
+                    .getText()
+                    .replace(/[\n\r]/g, '')
+                    .replace(/\{.*\}/, "{" + lineEnding + "  " + multilineJoinedElements + "," + lineEnding + "}");
+            }
+            return node.getText().replace(/\{.*\}/, "{ " + elements.join(', ') + " }");
         }
-        return node.getText().replace(/\{.*\}/, "{ " + elements.join(', ') + " }");
+        else {
+            return;
+        }
     }
     return node.getText();
 }
@@ -89,6 +107,7 @@ var Rule = (function (_super) {
                     return groups_1[num]
                         .sort(sorter_1)
                         .map(function (importStatement) { return getSortedEntries(importStatement, lineEnding); })
+                        .filter(function (x) { return !!x; })
                         .join(lineEnding);
                 })
                     .join(lineEnding + lineEnding);
