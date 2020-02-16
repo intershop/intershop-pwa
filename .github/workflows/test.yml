@@ -134,6 +134,7 @@ jobs:
             'account/*b2c*',
             'checkout/*b2c*',
             'shopping/*b2c*',
+            'system/*b2c*',
             # TODO: include remaining in a general way
             # '!(shopping|account|checkout)*/*b2c*'
             # '@(cms|contact)*/*b2c*'
