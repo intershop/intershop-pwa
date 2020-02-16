@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { concatMap, map, mapTo } from 'rxjs/operators';
 
 import { ContactService } from 'ish-core/services/contact/contact.service';
@@ -10,7 +9,7 @@ import * as ContactActions from './contact.actions';
 
 @Injectable()
 export class ContactEffects {
-  constructor(private actions$: Actions, private store: Store<{}>, private contactService: ContactService) {}
+  constructor(private actions$: Actions, private contactService: ContactService) {}
 
   /**
    * Load the contact subjects, which the customer can select for his request

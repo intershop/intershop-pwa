@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -19,7 +19,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 })
 export class BasketInfoComponent implements OnInit {
   infoMessages$: Observable<BasketInfo[]>;
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.infoMessages$ = this.checkoutFacade.basketInfo$.pipe(

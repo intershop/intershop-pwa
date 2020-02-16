@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { uniq } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -42,7 +34,7 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   @Output() continueCheckout = new EventEmitter<void>();
 

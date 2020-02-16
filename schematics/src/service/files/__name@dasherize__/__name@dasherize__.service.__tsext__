@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { ApiService } from '<% if(!extension) { %>..<% } else { %>ish-core/services<% } %>/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class <%= classify(name) %>Service {
   constructor(private apiService: ApiService) {}
+
+  get<%= classify(name) %>() {
+    return this.apiService.get('<%= dasherize(name) %>');
+  }
 }
