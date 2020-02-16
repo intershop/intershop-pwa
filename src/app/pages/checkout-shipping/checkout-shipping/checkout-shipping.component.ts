@@ -10,7 +10,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -35,8 +34,6 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   submitted = false;
 
   private destroy$ = new Subject();
-
-  constructor(private router: Router) {}
 
   ngOnInit() {
     this.shippingForm = new FormGroup({

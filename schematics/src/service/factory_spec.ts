@@ -24,7 +24,9 @@ describe('Service Schematic', () => {
     expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.spec.ts');
     expect(files).toContain('/projects/bar/src/app/core/services/foo/foo.service.ts');
 
-    expect(tree.readContent('/projects/bar/src/app/core/services/foo/foo.service.ts')).toContain('../api/api.service');
+    expect(tree.readContent('/projects/bar/src/app/core/services/foo/foo.service.ts')).toContain(
+      'ish-core/services/api/api.service'
+    );
   });
 
   it('should ignore folders in name', async () => {
