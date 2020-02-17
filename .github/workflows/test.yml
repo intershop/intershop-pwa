@@ -3,6 +3,15 @@ name: TestCI
 on: [push]
 
 jobs:
+  CancelPrevious:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Old Pipeline
+        uses: rokroskar/workflow-run-cleanup-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Quality:
     runs-on: ubuntu-latest
 
