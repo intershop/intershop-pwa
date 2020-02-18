@@ -45,15 +45,12 @@
       {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
       <a [routerLink]="['/account/quote-request', quote.id]">{{ quote.number }}</a>
     </p>
-    <p>
-      {{ 'quote.edit.submitted.your_quote_request.text' | translate }} <br />
-      <span
-        [ishServerHtml]="
-          'quote.edit.submitted.you_can_check.text'
-            | translate: { '0': 'route://account/quote-list', '1': 'route://account' }
-        "
-      ></span>
-    </p>
+    <p
+      [ishServerHtml]="
+        'quote.edit.submitted.you_can_check.text'
+          | translate: { '0': 'route://account/quote-list', '1': 'route://account' }
+      "
+    ></p>
     <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': user.email } }}</p>
   </ng-container>
 
