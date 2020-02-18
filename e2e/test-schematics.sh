@@ -19,7 +19,7 @@ npx ng g store-group training
 stat src/app/core/store/training/training-store.ts
 grep "TrainingStoreModule" src/app/core/store/core-store.module.ts
 
-npx ng g store core/store/training/warehouses --entity warehouse
+npx ng g store training/warehouses --entity warehouse
 stat src/app/core/store/training/warehouses/warehouses.actions.ts
 stat src/app/core/store/training/warehouses/warehouses.effects.ts
 stat src/app/core/store/training/warehouses/warehouses.reducer.ts
