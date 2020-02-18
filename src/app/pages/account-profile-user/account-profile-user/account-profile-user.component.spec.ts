@@ -7,7 +7,6 @@ import { anything, spy, verify } from 'ts-mockito';
 import { User } from 'ish-core/models/user/user.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
-import { SelectLanguageComponent } from 'ish-shared/forms/components/select-language/select-language.component';
 import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
 
 import { AccountProfileUserComponent } from './account-profile-user.component';
@@ -24,7 +23,6 @@ describe('Account Profile User Component', () => {
         AccountProfileUserComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
-        MockComponent(SelectLanguageComponent),
         MockComponent(SelectTitleComponent),
       ],
     }).compileComponents();
@@ -50,11 +48,6 @@ describe('Account Profile User Component', () => {
   it('should display select box for title', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('ish-select-title')).toHaveLength(1);
-  });
-
-  it('should display select box for language', () => {
-    fixture.detectChanges();
-    expect(element.querySelectorAll('ish-select-language')).toHaveLength(1);
   });
 
   it('should emit updateUserProfile event if form is valid', () => {
