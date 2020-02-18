@@ -28,7 +28,7 @@ describe('Extension Schematic', () => {
       .toPromise();
   });
 
-  it('should create a page in root by default', async () => {
+  it('should create an extension', async () => {
     const options = { ...defaultOptions };
 
     const tree = await schematicRunner.runSchematicAsync('extension', options, appTree).toPromise();
@@ -37,6 +37,7 @@ describe('Extension Schematic', () => {
       Array [
         "/projects/bar/src/app/extensions/foo/foo.module.ts",
         "/projects/bar/src/app/extensions/foo/exports/foo-exports.module.ts",
+        "/projects/bar/src/app/extensions/foo/facades/foo.facade.ts",
         "/projects/bar/src/app/extensions/foo/pages/foo-routing.module.ts",
         "/projects/bar/src/app/extensions/foo/store/foo-store.ts",
         "/projects/bar/src/app/extensions/foo/store/foo-store.module.ts",
