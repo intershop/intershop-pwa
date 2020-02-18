@@ -146,12 +146,18 @@ export function insertImport(
   artifactName: string,
   relativePath: string
 ) {
+  const imp = `import { ${artifactName} } from '${relativePath}';`;
+
   // insert import statement to imports
   const lastImportEnd = findImports(source, ImportKind.All)
     .map(x => x.parent.end)
     .sort((x, y) => x - y)
     .pop();
-  recorder.insertRight(lastImportEnd, `\nimport { ${artifactName} } from '${relativePath}';`);
+  if (lastImportEnd) {
+    recorder.insertRight(lastImportEnd, `\n${imp}`);
+  } else {
+    recorder.insertLeft(0, `${imp}\n\n`);
+  }
 }
 
 export function addImportToNgModuleBefore(
