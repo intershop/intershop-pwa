@@ -1,5 +1,5 @@
-import { createFeatureSelector } from '@ngrx/store';
-
 export interface <%= classify(name) %>State {}
 
-export const get<%= classify(name) %>State = createFeatureSelector<<%= classify(name) %>State>('<%= camelize(name) %>');
+// TODO: use createFeatureSelector after ivy dynamic loading
+// tslint:disable-next-line: no-any
+export const get<%= classify(name) %>State: (state: any) => <%= classify(name) %>State = state => state.<%= camelize(name) %>;
