@@ -2484,7 +2484,7 @@
   "quote.edit.product_not_available.text": "The product {{0}} is not available and cannot be added to the current requisition.",
   "quote.edit.cannot_copy_quote.text": "The quote cannot be copied because all products are outdated or not available.",
   "quote.edit.products_not_available.text": "The following products cannot be added to the current quote because the products are outdated or not available:",
-  "quote.edit.submitted.heading": "THANK YOU FOR YOUR QUOTE",
+  "quote.edit.submitted.heading": "Thank you for your quote request",
   "quote.edit.submitted.your_quote_number.text": "Your quote number is:",
   "quote.edit.submitted.your_quote_request.text": "Your quote request has been submitted.",
   "quote.edit.submitted.you_can_check.text": "You can check the status of your <a href=\"{{0}}\">quotes</a> in your <a href=\"{{1}}\">My Account</a> section.",

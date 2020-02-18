@@ -2483,7 +2483,7 @@
   "quote.edit.product_not_available.text": "Le produit {{0}} n’est pas disponible et ne peut pas être ajouté à la demande d’achat actuelle.",
   "quote.edit.cannot_copy_quote.text": "Impossible de copier le devis car tous les produits sont devenus obsolètes ou ne sont plus disponibles.",
   "quote.edit.products_not_available.text": "Impossible d’ajouter les produits suivants au devis actuel car ils sont devenus obsolètes ou ne sont plus disponibles :",
-  "quote.edit.submitted.heading": "NOUS VOUS REMERCIONS POUR VOTRE DEVIS",
+  "quote.edit.submitted.heading": "Nous vous remercions pour votre demande de devis",
   "quote.edit.submitted.your_quote_number.text": "Votre numéro de devis est :",
   "quote.edit.submitted.your_quote_request.text": "Votre demande de devis a été soumise.",
   "quote.edit.submitted.you_can_check.text": "Vous pouvez consulter l’état de vos <a href=\"{{0}}\">devis</a> dans la section <a href=\"{{1}}\">Mon compte</a>.",
