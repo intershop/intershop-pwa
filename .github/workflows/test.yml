@@ -164,10 +164,19 @@ jobs:
         with:
           name: dist
 
+      - name: Start SSR
+        if: matrix.test != '*mock*'
+        run: |
+          npm run serve &
+
+      - name: Start Dev-Server
+        if: matrix.test == '*mock*'
+        run: |
+          npm run ng -- serve &
+
       - name: Cypress
-        uses: cypress-io/github-action@master
+        uses: cypress-io/github-action@v1.22.0
         with:
-          start: ${{ matrix.test == '*mock*' && 'npm run ng -- serve' || 'npm run serve > /dev/null 2>&1' }}
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e
