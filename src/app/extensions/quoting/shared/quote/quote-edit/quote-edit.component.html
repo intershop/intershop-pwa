@@ -25,7 +25,7 @@
     </h1>
   </ng-template>
 
-  <div *ngIf="quote.state === 'Submitted'" data-testing-id="success-message" class="alert alert-info">
+  <div *ngIf="quote.state === 'Submitted' && !submitted" data-testing-id="success-message" class="alert alert-info">
     {{
       'quote.edit.submitted.your_quote_request_has_been_submitted.text'
         | translate: { '0': quote.creationDate | ishDate: 'shortDate' }
@@ -47,7 +47,7 @@
     </p>
     <p
       [ishServerHtml]="
-        'quote.edit.submitted.you_can_check.text'
+        'quote.edit.submitted.your_quote_request.text'
           | translate: { '0': 'route://account/quote-list', '1': 'route://account' }
       "
     ></p>
