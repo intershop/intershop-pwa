@@ -2669,5 +2669,6 @@
   "basket.add_quotelineitem.error": "Das Preisangebot kann nicht in den Warenkorb gelegt werden.  Es enthält ungültige Produkte.",
   "quote.already_in_basket.error": "Das Preisangebot befindet sich bereits im Warenkorb.",
   "quote.not_found.error": "Das Preisangebot konnte nicht gefunden werden.",
-  "basket.add_quote.error": "Das Preisangebot konnte nicht in den Warenkorb gelegt werden."
+  "basket.add_quote.error": "Das Preisangebot konnte nicht in den Warenkorb gelegt werden.",
+  "quoterequest.not_editable.error": "Sie haben die Preisanfrage bereits gesendet. <a href=\"javascript:location.reload()\">Laden Sie diese Seite neu</a>, um die Änderungen zu sehen."
 }
