@@ -41,7 +41,15 @@ function determineStoreLocation(host, options) {
     else {
         throw new Error('cannot add feature store in extension');
     }
-    return Object.assign({}, options, { parentStorePath: `${path}${parent}`, name: options.name.split('/').pop(), extension,
+    const name = options.name.split('/').pop();
+    if (name === feature) {
+        throw new Error('name of feature and store cannot be equal');
+    }
+    if (name === extension) {
+        throw new Error('name of extension and store cannot be equal');
+    }
+    return Object.assign({}, options, { parentStorePath: `${path}${parent}`, name,
+        extension,
         feature,
         path,
         parent });
