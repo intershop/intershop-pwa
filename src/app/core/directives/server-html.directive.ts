@@ -93,22 +93,30 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
         const href = el.getAttribute('href');
         const cb = el.getAttribute('callback');
 
-        // apply default link handling for empty href, external links & target _blank
-        if (!cb && (!href || href.startsWith('http') || el.getAttribute('target') === '_blank')) {
+        // handle links with callback functions, e.g. <a callback="availableCallbackFunction">
+        if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
+          this.callbacks[cb]();
+        }
+
+        // apply default link handling for empty href, external links, javascript links & target _blank
+        if (
+          !href ||
+          href.startsWith('http') ||
+          href.startsWith('javascript:') ||
+          el.getAttribute('target') === '_blank'
+        ) {
           return;
         }
 
-        if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
-          // handle links with callback functions, e.g. <a callback="availableCallbackFunction">
-          this.callbacks[cb]();
-        } else if (href.startsWith('#')) {
-          // handle fragment links / anchor navigation
+        // handle fragment links / anchor navigation
+        if (href.startsWith('#')) {
           document.getElementById(href.replace('#', '')).scrollIntoView({ block: 'start', behavior: 'smooth' });
         } else {
           // otherwise handle as routerLink
           this.router.navigateByUrl(href);
         }
 
+        // prevent default link handling
         event.preventDefault();
         return false;
       }
