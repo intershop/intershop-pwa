@@ -226,5 +226,17 @@ export const getCoreState: Selector<CoreState, CoreState> = state => state;
       expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', extension: 'bar' })).toEqual(config);
       expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'extensions/bar/foobar' })).toEqual(config);
     });
+
+    it('should throw if feature equals store name', () => {
+      expect(() =>
+        determineStoreLocation(appTree, { ...defaultOptions, feature: defaultOptions.name })
+      ).toThrowErrorMatchingInlineSnapshot(`"name of feature and store cannot be equal"`);
+    });
+
+    it('should throw if extension equals store name', () => {
+      expect(() =>
+        determineStoreLocation(appTree, { ...defaultOptions, extension: defaultOptions.name })
+      ).toThrowErrorMatchingInlineSnapshot(`"name of extension and store cannot be equal"`);
+    });
   });
 });
