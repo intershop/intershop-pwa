@@ -43,11 +43,11 @@ The `src/app` folder contains all TypeScript code (sources and tests) and HTML t
 
 - `core` contains all configuration and utility code for the main B2C application.
   - `core/models` contains models for all data entities for the B2C store.
-  <!-- TODO: see Data Handling with Mappers. -->
+    <!-- TODO: see Data Handling with Mappers. -->
   - `core/utils` contains all utility functions that are used in multiple cases.
   - `core/store` contains the main [State Management](./state-management.md), `core/facades` contains facades for accessing the state in the application.
 - `shell` contains the synchronously loaded application shell (header and footer).
-- `pages` contains  a flat folder list of page modules and components that are only used on that corresponding page.
+- `pages` contains a flat folder list of page modules and components that are only used on that corresponding page.
 - `shared` contains code which is shared across multiple modules and pages.
 - `extensions` contains extension modules for mainly B2B features that have minimal touch points with the B2C store. Each module (foo and bar) contains code which concerns only itself. The connection to the B2C store is implemented via lazy-loaded modules and components.
 
@@ -57,7 +57,7 @@ The `src/environments` folder contains environment properties which are switched
 
 The `src/theme` contains styling files.
 
->> Components should only reside in `shared`, `shell` and `pages`.
+> Components should only reside in `shared`, `shell` and `pages`.
 
 ## Extension Folder Structure
 
@@ -118,13 +118,13 @@ When using `ng generate` with our PWA custom schematics, the components should a
 
 Angular requires you to declare a component in one and only one NgModule. Find the right one in the following order:
 
-*Your Component is used only on one page?* - Add it to the declarations of the corresponding page.module.
+_Your Component is used only on one page?_ - Add it to the declarations of the corresponding page.module.
 
-*Your Component is used among multiple pages?* - Declare it in the shared.module and also export it there.
+_Your Component is used among multiple pages?_ - Declare it in the shared.module and also export it there.
 
-*Your Component is used in the application shell (and maybe again on certain pages)?* - Declare it in the shell.module and also export it there.
+_Your Component is used in the application shell (and maybe again on certain pages)?_ - Declare it in the shell.module and also export it there.
 
-*(advanced) Your component relates to a specific B2B extension?* - Declare it in that extension module and add it as an entryComponent, add a lazy-loaded component and add that to the extension exports, which are then im-/exported in the shared.module.
+_(advanced) Your component relates to a specific B2B extension?_ - Declare it in that extension module and add it as an entryComponent, add a lazy-loaded component and add that to the extension exports, which are then im-/exported in the shared.module.
 
 When using `ng generate`, the right module should be found automatically.
 
@@ -151,19 +151,19 @@ There is an exception for direct string value bindings where we use for example 
 
 ![Warning](icons/warning.png) **Pattern to avoid**
 
-````html
-<div attr.data-testing-id="category-{{category.id}}">  
-  
-<img src="{{base_url + category.images[0].effectiveUrl}}">
-````
+```html
+<div attr.data-testing-id="category-{{category.id}}">
+  <img src="{{base_url + category.images[0].effectiveUrl}}" />
+</div>
+```
 
 ![Tip](icons/tip.png) **Correct pattern**
 
-````html
-<div [attr.data-testing-id]="'category-' + category.id">  
-  
-<img [src]="base_url + category.images[0].effectiveUrl">
-````
+```html
+<div [attr.data-testing-id]="'category-' + category.id">
+  <img [src]="base_url + category.images[0].effectiveUrl" />
+</div>
+```
 
 ### Pattern for Conditions (ngif) with Alternative Template (else) in Component Templates
 
@@ -192,7 +192,7 @@ In this case the condition should look like this:
 
 Following the ideas of the article [RxJS: Don’t Unsubscribe](https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
 
-![Tip](icons/tip.png) **'unsubscribe' via destroy$ Subject**
+![Tip](icons/tip.png) **'unsubscribe' via destroy\$ Subject**
 
 ```typescript
 export class AnyComponent implements OnInit, OnDestroy {

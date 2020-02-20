@@ -15,6 +15,9 @@
 *.hbs
 *.mp4
 *.js.map
+*.properties
+*.crt
+*.key
 .*ignore
 .gitattributes
 .editorconfig
@@ -26,8 +29,8 @@ browserslist
 /build
 /builds
 /cache
-/dist
-/docs
+/docs/**/*.ditamap
+/docs/theme
 /out-tsc
 /coverage
 /junit.xml

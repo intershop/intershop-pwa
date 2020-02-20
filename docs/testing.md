@@ -16,11 +16,11 @@ Following unit tests we also run module tests which serve as the first layer of 
 
 ### Integration
 
-The next layer of tests are integration tests which run the application as a whole but mock out ICM rest responses. The test is run using a browser and performing various actions and checks on the application. For this kind of test [Cypress](https://www.cypress.io/) is required. The tests are written in a Jasmine-like behavior driven style. For the ease of readability we implemented them using a _PageObject_ pattern, see [https://martinfowler.com/bliki/PageObject.html](https://martinfowler.com/bliki/PageObject.html). Testing in this stage is of course more time-consuming as the application has to be compiled and started up as a whole. The fact of mocking server responses also limits the available workflows of the application. For example designing Mock-Data for a complete customer journey through the checkout would be too complex and too brittle. Nevertheless, the tests serve well for a basic overview of some functionality.
+The next layer of tests are integration tests which run the application as a whole but mock out ICM rest responses. The test is run using a browser and performing various actions and checks on the application. For this kind of test [Cypress](https://www.cypress.io/) is required. The tests are written in a Jasmine-like behavior driven style. For the ease of readability we implemented them using a _PageObject_ pattern, see [https://martinfowler.com/bliki/PageObject.html](https://martinfowler.com/bliki/PageObject.html). Testing in this stage is of course more time-consuming as the application has to be compiled and started up as a whole. The fact of mocking server responses also limits the available workflows of the application. For example designing Mock-Data for a complete customer journey through the checkout would be too complex and too brittle. Nevertheless, the tests serve well for a basic overview of some functionality.
 
 ### End-to-End
 
-The most time-consuming tests are complete end-to-end tests. They do not mock out anything and run the PWA against an ICM with a deployed `a_responsive:inspired-b2x`. We also use [Cypress](https://www.cypress.io/) here. Additionally, all tests from the previous Integration step should be composed in a way that they can also be run with real REST Responses. As a basic rule of thumb we only test happy path functionality or workflows that would be too cumbersome to be mocked in module tests.
+The most time-consuming tests are complete end-to-end tests. They do not mock out anything and run the PWA against an ICM with a deployed `a_responsive:inspired-b2x`. We also use [Cypress](https://www.cypress.io/) here. Additionally, all tests from the previous Integration step should be composed in a way that they can also be run with real REST Responses. As a basic rule of thumb we only test happy path functionality or workflows that would be too cumbersome to be mocked in module tests.
 
 ## Test File Locations
 
@@ -30,9 +30,9 @@ Integration and end-to-end tests currently reside in _cypress/integration/specs_
 
 ## Deviation from Standard Angular Test Frameworks
 
-By default Angular Projects are setup with [Jasmine](https://jasmine.github.io/) and Karma Runner for unit and module tests, as well as [Protractor](https://www.protractortest.org) for end-to-end Testing. We decided to deviate from these frameworks, because there are better alternatives available.
+By default Angular Projects are setup with [Jasmine](https://jasmine.github.io/) and Karma Runner for unit and module tests, as well as [Protractor](https://www.protractortest.org) for end-to-end Testing. We decided to deviate from these frameworks, because there are better alternatives available.
 
-[Jest](https://facebook.github.io/jest/) provides a better and faster experience when testing. Jest uses a JavaScript engine comparable to a virtual browser. There is no need to start up a real browser like it is standard with Jasmine+Karma. Also Jest provides an interactive command line interface with many options. Integrations for VSCode are available that will ease developing and running tests. Another big advantage of Jest is the functionality for [Snapshot Testing](https://jestjs.io/docs/en/snapshot-testing).
+[Jest](https://facebook.github.io/jest/) provides a better and faster experience when testing. Jest uses a JavaScript engine comparable to a virtual browser. There is no need to start up a real browser like it is standard with Jasmine+Karma. Also Jest provides an interactive command line interface with many options. Integrations for VSCode are available that will ease developing and running tests. Another big advantage of Jest is the functionality for [Snapshot Testing](https://jestjs.io/docs/en/snapshot-testing).
 
 We also do not use Protractor for end-to-end testing. Like all Selenium-based testing frameworks, Protractor deals with the same problems. Special Bindings for the programming language communicate via HTTP with a browser driver which then remotely controls the browser over HTTP. This indirect way is very fragile against network latency. Also the functionalities are limited. Protractor, however, is especially designed for Angular, so it automatically waits for background tasks to finish before continuing the test run. This functionality must be implemented when using Cypress.
 
@@ -48,7 +48,7 @@ No form of abstraction shall be made when developing tests, especially not for r
 
 For unit and module tests test data is instantiated as required. Each test should only set fields actually required for each test to ease readability. If new dependencies are introduced or workflows change, the corresponding test cases have to change, too.
 
-Integration and end-to-end tests are tailored for the inSPIRED (a\_responsive) demo store. Used test data can be abstracted at the start of the file but at all times it should only be accumulated here to ease readability of these test cases. Further abstraction would lead to longer development cycles as it is harder to understand functionality of test cases if it is distributed among multiple files.
+Integration and end-to-end tests are tailored for the inSPIRED (a_responsive) demo store. Used test data can be abstracted at the start of the file but at all times it should only be accumulated here to ease readability of these test cases. Further abstraction would lead to longer development cycles as it is harder to understand functionality of test cases if it is distributed among multiple files.
 
 If projects want to re-use the supplied test cases, they have to adapt them in terms of Test Data.
 
@@ -60,27 +60,27 @@ The end-to-end tests have to be adapted as well. Styling and structural changes 
 
 #### Single Responsibility
 
-A test should test only one thing. One given behavior is tested in one and _only_ one test.
+A test should test only one thing. One given behavior is tested in one and _only_ one test.
 
-The tests should be independent from the others, that means no chaining and no run in a specific order is necessary.
+The tests should be independent from the others, that means no chaining and no run in a specific order is necessary.
 
 #### Test Functionality - Not Implementation
 
-A test is implemented incorrectly or the test scenario is meaningless if changes in the HTML structure of the component destroy the test result.
+A test is implemented incorrectly or the test scenario is meaningless if changes in the HTML structure of the component destroy the test result.
 
 Example: The test fails if an additional input field is added to the form.
 
 ![Warning](icons/warning.png) **Wrong Test Scenario**
 
-````typescript
+```typescript
 it('should check if input fields are rendered on HTML', () => {
-   const inputFields = element.getElementsByClassName('form-control');
-   expect(inputFields.length).toBe(4);
-   expect(inputFields[0]).toBeDefined();
-   expect(inputFields[1]).toBeDefined();
-   expect(inputFields[2]).toBeDefined();
+  const inputFields = element.getElementsByClassName('form-control');
+  expect(inputFields.length).toBe(4);
+  expect(inputFields[0]).toBeDefined();
+  expect(inputFields[1]).toBeDefined();
+  expect(inputFields[2]).toBeDefined();
 });
-````
+```
 
 #### Do not Comment out Tests
 
@@ -88,13 +88,13 @@ Instead use the `xdescribe` or `xit` feature (just add an '`x`' before the metho
 
 ![Right](icons/tip.png)
 
-````typescript
-xdescribe("description", function() {  
-  it("description", function() {  
-    ...  
-  });  
+```typescript
+xdescribe("description", function() {
+  it("description", function() {
+    ...
+  });
 });
-````
+```
 
 #### Always Test the Initial State of a Service/Component/Module/...
 
@@ -102,26 +102,26 @@ This way the test itself documents the initial behavior of the unit under test. 
 
 ![Right](icons/tip.png)
 
-````typescript
-it('should call the cache when data is available', () => {  
-    // precondition  
-    service.getData();  
-    expect(cacheService.getChachedData).not.toHaveBeenCalled();  
+```typescript
+it('should call the cache when data is available', () => {
+    // precondition
+    service.getData();
+    expect(cacheService.getChachedData).not.toHaveBeenCalled();
 
-    << change cacheService mock to data available >>  
+    << change cacheService mock to data available >>
 
-    // test again  
-    service.getData();  
-    expect(cacheService.getChachedData).toHaveBeenCalled();  
+    // test again
+    service.getData();
+    expect(cacheService.getChachedData).toHaveBeenCalled();
 });
-````
+```
 
 #### Do not Test the Obvious
 
 Testing should not be done for the sake of tests existing:
 
-* It is not useful to test getter and setter methods and use spy on methods which are directly called later on.
-* Do not use assertions which are logically always true.
+- It is not useful to test getter and setter methods and use spy on methods which are directly called later on.
+- Do not use assertions which are logically always true.
 
 #### Make Stronger Assertions
 
@@ -129,65 +129,65 @@ It is easy to always test with `toBeTruthy` or `toBeFalsy` when you expect somet
 
 ![Warning](icons/warning.png)
 
-````typescript
-it('should cache data with encryption', () => {  
-    customCacheService.storeDataToCache('My task is testing', 'task', true);  
-    expect(customCacheService.cacheKeyExists('task')).toBeTruthy();  
+```typescript
+it('should cache data with encryption', () => {
+  customCacheService.storeDataToCache('My task is testing', 'task', true);
+  expect(customCacheService.cacheKeyExists('task')).toBeTruthy();
 });
-````
+```
 
 ![Right](icons/tip.png)
 
-````typescript
-it('should cache data with encryption', () => {  
-    customCacheService.storeDataToCache('My task is testing', 'task', true);  
-    expect(customCacheService.cacheKeyExists('task')).toBe(true);  
+```typescript
+it('should cache data with encryption', () => {
+  customCacheService.storeDataToCache('My task is testing', 'task', true);
+  expect(customCacheService.cacheKeyExists('task')).toBe(true);
 });
-````
+```
 
 Again, do not rely too much on the implementation. If user customizations can easily break the test code, your assertions are too strong.
 
 ![Warning](icons/warning.png) **Test too Close to Implementation**
 
-````typescript
-it('should test if tags with their text are getting rendered on the HTML', () => {  
-    expect(element.getElementsByTagName('h3')\[0\].textContent).toContain('We are sorry');  
-    expect(element.getElementsByTagName('p')\[0\].textContent).toContain('The page you are looking for is currently not available');  
-    expect(element.getElementsByTagName('h4')\[0\].textContent).toContain('Please try one of the following:');  
-    expect(element.getElementsByClassName('btn-primary')\[0\].textContent).toContain('Search');  
+```typescript
+it('should test if tags with their text are getting rendered on the HTML', () => {
+    expect(element.getElementsByTagName('h3')\[0\].textContent).toContain('We are sorry');
+    expect(element.getElementsByTagName('p')\[0\].textContent).toContain('The page you are looking for is currently not available');
+    expect(element.getElementsByTagName('h4')\[0\].textContent).toContain('Please try one of the following:');
+    expect(element.getElementsByClassName('btn-primary')\[0\].textContent).toContain('Search');
 });
-````
+```
 
 ![Right](icons/tip.png) **Same Test in a more Stable Way**
 
-````typescript
-it('should test if tags with their text are getting rendered on the HTML', () => {  
-    expect(element.getElementsByClassName('error-text')).toBeTruthy();  
-    expect(element.getElementsByClassName('btn-primary')\[0\].textContent).toContain('Search');  
+```typescript
+it('should test if tags with their text are getting rendered on the HTML', () => {
+    expect(element.getElementsByClassName('error-text')).toBeTruthy();
+    expect(element.getElementsByClassName('btn-primary')\[0\].textContent).toContain('Search');
 });
-````
+```
 
 #### Do not Meddle with the Framework
 
-Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call it directly. When doing component testing, you most likely use `TestBed` anyway, so use the `detectChanges()` method of your available `ComponentFixture`.
+Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call it directly. When doing component testing, you most likely use `TestBed` anyway, so use the `detectChanges()` method of your available `ComponentFixture`.
 
 ![Warning](icons/warning.png) **Wrong Test with ngOnInit() Method Calling**
 
-````typescript
-it('should call ngOnInit method', () => {  
-    component.ngOnInit();  
-    expect(component.loginForm).toBeDefined();  
+```typescript
+it('should call ngOnInit method', () => {
+  component.ngOnInit();
+  expect(component.loginForm).toBeDefined();
 });
-````
+```
 
 ![Right](icons/tip.png) **Test without ngOnInit() Method Call**
 
-````typescript
-it('should contain the login form', () => {  
-    fixture.detectChanges();  
-    expect(component.loginForm).not.toBeNull();  
+```typescript
+it('should contain the login form', () => {
+  fixture.detectChanges();
+  expect(component.loginForm).not.toBeNull();
 });
-````
+```
 
 ### Assure Readability of Tests
 
@@ -197,15 +197,15 @@ The test name describes perfectly what the test is doing.
 
 ![Warning](icons/warning.png) **Wrong Naming**
 
-````typescript
+```typescript
 it ('wishlist test', () => {...})
-````
+```
 
 ![Right](icons/tip.png) **Correct Naming**
 
-````typescript
+```typescript
 it ('should add a product to an existing wishlist when the button is clicked', () => {...})
-````
+```
 
 Basically it should read like a documentation for the unit under test, not a documentation about what the test does. [Jasmine](https://jasmine.github.io) has named the methods accordingly. Read it like \`I am describing <component>, it should <do> when/if/on <condition/trigger> (because/to <reason>)\`.
 
@@ -213,21 +213,21 @@ This also applies to assertions. They should be readable like meaningful sentenc
 
 ![Warning](icons/warning.png)
 
-````typescript
-const result = accountService.isAuthorized()  
-expect(result).toBe(true)
-````
+```typescript
+const result = accountService.isAuthorized();
+expect(result).toBe(true);
+```
 
 ![Right](icons/tip.png)
 
-````typescript
-const authorized = accountService.isAuthorized()  
-expect(authorized).toBe(true)  
+```typescript
+const authorized = accountService.isAuthorized()
+expect(authorized).toBe(true)
 
           _or directly_
 
 expect(accountService.isAuthorized()).toBe(true)
-````
+```
 
 #### Avoid Global Variables
 
@@ -237,46 +237,46 @@ Tests should define Variables only in the scope where they are needed. Do not de
 
 This increases readability of test cases.
 
-* Common initialization code of constants or sub-elements should be located in `beforeEach` methods.
-* When using `TestBed` you can handle injection to variables in a separate `beforeEach` method.
+- Common initialization code of constants or sub-elements should be located in `beforeEach` methods.
+- When using `TestBed` you can handle injection to variables in a separate `beforeEach` method.
 
 ![Warning](icons/warning.png)
 
-````typescript
-it('should create the app', async(() => {  
-    const fixture = TestBed.createComponent(AppComponent);  
-    const component = fixture.componentInstance;  
-    ...  
-});  
-it(\`should have the title 'app'\`, async(() => {  
-    const fixture = TestBed.createComponent(AppComponent);  
-    const component = fixture.componentInstance;  
-   ...  
-});  
-it('should match the text passed in Header Component', async(() => {  
-    const fixture = TestBed.createComponent(AppComponent);  
+```typescript
+it('should create the app', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const component = fixture.componentInstance;
+    ...
 });
-````
+it('should have the title "app"', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const component = fixture.componentInstance;
+   ...
+});
+it('should match the text passed in Header Component', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+});
+```
 
 ![Right](icons/tip.png)
 
-````typescript
-describe('AppComponent', () => {  
-    let translate: TranslateService;  
-    let fixture: ComponentFixture<AppComponent>;  
-    let component: AppComponent;  
+```typescript
+describe('AppComponent', () => {
+    let translate: TranslateService;
+    let fixture: ComponentFixture<AppComponent>;
+    let component: AppComponent;
 
-    beforeEach(async(() => {  
-        TestBed.configureTestingModule({  
-            declarations: \[ ... \] });  
-        fixture = TestBed.createComponent(AppComponent);  
-        component = fixture.componentInstance;  
-    })  
-    it('should create the app', () => { ... });  
-    it(\`should have as title 'app'\`, () => { ... });  
-    it('should match the text passed in Header Component', () => { ... });  
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: \[ ... \] });
+        fixture = TestBed.createComponent(AppComponent);
+        component = fixture.componentInstance;
+    })
+    it('should create the app', () => { ... });
+    it(\`should have as title 'app'\`, () => { ... });
+    it('should match the text passed in Header Component', () => { ... });
 });
-````
+```
 
 #### Do not Use Features You Do not Need
 
@@ -284,30 +284,30 @@ This increases readability of test cases.
 
 If you do not need the functionality of :
 
-* `ComponentFixture.debugElement`
-* `TestBed`
-* `async, fakeAsync`
-* `inject`
+- `ComponentFixture.debugElement`
+- `TestBed`
+- `async, fakeAsync`
+- `inject`
 
 ... do not use it.
 
 ![Warning](icons/warning.png) **Wrong Test With Useless Features (TestBed, ComponentFixture.debugElement)**
 
-````typescript
-it('should create the app', async(() => {  
-    const app = fixture.debugElement.componentInstance;  
-    expect(app).toBeTruthy();  
+```typescript
+it('should create the app', async(() => {
+  const app = fixture.debugElement.componentInstance;
+  expect(app).toBeTruthy();
 }));
-````
+```
 
 ![Right](icons/tip.png) **Same Test - Works Without These Features**
 
-````typescript
-it('should be created', () => {  
-  const app = fixture.componentInstance;  
-    expect(app).toBeTruthy();  
+```typescript
+it('should be created', () => {
+  const app = fixture.componentInstance;
+  expect(app).toBeTruthy();
 });
-````
+```
 
 #### Structure Long Tests
 
@@ -315,17 +315,17 @@ The `describe` methods in Jasmine are nestable. You can use this to group variou
 
 ![Right](icons/tip.png) **Nested describe Methods**
 
-````typescript
-describe('AccountLogin Component', () => {  
-    it('should be created', () => { ... });  
-    it('should check if controls are rendered on Login page', () => { ... });  
-    ....  
-    describe('Username Field', () => {  
-        it('should be valid when a correct email is assigned', () => { ... });  
-       ....  
-    });  
+```typescript
+describe('AccountLogin Component', () => {
+    it('should be created', () => { ... });
+    it('should check if controls are rendered on Login page', () => { ... });
+    ....
+    describe('Username Field', () => {
+        it('should be valid when a correct email is assigned', () => { ... });
+       ....
+    });
 });
-````
+```
 
 #### Avoid Having Dead Code
 
@@ -343,21 +343,21 @@ Use only IDs or definite class names to select DOM elements in tests. Try to avo
 
 ![Warning](icons/warning.png) **Wrong Selector**
 
-````typescript
+```typescript
 const selectedLanguage = element.getElementsByClassName('hidden-xs');
-````
+```
 
 ![Right](icons/tip.png) **Correct Selector**
 
-````typescript
+```typescript
 // by id
 
-const selectedLanguage = element.querySelector('#language-switch')
+const selectedLanguage = element.querySelector('#language-switch');
 
-// by class  
+// by class
 
 const selectedLanguage = element.getElementsByClassName('language-switch');
-````
+```
 
 #### DOM Changes for Tests
 
@@ -365,8 +365,8 @@ Use `data-testing-id` via attribute binding to implement an identifier used for 
 
 ![Right](icons/tip.png) **Correct Testing ID**
 
-````html
-\*.component.html  
+```html
+\*.component.html
 
 < ol class = "viewer-nav" >< li * ngFor = "let section of sections" [ attr . data - testing-id ]= "section.value" >{{ section . text }}</ li > </ ol >
 
@@ -374,8 +374,8 @@ Use `data-testing-id` via attribute binding to implement an identifier used for 
 
 element.querySelectorAll("[data-testing-id]")[0].innerHTML
 
-element.querySelectorAll("[data-testing-id='en']").length  
-````
+element.querySelectorAll("[data-testing-id='en']").length
+```
 
 > ![Note](icons/note.png) **Note**  
 > Do not overuse this feature!
@@ -388,23 +388,21 @@ Every component should have a 'should be created' test like the one Angular CLI 
 
 ![Right](icons/tip.png)
 
-````typescript
+```typescript
 it('should be created', () => {
+  expect(component).toBeTruthy();
 
-  expect(component).toBeTruthy();
+  expect(element).toBeTruthy();
 
-  expect(element).toBeTruthy();
-
-  expect(() => fixture.detectChanges()).not.toThrow();
-
+  expect(() => fixture.detectChanges()).not.toThrow();
 });
-````
+```
 
 #### Choose the Right Level of Abstraction
 
-* When working mainly with stubs for specific services which mock dependencies of services under test, you should mainly use spies to check whether the right methods of the stub are called.
-* When working mainly with fully configured services, it is best to check return values.
-* When testing complex scenarios (e.g., when the test has to handle multiple pages), it might be better to implement a Geb+Spock end to end test.
+- When working mainly with stubs for specific services which mock dependencies of services under test, you should mainly use spies to check whether the right methods of the stub are called.
+- When working mainly with fully configured services, it is best to check return values.
+- When testing complex scenarios (e.g., when the test has to handle multiple pages), it might be better to implement a Geb+Spock end to end test.
 
 See [Three Ways to Test Angular Components](https://vsavkin.com/three-ways-to-test-angular-2-components-dcea8e90bd8d) for more information.
 
@@ -424,14 +422,14 @@ Jasmine does not automatically reset all your variables for each test like other
 > ![Warning](icons/warning.png) **Warning**  
 > Since tests should be independent of each other, do not do this.
 
-````typescript
+```typescript
 describe(... () => {
   let varA = true;    // if changed once, value is not initialized again
   const varB = true;  // immutable value let
   varC;               // initialized in beforeEach for every test
-  
+
   beforeEach({ varC = true; });
-  
+
   it( 'test1' () => {
     varA = false;
     // varB = false; not possible
@@ -442,9 +440,9 @@ describe(... () => {
     // varC is back to true
   })
 });
-````
+```
 
-As shown in the above example, `varA` shows the wrong way of initializing variables in tests.
+As shown in the above example, `varA` shows the wrong way of initializing variables in tests.
 
 If you do not need to change the value, use a `const` declaration like variable `varB`. If you need to change the value in some tests, assure it is reinitialized each time in the `beforeEach` method like `varC`.
 
@@ -452,7 +450,7 @@ If you do not need to change the value, use a `const` declaration like variable 
 
 Testing `EventEmitter` firing can be done in multiple ways that have advantages and disadvantages. Consider the following example:
 
-````typescript
+```typescript
 import { EventEmitter } from '@angular/core';
 import { anything, capture, deepEqual, spy, verify } from 'ts-mockito';
 
@@ -471,7 +469,8 @@ describe('Emitter', () => {
     component = new Component();
   });
 
-  it('should detect errors using spy with extract', () => { // *1*
+  it('should detect errors using spy with extract', () => {
+    // *1*
     const emitter = spy(component.valueChange);
 
     component.do();
@@ -481,7 +480,8 @@ describe('Emitter', () => {
     expect(arg).toEqual({ val: 0 });
   });
 
-  it('should detect errors using spy with deepEqual', () => { // *2*
+  it('should detect errors using spy with deepEqual', () => {
+    // *2*
     const emitter = spy(component.valueChange);
 
     component.do();
@@ -489,7 +489,8 @@ describe('Emitter', () => {
     verify(emitter.emit(deepEqual({ val: 0 }))).once();
   });
 
-  it('should detect errors using subscribe', done => { // *3*
+  it('should detect errors using subscribe', done => {
+    // *3*
     component.valueChange.subscribe(data => {
       expect(data).toEqual({ val: 0 });
       done();
@@ -498,13 +499,13 @@ describe('Emitter', () => {
     component.do();
   });
 });
-````
+```
 
 As `EventEmitter` is `Observable`, subscribing to it might be the most logical way of testing it. We, however, would recommend using `ts-mockito` to increase readability. The ways 1 and 2 portrait two options, we would recommend using the first one.
 
-| | 1 (preferred) | 2 | 3 |
-| ------------------- | --- | --- | --- |
-| Description | - Using ts-mockito spy and then verify it has fired - Then check argument for expected value |  Using ts-mockito spy and then verify it has fired with the expected value| - Using subscription and asynchronous method safeguard |
-| Readability | Capturing arguments with ts-mockito might seem tricky and therefore reduces readability, but the test is done in the right order. | ![Right](icons/tip.png) Right order, fewest lines of code | ![Wrong](icons/warning.png) Order is reversed. |
-| In case it does not emit | ![Right](icons/check.svg) Correct line number and a missing emission is reported. | ![Right](icons/tip.png) Correct line number and a missing emission is reported. | ![Wrong](icons/warning.png) Test runs into timeout as the asynchronous callback is not called. |
-| In case it emits another value | ![Right](icons/tip.png) Correct line number and an incorrect value is reported. | ![Wrong](icons/warning.png) Missing emission is reported. | ![Right](icons/tip.png) Correct line number and an incorrect value is reported. |
+|                                | 1 (preferred)                                                                                                                     | 2                                                                               | 3                                                                                              |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Description                    | - Using ts-mockito spy and then verify it has fired - Then check argument for expected value                                      | Using ts-mockito spy and then verify it has fired with the expected value       | - Using subscription and asynchronous method safeguard                                         |
+| Readability                    | Capturing arguments with ts-mockito might seem tricky and therefore reduces readability, but the test is done in the right order. | ![Right](icons/tip.png) Right order, fewest lines of code                       | ![Wrong](icons/warning.png) Order is reversed.                                                 |
+| In case it does not emit       | ![Right](icons/check.svg) Correct line number and a missing emission is reported.                                                 | ![Right](icons/tip.png) Correct line number and a missing emission is reported. | ![Wrong](icons/warning.png) Test runs into timeout as the asynchronous callback is not called. |
+| In case it emits another value | ![Right](icons/tip.png) Correct line number and an incorrect value is reported.                                                   | ![Wrong](icons/warning.png) Missing emission is reported.                       | ![Right](icons/tip.png) Correct line number and an incorrect value is reported.                |
