@@ -8,8 +8,6 @@
 
 ## [Software Architecture](./software-architecture.md)
 
-## [Style Guide](./style-guide.md)
-
 ## [Localization](./localization.md)
 
 ## [State Management](./state-management.md)
