@@ -1,10 +1,10 @@
 # Code Documentation
 
-For our Intershop Progressive Web App, Compodoc is used as documentation package. For further information refer to [Compodoc](https://compodoc.app).
+For our Intershop Progressive Web App, Compodoc is used as documentation package. For further information refer to [Compodoc](https://compodoc.app).
 
-For documentation, the _tsconfig.app.json_ file is used as configuration file. The output folder for the documentation is set to _<project-home>\\docs\\compodoc_.
+For documentation, the _tsconfig.app.json_ file is used as configuration file. The output folder for the documentation is set to _<project-home>/docs/compodoc_.
 
-We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc. The _style.css_ file of the theme can be found in _<project-home>\\docs\\theme_.
+We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc. The _style.css_ file of the theme can be found in _<project-home>/docs/theme_.
 
 Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](http://typedoc.org/guides/doccomments/).
 
@@ -14,27 +14,27 @@ Examples for the comment styling pattern can be found here: [TypeDoc - DocCommen
 
 **Generate Code Documentation**
 
-````bash
+```bash
 npm run docs
-````
+```
 
-The generated documentation can be called by _\<project-home\>\\docs\\compodoc\\index.html_.
+The generated documentation can be called by _<project-home>/docs/compodoc/index.html_.
 
 ### Serve Generated Documentation with Compodoc
 
 **Serve Generated Documentation with Compodoc**
 
-````bash
+```bash
 npm run docs:serve
-````
+```
 
-Documentation is generated at _\<project-home\>\\docs\\compodoc_ (output folder). The local HTTP server is launched at _http://localhost:8080_.
+Documentation is generated at _<project-home>/docs/compodoc_ (output folder). The local HTTP server is launched at _http://localhost:8080_.
 
 **Watch Source Files After Serve and Force Documentation Rebuild**
 
-````bash
+```bash
 npm run docs:watch
-````
+```
 
 ## Comments
 
@@ -46,24 +46,24 @@ Use this format to describe components, modules, etc., but also methods, inputs,
 
 **Example for General Description**
 
-````typescript
+```typescript
 /**
  * The Product Images Component
  */
-````
+```
 
 ### JSDoc Tags
 
 Currently Compodoc supports the following JSDoc tags :
 
-* `@returns`
-* `@param`
-* `@link`
-* `@example`
+- `@returns`
+- `@param`
+- `@link`
+- `@example`
 
 **Example for parameter and return values**
 
-````typescript
+```typescript
 /**
  * REST API - Get full product data
  * @param productSku  The product SKU for the product of interest.
@@ -72,11 +72,11 @@ Currently Compodoc supports the following JSDoc tags :
 getProduct(productSku: string): Observable<Product> {
  ...
 }
-````
+```
 
 **Example for links and implementation examples**
 
-````typescript
+```typescript
 /**
  * The Product Images Component displays carousel slides for all images of the product and a thumbnails list as carousel indicator.
  * It uses the {@link ProductImageComponent} for the rendering of product images.
@@ -84,30 +84,30 @@ getProduct(productSku: string): Observable<Product> {
  * @example
  * <ish-product-images [product]="product"></ish-product-images>
  */
-````
+```
 
 > ![Note](icons/note.png) **Indentation Warning**  
-TypeScript has an internal margin for new lines. If you want to keep a level of indentation, put a minimum of 13 space characters as shown in the example:
+> TypeScript has an internal margin for new lines. If you want to keep a level of indentation, put a minimum of 13 space characters as shown in the example:
 
 **Example with Indentation Keeping**
-  
-````typescript
-  /** 
-  * @example
-  * <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
-  *               <input
-  *                 [type]="type"
-  *                 class="form-control">
-  *               <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
-  * </div>
-  */
-  ````
+
+```typescript
+/**
+ * @example
+ * <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+ *               <input
+ *                 [type]="type"
+ *                 class="form-control">
+ *               <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
+ * </div>
+ */
+```
 
 > New lines are created inside a comment with a blank line between two lines:
 
 **Comments with New Lines**
 
-````typescript
+```typescript
 /**
  * First line
  *
@@ -118,29 +118,29 @@ TypeScript has an internal margin for new lines. If you want to keep a level of 
  * First line
  * Behind first line, produces only one line
  */
-````
+```
 
 ## Documentation Rules
 
 ### General Documentation Rules
 
-* Use speaking names, especially for methods, effects and actions.
-* We do not need additional documentation if the name describes the behavior.
-* Use comments for documentation in all cases where the name alone cannot describe everything .
+- Use speaking names, especially for methods, effects and actions.
+- We do not need additional documentation if the name describes the behavior.
+- Use comments for documentation in all cases where the name alone cannot describe everything .
 
 ### Component Documentation
 
 To document a component of the Intershop Progressive Web App:
 
-* A description of the general behavior of the component exists.
-* All input parameters are described.
-* All output parameters are described.
-* An example of how the component can be used in templates is shown.
-* Relevant components used by the component could be linked in the documentation.
+- A description of the general behavior of the component exists.
+- All input parameters are described.
+- All output parameters are described.
+- An example of how the component can be used in templates is shown.
+- Relevant components used by the component could be linked in the documentation.
 
 **Example for the Documentation of a Component**
 
-````typescript
+```typescript
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
@@ -154,11 +154,9 @@ import { Product } from '../../../../models/product/product.model';
 @Component({
   selector: 'ish-product-images',
   templateUrl: './product-images.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductImagesComponent {
-
   /**
    * The product for which the images should be displayed.
    */
@@ -184,20 +182,19 @@ export class ProductImagesComponent {
   isActiveSlide(slideIndex: number): boolean {
     return this.activeSlide === slideIndex;
   }
-
 }
-````
+```
 
 ### Service Documentation
 
 To document a service of the Intershop Progressive Web App:
 
-* A description of the service exists.
-* The methods of the service with the input and output parameters are described.  
+- A description of the service exists.
+- The methods of the service with the input and output parameters are described.
 
 **Example for the Documentation of a Service**
 
-````typescript
+```typescript
 import { ApiService } from '../../../core/services/api.service';
 import { Product } from '../../../models/product/product.model';
 ...
@@ -234,19 +231,19 @@ export class ProductsService {
   }
 
 }
-````
+```
 
 ### Directive Documentation
 
 To document a directive of the Intershop Progressive Web App:
 
-* A description of the general behavior of the directive exists.
-* All input properties are described.
-* An example how the directive can be used in templates is shown.
+- A description of the general behavior of the directive exists.
+- All input properties are described.
+- An example how the directive can be used in templates is shown.
 
 **Example for the Documentation of a Directive**
 
-````typescript
+```typescript
 import { Directive, HostBinding, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
@@ -262,11 +259,9 @@ import { AbstractControl } from '@angular/forms';
  * </div>
  */
 @Directive({
-  selector: '[ishShowFormFeedback]'
+  selector: '[ishShowFormFeedback]',
 })
-
 export class ShowFormFeedbackDirective {
-
   /**
    * FormControl which validation status is considered.
    */
@@ -286,9 +281,8 @@ export class ShowFormFeedbackDirective {
   @HostBinding('class.has-success') get hasSuccess() {
     return this.control.valid && this.control.dirty;
   }
-
 }
-````
+```
 
 ### Model Documentation
 
@@ -300,12 +294,11 @@ For guards, resolvers and interceptors the class should be described. The method
 
 **Example for the Documentation of an Interceptor**
 
-````typescript
+```typescript
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
-
 
 let TOKEN: string;
 
@@ -318,9 +311,7 @@ const authorizationHeaderKey = 'Authorization';
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     if (TOKEN && !req.headers.has(authorizationHeaderKey)) {
       req = req.clone({ headers: req.headers.set(tokenHeaderKeyName, TOKEN) });
     }
@@ -342,21 +333,21 @@ export class AuthInterceptor implements HttpInterceptor {
 export function _setToken(token: string): void {
   TOKEN = token;
 }
-````
+```
 
 ### Configuration/Injection Key Documentation
 
-To document configuration or injection keys of the Intershop Progressive Web App, the stored information of the keys has to be described.
+To document configuration or injection keys of the Intershop Progressive Web App, the stored information of the keys has to be described.
 
 If there are several states possible, describe the states of the key.
 
 **Example for the Documentation of a Configuration Key**
 
-````typescript
+```typescript
 import { InjectionToken } from '@angular/core';
 
 /**
  * global definition of the endless scrolling page size.
  */
 export const ENDLESS_SCROLLING_ITEMS_PER_PAGE = new InjectionToken<boolean>('endlessScrollingItemsPerPage');
-````
+```

@@ -34,7 +34,7 @@ To access those events, Angular uses the concept of zones. In short words, a zon
 See also: [Using Zones in Angular for better performance](https://blog.thoughtram.io/angular/2017/02/21/using-zones-in-angular-for-better-performance.html)
 
 > ![Note](icons/note.png) **Note**  
->Zones wrap asynchronous browser APIs, and notify a consumer when an asynchronous task has started or ended. Angular takes advantage of these APIs to get notified when any asynchronous task is done. This includes things like XHR calls, `setTimeout()` and pretty much all user events like `click`, `submit`, `mousedown`, … etc.
+> Zones wrap asynchronous browser APIs, and notify a consumer when an asynchronous task has started or ended. Angular takes advantage of these APIs to get notified when any asynchronous task is done. This includes things like XHR calls, `setTimeout()` and pretty much all user events like `click`, `submit`, `mousedown`, … etc.
 
 When async events happen in the application, the zone informs Angular which then triggers change detection.
 
@@ -49,10 +49,12 @@ The zone tracks all ongoing async events and does also know whether there are pe
 
 The stability of the Angular zone can be used to make decisions in the code. `ApplicationRef.isStable` exposes an Observable stream which gives information about whether the zone is stable or not.
 
-````typescript
+```typescript
 import { ApplicationRef } from '@angular/core';
 
-@Component({ /* ... */ })
+@Component({
+  /* ... */
+})
 export class MyComponent {
   constructor(private appRef: ApplicationRef) {
     appRef.isStable.subscribe(stable => {
@@ -62,7 +64,7 @@ export class MyComponent {
     });
   }
 }
-````
+```
 
 #### Using Zone Stability
 
@@ -92,40 +94,39 @@ If you have any intervals in the application, wait for zone stability first befo
 ### Data Handling with Mappers dataHandling
 
 The data (server-side and client-side) have to be separated, because the data sent by the server may change over iterations or may not be in the right format, while the client side shop data handling may be stable for a long time. Therefore, each existing model served by the `httpclient` has to fit the mapper pattern.  
-First of all, the raw data (from the server) is defined by an interface (_\<name\>.interface.ts_) and mapped to a type used in the Angular application (_\<name\>.model.ts_). Both files have to be close together so they share a parent directory in _src/core/models_. Next to them is a _\<name\>.mapper.ts_ to map the raw type to the other and back.  
-  
+First of all, the raw data (from the server) is defined by an interface (_<name>.interface.ts_) and mapped to a type used in the Angular application (_<name>.model.ts_). Both files have to be close together so they share a parent directory in _src/core/models_. Next to them is a _<name>.mapper.ts_ to map the raw type to the other and back.
+
 **category.interface.ts**
 
-````typescript
+```typescript
 export interface CategoryData {
   id: string;
   name: string;
   raw: string;
 }
-````
+```
 
 **category.model.ts**
 
-````typescript
+```typescript
 export class Category {
   id: string;
   name: string;
   transformed: number;
 }
-````
+```
 
 **category.mapper.ts**
 
-````typescript
-@Injectable({ providedIn: 'root'})
+```typescript
+@Injectable({ providedIn: 'root' })
 export class CategoryMapper {
-
   fromData(categoryData: CategoryData): Category {
     const category: Category = {
       id: categoryData.id,
       name: categoryData.id,
-      transformed: CategoryHelper.transform(categoryData.raw)
-    }
+      transformed: CategoryHelper.transform(categoryData.raw),
+    };
     return category;
   }
 
@@ -133,11 +134,11 @@ export class CategoryMapper {
     const categoryData: CategoryData = {
       id: category.id,
       name: category.id,
-      raw: CategoryHelper.raw(categoryData.transformed)
-    }
+      raw: CategoryHelper.raw(categoryData.transformed),
+    };
     return categoryData;
   }
 }
-````
+```
 
-A _\<name\>.helper.ts_ can be introduced to provide utility functions for the model.
+A _<name>.helper.ts_ can be introduced to provide utility functions for the model.

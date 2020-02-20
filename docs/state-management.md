@@ -11,7 +11,7 @@ This section describes how [NgRx](https://ngrx.io/) is integrated into the Inter
 
 ## Architecture
 
-![State Management](state-management.svg "State Management")
+![State Management](state-management.svg 'State Management')
 
 NgRx is a framework for handling state information in Angular applications following the Redux pattern. It consist of a few basic parts:
 
@@ -63,23 +63,23 @@ src/app/core
 
 An application module named `foobar` with substates named `foo` and `bar` serves as an example. The files handling NgRx store should then be contained in the folder `foobar`. Each substate should aggregate its store components in separate subfolders correspondingly named `foo` and `bar`:
 
-- *foo.actions.ts*: This file contains all action creators for the `foo` state. Additionally, a bundle type aggregating all action creators and an enum type with all action types is contained here.
+- _foo.actions.ts_: This file contains all action creators for the `foo` state. Additionally, a bundle type aggregating all action creators and an enum type with all action types is contained here.
 
-- *foo.effects.ts*: This file defines an effect class with all its containing effect implementations for the `FooState`.
+- _foo.effects.ts_: This file defines an effect class with all its containing effect implementations for the `FooState`.
 
-- *foo.reducer.ts*: This file exports a reducer function which modifies the state of `foo`. Additionally, the `FooState` and its `initialState` is contained here.
+- _foo.reducer.ts_: This file exports a reducer function which modifies the state of `foo`. Additionally, the `FooState` and its `initialState` is contained here.
 
-- *foo.selectors.ts*: This file exports all selectors working on the state of `foo`.
+- _foo.selectors.ts_: This file exports all selectors working on the state of `foo`.
 
-- *index.ts*: This file exports the public API for the state of the `foo` substate. In here all specific selectors and actions are exported.
+- _index.ts_: This file exports the public API for the state of the `foo` substate. In here all specific selectors and actions are exported.
 
 Furthermore, the state of foobar is aggregated in two files:
 
-- *foobar.state.ts*: Contains the `FoobarState` as an aggregate of the `foo` and `bar` states.
+- _foobar.state.ts_: Contains the `FoobarState` as an aggregate of the `foo` and `bar` states.
 
-- *foobar.system.ts*: Contains aggregations for `foobarReducers` and `foobarEffects` of the corresponding substates to be used in modules and `TestBed` declarations.
+- _foobar.system.ts_: Contains aggregations for `foobarReducers` and `foobarEffects` of the corresponding substates to be used in modules and `TestBed` declarations.
 
-Access to the state slice of `foobar` is provided with the `FoobarFacade` located in *foobar.facade.ts*
+Access to the state slice of `foobar` is provided with the `FoobarFacade` located in _foobar.facade.ts_
 
 ## Naming
 
@@ -105,13 +105,13 @@ The action creator is a class with an optional payload member. Its PascalCase na
 ```typescript
 export class LoadFoo implements Action {
   readonly type = FooActionTypes.LoadFoo;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 ```
 
 ### Actions - Bundle
 
-The file *actions.ts* should also contain an action bundle type with the name of the substate + 'Action', which is to be used in the reducer and tests.
+The file _actions.ts_ should also contain an action bundle type with the name of the substate + 'Action', which is to be used in the reducer and tests.
 
 ```typescript
 export type FooAction = LoadFoo | SaveFoo | ...
@@ -144,7 +144,7 @@ export const getSelectedFoo = createSelector( ...
 
 ### Facades - Streams
 
-Any field ending with $ indicates that a stream is supplied. i.e. `foos$()`, `bars$`, `foo$(id)`. The facade takes care that the stream will be loaded or initialized. The naming should just refer to the object itself without any verbs.
+Any field ending with \$ indicates that a stream is supplied. i.e. `foos$()`, `bars$`, `foo$(id)`. The facade takes care that the stream will be loaded or initialized. The naming should just refer to the object itself without any verbs.
 
 ### Facades - Action Dispatchers
 
