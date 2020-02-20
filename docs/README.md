@@ -30,8 +30,6 @@
 
 ## [Deployment Scenarios](./deployment-scenarios.md)
 
-## [Angular Universal](./angular-universal.md)
-
 ## [Continuous Integration](./continous-integration.md)
 
 ## [Microsoft Azure Deployment](./microsoft-azure-deployment.md)
