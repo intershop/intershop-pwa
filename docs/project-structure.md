@@ -149,17 +149,27 @@ In the PWA we prefer using property binding since this covers more cases in the 
 
 There is an exception for direct string value bindings where we use for example `routerLink="/logout"` instead of `[routerLink]="'/logout'"`.
 
-Pattern to avoid:
-- `<div attr.data-testing-id="category-{{ category.id }}">`
-- `<img src="{{ base_url + category.images[0].effectiveUrl }}">`
+![Warning](icons/warning.png) **Pattern to avoid**
 
-Prefer:
-- `<div [attr.data-testing-id]="'category-' + category.id">`
-- `<img [src]="base_url + category.images[0].effectiveUrl">`
+````html
+<div attr.data-testing-id="category-{{category.id}}">  
+  
+<img src="{{base_url + category.images[0].effectiveUrl}}">
+````
+
+![Tip](icons/tip.png) **Correct pattern**
+
+````html
+<div [attr.data-testing-id]="'category-' + category.id">  
+  
+<img [src]="base_url + category.images[0].effectiveUrl">
+````
 
 ### Pattern for Conditions (ngif) with Alternative Template (else) in Component Templates
 
 Also for consistency reasons, we want to establish the following pattern for conditions in component templates:
+
+![Tip](icons/tip.png) **Condition in template**
 
 ```typescript
 <ng-container *ngIf="show; else elseBlock">
@@ -181,6 +191,8 @@ In this case the condition should look like this:
 ### Do Not Unsubscribe, Use Destroy Observable and takeUntil Instead
 
 Following the ideas of the article [RxJS: Don’t Unsubscribe](https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
+
+![Tip](icons/tip.png) **'unsubscribe' via destroy$ Subject**
 
 ```typescript
 export class AnyComponent implements OnInit, OnDestroy {
