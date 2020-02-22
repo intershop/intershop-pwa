@@ -125,7 +125,7 @@ Testing should not be done for the sake of tests existing:
 
 #### Make Stronger Assertions
 
-It is easy to always test with `toBeTruthy` or `toBeFalsy` when you expect something as a return value, but it is better to make stronger assertions like `toBe(true)`, `toBeNull` or `toEqual(12)`.
+It is easy to always test with `toBeTruthy` or `toBeFalsy` when you expect something as a return value, but it is better to make stronger assertions like `toBeTrue`, `toBeNull` or `toEqual(12)`.
 
 ![Warning](icons/warning.png)
 
@@ -141,7 +141,7 @@ it('should cache data with encryption', () => {
 ```typescript
 it('should cache data with encryption', () => {
   customCacheService.storeDataToCache('My task is testing', 'task', true);
-  expect(customCacheService.cacheKeyExists('task')).toBe(true);
+  expect(customCacheService.cacheKeyExists('task')).toBeTrue();
 });
 ```
 
@@ -151,10 +151,12 @@ Again, do not rely too much on the implementation. If user customizations can ea
 
 ```typescript
 it('should test if tags with their text are getting rendered on the HTML', () => {
-    expect(element.getElementsByTagName('h3')\[0\].textContent).toContain('We are sorry');
-    expect(element.getElementsByTagName('p')\[0\].textContent).toContain('The page you are looking for is currently not available');
-    expect(element.getElementsByTagName('h4')\[0\].textContent).toContain('Please try one of the following:');
-    expect(element.getElementsByClassName('btn-primary')\[0\].textContent).toContain('Search');
+  expect(element.getElementsByTagName('h3')[0].textContent).toContain('We are sorry');
+  expect(element.getElementsByTagName('p')[0].textContent).toContain(
+    'The page you are looking for is currently not available'
+  );
+  expect(element.getElementsByTagName('h4')[0].textContent).toContain('Please try one of the following:');
+  expect(element.getElementsByClassName('btn-primary')[0].textContent).toContain('Search');
 });
 ```
 
@@ -162,8 +164,8 @@ it('should test if tags with their text are getting rendered on the HTML', () =>
 
 ```typescript
 it('should test if tags with their text are getting rendered on the HTML', () => {
-    expect(element.getElementsByClassName('error-text')).toBeTruthy();
-    expect(element.getElementsByClassName('btn-primary')\[0\].textContent).toContain('Search');
+  expect(element.getElementsByClassName('error-text')).toBeTruthy();
+  expect(element.getElementsByClassName('btn-primary')[0].textContent).toContain('Search');
 });
 ```
 
@@ -215,18 +217,20 @@ This also applies to assertions. They should be readable like meaningful sentenc
 
 ```typescript
 const result = accountService.isAuthorized();
-expect(result).toBe(true);
+expect(result).toBeTrue();
 ```
 
 ![Right](icons/tip.png)
 
 ```typescript
-const authorized = accountService.isAuthorized()
-expect(authorized).toBe(true)
+const authorized = accountService.isAuthorized();
+expect(authorized).toBeTrue();
+```
 
-          _or directly_
+or directly
 
-expect(accountService.isAuthorized()).toBe(true)
+```typescript
+expect(accountService.isAuthorized()).toBeTrue();
 ```
 
 #### Avoid Global Variables
@@ -268,7 +272,7 @@ describe('AppComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: \[ ... \] });
+            declarations: [ ... ] });
         fixture = TestBed.createComponent(AppComponent);
         component = fixture.componentInstance;
     })
@@ -365,19 +369,23 @@ Use `data-testing-id` via attribute binding to implement an identifier used for 
 
 ![Right](icons/tip.png) **Correct Testing ID**
 
-```html
 \*.component.html
 
-< ol class = "viewer-nav" >< li * ngFor = "let section of sections" [ attr . data - testing-id ]= "section.value" >{{ section . text }}</ li > </ ol >
+```html
+<ol class="viewer-nav">
+  <li *ngFor="let section of sections" [attr.data-testing-id]="section.value">{{ section.text }}</li>
+</ol>
+```
 
 \*.spec.ts
 
-element.querySelectorAll("[data-testing-id]")[0].innerHTML
+```typescript
+element.querySelectorAll('[data-testing-id]')[0].innerHTML;
 
-element.querySelectorAll("[data-testing-id='en']").length
+element.querySelectorAll("[data-testing-id='en']").length;
 ```
 
-> ![Note](icons/note.png) **Note**  
+> ![Note](icons/note.png) **Note**
 > Do not overuse this feature!
 
 ### Stick to Intershop Conventions Regarding Angular Tests
@@ -391,9 +399,7 @@ Every component should have a 'should be created' test like the one Angular CLI 
 ```typescript
 it('should be created', () => {
   expect(component).toBeTruthy();
-
   expect(element).toBeTruthy();
-
   expect(() => fixture.detectChanges()).not.toThrow();
 });
 ```
@@ -425,8 +431,8 @@ Jasmine does not automatically reset all your variables for each test like other
 ```typescript
 describe(... () => {
   let varA = true;    // if changed once, value is not initialized again
-  const varB = true;  // immutable value let
-  varC;               // initialized in beforeEach for every test
+  const varB = true;  // immutable value
+  let varC;           // initialized in beforeEach for every test
 
   beforeEach({ varC = true; });
 
@@ -507,5 +513,5 @@ As `EventEmitter` is `Observable`, subscribing to it might be the most logical w
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | Description                    | - Using ts-mockito spy and then verify it has fired - Then check argument for expected value                                      | Using ts-mockito spy and then verify it has fired with the expected value       | - Using subscription and asynchronous method safeguard                                         |
 | Readability                    | Capturing arguments with ts-mockito might seem tricky and therefore reduces readability, but the test is done in the right order. | ![Right](icons/tip.png) Right order, fewest lines of code                       | ![Wrong](icons/warning.png) Order is reversed.                                                 |
-| In case it does not emit       | ![Right](icons/check.svg) Correct line number and a missing emission is reported.                                                 | ![Right](icons/tip.png) Correct line number and a missing emission is reported. | ![Wrong](icons/warning.png) Test runs into timeout as the asynchronous callback is not called. |
+| In case it does not emit       | ![Right](icons/tip.png) Correct line number and a missing emission is reported.                                                   | ![Right](icons/tip.png) Correct line number and a missing emission is reported. | ![Wrong](icons/warning.png) Test runs into timeout as the asynchronous callback is not called. |
 | In case it emits another value | ![Right](icons/tip.png) Correct line number and an incorrect value is reported.                                                   | ![Wrong](icons/warning.png) Missing emission is reported.                       | ![Right](icons/tip.png) Correct line number and an incorrect value is reported.                |
