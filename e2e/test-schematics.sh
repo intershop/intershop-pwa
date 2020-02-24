@@ -81,11 +81,6 @@ npx ng g customized-copy shell/footer/footer
 stat src/app/shell/footer/custom-footer/custom-footer.component.ts
 grep 'custom-footer' src/app/app.component.html
 
-
-git add -A
-npx lint-staged
-npx tsc --project tsconfig.spec.json
-
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
 
 if grep mockServerAPI src/environments/environment.prod.ts
@@ -94,6 +89,10 @@ then
 else
   sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
 fi
+
+git add -A
+npx lint-staged
+npx tsc --project tsconfig.spec.json
 
 npm run build
 
