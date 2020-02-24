@@ -74,7 +74,7 @@ export interface ProductData {
 }
 
 export interface ProductDataStub {
-  attributeGroups?: { [id: string]: AttributeGroup };
+  attributeGroup?: { name: string; attributes: Attribute[] };
   attributes: Attribute[];
   description: string;
   title: string;

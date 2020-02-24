@@ -30,12 +30,32 @@ describe('Products Service', () => {
         uri: '/categories/CategoryID/products/ProductA',
         title: 'Product A',
         attributes: [{ name: 'sku', type: 'String', value: 'ProductA' }],
+        attributeGroup: {
+          name: 'attrGroupA',
+          attributes: [
+            {
+              name: 'attrNameA',
+              type: 'Boolean',
+              value: true,
+            },
+          ],
+        },
       },
       {
         type: 'Link',
         uri: '/categories/CategoryID/products/ProductB',
         title: 'Product B',
         attributes: [{ name: 'sku', type: 'String', value: 'ProductB' }],
+        attributeGroup: {
+          name: 'attrGroupB',
+          attributes: [
+            {
+              name: 'attrNameB',
+              type: 'Boolean',
+              value: true,
+            },
+          ],
+        },
       },
     ],
     type: 'ResourceCollection',
