@@ -50,6 +50,10 @@ jobs:
           (cd schematics && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
           (cd tslint-rules && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
 
+      - name: Escalate TSLint Rules
+        run: |
+          node scripts/tslint-hard
+
       - name: Lint by action
         uses: mooyoul/tslint-actions@v1.1.1
         with:
@@ -127,7 +131,8 @@ jobs:
       - name: Test Schematics
         run: |
           bash e2e/test-schematics.sh
-          sh scripts/ci-check-no-additional-warnings.sh
+          node scripts/tslint-hard
+          npm run lint
 
   Cypress:
     needs: Build
