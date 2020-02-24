@@ -717,7 +717,8 @@ schematics:
   script:
     - npm install
     - bash e2e/test-schematics.sh
-    - sh scripts/ci-check-no-additional-warnings.sh
+    - node scripts/tslint-hard
+    - npm run lint
     - echo "schematics complete"
 
 .universal_template: &universal_definition
@@ -831,7 +832,8 @@ check_tslint_no_warnings:
     - performance
   script:
     - npm ci
-    - sh scripts/ci-check-no-additional-warnings.sh
+    - node scripts/tslint-hard
+    - npm run lint
     - echo "check complete"
 
 housekeeping_images:
