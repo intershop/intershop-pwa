@@ -19,7 +19,6 @@ import { InputComponent } from './components/input/input.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SelectAddressComponent } from './components/select-address/select-address.component';
 import { SelectCountryComponent } from './components/select-country/select-country.component';
-import { SelectLanguageComponent } from './components/select-language/select-language.component';
 import { SelectRegionComponent } from './components/select-region/select-region.component';
 import { SelectSecurityQuestionComponent } from './components/select-security-question/select-security-question.component';
 import { SelectTitleComponent } from './components/select-title/select-title.component';
@@ -41,7 +40,6 @@ const exportedComponents = [
   SelectAddressComponent,
   SelectComponent,
   SelectCountryComponent,
-  SelectLanguageComponent,
   SelectRegionComponent,
   SelectSecurityQuestionComponent,
   SelectTitleComponent,

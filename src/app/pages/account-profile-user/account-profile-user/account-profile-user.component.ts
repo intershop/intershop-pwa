@@ -44,7 +44,6 @@ export class AccountProfileUserComponent implements OnInit, OnChanges {
       firstName: new FormControl('', [Validators.required, SpecialValidators.noSpecialChars]),
       lastName: new FormControl('', [Validators.required, SpecialValidators.noSpecialChars]),
       phoneHome: new FormControl(''),
-      preferredLanguage: new FormControl(this.countryCode, Validators.required),
     });
 
     // initialize form values in case currentUser is available
@@ -69,11 +68,6 @@ export class AccountProfileUserComponent implements OnInit, OnChanges {
       this.form.get('firstName').setValue(this.currentUser.firstName);
       this.form.get('lastName').setValue(this.currentUser.lastName);
       this.form.get('phoneHome').setValue(this.currentUser.phoneHome);
-      if (this.currentUser.preferredLanguage) {
-        this.form
-          .get('preferredLanguage')
-          .setValue(this.currentUser.preferredLanguage ? this.currentUser.preferredLanguage : this.countryCode);
-      }
     }
   }
 
@@ -91,9 +85,8 @@ export class AccountProfileUserComponent implements OnInit, OnChanges {
     const firstName = this.form.get('firstName').value;
     const lastName = this.form.get('lastName').value;
     const phoneHome = this.form.get('phoneHome').value;
-    const preferredLanguage = this.form.get('preferredLanguage').value;
 
-    this.updateUserProfile.emit({ ...this.currentUser, title, firstName, lastName, phoneHome, preferredLanguage });
+    this.updateUserProfile.emit({ ...this.currentUser, title, firstName, lastName, phoneHome });
   }
 
   get buttonDisabled() {

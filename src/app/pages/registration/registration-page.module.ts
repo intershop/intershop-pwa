@@ -7,7 +7,6 @@ import { RegistrationCompanyFormComponent } from './registration-company-form/re
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form/registration-credentials-form.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { RegistrationPageComponent } from './registration-page.component';
-import { RegistrationPersonalFormComponent } from './registration-personal-form/registration-personal-form.component';
 
 const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageComponent }];
 
@@ -18,7 +17,6 @@ const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageC
     RegistrationCredentialsFormComponent,
     RegistrationFormComponent,
     RegistrationPageComponent,
-    RegistrationPersonalFormComponent,
   ],
 })
 export class RegistrationPageModule {}
