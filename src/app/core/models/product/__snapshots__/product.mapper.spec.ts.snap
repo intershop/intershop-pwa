@@ -2,7 +2,17 @@
 
 exports[`Product Mapper fromStubData should construct a stub when supplied with a complex API response 1`] = `
 Object {
-  "attributeGroups": undefined,
+  "attributeGroups": Object {
+    "attrGroup": Object {
+      "attributes": Array [
+        Object {
+          "name": "attrName",
+          "type": "Boolean",
+          "value": true,
+        },
+      ],
+    },
+  },
   "availability": true,
   "completenessLevel": 2,
   "defaultCategoryId": undefined,
