@@ -148,6 +148,16 @@ describe('Product Mapper', () => {
         attributes: [{ name: 'sku', value: 'productSKU', type: 'String' }],
         title: 'productName',
         description: 'productDescription',
+        attributeGroup: {
+          name: 'attrGroup',
+          attributes: [
+            {
+              name: 'attrName',
+              type: 'Boolean',
+              value: true,
+            },
+          ],
+        },
       });
       expect(stub).toBeTruthy();
       expect(stub.name).toEqual('productName');
@@ -177,6 +187,16 @@ describe('Product Mapper', () => {
         ] as Attribute[],
         description: 'EasyShare M552, 14MP, 6.858 cm (2.7 ") LCD, 4x, 28mm, HD 720p, Black',
         title: 'Kodak M series EasyShare M552',
+        attributeGroup: {
+          name: 'attrGroup',
+          attributes: [
+            {
+              name: 'attrName',
+              type: 'Boolean',
+              value: true,
+            },
+          ],
+        },
       });
 
       expect(stub).toMatchSnapshot();
