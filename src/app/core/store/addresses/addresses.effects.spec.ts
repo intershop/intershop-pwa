@@ -131,8 +131,11 @@ describe('Addresses Effects', () => {
       const addressId = '123';
       const action = new addressesActions.DeleteCustomerAddress({ addressId });
       const completion = new addressesActions.DeleteCustomerAddressSuccess({ addressId });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion2 = new SuccessMessage({
+        message: 'account.addresses.new_address_deleted.message',
+      });
+      actions$ = hot('-a----a----a----|', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)-|', { c: completion, d: completion2 });
 
       expect(effects.deleteCustomerAddress$).toBeObservable(expected$);
     });

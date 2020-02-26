@@ -99,11 +99,11 @@ export class AccountFacade {
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
 
-  updateCustomerProfile(customer: Customer) {
+  updateCustomerProfile(customer: Customer, message?: string) {
     this.store.dispatch(
       new UpdateCustomer({
         customer,
-        successMessage: 'account.profile.update_profile.message',
+        successMessage: message ? message : 'account.profile.update_profile.message',
         successRouterLink: '/account/profile',
       })
     );

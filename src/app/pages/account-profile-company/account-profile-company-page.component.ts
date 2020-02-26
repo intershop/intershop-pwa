@@ -42,6 +42,6 @@ export class AccountProfileCompanyPageComponent implements OnInit {
   }
 
   updateCompanyProfile(customer: Customer) {
-    this.accountFacade.updateCustomerProfile(customer);
+    this.accountFacade.updateCustomerProfile(customer, 'account.profile.update_company_profile.message');
   }
 }
