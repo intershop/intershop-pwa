@@ -59,7 +59,10 @@ export class AddressesEffects {
     filter(([addressId, customer]) => !!addressId || !!customer),
     mergeMap(([addressId, customer]) =>
       this.addressService.deleteCustomerAddress(customer.customerNo, addressId).pipe(
-        map(id => new addressActions.DeleteCustomerAddressSuccess({ addressId: id })),
+        mergeMap(id => [
+          new addressActions.DeleteCustomerAddressSuccess({ addressId: id }),
+          new SuccessMessage({ message: 'account.addresses.new_address_deleted.message' }),
+        ]),
         mapErrorToAction(addressActions.DeleteCustomerAddressFail)
       )
     )

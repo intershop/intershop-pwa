@@ -38,8 +38,4 @@ export class AccountAddressesPageComponent implements OnInit {
   deleteCustomerAddress(addressId: string) {
     this.accountFacade.deleteCustomerAddress(addressId);
   }
-
-  updateUser(user: User) {
-    this.accountFacade.updateUser(user);
-  }
 }
