@@ -12,12 +12,6 @@ const accountWishlistDetailPageRoutes: Routes = [
   {
     path: '',
     component: AccountWishlistDetailPageComponent,
-    children: [
-      {
-        path: '**',
-        component: AccountWishlistDetailPageComponent,
-      },
-    ],
   },
 ];
 

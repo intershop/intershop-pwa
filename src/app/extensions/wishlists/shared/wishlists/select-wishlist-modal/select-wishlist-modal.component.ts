@@ -120,12 +120,12 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
         this.wishlistOptions = [];
       }
       this.setDefaultFormValues();
-      this.checkUseDefault();
+      this.addProductToPreferredWishlist();
     });
   }
 
   private setDefaultFormValues() {
-    if (this.showForm && !this.checkUseDefault()) {
+    if (this.showForm && !this.addProductToPreferredWishlist()) {
       if (this.wishlistOptions && this.wishlistOptions.length > 0) {
         if (this.preferredWishlist) {
           this.updateWishlistForm.get('wishlist').setValue(this.preferredWishlist.id);
@@ -139,7 +139,8 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkUseDefault(): boolean {
+  /* don't show wishlist selection form but add a product immediately if there is a preferred wishlist */
+  private addProductToPreferredWishlist(): boolean {
     if (this.showForm && this.preferredWishlist && this.addMoveProduct === 'add') {
       this.updateWishlistForm.get('wishlist').setValue(this.preferredWishlist.id);
       this.submitForm();

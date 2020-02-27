@@ -35,11 +35,8 @@ export class AccountWishlistListComponent implements OnChanges {
 
   ngOnChanges() {
     // determine preferred wishlist
-    if (this.wishlists && this.wishlists.length) {
-      this.preferredWishlist = this.wishlists.find(wishlist => wishlist.preferred);
-    } else {
-      this.preferredWishlist = undefined;
-    }
+    this.preferredWishlist =
+      this.wishlists && this.wishlists.length ? this.wishlists.find(wishlist => wishlist.preferred) : undefined;
   }
 
   /** Emits the id of the wishlist to delete. */

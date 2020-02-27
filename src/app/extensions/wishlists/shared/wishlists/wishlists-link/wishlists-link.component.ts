@@ -1,42 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
+import { Wishlist } from '../../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-wishlists-link',
   templateUrl: './wishlists-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WishlistsLinkComponent implements OnInit, OnDestroy {
+export class WishlistsLinkComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
-  itemsCount: number = undefined;
   routerLink = '/account/wishlists';
-  private destroy$ = new Subject<void>();
+  preferredWishlist$: Observable<Wishlist>;
 
-  constructor(
-    private accountFacade: AccountFacade,
-    private wishlistFacade: WishlistsFacade,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private wishlistFacade: WishlistsFacade) {}
 
   ngOnInit() {
-    // determine the item's count of the preferred wishlist
-    this.wishlistFacade.wishlists$.pipe(takeUntil(this.destroy$)).subscribe(wishlists => {
-      const prefWishlist = wishlists.find(wishlist => wishlist.preferred);
-      this.itemsCount = prefWishlist ? prefWishlist.itemsCount : 0;
-      this.cdr.markForCheck();
-    });
-
-    this.accountFacade.isLoggedIn$.pipe(takeUntil(this.destroy$)).subscribe(loggedIn => {
-      this.routerLink = loggedIn ? '/account/wishlists' : '/login';
-    });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
+    this.preferredWishlist$ = this.wishlistFacade.preferredWishlist$;
   }
 }

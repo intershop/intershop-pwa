@@ -51,7 +51,6 @@ describe('Wishlist Preferences Dialog Component', () => {
 
   it('should emit new wishlist data when submit form was called and the form was valid', done => {
     fixture.detectChanges();
-    component.ngOnChanges({});
     component.wishListForm.setValue({
       title: 'test wishlist',
       preferred: true,
@@ -71,14 +70,7 @@ describe('Wishlist Preferences Dialog Component', () => {
   });
 
   it('should not emit new wishlist data when submit form was called and the form was invalid', () => {
-    component.ngOnChanges({
-      wishlist: {
-        currentValue: wishlist,
-        previousValue: undefined,
-        firstChange: undefined,
-        isFirstChange: undefined,
-      },
-    });
+    component.ngOnChanges();
     fixture.detectChanges();
     const emitter = spy(component.submit);
     component.submitWishlistForm();
@@ -87,14 +79,8 @@ describe('Wishlist Preferences Dialog Component', () => {
   });
 
   it('should fill form with wishlist data if formContent is passed', () => {
-    component.ngOnChanges({
-      wishlist: {
-        currentValue: wishlist,
-        previousValue: undefined,
-        firstChange: undefined,
-        isFirstChange: undefined,
-      },
-    });
+    component.wishlist = wishlist;
+    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(component.wishListForm.value.title).toEqual(wishlist.title);

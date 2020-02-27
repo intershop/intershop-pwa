@@ -6,13 +6,11 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { once } from 'lodash-es';
 
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -59,31 +57,32 @@ export class WishlistPreferencesDialogComponent implements OnInit, OnChanges {
   // tslint:disable-next-line:no-any
   @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<any>;
 
-  constructor(private fb: FormBuilder, private ngbModal: NgbModal) {}
-
-  initForm = once(() => {
-    this.wishListForm = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(35)]],
-      preferred: false,
-    });
-  });
-
-  ngOnChanges(s: SimpleChanges) {
+  constructor(private fb: FormBuilder, private ngbModal: NgbModal) {
     this.initForm();
-    if (s.wishlist && s.wishlist.currentValue) {
-      this.wishListForm.patchValue({
-        title: s.wishlist.currentValue.title,
-        preferred: s.wishlist.currentValue.preferred,
-      });
-    }
   }
 
-  ngOnInit() {
-    this.initForm();
+  ngOnChanges() {
+    this.patchForm();
     if (this.wishlist) {
       this.primaryButton = 'account.wishlists.edit_wishlist_form.save_button.text';
       this.wishlistTitle = this.wishlist.title;
       this.modalHeader = 'account.wishlist.list.edit';
+    }
+  }
+
+  initForm() {
+    this.wishListForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(35)]],
+      preferred: false,
+    });
+  }
+
+  patchForm() {
+    if (this.wishlist) {
+      this.wishListForm.setValue({
+        title: this.wishlist.title,
+        preferred: this.wishlist.preferred,
+      });
     }
   }
 

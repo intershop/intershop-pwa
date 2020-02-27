@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { spy, verify } from 'ts-mockito';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -32,11 +33,11 @@ describe('Account Wishlist List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit delete id when delete is called', done => {
-    component.deleteWishlist.subscribe(emit => {
-      expect(emit).toBe('deleteId');
-      done();
-    });
+  it('should emit delete id when delete is called', () => {
+    const emitter = spy(component.deleteWishlist);
+
     component.delete('deleteId');
+
+    verify(emitter.emit('deleteId')).once();
   });
 });

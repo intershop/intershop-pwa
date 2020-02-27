@@ -3,12 +3,12 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { WishlistPreferencesDialogComponent } from '../../shared/wishlists/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
 
 import { AccountWishlistListComponent } from './account-wishlist-list/account-wishlist-list.component';
@@ -20,8 +20,10 @@ describe('Account Wishlist Page Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const wishlistsFacade = mock(WishlistsFacade);
+
     TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [NgbPopoverModule, TranslateModule.forRoot()],
       declarations: [
         AccountWishlistPageComponent,
         MockComponent(AccountWishlistListComponent),
@@ -30,6 +32,7 @@ describe('Account Wishlist Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(WishlistPreferencesDialogComponent),
       ],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }],
     }).compileComponents();
   }));
 

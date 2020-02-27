@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { once } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -18,7 +17,7 @@ import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model'
   templateUrl: './account-wishlist-detail-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountWishlistDetailLineItemComponent implements OnChanges {
+export class AccountWishlistDetailLineItemComponent implements OnInit, OnChanges {
   constructor(private productFacade: ShoppingFacade, private wishlistsFacade: WishlistsFacade) {}
 
   private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
@@ -28,18 +27,21 @@ export class AccountWishlistDetailLineItemComponent implements OnChanges {
   addToCartForm: FormGroup;
   product$: Observable<ProductView>;
 
-  /** init form in the beginning */
-  private initForm = once(() => {
-    this.addToCartForm = new FormGroup({
-      quantity: new FormControl(1),
-    });
-  });
+  ngOnInit() {
+    this.initForm();
+  }
 
   ngOnChanges(s: SimpleChanges) {
-    this.initForm();
     if (s.wishlistItemData) {
       this.loadProductDetails();
     }
+  }
+
+  /** init form in the beginning */
+  private initForm() {
+    this.addToCartForm = new FormGroup({
+      quantity: new FormControl(1),
+    });
   }
 
   addToCart(sku: string) {
