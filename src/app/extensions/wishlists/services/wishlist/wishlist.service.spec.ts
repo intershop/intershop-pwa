@@ -26,23 +26,24 @@ describe('Wishlist Service', () => {
   });
 
   it("should get wishlists when 'getWishlists' is called", done => {
-    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [] }));
+    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [{ uri: 'any/wishlists/1234' }] }));
+    when(apiServiceMock.get(`customers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
 
-    wishlistService.getWishlists().subscribe(() => {
+    wishlistService.getWishlists().subscribe(data => {
       verify(apiServiceMock.get(`customers/-/wishlists`)).once();
-      done();
-    });
-  });
-
-  it("should get a wishlist when 'getWishlist' is called", done => {
-    const wishlistId = '1234';
-    when(apiServiceMock.get(`customers/-/wishlists/${wishlistId}`)).thenReturn(
-      of({ title: 'wishlist title' } as WishlistData)
-    );
-
-    wishlistService.getWishlist(wishlistId).subscribe(data => {
-      expect(wishlistId).toEqual(data.id);
-      verify(apiServiceMock.get(`customers/-/wishlists/${wishlistId}`)).once();
+      verify(apiServiceMock.get(`customers/-/wishlists/1234`)).once();
+      expect(data).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "id": "1234",
+            "items": Array [],
+            "itemsCount": 0,
+            "preferred": true,
+            "public": undefined,
+            "title": undefined,
+          },
+        ]
+      `);
       done();
     });
   });

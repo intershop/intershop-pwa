@@ -14,11 +14,10 @@ export class WishlistService {
 
   /**
    * Gets a list of wishlists for the current user.
-   * @param customerId  The customer id.
    * @returns           The customer's wishlists.
    */
-  getWishlists(customerId: string = '-'): Observable<Wishlist[]> {
-    return this.apiService.get(`customers/${customerId}/wishlists`).pipe(
+  getWishlists(): Observable<Wishlist[]> {
+    return this.apiService.get(`customers/-/wishlists`).pipe(
       unpackEnvelope(),
       map(wishlistData => wishlistData.map(this.wishlistMapper.fromDataToIds)),
       map(wishlistData => wishlistData.map(wishlist => this.getWishlist(wishlist.id))),
@@ -33,7 +32,7 @@ export class WishlistService {
    * @param wishlistId  The wishlist id.
    * @returns           The wishlist.
    */
-  getWishlist(wishlistId): Observable<Wishlist> {
+  private getWishlist(wishlistId): Observable<Wishlist> {
     if (!wishlistId) {
       return throwError('getWishlist() called without wishlistId');
     }
@@ -96,7 +95,7 @@ export class WishlistService {
   }
 
   /**
-   * Removes a product from the wishlist with the given id.
+   * Removes a product from the wishlist with the given id. Returns an error observable if parameters are falsy.
    * @param wishlist Id   The wishlist id.
    * @param sku           The product sku.
    * @returns             The changed wishlist.

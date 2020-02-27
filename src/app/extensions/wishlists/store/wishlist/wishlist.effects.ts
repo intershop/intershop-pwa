@@ -38,7 +38,7 @@ export class WishlistEffects {
     mapToPayloadProperty('wishlist'),
     mergeMap((wishlistData: WishlistHeader) =>
       this.wishlistService.createWishlist(wishlistData).pipe(
-        switchMap(wishlist => [
+        mergeMap(wishlist => [
           new wishlistsActions.CreateWishlistSuccess({ wishlist }),
           new SuccessMessage({
             message: 'account.wishlists.new_wishlist.confirmation',
@@ -112,7 +112,7 @@ export class WishlistEffects {
         })
         .pipe(
           // use created wishlist data to dispatch addProduct action
-          switchMap(wishlist => [
+          mergeMap(wishlist => [
             new wishlistsActions.CreateWishlistSuccess({ wishlist }),
             new wishlistsActions.AddProductToWishlist({ wishlistId: wishlist.id, sku: payload.sku }),
             new wishlistsActions.SelectWishlist({ id: wishlist.id }),
