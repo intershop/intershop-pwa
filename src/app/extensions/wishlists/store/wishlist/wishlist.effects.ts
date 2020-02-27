@@ -33,20 +33,6 @@ export class WishlistEffects {
   );
 
   @Effect()
-  loadWishlistDetails$ = this.actions$.pipe(
-    ofType<wishlistsActions.LoadWishlistDetails>(wishlistsActions.WishlistsActionTypes.LoadWishlistDetails),
-    mapToPayloadProperty('wishlistId'),
-    withLatestFrom(this.store.pipe(select(getUserAuthorized))),
-    filter(([, authorized]) => authorized),
-    mergeMap(([wishlistId]) =>
-      this.wishlistService.getWishlist(wishlistId).pipe(
-        map(wishlist => new wishlistsActions.LoadWishlistDetailsSuccess({ wishlist })),
-        mapErrorToAction(wishlistsActions.LoadWishlistDetailsFail)
-      )
-    )
-  );
-
-  @Effect()
   createWishlist$ = this.actions$.pipe(
     ofType<wishlistsActions.CreateWishlist>(wishlistsActions.WishlistsActionTypes.CreateWishlist),
     mapToPayloadProperty('wishlist'),

@@ -13,10 +13,6 @@ export enum WishlistsActionTypes {
   CreateWishlistSuccess = '[Wishlists API] Create Wishlist Success',
   CreateWishlistFail = '[Wishlists API] Create Wishlist Fail',
 
-  LoadWishlistDetails = '[Wishlists Internal] Load Wishlist Details',
-  LoadWishlistDetailsSuccess = '[Wishlists API] Load Wishlist Details Success',
-  LoadWishlistDetailsFail = '[Wishlists API] Load Wishlist Details Fail',
-
   UpdateWishlist = '[Wishlists] Update Wishlist',
   UpdateWishlistSuccess = '[Wishlists API] Update Wishlist Success',
   UpdateWishlistFail = '[Wishlists API] Update Wishlist Fail',
@@ -67,21 +63,6 @@ export class CreateWishlistSuccess implements Action {
 
 export class CreateWishlistFail implements Action {
   readonly type = WishlistsActionTypes.CreateWishlistFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
-export class LoadWishlistDetails implements Action {
-  readonly type = WishlistsActionTypes.LoadWishlistDetails;
-  constructor(public payload: { wishlistId: string }) {}
-}
-
-export class LoadWishlistDetailsSuccess implements Action {
-  readonly type = WishlistsActionTypes.LoadWishlistDetailsSuccess;
-  constructor(public payload: { wishlist: Wishlist }) {}
-}
-
-export class LoadWishlistDetailsFail implements Action {
-  readonly type = WishlistsActionTypes.LoadWishlistDetailsFail;
   constructor(public payload: { error: HttpError }) {}
 }
 
@@ -172,9 +153,6 @@ export type WishlistsAction =
   | CreateWishlist
   | CreateWishlistSuccess
   | CreateWishlistFail
-  | LoadWishlistDetails
-  | LoadWishlistDetailsSuccess
-  | LoadWishlistDetailsFail
   | UpdateWishlist
   | UpdateWishlistSuccess
   | UpdateWishlistFail

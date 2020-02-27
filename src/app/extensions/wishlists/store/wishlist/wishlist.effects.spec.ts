@@ -34,9 +34,6 @@ import {
   DeleteWishlist,
   DeleteWishlistFail,
   DeleteWishlistSuccess,
-  LoadWishlistDetails,
-  LoadWishlistDetailsFail,
-  LoadWishlistDetailsSuccess,
   LoadWishlists,
   LoadWishlistsFail,
   LoadWishlistsSuccess,
@@ -150,49 +147,6 @@ describe('Wishlist Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadWishlists$).toBeObservable(expected$);
-    });
-  });
-
-  describe('loadWishlistDetails$', () => {
-    const wishlistId = '1234';
-    beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customer }));
-
-      when(wishlistServiceMock.getWishlist(anyString())).thenReturn(of(wishlists[0]));
-    });
-
-    it('should call the wishlistService for loadWishlist', done => {
-      const action = new LoadWishlistDetails({ wishlistId });
-      actions$ = of(action);
-
-      effects.loadWishlistDetails$.subscribe(() => {
-        verify(wishlistServiceMock.getWishlist(wishlistId)).once();
-        done();
-      });
-    });
-
-    it('should map to actions of type LoadWishlistsDetailsSuccess', () => {
-      const action = new LoadWishlistDetails({ wishlistId });
-      const completion = new LoadWishlistDetailsSuccess({
-        wishlist: wishlists[0],
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadWishlistDetails$).toBeObservable(expected$);
-    });
-
-    it('should map failed calls to actions of type LoadWishlistsDetailsFail', () => {
-      const error = { message: 'invalid' } as HttpError;
-      when(wishlistServiceMock.getWishlist(anyString())).thenReturn(throwError(error));
-      const action = new LoadWishlistDetails({ wishlistId });
-      const completion = new LoadWishlistDetailsFail({
-        error,
-      });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.loadWishlistDetails$).toBeObservable(expected$);
     });
   });
 

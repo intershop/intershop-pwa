@@ -25,7 +25,6 @@ export const initialState = wishlistsAdapter.getInitialState({
 export function wishlistReducer(state = initialState, action: WishlistsAction): WishlistState {
   switch (action.type) {
     case WishlistsActionTypes.LoadWishlists:
-    case WishlistsActionTypes.LoadWishlistDetails:
     case WishlistsActionTypes.CreateWishlist:
     case WishlistsActionTypes.DeleteWishlist:
     case WishlistsActionTypes.UpdateWishlist: {
@@ -35,7 +34,6 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
       };
     }
     case WishlistsActionTypes.LoadWishlistsFail:
-    case WishlistsActionTypes.LoadWishlistDetailsFail:
     case WishlistsActionTypes.DeleteWishlistFail:
     case WishlistsActionTypes.CreateWishlistFail:
     case WishlistsActionTypes.UpdateWishlistFail: {
@@ -57,7 +55,6 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
     }
 
     case WishlistsActionTypes.UpdateWishlistSuccess:
-    case WishlistsActionTypes.LoadWishlistDetailsSuccess:
     case WishlistsActionTypes.AddProductToWishlistSuccess:
     case WishlistsActionTypes.RemoveItemFromWishlistSuccess: {
       const { wishlist } = action.payload;

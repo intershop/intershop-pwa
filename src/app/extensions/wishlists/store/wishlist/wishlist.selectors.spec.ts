@@ -14,9 +14,6 @@ import {
   DeleteWishlist,
   DeleteWishlistFail,
   DeleteWishlistSuccess,
-  LoadWishlistDetails,
-  LoadWishlistDetailsFail,
-  LoadWishlistDetailsSuccess,
   LoadWishlists,
   LoadWishlistsFail,
   LoadWishlistsSuccess,
@@ -50,7 +47,7 @@ describe('Wishlist Selectors', () => {
     store$ = TestBed.get(TestStore);
   });
 
-  const wishlistDetails = [
+  const wishlists = [
     {
       title: 'testing wishlist',
       type: 'WishList',
@@ -95,7 +92,7 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('LoadWishlistsSuccess', () => {
-      const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists: wishlistDetails });
+      const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists });
 
       beforeEach(() => {
         store$ = TestBed.get(TestStore);
@@ -107,63 +104,12 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should add wishlists to state', () => {
-        expect(getAllWishlists(store$.state)).toEqual(wishlistDetails);
+        expect(getAllWishlists(store$.state)).toEqual(wishlists);
       });
     });
 
     describe('LoadWishlistsFail', () => {
       const loadWishlistFailAction = new LoadWishlistsFail({ error: { message: 'invalid' } as HttpError });
-
-      beforeEach(() => {
-        store$ = TestBed.get(TestStore);
-        store$.dispatch(loadWishlistFailAction);
-      });
-
-      it('should set loading to false', () => {
-        expect(getWishlistsLoading(store$.state)).toBeFalse();
-      });
-
-      it('should add the error to state', () => {
-        expect(getWishlistsError(store$.state)).toEqual({ message: 'invalid' });
-      });
-    });
-  });
-
-  describe('loading wishlist details', () => {
-    describe('LoadWishlistDetails', () => {
-      const loadWishlistDetailsAction = new LoadWishlistDetails({ wishlistId: 'id' });
-
-      beforeEach(() => {
-        store$.dispatch(loadWishlistDetailsAction);
-      });
-
-      it('should set loading to true', () => {
-        expect(getWishlistsLoading(store$.state)).toBeTrue();
-      });
-    });
-
-    describe('LoadWishlistDetailsSuccess', () => {
-      const loadWishilstDetailsSuccessAction = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[0] });
-      const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists: wishlistDetails });
-
-      beforeEach(() => {
-        store$ = TestBed.get(TestStore);
-      });
-
-      it('should set loading to false', () => {
-        store$.dispatch(loadWishilstDetailsSuccessAction);
-        expect(getWishlistsLoading(store$.state)).toBeFalse();
-      });
-
-      it('should add wishlist details to state', () => {
-        store$.dispatch(loadWishlistSuccessAction);
-        store$.dispatch(loadWishilstDetailsSuccessAction);
-        expect(getAllWishlists(store$.state)).toContainEqual(wishlistDetails[0]);
-      });
-    });
-
-    describe('LoadWishlistDetailsFail', () => {
-      const loadWishlistFailAction = new LoadWishlistDetailsFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
         store$ = TestBed.get(TestStore);
@@ -199,7 +145,7 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('CreateWishlistSuccess', () => {
-      const createWishistSuccessAction = new CreateWishlistSuccess({ wishlist: wishlistDetails[0] });
+      const createWishistSuccessAction = new CreateWishlistSuccess({ wishlist: wishlists[0] });
 
       beforeEach(() => {
         store$ = TestBed.get(TestStore);
@@ -211,7 +157,7 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should add new wishlist to state', () => {
-        expect(getAllWishlists(store$.state)).toContainEqual(wishlistDetails[0]);
+        expect(getAllWishlists(store$.state)).toContainEqual(wishlists[0]);
       });
     });
 
@@ -247,8 +193,8 @@ describe('Wishlist Selectors', () => {
     });
 
     describe('DeleteWishlistSuccess', () => {
-      const deleteWishlistSuccessAction = new DeleteWishlistSuccess({ wishlistId: wishlistDetails[0].id });
-      const loadWishlistDetailsSuccessAction = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[0] });
+      const loadWishlistSuccessAction = new LoadWishlistsSuccess({ wishlists });
+      const deleteWishlistSuccessAction = new DeleteWishlistSuccess({ wishlistId: wishlists[0].id });
 
       beforeEach(() => {
         store$ = TestBed.get(TestStore);
@@ -261,10 +207,10 @@ describe('Wishlist Selectors', () => {
       });
 
       it('should remove wishlist from state, when wishlist delete action was called', () => {
-        store$.dispatch(loadWishlistDetailsSuccessAction);
+        store$.dispatch(loadWishlistSuccessAction);
         store$.dispatch(deleteWishlistSuccessAction);
 
-        expect(getAllWishlists(store$.state)).not.toContain(wishlistDetails[0]);
+        expect(getAllWishlists(store$.state)).not.toContain(wishlists[0]);
       });
     });
 
@@ -288,7 +234,7 @@ describe('Wishlist Selectors', () => {
 
   describe('updating a wishlist', () => {
     describe('UpdateWishlist', () => {
-      const updateWishlistAction = new UpdateWishlist({ wishlist: wishlistDetails[0] });
+      const updateWishlistAction = new UpdateWishlist({ wishlist: wishlists[0] });
 
       beforeEach(() => {
         store$.dispatch(updateWishlistAction);
@@ -301,14 +247,13 @@ describe('Wishlist Selectors', () => {
 
     describe('UpdateWishlistSuccess', () => {
       const updated = {
-        ...wishlistDetails[0],
+        ...wishlists[0],
         title: 'new title',
       };
       const updateWishlistSuccessAction = new UpdateWishlistSuccess({
         wishlist: updated,
       });
-      const loadWishlistSuccess = new LoadWishlistsSuccess({ wishlists: wishlistDetails });
-      const loadWishlistDetailsSuccess = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[0] });
+      const loadWishlistSuccess = new LoadWishlistsSuccess({ wishlists });
 
       beforeEach(() => {
         store$ = TestBed.get(TestStore);
@@ -322,7 +267,6 @@ describe('Wishlist Selectors', () => {
 
       it('should update wishlist title to new title', () => {
         store$.dispatch(loadWishlistSuccess);
-        store$.dispatch(loadWishlistDetailsSuccess);
         store$.dispatch(updateWishlistSuccessAction);
 
         expect(getAllWishlists(store$.state)).toContainEqual(updated);
@@ -348,40 +292,32 @@ describe('Wishlist Selectors', () => {
   });
 
   describe('Get Selected Wishlist', () => {
-    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists: wishlistDetails });
-    const loadWishlistDetails1SuccessAction = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[0] });
-    const loadWishlistDetails2SuccessAction = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[1] });
-    const selectWishlistAction = new SelectWishlist({ id: wishlistDetails[1].id });
+    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists });
+    const selectWishlistAction = new SelectWishlist({ id: wishlists[1].id });
 
     beforeEach(() => {
       store$.dispatch(loadWishlistsSuccessActions);
-      store$.dispatch(loadWishlistDetails1SuccessAction);
-      store$.dispatch(loadWishlistDetails2SuccessAction);
       store$.dispatch(selectWishlistAction);
     });
 
     it('should return correct wishlist id for given id', () => {
-      expect(getSelectedWishlistId(store$.state)).toEqual(wishlistDetails[1].id);
+      expect(getSelectedWishlistId(store$.state)).toEqual(wishlists[1].id);
     });
 
     it('should return correct wishlist details for given id', () => {
-      expect(getSelectedWishlistDetails(store$.state)).toEqual(wishlistDetails[1]);
+      expect(getSelectedWishlistDetails(store$.state)).toEqual(wishlists[1]);
     });
   });
 
   describe('Get Preferred Wishlist', () => {
-    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists: wishlistDetails });
-    const loadWishlistDetails1SuccessAction = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[0] });
-    const loadWishlistDetails2SuccessAction = new LoadWishlistDetailsSuccess({ wishlist: wishlistDetails[1] });
+    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists });
 
     beforeEach(() => {
       store$.dispatch(loadWishlistsSuccessActions);
-      store$.dispatch(loadWishlistDetails1SuccessAction);
-      store$.dispatch(loadWishlistDetails2SuccessAction);
     });
 
     it('should return correct wishlist for given title', () => {
-      expect(getPreferredWishlist(store$.state)).toEqual(wishlistDetails[0]);
+      expect(getPreferredWishlist(store$.state)).toEqual(wishlists[0]);
     });
   });
 });
