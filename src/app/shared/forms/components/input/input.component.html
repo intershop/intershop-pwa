@@ -14,7 +14,7 @@
       [min]="min || (min === 0 ? 0 : '')"
       [max]="max || ''"
       [placeholder]="placeholder | translate"
-      [attr.disabled]="disabled"
+      [attr.disabled]="disAbled"
     />
     <ng-content></ng-content>
     <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>

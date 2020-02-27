@@ -24,7 +24,6 @@ export class AccountWishlistDetailLineItemComponent implements OnChanges {
   private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   @Input() wishlistItemData: WishlistItem;
   @Input() currentWishlist: Wishlist;
-  @Input() allWishlists: Wishlist[];
 
   addToCartForm: FormGroup;
   product$: Observable<ProductView>;

@@ -61,13 +61,7 @@ export class WishlistsFacade {
     this.store.dispatch(new MoveItemToWishlist({ source: { id: sourceWishlistId }, target: { title, sku } }));
   }
 
-  removeProductFromWishlist(wishlistId: string, sku: string): Observable<Wishlist> {
+  removeProductFromWishlist(wishlistId: string, sku: string): void {
     this.store.dispatch(new RemoveItemFromWishlist({ wishlistId, sku }));
-    return this.currentWishlist$;
-  }
-
-  changeQuantityOfProductForWishlist(wishlistId: string, sku: string, newQuantity: number): Observable<Wishlist> {
-    this.addProductToWishlist(wishlistId, sku, newQuantity);
-    return this.currentWishlist$;
   }
 }

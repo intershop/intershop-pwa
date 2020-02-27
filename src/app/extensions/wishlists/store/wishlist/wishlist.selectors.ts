@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { getWishlistsState } from '../wishlists-store';
 
 import { initialState, wishlistsAdapter } from './wishlist.reducer';
@@ -9,7 +10,7 @@ const getWishlistState = createSelector(
   state => (state ? state.wishlists : initialState)
 );
 
-export const { selectEntities: getWishlistEntitites, selectAll: getAllWishlists } = wishlistsAdapter.getSelectors(
+export const { selectEntities: getWishlistEntities, selectAll: getAllWishlists } = wishlistsAdapter.getSelectors(
   getWishlistState
 );
 
@@ -28,9 +29,9 @@ export const getSelectedWishlistId = createSelector(
 );
 
 export const getSelectedWishlistDetails = createSelector(
-  getAllWishlists,
+  getWishlistEntities,
   getSelectedWishlistId,
-  (entities, id) => entities.find(e => e.id === id)
+  (entities, id): Wishlist => id && entities[id]
 );
 
 export const getPreferredWishlist = createSelector(

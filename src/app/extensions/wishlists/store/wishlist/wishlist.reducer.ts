@@ -56,6 +56,7 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
       });
     }
 
+    case WishlistsActionTypes.UpdateWishlistSuccess:
     case WishlistsActionTypes.LoadWishlistDetailsSuccess:
     case WishlistsActionTypes.AddProductToWishlistSuccess:
     case WishlistsActionTypes.RemoveItemFromWishlistSuccess: {
@@ -88,20 +89,6 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
         ...state,
         loading: false,
       });
-    }
-
-    case WishlistsActionTypes.UpdateWishlistSuccess: {
-      const { wishlist } = action.payload;
-      return wishlistsAdapter.updateOne(
-        {
-          id: wishlist.id,
-          changes: wishlist,
-        },
-        {
-          ...state,
-          loading: false,
-        }
-      );
     }
 
     case WishlistsActionTypes.SelectWishlist: {

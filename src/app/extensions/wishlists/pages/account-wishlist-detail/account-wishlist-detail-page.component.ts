@@ -18,14 +18,12 @@ export class AccountWishlistDetailPageComponent implements OnInit, OnDestroy {
   wishlist$: Observable<Wishlist>;
   wishlistError$: Observable<HttpError>;
   wishlistLoading$: Observable<boolean>;
-  allWishlists$: Observable<Wishlist[]>;
 
   private destroy$ = new Subject();
 
   constructor(private appFacade: AppFacade, private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
-    this.allWishlists$ = this.wishlistsFacade.wishlists$;
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;
     this.wishlistLoading$ = this.wishlistsFacade.wishlistLoading$;
     this.wishlistError$ = this.wishlistsFacade.wishlistError$;

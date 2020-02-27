@@ -40,7 +40,6 @@
         <ng-container *ngFor="let item of wishlist.items">
           <div class="list-item-row">
             <ish-account-wishlist-detail-line-item
-              [allWishlists]="allWishlists$ | async"
               [wishlistItemData]="item"
               [currentWishlist]="wishlist"
             ></ish-account-wishlist-detail-line-item>
