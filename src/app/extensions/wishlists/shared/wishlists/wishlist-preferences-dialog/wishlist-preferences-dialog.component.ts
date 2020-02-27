@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -30,7 +29,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   templateUrl: './wishlist-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WishlistPreferencesDialogComponent implements OnInit, OnChanges {
+export class WishlistPreferencesDialogComponent implements OnChanges {
   /**
    * Predefined wishlist to fill the form with, if there is no wishlist a new wishlist will be created
    */
