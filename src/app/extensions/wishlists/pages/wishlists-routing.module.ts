@@ -10,19 +10,16 @@ const routes: Routes = [
     loadChildren: () =>
       import('./account-wishlist/account-wishlist-page.module').then(m => m.AccountWishlistPageModule),
     canActivate: [FeatureToggleGuard, AuthGuard],
-    data: { feature: 'wishlists' },
+    data: { feature: 'wishlists', breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
   },
   {
     path: ':wishlistName',
-    data: {
-      feature: 'wishlists',
-      breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link', link: '/account/wishlists' }, { key: '' }],
-    },
     loadChildren: () =>
       import('./account-wishlist-detail/account-wishlist-detail-page.module').then(
         m => m.AccountWishlistDetailPageModule
       ),
     canActivate: [FeatureToggleGuard, AuthGuard],
+    data: { feature: 'wishlists' },
   },
 ];
 

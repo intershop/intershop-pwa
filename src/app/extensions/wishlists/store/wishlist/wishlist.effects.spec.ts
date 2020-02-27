@@ -21,6 +21,7 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
+import { wishlistsReducers } from '../wishlists-store.module';
 
 import {
   AddProductToNewWishlist,
@@ -51,7 +52,6 @@ import {
   WishlistsActionTypes,
 } from './wishlist.actions';
 import { WishlistEffects } from './wishlist.effects';
-import { wishlistReducer } from './wishlist.reducer';
 
 describe('Wishlist Effects', () => {
   let actions$;
@@ -91,7 +91,7 @@ describe('Wishlist Effects', () => {
         FeatureToggleModule,
         ngrxTesting({
           reducers: {
-            wishlist: combineReducers(wishlistReducer),
+            wishlists: combineReducers(wishlistsReducers),
             shopping: combineReducers(shoppingReducers),
             checkout: combineReducers(checkoutReducers),
             user: userReducer,
@@ -543,7 +543,7 @@ describe('Wishlist Effects', () => {
     it('should map to action of type SelectWishlist', () => {
       const wishlistName = '.SKsEQAE4FIAAAFuNiUBWx0d';
       const action = new RouteNavigation({
-        path: 'account/wishlist/:wishlistId',
+        path: 'account/wishlist/:wishlistName',
         params: { wishlistName },
         queryParams: {},
       });
@@ -576,6 +576,33 @@ describe('Wishlist Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.resetWishlistStateAfterLogout$).toBeObservable(expected$);
+    });
+  });
+
+  describe('setWishlistBreadcrumb$', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadWishlistsSuccess({ wishlists }));
+      store$.dispatch(new SelectWishlist({ id: wishlists[0].id }));
+    });
+
+    it('should set the breadcrumb of the selected wishlist', done => {
+      actions$ = of(new RouteNavigation({ path: 'any', params: { wishlistName: wishlists[0].id } }));
+      effects.setWishlistBreadcrumb$.subscribe(action => {
+        expect(action.payload).toMatchInlineSnapshot(`
+          Object {
+            "breadcrumbData": Array [
+              Object {
+                "key": "account.wishlists.breadcrumb_link",
+                "link": "/account/wishlists",
+              },
+              Object {
+                "text": "testing wishlist",
+              },
+            ],
+          }
+        `);
+        done();
+      });
     });
   });
 });

@@ -4,14 +4,12 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { getICMBaseURL } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
 import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
 import {
-  SetBreadcrumbData,
   getBreadcrumbData,
   getDeviceType,
   getHeaderType,
@@ -62,9 +60,5 @@ export class AppFacade {
   regions$(countryCode: string) {
     this.store.dispatch(new LoadRegions({ countryCode }));
     return this.store.pipe(select(getRegionsByCountryCode, { countryCode }));
-  }
-
-  setBreadcrumbData(breadcrumbData: BreadcrumbItem[]) {
-    this.store.dispatch(new SetBreadcrumbData({ breadcrumbData }));
   }
 }

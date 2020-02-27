@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
-import { filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
 
 import { SuccessMessage } from 'ish-core/store/messages';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
+import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 
 import * as wishlistsActions from './wishlist.actions';
-import { getSelectedWishlistId } from './wishlist.selectors';
+import { getSelectedWishlistDetails, getSelectedWishlistId } from './wishlist.selectors';
 
 @Injectable()
 export class WishlistEffects {
@@ -193,5 +194,23 @@ export class WishlistEffects {
     ofType(UserActionTypes.LogoutUser),
 
     mapTo(new wishlistsActions.ResetWishlistState())
+  );
+
+  @Effect()
+  setWishlistBreadcrumb$ = this.actions$.pipe(
+    ofRoute(),
+    mapToParam('wishlistName'),
+    whenTruthy(),
+    switchMapTo(this.store.pipe(select(getSelectedWishlistDetails))),
+    whenTruthy(),
+    map(
+      wishlist =>
+        new SetBreadcrumbData({
+          breadcrumbData: [
+            { key: 'account.wishlists.breadcrumb_link', link: '/account/wishlists' },
+            { text: wishlist.title },
+          ],
+        })
+    )
   );
 }
