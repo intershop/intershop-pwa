@@ -37,10 +37,6 @@ export enum WishlistsActionTypes {
   RemoveItemFromWishlistSuccess = '[Wishlists API] Remove Item from Wishlist Success',
   RemoveItemFromWishlistFail = '[Wishlists API] Remove Item from Wishlist Fail',
 
-  AddItemToBasket = '[Wishlists] Add Item to Basket',
-  AddItemToBasketSuccess = '[Wishlists API] Add Item to Basket Success',
-  AddItemToBasketFail = '[Wishlists API] Add Item to Basket Fail',
-
   SelectWishlist = '[Wishlists Internal] Select Wishlist',
   ResetWishlistState = '[Wishlists Internal] Reset Wishlist State',
 }
@@ -160,20 +156,6 @@ export class RemoveItemFromWishlistFail implements Action {
   constructor(public payload: { error: HttpError }) {}
 }
 
-export class AddItemToBasket implements Action {
-  readonly type = WishlistsActionTypes.AddItemToBasket;
-  constructor(public payload: { wishlist: Wishlist; customerPurchaseWishlistKey: string; quantity?: number }) {}
-}
-
-export class AddItemToBasketSuccess implements Action {
-  readonly type = WishlistsActionTypes.AddItemToBasketSuccess;
-}
-
-export class AddItemToBasketFail implements Action {
-  readonly type = WishlistsActionTypes.AddItemToBasketFail;
-  constructor(public payload: { error: HttpError }) {}
-}
-
 export class SelectWishlist implements Action {
   readonly type = WishlistsActionTypes.SelectWishlist;
   constructor(public payload: { id: string }) {}
@@ -207,8 +189,5 @@ export type WishlistsAction =
   | RemoveItemFromWishlist
   | RemoveItemFromWishlistSuccess
   | RemoveItemFromWishlistFail
-  | AddItemToBasket
-  | AddItemToBasketSuccess
-  | AddItemToBasketFail
   | SelectWishlist
   | ResetWishlistState;
