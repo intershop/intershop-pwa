@@ -37,8 +37,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         whenTruthy(),
         take(1)
       ),
-      // send to login after timeout
-      timer(4000).pipe(mapTo(this.router.createUrlTree(['/login'], { queryParams: { returnUrl: url } })))
+      // send to login after timeout on first routing only
+      timer(this.router.navigated ? 0 : 4000).pipe(
+        mapTo(this.router.createUrlTree(['/login'], { queryParams: { returnUrl: url } }))
+      )
     );
   }
 }
