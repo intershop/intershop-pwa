@@ -11,7 +11,6 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
 })
 export class WishlistsLinkComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';
-  routerLink = '/account/wishlists';
   preferredWishlist$: Observable<Wishlist>;
 
   constructor(private wishlistFacade: WishlistsFacade) {}
