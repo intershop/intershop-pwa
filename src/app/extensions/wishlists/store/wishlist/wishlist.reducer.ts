@@ -56,25 +56,11 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
 
     case WishlistsActionTypes.UpdateWishlistSuccess:
     case WishlistsActionTypes.AddProductToWishlistSuccess:
-    case WishlistsActionTypes.RemoveItemFromWishlistSuccess: {
-      const { wishlist } = action.payload;
-
-      return wishlistsAdapter.updateOne(
-        {
-          id: wishlist.id,
-          changes: wishlist,
-        },
-        {
-          ...state,
-          loading: false,
-        }
-      );
-    }
-
+    case WishlistsActionTypes.RemoveItemFromWishlistSuccess:
     case WishlistsActionTypes.CreateWishlistSuccess: {
       const { wishlist } = action.payload;
 
-      return wishlistsAdapter.addOne(wishlist, {
+      return wishlistsAdapter.upsertOne(wishlist, {
         ...state,
         loading: false,
       });
