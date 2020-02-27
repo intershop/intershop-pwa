@@ -3,9 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
-
-import { AccountFacade } from 'ish-core/facades/account.facade';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { WishlistsFacade } from '../../../facades/wishlists.facade';
 
@@ -18,15 +17,12 @@ describe('Wishlists Link Component', () => {
 
   beforeEach(async(() => {
     const wishlistFacadeMock = mock(WishlistsFacade);
-    const accountFacadeMock = mock(AccountFacade);
+    when(wishlistFacadeMock.preferredWishlist$).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
       declarations: [MockComponent(FaIconComponent), WishlistsLinkComponent],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
-      providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
-        { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
-      ],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   }));
 

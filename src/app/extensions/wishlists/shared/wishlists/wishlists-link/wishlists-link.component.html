@@ -1,5 +1,5 @@
 <a
-  routerLink="/account/wishlists"
+  [routerLink]="routerLink$ | async"
   [queryParams]="{ messageKey: 'wishlists' }"
   rel="nofollow"
   class="item-count-container"
