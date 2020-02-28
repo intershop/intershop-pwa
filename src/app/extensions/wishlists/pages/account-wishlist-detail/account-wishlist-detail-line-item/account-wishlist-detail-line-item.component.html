@@ -1,13 +1,13 @@
 <ng-container *ngIf="product$ | async as product">
   <div class="d-flex">
-    <div class="col-sm-2 col-3 list-item">
+    <div class="col-3 col-md-2 list-item">
       <a [routerLink]="product | ishProductRoute">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
       </a>
     </div>
-    <div class="col-sm-10 col-9 list-item column-price">
+    <div class="col-9 col-md-10 list-item column-price">
       <div class="row">
-        <div class="col-sm-6 text-left">
+        <div class="col-md-7 col-xs-12 text-left">
           <div class="pli-description">
             <a [routerLink]="product | ishProductRoute" class="product-title" data-testing-id="wishlist-product-link">
               {{ product.name }}
@@ -18,11 +18,11 @@
               *ngIf="product.type === 'Bundle'"
               [productBundleSKU]="product.sku"
             ></ish-product-bundle-display>
-            <p class="hidden-xs">
+            <div class="hidden-xs">
               <label>{{ 'account.wishlist.table.added_on' | translate }}</label>
               {{ wishlistItemData?.creationDate | ishDate: 'shortDate' }}
-            </p>
-            <p>
+            </div>
+            <div class="btn-group mb-2">
               <a class="btn-tool" (click)="moveDialog.show()" data-testing-id="move-wishlist">
                 <fa-icon
                   [icon]="['fas', 'arrows-alt']"
@@ -35,34 +35,38 @@
                   [title]="'account.wishlist.table.options.remove' | translate"
                 ></fa-icon>
               </a>
-            </p>
+            </div>
           </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-12 col-md-5 product-list-actions-container">
           <ish-product-price [product]="product"></ish-product-price>
           <p *ngIf="product.inStock; else noInStock">{{ 'account.wishlist.table.in_stock' | translate }}</p>
           <ng-template #noInStock>
             <p>{{ 'account.wishlist.table.not_accessible' | translate }}</p>
           </ng-template>
-          <form [formGroup]="addToCartForm">
-            <ish-input
-              [form]="addToCartForm"
-              controlName="quantity"
-              label="account.wishlist.table.options.add_to_cart_quantity_label"
-              labelClass="col-6 col-form-label"
-              inputClass="col-6"
-              type="number"
-            ></ish-input>
-            <ish-product-add-to-basket
-              [product]="product"
-              (productToBasket)="addToCart(product.sku)"
-            ></ish-product-add-to-basket>
+          <form [formGroup]="addToCartForm" class="row">
+            <div class="col-6 offset-md-6 col-lg-5 offset-lg-0">
+              <ish-product-quantity
+                [allowZeroQuantity]="false"
+                [quantityLabel]="''"
+                [product]="product"
+                [parentForm]="addToCartForm"
+                controlName="quantity"
+              ></ish-product-quantity>
+            </div>
+            <div class="col-12 col-lg-7 addtocart-container">
+              <ish-product-add-to-basket
+                [product]="product"
+                (productToBasket)="addToCart(product.sku)"
+              ></ish-product-add-to-basket>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
+
   <ish-select-wishlist-modal
     #moveDialog
     addMoveProduct="move"
