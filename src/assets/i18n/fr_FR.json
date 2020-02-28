@@ -910,7 +910,7 @@
   "account.wishlists.move_wishlist_item.quantity.maximum.validation.message": "Impossible de déplacer plus que la quantité souhaitée.",
   "account.wishlists.move_wishlist_item.quantity.minimum.validation.message": "Veuillez entrer une quantité supérieure à 0",
   "account.wishlists.move_wishlist_item.quantity.validation.message": "Veuillez entrer une quantité valide.",
-  "account.wishlists.new_wishlist.confirmation": "Création de la liste de souhaits {{0}} réussie. ",
+  "account.wishlists.new_wishlist.confirmation": "La liste de souhaits {{0}} a été créée.",
   "account.wishlists.new_wishlist.confirmation.ok_button.text": "OK",
   "account.wishlists.new_wishlist_dialog.header": "Ajouter une liste de souhaits",
   "account.wishlists.new_wishlist_form.create_button.text": "Créer",
