@@ -9,7 +9,7 @@ describe('Content View Helper', () => {
       [
         { input: 'route://category/Computers', expected: '/category/Computers' },
         { input: 'route://category/Home-Entertainment.SmartHome', expected: '/category/Home-Entertainment.SmartHome' },
-        { input: 'product://201807195@inSPIRED-inTRONICS', expected: '/product/201807195' },
+        { input: 'product://201807195@inSPIRED-inTRONICS', expected: '/sku201807195' },
       ],
       ({ input, expected }) => {
         it(`should transform ${input} to ${expected}`, () => {
