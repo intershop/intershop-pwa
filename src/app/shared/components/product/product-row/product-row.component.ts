@@ -27,6 +27,7 @@ export interface ProductRowComponentConfiguration {
   displayVariations: boolean;
   displayShipment: boolean;
   displayAddToBasket: boolean;
+  displayAddToWishlist: boolean;
   displayAddToCompare: boolean;
   displayAddToQuote: boolean;
 }

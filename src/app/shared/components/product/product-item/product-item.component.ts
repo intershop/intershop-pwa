@@ -39,6 +39,7 @@ export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> 
   displayVariations: true,
   displayShipment: false,
   displayAddToBasket: true,
+  displayAddToWishlist: true,
   displayAddToCompare: true,
   displayAddToQuote: true,
   displayType: 'tile',

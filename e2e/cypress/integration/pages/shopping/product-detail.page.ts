@@ -1,3 +1,4 @@
+import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
@@ -13,6 +14,8 @@ export class ProductDetailPage {
   readonly retailSetParts = new ProductListModule('ish-retail-set-parts');
   readonly variations = new ProductListModule('ish-product-master-variations');
 
+  readonly addToWishlist = new AddToWishlistModule();
+
   static navigateTo(sku: string, categoryUniqueId?: string) {
     if (categoryUniqueId) {
       cy.visit(`/category/${categoryUniqueId}/product/${sku}`);
@@ -25,6 +28,10 @@ export class ProductDetailPage {
   private addToCompareButton() {
     return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="compare"] .share-label');
   }
+  private addToWishlistButton() {
+    return cy.get('ish-product-detail').find('ish-product-detail-actions [data-testing-id*="wishlist"] .share-label');
+  }
+
   private addToQuoteRequestButton = () => cy.get('ish-product-detail').find('[data-testing-id="addToQuoteButton"]');
   private quantityInput = () => cy.get('ish-product-detail').find('[data-testing-id="quantity"]');
 
@@ -64,6 +71,10 @@ export class ProductDetailPage {
 
   addProductToQuoteRequest() {
     this.addToQuoteRequestButton().click();
+  }
+
+  addProductToWishlist() {
+    this.addToWishlistButton().click();
   }
 
   setQuantity(quantity: number) {

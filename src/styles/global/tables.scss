@@ -15,7 +15,6 @@
   font-size: 18px;
   font-weight: normal;
   text-transform: uppercase;
-  // border-right: 4px solid #fff; // TODO: needed?
 }
 
 // RESPONSIVE TABLE
@@ -129,7 +128,7 @@
     }
 
     .list-item {
-      padding: $table-cell-padding * 0.7 $table-cell-padding * 0.7 $table-cell-padding * 0.7 0;
+      padding: $table-cell-padding * 0.9 $table-cell-padding * 0.7 $table-cell-padding * 0.9 0;
 
       .list-item {
         padding: 0;
@@ -190,10 +189,10 @@
 .column-price,
 .column-action {
   text-align: right;
-  // TODO: are we shure we want that?
-  // @media (max-width: $screen-xs-max) {
-  //   text-align: left;
-  // }
+
+  @media (max-width: $screen-xs-max) {
+    text-align: left;
+  }
 }
 
 // form element in tables

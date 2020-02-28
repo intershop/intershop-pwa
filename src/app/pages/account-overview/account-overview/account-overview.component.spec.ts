@@ -4,8 +4,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
+import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
 
 import { LazyQuoteWidgetComponent } from '../../../extensions/quoting/exports/account/lazy-quote-widget/lazy-quote-widget.component';
@@ -29,7 +32,16 @@ describe('Account Overview Component', () => {
         MockComponent(OrderWidgetComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [
+        FeatureToggleModule,
+        TranslateModule.forRoot(),
+        ngrxTesting({
+          reducers: { configuration: configurationReducer },
+          config: {
+            initialState: { configuration: { features: ['wishlist'] } },
+          },
+        }),
+      ],
     }).compileComponents();
   }));
 

@@ -1,0 +1,13 @@
+<a
+  [routerLink]="routerLink$ | async"
+  [queryParams]="{ messageKey: 'wishlists' }"
+  rel="nofollow"
+  class="item-count-container"
+>
+  <fa-icon class="header-icon" [icon]="['fas', 'heart']"></fa-icon>
+
+  <span class="badge badge-pill" *ngIf="preferredWishlist$ | async as wishlist">{{ wishlist.itemsCount }}</span>
+  <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{
+    'account.wishlists.link' | translate
+  }}</span>
+</a>
