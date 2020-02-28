@@ -32,4 +32,8 @@ export class MyAccountPage {
   navigateToAddresses() {
     cy.get('a[data-testing-id="addresses-link"]').click();
   }
+
+  navigateToWishlists() {
+    cy.get('a[data-testing-id="wishlists-link"]').click();
+  }
 }

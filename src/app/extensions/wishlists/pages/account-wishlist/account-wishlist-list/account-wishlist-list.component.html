@@ -1,0 +1,45 @@
+<div *ngIf="wishlists && wishlists.length > 0; else noWishlist" class="list-body">
+  <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: preferredWishlist }"></ng-container>
+  <ng-container *ngFor="let wishlist of wishlists">
+    <ng-container *ngIf="!preferredWishlist || wishlist.id !== preferredWishlist.id">
+      <ng-container *ngTemplateOutlet="wishlistRow; context: { wishlist: wishlist }"></ng-container>
+    </ng-container>
+  </ng-container>
+</div>
+<ng-template #noWishlist>
+  <p>{{ 'account.wishlists.no_wishlists' | translate }}</p>
+</ng-template>
+<ng-template #wishlistRow let-wishlist="wishlist">
+  <div *ngIf="wishlist" class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
+    <div class="col-7 list-item" data-testing-id="wishlist-list-item">
+      <a [routerLink]="'/account/wishlists/' + wishlist.id" data-testing-id="wishlist-list-title">{{
+        wishlist.title
+      }}</a
+      ><span *ngIf="wishlist.preferred" class="input-help pl-3">{{
+        'account.wishlists.table.preferred' | translate
+      }}</span>
+    </div>
+    <div class="col-2 list-item">
+      {{ wishlist.itemsCount | i18nPlural: ('account.wishlists.items' | translate) || { other: '#' } }}
+    </div>
+    <div class="col-3 list-item text-right">
+      <a
+        class="btn-tool"
+        title="{{ 'account.wishlist.list.remove' | translate }}"
+        (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
+        data-testing-id="delete-wishlist"
+        ><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon
+      ></a>
+    </div>
+  </div>
+</ng-template>
+
+<ish-modal-dialog
+  #deleteDialog
+  (confirmed)="delete($event)"
+  [options]="{
+    confirmText: 'account.wishlists.delete_wishlist_dialog.delete_button.text' | translate,
+    rejectText: 'account.wishlists.delete_wishlist_dialog.cancel_button.text' | translate
+  }"
+  >{{ 'account.wishlists.delete_wishlist_dialog.are_you_sure_paragraph' | translate }}</ish-modal-dialog
+>

@@ -46,6 +46,12 @@
       class="btn-link"
       (compareToggle)="toggleCompare()"
     ></ish-product-add-to-compare>
+    <ish-lazy-product-add-to-wishlist
+      *ngIf="configuration.displayAddToWishlist"
+      class="btn-link"
+      [product]="product"
+      displayType="icon"
+    ></ish-lazy-product-add-to-wishlist>
     <ish-product-add-to-basket
       *ngIf="configuration.displayAddToBasket && !isMasterProduct(product)"
       [product]="product"

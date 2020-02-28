@@ -1,0 +1,36 @@
+<div class="wishlist">
+  <ng-template #WishlistDescription>
+    <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+  </ng-template>
+  <a
+    [ngbPopover]="WishlistDescription"
+    placement="bottom"
+    popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
+  >
+    {{ 'account.wishlists.heading.tooltip.link' | translate }}
+    <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+  </a>
+
+  <h1>
+    {{ 'account.wishlists.heading' | translate
+    }}<a class="btn btn-secondary" data-testing-id="add-wishlist" (click)="addWishlistDialog.show()">{{
+      'account.wishlists.add_wishlist' | translate
+    }}</a>
+  </h1>
+
+  <!-- Error message -->
+  <ish-error-message [error]="wishlistError$ | async"></ish-error-message>
+
+  <div class="section">
+    <ish-account-wishlist-list
+      [wishlists]="wishlists$ | async"
+      (deleteWishlist)="deleteWishlist($event)"
+    ></ish-account-wishlist-list>
+  </div>
+
+  <a routerLink="/home">{{ 'account.wishlist.searchform.continue_shopping.link' | translate }}</a>
+</div>
+
+<ish-wishlist-preferences-dialog #addWishlistDialog (submit)="addWishlist($event)"></ish-wishlist-preferences-dialog>
+
+<ish-loading *ngIf="wishlistLoading$ | async"></ish-loading>

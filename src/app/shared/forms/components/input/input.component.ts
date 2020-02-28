@@ -18,6 +18,7 @@ export class InputComponent extends FormElementComponent implements OnInit {
   @Input() max?: number;
 
   @Input() placeholder = '';
+  @Input() disabled: boolean;
 
   calculatedAutocomplete: string;
 
@@ -38,6 +39,10 @@ export class InputComponent extends FormElementComponent implements OnInit {
         'input parameter <type> is not valid for InputComponent, only text, email, password and number are possible types'
       );
     }
+  }
+
+  get disAbled(): boolean {
+    return !this.disabled ? undefined : true;
   }
 
   /*

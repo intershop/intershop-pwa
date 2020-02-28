@@ -28,13 +28,13 @@ export class LoginPage {
 
   submit() {
     cy.server()
-      .route('GET', '**/customers/**')
-      .as('customers');
+      .route('GET', /.*\/customers\/-.*/)
+      .as('currentCustomer');
     cy.wait(500);
 
     cy.get('button[name="login"]').click();
 
-    return cy.wait('@customers');
+    return cy.wait('@currentCustomer');
   }
 
   get errorText() {

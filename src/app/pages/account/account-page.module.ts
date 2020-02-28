@@ -84,6 +84,12 @@ const accountPageRoutes: Routes = [
         data: { breadcrumbData: [] },
         component: AccountOverviewPageModule.component,
       },
+      {
+        path: 'wishlists',
+        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
+        loadChildren: () =>
+          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
+      },
     ],
   },
 ];

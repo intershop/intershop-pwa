@@ -22,6 +22,13 @@ export function formatISHDate(
   return formatDate(date, format, lang, timezone || '+0000');
 }
 
+/**
+ * The date pipe converts a number, string or date into a localized date format
+ * example values:
+ * as number: 1581690101334
+ * as string: '01 Jan 1970 00:00:00 GMT'
+ * other parameters see also angular date pipe
+ */
 @Pipe({ name: 'ishDate', pure: true })
 export class DatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

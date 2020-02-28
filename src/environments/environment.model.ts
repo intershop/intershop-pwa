@@ -33,7 +33,9 @@ export interface Environment {
     | 'quoting'
     /* Third-party Integrations */
     | 'sentry'
-    | 'tracking')[];
+    | 'tracking'
+    /* B2C features */
+    | 'wishlists')[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 

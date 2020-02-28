@@ -1,6 +1,8 @@
 import { waitLoadingEnd } from '../../framework';
+import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 
 export class ProductListModule {
+  readonly addToWishlist = new AddToWishlistModule();
   constructor(private contextSelector: string) {}
 
   get visibleProducts() {

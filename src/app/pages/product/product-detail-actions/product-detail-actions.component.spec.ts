@@ -10,6 +10,8 @@ import { Product } from 'ish-core/models/product/product.model';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
+import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/products/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
 describe('Product Detail Actions Component', () => {
@@ -32,7 +34,11 @@ describe('Product Detail Actions Component', () => {
           },
         }),
       ],
-      declarations: [MockComponent(FaIconComponent), ProductDetailActionsComponent],
+      declarations: [
+        MockComponent(FaIconComponent),
+        MockComponent(LazyProductAddToWishlistComponent),
+        ProductDetailActionsComponent,
+      ],
     }).compileComponents();
   }));
 

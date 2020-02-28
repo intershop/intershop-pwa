@@ -16,7 +16,7 @@ function onPage<T extends Page>(page: new () => T) {
 }
 
 export function at<T extends Page>(type: new () => T, callback?: (page: T) => void) {
-  onPage(type).should('be.hidden');
+  onPage(type).should('exist');
   waitLoadingEnd();
   if (callback) {
     callback(currentPage as T);
