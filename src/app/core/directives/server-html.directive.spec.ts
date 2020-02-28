@@ -38,7 +38,7 @@ describe('Server Html Directive', () => {
     it('should transform the given links to routing links', () => {
       expect(element).toMatchInlineSnapshot(`
         <div>
-          <div><a href="/product/8182790134362">Produkt</a></div>
+          <div><a href="/sku8182790134362">Produkt</a></div>
           <div><a href="http://google.de">Google</a></div>
           <div><a href="/basket">Basket</a></div>
         </div>
@@ -80,16 +80,16 @@ describe('Server Html Directive', () => {
 
     it('should transform the given media object source to the correct source', () => {
       expect(element).toMatchInlineSnapshot(`
-                <div>
-                  <img
-                    src="http://example.org/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png"
-                    alt=""
-                    width="92"
-                    height="92"
-                    style="width: unset;"
-                  />
-                </div>
-            `);
+        <div>
+          <img
+            src="http://example.org/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png"
+            alt=""
+            width="92"
+            height="92"
+            style="width: unset;"
+          />
+        </div>
+      `);
     });
   });
 
