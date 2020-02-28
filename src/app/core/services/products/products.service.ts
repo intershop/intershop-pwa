@@ -114,6 +114,7 @@ export class ProductsService {
       .set('amount', this.itemsPerPage.toString())
       .set('offset', ((page - 1) * this.itemsPerPage).toString())
       .set('attrs', ProductsService.STUB_ATTRS)
+      .set('attributeGroup', AttributeGroupTypes.ProductLabelAttributes)
       .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
