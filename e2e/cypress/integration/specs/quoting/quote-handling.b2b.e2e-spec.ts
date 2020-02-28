@@ -3,6 +3,7 @@ import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
 import { QuoteDetailPage } from '../../pages/account/quote-detail.page';
+import { QuoteListPage } from '../../pages/account/quote-list.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
@@ -23,8 +24,6 @@ const _ = {
   },
 };
 
-const quantity = 2;
-
 describe('Quote Handling', () => {
   before(() => {
     createB2BUserViaREST(_.user);
@@ -39,6 +38,7 @@ describe('Quote Handling', () => {
   });
 
   it('user adds one product from product detail page to quote', () => {
+    const quantity = 2;
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
@@ -47,30 +47,24 @@ describe('Quote Handling', () => {
       page.addProductToQuoteRequest();
     });
     at(QuoteRequestDialog, dialog => {
-      dialog.gotoQuoteDetail();
-    });
-    at(QuoteDetailPage, page => {
-      page.totalPrice.should('contain', _.product.price * quantity);
-      page.deleteItemFromQuoteRequest();
+      dialog.totalPrice.should('contain', _.product.price * quantity);
+      dialog.deleteItemFromQuoteRequest();
+      dialog.assertClosed();
     });
   });
 
   it('user adds one product from product list page to quote', () => {
-    at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
+    at(ProductDetailPage, page => page.breadcrumb.items.eq(2).click());
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.gotoQuoteDetail();
-    });
-    at(QuoteDetailPage, page => {
-      page.totalPrice.should('contain', _.product.price);
-      page.deleteItemFromQuoteRequest();
+      dialog.totalPrice.should('contain', _.product.price);
+      dialog.deleteItemFromQuoteRequest();
+      dialog.assertClosed();
     });
   });
 
   it('user adds one product from basket to quote', () => {
-    at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
-    at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
+    const quantity = 2;
     at(FamilyPage, page => page.productList.gotoProductDetailPageBySku(_.product.sku));
     at(ProductDetailPage, page => {
       page.setQuantity(quantity);
@@ -94,8 +88,12 @@ describe('Quote Handling', () => {
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.submitQuoteRequest();
-      dialog.gotoQuoteDetail();
+      dialog.submitQuoteRequest().then(quoteId => {
+        dialog.hide();
+        at(FamilyPage, page => page.header.goToMyAccount());
+        at(MyAccountPage, page => page.navigateToQuoting());
+        at(QuoteListPage, page => page.goToQuoteDetailLink(quoteId));
+      });
     });
     at(QuoteDetailPage, page => {
       page.quoteState.should('have.text', 'Submitted');
@@ -107,8 +105,12 @@ describe('Quote Handling', () => {
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
     at(QuoteRequestDialog, dialog => {
-      dialog.submitQuoteRequest();
-      dialog.gotoQuoteDetail();
+      dialog.submitQuoteRequest().then(quoteId => {
+        dialog.hide();
+        at(FamilyPage, page => page.header.goToMyAccount());
+        at(MyAccountPage, page => page.navigateToQuoting());
+        at(QuoteListPage, page => page.goToQuoteDetailLink(quoteId));
+      });
     });
     at(QuoteDetailPage, page => {
       page.copyQuoteRequest();
