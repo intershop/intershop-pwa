@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
@@ -9,7 +10,6 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 })
 export class ProductDetailActionsComponent {
   @Input() product: Product;
-  @Input() currentUrl: string;
   @Output() productToCompare = new EventEmitter<void>();
 
   // TODO: to be removed once channelName inforamtion available in system
@@ -20,4 +20,6 @@ export class ProductDetailActionsComponent {
   addToCompare() {
     this.productToCompare.emit();
   }
+
+  constructor(@Inject(DOCUMENT) public document: Document) {}
 }

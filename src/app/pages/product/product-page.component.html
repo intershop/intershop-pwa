@@ -9,7 +9,6 @@
         [product]="product"
         [price]="price$ | async"
         [(quantity)]="quantity"
-        [currentUrl]="currentUrl$ | async"
         [variationOptions]="productVariationOptions$ | async"
         (productToBasket)="addToBasket()"
         (productToCompare)="addToCompare($event)"

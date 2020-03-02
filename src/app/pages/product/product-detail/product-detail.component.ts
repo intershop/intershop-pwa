@@ -21,7 +21,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   @Input() product: ProductView | VariationProductView | VariationProductMasterView;
   @Input() quantity: number;
   @Input() price: ProductPrices;
-  @Input() currentUrl: string;
   @Input() variationOptions: VariationOptionGroup[];
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
