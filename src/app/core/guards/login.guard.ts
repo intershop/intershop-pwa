@@ -34,6 +34,11 @@ export class LoginGuard implements CanActivate {
       return true;
     }
 
+    // force page view by queryParam
+    if (route.queryParams.forcePageView) {
+      return true;
+    }
+
     const returnUrl = route.queryParams.returnUrl || '/home';
 
     this.currentDialog = this.modalService.open(LazyLoginModalComponent, { centered: true, size: 'sm' });

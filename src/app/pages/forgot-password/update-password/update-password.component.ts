@@ -46,7 +46,7 @@ export class UpdatePasswordComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'], { queryParams: { forcePageView: true } });
       });
   }
 
