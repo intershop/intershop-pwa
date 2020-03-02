@@ -15,17 +15,14 @@
     "angular.ng-template",
     "mikael.angular-beastcode",
     "formulahendry.auto-rename-tag",
-    "stringham.move-ts",
     // code style + formatting
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "hex-ci.stylelint-plus",
     "ms-vscode.vscode-typescript-tslint-plugin",
     // testing
-    "orta.vscode-jest",
-    "andys8.jest-snippets",
-    "asvetliakov.snapshot-tools"
+    "andys8.jest-snippets"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-  "unwantedRecommendations": []
+  "unwantedRecommendations": ["eg2.tslint"]
 }
