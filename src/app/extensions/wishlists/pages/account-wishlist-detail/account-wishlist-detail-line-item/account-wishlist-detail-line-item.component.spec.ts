@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
