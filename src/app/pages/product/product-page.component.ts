@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
 import { filter, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -38,8 +37,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   quantity: number;
   price$: Observable<ProductPrices>;
 
-  currentUrl$: Observable<string>;
-
   isProductBundle = ProductHelper.isProductBundle;
   isRetailSet = ProductHelper.isRetailSet;
   isMasterProduct = ProductHelper.isMasterProduct;
@@ -48,7 +45,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   retailSetParts$ = new ReplaySubject<SkuQuantityType[]>(1);
 
   constructor(
-    private appFacade: AppFacade,
     private shoppingFacade: ShoppingFacade,
     private router: Router,
     private featureToggleService: FeatureToggleService,
@@ -61,7 +57,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.productVariationOptions$ = this.shoppingFacade.selectedProductVariationOptions$;
     this.category$ = this.shoppingFacade.selectedCategory$;
     this.productLoading$ = this.shoppingFacade.productDetailLoading$;
-    this.currentUrl$ = this.appFacade.currentUrl$;
 
     this.product$
       .pipe(

@@ -1,10 +1,8 @@
-import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { getICMBaseURL } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
@@ -19,12 +17,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store<{}>, private location: Location) {}
-
-  currentUrl$ = this.store.pipe(
-    select(getICMBaseURL),
-    map(baseUrl => baseUrl + this.location.path())
-  );
+  constructor(private store: Store<{}>) {}
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));

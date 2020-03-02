@@ -33,7 +33,7 @@
         <a
           href="mailto:
           ?subject={{ 'email.recommended_product.heading' | translate: { '0': channelName } }}
-          &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': currentUrl } }}"
+          &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': document.URL } }}"
         >
           <fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>
           <span class="share-label">{{ 'product.email_a_friend.link' | translate }}</span>
