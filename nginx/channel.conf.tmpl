@@ -52,7 +52,10 @@ server {
         if ($request_uri !~* ";lang=") {
             rewrite ^(.*)$ "$1;lang=$LANG";
         }
-        rewrite ^(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME" break;
+        if ($request_uri !~* ";channel=") {
+            rewrite ^(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION";
+        }
+        rewrite ^(.*)$ "$1;features=$FEATURES;theme=$THEME" break;
 
         proxy_pass $UPSTREAM_PWA;
     }
