@@ -15,7 +15,7 @@ function generateProductSlug(product: ProductView) {
 
   let slug = product.name.replace(/ /g, '-').replace(/-+$/g, '');
 
-  if (ProductHelper.isVariationProduct(product)) {
+  if (ProductHelper.isVariationProduct(product) && product.variableVariationAttributes) {
     slug += '-';
     slug += product.variableVariationAttributes
       .map(att => att.value)
