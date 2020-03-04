@@ -74,7 +74,7 @@ export const HYBRID_MAPPING_TABLE: HybridMappingEntry[] = [
   {
     id: 'Password Reset',
     icm: `${ICM_CONFIG_MATCH}/ViewForgotLoginData-NewPassword\\?uid=(?<uid>[^&]+)&Hash=(?<hash>[0-9a-f-]+).*$`,
-    pwaBuild: `forgotPassword/updatePassword?uid=$<uid>&Hash=$<hash>${PWA_CONFIG_BUILD}`,
+    pwaBuild: `forgotPassword/updatePassword${PWA_CONFIG_BUILD}?uid=$<uid>&Hash=$<hash>`,
     pwa: `^/forgotPassword/updatePassword?uid=([^&]+)&Hash=([0-9a-f-]+).*$`,
     icmBuild: 'ViewForgotLoginData-NewPassword\\?uid=$1&Hash=$2',
     handledBy: 'pwa',
