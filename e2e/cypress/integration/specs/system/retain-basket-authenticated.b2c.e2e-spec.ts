@@ -1,4 +1,4 @@
-import { at, waitLoadingEnd } from '../../framework';
+import { at } from '../../framework';
 import { createUserViaREST } from '../../framework/users';
 import { LoginPage } from '../../pages/account/login.page';
 import { MyAccountPage } from '../../pages/account/my-account.page';
@@ -25,25 +25,6 @@ const _ = {
 };
 
 describe('Returning User with Basket', () => {
-  describe('anonymous user', () => {
-    it('should add product to basket', () => {
-      ProductDetailPage.navigateTo(_.product.sku);
-      at(ProductDetailPage, page => {
-        page
-          .addProductToCart()
-          .its('status')
-          .should('equal', 201);
-        page.header.miniCart.total.should('contain', _.product.price);
-        waitLoadingEnd(1000);
-      });
-    });
-
-    it('should refresh page and still have basket', () => {
-      HomePage.navigateTo();
-      at(HomePage, page => page.header.miniCart.total.should('contain', _.product.price));
-    });
-  });
-
   describe('authenticated user', () => {
     before(() => {
       createUserViaREST(_.user);
