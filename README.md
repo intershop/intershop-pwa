@@ -88,12 +88,6 @@ Use `npm run format` to perform a formatting run on the code base with Prettier.
 
 Prefer using `npx lint-staged` to perform a manual quick evaluation of staged files. This also happens automatically when committing files. It is also possible to bypass verification on commit, following the suggestions of the versioning control tool of your choice.
 
-## Documentation
-
-Project documentation can be found in the [Documentation Folder](./docs).
-
-The project is also configured to use [Compodoc](https://compodoc.github.io/website) as API documentation tool. The output folder for the documentation is set to `\docs\compodoc`. To generate the code documentation, run `npm run docs`. To generate and serve the documentation at http://localhost:8080, run `npm run docs:serve`. To serve the documentation while watching for source changes, run `npm run docs:watch`.
-
 ## Code Scaffolding
 
 With the integrated `intershop-schematics` this project provides the functionality to generate different code artifacts according to our style guide and project structure. `ng generate` will use our custom schematics by default, e.g. run `ng generate component component-name` in the shared folder to generate a new shared component. `ng generate --help` gives an overview of available Intershop-specific schematics.
