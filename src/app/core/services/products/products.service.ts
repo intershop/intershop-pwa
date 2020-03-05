@@ -98,6 +98,7 @@ export class ProductsService {
    * Get products for a given search term respecting pagination.
    * @param searchTerm    The search term to look for matching products.
    * @param page          The page to request (1-based numbering)
+   * @param sortKey       The sortKey to sort the list, default value is ''.
    * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
    */
   searchProducts(
