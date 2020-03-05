@@ -15,5 +15,5 @@ wget --wait 10 --tries 10 --retry-connrefused $PWA_BASE_URL
 
 cd "$(dirname "$(readlink -f "$0")")"
 
-TIMEOUT="20m"
+TIMEOUT="10m"
 timeout $TIMEOUT node cypress-ci-e2e "$files" || ([ "$?" -eq "124" ] && timeout $TIMEOUT node cypress-ci-e2e "$files") || ([ "$?" -eq "124" ] && timeout $TIMEOUT node cypress-ci-e2e "$files")
