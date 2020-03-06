@@ -1,5 +1,5 @@
 server {
-    server_name ~^$SUBDOMAIN\..+$;
+    server_name ~^$DOMAIN$;
     include /etc/nginx/conf.d/listen.conf;
 
     # let ICM handle everything ICM related
@@ -42,7 +42,7 @@ server {
         proxy_cache_valid 200 302 10m;
         proxy_cache_valid 404      1m;
 
-        add_header X-icm-subdomain $SUBDOMAIN always;
+        add_header X-icm-domain $DOMAIN always;
         add_header X-icm-channel $CHANNEL always;
         add_header X-icm-application $APPLICATION always;
         add_header X-icm-features $FEATURES always;
