@@ -20,12 +20,12 @@
       <ng-container *ngIf="quote.state === 'Submitted' && user$ | async as user">
         <p>
           {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
-          <a [routerLink]="['/account/quote-request', quote.id]" (click)="hide()">{{ quote.number }}</a>
+          <a [routerLink]="['/account/quotes/request', quote.id]" (click)="hide()">{{ quote.number }}</a>
         </p>
         <p
           [ishServerHtml]="
             'quote.edit.submitted.your_quote_request.text'
-              | translate: { '0': 'route://account/quote-list', '1': 'route://account' }
+              | translate: { '0': 'route://account/quotes', '1': 'route://account' }
           "
           [callbacks]="{
             callbackHideDialogModal: callbackHideDialogModal
