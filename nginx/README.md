@@ -57,7 +57,7 @@ docker run -d --name "my-awesome-nginx" \
         -e PWA_3_FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling \
         -e PWA_3_THEME="blue|688dc3" \
         -e PWA_4_TOPLEVELDOMAIN=fr \
-        -e PWA_4_LANG=en_US \
+        -e PWA_4_LANG=fr_FR \
         -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site \
         -e PWA_4_APPLICATION=smb-responsive \
         -e PWA_4_FEATURES=quoting \
