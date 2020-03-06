@@ -784,7 +784,7 @@ universal_b2b:
 
 cypress_remote:
   <<: *cypress_definition
-  parallel: 9
+  parallel: 10
   only:
     - merge_requests
     - triggers
