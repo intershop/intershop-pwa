@@ -45,15 +45,14 @@ do
     fi
   fi
 
+  [ -z "$DOMAIN" ] && [ "$i" = "1" ] && export DOMAIN=".+"
   [ -z "$DOMAIN" ] && break
 
-  eval "export CHANNEL=\$PWA_${i}_CHANNEL"
-  [ -z "$CHANNEL" ] && echo "PWA_${i}_CHANNEL must be set" && exit 1
-
-  eval "export APPLICATION=\${PWA_${i}_APPLICATION:-'-'}"
+  eval "export CHANNEL=\${PWA_${i}_CHANNEL:-'default'}"
+  eval "export APPLICATION=\${PWA_${i}_APPLICATION:-'default'}"
   eval "export LANG=\${PWA_${i}_LANG:-'default'}"
   eval "export FEATURES=\${PWA_${i}_FEATURES:-'default'}"
-  eval "export THEME=\${PWA_${i}_THEME:-''}"
+  eval "export THEME=\${PWA_${i}_THEME:-'default'}"
 
   echo "$i DOMAIN=$DOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES THEME=$THEME"
 
