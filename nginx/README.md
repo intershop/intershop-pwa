@@ -25,14 +25,14 @@ If you are using http, the server will run on default port 80.
 If you use https as an upstream, it will run on default port 443.
 In the latter case you will also have to supply the files `server.key` and `server.crt` in the folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
 
-Setup at least one PWA channel configuration:
+If you run nginx without further configuration, the defaults for channel, application, ... are not overridden. You can setup multiple PWA channels with the following environment variables:
 
-- use mandatory `PWA_X_SUBDOMAIN`, `PWA_X_TOPLEVELDOMAIN` or `PWA_X_DOMAIN` for the channel domain
-- use mandatory `PWA_X_CHANNEL` for the channel name
-- use optional `PWA_X_APPLICATION` for the application name
-- use optional `PWA_X_LANG` for the default locale in the form of `lang_COUNTRY`
-- use optional `PWA_X_FEATURES` for a comma separated list of active feature toggles
-- use optional `PWA_X_THEME` for setting the theme of the channel
+- use `PWA_X_SUBDOMAIN`, `PWA_X_TOPLEVELDOMAIN` or `PWA_X_DOMAIN` for the channel domain
+- use `PWA_X_CHANNEL` for the channel name
+- use `PWA_X_APPLICATION` for the application name
+- use `PWA_X_LANG` for the default locale in the form of `lang_COUNTRY`
+- use `PWA_X_FEATURES` for a comma separated list of active feature toggles
+- use `PWA_X_THEME` for setting the theme of the channel
 
 Temper with the default Page Speed configuration:
 

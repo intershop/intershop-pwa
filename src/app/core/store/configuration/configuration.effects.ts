@@ -70,9 +70,9 @@ export class ConfigurationEffects {
   );
 
   extractConfigurationParameters(paramMap: ParamMap) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'application'];
+    const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'theme'];
     const properties: Partial<ConfigurationState> = keys
-      .filter(key => paramMap.has(key))
+      .filter(key => paramMap.has(key) && paramMap.get(key) !== 'default')
       .map(key => ({ [key]: paramMap.get(key) }))
       .reduce((acc, val) => ({ ...acc, ...val }), {});
 
@@ -86,10 +86,6 @@ export class ConfigurationEffects {
       } else {
         properties.features = paramMap.get('features').split(/,/g);
       }
-    }
-
-    if (paramMap.has('theme')) {
-      properties.theme = paramMap.get('theme');
     }
 
     return Object.keys(properties).length ? [new ApplyConfiguration(properties)] : [];
