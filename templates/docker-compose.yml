@@ -4,7 +4,11 @@
 version: "3"
 services:
   pwa:
-    build: ..
+    build:
+      context: ..
+      args:
+        # configuration: local
+        configuration: production
     environment:
       - LOGGING=true
       - ICM_BASE_URL
@@ -14,6 +18,7 @@ services:
       - pwa
     environment:
       UPSTREAM_PWA: "http://pwa:4200"
+      # DEBUG: 1
       PWA_1_DOMAIN: "example.com"
       # PWA_1_SUBDOMAIN: "www"
       # PWA_1_TOPLEVELDOMAIN: "com"

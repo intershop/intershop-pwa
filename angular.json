@@ -82,7 +82,7 @@
                 }
               ],
               "sourceMap": true,
-              "extractCss": true
+              "serviceWorker": false
             },
             "es5": {
               "tsConfig": "./tsconfig-es5.app.json"
@@ -140,6 +140,15 @@
                 "scripts": false,
                 "styles": true
               }
+            },
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ],
+              "sourceMap": true
             }
           }
         }
