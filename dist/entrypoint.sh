@@ -2,11 +2,14 @@
 
 set -e
 
-trap 'ps -o pid,comm | grep node | awk "{ print $1 }" | xargs -r kill' INT TERM
+trap 'echo recieved INT; exit 1' SIGINT
+trap 'echo recieved TERM; exit 0' SIGTERM
+trap 'echo recieved KILL; exit 1' SIGKILL
 
 if [ -z "$*" ]
 then
-  node dist/server
+  node dist/server &
+  wait
 else
   exec "$@"
 fi
