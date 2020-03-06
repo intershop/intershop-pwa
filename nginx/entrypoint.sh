@@ -69,7 +69,7 @@ env | grep NPSC_ | sed -e 's/^[^=]*=//' -e 's/$/;/' > /tmp/pagespeed-suffix.txt
 
 paste -d" " /tmp/pagespeed-prefix.txt /tmp/pagespeed-suffix.txt >> /etc/nginx/pagespeed.conf
 
-find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
+[ ! -z "$DEBUG" ] && find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
 
 if [ -z "$*" ]
 then
