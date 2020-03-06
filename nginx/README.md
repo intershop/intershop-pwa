@@ -27,7 +27,7 @@ In the latter case you will also have to supply the files `server.key` and `serv
 
 Setup at least one PWA channel configuration:
 
-- use mandatory `PWA_X_SUBDOMAIN` for the channel sub domain
+- use mandatory `PWA_X_SUBDOMAIN`, `PWA_X_TOPLEVELDOMAIN` or `PWA_X_DOMAIN` for the channel domain
 - use mandatory `PWA_X_CHANNEL` for the channel name
 - use optional `PWA_X_APPLICATION` for the application name
 - use optional `PWA_X_LANG` for the default locale in the form of `lang_COUNTRY`
@@ -46,19 +46,22 @@ docker run -d --name "my-awesome-nginx" \
         --restart always \
         -p 4199:80 \
         -e UPSTREAM_PWA=http://192.168.0.10:4200 \
-        -e PWA_1_SUBDOMAIN=b2b \
-        -e PWA_1_CHANNEL=inSPIRED-inTRONICS_Business-Site \
-        -e PWA_1_FEATURES=quoting,recently,compare \
-        -e PWA_2_SUBDOMAIN=b2c \
+        -e PWA_1_TOPLEVELDOMAIN=net \
+        -e PWA_1_CHANNEL=inSPIRED-inTRONICS-Site \
+        -e PWA_1_LANG=en_US \
+        -e PWA_2_TOPLEVELDOMAIN=de \
         -e PWA_2_CHANNEL=inSPIRED-inTRONICS-Site \
-        -e PWA_3_SUBDOMAIN=de \
-        -e PWA_3_CHANNEL=inSPIRED-inTRONICS-Site \
-        -e PWA_3_LANG=de_DE \
-        -e PWA_3_FEATURES=none \
-        -e PWA_4_SUBDOMAIN=smb \
+        -e PWA_2_LANG=de_DE \
+        -e PWA_3_TOPLEVELDOMAIN=com \
+        -e PWA_3_CHANNEL=inSPIRED-inTRONICS_Business-Site \
+        -e PWA_3_FEATURES=quoting,recently,compare,businessCustomerRegistration,advancedVariationHandling \
+        -e PWA_3_THEME="blue|688dc3" \
+        -e PWA_4_TOPLEVELDOMAIN=fr \
+        -e PWA_4_LANG=en_US \
         -e PWA_4_CHANNEL=inSPIRED-inTRONICS-Site \
         -e PWA_4_APPLICATION=smb-responsive \
         -e PWA_4_FEATURES=quoting \
+        -e PWA_4_THEME="blue|688dc3" \
         my_awesome_nginx
 ```
 

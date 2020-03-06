@@ -28,7 +28,24 @@ i=1
 while true
 do
   eval "export SUBDOMAIN=\$PWA_${i}_SUBDOMAIN"
-  [ -z "$SUBDOMAIN" ] && break
+  eval "export TOPLEVELDOMAIN=\$PWA_${i}_TOPLEVELDOMAIN"
+  eval "export DOMAIN=\$PWA_${i}_DOMAIN"
+
+  if [ ! -z "$DOMAIN" ]
+  then
+    [ ! -z "$SUBDOMAIN" ] && echo "ignoring PWA_${i}_SUBDOMAIN as PWA_${i}_DOMAIN is set"
+    [ ! -z "$TOPLEVELDOMAIN" ] && echo "ignoring PWA_${i}_TOPLEVELDOMAIN as PWA_${i}_DOMAIN is set"
+  else
+    if [ ! -z "$SUBDOMAIN" ]
+    then
+      [ ! -z "$TOPLEVELDOMAIN" ] && echo "ignoring PWA_${i}_TOPLEVELDOMAIN as PWA_${i}_SUBDOMAIN is set"
+      export DOMAIN="$SUBDOMAIN\..+"
+    else
+      [ ! -z "$TOPLEVELDOMAIN" ] && export DOMAIN=".+\.$TOPLEVELDOMAIN"
+    fi
+  fi
+
+  [ -z "$DOMAIN" ] && break
 
   eval "export CHANNEL=\$PWA_${i}_CHANNEL"
   [ -z "$CHANNEL" ] && echo "PWA_${i}_CHANNEL must be set" && exit 1
@@ -38,9 +55,9 @@ do
   eval "export FEATURES=\${PWA_${i}_FEATURES:-'default'}"
   eval "export THEME=\${PWA_${i}_THEME:-''}"
 
-  echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
+  echo "$i DOMAIN=$DOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES THEME=$THEME"
 
-  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
+  envsubst '$UPSTREAM_PWA,$DOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
 
   i=$((i+1))
 done
