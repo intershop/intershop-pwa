@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "types": ["node"]
+  },
+  "exclude": ["../src/setupJest.ts", "../src/**/*.spec.ts"],
+  "include": ["../src/**/*"]
+}

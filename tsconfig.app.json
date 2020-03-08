@@ -9,7 +9,8 @@
     "src/setupJest.ts",
     "**/*.spec.ts",
     "**/dev/**/*.ts",
-    "**/ngrx-router/**/*.ts"
+    "**/ngrx-router/**/*.ts",
+    "**/*.stories.ts"
   ],
   "include": ["src/**/*.ts", "src/main.ts", "src/polyfills.ts"]
 }

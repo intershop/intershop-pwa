@@ -17,7 +17,7 @@
     "no-unnecessary-type-annotation": true,
     "ish-no-object-literal-type-assertion": [
       true,
-      "^((?!(/dev/|/tslint-rules/|spec\\.ts$)).)*$"
+      "^((?!(/dev/|/tslint-rules/|\\.spec\\.ts|\\.e2e-spec\\.ts|src\\/stories\\/.*$)).)*$"
     ],
     "no-collapsible-if": true,
     "no-unused": true,
@@ -494,6 +494,9 @@
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/ngrx-router/.*$",
           "^.*/src/hybrid/default-url-mapping-table.ts$",
+          // storybook
+          "^.*/src/stories/storybook-helper.ts$",
+          "^.*/src/stories/(.*/)?.*\\.stories\\.ts$",
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",
