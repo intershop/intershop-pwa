@@ -27,6 +27,7 @@ import {
   getPreferredWishlist,
   getSelectedWishlistDetails,
   getSelectedWishlistId,
+  getWishlistDetails,
   getWishlistsError,
   getWishlistsLoading,
 } from './wishlist.selectors';
@@ -306,6 +307,18 @@ describe('Wishlist Selectors', () => {
 
     it('should return correct wishlist details for given id', () => {
       expect(getSelectedWishlistDetails(store$.state)).toEqual(wishlists[1]);
+    });
+  });
+
+  describe('Get Wishlist Details', () => {
+    const loadWishlistsSuccessActions = new LoadWishlistsSuccess({ wishlists });
+
+    beforeEach(() => {
+      store$.dispatch(loadWishlistsSuccessActions);
+    });
+
+    it('should return correct wishlist for given id', () => {
+      expect(getWishlistDetails(store$.state, { id: wishlists[1].id })).toEqual(wishlists[1]);
     });
   });
 

@@ -13,7 +13,7 @@ import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
 
 import * as wishlistsActions from './wishlist.actions';
-import { getSelectedWishlistDetails, getSelectedWishlistId } from './wishlist.selectors';
+import { getSelectedWishlistDetails, getSelectedWishlistId, getWishlistDetails } from './wishlist.selectors';
 
 @Injectable()
 export class WishlistEffects {
@@ -54,9 +54,18 @@ export class WishlistEffects {
   deleteWishlist$ = this.actions$.pipe(
     ofType<wishlistsActions.DeleteWishlist>(wishlistsActions.WishlistsActionTypes.DeleteWishlist),
     mapToPayloadProperty('wishlistId'),
-    mergeMap((wishlistId: string) =>
+    mergeMap(wishlistId => this.store.pipe(select(getWishlistDetails, { id: wishlistId }))),
+    whenTruthy(),
+    map(wishlist => ({ wishlistId: wishlist.id, title: wishlist.title })),
+    mergeMap(({ wishlistId, title }) =>
       this.wishlistService.deleteWishlist(wishlistId).pipe(
-        map(() => new wishlistsActions.DeleteWishlistSuccess({ wishlistId })),
+        mergeMap(() => [
+          new wishlistsActions.DeleteWishlistSuccess({ wishlistId }),
+          new SuccessMessage({
+            message: 'account.wishlist.list.remove.message',
+            messageParams: { 0: title },
+          }),
+        ]),
         mapErrorToAction(wishlistsActions.DeleteWishlistFail)
       )
     )
@@ -68,7 +77,13 @@ export class WishlistEffects {
     mapToPayloadProperty('wishlist'),
     mergeMap((newWishlist: Wishlist) =>
       this.wishlistService.updateWishlist(newWishlist).pipe(
-        map(wishlist => new wishlistsActions.UpdateWishlistSuccess({ wishlist })),
+        mergeMap(wishlist => [
+          new wishlistsActions.UpdateWishlistSuccess({ wishlist }),
+          new SuccessMessage({
+            message: 'account.wishlist.list.edit.message',
+            messageParams: { 0: wishlist.title },
+          }),
+        ]),
         mapErrorToAction(wishlistsActions.UpdateWishlistFail)
       )
     )
