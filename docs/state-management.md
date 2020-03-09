@@ -1,3 +1,10 @@
+<!--
+kb_sync_by_release
+kb_pwa
+kb_concepts
+kb_everyone
+-->
+
 # State Management
 
 This section describes how [NgRx](https://ngrx.io/) is integrated into the Intershop Progressive Web App for the application wide state management.
