@@ -16,6 +16,9 @@ export const environment: Environment = {
 
   mockServerAPI: true,
 
+  // icmBaseURL: 'https://intershoppwa.azurewebsites.net',
+  // mockServerAPI: false,
+
   /* FEATURE TOOGLES */
   features: ['compare', 'recently', 'rating', 'wishlists'],
 
