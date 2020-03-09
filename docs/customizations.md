@@ -1,4 +1,11 @@
-# Intershop Progressive Web App - Customization Guide
+<!--
+kb_sync_by_release
+kb_pwa
+kb_guide
+kb_everyone
+-->
+
+# Customization Guide
 
 When customizing the PWA, always keep in mind that you probably want to upgrade from time to time and will have to merge incoming changes into your codebase. We therefore suggest that you do not edit existing files all too much and keep them as intact as possible. In this document we provide a couple of rules that you should follow. Generally speaking:
 

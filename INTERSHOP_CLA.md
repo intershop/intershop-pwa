@@ -1,3 +1,10 @@
+<!--
+kb_sync_latest_only
+kb_pwa
+kb_everyone
+kb_guide
+-->
+
 # Intershop Contributor License Agreement
 
 Thank you for your interest in contributing to our open source software project ("project PWA storefront" or just "project") made available by Intershop Communications AG ("ISH"). This contributor license agreement ("agreement") sets out the terms governing any source code, object code, bug fixes, configuration changes, tools, specifications, documentation, data, materials, feedback, information or other works of authorship that you submit or have submitted, in any form and in any manner, to ISH in respect of the project PWA storefront (collectively "Contributions").
