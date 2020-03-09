@@ -9,15 +9,15 @@ export const environment: Environment = {
   production: false,
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'http://localhost:4200',
+  // icmBaseURL: 'http://localhost:4200',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
-  mockServerAPI: true,
+  // mockServerAPI: true,
 
-  // icmBaseURL: 'https://intershoppwa.azurewebsites.net',
-  // mockServerAPI: false,
+  icmBaseURL: 'https://intershoppwa.azurewebsites.net',
+  mockServerAPI: false,
 
   /* FEATURE TOOGLES */
   features: ['compare', 'recently', 'rating', 'wishlists'],
