@@ -32,8 +32,6 @@
 
 ## [Continuous Integration](./continous-integration.md)
 
-## [Microsoft Azure Deployment](./microsoft-azure-deployment.md)
-
 ## [Migrations](./migrations.md)
 
 ## [Search Engine Optimization](./search-engine-optimization.md)
