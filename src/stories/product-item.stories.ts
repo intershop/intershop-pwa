@@ -4,6 +4,12 @@ import { ProductItemContainerConfiguration } from 'ish-shared/components/product
 
 import { defaultModuleMetadata } from './storybook-helper';
 
+storiesOf('ish-product-item/isolation', module)
+  .addDecorator(moduleMetadata(defaultModuleMetadata))
+  .add('normal product', () => ({
+    template: `<ish-product-item productSku="201807171" quantity="1"></ish-product-item>`,
+  }));
+
 storiesOf('ish-product-item/tile', module)
   .addDecorator(moduleMetadata(defaultModuleMetadata))
   .add('normal product', () => ({
