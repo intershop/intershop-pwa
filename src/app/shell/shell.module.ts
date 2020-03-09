@@ -34,6 +34,7 @@ import { UserInformationMobileComponent } from './header/user-information-mobile
 const exportedComponents = [
   FooterComponent,
   HeaderComponent,
+  MiniBasketComponent,
   ProductImageComponent,
   SearchBoxComponent,
   ServerHtmlDirective,
@@ -68,7 +69,6 @@ const exportedComponents = [
     LanguageSwitchComponent,
     LazyLoginModalComponent,
     LoginStatusComponent,
-    MiniBasketComponent,
     ProductCompareStatusComponent,
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
