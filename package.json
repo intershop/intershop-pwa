@@ -102,6 +102,7 @@
     "@babel/preset-env": "^7.5.5",
     "@schematics/angular": "^8.3.18",
     "@storybook/addon-actions": "^5.3.14",
+    "@storybook/addon-knobs": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addon-notes": "^5.3.14",
     "@storybook/addon-storysource": "^5.3.14",
