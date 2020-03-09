@@ -221,9 +221,10 @@ describe('Wishlist Effects', () => {
   });
 
   describe('deleteWishlist$', () => {
-    const id = 'id';
+    const id = wishlists[0].id;
     beforeEach(() => {
       store$.dispatch(new LoginUserSuccess({ customer }));
+      store$.dispatch(new CreateWishlistSuccess({ wishlist: wishlists[0] }));
       when(wishlistServiceMock.deleteWishlist(anyString())).thenReturn(of(undefined));
     });
 
@@ -239,9 +240,13 @@ describe('Wishlist Effects', () => {
 
     it('should map to actions of type DeleteWishlistSuccess', () => {
       const action = new DeleteWishlist({ wishlistId: id });
-      const completion = new DeleteWishlistSuccess({ wishlistId: id });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion1 = new DeleteWishlistSuccess({ wishlistId: id });
+      const completion2 = new SuccessMessage({
+        message: 'account.wishlist.list.remove.message',
+        messageParams: { 0: wishlists[0].title },
+      });
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.deleteWishlist$).toBeObservable(expected$);
     });
@@ -286,9 +291,13 @@ describe('Wishlist Effects', () => {
 
     it('should map to actions of type UpdateWishlistSuccess', () => {
       const action = new UpdateWishlist({ wishlist: wishlistDetailData[0] });
-      const completion = new UpdateWishlistSuccess({ wishlist: wishlistDetailData[0] });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion1 = new UpdateWishlistSuccess({ wishlist: wishlistDetailData[0] });
+      const completion2 = new SuccessMessage({
+        message: 'account.wishlist.list.edit.message',
+        messageParams: { 0: wishlistDetailData[0].title },
+      });
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.updateWishlist$).toBeObservable(expected$);
     });
