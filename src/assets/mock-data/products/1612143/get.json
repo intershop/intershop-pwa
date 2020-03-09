@@ -1,0 +1,342 @@
+{
+  "name": "Benq MD300",
+  "type": "Product",
+  "attributes": [
+    {
+      "name": "Movement detection technology",
+      "type": "String",
+      "value": "Optical"
+    },
+    {
+      "name": "Mouse dimensions (WxDxH)",
+      "type": "String",
+      "value": "95 x 64 x 27.8 mm"
+    },
+    {
+      "name": "Movement resolution",
+      "type": "String",
+      "value": "800 DPI"
+    },
+    {
+      "name": "Device interface",
+      "type": "String",
+      "value": "USB"
+    },
+    {
+      "name": "Scroll",
+      "type": "String",
+      "value": "Y"
+    },
+    {
+      "name": "Source data-sheet",
+      "type": "String",
+      "value": "Icecat.biz"
+    },
+    {
+      "name": "Buttons quantity",
+      "type": "String",
+      "value": "3"
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Black"
+    },
+    {
+      "name": "Compatible operating systems",
+      "type": "String",
+      "value": "Windows 98SE, 2000, ME, XP, Vista"
+    }
+  ],
+  "sku": "1612143",
+  "productName": "Benq MD300",
+  "shortDescription": "MD300 Optical Mouse/ black/ 800DPI/ USB",
+  "longDescription": "<b>Innovative interactive sensing technology</b><br/>Not only for controlling the cursor on your screen but interactively sense the pointing device by a glow of lightning, vibration, sound and movement in your hand with instant response. By the innovative design, the MD300 shows different vivid expression feedback to you when you shake it, squeeze it, roll it and tickle it.<br/><br/><b>Vivid dance</b><br/>Sit back, listen to music and enjoy the MD300 dancing on your desk while playing music on your PC or notebook. With the advanced sensing technology, the MD300 Sense Mouse listens to the music and joyfully dance with you!<br/><br/><b>Instant online message notification</b><br/>Customise the different incoming message notifications by sound, vibration and glow of lightning through the enhanced Sense Mouse driver software. Personalize your daily contact with different emotional light expression and sense the mouse vivid feedback not only through your eyes.",
+  "productTypes": ["PRODUCT"],
+  "availability": true,
+  "retailSet": false,
+  "inStock": true,
+  "availableStock": 0,
+  "productMaster": false,
+  "mastered": false,
+  "roundedAverageRating": "0.0",
+  "readyForShipmentMin": 3,
+  "readyForShipmentMax": 7,
+  "minOrderQuantity": 1,
+  "productBundle": false,
+  "manufacturer": "Benq",
+  "listPrice": {
+    "type": "ProductPrice",
+    "value": 21.47,
+    "currencyMnemonic": "USD",
+    "currency": "USD"
+  },
+  "salePrice": {
+    "type": "ProductPrice",
+    "value": 17.17,
+    "currencyMnemonic": "USD",
+    "currency": "USD"
+  },
+  "maxOrderQuantity": 0,
+  "stepOrderQuantity": 1,
+  "packingUnit": "",
+  "shippingMethods": [
+    {
+      "name": "Saturday Delivery",
+      "type": "ShippingMethod",
+      "id": "SATURDAY",
+      "shippingTimeMin": 0,
+      "shippingTimeMax": 6
+    },
+    {
+      "name": "5-Business Day",
+      "type": "ShippingMethod",
+      "id": "STD_5DAY",
+      "shippingTimeMin": 2,
+      "shippingTimeMax": 5
+    },
+    {
+      "name": "2-Business Day",
+      "type": "ShippingMethod",
+      "id": "STD_2DAY",
+      "shippingTimeMin": 1,
+      "shippingTimeMax": 2
+    },
+    {
+      "name": "Standard Ground",
+      "type": "ShippingMethod",
+      "id": "STD_GROUND",
+      "shippingTimeMin": 3,
+      "shippingTimeMax": 7
+    }
+  ],
+  "availableGiftWraps": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature",
+      "title": "Gift Wrap Nature",
+      "description": "Wrapping paper with ornamental pattern."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy",
+      "title": "Gift Wrap Phantasy",
+      "description": "Gift Wrap with phantasy pattern."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers",
+      "title": "Gift Wrap Pink Flowers",
+      "description": "Gift Wrap with a beautiful pink floral pattern"
+    }
+  ],
+  "availableGiftMessages": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue",
+      "title": "Gift Message Blue",
+      "description": "A blue gift card message."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen",
+      "title": "Gift Message Green",
+      "description": "A green message card."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink",
+      "title": "Gift Message Pink",
+      "description": "A gift message card."
+    }
+  ],
+  "images": [
+    {
+      "name": "side S",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "side",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": false
+    },
+    {
+      "name": "back S",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "back",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": false
+    },
+    {
+      "name": "front S",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "front",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": true
+    },
+    {
+      "name": "side L",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "side",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": false
+    },
+    {
+      "name": "back L",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "back",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": false
+    },
+    {
+      "name": "front L",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "front",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": true
+    },
+    {
+      "name": "side M",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "side",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": false
+    },
+    {
+      "name": "back M",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "back",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": false
+    },
+    {
+      "name": "front M",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "front",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": true
+    }
+  ],
+  "defaultCategory": {
+    "name": "Mice",
+    "type": "DefaultCategory",
+    "id": "195",
+    "categoryPath": [
+      {
+        "name": "Computers",
+        "type": "CategoryPath",
+        "id": "Computers",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/"
+      },
+      {
+        "name": "Input Devices",
+        "type": "CategoryPath",
+        "id": "191",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/"
+      },
+      {
+        "name": "Mice",
+        "type": "CategoryPath",
+        "id": "195",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/195/"
+      }
+    ],
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/191/195/"
+  },
+  "attributeGroups": {
+    "PRODUCT_LABEL_ATTRIBUTES": {
+      "attributes": [
+        {
+          "name": "sale",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "discount",
+          "type": "Integer",
+          "value": 15
+        }
+      ]
+    },
+    "PRODUCT_DETAIL_ATTRIBUTES": {
+      "attributes": [
+        {
+          "name": "Movement detection technology",
+          "type": "String",
+          "value": "Optical"
+        },
+        {
+          "name": "Mouse dimensions (WxDxH)",
+          "type": "String",
+          "value": "95 x 64 x 27.8 mm"
+        },
+        {
+          "name": "Movement resolution",
+          "type": "String",
+          "value": "800 DPI"
+        },
+        {
+          "name": "Device interface",
+          "type": "String",
+          "value": "USB"
+        },
+        {
+          "name": "Scroll",
+          "type": "String",
+          "value": "Y"
+        },
+        {
+          "name": "Colour of product",
+          "type": "String",
+          "value": "Black"
+        },
+        {
+          "name": "Source data-sheet",
+          "type": "String",
+          "value": "Icecat.biz"
+        },
+        {
+          "name": "Buttons quantity",
+          "type": "String",
+          "value": "3"
+        },
+        {
+          "name": "Compatible operating systems",
+          "type": "String",
+          "value": "Windows 98SE, 2000, ME, XP, Vista"
+        }
+      ]
+    }
+  },
+  "seoAttributes": {
+    "metaTitle": "Benq MD300 - Mice favorable buying at our shop",
+    "metaDescription": "Benq MD300 - MD300 Optical Mouse/ black/ 800DPI/ USB",
+    "metaKeywords": [],
+    "robots": ["index", "follow"]
+  }
+}

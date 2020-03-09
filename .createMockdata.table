@@ -37,7 +37,9 @@ products/201807193 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sor
 products/201807194 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/201807194/bundles ?
 products/201807204 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/201807204/variations
 products/201807231 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/201807231/variations
 products/201807204-01 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/201807231-01 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/201807231-02 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
@@ -47,8 +49,9 @@ products/201807231-05 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=
 products/201807231-06 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
-products/201807204/variations
-products/201807231/variations
+products/M4548736000919 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/M4548736000919/partOfRetailSet
+products/1612143 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 suggest ?SearchTerm=k
 suggest ?SearchTerm=kodak
 products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image,minOrderQuantity,inStock,promotions,packingUnit,mastered,productMaster,productMasterSKU,roundedAverageRating&offset=0&returnSortKeys=true&searchTerm=kodak {elements:[.elements[]|select(.uri|test(".*/7912057"))],name,type,sortKeys,total:1,offset,amount}

@@ -1,0 +1,187 @@
+{
+  "name": "Sony FDR-X1000V Set",
+  "type": "Product",
+  "sku": "M4548736000919",
+  "productName": "Sony FDR-X1000V Set",
+  "shortDescription": "Camera Set: including Sony FDR-X1000V, Underwater Case & spare rchrgbl. Battery",
+  "longDescription": "<b>1. camera: Sony FDR-X1000V</b>\n<br/>Sony’s FDR-X1000V Action Cam’s combines all the features experienced users have been waiting for. 4K picture quality is equal to that of current Hollywood blockbusters, enhanced SteadyShot stabilization makes getting great shots easier, and handy features like the Highlight Movie Maker help you turn all that footage into a mesmerizing masterpiece.\n<br/><br/>\n- 4K Ultra HD for four times the detail of Full HD\n<br/>- 170° ultra-wide ZEISS Tessar® lens for panoramic shots\n<br/>- SteadyShot is 3 times more effective (not supported in 4K mode)\n<br/>- Enhanced Full HD captures crisp, clear images in rich color\n<br/>- Record fast-moving action at Full HD 120p for beautiful slo-mo\n<br/><br/>\n<b>2. underwater case: Sony MPK-AS3</b>\n<br/>Waterproof up to 60m\n<br/>Includes a flat lens for clearer underwater images\n<br/>Offers great protection both in and out of the water\n<br/>Lightweight 110g design\n<br/><br/>\n<b>3. spare rechargeable battery: Sony NP-BY1</b>\n<br/>Sony NP-BY1. Battery capacity: 640 mAh, Purpose: Digital camera, Battery technology: Lithium-Ion. Weight: 15g",
+  "productTypes": ["RETAIL_SET"],
+  "availability": true,
+  "retailSet": true,
+  "inStock": true,
+  "availableStock": 0,
+  "productMaster": false,
+  "mastered": false,
+  "roundedAverageRating": "4.0",
+  "readyForShipmentMin": 3,
+  "readyForShipmentMax": 7,
+  "minOrderQuantity": 1,
+  "productBundle": false,
+  "manufacturer": "Sony",
+  "minListPrice": {
+    "type": "ProductPrice",
+    "value": 22.82,
+    "currencyMnemonic": "USD",
+    "currency": "USD"
+  },
+  "minSalePrice": {
+    "type": "ProductPrice",
+    "value": 22.82,
+    "currencyMnemonic": "USD",
+    "currency": "USD"
+  },
+  "summedUpListPrice": {
+    "type": "ProductPrice",
+    "value": 437.77,
+    "currencyMnemonic": "USD",
+    "currency": "USD"
+  },
+  "summedUpSalePrice": {
+    "type": "ProductPrice",
+    "value": 437.77,
+    "currencyMnemonic": "USD",
+    "currency": "USD"
+  },
+  "maxOrderQuantity": 0,
+  "stepOrderQuantity": 1,
+  "packingUnit": "",
+  "partOfRetailSet": "inSPIRED-inTRONICS-Site/-/products/M4548736000919/partOfRetailSet",
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/M4548736000919/reviews",
+  "shippingMethods": [
+    {
+      "name": "Standard Ground",
+      "type": "ShippingMethod",
+      "id": "STD_GROUND",
+      "shippingTimeMin": 3,
+      "shippingTimeMax": 7
+    },
+    {
+      "name": "Saturday Delivery",
+      "type": "ShippingMethod",
+      "id": "SATURDAY",
+      "shippingTimeMin": 0,
+      "shippingTimeMax": 6
+    },
+    {
+      "name": "2-Business Day",
+      "type": "ShippingMethod",
+      "id": "STD_2DAY",
+      "shippingTimeMin": 1,
+      "shippingTimeMax": 2
+    },
+    {
+      "name": "5-Business Day",
+      "type": "ShippingMethod",
+      "id": "STD_5DAY",
+      "shippingTimeMin": 2,
+      "shippingTimeMax": 5
+    }
+  ],
+  "availableGiftWraps": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers",
+      "title": "Gift Wrap Pink Flowers",
+      "description": "Gift Wrap with a beautiful pink floral pattern"
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature",
+      "title": "Gift Wrap Nature",
+      "description": "Wrapping paper with ornamental pattern."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy",
+      "title": "Gift Wrap Phantasy",
+      "description": "Gift Wrap with phantasy pattern."
+    }
+  ],
+  "availableGiftMessages": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink",
+      "title": "Gift Message Pink",
+      "description": "A gift message card."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue",
+      "title": "Gift Message Blue",
+      "description": "A blue gift card message."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen",
+      "title": "Gift Message Green",
+      "description": "A green message card."
+    }
+  ],
+  "images": [
+    {
+      "name": "front S",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "front",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": true
+    },
+    {
+      "name": "front L",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "front",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": true
+    },
+    {
+      "name": "front M",
+      "type": "Image",
+      "effectiveUrl": "assets/img/not_available.png",
+      "viewID": "front",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": true
+    }
+  ],
+  "defaultCategory": {
+    "name": "Action Cameras",
+    "type": "DefaultCategory",
+    "id": "832",
+    "categoryPath": [
+      {
+        "name": "Cameras",
+        "type": "CategoryPath",
+        "id": "Cameras-Camcorders",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/"
+      },
+      {
+        "name": "Action Cameras",
+        "type": "CategoryPath",
+        "id": "832",
+        "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832/"
+      }
+    ],
+    "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832/"
+  },
+  "attributeGroups": {},
+  "promotions": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams",
+      "title": "5 % discount on action cameras and accessories",
+      "itemId": "5PercentOnActionCams"
+    }
+  ],
+  "seoAttributes": {
+    "metaTitle": "Sony FDR-X1000V Set - Action Cameras favorable buying at our shop",
+    "metaDescription": "Sony FDR-X1000V Set - Camera Set: including Sony FDR-X1000V, Underwater Case & spare rchrgbl. Battery",
+    "metaKeywords": [],
+    "robots": ["index", "follow"]
+  }
+}
