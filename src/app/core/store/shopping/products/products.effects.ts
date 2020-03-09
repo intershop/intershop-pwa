@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
@@ -8,11 +7,14 @@ import {
   concatMap,
   distinct,
   distinctUntilChanged,
+  distinctUntilKeyChanged,
   filter,
   groupBy,
   map,
   mergeMap,
   switchMap,
+  switchMapTo,
+  take,
   takeUntil,
   tap,
   throttleTime,
@@ -23,6 +25,7 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { ofProductRoute } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
@@ -32,6 +35,7 @@ import {
   mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
+  whenFalsy,
   whenTruthy,
 } from 'ish-core/utils/operators';
 
@@ -44,7 +48,6 @@ export class ProductsEffects {
     private actions$: Actions,
     private store: Store<{}>,
     private productsService: ProductsService,
-    private router: Router,
     private httpStatusCodeService: HttpStatusCodeService,
     private productListingMapper: ProductListingMapper
   ) {}
@@ -214,11 +217,14 @@ export class ProductsEffects {
 
   @Effect()
   loadDefaultCategoryContextForProduct$ = this.actions$.pipe(
-    ofRoute(/^product/),
+    ofProductRoute(),
+    mapToParam('categoryUniqueId'),
+    whenFalsy(),
     switchMap(() =>
       this.store.pipe(
         select(productsSelectors.getSelectedProduct),
         whenTruthy(),
+        filter(p => !ProductHelper.isFailedLoading(p)),
         filter(product => !product.defaultCategory()),
         mapToProperty('defaultCategoryId'),
         whenTruthy(),
@@ -264,8 +270,16 @@ export class ProductsEffects {
 
   @Effect({ dispatch: false })
   redirectIfErrorInProducts$ = this.actions$.pipe(
-    ofType(productsActions.ProductsActionTypes.LoadProductFail),
-    filter(() => this.router.url.includes('/product/')),
+    ofProductRoute(),
+    switchMapTo(
+      this.store.pipe(
+        select(productsSelectors.getSelectedProduct),
+        whenTruthy(),
+        distinctUntilKeyChanged('sku'),
+        filter(ProductHelper.isFailedLoading),
+        take(1)
+      )
+    ),
     tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 

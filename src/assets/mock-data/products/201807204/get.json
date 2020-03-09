@@ -236,24 +236,6 @@
   "type": "Product",
   "variationAttributeValues": [
     {
-      "name": "Hard drive size",
-      "type": "VariationAttribute",
-      "value": "1TB",
-      "variationAttributeId": "Attr_harddrivesize"
-    },
-    {
-      "name": "Hard drive size",
-      "type": "VariationAttribute",
-      "value": "256GB",
-      "variationAttributeId": "Attr_harddrivesize"
-    },
-    {
-      "name": "Hard drive size",
-      "type": "VariationAttribute",
-      "value": "512GB",
-      "variationAttributeId": "Attr_harddrivesize"
-    },
-    {
       "name": "Color",
       "type": "VariationAttribute",
       "value": "Burgundy",
@@ -276,6 +258,24 @@
       "type": "VariationAttribute",
       "value": "Platinum",
       "variationAttributeId": "Colour_of_product"
+    },
+    {
+      "name": "Hard drive size",
+      "type": "VariationAttribute",
+      "value": "1TB",
+      "variationAttributeId": "Hard_disk_drive_capacity"
+    },
+    {
+      "name": "Hard drive size",
+      "type": "VariationAttribute",
+      "value": "256GB",
+      "variationAttributeId": "Hard_disk_drive_capacity"
+    },
+    {
+      "name": "Hard drive size",
+      "type": "VariationAttribute",
+      "value": "512GB",
+      "variationAttributeId": "Hard_disk_drive_capacity"
     }
   ],
   "variations": "inSPIRED-inTRONICS-Site/-/products/201807204/variations"

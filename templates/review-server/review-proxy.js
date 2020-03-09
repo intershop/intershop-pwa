@@ -23,13 +23,16 @@ app.get('/*', function (req, res) {
         return res.status(500).send({ error: 'no data from inspect' });
       }
 
-      const bindings = Object.values(inspect[0].NetworkSettings.Ports)
-        .filter(val => !!val)
+      const ports = inspect[0].NetworkSettings.Ports
+      const bindings = Object.keys(ports)
+        .filter(val => !!val && !!ports[val])
+        .filter(val => !val.includes('443'))
+        .map(key => ports[key])
         .reduce((acc, val) => [...acc, ...val], [])
         .map(binding => binding.HostPort)
         .map(parseInt);
 
-      console.log(name, inspect[0].NetworkSettings.Ports);
+      console.log(name, ports);
       if (!bindings || !bindings.length) {
         return res.status(404).send({ error: 'instance does not have public ports' });
       }

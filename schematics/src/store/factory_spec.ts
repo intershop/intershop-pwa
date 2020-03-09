@@ -2,12 +2,13 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { mergeMap } from 'rxjs/operators';
 
 import {
-  createAppNotFoundRoutingModule,
+  createAppLastRoutingModule,
   createApplication,
   createModule,
   createSchematicRunner,
 } from '../utils/testHelper';
 
+import { determineStoreLocation } from './factory';
 import { PwaStoreOptionsSchema as Options } from './schema';
 
 describe('Store Schematic', () => {
@@ -23,7 +24,7 @@ describe('Store Schematic', () => {
       .pipe(
         createModule(schematicRunner, { name: 'shared' }),
         createModule(schematicRunner, { name: 'shell' }),
-        createAppNotFoundRoutingModule(schematicRunner),
+        createAppLastRoutingModule(schematicRunner),
         mergeMap(tree => schematicRunner.runSchematicAsync('extension', { name: 'feature', project: 'bar' }, tree))
       )
       .toPromise();
@@ -67,34 +68,9 @@ export interface CoreState {
 export const getCoreState: Selector<CoreState, CoreState> = state => state;
 `
     );
-    appTree.create(
-      '/projects/bar/src/app/core/store/bar/bar-store.module.ts',
-      `import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { ActionReducerMap, StoreModule } from '@ngrx/store';
-
-import { BarState } from './bar-store';
-
-export const barReducers: ActionReducerMap<BarState> = {};
-
-export const barEffects = [];
-
-@NgModule({
-  imports: [
-    EffectsModule.forRoot(barEffects),
-    StoreModule.forRoot(barReducers),
-  ],
-})
-export class BarStoreModule {}
-`
-    );
-    appTree.create(
-      '/projects/bar/src/app/core/store/bar/bar-store.ts',
-      `import { Selector } from '@ngrx/store';
-
-export interface BarState {}
-`
-    );
+    appTree = await schematicRunner
+      .runSchematicAsync('store-group', { ...defaultOptions, name: 'bar' }, appTree)
+      .toPromise();
   });
 
   it('should create a store in core store by default', async () => {
@@ -201,6 +177,66 @@ export interface BarState {}
     schematicRunner.runSchematicAsync('store', options, appTree).subscribe(fail, err => {
       expect(err).toMatchInlineSnapshot(`[Error: cannot add feature store in extension]`);
       done();
+    });
+  });
+
+  describe('determineStoreLocation', () => {
+    it('should handle simple stores', () => {
+      const config = {
+        extension: undefined,
+        feature: undefined,
+        name: 'foobar',
+        parent: 'core',
+        parentStorePath: 'projects/bar/src/app/core/store/core',
+        path: 'projects/bar/src/app/core/store/',
+        project: 'bar',
+      };
+
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar' })).toEqual(config);
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/foobar' })).toEqual(config);
+    });
+
+    it('should handle feature stores', () => {
+      const config = {
+        extension: undefined,
+        feature: 'bar',
+        name: 'foobar',
+        parent: 'bar',
+        parentStorePath: 'projects/bar/src/app/core/store/bar/bar',
+        path: 'projects/bar/src/app/core/store/bar/',
+        project: 'bar',
+      };
+
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', feature: 'bar' })).toEqual(config);
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'bar/foobar' })).toEqual(config);
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'core/store/bar/foobar' })).toEqual(config);
+    });
+
+    it('should handle extension stores', () => {
+      const config = {
+        extension: 'bar',
+        feature: undefined,
+        name: 'foobar',
+        parent: 'bar',
+        parentStorePath: 'projects/bar/src/app/extensions/bar/store/bar',
+        path: 'projects/bar/src/app/extensions/bar/store/',
+        project: 'bar',
+      };
+
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'foobar', extension: 'bar' })).toEqual(config);
+      expect(determineStoreLocation(appTree, { ...defaultOptions, name: 'extensions/bar/foobar' })).toEqual(config);
+    });
+
+    it('should throw if feature equals store name', () => {
+      expect(() =>
+        determineStoreLocation(appTree, { ...defaultOptions, feature: defaultOptions.name })
+      ).toThrowErrorMatchingInlineSnapshot(`"name of feature and store cannot be equal"`);
+    });
+
+    it('should throw if extension equals store name', () => {
+      expect(() =>
+        determineStoreLocation(appTree, { ...defaultOptions, extension: defaultOptions.name })
+      ).toThrowErrorMatchingInlineSnapshot(`"name of extension and store cannot be equal"`);
     });
   });
 });

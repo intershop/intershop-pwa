@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockDirective } from 'ng-mocks';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { ErrorMessageComponent } from './error-message.component';
@@ -11,7 +14,8 @@ describe('Error Message Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ErrorMessageComponent],
+      imports: [TranslateModule.forRoot()],
+      declarations: [ErrorMessageComponent, MockDirective(ServerHtmlDirective)],
     }).compileComponents();
   }));
 

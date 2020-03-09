@@ -46,7 +46,7 @@ describe('Viewconf Integration', () => {
 
     expect(getWrapperClass(store$.state)).toEqual('something');
 
-    store$.dispatch(new RouteNavigation({ path: 'any', data: {} }));
+    store$.dispatch(new RouteNavigation({ path: 'any' }));
 
     expect(getWrapperClass(store$.state)).toBeUndefined();
   });

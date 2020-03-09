@@ -12,7 +12,7 @@
   </div>
   <div *ngIf="form.get('items')" class="list-body" formArrayName="items">
     <ng-container *ngFor="let pli of lineItems; index as i; trackBy: trackByFn">
-      <div *ngIf="pli.product" class="row list-item-row list-item-row-big">
+      <div *ngIf="pli.product" class="row list-item-row list-item-row-big" data-testing-id="product-list-item">
         <!-- Errors and Infos -->
         <div *ngIf="pli.validationError?.message" class="alert alert-inline alert-danger col-12">
           {{ pli.validationError.message }}
@@ -31,7 +31,7 @@
         <div *ngIf="form.get(['items', i])" class="col-7 col-md-6 col-xl-4 list-item">
           <!--Product Description -->
           <div class="pli-description">
-            <a class="product-title" [routerLink]="pli.product | ishProductRoute">{{ pli.name }}</a>
+            <a class="product-title" [routerLink]="pli.product | ishProductRoute">{{ pli.name || pli.product.name }}</a>
 
             <ish-line-item-description
               [pli]="pli"
@@ -46,17 +46,24 @@
                 <ish-basket-promotion [rebate]="rebate" class="list-item-promo"></ish-basket-promotion>
               </ng-container>
             </div>
-
-            <a
-              class="btn-tool"
-              *ngIf="!pli.isFreeGift && editable"
-              [attr.data-testing-id]="'remove-pli-' + pli.id + '-element'"
-              [attr.data-id]="pli.id"
-              title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
-              (click)="onDeleteItem(pli.id)"
-            >
-              <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
-            </a>
+            <div class="d-flex align-items-center">
+              <ish-lazy-product-add-to-wishlist
+                *ngIf="editable"
+                class="btn-tool"
+                [product]="pli.product"
+                displayType="icon"
+              ></ish-lazy-product-add-to-wishlist>
+              <a
+                class="btn-tool"
+                *ngIf="!pli.isFreeGift && editable"
+                [attr.data-testing-id]="'remove-pli-' + pli.id + '-element'"
+                [attr.data-id]="pli.id"
+                title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
+                (click)="onDeleteItem(pli.id)"
+              >
+                <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+              </a>
+            </div>
           </div>
 
           <!-- mobile quantity -->

@@ -38,7 +38,7 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
   /**
    * when 'icon', the button label is an icon, otherwise it is text
    */
-  @Input() displayType?: string;
+  @Input() displayType?: 'icon' | 'link' = 'link';
   /**
    * additional css styling
    */

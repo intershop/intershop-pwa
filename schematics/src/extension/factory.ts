@@ -58,7 +58,7 @@ export function createExtension(options: Options): Rule {
         options.name
       )}-routing.module`,
     };
-    operations.push(addImportToNgModuleBefore(appModuleOptions, 'AppNotFoundRoutingModule'));
+    operations.push(addImportToNgModuleBefore(appModuleOptions, 'AppLastRoutingModule'));
 
     return chain(operations);
   };

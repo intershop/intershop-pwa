@@ -4,7 +4,9 @@ import { isEqual } from 'lodash-es';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { BasketView, createBasketView } from 'ish-core/models/basket/basket.model';
+import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { getCheckoutState } from 'ish-core/store/checkout/checkout-store';
+import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 import { getLoggedInCustomer } from 'ish-core/store/user';
 
@@ -16,7 +18,8 @@ const getBasketState = createSelector(
 export const getBasketValidationResults = createSelector(
   getBasketState,
   getProductEntities,
-  (basket, products): BasketValidationResultType => {
+  getCategoryTree,
+  (basket, products, categoryTree): BasketValidationResultType => {
     if (!basket || !basket.validationResults) {
       return;
     }
@@ -27,7 +30,7 @@ export const getBasketValidationResults = createSelector(
       infos: basketResults.infos
         ? basketResults.infos.map(info => ({
             ...info,
-            product: info.parameters && products[info.parameters.productSku],
+            product: info.parameters && createProductView(products[info.parameters.productSku], categoryTree),
           }))
         : [],
       errors: basketResults.errors
@@ -41,7 +44,10 @@ export const getBasketValidationResults = createSelector(
               error.parameters &&
               error.parameters.lineItemId &&
               basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId) &&
-              products[basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId).productSKU],
+              createProductView(
+                products[basket.basket.lineItems.find(item => item.id === error.parameters.lineItemId).productSKU],
+                categoryTree
+              ),
           }))
         : [],
     };
@@ -61,8 +67,9 @@ export const getCurrentBasket = createSelector(
   getProductEntities,
   getBasketValidationResults,
   getBasketInfo,
-  (basket, products, validationResults, basketInfo): BasketView =>
-    createBasketView(basket.basket, products, validationResults, basketInfo)
+  getCategoryTree,
+  (basket, products, validationResults, basketInfo, categoryTree): BasketView =>
+    createBasketView(basket.basket, products, validationResults, basketInfo, categoryTree)
 );
 
 export const getCurrentBasketId = createSelector(

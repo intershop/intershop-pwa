@@ -34,7 +34,7 @@ function createExtension(options) {
             artifactName: core_1.strings.classify(options.name) + 'RoutingModule',
             moduleImportPath: `${projectRoot}/extensions/${core_1.strings.dasherize(options.name)}/pages/${core_1.strings.dasherize(options.name)}-routing.module`,
         };
-        operations.push(registration_1.addImportToNgModuleBefore(appModuleOptions, 'AppNotFoundRoutingModule'));
+        operations.push(registration_1.addImportToNgModuleBefore(appModuleOptions, 'AppLastRoutingModule'));
         return schematics_1.chain(operations);
     };
 }

@@ -6,21 +6,25 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { MockComponent } from 'ng-mocks';
+import { noop } from 'rxjs';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { Category } from 'ish-core/models/category/category.model';
 import { VariationSelection } from 'ish-core/models/product-variation/variation-selection.model';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRetailSet } from 'ish-core/models/product/product-retail-set.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
+import { LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
 import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
@@ -47,7 +51,7 @@ describe('Product Page Component', () => {
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        RouterTestingModule.withRoutes([{ path: 'product/:sku', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
@@ -80,6 +84,11 @@ describe('Product Page Component', () => {
     router = TestBed.get(Router);
     store$ = TestBed.get(TestStore);
     store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
+
+    store$.dispatch(
+      new LoadCategorySuccess({ categories: categoryTree([{ uniqueId: 'A', categoryPath: ['A'] } as Category]) })
+    );
+    store$.dispatch(new SelectCategory({ categoryId: 'A' }));
   });
 
   it('should be created', () => {
@@ -144,6 +153,7 @@ describe('Product Page Component', () => {
             { name: 'Attr 1', type: 'VariationAttribute', value: 'A', variationAttributeId: 'a1' },
             { name: 'Attr 2', type: 'VariationAttribute', value: 'D', variationAttributeId: 'a2' },
           ],
+          defaultCategory: noop,
         },
       ],
     } as VariationProductView;
@@ -153,10 +163,12 @@ describe('Product Page Component', () => {
       a2: 'D',
     };
 
+    fixture.detectChanges();
+
     component.variationSelected(selection, product);
     tick(500);
 
-    expect(location.path()).toEqual('/product/333');
+    expect(location.path()).toMatchInlineSnapshot(`"/sku333-catA"`);
   }));
 
   describe('redirecting to default variation', () => {
@@ -190,7 +202,7 @@ describe('Product Page Component', () => {
       fixture.detectChanges();
       tick(500);
 
-      expect(location.path()).toMatchInlineSnapshot(`"/product/222"`);
+      expect(location.path()).toMatchInlineSnapshot(`"/sku222-catA"`);
     }));
 
     it('should not redirect to default variation for master product if advanced variation handling is activated', fakeAsync(() => {

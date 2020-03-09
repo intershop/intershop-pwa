@@ -12,24 +12,24 @@
       "value": "White, Slate fabric"
     },
     {
-      "name": "Dimensions",
-      "type": "String",
-      "value": "96mm*142mm"
-    },
-    {
       "name": "Supported operating systems",
       "type": "String",
       "value": "Anroid 4.4 and higher, iOS 9.1 and higher"
     },
     {
-      "name": "Weight",
+      "name": "Dimensions",
       "type": "String",
-      "value": "477g"
+      "value": "96mm*142mm"
     },
     {
       "name": "Power",
       "type": "String",
       "value": "16.5V, 2A"
+    },
+    {
+      "name": "Weight",
+      "type": "String",
+      "value": "477g"
     }
   ],
   "availability": true,

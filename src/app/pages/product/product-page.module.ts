@@ -16,7 +16,8 @@ import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.com
 
 const productPageRoutes: Routes = [
   {
-    path: ':sku',
+    // compatibility to old routes
+    path: 'product/:sku',
     children: [
       {
         path: '**',
@@ -24,6 +25,17 @@ const productPageRoutes: Routes = [
       },
     ],
   },
+  {
+    // compatibility to old routes
+    path: 'category/:categoryUniqueId/product/:sku',
+    children: [
+      {
+        path: '**',
+        component: ProductPageComponent,
+      },
+    ],
+  },
+  { path: '**', component: ProductPageComponent },
 ];
 
 @NgModule({

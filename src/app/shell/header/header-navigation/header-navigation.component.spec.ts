@@ -8,7 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
-import { CategoryRoutePipe } from 'ish-core/pipes/category-route.pipe';
+import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-navigation/sub-category-navigation.component';
 
@@ -64,9 +64,9 @@ describe('Header Navigation Component', () => {
         <li class="dropdown">
           <a
             style="width: 100%;"
-            ng-reflect-router-link="/category/A"
+            ng-reflect-router-link="/CAT_A-catA"
             data-testing-id="A-link"
-            href="/category/A"
+            href="/CAT_A-catA"
           >
             CAT_A </a
           ><ish-sub-category-navigation
@@ -77,9 +77,9 @@ describe('Header Navigation Component', () => {
         <li class="dropdown">
           <a
             style="width: 100%;"
-            ng-reflect-router-link="/category/B"
+            ng-reflect-router-link="/CAT_B-catB"
             data-testing-id="B-link"
-            href="/category/B"
+            href="/CAT_B-catB"
           >
             CAT_B </a
           ><ish-sub-category-navigation
@@ -90,9 +90,9 @@ describe('Header Navigation Component', () => {
         <li class="dropdown">
           <a
             style="width: 100%;"
-            ng-reflect-router-link="/category/C"
+            ng-reflect-router-link="/CAT_C-catC"
             data-testing-id="C-link"
-            href="/category/C"
+            href="/CAT_C-catC"
           >
             CAT_C </a
           ><ish-sub-category-navigation

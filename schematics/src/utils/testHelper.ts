@@ -43,7 +43,7 @@ export function createModule(
     source$.pipe(switchMap(tree => schematicRunner.runSchematicAsync('module', { ...options, project: 'bar' }, tree)));
 }
 
-export function createAppNotFoundRoutingModule(schematicRunner: SchematicTestRunner) {
+export function createAppLastRoutingModule(schematicRunner: SchematicTestRunner) {
   return (source$: Observable<UnitTestTree>) =>
     source$.pipe(
       switchMap(tree =>
@@ -51,7 +51,7 @@ export function createAppNotFoundRoutingModule(schematicRunner: SchematicTestRun
           '@schematics/angular',
           'module',
           {
-            name: 'pages/app-not-found-routing',
+            name: 'pages/app-last-routing',
             flat: true,
             module: 'app.module',
             project: 'bar',

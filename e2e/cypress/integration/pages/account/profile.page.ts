@@ -33,10 +33,6 @@ export class ProfilePage {
     return cy.get(this.tag).find('[data-testing-id="phone-field"]');
   }
 
-  get preferredLanguage() {
-    return cy.get(this.tag).find('[data-testing-id="preferred-language-field"]');
-  }
-
   get companyName() {
     return cy.get(this.tag).find('[data-testing-id="company-field"]');
   }

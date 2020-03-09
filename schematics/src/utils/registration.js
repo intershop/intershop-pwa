@@ -87,12 +87,18 @@ function addProviderToNgModule(options) {
 }
 exports.addProviderToNgModule = addProviderToNgModule;
 function insertImport(source, recorder, artifactName, relativePath) {
+    const imp = `import { ${artifactName} } from '${relativePath}';`;
     // insert import statement to imports
     const lastImportEnd = tsutils_1.findImports(source, tsutils_1.ImportKind.All)
         .map(x => x.parent.end)
         .sort((x, y) => x - y)
         .pop();
-    recorder.insertRight(lastImportEnd, `\nimport { ${artifactName} } from '${relativePath}';`);
+    if (lastImportEnd) {
+        recorder.insertRight(lastImportEnd, `\n${imp}`);
+    }
+    else {
+        recorder.insertLeft(0, `${imp}\n\n`);
+    }
 }
 exports.insertImport = insertImport;
 function addImportToNgModuleBefore(options, beforeToken) {

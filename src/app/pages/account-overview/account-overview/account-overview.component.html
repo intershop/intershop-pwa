@@ -23,6 +23,12 @@
       {{ 'account.order_history.link' | translate }}
     </a>
   </div>
+  <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
+    <a routerLink="/account/wishlists">
+      <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']"></fa-icon></div>
+      {{ 'account.wishlists.link' | translate }}
+    </a>
+  </div>
   <div class="col-6 col-sm-4 col-md-3 dashboard-item">
     <a routerLink="/account/addresses">
       <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>

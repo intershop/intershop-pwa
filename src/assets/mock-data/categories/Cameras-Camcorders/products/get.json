@@ -6,7 +6,7 @@
         {
           "name": "sku",
           "type": "String",
-          "value": "4905524961133"
+          "value": "3957277"
         },
         {
           "name": "minOrderQuantity",
@@ -49,7 +49,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 49.63
+            "value": 130.33
           }
         },
         {
@@ -59,7 +59,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 49.63
+            "value": 130.33
           }
         },
         {
@@ -75,19 +75,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Sony"
+          "value": "Kodak"
         }
       ],
-      "description": "Underwater Housing For Action Cam",
-      "title": "Sony MPK-AS3",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4905524961133"
+      "description": "EasyShare M575 14 MP, 5X optical, Brown",
+      "title": "Kodak M series EasyShare M575",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957277"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "4144132"
+          "value": "603562"
         },
         {
           "name": "minOrderQuantity",
@@ -130,7 +130,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 409.43
+            "value": 1432.33
           }
         },
         {
@@ -140,7 +140,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 409.43
+            "value": 1432.33
           }
         },
         {
@@ -156,19 +156,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Pentax"
+          "value": "Canon"
         }
       ],
-      "description": "Optio W90 digital cameras 12.1 Mp",
-      "title": "Pentax Optio W90",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4144132"
+      "description": "EF 135 mm f/2.0L USM",
+      "title": "Canon EF 135 mm f/2.0L USM",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/603562"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "0818279012576"
+          "value": "9780321934161"
         },
         {
           "name": "minOrderQuantity",
@@ -211,7 +211,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 22.34
+            "value": 26.98
           }
         },
         {
@@ -221,13 +221,13 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 22.34
+            "value": 26.98
           }
         },
         {
           "name": "roundedAverageRating",
           "type": "String",
-          "value": "0.0"
+          "value": "5.0"
         },
         {
           "name": "availability",
@@ -255,16 +255,16 @@
           }
         }
       ],
-      "description": "Floating GoPro hand grip for stable shooting in and out of the water.",
-      "title": "GoPro The Handler",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/0818279012576"
+      "description": "This 296-page book features everything you need to know about how to shoot, edit",
+      "title": "GoPro: Professional Guide to Filmmaking",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/9780321934161"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "4548736000919"
+          "value": "3998290"
         },
         {
           "name": "minOrderQuantity",
@@ -307,7 +307,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 365.32
+            "value": 141.78
           }
         },
         {
@@ -317,7 +317,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 365.32
+            "value": 141.78
           }
         },
         {
@@ -333,34 +333,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Sony"
-        },
-        {
-          "name": "promotions",
-          "type": "LinkResourceCollectionRO",
-          "value": {
-            "elements": [
-              {
-                "itemId": "5PercentOnActionCams",
-                "title": "5 % discount on action cameras and accessories",
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/promotions/5PercentOnActionCams"
-              }
-            ],
-            "type": "ResourceCollection"
-          }
+          "value": "Toshiba"
         }
       ],
-      "description": "FDR-X1000V - 1/2.3\" 8.8MP (16:9), ZEISS Tessar Len, F2.8, 6lux, BIONZ X,",
-      "title": "Sony FDR-X1000V",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4548736000919"
+      "description": "Camileo S20, 5MP, CMOS, 7.62 cm (3 \") LCD, HDMI, USB 2.0, SD/SDHC, 115g, Red",
+      "title": "Toshiba Camileo S20",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3998290"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "3957284"
+          "value": "3795168"
         },
         {
           "name": "minOrderQuantity",
@@ -403,7 +388,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 281.95
+            "value": 70.97
           }
         },
         {
@@ -413,7 +398,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 281.95
+            "value": 70.97
           }
         },
         {
@@ -429,19 +414,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Kodak"
+          "value": "Creative Labs"
         }
       ],
-      "description": "Slice - 14MP, 5x optisch, 16:9, nickel",
-      "title": "Kodak Slice ",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957284"
+      "description": "Live! Cam Socialize HD",
+      "title": "Creative Labs Live! Cam Socialize HD",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3795168"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "4852575"
+          "value": "1980694"
         },
         {
           "name": "minOrderQuantity",
@@ -484,7 +469,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 18.01
+            "value": 99.11
           }
         },
         {
@@ -494,88 +479,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 18.01
-          }
-        },
-        {
-          "name": "roundedAverageRating",
-          "type": "String",
-          "value": "0.0"
-        },
-        {
-          "name": "availability",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "manufacturer",
-          "type": "String",
-          "value": "Canyon"
-        }
-      ],
-      "description": "CNR-CP2G, 0.3Mpixel CMOS, USB 2.0",
-      "title": "Canyon CNR-CP2G",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/4852575"
-    },
-    {
-      "attributes": [
-        {
-          "name": "sku",
-          "type": "String",
-          "value": "3957286"
-        },
-        {
-          "name": "minOrderQuantity",
-          "type": "ResourceAttribute",
-          "value": {
-            "type": "Quantity",
-            "unit": "",
-            "value": 1
-          }
-        },
-        {
-          "name": "packingUnit",
-          "type": "String",
-          "value": ""
-        },
-        {
-          "name": "inStock",
-          "type": "Boolean",
-          "value": true
-        },
-        {
-          "name": "image",
-          "type": "String",
-          "value": "assets/img/not_available.png"
-        },
-        {
-          "name": "productMaster",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "mastered",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "name": "listPrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 106
-          }
-        },
-        {
-          "name": "salePrice",
-          "type": "ResourceAttribute",
-          "value": {
-            "currency": "USD",
-            "currencyMnemonic": "USD",
-            "type": "Money",
-            "value": 106
+            "value": 99.11
           }
         },
         {
@@ -594,16 +498,16 @@
           "value": "Kodak"
         }
       ],
-      "description": "EasyShare C142, 10.3Mp, 1/ 6.35 cm (2.5 \") CCD, 3x opt, SD/SDHC, USB 2.0",
-      "title": "Kodak C series EasyShare C142",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/3957286"
+      "description": "Zx1 3MP, 1/4.5: CMOS, 5.08 cm (2.0 \") LCD, 128MB, 90g",
+      "title": "Kodak Zx1",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/1980694"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "11028788"
+          "value": "7912064"
         },
         {
           "name": "minOrderQuantity",
@@ -646,7 +550,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 587.51
+            "value": 126.67
           }
         },
         {
@@ -656,7 +560,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 587.51
+            "value": 126.67
           }
         },
         {
@@ -672,19 +576,19 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Canon"
+          "value": "Kodak"
         }
       ],
-      "description": "PowerShot S100 - 12.1MP, 1/ 4.318 cm (1.7 \") CMOS, 4000 x 3000, 5x Optical zoom",
-      "title": "Canon PowerShot S100",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/11028788"
+      "description": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Silver",
+      "title": "Kodak PlayFull Ze1",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/7912064"
     },
     {
       "attributes": [
         {
           "name": "sku",
           "type": "String",
-          "value": "M1610689"
+          "value": "9438726"
         },
         {
           "name": "minOrderQuantity",
@@ -727,7 +631,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 253.33
+            "value": 190.79
           }
         },
         {
@@ -737,7 +641,7 @@
             "currency": "USD",
             "currencyMnemonic": "USD",
             "type": "Money",
-            "value": 253.33
+            "value": 190.79
           }
         },
         {
@@ -753,12 +657,93 @@
         {
           "name": "manufacturer",
           "type": "String",
-          "value": "Benq"
+          "value": "Creative Labs"
         }
       ],
-      "description": "Retail Set: Benq T850 Red and Dicota CamPocket Zoom ",
-      "title": "Benq T850 Red + Dicota CamPocket Zoom",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/M1610689"
+      "description": "12MP, 1920 x 1080, 30fps, USB 2.0, Black",
+      "title": "Creative Labs Live Cam inPerson HD",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/9438726"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "5920587"
+        },
+        {
+          "name": "minOrderQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "unit": "",
+            "value": 1
+          }
+        },
+        {
+          "name": "packingUnit",
+          "type": "String",
+          "value": ""
+        },
+        {
+          "name": "inStock",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "assets/img/not_available.png"
+        },
+        {
+          "name": "productMaster",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "mastered",
+          "type": "Boolean",
+          "value": false
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 154.23
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currency": "USD",
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 154.23
+          }
+        },
+        {
+          "name": "roundedAverageRating",
+          "type": "String",
+          "value": "0.0"
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Pentax"
+        }
+      ],
+      "description": "Optio RZ10, 14.1MP, 10x Superzoom, HDTV Video, CCD, ISO 80 - 6400, TTL, White",
+      "title": "Pentax Optio RZ10",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/products/5920587"
     }
   ],
   "name": "products",

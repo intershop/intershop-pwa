@@ -1,9 +1,8 @@
 import { ApplicationRef, ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, ReplaySubject, Subject, of } from 'rxjs';
-import { filter, first, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -21,7 +20,7 @@ import {
   ProductPrices,
   SkuQuantityType,
 } from 'ish-core/models/product/product.model';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { generateProductUrl } from 'ish-core/routing/product/product.route';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -38,8 +37,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   quantity: number;
   price$: Observable<ProductPrices>;
 
-  currentUrl$: Observable<string>;
-
   isProductBundle = ProductHelper.isProductBundle;
   isRetailSet = ProductHelper.isRetailSet;
   isMasterProduct = ProductHelper.isMasterProduct;
@@ -48,10 +45,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   retailSetParts$ = new ReplaySubject<SkuQuantityType[]>(1);
 
   constructor(
-    private appFacade: AppFacade,
     private shoppingFacade: ShoppingFacade,
     private router: Router,
-    private prodRoutePipe: ProductRoutePipe,
     private featureToggleService: FeatureToggleService,
     private appRef: ApplicationRef,
     private ngZone: NgZone
@@ -62,7 +57,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.productVariationOptions$ = this.shoppingFacade.selectedProductVariationOptions$;
     this.category$ = this.shoppingFacade.selectedCategory$;
     this.productLoading$ = this.shoppingFacade.productDetailLoading$;
-    this.currentUrl$ = this.appFacade.currentUrl$;
 
     this.product$
       .pipe(
@@ -138,19 +132,19 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   redirectToVariation(variation: VariationProductView, replaceUrl = false) {
-    const route = variation && this.prodRoutePipe.transform(variation);
-    if (route) {
-      this.appRef.isStable
-        .pipe(
-          whenTruthy(),
-          first()
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => {
-            this.router.navigateByUrl(route, { replaceUrl });
-          });
+    this.appRef.isStable
+      .pipe(
+        filter(() => !!variation),
+        whenTruthy(),
+        take(1),
+        map(() => variation),
+        withLatestFrom(this.category$)
+      )
+      .subscribe(([product, category]) => {
+        this.ngZone.run(() => {
+          this.router.navigateByUrl(generateProductUrl(product, category), { replaceUrl });
         });
-    }
+      });
   }
 
   ngOnDestroy() {

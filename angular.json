@@ -27,11 +27,7 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "extractCss": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
-            ],
+            "assets": ["src/assets"],
             "styles": [
               {
                 "input": "src/styles/themes/default/style.scss",

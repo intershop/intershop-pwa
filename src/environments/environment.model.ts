@@ -9,6 +9,8 @@ export interface Environment {
   icmBaseURL: string;
   icmServer: string;
   icmServerStatic: string;
+
+  // application specific
   icmChannel: string;
   icmApplication?: string;
 
@@ -31,7 +33,9 @@ export interface Environment {
     | 'quoting'
     /* Third-party Integrations */
     | 'sentry'
-    | 'tracking')[];
+    | 'tracking'
+    /* B2C features */
+    | 'wishlists')[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 
@@ -75,5 +79,6 @@ export interface Environment {
   locales: Locale[];
 
   // configuration of the styling theme ('default' if not configured)
+  // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
   theme?: string;
 }

@@ -3,8 +3,17 @@ name: TestCI
 on: [push]
 
 jobs:
+  CancelPrevious:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Old Pipeline
+        uses: rokroskar/workflow-run-cleanup-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Quality:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -23,6 +32,11 @@ jobs:
       - name: Install root dependencies
         uses: bahmutov/npm-install@v1
 
+      - name: Install e2e dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: e2e
+
       - name: Code Quality
         run: |
           npm run format
@@ -32,8 +46,13 @@ jobs:
         run: |
           npm run ng -- build --aot
           npx tsc -p tsconfig.spec.json
+          (cd e2e && npx tsc -p cypress/tsconfig.json)
           (cd schematics && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
           (cd tslint-rules && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
+
+      - name: Escalate TSLint Rules
+        run: |
+          node scripts/tslint-hard
 
       - name: Lint by action
         uses: mooyoul/tslint-actions@v1.1.1
@@ -42,7 +61,7 @@ jobs:
           project: 'tsconfig.json'
 
   Jest:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -59,7 +78,7 @@ jobs:
           npm test
 
   Build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -97,7 +116,7 @@ jobs:
 
   Schematics:
     needs: [Build, Quality, Jest]
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -112,14 +131,16 @@ jobs:
       - name: Test Schematics
         run: |
           bash e2e/test-schematics.sh
-          sh scripts/ci-check-no-additional-warnings.sh
+          node scripts/tslint-hard
+          npm run lint
 
   Cypress:
     needs: Build
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+      fail-fast: true
+      max-parallel: 2
       matrix:
         test:
           [
@@ -128,6 +149,8 @@ jobs:
             'account/*b2c*',
             'checkout/*b2c*',
             'shopping/*b2c*',
+            'system/*b2c*',
+            'extras/*b2c*',
             # TODO: include remaining in a general way
             # '!(shopping|account|checkout)*/*b2c*'
             # '@(cms|contact)*/*b2c*'
@@ -147,10 +170,19 @@ jobs:
         with:
           name: dist
 
+      - name: Start SSR
+        if: matrix.test != '*mock*'
+        run: |
+          npm run serve &
+
+      - name: Start Dev-Server
+        if: matrix.test == '*mock*'
+        run: |
+          npm run ng -- serve &
+
       - name: Cypress
-        uses: cypress-io/github-action@master
+        uses: cypress-io/github-action@v1.22.0
         with:
-          start: ${{ matrix.test == '*mock*' && 'npm run ng -- serve' || 'npm run serve > /dev/null 2>&1' }}
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e

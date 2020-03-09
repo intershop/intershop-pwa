@@ -23,6 +23,7 @@ export enum QuoteActionTypes {
   AddQuoteToBasket = '[Basket] Add Quote To Basket',
   AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
   AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
+  ResetQuoteError = '[Quote] Reset Quote Error',
 }
 
 export class SelectQuote implements Action {
@@ -102,6 +103,10 @@ export class AddQuoteToBasketSuccess implements Action {
   constructor(public payload: { link: Link }) {}
 }
 
+export class ResetQuoteError implements Action {
+  readonly type = QuoteActionTypes.ResetQuoteError;
+}
+
 export type QuoteAction =
   | SelectQuote
   | LoadQuotes
@@ -118,4 +123,5 @@ export type QuoteAction =
   | CreateQuoteRequestFromQuoteSuccess
   | AddQuoteToBasket
   | AddQuoteToBasketFail
-  | AddQuoteToBasketSuccess;
+  | AddQuoteToBasketSuccess
+  | ResetQuoteError;

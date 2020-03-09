@@ -50,34 +50,21 @@ const accountPageRoutes: Routes = [
           import('../account-profile/account-profile-page.module').then(m => m.AccountProfilePageModule),
       },
       {
-        path: 'quote-list',
+        path: 'quotes',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
         loadChildren: () =>
-          import('../../extensions/quoting/pages/quote-list/quote-list-page.module').then(m => m.QuoteListPageModule),
-      },
-      {
-        path: 'quote',
-        data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
-        loadChildren: () =>
-          import('../../extensions/quoting/pages/quote-edit/quote-edit-page.module').then(m => m.QuoteEditPageModule),
-      },
-      {
-        path: 'quote-request',
-        data: {
-          breadcrumbData: [
-            { key: 'quote.quotes.link', link: '/account/quote-list' },
-            { key: 'quote.quote_details.link' },
-          ],
-        },
-        loadChildren: () =>
-          import('../../extensions/quoting/pages/quote-request-edit/quote-request-edit-page.module').then(
-            m => m.QuoteRequestEditPageModule
-          ),
+          import('../../extensions/quoting/pages/quoting-routing.module').then(m => m.QuotingRoutingModule),
       },
       {
         path: '',
         data: { breadcrumbData: [] },
         component: AccountOverviewPageModule.component,
+      },
+      {
+        path: 'wishlists',
+        data: { breadcrumbData: [{ key: 'account.wishlists.breadcrumb_link' }] },
+        loadChildren: () =>
+          import('../../extensions/wishlists/pages/wishlists-routing.module').then(m => m.WishlistsRoutingModule),
       },
     ],
   },

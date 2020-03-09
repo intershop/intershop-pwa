@@ -307,7 +307,6 @@ describe('Products Effects', () => {
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId/product/:sku',
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectProduct({ sku: 'foobar' });
 
@@ -319,7 +318,6 @@ describe('Products Effects', () => {
       const action = new RouteNavigation({
         path: 'product/:sku',
         params: { sku: 'foobar' },
-        queryParams: {},
       });
       const expected = new fromActions.SelectProduct({ sku: 'foobar' });
 
@@ -328,7 +326,7 @@ describe('Products Effects', () => {
     });
 
     it('should not fire SelectProduct when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('-'));
@@ -349,11 +347,13 @@ describe('Products Effects', () => {
   });
 
   describe('redirectIfErrorInProducts$', () => {
+    beforeEach(() => {
+      store$.dispatch(new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError }));
+      store$.dispatch(new fromActions.SelectProduct({ sku: 'SKU' }));
+    });
+
     it('should redirect if triggered on product detail page', fakeAsync(() => {
-      when(router.url).thenReturn('/category/A/product/SKU');
-
-      const action = new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError });
-
+      const action = new RouteNavigation({ path: 'pr', params: { sku: 'SKU' } });
       actions$ = of(action);
 
       effects.redirectIfErrorInProducts$.subscribe(noop, fail, noop);
@@ -364,10 +364,7 @@ describe('Products Effects', () => {
     }));
 
     it('should not redirect if triggered on page other than product detail page', done => {
-      when(router.url).thenReturn('/search/term');
-
-      const action = new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError });
-
+      const action = new RouteNavigation({ path: 'any' });
       actions$ = of(action);
 
       effects.redirectIfErrorInProducts$.subscribe(fail, fail, done);

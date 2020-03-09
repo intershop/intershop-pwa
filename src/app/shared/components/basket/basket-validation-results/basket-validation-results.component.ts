@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { uniq } from 'lodash-es';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -15,7 +7,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { Product } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 /**
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
@@ -36,13 +28,13 @@ export class BasketValidationResultsComponent implements OnInit, OnDestroy {
   errorMessages$: Observable<string[]>;
   infoMessages$: Observable<string[]>;
   undeliverableItems$: Observable<LineItemView[]>;
-  removedItems$: Observable<{ message: string; product: Product }[]>;
+  removedItems$: Observable<{ message: string; product: ProductView }[]>;
 
   itemHasBeenRemoved = false;
 
   private destroy$ = new Subject();
 
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   @Output() continueCheckout = new EventEmitter<void>();
 

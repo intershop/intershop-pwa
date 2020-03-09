@@ -1,3 +1,52 @@
+# [0.18.0](https://github.com/intershop/intershop-pwa/releases/tag/0.18.0) (2020-03-09)
+
+**required Intershop Commerce Management version: 7.10.16.6**
+
+### Features
+
+- manage multiple personal wishlists (#34, #129) ([199f25b](https://github.com/intershop/intershop-pwa/commit/199f25b))
+- SEO friendly localized URLs for category and product list pages (#110) ([4e3169e](https://github.com/intershop/intershop-pwa/commit/4e3169e))
+- SEO friendly localized URLs for product detail pages (#110) ([91767f3](https://github.com/intershop/intershop-pwa/commit/91767f3))
+- support running ICM and PWA in hybrid mode (#99) ([d95b36e](https://github.com/intershop/intershop-pwa/commit/d95b36e))
+- HTTPS deployment for universal server (#99) ([90e6440](https://github.com/intershop/intershop-pwa/commit/90e6440))
+- proxy ICM through express server (#99) ([f39bd83](https://github.com/intershop/intershop-pwa/commit/f39bd83))
+- use nginx with https upstream (#99) ([d0fdd75](https://github.com/intershop/intershop-pwa/commit/d0fdd75))
+- add support for CMS Landing Page components (#108) ([da50347](https://github.com/intershop/intershop-pwa/commit/da50347))
+- use morgan for logging in expressjs server ([ea4c800](https://github.com/intershop/intershop-pwa/commit/ea4c800))
+- add url property to RouteNavigation ([ca946f2](https://github.com/intershop/intershop-pwa/commit/ca946f2))
+- extend ishServerHtml directive to apply default handling to 'javascript:' links and allow a callback function in combination with further link handling ([8716834](https://github.com/intershop/intershop-pwa/commit/8716834))
+- use ishServerHtml for header error-keys in error-message component ([2e87448](https://github.com/intershop/intershop-pwa/commit/2e87448))
+- error-message component uses header error-key as fallback ([b4f7ae9](https://github.com/intershop/intershop-pwa/commit/b4f7ae9))
+- dynamic breadcrumb for quote-edit and quote-request-edit ([5769cba](https://github.com/intershop/intershop-pwa/commit/5769cba))
+- provide preview image for social media sharing - add og:image to meta tags (#126) ([52a1907](https://github.com/intershop/intershop-pwa/commit/52a1907))
+- display product labels in product lists (#73, #131) ([7314bf0](https://github.com/intershop/intershop-pwa/commit/7314bf0))
+- extended multiple theme support to control system icons (e.g. favicon), manifest.webmanifest and theme-color as well (#88, #100) ([46e84ba](https://github.com/intershop/intershop-pwa/commit/46e84ba))
+- **schematics:** create facade skeleton when creating an extension ([c02d4d2](https://github.com/intershop/intershop-pwa/commit/c02d4d2))
+
+### Bug Fixes
+
+- quotes routerActiveLink on account menu ([c95c31f](https://github.com/intershop/intershop-pwa/commit/c95c31f), [5bf460c](https://github.com/intershop/intershop-pwa/commit/5bf460c))
+- 'submit quote request' and 'copy submitted quote request' from modal dialog should not navigate to my account (#112) ([8039fe5](https://github.com/intershop/intershop-pwa/commit/8039fe5))
+- "Add Quote to Cart" behaviour changed to only route on success and hide the button on error (#51) ([a70da64](https://github.com/intershop/intershop-pwa/commit/a70da64))
+- show quote item availability on quote detail page (#51) ([788b6dd](https://github.com/intershop/intershop-pwa/commit/788b6dd))
+- save quote request from modal dialog navigates to my account (#56) ([e26d4e1](https://github.com/intershop/intershop-pwa/commit/e26d4e1))
+- missing product names in quote items listing (#111) ([af71f23](https://github.com/intershop/intershop-pwa/commit/af71f23))
+- breadcrumb quote detail page ([d9ddcfe](https://github.com/intershop/intershop-pwa/commit/d9ddcfe))
+- display user friendly error messages for quoting (#51) ([0c9a943](https://github.com/intershop/intershop-pwa/commit/0c9a943))
+- add user friendly error message for "Forbidden (QuoteRequest is not editable)" with reload link (ISREST-943) ([671aad3](https://github.com/intershop/intershop-pwa/commit/671aad3))
+- correct "Thank you for your quote" page heading to "Thank you for your quote request" (ISREST-945) ([5067f93](https://github.com/intershop/intershop-pwa/commit/5067f93))
+- remove duplicated content on "Thank you for your quote request" page (ISREST-944) ([5efa993](https://github.com/intershop/intershop-pwa/commit/5efa993), [d506c8e](https://github.com/intershop/intershop-pwa/commit/d506c8e))
+- set correct URL for sharing product page via email (#128, #138) ([a338c22](https://github.com/intershop/intershop-pwa/commit/a338c22))
+- respect selected category when switching variations on product detail page ([3a806f3](https://github.com/intershop/intershop-pwa/commit/3a806f3))
+- display localized product attribute names (#91, #107) ([3205ba5](https://github.com/intershop/intershop-pwa/commit/3205ba5))
+- display product labels on search result pages (#134) ([0062272](https://github.com/intershop/intershop-pwa/commit/0062272))
+- remove preferred language management in user profile (#120) ([9f44cff](https://github.com/intershop/intershop-pwa/commit/9f44cff))
+- correctly propagate queryParams to login route ([95bf324](https://github.com/intershop/intershop-pwa/commit/95bf324))
+- timeout in auth guard only on first routing ([d7a310c](https://github.com/intershop/intershop-pwa/commit/d7a310c))
+- change password redirects to login page on success instead of displaying the login dialog (#130) ([ebf8379](https://github.com/intershop/intershop-pwa/commit/ebf8379))
+- **schematics:** prevent using same name for store and store-group ([09d66f4](https://github.com/intershop/intershop-pwa/commit/09d66f4))
+- **schematics:** make store location selection more robust ([c0ab56c](https://github.com/intershop/intershop-pwa/commit/c0ab56c))
+
 # [0.17.0](https://github.com/intershop/intershop-pwa/releases/tag/0.17.0) (2020-01-24)
 
 **required Intershop Commerce Management version: 7.10.15.2**
@@ -14,7 +63,7 @@
 - add counter input component (#61) ([a7f5aee](https://github.com/intershop/intershop-pwa/commit/a7f5aee))
 - serve robots.txt from universal server (#66) ([34bbd04](https://github.com/intershop/intershop-pwa/commit/34bbd04))
 - seo canonical link support (#45) ([7e19179](https://github.com/intershop/intershop-pwa/commit/7e19179))
-- remove promotion from basket (#71) ([16c6f1f](https://github.com/intershop/intershop-pwa/commit/16c6f1f))
+- remove promotion code from basket (#71) ([16c6f1f](https://github.com/intershop/intershop-pwa/commit/16c6f1f))
 - migration script for removing container-component-pattern ([c7a1c9e](https://github.com/intershop/intershop-pwa/commit/c7a1c9e))
 - add move-component schematic ([6b1523b](https://github.com/intershop/intershop-pwa/commit/6b1523b))
 - basket validation with adjustments on checkout shipping, review & payment page ([b04fadf](https://github.com/intershop/intershop-pwa/commit/b04fadf))

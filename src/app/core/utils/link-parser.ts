@@ -9,11 +9,11 @@ export class LinkParser {
         case 'product':
           // TODO: for consistent product links it should have the default category in the route
           // TODO: use ProductRoutePipe
-          return `/product/${value}`;
+          return `/sku${value}`;
         case 'category':
           // TODO: the configuration parameter currently only works for first level categories
           // TODO: use CategoryRoutePipe
-          return `/category/${value}`;
+          return `/cat${value}`;
         case 'page':
           // CMS managed pages link
           return `/page/${value}`;

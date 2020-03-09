@@ -5,7 +5,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -20,6 +20,8 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
+import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/products/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { ProductTileComponent } from './product-tile.component';
 
@@ -38,8 +40,10 @@ describe('Product Tile Component', () => {
       ],
       declarations: [
         MockComponent(LazyProductAddToQuoteComponent),
+        MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductAddToCompareComponent),
+        MockComponent(ProductAddToWishlistComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductLabelComponent),
         MockComponent(ProductPriceComponent),
@@ -71,6 +75,7 @@ describe('Product Tile Component', () => {
     expect(findAllIshElements(element)).toMatchInlineSnapshot(`
       Array [
         "ish-lazy-product-add-to-quote",
+        "ish-lazy-product-add-to-wishlist",
         "ish-product-add-to-basket",
         "ish-product-add-to-compare",
         "ish-product-image",

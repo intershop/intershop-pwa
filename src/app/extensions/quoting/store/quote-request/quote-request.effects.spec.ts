@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, combineReducers } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { noop, of, throwError } from 'rxjs';
@@ -61,11 +62,12 @@ describe('Quote Request Effects', () => {
         RouterTestingModule.withRoutes([
           {
             path: 'account',
-            children: [{ path: 'quote-request', children: [{ path: ':quoteRequestId', component: DummyComponent }] }],
+            children: [{ path: 'quotes', children: [{ path: 'request/:quoteRequestId', component: DummyComponent }] }],
           },
           { path: 'login', component: DummyComponent },
           { path: 'foobar', component: DummyComponent },
         ]),
+        TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
             quoting: combineReducers(quotingReducers),
@@ -898,7 +900,7 @@ describe('Quote Request Effects', () => {
   });
 
   describe('goToQuoteRequestDetail$', () => {
-    it('should navigate to /account/quote-request/QRID if AddBasketToQuoteRequestSuccess called.', fakeAsync(() => {
+    it('should navigate to /account/quotes/request/QRID if AddBasketToQuoteRequestSuccess called.', fakeAsync(() => {
       const id = 'QRID';
       const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess({ id });
       actions$ = of(action);
@@ -907,7 +909,7 @@ describe('Quote Request Effects', () => {
 
       tick(500);
 
-      expect(location.path()).toEqual('/account/quote-request/QRID');
+      expect(location.path()).toEqual('/account/quotes/request/QRID');
     }));
   });
 
@@ -1012,7 +1014,6 @@ describe('Quote Request Effects', () => {
       const action = new RouteNavigation({
         path: 'quote-request/:quoteRequestId',
         params: { quoteRequestId: 'QRID' },
-        queryParams: {},
       });
       const expected = new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' });
 
@@ -1021,7 +1022,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should not fire SelectQuoteRequest when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+      const action = new RouteNavigation({ path: 'something' });
 
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingQuote$).toBeObservable(cold('-'));

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Category } from 'ish-core/models/category/category.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 
 /**
  * The Category Tile Component renders a category tile with the image of the
@@ -18,5 +18,5 @@ export class CategoryTileComponent {
   /**
    * The Category to render a tile for
    */
-  @Input() category: Category;
+  @Input() category: CategoryView;
 }

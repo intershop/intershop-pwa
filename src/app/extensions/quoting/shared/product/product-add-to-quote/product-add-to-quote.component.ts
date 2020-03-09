@@ -21,7 +21,7 @@ import { ProductAddToQuoteDialogComponent } from '../product-add-to-quote-dialog
 export class ProductAddToQuoteComponent {
   @Input() product: Product;
   @Input() disabled?: boolean;
-  @Input() displayType?: string;
+  @Input() displayType?: 'icon' | 'link' = 'link';
   @Input() class?: string;
   @Input() quantity?: number;
 

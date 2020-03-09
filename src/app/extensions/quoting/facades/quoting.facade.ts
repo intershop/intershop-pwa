@@ -13,6 +13,7 @@ import {
   DeleteQuote,
   LoadQuotes,
   RejectQuote,
+  ResetQuoteError,
   getCurrentQuotes,
   getQuoteError,
   getQuoteLoading,
@@ -74,6 +75,10 @@ export class QuotingFacade {
     this.store.dispatch(new AddQuoteToBasket({ quoteId }));
   }
 
+  resetQuoteError() {
+    this.store.dispatch(new ResetQuoteError());
+  }
+
   // QUOTE REQUEST
   quoteRequest$ = this.store.pipe(select(getSelectedQuoteRequestWithProducts));
   quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
@@ -109,8 +114,8 @@ export class QuotingFacade {
     this.store.dispatch(new UpdateSubmitQuoteRequest(payload));
   }
 
-  copyQuoteRequest() {
-    this.store.dispatch(new CreateQuoteRequestFromQuoteRequest());
+  copyQuoteRequest(preventRedirect?: boolean) {
+    this.store.dispatch(new CreateQuoteRequestFromQuoteRequest({ redirect: !preventRedirect }));
   }
 
   updateQuoteRequestItem(update: LineItemUpdate) {

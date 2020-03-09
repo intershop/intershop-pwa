@@ -3,19 +3,22 @@ import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockComponents, MockPipe } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
 import { LineItemDescriptionComponent } from 'ish-shared/components/basket/line-item-description/line-item-description.component';
 import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
+
+import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/products/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
+import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { LineItemListComponent } from './line-item-list.component';
 
@@ -32,8 +35,10 @@ describe('Line Item List Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(InputComponent),
         MockComponent(LineItemDescriptionComponent),
+        MockComponent(ProductAddToWishlistComponent),
         MockComponent(ProductImageComponent),
         MockComponent(PromotionDetailsComponent),
+        MockComponents(LazyProductAddToWishlistComponent),
         MockPipe(PricePipe),
         MockPipe(ProductRoutePipe),
       ],

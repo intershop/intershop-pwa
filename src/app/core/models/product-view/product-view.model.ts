@@ -58,7 +58,7 @@ export function createVariationProductMasterView(
       : () => [],
     defaultVariation: product.defaultVariationSKU
       ? once(() => createVariationProductView(entities[product.defaultVariationSKU], entities, tree))
-      : undefined,
+      : () => undefined,
   };
 }
 

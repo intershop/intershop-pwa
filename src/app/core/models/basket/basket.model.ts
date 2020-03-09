@@ -7,6 +7,7 @@ import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItem, LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
+import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -33,7 +34,7 @@ export interface Basket extends AbstractBasket<LineItem> {}
 export interface BasketView extends AbstractBasket<LineItemView> {}
 
 export const createBasketView = memoize(
-  (basket, products, validationResults, basketInfo): BasketView => {
+  (basket, products, validationResults, basketInfo, categoryTree): BasketView => {
     if (!basket) {
       return;
     }
@@ -43,7 +44,7 @@ export const createBasketView = memoize(
       lineItems: basket.lineItems
         ? basket.lineItems.map(li => ({
             ...li,
-            product: products[li.productSKU],
+            product: createProductView(products[li.productSKU], categoryTree),
             name: products && products[li.productSKU] ? products[li.productSKU].name : undefined,
             inStock: products && products[li.productSKU] ? products[li.productSKU].inStock : undefined,
             availability: products && products[li.productSKU] ? products[li.productSKU].availability : undefined,

@@ -5,7 +5,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ProductRoutePipe } from 'ish-core/pipes/product-route.pipe';
+import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';

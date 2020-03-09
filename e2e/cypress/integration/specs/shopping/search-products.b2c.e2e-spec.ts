@@ -5,7 +5,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 
 const _ = {
   suggestTerm: 'k',
-  searchTerm: 'kodak',
+  searchTerm: 'kodak M552',
   suggestItemText: 'Kodak',
   product: '7912057',
 };

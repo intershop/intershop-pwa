@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/cor
 import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { CategoryRoutePipe } from 'ish-core/pipes/category-route.pipe';
+import { generateCategoryUrl } from 'ish-core/routing/category/category.route';
 
 @Component({
   selector: 'ish-breadcrumb',
@@ -19,8 +19,6 @@ export class BreadcrumbComponent implements DoCheck {
   @Input() account: boolean;
   @Input() trail: BreadcrumbItem[] = [];
 
-  constructor(private categoryRoutePipe: CategoryRoutePipe) {}
-
   private buildTrailFromCategoryOrProduct(category: CategoryView, product: ProductView) {
     const trail = [];
 
@@ -30,7 +28,7 @@ export class BreadcrumbComponent implements DoCheck {
       trail.push(
         ...usedCategory.pathCategories().map(cat => ({
           text: cat.name,
-          link: this.categoryRoutePipe.transform(cat),
+          link: generateCategoryUrl(cat),
         }))
       );
     }

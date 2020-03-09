@@ -1,6 +1,8 @@
 import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 
+import { createProductView } from 'ish-core/models/product-view/product-view.model';
+import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 
 import { QuoteRequestHelper } from '../../models/quote-request/quote-request.helper';
@@ -40,10 +42,11 @@ export const getQuoteRequestItems = createSelector(
 export const getQuoteRequestItemsWithProducts = createSelector(
   getQuoteRequestItems,
   getProductEntities,
-  (items, products) =>
+  getCategoryTree,
+  (items, products, categoryTree) =>
     items.map(item => ({
       ...item,
-      product: item.productSKU ? products[item.productSKU] : undefined,
+      product: item.productSKU ? createProductView(products[item.productSKU], categoryTree) : undefined,
     }))
 );
 

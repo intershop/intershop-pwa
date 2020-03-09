@@ -19,7 +19,7 @@ npx ng g store-group training
 stat src/app/core/store/training/training-store.ts
 grep "TrainingStoreModule" src/app/core/store/core-store.module.ts
 
-npx ng g store core/store/training/warehouses --entity warehouse
+npx ng g store training/warehouses --entity warehouse
 stat src/app/core/store/training/warehouses/warehouses.actions.ts
 stat src/app/core/store/training/warehouses/warehouses.effects.ts
 stat src/app/core/store/training/warehouses/warehouses.reducer.ts
@@ -81,11 +81,6 @@ npx ng g customized-copy shell/footer/footer
 stat src/app/shell/footer/custom-footer/custom-footer.component.ts
 grep 'custom-footer' src/app/app.component.html
 
-
-git add -A
-npx lint-staged
-npx tsc --project tsconfig.spec.json
-
 sed -i -e "s%icmBaseURL.*%icmBaseURL: 'http://localhost:4200',%g" src/environments/environment.prod.ts
 
 if grep mockServerAPI src/environments/environment.prod.ts
@@ -94,6 +89,10 @@ then
 else
   sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
 fi
+
+git add -A
+npx lint-staged
+npx tsc --project tsconfig.spec.json
 
 npm run build
 

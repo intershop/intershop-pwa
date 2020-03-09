@@ -41,6 +41,12 @@
             class="btn-link"
             (compareToggle)="toggleCompare()"
           ></ish-product-add-to-compare>
+          <ish-lazy-product-add-to-wishlist
+            *ngIf="configuration.displayAddToWishlist"
+            displayType="icon"
+            class="btn-link"
+            [product]="product"
+          ></ish-lazy-product-add-to-wishlist>
         </div>
       </div>
 

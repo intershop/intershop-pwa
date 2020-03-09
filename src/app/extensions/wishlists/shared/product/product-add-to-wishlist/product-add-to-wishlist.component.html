@@ -1,0 +1,25 @@
+<!-- display addToCart Icon/animated Icon or link-->
+<button
+  type="submit"
+  name="addProduct"
+  class="btn btn-link add-to-wishlist"
+  (click)="openModal(modal)"
+  data-testing-id="addToWishlistButton"
+>
+  <ng-container [ngSwitch]="displayType">
+    <ng-template [ngSwitchCase]="'link'">{{ 'product.add_to_wishlist.link' | translate }}</ng-template>
+    <ng-template [ngSwitchCase]="'animated'">
+      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate"></fa-icon>
+      <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
+    </ng-template>
+    <ng-template ngSwitchDefault>
+      <fa-icon [icon]="['fas', 'heart']" [title]="'product.add_to_wishlist.link' | translate"></fa-icon>
+    </ng-template>
+  </ng-container>
+</button>
+
+<ish-select-wishlist-modal
+  #modal
+  [product]="product"
+  (submitEmitter)="addProductToWishlist($event)"
+></ish-select-wishlist-modal>

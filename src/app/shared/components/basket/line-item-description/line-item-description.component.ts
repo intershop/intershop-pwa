@@ -24,7 +24,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 export class LineItemDescriptionComponent {
   @Input() pli: LineItemView;
   @Input() editable = true;
-  @Input() lineItemViewType?: 'simple';
+  @Input() lineItemViewType?: 'simple' | 'availability';
   @Output() updateItem = new EventEmitter<LineItemUpdate>();
 
   isVariationProduct = ProductHelper.isVariationProduct;

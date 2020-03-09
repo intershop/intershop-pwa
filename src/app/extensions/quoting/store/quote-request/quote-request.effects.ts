@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest, concat, forkJoin } from 'rxjs';
 import {
@@ -14,6 +15,7 @@ import {
   mapTo,
   mergeMap,
   switchMap,
+  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -28,6 +30,7 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.model'
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
+import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
@@ -37,6 +40,7 @@ import { QuoteActionTypes } from '../quote/quote.actions';
 import * as actions from './quote-request.actions';
 import {
   getCurrentQuoteRequests,
+  getSelectedQuoteRequest,
   getSelectedQuoteRequestId,
   getSelectedQuoteRequestWithProducts,
 } from './quote-request.selectors';
@@ -48,7 +52,8 @@ export class QuoteRequestEffects {
     private featureToggleService: FeatureToggleService,
     private quoteRequestService: QuoteRequestService,
     private router: Router,
-    private store: Store<{}>
+    private store: Store<{}>,
+    private translateService: TranslateService
   ) {}
 
   /**
@@ -152,14 +157,19 @@ export class QuoteRequestEffects {
    */
   @Effect()
   createQuoteRequestFromQuoteRequest$ = this.actions$.pipe(
-    ofType(actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest),
+    ofType<actions.CreateQuoteRequestFromQuoteRequest>(
+      actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest
+    ),
+    mapToPayloadProperty('redirect'),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestWithProducts))),
-    concatMap(([, currentQuoteRequest]) =>
+    concatMap(([redirect, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuoteRequest(currentQuoteRequest).pipe(
         map(quoteLineItemResult => new actions.CreateQuoteRequestFromQuoteRequestSuccess({ quoteLineItemResult })),
-        tap(quoteLineItemResult =>
-          this.router.navigate([`/account/quote-request/${quoteLineItemResult.payload.quoteLineItemResult.title}`])
-        ),
+        tap(quoteLineItemResult => {
+          if (redirect) {
+            this.router.navigate([`/account/quotes/request/${quoteLineItemResult.payload.quoteLineItemResult.title}`]);
+          }
+        }),
         mapErrorToAction(actions.CreateQuoteRequestFromQuoteRequestFail)
       )
     )
@@ -317,8 +327,20 @@ export class QuoteRequestEffects {
     ofType<actions.AddBasketToQuoteRequestSuccess>(actions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess),
     mapToPayloadProperty('id'),
     tap(quoteRequestId => {
-      this.router.navigate([`/account/quote-request/${quoteRequestId}`]);
+      this.router.navigate([`/account/quotes/request/${quoteRequestId}`]);
     })
+  );
+
+  /**
+   * Triggers a SelectQuoteRequest action for the just created copy after successfully creating a quote request copy.
+   */
+  @Effect()
+  selectQuoteRequestAfterCopy$ = this.actions$.pipe(
+    ofType<actions.CreateQuoteRequestFromQuoteRequestSuccess>(
+      actions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess
+    ),
+    mapToPayload(),
+    map(payload => new actions.SelectQuoteRequest({ id: payload.quoteLineItemResult.title }))
   );
 
   /**
@@ -375,6 +397,25 @@ export class QuoteRequestEffects {
     select(getUserAuthorized),
     whenTruthy(),
     mapTo(new actions.LoadQuoteRequests())
+  );
+
+  @Effect()
+  setQuoteRequestBreadcrumb$ = this.actions$.pipe(
+    ofRoute(),
+    mapToParam('quoteRequestId'),
+    whenTruthy(),
+    switchMapTo(this.store.pipe(select(getSelectedQuoteRequest))),
+    whenTruthy(),
+    withLatestFrom(this.translateService.get('quote.edit.unsubmitted.quote_request_details.text')),
+    map(
+      ([quoteRequest, x]) =>
+        new SetBreadcrumbData({
+          breadcrumbData: [
+            { key: 'quote.quotes.link', link: '/account/quotes' },
+            { text: `${x} - ${quoteRequest.displayName}` },
+          ],
+        })
+    )
   );
 
   /**

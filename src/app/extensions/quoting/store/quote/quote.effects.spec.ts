@@ -1,10 +1,12 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, combineReducers } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
-import { of, throwError } from 'rxjs';
+import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -39,10 +41,11 @@ describe('Quote Effects', () => {
   let basketServiceMock: BasketService;
   let effects: QuoteEffects;
   let store$: Store<{}>;
+  let location: Location;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     quoteServiceMock = mock(QuoteService);
     basketServiceMock = mock(BasketService);
 
@@ -53,7 +56,11 @@ describe('Quote Effects', () => {
       declarations: [DummyComponent],
       imports: [
         FeatureToggleModule,
-        RouterTestingModule.withRoutes([{ path: 'account/quote-request/:quoteRequestId', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'account/quotes/request/:quoteRequestId', component: DummyComponent },
+          { path: 'basket', component: DummyComponent },
+        ]),
+        TranslateModule.forRoot(),
         ngrxTesting({
           reducers: {
             quoting: combineReducers(quotingReducers),
@@ -74,11 +81,12 @@ describe('Quote Effects', () => {
 
     effects = TestBed.get(QuoteEffects);
     store$ = TestBed.get(Store);
+    location = TestBed.get(Location);
 
     store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
     store$.dispatch(new LoginUserSuccess({ customer }));
     store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
-  });
+  }));
 
   describe('loadQuotes$', () => {
     beforeEach(() => {
@@ -376,5 +384,15 @@ describe('Quote Effects', () => {
 
       expect(effects.addQuoteToBasket$).toBeObservable(expected$);
     });
+  });
+
+  describe('gotoBasketAfterAddQuoteToBasketSuccess$', () => {
+    it('should navigate to basket when success', fakeAsync(() => {
+      const action = new quoteActions.AddQuoteToBasketSuccess({ link: {} as Link });
+      actions$ = of(action);
+      effects.gotoBasketAfterAddQuoteToBasketSuccess$.subscribe(noop, fail, noop);
+      tick(1000);
+      expect(location.path()).toBe('/basket');
+    }));
   });
 });

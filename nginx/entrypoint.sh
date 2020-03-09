@@ -5,13 +5,24 @@ set -e
 
 [ -z "$UPSTREAM_PWA" ] && echo "UPSTREAM_PWA is not set" && exit 1
 
-[ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
-
-if [ -n "$UPSTREAM_ICM" ]
+if echo "$UPSTREAM_PWA" | grep -Eq '^https'
 then
-  envsubst \$UPSTREAM_ICM </etc/nginx/conf.d/icm.conf.tmpl > /etc/nginx/conf.d/icm.conf
-  export ICM_INCLUDE="include /etc/nginx/conf.d/icm.conf;"
+  cat >/etc/nginx/conf.d/listen.conf <<EOF
+listen 443 ssl;
+ssl_certificate     server.crt;
+ssl_certificate_key server.key;
+ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+ssl_ciphers         HIGH:!aNULL:!MD5;
+
+# https://ma.ttias.be/force-redirect-http-https-custom-port-nginx/
+error_page  497 https://\$http_host\$request_uri;
+
+EOF
+else
+  echo "listen 80;" >/etc/nginx/conf.d/listen.conf
 fi
+
+[ -f "/etc/nginx/conf.d/default.conf" ] && rm /etc/nginx/conf.d/default.conf
 
 i=1
 while true
@@ -29,7 +40,7 @@ do
 
   echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
 
-  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME,$ICM_INCLUDE' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
+  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
 
   i=$((i+1))
 done

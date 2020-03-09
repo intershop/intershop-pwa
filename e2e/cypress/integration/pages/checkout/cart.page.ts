@@ -1,9 +1,11 @@
+import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { HeaderModule } from '../header.module';
 
 export class CartPage {
   readonly tag = 'ish-shopping-basket';
 
   readonly header = new HeaderModule();
+  readonly addToWishlist = new AddToWishlistModule();
 
   private saveQuoteRequestButton = () => cy.get('[id="createQuote"]');
 
@@ -19,8 +21,14 @@ export class CartPage {
     this.saveQuoteRequestButton().click();
   }
 
+  private addToWishlistButton = () => cy.get('ish-shopping-basket').find('[data-testing-id="addToWishlistButton"]');
+
   get lineItems() {
     return cy.get(this.tag).find('div.pli-description');
+  }
+
+  addProductToWishlist() {
+    this.addToWishlistButton().click();
   }
 
   lineItem(idx: number) {

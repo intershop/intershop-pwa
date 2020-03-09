@@ -17,10 +17,12 @@ function determineStoreLocation(host, options) {
         extension = requestDestination.match(regex)[1];
     }
     let feature = options.feature;
-    const regex2 = /store\/([a-z][a-z0-9-]+)\//;
-    const requestDestination2 = core_1.normalize(`${options.path}/${options.name}`);
-    if (regex2.test(requestDestination2)) {
-        feature = requestDestination2.match(regex2)[1];
+    if (!extension && !feature) {
+        const nameWOStore = options.name.replace(/.*store\//, '');
+        if (nameWOStore.includes('/')) {
+            const pathFragments = nameWOStore.split('/');
+            feature = pathFragments[pathFragments.length - 2];
+        }
     }
     let parent;
     let path = options.path;
@@ -39,7 +41,15 @@ function determineStoreLocation(host, options) {
     else {
         throw new Error('cannot add feature store in extension');
     }
-    return Object.assign({}, options, { parentStorePath: `${path}${parent}`, extension,
+    const name = options.name.split('/').pop();
+    if (name === feature) {
+        throw new Error('name of feature and store cannot be equal');
+    }
+    if (name === extension) {
+        throw new Error('name of extension and store cannot be equal');
+    }
+    return Object.assign({}, options, { parentStorePath: `${path}${parent}`, name,
+        extension,
         feature,
         path,
         parent });

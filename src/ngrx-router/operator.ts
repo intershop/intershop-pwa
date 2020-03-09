@@ -9,13 +9,13 @@ export function isRoute(route?: string | string[] | RegExp) {
     const isRouteAction = action.type === ROUTER_NAVIGATION_TYPE;
     if (isRouteAction && route) {
       const routeAction = action as RouteNavigation;
-      const routePath = routeAction.payload.path;
+      const pathOrUrl = [routeAction.payload.path, routeAction.payload.url];
       if (Array.isArray(route)) {
-        return route.indexOf(routePath) > -1;
+        return pathOrUrl.some(str => route.indexOf(str) > -1);
       } else if (route instanceof RegExp) {
-        return route.test(routePath);
-      } else {
-        return routePath === route;
+        return pathOrUrl.some(str => route.test(str));
+      } else if (typeof route === 'string') {
+        return pathOrUrl.some(str => str === route);
       }
     }
     return isRouteAction;
@@ -27,13 +27,13 @@ export function ofRoute(route?: string | string[] | RegExp): MonoTypeOperatorFun
 }
 
 export function mapToParam<T>(key: string): OperatorFunction<RouteNavigation, T> {
-  return map<RouteNavigation, T>(action => action.payload.params[key]);
+  return map<RouteNavigation, T>(action => action.payload.params && action.payload.params[key]);
 }
 
 export function mapToQueryParam<T>(key: string): OperatorFunction<RouteNavigation, T> {
-  return map<RouteNavigation, T>(action => action.payload.queryParams[key]);
+  return map<RouteNavigation, T>(action => action.payload.queryParams && action.payload.queryParams[key]);
 }
 
 export function mapToData<T>(key: string): OperatorFunction<RouteNavigation, T> {
-  return map<RouteNavigation, T>(action => action.payload.data[key]);
+  return map<RouteNavigation, T>(action => action.payload.data && action.payload.data[key]);
 }

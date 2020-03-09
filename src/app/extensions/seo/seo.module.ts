@@ -1,9 +1,18 @@
 import { NgModule } from '@angular/core';
-import { MetaLoader, MetaModule, MetaSettings, MetaStaticLoader, PageTitlePositioning } from '@ngx-meta/core';
+import { Router } from '@angular/router';
+import {
+  MetaGuard,
+  MetaLoader,
+  MetaModule,
+  MetaSettings,
+  MetaStaticLoader,
+  PageTitlePositioning,
+} from '@ngx-meta/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { Locale } from 'ish-core/models/locale/locale.model';
+import { addGlobalGuard } from 'ish-core/utils/routing';
 
 import { SeoStoreModule } from './store/seo-store.module';
 
@@ -36,4 +45,8 @@ export function metaFactory(translate: TranslateService, locales: Locale[]): Met
     SeoStoreModule,
   ],
 })
-export class SeoModule {}
+export class SeoModule {
+  constructor(router: Router) {
+    addGlobalGuard(router, MetaGuard);
+  }
+}

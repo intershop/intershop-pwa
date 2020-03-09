@@ -114,6 +114,26 @@ describe('Product Mapper', () => {
       expect(product.type).toEqual('RetailSet');
       expect(ProductHelper.isRetailSet(product)).toBeTrue();
     });
+
+    it('should return attributes or detailed product attributes when PRODUCT_DETAIL_ATTRIBUTES enabled', () => {
+      const p1: Product = productMapper.fromData({
+        sku: '1',
+        attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
+      } as ProductData);
+      const p2: Product = productMapper.fromData(({
+        sku: '1',
+        attributes: [{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }],
+        attributeGroups: {
+          PRODUCT_DETAIL_ATTRIBUTES: {
+            attributes: [{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }],
+          },
+        },
+      } as unknown) as ProductData);
+      expect(p1).toBeTruthy();
+      expect(p1.attributes).toEqual([{ name: 'Graphics', type: 'String', value: 'NVIDIA Quadro K2200' }]);
+      expect(p2).toBeTruthy();
+      expect(p2.attributes).toEqual([{ name: 'Grafikkarte', type: 'String', value: 'NVIDIA Quadro K2200' }]);
+    });
   });
 
   describe('fromStubData', () => {
@@ -128,6 +148,16 @@ describe('Product Mapper', () => {
         attributes: [{ name: 'sku', value: 'productSKU', type: 'String' }],
         title: 'productName',
         description: 'productDescription',
+        attributeGroup: {
+          name: 'attrGroup',
+          attributes: [
+            {
+              name: 'attrName',
+              type: 'Boolean',
+              value: true,
+            },
+          ],
+        },
       });
       expect(stub).toBeTruthy();
       expect(stub.name).toEqual('productName');
@@ -157,6 +187,16 @@ describe('Product Mapper', () => {
         ] as Attribute[],
         description: 'EasyShare M552, 14MP, 6.858 cm (2.7 ") LCD, 4x, 28mm, HD 720p, Black',
         title: 'Kodak M series EasyShare M552',
+        attributeGroup: {
+          name: 'attrGroup',
+          attributes: [
+            {
+              name: 'attrName',
+              type: 'Boolean',
+              value: true,
+            },
+          ],
+        },
       });
 
       expect(stub).toMatchSnapshot();

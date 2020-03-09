@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { AttributeGroup } from 'ish-core/models/attribute-group/attribute-group.model';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
@@ -31,6 +32,13 @@ function retrieveStubAttributeValue<T>(data: ProductDataStub, attributeName: str
  */
 function mapPromotionIds(data: Link[]): string[] {
   return data ? data.map(promotionLink => promotionLink.itemId) : [];
+}
+
+/**
+ * maps an attribute group and its attribute data to the same format as it is used in a single product call
+ */
+function mapAttributeGroups(data: ProductDataStub): { [id: string]: AttributeGroup } {
+  return { [data.attributeGroup.name]: { attributes: data.attributeGroup.attributes } };
 }
 
 /**
@@ -142,7 +150,7 @@ export class ProductMapper {
       longDescription: undefined,
       minOrderQuantity,
       packingUnit: retrieveStubAttributeValue(data, 'packingUnit'),
-      attributeGroups: data.attributeGroups,
+      attributeGroups: data.attributeGroup && mapAttributeGroups(data),
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
       roundedAverageRating: +retrieveStubAttributeValue<string>(data, 'roundedAverageRating') || 0,
@@ -188,7 +196,11 @@ export class ProductMapper {
       minOrderQuantity: data.minOrderQuantity || 1,
       packingUnit: data.packingUnit,
       maxOrderQuantity: data.maxOrderQuantity || 100,
-      attributes: data.attributes,
+      attributes:
+        (data.attributeGroups &&
+          data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES &&
+          data.attributeGroups.PRODUCT_DETAIL_ATTRIBUTES.attributes) ||
+        data.attributes,
       attributeGroups: data.attributeGroups,
       images: this.imageMapper.fromImages(data.images),
       listPrice: filterPrice(data.listPrice),

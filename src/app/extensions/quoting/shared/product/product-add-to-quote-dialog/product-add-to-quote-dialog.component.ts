@@ -2,9 +2,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilKeyChanged, filter, take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { MessageFacade } from 'ish-core/facades/message.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
+import { User } from 'ish-core/models/user/user.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingFacade } from '../../../facades/quoting.facade';
@@ -16,14 +19,20 @@ import { QuoteRequest } from '../../../models/quote-request/quote-request.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
-  activeQuoteRequest$: Observable<QuoteRequest>;
+  selectedQuoteRequest$: Observable<QuoteRequest>;
   quoteRequestLoading$: Observable<boolean>;
+  user$: Observable<User>;
 
   form: FormGroup;
 
   private destroy$ = new Subject();
 
-  constructor(public ngbActiveModal: NgbActiveModal, private quotingFacade: QuotingFacade) {
+  constructor(
+    public ngbActiveModal: NgbActiveModal,
+    private quotingFacade: QuotingFacade,
+    private messageFacade: MessageFacade,
+    private accountFacade: AccountFacade
+  ) {
     this.form = new FormGroup({
       displayName: new FormControl(undefined, [Validators.maxLength(255)]),
       description: new FormControl(undefined, []),
@@ -31,10 +40,11 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeQuoteRequest$ = this.quotingFacade.activeQuoteRequest$;
+    this.user$ = this.accountFacade.user$;
+    this.selectedQuoteRequest$ = this.quotingFacade.quoteRequest$;
     this.quoteRequestLoading$ = this.quotingFacade.quoteRequestLoading$;
 
-    this.activeQuoteRequest$
+    this.selectedQuoteRequest$
       .pipe(
         whenTruthy(),
         takeUntil(this.destroy$)
@@ -43,11 +53,11 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
         this.patchForm(quote);
       });
 
-    this.activeQuoteRequest$
+    // make active quote request to selected
+    this.quotingFacade.activeQuoteRequest$
       .pipe(
-        filter(quoteRequest => !!quoteRequest),
-        distinctUntilKeyChanged('id'),
-        takeUntil(this.destroy$)
+        whenTruthy(),
+        take(1)
       )
       .subscribe(quoteRequest => this.quotingFacade.selectQuoteRequest(quoteRequest.id));
   }
@@ -71,7 +81,7 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    * @param item Item id and quantity pair that should be changed
    */
   onUpdateItem(item: LineItemUpdate) {
-    this.activeQuoteRequest$
+    this.selectedQuoteRequest$
       .pipe(
         take(1),
         whenTruthy()
@@ -91,7 +101,7 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    * Throws deleteQuoteRequest event when last item will be deleted.
    */
   onDeleteItem(itemId: string) {
-    this.activeQuoteRequest$
+    this.selectedQuoteRequest$
       .pipe(
         take(1),
         whenTruthy()
@@ -118,7 +128,6 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
     } else {
       this.quotingFacade.submitQuoteRequest();
     }
-    this.hide();
   }
 
   /**
@@ -133,7 +142,23 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
       displayName: this.form.value.displayName,
       description: this.form.value.description,
     });
+
+    this.messageFacade.success({
+      message: 'quote.edit.saved.your_quote_request_has_been_saved.text',
+      messageParams: {
+        0: this.form.value.displayName,
+      },
+    });
+
     this.hide();
+    return false;
+  }
+
+  /**
+   * Throws copyQuoteRequest event when copy button was clicked.
+   */
+  copy() {
+    this.quotingFacade.copyQuoteRequest(true);
   }
 
   /**
@@ -141,5 +166,14 @@ export class ProductAddToQuoteDialogComponent implements OnInit, OnDestroy {
    */
   hide() {
     this.ngbActiveModal.close();
+  }
+
+  /**
+   * Callback function to hide modal dialog (used with ishServerHtml).
+   */
+  get callbackHideDialogModal() {
+    return () => {
+      this.hide();
+    };
   }
 }

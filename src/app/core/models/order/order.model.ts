@@ -2,6 +2,7 @@ import { Dictionary } from '@ngrx/entity';
 import { memoize } from 'lodash-es';
 
 import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
+import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
@@ -26,7 +27,7 @@ export interface Order extends Basket, AbstractOrder {}
 export interface OrderView extends BasketView, AbstractOrder {}
 
 export const createOrderView = memoize(
-  (order, products): OrderView => {
+  (order, products, categoryTree): OrderView => {
     if (!order) {
       return;
     }
@@ -36,7 +37,7 @@ export const createOrderView = memoize(
       lineItems: order.lineItems
         ? order.lineItems.map(li => ({
             ...li,
-            product: products ? products[li.productSKU] : undefined,
+            product: products ? createProductView(products[li.productSKU], categoryTree) : undefined,
           }))
         : [],
     };

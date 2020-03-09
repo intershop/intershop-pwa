@@ -6,6 +6,7 @@ import { CMSDialogComponent } from './components/cms-dialog/cms-dialog.component
 import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './components/cms-image/cms-image.component';
+import { CMSLandingPageComponent } from './components/cms-landing-page/cms-landing-page.component';
 import { CMSProductListComponent } from './components/cms-product-list/cms-product-list.component';
 import { CMSStandardPageComponent } from './components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
@@ -77,6 +78,14 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
       useValue: {
         definitionQualifiedName: 'app_sf_responsive_cm:component.common.video.pagelet2-Component',
         class: CMSVideoComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.shopping.landingPage.pagelet2-Component',
+        class: CMSLandingPageComponent,
       },
       multi: true,
     },

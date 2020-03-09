@@ -21,6 +21,10 @@ Basic environment variables:
 
 If you want to use fully qualified names here, do not forget to also add host mappings to your orchestrator name resolution. For `docker run` this can be done with `--add-host`.
 
+If you are using http, the server will run on default port 80.
+If you use https as an upstream, it will run on default port 443.
+In the latter case you will also have to supply the files `server.key` and `server.crt` in the folder `/etx/nginx` (either by volume mapping with `docker run` or in the image itself by `docker build`).
+
 Setup at least one PWA channel configuration:
 
 - use mandatory `PWA_X_SUBDOMAIN` for the channel sub domain
@@ -61,7 +65,3 @@ docker run -d --name "my-awesome-nginx" \
 And then access the PWA with `http://b2b.<your-fully-qualified-machine-name>:4199`
 
 If your DNS is not set up correctly, you have to use something like _dnsmasq_ (Linux) or _Acrylic DNS Proxy_ (Windows), or just ask your local network administrator.
-
-## Extras
-
-To fully release the potential of this nginx, also set `UPSTREAM_ICM` in the form of `http(s)://<IP>:<PORT>` to tunnel all ICM traffic through this PageSpeed optimized nginx. This will automatically point the `ICM_BASE_URL` of the deployed PWA on a request basis to it. This however is still experimental.

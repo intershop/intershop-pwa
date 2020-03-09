@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -40,7 +39,7 @@ export class ShoppingBasketComponent {
   form: FormGroup;
   submitted = false;
 
-  constructor(private router: Router) {
+  constructor() {
     this.form = new FormGroup({});
   }
 

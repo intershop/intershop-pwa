@@ -21,6 +21,7 @@ import { PipesModule } from 'ish-core/pipes.module';
 import { ShellModule } from 'ish-shell/shell.module';
 
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
+import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
 import { AddressFormsSharedModule } from './address-forms/address-forms.module';
 import { CMSModule } from './cms/cms.module';
@@ -30,6 +31,7 @@ import { CMSDialogComponent } from './cms/components/cms-dialog/cms-dialog.compo
 import { CMSFreestyleComponent } from './cms/components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './cms/components/cms-image-enhanced/cms-image-enhanced.component';
 import { CMSImageComponent } from './cms/components/cms-image/cms-image.component';
+import { CMSLandingPageComponent } from './cms/components/cms-landing-page/cms-landing-page.component';
 import { CMSProductListComponent } from './cms/components/cms-product-list/cms-product-list.component';
 import { CMSStandardPageComponent } from './cms/components/cms-standard-page/cms-standard-page.component';
 import { CMSStaticPageComponent } from './cms/components/cms-static-page/cms-static-page.component';
@@ -125,6 +127,7 @@ const importExportModules = [
   ShellModule,
   SwiperModule,
   TranslateModule,
+  WishlistsExportsModule,
 ];
 
 const declaredComponents = [
@@ -136,6 +139,7 @@ const declaredComponents = [
   CMSFreestyleComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
+  CMSLandingPageComponent,
   CMSProductListComponent,
   CMSStandardPageComponent,
   CMSStaticPageComponent,
@@ -221,6 +225,7 @@ const exportedComponents = [
     CMSFreestyleComponent,
     CMSImageComponent,
     CMSImageEnhancedComponent,
+    CMSLandingPageComponent,
     CMSProductListComponent,
     CMSStandardPageComponent,
     CMSStaticPageComponent,

@@ -1,6 +1,14 @@
 <div class="row product-details-top-line justify-content-end">
   <div class="col-lg-12">
     <ul class="share-tools">
+      <ng-container *ishFeature="'wishlists'">
+        <li class="d-none d-md-block mt-1 mr-2" [attr.data-testing-id]="'wishlist-' + product.sku">
+          <ish-lazy-product-add-to-wishlist
+            [product]="product"
+            displayType="animated"
+          ></ish-lazy-product-add-to-wishlist>
+        </li>
+      </ng-container>
       <ng-container *ishFeature="'compare'">
         <li
           *ngIf="!isMasterProduct(product)"
@@ -25,7 +33,7 @@
         <a
           href="mailto:
           ?subject={{ 'email.recommended_product.heading' | translate: { '0': channelName } }}
-          &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': currentUrl } }}"
+          &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': document.URL } }}"
         >
           <fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>
           <span class="share-label">{{ 'product.email_a_friend.link' | translate }}</span>

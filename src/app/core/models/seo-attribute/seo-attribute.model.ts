@@ -3,4 +3,5 @@ export interface SeoAttributes {
   metaTitle?: string;
   robots?: string[];
   canonical?: string;
+  'og:image'?: string;
 }

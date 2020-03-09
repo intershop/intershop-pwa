@@ -99,7 +99,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-unused-declaration": true,
     "no-parameter-reassignment": true,
     "throw-error": true,
     "no-var-keyword": true,
@@ -328,7 +327,7 @@
         },
         {
           "starImport": true,
-          "from": "(\\.\\.|ish).*",
+          "from": "^(\\.\\.|ish).*",
           "filePattern": ".*src/app.*",
           "message": "use star imports only for aggregation of deeper lying imports"
         },
@@ -389,7 +388,7 @@
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {
-          "from": "(.*environments/environment).+",
+          "from": "(?!.*environments/environment.model)(.*environments/environment).+",
           "message": "Importing specific environments is not allowed. Use the default one.",
           "fix": "$1"
         },
@@ -422,6 +421,12 @@
           "from": "ish-core/pipes.module",
           "filePattern": "^.*\\.spec\\.ts*$",
           "message": "Performance: Use MockPipe or declare it individually in tests instead."
+        },
+        {
+          "import": ".*",
+          "from": "@ngx-meta.*",
+          "filePattern": "^(?!.*/extensions/seo/.*$).*$",
+          "message": "Imports from @ngx-meta are only allowed in SEO extension."
         }
       ]
     },
@@ -488,9 +493,13 @@
           "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           "^.*/src/ngrx-router/.*$",
+          "^.*/src/hybrid/default-url-mapping-table.ts$",
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
           "^.*/src/app/core/configurations/.*",
+          // custom routes
+          "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\.route\\.ts",
+          "^.*/src/app/core/routing/([a-z0-9-]+)/\\1\\-route\\.pipe\\.ts",
           // extra artifacts
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(service)s/([a-z][a-z0-9-]+)/\\3(\\-[a-z0-9-]+|)\\.\\2[a-z0-9-\\.]*\\.ts",
           "^.*/src/app/(core|extensions/[a-z][a-z0-9-]+)/(interceptor|guard|directive|pipe)s/[a-z][a-z0-9-]+.\\2\\.ts",
@@ -556,6 +565,23 @@
           {
             "name": "^(CMS[A-Z].*Page)Component$",
             "file": ".*/<kebab>/<kebab>\\.component\\.ts$"
+          },
+          // custom routing
+          {
+            "name": "^([A-Z].*)RoutePipe$",
+            "file": ".*/core/routing/<kebab>/<kebab>-route\\.pipe\\.ts$"
+          },
+          {
+            "name": "^generate([A-Z].*)Url$",
+            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+          },
+          {
+            "name": "^match([A-Z].*)Route$",
+            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
+          },
+          {
+            "name": "^of([A-Z].*)Route$",
+            "file": ".*/core/routing/<kebab>/<kebab>.route\\.ts$"
           },
           // angular components
           {
