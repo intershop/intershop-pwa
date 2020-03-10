@@ -62,7 +62,7 @@ export class WishlistEffects {
         mergeMap(() => [
           new wishlistsActions.DeleteWishlistSuccess({ wishlistId }),
           new SuccessMessage({
-            message: 'account.wishlist.list.remove.message',
+            message: 'account.wishlists.delete_wishlist.confirmation',
             messageParams: { 0: title },
           }),
         ]),
@@ -80,7 +80,7 @@ export class WishlistEffects {
         mergeMap(wishlist => [
           new wishlistsActions.UpdateWishlistSuccess({ wishlist }),
           new SuccessMessage({
-            message: 'account.wishlist.list.edit.message',
+            message: 'account.wishlists.edit_wishlist.confirmation',
             messageParams: { 0: wishlist.title },
           }),
         ]),

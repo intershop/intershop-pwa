@@ -242,7 +242,7 @@ describe('Wishlist Effects', () => {
       const action = new DeleteWishlist({ wishlistId: id });
       const completion1 = new DeleteWishlistSuccess({ wishlistId: id });
       const completion2 = new SuccessMessage({
-        message: 'account.wishlist.list.remove.message',
+        message: 'account.wishlists.delete_wishlist.confirmation',
         messageParams: { 0: wishlists[0].title },
       });
       actions$ = hot('-a----a----a', { a: action });
@@ -293,7 +293,7 @@ describe('Wishlist Effects', () => {
       const action = new UpdateWishlist({ wishlist: wishlistDetailData[0] });
       const completion1 = new UpdateWishlistSuccess({ wishlist: wishlistDetailData[0] });
       const completion2 = new SuccessMessage({
-        message: 'account.wishlist.list.edit.message',
+        message: 'account.wishlists.edit_wishlist.confirmation',
         messageParams: { 0: wishlistDetailData[0].title },
       });
       actions$ = hot('-a----a----a', { a: action });
