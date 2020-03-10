@@ -71,9 +71,9 @@ export class CartPage {
         .first(),
     };
   }
-  get infoMessage() {
+  get lineItemInfoMessage() {
     return {
-      message: cy.get('ish-basket-info').find('.alert-info'),
+      message: cy.get('ish-line-item-list').find('.alert-info'),
     };
   }
 

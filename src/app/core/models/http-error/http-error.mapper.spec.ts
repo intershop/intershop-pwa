@@ -58,7 +58,7 @@ describe('Http Error Mapper', () => {
           error: {
             errors: [
               {
-                message: 'The product could not be added to your basket.',
+                message: 'The product could not be added to your cart.',
                 causes: [{ message: 'The maximum allowed item quantity is exceeded' }],
               },
             ],

@@ -2,7 +2,7 @@
 
 exports[`Http Error Mapper should convert correctly for HttpErrorResponse with errors and causes 1`] = `
 Object {
-  "error": "The product could not be added to your basket. The maximum allowed item quantity is exceeded",
+  "error": "The product could not be added to your cart. The maximum allowed item quantity is exceeded",
   "errorCode": undefined,
   "headers": Object {},
   "message": "Http failure response for (unknown url): 422 Unprocessable Entity",
