@@ -2,19 +2,33 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { mapToParam, ofRoute } from 'ngrx-router';
 import { race } from 'rxjs';
-import { concatMap, filter, map, mapTo, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  debounceTime,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  switchMap,
+  switchMapTo,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/checkout/basket';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
+import { SetBreadcrumbData } from 'ish-core/store/viewconf';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as ordersActions from './orders.actions';
-import { getOrder, getSelectedOrderId } from './orders.selectors';
+import { getOrder, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
 
 @Injectable()
 export class OrdersEffects {
@@ -22,7 +36,8 @@ export class OrdersEffects {
     private actions$: Actions,
     private orderService: OrderService,
     private router: Router,
-    private store: Store<{}>
+    private store: Store<{}>,
+    private translateService: TranslateService
   ) {}
 
   /**
@@ -215,5 +230,25 @@ export class OrdersEffects {
   resetOrdersAfterLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.LogoutUser),
     mapTo(new ordersActions.ResetOrders())
+  );
+
+  @Effect()
+  setOrderBreadcrumb$ = this.actions$.pipe(
+    ofRoute(),
+    mapToParam('orderId'),
+    whenTruthy(),
+    switchMapTo(this.store.pipe(select(getSelectedOrder))),
+    whenTruthy(),
+    debounceTime(0),
+    withLatestFrom(this.translateService.get('account.orderdetails.breadcrumb')),
+    map(
+      ([order, x]) =>
+        new SetBreadcrumbData({
+          breadcrumbData: [
+            { key: 'account.order_history.link', link: '/account/orders' },
+            { text: `${x} - ${order.documentNo}` },
+          ],
+        })
+    )
   );
 }
