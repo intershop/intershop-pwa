@@ -13,7 +13,7 @@ export function generateLocalizedCategorySlug(category: CategoryView) {
   return lastCat ? lastCat.replace(/ /g, '-') : '';
 }
 
-const categoryRouteFormat = new RegExp('^/(?!category/.*$)(.*)cat(.*)$');
+const categoryRouteFormat = /^\/(?!category\/.*$)(.*-)?cat(.*)$/;
 
 export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
