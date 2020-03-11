@@ -21,7 +21,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
   it('should convert a complex example to complex type', () => {
     const input: ContentPageletEntryPointData = {
       link: {
-        title: 'include-id',
+        title: 'Readable Title',
         uri: 'uri://test',
         type: 'ContentInclude',
       },
