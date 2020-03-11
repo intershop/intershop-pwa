@@ -13,6 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -36,8 +37,6 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
   @Output() createCustomerAddress = new EventEmitter<Address>();
   @Output() deleteCustomerAddress = new EventEmitter<string>();
 
-  @Output() updateUserPreferredAddress = new EventEmitter<User>();
-
   hasPreferredAddresses = false;
   preferredAddressesEqual: boolean;
   preferredInvoiceToAddress: Address;
@@ -52,6 +51,8 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject();
 
+  constructor(private accountFacade: AccountFacade) {}
+
   ngOnInit() {
     // create preferred select form (selectboxes)
     this.preferredAddressForm = new FormGroup({
@@ -65,7 +66,10 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(urn => {
         if (urn) {
-          this.updateUserPreferredAddress.emit({ ...this.user, preferredInvoiceToAddressUrn: urn });
+          this.accountFacade.updateUser(
+            { ...this.user, preferredInvoiceToAddressUrn: urn },
+            'account.addresses.preferredinvoice.change.message'
+          );
           this.preferredAddressForm.get('preferredInvoiceAddressUrn').setValue('');
         }
       });
@@ -76,7 +80,10 @@ export class AccountAddressesComponent implements OnInit, OnChanges, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(urn => {
         if (urn) {
-          this.updateUserPreferredAddress.emit({ ...this.user, preferredShipToAddressUrn: urn });
+          this.accountFacade.updateUser(
+            { ...this.user, preferredShipToAddressUrn: urn },
+            'account.addresses.preferredshipping.change.message'
+          );
           this.preferredAddressForm.get('preferredShippingAddressUrn').setValue('');
         }
       });

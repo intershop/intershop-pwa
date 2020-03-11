@@ -34,6 +34,11 @@ export const getSelectedWishlistDetails = createSelector(
   (entities, id): Wishlist => id && entities[id]
 );
 
+export const getWishlistDetails = createSelector(
+  getWishlistEntities,
+  (entities, props: { id: string }): Wishlist => props.id && entities[props.id]
+);
+
 export const getPreferredWishlist = createSelector(
   getAllWishlists,
   entities => entities.find(e => e.preferred)

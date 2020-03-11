@@ -28,6 +28,7 @@ import {
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { SuccessMessage } from 'ish-core/store/messages';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
@@ -110,7 +111,10 @@ export class QuoteRequestEffects {
 
     concatMap(quoteRequestId =>
       this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
-        map(id => new actions.DeleteQuoteRequestSuccess({ id })),
+        mergeMap(id => [
+          new actions.DeleteQuoteRequestSuccess({ id }),
+          new SuccessMessage({ message: 'quote.delete.message' }),
+        ]),
         mapErrorToAction(actions.DeleteQuoteRequestFail)
       )
     )

@@ -4,11 +4,13 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, spy, verify } from 'ts-mockito';
+import { spy, verify } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
+import { coreReducers } from 'ish-core/store/core-store.module';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -34,7 +36,7 @@ describe('Account Addresses Component', () => {
         MockComponent(ModalDialogComponent),
         MockComponent(SelectAddressComponent),
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
     }).compileComponents();
   }));
 
@@ -249,23 +251,5 @@ describe('Account Addresses Component', () => {
     component.deleteAddress(address);
 
     verify(emitter.emit(address.id)).once();
-  });
-
-  it('should emit updatePreferredAddress event when preferredInvoiceAddress has been changed ', () => {
-    fixture.detectChanges();
-    const emitter = spy(component.updateUserPreferredAddress);
-
-    component.preferredAddressForm.get('preferredInvoiceAddressUrn').setValue(component.addresses[1].urn);
-
-    verify(emitter.emit(anything())).once();
-  });
-
-  it('should emit updatePreferredAddress event when preferredShippingAddress has been changed ', () => {
-    fixture.detectChanges();
-    const emitter = spy(component.updateUserPreferredAddress);
-
-    component.preferredAddressForm.get('preferredShippingAddressUrn').setValue(component.addresses[1].urn);
-
-    verify(emitter.emit(anything())).once();
   });
 });
