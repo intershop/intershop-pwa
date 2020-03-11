@@ -22,6 +22,7 @@ describe('Server Html', () => {
       response: {
         definitionQualifiedName: 'app_sf_responsive_cm:pwa.include.homepage.pagelet2-Include',
         displayName: 'PWA Homepage Content',
+        id: 'pwa.include.homepage.pagelet2-Include',
         link: {
           title: 'pwa.include.homepage.pagelet2-Include',
           type: 'Link',
