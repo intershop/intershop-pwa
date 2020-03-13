@@ -22,8 +22,7 @@ export class PaymentMethodMapper {
     if (!body.data.length) {
       return [];
     }
-
-    return body.data
+    const paymentMethods = body.data
       .filter(data => PaymentMethodMapper.isPaymentMethodValid(data))
       .map(data => ({
         id: data.id,
@@ -43,6 +42,12 @@ export class PaymentMethodMapper {
         parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
         hostedPaymentPageParameters: data.hostedPaymentPageParameters,
       }));
+
+    // map sepa mandate information only for concardis direct debit
+    paymentMethods
+      .filter(pm => pm.id === 'Concardis_DirectDebit')
+      .forEach(pm => PaymentMethodMapper.mapSEPAMandateInformation(pm));
+    return paymentMethods;
   }
 
   // is needed for getting a user's eligible payment methods
@@ -189,5 +194,27 @@ export class PaymentMethodMapper {
       }
       return param;
     });
+  }
+
+  /**
+   * convenience method to restructure concardis sepa mandate hosted payment page parameter
+   */
+  private static mapSEPAMandateInformation(pm: PaymentMethod) {
+    const hostedPaymentPageParameters = pm.hostedPaymentPageParameters;
+
+    hostedPaymentPageParameters
+      .filter(hppp => hppp.name === 'Concardis_SEPA_Mandate')
+      .forEach(mandateEntry => {
+        if (typeof mandateEntry.value !== 'string') {
+          const sepaMandateArray = mandateEntry.value as {
+            mandateId: string;
+            mandateText: string;
+            directDebitType: string;
+          };
+          hostedPaymentPageParameters.push({ name: 'mandateId', value: sepaMandateArray.mandateId });
+          hostedPaymentPageParameters.push({ name: 'mandateText', value: sepaMandateArray.mandateText });
+          hostedPaymentPageParameters.push({ name: 'directDebitType', value: sepaMandateArray.directDebitType });
+        }
+      });
   }
 }

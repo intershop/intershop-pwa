@@ -107,39 +107,52 @@
                 <p class="indicates-required">
                   <span class="required">*</span>{{ 'account.required_field.message' | translate }}
                 </p>
-                <ng-container *ngIf="paymentMethod.serviceId !== 'Concardis_CreditCard'; else ConcardisCreditCard">
-                  <formly-form
-                    [form]="parameterForm"
-                    [options]="options"
-                    [model]="model"
-                    [fields]="paymentMethod.parameters"
-                  >
-                    <div class="offset-md-4 col-md-8">
-                      <ng-container *ngIf="paymentMethod.saveAllowed">
-                        <ng-container *ngTemplateOutlet="saveForLaterTemplate"></ng-container>
-                      </ng-container>
-                      <div class="form-group">
-                        <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
-                          {{ 'checkout.account.submit.button.label' | translate }}
-                        </button>
-                        <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
-                          {{ 'checkout.cancel.button.label' | translate }}
-                        </button>
+                <ng-container [ngSwitch]="paymentMethod.serviceId">
+                  <ng-template [ngSwitchCase]="'Concardis_CreditCard'">
+                    <ish-payment-concardis-creditcard
+                      [paymentMethod]="paymentMethod"
+                      [activated]="formIsOpen(i)"
+                      (submit)="createNewPaymentInstrument($event)"
+                      (cancel)="cancelNewPaymentInstrument()"
+                    ></ish-payment-concardis-creditcard>
+                  </ng-template>
+
+                  <ng-template [ngSwitchCase]="'Concardis_DirectDebit'">
+                    <ish-payment-concardis-directdebit
+                      [paymentMethod]="paymentMethod"
+                      [activated]="formIsOpen(i)"
+                      (submit)="createNewPaymentInstrument($event)"
+                      (cancel)="cancelNewPaymentInstrument()"
+                    ></ish-payment-concardis-directdebit>
+                  </ng-template>
+
+                  <ng-template ngSwitchDefault>
+                    <formly-form
+                      [form]="parameterForm"
+                      [options]="options"
+                      [model]="model"
+                      [fields]="paymentMethod.parameters"
+                    >
+                      <div class="offset-md-4 col-md-8">
+                        <ng-container *ngIf="paymentMethod.saveAllowed">
+                          <ng-container *ngTemplateOutlet="saveForLaterTemplate"></ng-container>
+                        </ng-container>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary" [disabled]="submitDisabled">
+                            {{ 'checkout.account.submit.button.label' | translate }}
+                          </button>
+                          <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+                            {{ 'checkout.cancel.button.label' | translate }}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </formly-form>
+                    </formly-form>
+                  </ng-template>
                 </ng-container>
-                <ng-template #ConcardisCreditCard>
-                  <ish-payment-concardis-creditcard
-                    [paymentMethod]="paymentMethod"
-                    [activated]="formIsOpen(i)"
-                    (submit)="createNewPaymentInstrument($event)"
-                    (cancel)="cancelNewPaymentInstrument()"
-                  ></ish-payment-concardis-creditcard>
-                </ng-template>
               </div>
-            </div></li
-        ></ng-container>
+            </div>
+          </li>
+        </ng-container>
       </ul>
       <!-- saveForLater checkbox - outlet template -->
       <ng-template #saveForLaterTemplate>

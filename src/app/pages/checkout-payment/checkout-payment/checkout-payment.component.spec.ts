@@ -21,9 +21,9 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
-import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
-
 import { CheckoutPaymentComponent } from './checkout-payment.component';
+import { PaymentConcardisCreditcardComponent } from './payment-concardis/payment-concardis-creditcard/payment-concardis-creditcard.component';
+import { PaymentConcardisDirectdebitComponent } from './payment-concardis/payment-concardis-directdebit/payment-concardis-directdebit.component';
 
 describe('Checkout Payment Component', () => {
   let component: CheckoutPaymentComponent;
@@ -51,6 +51,7 @@ describe('Checkout Payment Component', () => {
         MockComponent(ModalDialogLinkComponent),
         MockComponent(NgbCollapse),
         MockComponent(PaymentConcardisCreditcardComponent),
+        MockComponent(PaymentConcardisDirectdebitComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
       ],
@@ -152,33 +153,33 @@ describe('Checkout Payment Component', () => {
 
   describe('next button', () => {
     it('should set submitted if next button is clicked', () => {
-      expect(component.nextSubmitted).toBeFalse();
+      expect(component.nextSubmitted).toBeFalsy();
       component.goToNextStep();
-      expect(component.nextSubmitted).toBeTrue();
+      expect(component.nextSubmitted).toBeTruthy();
     });
 
     it('should not disable next button if basket payment method is set and next button is clicked', () => {
-      expect(component.nextDisabled).toBeFalse();
+      expect(component.nextDisabled).toBeFalsy();
       component.goToNextStep();
-      expect(component.nextDisabled).toBeFalse();
+      expect(component.nextDisabled).toBeFalsy();
     });
 
     it('should disable next button if basket payment method is missing and next button is clicked', () => {
       component.basket.payment = undefined;
 
       component.goToNextStep();
-      expect(component.nextDisabled).toBeTrue();
+      expect(component.nextDisabled).toBeTruthy();
     });
   });
 
   describe('parameter forms', () => {
     it('should open and close payment form if open/cancel form is triggered', () => {
-      expect(component.formIsOpen(-1)).toBeTrue();
+      expect(component.formIsOpen(-1)).toBeTruthy();
       component.openPaymentParameterForm(2);
-      expect(component.formIsOpen(2)).toBeTrue();
+      expect(component.formIsOpen(2)).toBeTruthy();
 
       component.cancelNewPaymentInstrument();
-      expect(component.formIsOpen(-1)).toBeTrue();
+      expect(component.formIsOpen(-1)).toBeTruthy();
     });
 
     it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', done => {
@@ -190,7 +191,7 @@ describe('Checkout Payment Component', () => {
           paymentMethod: 'Concardis_CreditCard',
           parameters: [{ name: 'creditCardNumber', value: '123' }],
         });
-        expect(formValue.saveForLater).toBeFalse();
+        expect(formValue.saveForLater).toBeFalsy();
         done();
       });
 
@@ -200,14 +201,14 @@ describe('Checkout Payment Component', () => {
 
     it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', done => {
       component.ngOnChanges(paymentMethodChange);
-      component.openPaymentParameterForm(2);
+      component.openPaymentParameterForm(3);
 
       component.createPaymentInstrument.subscribe(formValue => {
         expect(formValue.paymentInstrument).toEqual({
           paymentMethod: 'ISH_CreditCard',
           parameters: [{ name: 'creditCardNumber', value: '456' }],
         });
-        expect(formValue.saveForLater).toBeTrue();
+        expect(formValue.saveForLater).toBeTruthy();
         done();
       });
 
@@ -219,10 +220,10 @@ describe('Checkout Payment Component', () => {
       component.openPaymentParameterForm(1);
       fixture.detectChanges();
 
-      expect(component.formSubmitted).toBeFalse();
+      expect(component.formSubmitted).toBeFalsy();
       component.parameterForm.addControl('IBAN', new FormControl('', Validators.required));
       component.submitParameterForm();
-      expect(component.formSubmitted).toBeTrue();
+      expect(component.formSubmitted).toBeTruthy();
     });
 
     it('should render standard parameter form for standard parametrized form', () => {
