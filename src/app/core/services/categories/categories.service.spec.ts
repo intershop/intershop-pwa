@@ -52,8 +52,9 @@ describe('Categories Service', () => {
       // tslint:disable-next-line:no-any
       const params = (args[1] as any).params as HttpParams;
       expect(params).toBeTruthy();
-      expect(params.get('view')).toBe('tree');
-      expect(params.get('limit')).toBe('1');
+      expect(params.toString()).toMatchInlineSnapshot(
+        `"imageView=NO-IMAGE&view=tree&limit=1&omitHasOnlineProducts=true"`
+      );
     });
 
     it('should not throw when response is without categories', done => {
