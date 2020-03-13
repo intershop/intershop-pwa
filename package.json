@@ -166,7 +166,11 @@
       ]
     }
   },
-  "commitlint": { "extends": ["cz"] },
+  "commitlint": {
+    "extends": [
+      "cz"
+    ]
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
