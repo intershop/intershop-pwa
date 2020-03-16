@@ -8,7 +8,7 @@
     type="text"
     class="form-control searchTerm"
     (input)="searchSuggest($event.target.value)"
-    [value]="allSearchTerms$ | async"
+    [value]="(allSearchTerms$ | async) || ''"
     (focus)="hidePopup()"
     (blur)="hidePopup()"
     (keydown.esc)="hidePopup()"
