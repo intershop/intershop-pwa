@@ -11,6 +11,7 @@ import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 import { coreReducers } from 'ish-core/store/core-store.module';
 
@@ -57,7 +58,10 @@ export function translateLoaderFactory() {
       },
     }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppServerModule {
