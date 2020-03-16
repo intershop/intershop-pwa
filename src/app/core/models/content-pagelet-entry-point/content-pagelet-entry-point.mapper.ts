@@ -36,7 +36,7 @@ export class ContentPageletEntryPointMapper {
     const configurationParameters = this.contentConfigurationParameterMapper.fromData(data.configurationParameters);
 
     const pageletEntryPoint: ContentPageletEntryPoint = {
-      id: data.link.title,
+      id: data.id,
       definitionQualifiedName: data.definitionQualifiedName,
       displayName: data.displayName,
       domain: data.domain,
