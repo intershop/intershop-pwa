@@ -342,6 +342,7 @@ deploy_demo:
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
+      --env PROXY_ICM=true
       --env SENTRY_DSN=${SENTRY_DSN}
       --add-host $DEMO_SERVER_NAME:$DEMO_SERVER_IP
       --add-host b2b.$DEMO_SERVER_NAME:$DEMO_SERVER_IP
@@ -379,6 +380,7 @@ deploy_demo_b2b:
       --name ${SERVICE}
       --env ICM_BASE_URL=$ICM_BASE_URL
       --env LOGGING=true
+      --env PROXY_ICM=true
       --env THEME="blue|688dc3"
       --env FEATURES=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling,sentry
       --env ICM_CHANNEL=inSPIRED-inTRONICS_Business-Site
@@ -523,6 +525,7 @@ deploy_review_b2c:
       $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-pwa-b2c"
       -e LOGGING=true
+      -e PROXY_ICM=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
       --add-host $ICM_HOST:$ICM_IP
@@ -616,6 +619,7 @@ deploy_review_b2b:
       $PUBLISH_PWA
       --name "${CI_COMMIT_REF_SLUG}-pwa-b2b"
       -e LOGGING=true
+      -e PROXY_ICM=true
       -e SENTRY_DSN=${SENTRY_DSN}
       -e ICM_BASE_URL=${ICM_BASE_URL}
       -e THEME="blue|688dc3"
