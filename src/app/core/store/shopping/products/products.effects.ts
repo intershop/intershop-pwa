@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
 import { mapToParam, ofRoute } from 'ngrx-router';
+import { identity } from 'rxjs';
 import {
   concatMap,
   distinct,
@@ -49,7 +51,8 @@ export class ProductsEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
-    private productListingMapper: ProductListingMapper
+    private productListingMapper: ProductListingMapper,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   @Effect()
@@ -73,7 +76,7 @@ export class ProductsEffects {
     groupBy(([{ sku }]) => sku),
     mergeMap(group$ =>
       group$.pipe(
-        throttleTime(3000),
+        this.throttleOnBrowser(),
         map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
       )
     )
@@ -159,7 +162,7 @@ export class ProductsEffects {
     groupBy(([product]) => product.productMasterSKU),
     mergeMap(groups =>
       groups.pipe(
-        throttleTime(3000),
+        this.throttleOnBrowser(),
         map(
           ([product]) =>
             new productsActions.LoadProductIfNotLoaded({
@@ -188,7 +191,7 @@ export class ProductsEffects {
     groupBy(([product]) => product.sku),
     mergeMap(groups =>
       groups.pipe(
-        throttleTime(3000),
+        this.throttleOnBrowser(),
         map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
       )
     )
@@ -313,4 +316,6 @@ export class ProductsEffects {
     ),
     mergeMap(ids => ids.map(categoryId => new LoadCategory({ categoryId })))
   );
+
+  private throttleOnBrowser = () => (isPlatformBrowser(this.platformId) ? throttleTime(3000) : map(identity));
 }
