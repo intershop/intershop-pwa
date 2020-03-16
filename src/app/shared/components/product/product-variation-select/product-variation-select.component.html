@@ -26,11 +26,16 @@
           [formControlName]="group.id"
           [attr.data-testing-id]="group.id"
         >
-          <ng-container *ngFor="let option of group.options">
-            <option *ngIf="!option.alternativeCombination" [value]="option.value">
-              {{ option.label }}
-            </option>
-          </ng-container>
+          <option
+            *ngFor="let option of group.options"
+            [disabled]="option.alternativeCombination"
+            [value]="option.value"
+          >
+            {{ option.label }}
+            <ng-container *ngIf="option.alternativeCombination">
+              - {{ 'product.available_in_different_configuration' | translate }}
+            </ng-container>
+          </option>
         </select>
       </div>
     </div>
