@@ -5,7 +5,7 @@ kb_guide
 kb_everyone
 -->
 
-# Intershop Progressive Web App
+# Getting Started
 
 Welcome to the Intershop PWA project!
 
@@ -19,7 +19,7 @@ More information on the PWA can be found [here](https://www.intershop.com/en/pro
 
 In order to contribute, please have a look at our [Contribution Guidelines](./CONTRIBUTING.md)
 
-## Getting Started
+## Prerequisites
 
 ---
 
