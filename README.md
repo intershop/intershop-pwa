@@ -1,11 +1,4 @@
-<!--
-kb_sync_latest_only
-kb_pwa
-kb_guide
-kb_everyone
--->
-
-# Getting Started
+# Intershop Progressive Web App
 
 Welcome to the Intershop PWA project!
 
@@ -19,7 +12,7 @@ More information on the PWA can be found [here](https://www.intershop.com/en/pro
 
 In order to contribute, please have a look at our [Contribution Guidelines](./CONTRIBUTING.md)
 
-## Prerequisites
+## Getting Started
 
 ---
 
