@@ -42,6 +42,8 @@ export interface LineItem {
 
   // attributes needed for quote feature
   originSingleBasePrice?: Price;
+
+  isQuantityFixed?: boolean;
 }
 
 export interface LineItemView extends LineItem {

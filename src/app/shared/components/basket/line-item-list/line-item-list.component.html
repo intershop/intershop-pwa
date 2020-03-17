@@ -150,7 +150,7 @@
 
 <!-- template (ngTemplateOutlet) for quantity-input -->
 <ng-template #quantityInputTemplate let-pli="pli" let-editable="editable" let-form="form" let-i="i">
-  <ng-container *ngIf="!pli.isFreeGift && editable; else readonlyQuantity">
+  <ng-container *ngIf="!pli.isQuantityFixed && editable; else readonlyQuantity">
     <ish-input
       [form]="form.get(['items', i])"
       controlName="quantity"
