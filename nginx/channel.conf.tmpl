@@ -2,6 +2,10 @@ server {
     server_name ~^$DOMAIN$;
     include /etc/nginx/conf.d/listen.conf;
 
+    # uncomment the following lines to debug rewrite rules
+    # error_log /dev/stdout notice;
+    # rewrite_log on;
+
     # let ICM handle everything ICM related
     location ~* ^/INTERSHOP.*$ {
         proxy_set_header Host $http_host;
