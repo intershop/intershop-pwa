@@ -1,14 +1,31 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { BasketValidationData } from './basket-validation.interface';
 import { BasketValidationMapper } from './basket-validation.mapper';
 import { BasketValidation } from './basket-validation.model';
 
 describe('Basket Validation Mapper', () => {
+  let basketValidationMapper: BasketValidationMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }),
+        BasketValidationMapper,
+      ],
+    });
+
+    basketValidationMapper = TestBed.get(BasketValidationMapper);
+  });
+
   const basketBaseData: BasketBaseData = {
     id: 'basket_1234',
     calculated: true,
@@ -159,7 +176,7 @@ describe('Basket Validation Mapper', () => {
     });
 
     it(`should return Basket Validation results when getting BasketValidationData`, () => {
-      basketValidation = BasketValidationMapper.fromData(basketValidationData);
+      basketValidation = basketValidationMapper.fromData(basketValidationData);
       expect(basketValidation).toBeTruthy();
       expect(basketValidation.results).toBeTruthy();
       expect(basketValidation.results.valid).toBeFalse();
@@ -170,7 +187,7 @@ describe('Basket Validation Mapper', () => {
     });
 
     it('should return (adjusted) Basket when basket was included', () => {
-      basketValidation = BasketValidationMapper.fromData(basketValidationData);
+      basketValidation = basketValidationMapper.fromData(basketValidationData);
 
       expect(basketValidation.basket.invoiceToAddress.id).toEqual('invoiceToAddress_123');
       expect(basketValidation.basket.commonShipToAddress.id).toEqual('commonShipToAddress_123');

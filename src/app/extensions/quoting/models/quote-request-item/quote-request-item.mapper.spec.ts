@@ -1,3 +1,4 @@
+import { QuoteRequestItemData } from './quote-request-item.interface';
 import { QuoteRequestItemMapper } from './quote-request-item.mapper';
 
 describe('Quote Request Item Mapper', () => {
@@ -36,7 +37,7 @@ describe('Quote Request Item Mapper', () => {
           currency: 'USD',
         },
         productSKU: '9438012',
-      };
+      } as QuoteRequestItemData;
       const quoteRequestItem = QuoteRequestItemMapper.fromData(quoteRequestItemData, 'test');
 
       expect(quoteRequestItem).toBeTruthy();

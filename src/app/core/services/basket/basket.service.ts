@@ -69,7 +69,12 @@ type ValidationBasketIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class BasketService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private basketMapper: BasketMapper,
+    private basketValidationMapper: BasketValidationMapper,
+    private shippingMethodMapper: ShippingMethodMapper
+  ) {}
 
   // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
@@ -128,7 +133,7 @@ export class BasketService {
         headers: this.basketHeaders,
         params,
       })
-      .pipe(map(BasketMapper.fromData));
+      .pipe(map(basket => this.basketMapper.fromData(basket)));
   }
 
   getBasketByToken(apiToken: string): Observable<Basket> {
@@ -142,7 +147,7 @@ export class BasketService {
         runExclusively: true,
       })
       .pipe(
-        map(BasketMapper.fromData),
+        map(basket => this.basketMapper.fromData(basket)),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       );
@@ -161,7 +166,7 @@ export class BasketService {
           headers: this.basketHeaders,
         }
       )
-      .pipe(map(BasketMapper.fromData));
+      .pipe(map(basket => this.basketMapper.fromData(basket)));
   }
 
   /**
@@ -190,7 +195,7 @@ export class BasketService {
               params,
             }
           )
-          .pipe(map(mergeBasketData => BasketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))))
+          .pipe(map(mergeBasketData => this.basketMapper.fromData(BasketMergeHelper.transform(mergeBasketData))))
       )
     );
   }
@@ -212,7 +217,7 @@ export class BasketService {
         headers: this.basketHeaders,
         params,
       })
-      .pipe(map(BasketMapper.fromData));
+      .pipe(map(basket => this.basketMapper.fromData(basket)));
   }
 
   /**
@@ -237,7 +242,7 @@ export class BasketService {
         headers: this.basketHeaders,
         params,
       })
-      .pipe(map(BasketValidationMapper.fromData));
+      .pipe(map(data => this.basketValidationMapper.fromData(data)));
   }
 
   /**
@@ -414,7 +419,7 @@ export class BasketService {
           })
           .pipe(
             unpackEnvelope<ShippingMethodData>('data'),
-            map(data => data.map(ShippingMethodMapper.fromData))
+            map(data => data.map(shippingData => this.shippingMethodMapper.fromData(shippingData)))
           )
       : this.apiService
           .get(`baskets/${basketId}/eligible-shipping-methods`, {
@@ -422,7 +427,7 @@ export class BasketService {
           })
           .pipe(
             unpackEnvelope<ShippingMethodData>('data'),
-            map(data => data.map(ShippingMethodMapper.fromData))
+            map(data => data.map(shippingData => this.shippingMethodMapper.fromData(shippingData)))
           );
   }
 

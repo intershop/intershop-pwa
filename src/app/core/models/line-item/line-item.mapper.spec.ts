@@ -1,9 +1,23 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { LineItemData } from './line-item.interface';
 import { LineItemMapper } from './line-item.mapper';
 
 describe('Line Item Mapper', () => {
+  let lineItemMapper: LineItemMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }), LineItemMapper],
+    });
+
+    lineItemMapper = TestBed.get(LineItemMapper);
+  });
+
   describe('fromData', () => {
     it(`should return BasketItem when getting LineItemData`, () => {
       const lineItemData = {
@@ -25,7 +39,7 @@ describe('Line Item Mapper', () => {
           },
         },
       } as LineItemData;
-      const lineItem = LineItemMapper.fromData(lineItemData, undefined);
+      const lineItem = lineItemMapper.fromData(lineItemData, undefined);
 
       expect(lineItem).toBeTruthy();
       expect(lineItem.productSKU).toBe(lineItemData.product);
@@ -33,7 +47,7 @@ describe('Line Item Mapper', () => {
     });
 
     it(`should throw an error when getting no LineItemData`, () => {
-      expect(() => LineItemMapper.fromData(undefined, undefined)).toThrow();
+      expect(() => lineItemMapper.fromData(undefined, undefined)).toThrow();
     });
   });
 
@@ -58,7 +72,7 @@ describe('Line Item Mapper', () => {
           },
         },
       } as OrderItemData;
-      const basketItem = LineItemMapper.fromOrderItemData(orderItemData, undefined);
+      const basketItem = lineItemMapper.fromOrderItemData(orderItemData, undefined);
 
       expect(basketItem).toBeTruthy();
       expect(basketItem.productSKU).toBe(orderItemData.product);
@@ -66,7 +80,7 @@ describe('Line Item Mapper', () => {
     });
 
     it(`should throw an error when getting no OrderItemData`, () => {
-      expect(() => LineItemMapper.fromOrderItemData(undefined)).toThrow();
+      expect(() => lineItemMapper.fromOrderItemData(undefined)).toThrow();
     });
   });
 });

@@ -1,14 +1,27 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
-import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { BasketBaseData, BasketData } from './basket.interface';
 import { BasketMapper } from './basket.mapper';
 import { Basket } from './basket.model';
 
 describe('Basket Mapper', () => {
+  let basketMapper: BasketMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }), BasketMapper],
+    });
+
+    basketMapper = TestBed.get(BasketMapper);
+  });
+
   const basketBaseData: BasketBaseData = {
     id: 'basket_1234',
     calculated: true,
@@ -166,7 +179,7 @@ describe('Basket Mapper', () => {
       basketData.data.commonShippingMethod = undefined;
       basketData.data.discounts = undefined;
 
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
       expect(basket).toBeTruthy();
 
       expect(basket.totals.itemTotal.value).toBe(basketData.data.totals.itemTotal.gross.value);
@@ -184,7 +197,7 @@ describe('Basket Mapper', () => {
       basketData.data.commonShippingMethod = undefined;
       basketData.data.discounts = undefined;
 
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
 
       expect(basket.invoiceToAddress.id).toEqual('invoiceToAddress_123');
       expect(basket.totals.isEstimated).toBeTrue();
@@ -195,7 +208,7 @@ describe('Basket Mapper', () => {
       basketData.data.commonShippingMethod = undefined;
       basketData.data.discounts = undefined;
 
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
 
       expect(basket.commonShipToAddress.id).toEqual('commonShipToAddress_123');
       expect(basket.totals.isEstimated).toBeTrue();
@@ -205,64 +218,33 @@ describe('Basket Mapper', () => {
       basketData.data.invoiceToAddress = undefined;
       basketData.data.commonShipToAddress = undefined;
       basketData.data.discounts = undefined;
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
 
       expect(basket.commonShippingMethod.name).toEqual('ShippingMethodName');
       expect(basket.totals.isEstimated).toBeTrue();
     });
 
     it('should return line items if included', () => {
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
 
       expect(basket.lineItems).toBeArrayOfSize(1);
     });
 
     it('should return infos if included', () => {
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
 
       expect(basket.infos).toBeArrayOfSize(1);
     });
 
     it('should return discounts if included', () => {
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
 
       expect(basket.totals.valueRebates[0].amount.value).toBePositive();
     });
 
     it('should return estimated as false if invoive address, shipping address and shipping method is set', () => {
-      basket = BasketMapper.fromData(basketData);
+      basket = basketMapper.fromData(basketData);
       expect(basket.totals.isEstimated).toBeFalse();
-    });
-  });
-
-  describe('getTotals', () => {
-    let totals: BasketTotal;
-    let basketData: BasketData;
-    beforeEach(() => {
-      basketData = {
-        data: { ...basketBaseData },
-        included: { ...basketIncludedData },
-      };
-    });
-
-    it(`should return totals when getting BasketData with totals`, () => {
-      totals = BasketMapper.getTotals(basketBaseData);
-      expect(totals).toBeTruthy();
-
-      expect(totals.total.value).toBe(basketData.data.totals.grandTotal.gross.value);
-      expect(totals.itemTotal.value).toBe(basketData.data.totals.itemTotal.gross.value);
-      expect(totals.itemSurchargeTotalsByType[0].amount.value).toBe(
-        basketData.data.surcharges.itemSurcharges[0].amount.gross.value
-      );
-      expect(totals.isEstimated).toBeFalse();
-    });
-
-    it(`should return totals when getting BasketData with discounts`, () => {
-      totals = BasketMapper.getTotals(basketBaseData, basketIncludedData.discounts);
-      expect(totals).toBeTruthy();
-
-      expect(totals.valueRebates[0].amount.value).toBePositive();
-      expect(totals.valueRebates[0].id).toEqual('discount_1');
     });
   });
 });

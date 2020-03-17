@@ -1,7 +1,25 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
+import { getLoggedInCustomer } from 'ish-core/store/user';
+
 import { ShippingMethodData } from './shipping-method.interface';
 import { ShippingMethodMapper } from './shipping-method.mapper';
 
 describe('Shipping Method Mapper', () => {
+  let shippingMethodMapper: ShippingMethodMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }),
+        ShippingMethodMapper,
+      ],
+    });
+
+    shippingMethodMapper = TestBed.get(ShippingMethodMapper);
+  });
+
   describe('fromData', () => {
     const shippingMethodData = {
       id: '4711',
@@ -20,7 +38,7 @@ describe('Shipping Method Mapper', () => {
     } as ShippingMethodData;
 
     it(`should return ShippingMethod when getting a ShippingMethodData`, () => {
-      const shippingMethod = ShippingMethodMapper.fromData(shippingMethodData);
+      const shippingMethod = shippingMethodMapper.fromData(shippingMethodData);
 
       expect(shippingMethod).toBeTruthy();
       expect(shippingMethod.name).toEqual('StdGround');
@@ -30,7 +48,7 @@ describe('Shipping Method Mapper', () => {
     it(`should return shippingTimeMin and Max when getting a ShippingMethodData`, () => {
       shippingMethodData.deliveryTimeMin = 'P6D';
       shippingMethodData.deliveryTimeMax = 'P14D';
-      const shippingMethod = ShippingMethodMapper.fromData(shippingMethodData);
+      const shippingMethod = shippingMethodMapper.fromData(shippingMethodData);
 
       expect(shippingMethod.shippingTimeMin).toEqual(6);
       expect(shippingMethod.shippingTimeMax).toEqual(14);
@@ -39,7 +57,7 @@ describe('Shipping Method Mapper', () => {
     it(`should not return shippingTimeMin and Max if shipping time is not a day in period format`, () => {
       shippingMethodData.deliveryTimeMin = '6';
       shippingMethodData.deliveryTimeMax = 'P14D12H';
-      const shippingMethod = ShippingMethodMapper.fromData(shippingMethodData);
+      const shippingMethod = shippingMethodMapper.fromData(shippingMethodData);
 
       expect(shippingMethod.shippingTimeMin).toBeUndefined();
       expect(shippingMethod.shippingTimeMax).toBeUndefined();

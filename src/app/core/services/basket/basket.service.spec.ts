@@ -1,9 +1,12 @@
 import { HttpHeaders } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { BasketItemUpdateType, BasketService } from './basket.service';
@@ -77,7 +80,16 @@ describe('Basket Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    basketService = new BasketService(instance(apiService));
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }),
+        BasketService,
+      ],
+    });
+
+    basketService = TestBed.get(BasketService);
   });
 
   it("should get basket data when 'getBasket' is called", done => {

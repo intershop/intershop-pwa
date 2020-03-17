@@ -1,4 +1,8 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import {
   PaymentMethodData,
@@ -8,6 +12,16 @@ import {
 import { PaymentMethodMapper } from './payment-method.mapper';
 
 describe('Payment Method Mapper', () => {
+  let paymentMethodMapper: PaymentMethodMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }), PaymentMethodMapper],
+    });
+
+    paymentMethodMapper = TestBed.get(PaymentMethodMapper);
+  });
+
   describe('fromData', () => {
     const paymentMethodData = {
       data: [
@@ -91,7 +105,7 @@ describe('Payment Method Mapper', () => {
     ];
 
     it(`should return PaymentMethod when getting a PaymentMethodData`, () => {
-      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
+      const paymentMethod = paymentMethodMapper.fromData(paymentMethodData)[0];
 
       expect(paymentMethod).toBeTruthy();
       expect(paymentMethod.id).toEqual('ISH_CreditCard');
@@ -109,14 +123,14 @@ describe('Payment Method Mapper', () => {
           code: 'restricition code',
         },
       ];
-      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
+      const paymentMethod = paymentMethodMapper.fromData(paymentMethodData)[0];
       expect(paymentMethod.isRestricted).toBeTrue();
       expect(paymentMethod.restrictionCauses).toHaveLength(1);
     });
 
     it(`should return a payment method with parameter definitions if payment method has input parameters`, () => {
       paymentMethodData.data[0].parameterDefinitions = parametersData;
-      const paymentMethod = PaymentMethodMapper.fromData(paymentMethodData)[0];
+      const paymentMethod = paymentMethodMapper.fromData(paymentMethodData)[0];
 
       expect(paymentMethod.saveAllowed).toBeTrue();
       expect(paymentMethod.parameters).toHaveLength(3);

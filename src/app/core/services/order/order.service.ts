@@ -27,7 +27,7 @@ type OrderIncludeType =
  */
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private apiService: ApiService, private store: Store<{}>) {}
+  constructor(private apiService: ApiService, private orderMapper: OrderMapper, private store: Store<{}>) {}
 
   // http header for Order API v1
   private orderHeaders = new HttpHeaders({
@@ -73,7 +73,7 @@ export class OrderService {
         }
       )
       .pipe(
-        map(OrderMapper.fromData),
+        map(orderData => this.orderMapper.fromData(orderData)),
         withLatestFrom(this.store.pipe(select(getCurrentLocale))),
         concatMap(([order, currentLocale]) =>
           this.sendRedirectUrlsIfRequired(order, currentLocale && currentLocale.lang)
@@ -106,10 +106,10 @@ export class OrderService {
         },
       };
       return this.apiService
-        .patch(`orders/${order.id}`, body, {
+        .patch<OrderData>(`orders/${order.id}`, body, {
           headers: this.orderHeaders,
         })
-        .pipe(map(OrderMapper.fromData));
+        .pipe(map(orderData => this.orderMapper.fromData(orderData)));
     } else {
       return of(order);
     }
@@ -128,7 +128,7 @@ export class OrderService {
         headers: this.orderHeaders,
         params,
       })
-      .pipe(map(OrderMapper.fromListData));
+      .pipe(map(orderData => this.orderMapper.fromListData(orderData)));
   }
 
   /**
@@ -148,7 +148,7 @@ export class OrderService {
         headers: this.orderHeaders,
         params,
       })
-      .pipe(map(OrderMapper.fromData));
+      .pipe(map(orderData => this.orderMapper.fromData(orderData)));
   }
 
   /**
@@ -176,7 +176,7 @@ export class OrderService {
         runExclusively: true,
       })
       .pipe(
-        map(OrderMapper.fromData),
+        map(orderData => this.orderMapper.fromData(orderData)),
         // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       );

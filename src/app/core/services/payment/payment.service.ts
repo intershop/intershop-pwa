@@ -12,6 +12,7 @@ import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/paymen
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import {
   PaymentMethodBaseData,
+  PaymentMethodData,
   PaymentMethodOptionsDataType,
 } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-method.mapper';
@@ -25,7 +26,11 @@ import { getCurrentLocale } from 'ish-core/store/locale';
  */
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  constructor(private apiService: ApiService, private store: Store<{}>) {}
+  constructor(
+    private apiService: ApiService,
+    private paymentMethodMapper: PaymentMethodMapper,
+    private store: Store<{}>
+  ) {}
 
   // http header for Basket API v1
   private basketHeaders = new HttpHeaders({
@@ -46,11 +51,11 @@ export class PaymentService {
     const params = new HttpParams().set('include', 'paymentInstruments');
 
     return this.apiService
-      .get(`baskets/${basketId}/eligible-payment-methods`, {
+      .get<PaymentMethodData>(`baskets/${basketId}/eligible-payment-methods`, {
         headers: this.basketHeaders,
         params,
       })
-      .pipe(map(PaymentMethodMapper.fromData));
+      .pipe(map(data => this.paymentMethodMapper.fromData(data)));
   }
 
   /**

@@ -6,36 +6,36 @@ describe('Price Helper', () => {
   function dataProviderValid() {
     return [
       {
-        p1: { type: 'M', currency: 'USD', value: 10 } as Price,
-        p2: { type: 'M', currency: 'USD', value: 9 } as Price,
-        diff: { type: 'M', currency: 'USD', value: 1 } as Price,
-        sum: { type: 'M', currency: 'USD', value: 19 } as Price,
-        min: { type: 'M', currency: 'USD', value: 9 } as Price,
-        max: { type: 'M', currency: 'USD', value: 10 } as Price,
+        p1: { type: 'Money', currency: 'USD', value: 10 } as Price,
+        p2: { type: 'Money', currency: 'USD', value: 9 } as Price,
+        diff: { type: 'Money', currency: 'USD', value: 1 } as Price,
+        sum: { type: 'Money', currency: 'USD', value: 19 } as Price,
+        min: { type: 'Money', currency: 'USD', value: 9 } as Price,
+        max: { type: 'Money', currency: 'USD', value: 10 } as Price,
       },
       {
-        p1: { type: 'M', currency: 'USD', value: 10.99 } as Price,
-        p2: { type: 'M', currency: 'USD', value: 9.45 } as Price,
-        diff: { type: 'M', currency: 'USD', value: 1.54 } as Price,
-        sum: { type: 'M', currency: 'USD', value: 20.44 } as Price,
-        min: { type: 'M', currency: 'USD', value: 9.45 } as Price,
-        max: { type: 'M', currency: 'USD', value: 10.99 } as Price,
+        p1: { type: 'Money', currency: 'USD', value: 10.99 } as Price,
+        p2: { type: 'Money', currency: 'USD', value: 9.45 } as Price,
+        diff: { type: 'Money', currency: 'USD', value: 1.54 } as Price,
+        sum: { type: 'Money', currency: 'USD', value: 20.44 } as Price,
+        min: { type: 'Money', currency: 'USD', value: 9.45 } as Price,
+        max: { type: 'Money', currency: 'USD', value: 10.99 } as Price,
       },
       {
-        p1: { type: 'M', currency: 'USD', value: 8 } as Price,
-        p2: { type: 'M', currency: 'USD', value: 9 } as Price,
-        diff: { type: 'M', currency: 'USD', value: -1 } as Price,
-        sum: { type: 'M', currency: 'USD', value: 17 } as Price,
-        min: { type: 'M', currency: 'USD', value: 8 } as Price,
-        max: { type: 'M', currency: 'USD', value: 9 } as Price,
+        p1: { type: 'Money', currency: 'USD', value: 8 } as Price,
+        p2: { type: 'Money', currency: 'USD', value: 9 } as Price,
+        diff: { type: 'Money', currency: 'USD', value: -1 } as Price,
+        sum: { type: 'Money', currency: 'USD', value: 17 } as Price,
+        min: { type: 'Money', currency: 'USD', value: 8 } as Price,
+        max: { type: 'Money', currency: 'USD', value: 9 } as Price,
       },
       {
-        p1: { type: 'M', currency: 'USD', value: 8.88888 } as Price,
-        p2: { type: 'F', currency: 'USD', value: 3.55555 } as Price,
-        diff: { type: 'M', currency: 'USD', value: 5.33 } as Price,
-        sum: { type: 'M', currency: 'USD', value: 12.44 } as Price,
-        min: { type: 'M', currency: 'USD', value: 3.56 } as Price,
-        max: { type: 'M', currency: 'USD', value: 8.89 } as Price,
+        p1: { type: 'Money', currency: 'USD', value: 8.88888 } as Price,
+        p2: { type: 'Money', currency: 'USD', value: 3.55555 } as Price,
+        diff: { type: 'Money', currency: 'USD', value: 5.33 } as Price,
+        sum: { type: 'Money', currency: 'USD', value: 12.44 } as Price,
+        min: { type: 'Money', currency: 'USD', value: 3.56 } as Price,
+        max: { type: 'Money', currency: 'USD', value: 8.89 } as Price,
       },
     ];
   }
@@ -44,27 +44,27 @@ describe('Price Helper', () => {
     return [
       {
         p1: undefined,
-        p2: { type: 'F', currency: 'USD', value: 9 } as Price,
+        p2: { type: 'ProductPrice', currency: 'USD', value: 9 } as Price,
         error: /.*undefined.*/,
       },
       {
-        p1: { type: 'F', currency: 'USD', value: 9 } as Price,
+        p1: { type: 'ProductPrice', currency: 'USD', value: 9 } as Price,
         p2: undefined,
         error: /.*undefined.*/,
       },
       {
-        p1: { type: 'F', currency: 'USD', value: 9 } as Price,
-        p2: { type: 'F', value: 9 } as Price,
+        p1: { type: 'ProductPrice', currency: 'USD', value: 9 } as Price,
+        p2: { type: 'ProductPrice', value: 9 } as Price,
         error: /.*undefined.*/,
       },
       {
-        p1: { type: 'F', currency: 'USD', value: 9 } as Price,
-        p2: { type: 'F', currency: 'USD' } as Price,
+        p1: { type: 'ProductPrice', currency: 'USD', value: 9 } as Price,
+        p2: { type: 'ProductPrice', currency: 'USD' } as Price,
         error: /.*undefined.*/,
       },
       {
-        p1: { type: 'M', currency: 'USD', value: 10 } as Price,
-        p2: { type: 'M', currency: 'EUR', value: 9 } as Price,
+        p1: { type: 'Money', currency: 'USD', value: 10 } as Price,
+        p2: { type: 'Money', currency: 'EUR', value: 9 } as Price,
         error: /.*currency.*/,
       },
     ];
@@ -143,7 +143,7 @@ describe('Price Helper', () => {
   });
 
   describe('invert', () => {
-    const price = { type: 'F', currency: 'USD', value: 9 } as Price;
+    const price = { type: 'Money', currency: 'USD', value: 9 } as Price;
 
     it('should return inverted price when called', () => {
       const invertedPrice = PriceHelper.invert(price);

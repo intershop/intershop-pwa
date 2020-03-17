@@ -83,12 +83,12 @@ describe('Quote Service', () => {
           items: [
             {
               singlePrice: {
-                type: 'test',
+                type: 'Money',
                 value: 1,
                 currency: 'EUR',
               },
               totalPrice: {
-                type: 'test',
+                type: 'Money',
                 value: 1,
                 currency: 'EUR',
               },

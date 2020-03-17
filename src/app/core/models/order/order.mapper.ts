@@ -1,5 +1,7 @@
+import { Injectable } from '@angular/core';
+
 import { AddressMapper } from 'ish-core/models/address/address.mapper';
-import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { BasketTotalMapper } from 'ish-core/models/basket-total/basket-total.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -7,11 +9,18 @@ import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-m
 import { OrderData } from './order.interface';
 import { Order } from './order.model';
 
+@Injectable({ providedIn: 'root' })
 export class OrderMapper {
-  static fromData(payload: OrderData): Order {
+  constructor(
+    private basketTotalMapper: BasketTotalMapper,
+    private lineItemMapper: LineItemMapper,
+    private shippingMethodMapper: ShippingMethodMapper
+  ) {}
+
+  fromData(payload: OrderData): Order {
     if (!Array.isArray(payload.data)) {
       const { data, included, infos } = payload;
-      const totals = BasketMapper.getTotals(data, included ? included.discounts : undefined);
+      const totals = this.basketTotalMapper.getTotals(data, included ? included.discounts : undefined);
 
       return {
         id: data.id,
@@ -33,12 +42,12 @@ export class OrderMapper {
             : undefined,
         commonShippingMethod:
           included && included.commonShippingMethod && data.commonShippingMethod
-            ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
+            ? this.shippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
             : undefined,
         lineItems:
           included && included.lineItems && data.lineItems && data.lineItems.length
             ? data.lineItems.map(lineItemId =>
-                LineItemMapper.fromOrderItemData(included.lineItems[lineItemId], included.lineItems_discounts)
+                this.lineItemMapper.fromOrderItemData(included.lineItems[lineItemId], included.lineItems_discounts)
               )
             : [],
         totalProductQuantity: data.totalProductQuantity,
@@ -61,9 +70,9 @@ export class OrderMapper {
     }
   }
 
-  static fromListData(payload: OrderData): Order[] {
+  fromListData(payload: OrderData): Order[] {
     if (Array.isArray(payload.data)) {
-      return payload.data.map(data => OrderMapper.fromData({ ...payload, data }));
+      return payload.data.map(data => this.fromData({ ...payload, data }));
     }
   }
 }

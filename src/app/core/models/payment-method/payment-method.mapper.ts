@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
@@ -11,39 +12,9 @@ import {
 } from './payment-method.interface';
 import { PaymentMethod } from './payment-method.model';
 
+@Injectable({ providedIn: 'root' })
 export class PaymentMethodMapper {
-  static fromData(body: PaymentMethodData): PaymentMethod[] {
-    if (!body || !body.data) {
-      throw new Error(`'paymentMethodData' is required`);
-    }
-
-    const included = body.included;
-
-    if (!body.data.length) {
-      return [];
-    }
-
-    return body.data
-      .filter(data => PaymentMethodMapper.isPaymentMethodValid(data))
-      .map(data => ({
-        id: data.id,
-        serviceId: data.serviceID,
-        displayName: data.displayName,
-        description: data.description,
-        capabilities: data.capabilities,
-        isRestricted: data.restricted,
-        saveAllowed: data.saveAllowed && !!data.parameterDefinitions && !!data.parameterDefinitions.length,
-        restrictionCauses: data.restrictions,
-        paymentCosts: PriceMapper.fromPriceItem(data.paymentCosts, 'net'),
-        paymentCostsThreshold: PriceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
-        paymentInstruments:
-          included && included.paymentInstruments && data.paymentInstruments
-            ? data.paymentInstruments.map(id => included.paymentInstruments[id])
-            : undefined,
-        parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
-        hostedPaymentPageParameters: data.hostedPaymentPageParameters,
-      }));
-  }
+  constructor(private priceMapper: PriceMapper) {}
 
   // is needed for getting a user's eligible payment methods
   static fromOptions(options: {
@@ -189,5 +160,38 @@ export class PaymentMethodMapper {
       }
       return param;
     });
+  }
+
+  fromData(body: PaymentMethodData): PaymentMethod[] {
+    if (!body || !body.data) {
+      throw new Error(`'paymentMethodData' is required`);
+    }
+
+    const included = body.included;
+
+    if (!body.data.length) {
+      return [];
+    }
+
+    return body.data
+      .filter(data => PaymentMethodMapper.isPaymentMethodValid(data))
+      .map(data => ({
+        id: data.id,
+        serviceId: data.serviceID,
+        displayName: data.displayName,
+        description: data.description,
+        capabilities: data.capabilities,
+        isRestricted: data.restricted,
+        saveAllowed: data.saveAllowed && !!data.parameterDefinitions && !!data.parameterDefinitions.length,
+        restrictionCauses: data.restrictions,
+        paymentCosts: this.priceMapper.fromPriceItem(data.paymentCosts, 'net'),
+        paymentCostsThreshold: this.priceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
+        paymentInstruments:
+          included && included.paymentInstruments && data.paymentInstruments
+            ? data.paymentInstruments.map(id => included.paymentInstruments[id])
+            : undefined,
+        parameters: data.parameterDefinitions ? PaymentMethodMapper.mapParameter(data.parameterDefinitions) : undefined,
+        hostedPaymentPageParameters: data.hostedPaymentPageParameters,
+      }));
   }
 }

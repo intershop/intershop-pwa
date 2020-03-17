@@ -1,14 +1,19 @@
+import { Injectable } from '@angular/core';
+
 import { BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 
 import { BasketValidationData } from './basket-validation.interface';
 import { BasketValidation } from './basket-validation.model';
 
+@Injectable({ providedIn: 'root' })
 export class BasketValidationMapper {
-  static fromData(data: BasketValidationData): BasketValidation {
+  constructor(private basketMapper: BasketMapper) {}
+
+  fromData(data: BasketValidationData): BasketValidation {
     if (data) {
       return {
-        basket: BasketMapper.fromData(BasketValidationMapper.transform(data)),
+        basket: this.basketMapper.fromData(this.transform(data)),
         results: {
           valid: data.data.results && data.data.results.valid,
           adjusted: data.data.results && data.data.results.adjusted,
@@ -21,7 +26,7 @@ export class BasketValidationMapper {
   }
 
   // map basket from BasketValidationResult
-  private static transform(basketValidationData: BasketValidationData): BasketData {
+  private transform(basketValidationData: BasketValidationData): BasketData {
     return {
       data: basketValidationData.included
         ? basketValidationData.included.basket[basketValidationData.data.basket]

@@ -1,11 +1,25 @@
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
+import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { OrderBaseData, OrderData } from './order.interface';
 import { OrderMapper } from './order.mapper';
 
 describe('Order Mapper', () => {
+  let orderMapper: OrderMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }), OrderMapper],
+    });
+
+    orderMapper = TestBed.get(OrderMapper);
+  });
+
   const orderBaseData = {
     documentNumber: '4711',
     creationDate: 0,
@@ -138,7 +152,7 @@ describe('Order Mapper', () => {
 
   describe('fromData', () => {
     it(`should return Order when getting OrderData`, () => {
-      const order = OrderMapper.fromData(orderData);
+      const order = orderMapper.fromData(orderData);
 
       expect(order).toBeTruthy();
       expect(order.id).toEqual(orderBaseData.id);
