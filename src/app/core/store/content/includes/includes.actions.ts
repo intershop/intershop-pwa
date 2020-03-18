@@ -8,6 +8,7 @@ export enum IncludesActionTypes {
   LoadContentInclude = '[Content Include] Load Content Include',
   LoadContentIncludeFail = '[Content Include API] Load Content Include Fail',
   LoadContentIncludeSuccess = '[Content Include API] Load Content Include Success',
+  ResetContentIncludes = '[Content Include] Reset Content Includes',
 }
 
 export class LoadContentInclude implements Action {
@@ -25,4 +26,12 @@ export class LoadContentIncludeSuccess implements Action {
   constructor(public payload: { include: ContentPageletEntryPoint; pagelets: ContentPagelet[] }) {}
 }
 
-export type IncludesAction = LoadContentInclude | LoadContentIncludeFail | LoadContentIncludeSuccess;
+export class ResetContentIncludes implements Action {
+  readonly type = IncludesActionTypes.ResetContentIncludes;
+}
+
+export type IncludesAction =
+  | LoadContentInclude
+  | LoadContentIncludeFail
+  | LoadContentIncludeSuccess
+  | ResetContentIncludes;

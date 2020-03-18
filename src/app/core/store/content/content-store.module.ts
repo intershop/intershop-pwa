@@ -5,6 +5,7 @@ import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { ContentState } from './content-store';
 import { IncludesEffects } from './includes/includes.effects';
 import { includesReducer } from './includes/includes.reducer';
+import { PageletsEffects } from './pagelets/pagelets.effects';
 import { pageletsReducer } from './pagelets/pagelets.reducer';
 import { PagesEffects } from './pages/pages.effects';
 import { pagesReducer } from './pages/pages.reducer';
@@ -15,7 +16,7 @@ export const contentReducers: ActionReducerMap<ContentState> = {
   pages: pagesReducer,
 };
 
-export const contentEffects = [IncludesEffects, PagesEffects];
+export const contentEffects = [IncludesEffects, PagesEffects, PageletsEffects];
 
 @NgModule({
   imports: [EffectsModule.forFeature(contentEffects), StoreModule.forFeature('content', contentReducers)],

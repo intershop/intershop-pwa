@@ -9,6 +9,7 @@ export enum PagesActionTypes {
   LoadContentPage = '[Content Page] Load Content Page',
   LoadContentPageFail = '[Content Page API] Load Content Page Fail',
   LoadContentPageSuccess = '[Content Page API] Load Content Page Success',
+  ResetContentPages = '[Content Page] Reset Content Pages',
 }
 
 export class SelectContentPage implements Action {
@@ -30,4 +31,13 @@ export class LoadContentPageSuccess implements Action {
   constructor(public payload: { page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }) {}
 }
 
-export type PageAction = SelectContentPage | LoadContentPage | LoadContentPageFail | LoadContentPageSuccess;
+export class ResetContentPages implements Action {
+  readonly type = PagesActionTypes.ResetContentPages;
+}
+
+export type PageAction =
+  | SelectContentPage
+  | LoadContentPage
+  | LoadContentPageFail
+  | LoadContentPageSuccess
+  | ResetContentPages;
