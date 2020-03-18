@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -9,6 +9,7 @@ import {
   map,
   mapTo,
   mergeMap,
+  skip,
   switchMap,
   switchMapTo,
   tap,
@@ -17,8 +18,9 @@ import {
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from 'ish-core/models/category/category.model';
-import { ofCategoryRoute } from 'ish-core/routing/category/category.route';
+import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { selectRouteParam } from 'ish-core/store/router';
 import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
@@ -47,9 +49,9 @@ export class CategoriesEffects {
    * and {@link DeselectCategory} if deselected
    */
   @Effect()
-  routeListenerForSelectingCategory$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam<string>('categoryUniqueId'),
+  routeListenerForSelectingCategory$ = this.store.pipe(
+    select(selectRouteParam('categoryUniqueId')),
+    skip(1),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
     map(categoryId => (categoryId ? new actions.SelectCategory({ categoryId }) : new actions.DeselectCategory()))
   );
@@ -116,7 +118,7 @@ export class CategoriesEffects {
 
   @Effect()
   loadTopLevelWhenUnavailable$ = this.actions$.pipe(
-    ofRoute(),
+    ofType(routerNavigatedAction),
     switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded))),
     whenFalsy(),
     mapTo(new actions.LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
@@ -135,11 +137,9 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  productOrCategoryChanged$ = this.actions$.pipe(
-    ofCategoryRoute(),
-    mapToParam('sku'),
-    whenFalsy(),
-    switchMap(() => this.store.pipe(select(selectors.getSelectedCategory))),
+  productOrCategoryChanged$ = this.store.pipe(
+    ofCategoryUrl(),
+    select(selectors.getSelectedCategory),
     whenTruthy(),
     filter(cat => cat.hasOnlineProducts),
     map(({ uniqueId }) => new LoadMoreProducts({ id: { type: 'category', value: uniqueId } }))

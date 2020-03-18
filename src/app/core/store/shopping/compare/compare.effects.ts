@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { ofRoute } from 'ngrx-router';
 import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
+import { ofUrl } from 'ish-core/store/router';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { mapToPayloadProperty } from 'ish-core/utils/operators';
 
@@ -27,9 +27,9 @@ export class CompareEffects {
   );
 
   @Effect()
-  completeProductsForComparePage$ = this.actions$.pipe(
-    ofRoute('compare'),
-    withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
-    mergeMap(([, skus]) => skus.map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.Detail })))
+  completeProductsForComparePage$ = this.store.pipe(
+    ofUrl(/^\/compare.*/),
+    select(getCompareProductsSKUs),
+    mergeMap(skus => skus.map(sku => new LoadProductIfNotLoaded({ sku, level: ProductCompletenessLevel.Detail })))
   );
 }

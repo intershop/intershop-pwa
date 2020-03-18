@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
-import { RouterEffects } from 'ngrx-router';
 
 import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
 
@@ -27,6 +27,7 @@ import { ordersReducer } from './orders/orders.reducer';
 import { RegionsEffects } from './regions/regions.effects';
 import { regionsReducer } from './regions/regions.reducer';
 import { RestoreStoreModule } from './restore/restore-store.module';
+import { CustomRouterSerializer } from './router/router.serializer';
 import { ShoppingStoreModule } from './shopping/shopping-store.module';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
@@ -34,6 +35,7 @@ import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
 export const coreReducers: ActionReducerMap<CoreState> = {
+  router: routerReducer,
   user: userReducer,
   addresses: addressesReducer,
   orders: ordersReducer,
@@ -53,7 +55,6 @@ export const coreEffects = [
   CountriesEffects,
   ErrorEffects,
   RegionsEffects,
-  RouterEffects,
   ViewconfEffects,
   ConfigurationEffects,
   MessagesEffects,
@@ -79,6 +80,7 @@ export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
         strictStateSerializability: !environment.production,
       },
     }),
+    StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }),
   ],
 })
 export class CoreStoreModule {}

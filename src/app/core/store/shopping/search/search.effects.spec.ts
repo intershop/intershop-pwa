@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -88,20 +88,6 @@ describe('Search Effects', () => {
       store.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
     });
 
-    describe('listenToRouteForSearchTerm$', () => {
-      it('should trigger action if search URL is matched', () => {
-        const action = new RouteNavigation({
-          path: 'search/:searchTerm',
-          params: { searchTerm: 'dummy' },
-        });
-        actions$ = hot('a-a-|', { a: action });
-
-        expect(effects.listenToRouteForSearchTerm$).toBeObservable(
-          cold('a-a-|', { a: new SelectSearchTerm({ searchTerm: 'dummy' }) })
-        );
-      });
-    });
-
     describe('triggerSearch$', () => {
       it('should trigger action if search URL is matched', () => {
         const action = new SelectSearchTerm({ searchTerm: 'dummy' });
@@ -148,6 +134,7 @@ describe('Search Effects', () => {
     let store$: TestStore;
     let effects: SearchEffects;
     let location: Location;
+    let router: Router;
 
     @Component({ template: 'dummy' })
     class DummyComponent {}
@@ -156,12 +143,16 @@ describe('Search Effects', () => {
       TestBed.configureTestingModule({
         declarations: [DummyComponent],
         imports: [
-          RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+          RouterTestingModule.withRoutes([
+            { path: 'error', component: DummyComponent },
+            { path: 'search/:searchTerm', component: DummyComponent },
+          ]),
           ngrxTesting({
             reducers: {
               shopping: combineReducers(shoppingReducers),
             },
             effects: [SearchEffects, ProductListingEffects],
+            routerStore: true,
           }),
         ],
         providers: [
@@ -176,8 +167,23 @@ describe('Search Effects', () => {
       effects = TestBed.get(SearchEffects);
       store$ = TestBed.get(TestStore);
       location = TestBed.get(Location);
+      router = TestBed.get(Router);
 
       store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    });
+
+    describe('listenToRouteForSearchTerm$', () => {
+      it('should trigger action if search URL is matched', done => {
+        router.navigateByUrl('/search/dummy');
+
+        effects.listenToRouteForSearchTerm$.subscribe(data => {
+          expect(data).toMatchInlineSnapshot(`
+            [Shopping] Set Search Term:
+              searchTerm: "dummy"
+          `);
+          done();
+        });
+      });
     });
 
     describe('suggestSearch$', () => {
@@ -329,8 +335,9 @@ describe('Search Effects', () => {
     describe('searchProducts$', () => {
       it('should perform an additional search for given search term and trigger actions', fakeAsync(() => {
         const searchTerm = '123';
+        router.navigate(['search', searchTerm]);
+        tick(500);
 
-        store$.dispatch(new SearchProducts({ searchTerm }));
         verify(productsServiceMock.searchProducts(searchTerm, 1, anything())).once();
 
         store$.dispatch(new LoadMoreProducts({ id: { type: 'search', value: searchTerm }, page: 2 }));

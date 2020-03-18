@@ -1,18 +1,19 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { cold } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
-import { of } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { selectRouter } from 'ish-core/store/router';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { generateProductUrl, matchProductRoute, ofProductRoute } from './product.route';
+import { generateProductUrl, matchProductRoute, ofProductUrl } from './product.route';
 
 describe('Product Route', () => {
   const specials = { categoryPath: ['Specials'], uniqueId: 'Specials', name: 'Spezielles' } as Category;
@@ -315,28 +316,72 @@ describe('Product Route', () => {
       `);
     });
   });
+});
 
-  describe('ofProductRoute', () => {
-    it('should detect product route when sku is a param', () => {
-      const stream$ = of(new RouteNavigation({ path: 'any', params: { sku: '123' } }));
+describe('Product Route', () => {
+  let router: Router;
+  let store$: Store<{}>;
 
-      expect(stream$.pipe(ofProductRoute())).toBeObservable(
-        cold('(a|)', {
-          a: new RouteNavigation({
-            params: {
-              sku: '123',
-            },
-            path: 'any',
-            url: '/any',
-          }),
-        })
-      );
+  beforeEach(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
+    TestBed.configureTestingModule({
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        ngrxTesting({ routerStore: true }),
+      ],
     });
 
-    it('should not detect product route when sku is missing', () => {
-      const stream$ = of(new RouteNavigation({ path: 'any' }));
+    router = TestBed.get(Router);
+    store$ = TestBed.get(Store);
+  });
 
-      expect(stream$.pipe(ofProductRoute())).toBeObservable(cold('|'));
+  describe('ofProductRoute', () => {
+    it('should detect product route when sku is a param', done => {
+      router.navigateByUrl('/product;sku=123');
+
+      store$
+        .pipe(
+          ofProductUrl(),
+          select(selectRouter)
+        )
+        .subscribe(data => {
+          expect(data.state.params).toMatchInlineSnapshot(`
+            Object {
+              "sku": "123",
+            }
+          `);
+          done();
+        });
+    });
+
+    it('should detect product route when sku and categoryUniqueId are params', done => {
+      router.navigateByUrl('/product;sku=123;categoryUniqueId=ABC');
+
+      store$
+        .pipe(
+          ofProductUrl(),
+          select(selectRouter)
+        )
+        .subscribe(data => {
+          expect(data.state.params).toMatchInlineSnapshot(`
+            Object {
+              "categoryUniqueId": "ABC",
+              "sku": "123",
+            }
+          `);
+          done();
+        });
+    });
+
+    it('should not detect product route when sku is missing', done => {
+      router.navigateByUrl('/other');
+
+      store$.pipe(ofProductUrl()).subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 });

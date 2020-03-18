@@ -14,8 +14,7 @@
     "paths": {
       "ish-core/*": ["src/app/core/*"],
       "ish-shared/*": ["src/app/shared/*"],
-      "ish-shell/*": ["src/app/shell/*"],
-      "ngrx-router": ["src/ngrx-router"]
+      "ish-shell/*": ["src/app/shell/*"]
     },
     "lib": ["es2018", "dom"],
     "noUnusedLocals": true,

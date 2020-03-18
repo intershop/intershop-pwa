@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { mapToQueryParam, ofRoute } from 'ngrx-router';
 import { EMPTY, Observable, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
@@ -28,6 +28,7 @@ import { PersonalizationService } from 'ish-core/services/personalization/person
 import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/error';
 import { SuccessMessage } from 'ish-core/store/messages';
+import { ofUrl, selectQueryParam } from 'ish-core/store/router';
 import {
   mapErrorToAction,
   mapToPayload,
@@ -124,9 +125,9 @@ export class UserEffects {
       whenTruthy(),
       map(snapshot => snapshot.root.queryParams.returnUrl as string)
     ),
-    this.actions$.pipe(
-      ofRoute('login'),
-      mapToQueryParam<string>('returnUrl'),
+    this.store$.pipe(
+      ofUrl(/^\/login.*/),
+      select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/account'),
       switchMap(returnUrl =>
         this.store$.pipe(
@@ -236,7 +237,7 @@ export class UserEffects {
 
   @Effect()
   resetUserError$ = this.actions$.pipe(
-    ofRoute(),
+    ofType(routerNavigatedAction),
     withLatestFrom(this.store$.pipe(select(getUserError))),
     filter(([, error]) => !!error),
     mapTo(new userActions.UserErrorReset())

@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -31,6 +32,7 @@ describe('Categories Effects', () => {
   let effects: CategoriesEffects;
   let store$: Store<{}>;
   let location: Location;
+  let router: Router;
 
   let categoriesServiceMock: CategoriesService;
 
@@ -53,12 +55,17 @@ describe('Categories Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
+          { path: 'category/:categoryUniqueId', component: DummyComponent },
+          { path: '**', component: DummyComponent },
+        ]),
         ngrxTesting({
           reducers: {
             shopping: combineReducers(shoppingReducers),
             locale: localeReducer,
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -72,47 +79,50 @@ describe('Categories Effects', () => {
     effects = TestBed.get(CategoriesEffects);
     store$ = TestBed.get(Store);
     location = TestBed.get(Location);
+    router = TestBed.get(Router);
   });
 
   describe('routeListenerForSelectingCategory$', () => {
-    it('should trigger SelectCategory when /category/XXX is visited', () => {
-      const action = new RouteNavigation({
-        path: 'category/:categoryUniqueId',
-        params: { categoryUniqueId: 'dummy' },
-      });
-      const expected = new fromActions.SelectCategory({ categoryId: 'dummy' });
+    it('should trigger SelectCategory when /category/XXX is visited', done => {
+      router.navigateByUrl('/category/dummy');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForSelectingCategory$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Select Category:
+            categoryId: "dummy"
+        `);
+        done();
+      });
     });
 
-    it('should trigger SelectCategory when /category/XXX/product/YYY is visited', () => {
-      const action = new RouteNavigation({
-        path: 'category/:categoryUniqueId/product/:sku',
-        params: { categoryUniqueId: 'dummy', sku: 'foobar' },
-      });
-      const expected = new fromActions.SelectCategory({ categoryId: 'dummy' });
+    it('should trigger SelectCategory when /category/XXX/product/YYY is visited', done => {
+      router.navigateByUrl('/category/dummy/product/foobar');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForSelectingCategory$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Select Category:
+            categoryId: "dummy"
+        `);
+        done();
+      });
     });
 
-    it('should not trigger SelectCategory when /something is visited', () => {
-      const action = new RouteNavigation({ path: 'something' });
+    it('should not trigger SelectCategory when /something is visited', done => {
+      router.navigateByUrl('/something');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-'));
+      effects.routeListenerForSelectingCategory$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
 
-    it('should not trigger SelectCategory when category is already selected', () => {
-      const action = new RouteNavigation({
-        path: 'category/:categoryUniqueId',
-        params: { categoryUniqueId: 'dummy' },
-      });
-      const expected = new fromActions.SelectCategory({ categoryId: 'dummy' });
+    it('should not trigger SelectCategory when category is already selected', done => {
+      store$.dispatch(new fromActions.SelectCategory({ categoryId: 'dummy' }));
 
-      actions$ = hot('-a-a-a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', { a: expected }));
+      router.navigateByUrl('/category/dummy');
+
+      effects.routeListenerForSelectingCategory$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 
@@ -240,7 +250,8 @@ describe('Categories Effects', () => {
     it('should load top level categories retrying for every routing action', () => {
       const completion = new fromActions.LoadTopLevelCategories({ depth });
 
-      actions$ = hot('        ----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      // tslint:disable-next-line: no-any
+      actions$ = hot('        ----a---a--a', { a: routerNavigatedAction({ payload: {} as any }) });
       const expected$ = cold('----a---a--a', { a: completion });
 
       expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
@@ -249,7 +260,8 @@ describe('Categories Effects', () => {
     it('should not load top level categories when already available', () => {
       store$.dispatch(new fromActions.LoadTopLevelCategoriesSuccess({ categories: categoryTree() }));
 
-      actions$ = hot('        ----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      // tslint:disable-next-line: no-any
+      actions$ = hot('        ----a---a--a', { a: routerNavigatedAction({ payload: {} as any }) });
       const expected$ = cold('------------');
 
       expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
@@ -301,15 +313,27 @@ describe('Categories Effects', () => {
       } as Category;
     });
 
-    it('should do nothing when product is selected', () => {
-      store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-      store$.dispatch(new SelectProduct({ sku: 'P222' }));
+    describe('when product is selected', () => {
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/category/123/product/P222');
+        tick(500);
+      }));
 
-      expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
+      it('should do nothing when product is selected', () => {
+        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
+        store$.dispatch(new SelectProduct({ sku: 'P222' }));
+
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
+      });
     });
 
     describe('when product is not selected', () => {
-      it('should do nothing when category doesnt have online products', () => {
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/category/123');
+        tick(500);
+      }));
+
+      it("should do nothing when category doesn't have online products", () => {
         category.hasOnlineProducts = false;
         store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
         store$.dispatch(new fromActions.SelectCategory({ categoryId: category.uniqueId }));
@@ -331,31 +355,8 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
         store$.dispatch(new fromActions.SelectCategory({ categoryId: category.uniqueId }));
 
-        actions$ = hot('--a)', {
-          a: new RouteNavigation({
-            path: 'category/:categoryUniqueId',
-            params: { categoryUniqueId: category.uniqueId },
-          }),
-        });
-
         const action = new LoadMoreProducts({ id: { type: 'category', value: category.uniqueId }, page: undefined });
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('--a', { a: action }));
-      });
-
-      it('should not trigger action when we are on a product page', () => {
-        category.hasOnlineProducts = true;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        store$.dispatch(new fromActions.SelectCategory({ categoryId: category.uniqueId }));
-
-        actions$ = hot('(ab)', {
-          a: new RouteNavigation({
-            path: 'category/:categoryUniqueId/product/:sku',
-            params: { categoryUniqueId: category.uniqueId, sku: 'dummy' },
-          }),
-          b: new fromActions.SelectedCategoryAvailable({ categoryId: category.uniqueId }),
-        });
-
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('------'));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
       });
     });
   });

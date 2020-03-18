@@ -3,7 +3,6 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
-import { mapToParam, ofRoute } from 'ngrx-router';
 import { identity } from 'rxjs';
 import {
   concatMap,
@@ -14,10 +13,6 @@ import {
   groupBy,
   map,
   mergeMap,
-  switchMap,
-  switchMapTo,
-  take,
-  takeUntil,
   tap,
   throttleTime,
   withLatestFrom,
@@ -27,17 +22,18 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
-import { ofProductRoute } from 'ish-core/routing/product/product.route';
+import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { selectRouteParam } from 'ish-core/store/router';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
+  distinctCompareWith,
   mapErrorToAction,
   mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
-  whenFalsy,
   whenTruthy,
 } from 'ish-core/utils/operators';
 
@@ -198,12 +194,10 @@ export class ProductsEffects {
   );
 
   @Effect()
-  routeListenerForSelectingProducts$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam<string>('sku'),
-    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    filter(([fromAction, fromStore]) => fromAction !== fromStore),
-    map(([sku]) => new productsActions.SelectProduct({ sku }))
+  routeListenerForSelectingProducts$ = this.store.pipe(
+    select(selectRouteParam('sku')),
+    distinctCompareWith(this.store.pipe(select(productsSelectors.getSelectedProductId))),
+    map(sku => new productsActions.SelectProduct({ sku }))
   );
 
   /**
@@ -219,23 +213,18 @@ export class ProductsEffects {
   );
 
   @Effect()
-  loadDefaultCategoryContextForProduct$ = this.actions$.pipe(
-    ofProductRoute(),
-    mapToParam('categoryUniqueId'),
-    whenFalsy(),
-    switchMap(() =>
-      this.store.pipe(
-        select(productsSelectors.getSelectedProduct),
-        whenTruthy(),
-        filter(p => !ProductHelper.isFailedLoading(p)),
-        filter(product => !product.defaultCategory()),
-        mapToProperty('defaultCategoryId'),
-        whenTruthy(),
-        distinctUntilChanged(),
-        map(categoryId => new LoadCategory({ categoryId })),
-        takeUntil(this.actions$.pipe(ofRoute()))
-      )
-    )
+  loadDefaultCategoryContextForProduct$ = this.store.pipe(
+    ofProductUrl(),
+    select(productsSelectors.getSelectedProduct),
+    withLatestFrom(this.store.pipe(select(selectRouteParam('categoryUniqueId')))),
+    map(([product, categoryUniqueId]) => !categoryUniqueId && product),
+    whenTruthy(),
+    filter(p => !ProductHelper.isFailedLoading(p)),
+    filter(product => !product.defaultCategory()),
+    mapToProperty('defaultCategoryId'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    map(categoryId => new LoadCategory({ categoryId }))
   );
 
   @Effect()
@@ -272,17 +261,12 @@ export class ProductsEffects {
   );
 
   @Effect({ dispatch: false })
-  redirectIfErrorInProducts$ = this.actions$.pipe(
-    ofProductRoute(),
-    switchMapTo(
-      this.store.pipe(
-        select(productsSelectors.getSelectedProduct),
-        whenTruthy(),
-        distinctUntilKeyChanged('sku'),
-        filter(ProductHelper.isFailedLoading),
-        take(1)
-      )
-    ),
+  redirectIfErrorInProducts$ = this.store.pipe(
+    ofProductUrl(),
+    select(productsSelectors.getSelectedProduct),
+    whenTruthy(),
+    distinctUntilKeyChanged('sku'),
+    filter(ProductHelper.isFailedLoading),
     tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 

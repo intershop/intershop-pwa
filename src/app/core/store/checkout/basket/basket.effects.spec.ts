@@ -1,10 +1,11 @@
 import { Location } from '@angular/common';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -32,19 +33,25 @@ describe('Basket Effects', () => {
   let basketServiceMock: BasketService;
   let effects: BasketEffects;
   let store$: Store<{}>;
+  let router: Router;
 
   beforeEach(() => {
     basketServiceMock = mock(BasketService);
 
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
             shopping: combineReducers(shoppingReducers),
             checkout: combineReducers(checkoutReducers),
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -57,6 +64,7 @@ describe('Basket Effects', () => {
     effects = TestBed.get(BasketEffects);
     store$ = TestBed.get(Store);
     location = TestBed.get(Location);
+    router = TestBed.get(Router);
   });
 
   describe('loadBasket$', () => {
@@ -422,26 +430,29 @@ describe('Basket Effects', () => {
   });
 
   describe('routeListenerForResettingBasketErrors$', () => {
-    it('should fire ResetBasketErrors when route basket or checkout/* is navigated', () => {
-      const action = new RouteNavigation({ path: 'checkout/payment' });
-      const expected = new basketActions.ResetBasketErrors();
+    it('should fire ResetBasketErrors when route basket or checkout/* is navigated', done => {
+      router.navigateByUrl('/checkout/payment');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForResettingBasketErrors$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Basket Internal] Reset Basket and Basket Promotion Errors`);
+        done();
+      });
     });
 
-    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', () => {
-      const action = new RouteNavigation({ path: 'checkout/payment', queryParams: { error: true } });
+    it('should not fire ResetBasketErrors when route basket or checkout/* is navigated with query param error=true', done => {
+      router.navigateByUrl('/checkout/payment?error=true');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('-'));
+      effects.routeListenerForResettingBasketErrors$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
 
-    it('should not fire ResetBasketErrors when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something' });
+    it('should not fire ResetBasketErrors when route /something is navigated', done => {
+      router.navigateByUrl('/something');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForResettingBasketErrors$).toBeObservable(cold('-'));
+      effects.routeListenerForResettingBasketErrors$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 });

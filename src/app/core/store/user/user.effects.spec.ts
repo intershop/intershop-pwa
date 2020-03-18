@@ -5,9 +5,9 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { EMPTY, Observable, from, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -73,9 +73,9 @@ describe('User Effects', () => {
           { path: 'home', component: DummyComponent },
           { path: 'account', component: DummyComponent },
           { path: 'account/profile', component: DummyComponent },
-          { path: 'foobar', component: DummyComponent },
+          { path: '**', component: DummyComponent },
         ]),
-        ngrxTesting({ reducers: coreReducers }),
+        ngrxTesting({ reducers: coreReducers, routerStore: true }),
       ],
       providers: [
         UserEffects,
@@ -218,8 +218,6 @@ describe('User Effects', () => {
 
       store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
 
-      actions$ = of(new RouteNavigation({ path: 'login' }));
-
       effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
       tick(500);
@@ -233,8 +231,6 @@ describe('User Effects', () => {
       expect(location.path()).toEqual('/home');
 
       store$.dispatch(new ua.LoginUserSuccess(loginResponseData));
-
-      actions$ = of(new RouteNavigation({ path: 'home' }));
 
       effects.redirectAfterLogin$.subscribe(noop, fail, noop);
 
@@ -492,18 +488,24 @@ describe('User Effects', () => {
   });
 
   describe('resetUserError$', () => {
-    it('should not dispatch UserErrorReset action on router navigation if error is not set', () => {
-      actions$ = hot('a', { a: new RouteNavigation({ path: 'any' }) });
+    it('should not dispatch UserErrorReset action on router navigation if error is not set', done => {
+      router.navigateByUrl('/any');
 
-      expect(effects.resetUserError$).toBeObservable(cold('-'));
+      effects.resetUserError$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
 
-    it('should dispatch UserErrorReset action on router navigation if error was set', () => {
+    it('should dispatch UserErrorReset action on router navigation if error was set', done => {
       store$.dispatch(new ua.LoginUserFail({ error: { message: 'error' } as HttpError }));
 
-      actions$ = hot('a', { a: new RouteNavigation({ path: 'any' }) });
+      // tslint:disable-next-line: no-any
+      actions$ = of(routerNavigatedAction({ payload: {} as any }));
 
-      expect(effects.resetUserError$).toBeObservable(cold('a', { a: new ua.UserErrorReset() }));
+      effects.resetUserError$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`[Account Internal] Reset User Error`);
+        done();
+      });
     });
   });
 

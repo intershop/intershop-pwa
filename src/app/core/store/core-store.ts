@@ -1,3 +1,4 @@
+import { RouterReducerState } from '@ngrx/router-store';
 import { Selector } from '@ngrx/store';
 
 import { AddressesState } from './addresses/addresses.reducer';
@@ -11,6 +12,8 @@ import { UserState } from './user/user.reducer';
 import { ViewconfState } from './viewconf/viewconf.reducer';
 
 export interface CoreState {
+  // tslint:disable-next-line: no-any
+  router: RouterReducerState<any>;
   user: UserState;
   addresses: AddressesState;
   orders: OrdersState;

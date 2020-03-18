@@ -1,19 +1,20 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { cold } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
-import { of } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { selectRouter } from 'ish-core/store/router';
+import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
   generateCategoryUrl,
   generateLocalizedCategorySlug,
   matchCategoryRoute,
-  ofCategoryRoute,
+  ofCategoryUrl,
 } from './category.route';
 
 describe('Category Route', () => {
@@ -129,35 +130,6 @@ describe('Category Route', () => {
     });
   });
 
-  describe('ofCategoryRoute', () => {
-    it('should detect category route when categoryUniqueId is a param', () => {
-      const stream$ = of(new RouteNavigation({ path: 'any', params: { categoryUniqueId: '123' } }));
-      expect(stream$.pipe(ofCategoryRoute())).toBeObservable(
-        cold('(a|)', {
-          a: new RouteNavigation({
-            params: {
-              categoryUniqueId: '123',
-            },
-            path: 'any',
-            url: '/any',
-          }),
-        })
-      );
-    });
-
-    it('should not detect category route when categoryUniqueId is missing', () => {
-      const stream$ = of(new RouteNavigation({ path: 'any' }));
-
-      expect(stream$.pipe(ofCategoryRoute())).toBeObservable(cold('|'));
-    });
-
-    it('should not detect category route when categoryUniqueId and sku are params', () => {
-      const stream$ = of(new RouteNavigation({ path: 'any', params: { categoryUniqueId: '123', sku: '123' } }));
-
-      expect(stream$.pipe(ofCategoryRoute())).toBeObservable(cold('|'));
-    });
-  });
-
   describe('generateLocalizedCategorySlug', () => {
     it('should generate slug for top level category', () => {
       const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
@@ -171,6 +143,63 @@ describe('Category Route', () => {
 
     it('should return empty string when category is unavailable', () => {
       expect(generateLocalizedCategorySlug(undefined)).toMatchInlineSnapshot(`""`);
+    });
+  });
+});
+
+describe('Category Route', () => {
+  let router: Router;
+  let store$: Store<{}>;
+
+  beforeEach(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
+    TestBed.configureTestingModule({
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        ngrxTesting({ routerStore: true }),
+      ],
+    });
+
+    router = TestBed.get(Router);
+    store$ = TestBed.get(Store);
+  });
+
+  describe('ofCategoryRoute', () => {
+    it('should detect category route when categoryUniqueId is a param', done => {
+      router.navigateByUrl('/category;categoryUniqueId=ABC');
+
+      store$
+        .pipe(
+          ofCategoryUrl(),
+          select(selectRouter)
+        )
+        .subscribe(data => {
+          expect(data.state.params).toMatchInlineSnapshot(`
+            Object {
+              "categoryUniqueId": "ABC",
+            }
+          `);
+          done();
+        });
+    });
+
+    it('should not detect category route when sku and categoryUniqueId are params', done => {
+      router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
+
+      store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
+    });
+
+    it('should not detect category route when categoryUniqueId is missing', done => {
+      router.navigateByUrl('/other');
+
+      store$.pipe(ofCategoryUrl()).subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 });

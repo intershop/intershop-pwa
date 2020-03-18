@@ -192,6 +192,7 @@ describe('Shopping Store', () => {
             shopping: combineReducers(shoppingReducers),
           },
           effects: [...coreEffects, ...shoppingEffects],
+          routerStore: true,
         }),
       ],
       providers: [
@@ -235,17 +236,18 @@ describe('Shopping Store', () => {
 
     it('should just load toplevel categories when no specific shopping page is loaded', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {}
-          queryParams: {}
-          data: {}
-          url: "/home"
-          path: "home"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/home"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/home"}
         [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/home"}
         [Shopping] Load top level categories:
           depth: 1
         [Shopping] Load top level categories success:
@@ -272,15 +274,15 @@ describe('Shopping Store', () => {
 
       it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {"categoryUniqueId":"A.123"}
-            queryParams: {}
-            data: {}
-            url: "/category/A.123"
-            path: "category/:categoryUniqueId"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/category/A.123"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
+            event: {"id":2,"url":"/category/A.123"}
           [Shopping] Select Category:
             categoryId: "A.123"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Load Category:
             categoryId: "A.123"
           [Shopping] Load Category Success:
@@ -291,6 +293,9 @@ describe('Shopping Store', () => {
             categoryId: "A"
           [Shopping] Load Category Success:
             categories: tree(A,A.123)
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
+            event: {"id":2,"url":"/category/A.123"}
         `);
       }));
     });
@@ -326,15 +331,15 @@ describe('Shopping Store', () => {
 
       it('should trigger required actions when searching', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {"searchTerm":"something"}
-            queryParams: {}
-            data: {}
-            url: "/search/something"
-            path: "search/:searchTerm"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/search/something"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/search/something","params":{"searchTerm":"something...
+            event: {"id":2,"url":"/search/something"}
           [Shopping] Set Search Term:
             searchTerm: "something"
+          [Configuration Internal] Get the ICM configuration
           [ProductListing] Load More Products:
             id: {"type":"search","value":"something"}
           [ProductListing Internal] Load More Products For Params:
@@ -359,6 +364,9 @@ describe('Shopping Store', () => {
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
             id: {"type":"search","value":"something"}
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/search/something","params":{"searchTerm":"something...
+            event: {"id":2,"url":"/search/something"}
         `);
       }));
 
@@ -371,15 +379,15 @@ describe('Shopping Store', () => {
 
         it('should reload the product data when selected', fakeAsync(() => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
-            [Router] Navigation:
-              params: {"sku":"P2"}
-              queryParams: {}
-              data: {}
-              url: "/product/P2"
-              path: "product/:sku"
-            [Configuration Internal] Get the ICM configuration
+            @ngrx/router-store/request:
+              routerState: {"url":"/search/something","params":{"searchTerm":"something...
+              event: {"id":3,"url":"/product/P2"}
+            @ngrx/router-store/navigation:
+              routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
+              event: {"id":3,"url":"/product/P2"}
             [Shopping] Select Product:
               sku: "P2"
+            [Configuration Internal] Get the ICM configuration
             [Recently Viewed] Add Product to Recently:
               sku: "P2"
               group: undefined
@@ -387,6 +395,9 @@ describe('Shopping Store', () => {
               sku: "P2"
             [Shopping] Load Product Success:
               product: {"sku":"P2"}
+            @ngrx/router-store/navigated:
+              routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
+              event: {"id":3,"url":"/product/P2"}
           `);
         }));
       });
@@ -407,25 +418,19 @@ describe('Shopping Store', () => {
 
     it('should have toplevel loading and category loading actions when going to a category page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"categoryUniqueId":"A.123"}
-          queryParams: {}
-          data: {}
-          url: "/category/A.123"
-          path: "category/:categoryUniqueId"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/category/A.123"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
+          event: {"id":1,"url":"/category/A.123"}
         [Shopping] Select Category:
           categoryId: "A.123"
-        [Shopping] Load top level categories:
-          depth: 1
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
         [Shopping] Selected Category Available:
@@ -434,6 +439,13 @@ describe('Shopping Store', () => {
           categoryId: "A"
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
+          event: {"id":1,"url":"/category/A.123"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -452,14 +464,17 @@ describe('Shopping Store', () => {
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {}
-            queryParams: {}
-            data: {}
-            url: "/compare"
-            path: "compare"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
+            event: {"id":2,"url":"/compare"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
           [Shopping] Deselect Category
+          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
         `);
       }));
 
@@ -484,25 +499,19 @@ describe('Shopping Store', () => {
 
     it('should have all required actions when going to a family page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"categoryUniqueId":"A.123.456"}
-          queryParams: {}
-          data: {}
-          url: "/category/A.123.456"
-          path: "category/:categoryUniqueId"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/category/A.123.456"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+          event: {"id":1,"url":"/category/A.123.456"}
         [Shopping] Select Category:
           categoryId: "A.123.456"
-        [Shopping] Load top level categories:
-          depth: 1
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.456"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
         [Shopping] Selected Category Available:
@@ -545,6 +554,15 @@ describe('Shopping Store', () => {
           filterNavigation: {}
         [ProductListing] Set Product Listing Pages:
           id: {"type":"category","value":"A.123.456"}
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+          event: {"id":1,"url":"/category/A.123.456"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"A.123.456"}
       `);
     }));
 
@@ -561,15 +579,15 @@ describe('Shopping Store', () => {
 
       it('should reload the product when selected', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {"categoryUniqueId":"A.123.456","sku":"P1"}
-            queryParams: {}
-            data: {}
-            url: "/category/A.123.456/product/P1"
-            path: "category/:categoryUniqueId/product/:sku"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+            event: {"id":2,"url":"/category/A.123.456/product/P1"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+            event: {"id":2,"url":"/category/A.123.456/product/P1"}
           [Shopping] Select Product:
             sku: "P1"
+          [Configuration Internal] Get the ICM configuration
           [Recently Viewed] Add Product to Recently:
             sku: "P1"
             group: undefined
@@ -577,6 +595,9 @@ describe('Shopping Store', () => {
             sku: "P1"
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+            event: {"id":2,"url":"/category/A.123.456/product/P1"}
         `);
       }));
 
@@ -593,17 +614,18 @@ describe('Shopping Store', () => {
 
         it('should deselect product when navigating back', fakeAsync(() => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
-            [Router] Navigation:
-              params: {"categoryUniqueId":"A.123.456"}
-              queryParams: {}
-              data: {}
-              url: "/category/A.123.456"
-              path: "category/:categoryUniqueId"
-            [Configuration Internal] Get the ICM configuration
-            [ProductListing] Load More Products:
-              id: {"type":"category","value":"A.123.456"}
+            @ngrx/router-store/request:
+              routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+              event: {"id":3,"url":"/category/A.123.456"}
+            @ngrx/router-store/navigation:
+              routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+              event: {"id":3,"url":"/category/A.123.456"}
             [Shopping] Select Product:
               sku: undefined
+            [Configuration Internal] Get the ICM configuration
+            @ngrx/router-store/navigated:
+              routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+              event: {"id":3,"url":"/category/A.123.456"}
           `);
         }));
       });
@@ -618,16 +640,16 @@ describe('Shopping Store', () => {
 
       it('should load the right filters for search', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {"searchTerm":"something"}
-            queryParams: {}
-            data: {}
-            url: "/search/something"
-            path: "search/:searchTerm"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+            event: {"id":2,"url":"/search/something"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/search/something","params":{"searchTerm":"something...
+            event: {"id":2,"url":"/search/something"}
           [Shopping] Deselect Category
           [Shopping] Set Search Term:
             searchTerm: "something"
+          [Configuration Internal] Get the ICM configuration
           [ProductListing] Load More Products:
             id: {"type":"search","value":"something"}
           [ProductListing Internal] Load More Products For Params:
@@ -652,6 +674,9 @@ describe('Shopping Store', () => {
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
             id: {"type":"search","value":"something"}
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/search/something","params":{"searchTerm":"something...
+            event: {"id":2,"url":"/search/something"}
         `);
       }));
 
@@ -664,15 +689,15 @@ describe('Shopping Store', () => {
 
         it('should load the right filters for family page again', fakeAsync(() => {
           expect(store.actionsArray()).toMatchInlineSnapshot(`
-            [Router] Navigation:
-              params: {"categoryUniqueId":"A.123.456"}
-              queryParams: {}
-              data: {}
-              url: "/category/A.123.456"
-              path: "category/:categoryUniqueId"
-            [Configuration Internal] Get the ICM configuration
+            @ngrx/router-store/request:
+              routerState: {"url":"/search/something","params":{"searchTerm":"something...
+              event: {"id":3,"url":"/category/A.123.456"}
+            @ngrx/router-store/navigation:
+              routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+              event: {"id":3,"url":"/category/A.123.456"}
             [Shopping] Select Category:
               categoryId: "A.123.456"
+            [Configuration Internal] Get the ICM configuration
             [ProductListing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [ProductListing Internal] Load More Products For Params:
@@ -686,6 +711,9 @@ describe('Shopping Store', () => {
               uniqueId: "A.123.456"
             [Shopping] Load Filter Success:
               filterNavigation: {}
+            @ngrx/router-store/navigated:
+              routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+              event: {"id":3,"url":"/category/A.123.456"}
           `);
         }));
       });
@@ -706,14 +734,17 @@ describe('Shopping Store', () => {
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {}
-            queryParams: {}
-            data: {}
-            url: "/compare"
-            path: "compare"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+            event: {"id":2,"url":"/compare"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
           [Shopping] Deselect Category
+          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
         `);
       }));
 
@@ -738,27 +769,21 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"categoryUniqueId":"A.123.456","sku":"P1"}
-          queryParams: {}
-          data: {}
-          url: "/category/A.123.456/product/P1"
-          path: "category/:categoryUniqueId/product/:sku"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/category/A.123.456/product/P1"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+          event: {"id":1,"url":"/category/A.123.456/product/P1"}
         [Shopping] Select Category:
           categoryId: "A.123.456"
-        [Shopping] Load top level categories:
-          depth: 1
         [Shopping] Select Product:
           sku: "P1"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.456"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [Shopping] Load Product:
           sku: "P1"
         [Shopping] Load Category Success:
@@ -778,6 +803,13 @@ describe('Shopping Store', () => {
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+          event: {"id":1,"url":"/category/A.123.456/product/P1"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -800,17 +832,17 @@ describe('Shopping Store', () => {
 
       it('should trigger actions for products when they are not yet loaded', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {"categoryUniqueId":"A.123.456"}
-            queryParams: {}
-            data: {}
-            url: "/category/A.123.456"
-            path: "category/:categoryUniqueId"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+            event: {"id":2,"url":"/category/A.123.456"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+            event: {"id":2,"url":"/category/A.123.456"}
           [ProductListing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Shopping] Select Product:
             sku: undefined
+          [Configuration Internal] Get the ICM configuration
           [ProductListing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
             filters: undefined
@@ -835,6 +867,9 @@ describe('Shopping Store', () => {
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
             id: {"type":"category","value":"A.123.456"}
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+            event: {"id":2,"url":"/category/A.123.456"}
         `);
       }));
 
@@ -858,16 +893,19 @@ describe('Shopping Store', () => {
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {}
-            queryParams: {}
-            data: {}
-            url: "/compare"
-            path: "compare"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
+            event: {"id":2,"url":"/compare"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
           [Shopping] Deselect Category
           [Shopping] Select Product:
             sku: undefined
+          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
         `);
       }));
 
@@ -892,23 +930,17 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a product page', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"sku":"P1"}
-          queryParams: {}
-          data: {}
-          url: "/product/P1"
-          path: "product/:sku"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/product/P1"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
-        [Shopping] Load top level categories:
-          depth: 1
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
+          event: {"id":1,"url":"/product/P1"}
         [Shopping] Select Product:
           sku: "P1"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Product:
           sku: "P1"
         [Shopping] Load Product Success:
@@ -916,6 +948,13 @@ describe('Shopping Store', () => {
         [Recently Viewed] Add Product to Recently:
           sku: "P1"
           group: undefined
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
+          event: {"id":1,"url":"/product/P1"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -934,15 +973,18 @@ describe('Shopping Store', () => {
 
       it('should trigger actions for deselecting category and product when no longer in category or product', fakeAsync(() => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Router] Navigation:
-            params: {}
-            queryParams: {}
-            data: {}
-            url: "/compare"
-            path: "compare"
-          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/request:
+            routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
+            event: {"id":2,"url":"/compare"}
+          @ngrx/router-store/navigation:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
           [Shopping] Select Product:
             sku: undefined
+          [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
+            event: {"id":2,"url":"/compare"}
         `);
       }));
 
@@ -967,27 +1009,21 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a product page with invalid product sku', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"categoryUniqueId":"A.123.456","sku":"P3"}
-          queryParams: {}
-          data: {}
-          url: "/category/A.123.456/product/P3"
-          path: "category/:categoryUniqueId/product/:sku"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/category/A.123.456/product/P3"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/category/A.123.456/product/P3","params":{"categoryU...
+          event: {"id":1,"url":"/category/A.123.456/product/P3"}
         [Shopping] Select Category:
           categoryId: "A.123.456"
-        [Shopping] Load top level categories:
-          depth: 1
         [Shopping] Select Product:
           sku: "P3"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.456"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [Shopping] Load Product:
           sku: "P3"
         [Shopping] Load Category Success:
@@ -997,24 +1033,35 @@ describe('Shopping Store', () => {
           sku: "P3"
         [Shopping] Selected Category Available:
           categoryId: "A.123.456"
+        @ngrx/router-store/cancel:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
+          event: {"id":1,"url":"/category/A.123.456/product/P3"}
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":2,"url":"/error"}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
+        [Shopping] Deselect Category
+        [Shopping] Select Product:
+          sku: undefined
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Router] Navigation:
-          params: {}
-          queryParams: {}
-          data: {}
-          url: "/error"
-          path: "error"
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          event: {"id":2,"url":"/error"}
         [Configuration Internal] Get the ICM configuration
-        [Shopping] Deselect Category
-        [Shopping] Select Product:
-          sku: undefined
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          event: {"id":2,"url":"/error"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -1042,35 +1089,40 @@ describe('Shopping Store', () => {
 
     it('should trigger required load actions when going to a category page with invalid category uniqueId', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"categoryUniqueId":"A.123.XXX"}
-          queryParams: {}
-          data: {}
-          url: "/category/A.123.XXX"
-          path: "category/:categoryUniqueId"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/category/A.123.XXX"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/category/A.123.XXX","params":{"categoryUniqueId":"A...
+          event: {"id":1,"url":"/category/A.123.XXX"}
         [Shopping] Select Category:
           categoryId: "A.123.XXX"
-        [Shopping] Load top level categories:
-          depth: 1
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.XXX"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [Shopping] Load Category Fail:
           error: {"message":"error loading category A.123.XXX"}
-        [Router] Navigation:
-          params: {}
-          queryParams: {}
-          data: {}
-          url: "/error"
-          path: "error"
-        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/cancel:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
+          event: {"id":1,"url":"/category/A.123.XXX"}
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":2,"url":"/error"}
         [Shopping] Deselect Category
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          event: {"id":2,"url":"/error"}
+        [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          event: {"id":2,"url":"/error"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -1092,23 +1144,17 @@ describe('Shopping Store', () => {
 
     it('should trigger required actions when searching', fakeAsync(() => {
       expect(store.actionsArray()).toMatchInlineSnapshot(`
-        [Router] Navigation:
-          params: {"searchTerm":"something"}
-          queryParams: {}
-          data: {}
-          url: "/search/something"
-          path: "search/:searchTerm"
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/search/something"}
         [Viewconf Internal] Set Device Type:
           deviceType: "pc"
-        [Viewconf Internal] Set Breadcrumb Data:
-          breadcrumbData: undefined
-        [Configuration Internal] Get the ICM configuration
-        [Shopping] Load top level categories:
-          depth: 1
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/search/something","params":{"searchTerm":"something...
+          event: {"id":1,"url":"/search/something"}
         [Shopping] Set Search Term:
           searchTerm: "something"
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
+        [Configuration Internal] Get the ICM configuration
         [ProductListing] Load More Products:
           id: {"type":"search","value":"something"}
         [ProductListing Internal] Load More Products For Params:
@@ -1133,6 +1179,13 @@ describe('Shopping Store', () => {
           filterNavigation: {}
         [ProductListing] Set Product Listing Pages:
           id: {"type":"search","value":"something"}
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/search/something","params":{"searchTerm":"something...
+          event: {"id":1,"url":"/search/something"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
       `);
     }));
   });

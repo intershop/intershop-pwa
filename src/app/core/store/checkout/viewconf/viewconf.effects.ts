@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
-import { mapToData, ofRoute } from 'ngrx-router';
+import { Effect } from '@ngrx/effects';
+import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+
+import { selectRouteData } from 'ish-core/store/router';
 
 import { SetCheckoutStep } from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private actions$: Actions) {}
+  constructor(private store: Store<{}>) {}
 
   @Effect()
-  retrieveCheckoutStepFromRouting$ = this.actions$.pipe(
-    ofRoute(/^checkout.*/),
-    mapToData<number>('checkoutStep'),
+  retrieveCheckoutStepFromRouting$ = this.store.pipe(
+    select(selectRouteData<number>('checkoutStep')),
     map(step => new SetCheckoutStep({ step }))
   );
 }

@@ -1,7 +1,10 @@
 import { Injectable, Type } from '@angular/core';
 import { Actions, Effect, EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { Action, ActionReducerMap, RootStoreConfig, Store, StoreModule } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
+
+import { CustomRouterSerializer } from 'ish-core/store/router/router.serializer';
 
 // tslint:disable:no-any no-console
 
@@ -66,10 +69,15 @@ export function ngrxTesting<T>(
     reducers?: ActionReducerMap<T, Action>;
     effects?: Type<any>[];
     config?: RootStoreConfig<T>;
+    routerStore?: boolean;
   } = {}
 ) {
-  return [
-    StoreModule.forRoot(options.reducers || ({} as ActionReducerMap<T, Action>), {
+  let reducers = options.reducers || ({} as ActionReducerMap<T, Action>);
+  if (options.routerStore) {
+    reducers = { ...reducers, router: routerReducer };
+  }
+  const array = [
+    StoreModule.forRoot(reducers, {
       ...(options.config || {}),
       runtimeChecks: {
         strictActionImmutability: true,
@@ -80,4 +88,10 @@ export function ngrxTesting<T>(
     }),
     EffectsModule.forRoot([TestStore, ...(options.effects || [])]),
   ];
+
+  if (options.routerStore) {
+    array.push(StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }));
+  }
+
+  return array;
 }
