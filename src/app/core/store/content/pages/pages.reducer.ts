@@ -49,6 +49,13 @@ export function pagesReducer(state = initialState, action: PageAction): PagesSta
         loading: false,
       };
     }
+
+    case PagesActionTypes.ResetContentPages: {
+      return {
+        ...pagesAdapter.removeAll(state),
+        loading: false,
+      };
+    }
   }
 
   return state;

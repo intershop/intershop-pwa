@@ -18,6 +18,9 @@ export function pageletsReducer(state = initialState, action: IncludesAction | P
     case PagesActionTypes.LoadContentPageSuccess: {
       return pageletsAdapter.upsertMany(action.payload.pagelets, state);
     }
+    case IncludesActionTypes.ResetContentIncludes: {
+      return pageletsAdapter.removeAll(state);
+    }
   }
 
   return state;

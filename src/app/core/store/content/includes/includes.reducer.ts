@@ -40,6 +40,13 @@ export function includesReducer(state = initialState, action: IncludesAction): I
         loading: false,
       };
     }
+
+    case IncludesActionTypes.ResetContentIncludes: {
+      return {
+        ...includesAdapter.removeAll(state),
+        loading: false,
+      };
+    }
   }
 
   return state;
