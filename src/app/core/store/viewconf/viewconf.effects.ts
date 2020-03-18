@@ -1,17 +1,18 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
+import { routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { mapToData, ofRoute } from 'ngrx-router';
 import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { selectRouteData } from 'ish-core/store/router';
 import { distinctCompareWith } from 'ish-core/utils/operators';
 
-import { SetBreadcrumbData, SetDeviceType, SetHeaderType, SetStickyHeader, SetWrapperClass } from './viewconf.actions';
-import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
+import { SetBreadcrumbData, SetDeviceType, SetStickyHeader } from './viewconf.actions';
+import { getBreadcrumbData, getHeaderType } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
@@ -25,7 +26,7 @@ export class ViewconfEffects {
 
   @Effect()
   setDeviceType$ = this.actions$.pipe(
-    ofRoute(),
+    ofType(routerRequestAction),
     take(1),
     takeWhile(() => isPlatformBrowser(this.platformId)),
     switchMap(() =>
@@ -49,7 +50,7 @@ export class ViewconfEffects {
 
   @Effect()
   setDeviceTypeOnServer$ = this.actions$.pipe(
-    ofRoute(),
+    ofType(routerRequestAction),
     take(1),
     takeWhile(() => isPlatformServer(this.platformId)),
     mapTo(new SetDeviceType({ deviceType: 'mobile' }))
@@ -69,25 +70,8 @@ export class ViewconfEffects {
   );
 
   @Effect()
-  retrieveWrapperClassFromRouting$ = this.actions$.pipe(
-    ofRoute(),
-    mapToData('wrapperClass'),
-    distinctCompareWith(this.store.pipe(select(getWrapperClass))),
-    map(wrapperClass => new SetWrapperClass({ wrapperClass }))
-  );
-
-  @Effect()
-  retrieveHeaderTypeFromRouting$ = this.actions$.pipe(
-    ofRoute(),
-    mapToData('headerType'),
-    distinctCompareWith(this.store.pipe(select(getHeaderType))),
-    map(headerType => new SetHeaderType({ headerType }))
-  );
-
-  @Effect()
-  retrieveBreadcrumbDataFromRouting$ = this.actions$.pipe(
-    ofRoute(),
-    mapToData('breadcrumbData'),
+  retrieveBreadcrumbDataFromRouting$ = this.store.pipe(
+    select(selectRouteData('breadcrumbData')),
     distinctCompareWith(this.store.pipe(select(getBreadcrumbData))),
     map(breadcrumbData => new SetBreadcrumbData({ breadcrumbData }))
   );

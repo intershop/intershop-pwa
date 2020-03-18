@@ -1,5 +1,4 @@
 import * as using from 'jasmine-data-provider';
-import { RouteNavigation } from 'ngrx-router';
 import { anything } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -43,11 +42,6 @@ describe('Error Reducer', () => {
         state: initialState,
         action: new LoginUserSuccess(anything()),
         expected: initialState,
-      },
-      {
-        state: { current: {}, type: ErrorActionTypes.TimeoutError },
-        action: new RouteNavigation({ path: 'error' }),
-        expected: { current: {}, type: ErrorActionTypes.TimeoutError },
       },
     ];
   }

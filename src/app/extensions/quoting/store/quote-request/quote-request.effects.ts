@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { mapToParam, ofRoute } from 'ngrx-router';
 import { combineLatest, concat, forkJoin } from 'rxjs';
 import {
   concatMap,
@@ -15,7 +14,6 @@ import {
   mapTo,
   mergeMap,
   switchMap,
-  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -29,10 +27,18 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
 import { SuccessMessage } from 'ish-core/store/messages';
+import { selectRouteParam } from 'ish-core/store/router';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import {
+  distinctCompareWith,
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  whenFalsy,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
@@ -373,12 +379,10 @@ export class QuoteRequestEffects {
    * Triggers a SelectQuoteRequest action if route contains quoteRequestId parameter
    */
   @Effect()
-  routeListenerForSelectingQuote$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam<string>('quoteRequestId'),
-    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
-    filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
-    map(([itemId]) => new actions.SelectQuoteRequest({ id: itemId }))
+  routeListenerForSelectingQuote$ = this.store.pipe(
+    select(selectRouteParam('quoteRequestId')),
+    distinctCompareWith(this.store.pipe(select(getSelectedQuoteRequestId))),
+    map(id => new actions.SelectQuoteRequest({ id }))
   );
 
   /**
@@ -404,11 +408,8 @@ export class QuoteRequestEffects {
   );
 
   @Effect()
-  setQuoteRequestBreadcrumb$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam('quoteRequestId'),
-    whenTruthy(),
-    switchMapTo(this.store.pipe(select(getSelectedQuoteRequest))),
+  setQuoteRequestBreadcrumb$ = this.store.pipe(
+    select(getSelectedQuoteRequest),
     whenTruthy(),
     withLatestFrom(this.translateService.get('quote.edit.unsubmitted.quote_request_details.text')),
     map(

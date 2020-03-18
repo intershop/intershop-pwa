@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { mapToParam, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
@@ -18,6 +17,7 @@ import {
 import { ProductListingMapper } from 'ish-core/models/product-listing/product-listing.mapper';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { ofUrl, selectRouteParam } from 'ish-core/store/router';
 import { LoadMoreProducts, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -49,9 +49,9 @@ export class SearchEffects {
    * Effect that listens for search route changes and triggers a search action.
    */
   @Effect()
-  listenToRouteForSearchTerm$ = this.actions$.pipe(
-    ofRoute('search/:searchTerm'),
-    mapToParam<string>('searchTerm'),
+  listenToRouteForSearchTerm$ = this.store.pipe(
+    ofUrl(/^\/search.*/),
+    select(selectRouteParam('searchTerm')),
     whenTruthy(),
     map(searchTerm => new SelectSearchTerm({ searchTerm }))
   );

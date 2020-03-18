@@ -2,8 +2,8 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
+import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { ofRoute } from 'ngrx-router';
 import {
   concatMap,
   filter,
@@ -65,7 +65,7 @@ export class ConfigurationEffects {
    */
   @Effect()
   loadServerConfigOnInit$ = this.actions$.pipe(
-    ofRoute(),
+    ofType(routerNavigationAction),
     switchMapTo(this.store.pipe(select(isServerConfigurationLoaded))),
     whenFalsy(),
     mapTo(new LoadServerConfig())

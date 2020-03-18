@@ -20,7 +20,6 @@ module.exports = {
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   moduleNameMapper: {
     '^ish-(.*)$': '<rootDir>/src/app/$1',
-    '^ngrx-router$': '<rootDir>/src/ngrx-router',
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',

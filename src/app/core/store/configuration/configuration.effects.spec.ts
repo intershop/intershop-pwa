@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
+import { routerNavigationAction } from '@ngrx/router-store';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, Subject, of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { instance, mock, when } from 'ts-mockito';
@@ -71,9 +71,8 @@ describe('Configuration Effects', () => {
 
   describe('loadServerConfigOnInit$', () => {
     it('should trigger the loading of config data on the first page', () => {
-      const action = new RouteNavigation({
-        path: 'any',
-      });
+      // tslint:disable-next-line: no-any
+      const action = routerNavigationAction({ payload: {} as any });
       const expected = new LoadServerConfig();
 
       actions$ = hot('a', { a: action });
@@ -87,7 +86,9 @@ describe('Configuration Effects', () => {
         } as ServerConfig)
       );
 
-      actions$ = hot('        ----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      // tslint:disable-next-line: no-any
+      const action = routerNavigationAction({ payload: {} as any });
+      actions$ = hot('        ----a---a--a', { a: action });
       const expected$ = cold('------------');
 
       expect(effects.loadServerConfigOnInit$).toBeObservable(expected$);

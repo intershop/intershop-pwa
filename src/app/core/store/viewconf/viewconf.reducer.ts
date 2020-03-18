@@ -4,16 +4,12 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { ViewconfActionTypes, ViewconfActions } from './viewconf.actions';
 
 export interface ViewconfState {
-  wrapperClass: string;
-  headerType: string;
   deviceType: DeviceType;
   breadcrumbData: BreadcrumbItem[];
   stickyHeader: boolean;
 }
 
 export const initialState: ViewconfState = {
-  wrapperClass: undefined,
-  headerType: undefined,
   deviceType: undefined,
   breadcrumbData: [],
   stickyHeader: false,
@@ -21,16 +17,6 @@ export const initialState: ViewconfState = {
 
 export function viewconfReducer(state: ViewconfState = initialState, action: ViewconfActions) {
   switch (action.type) {
-    case ViewconfActionTypes.SetWrapperClass:
-      return {
-        ...state,
-        wrapperClass: action.payload.wrapperClass,
-      };
-    case ViewconfActionTypes.SetHeaderType:
-      return {
-        ...state,
-        headerType: action.payload.headerType,
-      };
     case ViewconfActionTypes.SetBreadcrumbData:
       return {
         ...state,

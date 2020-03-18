@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { mapToParam, ofRoute } from 'ngrx-router';
 import { race } from 'rxjs';
 import {
   concatMap,
@@ -13,7 +12,6 @@ import {
   mapTo,
   mergeMap,
   switchMap,
-  switchMapTo,
   take,
   tap,
   withLatestFrom,
@@ -22,6 +20,7 @@ import {
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/checkout/basket';
+import { ofUrl, selectQueryParams, selectRouteParam } from 'ish-core/store/router';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLoggedInUser } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
@@ -152,9 +151,9 @@ export class OrdersEffects {
    * Triggers a SelectOrder action if route contains orderId parameter ( for order detail page ).
    */
   @Effect()
-  routeListenerForSelectingOrder$ = this.actions$.pipe(
-    ofRoute(/^(account\/orders.*|checkout\/receipt)/),
-    mapToParam<string>('orderId'),
+  routeListenerForSelectingOrder$ = this.store.pipe(
+    ofUrl(/^\/(account\/orders.*|checkout\/receipt)/),
+    select(selectRouteParam('orderId')),
     withLatestFrom(this.store.pipe(select(getSelectedOrderId))),
     filter(([fromAction, selectedOrderId]) => fromAction && fromAction !== selectedOrderId),
     map(([orderId]) => new ordersActions.SelectOrder({ orderId }))
@@ -180,10 +179,10 @@ export class OrdersEffects {
    * Waits until the customer is logged in and triggers the handleOrderAfterRedirect action afterwards.
    */
   @Effect()
-  returnFromRedirectAfterOrderCreation$ = this.actions$.pipe(
-    ofRoute(['checkout/receipt', 'checkout/payment']),
-    mapToPayloadProperty('queryParams'),
-    filter(queryParams => queryParams && queryParams.redirect && queryParams.orderId),
+  returnFromRedirectAfterOrderCreation$ = this.store.pipe(
+    ofUrl(/^\/checkout\/(receipt|payment)/),
+    select(selectQueryParams),
+    filter(({ redirect, orderId }) => redirect && orderId),
     switchMap(queryParams =>
       // SelectOrderAfterRedirect will be triggered either after a user is logged in or after the paid order is loaded (anonymous user)
       race([
@@ -244,11 +243,8 @@ export class OrdersEffects {
   );
 
   @Effect()
-  setOrderBreadcrumb$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam('orderId'),
-    whenTruthy(),
-    switchMapTo(this.store.pipe(select(getSelectedOrder))),
+  setOrderBreadcrumb$ = this.store.pipe(
+    select(getSelectedOrder),
     whenTruthy(),
     debounceTime(0),
     withLatestFrom(this.translateService.get('account.orderdetails.breadcrumb')),

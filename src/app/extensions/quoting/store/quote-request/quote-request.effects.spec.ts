@@ -7,7 +7,6 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { noop, of, throwError } from 'rxjs';
 import { anyString, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
@@ -61,12 +60,9 @@ describe('Quote Request Effects', () => {
       imports: [
         FeatureToggleModule,
         RouterTestingModule.withRoutes([
-          {
-            path: 'account',
-            children: [{ path: 'quotes', children: [{ path: 'request/:quoteRequestId', component: DummyComponent }] }],
-          },
+          { path: 'account/quotes/request/:quoteRequestId', component: DummyComponent },
           { path: 'login', component: DummyComponent },
-          { path: 'foobar', component: DummyComponent },
+          { path: '**', component: DummyComponent },
         ]),
         TranslateModule.forRoot(),
         ngrxTesting({
@@ -77,6 +73,7 @@ describe('Quote Request Effects', () => {
             user: userReducer,
             configuration: configurationReducer,
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -1014,22 +1011,24 @@ describe('Quote Request Effects', () => {
   });
 
   describe('routeListenerForSelectingQuoteRequest$', () => {
-    it('should fire SelectQuoteRequest when route /quote-request/XXX is navigated', () => {
-      const action = new RouteNavigation({
-        path: 'quote-request/:quoteRequestId',
-        params: { quoteRequestId: 'QRID' },
-      });
-      const expected = new quoteRequestActions.SelectQuoteRequest({ id: 'QRID' });
+    it('should fire SelectQuoteRequest when route /quote-request/XXX is navigated', done => {
+      router.navigateByUrl('/account/quotes/request/QRID');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingQuote$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForSelectingQuote$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Quote] Select QuoteRequest:
+            id: "QRID"
+        `);
+        done();
+      });
     });
 
-    it('should not fire SelectQuoteRequest when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something' });
+    it('should not fire SelectQuoteRequest when route /something is navigated', done => {
+      router.navigateByUrl('/something');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingQuote$).toBeObservable(cold('-'));
+      effects.routeListenerForSelectingQuote$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 

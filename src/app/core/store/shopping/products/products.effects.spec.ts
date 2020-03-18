@@ -6,10 +6,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -66,12 +65,17 @@ describe('Products Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
+          { path: 'product/:sku', component: DummyComponent },
+          { path: '**', component: DummyComponent },
+        ]),
         ngrxTesting({
           reducers: {
             shopping: combineReducers(shoppingReducers),
             locale: localeReducer,
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -84,7 +88,7 @@ describe('Products Effects', () => {
 
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
-    router = spy(TestBed.get(Router));
+    router = TestBed.get(Router);
     location = TestBed.get(Location);
     store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
@@ -303,33 +307,36 @@ describe('Products Effects', () => {
   });
 
   describe('routeListenerForSelectingProducts$', () => {
-    it('should fire SelectProduct when route /category/XXX/product/YYY is navigated', () => {
-      const action = new RouteNavigation({
-        path: 'category/:categoryUniqueId/product/:sku',
-        params: { categoryUniqueId: 'dummy', sku: 'foobar' },
-      });
-      const expected = new fromActions.SelectProduct({ sku: 'foobar' });
+    it('should fire SelectProduct when route /category/XXX/product/YYY is navigated', done => {
+      router.navigateByUrl('/category/dummy/product/foobar');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForSelectingProducts$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Select Product:
+            sku: "foobar"
+        `);
+        done();
+      });
     });
 
-    it('should fire SelectProduct when route /product/YYY is navigated', () => {
-      const action = new RouteNavigation({
-        path: 'product/:sku',
-        params: { sku: 'foobar' },
-      });
-      const expected = new fromActions.SelectProduct({ sku: 'foobar' });
+    it('should fire SelectProduct when route /product/YYY is navigated', done => {
+      router.navigateByUrl('/product/foobar');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForSelectingProducts$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Select Product:
+            sku: "foobar"
+        `);
+        done();
+      });
     });
 
-    it('should not fire SelectProduct when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something' });
+    it('should not fire SelectProduct when route /something is navigated', done => {
+      router.navigateByUrl('/any');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('-'));
+      effects.routeListenerForSelectingProducts$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 
@@ -353,8 +360,7 @@ describe('Products Effects', () => {
     });
 
     it('should redirect if triggered on product detail page', fakeAsync(() => {
-      const action = new RouteNavigation({ path: 'pr', params: { sku: 'SKU' } });
-      actions$ = of(action);
+      router.navigateByUrl('/product/SKU');
 
       effects.redirectIfErrorInProducts$.subscribe(noop, fail, noop);
 
@@ -364,17 +370,16 @@ describe('Products Effects', () => {
     }));
 
     it('should not redirect if triggered on page other than product detail page', done => {
-      const action = new RouteNavigation({ path: 'any' });
-      actions$ = of(action);
+      router.navigateByUrl('/any');
 
-      effects.redirectIfErrorInProducts$.subscribe(fail, fail, done);
+      effects.redirectIfErrorInProducts$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 
   describe('redirectIfErrorInCategoryProducts$', () => {
     it('should redirect if triggered', fakeAsync(() => {
-      resetCalls(router);
-
       const action = new fromActions.LoadProductsForCategoryFail({
         categoryId: 'ID',
         error: { status: 404 } as HttpError,
@@ -525,6 +530,73 @@ describe('Products Effects', () => {
           }),
         })
       );
+    });
+  });
+
+  describe('loadDefaultCategoryContextForProduct$', () => {
+    it('should load a default category for the product if none is selected and product has one', done => {
+      store$.dispatch(
+        new fromActions.LoadProductSuccess({
+          product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
+        })
+      );
+      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
+
+      router.navigateByUrl('/product/ABC');
+
+      effects.loadDefaultCategoryContextForProduct$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Load Category:
+            categoryId: "123"
+        `);
+        done();
+      });
+    });
+
+    it('should not load a default category for the product if none is selected and product has none', done => {
+      store$.dispatch(
+        new fromActions.LoadProductSuccess({
+          product: { sku: 'ABC', type: 'Product' } as Product,
+        })
+      );
+      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
+
+      router.navigateByUrl('/product/ABC');
+
+      effects.loadDefaultCategoryContextForProduct$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
+    });
+
+    it('should not load a default category for the product if the product failed loading', done => {
+      store$.dispatch(
+        new fromActions.LoadProductFail({
+          sku: 'ABC',
+          error: { error: 'ERROR' } as HttpError,
+        })
+      );
+      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
+
+      router.navigateByUrl('/product/ABC');
+
+      effects.loadDefaultCategoryContextForProduct$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
+    });
+
+    it('should not load a default category for the product if the category is taken from the context', done => {
+      store$.dispatch(
+        new fromActions.LoadProductSuccess({
+          product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
+        })
+      );
+      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
+
+      router.navigateByUrl('/category/456/product/ABC');
+
+      effects.loadDefaultCategoryContextForProduct$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 });

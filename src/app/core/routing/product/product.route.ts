@@ -1,5 +1,4 @@
 import { UrlMatchResult, UrlSegment } from '@angular/router';
-import { RouteNavigation, ofRoute } from 'ngrx-router';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -7,6 +6,8 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
+import { CoreState } from 'ish-core/store/core-store';
+import { selectRouteParam } from 'ish-core/store/router';
 
 function generateProductSlug(product: ProductView) {
   if (!product || !product.name) {
@@ -82,10 +83,6 @@ export function generateProductUrl(product: ProductView, category?: CategoryView
   return route;
 }
 
-export function ofProductRoute(): MonoTypeOperatorFunction<RouteNavigation> {
-  return source$ =>
-    source$.pipe(
-      ofRoute(),
-      filter(action => action.payload.params && action.payload.params.sku)
-    );
+export function ofProductUrl(): MonoTypeOperatorFunction<{}> {
+  return source$ => source$.pipe(filter((state: CoreState) => !!selectRouteParam('sku')(state)));
 }

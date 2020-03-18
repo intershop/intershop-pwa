@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { mapToQueryParam, ofRoute } from 'ngrx-router';
 import { concatMap, filter, map, mapTo, mergeMap, mergeMapTo, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
+import { ofUrl, selectQueryParam } from 'ish-core/store/router';
 import { LoadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getLastAPITokenBeforeLogin } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayloadProperty, whenFalsy } from 'ish-core/utils/operators';
@@ -170,9 +170,9 @@ export class BasketEffects {
    *
    */
   @Effect()
-  routeListenerForResettingBasketErrors$ = this.actions$.pipe(
-    ofRoute(/^(basket|checkout.*)/),
-    mapToQueryParam<string>('error'),
+  routeListenerForResettingBasketErrors$ = this.store.pipe(
+    ofUrl(/^\/(basket|checkout.*)/),
+    select(selectQueryParam('error')),
     whenFalsy(),
     mapTo(new basketActions.ResetBasketErrors())
   );

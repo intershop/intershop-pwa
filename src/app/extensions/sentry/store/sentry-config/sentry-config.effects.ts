@@ -4,28 +4,18 @@ import { TransferState } from '@angular/platform-browser';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store, UPDATE, select } from '@ngrx/store';
 import * as Sentry from '@sentry/browser';
-import { ofRoute } from 'ngrx-router';
-import {
-  debounce,
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMapTo,
-  take,
-  takeWhile,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getGeneralError } from 'ish-core/store/error';
+import { ofUrl, selectRouter } from 'ish-core/store/router';
 import { getLoggedInUser } from 'ish-core/store/user';
-import { mapToPayload, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { SetSentryConfig } from './sentry-config.actions';
+import { SentryConfigActionTypes, SetSentryConfig } from './sentry-config.actions';
 import { getSentryDSN } from './sentry-config.selectors';
 
 @Injectable()
@@ -57,8 +47,7 @@ export class SentryConfigEffects {
     whenTruthy(),
     switchMapTo(
       this.actions$.pipe(
-        ofRoute(),
-        take(1),
+        ofType(SentryConfigActionTypes.SetSentryConfig),
         filter(() => this.featureToggleService.enabled('sentry')),
         withLatestFrom(this.store.pipe(select(getSentryDSN))),
         map(([, sentryDSN]) => sentryDSN),
@@ -80,16 +69,15 @@ export class SentryConfigEffects {
   );
 
   @Effect({ dispatch: false })
-  trackRouting$ = this.actions$.pipe(
-    ofRoute(),
-    mapToPayload(),
+  trackRouting$ = this.store.pipe(
+    select(selectRouter),
     map(payload => JSON.stringify(payload)),
     tap(message => Sentry.addBreadcrumb({ category: 'routing', message }))
   );
 
   @Effect({ dispatch: false })
   trackErrorPageErrors$ = this.store.pipe(
-    debounce(() => this.actions$.pipe(ofRoute('error'))),
+    ofUrl(/^\/error.*/),
     select(getGeneralError),
     whenTruthy(),
     distinctUntilChanged(),

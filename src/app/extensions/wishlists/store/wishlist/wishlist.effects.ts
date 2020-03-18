@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { mapToParam, ofRoute } from 'ngrx-router';
-import { filter, map, mapTo, mergeMap, switchMap, switchMapTo, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { SuccessMessage } from 'ish-core/store/messages';
+import { selectRouteParam } from 'ish-core/store/router';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { SetBreadcrumbData } from 'ish-core/store/viewconf';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import {
+  distinctCompareWith,
+  mapErrorToAction,
+  mapToPayload,
+  mapToPayloadProperty,
+  whenTruthy,
+} from 'ish-core/utils/operators';
 
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
@@ -169,12 +175,10 @@ export class WishlistEffects {
   );
 
   @Effect()
-  routeListenerForSelectedWishlist$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam<string>('wishlistName'),
-    withLatestFrom(this.store.pipe(select(getSelectedWishlistId))),
-    filter(([routerId, storeId]) => routerId !== storeId),
-    map(([id]) => new wishlistsActions.SelectWishlist({ id }))
+  routeListenerForSelectedWishlist$ = this.store.pipe(
+    select(selectRouteParam('wishlistName')),
+    distinctCompareWith(this.store.pipe(select(getSelectedWishlistId))),
+    map(id => new wishlistsActions.SelectWishlist({ id }))
   );
 
   /**
@@ -198,11 +202,8 @@ export class WishlistEffects {
   );
 
   @Effect()
-  setWishlistBreadcrumb$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam('wishlistName'),
-    whenTruthy(),
-    switchMapTo(this.store.pipe(select(getSelectedWishlistDetails))),
+  setWishlistBreadcrumb$ = this.store.pipe(
+    select(getSelectedWishlistDetails),
     whenTruthy(),
     map(
       wishlist =>

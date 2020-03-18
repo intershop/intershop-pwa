@@ -1,12 +1,12 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -32,6 +32,7 @@ describe('Orders Effects', () => {
   let orderServiceMock: OrderService;
   let store$: Store<{}>;
   let location: Location;
+  let router: Router;
 
   @Component({ template: 'dummy' })
   class DummyComponent {}
@@ -53,6 +54,8 @@ describe('Orders Effects', () => {
             path: 'checkout',
             children: [{ path: 'receipt', component: DummyComponent }, { path: 'payment', component: DummyComponent }],
           },
+          { path: 'account/orders/:orderId', component: DummyComponent },
+          { path: '**', component: DummyComponent },
         ]),
         TranslateModule.forRoot(),
         ngrxTesting({
@@ -60,6 +63,7 @@ describe('Orders Effects', () => {
             ...coreReducers,
             shopping: combineReducers(shoppingReducers),
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -72,6 +76,7 @@ describe('Orders Effects', () => {
     effects = TestBed.get(OrdersEffects);
     store$ = TestBed.get(Store);
     location = TestBed.get(Location);
+    router = TestBed.get(Router);
   });
 
   describe('createOrder$', () => {
@@ -287,68 +292,70 @@ describe('Orders Effects', () => {
   });
 
   describe('routeListenerForSelectingOrder$', () => {
-    it('should fire SelectOrder when route account/order/XXX is navigated', () => {
-      const orderId = '123';
-      const action = new RouteNavigation({
-        path: 'account/orders/:orderId',
-        params: { orderId },
-      });
-      const expected = new orderActions.SelectOrder({ orderId });
+    it('should fire SelectOrder when route account/order/XXX is navigated', done => {
+      router.navigateByUrl('/account/orders/123');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingOrder$).toBeObservable(cold('a', { a: expected }));
+      effects.routeListenerForSelectingOrder$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Order] Select Order:
+            orderId: "123"
+        `);
+        done();
+      });
     });
 
-    it('should not fire SelectOrder when route /something is navigated', () => {
-      const action = new RouteNavigation({ path: 'something' });
+    it('should not fire SelectOrder when route /something is navigated', done => {
+      router.navigateByUrl('/something');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingOrder$).toBeObservable(cold('-'));
+      effects.routeListenerForSelectingOrder$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
   });
 
   describe('returnFromRedirectAfterOrderCreation$', () => {
-    it('should not trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and there is no logged in user and no order', () => {
-      const action = new RouteNavigation({
-        path: 'checkout/receipt',
+    it('should not trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and there is no logged in user and no order', done => {
+      router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
       });
-      actions$ = hot('-a', { a: action });
 
-      expect(effects.returnFromRedirectAfterOrderCreation$).toBeObservable(cold('-'));
+      effects.returnFromRedirectAfterOrderCreation$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
     });
 
-    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and a user is logged in', () => {
+    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and a user is logged in', done => {
       const customer = { customerNo: 'patricia' } as Customer;
       const user = { firstName: 'patricia' } as User;
       store$.dispatch(new LoginUserSuccess({ customer, user }));
-      const params = { redirect: 'success', param1: 123, orderId: order.id };
 
-      const action = new RouteNavigation({
-        path: 'checkout/receipt',
+      router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
       });
-      actions$ = hot('-a', { a: action });
 
-      expect(effects.returnFromRedirectAfterOrderCreation$).toBeObservable(
-        cold('-c', { c: new orderActions.SelectOrderAfterRedirect({ params }) })
-      );
+      effects.returnFromRedirectAfterOrderCreation$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Order Internal] Select Order After Checkout Redirect:
+            params: {"redirect":"success","param1":"123","orderId":"1"}
+        `);
+        done();
+      });
     });
 
-    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and an order is available', () => {
+    it('should trigger SelectOrderAfterRedirect action if checkout payment/receipt page is called with query param "redirect" and an order is available', done => {
       store$.dispatch(new orderActions.CreateOrderSuccess({ order }));
 
-      const params = { redirect: 'success', param1: 123, orderId: order.id };
-
-      const action = new RouteNavigation({
-        path: 'checkout/receipt',
+      router.navigate(['checkout', 'receipt'], {
         queryParams: { redirect: 'success', param1: 123, orderId: order.id },
       });
-      actions$ = hot('-a', { a: action });
 
-      expect(effects.returnFromRedirectAfterOrderCreation$).toBeObservable(
-        cold('-c', { c: new orderActions.SelectOrderAfterRedirect({ params }) })
-      );
+      effects.returnFromRedirectAfterOrderCreation$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Order Internal] Select Order After Checkout Redirect:
+            params: {"redirect":"success","param1":"123","orderId":"1"}
+        `);
+        done();
+      });
     });
   });
 
@@ -443,7 +450,6 @@ describe('Orders Effects', () => {
     });
 
     it('should set the breadcrumb of the selected order', done => {
-      actions$ = of(new RouteNavigation({ path: 'any', params: { orderId: orders[0].id } }));
       effects.setOrderBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
           Object {

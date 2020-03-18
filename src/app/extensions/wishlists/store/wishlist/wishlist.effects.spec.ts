@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -17,7 +18,7 @@ import { SuccessMessage } from 'ish-core/store/messages';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
@@ -54,7 +55,8 @@ describe('Wishlist Effects', () => {
   let actions$;
   let wishlistServiceMock: WishlistService;
   let effects: WishlistEffects;
-  let store$: Store<{}>;
+  let store$: TestStore;
+  let router: Router;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
 
@@ -86,6 +88,7 @@ describe('Wishlist Effects', () => {
       declarations: [DummyComponent],
       imports: [
         FeatureToggleModule,
+        RouterTestingModule.withRoutes([{ path: 'account/wishlist/:wishlistName', component: DummyComponent }]),
         ngrxTesting({
           reducers: {
             wishlists: combineReducers(wishlistsReducers),
@@ -94,6 +97,7 @@ describe('Wishlist Effects', () => {
             user: userReducer,
             configuration: configurationReducer,
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -104,7 +108,8 @@ describe('Wishlist Effects', () => {
     });
 
     effects = TestBed.get(WishlistEffects);
-    store$ = TestBed.get(Store);
+    store$ = TestBed.get(TestStore);
+    router = TestBed.get(Router);
 
     store$.dispatch(new ApplyConfiguration({ features: ['wishlists'] }));
   });
@@ -503,17 +508,16 @@ describe('Wishlist Effects', () => {
   });
 
   describe('routeListenerForSelectedWishlist$', () => {
-    it('should map to action of type SelectWishlist', () => {
-      const wishlistName = '.SKsEQAE4FIAAAFuNiUBWx0d';
-      const action = new RouteNavigation({
-        path: 'account/wishlist/:wishlistName',
-        params: { wishlistName },
-        queryParams: {},
+    it('should map to action of type SelectWishlist', done => {
+      router.navigateByUrl('/account/wishlist/.SKsEQAE4FIAAAFuNiUBWx0d');
+
+      effects.routeListenerForSelectedWishlist$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Wishlists Internal] Select Wishlist:
+            id: ".SKsEQAE4FIAAAFuNiUBWx0d"
+        `);
+        done();
       });
-      const completion = new SelectWishlist({ id: wishlistName });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-      expect(effects.routeListenerForSelectedWishlist$).toBeObservable(expected$);
     });
   });
 
@@ -549,7 +553,6 @@ describe('Wishlist Effects', () => {
     });
 
     it('should set the breadcrumb of the selected wishlist', done => {
-      actions$ = of(new RouteNavigation({ path: 'any', params: { wishlistName: wishlists[0].id } }));
       effects.setWishlistBreadcrumb$.subscribe(action => {
         expect(action.payload).toMatchInlineSnapshot(`
           Object {

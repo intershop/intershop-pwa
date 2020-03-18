@@ -34,7 +34,6 @@ describe('Store Schematic', () => {
       `import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
-import { RouterEffects } from 'ngrx-router';
 
 import { CoreState } from './core-store';
 import { CountriesEffects } from './countries/countries.effects';
