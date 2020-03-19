@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -28,7 +29,7 @@ describe('Language Switch Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [LanguageSwitchComponent, MakeHrefPipe, MockComponent(FaIconComponent)],
-      imports: [RouterTestingModule],
+      imports: [NgbDropdownModule, RouterTestingModule],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     })
       .compileComponents()

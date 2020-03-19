@@ -1,11 +1,11 @@
 <div class="container user-info-box">
-  <div class="row col col-12">{{ 'header.welcome.text' | translate }}</div>
-  <div class="row col col-12"><ish-login-status view="full"></ish-login-status></div>
-  <div class="row col col-12">
+  <div class="user-info-box-item">{{ 'header.welcome.text' | translate }}</div>
+  <div class="user-info-box-item"><ish-login-status view="full"></ish-login-status></div>
+  <div class="user-info-box-item">
     <ish-product-compare-status *ishFeature="'compare'" view="full"></ish-product-compare-status>
   </div>
-  <div class="row col col-12">
+  <div class="user-info-box-item">
     <ish-lazy-wishlist-link *ishFeature="'wishlists'" view="full"></ish-lazy-wishlist-link>
   </div>
-  <div class="row col col-12"><ish-language-switch view="accordion"></ish-language-switch></div>
+  <div class="user-info-box-item"><ish-language-switch view="accordion" placement="up"></ish-language-switch></div>
 </div>

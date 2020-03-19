@@ -1,4 +1,10 @@
-<div *ngIf="locale$ | async as locale" class="language-switch" [ngClass]="view" ngbDropdown placement="bottom-right">
+<div
+  *ngIf="locale$ | async as locale"
+  class="language-switch"
+  [ngClass]="view"
+  ngbDropdown
+  placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}"
+>
   <a ngbDropdownToggle class="language-switch-link">
     <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon"></fa-icon>
     <span class="language-switch-current-selection d-inline"
