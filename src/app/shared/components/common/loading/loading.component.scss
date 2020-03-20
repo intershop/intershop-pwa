@@ -1,13 +1,11 @@
 .loading {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: fixed;
+  top: 37%;
+  left: 48%;
   z-index: 1;
-  min-width: 50px;
-  min-height: 50px;
-  background: #fff url('/assets/img/loading.gif') center center no-repeat;
+  width: 33px;
+  height: 33px;
+  background: #fff url('/assets/img/loading.gif') no-repeat;
   opacity: 0.5;
 }
 
