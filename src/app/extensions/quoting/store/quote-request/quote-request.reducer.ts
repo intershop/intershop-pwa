@@ -83,7 +83,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
       }
 
       return {
-        ...quoteRequestAdapter.addAll(quoteRequests, state),
+        ...quoteRequestAdapter.setAll(quoteRequests, state),
         loading: false,
       };
     }
