@@ -49,7 +49,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
       const { addresses } = action.payload;
 
       return {
-        ...addressAdapter.addAll(addresses, state),
+        ...addressAdapter.setAll(addresses, state),
         error: undefined,
         loading: false,
       };

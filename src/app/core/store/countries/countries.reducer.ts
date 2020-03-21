@@ -36,7 +36,7 @@ export function countriesReducer(state = initialState, action: CountryAction): C
       const { countries } = action.payload;
 
       return {
-        ...countryAdapter.addAll(countries, state),
+        ...countryAdapter.setAll(countries, state),
         loading: false,
       };
     }

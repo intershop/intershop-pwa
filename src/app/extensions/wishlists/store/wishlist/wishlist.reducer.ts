@@ -48,7 +48,7 @@ export function wishlistReducer(state = initialState, action: WishlistsAction): 
 
     case WishlistsActionTypes.LoadWishlistsSuccess: {
       const { wishlists } = action.payload;
-      return wishlistsAdapter.addAll(wishlists, {
+      return wishlistsAdapter.setAll(wishlists, {
         ...state,
         loading: false,
       });

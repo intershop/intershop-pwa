@@ -61,7 +61,7 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
       }
 
       return {
-        ...quoteAdapter.addAll(quotes, state),
+        ...quoteAdapter.setAll(quotes, state),
         loading: false,
       };
     }
