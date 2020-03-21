@@ -40,16 +40,20 @@ var Rule = (function (_super) {
         }
         return this.applyWithFunction(sourceFile, function (ctx) {
             var statements = sourceFile.statements.filter(function (stmt) { return stmt.kind === typescript_1.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'; });
-            if (statements.length && statements[0].getChildAt(0)) {
-                var describeText = statements[0]
-                    .getChildAt(0)
-                    .getChildAt(2)
-                    .getChildAt(0);
-                var interpolated = Rule.interpolatedName(sourceFile.fileName);
-                if (describeText.text !== interpolated) {
-                    var fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), "'" + interpolated + "'");
-                    ctx.addFailureAtNode(describeText, "string does not match filename, expected '" + interpolated + "' found '" + describeText.text + "'", fix);
-                }
+            if (statements.length) {
+                statements
+                    .filter(function (statement) { return statement.getChildAt(0); })
+                    .forEach(function (statement) {
+                    var describeText = statement
+                        .getChildAt(0)
+                        .getChildAt(2)
+                        .getChildAt(0);
+                    var interpolated = Rule.interpolatedName(sourceFile.fileName);
+                    if (describeText.text !== interpolated) {
+                        var fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), "'" + interpolated + "'");
+                        ctx.addFailureAtNode(describeText, "string does not match filename, expected '" + interpolated + "' found '" + describeText.text + "'", fix);
+                    }
+                });
             }
             tsquery_1.tsquery(sourceFile, 'Identifier[name="it"]').forEach(function (node) {
                 var descriptionToken = tsutils_1.getNextToken(tsutils_1.getNextToken(node));

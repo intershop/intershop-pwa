@@ -27,20 +27,24 @@ export class Rule extends Lint.Rules.AbstractRule {
       const statements = sourceFile.statements.filter(
         stmt => stmt.kind === SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'
       );
-      if (statements.length && statements[0].getChildAt(0)) {
-        const describeText = statements[0]
-          .getChildAt(0)
-          .getChildAt(2)
-          .getChildAt(0) as StringLiteral;
-        const interpolated = Rule.interpolatedName(sourceFile.fileName);
-        if (describeText.text !== interpolated) {
-          const fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), `'${interpolated}'`);
-          ctx.addFailureAtNode(
-            describeText,
-            `string does not match filename, expected '${interpolated}' found '${describeText.text}'`,
-            fix
-          );
-        }
+      if (statements.length) {
+        statements
+          .filter(statement => statement.getChildAt(0))
+          .forEach(statement => {
+            const describeText = statement
+              .getChildAt(0)
+              .getChildAt(2)
+              .getChildAt(0) as StringLiteral;
+            const interpolated = Rule.interpolatedName(sourceFile.fileName);
+            if (describeText.text !== interpolated) {
+              const fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), `'${interpolated}'`);
+              ctx.addFailureAtNode(
+                describeText,
+                `string does not match filename, expected '${interpolated}' found '${describeText.text}'`,
+                fix
+              );
+            }
+          });
       }
 
       tsquery(sourceFile, 'Identifier[name="it"]').forEach((node: Identifier) => {
