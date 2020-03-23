@@ -1,4 +1,4 @@
-import { arraySlices } from './functions';
+import { arraySlices, mergeDeep } from './functions';
 
 describe('Functions', () => {
   describe('arraySlices', () => {
@@ -36,6 +36,33 @@ describe('Functions', () => {
     it('should return undefined when requested length is smaller than 1', () => {
       expect(arraySlices([1], 0)).toBeUndefined();
       expect(arraySlices([1], -1)).toBeUndefined();
+    });
+  });
+
+  describe('mergeDeep', () => {
+    it('should merge complex objects on input', () => {
+      expect(mergeDeep({ a: 1, b: { c: 2 } }, { d: 4, b: { e: 5 } })).toMatchInlineSnapshot(`
+        Object {
+          "a": 1,
+          "b": Object {
+            "c": 2,
+            "e": 5,
+          },
+          "d": 4,
+        }
+      `);
+    });
+
+    it('should override incoming objects on input', () => {
+      expect(mergeDeep({ a: 1, b: { c: 2 }, d: 11 }, { a: 4, b: { c: 5 } })).toMatchInlineSnapshot(`
+        Object {
+          "a": 4,
+          "b": Object {
+            "c": 5,
+          },
+          "d": 11,
+        }
+      `);
     });
   });
 });

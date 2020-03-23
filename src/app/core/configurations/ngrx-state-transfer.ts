@@ -3,6 +3,8 @@ import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { ActionReducer, Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 
+import { mergeDeep } from 'ish-core/utils/functions';
+
 // tslint:disable:no-any
 
 const NGRX_STATE_SK = makeStateKey('ngrxState');
@@ -14,7 +16,7 @@ const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 export function ngrxStateTransferMeta(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state: any, action: any) => {
     if (action.type === STATE_ACTION_TYPE) {
-      return action.payload;
+      return mergeDeep(state, action.payload);
     }
     return reducer(state, action);
   };
