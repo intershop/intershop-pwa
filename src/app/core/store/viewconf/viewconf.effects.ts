@@ -1,10 +1,9 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
-import { routerRequestAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { fromEvent } from 'rxjs';
-import { distinctUntilChanged, map, mapTo, startWith, switchMap, take, takeWhile } from 'rxjs/operators';
+import { defer, fromEvent, iif, merge } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -25,14 +24,10 @@ export class ViewconfEffects {
   ) {}
 
   @Effect()
-  setDeviceType$ = this.actions$.pipe(
-    ofType(routerRequestAction),
-    take(1),
-    takeWhile(() => isPlatformBrowser(this.platformId)),
-    switchMap(() =>
-      fromEvent(window, 'resize').pipe(
-        // tslint:disable-next-line: deprecation
-        startWith(undefined),
+  setDeviceType$ = iif(
+    () => isPlatformBrowser(this.platformId),
+    defer(() =>
+      merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
         map(() => {
           if (window.innerWidth < this.mediumBreakpointWidth) {
             return 'mobile';
@@ -49,18 +44,9 @@ export class ViewconfEffects {
   );
 
   @Effect()
-  setDeviceTypeOnServer$ = this.actions$.pipe(
-    ofType(routerRequestAction),
-    take(1),
-    takeWhile(() => isPlatformServer(this.platformId)),
-    mapTo(new SetDeviceType({ deviceType: 'mobile' }))
-  );
-
-  @Effect()
-  toggleStickyHeader$ = this.actions$.pipe(
-    ofType(ROOT_EFFECTS_INIT),
-    takeWhile(() => isPlatformBrowser(this.platformId)),
-    switchMap(() =>
+  toggleStickyHeader$ = iif(
+    () => isPlatformBrowser(this.platformId),
+    defer(() =>
       fromEvent(window, 'scroll').pipe(
         map(() => window.pageYOffset >= 170),
         distinctUntilChanged(),

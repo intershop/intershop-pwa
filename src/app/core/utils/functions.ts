@@ -22,3 +22,26 @@ export const objectToArray = (values: { [key: string]: string }) =>
   Object.keys(values).map(key => ({ key, value: values[key] }));
 
 export const toObservable = <T>(input: T | Observable<T>): Observable<T> => (isObservable(input) ? input : of(input));
+
+export function isObject(item) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+// https://stackoverflow.com/a/37164538/13001898
+export function mergeDeep(target, source) {
+  let output = { ...target };
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target)) {
+          output = { ...output, [key]: source[key] };
+        } else {
+          output[key] = mergeDeep(target[key], source[key]);
+        }
+      } else {
+        output = { ...output, [key]: source[key] };
+      }
+    });
+  }
+  return output;
+}

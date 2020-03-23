@@ -4,18 +4,19 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { ViewconfActionTypes, ViewconfActions } from './viewconf.actions';
 
 export interface ViewconfState {
-  deviceType: DeviceType;
   breadcrumbData: BreadcrumbItem[];
   stickyHeader: boolean;
+  // not synced via state transfer
+  _deviceType: DeviceType;
 }
 
 export const initialState: ViewconfState = {
-  deviceType: undefined,
   breadcrumbData: [],
   stickyHeader: false,
+  _deviceType: 'mobile',
 };
 
-export function viewconfReducer(state: ViewconfState = initialState, action: ViewconfActions) {
+export function viewconfReducer(state: ViewconfState = initialState, action: ViewconfActions): ViewconfState {
   switch (action.type) {
     case ViewconfActionTypes.SetBreadcrumbData:
       return {
@@ -25,7 +26,7 @@ export function viewconfReducer(state: ViewconfState = initialState, action: Vie
     case ViewconfActionTypes.SetDeviceType:
       return {
         ...state,
-        deviceType: action.payload.deviceType,
+        _deviceType: action.payload.deviceType,
       };
     case ViewconfActionTypes.SetStickyHeader:
       return {
