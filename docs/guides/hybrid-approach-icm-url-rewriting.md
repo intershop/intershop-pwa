@@ -1,19 +1,25 @@
-# Guide - Handle rewritten ICM URLs in Hybrid Mode
+<!--
+kb_guide
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+# Handle Rewritten ICM URLs in Hybrid Mode
 
 If the ICM is set up with [URL Rewriting](https://support.intershop.com/kb/index.php/Display/28R955) further modifications are required to run the deployment with the [Hybrid Approach](../concepts/hybrid-approach.md).
 
 The examples in this guide follow the default example for ICM URL Rewriting. In particular we want to focus on the following two examples:
 
 - Product Detail Pages of the ICM
-  - URLs are in the form `/Home-Entertainment/SmartHome/google-home-zid201807171`
-  - they should be handled by the PWA in the form `/SmartHome/google-home-sku201807171`
+  - URLs are in the form */Home-Entertainment/SmartHome/google-home-zid201807171*
+  - They should be handled by the PWA in the form */SmartHome/google-home-sku201807171*
 - The help desk of the PWA
-  - URLs are in the form `/page/systempage.helpdesk.index.pagelet2-Page` (generic content page)
-  - this URL should be handled by the ICM: `/helpdesk`
+  - URLs are in the form */page/systempage.helpdesk.index.pagelet2-Page* (generic content page)
+  - This URL should be handled by the ICM: */helpdesk*
 
-## Mapping incoming rewritten ICM URLs to the PWA
+## Mapping Incoming Rewritten ICM URLs to the PWA
 
-Considering the example, the incoming Product Detail Page URL mapping must be included in the mapping table:
+Considering the example, the incoming product detail page URL mapping must be included in the mapping table:
 
 ```typescript
   {
@@ -26,7 +32,7 @@ Considering the example, the incoming Product Detail Page URL mapping must be in
   }
 ```
 
-## Mapping PWA URLs to rewritten ICM URLs
+## Mapping PWA URLs to Rewritten ICM URLs
 
 First, the mapping table must be adapted to instruct the PWA to leave the single-page application, when switching to the help desk content page:
 
@@ -56,7 +62,7 @@ _nginx/channel.conf.tmpl_:
          proxy_set_header Host $http_host;
 ```
 
-Last but not least, the express.js server must be instructed to proxy traffic to `/helpdesk` to the ICM upstream:
+Last but not least, the *express.js* server must be instructed to proxy traffic to */helpdesk* to the ICM upstream:
 
 _server.ts_:
 
