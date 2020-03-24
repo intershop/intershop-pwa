@@ -14,7 +14,7 @@ import { CoreStoreModule } from './store/core-store.module';
     BrowserTransferStateModule,
     CoreStoreModule,
     StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
+      maxAge: environment.production ? 25 : 200,
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
   ],
