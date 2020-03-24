@@ -26,12 +26,13 @@
     "docs": "npx @compodoc/compodoc -p tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "docs:serve": "npm run docs -- -s",
     "docs:watch": "npm run docs -- -s -w",
-    "build:client-and-server-bundles": "ng build --prod && ng run intershop-pwa:server:production --bundleDependencies all",
-    "webpack:server": "webpack --config webpack.server.config.js",
-    "serve": "node dist/server",
     "build:watch": "ng build --aot --watch",
-    "build": "npm run build:client-and-server-bundles && npm run webpack:server",
-    "start": "npm run build && npm run serve"
+    "build": "ng build -c production && ng run intershop-pwa:server:production --bundleDependencies all && npm run webpack:server",
+    "build:local": "ng build -c local && ng run intershop-pwa:server:local --bundleDependencies all && npm run webpack:server",
+    "webpack:server": "webpack --config webpack.server.config.js",
+    "start": "npm run build && npm run serve",
+    "start:local": "npm run build:local && npm run serve",
+    "serve": "node dist/server"
   },
   "dependencies": {
     "@angular/animations": "~8.2.14",
