@@ -115,7 +115,7 @@ jobs:
           path: dist
 
   Schematics:
-    needs: [Build, Quality, Jest]
+    needs: [Build, Quality, Jest, Cypress]
     runs-on: ubuntu-latest
 
     steps:
