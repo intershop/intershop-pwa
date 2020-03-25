@@ -2,14 +2,13 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { isEqual } from 'lodash-es';
 import {
   distinctUntilChanged,
   filter,
   map,
   mapTo,
   mergeMap,
-  skip,
   switchMap,
   switchMapTo,
   tap,
@@ -23,13 +22,7 @@ import { CategoriesService } from 'ish-core/services/categories/categories.servi
 import { selectRouteParam } from 'ish-core/store/router';
 import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import {
-  distinctCompareWith,
-  mapErrorToAction,
-  mapToPayloadProperty,
-  whenFalsy,
-  whenTruthy,
-} from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
@@ -45,57 +38,26 @@ export class CategoriesEffects {
   ) {}
 
   /**
-   * listens to routing and fires {@link SelectCategory} if a category route is selected
-   * and {@link DeselectCategory} if deselected
+   * listens to routing and fires {@link LoadCategory}
+   * when the requested {@link Category} is not available, yet
    */
   @Effect()
-  routeListenerForSelectingCategory$ = this.store.pipe(
+  selectedCategory$ = this.store.pipe(
     select(selectRouteParam('categoryUniqueId')),
-    skip(1),
-    distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
-    map(categoryId => (categoryId ? new actions.SelectCategory({ categoryId }) : new actions.DeselectCategory()))
-  );
-
-  /**
-   * listens to {@link SelectCategory} actions and fires {@link LoadCategory}
-   * when the requested {@link Category} is not available
-   */
-  @Effect()
-  selectedCategory$ = this.actions$.pipe(
-    ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
-    mapToPayloadProperty('categoryId'),
+    whenTruthy(),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
     map(([categoryId]) => new actions.LoadCategory({ categoryId }))
   );
 
   /**
-   * fires {@link SelectedCategoryAvailable} when the requested {@link Category} is completely loaded
-   */
-  @Effect()
-  selectedCategoryAvailable$ = combineLatest([
-    this.actions$.pipe(
-      ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
-      mapToPayloadProperty('categoryId')
-    ),
-    this.store.pipe(
-      select(selectors.getSelectedCategory),
-      filter(CategoryHelper.isCategoryCompletelyLoaded)
-    ),
-  ]).pipe(
-    filter(([selectId, category]) => selectId === category.uniqueId),
-    distinctUntilChanged((x, y) => x[0] === y[0]),
-    map(([categoryId]) => new actions.SelectedCategoryAvailable({ categoryId }))
-  );
-
-  /**
    * fires {@link LoadCategory} for category path categories of the selected category that are not yet completely loaded
    */
   @Effect()
-  loadCategoriesOfCategoryPath$ = this.actions$.pipe(
-    ofType(actions.CategoriesActionTypes.SelectedCategoryAvailable),
-    withLatestFrom(this.store.pipe(select(selectors.getSelectedCategory))),
-    map(([, category]) => category.categoryPath),
+  loadCategoriesOfCategoryPath$ = this.store.pipe(
+    select(selectors.getSelectedCategory),
+    filter(CategoryHelper.isCategoryCompletelyLoaded),
+    mapToProperty('categoryPath'),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
     mergeMap(ids => ids.map(categoryId => new actions.LoadCategory({ categoryId })))
@@ -137,12 +99,18 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  productOrCategoryChanged$ = this.store.pipe(
-    ofCategoryUrl(),
-    select(selectors.getSelectedCategory),
-    whenTruthy(),
-    filter(cat => cat.hasOnlineProducts),
-    map(({ uniqueId }) => new LoadMoreProducts({ id: { type: 'category', value: uniqueId } }))
+  productOrCategoryChanged$ = this.actions$.pipe(
+    ofType(routerNavigatedAction),
+    switchMapTo(
+      this.store.pipe(
+        ofCategoryUrl(),
+        select(selectors.getSelectedCategory),
+        whenTruthy(),
+        filter(cat => cat.hasOnlineProducts),
+        map(({ uniqueId }) => new LoadMoreProducts({ id: { type: 'category', value: uniqueId } }))
+      )
+    ),
+    distinctUntilChanged(isEqual)
   );
 
   @Effect({ dispatch: false })

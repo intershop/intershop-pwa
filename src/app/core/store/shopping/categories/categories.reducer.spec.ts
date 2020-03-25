@@ -16,15 +16,6 @@ describe('Categories Reducer', () => {
     });
   });
 
-  describe('SelectCategory action', () => {
-    it('should set the selected attribute in the state when SelectCategory is reduced', () => {
-      const action = new fromActions.SelectCategory({ categoryId: 'dummy' });
-      const state = categoriesReducer(initialState, action);
-
-      expect(state.selected).toEqual('dummy');
-    });
-  });
-
   describe('LoadCategory actions', () => {
     describe('LoadCategory action', () => {
       it('should set loading to true', () => {

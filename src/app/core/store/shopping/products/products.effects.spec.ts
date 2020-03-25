@@ -306,13 +306,13 @@ describe('Products Effects', () => {
     });
   });
 
-  describe('routeListenerForSelectingProducts$', () => {
+  describe('selectedProduct$', () => {
     it('should fire SelectProduct when route /category/XXX/product/YYY is navigated', done => {
       router.navigateByUrl('/category/dummy/product/foobar');
 
-      effects.routeListenerForSelectingProducts$.subscribe(action => {
+      effects.selectedProduct$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Select Product:
+          [Shopping] Load Product:
             sku: "foobar"
         `);
         done();
@@ -322,9 +322,9 @@ describe('Products Effects', () => {
     it('should fire SelectProduct when route /product/YYY is navigated', done => {
       router.navigateByUrl('/product/foobar');
 
-      effects.routeListenerForSelectingProducts$.subscribe(action => {
+      effects.selectedProduct$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Select Product:
+          [Shopping] Load Product:
             sku: "foobar"
         `);
         done();
@@ -334,29 +334,15 @@ describe('Products Effects', () => {
     it('should not fire SelectProduct when route /something is navigated', done => {
       router.navigateByUrl('/any');
 
-      effects.routeListenerForSelectingProducts$.subscribe(fail, fail, fail);
+      effects.selectedProduct$.subscribe(fail, fail, fail);
 
       setTimeout(done, 1000);
-    });
-  });
-
-  describe('selectedProduct$', () => {
-    it('should map to LoadProduct when product is selected', () => {
-      const sku = 'P123';
-      actions$ = hot('a', { a: new fromActions.SelectProduct({ sku }) });
-      expect(effects.selectedProduct$).toBeObservable(cold('a', { a: new fromActions.LoadProduct({ sku }) }));
-    });
-
-    it('should fire LoadProduct when product is undefined', () => {
-      actions$ = hot('a', { a: new fromActions.SelectProduct({ sku: undefined }) });
-      expect(effects.selectedProduct$).toBeObservable(cold('-'));
     });
   });
 
   describe('redirectIfErrorInProducts$', () => {
     beforeEach(() => {
       store$.dispatch(new fromActions.LoadProductFail({ sku: 'SKU', error: { status: 404 } as HttpError }));
-      store$.dispatch(new fromActions.SelectProduct({ sku: 'SKU' }));
     });
 
     it('should redirect if triggered on product detail page', fakeAsync(() => {
@@ -540,7 +526,6 @@ describe('Products Effects', () => {
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
         })
       );
-      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
 
       router.navigateByUrl('/product/ABC');
 
@@ -559,7 +544,6 @@ describe('Products Effects', () => {
           product: { sku: 'ABC', type: 'Product' } as Product,
         })
       );
-      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
 
       router.navigateByUrl('/product/ABC');
 
@@ -575,7 +559,6 @@ describe('Products Effects', () => {
           error: { error: 'ERROR' } as HttpError,
         })
       );
-      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
 
       router.navigateByUrl('/product/ABC');
 
@@ -590,7 +573,6 @@ describe('Products Effects', () => {
           product: { sku: 'ABC', type: 'Product', defaultCategoryId: '123' } as Product,
         })
       );
-      store$.dispatch(new fromActions.SelectProduct({ sku: 'ABC' }));
 
       router.navigateByUrl('/category/456/product/ABC');
 

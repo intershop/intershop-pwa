@@ -1,4 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -16,7 +19,6 @@ import {
   LoadProductVariationsFail,
   LoadProductVariationsSuccess,
   LoadRetailSetSuccess,
-  SelectProduct,
 } from './products.actions';
 import {
   getProduct,
@@ -25,26 +27,35 @@ import {
   getProductLoading,
   getProducts,
   getSelectedProduct,
-  getSelectedProductId,
 } from './products.selectors';
 
 describe('Products Selectors', () => {
   let store$: TestStore;
+  let router: Router;
 
   let prod: Product;
 
   beforeEach(() => {
     prod = { sku: 'sku' } as Product;
 
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
+          routerStore: true,
+        }),
+      ],
     });
 
     store$ = TestBed.get(TestStore);
+    router = TestBed.get(Router);
   });
 
   describe('with empty state', () => {
@@ -55,7 +66,6 @@ describe('Products Selectors', () => {
 
     it('should not select a current product when used', () => {
       expect(getSelectedProduct(store$.state)).toBeUndefined();
-      expect(getSelectedProductId(store$.state)).toBeUndefined();
     });
   });
 
@@ -108,14 +118,14 @@ describe('Products Selectors', () => {
 
       it('should not select the irrelevant product when used', () => {
         expect(getSelectedProduct(store$.state)).toBeUndefined();
-        expect(getSelectedProductId(store$.state)).toBeUndefined();
       });
     });
 
     describe('with product route', () => {
-      beforeEach(() => {
-        store$.dispatch(new SelectProduct({ sku: prod.sku }));
-      });
+      beforeEach(fakeAsync(() => {
+        router.navigateByUrl('/product;sku=' + prod.sku);
+        tick(500);
+      }));
 
       it('should return the product information when used', () => {
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
@@ -124,7 +134,6 @@ describe('Products Selectors', () => {
 
       it('should select the selected product when used', () => {
         expect(getSelectedProduct(store$.state)).toHaveProperty('sku', prod.sku);
-        expect(getSelectedProductId(store$.state)).toEqual(prod.sku);
       });
     });
   });

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
@@ -64,7 +65,8 @@ export class SearchEffects {
     ofType<SelectSearchTerm>(SearchActionTypes.SelectSearchTerm),
     mapToPayloadProperty('searchTerm'),
     whenTruthy(),
-    map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } }))
+    map(searchTerm => new LoadMoreProducts({ id: { type: 'search', value: searchTerm } })),
+    distinctUntilChanged(isEqual)
   );
 
   @Effect()

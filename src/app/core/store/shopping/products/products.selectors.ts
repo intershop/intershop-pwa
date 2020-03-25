@@ -14,6 +14,7 @@ import {
   createVariationProductView,
 } from 'ish-core/models/product-view/product-view.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+import { selectRouteParam } from 'ish-core/store/router';
 import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
@@ -36,11 +37,6 @@ const productToVariationOptions = memoize(
 
 export const { selectEntities: getProductEntities, selectIds: getProductIds } = productAdapter.getSelectors(
   getProductsState
-);
-
-export const getSelectedProductId = createSelector(
-  getProductsState,
-  state => state.selected
 );
 
 export const getFailed = createSelector(
@@ -108,7 +104,7 @@ export const getProducts = createSelector(
 
 export const getSelectedProduct = createSelector(
   state => state,
-  getSelectedProductId,
+  selectRouteParam('sku'),
   (state, sku): ProductView | VariationProductView | VariationProductMasterView => getProduct(state, { sku })
 );
 

@@ -29,7 +29,6 @@ import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import {
-  distinctCompareWith,
   mapErrorToAction,
   mapToPayload,
   mapToPayloadProperty,
@@ -193,21 +192,13 @@ export class ProductsEffects {
     )
   );
 
-  @Effect()
-  routeListenerForSelectingProducts$ = this.store.pipe(
-    select(selectRouteParam('sku')),
-    distinctCompareWith(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    map(sku => new productsActions.SelectProduct({ sku }))
-  );
-
   /**
    * reloads product when it is selected (usually product detail page)
    * change to {@link LoadProductIfNotLoaded} if no reload is needed
    */
   @Effect()
-  selectedProduct$ = this.actions$.pipe(
-    ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
-    mapToPayloadProperty('sku'),
+  selectedProduct$ = this.store.pipe(
+    select(selectRouteParam('sku')),
     whenTruthy(),
     map(sku => new productsActions.LoadProduct({ sku }))
   );

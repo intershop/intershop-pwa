@@ -4,30 +4,12 @@ import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model'
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export enum CategoriesActionTypes {
-  SelectCategory = '[Shopping] Select Category',
-  DeselectCategory = '[Shopping] Deselect Category',
-  SelectedCategoryAvailable = '[Shopping] Selected Category Available',
   LoadTopLevelCategories = '[Shopping] Load top level categories',
   LoadTopLevelCategoriesFail = '[Shopping] Load top level categories fail',
   LoadTopLevelCategoriesSuccess = '[Shopping] Load top level categories success',
   LoadCategory = '[Shopping] Load Category',
   LoadCategoryFail = '[Shopping] Load Category Fail',
   LoadCategorySuccess = '[Shopping] Load Category Success',
-}
-
-export class SelectCategory implements Action {
-  readonly type = CategoriesActionTypes.SelectCategory;
-  constructor(public payload: { categoryId: string }) {}
-}
-
-export class DeselectCategory implements Action {
-  readonly type = CategoriesActionTypes.DeselectCategory;
-  readonly payload = undefined;
-}
-
-export class SelectedCategoryAvailable implements Action {
-  readonly type = CategoriesActionTypes.SelectedCategoryAvailable;
-  constructor(public payload: { categoryId: string }) {}
 }
 
 export class LoadTopLevelCategories implements Action {
@@ -61,8 +43,6 @@ export class LoadCategorySuccess implements Action {
 }
 
 export type CategoriesAction =
-  | SelectCategory
-  | DeselectCategory
   | LoadTopLevelCategories
   | LoadTopLevelCategoriesFail
   | LoadTopLevelCategoriesSuccess
