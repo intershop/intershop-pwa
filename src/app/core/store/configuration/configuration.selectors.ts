@@ -58,3 +58,8 @@ export const getTheme = createSelector(
   getConfigurationState,
   state => state.theme
 );
+
+export const isServerConfigurationLoaded = createSelector(
+  getConfigurationState,
+  state => !!state.serverConfig
+);

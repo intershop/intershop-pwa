@@ -11,6 +11,7 @@ import {
   getICMServerURL,
   getICMStaticURL,
   getRestEndpoint,
+  isServerConfigurationLoaded,
 } from './configuration.selectors';
 
 describe('Configuration Selectors', () => {
@@ -32,56 +33,67 @@ describe('Configuration Selectors', () => {
       expect(getICMStaticURL(store$.state)).toBeUndefined();
       expect(getFeatures(store$.state)).toBeEmpty();
       expect(getGTMToken(store$.state)).toBeUndefined();
+      expect(isServerConfigurationLoaded(store$.state)).toBeFalsy();
+    });
+  });
+
+  describe('after importing settings', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new ApplyConfiguration({
+          baseURL: 'http://example.org',
+          server: 'api',
+          serverStatic: 'static',
+          channel: 'site',
+          features: ['compare', 'recently'],
+        })
+      );
     });
 
-    describe('after importing settings', () => {
+    it('should have defined values for all selectors', () => {
+      expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/-');
+      expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
+      expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
+      expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/-');
+      expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
+    });
+
+    describe('after setting application', () => {
       beforeEach(() => {
         store$.dispatch(
           new ApplyConfiguration({
-            baseURL: 'http://example.org',
-            server: 'api',
-            serverStatic: 'static',
-            channel: 'site',
-            features: ['compare', 'recently'],
+            application: 'app',
           })
         );
       });
 
       it('should have defined values for all selectors', () => {
-        expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/-');
+        expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
         expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
         expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
-        expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/-');
+        expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
         expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
       });
+    });
+  });
 
-      describe('after setting application', () => {
-        beforeEach(() => {
-          store$.dispatch(
-            new ApplyConfiguration({
-              application: 'app',
-            })
-          );
-        });
-
-        it('should have defined values for all selectors', () => {
-          expect(getRestEndpoint(store$.state)).toEqual('http://example.org/api/site/app');
-          expect(getICMBaseURL(store$.state)).toEqual('http://example.org');
-          expect(getICMServerURL(store$.state)).toEqual('http://example.org/api');
-          expect(getICMStaticURL(store$.state)).toEqual('http://example.org/static/site/app');
-          expect(getFeatures(store$.state)).toIncludeAllMembers(['compare', 'recently']);
-        });
-      });
+  describe('after setting gtm token', () => {
+    beforeEach(() => {
+      store$.dispatch(new SetGTMToken({ gtmToken: 'dummy' }));
     });
 
-    describe('after setting gtm token', () => {
-      beforeEach(() => {
-        store$.dispatch(new SetGTMToken({ gtmToken: 'dummy' }));
-      });
+    it('should set token to state', () => {
+      expect(getGTMToken(store$.state)).toEqual('dummy');
+    });
+  });
 
-      it('should set token to state', () => {
-        expect(getGTMToken(store$.state)).toEqual('dummy');
-      });
+  describe('after setting serverConfig', () => {
+    beforeEach(() => {
+      store$.dispatch(new ApplyConfiguration({ serverConfig: {} }));
+    });
+
+    it('should set serverConfig to state', () => {
+      expect(isServerConfigurationLoaded(store$.state)).toBeTruthy();
     });
   });
 });

@@ -6,15 +6,26 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { Observable, Subject, of } from 'rxjs';
+import { cold, hot } from 'jest-marbles';
+import { RouteNavigation } from 'ngrx-router';
+import { Observable, Subject, of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { instance, mock, when } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
+import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { SetAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
-import { ApplyConfiguration, ConfigurationActionTypes } from './configuration.actions';
+import {
+  ApplyConfiguration,
+  ConfigurationActionTypes,
+  LoadServerConfig,
+  LoadServerConfigFail,
+} from './configuration.actions';
 import { ConfigurationEffects } from './configuration.effects';
 import { configurationReducer } from './configuration.reducer';
 import { getFeatures, getRestEndpoint } from './configuration.selectors';
@@ -25,10 +36,13 @@ describe('Configuration Effects', () => {
   let router: Router;
   let location: Location;
   let store$: TestStore;
+  let configurationServiceMock: ConfigurationService;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
+
+    configurationServiceMock = mock(ConfigurationService);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -43,6 +57,7 @@ describe('Configuration Effects', () => {
         ConfigurationEffects,
         provideMockActions(() => actions$),
         { provide: PLATFORM_ID, useValue: 'server' },
+        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
       ],
     });
 
@@ -52,6 +67,58 @@ describe('Configuration Effects', () => {
     store$ = TestBed.get(TestStore);
     store$.dispatch(new SetAvailableLocales({ locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[] }));
     store$.dispatch(new ApplyConfiguration({ baseURL: 'http://example.org' }));
+  });
+
+  describe('loadServerConfigOnInit$', () => {
+    it('should trigger the loading of config data on the first page', () => {
+      const action = new RouteNavigation({
+        path: 'any',
+      });
+      const expected = new LoadServerConfig();
+
+      actions$ = hot('a', { a: action });
+      expect(effects.loadServerConfigOnInit$).toBeObservable(cold('a', { a: expected }));
+    });
+
+    it('should not trigger the loading of config data on the second page', () => {
+      store$.dispatch(
+        new ApplyConfiguration({
+          serverConfig: { application: 'intershop.B2CResponsive' },
+        } as ServerConfig)
+      );
+
+      actions$ = hot('        ----a---a--a', { a: new RouteNavigation({ path: 'any' }) });
+      const expected$ = cold('------------');
+
+      expect(effects.loadServerConfigOnInit$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadServerConfig$', () => {
+    beforeEach(() => {
+      when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
+    });
+
+    it('should map to action of type ApplyConfiguration', () => {
+      const action = new LoadServerConfig();
+      const completion = new ApplyConfiguration({ serverConfig: {} });
+
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadServerConfig$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadServerConfigFail', () => {
+      when(configurationServiceMock.getServerConfiguration()).thenReturn(throwError({ message: 'invalid' }));
+
+      const action = new LoadServerConfig();
+      const completion = new LoadServerConfigFail({ error: { message: 'invalid' } as HttpError });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadServerConfig$).toBeObservable(expected$);
+    });
   });
 
   describe('setInitialRestEndpoint$', () => {

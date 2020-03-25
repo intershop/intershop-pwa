@@ -23,6 +23,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -115,6 +116,9 @@ describe('Shopping Store', () => {
       }
     });
 
+    const configurationServiceMock = mock(ConfigurationService);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
+
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
@@ -192,6 +196,7 @@ describe('Shopping Store', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
@@ -240,6 +245,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load top level categories:
           depth: 1
         [Shopping] Load top level categories success:
@@ -272,6 +278,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/category/A.123"
             path: "category/:categoryUniqueId"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Select Category:
             categoryId: "A.123"
           [Shopping] Load Category:
@@ -325,6 +332,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/search/something"
             path: "search/:searchTerm"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Set Search Term:
             searchTerm: "something"
           [ProductListing] Load More Products:
@@ -369,6 +377,7 @@ describe('Shopping Store', () => {
               data: {}
               url: "/product/P2"
               path: "product/:sku"
+            [Configuration Internal] Get the ICM configuration
             [Shopping] Select Product:
               sku: "P2"
             [Recently Viewed] Add Product to Recently:
@@ -408,6 +417,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Select Category:
           categoryId: "A.123"
         [Shopping] Load top level categories:
@@ -448,6 +458,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/compare"
             path: "compare"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Deselect Category
         `);
       }));
@@ -483,6 +494,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Select Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories:
@@ -555,6 +567,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/category/A.123.456/product/P1"
             path: "category/:categoryUniqueId/product/:sku"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Select Product:
             sku: "P1"
           [Recently Viewed] Add Product to Recently:
@@ -586,6 +599,7 @@ describe('Shopping Store', () => {
               data: {}
               url: "/category/A.123.456"
               path: "category/:categoryUniqueId"
+            [Configuration Internal] Get the ICM configuration
             [ProductListing] Load More Products:
               id: {"type":"category","value":"A.123.456"}
             [Shopping] Select Product:
@@ -610,6 +624,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/search/something"
             path: "search/:searchTerm"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Deselect Category
           [Shopping] Set Search Term:
             searchTerm: "something"
@@ -655,6 +670,7 @@ describe('Shopping Store', () => {
               data: {}
               url: "/category/A.123.456"
               path: "category/:categoryUniqueId"
+            [Configuration Internal] Get the ICM configuration
             [Shopping] Select Category:
               categoryId: "A.123.456"
             [ProductListing] Load More Products:
@@ -696,6 +712,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/compare"
             path: "compare"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Deselect Category
         `);
       }));
@@ -731,6 +748,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Select Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories:
@@ -788,6 +806,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/category/A.123.456"
             path: "category/:categoryUniqueId"
+          [Configuration Internal] Get the ICM configuration
           [ProductListing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
           [Shopping] Select Product:
@@ -845,6 +864,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/compare"
             path: "compare"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Deselect Category
           [Shopping] Select Product:
             sku: undefined
@@ -882,6 +902,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load top level categories:
           depth: 1
         [Shopping] Select Product:
@@ -919,6 +940,7 @@ describe('Shopping Store', () => {
             data: {}
             url: "/compare"
             path: "compare"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Select Product:
             sku: undefined
         `);
@@ -955,6 +977,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Select Category:
           categoryId: "A.123.456"
         [Shopping] Load top level categories:
@@ -988,6 +1011,7 @@ describe('Shopping Store', () => {
           data: {}
           url: "/error"
           path: "error"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Deselect Category
         [Shopping] Select Product:
           sku: undefined
@@ -1028,6 +1052,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Select Category:
           categoryId: "A.123.XXX"
         [Shopping] Load top level categories:
@@ -1044,6 +1069,7 @@ describe('Shopping Store', () => {
           data: {}
           url: "/error"
           path: "error"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Deselect Category
       `);
     }));
@@ -1076,6 +1102,7 @@ describe('Shopping Store', () => {
           deviceType: "pc"
         [Viewconf Internal] Set Breadcrumb Data:
           breadcrumbData: undefined
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load top level categories:
           depth: 1
         [Shopping] Set Search Term:

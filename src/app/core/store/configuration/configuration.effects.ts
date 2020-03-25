@@ -2,19 +2,36 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
-import { filter, map, mergeMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { ofRoute } from 'ngrx-router';
+import {
+  concatMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  switchMapTo,
+  take,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { SelectLocale } from 'ish-core/store/locale';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
+import * as configActions from './configuration.actions';
 import { ConfigurationState } from './configuration.reducer';
+import { isServerConfigurationLoaded } from './configuration.selectors';
 
 @Injectable()
 export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
+    private store: Store<{}>,
+    private configService: ConfigurationService,
     private stateProperties: StatePropertiesService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: string,
@@ -37,6 +54,28 @@ export class ConfigurationEffects {
     mergeMap(({ paramMap }) => [...this.extractConfigurationParameters(paramMap), ...this.extractLanguage(paramMap)])
   );
 
+  /**
+   * get server configuration on routing event, if it is not already loaded
+   */
+  @Effect()
+  loadServerConfigOnInit$ = this.actions$.pipe(
+    ofRoute(),
+    switchMapTo(this.store.pipe(select(isServerConfigurationLoaded))),
+    whenFalsy(),
+    mapTo(new configActions.LoadServerConfig())
+  );
+
+  @Effect()
+  loadServerConfig$ = this.actions$.pipe(
+    ofType<configActions.LoadServerConfig>(configActions.ConfigurationActionTypes.LoadServerConfig),
+    concatMap(() =>
+      this.configService.getServerConfiguration().pipe(
+        map(serverConfig => new configActions.ApplyConfiguration({ serverConfig })),
+        mapErrorToAction(configActions.LoadServerConfigFail)
+      )
+    )
+  );
+
   @Effect()
   setInitialRestEndpoint$ = this.actions$.pipe(
     ofType(ROOT_EFFECTS_INIT),
@@ -54,7 +93,7 @@ export class ConfigurationEffects {
     ),
     map(
       ([, baseURL, server, serverStatic, channel, application, features, theme]) =>
-        new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
+        new configActions.ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
     )
   );
 
@@ -66,7 +105,7 @@ export class ConfigurationEffects {
     withLatestFrom(this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
     map(([, gtmToken]) => gtmToken),
     whenTruthy(),
-    map(gtmToken => new SetGTMToken({ gtmToken }))
+    map(gtmToken => new configActions.SetGTMToken({ gtmToken }))
   );
 
   extractConfigurationParameters(paramMap: ParamMap) {
@@ -88,7 +127,7 @@ export class ConfigurationEffects {
       }
     }
 
-    return Object.keys(properties).length ? [new ApplyConfiguration(properties)] : [];
+    return Object.keys(properties).length ? [new configActions.ApplyConfiguration(properties)] : [];
   }
 
   extractLanguage(paramMap: ParamMap) {
