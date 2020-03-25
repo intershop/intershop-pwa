@@ -2,19 +2,42 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
-import { filter, map, mergeMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { ofRoute } from 'ngrx-router';
+import {
+  concatMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  switchMapTo,
+  take,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { SelectLocale } from 'ish-core/store/locale';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
+import {
+  ApplyConfiguration,
+  ConfigurationActionTypes,
+  LoadServerConfig,
+  LoadServerConfigFail,
+  SetGTMToken,
+} from './configuration.actions';
 import { ConfigurationState } from './configuration.reducer';
+import { isServerConfigurationLoaded } from './configuration.selectors';
 
 @Injectable()
 export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
+    private store: Store<{}>,
+    private configService: ConfigurationService,
     private stateProperties: StatePropertiesService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: string,
@@ -35,6 +58,28 @@ export class ConfigurationEffects {
     map(event => event.snapshot),
     tap(snapshot => this.redirectIfNeeded(snapshot)),
     mergeMap(({ paramMap }) => [...this.extractConfigurationParameters(paramMap), ...this.extractLanguage(paramMap)])
+  );
+
+  /**
+   * get server configuration on routing event, if it is not already loaded
+   */
+  @Effect()
+  loadServerConfigOnInit$ = this.actions$.pipe(
+    ofRoute(),
+    switchMapTo(this.store.pipe(select(isServerConfigurationLoaded))),
+    whenFalsy(),
+    mapTo(new LoadServerConfig())
+  );
+
+  @Effect()
+  loadServerConfig$ = this.actions$.pipe(
+    ofType<LoadServerConfig>(ConfigurationActionTypes.LoadServerConfig),
+    concatMap(() =>
+      this.configService.getServerConfiguration().pipe(
+        map(serverConfig => new ApplyConfiguration({ serverConfig })),
+        mapErrorToAction(LoadServerConfigFail)
+      )
+    )
   );
 
   @Effect()

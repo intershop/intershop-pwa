@@ -58,3 +58,20 @@ export const getTheme = createSelector(
   getConfigurationState,
   state => state.theme
 );
+
+const getServerConfig = createSelector(
+  getConfigurationState,
+  state => state.serverConfig
+);
+
+export const isServerConfigurationLoaded = createSelector(
+  getServerConfig,
+  serverConfig => !!serverConfig
+);
+
+export const getServerConfigParameter = (path: string) =>
+  createSelector(
+    getServerConfig,
+    serverConfig =>
+      path.split('.').reduce((obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined), serverConfig)
+  );
