@@ -27,6 +27,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -133,6 +134,9 @@ describe('Checkout Store', () => {
 
     const categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
+
+    const configurationServiceMock = mock(ConfigurationService);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
@@ -247,6 +251,7 @@ describe('Checkout Store', () => {
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
