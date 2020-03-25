@@ -12,14 +12,12 @@ import { instance, mock, verify, when } from 'ts-mockito';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
+import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
 import { SetAvailableLocales } from 'ish-core/store/locale';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
-import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
-import { SelectProduct } from 'ish-core/store/shopping/products/products.actions';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -82,120 +80,84 @@ describe('Categories Effects', () => {
     router = TestBed.get(Router);
   });
 
-  describe('routeListenerForSelectingCategory$', () => {
-    it('should trigger SelectCategory when /category/XXX is visited', done => {
+  describe('selectedCategory$', () => {
+    let category: CategoryView;
+
+    beforeEach(() => {
+      category = {
+        uniqueId: 'dummy',
+      } as CategoryView;
+    });
+
+    it('should trigger LoadCategory when /category/XXX is visited', done => {
       router.navigateByUrl('/category/dummy');
 
-      effects.routeListenerForSelectingCategory$.subscribe(action => {
+      effects.selectedCategory$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Select Category:
+          [Shopping] Load Category:
             categoryId: "dummy"
         `);
         done();
       });
     });
 
-    it('should trigger SelectCategory when /category/XXX/product/YYY is visited', done => {
+    it('should trigger LoadCategory when /category/XXX is visited and category is not completely loaded', done => {
+      category.completenessLevel = 0;
+      store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
+      router.navigateByUrl('/category/dummy');
+
+      effects.selectedCategory$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Load Category:
+            categoryId: "dummy"
+        `);
+        done();
+      });
+    });
+
+    it('should do nothing if category is completely loaded', done => {
+      category.completenessLevel = CategoryCompletenessLevel.Max;
+      store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
+      router.navigateByUrl('/category/dummy');
+
+      effects.selectedCategory$.subscribe(fail, fail, fail);
+
+      setTimeout(done, 1000);
+    });
+    it('should trigger LoadCategory if category exists but subcategories have not been loaded', done => {
+      category.completenessLevel = 0;
+      const subcategory = { ...category, uniqueId: `${category.uniqueId}${CategoryHelper.uniqueIdSeparator}456` };
+
+      store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category, subcategory]) }));
+      router.navigateByUrl('/category/dummy');
+
+      effects.selectedCategory$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Shopping] Load Category:
+            categoryId: "dummy"
+        `);
+        done();
+      });
+    });
+
+    it('should trigger LoadCategory when /category/XXX/product/YYY is visited', done => {
       router.navigateByUrl('/category/dummy/product/foobar');
 
-      effects.routeListenerForSelectingCategory$.subscribe(action => {
+      effects.selectedCategory$.subscribe(action => {
         expect(action).toMatchInlineSnapshot(`
-          [Shopping] Select Category:
+          [Shopping] Load Category:
             categoryId: "dummy"
         `);
         done();
       });
     });
 
-    it('should not trigger SelectCategory when /something is visited', done => {
+    it('should not trigger LoadCategory when /something is visited', done => {
       router.navigateByUrl('/something');
 
-      effects.routeListenerForSelectingCategory$.subscribe(fail, fail, fail);
+      effects.selectedCategory$.subscribe(fail, fail, fail);
 
       setTimeout(done, 1000);
-    });
-
-    it('should not trigger SelectCategory when category is already selected', done => {
-      store$.dispatch(new fromActions.SelectCategory({ categoryId: 'dummy' }));
-
-      router.navigateByUrl('/category/dummy');
-
-      effects.routeListenerForSelectingCategory$.subscribe(fail, fail, fail);
-
-      setTimeout(done, 1000);
-    });
-  });
-
-  describe('selectedCategory$', () => {
-    describe('for root categories', () => {
-      let category: CategoryView;
-
-      beforeEach(() => {
-        category = {
-          uniqueId: '123',
-        } as CategoryView;
-      });
-
-      it('should reload category if it isnt completely loaded yet', () => {
-        category.completenessLevel = 0;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
-
-        const completion = new fromActions.LoadCategory({ categoryId: category.uniqueId });
-        const expected$ = cold('a', { a: completion });
-        expect(effects.selectedCategory$).toBeObservable(expected$);
-      });
-
-      it('should do nothing if category is completely loaded', () => {
-        category.completenessLevel = CategoryCompletenessLevel.Max;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
-        expect(effects.selectedCategory$).toBeObservable(cold('-'));
-      });
-
-      it('should trigger LoadCategory if not exists', () => {
-        actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
-        const completion = new fromActions.LoadCategory({ categoryId: category.uniqueId });
-        const expected$ = cold('a', { a: completion });
-        expect(effects.selectedCategory$).toBeObservable(expected$);
-      });
-
-      it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
-        category.hasChildren = () => true;
-        category.completenessLevel = 0;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
-
-        const completion = new fromActions.LoadCategory({ categoryId: category.uniqueId });
-        const expected$ = cold('a', { a: completion });
-        expect(effects.selectedCategory$).toBeObservable(expected$);
-      });
-    });
-
-    describe('for leaf categories', () => {
-      let category: Category;
-
-      beforeEach(() => {
-        category = {
-          uniqueId: '123.456.789',
-        } as Category;
-      });
-
-      it('should trigger only one LoadCategory if it doesnt exist', () => {
-        actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
-
-        const completion = new fromActions.LoadCategory({ categoryId: '123.456.789' });
-        const expected$ = cold('a', { a: completion });
-        expect(effects.selectedCategory$).toBeObservable(expected$);
-      });
-
-      it('should not trigger LoadCategory for categories that are completely loaded', () => {
-        category.completenessLevel = CategoryCompletenessLevel.Max;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        actions$ = hot('a', { a: new fromActions.SelectCategory({ categoryId: category.uniqueId }) });
-
-        expect(effects.selectedCategory$).toBeObservable(cold('-----'));
-      });
     });
   });
 
@@ -303,64 +265,6 @@ describe('Categories Effects', () => {
     });
   });
 
-  describe('productOrCategoryChanged$', () => {
-    let category: Category;
-
-    beforeEach(() => {
-      category = {
-        uniqueId: '123',
-        hasOnlineProducts: false,
-      } as Category;
-    });
-
-    describe('when product is selected', () => {
-      beforeEach(fakeAsync(() => {
-        router.navigateByUrl('/category/123/product/P222');
-        tick(500);
-      }));
-
-      it('should do nothing when product is selected', () => {
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        store$.dispatch(new SelectProduct({ sku: 'P222' }));
-
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-    });
-
-    describe('when product is not selected', () => {
-      beforeEach(fakeAsync(() => {
-        router.navigateByUrl('/category/123');
-        tick(500);
-      }));
-
-      it("should do nothing when category doesn't have online products", () => {
-        category.hasOnlineProducts = false;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        store$.dispatch(new fromActions.SelectCategory({ categoryId: category.uniqueId }));
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-
-      it('should do nothing when no category is selected', () => {
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-
-      it('should do nothing when selected category is not in the store', () => {
-        store$.dispatch(new fromActions.SelectCategory({ categoryId: category.uniqueId }));
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-
-      it('should trigger action of type LoadProductsForCategory when category is selected', () => {
-        category.hasOnlineProducts = true;
-        store$.dispatch(new fromActions.LoadCategorySuccess({ categories: categoryTree([category]) }));
-        store$.dispatch(new fromActions.SelectCategory({ categoryId: category.uniqueId }));
-
-        const action = new LoadMoreProducts({ id: { type: 'category', value: category.uniqueId }, page: undefined });
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
-      });
-    });
-  });
-
   describe('redirectIfErrorInCategories$', () => {
     it('should redirect if triggered', fakeAsync(() => {
       const action = new fromActions.LoadCategoryFail({ error: { status: 404 } as HttpError });
@@ -373,56 +277,5 @@ describe('Categories Effects', () => {
 
       expect(location.path()).toEqual('/error');
     }));
-  });
-
-  describe('selectedCategoryAvailable$', () => {
-    it('should not fire when selected category is not available', () => {
-      store$.dispatch(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      actions$ = of(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      expect(effects.selectedCategoryAvailable$).toBeObservable(cold('-----'));
-    });
-
-    it('should not fire when selected category is available but not completely loaded', () => {
-      store$.dispatch(
-        new fromActions.LoadCategorySuccess({ categories: categoryTree([{ uniqueId: 'A' }] as Category[]) })
-      );
-      store$.dispatch(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      actions$ = of(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      expect(effects.selectedCategoryAvailable$).toBeObservable(cold('-----'));
-    });
-
-    it('should fire when selected category is available and completely loaded', () => {
-      store$.dispatch(
-        new fromActions.LoadCategorySuccess({
-          categories: categoryTree([{ uniqueId: 'A', completenessLevel: CategoryCompletenessLevel.Max }] as Category[]),
-        })
-      );
-      store$.dispatch(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      actions$ = of(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      expect(effects.selectedCategoryAvailable$).toBeObservable(
-        cold('a', { a: new fromActions.SelectedCategoryAvailable({ categoryId: 'A' }) })
-      );
-    });
-
-    it('should not fire twice when category is selected multiple times', () => {
-      store$.dispatch(
-        new fromActions.LoadCategorySuccess({
-          categories: categoryTree([{ uniqueId: 'A', completenessLevel: CategoryCompletenessLevel.Max }] as Category[]),
-        })
-      );
-      store$.dispatch(new fromActions.SelectCategory({ categoryId: 'A' }));
-
-      actions$ = hot('-a-a-a', { a: new fromActions.SelectCategory({ categoryId: 'A' }) });
-
-      expect(effects.selectedCategoryAvailable$).toBeObservable(
-        cold('-a-----', { a: new fromActions.SelectedCategoryAvailable({ categoryId: 'A' }) })
-      );
-    });
   });
 });

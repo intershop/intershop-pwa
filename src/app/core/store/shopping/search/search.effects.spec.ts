@@ -89,12 +89,12 @@ describe('Search Effects', () => {
     });
 
     describe('triggerSearch$', () => {
-      it('should trigger action if search URL is matched', () => {
+      it('should trigger action once if search URL is matched', () => {
         const action = new SelectSearchTerm({ searchTerm: 'dummy' });
         actions$ = hot('a-a-|', { a: action });
 
         expect(effects.triggerSearch$).toBeObservable(
-          cold('a-a-|', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
+          cold('a---|', { a: new LoadMoreProducts({ id: { type: 'search', value: 'dummy' }, page: undefined }) })
         );
       });
     });

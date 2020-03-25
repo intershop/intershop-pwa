@@ -1,4 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers } from '@ngrx/store';
 
 import { Category } from 'ish-core/models/category/category.model';
@@ -14,19 +17,18 @@ import {
   LoadCategoryFail,
   LoadCategorySuccess,
   LoadTopLevelCategoriesSuccess,
-  SelectCategory,
 } from './categories.actions';
 import {
   getCategoryEntities,
   getCategoryLoading,
   getSelectedCategory,
-  getSelectedCategoryId,
   getTopLevelCategories,
   isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
   let store$: TestStore;
+  let router: Router;
 
   let cat: Category;
   let prod: Product;
@@ -36,15 +38,24 @@ describe('Categories Selectors', () => {
     cat = { uniqueId: 'Aa', categoryPath: ['Aa'] } as Category;
     cat.hasOnlineProducts = true;
 
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'category/:categoryUniqueId', component: DummyComponent }]),
+        ngrxTesting({
+          reducers: {
+            shopping: combineReducers(shoppingReducers),
+          },
+          routerStore: true,
+        }),
+      ],
     });
 
     store$ = TestBed.get(TestStore);
+    router = TestBed.get(Router);
   });
 
   describe('with empty state', () => {
@@ -55,7 +66,6 @@ describe('Categories Selectors', () => {
 
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
-      expect(getSelectedCategoryId(store$.state)).toBeUndefined();
     });
 
     it('should not select any top level categories when used', () => {
@@ -110,14 +120,14 @@ describe('Categories Selectors', () => {
 
       it('should not select the irrelevant category when used', () => {
         expect(getSelectedCategory(store$.state)).toBeUndefined();
-        expect(getSelectedCategoryId(store$.state)).toBeUndefined();
       });
     });
 
     describe('with category route', () => {
-      beforeEach(() => {
-        store$.dispatch(new SelectCategory({ categoryId: cat.uniqueId }));
-      });
+      beforeEach(fakeAsync(() => {
+        router.navigate(['category', cat.uniqueId]);
+        tick(500);
+      }));
 
       it('should return the category information when used', () => {
         expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
@@ -126,7 +136,6 @@ describe('Categories Selectors', () => {
 
       it('should select the selected category when used', () => {
         expect(getSelectedCategory(store$.state).uniqueId).toEqual(cat.uniqueId);
-        expect(getSelectedCategoryId(store$.state)).toEqual(cat.uniqueId);
       });
     });
   });

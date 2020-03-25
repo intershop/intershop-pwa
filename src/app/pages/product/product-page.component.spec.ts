@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,8 +18,8 @@ import { Product, ProductCompletenessLevel } from 'ish-core/models/product/produ
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
-import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 'ish-core/store/shopping/products';
+import { LoadCategorySuccess } from 'ish-core/store/shopping/categories';
+import { LoadProductSuccess, LoadProductVariationsSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -45,22 +44,22 @@ describe('Product Page Component', () => {
   let router: Router;
 
   beforeEach(async(() => {
-    @Component({ template: 'dummy', changeDetection: ChangeDetectionStrategy.OnPush })
-    class DummyComponent {}
-
     TestBed.configureTestingModule({
       imports: [
         FeatureToggleModule,
-        RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'product/:sku', component: ProductPageComponent },
+          { path: '**', component: ProductPageComponent },
+        ]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
             shopping: combineReducers(shoppingReducers),
           },
+          routerStore: true,
         }),
       ],
       declarations: [
-        DummyComponent,
         MockComponent(BreadcrumbComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductBundlePartsComponent),
@@ -88,7 +87,6 @@ describe('Product Page Component', () => {
     store$.dispatch(
       new LoadCategorySuccess({ categories: categoryTree([{ uniqueId: 'A', categoryPath: ['A'] } as Category]) })
     );
-    store$.dispatch(new SelectCategory({ categoryId: 'A' }));
   });
 
   it('should be created', () => {
@@ -106,10 +104,11 @@ describe('Product Page Component', () => {
     expect(findAllIshElements(element)).toEqual(['ish-loading', 'ish-recently-viewed']);
   });
 
-  it('should display product-detail when product is available', () => {
+  it('should display product-detail when product is available', fakeAsync(() => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
     store$.dispatch(new LoadProductSuccess({ product }));
-    store$.dispatch(new SelectProduct({ sku: product.sku }));
+    router.navigateByUrl('/product/' + product.sku);
+    tick(500);
 
     fixture.detectChanges();
 
@@ -119,17 +118,18 @@ describe('Product Page Component', () => {
       'ish-product-links',
       'ish-recently-viewed',
     ]);
-  });
+  }));
 
-  it('should not display product-detail when product is not completely loaded', () => {
+  it('should not display product-detail when product is not completely loaded', fakeAsync(() => {
     const product = { sku: 'dummy' } as Product;
     store$.dispatch(new LoadProductSuccess({ product }));
-    store$.dispatch(new SelectProduct({ sku: product.sku }));
+    router.navigateByUrl('/product/' + product.sku);
+    tick(500);
 
     fixture.detectChanges();
 
     expect(findAllIshElements(element)).toEqual(['ish-loading', 'ish-recently-viewed']);
-  });
+  }));
 
   it('should redirect to product page when variation is selected', fakeAsync(() => {
     const product = {
@@ -168,7 +168,7 @@ describe('Product Page Component', () => {
     component.variationSelected(selection, product);
     tick(500);
 
-    expect(location.path()).toMatchInlineSnapshot(`"/sku333-catA"`);
+    expect(location.path()).toMatchInlineSnapshot(`"/sku333"`);
   }));
 
   describe('redirecting to default variation', () => {
@@ -184,6 +184,7 @@ describe('Product Page Component', () => {
         sku: '222',
         attributes: [{ name: 'defaultVariation', type: 'Boolean', value: true }],
         completenessLevel: ProductCompletenessLevel.Detail,
+        defaultCategoryId: 'A',
       } as VariationProduct;
 
       store$.dispatch(new LoadProductSuccess({ product }));
@@ -193,7 +194,6 @@ describe('Product Page Component', () => {
       store$.dispatch(
         new LoadProductVariationsSuccess({ sku: product.sku, variations: ['111', '222'], defaultVariation: '222' })
       );
-      store$.dispatch(new SelectProduct(product));
     });
 
     it('should redirect to default variation for master product', fakeAsync(() => {
@@ -216,14 +216,15 @@ describe('Product Page Component', () => {
     }));
   });
 
-  it('should only dispatch retail set products when quantities are greater than 0', () => {
+  it('should only dispatch retail set products when quantities are greater than 0', fakeAsync(() => {
     const product = {
       sku: 'ABC',
       partSKUs: ['A', 'B', 'C'],
       type: 'RetailSet',
     } as ProductRetailSet;
     store$.dispatch(new LoadProductSuccess({ product }));
-    store$.dispatch(new SelectProduct({ sku: product.sku }));
+    router.navigateByUrl('/product/' + product.sku);
+    tick(500);
 
     fixture.detectChanges();
 
@@ -239,5 +240,5 @@ describe('Product Page Component', () => {
         sku: "C"
         quantity: 1
     `);
-  });
+  }));
 });

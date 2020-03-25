@@ -278,15 +278,11 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
             event: {"id":2,"url":"/category/A.123"}
-          [Shopping] Select Category:
-            categoryId: "A.123"
-          [Configuration Internal] Get the ICM configuration
           [Shopping] Load Category:
             categoryId: "A.123"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Load Category Success:
             categories: tree(A.123,A.123.456)
-          [Shopping] Selected Category Available:
-            categoryId: "A.123"
           [Shopping] Load Category:
             categoryId: "A"
           [Shopping] Load Category Success:
@@ -383,14 +379,12 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/product/P2","params":{"sku":"P2"},"queryParams":{},...
               event: {"id":3,"url":"/product/P2"}
-            [Shopping] Select Product:
+            [Shopping] Load Product:
               sku: "P2"
-            [Configuration Internal] Get the ICM configuration
             [Recently Viewed] Add Product to Recently:
               sku: "P2"
               group: undefined
-            [Shopping] Load Product:
-              sku: "P2"
+            [Configuration Internal] Get the ICM configuration
             [Shopping] Load Product Success:
               product: {"sku":"P2"}
             @ngrx/router-store/navigated:
@@ -422,15 +416,11 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
           event: {"id":1,"url":"/category/A.123"}
-        [Shopping] Select Category:
-          categoryId: "A.123"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Shopping] Selected Category Available:
-          categoryId: "A.123"
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category Success:
@@ -466,7 +456,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Shopping] Deselect Category
           [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
@@ -501,40 +490,43 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.456"}
-        [Shopping] Select Category:
-          categoryId: "A.123.456"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.456"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
-        [Shopping] Selected Category Available:
-          categoryId: "A.123.456"
-        [ProductListing] Load More Products:
-          id: {"type":"category","value":"A.123.456"}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
+        [Shopping] Load Category Success:
+          categories: tree(A,A.123)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Load Category:
+          categoryId: "A.123"
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
+          event: {"id":1,"url":"/category/A.123.456"}
+        [Shopping] Load top level categories:
+          depth: 1
+        [ProductListing] Load More Products:
+          id: {"type":"category","value":"A.123.456"}
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
         [ProductListing Internal] Load More Products For Params:
           id: {"type":"category","value":"A.123.456"}
           filters: undefined
           sorting: undefined
           page: undefined
-        [Shopping] Load Category Success:
-          categories: tree(A,A.123)
-        [Shopping] Load Category Success:
-          categories: tree(A.123,A.123.456)
         [Shopping] Load Products for Category:
           categoryId: "A.123.456"
           page: undefined
           sorting: undefined
         [Shopping] Load Filter For Category:
           uniqueId: "A.123.456"
-        [ProductListing] Load More Products:
-          id: {"type":"category","value":"A.123.456"}
-        [ProductListing] Load More Products:
-          id: {"type":"category","value":"A.123.456"}
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
         [Shopping] Load Product Success:
@@ -547,15 +539,6 @@ describe('Shopping Store', () => {
         [Shopping] Load Filter Success:
           filterNavigation: {}
         [ProductListing] Set Product Listing Pages:
-          id: {"type":"category","value":"A.123.456"}
-        @ngrx/router-store/navigated:
-          routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
-          event: {"id":1,"url":"/category/A.123.456"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
-        [ProductListing] Load More Products:
           id: {"type":"category","value":"A.123.456"}
       `);
     }));
@@ -579,14 +562,12 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
             event: {"id":2,"url":"/category/A.123.456/product/P1"}
-          [Shopping] Select Product:
+          [Shopping] Load Product:
             sku: "P1"
-          [Configuration Internal] Get the ICM configuration
           [Recently Viewed] Add Product to Recently:
             sku: "P1"
             group: undefined
-          [Shopping] Load Product:
-            sku: "P1"
+          [Configuration Internal] Get the ICM configuration
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
           @ngrx/router-store/navigated:
@@ -614,8 +595,6 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
-            [Shopping] Select Product:
-              sku: undefined
             [Configuration Internal] Get the ICM configuration
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
@@ -640,7 +619,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [Shopping] Deselect Category
           [Shopping] Set Search Term:
             searchTerm: "something"
           [Configuration Internal] Get the ICM configuration
@@ -689,22 +667,7 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
-            [Shopping] Select Category:
-              categoryId: "A.123.456"
             [Configuration Internal] Get the ICM configuration
-            [ProductListing] Load More Products:
-              id: {"type":"category","value":"A.123.456"}
-            [ProductListing Internal] Load More Products For Params:
-              id: {"type":"category","value":"A.123.456"}
-              filters: undefined
-              sorting: undefined
-              page: undefined
-            [ProductListing] Set Product Listing Pages:
-              id: {"type":"category","value":"A.123.456"}
-            [Shopping] Load Filter For Category:
-              uniqueId: "A.123.456"
-            [Shopping] Load Filter Success:
-              filterNavigation: {}
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
@@ -734,7 +697,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Shopping] Deselect Category
           [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
@@ -769,30 +731,28 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P1"}
-        [Shopping] Select Category:
-          categoryId: "A.123.456"
-        [Shopping] Select Product:
-          sku: "P1"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load Product:
           sku: "P1"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
-        [Shopping] Selected Category Available:
-          categoryId: "A.123.456"
-        [Recently Viewed] Add Product to Recently:
-          sku: "P1"
-          group: undefined
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
+        [Recently Viewed] Add Product to Recently:
+          sku: "P1"
+          group: undefined
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
+        [Shopping] Load Category Success:
+          categories: tree(A.123,A.123.456)
+        [Shopping] Load Category:
+          categoryId: "A.123"
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigated:
@@ -832,8 +792,6 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/category/A.123.456"}
           [ProductListing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
-          [Shopping] Select Product:
-            sku: undefined
           [Configuration Internal] Get the ICM configuration
           [ProductListing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
@@ -891,9 +849,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Shopping] Deselect Category
-          [Shopping] Select Product:
-            sku: undefined
           [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
@@ -928,11 +883,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
           event: {"id":1,"url":"/product/P1"}
-        [Shopping] Select Product:
-          sku: "P1"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Product:
           sku: "P1"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
         [Recently Viewed] Add Product to Recently:
@@ -969,8 +922,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Shopping] Select Product:
-            sku: undefined
           [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
@@ -1005,22 +956,20 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.456/product/P3","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P3"}
-        [Shopping] Select Category:
-          categoryId: "A.123.456"
-        [Shopping] Select Product:
-          sku: "P3"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.456"
         [Shopping] Load Product:
           sku: "P3"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
         [Shopping] Load Product Fail:
           error: {"message":"error loading product P3"}
           sku: "P3"
-        [Shopping] Selected Category Available:
-          categoryId: "A.123.456"
+        [Shopping] Load Category:
+          categoryId: "A"
+        [Shopping] Load Category:
+          categoryId: "A.123"
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
@@ -1028,13 +977,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Shopping] Load Category:
-          categoryId: "A"
-        [Shopping] Load Category:
-          categoryId: "A.123"
-        [Shopping] Deselect Category
-        [Shopping] Select Product:
-          sku: undefined
         [Shopping] Load Category Success:
           categories: tree(A,A.123)
         [Shopping] Load Category Success:
@@ -1083,11 +1025,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/category/A.123.XXX","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.XXX"}
-        [Shopping] Select Category:
-          categoryId: "A.123.XXX"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category:
           categoryId: "A.123.XXX"
+        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Fail:
           error: {"message":"error loading category A.123.XXX"}
         @ngrx/router-store/cancel:
@@ -1097,7 +1037,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Shopping] Deselect Category
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}

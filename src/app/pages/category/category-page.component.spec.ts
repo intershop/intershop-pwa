@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 
 import { Category } from 'ish-core/models/category/category.model';
 import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadCategory, LoadCategorySuccess, SelectCategory } from 'ish-core/store/shopping/categories';
+import { LoadCategory, LoadCategorySuccess } from 'ish-core/store/shopping/categories';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -21,16 +22,18 @@ describe('Category Page Component', () => {
   let fixture: ComponentFixture<CategoryPageComponent>;
   let element: HTMLElement;
   let store$: Store<{}>;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([{ path: 'category/:categoryUniqueId', component: CategoryPageComponent }]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
             shopping: combineReducers(shoppingReducers),
           },
+          routerStore: true,
         }),
       ],
       declarations: [
@@ -48,6 +51,7 @@ describe('Category Page Component', () => {
     element = fixture.nativeElement;
 
     store$ = TestBed.get(Store);
+    router = TestBed.get(Router);
   });
 
   it('should be created', () => {
@@ -75,25 +79,29 @@ describe('Category Page Component', () => {
     expect(findAllIshElements(element)).toEqual(['ish-loading']);
   }));
 
-  it('should display categories when category has sub categories', () => {
+  it('should display categories when category has sub categories', done => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     const subCategory = { uniqueId: 'dummy.A', categoryPath: ['dummy', 'dummy.A'] } as Category;
     store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category, subCategory]) }));
-    store$.dispatch(new SelectCategory({ categoryId: category.uniqueId }));
+    router.navigate(['category', category.uniqueId]);
 
-    fixture.detectChanges();
-
-    expect(findAllIshElements(element)).toEqual(['ish-category-categories']);
+    setTimeout(() => {
+      fixture.detectChanges();
+      expect(findAllIshElements(element)).toEqual(['ish-category-categories']);
+      done();
+    }, 1000);
   });
 
-  it('should display products when category has products', () => {
+  it('should display products when category has products', done => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     category.hasOnlineProducts = true;
     store$.dispatch(new LoadCategorySuccess({ categories: categoryTree([category]) }));
-    store$.dispatch(new SelectCategory({ categoryId: category.uniqueId }));
+    router.navigate(['category', category.uniqueId]);
 
-    fixture.detectChanges();
-
-    expect(findAllIshElements(element)).toEqual(['ish-category-products']);
+    setTimeout(() => {
+      fixture.detectChanges();
+      expect(findAllIshElements(element)).toEqual(['ish-category-products']);
+      done();
+    }, 1000);
   });
 });
