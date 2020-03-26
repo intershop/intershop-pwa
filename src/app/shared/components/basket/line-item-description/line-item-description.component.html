@@ -38,22 +38,22 @@
 
       <!-- ship window message -->
       <ish-product-shipment [product]="pli.product"></ish-product-shipment>
-
-      <!-- surcharges -->
-      <div *ngFor="let surcharge of pli.itemSurcharges">
-        {{ surcharge.displayName }} <span *ngIf="!surcharge.displayName">{{ surcharge.text }}</span>
-        <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
-        <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
-        <a
-          class="details-tooltip"
-          [ngbPopover]="SurchargeDescription"
-          [popoverTitle]="surcharge.displayName"
-          placement="top"
-        >
-          {{ 'shopping_cart.detail.text' | translate }}
-          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-        </a>
-      </div>
     </ng-container>
+
+    <!-- surcharges -->
+    <div *ngFor="let surcharge of pli.itemSurcharges">
+      {{ surcharge.displayName }} <span *ngIf="!surcharge.displayName">{{ surcharge.text }}</span>
+      <span class="text-nowrap"> {{ surcharge.amount | ishPrice }} </span>
+      <ng-template #SurchargeDescription> <span [innerHTML]="surcharge.description"></span> </ng-template>
+      <a
+        class="details-tooltip"
+        [ngbPopover]="SurchargeDescription"
+        [popoverTitle]="surcharge.displayName"
+        placement="top"
+      >
+        {{ 'shopping_cart.detail.text' | translate }}
+        <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+      </a>
+    </div>
   </ng-container>
 </ng-container>

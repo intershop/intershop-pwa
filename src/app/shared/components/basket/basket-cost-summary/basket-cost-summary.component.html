@@ -52,7 +52,12 @@
     <!-- Tax -->
     <!-- ToDo: display tax in dependence of price calculation preferences -->
     <ng-container *ngIf="totals.taxTotal && totals.taxTotal.value">
-      <dt class="col-6">{{ 'checkout.tax.text' | translate }}</dt>
+      <dt class="col-6">
+        <ng-container *ngIf="totals.itemTotal.priceType === 'net'; else vatIncluded">{{
+          'checkout.tax.text' | translate
+        }}</ng-container>
+        <ng-template #vatIncluded>{{ 'checkout.tax.TaxesLabel.TotalOrderVat' | translate }}</ng-template>
+      </dt>
       <dd class="col-6">{{ totals.taxTotal | ishPrice }}</dd>
     </ng-container>
 

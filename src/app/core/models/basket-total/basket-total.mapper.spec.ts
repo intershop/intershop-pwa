@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { anything } from 'ts-mockito';
 
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
+import { getConfigParameter } from 'ish-core/store/configuration';
 import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { BasketTotalData } from './basket-total.interface';
@@ -14,7 +16,15 @@ describe('Basket Total Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }), BasketTotalMapper],
+      providers: [
+        provideMockStore({
+          selectors: [
+            { selector: getLoggedInCustomer, value: {} },
+            { selector: getConfigParameter(anything(), anything()), value: {} },
+          ],
+        }),
+        BasketTotalMapper,
+      ],
     });
 
     basketTotalMapper = TestBed.get(BasketTotalMapper);

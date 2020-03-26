@@ -63,3 +63,14 @@ export const isServerConfigurationLoaded = createSelector(
   getConfigurationState,
   state => !!state.serverConfig
 );
+
+export const getConfigParameter = (group: string, attr: string) =>
+  createSelector(
+    getConfigurationState,
+    state =>
+      state &&
+      state.serverConfig &&
+      state.serverConfig[group] &&
+      state.serverConfig[group][attr] &&
+      state.serverConfig[group][attr].toString()
+  );

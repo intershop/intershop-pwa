@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { anything } from 'ts-mockito';
 
 import { AddressData } from 'ish-core/models/address/address.interface';
 import { BasketTotalData } from 'ish-core/models/basket-total/basket-total.interface';
 import { BasketBaseData } from 'ish-core/models/basket/basket.interface';
 import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
+import { getConfigParameter } from 'ish-core/store/configuration';
 import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { BasketValidationData } from './basket-validation.interface';
@@ -18,7 +20,12 @@ describe('Basket Validation Mapper', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }),
+        provideMockStore({
+          selectors: [
+            { selector: getLoggedInCustomer, value: {} },
+            { selector: getConfigParameter(anything(), anything()), value: {} },
+          ],
+        }),
         BasketValidationMapper,
       ],
     });

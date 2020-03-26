@@ -26,7 +26,7 @@ export class BasketTotalMapper {
           paymentCostsTotal: this.priceMapper.fromPriceItem(totalsData.paymentCostsTotal),
           dutiesAndSurchargesTotal: this.priceMapper.fromPriceItem(totalsData.surchargeTotal),
           taxTotal: { ...totalsData.grandTotal.tax, type: 'Money' },
-          total: this.priceMapper.fromPriceItem(totalsData.grandTotal),
+          total: this.priceMapper.fromPriceItem(totalsData.grandTotal, 'gross'), // display the total always as gross price
 
           itemRebatesTotal: this.priceMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
           valueRebatesTotal: this.priceMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),

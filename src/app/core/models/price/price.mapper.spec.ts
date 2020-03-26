@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { anything } from 'ts-mockito';
 
 import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
+import { getConfigParameter } from 'ish-core/store/configuration';
 import { getLoggedInCustomer } from 'ish-core/store/user';
 
 import { PriceMapper } from './price.mapper';
@@ -11,7 +13,15 @@ describe('Price Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: {} }] }), PriceMapper],
+      providers: [
+        provideMockStore({
+          selectors: [
+            { selector: getLoggedInCustomer, value: {} },
+            { selector: getConfigParameter(anything(), anything()), value: {} },
+          ],
+        }),
+        PriceMapper,
+      ],
     });
 
     priceMapper = TestBed.get(PriceMapper);
