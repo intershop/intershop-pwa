@@ -36,17 +36,18 @@ import {
   getCurrentBasket,
   isBasketInvoiceAndShippingAddressEqual,
 } from 'ish-core/store/checkout/basket';
-import { getCheckoutStep } from 'ish-core/store/checkout/viewconf';
 import { getServerConfigParameter } from 'ish-core/store/configuration';
 import { CreateOrder, getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
+import { selectRouteData } from 'ish-core/store/router';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
+
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
   constructor(private store: Store<{}>) {}
 
-  checkoutStep$ = this.store.pipe(select(getCheckoutStep));
+  checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
 
   continue(targetStep: number) {
     this.store.dispatch(new ContinueCheckout({ targetStep }));
