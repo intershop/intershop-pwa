@@ -91,7 +91,7 @@ describe('Missing Data', () => {
 
     it('should not lead to complete redirect to error page', () => {
       at(HomePage, page => {
-        page.header.doProductSearch('kodak');
+        page.header.searchBox.search('kodak');
       });
       at(SearchResultPage, page => {
         page.productList.visibleProducts.should('have.length.gte', 1);

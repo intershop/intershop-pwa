@@ -19,7 +19,7 @@ describe('Product Category Context', () => {
     before(() => HomePage.navigateTo());
 
     it('should search for the product', () => {
-      at(HomePage, page => page.header.doProductSearch(_.product.name));
+      at(HomePage, page => page.header.searchBox.search(_.product.name));
     });
 
     it('should find the product on search result page', () => {
