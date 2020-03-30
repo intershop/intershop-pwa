@@ -6,9 +6,10 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 
@@ -21,7 +22,7 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
   templateUrl: './payment-concardis.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class PaymentConcardisComponent implements OnChanges, OnDestroy {
+export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
   /**
    * concardis payment method, needed to get configuration parameters
@@ -60,6 +61,21 @@ export class PaymentConcardisComponent implements OnChanges, OnDestroy {
     return this.getParamValue('ConcardisPaymentService.Environment', '') === 'LIVE'
       ? 'https://pp.payengine.de/bridge/1.0/payengine.min.js'
       : 'https://pptest.payengine.de/bridge/1.0/payengine.min.js';
+  }
+
+  /**
+   * initialize parameter form on init
+   */
+  ngOnInit() {
+    this.parameterForm = new FormGroup(
+      this.paymentMethod.id === 'Concardis_CreditCard'
+        ? {
+            expirationMonth: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
+            expirationYear: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
+            saveForLater: new FormControl(true),
+          }
+        : {}
+    );
   }
 
   /**

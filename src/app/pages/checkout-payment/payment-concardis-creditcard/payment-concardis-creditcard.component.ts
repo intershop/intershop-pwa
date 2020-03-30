@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-import { PaymentConcardisComponent } from '../payment-concardis.component';
+import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 // allows access to concardis js functionality
 // tslint:disable-next-line:no-any
@@ -28,7 +27,7 @@ declare var PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 // tslint:disable-next-line:ccp-no-intelligence-in-components
-export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
+export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
   }
@@ -38,17 +37,6 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
     creditCardIframeName: string;
     verificationIframeName: string;
   };
-
-  /**
-   * initialize parameter form on init
-   */
-  ngOnInit() {
-    this.parameterForm = new FormGroup({
-      expirationMonth: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
-      expirationYear: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
-      saveForLater: new FormControl(true),
-    });
-  }
 
   /* ---------------------------------------- load concardis script if component is visible ------------------------------------------- */
   loadScript() {

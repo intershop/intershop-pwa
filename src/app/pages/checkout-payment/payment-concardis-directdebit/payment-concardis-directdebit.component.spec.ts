@@ -79,7 +79,7 @@ describe('Payment Concardis Directdebit Component', () => {
     verify(emitter.emit(anything())).once();
   });
 
-  /**it('should show an error if submit call back returns with an error', () => {
+  it('should show an error if submit call back returns with an error', () => {
     const errorMessage = 'field is required';
 
     fixture.detectChanges();
@@ -89,7 +89,7 @@ describe('Payment Concardis Directdebit Component', () => {
     );
 
     expect(component.errorMessage.iban.message).toEqual(errorMessage);
-  });**/
+  });
 
   it('should emit cancel event when cancelNewPaymentInstrument is triggered', () => {
     fixture.detectChanges();

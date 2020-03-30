@@ -21,9 +21,10 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox.component';
 
+import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
+import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
+
 import { CheckoutPaymentComponent } from './checkout-payment.component';
-import { PaymentConcardisCreditcardComponent } from './payment-concardis/payment-concardis-creditcard/payment-concardis-creditcard.component';
-import { PaymentConcardisDirectdebitComponent } from './payment-concardis/payment-concardis-directdebit/payment-concardis-directdebit.component';
 
 describe('Checkout Payment Component', () => {
   let component: CheckoutPaymentComponent;

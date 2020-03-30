@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
-import { PaymentConcardisComponent } from '../payment-concardis.component';
+import { PaymentConcardisComponent } from '../payment-concardis/payment-concardis.component';
 
 // allows access to concardis js functionality
 // tslint:disable-next-line:no-any
@@ -29,22 +29,16 @@ declare var PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 // tslint:disable-next-line:ccp-no-intelligence-in-components
-export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
+export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
   }
 
-  /**
-   * initialize parameter form on init
-   */
-  ngOnInit() {
-    this.parameterForm = new FormGroup({});
-  }
-
   handleErrors(controlName: string, message: string) {
-    this.parameterForm.controls[controlName].markAsDirty();
-    this.parameterForm.controls[controlName].markAsTouched();
-    this.parameterForm.controls[controlName].setErrors({ customError: message });
+    if (this.parameterForm.controls[controlName]) {
+      this.parameterForm.controls[controlName].markAsDirty();
+      this.parameterForm.controls[controlName].setErrors({ customError: message });
+    }
   }
 
   /* ---------------------------------------- load concardis script if component is visible ------------------------------------------- */
