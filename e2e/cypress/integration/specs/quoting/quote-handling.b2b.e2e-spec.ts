@@ -6,6 +6,7 @@ import { QuoteDetailPage } from '../../pages/account/quote-detail.page';
 import { QuoteListPage } from '../../pages/account/quote-list.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { CartPage } from '../../pages/checkout/cart.page';
+import { HomePage } from '../../pages/home.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
@@ -114,7 +115,9 @@ describe('Quote Handling', () => {
     });
     at(QuoteDetailPage, page => {
       page.copyQuoteRequest();
+      page.quoteState.should('have.text', 'New');
       page.header.logout();
     });
+    at(HomePage);
   });
 });
