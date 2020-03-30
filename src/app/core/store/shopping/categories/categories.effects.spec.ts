@@ -14,10 +14,7 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configuration
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
-import { SetAvailableLocales } from 'ish-core/store/locale';
-import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
@@ -61,7 +58,6 @@ describe('Categories Effects', () => {
         ngrxTesting({
           reducers: {
             shopping: combineReducers(shoppingReducers),
-            locale: localeReducer,
           },
           routerStore: true,
         }),
@@ -201,12 +197,10 @@ describe('Categories Effects', () => {
   });
 
   describe('loadTopLevelWhenUnavailable$', () => {
-    const EN_US = { lang: 'en' } as Locale;
     let depth: number;
 
     beforeEach(() => {
       depth = TestBed.get(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH);
-      store$.dispatch(new SetAvailableLocales({ locales: [EN_US] }));
     });
 
     it('should load top level categories retrying for every routing action', () => {

@@ -77,3 +77,16 @@ export const getServerConfigParameter = <T>(path: string) =>
         .split('.')
         .reduce((obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined), serverConfig as unknown) as T
   );
+
+export const getAvailableLocales = createSelector(
+  getConfigurationState,
+  state => state.locales
+);
+
+/**
+ * selects the current locale if set. If not returns the first available locale
+ */
+export const getCurrentLocale = createSelector(
+  getConfigurationState,
+  state => (state.lang ? state.locales.find(l => l.lang === state.lang) : state.locales[0])
+);

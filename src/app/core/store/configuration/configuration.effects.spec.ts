@@ -4,10 +4,11 @@ import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { Observable, Subject, of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
@@ -28,9 +29,11 @@ describe('Configuration Effects', () => {
   let effects: ConfigurationEffects;
   let store$: Store<{}>;
   let configurationServiceMock: ConfigurationService;
+  let translateServiceMock: TranslateService;
 
   beforeEach(() => {
     configurationServiceMock = mock(ConfigurationService);
+    translateServiceMock = mock(TranslateService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -41,6 +44,7 @@ describe('Configuration Effects', () => {
       ],
       providers: [
         ConfigurationEffects,
+        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         provideMockActions(() => actions$),
         { provide: PLATFORM_ID, useValue: 'server' },
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
@@ -122,6 +126,15 @@ describe('Configuration Effects', () => {
         () => testComplete$.next()
       );
       // tslint:enable:use-async-synchronisation-in-tests
+    });
+  });
+
+  describe('setLocale$', () => {
+    it('should call TranslateService when locale was initialized', done => {
+      verify(translateServiceMock.use(anything())).once();
+      const params = capture(translateServiceMock.use).last();
+      expect(params[0]).toEqual('en_US');
+      setTimeout(done, 1000);
     });
   });
 

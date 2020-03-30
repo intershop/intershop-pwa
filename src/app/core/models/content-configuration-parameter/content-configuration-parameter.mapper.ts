@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getICMStaticURL } from 'ish-core/store/configuration';
-import { getCurrentLocale } from 'ish-core/store/locale';
+import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/configuration';
 import { mapToProperty } from 'ish-core/utils/operators';
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';

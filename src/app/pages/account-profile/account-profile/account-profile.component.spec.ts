@@ -3,10 +3,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 
@@ -16,17 +14,11 @@ describe('Account Profile Component', () => {
   let component: AccountProfileComponent;
   let fixture: ComponentFixture<AccountProfileComponent>;
   let element: HTMLElement;
-  let locales: Locale[];
 
   const user = { firstName: 'Patricia', lastName: 'Miller', email: 'patricia@test.intershop.de' } as User;
   const customer = { type: 'PrivateCustomer' } as Customer;
 
   beforeEach(async(() => {
-    locales = [
-      { lang: 'en_US', currency: 'USD', value: 'en' },
-      { lang: 'de_DE', currency: 'EUR', value: 'de' },
-    ] as Locale[];
-
     TestBed.configureTestingModule({
       declarations: [
         AccountProfileComponent,
@@ -35,7 +27,6 @@ describe('Account Profile Component', () => {
         MockPipe(DatePipe),
       ],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AVAILABLE_LOCALES, useValue: locales }],
     }).compileComponents();
   }));
 

@@ -17,7 +17,6 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { markAsDirtyRecursive, markFormControlsAsInvalid } from 'ish-shared/forms/utils/form-utils';
@@ -29,7 +28,6 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationFormComponent implements OnInit, OnChanges {
-  @Input() languages: Locale[];
   @Input() error: HttpError;
 
   @Output() create = new EventEmitter<CustomerRegistrationType>();

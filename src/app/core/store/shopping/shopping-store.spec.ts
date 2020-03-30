@@ -9,7 +9,6 @@ import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import {
-  AVAILABLE_LOCALES,
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
@@ -18,7 +17,6 @@ import {
 } from 'ish-core/configurations/injection-keys';
 import { Category, CategoryCompletenessLevel } from 'ish-core/models/category/category.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { AddressService } from 'ish-core/services/address/address.service';
@@ -52,17 +50,10 @@ describe('Shopping Store', () => {
   let promotionsServiceMock: PromotionsService;
   let suggestServiceMock: SuggestService;
   let filterServiceMock: FilterService;
-  let locales: Locale[];
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
-
-    locales = [
-      { lang: 'en_US', currency: 'USD', value: 'en' },
-      { lang: 'de_DE', currency: 'EUR', value: 'de' },
-      { lang: 'fr_FR', currency: 'EUR', value: 'fr' },
-    ] as Locale[];
 
     const catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
     const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'] } as Category;
@@ -209,7 +200,6 @@ describe('Shopping Store', () => {
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
-        { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
