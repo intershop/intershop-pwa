@@ -23,6 +23,7 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
 import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
 import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/configuration';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/router';
 import { getSelectedCategory } from 'ish-core/store/shopping/categories/categories.selectors';
@@ -153,7 +154,29 @@ export class SeoEffects {
     )
   );
 
-  private waitAppStable(obs: Observable<unknown>) {
+  @Effect({ dispatch: false })
+  seoLanguage$ = this.waitAppStable(
+    this.store.pipe(
+      select(getCurrentLocale),
+      whenTruthy(),
+      tap(current => {
+        this.meta.setTag('og:locale', current.lang);
+      })
+    )
+  );
+
+  @Effect({ dispatch: false })
+  seoAlternateLanguages$ = this.waitAppStable(
+    this.store.pipe(
+      select(getAvailableLocales),
+      whenTruthy(),
+      tap(locales => {
+        this.meta.setTag('og:locale:alternate', locales.map(x => x.lang).join(','));
+      })
+    )
+  );
+
+  private waitAppStable<T>(obs: Observable<T>) {
     return this.appRef.isStable.pipe(
       whenTruthy(),
       first(),

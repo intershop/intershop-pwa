@@ -3,10 +3,21 @@ import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { concatMap, map, mapTo, switchMapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  concatMap,
+  distinctUntilChanged,
+  map,
+  mapTo,
+  switchMapTo,
+  take,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { mapErrorToAction, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import {
@@ -16,7 +27,7 @@ import {
   LoadServerConfigFail,
   SetGTMToken,
 } from './configuration.actions';
-import { isServerConfigurationLoaded } from './configuration.selectors';
+import { getCurrentLocale, isServerConfigurationLoaded } from './configuration.selectors';
 
 @Injectable()
 export class ConfigurationEffects {
@@ -24,6 +35,7 @@ export class ConfigurationEffects {
     private actions$: Actions,
     private store: Store<{}>,
     private configService: ConfigurationService,
+    private translateService: TranslateService,
     private stateProperties: StatePropertiesService,
     @Inject(PLATFORM_ID) private platformId: string,
     private appRef: ApplicationRef
@@ -77,6 +89,15 @@ export class ConfigurationEffects {
       ([, baseURL, server, serverStatic, channel, application, features, theme]) =>
         new ApplyConfiguration({ baseURL, server, serverStatic, channel, application, features, theme })
     )
+  );
+
+  @Effect({ dispatch: false })
+  setLocale$ = this.store.pipe(
+    select(getCurrentLocale),
+    mapToProperty('lang'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    tap(lang => this.translateService.use(lang))
   );
 
   @Effect()

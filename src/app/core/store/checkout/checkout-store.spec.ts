@@ -8,7 +8,6 @@ import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import {
-  AVAILABLE_LOCALES,
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
@@ -19,7 +18,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
@@ -52,7 +50,6 @@ let basketId: string;
 describe('Checkout Store', () => {
   const DEBUG = false;
   let store: TestStore;
-  let locales: Locale[];
 
   const lineItem = {
     id: 'test',
@@ -125,12 +122,6 @@ describe('Checkout Store', () => {
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
-
-    locales = [
-      { lang: 'en_US', currency: 'USD', value: 'en' },
-      { lang: 'de_DE', currency: 'EUR', value: 'de' },
-      { lang: 'fr_FR', currency: 'EUR', value: 'fr' },
-    ] as Locale[];
 
     const categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
@@ -260,7 +251,6 @@ describe('Checkout Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
-        { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },

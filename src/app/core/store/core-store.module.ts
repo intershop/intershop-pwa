@@ -23,8 +23,6 @@ import { countriesReducer } from './countries/countries.reducer';
 import { ErrorEffects } from './error/error.effects';
 import { errorReducer } from './error/error.reducer';
 import { HybridStoreModule } from './hybrid/hybrid-store.module';
-import { LocaleEffects } from './locale/locale.effects';
-import { localeReducer } from './locale/locale.reducer';
 import { MessagesEffects } from './messages/messages.effects';
 import { OrdersEffects } from './orders/orders.effects';
 import { ordersReducer } from './orders/orders.reducer';
@@ -43,7 +41,6 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,
   addresses: addressesReducer,
   orders: ordersReducer,
-  locale: localeReducer,
   countries: countriesReducer,
   regions: regionsReducer,
   error: errorReducer,
@@ -55,7 +52,6 @@ export const coreEffects = [
   UserEffects,
   AddressesEffects,
   OrdersEffects,
-  LocaleEffects,
   CountriesEffects,
   ErrorEffects,
   RegionsEffects,

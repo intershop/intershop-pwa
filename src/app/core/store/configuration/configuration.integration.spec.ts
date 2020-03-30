@@ -3,6 +3,7 @@ import { Component, PLATFORM_ID } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -13,9 +14,9 @@ import { ConfigurationService } from 'ish-core/services/configuration/configurat
 import { ApplyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/configuration';
 import { ConfigurationEffects } from 'ish-core/store/configuration/configuration.effects';
 import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { SetAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
-import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+
+import { getAvailableLocales, getCurrentLocale } from './configuration.selectors';
 
 describe('Configuration Integration', () => {
   let router: Router;
@@ -35,8 +36,9 @@ describe('Configuration Integration', () => {
         RouterTestingModule.withRoutes([
           { path: 'home', component: DummyComponent, canActivate: [ConfigurationGuard] },
         ]),
+        TranslateModule.forRoot(),
         ngrxTesting({
-          reducers: { configuration: configurationReducer, locale: localeReducer },
+          reducers: { configuration: configurationReducer },
           effects: [ConfigurationEffects],
           config: { metaReducers: [configurationMeta] },
           routerStore: true,
@@ -51,8 +53,12 @@ describe('Configuration Integration', () => {
     router = TestBed.get(Router);
     location = TestBed.get(Location);
     store$ = TestBed.get(TestStore);
-    store$.dispatch(new SetAvailableLocales({ locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[] }));
-    store$.dispatch(new ApplyConfiguration({ baseURL: 'http://example.org' }));
+    store$.dispatch(
+      new ApplyConfiguration({
+        baseURL: 'http://example.org',
+        locales: [{ lang: 'en_US' }, { lang: 'de_DE' }] as Locale[],
+      })
+    );
   });
 
   it('should set imported channel to state', fakeAsync(() => {
@@ -87,7 +93,13 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;features=a,b,c;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getFeatures(store$.state)).toIncludeAllMembers(['a', 'b', 'c']);
+    expect(getFeatures(store$.state)).toMatchInlineSnapshot(`
+      Array [
+        "a",
+        "b",
+        "c",
+      ]
+    `);
   }));
 
   it('should unset features if "none" was provided', fakeAsync(() => {
@@ -95,7 +107,7 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;features=none;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getFeatures(store$.state)).toBeEmpty();
+    expect(getFeatures(store$.state)).toMatchInlineSnapshot(`Array []`);
   }));
 
   it('should not set features if "default" was provided', fakeAsync(() => {
@@ -103,13 +115,41 @@ describe('Configuration Integration', () => {
     router.navigateByUrl('/home;features=default;redirect=1');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getFeatures(store$.state)).toIncludeAllMembers(['a', 'b', 'c']);
+    expect(getFeatures(store$.state)).toMatchInlineSnapshot(`
+      Array [
+        "a",
+        "b",
+        "c",
+      ]
+    `);
   }));
 
   it('should set imported locale to state', fakeAsync(() => {
     router.navigateByUrl('/home;redirect=1;lang=de_DE');
     tick(500);
     expect(location.path()).toMatchInlineSnapshot(`"/home"`);
-    expect(getCurrentLocale(store$.state).lang).toEqual('de_DE');
+    expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
+      Object {
+        "lang": "de_DE",
+      }
+    `);
+  }));
+
+  it('should have a default locale on startup in state', fakeAsync(() => {
+    expect(getCurrentLocale(store$.state)).toMatchInlineSnapshot(`
+      Object {
+        "lang": "en_US",
+      }
+    `);
+    expect(getAvailableLocales(store$.state)).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "lang": "en_US",
+        },
+        Object {
+          "lang": "de_DE",
+        },
+      ]
+    `);
   }));
 });

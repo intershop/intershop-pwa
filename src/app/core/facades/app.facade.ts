@@ -3,9 +3,9 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
-import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/locale';
 import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
 import {
   getBreadcrumbData,

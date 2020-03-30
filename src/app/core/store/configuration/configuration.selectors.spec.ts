@@ -5,6 +5,8 @@ import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
 import {
+  getAvailableLocales,
+  getCurrentLocale,
   getFeatures,
   getGTMToken,
   getICMBaseURL,
@@ -39,6 +41,8 @@ describe('Configuration Selectors', () => {
       expect(getServerConfigParameter('basket.acceleration')(store$.state)).toMatchInlineSnapshot(`undefined`);
       expect(getServerConfigParameter('services.captcha.siteKey')(store$.state)).toMatchInlineSnapshot(`undefined`);
       expect(getServerConfigParameter('general.locales')(store$.state)).toMatchInlineSnapshot(`undefined`);
+      expect(getAvailableLocales(store$.state)).not.toBeEmpty();
+      expect(getCurrentLocale(store$.state)).not.toBeEmpty();
     });
   });
 

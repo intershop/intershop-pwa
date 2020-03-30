@@ -1,7 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { getConfigurationState, getICMApplication } from 'ish-core/store/configuration';
-import { getCurrentLocale } from 'ish-core/store/locale';
+import { getConfigurationState, getCurrentLocale, getICMApplication } from 'ish-core/store/configuration';
 
 import { ICM_WEB_URL } from '../../../../hybrid/default-url-mapping-table';
 

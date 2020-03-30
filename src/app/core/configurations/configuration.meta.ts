@@ -5,8 +5,6 @@ import { ActionReducer } from '@ngrx/store';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { CoreState } from 'ish-core/store/core-store';
-import { SelectLocale } from 'ish-core/store/locale';
-import { LocaleState, localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { RouterState } from 'ish-core/store/router/router.reducer';
 import { mergeDeep } from 'ish-core/utils/functions';
 
@@ -21,7 +19,7 @@ class SimpleParamMap {
 }
 
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
-  const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'theme'];
+  const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'theme', 'lang'];
   const properties: Partial<ConfigurationState> = keys
     .filter(key => paramMap.has(key) && paramMap.get(key) !== 'default')
     .map(key => ({ [key]: paramMap.get(key) }))
@@ -45,13 +43,6 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
   return state;
 }
 
-function extractLanguage(state: LocaleState, paramMap: SimpleParamMap) {
-  if (paramMap.has('lang') && paramMap.get('lang') !== 'default') {
-    return localeReducer(state, new SelectLocale({ lang: paramMap.get('lang') }));
-  }
-  return state;
-}
-
 // tslint:disable: no-any
 /**
  * meta reducer for overriding client side state if supplied by server
@@ -65,11 +56,11 @@ export function configurationMeta(reducer: ActionReducer<any>): ActionReducer<an
       const payload: RouterNavigationPayload<RouterState> = action.payload;
       const paramMap = new SimpleParamMap(payload.routerState.params);
       newState = mergeDeep(newState, {
-        locale: extractLanguage(newState.locale, paramMap),
         configuration: extractConfigurationParameters(newState.configuration, paramMap),
       });
       first = true;
     }
+
     return reducer(newState, action);
   };
 }

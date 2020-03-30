@@ -6,8 +6,7 @@ import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, thr
 
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
-import { getCurrentLocale } from 'ish-core/store/locale';
+import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
 import { getAPIToken, getPGID } from 'ish-core/store/user';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';

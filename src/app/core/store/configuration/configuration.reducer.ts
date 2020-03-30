@@ -1,5 +1,8 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
+
+import { environment } from '../../../../environments/environment';
 
 import { ConfigurationAction, ConfigurationActionTypes } from './configuration.actions';
 
@@ -14,6 +17,8 @@ export interface ConfigurationState {
   gtmToken?: string;
   theme?: string;
   error?: HttpError;
+  locales?: Locale[];
+  lang?: string;
 }
 
 export const initialState: ConfigurationState = {
@@ -27,6 +32,8 @@ export const initialState: ConfigurationState = {
   gtmToken: undefined,
   theme: undefined,
   error: undefined,
+  locales: environment.locales,
+  lang: undefined,
 };
 
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {
