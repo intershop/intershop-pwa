@@ -2,7 +2,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
-import { StoreModule } from '@ngrx/store';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ServerCookiesModule } from '@ngx-utils/cookies/server';
@@ -13,7 +12,6 @@ import { Observable, Observer } from 'rxjs';
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
-import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
@@ -50,7 +48,6 @@ export function translateLoaderFactory() {
     ServerCookiesModule,
     ServerModule,
     ServerTransferStateModule,
-    StoreModule.forRoot(coreReducers, {}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

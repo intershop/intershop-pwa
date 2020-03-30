@@ -2,10 +2,8 @@ import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
-import { Observable, of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Order } from 'ish-core/models/order/order.model';
@@ -25,7 +23,6 @@ import { RestoreEffects } from './restore.effects';
 describe('Restore Effects', () => {
   let restoreEffects: RestoreEffects;
   let router: Router;
-  let actions$: Observable<Action>;
   let cookiesServiceMock: CookiesService;
   let store$: TestStore;
 
@@ -41,11 +38,11 @@ describe('Restore Effects', () => {
             shopping: combineReducers(shoppingReducers),
             checkout: combineReducers(checkoutReducers),
           },
+          routerStore: true,
         }),
       ],
       providers: [
         RestoreEffects,
-        provideMockActions(() => actions$),
         { provide: PLATFORM_ID, useValue: 'browser' },
         { provide: CookiesService, useFactory: () => instance(cookiesServiceMock) },
       ],
@@ -62,12 +59,12 @@ describe('Restore Effects', () => {
 
   describe('destroyTokenInCookieOnLogout$', () => {
     it('should destroy the cookie when user logs out', done => {
-      actions$ = of(new LogoutUser());
-
       restoreEffects.destroyTokenInCookieOnLogout$.subscribe(() => {
         verify(cookiesServiceMock.remove('apiToken')).once();
         done();
       }, fail);
+
+      store$.dispatch(new LogoutUser());
     });
   });
 

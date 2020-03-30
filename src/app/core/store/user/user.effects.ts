@@ -29,13 +29,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { GeneralError } from 'ish-core/store/error';
 import { SuccessMessage } from 'ish-core/store/messages';
 import { ofUrl, selectQueryParam } from 'ish-core/store/router';
-import {
-  mapErrorToAction,
-  mapToPayload,
-  mapToPayloadProperty,
-  mapToProperty,
-  whenTruthy,
-} from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as userActions from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
@@ -120,10 +114,13 @@ export class UserEffects {
   redirectAfterLogin$ = merge(
     this.actions$.pipe(
       ofType(userActions.UserActionTypes.LoginUserSuccess),
-      map(() => this.router.routerState),
-      mapToProperty('snapshot'),
-      whenTruthy(),
-      map(snapshot => snapshot.root.queryParams.returnUrl as string)
+      switchMapTo(
+        this.store$.pipe(
+          select(selectQueryParam('returnUrl')),
+          first()
+        )
+      ),
+      whenTruthy()
     ),
     this.store$.pipe(
       ofUrl(/^\/login.*/),
