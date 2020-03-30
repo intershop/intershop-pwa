@@ -15,4 +15,8 @@ export class SearchResultPage {
   static navigateTo(term: string, page?: number) {
     cy.visit(`/search/${term}${page ? `?page=${page}` : ''}`);
   }
+
+  get title() {
+    return cy.get(`${this.tag} h1`);
+  }
 }
