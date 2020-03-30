@@ -34,6 +34,21 @@
   }
 
   .product-tile-list {
+    a {
+      &.product-title {
+        padding-top: 0;
+        text-align: left;
+      }
+    }
+
+    .product-tile-actions {
+      position: relative;
+
+      .btn {
+        padding: 0 12px 3px 0;
+      }
+    }
+
     .product-variation-container {
       width: 100%;
 
@@ -88,21 +103,6 @@
 
     &.list-view {
       width: 100%;
-
-      .product-tile-actions {
-        position: relative;
-
-        .btn {
-          padding: 0 12px 3px 0;
-        }
-      }
-
-      a {
-        &.product-title {
-          padding-top: 0;
-          text-align: left;
-        }
-      }
     }
   }
 
