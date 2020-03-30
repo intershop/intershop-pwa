@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
 import { ProductLinkView } from 'ish-core/models/product-links/product-links.model';
+import { ProductItemContainerConfiguration } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product Link Carousel Component
@@ -30,4 +31,8 @@ export class ProductLinksCarouselComponent {
    * configuration for swiper carousel
    */
   @Input() swiperConfig: SwiperConfigInterface;
+  /**
+   * configuration for product tiles
+   */
+  @Input() tileConfiguration?: ProductItemContainerConfiguration;
 }
