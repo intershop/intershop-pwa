@@ -1,24 +1,11 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import {
-  concatMap,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  switchMapTo,
-  take,
-  takeWhile,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { concatMap, map, mapTo, switchMapTo, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { SelectLocale } from 'ish-core/store/locale';
 import { mapErrorToAction, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -29,7 +16,6 @@ import {
   LoadServerConfigFail,
   SetGTMToken,
 } from './configuration.actions';
-import { ConfigurationState } from './configuration.reducer';
 import { isServerConfigurationLoaded } from './configuration.selectors';
 
 @Injectable()
@@ -39,7 +25,6 @@ export class ConfigurationEffects {
     private store: Store<{}>,
     private configService: ConfigurationService,
     private stateProperties: StatePropertiesService,
-    private router: Router,
     @Inject(PLATFORM_ID) private platformId: string,
     private appRef: ApplicationRef
   ) {}
@@ -49,15 +34,6 @@ export class ConfigurationEffects {
     takeWhile(() => isPlatformBrowser(this.platformId)),
     // tslint:disable-next-line:no-any
     tap(stable => ((window as any).angularStable = stable))
-  );
-
-  @Effect()
-  routerWatch$ = this.router.events.pipe(
-    takeWhile(event => !(event instanceof NavigationEnd)),
-    filter<ActivationStart>(event => event instanceof ActivationStart),
-    map(event => event.snapshot),
-    tap(snapshot => this.redirectIfNeeded(snapshot)),
-    mergeMap(({ paramMap }) => [...this.extractConfigurationParameters(paramMap), ...this.extractLanguage(paramMap)])
   );
 
   /**
@@ -113,49 +89,4 @@ export class ConfigurationEffects {
     whenTruthy(),
     map(gtmToken => new SetGTMToken({ gtmToken }))
   );
-
-  extractConfigurationParameters(paramMap: ParamMap) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'application', 'theme'];
-    const properties: Partial<ConfigurationState> = keys
-      .filter(key => paramMap.has(key) && paramMap.get(key) !== 'default')
-      .map(key => ({ [key]: paramMap.get(key) }))
-      .reduce((acc, val) => ({ ...acc, ...val }), {});
-
-    if (paramMap.has('icmHost')) {
-      properties.baseURL = `${paramMap.get('icmScheme') || 'https'}://${paramMap.get('icmHost')}`;
-    }
-
-    if (paramMap.has('features') && paramMap.get('features') !== 'default') {
-      if (paramMap.get('features') === 'none') {
-        properties.features = [];
-      } else {
-        properties.features = paramMap.get('features').split(/,/g);
-      }
-    }
-
-    return Object.keys(properties).length ? [new ApplyConfiguration(properties)] : [];
-  }
-
-  extractLanguage(paramMap: ParamMap) {
-    return paramMap.has('lang') && paramMap.get('lang') !== 'default'
-      ? [new SelectLocale({ lang: paramMap.get('lang') })]
-      : [];
-  }
-
-  getResolvedUrl(route: ActivatedRouteSnapshot): string {
-    const url = route.pathFromRoot.map(v => v.url.map(segment => segment.toString()).join('/')).join('/');
-    const params = Object.entries(route.queryParams)
-      .map(kvp => kvp.join('='))
-      .join('&');
-    return url + (params ? '?' + params : '');
-  }
-
-  redirectIfNeeded(snapshot: ActivatedRouteSnapshot) {
-    if (snapshot.paramMap.has('redirect')) {
-      const url = this.getResolvedUrl(snapshot);
-      const params = url.match(/\/.*?(;[^?]*).*?/);
-      const navigateTo = url.replace(params[1], '');
-      return this.router.navigateByUrl(navigateTo);
-    }
-  }
 }

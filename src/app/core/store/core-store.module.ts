@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
+import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 
+import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
+import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
+import { addGlobalGuard } from 'ish-core/utils/routing';
 
 import { environment } from '../../../environments/environment';
 
@@ -61,16 +65,11 @@ export const coreEffects = [
 ];
 
 // tslint:disable-next-line: no-any
-export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
+export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMeta];
 
 @NgModule({
   imports: [
-    CheckoutStoreModule,
-    ContentStoreModule,
-    EffectsModule.forRoot(coreEffects),
-    HybridStoreModule,
-    RestoreStoreModule,
-    ShoppingStoreModule,
+    // tslint:disable-next-line: ng-module-sorted-fields
     StoreModule.forRoot(coreReducers, {
       metaReducers,
       runtimeChecks: {
@@ -81,6 +80,16 @@ export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta];
       },
     }),
     StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }),
+    EffectsModule.forRoot(coreEffects),
+    CheckoutStoreModule,
+    ContentStoreModule,
+    HybridStoreModule,
+    RestoreStoreModule,
+    ShoppingStoreModule,
   ],
 })
-export class CoreStoreModule {}
+export class CoreStoreModule {
+  constructor(router: Router) {
+    addGlobalGuard(router, ConfigurationGuard);
+  }
+}
