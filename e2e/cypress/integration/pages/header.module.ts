@@ -1,7 +1,9 @@
 import { MiniCartModule } from './checkout/mini-cart.module';
+import { SearchBoxModule } from './shopping/search-box.module';
 
 export class HeaderModule {
   miniCart = new MiniCartModule();
+  searchBox = new SearchBoxModule();
 
   get numberOfCompareItems() {
     cy.get('header').then(header => {
@@ -45,19 +47,6 @@ export class HeaderModule {
 
   get content() {
     return cy.get('ish-header');
-  }
-
-  getSearchSuggestions(searchTerm: string) {
-    cy.get('[data-testing-id="search-box-desktop"] input.searchTerm').type(searchTerm);
-    cy.get('ul.search-suggest-results').should('be.visible');
-    return cy.get('ul.search-suggest-results').get('li button');
-  }
-
-  doProductSearch(searchTerm: string) {
-    cy.get('[data-testing-id="search-box-desktop"] input.searchTerm')
-      .clear()
-      .type(searchTerm)
-      .type('{enter}');
   }
 
   topLevelCategoryLink(id: string) {
