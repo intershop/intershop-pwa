@@ -5,7 +5,7 @@ import { debounce, debounceTime, filter, map, switchMap, tap } from 'rxjs/operat
 
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
-import { AddProductToBasket } from 'ish-core/store/checkout/basket';
+import { AddItemsToBasket, AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getCategoryLoading, getSelectedCategory, getTopLevelCategories } from 'ish-core/store/shopping/categories';
 import {
   AddToCompare,
@@ -103,6 +103,10 @@ export class ShoppingFacade {
   // CHECKOUT
   addProductToBasket(sku: string, quantity: number) {
     this.store.dispatch(new AddProductToBasket({ sku, quantity }));
+  }
+
+  addProductsToBasket(productsToAdd) {
+    this.store.dispatch(new AddItemsToBasket({ items: productsToAdd }));
   }
 
   // PRODUCT LISTING
