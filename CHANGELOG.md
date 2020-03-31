@@ -1,3 +1,11 @@
+# [0.18.1](https://github.com/intershop/intershop-pwa/releases/tag/0.18.1) (2020-04-01)
+
+**required Intershop Commerce Management version: 7.10.16.6**
+
+### Features
+
+- support Concardis Direct Debit payment method (#165) ([a3b3e74](https://github.com/intershop/intershop-pwa/commit/a3b3e74))
+
 # [0.18.0](https://github.com/intershop/intershop-pwa/releases/tag/0.18.0) (2020-03-09)
 
 **required Intershop Commerce Management version: 7.10.16.6**
