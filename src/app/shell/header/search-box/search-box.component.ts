@@ -1,17 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject, merge } from 'rxjs';
-import { filter, first, map, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 export interface SearchBoxConfiguration {
-  /**
-   * id to support the multiple use on a page
-   */
-  id?: string;
   /**
    * text for search button on search box, icon is used if no text is provided
    */
@@ -52,84 +47,76 @@ export interface SearchBoxConfiguration {
   templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxComponent implements OnInit {
+export class SearchBoxComponent implements OnInit, OnDestroy {
   /**
    * the search box configuration for this component
    */
   @Input() configuration?: SearchBoxConfiguration;
 
-  suggestSearchTerm$: Observable<string>;
-  currentSearchBoxId$: Observable<string>;
   searchResults$: Observable<SuggestTerm[]>;
-  searchResultsToDisplay$: Observable<SuggestTerm[]>;
+  inputSearchTerms$ = new ReplaySubject<string>(1);
 
-  inputSearchTerms$ = new Subject<string>();
-  allSearchTerms$: Observable<string>;
-
-  isHidden = true;
   activeIndex = -1;
-  formSubmitted = false;
+  inputFocused: boolean;
+
+  private destroy$ = new Subject();
 
   constructor(private shoppingFacade: ShoppingFacade, private router: Router) {}
 
   ngOnInit() {
-    this.suggestSearchTerm$ = this.shoppingFacade.suggestSearchTerm$;
-    this.currentSearchBoxId$ = this.shoppingFacade.currentSearchBoxId$;
-    this.searchResults$ = this.shoppingFacade.searchResults$;
+    // initialize with searchTerm when on search route
+    this.shoppingFacade.searchTerm$
+      .pipe(
+        map(x => (x ? x : '')),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(term => this.inputSearchTerms$.next(term));
 
-    this.searchResultsToDisplay$ = this.searchResults$.pipe(
-      withLatestFrom(this.currentSearchBoxId$),
-      filter(([, id]) => !this.configuration || !this.configuration.id || this.configuration.id === id),
-      map(([hits]) => hits)
-    );
-
-    this.allSearchTerms$ = merge(this.suggestSearchTerm$, this.inputSearchTerms$).pipe(shareReplay(1));
+    // suggests are triggered solely via stream
+    this.searchResults$ = this.shoppingFacade.searchResults$(this.inputSearchTerms$);
   }
 
-  hidePopup() {
-    this.isHidden = true;
+  ngOnDestroy() {
+    this.destroy$.next();
+  }
+
+  blur() {
+    this.inputFocused = false;
     this.activeIndex = -1;
   }
 
-  searchSuggest(searchTerm: string) {
-    this.isHidden = !searchTerm;
-    this.formSubmitted = false;
-    this.inputSearchTerms$.next(searchTerm);
-
-    this.shoppingFacade.suggestSearch(searchTerm, this.configuration && this.configuration.id);
+  focus() {
+    this.inputFocused = true;
   }
 
-  submitSearch() {
-    this.isHidden = true;
-    this.formSubmitted = true;
-    if (this.activeIndex > -1) {
-      this.searchResultsToDisplay$.pipe(first()).subscribe(results => {
-        this.inputSearchTerms$.next(results[this.activeIndex].term);
-      });
+  searchSuggest(searchTerm: string) {
+    this.inputSearchTerms$.next(searchTerm);
+  }
+
+  submitSearch(suggestedTerm: string) {
+    if (!suggestedTerm) {
+      return false;
     }
 
-    this.allSearchTerms$
-      .pipe(
-        first(),
-        whenTruthy()
-      )
-      .subscribe(term => {
-        this.hidePopup();
-        this.router.navigate(['/search', term]);
-      });
+    // remove focus when switching to search page
+    this.inputFocused = false;
 
+    if (this.activeIndex !== -1) {
+      // something was selected via keyboard
+      this.searchResults$.pipe(take(1)).subscribe(results => {
+        this.router.navigate(['/search', results[this.activeIndex].term]);
+      });
+    } else {
+      this.router.navigate(['/search', suggestedTerm]);
+    }
+
+    // prevent form submission
     return false;
   }
 
-  submitSuggestedTerm(suggestedTerm: string) {
-    this.inputSearchTerms$.next(suggestedTerm);
-    this.submitSearch();
-  }
-
   selectSuggestedTerm(index: number) {
-    this.searchResultsToDisplay$.pipe(first()).subscribe(results => {
+    this.searchResults$.pipe(take(1)).subscribe(results => {
       if (
-        this.isHidden ||
         (this.configuration && this.configuration.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
         index < -1 ||
         index > results.length - 1
@@ -138,9 +125,5 @@ export class SearchBoxComponent implements OnInit {
       }
       this.activeIndex = index;
     });
-  }
-
-  isActiveSuggestedTerm(index: number) {
-    return this.activeIndex === index;
   }
 }

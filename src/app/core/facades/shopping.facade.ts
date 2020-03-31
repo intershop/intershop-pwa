@@ -39,15 +39,9 @@ import {
   getMostRecentlyViewedProducts,
   getRecentlyViewedProducts,
 } from 'ish-core/store/shopping/recently';
-import {
-  SuggestSearch,
-  getCurrentSearchBoxId,
-  getSearchTerm,
-  getSuggestSearchResult,
-  getSuggestSearchTerm,
-} from 'ish-core/store/shopping/search';
+import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from 'ish-core/store/shopping/search';
 import { toObservable } from 'ish-core/utils/functions';
-import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { whenFalsy } from 'ish-core/utils/operators';
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
@@ -131,12 +125,12 @@ export class ShoppingFacade {
 
   // SEARCH
   searchTerm$ = this.store.pipe(select(getSearchTerm));
-  suggestSearchTerm$ = this.store.pipe(
-    select(getSuggestSearchTerm),
-    whenTruthy()
-  );
-  currentSearchBoxId$ = this.store.pipe(select(getCurrentSearchBoxId));
-  searchResults$ = this.store.pipe(select(getSuggestSearchResult));
+  searchResults$(searchTerm: Observable<string>) {
+    return searchTerm.pipe(
+      tap(term => this.store.dispatch(new SuggestSearch({ searchTerm: term }))),
+      switchMap(term => this.store.pipe(select(getSuggestSearchResults(term))))
+    );
+  }
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   searchItemsCount$ = this.searchTerm$.pipe(
@@ -153,10 +147,6 @@ export class ShoppingFacade {
       )
     )
   );
-
-  suggestSearch(searchTerm: string, searchBoxId: string) {
-    this.store.dispatch(new SuggestSearch({ searchTerm, id: searchBoxId }));
-  }
 
   // FILTER
   currentFilter$ = this.store.pipe(select(getAvailableFilter));

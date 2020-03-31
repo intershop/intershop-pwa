@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { selectRouteParam } from 'ish-core/store/router';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { searchAdapter } from './search.reducer';
@@ -9,32 +10,12 @@ export const getSearchState = createSelector(
   (state: ShoppingState) => state.search
 );
 
-export const {
-  selectEntities: getSuggestSearchEntities,
-  selectIds: getSuggestSearchTerms,
-} = searchAdapter.getSelectors(getSearchState);
+const { selectEntities: getSuggestSearchEntities } = searchAdapter.getSelectors(getSearchState);
 
-export const getSearchTerm = createSelector(
-  getSearchState,
-  state => state.searchTerm
-);
+export const getSearchTerm = selectRouteParam('searchTerm');
 
-export const getSuggestSearchTerm = createSelector(
-  getSearchState,
-  state => state.suggestSearchTerm
-);
-
-export const getSuggestSearchResult = createSelector(
-  getSearchState,
-  state => state.suggestSearchResults
-);
-
-export const getSuggestSearchResults = createSelector(
-  getSuggestSearchEntities,
-  (entities, props: { suggestSearchTerm: string }) => entities[props.suggestSearchTerm]
-);
-
-export const getCurrentSearchBoxId = createSelector(
-  getSearchState,
-  state => state.currentSearchBoxId
-);
+export const getSuggestSearchResults = (searchTerm: string) =>
+  createSelector(
+    getSuggestSearchEntities,
+    entities => (entities[searchTerm] && entities[searchTerm].suggests) || []
+  );
