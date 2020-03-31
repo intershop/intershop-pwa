@@ -3,8 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { ReplaySubject, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
@@ -16,19 +15,24 @@ describe('Search Box Component', () => {
   let component: SearchBoxComponent;
   let fixture: ComponentFixture<SearchBoxComponent>;
   let element: HTMLElement;
-  let shoppingFacade: ShoppingFacade;
+  let searchResults$: Subject<SuggestTerm[]>;
+  let searchTerm$: Subject<string>;
 
   beforeEach(async(() => {
-    shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.searchResults$).thenReturn(of([]));
-    when(shoppingFacade.searchTerm$).thenReturn(of(undefined));
-    when(shoppingFacade.suggestSearchTerm$).thenReturn(of(undefined));
-    when(shoppingFacade.currentSearchBoxId$).thenReturn(of('test_id'));
+    searchResults$ = new ReplaySubject(1);
+    searchTerm$ = new ReplaySubject(1);
+    searchResults$.next([]);
+    searchTerm$.next(undefined);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), MockPipe(HighlightPipe), SearchBoxComponent],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [
+        {
+          provide: ShoppingFacade,
+          useFactory: () => ({ searchResults$: () => searchResults$, searchTerm$ } as Partial<ShoppingFacade>),
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -36,7 +40,10 @@ describe('Search Box Component', () => {
     fixture = TestBed.createComponent(SearchBoxComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.configuration = { id: 'test_id' };
+
+    // activate
+    component.inputFocused = true;
+    component.configuration = { maxAutoSuggests: 4 };
   });
 
   it('should be created', () => {
@@ -45,69 +52,67 @@ describe('Search Box Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  function triggerSearch(term: string, results: SuggestTerm[]) {
-    when(shoppingFacade.searchResults$).thenReturn(of(results));
-    when(shoppingFacade.suggestSearchTerm$).thenReturn(of(term));
-    when(shoppingFacade.searchTerm$).thenReturn(of(term));
-    component.searchSuggest(term);
-    fixture.detectChanges();
-  }
-
-  it('should fire event when search is called', () => {
-    component.searchSuggest('test');
-
-    verify(shoppingFacade.suggestSearch(anything(), anything())).once();
-    const args = capture(shoppingFacade.suggestSearch).last();
-    expect(args).toMatchInlineSnapshot(`
-      Array [
-        "test",
-        "test_id",
-      ]
-    `);
-  });
-
   describe('with no results', () => {
     beforeEach(() => {
-      triggerSearch('', []);
+      searchResults$.next([]);
     });
 
     it('should show no results when no suggestions are found', () => {
+      fixture.detectChanges();
+
       const ul = element.querySelector('.search-suggest-results');
-
       expect(ul).toBeFalsy();
-    });
-
-    it('should hide popup when no search results are found', () => {
-      expect(component.isHidden).toBeTrue();
     });
   });
 
   describe('with results', () => {
     beforeEach(() => {
-      triggerSearch('cam', [{ term: 'Cameras' }, { term: 'Camcorders' }]);
+      searchResults$.next([{ term: 'Cameras' }, { term: 'Camcorders' }]);
     });
 
     it('should show results when suggestions are available', () => {
-      const ul = element.querySelector('.search-suggest-results');
+      fixture.detectChanges();
 
+      const ul = element.querySelector('.search-suggest-results');
       expect(ul.querySelectorAll('li')).toHaveLength(2);
     });
 
-    it('should show popup when search results are found', () => {
-      expect(component.isHidden).toBeFalse();
+    it('should show no results when suggestions are available but maxAutoSuggests is 0', () => {
+      component.configuration.maxAutoSuggests = 0;
+      fixture.detectChanges();
+
+      const ul = element.querySelector('.search-suggest-results');
+      expect(ul.querySelectorAll('li')).toHaveLength(0);
+    });
+
+    it('should show no results when suggestions are available but input has no focus', () => {
+      component.inputFocused = false;
+      fixture.detectChanges();
+
+      expect(element.querySelector('.search-suggest-results')).toBeFalsy();
     });
   });
 
   describe('with inputs', () => {
+    it('should show searchTerm when on search page', () => {
+      searchTerm$.next('search');
+
+      fixture.detectChanges();
+      const input = element.querySelector('input');
+      expect(input.value).toContain('search');
+    });
+
     it('should show button text when buttonText is set', () => {
-      component.configuration = { id: 'searchbox', buttonText: 'buttonTextInput' };
+      component.configuration = { buttonText: 'buttonTextInput' };
+
       fixture.detectChanges();
       const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
     });
 
     it('should show placeholder text when placeholder is set', () => {
-      component.configuration = { id: 'searchbox', placeholder: 'placeholderInput' };
+      component.configuration = { placeholder: 'placeholderInput' };
+
       fixture.detectChanges();
       const inputElement = element.querySelector('.searchTerm');
       expect(inputElement.getAttribute('placeholder')).toBe('placeholderInput');

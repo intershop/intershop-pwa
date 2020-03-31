@@ -1,13 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { SelectSearchTerm } from 'ish-core/store/shopping/search';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 import { SearchNoResultComponent } from './search-no-result/search-no-result.component';
@@ -18,23 +16,22 @@ describe('Search Page Component', () => {
   let component: SearchPageComponent;
   let fixture: ComponentFixture<SearchPageComponent>;
   let element: HTMLElement;
-  let store$: Store<{}>;
+  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async(() => {
+    shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.searchTerm$).thenReturn(of('search'));
+
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(SearchNoResultComponent),
         MockComponent(SearchResultComponent),
         SearchPageComponent,
+      ],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
     }).compileComponents();
   }));
@@ -43,10 +40,6 @@ describe('Search Page Component', () => {
     fixture = TestBed.createComponent(SearchPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store$ = TestBed.get(Store);
-    const router: Router = TestBed.get(Router);
-    router.initialNavigation();
   });
 
   it('should be created', () => {
@@ -56,34 +49,27 @@ describe('Search Page Component', () => {
   });
 
   it('should render search no result component if search has no results', () => {
-    const newProducts = [];
-    store$.dispatch(new SelectSearchTerm({ searchTerm: 'search' }));
-    store$.dispatch(
-      new SetProductListingPages({
-        id: { type: 'search', value: 'search' },
-        itemCount: newProducts.length,
-        sortKeys: [],
-        1: newProducts,
-      })
-    );
+    when(shoppingFacade.searchItemsCount$).thenReturn(of(0));
+
     fixture.detectChanges();
-    expect(element.querySelector('ish-search-no-result')).toBeTruthy();
-    expect(element.querySelector('ish-search-result')).toBeFalsy();
+
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-breadcrumb",
+        "ish-search-no-result",
+      ]
+    `);
   });
 
   it('should render search result component if search has results', () => {
-    const newProducts = ['testSKU1', 'testSKU2'];
-    store$.dispatch(new SelectSearchTerm({ searchTerm: 'search' }));
-    store$.dispatch(
-      new SetProductListingPages({
-        id: { type: 'search', value: 'search' },
-        itemCount: newProducts.length,
-        sortKeys: [],
-        1: newProducts,
-      })
-    );
+    when(shoppingFacade.searchItemsCount$).thenReturn(of(1));
+
     fixture.detectChanges();
-    expect(element.querySelector('ish-search-no-result')).toBeFalsy();
-    expect(element.querySelector('ish-search-result')).toBeTruthy();
+
+    expect(findAllIshElements(element)).toMatchInlineSnapshot(`
+      Array [
+        "ish-search-result",
+      ]
+    `);
   });
 });

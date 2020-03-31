@@ -38,7 +38,7 @@ import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { getCategoryIds, getSelectedCategory } from './categories';
 import { getProductIds, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
-import { SuggestSearchAPI } from './search';
+import { SuggestSearch } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 
 describe('Shopping Store', () => {
@@ -287,13 +287,13 @@ describe('Shopping Store', () => {
     describe('and looking for suggestions', () => {
       beforeEach(fakeAsync(() => {
         store.reset();
-        store.dispatch(new SuggestSearchAPI({ searchTerm: 'some' }));
+        store.dispatch(new SuggestSearch({ searchTerm: 'some' }));
         tick(5000);
       }));
 
       it('should trigger suggest actions when suggest feature is used', () => {
         expect(store.actionsArray()).toMatchInlineSnapshot(`
-          [Suggest Search Internal] Trigger API Call for Search Suggestions:
+          [Suggest Search] Load Search Suggestions:
             searchTerm: "some"
           [Suggest Search Internal] Return Search Suggestions:
             searchTerm: "some"
@@ -321,9 +321,10 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [Shopping] Set Search Term:
-            searchTerm: "something"
           [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/search/something","params":{"searchTerm":"something...
+            event: {"id":2,"url":"/search/something"}
           [ProductListing] Load More Products:
             id: {"type":"search","value":"something"}
           [ProductListing Internal] Load More Products For Params:
@@ -348,9 +349,6 @@ describe('Shopping Store', () => {
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
             id: {"type":"search","value":"something"}
-          @ngrx/router-store/navigated:
-            routerState: {"url":"/search/something","params":{"searchTerm":"something...
-            event: {"id":2,"url":"/search/something"}
         `);
       }));
 
@@ -609,9 +607,10 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [Shopping] Set Search Term:
-            searchTerm: "something"
           [Configuration Internal] Get the ICM configuration
+          @ngrx/router-store/navigated:
+            routerState: {"url":"/search/something","params":{"searchTerm":"something...
+            event: {"id":2,"url":"/search/something"}
           [ProductListing] Load More Products:
             id: {"type":"search","value":"something"}
           [ProductListing Internal] Load More Products For Params:
@@ -636,9 +635,6 @@ describe('Shopping Store', () => {
             filterNavigation: {}
           [ProductListing] Set Product Listing Pages:
             id: {"type":"search","value":"something"}
-          @ngrx/router-store/navigated:
-            routerState: {"url":"/search/something","params":{"searchTerm":"something...
-            event: {"id":2,"url":"/search/something"}
         `);
       }));
 
@@ -1065,11 +1061,16 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
-        [Shopping] Set Search Term:
-          searchTerm: "something"
         [Configuration Internal] Get the ICM configuration
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/search/something","params":{"searchTerm":"something...
+          event: {"id":1,"url":"/search/something"}
+        [Shopping] Load top level categories:
+          depth: 1
         [ProductListing] Load More Products:
           id: {"type":"search","value":"something"}
+        [Shopping] Load top level categories success:
+          categories: tree(A,A.123,B)
         [ProductListing Internal] Load More Products For Params:
           id: {"type":"search","value":"something"}
           filters: undefined
@@ -1092,13 +1093,6 @@ describe('Shopping Store', () => {
           filterNavigation: {}
         [ProductListing] Set Product Listing Pages:
           id: {"type":"search","value":"something"}
-        @ngrx/router-store/navigated:
-          routerState: {"url":"/search/something","params":{"searchTerm":"something...
-          event: {"id":1,"url":"/search/something"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
     }));
   });
