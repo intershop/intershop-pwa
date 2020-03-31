@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
@@ -27,7 +28,7 @@ declare var PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 // tslint:disable-next-line:ccp-no-intelligence-in-components
-export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent {
+export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
   }
@@ -37,6 +38,19 @@ export class PaymentConcardisCreditcardComponent extends PaymentConcardisCompone
     creditCardIframeName: string;
     verificationIframeName: string;
   };
+
+  ngOnInit() {
+    super.formInit();
+
+    this.parameterForm.addControl(
+      'expirationMonth',
+      new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')])
+    );
+    this.parameterForm.addControl(
+      'expirationYear',
+      new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')])
+    );
+  }
 
   /* ---------------------------------------- load concardis script if component is visible ------------------------------------------- */
   loadScript() {

@@ -9,7 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFormOptions } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
 
@@ -19,7 +19,7 @@ import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.
 
 @Component({
   selector: 'ish-payment-concardis',
-  templateUrl: './payment-concardis.component.html',
+  template: ' ',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
@@ -67,15 +67,13 @@ export class PaymentConcardisComponent implements OnInit, OnChanges, OnDestroy {
    * initialize parameter form on init
    */
   ngOnInit() {
-    this.parameterForm = new FormGroup(
-      this.paymentMethod.id === 'Concardis_CreditCard'
-        ? {
-            expirationMonth: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
-            expirationYear: new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}')]),
-            saveForLater: new FormControl(true),
-          }
-        : {}
-    );
+    this.formInit();
+  }
+
+  formInit() {
+    this.parameterForm = new FormGroup({
+      saveForLater: new FormControl(true),
+    });
   }
 
   /**

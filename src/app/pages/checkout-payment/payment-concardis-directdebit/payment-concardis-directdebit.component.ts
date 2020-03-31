@@ -28,7 +28,6 @@ declare var PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-// tslint:disable-next-line:ccp-no-intelligence-in-components
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent {
   constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
     super(scriptLoader, cd);
@@ -176,7 +175,7 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
           { name: 'mandateText', value: result.attributes.mandate.mandateText },
           { name: 'mandateCreatedDateTime', value: result.attributes.mandate.createdDateTime },
         ],
-        saveAllowed: this.paymentMethod.saveAllowed && this.parameterForm.get('saveForLater').value,
+        saveAllowed: false,
       });
     }
     this.cd.detectChanges();
