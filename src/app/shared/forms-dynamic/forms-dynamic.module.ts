@@ -5,6 +5,7 @@ import { FormlyModule } from '@ngx-formly/core';
 
 import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 
+import { CheckboxDynamicComponent } from './components/checkbox-dynamic/checkbox-dynamic.component';
 import { InputDynamicComponent } from './components/input-dynamic/input-dynamic.component';
 import { SelectDynamicComponent } from './components/select-dynamic/select-dynamic.component';
 
@@ -15,12 +16,13 @@ import { SelectDynamicComponent } from './components/select-dynamic/select-dynam
       types: [
         { name: 'input', component: InputDynamicComponent },
         { name: 'select', component: SelectDynamicComponent },
+        { name: 'checkbox', component: CheckboxDynamicComponent },
       ],
     }),
     FormsSharedModule,
     ReactiveFormsModule,
   ],
-  declarations: [InputDynamicComponent, SelectDynamicComponent],
-  exports: [InputDynamicComponent, SelectDynamicComponent],
+  declarations: [CheckboxDynamicComponent, InputDynamicComponent, SelectDynamicComponent],
+  exports: [CheckboxDynamicComponent, InputDynamicComponent, SelectDynamicComponent],
 })
 export class FormsDynamicModule {}
