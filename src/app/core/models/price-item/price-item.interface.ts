@@ -1,7 +1,7 @@
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceData } from 'ish-core/models/price/price.interface';
 
-export interface PriceItem {
-  gross: Price;
-  net: Price;
-  tax?: Price;
+export interface PriceItemData {
+  gross: PriceData;
+  net: PriceData;
+  tax?: PriceData;
 }

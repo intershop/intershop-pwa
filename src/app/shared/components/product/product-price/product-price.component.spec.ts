@@ -30,12 +30,12 @@ describe('Product Price Component', () => {
     translate.use('en');
     product = { sku: 'sku' } as AnyProductType;
     product.listPrice = {
-      type: 'ProductPrice',
+      type: 'Money',
       value: 11,
       currency: 'USD',
     };
     product.salePrice = {
-      type: 'ProductPrice',
+      type: 'Money',
       value: 10,
       currency: 'USD',
     };

@@ -1,25 +1,21 @@
-import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
-
+import { PriceData } from './price.interface';
 import { PriceMapper } from './price.mapper';
 
 describe('Price Mapper', () => {
   describe('fromData', () => {
-    it(`should return Price when getting a PriceItem`, () => {
-      const priceItem = {
-        gross: {
-          value: 43.34,
-          currency: 'USD',
-        },
-        net: {
-          value: 40.34,
-          currency: 'USD',
-        },
-      } as PriceItem;
-      const price = PriceMapper.fromPriceItem(priceItem);
-
-      expect(price).toBeTruthy();
-      expect(price.value).toBe(priceItem[PriceMapper.defaultPriceType].value);
-      expect(price.currency).toBe('USD');
+    it('should map price data to client object', () => {
+      expect(PriceMapper.fromData({ currency: 'EUR', value: 1.23 })).toMatchInlineSnapshot(`
+        Object {
+          "currency": "EUR",
+          "type": "Money",
+          "value": 1.23,
+        }
+      `);
+    });
+    it('should not map price data if currency is missing', () => {
+      expect(PriceMapper.fromData({} as PriceData)).toBeUndefined();
+      expect(PriceMapper.fromData({ value: 1.23 } as PriceData)).toBeUndefined();
+      expect(PriceMapper.fromData({ value: 1.23, currency: 'N/A' })).toBeUndefined();
     });
   });
 });

@@ -1,26 +1,21 @@
-import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 
 export interface BasketTotalData {
-  itemTotal: PriceItem;
-  undiscountedItemTotal?: PriceItem;
-  shippingTotal?: PriceItem;
-  undiscountedShippingTotal: PriceItem;
-  paymentCostsTotal?: PriceItem;
-  surchargeTotal?: PriceItem;
-  grandTotal: PriceItem;
+  itemTotal: PriceItemData;
+  undiscountedItemTotal?: PriceItemData;
+  shippingTotal?: PriceItemData;
+  undiscountedShippingTotal: PriceItemData;
+  paymentCostsTotal?: PriceItemData;
+  surchargeTotal?: PriceItemData;
+  grandTotal: PriceItemData;
 
-  itemValueDiscountsTotal?: PriceItem;
-  basketValueDiscountsTotal?: PriceItem;
+  itemValueDiscountsTotal?: PriceItemData;
+  basketValueDiscountsTotal?: PriceItemData;
 
-  itemShippingDiscountsTotal?: PriceItem;
-  basketShippingDiscountsTotal?: PriceItem;
+  itemShippingDiscountsTotal?: PriceItemData;
+  basketShippingDiscountsTotal?: PriceItemData;
 
-  shippingDiscountsTotal?: PriceItem;
-  valueDiscountsTotal: PriceItem;
-  discountTotal?: PriceItem;
-
-  taxTotalsByTaxRate?: {
-    calculatedTax: Price;
-  }[];
+  shippingDiscountsTotal?: PriceItemData;
+  valueDiscountsTotal: PriceItemData;
+  discountTotal?: PriceItemData;
 }

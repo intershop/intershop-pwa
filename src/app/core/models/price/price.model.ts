@@ -1,5 +1,5 @@
 export interface Price {
-  type?: string;
+  type: 'Money';
   value: number;
   currency: string;
 }

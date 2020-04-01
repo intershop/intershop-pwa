@@ -169,11 +169,11 @@ describe('Basket Mapper', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket).toBeTruthy();
 
-      expect(basket.totals.itemTotal.value).toBe(basketData.data.totals.itemTotal.gross.value);
-      expect(basket.totals.itemSurchargeTotalsByType[0].amount.value).toBe(
+      expect(basket.totals.itemTotal.gross).toBe(basketData.data.totals.itemTotal.gross.value);
+      expect(basket.totals.itemSurchargeTotalsByType[0].amount.gross).toBe(
         basketData.data.surcharges.itemSurcharges[0].amount.gross.value
       );
-      expect(basket.totals.bucketSurchargeTotalsByType[0].amount.value).toBe(
+      expect(basket.totals.bucketSurchargeTotalsByType[0].amount.gross).toBe(
         basketData.data.surcharges.bucketSurcharges[0].amount.gross.value
       );
       expect(basket.totals.isEstimated).toBeTrue();
@@ -226,7 +226,7 @@ describe('Basket Mapper', () => {
     it('should return discounts if included', () => {
       basket = BasketMapper.fromData(basketData);
 
-      expect(basket.totals.valueRebates[0].amount.value).toBePositive();
+      expect(basket.totals.valueRebates[0].amount.gross).toBePositive();
     });
 
     it('should return estimated as false if invoive address, shipping address and shipping method is set', () => {
@@ -249,9 +249,9 @@ describe('Basket Mapper', () => {
       totals = BasketMapper.getTotals(basketBaseData);
       expect(totals).toBeTruthy();
 
-      expect(totals.total.value).toBe(basketData.data.totals.grandTotal.gross.value);
-      expect(totals.itemTotal.value).toBe(basketData.data.totals.itemTotal.gross.value);
-      expect(totals.itemSurchargeTotalsByType[0].amount.value).toBe(
+      expect(totals.total.gross).toBe(basketData.data.totals.grandTotal.gross.value);
+      expect(totals.itemTotal.gross).toBe(basketData.data.totals.itemTotal.gross.value);
+      expect(totals.itemSurchargeTotalsByType[0].amount.gross).toBe(
         basketData.data.surcharges.itemSurcharges[0].amount.gross.value
       );
       expect(totals.isEstimated).toBeFalse();
@@ -261,7 +261,7 @@ describe('Basket Mapper', () => {
       totals = BasketMapper.getTotals(basketBaseData, basketIncludedData.discounts);
       expect(totals).toBeTruthy();
 
-      expect(totals.valueRebates[0].amount.value).toBePositive();
+      expect(totals.valueRebates[0].amount.gross).toBePositive();
       expect(totals.valueRebates[0].id).toEqual('discount_1');
     });
   });

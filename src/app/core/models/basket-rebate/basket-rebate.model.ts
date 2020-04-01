@@ -1,8 +1,8 @@
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
 export interface BasketRebate {
   id: string;
-  amount: Price;
+  amount: PriceItem;
   description?: string;
   rebateType: string;
   code?: string;
