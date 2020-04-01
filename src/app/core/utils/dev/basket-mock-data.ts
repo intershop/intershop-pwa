@@ -28,8 +28,8 @@ export class BasketMockData {
       quantity: { value: 10 },
       productSKU: '4713',
       product: { sku: '4713', availability: true, inStock: true },
-      singleBasePrice: { value: 3, currency: 'USD', type: 'Money' },
-      price: { value: 3, currency: 'USD', type: 'Money' },
+      singleBasePrice: { gross: 3, net: 2, currency: 'USD', type: 'PriceItem' },
+      price: { gross: 3, net: 2, currency: 'USD', type: 'PriceItem' },
       itemSurcharges: [
         {
           amount: {},
@@ -120,39 +120,39 @@ export class BasketMockData {
   static getTotals(): BasketTotal {
     return {
       itemTotal: {
-        value: 141796.98,
+        gross: 141796.98,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       itemRebatesTotal: {
-        value: 4446,
+        gross: 4446,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       shippingTotal: {
-        value: 87.06,
+        gross: 87.06,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       itemShippingRebatesTotal: {
-        value: 0,
+        gross: 0,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       valueRebatesTotal: {
-        value: 4457.9,
+        gross: 4457.9,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       shippingRebatesTotal: {
-        value: 0,
+        gross: 0,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       paymentCostsTotal: {
-        value: 3.57,
+        gross: 3.57,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       taxTotal: {
         value: 22747.55,
@@ -160,16 +160,16 @@ export class BasketMockData {
         type: 'Money',
       },
       total: {
-        value: 142470.71,
+        gross: 142470.71,
         currency: 'USD',
-        type: 'Money',
+        type: 'PriceItem',
       },
       valueRebates: [
         {
           amount: {
-            value: 11.9,
+            gross: 11.9,
             currency: 'USD',
-            type: 'Money',
+            type: 'PriceItem',
           },
           rebateType: 'OrderValueOffDiscount',
         } as BasketRebate,
@@ -177,9 +177,9 @@ export class BasketMockData {
       itemSurchargeTotalsByType: [
         {
           amount: {
-            value: 595,
+            gross: 595,
             currency: 'USD',
-            type: 'Money',
+            type: 'PriceItem',
           },
           description: 'Surcharge for battery deposit',
           displayName: 'Battery Deposit Surcharge',

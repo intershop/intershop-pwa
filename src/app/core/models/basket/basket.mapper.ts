@@ -5,7 +5,7 @@ import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
-import { PriceMapper } from 'ish-core/models/price/price.mapper';
+import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
 
 import { Basket } from './basket.model';
@@ -73,24 +73,24 @@ export class BasketMapper {
 
     return totalsData
       ? {
-          itemTotal: PriceMapper.fromPriceItem(totalsData.itemTotal),
-          undiscountedItemTotal: PriceMapper.fromPriceItem(totalsData.undiscountedItemTotal),
-          shippingTotal: PriceMapper.fromPriceItem(totalsData.shippingTotal),
-          undiscountedShippingTotal: PriceMapper.fromPriceItem(totalsData.undiscountedShippingTotal),
-          paymentCostsTotal: PriceMapper.fromPriceItem(totalsData.paymentCostsTotal),
-          dutiesAndSurchargesTotal: PriceMapper.fromPriceItem(totalsData.surchargeTotal),
-          taxTotal: { ...totalsData.grandTotal.tax, type: 'Money' },
-          total: PriceMapper.fromPriceItem(totalsData.grandTotal),
+          itemTotal: PriceItemMapper.fromPriceItem(totalsData.itemTotal),
+          undiscountedItemTotal: PriceItemMapper.fromPriceItem(totalsData.undiscountedItemTotal),
+          shippingTotal: PriceItemMapper.fromPriceItem(totalsData.shippingTotal),
+          undiscountedShippingTotal: PriceItemMapper.fromPriceItem(totalsData.undiscountedShippingTotal),
+          paymentCostsTotal: PriceItemMapper.fromPriceItem(totalsData.paymentCostsTotal),
+          dutiesAndSurchargesTotal: PriceItemMapper.fromPriceItem(totalsData.surchargeTotal),
+          taxTotal: PriceItemMapper.fromSpecificPriceItem(totalsData.grandTotal, 'tax'),
+          total: PriceItemMapper.fromPriceItem(totalsData.grandTotal),
 
-          itemRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
-          valueRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),
+          itemRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.itemValueDiscountsTotal),
+          valueRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.basketValueDiscountsTotal),
           valueRebates:
             data.discounts && data.discounts.valueBasedDiscounts && discounts
               ? data.discounts.valueBasedDiscounts.map(discountId => BasketRebateMapper.fromData(discounts[discountId]))
               : undefined,
 
-          itemShippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.itemShippingDiscountsTotal),
-          shippingRebatesTotal: PriceMapper.fromPriceItem(totalsData.basketShippingDiscountsTotal),
+          itemShippingRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.itemShippingDiscountsTotal),
+          shippingRebatesTotal: PriceItemMapper.fromPriceItem(totalsData.basketShippingDiscountsTotal),
           shippingRebates:
             data.discounts && data.discounts.shippingBasedDiscounts && discounts
               ? data.discounts.shippingBasedDiscounts.map(discountId =>
@@ -101,7 +101,7 @@ export class BasketMapper {
           itemSurchargeTotalsByType:
             data.surcharges && data.surcharges.itemSurcharges
               ? data.surcharges.itemSurcharges.map(surcharge => ({
-                  amount: PriceMapper.fromPriceItem(surcharge.amount),
+                  amount: PriceItemMapper.fromPriceItem(surcharge.amount),
                   displayName: surcharge.name,
                   description: surcharge.description,
                 }))
@@ -109,7 +109,7 @@ export class BasketMapper {
           bucketSurchargeTotalsByType:
             data.surcharges && data.surcharges.bucketSurcharges
               ? data.surcharges.bucketSurcharges.map(surcharge => ({
-                  amount: PriceMapper.fromPriceItem(surcharge.amount),
+                  amount: PriceItemMapper.fromPriceItem(surcharge.amount),
                   displayName: surcharge.name,
                   description: surcharge.description,
                 }))

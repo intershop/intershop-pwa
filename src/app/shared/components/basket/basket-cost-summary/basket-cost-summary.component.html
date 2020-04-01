@@ -44,7 +44,7 @@
     </ng-container>
 
     <!-- Payment costs -->
-    <ng-container *ngIf="totals.paymentCostsTotal && totals.paymentCostsTotal.value">
+    <ng-container *ngIf="totals.paymentCostsTotal">
       <dt class="col-6">{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
       <dd class="col-6">{{ totals.paymentCostsTotal | ishPrice }}</dd>
     </ng-container>

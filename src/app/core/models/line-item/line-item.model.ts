@@ -1,5 +1,6 @@
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -12,10 +13,10 @@ export interface LineItem {
     unit?: string;
   };
   productSKU: string;
-  price: Price;
-  singleBasePrice: Price;
+  price: PriceItem;
+  singleBasePrice: PriceItem;
   itemSurcharges?: {
-    amount: Price;
+    amount: PriceItem;
     description?: string;
     displayName?: string;
     text?: string;
@@ -24,13 +25,13 @@ export interface LineItem {
   totals: {
     salesTaxTotal?: Price;
     shippingTaxTotal?: Price;
-    shippingTotal: Price;
-    total: Price;
+    shippingTotal: PriceItem;
+    total: PriceItem;
     undiscountedTotal;
-    valueRebatesTotal?: Price;
+    valueRebatesTotal?: PriceItem;
 
     // attributes needed for quote feature
-    originTotal?: Price;
+    originTotal?: PriceItem;
   };
   isHiddenGift: boolean;
   isFreeGift: boolean;
@@ -41,7 +42,7 @@ export interface LineItem {
   fulfillmentStatus?: string;
 
   // attributes needed for quote feature
-  originSingleBasePrice?: Price;
+  originSingleBasePrice?: PriceItem;
 
   isQuantityFixed?: boolean;
 }

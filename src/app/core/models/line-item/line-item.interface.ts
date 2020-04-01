@@ -1,5 +1,5 @@
-import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
+import { PriceData } from 'ish-core/models/price/price.interface';
 
 export interface LineItemData {
   id: string;
@@ -13,21 +13,21 @@ export interface LineItemData {
 
   surcharges?: [
     {
-      amount: PriceItem;
+      amount: PriceItemData;
       description?: string;
       name?: string;
     }
   ];
   discounts?: string[];
   pricing: {
-    salesTaxTotal?: Price;
-    shippingTaxTotal?: Price;
-    shippingTotal: PriceItem;
-    total: PriceItem;
-    valueRebatesTotal?: PriceItem;
-    price: PriceItem;
-    undiscountedPrice: PriceItem;
-    singleBasePrice: PriceItem;
+    salesTaxTotal?: PriceData;
+    shippingTaxTotal?: PriceData;
+    shippingTotal: PriceItemData;
+    total: PriceItemData;
+    valueRebatesTotal?: PriceItemData;
+    price: PriceItemData;
+    undiscountedPrice: PriceItemData;
+    singleBasePrice: PriceItemData;
   };
   hiddenGift: boolean;
   freeGift: boolean;

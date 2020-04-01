@@ -223,12 +223,12 @@ describe('Quote Request Service', () => {
     it("should get line item of quote request when 'getQuoteRequestItem' is called", done => {
       const quoteRequestItem = {
         singlePrice: {
-          type: 'test',
+          type: 'Money',
           value: 1,
           currency: 'EUR',
         },
         totalPrice: {
-          type: 'test',
+          type: 'Money',
           value: 1,
           currency: 'EUR',
         },

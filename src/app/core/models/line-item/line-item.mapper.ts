@@ -1,6 +1,7 @@
 import { BasketRebateData } from 'ish-core/models/basket-rebate/basket-rebate.interface';
 import { BasketRebateMapper } from 'ish-core/models/basket-rebate/basket-rebate.mapper';
 import { OrderItemData } from 'ish-core/models/order-item/order-item.interface';
+import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { LineItemData } from './line-item.interface';
@@ -13,11 +14,11 @@ export class LineItemMapper {
         id: data.id,
         position: data.position,
         quantity: data.quantity,
-        price: data.pricing ? PriceMapper.fromPriceItem(data.pricing.price) : undefined,
-        singleBasePrice: data.pricing ? PriceMapper.fromPriceItem(data.pricing.singleBasePrice) : undefined,
+        price: data.pricing ? PriceItemMapper.fromPriceItem(data.pricing.price) : undefined,
+        singleBasePrice: data.pricing ? PriceItemMapper.fromPriceItem(data.pricing.singleBasePrice) : undefined,
         itemSurcharges: data.surcharges
           ? data.surcharges.map(surcharge => ({
-              amount: PriceMapper.fromPriceItem(surcharge.amount),
+              amount: PriceItemMapper.fromPriceItem(surcharge.amount),
               description: surcharge.description,
               displayName: surcharge.name,
             }))
@@ -31,12 +32,12 @@ export class LineItemMapper {
         totals:
           data.calculated || data.calculated === undefined
             ? {
-                salesTaxTotal: data.pricing.salesTaxTotal,
-                shippingTaxTotal: data.pricing.shippingTaxTotal,
-                shippingTotal: PriceMapper.fromPriceItem(data.pricing.shippingTotal),
-                total: PriceMapper.fromPriceItem(data.pricing.price),
-                undiscountedTotal: PriceMapper.fromPriceItem(data.pricing.undiscountedPrice),
-                valueRebatesTotal: PriceMapper.fromPriceItem(data.pricing.valueRebatesTotal),
+                salesTaxTotal: PriceMapper.fromData(data.pricing.salesTaxTotal),
+                shippingTaxTotal: PriceMapper.fromData(data.pricing.shippingTaxTotal),
+                shippingTotal: PriceItemMapper.fromPriceItem(data.pricing.shippingTotal),
+                total: PriceItemMapper.fromPriceItem(data.pricing.price),
+                undiscountedTotal: PriceItemMapper.fromPriceItem(data.pricing.undiscountedPrice),
+                valueRebatesTotal: PriceItemMapper.fromPriceItem(data.pricing.valueRebatesTotal),
               }
             : undefined,
 

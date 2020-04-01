@@ -6,7 +6,7 @@ import { distinctUntilChanged, filter, mapTo, switchMap, takeUntil } from 'rxjs/
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
@@ -17,7 +17,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export class MiniBasketComponent implements OnInit, OnDestroy {
   basketError$: Observable<HttpError>;
   basketAnimation$: Observable<string>;
-  itemTotal$: Observable<Price>;
+  itemTotal$: Observable<PriceItem>;
   itemCount$: Observable<number>;
   lineItems$: Observable<LineItemView[]>;
 

@@ -1,3 +1,5 @@
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
+
 import { Price } from './price.model';
 
 export class PriceHelper {
@@ -30,8 +32,13 @@ export class PriceHelper {
    * @param price The price
    * @returns inverted price
    */
-  static invert(price: Price): Price {
-    return { ...price, value: price.value * -1 };
+  static invert<T extends Price | PriceItem>(price: T): T {
+    if (price) {
+      if (price.type === 'Money') {
+        return { ...price, value: (price as Price).value * -1 };
+      }
+      return { ...price, gross: (price as PriceItem).gross * -1, net: (price as PriceItem).net * -1 };
+    }
   }
 
   static min(p1: Price, p2: Price): Price {

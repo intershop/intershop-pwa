@@ -135,7 +135,8 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    */
   paymentCostThresholdReached(paymentMethod: PaymentMethod) {
     return (
-      paymentMethod.paymentCostsThreshold && paymentMethod.paymentCostsThreshold.value <= this.basket.totals.total.value
+      // TODO: check if 'gross' is correct here
+      paymentMethod.paymentCostsThreshold && paymentMethod.paymentCostsThreshold.value <= this.basket.totals.total.gross
     );
   }
 

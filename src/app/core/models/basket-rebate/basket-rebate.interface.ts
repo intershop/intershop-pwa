@@ -1,9 +1,9 @@
-import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
+import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 
 export interface BasketRebateData {
   id: string;
   promotionType: string;
-  amount: PriceItem;
+  amount: PriceItemData;
   description?: string;
   code?: string;
   promotion?: string;

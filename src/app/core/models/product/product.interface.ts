@@ -3,7 +3,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { Image } from 'ish-core/models/image/image.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceData } from 'ish-core/models/price/price.interface';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
 import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
@@ -29,7 +29,7 @@ export interface ProductData {
   inStock: boolean;
 
   // If warranty {
-  price?: Price;
+  price?: PriceData;
   currency?: unknown;
   // }
 
@@ -39,17 +39,17 @@ export interface ProductData {
   packingUnit: string;
 
   // If Variation Master and Retail Set {
-  minListPrice?: Price;
-  maxListPrice?: Price;
-  minSalePrice?: Price;
-  maxSalePrice?: Price;
+  minListPrice?: PriceData;
+  maxListPrice?: PriceData;
+  minSalePrice?: PriceData;
+  maxSalePrice?: PriceData;
   // }
   variationAttributeValues?: VariationAttribute[];
   variableVariationAttributes?: VariationAttribute[];
   partOfRetailSet: boolean;
   // If  Retail Set {
-  summedUpListPrice?: Price;
-  summedUpSalePrice?: Price;
+  summedUpListPrice?: PriceData;
+  summedUpSalePrice?: PriceData;
   // }
 
   attachments?: unknown;
@@ -57,8 +57,8 @@ export interface ProductData {
   crosssells?: unknown;
   productMaster: boolean;
   productBundle: boolean;
-  listPrice: Price;
-  salePrice: Price;
+  listPrice: PriceData;
+  salePrice: PriceData;
   manufacturer: string;
   mastered: boolean;
   readyForShipmentMin: number;

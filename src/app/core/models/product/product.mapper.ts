@@ -6,19 +6,12 @@ import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceMapper } from 'ish-core/models/price/price.mapper';
 
 import { VariationProduct } from './product-variation.model';
 import { AllProductTypes, SkuQuantityType } from './product.helper';
 import { ProductData, ProductDataStub, ProductVariationLink } from './product.interface';
 import { Product } from './product.model';
-
-function filterPrice(price: Price): Price {
-  if (price && price.currency && price.currency !== 'N/A') {
-    return price;
-  }
-  return;
-}
 
 /**
  * check if attribute is available and return value, otherwise undefined
@@ -120,8 +113,8 @@ export class ProductMapper {
       shortDescription: data.description,
       name: data.title,
       sku,
-      listPrice: filterPrice(retrieveStubAttributeValue(data, 'listPrice')),
-      salePrice: filterPrice(retrieveStubAttributeValue(data, 'salePrice')),
+      listPrice: PriceMapper.fromData(retrieveStubAttributeValue(data, 'listPrice')),
+      salePrice: PriceMapper.fromData(retrieveStubAttributeValue(data, 'salePrice')),
       images: this.imageMapper.fromImages([
         {
           effectiveUrl: retrieveStubAttributeValue(data, 'image'),
@@ -203,8 +196,8 @@ export class ProductMapper {
         data.attributes,
       attributeGroups: data.attributeGroups,
       images: this.imageMapper.fromImages(data.images),
-      listPrice: filterPrice(data.listPrice),
-      salePrice: filterPrice(data.salePrice),
+      listPrice: PriceMapper.fromData(data.listPrice),
+      salePrice: PriceMapper.fromData(data.salePrice),
       manufacturer: data.manufacturer,
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,
@@ -222,10 +215,10 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
-        minListPrice: filterPrice(data.minListPrice),
-        minSalePrice: filterPrice(data.minSalePrice),
-        maxListPrice: filterPrice(data.maxListPrice),
-        maxSalePrice: filterPrice(data.maxSalePrice),
+        minListPrice: PriceMapper.fromData(data.minListPrice),
+        minSalePrice: PriceMapper.fromData(data.minSalePrice),
+        maxListPrice: PriceMapper.fromData(data.maxListPrice),
+        maxSalePrice: PriceMapper.fromData(data.maxSalePrice),
         variationAttributeValues: data.variationAttributeValues,
         type: 'VariationProductMaster',
       };
@@ -245,10 +238,10 @@ export class ProductMapper {
       return {
         ...product,
         type: 'RetailSet',
-        minListPrice: filterPrice(data.minListPrice),
-        minSalePrice: filterPrice(data.minSalePrice),
-        summedUpListPrice: filterPrice(data.summedUpListPrice),
-        summedUpSalePrice: filterPrice(data.summedUpSalePrice),
+        minListPrice: PriceMapper.fromData(data.minListPrice),
+        minSalePrice: PriceMapper.fromData(data.minSalePrice),
+        summedUpListPrice: PriceMapper.fromData(data.summedUpListPrice),
+        summedUpSalePrice: PriceMapper.fromData(data.summedUpSalePrice),
         partSKUs: [],
       };
     } else {
