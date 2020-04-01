@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { CustomerUserType } from 'ish-core/models/customer/customer.model';
+import { Customer, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { ApplyConfiguration } from 'ish-core/store/configuration';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
@@ -29,6 +30,7 @@ import {
   getLoggedInUser,
   getPasswordReminderError,
   getPasswordReminderSuccess,
+  getPriceDisplayType,
   getUserAuthorized,
   getUserError,
   getUserLoading,
@@ -203,5 +205,74 @@ describe('User Selectors', () => {
     expect(getPasswordReminderError(store$.state)).toMatchObject(error);
     expect(getPasswordReminderSuccess(store$.state)).toBeFalse();
     expect(getUserLoading(store$.state)).toBeFalse();
+  });
+
+  describe('getPriceDisplayType', () => {
+    describe('without config', () => {
+      it.each([
+        ['gross', undefined],
+        ['gross', { isBusinessCustomer: false } as Customer],
+        ['net', { isBusinessCustomer: true } as Customer],
+      ])('should be "%s" for user %o', (expected, customer: Customer) => {
+        if (customer) {
+          store$.dispatch(new LoginUserSuccess({ customer }));
+        }
+        expect(getPriceDisplayType(store$.state)).toEqual(expected);
+      });
+    });
+
+    describe('B2C', () => {
+      beforeEach(() => {
+        store$.dispatch(
+          new ApplyConfiguration({
+            serverConfig: {
+              pricing: {
+                defaultCustomerTypeForPriceDisplay: 'PRIVATE',
+                privateCustomerPriceDisplayType: 'gross',
+                smbCustomerPriceDisplayType: 'net',
+              },
+            },
+          })
+        );
+      });
+
+      it.each([
+        ['gross', undefined],
+        ['gross', { isBusinessCustomer: false } as Customer],
+        ['net', { isBusinessCustomer: true } as Customer],
+      ])('should be "%s" for user %o', (expected, customer: Customer) => {
+        if (customer) {
+          store$.dispatch(new LoginUserSuccess({ customer }));
+        }
+        expect(getPriceDisplayType(store$.state)).toEqual(expected);
+      });
+    });
+
+    describe('B2B', () => {
+      beforeEach(() => {
+        store$.dispatch(
+          new ApplyConfiguration({
+            serverConfig: {
+              pricing: {
+                defaultCustomerTypeForPriceDisplay: 'SMB',
+                privateCustomerPriceDisplayType: 'gross',
+                smbCustomerPriceDisplayType: 'net',
+              },
+            },
+          })
+        );
+      });
+
+      it.each([
+        ['net', undefined],
+        ['gross', { isBusinessCustomer: false } as Customer],
+        ['net', { isBusinessCustomer: true } as Customer],
+      ])('should be "%s" for user %o', (expected, customer: Customer) => {
+        if (customer) {
+          store$.dispatch(new LoginUserSuccess({ customer }));
+        }
+        expect(getPriceDisplayType(store$.state)).toEqual(expected);
+      });
+    });
   });
 });

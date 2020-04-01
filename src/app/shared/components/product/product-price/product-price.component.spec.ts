@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 
@@ -19,6 +20,7 @@ describe('Product Price Component', () => {
     TestBed.configureTestingModule({
       imports: [CommonModule, TranslateModule.forRoot()],
       declarations: [PricePipe, ProductPriceComponent],
+      providers: [provideMockStore()],
     }).compileComponents();
   }));
 

@@ -16,7 +16,7 @@ export interface ConfigurationState {
   error?: HttpError;
 }
 
-const initialState: ConfigurationState = {
+export const initialState: ConfigurationState = {
   baseURL: undefined,
   server: undefined,
   serverStatic: undefined,

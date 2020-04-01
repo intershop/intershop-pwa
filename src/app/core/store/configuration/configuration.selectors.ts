@@ -69,9 +69,11 @@ export const isServerConfigurationLoaded = createSelector(
   serverConfig => !!serverConfig
 );
 
-export const getServerConfigParameter = (path: string) =>
+export const getServerConfigParameter = <T>(path: string) =>
   createSelector(
     getServerConfig,
-    serverConfig =>
-      path.split('.').reduce((obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined), serverConfig)
+    (serverConfig): T =>
+      path
+        .split('.')
+        .reduce((obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined), serverConfig as unknown) as T
   );

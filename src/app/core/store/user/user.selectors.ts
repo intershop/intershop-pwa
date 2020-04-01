@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { getServerConfigParameter } from 'ish-core/store/configuration';
 import { getCoreState } from 'ish-core/store/core-store';
 
 const getUserState = createSelector(
@@ -57,4 +58,16 @@ export const getPasswordReminderSuccess = createSelector(
 export const getPasswordReminderError = createSelector(
   getUserState,
   state => state.passwordReminderError
+);
+
+export const getPriceDisplayType = createSelector(
+  getUserAuthorized,
+  isBusinessCustomer,
+  getServerConfigParameter<'PRIVATE' | 'SMB'>('pricing.defaultCustomerTypeForPriceDisplay'),
+  getServerConfigParameter<'gross' | 'net'>('pricing.privateCustomerPriceDisplayType'),
+  getServerConfigParameter<'gross' | 'net'>('pricing.smbCustomerPriceDisplayType'),
+  (loggedIn, businessCustomer, defaultCustomer, b2c, b2b): 'gross' | 'net' => {
+    const isB2B = (!loggedIn && defaultCustomer === 'SMB') || businessCustomer;
+    return isB2B ? b2b || 'net' : b2c || 'gross';
+  }
 );
