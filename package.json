@@ -1,7 +1,7 @@
 {
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "license": "Intershop Standard Software End User License Agreement Intershop 7",
   "keywords": [
     "intershop"
@@ -64,7 +64,7 @@
     "@trademe/ng-defer-load": "^3.1.0",
     "@types/lodash-es": "^4.17.3",
     "@wishtack/reactive-component-loader": "^1.0.0",
-    "acorn": "^6.1.1",
+    "acorn": "^6.4.1",
     "angular2-cookie-law": "^7.0.1",
     "angular2-uuid": "^1.1.1",
     "angulartics2": "^8.1.0",

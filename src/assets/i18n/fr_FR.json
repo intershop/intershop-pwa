@@ -2672,5 +2672,17 @@
   "quote.already_in_basket.error": "Le devis se trouve déjà dans le panier.",
   "quote.not_found.error": "Le devis n’a pas pu être trouvé.",
   "basket.add_quote.error": "Le devis n’a pas pu être ajouté au panier.",
-  "quoterequest.not_editable.error": "Vous avez déjà soumis la demande de devis. Veuillez <a href=\"javascript:location.reload()\">rafraîchir</a> cette page pour afficher les modifications."
+  "quoterequest.not_editable.error": "Vous avez déjà soumis la demande de devis. Veuillez <a href=\"javascript:location.reload()\">rafraîchir</a> cette page pour afficher les modifications.",
+  "checkout.sepa.iban.error.default": "L’IBAN est obligatoire.",
+  "checkout.sepa.iban.error.length": "La longueur de l’IBAN n’est pas valide.",
+  "checkout.sepa.iban.error.countryNotSupported": "L’IBAN est associé à un pays qui n’est pas pris en charge.",
+  "checkout.sepa.iban.error.notAlphanumeric": "L’IBAN doit être composé de caractères alphanumériques.",
+  "checkout.sepa.iban.error.invalid": "L’IBAN n’est pas valide.",
+  "checkout.sepa.accountholder.error.default": "Le titulaire du compte est obligatoire.",
+  "checkout.sepa.accountholder.error.notAlphanumeric": "Le titulaire du compte doit être composé de caractères alphanumériques.",
+  "checkout.sepa.bic.error.notAlphanumeric": "Le BIC doit être composé de caractères alphanumériques.",
+  "checkout.sepa.bic.error.countryNotSupported": "Le BIC est associé à un pays qui n’est pas pris en charge.",
+  "checkout.sepa.bic.error.length": "La longueur du BIC n’est pas valide.",
+  "checkout.sepa.bic.error.invalid": "Le BIC n’est pas valide.",
+  "checkout.sepa.mandate.error.required": "Aucune autorisation n’a été donnée."
 }
