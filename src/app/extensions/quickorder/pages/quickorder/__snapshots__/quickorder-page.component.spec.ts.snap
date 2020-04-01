@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Quickorder Page Component should be created 1`] = `
+<form novalidate="" class="ng-untouched ng-pristine ng-invalid">
+  <ish-breadcrumb></ish-breadcrumb>
+  <div class="row">
+    <div class="col-md-12"><h1>quickorder.page.title</h1></div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <h3>quickorder.page.subtitle</h3>
+      <p>quickorder.page.subtitle.description</p>
+      <div class="list-header d-md-flex">
+        <div class="col-md-6 list-header-item no-seperator">quickorder.page.product.id</div>
+        <div class="col-md-2 list-header-item no-seperator">quickorder.page.product.quantity</div>
+      </div>
+      <div class="pt-1">
+        <div
+          formarrayname="quickOrderlines"
+          ng-reflect-name="quickOrderlines"
+          class="ng-untouched ng-pristine ng-invalid"
+        >
+          <div
+            class="row list-item-row py-2 ng-untouched ng-pristine ng-invalid"
+            ng-reflect-name="0"
+          >
+            <div class="col-sm-6 list-item search-container">
+              <div class="d-sm-none">quickorder.page.product.id</div>
+              <div class="quickorder-search-container position-relative">
+                <ish-input
+                  controlname="sku"
+                  inputclass="w-100 col-12"
+                  type="text"
+                  ng-reflect-control-name="sku"
+                  ng-reflect-input-class="w-100 col-12"
+                  ng-reflect-type="text"
+                ></ish-input>
+              </div>
+            </div>
+            <div class="col-sm-2 list-item">
+              <div class="d-sm-none">quickorder.page.product.quantity</div>
+              <ish-input
+                controlname="quantity"
+                inputclass="w-100"
+                max="2"
+                min="1"
+                type="number"
+                ng-reflect-control-name="quantity"
+                ng-reflect-input-class="w-100"
+                ng-reflect-type="number"
+                ng-reflect-min="1"
+                ng-reflect-max="2"
+              ></ish-input>
+            </div>
+            <div class="col-sm-2 list-item">
+              <a class="btn btn-link remove-row" title="remove-current-row"
+                >quickorder.page.remove.row</a
+              >
+            </div>
+          </div>
+          <div
+            class="row list-item-row py-2 ng-untouched ng-pristine ng-invalid"
+            ng-reflect-name="1"
+          >
+            <div class="col-sm-6 list-item search-container">
+              <div class="d-sm-none">quickorder.page.product.id</div>
+              <div class="quickorder-search-container position-relative">
+                <ish-input
+                  controlname="sku"
+                  inputclass="w-100 col-12"
+                  type="text"
+                  ng-reflect-control-name="sku"
+                  ng-reflect-input-class="w-100 col-12"
+                  ng-reflect-type="text"
+                ></ish-input>
+              </div>
+            </div>
+            <div class="col-sm-2 list-item">
+              <div class="d-sm-none">quickorder.page.product.quantity</div>
+              <ish-input
+                controlname="quantity"
+                inputclass="w-100"
+                max="2"
+                min="1"
+                type="number"
+                ng-reflect-control-name="quantity"
+                ng-reflect-input-class="w-100"
+                ng-reflect-type="number"
+                ng-reflect-min="1"
+                ng-reflect-max="2"
+              ></ish-input>
+            </div>
+            <div class="col-sm-2 list-item">
+              <a class="btn btn-link remove-row" title="remove-current-row"
+                >quickorder.page.remove.row</a
+              >
+            </div>
+          </div>
+          <div
+            class="row list-item-row py-2 ng-untouched ng-pristine ng-invalid"
+            ng-reflect-name="2"
+          >
+            <div class="col-sm-6 list-item search-container">
+              <div class="d-sm-none">quickorder.page.product.id</div>
+              <div class="quickorder-search-container position-relative">
+                <ish-input
+                  controlname="sku"
+                  inputclass="w-100 col-12"
+                  type="text"
+                  ng-reflect-control-name="sku"
+                  ng-reflect-input-class="w-100 col-12"
+                  ng-reflect-type="text"
+                ></ish-input>
+              </div>
+            </div>
+            <div class="col-sm-2 list-item">
+              <div class="d-sm-none">quickorder.page.product.quantity</div>
+              <ish-input
+                controlname="quantity"
+                inputclass="w-100"
+                max="2"
+                min="1"
+                type="number"
+                ng-reflect-control-name="quantity"
+                ng-reflect-input-class="w-100"
+                ng-reflect-type="number"
+                ng-reflect-min="1"
+                ng-reflect-max="2"
+              ></ish-input>
+            </div>
+            <div class="col-sm-2 list-item">
+              <a class="btn btn-link remove-row" title="remove-current-row"
+                >quickorder.page.remove.row</a
+              >
+            </div>
+          </div>
+          <div
+            class="row list-item-row py-2 ng-untouched ng-pristine ng-invalid"
+            ng-reflect-name="3"
+          >
+            <div class="col-sm-6 list-item search-container">
+              <div class="d-sm-none">quickorder.page.product.id</div>
+              <div class="quickorder-search-container position-relative">
+                <ish-input
+                  controlname="sku"
+                  inputclass="w-100 col-12"
+                  type="text"
+                  ng-reflect-control-name="sku"
+                  ng-reflect-input-class="w-100 col-12"
+                  ng-reflect-type="text"
+                ></ish-input>
+              </div>
+            </div>
+            <div class="col-sm-2 list-item">
+              <div class="d-sm-none">quickorder.page.product.quantity</div>
+              <ish-input
+                controlname="quantity"
+                inputclass="w-100"
+                max="2"
+                min="1"
+                type="number"
+                ng-reflect-control-name="quantity"
+                ng-reflect-input-class="w-100"
+                ng-reflect-type="number"
+                ng-reflect-min="1"
+                ng-reflect-max="2"
+              ></ish-input>
+            </div>
+            <div class="col-sm-2 list-item">
+              <a class="btn btn-link remove-row" title="remove-current-row"
+                >quickorder.page.remove.row</a
+              >
+            </div>
+          </div>
+          <div
+            class="row list-item-row py-2 ng-untouched ng-pristine ng-invalid"
+            ng-reflect-name="4"
+          >
+            <div class="col-sm-6 list-item search-container">
+              <div class="d-sm-none">quickorder.page.product.id</div>
+              <div class="quickorder-search-container position-relative">
+                <ish-input
+                  controlname="sku"
+                  inputclass="w-100 col-12"
+                  type="text"
+                  ng-reflect-control-name="sku"
+                  ng-reflect-input-class="w-100 col-12"
+                  ng-reflect-type="text"
+                ></ish-input>
+              </div>
+            </div>
+            <div class="col-sm-2 list-item">
+              <div class="d-sm-none">quickorder.page.product.quantity</div>
+              <ish-input
+                controlname="quantity"
+                inputclass="w-100"
+                max="2"
+                min="1"
+                type="number"
+                ng-reflect-control-name="quantity"
+                ng-reflect-input-class="w-100"
+                ng-reflect-type="number"
+                ng-reflect-min="1"
+                ng-reflect-max="2"
+              ></ish-input>
+            </div>
+            <div class="col-sm-2 list-item">
+              <a class="btn btn-link remove-row" title="remove-current-row"
+                >quickorder.page.remove.row</a
+              >
+            </div>
+          </div>
+          <a class="d-block">quickorder.page.add.row</a>
+          <hr class="mt-2 mb-4" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-primary" type="submit">quickorder.page.add.cart</button
+    ><button class="btn btn-link" type="reset">quickorder.page.reset.form</button>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <h3>quickorder.page.csv.title</h3>
+      <p>quickorder.page.csv.subtitle</p>
+      <form novalidate="" class="ng-untouched ng-pristine ng-invalid">
+        <div class="form-group section section-seperator">
+          <input
+            accept=".csv"
+            class="form-control"
+            id="CSVFile"
+            name="csvFile"
+            size="35"
+            type="file"
+          />
+          <div class="position-absolute" ng-reflect-ng-switch="0"><small></small></div>
+        </div>
+        <div>
+          <button class="btn btn-primary" name="addToCartCSV" type="submit">
+            quickorder.page.add.cart</button
+          ><button class="btn btn-link" name="reset" type="reset">
+            quickorder.page.csv.reset.form
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</form>
+`;

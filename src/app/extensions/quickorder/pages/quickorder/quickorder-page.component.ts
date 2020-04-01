@@ -42,7 +42,7 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initForms() {
+  initForms() {
     this.quickOrderForm = this.qf.group({
       quickOrderlines: this.qf.array([]),
     });
