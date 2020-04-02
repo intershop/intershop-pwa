@@ -34,6 +34,7 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForms();
+    // Dummy data to test search suggestion styling, typing 1234 will show the dropwdown with this product
     this.searchSuggestions.push({
       imgPath:
         'http://jxdemoserver.intershop.de/INTERSHOP/static/WFS/inSPIRED-inTRONICS_Business-Site/-/inSPIRED/en_US/S/4808544-118.jpg',
