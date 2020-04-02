@@ -1,3 +1,4 @@
+// tslint:disable:no-string-literal
 // tslint:disable: no-console ish-ordered-imports
 /**
  * *** NOTE ON IMPORTING FROM ANGULAR AND NGUNIVERSAL IN THIS FILE ***
@@ -57,6 +58,16 @@ if (process.env.TRUST_ICM) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   console.warn("ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!");
 }
+
+// prevent ssr issues regarding window, document, HTMLElement and navigator
+const domino = require('domino');
+const template = fs.readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const win = domino.createWindow(template);
+
+global['window'] = win;
+global['document'] = win.document;
+global['HTMLElement'] = win.HTMLElement;
+global['navigator'] = win.navigator;
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine(
