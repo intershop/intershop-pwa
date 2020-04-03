@@ -24,5 +24,11 @@ universalTest 7 "${PWA_BASE_URL}/catComputers.1835.151" "add-to-compare"
 universalTest 8 "${PWA_BASE_URL}/home" "intershop-pwa-state"
 universalTest 9 "${PWA_BASE_URL}/home" "&q;baseURL&q;:"
 universalTest 10 "${PWA_BASE_URL}/home" "<ish-content-include includeid=.pwa.include.homepage.pagelet2-Include"
+universalTest 11 "${PWA_BASE_URL}/home" "<link rel=.canonical. href=.${PWA_BASE_URL}/home.>"
+universalTest 12 "${PWA_BASE_URL}/home" "<meta property=.og:image. content=.${PWA_BASE_URL}[^>]*og-image-default"
+universalTest 13 "${PWA_BASE_URL}/home" "<title>inTRONICS Home | Intershop PWA</title>"
+universalTest 14 "${PWA_BASE_URL}/sku6997041" "<link rel=.canonical. href=.${PWA_BASE_URL}/sku6997041.>"
+universalTest 15 "${PWA_BASE_URL}/sku6997041" "<meta property=.og:image. content=[^>]*6997041"
+universalTest 16 "${PWA_BASE_URL}/sku6997041" "<title>Asus Eee PC 1008P .Karim Rashid. [^>]* | Intershop PWA</title>"
 
 exit 0
