@@ -1,6 +1,7 @@
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
+import { MetaDataModule } from '../meta-data.module';
 
 import { ProductListModule } from './product-list.module';
 
@@ -9,6 +10,7 @@ export class ProductDetailPage {
 
   readonly header = new HeaderModule();
   readonly breadcrumb = new BreadcrumbModule();
+  readonly metaData = new MetaDataModule();
 
   readonly bundleParts = new ProductListModule('ish-product-bundle-parts');
   readonly retailSetParts = new ProductListModule('ish-retail-set-parts');
