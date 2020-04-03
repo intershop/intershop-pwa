@@ -42,7 +42,6 @@ import { SuggestSearch } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 
 describe('Shopping Store', () => {
-  const DEBUG = false;
   let store: TestStore;
   let router: Router;
   let categoriesServiceMock: CategoriesService;
@@ -208,8 +207,6 @@ describe('Shopping Store', () => {
     });
 
     store = TestBed.get(TestStore);
-    store.logActions = DEBUG;
-    store.logState = DEBUG;
     router = TestBed.get(Router);
     store.reset();
   });
