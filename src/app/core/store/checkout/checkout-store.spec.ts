@@ -48,7 +48,6 @@ import { checkoutEffects, checkoutReducers } from './checkout-store.module';
 let basketId: string;
 
 describe('Checkout Store', () => {
-  const DEBUG = false;
   let store: TestStore;
 
   const lineItem = {
@@ -259,8 +258,6 @@ describe('Checkout Store', () => {
     });
 
     store = TestBed.get(TestStore);
-    store.logActions = DEBUG;
-    store.logState = DEBUG;
   });
 
   it('should be created', () => {
