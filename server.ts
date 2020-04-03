@@ -58,6 +58,21 @@ if (process.env.TRUST_ICM) {
   console.warn("ignoring all TLS verification as 'TRUST_ICM' variable is set - never use this in production!");
 }
 
+// uncomment this block to prevent ssr issues with third-party libraries regarding window, document, HTMLElement and navigator
+// tslint:disable-next-line: no-commented-out-code
+/*
+const domino = require('domino');
+const template = fs.readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const win = domino.createWindow(template);
+
+// tslint:disable:no-string-literal
+global['window'] = win;
+global['document'] = win.document;
+global['HTMLElement'] = win.HTMLElement;
+global['navigator'] = win.navigator;
+// tslint:enable:no-string-literal
+*/
+
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine(
   'html',
