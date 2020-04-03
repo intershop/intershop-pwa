@@ -1,4 +1,7 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -17,12 +20,19 @@ describe('Pages Effects', () => {
   let actions$: Observable<Action>;
   let effects: PagesEffects;
   let cmsServiceMock: CMSService;
+  let router: Router;
 
   beforeEach(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      imports: [ngrxTesting()],
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
+        ngrxTesting({ routerStore: true }),
+      ],
       providers: [
         PagesEffects,
         provideMockActions(() => actions$),
@@ -31,6 +41,7 @@ describe('Pages Effects', () => {
     });
 
     effects = TestBed.get(PagesEffects);
+    router = TestBed.get(Router);
   });
 
   describe('loadPages$', () => {
@@ -68,6 +79,20 @@ describe('Pages Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.resetContentPagesAfterLogout$).toBeObservable(expected$);
+    });
+  });
+
+  describe('selectedContentPage$', () => {
+    it('should select the route when url parameter is available', done => {
+      effects.selectedContentPage$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Content Page] Load Content Page:
+            contentPageId: "dummy"
+        `);
+        done();
+      });
+
+      router.navigateByUrl('/page/dummy');
     });
   });
 });
