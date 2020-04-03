@@ -1,12 +1,8 @@
-import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
-import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import {
-  ContentPageletEntryPointView,
-  createContentPageletEntryPointView,
-} from 'ish-core/models/content-view/content-view.model';
+import { createContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
 import { getContentState } from 'ish-core/store/content/content-store';
+import { selectRouteParam } from 'ish-core/store/router';
 
 import { pagesAdapter } from './pages.reducer';
 
@@ -22,19 +18,8 @@ export const getContentPageLoading = createSelector(
   state => state.loading
 );
 
-export const getSelectedContentPageId = createSelector(
-  getPagesState,
-  state => state.selected
-);
-
 export const getSelectedContentPage = createSelector(
   getPageEntities,
-  getSelectedContentPageId,
+  selectRouteParam('contentPageId'),
   (pages, id) => createContentPageletEntryPointView(pages[id])
-);
-
-export const getContentPage = createSelector(
-  getPageEntities,
-  (pages: Dictionary<ContentPageletEntryPoint>, id: string): ContentPageletEntryPointView =>
-    createContentPageletEntryPointView(pages[id])
 );

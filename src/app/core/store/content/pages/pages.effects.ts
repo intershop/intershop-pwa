@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { map, mapTo, mergeMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { selectQueryParam } from 'ish-core/store/router';
+import { selectRouteParam } from 'ish-core/store/router';
 import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -27,15 +27,8 @@ export class PagesEffects {
   );
 
   @Effect()
-  routeListenerForSelectingContentPages$ = this.store.pipe(
-    select(selectQueryParam('contentPageId')),
-    map(contentPageId => new pagesActions.SelectContentPage({ contentPageId }))
-  );
-
-  @Effect()
-  selectedContentPage$ = this.actions$.pipe(
-    ofType<pagesActions.SelectContentPage>(pagesActions.PagesActionTypes.SelectContentPage),
-    mapToPayloadProperty('contentPageId'),
+  selectedContentPage$ = this.store.pipe(
+    select(selectRouteParam('contentPageId')),
     whenTruthy(),
     map(contentPageId => new pagesActions.LoadContentPage({ contentPageId }))
   );
