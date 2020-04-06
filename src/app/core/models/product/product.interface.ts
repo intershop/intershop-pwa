@@ -5,7 +5,7 @@ import { Image } from 'ish-core/models/image/image.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { PriceData } from 'ish-core/models/price/price.interface';
 import { VariationAttribute } from 'ish-core/models/product-variation/variation-attribute.model';
-import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
+import { SeoAttributesData } from 'ish-core/models/seo-attributes/seo-attributes.interface';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
 export interface ProductData {
@@ -70,7 +70,7 @@ export interface ProductData {
 
   promotions?: Link[];
 
-  seoAttributes: SeoAttributes;
+  seoAttributes: SeoAttributesData;
 }
 
 export interface ProductDataStub {

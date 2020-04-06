@@ -36,16 +36,18 @@ describe('Seo Effects', () => {
   describe('setMetaData$', () => {
     it('should call the metaService to setup meta data', done => {
       const action = new seoActions.SetSeoAttributes({
-        metaTitle: 'dummy',
-        metaDescription: 'dummy desc',
-        robots: ['index', 'follow'],
+        title: 'dummy',
+        description: 'dummy desc',
+        robots: 'index, follow',
+        'og:other': 'other data',
       });
       actions$ = of(action);
 
       effects.setMetaData$.subscribe(() => {
         verify(metaServiceMock.setTitle('dummy')).once();
-        verify(metaServiceMock.setTag('robots', 'index,follow')).once();
+        verify(metaServiceMock.setTag('robots', 'index, follow')).once();
         verify(metaServiceMock.setTag('description', 'dummy desc')).once();
+        verify(metaServiceMock.setTag('og:other', 'other data')).once();
         done();
       });
     });

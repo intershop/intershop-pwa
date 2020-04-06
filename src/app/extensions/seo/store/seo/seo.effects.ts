@@ -20,7 +20,7 @@ import {
 
 import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.helper';
-import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
+import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 import { ofCategoryUrl } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/configuration';
@@ -56,9 +56,8 @@ export class SeoEffects {
       this.baseURL = this.doc.baseURI;
     }
 
-    // set og:image default (needs to be an absolute URL)
+    // og:image default (needs to be an absolute URL)
     this.ogImageDefault = `${this.baseURL}assets/img/og-image-default.jpg`;
-    this.meta.setTag('og:image', this.ogImageDefault);
   }
 
   @Effect({ dispatch: false })
@@ -72,6 +71,7 @@ export class SeoEffects {
         this.doc.head.appendChild(canonicalLink);
       }
       canonicalLink.setAttribute('href', this.doc.URL);
+      this.meta.setTag('og:url', this.doc.URL);
     })
   );
 
@@ -82,10 +82,13 @@ export class SeoEffects {
     whenTruthy(),
     tap((seoAttributes: SeoAttributes) => {
       if (seoAttributes) {
-        this.meta.setTitle(seoAttributes.metaTitle);
-        this.meta.setTag('description', seoAttributes.metaDescription);
-        this.meta.setTag('robots', seoAttributes.robots && seoAttributes.robots.join(','));
+        this.meta.setTitle(seoAttributes.title);
         this.meta.setTag('og:image', seoAttributes['og:image'] || this.ogImageDefault);
+        Object.keys(seoAttributes)
+          .filter(key => key !== 'title' && key !== 'og:image')
+          .forEach(key => {
+            this.meta.setTag(key, seoAttributes[key]);
+          });
       }
     })
   );
@@ -138,7 +141,7 @@ export class SeoEffects {
       select(selectRouteParam('searchTerm')),
       switchMap(searchTerm => this.translate.get('seo.title.search', { 0: searchTerm })),
       whenTruthy(),
-      map(metaTitle => new SetSeoAttributes({ metaTitle }))
+      map(title => new SetSeoAttributes({ title }))
     )
   );
 
@@ -150,7 +153,7 @@ export class SeoEffects {
       mapToProperty('displayName'),
       whenTruthy(),
       distinctUntilChanged(),
-      map(metaTitle => new SetSeoAttributes({ metaTitle }))
+      map(title => new SetSeoAttributes({ title }))
     )
   );
 

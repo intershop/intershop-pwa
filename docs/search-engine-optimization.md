@@ -29,6 +29,6 @@ By default the universal server provides a response with access to all pages exc
 
 The PWA uses the library [@ngx-meta/core](https://www.npmjs.com/package/@ngx-meta/core) for setting tags for title, meta description, robots, canonical links and open graph infos in page headers. It is also possible to use translation keys here.
 
-The process is triggered by adding a guard to the routing, see [Project Documentation](https://www.npmjs.com/package/@ngx-meta/core#route-configuration). The default `MetaSettings` are configured in the SEO extension of the PWA and documented in @ngx-meta/core.
+The process is triggered by adding the guard `MetaGuard` to the routing, this is automatically done for all routes in the seo module. The default `MetaSettings` are also configured in this guard.
 
 `seo.effects.ts` is the central place for customizations concerning dynamic content, e.g. names of products or categories (asynchronous data from the API). Effects are an essential part of our [State Management](./state-management.md).
