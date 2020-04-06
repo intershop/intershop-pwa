@@ -1,6 +1,6 @@
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
-import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
+import { SeoAttributesData } from 'ish-core/models/seo-attributes/seo-attributes.interface';
 
 export interface CategoryPathElement {
   id: string;
@@ -19,5 +19,5 @@ export interface CategoryData {
   uri?: string;
   categoryPath: CategoryPathElement[];
   attributes: Attribute[];
-  seoAttributes: SeoAttributes;
+  seoAttributes: SeoAttributesData;
 }

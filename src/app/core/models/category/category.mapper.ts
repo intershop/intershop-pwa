@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.helper';
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
+import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
 import { CategoryData, CategoryPathElement } from './category.interface';
 import { Category, CategoryHelper } from './category.model';
@@ -106,7 +107,7 @@ export class CategoryMapper {
         images: this.imageMapper.fromImages(categoryData.images),
         attributes: categoryData.attributes,
         completenessLevel: this.computeCompleteness(categoryData),
-        seoAttributes: categoryData.seoAttributes,
+        seoAttributes: SeoAttributesMapper.fromData(categoryData.seoAttributes),
       };
     } else {
       throw new Error(`'categoryData' is required`);

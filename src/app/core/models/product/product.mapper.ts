@@ -7,6 +7,7 @@ import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
 import { Link } from 'ish-core/models/link/link.model';
 import { PriceMapper } from 'ish-core/models/price/price.mapper';
+import { SeoAttributesMapper } from 'ish-core/models/seo-attributes/seo-attributes.mapper';
 
 import { VariationProduct } from './product-variation.model';
 import { AllProductTypes, SkuQuantityType } from './product.helper';
@@ -209,7 +210,7 @@ export class ProductMapper {
       promotionIds: mapPromotionIds(data.promotions),
       completenessLevel: 3,
       failed: false,
-      seoAttributes: data.seoAttributes,
+      seoAttributes: SeoAttributesMapper.fromData(data.seoAttributes),
     };
 
     if (data.productMaster) {
