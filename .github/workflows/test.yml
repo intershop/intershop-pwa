@@ -102,8 +102,51 @@ jobs:
           name: dist
           path: dist
 
+  Universal:
+    needs: [Build]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        test: [ 'b2c', 'b2b' ]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Download Build Output
+        uses: actions/download-artifact@v1
+        with:
+          name: dist
+
+      - name: Set Environment
+        uses: allenevans/set-env@v1.0.0
+        with:
+          overwrite: true
+          LOGGING: true
+          PROXY_ICM: true
+          ICM_BASE_URL: ${{ secrets.ICM_BASE_URL }}
+
+      - name: Set B2B Environment
+        if: matrix.test == 'b2b'
+        uses: allenevans/set-env@v1.0.0
+        with:
+          overwrite: true
+          THEME: blue
+          ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
+          FEATURES: quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling
+
+      - name: Start SSR
+        run: npm run serve &
+
+      - name: Test Universal
+        run: sh e2e/test-universal.sh
+
   Cypress:
-    needs: Build
+    needs: [Build, Universal]
     runs-on: ubuntu-latest
 
     strategy:
@@ -148,13 +191,11 @@ jobs:
 
       - name: Start SSR
         if: matrix.test != 'mock'
-        run: |
-          npm run serve &
+        run: npm run serve &
 
       - name: Start Dev-Server
         if: matrix.test == 'mock'
-        run: |
-          npm run ng -- serve &
+        run: npm run ng -- serve &
 
       - name: Cypress
         uses: cypress-io/github-action@v1.24.0
@@ -179,7 +220,7 @@ jobs:
           path: e2e/cypress/videos
 
   Schematics:
-    needs: [Build, Quality, Jest]
+    needs: [Build, Quality, Jest, Universal]
     runs-on: ubuntu-latest
 
     steps:
