@@ -37,10 +37,10 @@ import {
   isBasketInvoiceAndShippingAddressEqual,
 } from 'ish-core/store/checkout/basket';
 import { getCheckoutStep } from 'ish-core/store/checkout/viewconf';
+import { getServerConfigParameter } from 'ish-core/store/configuration';
 import { CreateOrder, getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })
 export class CheckoutFacade {
@@ -105,6 +105,7 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
+  priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));
