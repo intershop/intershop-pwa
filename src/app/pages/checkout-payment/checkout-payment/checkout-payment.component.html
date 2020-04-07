@@ -87,13 +87,12 @@
                   <label class="form-check-label " [for]="'paymentOption_' + paymentInstrument.id">
                     {{ paymentInstrument.accountIdentifier }}
                   </label>
-                  <!-- ToDo: enable this link if pwa runs against ICM 7.10.16+ -->
-                  <!--<a
+                  <a
                     class="float-right"
                     (click)="deleteBasketPayment(paymentInstrument)"
                     data-testing-id="delete-payment-link"
                     >{{ 'checkout.payment.method.delete.link' | translate }}</a
-                  >-->
+                  >
                 </div>
               </li>
 
