@@ -17,6 +17,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
   paymentMethods$: Observable<PaymentMethod[]>;
+  priceType$: Observable<'gross' | 'net'>;
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
@@ -25,6 +26,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
     this.basketError$ = this.checkoutFacade.basketError$;
     this.loading$ = this.checkoutFacade.basketLoading$;
     this.paymentMethods$ = this.checkoutFacade.eligiblePaymentMethods$();
+    this.priceType$ = this.checkoutFacade.priceType$;
   }
 
   updateBasketPaymentMethod(paymentName: string) {
