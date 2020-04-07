@@ -16,17 +16,16 @@ import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { Price } from './price.model';
 import { PricePipe } from './price.pipe';
 
-@Component({ template: '~{{ price | ishPrice }}~' })
-class DummyComponent {
-  price: Price | PriceItem;
-}
-
 describe('Price Pipe', () => {
   let fixture: ComponentFixture<DummyComponent>;
   let component: DummyComponent;
   let element: HTMLElement;
   let translateService: TranslateService;
-  let store$: Store<{}>;
+
+  @Component({ template: '~{{ price | ishPrice }}~' })
+  class DummyComponent {
+    price: Price | PriceItem;
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,7 +42,6 @@ describe('Price Pipe', () => {
     registerLocaleData(localeDe);
     translateService = TestBed.get(TranslateService);
     translateService.setDefaultLang('en');
-    store$ = TestBed.get(Store);
 
     fixture = TestBed.createComponent(DummyComponent);
     component = fixture.componentInstance;
@@ -106,6 +104,51 @@ describe('Price Pipe', () => {
       expect(element).toMatchInlineSnapshot(`~12.391,98&nbsp;€~`);
     });
   });
+});
+
+describe('Price Pipe', () => {
+  let fixture: ComponentFixture<DummyComponent>;
+  let component: DummyComponent;
+  let element: HTMLElement;
+  let translateService: TranslateService;
+  let store$: Store<{}>;
+
+  @Component({
+    template: `
+      flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }}
+    `,
+  })
+  class DummyComponent {
+    price: Price | PriceItem;
+  }
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DummyComponent, PricePipe],
+      imports: [
+        TranslateModule.forRoot(),
+        ngrxTesting({ reducers: { configuration: configurationReducer, user: userReducer } }),
+      ],
+      providers: [PricePipe],
+    });
+  }));
+
+  beforeEach(() => {
+    registerLocaleData(localeDe);
+    translateService = TestBed.get(TranslateService);
+    translateService.setDefaultLang('en');
+    store$ = TestBed.get(Store);
+
+    fixture = TestBed.createComponent(DummyComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(() => fixture.detectChanges()).not.toThrow();
+  });
 
   describe('PriceItem', () => {
     const priceItem: PriceItem = {
@@ -124,19 +167,19 @@ describe('Price Pipe', () => {
       fixture.detectChanges();
       tick(500);
 
-      expect(element).toMatchInlineSnapshot(`~$12,391.98~`);
+      expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
 
       store$.dispatch(new LoginUserSuccess({ customer: { isBusinessCustomer: true } as Customer }));
       fixture.detectChanges();
       tick(500);
 
-      expect(element).toMatchInlineSnapshot(`~$987.60~`);
+      expect(element).toMatchInlineSnapshot(`flex: $987.60 pinned: $987.60`);
 
       store$.dispatch(new LogoutUser());
       fixture.detectChanges();
       tick(500);
 
-      expect(element).toMatchInlineSnapshot(`~$12,391.98~`);
+      expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
 
       store$.dispatch(
         new ApplyConfiguration({ serverConfig: { pricing: { defaultCustomerTypeForPriceDisplay: 'SMB' } } })
@@ -144,20 +187,20 @@ describe('Price Pipe', () => {
       fixture.detectChanges();
       tick(500);
 
-      expect(element).toMatchInlineSnapshot(`~$987.60~`);
+      expect(element).toMatchInlineSnapshot(`flex: $987.60 pinned: $987.60`);
     }));
 
     it('should display price depending on input', fakeAsync(() => {
       fixture.detectChanges();
       tick(500);
 
-      expect(element).toMatchInlineSnapshot(`~$12,391.98~`);
+      expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
 
       component.price = { ...priceItem, gross: 123 };
       fixture.detectChanges();
       tick(500);
 
-      expect(element).toMatchInlineSnapshot(`~$123.00~`);
+      expect(element).toMatchInlineSnapshot(`flex: $123.00 pinned: $987.60`);
     }));
   });
 });
