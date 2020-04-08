@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from 'ish-core/core.module';
 
 import { AppComponent } from './app.component';
-import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
@@ -19,7 +18,6 @@ import { ShellModule } from './shell/shell.module';
     ShellModule,
     AppRoutingModule,
     AppLastRoutingModule,
-    QuickorderRoutingModule,
   ],
   bootstrap: [AppComponent],
 })

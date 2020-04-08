@@ -64,6 +64,13 @@ const routes: Routes = [
     },
   },
   {
+    path: 'quick-order',
+    loadChildren: () =>
+      import('../extensions/quickorder/pages/quickorder/quickorder-page.module').then(m => m.QuickorderPageModule),
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'quickorder' },
+  },
+  {
     path: 'search',
     loadChildren: () => import('./search/search-page.module').then(m => m.SearchPageModule),
   },
