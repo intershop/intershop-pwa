@@ -25,6 +25,7 @@ import {
 import {
   LoadProductIfNotLoaded,
   LoadProductLinks,
+  getFailed,
   getProduct,
   getProductBundleParts,
   getProductLinks,
@@ -62,6 +63,7 @@ export class ShoppingFacade {
   productDetailLoading$ = this.selectedProduct$.pipe(
     map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail))
   );
+  failedToLoadProducts$ = this.store.pipe(select(getFailed));
 
   product$(sku: string | Observable<string>, level: ProductCompletenessLevel) {
     return toObservable(sku).pipe(
@@ -106,7 +108,7 @@ export class ShoppingFacade {
   }
 
   addProductsToBasket(productsToAdd) {
-    this.store.dispatch(new AddItemsToBasket({ items: productsToAdd }));
+    return this.store.dispatch(new AddItemsToBasket({ items: productsToAdd }));
   }
 
   // PRODUCT LISTING

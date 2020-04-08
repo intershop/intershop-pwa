@@ -13,6 +13,7 @@
         <div class="col-md-6 list-header-item no-seperator">{{ 'quickorder.page.product.id' | translate }}</div>
         <div class="col-md-2 list-header-item no-seperator">{{ 'quickorder.page.product.quantity' | translate }}</div>
       </div>
+
       <div class="pt-1">
         <div formArrayName="quickOrderlines">
           <div
@@ -23,12 +24,18 @@
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">{{ 'quickorder.page.product.id' | translate }}</div>
               <div class="quickorder-search-container position-relative">
-                <ish-input
-                  type="text"
-                  [form]="quickOrderlines.controls[i]"
-                  controlName="sku"
-                  inputClass="w-100 col-12"
-                ></ish-input>
+                <input type="text" class="form-control w-100 col-12" formControlName="sku" />
+                <ng-container *ngIf="failedToLoadProducts$ | async as skus">
+                  <div
+                    *ngIf="skus.indexOf(quickOrderlines.controls[i].value.sku) > -1"
+                    class="has-error position-absolute"
+                  >
+                    <small class="form-text">{{
+                      'quickorder.page.error.invalid.product'
+                        | translate: { '0': quickOrderlines.controls[i].value.sku }
+                    }}</small>
+                  </div>
+                </ng-container>
                 <ul class="search-suggest-results w-100" *ngIf="item.value.sku === searchSuggestions[0].sku">
                   <li>
                     <button type="button" class="search-result">
@@ -67,7 +74,6 @@
                 controlName="quantity"
                 inputClass="w-100"
                 min="1"
-                max="2"
                 [errorMessages]="{
                   required: 'product.quantity.notempty.text',
                   integer: 'product.quantity.integer.text',

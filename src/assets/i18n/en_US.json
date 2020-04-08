@@ -2487,6 +2487,7 @@
   "quickorder.page.csv.file.uploaded": "File was uploaded",
   "quickorder.page.csv.file.invalid.format": "Invalid format. Only CSV files are allowed",
   "quickorder.page.csv.file.invalid.input": "Invalid input. Please confirm if your CSV file has the correct structure",
+  "quickorder.page.error.invalid.product": "Product {{0}} is not valid",
   "quote.quotes.link": "Quotes",
   "quote.quote_details.link": "Quote Details",
   "quote.add_product_to_quote.button.add_to_quote.label": "Add to Quote Request",

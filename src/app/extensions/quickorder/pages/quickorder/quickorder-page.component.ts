@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -24,6 +24,7 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
   csvForm: FormGroup;
 
   private destroy$ = new Subject();
+  failedToLoadProducts$: Observable<string[]>;
 
   constructor(
     private shoppingFacade: ShoppingFacade,
@@ -78,15 +79,19 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
   createLine(): FormGroup {
     return this.qf.group({
       sku: [''],
-      quantity: ['', [Validators.required, Validators.min(1), Validators.max(2), SpecialValidators.integer]],
+      quantity: ['', [Validators.required, Validators.min(1), SpecialValidators.integer]],
       unit: [''],
     });
   }
 
   onAddProducts() {
-    const filledLines = this.quickOrderlines.value.filter(p => p.sku !== '' && p.quantity !== undefined);
+    const filledLines = this.quickOrderlines.value.filter(
+      (p: { sku: string; quantity: number }) => p.sku !== '' && p.quantity !== undefined
+    );
     if (filledLines.length > 0) {
       this.shoppingFacade.addProductsToBasket(filledLines);
+
+      this.failedToLoadProducts$ = this.shoppingFacade.failedToLoadProducts$;
     }
   }
 
