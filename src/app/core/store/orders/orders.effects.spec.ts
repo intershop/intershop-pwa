@@ -403,6 +403,28 @@ describe('Orders Effects', () => {
     });
   });
 
+  describe('selectOrderAfterRedirectFailed', () => {
+    it('should navigate to /checkout/payment if order creation failed after redirect', fakeAsync(() => {
+      const action = new orderActions.SelectOrderAfterRedirectFail(undefined);
+      actions$ = of(action);
+
+      effects.selectOrderAfterRedirectFailed$.subscribe(noop, fail, noop);
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/payment?redirect=failure');
+    }));
+
+    it('should map to action of type LoadBasket', () => {
+      const action = new orderActions.SelectOrderAfterRedirectFail(undefined);
+      const completion = new LoadBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.selectOrderAfterRedirectFailed$).toBeObservable(expected$);
+    });
+  });
+
   describe('resetOrdersAfterLogout$', () => {
     it('should map to action of type ResetOrders if LogoutUser action triggered', () => {
       const action = new LogoutUser();
