@@ -27,14 +27,12 @@ exports[`Quickorder Page Component should be created 1`] = `
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">quickorder.page.product.id</div>
               <div class="quickorder-search-container position-relative">
-                <ish-input
-                  controlname="sku"
-                  inputclass="w-100 col-12"
+                <input
+                  class="form-control w-100 col-12 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="sku"
                   type="text"
-                  ng-reflect-control-name="sku"
-                  ng-reflect-input-class="w-100 col-12"
-                  ng-reflect-type="text"
-                ></ish-input>
+                  ng-reflect-name="sku"
+                />
               </div>
             </div>
             <div class="col-sm-2 list-item">
@@ -42,14 +40,12 @@ exports[`Quickorder Page Component should be created 1`] = `
               <ish-input
                 controlname="quantity"
                 inputclass="w-100"
-                max="2"
                 min="1"
                 type="number"
                 ng-reflect-control-name="quantity"
                 ng-reflect-input-class="w-100"
                 ng-reflect-type="number"
                 ng-reflect-min="1"
-                ng-reflect-max="2"
               ></ish-input>
             </div>
             <div class="col-sm-2 list-item">
@@ -65,14 +61,12 @@ exports[`Quickorder Page Component should be created 1`] = `
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">quickorder.page.product.id</div>
               <div class="quickorder-search-container position-relative">
-                <ish-input
-                  controlname="sku"
-                  inputclass="w-100 col-12"
+                <input
+                  class="form-control w-100 col-12 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="sku"
                   type="text"
-                  ng-reflect-control-name="sku"
-                  ng-reflect-input-class="w-100 col-12"
-                  ng-reflect-type="text"
-                ></ish-input>
+                  ng-reflect-name="sku"
+                />
               </div>
             </div>
             <div class="col-sm-2 list-item">
@@ -80,14 +74,12 @@ exports[`Quickorder Page Component should be created 1`] = `
               <ish-input
                 controlname="quantity"
                 inputclass="w-100"
-                max="2"
                 min="1"
                 type="number"
                 ng-reflect-control-name="quantity"
                 ng-reflect-input-class="w-100"
                 ng-reflect-type="number"
                 ng-reflect-min="1"
-                ng-reflect-max="2"
               ></ish-input>
             </div>
             <div class="col-sm-2 list-item">
@@ -103,14 +95,12 @@ exports[`Quickorder Page Component should be created 1`] = `
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">quickorder.page.product.id</div>
               <div class="quickorder-search-container position-relative">
-                <ish-input
-                  controlname="sku"
-                  inputclass="w-100 col-12"
+                <input
+                  class="form-control w-100 col-12 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="sku"
                   type="text"
-                  ng-reflect-control-name="sku"
-                  ng-reflect-input-class="w-100 col-12"
-                  ng-reflect-type="text"
-                ></ish-input>
+                  ng-reflect-name="sku"
+                />
               </div>
             </div>
             <div class="col-sm-2 list-item">
@@ -118,14 +108,12 @@ exports[`Quickorder Page Component should be created 1`] = `
               <ish-input
                 controlname="quantity"
                 inputclass="w-100"
-                max="2"
                 min="1"
                 type="number"
                 ng-reflect-control-name="quantity"
                 ng-reflect-input-class="w-100"
                 ng-reflect-type="number"
                 ng-reflect-min="1"
-                ng-reflect-max="2"
               ></ish-input>
             </div>
             <div class="col-sm-2 list-item">
@@ -141,14 +129,12 @@ exports[`Quickorder Page Component should be created 1`] = `
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">quickorder.page.product.id</div>
               <div class="quickorder-search-container position-relative">
-                <ish-input
-                  controlname="sku"
-                  inputclass="w-100 col-12"
+                <input
+                  class="form-control w-100 col-12 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="sku"
                   type="text"
-                  ng-reflect-control-name="sku"
-                  ng-reflect-input-class="w-100 col-12"
-                  ng-reflect-type="text"
-                ></ish-input>
+                  ng-reflect-name="sku"
+                />
               </div>
             </div>
             <div class="col-sm-2 list-item">
@@ -156,14 +142,12 @@ exports[`Quickorder Page Component should be created 1`] = `
               <ish-input
                 controlname="quantity"
                 inputclass="w-100"
-                max="2"
                 min="1"
                 type="number"
                 ng-reflect-control-name="quantity"
                 ng-reflect-input-class="w-100"
                 ng-reflect-type="number"
                 ng-reflect-min="1"
-                ng-reflect-max="2"
               ></ish-input>
             </div>
             <div class="col-sm-2 list-item">
@@ -179,14 +163,12 @@ exports[`Quickorder Page Component should be created 1`] = `
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">quickorder.page.product.id</div>
               <div class="quickorder-search-container position-relative">
-                <ish-input
-                  controlname="sku"
-                  inputclass="w-100 col-12"
+                <input
+                  class="form-control w-100 col-12 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="sku"
                   type="text"
-                  ng-reflect-control-name="sku"
-                  ng-reflect-input-class="w-100 col-12"
-                  ng-reflect-type="text"
-                ></ish-input>
+                  ng-reflect-name="sku"
+                />
               </div>
             </div>
             <div class="col-sm-2 list-item">
@@ -194,14 +176,12 @@ exports[`Quickorder Page Component should be created 1`] = `
               <ish-input
                 controlname="quantity"
                 inputclass="w-100"
-                max="2"
                 min="1"
                 type="number"
                 ng-reflect-control-name="quantity"
                 ng-reflect-input-class="w-100"
                 ng-reflect-type="number"
                 ng-reflect-min="1"
-                ng-reflect-max="2"
               ></ish-input>
             </div>
             <div class="col-sm-2 list-item">
