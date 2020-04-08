@@ -107,7 +107,7 @@ describe('Shopping Store', () => {
     });
 
     const configurationServiceMock = mock(ConfigurationService);
-    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(of({}));
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(EMPTY);
@@ -230,6 +230,8 @@ describe('Shopping Store', () => {
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
         [Configuration Internal] Get the ICM configuration
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         @ngrx/router-store/navigated:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
@@ -267,7 +269,6 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/category/A.123"}
           [Shopping] Load Category:
             categoryId: "A.123"
-          [Configuration Internal] Get the ICM configuration
           [Shopping] Load Category Success:
             categories: tree(A.123,A.123.456)
           [Shopping] Load Category:
@@ -318,7 +319,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
@@ -369,7 +369,6 @@ describe('Shopping Store', () => {
             [Recently Viewed] Add Product to Recently:
               sku: "P2"
               group: undefined
-            [Configuration Internal] Get the ICM configuration
             [Shopping] Load Product Success:
               product: {"sku":"P2"}
             @ngrx/router-store/navigated:
@@ -406,6 +405,8 @@ describe('Shopping Store', () => {
         [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category Success:
@@ -441,7 +442,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
@@ -480,6 +480,8 @@ describe('Shopping Store', () => {
         [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -552,7 +554,6 @@ describe('Shopping Store', () => {
           [Recently Viewed] Add Product to Recently:
             sku: "P1"
             group: undefined
-          [Configuration Internal] Get the ICM configuration
           [Shopping] Load Product Success:
             product: {"sku":"P1"}
           @ngrx/router-store/navigated:
@@ -580,7 +581,6 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
-            [Configuration Internal] Get the ICM configuration
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
@@ -604,7 +604,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
-          [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/search/something","params":{"searchTerm":"something...
             event: {"id":2,"url":"/search/something"}
@@ -650,7 +649,6 @@ describe('Shopping Store', () => {
             @ngrx/router-store/navigation:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
-            [Configuration Internal] Get the ICM configuration
             @ngrx/router-store/navigated:
               routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
               event: {"id":3,"url":"/category/A.123.456"}
@@ -680,7 +678,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
@@ -723,6 +720,8 @@ describe('Shopping Store', () => {
           categories: tree(A.123.456)
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -775,7 +774,6 @@ describe('Shopping Store', () => {
             event: {"id":2,"url":"/category/A.123.456"}
           [ProductListing] Load More Products:
             id: {"type":"category","value":"A.123.456"}
-          [Configuration Internal] Get the ICM configuration
           [ProductListing Internal] Load More Products For Params:
             id: {"type":"category","value":"A.123.456"}
             filters: undefined
@@ -832,7 +830,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
@@ -871,6 +868,8 @@ describe('Shopping Store', () => {
         [Configuration Internal] Get the ICM configuration
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         [Recently Viewed] Add Product to Recently:
           sku: "P1"
           group: undefined
@@ -905,7 +904,6 @@ describe('Shopping Store', () => {
           @ngrx/router-store/navigation:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
-          [Configuration Internal] Get the ICM configuration
           @ngrx/router-store/navigated:
             routerState: {"url":"/compare","params":{},"queryParams":{},"data":{}}
             event: {"id":2,"url":"/compare"}
@@ -949,6 +947,8 @@ describe('Shopping Store', () => {
         [Shopping] Load Product Fail:
           error: {"message":"error loading product P3"}
           sku: "P3"
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -967,7 +967,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Configuration Internal] Get the ICM configuration
         @ngrx/router-store/navigated:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
@@ -1013,6 +1012,8 @@ describe('Shopping Store', () => {
         [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Fail:
           error: {"message":"error loading category A.123.XXX"}
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
@@ -1023,7 +1024,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
-        [Configuration Internal] Get the ICM configuration
         @ngrx/router-store/navigated:
           routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
@@ -1059,6 +1059,8 @@ describe('Shopping Store', () => {
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
         [Configuration Internal] Get the ICM configuration
+        [Configuration] Apply Configuration:
+          serverConfig: {}
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
