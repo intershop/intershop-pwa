@@ -223,6 +223,17 @@ export class OrdersEffects {
     )
   );
 
+  @Effect()
+  selectOrderAfterRedirectFailed$ = this.actions$.pipe(
+    ofType(ordersActions.OrdersActionTypes.SelectOrderAfterRedirectFail),
+    tap(() =>
+      this.router.navigate(['/checkout/payment'], {
+        queryParams: { redirect: 'failure' },
+      })
+    ),
+    mapTo(new LoadBasket())
+  );
+
   /**
    * Trigger ResetOrders action after LogoutUser.
    */
