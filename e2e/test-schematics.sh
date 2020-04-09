@@ -90,6 +90,10 @@ else
   sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
 fi
 
+node schematics/customization/service-worker false
+grep '"serviceWorker": false' angular.json
+grep 'serviceWorker: false' src/environments/environment.prod.ts
+
 git add -A
 npx lint-staged
 npx tsc --project tsconfig.spec.json
