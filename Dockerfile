@@ -6,6 +6,9 @@ COPY schematics/package.json /workspace/node_modules/intershop-schematics/packag
 RUN npm i
 COPY src /workspace/src/
 COPY tsconfig.app.json tsconfig-es5.app.json tsconfig.json ngsw-config.json browserslist angular.json /workspace/
+ARG serviceWorker
+COPY schematics/customization/service-worker /workspace/schematics/customization/service-worker
+RUN node schematics/customization/service-worker ${serviceWorker} || true
 ARG configuration=production
 RUN npm run ng -- build -c ${configuration}
 COPY tsconfig.server.json /workspace/

@@ -238,6 +238,7 @@ publish_pwa:
     - VERSION="$(grep "version" package.json | grep -Eo '[0-9][^"]*')"
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+      --build-arg serviceWorker=false
       --build-arg displayVersion="$VERSION ($CI_COMMIT_REF_NAME @ $CI_COMMIT_SHA)"
       --label environment="production"
       --label revision="${CI_BUILD_REF}"
@@ -255,6 +256,7 @@ publish_pwa_latest:
   stage: publish
   only:
     - tags
+    - github-develop
   tags:
     - shell-executor
     - docker
@@ -264,8 +266,8 @@ publish_pwa_latest:
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:master
-    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:master ${CI_REGISTRY_IMAGE}:latest
+    - test -z "${CI_JOB_TOKEN}" || docker pull ${CI_REGISTRY_IMAGE}:github-develop
+    - test -z "${CI_JOB_TOKEN}" || docker tag ${CI_REGISTRY_IMAGE}:github-develop ${CI_REGISTRY_IMAGE}:latest
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:latest
 
 publish_nginx:
