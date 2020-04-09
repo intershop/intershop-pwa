@@ -91,12 +91,10 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Disable ServiceWorker
-        run: |
-          sed -i "s/serviceWorker:.*/serviceWorker:false,/" src/environments/environment.prod.ts
+        run: node schematics/customization/service-worker false
 
       - name: Build SSR
-        run: |
-          npm run build
+        run: npm run build
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v1
