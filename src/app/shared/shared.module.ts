@@ -122,6 +122,7 @@ const importExportModules = [
   NgbModalModule,
   NgbPopoverModule,
   PipesModule,
+  QuickorderExportsModule,
   QuotingExportsModule,
   ReactiveFormsModule,
   RouterModule,
@@ -216,9 +217,9 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules, QuickorderExportsModule],
+  imports: [...importExportModules],
   declarations: [...declaredComponents, ...exportedComponents],
-  exports: [...exportedComponents, ...importExportModules, QuickorderExportsModule],
+  exports: [...exportedComponents, ...importExportModules],
   entryComponents: [
     CMSCarouselComponent,
     CMSContainerComponent,

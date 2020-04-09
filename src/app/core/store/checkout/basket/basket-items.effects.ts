@@ -62,7 +62,7 @@ export class BasketItemsEffects {
           if (element) {
             element.quantity += val.quantity;
           } else {
-            acc.push({ ...val, unit: entities[val.sku].packingUnit });
+            acc.push({ ...val, unit: entities[val.sku] && entities[val.sku].packingUnit });
           }
           return acc;
         }, []),

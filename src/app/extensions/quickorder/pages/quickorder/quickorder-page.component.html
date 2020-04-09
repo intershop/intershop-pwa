@@ -116,13 +116,13 @@
             (change)="uploadListener($event)"
           />
           <div [ngSwitch]="status" class="position-absolute">
-            <small *ngSwitchCase="csvFileStatus.IncorrectInput" class="has-error"
+            <small *ngSwitchCase="csvStatusMessages.IncorrectInput" class="has-error"
               ><span class="form-text">{{ 'quickorder.page.csv.file.invalid.input' | translate }}</span></small
             >
-            <small *ngSwitchCase="csvFileStatus.InvalidFormat" class="has-error"
+            <small *ngSwitchCase="csvStatusMessages.InvalidFormat" class="has-error"
               ><span class="form-text">{{ 'quickorder.page.csv.file.invalid.format' | translate }}</span></small
             >
-            <small *ngSwitchCase="csvFileStatus.ValidFormat" class="has-success"
+            <small *ngSwitchCase="csvStatusMessages.ValidFormat" class="has-success"
               ><span class="form-text">{{ 'quickorder.page.csv.file.uploaded' | translate }}</span></small
             >
             <small *ngSwitchDefault></small>

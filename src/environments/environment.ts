@@ -1,16 +1,23 @@
 import { Environment } from './environment.model';
 
+// The file contents for the current environment will overwrite these during build.
+// The build system defaults to the dev environment which uses `environment.ts`, but if you do
+// `ng build --prod` then `environment.prod.ts` will be used instead.
+// The list of which configuration maps to which file can be found in `angular.json`.
+
 export const environment: Environment = {
   production: false,
 
   /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
-  icmBaseURL: 'http://http://localhost:4200',
+  icmBaseURL: 'http://localhost:4200',
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmChannel: 'inSPIRED-inTRONICS-Site',
 
+  mockServerAPI: true,
+
   /* FEATURE TOOGLES */
-  features: ['compare', 'recently', 'rating', 'wishlists', 'quickorder'],
+  features: ['compare', 'recently', 'rating', 'wishlists'],
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
   smallBreakpointWidth: 576,

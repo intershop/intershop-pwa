@@ -11,6 +11,7 @@ import {
   faCheck,
   faCog,
   faColumns,
+  faFastForward,
   faGlobeAmericas,
   faHeart,
   faHome,
@@ -79,7 +80,8 @@ export class IconModule {
       faUser,
       faStar,
       faStarHalf,
-      faHeart
+      faHeart,
+      faFastForward
     );
   }
 }

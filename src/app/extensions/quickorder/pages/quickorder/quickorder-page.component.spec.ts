@@ -36,7 +36,6 @@ describe('Quickorder Page Component', () => {
     expect(element).toBeTruthy();
     expect(store$).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchSnapshot();
   });
 
   it('should be always initialized with numberOfRows quick order lines', () => {

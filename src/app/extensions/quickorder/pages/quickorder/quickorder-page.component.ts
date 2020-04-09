@@ -1,35 +1,37 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { QuickOrderLine } from '../../models/quickorder-line.model';
-import { CsvStatusMessages } from '../../models/quickorder-status-messages.helper';
 
+export enum CsvStatusMessages {
+  Default,
+  ValidFormat,
+  InvalidFormat,
+  IncorrectInput,
+}
 @Component({
   selector: 'ish-quickorder-page',
   templateUrl: './quickorder-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuickorderPageComponent implements OnInit, OnDestroy {
+export class QuickorderPageComponent implements OnInit {
   numberOfRows = 5;
   productsFromCsv: QuickOrderLine[] = [];
-  searchSuggestions = new Array<{ imgPath: string; sku: string; name: string }>();
-  csvFileStatus = CsvStatusMessages;
+  searchSuggestions: { imgPath: string; sku: string; name: string }[] = [];
   status: number;
 
   quickOrderForm: FormGroup;
   csvForm: FormGroup;
 
-  private destroy$ = new Subject();
   failedToLoadProducts$: Observable<string[]>;
 
   constructor(
     private shoppingFacade: ShoppingFacade,
     private qf: FormBuilder,
-    private csvf: FormBuilder,
     private updateStatus: ChangeDetectorRef
   ) {}
 
@@ -49,11 +51,11 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
       quickOrderlines: this.qf.array([]),
     });
 
-    this.csvForm = this.csvf.group({
+    this.csvForm = this.qf.group({
       csvFile: ['', Validators.required],
     });
 
-    this.status = this.csvFileStatus.Default;
+    this.status = CsvStatusMessages.Default;
 
     this.addRows(this.numberOfRows);
   }
@@ -76,6 +78,10 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
     return this.quickOrderForm.get('quickOrderlines') as FormArray;
   }
 
+  get csvStatusMessages() {
+    return CsvStatusMessages;
+  }
+
   createLine(): FormGroup {
     return this.qf.group({
       sku: [''],
@@ -88,8 +94,14 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
     const filledLines = this.quickOrderlines.value.filter(
       (p: { sku: string; quantity: number }) => p.sku !== '' && p.quantity !== undefined
     );
-    if (filledLines.length > 0) {
-      this.shoppingFacade.addProductsToBasket(filledLines);
+    this.addProductsToBasket(filledLines);
+  }
+
+  addProductsToBasket(products: QuickOrderLine[]) {
+    if (products.length > 0) {
+      products.forEach((product: { sku: string; quantity: number }) => {
+        this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
+      });
 
       this.failedToLoadProducts$ = this.shoppingFacade.failedToLoadProducts$;
     }
@@ -97,7 +109,7 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
 
   uploadListener($event): void {
     const files = $event.srcElement.files;
-    this.status = this.csvFileStatus.Default;
+    this.status = CsvStatusMessages.Default;
 
     if (this.isValidCSVFile(files[0])) {
       const input = $event.target;
@@ -113,30 +125,33 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
       reader.onloadend = () => {
         this.status =
           this.productsFromCsv.filter(p => p.sku !== '' && p.quantity !== undefined).length !== 0
-            ? this.csvFileStatus.ValidFormat
-            : this.csvFileStatus.IncorrectInput;
+            ? CsvStatusMessages.ValidFormat
+            : CsvStatusMessages.IncorrectInput;
 
-        this.updateStatus.detectChanges();
+        this.updateStatus.markForCheck();
       };
     } else {
-      this.status = this.csvFileStatus.InvalidFormat;
+      this.status = CsvStatusMessages.InvalidFormat;
     }
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): QuickOrderLine[] {
-    const csvArr = new Array<QuickOrderLine>();
+    const csvArr: QuickOrderLine[] = [];
     // TODO: Use try catch?
     try {
-      for (let i = 1; i < csvRecordsArray.filter(r => r !== '').length; i++) {
+      for (let i = 0; i < csvRecordsArray.filter(r => r !== '').length; i++) {
         const currentRecord = (csvRecordsArray[i] as string).split(',');
-        const csvRecord = new QuickOrderLine();
-        csvRecord.sku = currentRecord[0].trim();
-        csvRecord.quantity = +currentRecord[1].trim();
-        csvRecord.unit = '';
-        csvArr.push(csvRecord);
+        if (+currentRecord[1].trim() !== NaN) {
+          const csvRecord: QuickOrderLine = {
+            sku: currentRecord[0].trim(),
+            quantity: +currentRecord[1].trim(),
+            unit: '',
+          };
+          csvArr.push(csvRecord);
+        }
       }
     } catch (error) {
-      this.status = this.csvFileStatus.IncorrectInput;
+      this.status = CsvStatusMessages.IncorrectInput;
       return [];
     }
     return csvArr;
@@ -147,18 +162,14 @@ export class QuickorderPageComponent implements OnInit, OnDestroy {
   }
 
   addCsvToCart() {
-    if (this.csvFileStatus.ValidFormat) {
-      this.shoppingFacade.addProductsToBasket(this.productsFromCsv);
+    if (CsvStatusMessages.ValidFormat) {
+      this.addProductsToBasket(this.productsFromCsv);
       this.resetCsvProductArray();
     }
   }
 
   resetCsvProductArray() {
     this.productsFromCsv = [];
-    this.status = this.csvFileStatus.Default;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
+    this.status = CsvStatusMessages.Default;
   }
 }
