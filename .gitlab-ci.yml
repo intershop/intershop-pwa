@@ -674,9 +674,9 @@ build_e2e_image:
     - docker:dind
   script:
     - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
-    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF} e2e
+    - docker build -t ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG} e2e
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
 
 deploy_public_demo:
   stage: deploy
@@ -732,7 +732,7 @@ schematics:
     - echo "schematics complete"
 
 .universal_template: &universal_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: universal
   retry: 1
   only:
@@ -761,7 +761,7 @@ universal_b2b:
     PWA_BASE_URL: http://${DEMO_SERVER_NAME}:3000/${CI_COMMIT_REF_SLUG}-pwa-b2b
 
 .cypress_template: &cypress_definition
-  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}-${CI_BUILD_REF}
+  image: ${CI_REGISTRY_IMAGE}:e2e-${CI_COMMIT_REF_SLUG}
   stage: e2e
   tags:
     - docker-executor
@@ -779,18 +779,19 @@ universal_b2b:
   script:
     - set -x
     - node --version && npm --version
-    - cd e2e && npm ci
+    - cd e2e
+    - npm i || npm i || npm i || npm i || npm i
     - export DISPLAY=:5
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - export ICM_BASE_URL=$(sh get-icmbaseurl.sh)
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
-    - sh e2e-partition.sh $CI_NODE_TOTAL $CI_NODE_INDEX $TESTS | xargs -r sh test-e2e.sh
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} ${PWA_BASE_URL})"
+    - node cypress-ci-e2e **/$TESTS
     - echo "E2E complete"
 
 cypress_remote:
   <<: *cypress_definition
-  parallel: 10
   only:
     - merge_requests
     - triggers
@@ -800,7 +801,6 @@ cypress_remote:
 
 cypress_remote_b2b:
   <<: *cypress_definition
-  parallel: 2
   only:
     - merge_requests
     - triggers
@@ -810,7 +810,6 @@ cypress_remote_b2b:
 
 cypress_mocked:
   <<: *cypress_definition
-  parallel: 2
   only:
     - merge_requests
   variables:
