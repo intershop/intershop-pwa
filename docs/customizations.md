@@ -15,10 +15,10 @@ It can be tempting to always modify existing templates, component and style file
 
 ## Start Customization
 
-To start customizing, **set a prefix** for your custom components with the script `node schematics/customization <prefix>`. After that we recommend to additionally use the prefix in every component to further help identifying customized components.
+To start customizing, **set a prefix** for your custom components with the script `node schematics/customization/add <prefix>`. After that we recommend to additionally use the prefix in every component to further help identifying customized components.
 
 ```bash
-$ node schematics/customization custom
+$ node schematics/customization/add custom
 $ ng g c shared/components/basket/custom-basket-display
 CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-display.component.ts (275 bytes)
 ...
@@ -65,7 +65,7 @@ When **heavily customizing** existing components it is better to **copy componen
 We are supplying a schematic `customized-copy` for copying components and replacing all usages.
 
 ```bash
-$ node schematics/customization custom
+$ node schematics/customization/add custom
 $ ng g customized-copy shared/components/product/product-price
 CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.html (1591 bytes)
 CREATE src/app/shared/components/product/custom-product-price/custom-product-price.component.spec.ts (7632 bytes)
