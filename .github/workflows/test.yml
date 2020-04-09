@@ -94,16 +94,6 @@ jobs:
         run: |
           sed -i "s/serviceWorker:.*/serviceWorker:false,/" src/environments/environment.prod.ts
 
-      - name: Set ICM URL
-        run: |
-          sed -i "s%icmBaseURL:.*%icmBaseURL:'${{ secrets.ICM_BASE_URL }}',%" src/environments/environment.prod.ts
-
-      - name: Print Environment
-        run: |
-          set +x
-          cat src/environments/environment.ts
-          cat src/environments/environment.prod.ts
-
       - name: Build SSR
         run: |
           npm run build
@@ -114,8 +104,84 @@ jobs:
           name: dist
           path: dist
 
+  Cypress:
+    needs: Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      max-parallel: 2
+      matrix:
+        test: [ 'mock', 'b2c', 'b2b' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install root dependencies
+        if: matrix.test == 'mock'
+        uses: bahmutov/npm-install@v1
+
+      - name: Download Build Output
+        if: matrix.test != 'mock'
+        uses: actions/download-artifact@v1
+        with:
+          name: dist
+
+      - name: Set Environment
+        uses: allenevans/set-env@v1.0.0
+        with:
+          overwrite: true
+          PWA_BASE_URL: http://localhost:4200
+          LOGGING: true
+          PROXY_ICM: true
+          ICM_BASE_URL: ${{ secrets.ICM_BASE_URL }}
+          BROWSER: chrome
+          NO_CHANNEL_REDIRECT: true
+
+      - name: Set B2B Environment
+        if: matrix.test == 'b2b'
+        uses: allenevans/set-env@v1.0.0
+        with:
+          overwrite: true
+          THEME: blue
+          CHANNEL: inSPIRED-inTRONICS_Business-Site
+          FEATURES: quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling
+
+      - name: Start SSR
+        if: matrix.test != 'mock'
+        run: |
+          npm run serve &
+
+      - name: Start Dev-Server
+        if: matrix.test == 'mock'
+        run: |
+          npm run ng -- serve &
+
+      - name: Cypress
+        uses: cypress-io/github-action@v1.24.0
+        with:
+          wait-on: 'http://localhost:4200'
+          wait-on-timeout: 180
+          working-directory: e2e
+          command: node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: screenshots
+          path: e2e/cypress/screenshots
+
+      - name: Upload Videos
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: videos
+          path: e2e/cypress/videos
+
   Schematics:
-    needs: [Build, Quality, Jest, Cypress]
+    needs: [Build, Quality, Jest]
     runs-on: ubuntu-latest
 
     steps:
@@ -133,73 +199,3 @@ jobs:
           bash e2e/test-schematics.sh
           node scripts/tslint-hard
           npm run lint
-
-  Cypress:
-    needs: Build
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-      max-parallel: 2
-      matrix:
-        test:
-          [
-            '*mock*',
-            '*b2b*',
-            'account/*b2c*',
-            'checkout/*b2c*',
-            'shopping/*b2c*',
-            'system/*b2c*',
-            'extras/*b2c*',
-            # TODO: include remaining in a general way
-            # '!(shopping|account|checkout)*/*b2c*'
-            # '@(cms|contact)*/*b2c*'
-          ]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Install root dependencies
-        if: matrix.test == '*mock*'
-        uses: bahmutov/npm-install@v1
-
-      - name: Download Build Output
-        if: matrix.test != '*mock*'
-        uses: actions/download-artifact@v1
-        with:
-          name: dist
-
-      - name: Start SSR
-        if: matrix.test != '*mock*'
-        run: |
-          npm run serve &
-
-      - name: Start Dev-Server
-        if: matrix.test == '*mock*'
-        run: |
-          npm run ng -- serve &
-
-      - name: Cypress
-        uses: cypress-io/github-action@v1.22.0
-        with:
-          wait-on: 'http://localhost:4200'
-          wait-on-timeout: 180
-          working-directory: e2e
-          config: testFiles=**/${{ matrix.test }}.e2e-spec.ts,video=true,videoUploadOnPasses=false,chromeWebSecurity=false
-          browser: chrome
-          env: PWA_BASE_URL=http://localhost:4200,ICM_BASE_URL=${{ secrets.ICM_BASE_URL }}
-
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: screenshots
-          path: e2e/cypress/screenshots
-
-      - name: Upload Videos
-        uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: videos
-          path: e2e/cypress/videos
