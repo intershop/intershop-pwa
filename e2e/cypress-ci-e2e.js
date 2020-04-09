@@ -5,9 +5,10 @@
  */
 
 const _ = require('lodash');
+const fs = require('fs');
 const cypress = require('cypress');
 
-const MAX_NUM_RUNS = 6;
+const MAX_NUM_RUNS = 3;
 const BROWSER = process.env.BROWSER || 'chrome';
 const TEST_FILES = process.argv.length > 2 ? process.argv[2].split(',') : undefined;
 
@@ -27,14 +28,17 @@ const DEFAULT_CONFIG = {
   reporter: 'junit',
   reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
   spec: TEST_FILES,
+  numTestsKeptInMemory: 1,
+  watchForFileChanges: false,
   config: {
+    ...JSON.parse(fs.readFileSync('cypress.json')),
     baseUrl: process.env.PWA_BASE_URL,
-    numTestsKeptInMemory: 1,
     pageLoadTimeout: 180000,
     trashAssetsBeforeRuns: false,
+    video: true,
+    videoUploadOnPasses: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
-  modifyObstructiveCode: false,
 };
 
 let totalFailuresIncludingRetries = 0;
