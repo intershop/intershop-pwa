@@ -75,7 +75,7 @@ grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
 
 
-node schematics/customization custom
+node schematics/customization/add custom
 npx ng g customized-copy shell/footer/footer
 
 stat src/app/shell/footer/custom-footer/custom-footer.component.ts
