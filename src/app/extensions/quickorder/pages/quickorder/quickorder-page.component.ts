@@ -128,7 +128,7 @@ export class QuickorderPageComponent implements OnInit {
     try {
       return csvRecordsArray
         .filter(r => !!r)
-        .map(record => record.split(','))
+        .map(record => record.split(/[,;]/))
         .map(record => ({
           sku: record[0].trim(),
           quantity: +record[1].trim(),
