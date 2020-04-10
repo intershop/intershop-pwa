@@ -67,14 +67,14 @@ const run = (num, spec, retryGroup) => {
             .value();
 
           console.log(`Run #${num} failed.`);
-          console.log(
-            _(results.runs)
-              .filter('stats.failures')
-              .map('tests')
-              .flatten()
-              .filter('error')
-              .value()
-          );
+          _(results.runs)
+            .filter('stats.failures')
+            .map('tests')
+            .flatten()
+            .filter('error')
+            .value()
+            .map(result => ({ title: result.title.join(' > '), error: result.error }))
+            .forEach(result => console.warn(result.title, '\n', result.error, '\n'));
 
           // if this is the 3rd total run (2nd retry)
           // and we've still got failures then just exit
