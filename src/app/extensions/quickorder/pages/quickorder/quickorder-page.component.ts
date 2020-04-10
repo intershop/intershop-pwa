@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
-import { QuickOrderLine } from '../../models/quickorder-line.model';
-
 declare type CsvStatusType = 'Default' | 'ValidFormat' | 'InvalidFormat' | 'IncorrectInput';
 
 @Component({
@@ -16,7 +14,7 @@ declare type CsvStatusType = 'Default' | 'ValidFormat' | 'InvalidFormat' | 'Inco
 })
 export class QuickorderPageComponent implements OnInit {
   numberOfRows = 5;
-  productsFromCsv: QuickOrderLine[] = [];
+  productsFromCsv: { sku: string; quantity: number }[] = [];
   searchSuggestions: { imgPath: string; sku: string; name: string }[] = [];
   status: CsvStatusType;
 
@@ -78,20 +76,19 @@ export class QuickorderPageComponent implements OnInit {
     return this.qf.group({
       sku: [''],
       quantity: ['', [Validators.required, Validators.min(1), SpecialValidators.integer]],
-      unit: [''],
     });
   }
 
   onAddProducts() {
     const filledLines = this.quickOrderlines.value.filter(
-      (p: { sku: string; quantity: number }) => p.sku !== '' && p.quantity !== undefined
+      (p: { sku: string; quantity: number }) => !!p.sku && !!p.quantity
     );
     this.addProductsToBasket(filledLines);
   }
 
-  addProductsToBasket(products: QuickOrderLine[]) {
+  addProductsToBasket(products: { sku: string; quantity: number }[]) {
     if (products.length > 0) {
-      products.forEach((product: { sku: string; quantity: number }) => {
+      products.forEach(product => {
         this.shoppingFacade.addProductToBasket(product.sku, product.quantity);
       });
 
@@ -127,26 +124,20 @@ export class QuickorderPageComponent implements OnInit {
     }
   }
 
-  getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): QuickOrderLine[] {
-    const csvArr: QuickOrderLine[] = [];
-    // TODO: Use try catch?
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: string[]): { sku: string; quantity: number }[] {
     try {
-      for (let i = 0; i < csvRecordsArray.filter(r => r !== '').length; i++) {
-        const currentRecord = (csvRecordsArray[i] as string).split(',');
-        if (+currentRecord[1].trim() !== NaN) {
-          const csvRecord: QuickOrderLine = {
-            sku: currentRecord[0].trim(),
-            quantity: +currentRecord[1].trim(),
-            unit: '',
-          };
-          csvArr.push(csvRecord);
-        }
-      }
+      return csvRecordsArray
+        .filter(r => !!r)
+        .map(record => record.split(','))
+        .map(record => ({
+          sku: record[0].trim(),
+          quantity: +record[1].trim(),
+        }))
+        .filter(record => !isNaN(record.quantity));
     } catch (error) {
       this.status = 'IncorrectInput';
       return [];
     }
-    return csvArr;
   }
 
   isValidCSVFile(file) {
