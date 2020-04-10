@@ -20,6 +20,7 @@ export const environment: Environment = {
   mainNavigationMaxSubCategoriesDepth: 2,
   productListingItemsPerPage: 9,
   defaultProductListingViewType: 'grid',
+  defaultDeviceType: 'mobile',
   serviceWorker: true,
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },

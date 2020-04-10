@@ -2,6 +2,10 @@ server {
     server_name ~^$DOMAIN$;
     include /etc/nginx/conf.d/listen.conf;
 
+    ## uncomment for debugging rewrite rules
+    # error_log /dev/stdout notice;
+    # rewrite_log on;
+
     # let ICM handle everything ICM related
     location ~* ^/INTERSHOP.*$ {
         proxy_set_header Host $http_host;
@@ -14,7 +18,7 @@ server {
     }
 
     # respect cache entries of static assets
-    location ~* ^/(assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(ngx_pagespeed_beacon|assets|.*\.(js|css|ico|json|txt|webmanifest|woff|woff2))(.*)$ {
         proxy_cache my_cache;
         proxy_cache_use_stale error timeout http_404 http_500 http_502 http_503 http_504;
 
@@ -47,15 +51,15 @@ server {
         add_header X-icm-application $APPLICATION always;
         add_header X-icm-features $FEATURES always;
         add_header X-icm-default-lang $LANG always;
+        add_header X-ua-device $ua_device always;
 
         rewrite ^/$ /home;
-        if ($request_uri !~* ";lang=") {
-            rewrite ^(.*)$ "$1;lang=$LANG";
-        }
-        if ($request_uri !~* ";channel=") {
-            rewrite ^(.*)$ "$1;channel=$CHANNEL;application=$APPLICATION";
-        }
-        rewrite ^(.*)$ "$1;features=$FEATURES;theme=$THEME" break;
+
+        rewrite '^(?!.*;lang=.*)(.*)$' '$1;lang=$LANG';
+
+        set $default_rewrite_params ';channel=$CHANNEL;application=$APPLICATION;features=$FEATURES;theme=$THEME;device=$ua_device';
+
+        rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
         proxy_pass $UPSTREAM_PWA;
     }
