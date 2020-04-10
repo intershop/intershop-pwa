@@ -748,6 +748,7 @@ schematics:
     - export ICM_BASE_URL=$(sh e2e/get-icmbaseurl.sh)
     - echo "$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME) $DEMO_SERVER_NAME" >> /etc/hosts
     - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} ${PWA_BASE_URL})"
     - sh e2e/test-universal.sh
 
 universal_b2c:
