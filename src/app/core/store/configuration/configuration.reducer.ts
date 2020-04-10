@@ -37,7 +37,7 @@ export const initialState: ConfigurationState = {
   error: undefined,
   locales: environment.locales,
   lang: undefined,
-  _deviceType: 'mobile',
+  _deviceType: environment.defaultDeviceType,
 };
 
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {

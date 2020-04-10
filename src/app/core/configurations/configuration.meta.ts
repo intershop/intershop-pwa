@@ -13,7 +13,7 @@ class SimpleParamMap {
   has(key: string): boolean {
     return this.obj[key] !== undefined;
   }
-  get(key: string): string {
+  get<T>(key: string): T {
     return this.obj[key];
   }
 }
@@ -33,8 +33,12 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
     if (paramMap.get('features') === 'none') {
       properties.features = [];
     } else {
-      properties.features = paramMap.get('features').split(/,/g);
+      properties.features = paramMap.get<string>('features').split(/,/g);
     }
+  }
+
+  if (paramMap.has('device')) {
+    properties._deviceType = paramMap.get('device');
   }
 
   if (Object.keys(properties).length) {

@@ -9,6 +9,7 @@ services:
       args:
         # configuration: local
         configuration: production
+        serviceWorker: "false"
     environment:
       - LOGGING=true
       - ICM_BASE_URL

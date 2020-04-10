@@ -69,69 +69,67 @@ describe('Header Default Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  describe('rendering', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
+  it('should render User Links on template', () => {
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-product-compare-status']);
+  });
+  it('should render Language Switch on template', () => {
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toContain('ish-language-switch');
+  });
 
-    it('should render User Links on template', () => {
-      expect(findAllIshElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-product-compare-status']);
-    });
-    it('should render Language Switch on template', () => {
-      expect(findAllIshElements(element)).toContain('ish-language-switch');
-    });
+  it('should render Search Box on template', () => {
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toContain('ish-search-box');
+  });
 
-    it('should render Search Box on template', () => {
-      expect(findAllIshElements(element)).toContain('ish-search-box');
-    });
+  it('should render Header Navigation on template', () => {
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toContain('ish-header-navigation');
+  });
 
-    it('should render Header Navigation on template', () => {
-      expect(findAllIshElements(element)).toContain('ish-header-navigation');
-    });
+  it('should render normal header adequately for mobile devices', () => {
+    component.deviceType = 'mobile';
+    fixture.detectChanges();
 
-    it('should render normal header adequately for mobile devices', () => {
-      component.deviceType = 'mobile';
-      fixture.detectChanges();
+    expect(element).toMatchSnapshot();
+  });
 
-      expect(element).toMatchSnapshot();
-    });
+  it('should render sticky header adequately for mobile devices', () => {
+    component.deviceType = 'mobile';
+    component.isSticky = true;
+    fixture.detectChanges();
 
-    it('should render sticky header adequately for mobile devices', () => {
-      component.deviceType = 'mobile';
-      component.isSticky = true;
-      fixture.detectChanges();
+    expect(element).toMatchSnapshot();
+  });
 
-      expect(element).toMatchSnapshot();
-    });
+  it('should render normal header adequately for tablet devices', () => {
+    component.deviceType = 'tablet';
+    fixture.detectChanges();
 
-    it('should render normal header adequately for tablet devices', () => {
-      component.deviceType = 'tablet';
-      fixture.detectChanges();
+    expect(element).toMatchSnapshot();
+  });
 
-      expect(element).toMatchSnapshot();
-    });
+  it('should render sticky header adequately for tablet devices', () => {
+    component.deviceType = 'tablet';
+    component.isSticky = true;
+    fixture.detectChanges();
 
-    it('should render sticky header adequately for tablet devices', () => {
-      component.deviceType = 'tablet';
-      component.isSticky = true;
-      fixture.detectChanges();
+    expect(element).toMatchSnapshot();
+  });
 
-      expect(element).toMatchSnapshot();
-    });
+  it('should render normal header adequately for desktop', () => {
+    component.deviceType = 'pc';
+    fixture.detectChanges();
 
-    it('should render normal header adequately for desktop', () => {
-      component.deviceType = 'pc';
-      fixture.detectChanges();
+    expect(element).toMatchSnapshot();
+  });
 
-      expect(element).toMatchSnapshot();
-    });
+  it('should render sticky header adequately for desktop', () => {
+    component.deviceType = 'pc';
+    component.isSticky = true;
+    fixture.detectChanges();
 
-    it('should render sticky header adequately for desktop', () => {
-      component.deviceType = 'pc';
-      component.isSticky = true;
-      fixture.detectChanges();
-
-      expect(element).toMatchSnapshot();
-    });
+    expect(element).toMatchSnapshot();
   });
 });

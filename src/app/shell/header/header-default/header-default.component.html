@@ -11,7 +11,7 @@
   ></ish-search-box>
 </ng-template>
 
-<div class="header container">
+<div class="header container" [ngClass]="deviceType">
   <ul *ngIf="!isSticky" class="user-links">
     <li *ngIf="!isSticky && deviceType !== 'mobile'">
       <ish-login-status data-testing-id="user-status-desktop"></ish-login-status>
