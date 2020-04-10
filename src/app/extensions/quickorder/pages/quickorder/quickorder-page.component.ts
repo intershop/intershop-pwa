@@ -7,12 +7,8 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 import { QuickOrderLine } from '../../models/quickorder-line.model';
 
-export enum CsvStatusMessages {
-  Default,
-  ValidFormat,
-  InvalidFormat,
-  IncorrectInput,
-}
+declare type CsvStatusType = 'Default' | 'ValidFormat' | 'InvalidFormat' | 'IncorrectInput';
+
 @Component({
   selector: 'ish-quickorder-page',
   templateUrl: './quickorder-page.component.html',
@@ -22,7 +18,7 @@ export class QuickorderPageComponent implements OnInit {
   numberOfRows = 5;
   productsFromCsv: QuickOrderLine[] = [];
   searchSuggestions: { imgPath: string; sku: string; name: string }[] = [];
-  status: number;
+  status: CsvStatusType;
 
   quickOrderForm: FormGroup;
   csvForm: FormGroup;
@@ -55,7 +51,7 @@ export class QuickorderPageComponent implements OnInit {
       csvFile: ['', Validators.required],
     });
 
-    this.status = CsvStatusMessages.Default;
+    this.status = 'Default';
 
     this.addRows(this.numberOfRows);
   }
@@ -76,10 +72,6 @@ export class QuickorderPageComponent implements OnInit {
 
   get quickOrderlines() {
     return this.quickOrderForm.get('quickOrderlines') as FormArray;
-  }
-
-  get csvStatusMessages() {
-    return CsvStatusMessages;
   }
 
   createLine(): FormGroup {
@@ -109,7 +101,7 @@ export class QuickorderPageComponent implements OnInit {
 
   uploadListener($event): void {
     const files = $event.srcElement.files;
-    this.status = CsvStatusMessages.Default;
+    this.status = 'Default';
 
     if (this.isValidCSVFile(files[0])) {
       const input = $event.target;
@@ -125,13 +117,13 @@ export class QuickorderPageComponent implements OnInit {
       reader.onloadend = () => {
         this.status =
           this.productsFromCsv.filter(p => p.sku !== '' && p.quantity !== undefined).length !== 0
-            ? CsvStatusMessages.ValidFormat
-            : CsvStatusMessages.IncorrectInput;
+            ? 'ValidFormat'
+            : 'IncorrectInput';
 
         this.updateStatus.markForCheck();
       };
     } else {
-      this.status = CsvStatusMessages.InvalidFormat;
+      this.status = 'InvalidFormat';
     }
   }
 
@@ -151,7 +143,7 @@ export class QuickorderPageComponent implements OnInit {
         }
       }
     } catch (error) {
-      this.status = CsvStatusMessages.IncorrectInput;
+      this.status = 'IncorrectInput';
       return [];
     }
     return csvArr;
@@ -162,7 +154,7 @@ export class QuickorderPageComponent implements OnInit {
   }
 
   addCsvToCart() {
-    if (CsvStatusMessages.ValidFormat) {
+    if (this.status === 'ValidFormat') {
       this.addProductsToBasket(this.productsFromCsv);
       this.resetCsvProductArray();
     }
@@ -170,6 +162,6 @@ export class QuickorderPageComponent implements OnInit {
 
   resetCsvProductArray() {
     this.productsFromCsv = [];
-    this.status = CsvStatusMessages.Default;
+    this.status = 'Default';
   }
 }
