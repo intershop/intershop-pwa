@@ -9,6 +9,7 @@ const fs = require('fs');
 const cypress = require('cypress');
 
 const MAX_NUM_RUNS = 5;
+const STATUS_FILE = 'cypress.status';
 const BROWSER = process.env.BROWSER || 'chrome';
 const TEST_FILES = process.argv.length > 2 ? process.argv[2].split(',') : undefined;
 
@@ -84,7 +85,8 @@ const run = (num, spec, retryGroup) => {
           // and we've still got failures then just exit
           if (num >= MAX_NUM_RUNS) {
             console.log(`Ran a total of '${MAX_NUM_RUNS}' times but still have failures. Exiting...`);
-            return process.exit(totalFailuresIncludingRetries);
+            fs.writeFileSync(STATUS_FILE, 'FAILURE');
+            return process.exit(1);
           }
 
           console.log(`Retrying '${specs.length}' specs...`);
@@ -100,6 +102,9 @@ const run = (num, spec, retryGroup) => {
 
           // kick off a new suite run
           return run(num, specs, retryGroupName);
+        } else {
+          console.log('finished successful');
+          fs.writeFileSync(STATUS_FILE, 'SUCCESS');
         }
       })
       .catch(err => {
@@ -111,6 +116,11 @@ const run = (num, spec, retryGroup) => {
     return run(num);
   }
 };
+
+// remove status file
+if (fs.existsSync(STATUS_FILE)) {
+  fs.unlinkSync(STATUS_FILE);
+}
 
 // kick off the run with the default specs
 run(0);
