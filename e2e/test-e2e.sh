@@ -3,8 +3,6 @@
 [ -z "$1" ] && echo "test file required" && exit 1
 files="$(echo "$*" | tr ' ' ',')"
 
-export CYPRESS_NO_CHANNEL_REDIRECT=1
-
 echo "PWA_BASE_URL is $PWA_BASE_URL"
 export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} $PWA_BASE_URL)"
 echo "effective PWA_BASE_URL is $PWA_BASE_URL"
