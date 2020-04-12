@@ -185,7 +185,7 @@ jobs:
         with:
           overwrite: true
           THEME: blue
-          CHANNEL: inSPIRED-inTRONICS_Business-Site
+          ICM_CHANNEL: inSPIRED-inTRONICS_Business-Site
           FEATURES: quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling
 
       - name: Start SSR
