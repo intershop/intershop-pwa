@@ -35,8 +35,7 @@ const DEFAULT_CONFIG = {
     baseUrl: process.env.PWA_BASE_URL,
     pageLoadTimeout: 180000,
     trashAssetsBeforeRuns: false,
-    video: true,
-    videoUploadOnPasses: false,
+    video: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
@@ -47,6 +46,11 @@ const run = (num, spec, retryGroup) => {
   num += 1;
   let config = _.cloneDeep(DEFAULT_CONFIG);
   config = { ...config, env: { ...config.env, numRuns: num } };
+
+  // activate video only for last run
+  if (num >= MAX_NUM_RUNS) {
+    config.config.video = true;
+  }
 
   if (spec) config.spec = spec;
   if (retryGroup) config.group = retryGroup;
