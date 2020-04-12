@@ -178,7 +178,6 @@ jobs:
           PROXY_ICM: true
           ICM_BASE_URL: ${{ secrets.ICM_BASE_URL }}
           BROWSER: chrome
-          NO_CHANNEL_REDIRECT: true
 
       - name: Set B2B Environment
         if: matrix.test == 'b2b'
