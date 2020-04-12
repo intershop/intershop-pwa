@@ -26,7 +26,7 @@ describe('Wishlist Shopping Experience Functionality', () => {
   const shoppingPreferred = 'shopping wishlist preferred';
   before(() => {
     createUserViaREST(_.user);
-    LoginPage.navigateTo();
+    LoginPage.navigateTo('/account/wishlists');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page
@@ -34,7 +34,6 @@ describe('Wishlist Shopping Experience Functionality', () => {
         .its('status')
         .should('equal', 200);
     });
-    WishlistsOverviewPage.navigateTo();
     at(WishlistsOverviewPage, page => {
       page.addWishlist(unpreferredWishlist, false);
       page.addWishlist(shoppingUnpreferred, false);
@@ -79,7 +78,7 @@ describe('Wishlist Shopping Experience Functionality', () => {
   });
 
   it('user adds a product to wishlist from shopping cart (to a preferred wishlist without selection)', () => {
-    WishlistsOverviewPage.navigateTo();
+    at(WishlistsDetailsPage, page => page.header.gotoWishlists());
     at(WishlistsOverviewPage, page => {
       page.addWishlist(shoppingPreferred, true);
       page.header.miniCart.goToCart();

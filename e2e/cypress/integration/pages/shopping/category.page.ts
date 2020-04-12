@@ -1,8 +1,11 @@
+import { waitLoadingEnd } from '../../framework';
+
 export class CategoryPage {
   readonly tag = 'ish-category-categories';
 
   gotoSubCategory(categoryUniqueId: string) {
     cy.get(`div[data-testing-id="category-${categoryUniqueId}"] a`).click({ force: true });
+    waitLoadingEnd();
   }
 
   get subCategories() {
