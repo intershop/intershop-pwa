@@ -5,6 +5,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.tslint": true
   },
+  "git.rebaseWhenSync": true,
   "tslint.alwaysShowRuleFailuresAsWarnings": true,
 
   // file type specific settings
