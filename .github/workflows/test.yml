@@ -108,7 +108,7 @@ jobs:
 
     strategy:
       matrix:
-        test: [ 'b2c', 'b2b' ]
+        test: ['b2c', 'b2b']
 
     steps:
       - uses: actions/checkout@v1
@@ -153,7 +153,7 @@ jobs:
       fail-fast: true
       max-parallel: 2
       matrix:
-        test: [ 'mock', 'b2c', 'b2b' ]
+        test: ['mock', 'b2c', 'b2b']
 
     steps:
       - name: Checkout
@@ -203,6 +203,9 @@ jobs:
           wait-on-timeout: 180
           working-directory: e2e
           command: node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+
+      - name: Cypress Sanity Check
+        run: grep SUCCESS e2e/cypress.status
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
