@@ -38,6 +38,7 @@ export class ProductListModule {
     cy.get(this.contextSelector)
       .find(`ish-product-item div[data-testing-sku="${sku}"]`)
       .click();
+    waitLoadingEnd();
   }
 
   addProductToCompareBySku(sku: string) {

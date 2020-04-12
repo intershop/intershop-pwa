@@ -1,3 +1,5 @@
+import { waitLoadingEnd } from '../framework';
+
 import { MiniCartModule } from './checkout/mini-cart.module';
 import { SearchBoxModule } from './shopping/search-box.module';
 
@@ -19,18 +21,29 @@ export class HeaderModule {
 
   gotoHomePage() {
     cy.get('[data-testing-id="header-home-link-desktop"]').click();
+    waitLoadingEnd();
   }
 
   gotoLoginPage() {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-login').click();
+    waitLoadingEnd();
   }
 
   gotoRegistrationPage() {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-register').click();
+    waitLoadingEnd();
   }
 
   gotoCategoryPage(categoryUniqueId: string) {
     cy.get(`[data-testing-id="${categoryUniqueId}-link"]`).click();
+    waitLoadingEnd();
+  }
+
+  gotoWishlists() {
+    cy.get('ish-wishlists-link a')
+      .eq(0)
+      .click({ force: true });
+    waitLoadingEnd();
   }
 
   logout() {
