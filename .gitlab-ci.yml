@@ -789,7 +789,6 @@ universal_b2b:
     - wget --wait 10 --tries 30 --retry-connrefused --no-check-certificate ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - export PWA_BASE_URL="$(curl -Ls -o /dev/null -w %{url_effective} ${PWA_BASE_URL})"
     - node cypress-ci-e2e **/$TESTS
-    - grep SUCCESS cypress.status
     - echo "E2E complete"
 
 cypress_remote:

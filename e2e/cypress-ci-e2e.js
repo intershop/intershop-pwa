@@ -8,8 +8,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const cypress = require('cypress');
 
-const MAX_NUM_RUNS = 5;
-const STATUS_FILE = 'cypress.status';
+const MAX_NUM_RUNS = 4;
 const BROWSER = process.env.BROWSER || 'chrome';
 const TEST_FILES = process.argv.length > 2 ? process.argv[2].split(',') : undefined;
 
@@ -28,20 +27,31 @@ const DEFAULT_CONFIG = {
   defaultCommandTimeout: 15000,
   reporter: 'junit',
   reporterOptions: 'mochaFile=reports/e2e-remote-[hash]-report.xml,includePending=true',
-  spec: TEST_FILES,
   numTestsKeptInMemory: 1,
   watchForFileChanges: false,
   config: {
     ...JSON.parse(fs.readFileSync('cypress.json')),
     baseUrl: process.env.PWA_BASE_URL,
     pageLoadTimeout: 180000,
-    trashAssetsBeforeRuns: false,
+    trashAssetsBeforeRuns: true,
     video: false,
   },
   env: { ICM_BASE_URL: process.env.ICM_BASE_URL },
 };
 
-let totalFailuresIncludingRetries = 0;
+const checkMaxRunsReached = num => {
+  if (num >= MAX_NUM_RUNS) {
+    console.log(`Ran a total of '${num}' times but still have failures. Exiting...`);
+    return process.exit(1);
+  }
+};
+
+const newGroupName = num => {
+  // If we're using parallelization, set a new group name
+  if (DEFAULT_CONFIG.group) {
+    return `${DEFAULT_CONFIG.group}: retry #${num}`;
+  }
+};
 
 const run = (num, spec, retryGroup) => {
   num += 1;
@@ -49,78 +59,51 @@ const run = (num, spec, retryGroup) => {
   config = { ...config, env: { ...config.env, numRuns: num } };
 
   // activate video only for last run
-  if (num >= MAX_NUM_RUNS) {
-    config.config.video = true;
-  }
-
+  if (num >= MAX_NUM_RUNS) config.config.video = true;
+  if (num > 1) config.config.trashAssetsBeforeRuns = false;
   if (spec) config.spec = spec;
   if (retryGroup) config.group = retryGroup;
 
   console.log(config);
 
-  try {
-    return cypress
-      .run(config)
-      .then(results => {
-        if (results.totalFailed) {
-          totalFailuresIncludingRetries += results.totalFailed;
+  return cypress
+    .run(config)
+    .then(results => {
+      if (results.failures) {
+        throw new Error(results.message);
+      } else if (results.totalFailed) {
+        // rerun again with only the failed tests
+        const specs = _(results.runs)
+          .filter('stats.failures')
+          .map('spec.relative')
+          .value();
 
-          // rerun again with only the failed tests
-          const specs = _(results.runs)
-            .filter('stats.failures')
-            .map('spec.relative')
-            .value();
+        console.log(`Run #${num} failed.`);
+        _(results.runs)
+          .filter('stats.failures')
+          .map('tests')
+          .flatten()
+          .filter('error')
+          .value()
+          .map(result => ({ title: result.title.join(' > '), error: result.error }))
+          .forEach(result => console.warn(result.title, '\n', result.error, '\n'));
 
-          console.log(`Run #${num} failed.`);
-          _(results.runs)
-            .filter('stats.failures')
-            .map('tests')
-            .flatten()
-            .filter('error')
-            .value()
-            .map(result => ({ title: result.title.join(' > '), error: result.error }))
-            .forEach(result => console.warn(result.title, '\n', result.error, '\n'));
+        checkMaxRunsReached(num);
 
-          // if this is the 3rd total run (2nd retry)
-          // and we've still got failures then just exit
-          if (num >= MAX_NUM_RUNS) {
-            console.log(`Ran a total of '${MAX_NUM_RUNS}' times but still have failures. Exiting...`);
-            fs.writeFileSync(STATUS_FILE, 'FAILURE');
-            return process.exit(1);
-          }
+        console.log(`Retrying '${specs.length}' specs...`);
 
-          console.log(`Retrying '${specs.length}' specs...`);
-          console.log(specs);
-
-          // If we're using parallelization, set a new group name
-          let retryGroupName;
-          if (DEFAULT_CONFIG.group) {
-            retryGroupName = `${DEFAULT_CONFIG.group}: retry #${num}  (${specs.length} spec${
-              specs.length === 1 ? '' : 's'
-            } on ${uniqueId})`;
-          }
-
-          // kick off a new suite run
-          return run(num, specs, retryGroupName);
-        } else {
-          console.log('finished successful');
-          fs.writeFileSync(STATUS_FILE, 'SUCCESS');
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        return run(num);
-      });
-  } catch (err) {
-    console.error(err);
-    return run(num);
-  }
+        // kick off a new suite run
+        return run(num, specs, newGroupName(num));
+      } else {
+        console.log('finished successful');
+      }
+    })
+    .catch(err => {
+      console.error(err.message);
+      checkMaxRunsReached(num);
+      return run(num, spec, newGroupName(num));
+    });
 };
 
-// remove status file
-if (fs.existsSync(STATUS_FILE)) {
-  fs.unlinkSync(STATUS_FILE);
-}
-
 // kick off the run with the default specs
-run(0);
+run(0, TEST_FILES);
