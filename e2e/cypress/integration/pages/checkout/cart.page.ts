@@ -1,3 +1,4 @@
+import { AddToOrderTemplateModule } from '../account/add-to-order-template.module';
 import { AddToWishlistModule } from '../account/add-to-wishlist.module';
 import { HeaderModule } from '../header.module';
 
@@ -6,6 +7,7 @@ export class CartPage {
 
   readonly header = new HeaderModule();
   readonly addToWishlist = new AddToWishlistModule();
+  readonly addToOrderTemplate = new AddToOrderTemplateModule();
 
   private saveQuoteRequestButton = () => cy.get('[id="createQuote"]');
 
@@ -20,12 +22,28 @@ export class CartPage {
 
   private addToWishlistButton = () => cy.get('ish-shopping-basket').find('[data-testing-id="addToWishlistButton"]');
 
+  private addToOrderTemplateButton() {
+    return cy.get('ish-shopping-basket').find('[data-testing-id="addToOrderTemplateButton"]');
+  }
+
+  private addBasketToOrderTemplateButton() {
+    return cy.get('ish-shopping-basket').find('[data-testing-id="addBasketToOrderTemplateButton"]');
+  }
+
   get lineItems() {
     return cy.get(this.tag).find('div.pli-description');
   }
 
   addProductToWishlist() {
     this.addToWishlistButton().click();
+  }
+
+  addProductToOrderTemplate() {
+    this.addToOrderTemplateButton().click();
+  }
+
+  addBasketToOrderTemplate() {
+    this.addBasketToOrderTemplateButton().click();
   }
 
   lineItem(idx: number) {

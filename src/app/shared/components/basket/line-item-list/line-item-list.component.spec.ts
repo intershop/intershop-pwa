@@ -18,7 +18,7 @@ import { InputComponent } from 'ish-shared/forms/components/input/input.componen
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
-import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/shared/product/product-add-to-wishlist/product-add-to-wishlist.component';
+import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/products/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 
 import { LineItemListComponent } from './line-item-list.component';
 
@@ -35,9 +35,9 @@ describe('Line Item List Component', () => {
         MockComponent(FaIconComponent),
         MockComponent(InputComponent),
         MockComponent(LineItemDescriptionComponent),
-        MockComponent(ProductAddToWishlistComponent),
         MockComponent(ProductImageComponent),
         MockComponent(PromotionDetailsComponent),
+        MockComponents(LazyProductAddToOrderTemplateComponent),
         MockComponents(LazyProductAddToWishlistComponent),
         MockPipe(PricePipe),
         MockPipe(ProductRoutePipe),

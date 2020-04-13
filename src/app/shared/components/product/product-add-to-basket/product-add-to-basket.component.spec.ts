@@ -17,6 +17,7 @@ describe('Product Add To Basket Component', () => {
   let product: Product;
   let translate: TranslateService;
   let element: HTMLElement;
+  let products: Product[];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,8 +44,11 @@ describe('Product Add To Basket Component', () => {
     product.inStock = true;
     product.minOrderQuantity = 1;
     product.availability = true;
+    products = [];
+    products.push(product);
     element = fixture.nativeElement;
     component.product = product;
+    component.products = products;
   });
 
   it('should be created', () => {
@@ -53,13 +57,9 @@ describe('Product Add To Basket Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set', () => {
+  it('should not render when product and products are undefined', () => {
     component.product = undefined;
-    expect(() => fixture.detectChanges()).toThrow();
-  });
-
-  it('should not render when inStock = false', () => {
-    product.inStock = false;
+    component.products = undefined;
     fixture.detectChanges();
     expect(element.querySelector('button')).toBeFalsy();
   });

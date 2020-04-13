@@ -15,6 +15,7 @@ import { LineItemListComponent } from 'ish-shared/components/basket/line-item-li
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
+import { LazyCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/basket/lazy-create-order-template/lazy-create-order-template.component';
 import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/basket/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -34,6 +35,7 @@ describe('Shopping Basket Component', () => {
         MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyBasketAddToQuoteComponent),
+        MockComponent(LazyCreateOrderTemplateComponent),
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
         ShoppingBasketComponent,

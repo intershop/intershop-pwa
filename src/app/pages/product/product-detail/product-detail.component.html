@@ -66,6 +66,12 @@
           (productToBasket)="addToBasket()"
         ></ish-product-add-to-basket>
 
+        <ish-lazy-product-add-to-order-template
+          [class]="'btn btn-default btn-block'"
+          [product]="product"
+          [quantity]="quantity"
+        ></ish-lazy-product-add-to-order-template>
+
         <ish-lazy-product-add-to-quote
           [product]="product"
           [disabled]="productDetailForm.invalid"

@@ -24,6 +24,7 @@ import { ProductShipmentComponent } from 'ish-shared/components/product/product-
 import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
+import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/order-templates/exports/products/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductAddToQuoteComponent } from '../../../../extensions/quoting/exports/product/lazy-product-add-to-quote/lazy-product-add-to-quote.component';
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
@@ -44,6 +45,7 @@ describe('Product Row Component', () => {
         ngrxTesting({ reducers: { configuration: configurationReducer } }),
       ],
       declarations: [
+        MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
         MockComponent(LazyProductAddToWishlistComponent),
         MockComponent(ProductAddToBasketComponent),
@@ -82,6 +84,7 @@ describe('Product Row Component', () => {
     fixture.detectChanges();
     expect(findAllIshElements(element)).toMatchInlineSnapshot(`
       Array [
+        "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-quote",
         "ish-lazy-product-add-to-wishlist",
         "ish-product-add-to-basket",

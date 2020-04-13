@@ -36,8 +36,20 @@
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>
 
+<<<<<<< HEAD
         <div><ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote></div>
         <a routerLink="/home" class="text-nowrap btn btn-link">{{
+=======
+        <div class="cart-button-group">
+          <ish-lazy-basket-add-to-quote></ish-lazy-basket-add-to-quote>
+          <ish-lazy-create-order-template
+            *ngIf="basket"
+            [class]="'btn btn-default'"
+            [products]="basket.lineItems"
+          ></ish-lazy-create-order-template>
+        </div>
+        <a routerLink="/home" class="text-nowrap btn btn-link ">{{
+>>>>>>> feat: add order templates functionality as configurable feature
           'shopping_cart.detailed.continue_shopping.link' | translate
         }}</a>
       </div>
