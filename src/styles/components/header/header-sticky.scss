@@ -32,17 +32,23 @@
         margin-right: 0;
         margin-left: 0;
       }
+      .logo-col {
+        max-width: 100%;
+        .logo-wrapper {
+          display: flex;
+          align-self: center;
+          padding-top: 0;
+          padding-bottom: 0;
 
-      .logo-wrapper {
-        display: flex;
-        align-self: center;
-        padding-top: 0;
-        padding-bottom: 0;
-
-        .logo {
-          height: 25px;
-          padding-right: $space-default * 2;
+          .logo {
+            height: 25px;
+            padding-right: $space-default * 2;
+          }
         }
+      }
+
+      .quick-order-links {
+        display: none !important;
       }
 
       .navbar-toggler {
