@@ -25,7 +25,6 @@ import {
 import {
   LoadProductIfNotLoaded,
   LoadProductLinks,
-  getFailed,
   getProduct,
   getProductBundleParts,
   getProductLinks,
@@ -63,7 +62,6 @@ export class ShoppingFacade {
   productDetailLoading$ = this.selectedProduct$.pipe(
     map(p => !ProductHelper.isReadyForDisplay(p, ProductCompletenessLevel.Detail))
   );
-  failedToLoadProducts$ = this.store.pipe(select(getFailed));
 
   product$(sku: string | Observable<string>, level: ProductCompletenessLevel) {
     return toObservable(sku).pipe(
