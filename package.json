@@ -163,6 +163,7 @@
       ],
       "docs/**/*.md": [
         "node docs/check-kb-labels",
+        "node docs/check-dead-links fast",
         "npx prettier --loglevel warn --write",
         "git add"
       ],

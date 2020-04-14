@@ -132,6 +132,9 @@ jobs:
       - name: Check KB Labels
         run: node docs/check-kb-labels
 
+      - name: Check Dead Links
+        run: node docs/check-dead-links
+
   Universal:
     needs: [Build]
     runs-on: ubuntu-latest
