@@ -1,3 +1,10 @@
+<!--
+kb_concepts
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+
 # Configuration
 
 In a complex application like the Intershop Progressive Web App, there are multiple ways and kinds of configuration. The complexity increases if you consider that the communication with Intershop Commerce Management has to be coordinated as well. In addition, the PWA, when run with Angular Universal, consists of a server-side and a client-side application.

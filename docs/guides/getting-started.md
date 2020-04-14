@@ -23,7 +23,7 @@ The project can alternatively be run in production mode with `npm start`.
 
 ## Customization
 
-Before customizing the PWA for your specific needs, have a look at our [Customization Guide](../customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
+Before customizing the PWA for your specific needs, have a look at our [Customization Guide](./customizations.md) and also have a look at the current [PWA Guide](https://support.intershop.de/kb/index.php?c=Search&qoff=0&qtext=guide+progressive+web+app) first.
 
 ## Development Server
 
@@ -41,7 +41,7 @@ Running `ng serve --open` will automatically open a new browser tab with the sta
 
 > **Warning**: Do not use _webpack-dev-server_ in production!
 
-Also have a look at further information in the [Development Guide](../development.md)
+Also have a look at further information in the [Development Guide](./development.md)
 
 ## Deployment
 

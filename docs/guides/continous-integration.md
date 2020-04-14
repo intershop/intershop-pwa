@@ -1,3 +1,10 @@
+<!--
+kb_guide
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+
 # Continuous Integration
 
 This section provides an overview of required Continuous Integration steps to verify the validity of code contributions.

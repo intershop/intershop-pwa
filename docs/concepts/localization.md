@@ -1,3 +1,10 @@
+<!--
+kb_concepts
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+
 # Localization
 
 Intershop Progressive Web App uses a mix of Angular's internationalization tools (i18n) and the internationalization library ngx-translate for localization.

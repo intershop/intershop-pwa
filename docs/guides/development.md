@@ -1,3 +1,10 @@
+<!--
+kb_guide
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+
 # Development Environment
 
 Developing with the Intershop PWA requires to download and install [Node.js](https://nodejs.org) with the included npm package manager. Check the project's `package.json` in the `engines` section for the recommended node version.

@@ -45,4 +45,4 @@ For extracting the environment property, you can use the methods of the `StatePr
 
 ## Further References
 
-- [Concept - Configuration](../configuration.md)
+- [Concept - Configuration](../concepts/configuration.md)

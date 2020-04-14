@@ -1,8 +1,8 @@
 <!--
-kb_sync_by_release
-kb_pwa
 kb_concepts
+kb_pwa
 kb_everyone
+kb_sync_latest_only
 -->
 
 # Project Structure

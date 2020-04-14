@@ -1,3 +1,10 @@
+<!--
+kb_guide
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+
 # Code Documentation
 
 For our Intershop Progressive Web App, [Compodoc](https://compodoc.app) is used as documentation package.

@@ -1,3 +1,10 @@
+<!--
+kb_concepts
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
+
 # Styling & Behavior
 
 The visual design (styling) and the interaction design (behavior) of the Intershop Progressive Web App is derived from the Responsive Starter Store with some changes (e.g., the header) to improve and modernize the customer experience and to provide an easy optical distinction between the two Intershop storefronts. While the Responsive Starter Store is based on a customized/themed [Bootstrap 3](https://getbootstrap.com/docs/3.3/), the Intershop Progressive Web App styling was migrated to build upon the current version of [Bootstrap 4](https://getbootstrap.com/). This also means that the Intershop Progressive Web App styling is now based on [Sass](http://sass-lang.com/).
@@ -24,7 +31,7 @@ Currently the default font families for the Intershop Progressive Web App [Robot
 
 It is possible to create multiple themes for styling. The Intershop Progressive Web App currently uses multi-theming to provide different styles for the B2C an the B2B application. The styles for B2C are defined in _/src/styles/themes/default/style.scss_, for B2B in _/src/themes/styles/blue/style.scss_.
 
-Using schematics to start customizing Intershop Progressive Web App prepares a theme for your own custom styling. (See [Customizations - Start Customization](customizations.md#start-customization))
+Using schematics to start customizing Intershop Progressive Web App prepares a theme for your own custom styling. (See [Customizations - Start Customization](../guides/customizations.md#start-customization))
 
 You can also manually prepare a new theme:
 

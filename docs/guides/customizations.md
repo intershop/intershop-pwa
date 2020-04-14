@@ -1,8 +1,8 @@
 <!--
-kb_sync_by_release
-kb_pwa
 kb_guide
+kb_pwa
 kb_everyone
+kb_sync_latest_only
 -->
 
 # Customization Guide
