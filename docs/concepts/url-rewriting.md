@@ -4,6 +4,7 @@ kb_pwa
 kb_everyone
 kb_sync_latest_only
 -->
+
 # URL Rewriting
 
 With the PWA it is possible to supply localized and SEO optimized URLs for categories and product detail pages.
@@ -14,11 +15,11 @@ This feature is mainly built on top of Angular's [UrlMatcher] for parsing routes
 
 ## Rewriting Artifacts
 
-Artifacts for custom routes are accumulated in *src/app/core/routing*.
+Artifacts for custom routes are accumulated in _src/app/core/routing_.
 
 ### matchXRoute
 
-Each route must supply an implementation of [UrlMatcher] to be used in the routing module. We recommend defining custom routes in *src/app/pages/app-last-routing.module.ts*, so they do not interfere with other routes. The easiest approach for implementation would be to build on top of `UrlSegment`, but it is also possible to implement a custom solution with regular expressions.
+Each route must supply an implementation of [UrlMatcher] to be used in the routing module. We recommend defining custom routes in _src/app/pages/app-last-routing.module.ts_, so they do not interfere with other routes. The easiest approach for implementation would be to build on top of `UrlSegment`, but it is also possible to implement a custom solution with regular expressions.
 
 ### XRoutePipe
 

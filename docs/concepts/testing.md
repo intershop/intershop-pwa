@@ -4,6 +4,7 @@ kb_pwa
 kb_everyone
 kb_sync_latest_only
 -->
+
 # Testing the PWA
 
 ## Different Levels of Testing
@@ -30,7 +31,7 @@ The most time-consuming tests are complete end-to-end tests. They do not mock ou
 
 ## Test File Locations
 
-Unit and module tests are closely located next to the production source code in the *src* folder.
+Unit and module tests are closely located next to the production source code in the _src_ folder.
 
 Integration and end-to-end tests currently reside in _cypress/integration/specs_. _PageObjects_ are located in _cypress/integration/pages_. If the filename of a spec contains the string `mock`, it is run as an integration test with mocked server API. If it (additionally) contains `b2c` or `b2b` the test also should run on the PWA set up with the corresponding channel.
 
@@ -54,7 +55,7 @@ No form of abstraction shall be made when developing tests, especially not for r
 
 For unit and module tests test data is instantiated as required. Each test should only set fields actually required for each test to ease readability. If new dependencies are introduced or workflows change, the corresponding test cases have to change, too.
 
-Integration and end-to-end tests are tailored for the inSPIRED (*a_responsive*) demo store. Used test data can be abstracted at the start of the file but at all times it should only be accumulated here to ease readability of these test cases. Further abstraction would lead to longer development cycles as it is harder to understand functionality of test cases if it is distributed among multiple files.
+Integration and end-to-end tests are tailored for the inSPIRED (_a_responsive_) demo store. Used test data can be abstracted at the start of the file but at all times it should only be accumulated here to ease readability of these test cases. Further abstraction would lead to longer development cycles as it is harder to understand functionality of test cases if it is distributed among multiple files.
 
 If the supplied test cases should be reused for projects, the test data has to be adapted.
 
