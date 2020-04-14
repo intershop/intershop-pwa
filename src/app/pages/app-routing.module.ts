@@ -8,6 +8,7 @@ import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'loading', loadChildren: () => import('./loading/loading-page.module').then(m => m.LoadingPageModule) },
   {
     path: 'home',
     loadChildren: () => import('./home/home-page.module').then(m => m.HomePageModule),
