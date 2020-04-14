@@ -157,7 +157,12 @@
   },
   "lint-staged": {
     "linters": {
-      "!(*.ts)": [
+      "!(*.ts|docs/**/*.md)": [
+        "npx prettier --loglevel warn --write",
+        "git add"
+      ],
+      "docs/**/*.md": [
+        "node docs/check-kb-labels",
         "npx prettier --loglevel warn --write",
         "git add"
       ],

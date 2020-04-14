@@ -116,6 +116,22 @@ jobs:
           name: dist
           path: dist
 
+  Docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install root dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Check KB Labels
+        run: node docs/check-kb-labels
+
   Universal:
     needs: [Build]
     runs-on: ubuntu-latest
