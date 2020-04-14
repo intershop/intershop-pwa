@@ -48,6 +48,8 @@ server {
         add_header X-icm-features $FEATURES always;
         add_header X-icm-default-lang $LANG always;
 
+        rewrite ^.*/index.html$ /loading;
+
         rewrite ^/$ /home;
         if ($request_uri !~* ";lang=") {
             rewrite ^(.*)$ "$1;lang=$LANG";
