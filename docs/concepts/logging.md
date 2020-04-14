@@ -16,11 +16,11 @@ The nginx image providing [PageSpeed](https://www.modpagespeed.com/) and Multi-C
 
 ## Server-Side Rendering
 
-The *express.js* image serving the Angular Universal Server-Side Rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.
+The _express.js_ image serving the Angular Universal Server-Side Rendering can be provisioned to log extended information to the console by supplying the environment variable `LOGGING=true`.
 
 Information logged to the console contains the following:
 
-- Requests to the SSR process are logged with [morgan](https://github.com/expressjs/morgan) (see configuration in *server.ts*) in the form of:
+- Requests to the SSR process are logged with [morgan](https://github.com/expressjs/morgan) (see configuration in _server.ts_) in the form of:
 
   `<method> <url> <status> <bytes> - <duration> ms`
 

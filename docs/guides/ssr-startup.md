@@ -4,13 +4,14 @@ kb_pwa
 kb_everyone
 kb_sync_latest_only
 -->
+
 # Building and Running Server-Side Rendering
 
 ## Building
 
-To **simply** build the Intershop PWA in server-side rendering mode, you can use the *package.json* script `npm run build`, which will build the Intershop PWA with the `production` configuration of the `angular.json`. Afterwards you can start the application with `npm run serve` (or do both by using `npm run start`).
+To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which will build the Intershop PWA with the `production` configuration of the `angular.json`. Afterwards you can start the application with `npm run serve` (or do both by using `npm run start`).
 
-The preferred way for **production deployments** is to build the `Dockerfile` in the project root and run the created image. While building you can provide a build argument (i.e. via `--build-arg`) `configuration` and build a different configuration from *angular.json*. By default the `production` configuration is built.
+The preferred way for **production deployments** is to build the `Dockerfile` in the project root and run the created image. While building you can provide a build argument (i.e. via `--build-arg`) `configuration` and build a different configuration from _angular.json_. By default the `production` configuration is built.
 
 ## Running
 

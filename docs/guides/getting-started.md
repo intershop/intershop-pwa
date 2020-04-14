@@ -4,6 +4,7 @@ kb_pwa
 kb_everyone
 kb_sync_latest_only
 -->
+
 # Getting Started
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager. Currently Node.js 12.x LTS with the corresponding npm is required.
@@ -26,27 +27,27 @@ Before customizing the PWA for your specific needs, have a look at our [Customiz
 
 ## Development Server
 
-Run `ng serve` or `ng s` for a development server that is configured by default via *environment.ts* to use mocked responses instead of actual REST calls.
+Run `ng serve` or `ng s` for a development server that is configured by default via _environment.ts_ to use mocked responses instead of actual REST calls.
 
-Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API (see the used *environment.prod.ts* for the configuration).
+Running `ng serve --configuration production` or `ng s -c production` starts a server that will communicate by default with the Intershop Commerce Management of our public demo via REST API (see the used _environment.prod.ts_ for the configuration).
 
-The project is also configured to support the usage of an own local environment file *environment.local.ts* that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the *environment.model.ts*). This file will be ignored by Git so the developer-specific setting will not be committed. To use this local environment configuration, the server should be started with `ng s -c local`.
+The project is also configured to support the usage of an own local environment file _environment.local.ts_ that can be configured according to the development environment, e.g. with a different icmBaseURL or different configuration options (see the _environment.model.ts_). This file will be ignored by Git so the developer-specific setting will not be committed. To use this local environment configuration, the server should be started with `ng s -c local`.
 
-Once the server is running, navigate to *http://localhost:4200/* in your browser to see the application. The application will automatically reload if you change any of the source files.
+Once the server is running, navigate to _http://localhost:4200/_ in your browser to see the application. The application will automatically reload if you change any of the source files.
 
 Running `ng serve --port 4300` will start the server on a different port than the default 4200 port, e.g., if one wants to run multiple instances in parallel for comparison.
 
 Running `ng serve --open` will automatically open a new browser tab with the started application. The different start options can be combined.
 
-> **Warning**: Do not use *webpack-dev-server* in production!
+> **Warning**: Do not use _webpack-dev-server_ in production!
 
 Also have a look at further information in the [Development Guide](../development.md)
 
 ## Deployment
 
-Deployments are generated to the *dist* folder of the project.
+Deployments are generated to the _dist_ folder of the project.
 
-Use `npm run build` to generate the preferred angular universal enabled version. On the server the *dist/server.js* script has to be executed with `node`.
+Use `npm run build` to generate the preferred angular universal enabled version. On the server the _dist/server.js_ script has to be executed with `node`.
 
 Alternatively, you can use `ng build --prod` to get an application using browser rendering. All the files under `dist/browser` have to be served statically. The server has to be configured for fallback routing,
 see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).
@@ -57,7 +58,7 @@ We provide templates for [Kubernetes Deployments](../../schematics/src/kubernete
 
 ## Progressive Web App (PWA)
 
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application. After that open *http://localhost:4200* in your browser and test it or run a PWA Audit. Currently only *localhost* or *127.0.0.1* will work with the service worker since it requires *https* communication on any other domain.
+To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application. After that open _http://localhost:4200_ in your browser and test it or run a PWA Audit. Currently only _localhost_ or _127.0.0.1_ will work with the service worker since it requires _https_ communication on any other domain.
 
 ## Running Tests
 

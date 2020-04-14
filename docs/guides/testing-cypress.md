@@ -4,6 +4,7 @@ kb_pwa
 kb_everyone
 kb_sync_latest_only
 -->
+
 # End-to-End Testing with Cypress
 
 ## When to Write Cypress Tests?
