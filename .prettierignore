@@ -29,6 +29,7 @@ browserslist
 /build
 /builds
 /cache
+/dist
 /docs/**/*.ditamap
 /docs/theme
 /out-tsc
