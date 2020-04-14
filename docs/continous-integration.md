@@ -2,7 +2,7 @@
 
 This section provides an overview of required Continuous Integration steps to verify the validity of code contributions.
 
-> ![Info](icons/info.png) All mentioned tools provide feedback on success or failure via exit code.
+> All mentioned tools provide feedback on success or failure via exit code.
 
 ## Code Integrity
 

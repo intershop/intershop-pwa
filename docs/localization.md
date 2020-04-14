@@ -257,8 +257,6 @@ showModalDialog(dialog) {
 
 The idea is to use the existing localization properties files of the current Responsive Starter Store cartridges (or the localization files of a project) and convert them into the proper JSON files that can be used by ngx-translate. For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
 
-Plugin source as zip file: [ngx-translate-plugin-master.zip](ngx-translate-plugin-master.zip)
-
 In the current state of the Intershop Progressive Web App the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
 ## Extend Locales

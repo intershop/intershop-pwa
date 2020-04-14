@@ -1,8 +1,6 @@
 # Documentation
 
-## [Development Project](./development-project.md)
-
-## [Development Tools](./development-tools.md)
+## [Development](./development.md)
 
 ## [Project Structure](./project-structure.md)
 
@@ -17,8 +15,6 @@
 ## [Styling Behavior](./styling-behavior.md)
 
 ## [Code Documentation](./code-documentation.md)
-
-## [Testing](./testing.md)
 
 ## [Customizations](./customizations.md)
 

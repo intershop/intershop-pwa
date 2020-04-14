@@ -33,8 +33,7 @@ Change detection needs to be triggered whenever a potential change happens. Data
 To access those events, Angular uses the concept of zones. In short words, a zone is an asynchronous execution context that keeps track of all events happening and reports their status to our program.  
 See also: [Using Zones in Angular for better performance](https://blog.thoughtram.io/angular/2017/02/21/using-zones-in-angular-for-better-performance.html)
 
-> ![Note](icons/note.png) **Note**  
-> Zones wrap asynchronous browser APIs, and notify a consumer when an asynchronous task has started or ended. Angular takes advantage of these APIs to get notified when any asynchronous task is done. This includes things like XHR calls, `setTimeout()` and pretty much all user events like `click`, `submit`, `mousedown`, … etc.
+Zones wrap asynchronous browser APIs, and notify a consumer when an asynchronous task has started or ended. Angular takes advantage of these APIs to get notified when any asynchronous task is done. This includes things like XHR calls, `setTimeout()` and pretty much all user events like `click`, `submit`, `mousedown`, … etc.
 
 When async events happen in the application, the zone informs Angular which then triggers change detection.
 
@@ -42,10 +41,9 @@ When async events happen in the application, the zone informs Angular which then
 
 The zone tracks all ongoing async events and does also know whether there are pending tasks in the queue. If so (e.g., a running timer or XHR) it is likely that some change will happen in near future. This makes the zone **unstable**. Once all async tasks have been finished, the zone enters the **stable** status.
 
-> ![Note](icons/note.png) **Note**  
-> The zone will never become stable with an endless interval running in the application.
+- The zone will never become stable with an endless interval running in the application.
 
-> A **zone is stable** when all pending async tasks have been finished.
+- A **zone is stable** when all pending async tasks have been finished.
 
 The stability of the Angular zone can be used to make decisions in the code. `ApplicationRef.isStable` exposes an Observable stream which gives information about whether the zone is stable or not.
 

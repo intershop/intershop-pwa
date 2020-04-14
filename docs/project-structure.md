@@ -149,7 +149,7 @@ In the PWA we prefer using property binding since this covers more cases in the 
 
 There is an exception for direct string value bindings where we use for example `routerLink="/logout"` instead of `[routerLink]="'/logout'"`.
 
-![Warning](icons/warning.png) **Pattern to avoid**
+:warning: **Pattern to avoid**
 
 ```html
 <div attr.data-testing-id="category-{{category.id}}">
@@ -157,7 +157,7 @@ There is an exception for direct string value bindings where we use for example 
 </div>
 ```
 
-![Tip](icons/tip.png) **Correct pattern**
+:heavy_check_mark: **Correct pattern**
 
 ```html
 <div [attr.data-testing-id]="'category-' + category.id">
@@ -169,7 +169,7 @@ There is an exception for direct string value bindings where we use for example 
 
 Also for consistency reasons, we want to establish the following pattern for conditions in component templates:
 
-![Tip](icons/tip.png) **Condition in template**
+:warning: **Condition in template**
 
 ```typescript
 <ng-container *ngIf="show; else elseBlock">
@@ -192,7 +192,7 @@ In this case the condition should look like this:
 
 Following the ideas of the article [RxJS: Don’t Unsubscribe](https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87), the following pattern is used for ending subscriptions to observables that are not handled via async pipe in the templates.
 
-![Tip](icons/tip.png) **'unsubscribe' via destroy\$ Subject**
+:heavy_check_mark: **'unsubscribe' via destroy\$ Subject**
 
 ```typescript
 export class AnyComponent implements OnInit, OnDestroy {

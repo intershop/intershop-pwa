@@ -1,6 +1,13 @@
-# Guide - Unit Testing with Jest
+<!--
+kb_guide
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
 
-- [Guide - Unit Testing with Jest](#guide---unit-testing-with-jest)
+# Unit Testing with Jest
+
+- [Unit Testing with Jest](#unit-testing-with-jest)
   - [Stick to General Unit Testing Rules](#stick-to-general-unit-testing-rules)
     - [Single Responsibility](#single-responsibility)
     - [Test Functionality - Not Implementation](#test-functionality---not-implementation)
@@ -42,7 +49,7 @@ A test is implemented incorrectly or the test scenario is meaningless if changes
 
 Example: The test fails if an additional input field is added to the form.
 
-![Warning](icons/warning.png) **Wrong Test Scenario**
+:warning: **Wrong Test Scenario**
 
 ```typescript
 it('should check if input fields are rendered on HTML', () => {
@@ -58,7 +65,7 @@ it('should check if input fields are rendered on HTML', () => {
 
 Instead use the `xdescribe` or `xit` feature (just add an '`x`' before the method declaration) to exclude tests. This way excluded tests are still visible as skipped and can be repaired later on.
 
-![Right](icons/tip.png)
+:heavy_check_mark:
 
 ```typescript
 xdescribe("description", function() {
@@ -72,7 +79,7 @@ xdescribe("description", function() {
 
 This way the test itself documents the initial behavior of the unit under test. Especially if you test that your action triggers a change: Test for the previous state!
 
-![Right](icons/tip.png)
+:heavy_check_mark:
 
 ```typescript
 it('should call the cache when data is available', () => {
@@ -99,7 +106,7 @@ Testing should not be done for the sake of tests existing:
 
 It is easy to always test with `toBeTruthy` or `toBeFalsy` when you expect something as a return value, but it is better to make stronger assertions like `toBeTrue`, `toBeNull` or `toEqual(12)`.
 
-![Warning](icons/warning.png)
+:warning:
 
 ```typescript
 it('should cache data with encryption', () => {
@@ -108,7 +115,7 @@ it('should cache data with encryption', () => {
 });
 ```
 
-![Right](icons/tip.png)
+:heavy_check_mark:
 
 ```typescript
 it('should cache data with encryption', () => {
@@ -119,7 +126,7 @@ it('should cache data with encryption', () => {
 
 Again, do not rely too much on the implementation. If user customizations can easily break the test code, your assertions are too strong.
 
-![Warning](icons/warning.png) **Test too Close to Implementation**
+:warning: **Test too Close to Implementation**
 
 ```typescript
 it('should test if tags with their text are getting rendered on the HTML', () => {
@@ -132,7 +139,7 @@ it('should test if tags with their text are getting rendered on the HTML', () =>
 });
 ```
 
-![Right](icons/tip.png) **Same Test in a more Stable Way**
+:heavy_check_mark: **Same Test in a more Stable Way**
 
 ```typescript
 it('should test if tags with their text are getting rendered on the HTML', () => {
@@ -145,7 +152,7 @@ it('should test if tags with their text are getting rendered on the HTML', () =>
 
 Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call it directly. When doing component testing, you most likely use `TestBed` anyway, so use the `detectChanges()` method of your available `ComponentFixture`.
 
-![Warning](icons/warning.png) **Wrong Test with ngOnInit() Method Calling**
+:warning: **Wrong Test with ngOnInit() Method Calling**
 
 ```typescript
 it('should call ngOnInit method', () => {
@@ -154,7 +161,7 @@ it('should call ngOnInit method', () => {
 });
 ```
 
-![Right](icons/tip.png) **Test without ngOnInit() Method Call**
+:heavy_check_mark: **Test without ngOnInit() Method Call**
 
 ```typescript
 it('should contain the login form', () => {
@@ -169,13 +176,13 @@ it('should contain the login form', () => {
 
 The test name describes perfectly what the test is doing.
 
-![Warning](icons/warning.png) **Wrong Naming**
+:warning: **Wrong Naming**
 
 ```typescript
 it ('wishlist test', () => {...})
 ```
 
-![Right](icons/tip.png) **Correct Naming**
+:heavy_check_mark: **Correct Naming**
 
 ```typescript
 it ('should add a product to an existing wishlist when the button is clicked', () => {...})
@@ -185,14 +192,14 @@ Basically it should read like a documentation for the unit under test, not a doc
 
 This also applies to assertions. They should be readable like meaningful sentences.
 
-![Warning](icons/warning.png)
+:warning:
 
 ```typescript
 const result = accountService.isAuthorized();
 expect(result).toBeTrue();
 ```
 
-![Right](icons/tip.png)
+:heavy_check_mark:
 
 ```typescript
 const authorized = accountService.isAuthorized();
@@ -216,7 +223,7 @@ This increases readability of test cases.
 - Common initialization code of constants or sub-elements should be located in `beforeEach` methods.
 - When using `TestBed` you can handle injection to variables in a separate `beforeEach` method.
 
-![Warning](icons/warning.png)
+:warning:
 
 ```typescript
 it('should create the app', async(() => {
@@ -234,7 +241,7 @@ it('should match the text passed in Header Component', async(() => {
 });
 ```
 
-![Right](icons/tip.png)
+:heavy_check_mark:
 
 ```typescript
 describe('AppComponent', () => {
@@ -267,7 +274,7 @@ If you do not need the functionality of :
 
 ... do not use it.
 
-![Warning](icons/warning.png) **Wrong Test With Useless Features (TestBed, ComponentFixture.debugElement)**
+:warning: **Wrong Test With Useless Features (TestBed, ComponentFixture.debugElement)**
 
 ```typescript
 it('should create the app', async(() => {
@@ -276,7 +283,7 @@ it('should create the app', async(() => {
 }));
 ```
 
-![Right](icons/tip.png) **Same Test - Works Without These Features**
+:heavy_check_mark: **Same Test - Works Without These Features**
 
 ```typescript
 it('should be created', () => {
@@ -289,7 +296,7 @@ it('should be created', () => {
 
 The `describe` methods in Jasmine are nestable. You can use this to group various `it` methods into a nested `describe` where you can also use an additional `beforeEach` initialization method.
 
-![Right](icons/tip.png) **Nested describe Methods**
+:heavy_check_mark: **Nested describe Methods**
 
 ```typescript
 describe('AccountLogin Component', () => {
@@ -317,13 +324,13 @@ This way less code needs to be implemented which again increases readability of 
 
 Use only IDs or definite class names to select DOM elements in tests. Try to avoid general class names.
 
-![Warning](icons/warning.png) **Wrong Selector**
+:warning: **Wrong Selector**
 
 ```typescript
 const selectedLanguage = element.getElementsByClassName('hidden-xs');
 ```
 
-![Right](icons/tip.png) **Correct Selector**
+:heavy_check_mark: **Correct Selector**
 
 ```typescript
 // by id
@@ -339,7 +346,7 @@ const selectedLanguage = element.getElementsByClassName('language-switch');
 
 Use `data-testing-id` via attribute binding to implement an identifier used for testing purpose only.
 
-![Right](icons/tip.png) **Correct Testing ID**
+:heavy_check_mark: **Correct Testing ID**
 
 \*.component.html
 
@@ -357,7 +364,7 @@ element.querySelectorAll('[data-testing-id]')[0].innerHTML;
 element.querySelectorAll("[data-testing-id='en']").length;
 ```
 
-> ![Note](icons/note.png) **Note**
+> :warning: **Note**
 > Do not overuse this feature!
 
 ## Stick to Intershop Conventions Regarding Angular Tests
@@ -366,7 +373,7 @@ element.querySelectorAll("[data-testing-id='en']").length;
 
 Every component should have a 'should be created' test like the one Angular CLI auto-generates. This test handles runtime initialization Errors.
 
-![Right](icons/tip.png)
+:heavy_check_mark:
 
 ```typescript
 it('should be created', () => {
@@ -390,14 +397,14 @@ See [Three Ways to Test Angular Components](https://vsavkin.com/three-ways-to-te
 
 Be careful when using `toBeDefined`, because a dynamic language like JavaScript has another meaning of defined (see: [Is It Defined? toBeDefined, toBeUndefined](http://www.safaribooksonline.com/library/view/javascript-testing-with/9781449356729/ch04.html)).
 
-> ![Warning](icons/warning.png) **Warning**  
+> :warning: **Warning**  
 > Do not use `toBeDefined` if you really want to check for not null because technically 'null' is defined. Use `toBeTruthy` instead.
 
 ### Be Careful With Variable Initialization
 
 Jasmine does not automatically reset all your variables for each test like other test frameworks do. If you initialize directly under `describe`, the variable is initialized only once.
 
-> ![Warning](icons/warning.png) **Warning**  
+> :warning: **Warning**  
 > Since tests should be independent of each other, do not do this.
 
 ```typescript
@@ -481,9 +488,9 @@ describe('Emitter', () => {
 
 As `EventEmitter` is `Observable`, subscribing to it might be the most logical way of testing it. We, however, would recommend using `ts-mockito` to increase readability. The ways 1 and 2 portrait two options, we would recommend using the first one.
 
-|                                | 1 (preferred)                                                                                                                     | 2                                                                               | 3                                                                                              |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Description                    | - Using ts-mockito spy and then verify it has fired - Then check argument for expected value                                      | Using ts-mockito spy and then verify it has fired with the expected value       | - Using subscription and asynchronous method safeguard                                         |
-| Readability                    | Capturing arguments with ts-mockito might seem tricky and therefore reduces readability, but the test is done in the right order. | ![Right](icons/tip.png) Right order, fewest lines of code                       | ![Wrong](icons/warning.png) Order is reversed.                                                 |
-| In case it does not emit       | ![Right](icons/tip.png) Correct line number and a missing emission is reported.                                                   | ![Right](icons/tip.png) Correct line number and a missing emission is reported. | ![Wrong](icons/warning.png) Test runs into timeout as the asynchronous callback is not called. |
-| In case it emits another value | ![Right](icons/tip.png) Correct line number and an incorrect value is reported.                                                   | ![Wrong](icons/warning.png) Missing emission is reported.                       | ![Right](icons/tip.png) Correct line number and an incorrect value is reported.                |
+|                                | 1 (preferred)                                                                                                                     | 2                                                                          | 3                                                                            |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Description                    | - Using ts-mockito spy and then verify it has fired - Then check argument for expected value                                      | Using ts-mockito spy and then verify it has fired with the expected value  | - Using subscription and asynchronous method safeguard                       |
+| Readability                    | Capturing arguments with ts-mockito might seem tricky and therefore reduces readability, but the test is done in the right order. | :heavy_check_mark: Right order, fewest lines of code                       | :warning: Order is reversed.                                                 |
+| In case it does not emit       | :heavy_check_mark: Correct line number and a missing emission is reported.                                                        | :heavy_check_mark: Correct line number and a missing emission is reported. | :warning: Test runs into timeout as the asynchronous callback is not called. |
+| In case it emits another value | :heavy_check_mark: Correct line number and an incorrect value is reported.                                                        | :warning: Missing emission is reported.                                    | :heavy_check_mark: Correct line number and an incorrect value is reported.   |

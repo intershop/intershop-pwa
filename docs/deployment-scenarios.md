@@ -2,8 +2,7 @@
 
 ## Simple Browser-Side Rendering
 
-> ![Warning](icons/warning.png)
-> This is suitable for Demo Servers to have a fast build chain. We do not recommend this setup for production use.
+> :warning: This is suitable for Demo Servers to have a fast build chain. We do not recommend this setup for production use.
 
 The application is built completely with Angular CLI:
 
@@ -17,7 +16,7 @@ Of course, this can have a significant impact on the client side if no efficient
 
 ## Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular Universal)
 
-> ![Tip](icons/tip.png) We recommend using this approach for production use. You can use the supplied Dockerfile to build it.
+> We recommend using this approach for production use. You can use the supplied Dockerfile to build it.
 
 The application consists of two parts, the server-side and the client-side application:
 

@@ -90,7 +90,7 @@ searchProducts(
  */
 ```
 
-> ![Note](icons/note.png) **Indentation Warning**  
+> :warning: **Indentation Warning**  
 > TypeScript has an internal margin for new lines. If you want to keep a level of indentation, put a minimum of 13 space characters as shown in the example:
 
 **Example with Indentation Keeping**

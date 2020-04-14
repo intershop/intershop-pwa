@@ -4,7 +4,7 @@ In a complex application like the Intershop Progressive Web App, there are multi
 
 ## Ways of Configuring Angular Applications
 
-> ![Warning](icons/warning.png) If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
+> :warning: If available, always prefer configuration via system environment variables and running the PWA with Universal Rendering.
 
 ### Angular CLI Environments
 
