@@ -5,8 +5,15 @@
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
-        "files": ["/favicon.ico", "/*.css", "/*.js", "/manifest.webmanifest"]
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/*.css",
+          "/*.js",
+          "/manifest.webmanifest"
+        ]
       }
     },
     {
@@ -20,5 +27,42 @@
         ]
       }
     }
-  ]
+  ],
+  "dataGroups": [
+    {
+      "name": "ICM REST API",
+      "urls": ["**/INTERSHOP/rest/**/cms"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxAge": "1m",
+        "maxSize": 100000,
+        "timeout": "5s"
+      }
+    },
+    {
+      "name": "cached ICM REST API",
+      "urls": [
+        "**/INTERSHOP/rest/**/products",
+        "**/INTERSHOP/rest/**/categories",
+        "**/INTERSHOP/rest/**/configurations"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxAge": "10m",
+        "maxSize": 100000,
+        "timeout": "5s"
+      }
+    },
+    {
+      "name": "ICM static resources",
+      "urls": ["**/INTERSHOP/static/**"],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxAge": "1d",
+        "maxSize": 100000,
+        "timeout": "5s"
+      }
+    }
+  ],
+  "navigationUrls": ["/**", "!/*.json", "!/*.ico", "!/INTERSHOP/**"]
 }
