@@ -144,12 +144,5 @@ describe('Categories Reducer', () => {
 
       expect(state.categories.rootIds).toEqual(topLevelIds);
     });
-
-    it('should remember if top level categories were loaded', () => {
-      const action = loadTopLevelCategoriesSuccess({ categories });
-      const state = categoriesReducer(initialState, action);
-
-      expect(state.topLevelLoaded).toBeTrue();
-    });
   });
 });

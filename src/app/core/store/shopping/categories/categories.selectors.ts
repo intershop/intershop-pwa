@@ -41,8 +41,6 @@ export const getSelectedCategory = createSelectorFactory(projector => defaultMem
 
 export const getCategoryLoading = createSelector(getCategoriesState, categories => categories.loading);
 
-export const isTopLevelCategoriesLoaded = createSelector(getCategoriesState, state => state.topLevelLoaded);
-
 export const getBreadcrumbForCategoryPage = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)
 )(getSelectedCategory, getCategoryEntities, (category: CategoryView, entities: Dictionary<Category>) =>

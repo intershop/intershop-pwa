@@ -3,10 +3,7 @@ import { createAction } from '@ngrx/store';
 import { CategoryTree } from 'ish-core/models/category-tree/category-tree.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadTopLevelCategories = createAction(
-  '[Categories Internal] Load top level categories',
-  payload<{ depth: number }>()
-);
+export const loadTopLevelCategories = createAction('[Categories Internal] Load top level categories');
 
 export const loadTopLevelCategoriesFail = createAction('[Categories API] Load top level categories fail', httpError());
 
