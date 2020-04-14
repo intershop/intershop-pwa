@@ -25,7 +25,6 @@ import {
   getCategoryLoading,
   getNavigationCategories,
   getSelectedCategory,
-  isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
@@ -77,10 +76,6 @@ describe('Categories Selectors', () => {
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
       expect(getCategory(catA.uniqueId)(store$.state)).toBeUndefined();
-    });
-
-    it('should not have any top level categories loaded when used', () => {
-      expect(isTopLevelCategoriesLoaded(store$.state)).toBeFalse();
     });
   });
 
@@ -202,10 +197,6 @@ describe('Categories Selectors', () => {
       const cA2 = { name: 'name_A.2', uniqueId: 'A.2', categoryPath: ['A', 'A.2'] } as Category;
       const cB = { name: 'name_B', uniqueId: 'B', categoryPath: ['B'] } as Category;
       store$.dispatch(loadTopLevelCategoriesSuccess({ categories: categoryTree([cA, cA1, cA1a, cA1b, cA2, cB]) }));
-    });
-
-    it('should remember if top level categories are loaded', () => {
-      expect(isTopLevelCategoriesLoaded(store$.state)).toBeTrue();
     });
 
     describe('selecting navigation categories', () => {

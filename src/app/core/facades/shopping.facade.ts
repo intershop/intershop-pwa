@@ -11,6 +11,7 @@ import {
   getCategoryLoading,
   getNavigationCategories,
   getSelectedCategory,
+  loadTopLevelCategories,
 } from 'ish-core/store/shopping/categories';
 import {
   addToCompare,
@@ -63,6 +64,9 @@ export class ShoppingFacade {
   }
 
   navigationCategories$(uniqueId?: string) {
+    if (!uniqueId) {
+      this.store.dispatch(loadTopLevelCategories());
+    }
     return this.store.pipe(select(getNavigationCategories(uniqueId)));
   }
 

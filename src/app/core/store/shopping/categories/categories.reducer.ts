@@ -13,13 +13,11 @@ import {
 export interface CategoriesState {
   categories: CategoryTree;
   loading: boolean;
-  topLevelLoaded: boolean;
 }
 
 export const initialState: CategoriesState = {
   loading: false,
   categories: CategoryTreeHelper.empty(),
-  topLevelLoaded: false,
 };
 
 function mergeCategories(
@@ -42,9 +40,5 @@ export const categoriesReducer = createReducer(
     ...state,
     loading: false,
   })),
-  on(loadTopLevelCategoriesSuccess, (state: CategoriesState, action) => ({
-    ...mergeCategories(state, action),
-    topLevelLoaded: true,
-  })),
-  on(loadCategorySuccess, mergeCategories)
+  on(loadCategorySuccess, loadTopLevelCategoriesSuccess, mergeCategories)
 );
