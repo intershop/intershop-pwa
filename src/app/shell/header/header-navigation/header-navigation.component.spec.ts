@@ -52,7 +52,7 @@ describe('Header Navigation Component', () => {
       createCategoryView(categories, 'C'),
     ];
 
-    when(shoppingFacade.topLevelCategories$).thenReturn(of(topLevelCategories));
+    when(shoppingFacade.topLevelCategories$()).thenReturn(of(topLevelCategories));
   });
 
   it('should be created', () => {

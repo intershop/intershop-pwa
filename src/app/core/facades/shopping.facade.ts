@@ -6,7 +6,12 @@ import { debounce, debounceTime, filter, map, switchMap, tap } from 'rxjs/operat
 import { ProductListingID } from 'ish-core/models/product-listing/product-listing.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
-import { getCategoryLoading, getSelectedCategory, getTopLevelCategories } from 'ish-core/store/shopping/categories';
+import {
+  LoadTopLevelCategories,
+  getCategoryLoading,
+  getSelectedCategory,
+  getTopLevelCategories,
+} from 'ish-core/store/shopping/categories';
 import {
   AddToCompare,
   RemoveFromCompare,
@@ -49,7 +54,10 @@ export class ShoppingFacade {
   constructor(private store: Store<{}>) {}
 
   // CATEGORY
-  topLevelCategories$ = this.store.pipe(select(getTopLevelCategories));
+  topLevelCategories$() {
+    this.store.dispatch(new LoadTopLevelCategories());
+    return this.store.pipe(select(getTopLevelCategories));
+  }
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
   selectedCategoryLoading$ = this.store.pipe(
     select(getCategoryLoading),

@@ -7,7 +7,6 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  mapTo,
   mergeMap,
   switchMap,
   switchMapTo,
@@ -22,7 +21,7 @@ import { CategoriesService } from 'ish-core/services/categories/categories.servi
 import { selectRouteParam } from 'ish-core/store/router';
 import { LoadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
-import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
@@ -79,19 +78,10 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  loadTopLevelWhenUnavailable$ = this.actions$.pipe(
-    ofType(routerNavigatedAction),
-    switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded))),
-    whenFalsy(),
-    mapTo(new actions.LoadTopLevelCategories({ depth: this.mainNavigationMaxSubCategoriesDepth }))
-  );
-
-  @Effect()
   loadTopLevelCategories$ = this.actions$.pipe(
     ofType<actions.LoadTopLevelCategories>(actions.CategoriesActionTypes.LoadTopLevelCategories),
-    mapToPayloadProperty('depth'),
-    switchMap(limit =>
-      this.categoryService.getTopLevelCategories(limit).pipe(
+    switchMap(() =>
+      this.categoryService.getTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth).pipe(
         map(categories => new actions.LoadTopLevelCategoriesSuccess({ categories })),
         mapErrorToAction(actions.LoadTopLevelCategoriesFail)
       )

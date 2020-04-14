@@ -14,7 +14,6 @@ export enum CategoriesActionTypes {
 
 export class LoadTopLevelCategories implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategories;
-  constructor(public payload: { depth: number }) {}
 }
 
 export class LoadTopLevelCategoriesFail implements Action {

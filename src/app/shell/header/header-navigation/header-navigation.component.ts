@@ -20,7 +20,7 @@ export class HeaderNavigationComponent implements OnInit {
   constructor(private shoppingFacade: ShoppingFacade) {}
 
   ngOnInit() {
-    this.categories$ = this.shoppingFacade.topLevelCategories$;
+    this.categories$ = this.shoppingFacade.topLevelCategories$();
   }
 
   /**

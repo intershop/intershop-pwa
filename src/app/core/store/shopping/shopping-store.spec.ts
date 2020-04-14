@@ -156,6 +156,7 @@ describe('Shopping Store', () => {
           {
             path: 'error',
             component: DummyComponent,
+            data: { headerType: 'simple' },
           },
           {
             path: 'category/:categoryUniqueId',
@@ -235,14 +236,9 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
 
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
+      expect(getCategoryIds(store.state)).toBeEmpty();
       expect(getProductIds(store.state)).toBeEmpty();
     }));
 
@@ -254,8 +250,13 @@ describe('Shopping Store', () => {
       }));
 
       it('should load necessary data when going to a category page', fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123",
+            "A.123.456",
+            "A",
+          ]
+        `);
         expect(getProductIds(store.state)).toBeEmpty();
       }));
 
@@ -387,8 +388,13 @@ describe('Shopping Store', () => {
     }));
 
     it('should load necessary data when going to a category page', fakeAsync(() => {
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+      expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+        Array [
+          "A.123",
+          "A.123.456",
+          "A",
+        ]
+      `);
       expect(getProductIds(store.state)).toBeEmpty();
     }));
 
@@ -414,10 +420,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123","params":{"categoryUniqueId":"A.123...
           event: {"id":1,"url":"/category/A.123"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -429,8 +431,13 @@ describe('Shopping Store', () => {
       }));
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123",
+            "A.123.456",
+            "A",
+          ]
+        `);
         expect(getProductIds(store.state)).toBeEmpty();
       }));
 
@@ -462,8 +469,13 @@ describe('Shopping Store', () => {
     }));
 
     it('should load all products and required categories when going to a family page', fakeAsync(() => {
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+      expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123.456",
+            "A",
+            "A.123",
+          ]
+        `);
       expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
     }));
 
@@ -497,12 +509,8 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456","params":{"categoryUniqueId":"A...
           event: {"id":1,"url":"/category/A.123.456"}
-        [Shopping] Load top level categories:
-          depth: 1
         [ProductListing] Load More Products:
           id: {"type":"category","value":"A.123.456"}
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [ProductListing Internal] Load More Products For Params:
           id: {"type":"category","value":"A.123.456"}
           filters: undefined
@@ -665,8 +673,13 @@ describe('Shopping Store', () => {
       }));
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123.456",
+            "A",
+            "A.123",
+          ]
+        `);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       }));
 
@@ -698,8 +711,13 @@ describe('Shopping Store', () => {
     }));
 
     it('should load the product and its required categories when going to a product page', fakeAsync(() => {
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+      expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123.456",
+            "A",
+            "A.123",
+          ]
+        `);
       expect(getProductIds(store.state)).toEqual(['P1']);
     }));
 
@@ -740,10 +758,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/category/A.123.456/product/P1","params":{"categoryU...
           event: {"id":1,"url":"/category/A.123.456/product/P1"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -759,8 +773,13 @@ describe('Shopping Store', () => {
       }));
 
       it('should load the sibling products when they are not yet loaded', fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123.456",
+            "A",
+            "A.123",
+          ]
+        `);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       }));
 
@@ -817,8 +836,13 @@ describe('Shopping Store', () => {
       }));
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+          Array [
+            "A.123.456",
+            "A",
+            "A.123",
+          ]
+        `);
         expect(getProductIds(store.state)).toEqual(['P1']);
       }));
 
@@ -850,8 +874,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should load the product ang top level categories when going to a product page', fakeAsync(() => {
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
+      expect(getCategoryIds(store.state)).toBeEmpty();
       expect(getProductIds(store.state)).toEqual(['P1']);
     }));
 
@@ -876,10 +899,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/product/P1","params":{"sku":"P1"},"queryParams":{},...
           event: {"id":1,"url":"/product/P1"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -891,8 +910,7 @@ describe('Shopping Store', () => {
       }));
 
       it('should not load anything additionally when going to compare page', fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
-        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
+        expect(getCategoryIds(store.state)).toBeEmpty();
         expect(getProductIds(store.state)).toEqual(['P1']);
       }));
 
@@ -924,8 +942,13 @@ describe('Shopping Store', () => {
     }));
 
     it('should load only family page content and redirect to error when product was not found', fakeAsync(() => {
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
+      expect(getCategoryIds(store.state)).toMatchInlineSnapshot(`
+        Array [
+          "A.123.456",
+          "A",
+          "A.123",
+        ]
+      `);
       expect(getProductIds(store.state)).toBeEmpty();
     }));
 
@@ -965,15 +988,11 @@ describe('Shopping Store', () => {
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
         @ngrx/router-store/navigation:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigated:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
           event: {"id":2,"url":"/error"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -994,8 +1013,7 @@ describe('Shopping Store', () => {
     }));
 
     it('should load only some categories and redirect to error when category was not found', fakeAsync(() => {
-      expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
-      expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
+      expect(getCategoryIds(store.state)).toBeEmpty();
       expect(getProductIds(store.state)).toBeEmpty();
     }));
 
@@ -1022,15 +1040,11 @@ describe('Shopping Store', () => {
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigation:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
           event: {"id":2,"url":"/error"}
         @ngrx/router-store/navigated:
-          routerState: {"url":"/error","params":{},"queryParams":{},"data":{}}
+          routerState: {"url":"/error","params":{},"queryParams":{},"data":{"header...
           event: {"id":2,"url":"/error"}
-        [Shopping] Load top level categories:
-          depth: 1
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
       `);
     }));
 
@@ -1064,12 +1078,8 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
-        [Shopping] Load top level categories:
-          depth: 1
         [ProductListing] Load More Products:
           id: {"type":"search","value":"something"}
-        [Shopping] Load top level categories success:
-          categories: tree(A,A.123,B)
         [ProductListing Internal] Load More Products For Params:
           id: {"type":"search","value":"something"}
           filters: undefined
