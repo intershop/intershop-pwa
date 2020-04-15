@@ -37,18 +37,29 @@ jobs:
         with:
           working-directory: e2e
 
-      - name: Code Quality
+      - name: Code Formatting
         run: |
           npm run format
           bash scripts/ci-test-no-changes.sh 'you probably committed unformatted code'
 
-      - name: Compile
+      - name: Compile Angular
+        run: npm run ng -- build --aot
+
+      - name: Compile Unit Tests
+        run: npx tsc -p tsconfig.spec.json
+
+      - name: Compile Cypress Tests
+        run: (cd e2e && npx tsc -p cypress/tsconfig.json)
+
+      - name: Compile Schematics
         run: |
-          npm run ng -- build --aot
-          npx tsc -p tsconfig.spec.json
-          (cd e2e && npx tsc -p cypress/tsconfig.json)
-          (cd schematics && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
-          (cd tslint-rules && npm run build && bash ../scripts/ci-test-no-changes.sh 'you probably committed unformatted code')
+          (cd schematics && npm run build)
+          bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
+
+      - name: Compile TSLint Rules
+        run: |
+          (cd tslint-rules && npm run build)
+          bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
 
       - name: Escalate TSLint Rules
         run: |
@@ -59,6 +70,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           project: 'tsconfig.json'
+
+      - name: Find Dead Code
+        run: npx ts-node scripts/find-dead-code
 
   Jest:
     runs-on: ubuntu-latest
