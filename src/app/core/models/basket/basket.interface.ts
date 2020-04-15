@@ -16,6 +16,7 @@ export interface BasketBaseData {
   invoiceToAddress?: string;
   commonShipToAddress?: string;
   commonShippingMethod?: string;
+  customer?: string;
   discounts?: {
     dynamicMessages?: string[];
     shippingBasedDiscounts?: string[];

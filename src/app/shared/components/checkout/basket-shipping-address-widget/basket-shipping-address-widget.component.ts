@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable, Subject, combineLatest } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMapTo, take, takeUntil } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Address } from 'ish-core/models/address/address.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * Standalone widget component for selecting and setting the basket shipping address in the checkout.
@@ -58,6 +59,8 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
           : 'checkout.addresses.select_shipping_address.button'
       )
     );
+
+    // prepare data for shipping select drop down
     this.addresses$ = combineLatest([this.accountFacade.addresses$(), this.shippingAddress$]).pipe(
       map(
         ([addresses, shippingAddress]) =>
@@ -68,10 +71,19 @@ export class BasketShippingAddressWidgetComponent implements OnInit, OnDestroy {
       )
     );
 
-    combineLatest([this.addresses$, this.shippingAddress$])
+    // preassign a shipping address if the user has only one shipping address
+    this.checkoutFacade.basket$
       .pipe(
-        filter(([addresses]) => addresses && !!addresses.length),
-        take(1)
+        whenTruthy(),
+        // prevent assigning the address at an anonymous basket after login
+        filter(basket => !!basket.customerNo),
+        take(1),
+        switchMapTo(
+          combineLatest([this.addresses$, this.shippingAddress$]).pipe(
+            filter(([addresses]) => addresses && !!addresses.length),
+            take(1)
+          )
+        )
       )
       .subscribe(([addresses, shippingAddress]) => {
         if (!shippingAddress && addresses.length === 1) {
