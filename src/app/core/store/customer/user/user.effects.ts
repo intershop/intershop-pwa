@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, Observable, merge, of, race, timer } from 'rxjs';
+import { EMPTY, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -69,20 +69,6 @@ import {
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
-function mapUserErrorToActionIfPossible<T>(specific) {
-  return (source$: Observable<T>) =>
-    source$.pipe(
-      // tslint:disable-next-line:ban
-      catchError(error =>
-        of(
-          error.headers.has('error-key')
-            ? new specific({ error: HttpErrorMapper.fromError(error) })
-            : new GeneralError({ error: HttpErrorMapper.fromError(error) })
-        )
-      )
-    );
-}
-
 @Injectable()
 export class UserEffects {
   constructor(
@@ -101,7 +87,14 @@ export class UserEffects {
     exhaustMap(credentials =>
       this.userService.signinUser(credentials).pipe(
         map(data => new LoginUserSuccess(data)),
-        mapUserErrorToActionIfPossible(LoginUserFail)
+        // tslint:disable-next-line:ban
+        catchError(error =>
+          of(
+            error.headers.has('error-key')
+              ? new LoginUserFail({ error: HttpErrorMapper.fromError(error) })
+              : new GeneralError({ error: HttpErrorMapper.fromError(error) })
+          )
+        )
       )
     )
   );
@@ -166,7 +159,14 @@ export class UserEffects {
       this.userService.createUser(data).pipe(
         // TODO:see #IS-22750 - user should actually be logged in after registration
         map(() => new LoginUser({ credentials: data.credentials })),
-        mapUserErrorToActionIfPossible(CreateUserFail)
+        // tslint:disable-next-line:ban
+        catchError(error =>
+          of(
+            error.headers.has('error-key')
+              ? new CreateUserFail({ error: HttpErrorMapper.fromError(error) })
+              : new GeneralError({ error: HttpErrorMapper.fromError(error) })
+          )
+        )
       )
     )
   );
