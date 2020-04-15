@@ -15,6 +15,7 @@ describe('Basket Mapper', () => {
     invoiceToAddress: 'urn_invoiceToAddress_123',
     commonShipToAddress: 'urn_commonShipToAddress_123',
     commonShippingMethod: 'shipping_method_123',
+    customer: 'Heimroth',
     lineItems: ['YikKAE8BKC0AAAFrIW8IyLLD'],
     totals: {
       grandTotal: {
@@ -169,6 +170,7 @@ describe('Basket Mapper', () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket).toBeTruthy();
 
+      expect(basket.customerNo).toBe(basketData.data.customer);
       expect(basket.totals.itemTotal.gross).toBe(basketData.data.totals.itemTotal.gross.value);
       expect(basket.totals.itemSurchargeTotalsByType[0].amount.gross).toBe(
         basketData.data.surcharges.itemSurcharges[0].amount.gross.value

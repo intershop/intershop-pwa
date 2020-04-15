@@ -27,6 +27,7 @@ describe('Basket Invoice Address Widget Component', () => {
 
   beforeEach(async(() => {
     checkoutFacade = mock(CheckoutFacade);
+    when(checkoutFacade.basket$).thenReturn(EMPTY);
     when(checkoutFacade.basketInvoiceAddress$).thenReturn(EMPTY);
 
     accountFacade = mock(AccountFacade);

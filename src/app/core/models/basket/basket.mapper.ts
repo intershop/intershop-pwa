@@ -38,6 +38,7 @@ export class BasketMapper {
         included && included.commonShippingMethod && data.commonShippingMethod
           ? ShippingMethodMapper.fromData(included.commonShippingMethod[data.commonShippingMethod])
           : undefined,
+      customerNo: data.customer,
       lineItems:
         included && included.lineItems && data.lineItems && data.lineItems.length
           ? data.lineItems.map(lineItemId =>
