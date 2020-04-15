@@ -714,6 +714,7 @@
           "src/[^/]*.ts$",
           ".*.spec.ts$",
           "tslint-rules/",
+          "scripts/",
           "schematics/",
           "utils/dev/",
           "core/utils/",
