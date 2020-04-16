@@ -4,8 +4,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
 import { filter, first } from 'rxjs/operators';
 
+import { getDeviceType } from 'ish-core/store/configuration';
 import { getUserAuthorized } from 'ish-core/store/user';
-import { getDeviceType } from 'ish-core/store/viewconf';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { LazyLoginModalComponent } from 'ish-shell/header/lazy-login-modal/lazy-login-modal.component';
 

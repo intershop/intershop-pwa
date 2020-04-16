@@ -10,6 +10,7 @@ import { Observable, Subject, of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
@@ -48,6 +49,8 @@ describe('Configuration Effects', () => {
         provideMockActions(() => actions$),
         { provide: PLATFORM_ID, useValue: 'server' },
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 

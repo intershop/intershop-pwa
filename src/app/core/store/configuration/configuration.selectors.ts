@@ -90,3 +90,8 @@ export const getCurrentLocale = createSelector(
   getConfigurationState,
   state => (state.lang ? state.locales.find(l => l.lang === state.lang) : state.locales[0])
 );
+
+export const getDeviceType = createSelector(
+  getConfigurationState,
+  state => state._deviceType
+);
