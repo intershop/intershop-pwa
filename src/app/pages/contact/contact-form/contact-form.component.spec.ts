@@ -69,7 +69,7 @@ describe('Contact Form Component', () => {
     component.contactForm.get('phone').setValue('123456');
     component.contactForm.get('order').setValue('456789');
     component.contactForm.get('subject').setValue('Return');
-    component.contactForm.get('comments').setValue('want to return stuff');
+    component.contactForm.get('comment').setValue('want to return stuff');
     component.submitForm();
     verify(emitter.emit(anything())).once();
   });

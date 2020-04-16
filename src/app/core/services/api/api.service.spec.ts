@@ -487,5 +487,32 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
       expect(req.request.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
     });
+
+    it('should set Captcha V2 authorization header key when captcha is supplied without captchaAction', () => {
+      apiService.get('dummy', { captcha: { captcha: 'captchatoken' } }).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
+        `"CAPTCHA g-recaptcha-response=captchatoken foo=bar"`
+      );
+    });
+
+    it('should set Captcha V3 authorization header key when captcha is supplied', () => {
+      apiService
+        .get('dummy', { captcha: { captcha: 'captchatoken', captchaAction: 'create_account' } })
+        .subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toMatchInlineSnapshot(
+        `"CAPTCHA recaptcha_token=captchatoken action=create_account"`
+      );
+    });
+
+    it('should not set header when captcha config object is empty', () => {
+      apiService.get('dummy', { captcha: {} }).subscribe(fail, fail, fail);
+
+      const req = httpTestingController.expectOne(`${REST_URL}/dummy`);
+      expect(req.request.headers.get(ApiService.AUTHORIZATION_HEADER_KEY)).toBeFalsy();
+    });
   });
 });

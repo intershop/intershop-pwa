@@ -52,8 +52,8 @@ export class ContactPageComponent implements OnInit, OnDestroy {
   }
 
   /** dispatch contact request */
-  createRequest(request: { contact: Contact; captcha?: string }) {
-    this.accountFacade.createContact(request.contact);
+  createRequest(contact: Contact) {
+    this.accountFacade.createContact(contact);
     this.router.navigate([], { queryParams: { submitted: true } });
   }
 

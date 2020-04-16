@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, OperatorFunction, Subject, forkJoin, of, throwError } from 'rxjs';
 import { catchError, concatMap, defaultIfEmpty, filter, map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 
+import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { getCurrentLocale, getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
@@ -105,6 +106,7 @@ export interface AvailableOptions {
   headers?: HttpHeaders;
   skipApiErrorHandling?: boolean;
   runExclusively?: boolean;
+  captcha?: Captcha;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -138,16 +140,43 @@ export class ApiService {
   }
 
   /**
+-   * sets the request header for the appropriate captcha service
+-   @param   captcha       captcha token for captcha V2 and V3
+-   @param   captchaAction captcha action for captcha V3
+-   @returns HttpHeader    http header with captcha Authorization key
+-   */
+  private appendCaptchaTokenToHeaders(headers: HttpHeaders, captcha: string, captchaAction: string) {
+    // testing token gets 'null' from captcha service, so we accept it as a valid value here
+    if (captchaAction !== undefined) {
+      // captcha V3
+      return headers.set(
+        ApiService.AUTHORIZATION_HEADER_KEY,
+        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
+      );
+    } else {
+      // captcha V2
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      return headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
+    }
+  }
+
+  /**
    * merges supplied and default headers
    */
-  private constructHeaders(options?: { headers?: HttpHeaders }): HttpHeaders {
+  private constructHeaders(options?: AvailableOptions): HttpHeaders {
     const defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
     let newHeaders = defaultHeaders;
     if (options && options.headers) {
       newHeaders = options.headers.keys().reduce((acc, key) => acc.set(key, options.headers.get(key)), defaultHeaders);
     }
-    return this.appendAPITokenToHeaders(newHeaders);
+
+    // testing token gets 'null' from captcha service, so we accept it as a valid value here
+    if (options && options.captcha && options.captcha.captcha !== undefined) {
+      return this.appendCaptchaTokenToHeaders(newHeaders, options.captcha.captcha, options.captcha.captchaAction);
+    } else {
+      return this.appendAPITokenToHeaders(newHeaders);
+    }
   }
 
   private wrapHttpCall<T>(httpCall: () => Observable<T>, options: AvailableOptions) {

@@ -1,4 +1,5 @@
 import { Address } from 'ish-core/models/address/address.model';
+import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { User } from 'ish-core/models/user/user.model';
 
@@ -29,9 +30,7 @@ export interface CustomerUserType {
 /**
  * registration request data type
  */
-export interface CustomerRegistrationType extends CustomerUserType {
+export interface CustomerRegistrationType extends CustomerUserType, Captcha {
   credentials: Credentials;
   address: Address;
-  captchaResponse?: string;
-  captchaAction?: string;
 }
