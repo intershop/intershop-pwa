@@ -1,4 +1,3 @@
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -17,14 +16,13 @@ export interface ConfigurationState {
   features?: string[];
   gtmToken?: string;
   theme?: string;
-  error?: HttpError;
   locales?: Locale[];
   lang?: string;
   // not synced via state transfer
   _deviceType?: DeviceType;
 }
 
-export const initialState: ConfigurationState = {
+const initialState: ConfigurationState = {
   baseURL: undefined,
   server: undefined,
   serverStatic: undefined,
@@ -34,7 +32,6 @@ export const initialState: ConfigurationState = {
   features: [],
   gtmToken: undefined,
   theme: undefined,
-  error: undefined,
   locales: environment.locales,
   lang: undefined,
   _deviceType: environment.defaultDeviceType,
@@ -43,17 +40,12 @@ export const initialState: ConfigurationState = {
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {
   switch (action.type) {
     case ConfigurationActionTypes.ApplyConfiguration: {
-      return { ...state, error: undefined, ...action.payload };
+      return { ...state, ...action.payload };
     }
 
     case ConfigurationActionTypes.SetGTMToken: {
       const { gtmToken } = action.payload;
       return { ...state, gtmToken };
-    }
-
-    case ConfigurationActionTypes.LoadServerConfigFail: {
-      const { error } = action.payload;
-      return { ...state, error };
     }
   }
 

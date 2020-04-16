@@ -13,7 +13,6 @@ describe('Price Helper', () => {
         diff: { type: 'Money', currency: 'USD', value: 1 } as Price,
         sum: { type: 'Money', currency: 'USD', value: 19 } as Price,
         min: { type: 'Money', currency: 'USD', value: 9 } as Price,
-        max: { type: 'Money', currency: 'USD', value: 10 } as Price,
       },
       {
         p1: { type: 'Money', currency: 'USD', value: 10.99 } as Price,
@@ -21,7 +20,6 @@ describe('Price Helper', () => {
         diff: { type: 'Money', currency: 'USD', value: 1.54 } as Price,
         sum: { type: 'Money', currency: 'USD', value: 20.44 } as Price,
         min: { type: 'Money', currency: 'USD', value: 9.45 } as Price,
-        max: { type: 'Money', currency: 'USD', value: 10.99 } as Price,
       },
       {
         p1: { type: 'Money', currency: 'USD', value: 8 } as Price,
@@ -29,7 +27,6 @@ describe('Price Helper', () => {
         diff: { type: 'Money', currency: 'USD', value: -1 } as Price,
         sum: { type: 'Money', currency: 'USD', value: 17 } as Price,
         min: { type: 'Money', currency: 'USD', value: 8 } as Price,
-        max: { type: 'Money', currency: 'USD', value: 9 } as Price,
       },
       {
         p1: { type: 'Money', currency: 'USD', value: 8.88888 } as Price,
@@ -37,7 +34,6 @@ describe('Price Helper', () => {
         diff: { type: 'Money', currency: 'USD', value: 5.33 } as Price,
         sum: { type: 'Money', currency: 'USD', value: 12.44 } as Price,
         min: { type: 'Money', currency: 'USD', value: 3.56 } as Price,
-        max: { type: 'Money', currency: 'USD', value: 8.89 } as Price,
       },
     ];
   }
@@ -122,24 +118,6 @@ describe('Price Helper', () => {
         slice.p1
       )}' and '${JSON.stringify(slice.p2)}'`, () => {
         expect(() => PriceHelper.min(slice.p1, slice.p2)).toThrowError(slice.error);
-      });
-    });
-  });
-
-  describe('max', () => {
-    using(dataProviderValid, slice => {
-      it(`should return ${slice.max.value} when finding maximum of '${JSON.stringify(slice.p1)}' and '${JSON.stringify(
-        slice.p2
-      )}'`, () => {
-        expect(PriceHelper.max(slice.p1, slice.p2)).toEqual(slice.max);
-      });
-    });
-
-    using(dataProviderInvalid, slice => {
-      it(`should throw something like ${slice.error} when finding maximum '${JSON.stringify(
-        slice.p1
-      )}' and '${JSON.stringify(slice.p2)}'`, () => {
-        expect(() => PriceHelper.max(slice.p1, slice.p2)).toThrowError(slice.error);
       });
     });
   });

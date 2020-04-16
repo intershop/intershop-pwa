@@ -9,6 +9,7 @@ import {
   WarningMessage,
 } from 'ish-core/store/messages';
 
+// not-dead-code
 @Injectable({ providedIn: 'root' })
 export class MessageFacade {
   constructor(private store: Store<{}>) {}

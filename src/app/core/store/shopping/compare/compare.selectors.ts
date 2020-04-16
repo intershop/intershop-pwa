@@ -5,7 +5,7 @@ import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
-export const getCompareState = createSelector(
+const getCompareState = createSelector(
   getShoppingState,
   (state: ShoppingState) => state.compare
 );

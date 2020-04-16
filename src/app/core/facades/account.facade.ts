@@ -135,7 +135,7 @@ export class AccountFacade {
   ordersLoading$ = this.store.pipe(select(getOrdersLoading));
 
   // PAYMENT
-  eligiblePaymentMethods$ = this.store.pipe(select(getUserPaymentMethods));
+  private eligiblePaymentMethods$ = this.store.pipe(select(getUserPaymentMethods));
 
   paymentMethods$() {
     this.store.dispatch(new LoadUserPaymentMethods());

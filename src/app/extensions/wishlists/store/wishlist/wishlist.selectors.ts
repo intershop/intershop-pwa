@@ -10,9 +10,8 @@ const getWishlistState = createSelector(
   state => (state ? state.wishlists : initialState)
 );
 
-export const { selectEntities: getWishlistEntities, selectAll: getAllWishlists } = wishlistsAdapter.getSelectors(
-  getWishlistState
-);
+const { selectEntities, selectAll } = wishlistsAdapter.getSelectors(getWishlistState);
+export const getAllWishlists = selectAll;
 
 export const getWishlistsLoading = createSelector(
   getWishlistState,
@@ -29,13 +28,13 @@ export const getSelectedWishlistId = createSelector(
 );
 
 export const getSelectedWishlistDetails = createSelector(
-  getWishlistEntities,
+  selectEntities,
   getSelectedWishlistId,
   (entities, id): Wishlist => id && entities[id]
 );
 
 export const getWishlistDetails = createSelector(
-  getWishlistEntities,
+  selectEntities,
   (entities, props: { id: string }): Wishlist => props.id && entities[props.id]
 );
 

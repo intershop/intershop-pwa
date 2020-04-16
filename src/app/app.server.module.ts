@@ -16,7 +16,7 @@ import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.i
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-export class TranslateUniversalLoader implements TranslateLoader {
+class TranslateUniversalLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<string> {
     return new Observable((observer: Observer<string>) => {
       let rootPath = process.cwd();
@@ -41,6 +41,7 @@ export function translateLoaderFactory() {
   return new TranslateUniversalLoader();
 }
 
+// not-dead-code
 @NgModule({
   imports: [
     AppModule,

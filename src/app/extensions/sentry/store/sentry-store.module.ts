@@ -7,11 +7,11 @@ import { SentryConfigEffects } from './sentry-config/sentry-config.effects';
 import { sentryConfigReducer } from './sentry-config/sentry-config.reducer';
 import { SentryState } from './sentry-store';
 
-export const sentryReducers: ActionReducerMap<SentryState> = {
+const sentryReducers: ActionReducerMap<SentryState> = {
   config: sentryConfigReducer,
 };
 
-export const sentryEffects = [SentryConfigEffects];
+const sentryEffects = [SentryConfigEffects];
 
 const sentryFeature = 'sentry';
 @NgModule({

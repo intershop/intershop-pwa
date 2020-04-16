@@ -16,7 +16,7 @@ export const contentReducers: ActionReducerMap<ContentState> = {
   pages: pagesReducer,
 };
 
-export const contentEffects = [IncludesEffects, PagesEffects, PageletsEffects];
+const contentEffects = [IncludesEffects, PageletsEffects, PagesEffects];
 
 @NgModule({
   imports: [EffectsModule.forFeature(contentEffects), StoreModule.forFeature('content', contentReducers)],

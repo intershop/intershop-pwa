@@ -9,12 +9,10 @@ export const productAdapter = createEntityAdapter<AllProductTypes>({
 });
 
 export interface ProductsState extends EntityState<AllProductTypes> {
-  loading: boolean;
   failed: string[];
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
-  loading: false,
   failed: [],
 });
 
@@ -28,19 +26,10 @@ function removeFailed(failed: string[], sku: string): string[] {
 
 export function productsReducer(state = initialState, action: ProductsAction): ProductsState {
   switch (action.type) {
-    case ProductsActionTypes.LoadProduct:
-    case ProductsActionTypes.LoadProductVariations: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
     case ProductsActionTypes.LoadProductFail:
     case ProductsActionTypes.LoadProductVariationsFail: {
       return {
         ...state,
-        loading: false,
         failed: addFailed(state.failed, action.payload.sku),
       };
     }

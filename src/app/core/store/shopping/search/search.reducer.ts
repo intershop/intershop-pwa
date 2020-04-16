@@ -4,7 +4,7 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
 import { SearchAction, SearchActionTypes } from './search.actions';
 
-export interface SuggestSearch {
+interface SuggestSearch {
   searchTerm: string;
   suggests: SuggestTerm[];
 }
@@ -15,7 +15,7 @@ export const searchAdapter = createEntityAdapter<SuggestSearch>({
 
 export interface SearchState extends EntityState<SuggestSearch> {}
 
-export const initialState: SearchState = searchAdapter.getInitialState({});
+const initialState: SearchState = searchAdapter.getInitialState({});
 
 export function searchReducer(state = initialState, action: SearchAction): SearchState {
   switch (action.type) {

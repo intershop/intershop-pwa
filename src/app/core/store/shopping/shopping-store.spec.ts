@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
+import { combineReducers, createSelector } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
@@ -35,11 +35,21 @@ import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
-import { getCategoryIds, getSelectedCategory } from './categories';
-import { getProductIds, getSelectedProduct } from './products';
+import { getCategoryTree, getSelectedCategory } from './categories';
+import { getProductEntities, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
 import { SuggestSearch } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping-store.module';
+
+const getCategoryIds = createSelector(
+  getCategoryTree,
+  tree => Object.keys(tree.nodes)
+);
+
+const getProductIds = createSelector(
+  getProductEntities,
+  entities => Object.keys(entities)
+);
 
 describe('Shopping Store', () => {
   let store: TestStore;

@@ -22,11 +22,6 @@ export const getCategoryEntities = createSelector(
   tree => tree.nodes
 );
 
-export const getCategoryIds = createSelector(
-  getCategoryTree,
-  tree => Object.keys(tree.nodes)
-);
-
 /**
  * Retrieves the currently resolved selected category.
  */

@@ -61,7 +61,7 @@ export const coreEffects = [
 ];
 
 // tslint:disable-next-line: no-any
-export const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMeta];
+const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMeta];
 
 @NgModule({
   imports: [

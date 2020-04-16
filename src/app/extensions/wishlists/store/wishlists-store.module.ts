@@ -11,7 +11,7 @@ export const wishlistsReducers: ActionReducerMap<WishlistsState> = {
   wishlists: wishlistReducer,
 };
 
-export const wishlistsEffects = [WishlistEffects];
+const wishlistsEffects = [WishlistEffects];
 
 const wishlistsFeature = 'wishlists';
 

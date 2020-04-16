@@ -2,7 +2,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { User } from 'ish-core/models/user/user.model';
 
-export type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
+type CustomerType = 'PrivateCustomer' | 'SMBCustomer';
 
 export interface Customer {
   type: CustomerType;

@@ -37,7 +37,7 @@ export interface ProductListingState extends EntityState<ProductListingType> {
   currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> };
 }
 
-export const initialState: ProductListingState = adapter.getInitialState({
+const initialState: ProductListingState = adapter.getInitialState({
   loading: false,
   itemsPerPage: undefined,
   viewType: undefined,
@@ -86,7 +86,6 @@ export function productListingReducer(
 
     case SearchActionTypes.SearchProductsFail:
     case ProductsActionTypes.LoadProductsForCategoryFail:
-    case FilterActionTypes.LoadProductsForFilterFail:
       return { ...state, loading: false };
 
     case ProductListingActionTypes.SetProductListingPages: {

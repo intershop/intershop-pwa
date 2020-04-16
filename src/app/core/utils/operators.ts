@@ -5,11 +5,6 @@ import { catchError, distinctUntilChanged, filter, map, withLatestFrom } from 'r
 import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-export interface Partition<T> {
-  isTrue: Observable<T>;
-  isFalse: Observable<T>;
-}
-
 /**
  * compare the current stream with the latest value from given observable distinctively and fire only when value is different than the observable value and the last fired value
  */
