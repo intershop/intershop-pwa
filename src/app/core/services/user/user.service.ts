@@ -97,7 +97,7 @@ export class UserService {
 
     if (body.captchaResponse) {
       return this.apiService.post<void>('customers', newCustomer, {
-        headers: this.appendCaptchaHeaders(body.captchaResponse, body.captchaAction),
+        headers: this.apiService.appendCaptchaHeaders(body.captchaResponse, body.captchaAction),
       });
       // without captcha
     } else {
@@ -198,7 +198,7 @@ export class UserService {
     };
 
     if (data.captcha) {
-      options.headers = this.appendCaptchaHeaders(data.captcha, data.captchaAction);
+      options.headers = this.apiService.appendCaptchaHeaders(data.captcha, data.captchaAction);
     }
 
     return this.apiService.post('security/reminder', { answer: '', ...data }, options);
@@ -213,22 +213,5 @@ export class UserService {
       skipApiErrorHandling: true,
     };
     return this.apiService.post('security/password', data, options);
-  }
-
-  // provides the request header for the appropriate captcha service
-  private appendCaptchaHeaders(captcha: string, captchaAction: string): HttpHeaders {
-    let headers = new HttpHeaders();
-    // captcha V3
-    if (captchaAction) {
-      headers = headers.set(
-        ApiService.AUTHORIZATION_HEADER_KEY,
-        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
-      );
-      // captcha V2
-    } else {
-      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
-      headers = headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
-    }
-    return headers;
   }
 }

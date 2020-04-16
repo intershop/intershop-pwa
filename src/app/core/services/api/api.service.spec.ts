@@ -148,9 +148,25 @@ describe('Api Service', () => {
       req.flush({});
       expect(req.request.method).toEqual('DELETE');
     });
+
+    it('should set Captcha V2 authorization header key when apiService.appendCaptchaHeaders method is called.', () => {
+      const httpHeader = apiService.appendCaptchaHeaders('captchatoken', undefined);
+
+      expect(httpHeader.get(ApiService.AUTHORIZATION_HEADER_KEY)).toEqual(
+        'CAPTCHA g-recaptcha-response=captchatoken foo=bar'
+      );
+    });
+
+    it('should set Captcha V3 authorization header key when apiService.appendCaptchaHeaders method is called.', () => {
+      const httpHeader = apiService.appendCaptchaHeaders('captchatoken', 'create_account');
+
+      expect(httpHeader.get(ApiService.AUTHORIZATION_HEADER_KEY)).toEqual(
+        'CAPTCHA recaptcha_token=captchatoken action=create_account'
+      );
+    });
   });
 
-  describe('API Service Helper Methods', () => {
+  describe('Api Service', () => {
     describe('constructUrlForPath()', () => {
       const BASE_URL = 'http://example.org/site';
       const JP = { lang: 'jp', currency: 'YEN' } as Locale;
@@ -207,7 +223,7 @@ describe('Api Service', () => {
     });
   });
 
-  describe('API Service Pipable Operators', () => {
+  describe('Api Service', () => {
     let httpTestingController: HttpTestingController;
     let apiService: ApiService;
 
@@ -392,7 +408,7 @@ describe('Api Service', () => {
     });
   });
 
-  describe('API Service Headers', () => {
+  describe('Api Service', () => {
     const REST_URL = 'http://www.example.org/WFS/site/-';
     let apiService: ApiService;
     let store$: Store<{}>;

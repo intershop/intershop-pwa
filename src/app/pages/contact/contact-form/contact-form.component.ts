@@ -22,7 +22,7 @@ export class ContactFormComponent implements OnChanges, OnInit {
   @Input() subjects: string[] = [];
   @Input() user: User;
   /** The contact request to send. */
-  @Output() request = new EventEmitter<{ contact: Contact; captcha?: string }>();
+  @Output() request = new EventEmitter<Contact>();
 
   subjectOptions: SelectOption[];
 
@@ -43,18 +43,9 @@ export class ContactFormComponent implements OnChanges, OnInit {
   /** emit contact request, when for is valid or mark form as dirty, when form is invalid */
   submitForm() {
     if (this.contactForm.valid) {
-      const formValue = this.contactForm.value;
-      const contact: Contact = {
-        name: formValue.name,
-        email: formValue.email,
-        phone: formValue.phone,
-        subject: formValue.subject,
-        comment: formValue.comments,
-        order: formValue.order,
-      };
+      const contact: Contact = this.contactForm.value;
 
-      /* ToDo: send captcha data if captcha is supported by REST, see #IS-28299 */
-      this.request.emit({ contact });
+      this.request.emit(contact);
     } else {
       markAsDirtyRecursive(this.contactForm);
       this.submitted = true;
@@ -77,7 +68,7 @@ export class ContactFormComponent implements OnChanges, OnInit {
       phone: [phone, Validators.required],
       order: [''],
       subject: ['', Validators.required],
-      comments: ['', Validators.required],
+      comment: ['', Validators.required],
       captcha: [''],
       captchaAction: ['contact_us'],
     });

@@ -9,4 +9,6 @@ export interface Contact {
   order?: string;
   subject: string;
   comment: string;
+  captcha?: string;
+  captchaAction?: string;
 }

@@ -285,4 +285,26 @@ export class ApiService {
       options
     );
   }
+
+  /**
+   * provides the request header for the appropriate captcha service
+   @param   captcha       captcha token for captcha V2 and V3
+   @param   captchaAction captcha action for captcha V3
+   @returns HttpHeader    http header with captcha Authorization key
+   */
+  appendCaptchaHeaders(captcha: string, captchaAction: string): HttpHeaders {
+    let headers = new HttpHeaders();
+    // captcha V3
+    if (captchaAction) {
+      headers = headers.set(
+        ApiService.AUTHORIZATION_HEADER_KEY,
+        `CAPTCHA recaptcha_token=${captcha} action=${captchaAction}`
+      );
+      // captcha V2
+    } else {
+      // TODO: remove second parameter 'foo=bar' that currently only resolves a shortcoming of the server side implemenation that still requires two parameters
+      headers = headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `CAPTCHA g-recaptcha-response=${captcha} foo=bar`);
+    }
+    return headers;
+  }
 }

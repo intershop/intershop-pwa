@@ -37,7 +37,7 @@ export class ContactPage {
       .blur();
     // tslint:disable-next-line:ban
     cy.get('select[data-testing-id="subject"]').select(subject);
-    cy.get('textarea[data-testing-id="comments"]')
+    cy.get('textarea[data-testing-id="comment"]')
       .clear()
       .type(comments)
       .blur();
