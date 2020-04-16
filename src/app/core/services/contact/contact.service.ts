@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { pick } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
-import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
@@ -23,6 +24,11 @@ export class ContactService {
    * Send contact us request, when a customer want to get in contact with the shop
    */
   createContactRequest(contactData: Contact): Observable<void> {
-    return this.apiService.post(`contact`, contactData, { skipApiErrorHandling: true });
+    const options: AvailableOptions = {
+      skipApiErrorHandling: true,
+      captcha: pick(contactData, ['captcha', 'captchaAction']),
+    };
+
+    return this.apiService.post(`contact`, { ...contactData, captcha: undefined, captchaAction: undefined }, options);
   }
 }

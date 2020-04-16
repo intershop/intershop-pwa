@@ -74,7 +74,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       birthday: [''],
       termsAndConditions: [false, [Validators.required, Validators.pattern('true')]],
       captcha: [''],
-      captchaAction: ['create_account'],
+      captchaAction: ['register'],
       address: this.afs.getFactory('default').getGroup({ isBusinessAddress: this.businessCustomerRegistration }), // filled dynamically when country code changes
     });
 
@@ -147,7 +147,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     }
 
     const registration: CustomerRegistrationType = { customer, user, credentials, address };
-    registration.captchaResponse = this.form.get('captcha').value;
+    registration.captcha = this.form.get('captcha').value;
     registration.captchaAction = this.form.get('captchaAction').value;
 
     this.create.emit(registration);
