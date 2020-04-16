@@ -6,7 +6,7 @@ import { map, take, takeUntil } from 'rxjs/operators';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
-export interface SearchBoxConfiguration {
+interface SearchBoxConfiguration {
   /**
    * text for search button on search box, icon is used if no text is provided
    */

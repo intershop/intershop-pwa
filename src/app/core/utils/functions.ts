@@ -23,7 +23,7 @@ export const objectToArray = (values: { [key: string]: string }) =>
 
 export const toObservable = <T>(input: T | Observable<T>): Observable<T> => (isObservable(input) ? input : of(input));
 
-export function isObject(item) {
+function isObject(item) {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
 

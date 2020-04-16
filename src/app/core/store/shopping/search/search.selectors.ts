@@ -5,7 +5,7 @@ import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shoppin
 
 import { searchAdapter } from './search.reducer';
 
-export const getSearchState = createSelector(
+const getSearchState = createSelector(
   getShoppingState,
   (state: ShoppingState) => state.search
 );

@@ -1,7 +1,7 @@
 import { Price } from 'ish-core/models/price/price.model';
 
 import { QuoteRequestItemData } from '../quote-request-item/quote-request-item.interface';
-import { QuoteRequestItem, QuoteRequestItemView } from '../quote-request-item/quote-request-item.model';
+import { QuoteRequestItem } from '../quote-request-item/quote-request-item.model';
 
 export type QuoteStateType = 'Responded' | 'Rejected' | 'Converted' | 'Expired';
 
@@ -25,5 +25,3 @@ interface AbstractQuote<T> {
 }
 
 export interface Quote extends AbstractQuote<QuoteRequestItem | QuoteRequestItemData> {}
-
-export interface QuoteView extends AbstractQuote<QuoteRequestItemView> {}

@@ -37,7 +37,7 @@ import {
   isBasketInvoiceAndShippingAddressEqual,
 } from 'ish-core/store/checkout/basket';
 import { getServerConfigParameter } from 'ish-core/store/configuration';
-import { CreateOrder, getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
+import { getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
 import { selectRouteData } from 'ish-core/store/router';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -79,13 +79,9 @@ export class CheckoutFacade {
   }
 
   // ORDERS
-  ordersError$ = this.store.pipe(select(getOrdersError));
+  private ordersError$ = this.store.pipe(select(getOrdersError));
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
-
-  createOrder(basketId: string) {
-    this.store.dispatch(new CreateOrder({ basketId }));
-  }
 
   // SHIPPING
   eligibleShippingMethods$() {

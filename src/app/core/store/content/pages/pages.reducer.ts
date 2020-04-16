@@ -12,7 +12,7 @@ export interface PagesState extends EntityState<ContentPageletEntryPoint> {
   loading: boolean;
 }
 
-export const initialState: PagesState = pagesAdapter.getInitialState({
+const initialState: PagesState = pagesAdapter.getInitialState({
   loading: false,
 });
 

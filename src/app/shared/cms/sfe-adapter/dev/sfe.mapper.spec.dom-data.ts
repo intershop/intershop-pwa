@@ -124,7 +124,7 @@ const reducedTree2 = {
 
 ////////////////////////////////////////////////
 
-export const html3 = `
+const html3 = `
 <ish-root>
     <ish-content-include data-sfe='{ "id": "test3", "displayType": "Include" }'>
         <div>

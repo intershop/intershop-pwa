@@ -35,11 +35,9 @@ const productToVariationOptions = memoize(
     `${product && product.sku}#${ProductHelper.isVariationProduct(product) && ProductHelper.hasVariations(product)}`
 );
 
-export const { selectEntities: getProductEntities, selectIds: getProductIds } = productAdapter.getSelectors(
-  getProductsState
-);
+export const { selectEntities: getProductEntities } = productAdapter.getSelectors(getProductsState);
 
-export const getFailed = createSelector(
+const getFailed = createSelector(
   getProductsState,
   state => state.failed
 );
@@ -129,11 +127,6 @@ export const getProductBundleParts = createSelector(
             product: entities[sku],
             quantity,
           }))
-);
-
-export const getProductLoading = createSelector(
-  getProductsState,
-  products => products.loading
 );
 
 export const getProductLinks = createSelector(

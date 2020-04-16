@@ -20,7 +20,7 @@ interface ContentEntryPointView {
   pageletIDs: string[];
 }
 
-export interface ContentSlotView extends ContentEntryPointView, ContentConfigurationParameterView {}
+interface ContentSlotView extends ContentEntryPointView, ContentConfigurationParameterView {}
 
 export interface ContentPageletEntryPointView extends ContentEntryPointView, ContentConfigurationParameterView {
   id: string;
@@ -80,7 +80,7 @@ export const createContentPageletView = (pagelet: ContentPagelet): ContentPagele
     ...createContentConfigurationParameterView(pagelet.configurationParameters || {}),
   };
 
-export const createContentSlotView = (pagelet: ContentPagelet, slot: ContentSlot): ContentSlotView =>
+const createContentSlotView = (pagelet: ContentPagelet, slot: ContentSlot): ContentSlotView =>
   slot && {
     id: slot.definitionQualifiedName,
     domain: pagelet.domain,

@@ -20,14 +20,7 @@ import {
   LoadProductVariationsSuccess,
   LoadRetailSetSuccess,
 } from './products.actions';
-import {
-  getProduct,
-  getProductEntities,
-  getProductLinks,
-  getProductLoading,
-  getProducts,
-  getSelectedProduct,
-} from './products.selectors';
+import { getProduct, getProductEntities, getProductLinks, getProducts, getSelectedProduct } from './products.selectors';
 
 describe('Products Selectors', () => {
   let store$: TestStore;
@@ -61,7 +54,6 @@ describe('Products Selectors', () => {
   describe('with empty state', () => {
     it('should not select any products when used', () => {
       expect(getProductEntities(store$.state)).toBeEmpty();
-      expect(getProductLoading(store$.state)).toBeFalse();
     });
 
     it('should not select a current product when used', () => {
@@ -74,17 +66,12 @@ describe('Products Selectors', () => {
       store$.dispatch(new LoadProduct({ sku: '' }));
     });
 
-    it('should set the state to loading', () => {
-      expect(getProductLoading(store$.state)).toBeTrue();
-    });
-
     describe('and reporting success', () => {
       beforeEach(() => {
         store$.dispatch(new LoadProductSuccess({ product: prod }));
       });
 
-      it('should set loading to false', () => {
-        expect(getProductLoading(store$.state)).toBeFalse();
+      it('should add product to state', () => {
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
       });
     });
@@ -95,7 +82,6 @@ describe('Products Selectors', () => {
       });
 
       it('should not have loaded product on error', () => {
-        expect(getProductLoading(store$.state)).toBeFalse();
         expect(getProductEntities(store$.state)).toBeEmpty();
       });
 
@@ -113,7 +99,6 @@ describe('Products Selectors', () => {
     describe('but no current router state', () => {
       it('should return the product information when used', () => {
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
-        expect(getProductLoading(store$.state)).toBeFalse();
       });
 
       it('should not select the irrelevant product when used', () => {
@@ -129,7 +114,6 @@ describe('Products Selectors', () => {
 
       it('should return the product information when used', () => {
         expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
-        expect(getProductLoading(store$.state)).toBeFalse();
       });
 
       it('should select the selected product when used', () => {
@@ -194,17 +178,12 @@ describe('Products Selectors', () => {
       store$.dispatch(new LoadProductVariations({ sku: 'SKU' }));
     });
 
-    it('should set the state to loading', () => {
-      expect(getProductLoading(store$.state)).toBeTrue();
-    });
-
     describe('and reporting success', () => {
       beforeEach(() => {
         store$.dispatch(new LoadProductVariationsSuccess({ sku: 'SKU', variations: ['VAR'], defaultVariation: 'VAR' }));
       });
 
-      it('should set variations data and set loading to false', () => {
-        expect(getProductLoading(store$.state)).toBeFalse();
+      it('should add variations to state', () => {
         expect(getProductEntities(store$.state).SKU).toMatchInlineSnapshot(`
           Object {
             "defaultVariationSKU": "VAR",
@@ -224,7 +203,6 @@ describe('Products Selectors', () => {
       });
 
       it('should not have loaded product variations on error', () => {
-        expect(getProductLoading(store$.state)).toBeFalse();
         expect(getProductEntities(store$.state).SKU).toEqual({ sku: 'SKU', type: 'VariationProductMaster' });
       });
     });

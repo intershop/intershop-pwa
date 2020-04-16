@@ -16,7 +16,7 @@ export const wishlistsAdapter = createEntityAdapter<Wishlist>({
   selectId: wishlist => wishlist.id,
 });
 
-export const initialState = wishlistsAdapter.getInitialState({
+export const initialState: WishlistState = wishlistsAdapter.getInitialState({
   loading: false,
   selected: undefined,
   error: undefined,

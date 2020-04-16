@@ -4,7 +4,7 @@ export interface RecentlyState {
   products: { sku: string; group?: string }[];
 }
 
-export const initialState: RecentlyState = {
+const initialState: RecentlyState = {
   products: [],
 };
 

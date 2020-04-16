@@ -50,15 +50,6 @@ export class PriceHelper {
     };
   }
 
-  static max(p1: Price, p2: Price): Price {
-    PriceHelper.sanityChecks(p1, p2);
-    return {
-      type: p1.type,
-      currency: p1.currency,
-      value: Math.round(Math.max(p1.value, p2.value) * 100) / 100,
-    };
-  }
-
   static sum(p1: Price, p2: Price): Price {
     PriceHelper.sanityChecks(p1, p2);
     return {

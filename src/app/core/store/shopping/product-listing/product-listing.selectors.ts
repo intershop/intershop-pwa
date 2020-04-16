@@ -31,7 +31,7 @@ export const getProductListingViewType = createSelector(
   state => state.viewType
 );
 
-export const getProductListingSettings = createSelector(
+const getProductListingSettings = createSelector(
   getProductListingState,
   state => state.currentSettings
 );

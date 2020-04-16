@@ -11,5 +11,3 @@ export class SetSeoAttributes implements Action {
   // tslint:disable-next-line:ngrx-use-complex-type-with-action-payload
   constructor(public payload: Partial<SeoAttributes>) {}
 }
-
-export type SeoAction = SetSeoAttributes;

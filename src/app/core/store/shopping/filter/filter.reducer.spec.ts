@@ -14,12 +14,22 @@ describe('Filter Reducer', () => {
     });
   });
 
-  describe('LoadFilterForCategory', () => {
-    it('should change state to loading when reduced', () => {
-      const action = new fromActions.LoadFilterForCategory({ uniqueId: 'dummy' });
+  describe('LoadFilterSuccess', () => {
+    it('should set filter when reduced', () => {
+      const filterNavigation = { filter: [{ name: 'a' }] } as FilterNavigation;
+      const action = new fromActions.LoadFilterSuccess({ filterNavigation });
       const state = filterReducer(initialState, action);
 
-      expect(state.loading).toBeTrue();
+      expect(state.availableFilter).toEqual(filterNavigation);
+    });
+  });
+
+  describe('LoadFilterFailed', () => {
+    it('should set filter when reduced', () => {
+      const action = new fromActions.LoadFilterFail({ error: {} as HttpError });
+      const state = filterReducer(initialState, action);
+
+      expect(state.availableFilter).toBeFalsy();
     });
   });
 
@@ -30,7 +40,6 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filterNavigation);
-      expect(state.loading).toBeFalse();
     });
   });
 
@@ -40,46 +49,6 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
-      expect(state.loading).toBeFalse();
-    });
-  });
-
-  describe('LoadFilterForSearch', () => {
-    it('should change state to loading when reduced', () => {
-      const action = new fromActions.LoadFilterForSearch({ searchTerm: '' });
-      const state = filterReducer(initialState, action);
-
-      expect(state.loading).toBeTrue();
-    });
-  });
-
-  describe('LoadFilterSuccess', () => {
-    it('should set filter when reduced', () => {
-      const filterNavigation = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.LoadFilterSuccess({ filterNavigation });
-      const state = filterReducer(initialState, action);
-
-      expect(state.availableFilter).toEqual(filterNavigation);
-      expect(state.loading).toBeFalse();
-    });
-  });
-
-  describe('LoadFilterFailed', () => {
-    it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterFail({ error: {} as HttpError });
-      const state = filterReducer(initialState, action);
-
-      expect(state.availableFilter).toBeFalsy();
-      expect(state.loading).toBeFalse();
-    });
-  });
-
-  describe('ApplyFilter', () => {
-    it('should change state to loading when reduced', () => {
-      const action = new fromActions.ApplyFilter({ searchParameter: 'b' });
-      const state = filterReducer(initialState, action);
-
-      expect(state.loading).toBeTrue();
     });
   });
 
@@ -93,7 +62,6 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filter);
-      expect(state.loading).toBeFalse();
     });
   });
 });

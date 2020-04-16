@@ -7,7 +7,7 @@ import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module'
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
-import { getPromotion, getPromotionEntities, getPromotions } from './promotions.selectors';
+import { getPromotion, getPromotions } from './promotions.selectors';
 
 describe('Promotions Selectors', () => {
   let store$: TestStore;
@@ -32,7 +32,7 @@ describe('Promotions Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any promotions when used', () => {
-      expect(getPromotionEntities(store$.state)).toBeEmpty();
+      expect(getPromotions()(store$.state, { promotionIds: [promo.id, promo1.id] })).toBeEmpty();
     });
   });
 
@@ -43,7 +43,7 @@ describe('Promotions Selectors', () => {
       });
 
       it('should put the promotion to the state', () => {
-        expect(getPromotionEntities(store$.state)).toEqual({ [promo.id]: promo });
+        expect(getPromotion()(store$.state, { promoId: promo.id })).toEqual(promo);
       });
     });
 
@@ -55,7 +55,7 @@ describe('Promotions Selectors', () => {
       });
 
       it('should not have loaded promotion on error', () => {
-        expect(getPromotionEntities(store$.state)).toBeEmpty();
+        expect(getPromotions()(store$.state, { promotionIds: [promo.id, promo1.id] })).toBeEmpty();
       });
     });
   });
@@ -67,19 +67,6 @@ describe('Promotions Selectors', () => {
     });
 
     describe('but no current router state', () => {
-      it('should return the promotion information when used', () => {
-        expect(getPromotionEntities(store$.state)).toMatchInlineSnapshot(`
-          Object {
-            "id": Object {
-              "id": "id",
-            },
-            "id1": Object {
-              "id": "id1",
-            },
-          }
-        `);
-      });
-
       it('should return a promotion stub if promotion is selected', () => {
         expect(getPromotion()(store$.state, { promoId: promo.id })).toMatchInlineSnapshot(`
           Object {

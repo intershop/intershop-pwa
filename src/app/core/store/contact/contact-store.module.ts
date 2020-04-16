@@ -10,7 +10,7 @@ export const contactReducers: ActionReducerMap<ContactState> = {
   contact: contactReducer,
 };
 
-export const contactEffects = [ContactEffects];
+const contactEffects = [ContactEffects];
 
 @NgModule({
   imports: [EffectsModule.forFeature(contactEffects), StoreModule.forFeature('contact', contactReducers)],

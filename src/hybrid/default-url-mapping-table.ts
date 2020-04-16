@@ -1,6 +1,7 @@
 const ICM_CONFIG_MATCH = `^/INTERSHOP/web/WFS/(?<channel>[\\w-]+)/(?<lang>[\\w-]+)/(?<application>[\\w-]+)/[\\w-]+`;
 const PWA_CONFIG_BUILD = ';channel=$<channel>;lang=$<lang>;application=$<application>;redirect=1';
 
+// not-dead-code
 export interface HybridMappingEntry {
   /** ID for grouping */
   id: string;

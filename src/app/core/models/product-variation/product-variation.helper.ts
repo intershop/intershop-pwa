@@ -15,7 +15,7 @@ export class ProductVariationHelper {
    * @returns       Indicates if no perfect match is found.
    */
   // TODO: Refactor this to a more functional style
-  static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
+  private static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
     let quality: number;
     const selectedProductAttributes: VariationAttribute[] = [];
     const perfectMatchQuality = product.variableVariationAttributes.length;
