@@ -8,6 +8,7 @@ import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ConfigurationGuard } from 'ish-core/guards/configuration.guard';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
@@ -47,6 +48,8 @@ describe('Configuration Integration', () => {
       providers: [
         { provide: PLATFORM_ID, useValue: 'server' },
         { provide: ConfigurationService, useFactory: () => instance(configurationService) },
+        { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],
     });
 

@@ -3,17 +3,11 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/configuration';
+import { getAvailableLocales, getCurrentLocale, getDeviceType } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
 import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
-import {
-  getBreadcrumbData,
-  getDeviceType,
-  getHeaderType,
-  getWrapperClass,
-  isStickyHeader,
-} from 'ish-core/store/viewconf';
+import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/viewconf';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {

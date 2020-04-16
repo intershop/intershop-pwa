@@ -1,6 +1,7 @@
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { environment } from '../../../../environments/environment';
 
@@ -19,6 +20,8 @@ export interface ConfigurationState {
   error?: HttpError;
   locales?: Locale[];
   lang?: string;
+  // not synced via state transfer
+  _deviceType?: DeviceType;
 }
 
 export const initialState: ConfigurationState = {
@@ -34,6 +37,7 @@ export const initialState: ConfigurationState = {
   error: undefined,
   locales: environment.locales,
   lang: undefined,
+  _deviceType: 'mobile',
 };
 
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {

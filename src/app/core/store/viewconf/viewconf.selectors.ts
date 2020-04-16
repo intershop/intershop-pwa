@@ -17,10 +17,6 @@ export const getBreadcrumbData = createSelector(
   getViewconfState,
   state => state.breadcrumbData
 );
-export const getDeviceType = createSelector(
-  getViewconfState,
-  state => state._deviceType
-);
 export const isStickyHeader = createSelector(
   getViewconfState,
   getHeaderType,

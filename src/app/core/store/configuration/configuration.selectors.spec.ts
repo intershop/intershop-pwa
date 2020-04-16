@@ -7,6 +7,7 @@ import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
 import {
   getAvailableLocales,
   getCurrentLocale,
+  getDeviceType,
   getFeatures,
   getGTMToken,
   getICMBaseURL,
@@ -29,7 +30,7 @@ describe('Configuration Selectors', () => {
   });
 
   describe('initial state', () => {
-    it('should only have undefined of empty values for all selectors', () => {
+    it('should be undefined or empty values for most selectors', () => {
       expect(getRestEndpoint(store$.state)).toBeUndefined();
       expect(getICMBaseURL(store$.state)).toBeUndefined();
       expect(getICMServerURL(store$.state)).toBeUndefined();
@@ -43,6 +44,7 @@ describe('Configuration Selectors', () => {
       expect(getServerConfigParameter('general.locales')(store$.state)).toMatchInlineSnapshot(`undefined`);
       expect(getAvailableLocales(store$.state)).not.toBeEmpty();
       expect(getCurrentLocale(store$.state)).not.toBeEmpty();
+      expect(getDeviceType(store$.state)).not.toBeEmpty();
     });
   });
 
