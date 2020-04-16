@@ -31,7 +31,7 @@ exports[`Header Default Component rendering should render normal header adequate
     ></ish-mini-basket>
   </div>
   <div class="row align-items-center">
-    <div class="col-md-3"><div class="logo-wrapper"></div></div>
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
@@ -85,7 +85,7 @@ exports[`Header Default Component rendering should render normal header adequate
     ></ish-mini-basket>
   </div>
   <div class="row align-items-center">
-    <div class="col-md-3"><div class="logo-wrapper"></div></div>
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
@@ -139,7 +139,7 @@ exports[`Header Default Component rendering should render normal header adequate
     ></ish-mini-basket>
   </div>
   <div class="row align-items-center">
-    <div class="col-md-3"><div class="logo-wrapper"></div></div>
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
@@ -193,7 +193,7 @@ exports[`Header Default Component rendering should render sticky header adequate
     ></ish-mini-basket>
   </div>
   <div class="row align-items-center">
-    <div class="col-md-3"><div class="logo-wrapper"></div></div>
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
@@ -247,7 +247,7 @@ exports[`Header Default Component rendering should render sticky header adequate
     ></ish-mini-basket>
   </div>
   <div class="row align-items-center">
-    <div class="col-md-3"><div class="logo-wrapper"></div></div>
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
@@ -301,7 +301,7 @@ exports[`Header Default Component rendering should render sticky header adequate
     ></ish-mini-basket>
   </div>
   <div class="row align-items-center">
-    <div class="col-md-3"><div class="logo-wrapper"></div></div>
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
     <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
