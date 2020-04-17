@@ -46,6 +46,11 @@ export class HeaderModule {
     waitLoadingEnd();
   }
 
+  gotoQuickorder() {
+    cy.get('a[rel="quick-order"]').click();
+    waitLoadingEnd();
+  }
+
   logout() {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-logout').click();
   }

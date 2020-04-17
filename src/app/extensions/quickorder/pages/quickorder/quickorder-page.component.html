@@ -20,6 +20,7 @@
             class="row list-item-row py-2"
             *ngFor="let item of quickOrderlines.controls; let i = index"
             [formGroupName]="i"
+            [attr.data-testing-id]="'quickorder-line-' + i"
           >
             <div class="col-sm-6 list-item search-container">
               <div class="d-sm-none">{{ 'quickorder.page.product.id' | translate }}</div>
@@ -28,11 +29,9 @@
                   type="text"
                   controlName="sku"
                   inputClass="w-100 col-12"
-                  [form]="quickOrderlines.controls[i]"
+                  [form]="item"
                   [errorMessages]="{
-                    not_exists:
-                      'quickorder.page.error.invalid.product'
-                      | translate: { '0': quickOrderlines.controls[i].value.sku }
+                    not_exists: 'quickorder.page.error.invalid.product' | translate: { '0': item.value.sku }
                   }"
                 ></ish-input>
                 <ul class="search-suggest-results w-100" *ngIf="item.value.sku === searchSuggestions[0].sku">
@@ -69,19 +68,15 @@
               <div class="d-sm-none">{{ 'quickorder.page.product.quantity' | translate }}</div>
               <ish-input
                 type="number"
-                [form]="quickOrderlines.controls[i]"
+                [form]="item"
                 controlName="quantity"
                 inputClass="w-100"
                 min="1"
                 [errorMessages]="{
                   required: 'product.quantity.notempty.text',
                   integer: 'product.quantity.integer.text',
-                  min:
-                    'product.quantity.greaterthan.text'
-                    | translate: { '0': quickOrderlines.controls[i].get('product').value.minOrderQuantity },
-                  max:
-                    'product.quantity.lessthan.text'
-                    | translate: { '0': quickOrderlines.controls[i].get('product').value.maxOrderQuantity }
+                  min: 'product.quantity.greaterthan.text' | translate: { '0': item.value.product.minOrderQuantity },
+                  max: 'product.quantity.lessthan.text' | translate: { '0': item.value.product.maxOrderQuantity }
                 }"
               ></ish-input>
             </div>
@@ -91,14 +86,21 @@
               }}</a>
             </div>
           </div>
-          <a class="d-block" (click)="addRows(1)">{{ 'quickorder.page.add.row' | translate }}</a>
+          <a class="d-block" (click)="addRows(1)" data-testing-id="add-quickorder-line">{{
+            'quickorder.page.add.row' | translate
+          }}</a>
           <hr class="mt-2 mb-4" />
         </div>
       </div>
     </div>
   </div>
   <div class="btn-group">
-    <button type="submit" class="btn btn-primary" [disabled]="quickOrderForm.invalid">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="quickOrderForm.invalid"
+      data-testing-id="add-form-to-cart"
+    >
       {{ 'quickorder.page.add.cart' | translate }}
     </button>
     <button type="reset" class="btn btn-link" (click)="resetFields()">
