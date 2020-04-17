@@ -30,10 +30,15 @@ exports[`Header Default Component rendering should render normal header adequate
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="search-container header-search-container">
-    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
+    <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+      </div>
+    </div>
   </div>
-  <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
@@ -79,10 +84,15 @@ exports[`Header Default Component rendering should render normal header adequate
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="search-container header-search-container">
-    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
+    <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+      </div>
+    </div>
   </div>
-  <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
@@ -128,10 +138,15 @@ exports[`Header Default Component rendering should render normal header adequate
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="search-container header-search-container">
-    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
+    <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+      </div>
+    </div>
   </div>
-  <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
@@ -177,10 +192,15 @@ exports[`Header Default Component rendering should render sticky header adequate
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="search-container header-search-container">
-    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
+    <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+      </div>
+    </div>
   </div>
-  <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
@@ -226,10 +246,15 @@ exports[`Header Default Component rendering should render sticky header adequate
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="search-container header-search-container">
-    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
+    <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+      </div>
+    </div>
   </div>
-  <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
@@ -275,10 +300,15 @@ exports[`Header Default Component rendering should render sticky header adequate
       ng-reflect-view="small"
     ></ish-mini-basket>
   </div>
-  <div class="search-container header-search-container">
-    <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col"><div class="logo-wrapper"></div></div>
+    <div class="col-md-5 text-right"><ish-lazy-header-quickorder></ish-lazy-header-quickorder></div>
+    <div class="col-md-4">
+      <div class="search-container header-search-container">
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
+      </div>
+    </div>
   </div>
-  <div class="logo-wrapper"></div>
   <button class="navbar-toggler" type="button">
     <span class="sr-only">common.button.navbarCollapsed.text</span>
     <div class="hamburger-menu"><span></span><span></span><span></span></div>

@@ -6,6 +6,7 @@
     "source.fixAll.tslint": true
   },
   "git.rebaseWhenSync": true,
+  "git.autoStash": true,
   "tslint.alwaysShowRuleFailuresAsWarnings": true,
 
   // file type specific settings

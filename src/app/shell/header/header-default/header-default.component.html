@@ -53,26 +53,33 @@
       [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
     ></ish-mini-basket>
   </div>
-
-  <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
-    <ng-container *ngTemplateOutlet="searchBoxTemplate"></ng-container>
-  </div>
-
-  <div class="logo-wrapper">
-    <a
-      *ngIf="showDesktopLogoLink"
-      rel="home"
-      routerLink="/home"
-      class="logo"
-      data-testing-id="header-home-link-desktop"
-    ></a>
-    <a
-      *ngIf="showMobileLogoLink"
-      rel="home"
-      routerLink="/home"
-      class="mobile-logo"
-      data-testing-id="header-home-link-mobile"
-    ></a>
+  <div class="row align-items-center">
+    <div class="col-md-3 logo-col">
+      <div class="logo-wrapper">
+        <a
+          *ngIf="showDesktopLogoLink"
+          rel="home"
+          routerLink="/home"
+          class="logo"
+          data-testing-id="header-home-link-desktop"
+        ></a>
+        <a
+          *ngIf="showMobileLogoLink"
+          rel="home"
+          routerLink="/home"
+          class="mobile-logo"
+          data-testing-id="header-home-link-mobile"
+        ></a>
+      </div>
+    </div>
+    <div class="col-md-5 text-right">
+      <ish-lazy-header-quickorder></ish-lazy-header-quickorder>
+    </div>
+    <div class="col-md-4">
+      <div *ngIf="!isSticky && deviceType !== 'mobile'" class="search-container header-search-container">
+        <ng-container *ngTemplateOutlet="searchBoxTemplate"></ng-container>
+      </div>
+    </div>
   </div>
 
   <button class="navbar-toggler" type="button" (click)="toggle('navbar')">

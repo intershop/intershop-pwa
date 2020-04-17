@@ -12,6 +12,7 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
 
+import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { QuotingExportsModule } from '../extensions/quoting/exports/quoting-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
@@ -49,6 +50,7 @@ const exportedComponents = [
     NgbDropdownModule,
     NgbModalModule,
     PipesModule.forRoot(),
+    QuickorderExportsModule,
     QuotingExportsModule,
     ReactiveComponentLoaderModule.withModule({
       moduleId: 'ish-shared',
