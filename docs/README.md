@@ -31,6 +31,7 @@ kb_sync_latest_only
   - [Guide - Testing with Jest](./guides/testing-jest.md)
   - [Guide - Testing with Cypress](./guides/testing-cypress.md)
 - [Guide - Code Documentation](./guides/code-documentation.md)
+- [Guide - Angular Component Development](./guides/angular-component-development.md)
 
 ### Customization
 
