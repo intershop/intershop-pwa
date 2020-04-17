@@ -31,7 +31,7 @@ universalTest 14 "${PWA_BASE_URL}/sku6997041" "<link rel=.canonical. href=.${PWA
 universalTest 15 "${PWA_BASE_URL}/sku6997041" "<meta property=.og:image. content=[^>]*6997041"
 universalTest 16 "${PWA_BASE_URL}/sku6997041" "<title>Asus Eee PC 1008P .Karim Rashid. [^>]* | Intershop PWA</title>"
 universalTest 17 "${PWA_BASE_URL}/home;device=tablet" "class=.header container tablet"
-universalTest 18 "${PWA_BASE_URL}/home;device=pc" "class=.header container pc"
+universalTest 18 "${PWA_BASE_URL}/home;device=desktop" "class=.header container desktop"
 universalTest 19 "${PWA_BASE_URL}/home;device=mobile" "class=.header container mobile"
 
 exit 0

@@ -121,17 +121,17 @@ export class ConfigurationEffects {
     () => isPlatformBrowser(this.platformId),
     defer(() =>
       merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
-        map(() => {
+        map<unknown, DeviceType>(() => {
           if (window.innerWidth < this.mediumBreakpointWidth) {
             return 'mobile';
           } else if (window.innerWidth < this.largeBreakpointWidth) {
             return 'tablet';
           } else {
-            return 'pc';
+            return 'desktop';
           }
         }),
         distinctCompareWith(this.store.pipe(select(getDeviceType))),
-        map((deviceType: DeviceType) => new ApplyConfiguration({ _deviceType: deviceType }))
+        map(deviceType => new ApplyConfiguration({ _deviceType: deviceType }))
       )
     )
   );

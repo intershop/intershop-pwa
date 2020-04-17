@@ -119,14 +119,14 @@ describe('Header Default Component', () => {
   });
 
   it('should render normal header adequately for desktop', () => {
-    component.deviceType = 'pc';
+    component.deviceType = 'desktop';
     fixture.detectChanges();
 
     expect(element).toMatchSnapshot();
   });
 
   it('should render sticky header adequately for desktop', () => {
-    component.deviceType = 'pc';
+    component.deviceType = 'desktop';
     component.isSticky = true;
     fixture.detectChanges();
 

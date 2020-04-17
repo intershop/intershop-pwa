@@ -48,19 +48,19 @@ export class HeaderDefaultComponent implements OnChanges {
   get showNavBar() {
     return (
       this.activeComponent === 'navbar' ||
-      // always show for pc
-      this.deviceType === 'pc' ||
+      // always show for desktop
+      this.deviceType === 'desktop' ||
       // always show for tablet on top
       (this.deviceType === 'tablet' && !this.isSticky)
     );
   }
 
   get showDesktopLogoLink() {
-    return (!this.isSticky && this.deviceType === 'tablet') || this.deviceType === 'pc';
+    return (!this.isSticky && this.deviceType === 'tablet') || this.deviceType === 'desktop';
   }
 
   get showMobileLogoLink() {
-    return (this.isSticky && this.deviceType !== 'pc') || this.deviceType === 'mobile';
+    return (this.isSticky && this.deviceType !== 'desktop') || this.deviceType === 'mobile';
   }
 
   private toggleSpecialStatusOfSearch() {
