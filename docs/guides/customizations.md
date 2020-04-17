@@ -30,8 +30,7 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 ...
 ```
 
-The script also creates an **additional theme** under `src/styles/themes`.
-Here you can adjust colors and add overrides to the existing styling.
+The script also creates an **additional theme**, see [Guide - Multiple Themes](../guides/multiple-themes.md).
 
 ## Import Changes from New Release
 

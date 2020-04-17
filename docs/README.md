@@ -39,6 +39,7 @@ kb_sync_latest_only
 ### Customization
 
 - [Guide - Customizations](./guides/customizations.md)
+  - [Guide - Multiple Themes](./guides/multiple-themes.md)
 - [Guide - Migration](./guides/migrations.md)
 - [Concept - Third-Party Integrations](./concepts/third-party-integrations.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
