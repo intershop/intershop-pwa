@@ -9,7 +9,8 @@ kb_sync_latest_only
 
 ## Declare Components in the Right NgModule
 
-Angular requires you to declare a component in one and only one NgModule. Find the right one in the following order:
+Angular requires you to declare a component in one and only one NgModule.
+Find the right one in the following order:
 
 _Your Component is used only on one page?_ - Add it to the declarations of the corresponding page.module.
 
@@ -23,11 +24,14 @@ When using `ng generate`, the right module should be found automatically.
 
 ## Do not use NgRx or Services in Components
 
-Using NgRx or Services directly in components violates our model of abstraction. Only facades should be used in components, as they provide the simplest access to the business logic.
+Using NgRx or Services directly in components violates our model of abstraction.
+Only facades should be used in components, as they provide the simplest access to the business logic.
 
 ## Delegate Complex Component Logic to Services
 
-There should not be any string or URL manipulation, routing mapping or REST endpoint string handling within components. This is supposed to be handled by methods of services. See also [Angular Style Guide](https://angular.io/guide/styleguide#style-05-15).
+There should not be any string or URL manipulation, routing mapping or REST endpoint string handling within components.
+This is supposed to be handled by methods of services.
+See also [Angular Style Guide](https://angular.io/guide/styleguide#style-05-15).
 
 ## Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`
 
@@ -38,7 +42,8 @@ See [The essential difference between Constructor and ngOnInit in Angular](https
 See [Explanation of the difference between an HTML attribute and a DOM property](https://angular.io/guide/template-syntax#html-attribute-vs-dom-property).
 
 There are often two ways to bind values dynamically to attributes or properties: interpolation or property binding.
-In the PWA we prefer using property binding since this covers more cases in the same way. So the code will be more consistent.
+In the PWA we prefer using property binding since this covers more cases in the same way.
+So the code will be more consistent.
 
 There is an exception for direct string value bindings where we use for example `routerLink="/logout"` instead of `[routerLink]="'/logout'"`.
 

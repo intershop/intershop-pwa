@@ -39,7 +39,8 @@ kb_sync_latest_only
 
 ### Single Responsibility
 
-A test should test only one thing. One given behavior is tested in one and _only_ one test.
+A test should test only one thing.
+One given behavior is tested in one and _only_ one test.
 
 The tests should be independent from the others, that means no chaining and no run in a specific order is necessary.
 
@@ -63,7 +64,8 @@ it('should check if input fields are rendered on HTML', () => {
 
 ### Do not Comment out Tests
 
-Instead use the `xdescribe` or `xit` feature (just add an '`x`' before the method declaration) to exclude tests. This way excluded tests are still visible as skipped and can be repaired later on.
+Instead use the `xdescribe` or `xit` feature (just add an '`x`' before the method declaration) to exclude tests.
+This way excluded tests are still visible as skipped and can be repaired later on.
 
 :heavy_check_mark:
 
@@ -77,7 +79,8 @@ xdescribe("description", function() {
 
 ### Always Test the Initial State of a Service/Component/Module/...
 
-This way the test itself documents the initial behavior of the unit under test. Especially if you test that your action triggers a change: Test for the previous state!
+This way the test itself documents the initial behavior of the unit under test.
+Especially if you test that your action triggers a change: Test for the previous state!
 
 :heavy_check_mark:
 
@@ -124,7 +127,8 @@ it('should cache data with encryption', () => {
 });
 ```
 
-Again, do not rely too much on the implementation. If user customizations can easily break the test code, your assertions are too strong.
+Again, do not rely too much on the implementation.
+If user customizations can easily break the test code, your assertions are too strong.
 
 :warning: **Test too Close to Implementation**
 
@@ -150,7 +154,8 @@ it('should test if tags with their text are getting rendered on the HTML', () =>
 
 ### Do not Meddle with the Framework
 
-Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call it directly. When doing component testing, you most likely use `TestBed` anyway, so use the `detectChanges()` method of your available `ComponentFixture`.
+Methods like `ngOnInit()` are lifecycle-hook methods which are called by Angular – The test should not call it directly.
+When doing component testing, you most likely use `TestBed` anyway, so use the `detectChanges()` method of your available `ComponentFixture`.
 
 :warning: **Wrong Test with ngOnInit() Method Calling**
 
@@ -188,9 +193,11 @@ it ('wishlist test', () => {...})
 it ('should add a product to an existing wishlist when the button is clicked', () => {...})
 ```
 
-Basically it should read like a documentation for the unit under test, not a documentation about what the test does. [Jasmine](https://jasmine.github.io) has named the methods accordingly. Read it like \`I am describing <component>, it should <do> when/if/on <condition/trigger> (because/to <reason>)\`.
+Basically it should read like a documentation for the unit under test, not a documentation about what the test does. [Jasmine](https://jasmine.github.io) has named the methods accordingly.
+Read it like \`I am describing <component>, it should <do> when/if/on <condition/trigger> (because/to <reason>)\`.
 
-This also applies to assertions. They should be readable like meaningful sentences.
+This also applies to assertions.
+They should be readable like meaningful sentences.
 
 :warning:
 
@@ -214,7 +221,8 @@ expect(accountService.isAuthorized()).toBeTrue();
 
 ### Avoid Global Variables
 
-Tests should define Variables only in the scope where they are needed. Do not define Variables before `describe` or respective `it` methods.
+Tests should define Variables only in the scope where they are needed.
+Do not define Variables before `describe` or respective `it` methods.
 
 ### Avoid Code Duplication in Tests
 
@@ -294,7 +302,8 @@ it('should be created', () => {
 
 ### Structure Long Tests
 
-The `describe` methods in Jasmine are nestable. You can use this to group various `it` methods into a nested `describe` where you can also use an additional `beforeEach` initialization method.
+The `describe` methods in Jasmine are nestable.
+You can use this to group various `it` methods into a nested `describe` where you can also use an additional `beforeEach` initialization method.
 
 :heavy_check_mark: **Nested describe Methods**
 
@@ -312,17 +321,21 @@ describe('AccountLogin Component', () => {
 
 ### Avoid Having Dead Code
 
-Always only declare what you need. Unused variables, classes and imports reduce the readability of unit tests.
+Always only declare what you need.
+Unused variables, classes and imports reduce the readability of unit tests.
 
 ### Use a Mocking Framework Instead of Dealing with Stubbed Classes
 
-This way less code needs to be implemented which again increases readability of unit tests. Also mocks can be stubbed on time, depending on the current method. We decided to use _ts-mockito_ as the Test Mocking Framework.
+This way less code needs to be implemented which again increases readability of unit tests.
+Also mocks can be stubbed on time, depending on the current method.
+We decided to use _ts-mockito_ as the Test Mocking Framework.
 
 ## Do not Change Implementation to Satisfy Tests
 
 ### DOM Element Selection
 
-Use only IDs or definite class names to select DOM elements in tests. Try to avoid general class names.
+Use only IDs or definite class names to select DOM elements in tests.
+Try to avoid general class names.
 
 :warning: **Wrong Selector**
 
@@ -371,7 +384,8 @@ element.querySelectorAll("[data-testing-id='en']").length;
 
 ### Every Component Should Have a 'should be created' Test
 
-Every component should have a 'should be created' test like the one Angular CLI auto-generates. This test handles runtime initialization Errors.
+Every component should have a 'should be created' test like the one Angular CLI auto-generates.
+This test handles runtime initialization Errors.
 
 :heavy_check_mark:
 
@@ -402,7 +416,8 @@ Be careful when using `toBeDefined`, because a dynamic language like JavaScript 
 
 ### Be Careful With Variable Initialization
 
-Jasmine does not automatically reset all your variables for each test like other test frameworks do. If you initialize directly under `describe`, the variable is initialized only once.
+Jasmine does not automatically reset all your variables for each test like other test frameworks do.
+If you initialize directly under `describe`, the variable is initialized only once.
 
 > :warning: **Warning**  
 > Since tests should be independent of each other, do not do this.
@@ -429,11 +444,13 @@ describe(... () => {
 
 As shown in the above example, `varA` shows the wrong way of initializing variables in tests.
 
-If you do not need to change the value, use a `const` declaration like variable `varB`. If you need to change the value in some tests, assure it is reinitialized each time in the `beforeEach` method like `varC`.
+If you do not need to change the value, use a `const` declaration like variable `varB`.
+If you need to change the value in some tests, assure it is reinitialized each time in the `beforeEach` method like `varC`.
 
 ### Use the right way to test EventEmitter
 
-Testing `EventEmitter` firing can be done in multiple ways that have advantages and disadvantages. Consider the following example:
+Testing `EventEmitter` firing can be done in multiple ways that have advantages and disadvantages.
+Consider the following example:
 
 ```typescript
 import { EventEmitter } from '@angular/core';
@@ -486,7 +503,9 @@ describe('Emitter', () => {
 });
 ```
 
-As `EventEmitter` is `Observable`, subscribing to it might be the most logical way of testing it. We, however, would recommend using `ts-mockito` to increase readability. The ways 1 and 2 portrait two options, we would recommend using the first one.
+As `EventEmitter` is `Observable`, subscribing to it might be the most logical way of testing it.
+We, however, would recommend using `ts-mockito` to increase readability.
+The ways 1 and 2 portrait two options, we would recommend using the first one.
 
 |                                | 1 (preferred)                                                                                                                     | 2                                                                          | 3                                                                            |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |

@@ -35,7 +35,10 @@ kb_sync_latest_only
 - File location for module specific services: _\<module>/services/\<object>_
 - Name: _\<object>.service.ts_
 
-Usually, there should be no form specific data models. If forms are related to persistent data, use/create generic data models for your forms, e.g., there should be only one data model for addresses. Each model has its own service class(es). In this class there are methods concerning the data model, e.g., updateAddress (address: Address)
+Usually, there should be no form specific data models.
+If forms are related to persistent data, use/create generic data models for your forms, e.g., there should be only one data model for addresses.
+Each model has its own service class(es).
+In this class there are methods concerning the data model, e.g., updateAddress (address: Address)
 
 ### Extensions
 
@@ -60,13 +63,15 @@ If functionality is implemented as an extension, the form models and services ca
 
 ### Usage of Template Driven Forms vs Reactive Forms
 
-In general, you should use reactive forms for creating your forms. If a form is very simple (e.g. only one form input field without any special validation rules), it is also possible to use template driven forms as an exception.
+In general, you should use reactive forms for creating your forms.
+If a form is very simple (e.g. only one form input field without any special validation rules), it is also possible to use template driven forms as an exception.
 
 ### Validators
 
 For the validation of the form input fields you can use Angular's [Build-in Validators](https://angular.io/api/forms/Validators).
 
-Additionally, the package [ng2-validation](https://www.npmjs.com/package/ng2-validation) is available. It provides further validators.
+Additionally, the package [ng2-validation](https://www.npmjs.com/package/ng2-validation) is available.
+It provides further validators.
 
 If there is a need for special custom validators, use class _app/shared/forms/validators/special-validators_ to write your own custom validators.
 
@@ -169,7 +174,8 @@ cancelForm() {
 
 ## Error Handling of Server Side Error Messages
 
-Server side errors should be saved in the ngrx store. Please make sure they are also removed if they are obsolete.
+Server side errors should be saved in the ngrx store.
+Please make sure they are also removed if they are obsolete.
 
 Errors should be read by appropriate facade methods and can be displayed by the error-component.
 
@@ -222,7 +228,8 @@ Form component:
 
 Form creation is also possible dynamically based on a (json) definition using the library [formly](https://formly.dev/).
 
-This is currently done to create payment parameter forms depending on the payment method (e.g. a credit card form). The form definition is obtained from the REST interface in this case.
+This is currently done to create payment parameter forms depending on the payment method (e.g. a credit card form).
+The form definition is obtained from the REST interface in this case.
 
 The following input types are supported by now:
 

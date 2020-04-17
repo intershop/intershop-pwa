@@ -9,9 +9,11 @@ kb_sync_latest_only
 
 For our Intershop Progressive Web App, [Compodoc](https://compodoc.app) is used as documentation package.
 
-For documentation, the _tsconfig.app.json_ file is used as configuration file. The output folder for the documentation is set to _<project-home>/docs/compodoc_.
+For documentation, the _tsconfig.app.json_ file is used as configuration file.
+The output folder for the documentation is set to _<project-home>/docs/compodoc_.
 
-We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc. The _style.css_ file of the theme can be found in _<project-home>/docs/theme_.
+We use an own styling theme based on the theme '_readthedocs_' provided by Compodoc.
+The _style.css_ file of the theme can be found in _<project-home>/docs/theme_.
 
 Examples for the comment styling pattern can be found here: [TypeDoc - DocComments](http://typedoc.org/guides/doccomments/).
 
@@ -35,7 +37,8 @@ The generated documentation can be called by _<project-home>/docs/compodoc/index
 npm run docs:serve
 ```
 
-Documentation is generated at _<project-home>/docs/compodoc_ (output folder). The local HTTP server is launched at _http://localhost:8080_.
+Documentation is generated at _<project-home>/docs/compodoc_ (output folder).
+The local HTTP server is launched at _http://localhost:8080_.
 
 **Watch Source Files After Serve and Force Documentation Rebuild**
 
@@ -133,7 +136,9 @@ searchProducts(
 
 ## :warning: Document only if documentation is needed!
 
-This is not a project with obligatory documentation, so: Do not document the obvious! For example, if behavior and requirements can be implied by a method signature, no additional documentation is needed. Instead **pay attention to useful names**. If you cannot find a pricise name for your variable or method, maybe this is a sign that too much is done here and it would be better to **refactor instead**.
+This is not a project with obligatory documentation, so: Do not document the obvious! For example, if behavior and requirements can be implied by a method signature, no additional documentation is needed.
+Instead **pay attention to useful names**.
+If you cannot find a pricise name for your variable or method, maybe this is a sign that too much is done here and it would be better to **refactor instead**.
 
 However, there are some cases where documentation is recommended:
 

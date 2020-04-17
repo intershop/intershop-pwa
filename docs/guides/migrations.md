@@ -19,6 +19,7 @@ The script will check if all your components can be moved to the new folder stru
 
 ## 0.18 to 0.19
 
-We migrated from using [ngrx-router](https://github.com/amcdnl/ngrx-router) to the official and better supported [@ngrx/router-store](https://ngrx.io/guide/router-store). This means that throughout the code all usage of the `ofRoute` operator and `RouteNavigation` actions are no longer available.
+We migrated from using [ngrx-router](https://github.com/amcdnl/ngrx-router) to the official and better supported [@ngrx/router-store](https://ngrx.io/guide/router-store).
+This means that throughout the code all usage of the `ofRoute` operator and `RouteNavigation` actions are no longer available.
 
 As some of these implementations were very specific, we cannot provide a migration script.

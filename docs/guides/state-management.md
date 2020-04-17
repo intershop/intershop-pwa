@@ -28,7 +28,8 @@ effect = this.actions$.pipe(
 
 ### Using `switchMap` can Lead to Race Conditions
 
-Using flatmapping operators can lead to unexpected behavior. If in doubt, use `concatMap`.
+Using flatmapping operators can lead to unexpected behavior.
+If in doubt, use `concatMap`.
 
 See [RxJS: Avoiding switchMap-Related Bugs](https://medium.com/angular-in-depth/switchmap-bugs-b6de69155524) for more information.
 

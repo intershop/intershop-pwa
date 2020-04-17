@@ -22,7 +22,9 @@ A possible scenario would be to have the shopping experience with all its SEO op
 
 For a minimal-invasive implementation, the mechanics for the hybrid approach are mainly implemented outside of the ICM and in deployment-specific components of the PWA.
 
-The ICM is proxied in the _express.js_ server of the server-side rendering process and hereby made available to the outside. A newly introduced mapping table is also used to decide when an incoming request should be handled by the PWA or the ICM. This mapping table is also used in the PWA for switching from the context of the single page application to the ICM.
+The ICM is proxied in the _express.js_ server of the server-side rendering process and hereby made available to the outside.
+A newly introduced mapping table is also used to decide when an incoming request should be handled by the PWA or the ICM.
+This mapping table is also used in the PWA for switching from the context of the single page application to the ICM.
 
 ## Configuration
 
@@ -30,7 +32,8 @@ The ICM is proxied in the _express.js_ server of the server-side rendering proce
 
 The ICM must be run with [Secure URL-only Server Configuration](https://docs.intershop.com/icm/7.10/olh/oma/en/search.html?searchQuery=SecureAccessOnly), which can be done by adding `SecureAccessOnly=true` to the appserver configuration.
 
-Furthermore the synchronization of the `apiToken` cookie must be switched on, so that users and baskets are synchronized between PWA and ICM. See [Concept - Integration of Progressive Web App and inSPIRED Storefront](https://support.intershop.com/kb/index.php/Display/2928F6).
+Furthermore the synchronization of the `apiToken` cookie must be switched on, so that users and baskets are synchronized between PWA and ICM.
+See [Concept - Integration of Progressive Web App and inSPIRED Storefront](https://support.intershop.com/kb/index.php/Display/2928F6).
 
 If you also want to support the correct handling for links generated in E-Mails, the property `intershop.WebServerSecureURL` must point to nginx.
 
@@ -70,7 +73,8 @@ Each entry contains:
 - Corresponding instructions to build the matching URL of the counterpart (`pwaBuild` and `icmBuild`)
 - A property `handledBy` (either `icm` or `pwa`) to decide on the target upstream
 
-The properties `icm` and `pwaBuild` can use [named capture groups](<https://2ality.com/2017/05/regexp-named-capture-groups.html#replace()-and-named-capture-groups>) and are only used in the _node.js_ process running on the server. However, `pwa` and `icmBuild` are used in the client application where [named capture groups are not yet supported by all browsers](https://github.com/tc39/proposal-regexp-named-groups#implementations).
+The properties `icm` and `pwaBuild` can use [named capture groups](<https://2ality.com/2017/05/regexp-named-capture-groups.html#replace()-and-named-capture-groups>) and are only used in the _node.js_ process running on the server.
+However, `pwa` and `icmBuild` are used in the client application where [named capture groups are not yet supported by all browsers](https://github.com/tc39/proposal-regexp-named-groups#implementations).
 
 # Further References
 

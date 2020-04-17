@@ -9,7 +9,8 @@ kb_sync_latest_only
 
 If the ICM is set up with [URL Rewriting](https://support.intershop.com/kb/index.php/Display/28R955) further modifications are required to run the deployment with the [Hybrid Approach](../concepts/hybrid-approach.md).
 
-The examples in this guide follow the default example for ICM URL Rewriting. In particular we want to focus on the following two examples:
+The examples in this guide follow the default example for ICM URL Rewriting.
+In particular we want to focus on the following two examples:
 
 - Product Detail Pages of the ICM
   - URLs are in the form _/Home-Entertainment/SmartHome/google-home-zid201807171_
@@ -52,7 +53,10 @@ export const ICM_WEB_URL = '/';
   }
 ```
 
-Then, the nginx configuration must be adapted. The supplied nginx dynamically adds multi-site configuration parameters to dynamically configure the PWA depending on the incoming URL. The ICM cannot handle them, so traffic to the ICM must be excluded from adding those parameters. You can do this by extending the channel configuration:
+Then, the nginx configuration must be adapted.
+The supplied nginx dynamically adds multi-site configuration parameters to dynamically configure the PWA depending on the incoming URL.
+The ICM cannot handle them, so traffic to the ICM must be excluded from adding those parameters.
+You can do this by extending the channel configuration:
 
 _nginx/channel.conf.tmpl_:
 

@@ -13,23 +13,30 @@ Configuration parameters can be provided from different sources.
 
 ## Angular CLI Environment Files
 
-If properties just have to be provided as compile time settings in the Angular CLI environment files like _src/environments/environment.ts_, you can theoretically access them in any source file directly. However we recommend creating [InjectionTokens][angular-injectiontoken] and [providing][angular-injectiontoken-provide] them in modules like the `ConfigurationModule`.
+If properties just have to be provided as compile time settings in the Angular CLI environment files like _src/environments/environment.ts_, you can theoretically access them in any source file directly.
+However we recommend creating [InjectionTokens][angular-injectiontoken] and [providing][angular-injectiontoken-provide] them in modules like the `ConfigurationModule`.
 
-This option provides the easiest approach. Different configurations can be provided while building the sources with Angular CLI.
+This option provides the easiest approach.
+Different configurations can be provided while building the sources with Angular CLI.
 
 [angular-injectiontoken]: https://angular.io/api/core/InjectionToken
 [angular-injectiontoken-provide]: https://angular.io/guide/dependency-injection-providers#non-class-dependencies
 
 ## URL Parameters
 
-Specific properties can also be supplied by URL parameters (i.e. _shop.de/home;foo=bar_). The multi-channel configuration handling basically uses this method of configuration to dynamically provision a PWA server-side rendering run for a specific channel.
+Specific properties can also be supplied by URL parameters (i.e. _shop.de/home;foo=bar_).
+The multi-channel configuration handling basically uses this method of configuration to dynamically provision a PWA server-side rendering run for a specific channel.
 
 Currently all of those properties are transferred into _src/app/core/store/configuration_.
 If you want to add another property, add it to the `ConfigurationState` and add the extraction handling in `ConfigurationEffects`.
 
 ## Runtime Environment Properties
 
-It gets more complicated, when properties from environment variables have to be transferred to the Angular client application. Environment parameters from the browser cannot be accessed as the browsers basically sandbox all websites for security reasons. What can be accessed are environment parameters of the environment the server-side rendering process is running in. This can be the Docker environment (arguments passed by an orchestrator like Kubernetes or Docker Swarm) or the local environment for debug purposes. See also [Guide - Building and Running Server-Side Rendering][guide-ssr]
+It gets more complicated, when properties from environment variables have to be transferred to the Angular client application.
+Environment parameters from the browser cannot be accessed as the browsers basically sandbox all websites for security reasons.
+What can be accessed are environment parameters of the environment the server-side rendering process is running in.
+This can be the Docker environment (arguments passed by an orchestrator like Kubernetes or Docker Swarm) or the local environment for debug purposes.
+See also [Guide - Building and Running Server-Side Rendering][guide-ssr]
 
 In general the extraction is as follows:
 

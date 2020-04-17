@@ -165,6 +165,7 @@
         "node docs/check-kb-labels",
         "node docs/check-dead-links fast",
         "node docs/check-documentation-overview",
+        "node docs/check-sentence-newline",
         "npx prettier --loglevel warn --write",
         "git add"
       ],

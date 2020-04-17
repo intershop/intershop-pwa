@@ -13,7 +13,9 @@ In accordance with the [Angular Style Guide](https://angular.io/guide/styleguide
 
 ## General Folder Structure
 
-We decided on a folder layout to fit our project-specific needs. Basic concerns included defining a set of basic rules where components and other artifacts should be located to ease development, customization and bundling to achieve fast loading. Here we deviate from the general guidelines of Angular CLI, but we provide custom CLI schematics to easily add all artifacts to the project.
+We decided on a folder layout to fit our project-specific needs.
+Basic concerns included defining a set of basic rules where components and other artifacts should be located to ease development, customization and bundling to achieve fast loading.
+Here we deviate from the general guidelines of Angular CLI, but we provide custom CLI schematics to easily add all artifacts to the project.
 
 Additionally, the custom tslint rules `project-structure` and `ban-specific-imports` should be activated to have a feedback when adding files to the project.
 
@@ -84,9 +86,12 @@ Optionally additional sub folders for module-scoped artifacts are allowed:
 
 ## Modules
 
-As [Angular Modules](https://angular.io/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared. The Angular modules are mainly used to feed the Angular dependency injection and with that component factories that populate the templates. It has little to do with the bundling of lazy-loaded modules when a production-ready Ahead-of-Time build is executed.
+As [Angular Modules](https://angular.io/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared.
+The Angular modules are mainly used to feed the Angular dependency injection and with that component factories that populate the templates.
+It has little to do with the bundling of lazy-loaded modules when a production-ready Ahead-of-Time build is executed.
 
-As a general rule of thumb, modules should mainly aggregate deeper lying artifacts. Only some exceptions are allowed.
+As a general rule of thumb, modules should mainly aggregate deeper lying artifacts.
+Only some exceptions are allowed.
 
 ### Extending Modules
 
