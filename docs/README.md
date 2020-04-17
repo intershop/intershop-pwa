@@ -13,8 +13,8 @@ kb_sync_latest_only
 
 ### Architecture
 
-- [Concept - Project Structure](./concepts/project-structure.md)
 - [Concept - Software Architecture](./concepts/software-architecture.md)
+- [Concept - Project Structure](./concepts/project-structure.md)
 - [Concept - State Management](./concepts/state-management.md)
 - [Concept - CMS Integration](./concepts/cms-integration.md)
 - [Concept - Configuration](./concepts/configuration.md)
@@ -32,6 +32,8 @@ kb_sync_latest_only
   - [Guide - Testing with Cypress](./guides/testing-cypress.md)
 - [Guide - Code Documentation](./guides/code-documentation.md)
 - [Guide - Angular Component Development](./guides/angular-component-development.md)
+- [Guide - Angular Change Detection](./guides/angular-change-detection.md)
+- [Guide - Data Handling with Mappers](./guides/data-handling-with-mappers.md)
 
 ### Customization
 
@@ -39,6 +41,7 @@ kb_sync_latest_only
 - [Guide - Migration](./guides/migrations.md)
 - [Concept - Third-Party Integrations](./concepts/third-party-integrations.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
+- [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
 
 ## Operations
 
