@@ -39,7 +39,8 @@ To localize simple texts, just apply the `translate` pipe to the key:
 
 ### Localization with Parameters
 
-ngx-translate uses named parameters. A map of parameters can be supplied as input to the `translate` pipe.
+ngx-translate uses named parameters.
+A map of parameters can be supplied as input to the `translate` pipe.
 
 Localization file:
 
@@ -211,7 +212,8 @@ See also: https://github.com/ngx-translate/core/issues/835
 
 Translated texts can contain html-anchors (e.g. link to external page or internal route) or onclick handlers.
 
-Here we need the `ServerHtmlDirective`. Pass the translated text and optional callbacks into `ishServerHtml`\-directive.
+Here we need the `ServerHtmlDirective`.
+Pass the translated text and optional callbacks into `ishServerHtml`-directive.
 
 To open a modalDialog by click use the callback-handler (1st anchor in example).
 
@@ -262,7 +264,8 @@ showModalDialog(dialog) {
 
 ## Localization Files Generation
 
-The idea is to use the existing localization properties files of the current Responsive Starter Store cartridges (or the localization files of a project) and convert them into the proper JSON files that can be used by ngx-translate. For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
+The idea is to use the existing localization properties files of the current Responsive Starter Store cartridges (or the localization files of a project) and convert them into the proper JSON files that can be used by ngx-translate.
+For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
 
 In the current state of the Intershop Progressive Web App the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
