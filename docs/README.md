@@ -47,7 +47,7 @@ kb_sync_latest_only
   - [Guide - SSR Parameters](./guides/ssr-startup.md)
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
-- [Guide - CI](./guides/continous-integration.md)
+- [Guide - CI](./guides/continuous-integration.md)
 
 ### Monitoring
 

@@ -45,13 +45,11 @@ UI testing is done with [Cypress](https://www.cypress.io/). This requires a suit
 
 Run UI tests interactively with `npm run e2e`. Before that you have to start up a PWA application.
 
-See an example in our `.gitlab-ci.yml` how to do this automatically.
-
 ## Universal Testing
 
 Since Angular Universal is used for server-side pre-rendering of content to tackle SEO concerns, the CI system should also check if server-side rendering is still working. For this purpose, it must be checked whether the server response contains content from lazy-loaded modules, in other words making sure all modules have produced compliant HTML markup.
 
-This can be done by pointing `curl` to a product detail page and checking if a specific CSS class could be found (via `grep`) in the HTML. Have a look into `.gitlab-ci-test-universal.sh` to see how we are doing that.
+This can be done by pointing `curl` to a product detail page and checking if a specific CSS class could be found (via `grep`) in the HTML. Have a look into `e2e/test-universal.sh` to see how we are doing that.
 
 ## Static Code Analysis
 
