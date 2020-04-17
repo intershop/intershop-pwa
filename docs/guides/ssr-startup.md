@@ -45,4 +45,5 @@ Only empty strings count as inactive.
 
 [Concept - Configuration](../concepts/configuration.md)
 [Concept - Hybrid Approach](../concepts/hybrid-approach.md)
-[Concept - Third-Party Integrations](../concepts/third-party-integrations.md)
+[Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
+[Guide - Google Tag Manager](./google-tag-manager.md)

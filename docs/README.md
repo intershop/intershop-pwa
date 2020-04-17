@@ -41,7 +41,6 @@ kb_sync_latest_only
 - [Guide - Customizations](./guides/customizations.md)
   - [Guide - Multiple Themes](./guides/multiple-themes.md)
 - [Guide - Migration](./guides/migrations.md)
-- [Concept - Third-Party Integrations](./concepts/third-party-integrations.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
 
@@ -54,7 +53,9 @@ kb_sync_latest_only
 - [Concept - Hybrid Approach](./concepts/hybrid-approach.md)
   - [Guide - Hybrid Approach and ICM URL Rewriting](./guides/hybrid-approach-icm-url-rewriting.md)
 - [Guide - CI](./guides/continuous-integration.md)
+- [Guide - Google Tag Manager](./guides/google-tag-manager.md)
 
 ### Monitoring
 
 - [Concept - Logging](./concepts/logging.md)
+- [Guide - Client-Side Error Monitoring with Sentry](./guides/sentry-error-monitoring.md)
