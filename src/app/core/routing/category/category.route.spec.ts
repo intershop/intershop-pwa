@@ -6,8 +6,8 @@ import { Store, select } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Category } from 'ish-core/models/category/category.model';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { selectRouter } from 'ish-core/store/router';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import {
@@ -158,8 +158,8 @@ describe('Category Route', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-        ngrxTesting({ routerStore: true }),
       ],
     });
 

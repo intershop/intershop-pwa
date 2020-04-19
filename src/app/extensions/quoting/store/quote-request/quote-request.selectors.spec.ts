@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
-import { quotingReducers } from '../quoting-store.module';
+import { QuotingStoreModule } from '../quoting-store.module';
 
 import {
   LoadQuoteRequestItems,
@@ -32,19 +32,19 @@ import {
 } from './quote-request.selectors';
 
 describe('Quote Request Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [
+        CoreStoreModule.forTesting(),
+        QuotingStoreModule.forTesting('quoteRequest'),
+        ShoppingStoreModule.forTesting('products', 'categories'),
+      ],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {

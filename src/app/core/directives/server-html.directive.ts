@@ -10,11 +10,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
-import { getICMBaseURL } from 'ish-core/store/configuration';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { LinkParser } from 'ish-core/utils/link-parser';
 
 @Directive({
@@ -26,11 +24,8 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
   };
 
   private destroy$ = new Subject();
-  private icmBaseUrl: string;
 
-  constructor(private router: Router, private elementRef: ElementRef, store: Store) {
-    store.pipe(select(getICMBaseURL), takeUntil(this.destroy$)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
-  }
+  constructor(private router: Router, private elementRef: ElementRef, private appFacade: AppFacade) {}
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -69,7 +64,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
     if (regex.test(src)) {
       const [, ismediaobjectContent] = regex.exec(src);
       const links = ismediaobjectContent.split('|');
-      return this.icmBaseUrl + links[links.length - 1];
+      return this.appFacade.icmBaseUrl + links[links.length - 1];
     } else {
       return src;
     }

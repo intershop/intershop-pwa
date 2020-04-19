@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
-import { LoadFilterSuccess } from 'ish-core/store/shopping/filter';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { FilterNavigationBadgesComponent } from 'ish-shared/components/filter/filter-navigation-badges/filter-navigation-badges.component';
 import { FilterNavigationHorizontalComponent } from 'ish-shared/components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
@@ -19,24 +18,20 @@ describe('Filter Navigation Component', () => {
   let component: FilterNavigationComponent;
   let fixture: ComponentFixture<FilterNavigationComponent>;
   let element: HTMLElement;
-  let store$: Store;
+  let shoppingFacade: ShoppingFacade;
 
   beforeEach(async(() => {
+    shoppingFacade = mock(ShoppingFacade);
+
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [RouterTestingModule],
       declarations: [
         FilterNavigationComponent,
         MockComponent(FilterNavigationBadgesComponent),
         MockComponent(FilterNavigationHorizontalComponent),
         MockComponent(FilterNavigationSidebarComponent),
       ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   }));
 
@@ -44,8 +39,6 @@ describe('Filter Navigation Component', () => {
     fixture = TestBed.createComponent(FilterNavigationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -61,7 +54,8 @@ describe('Filter Navigation Component', () => {
 
   it('should display sidebar component for default mode', () => {
     const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
-    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
+    when(shoppingFacade.currentFilter$).thenReturn(of(filterNavigation));
+
     fixture.detectChanges();
 
     expect(findAllIshElements(element)).toMatchInlineSnapshot(`
@@ -73,7 +67,8 @@ describe('Filter Navigation Component', () => {
 
   it('should display horizontal components if set', () => {
     const filterNavigation = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
-    store$.dispatch(new LoadFilterSuccess({ filterNavigation }));
+    when(shoppingFacade.currentFilter$).thenReturn(of(filterNavigation));
+
     component.orientation = 'horizontal';
     fixture.detectChanges();
 

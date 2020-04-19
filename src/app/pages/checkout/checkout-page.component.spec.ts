@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { EMPTY } from 'rxjs';
+import { instance, mock } from 'ts-mockito';
 
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 
 import { CheckoutPageComponent } from './checkout-page.component';
 import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
@@ -19,8 +16,8 @@ describe('Checkout Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CheckoutPageComponent, MockComponent(CheckoutProgressBarComponent)],
-      imports: [RouterTestingModule, ngrxTesting({ reducers: { checkout: combineReducers(checkoutReducers) } })],
-      providers: [{ provide: ActivatedRoute, useValue: { firstChild: { data: EMPTY } } }],
+      imports: [RouterTestingModule],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
     }).compileComponents();
   }));
 

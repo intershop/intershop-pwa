@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -8,9 +8,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ContactService } from 'ish-core/services/contact/contact.service';
-import { contactReducers } from 'ish-core/store/contact/contact-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as actions from './contact.actions';
 import { ContactEffects } from './contact.effects';
@@ -33,14 +30,6 @@ describe('Contact Effects', () => {
   beforeEach(() => {
     contactServiceMock = mock(ContactService);
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            contact: combineReducers(contactReducers),
-          },
-        }),
-      ],
       providers: [
         ContactEffects,
         provideMockActions(() => actions$),

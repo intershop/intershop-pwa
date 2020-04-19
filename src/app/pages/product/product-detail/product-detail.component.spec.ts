@@ -2,12 +2,10 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AccordionItemComponent } from 'ish-shared/components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from 'ish-shared/components/common/accordion/accordion.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -42,11 +40,9 @@ describe('Product Detail Component', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        FeatureToggleModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'search', component: ProductDetailComponent }]),
         TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { configuration: configurationReducer } }),
       ],
       declarations: [
         MockComponent(AccordionComponent),
@@ -65,6 +61,7 @@ describe('Product Detail Component', () => {
         MockComponent(ProductRatingComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockDirective(FeatureToggleDirective),
         ProductDetailComponent,
       ],
     })

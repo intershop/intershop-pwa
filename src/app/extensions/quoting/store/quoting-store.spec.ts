@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
@@ -14,10 +13,9 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { CountryService } from 'ish-core/services/country/country.service';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import {
   LoadCompanyUserSuccess,
   LoginUserSuccess,
@@ -26,10 +24,10 @@ import {
   getLoggedInUser,
 } from 'ish-core/store/user';
 import {
-  TestStore,
+  StoreWithSnapshots,
   containsActionWithType,
   containsActionWithTypeAndPayload,
-  ngrxTesting,
+  provideStoreSnapshots,
 } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteRequestData } from '../models/quote-request/quote-request.interface';
@@ -43,10 +41,10 @@ import {
   getActiveQuoteRequest,
   getCurrentQuoteRequests,
 } from './quote-request';
-import { quotingEffects, quotingReducers } from './quoting-store.module';
+import { QuotingStoreModule } from './quoting-store.module';
 
 describe('Quoting Store', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let apiServiceMock: ApiService;
   let quoteServiceMock: QuoteService;
   const user = { email: 'UID' } as User;
@@ -70,24 +68,20 @@ describe('Quoting Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        FeatureToggleModule,
+        CheckoutStoreModule.forTesting('basket'),
+        CoreStoreModule.forTesting(['user'], true),
+        FeatureToggleModule.forTesting('quoting'),
+        QuotingStoreModule,
         RouterTestingModule.withRoutes([
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
         ]),
+        ShoppingStoreModule.forTesting('products', 'categories'),
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            quoting: combineReducers(quotingReducers),
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-          },
-          effects: [...coreEffects, ...quotingEffects],
-        }),
       ],
       providers: [
+        provideStoreSnapshots(),
         QuoteRequestService,
         { provide: QuoteService, useFactory: () => instance(quoteServiceMock) },
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
@@ -97,8 +91,7 @@ describe('Quoting Store', () => {
       ],
     });
 
-    store$ = TestBed.inject(TestStore);
-    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   it('should be created', () => {
@@ -145,7 +138,7 @@ describe('Quoting Store', () => {
     });
 
     it('should load the quotes and quote requests after user login', () => {
-      const firedActions = store$.actionsArray(['Quote']);
+      const firedActions = store$.actionsArray(/Quote/);
 
       expect(firedActions).toSatisfy(containsActionWithType(QuoteActionTypes.LoadQuotes));
       expect(firedActions).toSatisfy(containsActionWithType(QuoteRequestActionTypes.LoadQuoteRequests));

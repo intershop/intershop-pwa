@@ -1,17 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { coreReducers } from 'ish-core/store/core-store.module';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LineItemEditComponent } from 'ish-shared/components/line-item/line-item-edit/line-item-edit.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -25,11 +21,10 @@ describe('Line Item Description Component', () => {
   let component: LineItemDescriptionComponent;
   let fixture: ComponentFixture<LineItemDescriptionComponent>;
   let element: HTMLElement;
-  let store$: Store;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule, TranslateModule.forRoot(), ngrxTesting({ reducers: { ...coreReducers } })],
+      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
       declarations: [
         LineItemDescriptionComponent,
         MockComponent(FaIconComponent),
@@ -50,7 +45,6 @@ describe('Line Item Description Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.pli = BasketMockData.getBasketItem();
-    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -95,7 +89,7 @@ describe('Line Item Description Component', () => {
 
   it('should not display edit component for variation products with advanced variation handling', () => {
     component.pli.product.type = 'VariationProduct';
-    store$.dispatch(new ApplyConfiguration({ features: ['advancedVariationHandling'] }));
+    FeatureToggleModule.switchTestingFeatures('advancedVariationHandling');
     fixture.detectChanges();
     expect(findAllIshElements(element)).not.toContain('ish-line-item-edit');
   });

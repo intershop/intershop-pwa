@@ -8,8 +8,6 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormContainerComponent } from 'ish-shared/address-forms/components/address-form-container/address-form-container.component';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
@@ -50,15 +48,9 @@ describe('Registration Form Component', () => {
       ],
       providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],
       imports: [
-        FeatureToggleModule,
+        FeatureToggleModule.forTesting('businessCustomerRegistration'),
         ReactiveFormsModule,
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: { configuration: { features: ['businessCustomerRegistration'] } },
-          },
-        }),
       ],
     }).compileComponents();
   }));

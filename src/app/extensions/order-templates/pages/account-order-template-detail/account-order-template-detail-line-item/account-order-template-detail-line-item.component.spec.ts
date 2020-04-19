@@ -4,11 +4,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -20,6 +20,7 @@ import { CheckboxComponent } from 'ish-shared/forms/components/checkbox/checkbox
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
+import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../../../shared/order-templates/select-order-template-modal/select-order-template-modal.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item.component';
@@ -48,13 +49,10 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockPipe(DatePipe),
         MockPipe(ProductRoutePipe),
       ],
-      imports: [
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: coreReducers,
-        }),
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
+        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
       ],
     }).compileComponents();
   }));

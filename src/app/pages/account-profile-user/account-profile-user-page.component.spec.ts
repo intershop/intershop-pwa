@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountProfileUserPageComponent } from './account-profile-user-page.component';
@@ -15,12 +16,18 @@ describe('Account Profile User Page Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const appFacade = mock(AppFacade);
+    when(appFacade.currentLocale$).thenReturn(EMPTY);
+
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       declarations: [
         AccountProfileUserPageComponent,
         MockComponent(AccountProfileUserComponent),
         MockComponent(LoadingComponent),
+      ],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
   }));

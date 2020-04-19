@@ -6,8 +6,6 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountOverviewPageComponent } from './account-overview-page.component';
@@ -28,7 +26,7 @@ describe('Account Overview Page Component', () => {
         MockComponent(AccountOverviewComponent),
         MockComponent(LoadingComponent),
       ],
-      imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacadeMock) }],
     }).compileComponents();
   }));

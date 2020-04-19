@@ -2,17 +2,15 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { WishlistPreferencesDialogComponent } from '../../shared/wishlists/wishlist-preferences-dialog/wishlist-preferences-dialog.component';
-import { wishlistsReducers } from '../../store/wishlists-store.module';
 
 import { AccountWishlistDetailLineItemComponent } from './account-wishlist-detail-line-item/account-wishlist-detail-line-item.component';
 import { AccountWishlistDetailPageComponent } from './account-wishlist-detail-page.component';
@@ -24,12 +22,7 @@ describe('Account Wishlist Detail Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbPopoverModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { ...coreReducers, wishlists: combineReducers(wishlistsReducers) } }),
-      ],
+      imports: [NgbPopoverModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AccountWishlistDetailPageComponent,
         MockComponent(AccountWishlistDetailLineItemComponent),
@@ -38,6 +31,7 @@ describe('Account Wishlist Detail Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(WishlistPreferencesDialogComponent),
       ],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
     }).compileComponents();
   }));
 

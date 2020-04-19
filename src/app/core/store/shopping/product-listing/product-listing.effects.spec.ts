@@ -2,15 +2,14 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 
 import {
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadMoreProducts } from './product-listing.actions';
 import { ProductListingEffects } from './product-listing.effects';
@@ -18,7 +17,7 @@ import { getProductListingItemsPerPage, getProductListingViewType } from './prod
 
 describe('Product Listing Effects', () => {
   let router: Router;
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -27,24 +26,19 @@ describe('Product Listing Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router'], [ProductListingEffects]),
         RouterTestingModule.withRoutes([{ path: 'some', component: DummyComponent }]),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-          },
-          effects: [ProductListingEffects],
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
+        provideStoreSnapshots(),
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
       ],
     });
 
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('initializePageSize$', () => {

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -8,13 +7,13 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
   AddItemsToBasketSuccess,
@@ -44,20 +43,19 @@ import {
 } from './basket.selectors';
 
 describe('Basket Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [
+        CheckoutStoreModule.forTesting('basket'),
+        CoreStoreModule.forTesting(['user']),
+        ShoppingStoreModule.forTesting('products', 'categories'),
+      ],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -15,12 +15,11 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { BasketPaymentEffects } from './basket-payment.effects';
 import * as basketActions from './basket.actions';
@@ -41,15 +40,10 @@ describe('Basket Payment Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CheckoutStoreModule.forTesting('basket'),
+        CoreStoreModule.forTesting(['router', 'user']),
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-          },
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
         BasketPaymentEffects,

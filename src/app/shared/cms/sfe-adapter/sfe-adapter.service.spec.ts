@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { SfeAdapterService } from './sfe-adapter.service';
 
@@ -10,7 +9,8 @@ describe('Sfe Adapter Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ngrxTesting()],
+      imports: [RouterTestingModule],
+      providers: [provideMockStore()],
     });
 
     sfeAdapterService = TestBed.inject(SfeAdapterService);

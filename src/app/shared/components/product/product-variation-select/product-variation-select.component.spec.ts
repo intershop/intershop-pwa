@@ -4,8 +4,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductVariationSelectComponent } from './product-variation-select.component';
 
@@ -16,13 +14,7 @@ describe('Product Variation Select Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
-      ],
+      imports: [FeatureToggleModule.forTesting(), ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [ProductVariationSelectComponent],
     }).compileComponents();
   }));

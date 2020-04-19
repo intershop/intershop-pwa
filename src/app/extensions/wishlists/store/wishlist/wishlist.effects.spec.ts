@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { combineReducers } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -11,18 +11,13 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { SuccessMessage } from 'ish-core/store/messages';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { WishlistService } from '../../services/wishlist/wishlist.service';
-import { wishlistsReducers } from '../wishlists-store.module';
+import { WishlistsStoreModule } from '../wishlists-store.module';
 
 import {
   AddProductToNewWishlist,
@@ -55,7 +50,7 @@ describe('Wishlist Effects', () => {
   let actions$;
   let wishlistServiceMock: WishlistService;
   let effects: WishlistEffects;
-  let store$: TestStore;
+  let store$: Store;
   let router: Router;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
@@ -87,18 +82,10 @@ describe('Wishlist Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        FeatureToggleModule,
+        CoreStoreModule.forTesting(['router', 'user']),
+        FeatureToggleModule.forTesting('wishlists'),
         RouterTestingModule.withRoutes([{ path: 'account/wishlist/:wishlistName', component: DummyComponent }]),
-        ngrxTesting({
-          reducers: {
-            wishlists: combineReducers(wishlistsReducers),
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-            user: userReducer,
-            configuration: configurationReducer,
-          },
-          routerStore: true,
-        }),
+        WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
         WishlistEffects,
@@ -108,10 +95,8 @@ describe('Wishlist Effects', () => {
     });
 
     effects = TestBed.inject(WishlistEffects);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(Store);
     router = TestBed.inject(Router);
-
-    store$.dispatch(new ApplyConfiguration({ features: ['wishlists'] }));
   });
 
   describe('loadWishlists$', () => {

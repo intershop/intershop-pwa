@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, select } from '@ngrx/store';
 
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ofUrl } from './router.operators';
 import {
@@ -26,6 +27,7 @@ describe('Router Integration', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router'], true),
         RouterTestingModule.withRoutes([
           {
             path: 'test',
@@ -52,8 +54,8 @@ describe('Router Integration', () => {
           },
           { path: '**', component: DummyComponent },
         ]),
-        ngrxTesting({ routerStore: true }),
       ],
+      providers: [provideStoreSnapshots()],
     });
 
     router = TestBed.inject(Router);
@@ -64,9 +66,9 @@ describe('Router Integration', () => {
   });
 
   describe('selectors', () => {
-    let store$: TestStore;
+    let store$: StoreWithSnapshots;
     beforeEach(() => {
-      store$ = TestBed.inject(TestStore);
+      store$ = TestBed.inject(StoreWithSnapshots);
     });
 
     it('should be undefined on start', () => {
@@ -76,7 +78,7 @@ describe('Router Integration', () => {
       expect(selectRouteData('foo')(store$.state)).toBeUndefined();
       expect(selectRouteParam('foo')(store$.state)).toBeUndefined();
       expect(selectUrl(store$.state)).toBeUndefined();
-      expect(store$.actionsArray()).toMatchInlineSnapshot(`@ngrx/effects/init`);
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`Array []`);
     });
 
     it('should be empty on initial navigation', fakeAsync(() => {
@@ -100,17 +102,16 @@ describe('Router Integration', () => {
       expect(selectRouteParam('foo')(store$.state)).toBeUndefined();
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-              @ngrx/effects/init
-              @ngrx/router-store/request:
-                routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-                event: {"id":1,"url":"/"}
-              @ngrx/router-store/navigation:
-                routerState: {"url":"/","params":{},"queryParams":{},"data":{}}
-                event: {"id":1,"url":"/"}
-              @ngrx/router-store/navigated:
-                routerState: {"url":"/","params":{},"queryParams":{},"data":{}}
-                event: {"id":1,"url":"/"}
-          `);
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/"}
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/"}
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/"}
+      `);
     }));
 
     it('should collect data when triggered with simple route', fakeAsync(() => {
@@ -145,17 +146,16 @@ describe('Router Integration', () => {
       expect(selectRouteParam('foo')(store$.state)).toMatchInlineSnapshot(`"urlParam"`);
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-              @ngrx/effects/init
-              @ngrx/router-store/request:
-                routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-                event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
-              @ngrx/router-store/navigation:
-                routerState: {"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam","p...
-                event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
-              @ngrx/router-store/navigated:
-                routerState: {"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam","p...
-                event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
-          `);
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam","p...
+          event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryParam","p...
+          event: {"id":1,"url":"/any;foo=urlParam;bar=bar?bar=bar&foo=queryPa...
+      `);
     }));
 
     it('should collect data when triggered with deep route', fakeAsync(() => {
@@ -198,17 +198,16 @@ describe('Router Integration', () => {
       expect(selectRouteParam('foo')(store$.state)).toMatchInlineSnapshot(`"very"`);
       expect(selectUrl(store$.state)).toMatchInlineSnapshot(`"/test/very/deep/routes;bar=bar?bar=bar&foo=queryParam"`);
       expect(store$.actionsArray()).toMatchInlineSnapshot(`
-              @ngrx/effects/init
-              @ngrx/router-store/request:
-                routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-                event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
-              @ngrx/router-store/navigation:
-                routerState: {"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=queryPara...
-                event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
-              @ngrx/router-store/navigated:
-                routerState: {"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=queryPara...
-                event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
-          `);
+        @ngrx/router-store/request:
+          routerState: {"url":"","params":{},"queryParams":{},"data":{}}
+          event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
+        @ngrx/router-store/navigation:
+          routerState: {"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=queryPara...
+          event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
+        @ngrx/router-store/navigated:
+          routerState: {"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=queryPara...
+          event: {"id":1,"url":"/test/very/deep/routes;bar=bar?bar=bar&foo=qu...
+      `);
     }));
   });
 

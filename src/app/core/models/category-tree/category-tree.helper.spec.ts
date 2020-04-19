@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { CategoryMapper } from 'ish-core/models/category/category.mapper';
 import { Category } from 'ish-core/models/category/category.model';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';
@@ -326,7 +326,9 @@ describe('Category Tree Helper', () => {
       let categoryMapper: CategoryMapper;
 
       beforeEach(() => {
-        TestBed.configureTestingModule({ imports: [ngrxTesting()] });
+        TestBed.configureTestingModule({
+          providers: [provideMockStore()],
+        });
         categoryMapper = TestBed.inject(CategoryMapper);
 
         tree = [catARaw, catBRaw].reduce(

@@ -3,8 +3,7 @@ import * as using from 'jasmine-data-provider';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryData } from './category.interface';
@@ -16,7 +15,7 @@ describe('Category Mapper', () => {
   let imageMapper: ImageMapper;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({ imports: [ngrxTesting({ reducers: { configuration: configurationReducer } })] });
+    TestBed.configureTestingModule({ imports: [CoreStoreModule.forTesting(['configuration'])] });
     categoryMapper = TestBed.inject(CategoryMapper);
     imageMapper = spy(TestBed.inject(ImageMapper));
   }));

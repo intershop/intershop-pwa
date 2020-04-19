@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store, combineReducers } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -11,18 +11,13 @@ import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { SuccessMessage } from 'ish-core/store/messages';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
 import { OrderTemplateService } from '../../services/order-template/order-template.service';
-import { orderTemplatesReducers } from '../order-templates-store.module';
+import { OrderTemplatesStoreModule } from '../order-templates-store.module';
 
 import {
   AddProductToNewOrderTemplate,
@@ -83,20 +78,12 @@ describe('Order Template Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        FeatureToggleModule,
+        CoreStoreModule.forTesting(['user', 'router']),
+        FeatureToggleModule.forTesting('orderTemplates'),
+        OrderTemplatesStoreModule.forTesting('orderTemplates'),
         RouterTestingModule.withRoutes([
           { path: 'account/order-templates/:orderTemplateName', component: DummyComponent },
         ]),
-        ngrxTesting({
-          reducers: {
-            orderTemplates: combineReducers(orderTemplatesReducers),
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-            user: userReducer,
-            configuration: configurationReducer,
-          },
-          routerStore: true,
-        }),
       ],
       providers: [
         OrderTemplateEffects,
@@ -108,8 +95,6 @@ describe('Order Template Effects', () => {
     effects = TestBed.inject(OrderTemplateEffects);
     store$ = TestBed.inject(Store);
     router = TestBed.inject(Router);
-
-    store$.dispatch(new ApplyConfiguration({ features: ['orderTemplates'] }));
   });
 
   describe('loadOrderTemplate$', () => {

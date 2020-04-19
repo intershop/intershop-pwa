@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest, merge } from 'rxjs';
 import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 
-import { getAvailableLocales, getCurrentLocale, getDeviceType } from 'ish-core/store/configuration';
+import { getAvailableLocales, getCurrentLocale, getDeviceType, getICMBaseURL } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
 import { getGeneralError, getGeneralErrorType } from 'ish-core/store/error';
 import { LoadRegions, getRegionsByCountryCode } from 'ish-core/store/regions';
@@ -12,9 +12,13 @@ import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } fro
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
+  icmBaseUrl: string;
+
   constructor(private store: Store, private router: Router) {
     // tslint:disable-next-line: rxjs-no-ignored-subscribe
     this.routingInProgress$.subscribe();
+
+    store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
 
   headerType$ = this.store.pipe(select(getHeaderType));

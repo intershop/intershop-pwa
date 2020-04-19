@@ -3,14 +3,14 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ViewconfEffects } from './viewconf.effects';
-import { viewconfReducer } from './viewconf.reducer';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 
 describe('Viewconf Integration', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let router: Router;
 
   beforeEach(() => {
@@ -20,11 +20,7 @@ describe('Viewconf Integration', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        ...ngrxTesting({
-          reducers: { viewconf: viewconfReducer },
-          effects: [ViewconfEffects],
-          routerStore: true,
-        }),
+        CoreStoreModule.forTesting(['router', 'viewconf'], [ViewconfEffects]),
         RouterTestingModule.withRoutes([
           {
             path: 'some',
@@ -38,9 +34,10 @@ describe('Viewconf Integration', () => {
           { path: '**', component: DummyComponent },
         ]),
       ],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     router = TestBed.inject(Router);
   });
 

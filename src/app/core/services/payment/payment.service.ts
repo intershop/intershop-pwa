@@ -1,6 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Params } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -160,7 +159,7 @@ export class PaymentService {
    * @param redirect          The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
-  updateBasketPayment(basketId: string, params: Params): Observable<Payment> {
+  updateBasketPayment(basketId: string, params: { [key: string]: string }): Observable<Payment> {
     if (!basketId) {
       return throwError('createBasketPayment() called without basketId');
     }

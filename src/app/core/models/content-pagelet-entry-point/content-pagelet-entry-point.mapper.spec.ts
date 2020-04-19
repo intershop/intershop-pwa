@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 describe('Content Pagelet Entry Point Mapper', () => {
   let contentPageletEntryPointMapper: ContentPageletEntryPointMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ngrxTesting()],
+      providers: [provideMockStore()],
     });
     contentPageletEntryPointMapper = TestBed.inject(ContentPageletEntryPointMapper);
   });

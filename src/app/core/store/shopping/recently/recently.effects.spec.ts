@@ -4,7 +4,6 @@ import { cold } from 'jest-marbles';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
-import { getFeatures } from 'ish-core/store/configuration';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 
 import { AddToRecently } from './recently.actions';
@@ -16,8 +15,8 @@ describe('Recently Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule],
-      providers: [RecentlyEffects, provideMockStore({ selectors: [{ selector: getFeatures, value: [] }] })],
+      imports: [FeatureToggleModule.forTesting('recently')],
+      providers: [RecentlyEffects, provideMockStore()],
     });
 
     effects = TestBed.inject(RecentlyEffects);

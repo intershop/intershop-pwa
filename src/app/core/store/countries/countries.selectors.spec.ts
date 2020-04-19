@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 
 import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { getAllCountries, getCountriesLoading } from './countries.selectors';
 
 describe('Countries Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   const countries = [
     { countryCode: 'BG', name: 'Bulgaria' },
@@ -18,10 +18,11 @@ describe('Countries Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ reducers: coreReducers }),
+      imports: [CoreStoreModule.forTesting(['countries'])],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -7,8 +6,6 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { BasketValidationItemsComponent } from 'ish-shared/components/basket/basket-validation-items/basket-validation-items.component';
 import { BasketValidationProductsComponent } from 'ish-shared/components/basket/basket-validation-products/basket-validation-products.component';
 
@@ -30,14 +27,7 @@ describe('Basket Validation Results Component', () => {
         MockComponent(BasketValidationItemsComponent),
         MockComponent(BasketValidationProductsComponent),
       ],
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            checkout: combineReducers(checkoutReducers),
-          },
-        }),
-      ],
+      imports: [TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
     }).compileComponents();
   }));

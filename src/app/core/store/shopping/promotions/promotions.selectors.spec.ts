@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadPromotionFail, LoadPromotionSuccess } from './promotions.actions';
 import { getPromotion, getPromotions } from './promotions.selectors';
 
 describe('Promotions Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   let promo: Promotion;
   let promo1: Promotion;
@@ -20,14 +20,11 @@ describe('Promotions Selectors', () => {
     promo1 = { id: 'id1' } as Promotion;
 
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('promotions')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {

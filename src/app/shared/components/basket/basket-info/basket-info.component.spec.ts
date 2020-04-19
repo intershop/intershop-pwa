@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { BasketInfoComponent } from './basket-info.component';
 
@@ -22,13 +19,6 @@ describe('Basket Info Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [BasketInfoComponent],
-      imports: [
-        ngrxTesting({
-          reducers: {
-            checkout: combineReducers(checkoutReducers),
-          },
-        }),
-      ],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
     }).compileComponents();
   }));

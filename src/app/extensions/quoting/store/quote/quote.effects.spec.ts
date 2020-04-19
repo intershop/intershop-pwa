@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Store, combineReducers } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { noop, of, throwError } from 'rxjs';
@@ -17,20 +17,17 @@ import { Link } from 'ish-core/models/link/link.model';
 import { User } from 'ish-core/models/user/user.model';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { LoadBasketSuccess } from 'ish-core/store/checkout/basket/basket.actions';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteLineItemResult } from '../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteData } from '../../models/quote/quote.interface';
 import { QuoteService } from '../../services/quote/quote.service';
 import { SubmitQuoteRequestSuccess } from '../quote-request';
-import { quotingReducers } from '../quoting-store.module';
+import { QuotingStoreModule } from '../quoting-store.module';
 
 import * as quoteActions from './quote.actions';
 import { QuoteEffects } from './quote.effects';
@@ -55,21 +52,16 @@ describe('Quote Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        FeatureToggleModule,
+        CheckoutStoreModule.forTesting('basket'),
+        CoreStoreModule.forTesting(),
+        FeatureToggleModule.forTesting('quoting'),
+        QuotingStoreModule.forTesting('quote'),
         RouterTestingModule.withRoutes([
           { path: 'account/quotes/request/:quoteRequestId', component: DummyComponent },
           { path: 'basket', component: DummyComponent },
         ]),
+        ShoppingStoreModule.forTesting('products'),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            quoting: combineReducers(quotingReducers),
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-            user: userReducer,
-            configuration: configurationReducer,
-          },
-        }),
       ],
       providers: [
         QuoteEffects,
@@ -83,7 +75,6 @@ describe('Quote Effects', () => {
     store$ = TestBed.inject(Store);
     location = TestBed.inject(Location);
 
-    store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
     store$.dispatch(new LoginUserSuccess({ customer }));
     store$.dispatch(new LoadCompanyUserSuccess({ user: { email: 'test' } as User }));
   }));

@@ -6,8 +6,6 @@ import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ProductAddToCompareComponent } from './product-add-to-compare.component';
 
@@ -18,15 +16,7 @@ describe('Product Add To Compare Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: { initialState: { configuration: { features: ['compare'] } } },
-        }),
-      ],
+      imports: [FeatureToggleModule.forTesting('compare'), RouterTestingModule, TranslateModule.forRoot()],
       declarations: [MockComponent(FaIconComponent), ProductAddToCompareComponent],
     }).compileComponents();
   }));

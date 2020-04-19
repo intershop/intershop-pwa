@@ -2,7 +2,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -10,13 +10,12 @@ import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { BasketActionTypes, LoadBasketSuccess, ResetBasket } from 'ish-core/store/checkout/basket';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { CheckoutStoreModule } from 'ish-core/store/checkout/checkout-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadOrderSuccess, OrdersActionTypes } from 'ish-core/store/orders';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser, SetAPIToken, UserActionTypes } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { RestoreEffects } from './restore.effects';
 
@@ -24,22 +23,17 @@ describe('Restore Effects', () => {
   let restoreEffects: RestoreEffects;
   let router: Router;
   let cookiesServiceMock: CookiesService;
-  let store$: TestStore;
+  let store$: Store;
 
   beforeEach(() => {
     cookiesServiceMock = mock(CookiesService);
 
     TestBed.configureTestingModule({
       imports: [
+        CheckoutStoreModule.forTesting('basket'),
+        CoreStoreModule.forTesting(['router', 'user', 'orders'], true),
         RouterTestingModule.withRoutes([]),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-          },
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
         RestoreEffects,
@@ -50,7 +44,7 @@ describe('Restore Effects', () => {
 
     restoreEffects = TestBed.inject(RestoreEffects);
     router = TestBed.inject(Router);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
