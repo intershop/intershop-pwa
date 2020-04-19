@@ -1,17 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { contactReducers } from 'ish-core/store/contact/contact-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ContactStoreModule } from 'ish-core/store/contact/contact-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as actions from './contact.actions';
 import { getContactLoading, getContactSubjects } from './contact.selectors';
 
 describe('Contact Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   const contact: Contact = {
     comment: 'Where is my order?',
@@ -25,15 +24,11 @@ describe('Contact Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          contact: combineReducers(contactReducers),
-        },
-      }),
+      imports: [ContactStoreModule.forTesting('contact'), CoreStoreModule.forTesting()],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('initial state', () => {

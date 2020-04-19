@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
 import {
@@ -19,14 +19,15 @@ import {
 } from './configuration.selectors';
 
 describe('Configuration Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ reducers: coreReducers }),
+      imports: [CoreStoreModule.forTesting(['configuration'])],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('initial state', () => {

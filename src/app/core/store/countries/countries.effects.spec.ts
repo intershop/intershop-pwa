@@ -8,8 +8,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { Country } from 'ish-core/models/country/country.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CountryService } from 'ish-core/services/country/country.service';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 
 import { CountryActionTypes, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { CountriesEffects } from './countries.effects';
@@ -29,7 +28,7 @@ describe('Countries Effects', () => {
     when(countryServiceMock.getCountries()).thenReturn(of(countries));
 
     TestBed.configureTestingModule({
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      imports: [CoreStoreModule.forTesting(['countries'])],
       providers: [
         CountriesEffects,
         provideMockActions(() => actions$),

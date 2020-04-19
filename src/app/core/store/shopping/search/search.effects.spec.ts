@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 import { of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -16,16 +15,17 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadMoreProducts, SetProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { SearchProductsFail, SuggestSearch } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let effects: SearchEffects;
   let location: Location;
   let router: Router;
@@ -59,19 +59,15 @@ describe('Search Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router'], [SearchEffects, ProductListingEffects]),
         RouterTestingModule.withRoutes([
           { path: 'error', component: DummyComponent },
           { path: 'search/:searchTerm', component: DummyComponent },
         ]),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-          effects: [SearchEffects, ProductListingEffects],
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('productListing'),
       ],
       providers: [
+        provideStoreSnapshots(),
         { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
@@ -81,7 +77,7 @@ describe('Search Effects', () => {
     });
 
     effects = TestBed.inject(SearchEffects);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     location = TestBed.inject(Location);
     router = TestBed.inject(Router);
 

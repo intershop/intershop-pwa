@@ -1,14 +1,14 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { of } from 'rxjs';
+import { deepEqual, instance, mock, when } from 'ts-mockito';
 
-import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from 'ish-shared/components/product/product-list-toolbar/product-list-toolbar.component';
@@ -21,19 +21,23 @@ describe('Product Listing Component', () => {
   let component: ProductListingComponent;
   let fixture: ComponentFixture<ProductListingComponent>;
   let element: HTMLElement;
-  let store$: Store;
 
   beforeEach(async(() => {
+    const shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.productListingViewType$).thenReturn(of('grid'));
+    when(shoppingFacade.productListingView$(deepEqual(TEST_ID))).thenReturn(
+      of({
+        allPagesAvailable: () => false,
+        empty: () => false,
+        itemCount: 30,
+        products: () => ['A', 'B', 'C'],
+        productsOfPage: _ => ['A', 'B', 'C'],
+        pageIndices: _ => [{ value: 1, display: '1' }],
+      } as ProductListingView)
+    );
+
     TestBed.configureTestingModule({
-      imports: [
-        InfiniteScrollModule,
-        RouterTestingModule,
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [InfiniteScrollModule, RouterTestingModule],
       declarations: [
         MockComponent(LoadingComponent),
         MockComponent(ProductListComponent),
@@ -41,9 +45,8 @@ describe('Product Listing Component', () => {
         MockComponent(ProductListToolbarComponent),
         ProductListingComponent,
       ],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
-
-    store$ = TestBed.inject(Store);
   }));
 
   beforeEach(() => {
@@ -69,9 +72,6 @@ describe('Product Listing Component', () => {
 
   describe('display modes', () => {
     beforeEach(() => {
-      store$.dispatch(new SetProductListingPageSize({ itemsPerPage: 1 }));
-      store$.dispatch(new SetProductListingPages({ id: TEST_ID, itemCount: 30, sortKeys: [] }));
-
       component.ngOnChanges({ id: new SimpleChange(undefined, TEST_ID, true) });
     });
 

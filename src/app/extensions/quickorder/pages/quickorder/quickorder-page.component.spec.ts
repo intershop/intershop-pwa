@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
@@ -17,8 +17,9 @@ describe('Quickorder Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [MockComponent(BreadcrumbComponent), MockComponent(InputComponent), QuickorderPageComponent],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) }],
     }).compileComponents();
   }));
 

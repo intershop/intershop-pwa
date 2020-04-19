@@ -1,21 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CommunicationTimeoutError } from './error.actions';
 import { getGeneralError, getGeneralErrorType } from './error.selectors';
 
 describe('Error Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      imports: [CoreStoreModule.forTesting(['error'])],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   it('should have nothing when just initialized', () => {

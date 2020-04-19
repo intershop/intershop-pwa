@@ -1,16 +1,15 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { getPriceDisplayType } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ProductImageComponent } from 'ish-shell/header/product-image/product-image.component';
 
@@ -24,6 +23,9 @@ describe('Mini Basket Component', () => {
 
   beforeEach(async(() => {
     checkoutFacade = mock(CheckoutFacade);
+    const accountFacade = mock(AccountFacade);
+    when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
+
     TestBed.configureTestingModule({
       declarations: [
         MiniBasketComponent,
@@ -34,11 +36,8 @@ describe('Mini Basket Component', () => {
       ],
       imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [
-        {
-          provide: CheckoutFacade,
-          useFactory: () => instance(checkoutFacade),
-        },
-        provideMockStore({ selectors: [{ selector: getPriceDisplayType, value: 'gross' }] }),
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
       ],
     }).compileComponents();
   }));

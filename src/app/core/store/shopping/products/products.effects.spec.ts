@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
@@ -16,10 +16,10 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPageSize, SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
@@ -64,17 +64,13 @@ describe('Products Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
           { path: 'product/:sku', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [
         ProductsEffects,

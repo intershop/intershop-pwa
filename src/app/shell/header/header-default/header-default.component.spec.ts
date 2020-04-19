@@ -6,9 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
@@ -29,17 +27,7 @@ describe('Header Default Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: { configuration: { features: ['compare'] } },
-          },
-        }),
-      ],
+      imports: [FeatureToggleModule.forTesting('compare'), RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         HeaderDefaultComponent,
         MockComponent(FaIconComponent),
@@ -54,14 +42,14 @@ describe('Header Default Component', () => {
         MockComponent(SearchBoxComponent),
         MockComponent(UserInformationMobileComponent),
       ],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(HeaderDefaultComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-      });
+    }).compileComponents();
   }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeaderDefaultComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();

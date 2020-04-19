@@ -2,17 +2,17 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
+import { ApplyConfiguration, getICMServerURL, getRestEndpoint } from 'ish-core/store/configuration';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { ErrorActionTypes, ServerError } from 'ish-core/store/error';
 import { SetAPIToken } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApiService, constructUrlForPath, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -27,18 +27,12 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
-        imports: [
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
-          }),
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({ selectors: [{ selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' }] }),
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -230,18 +224,17 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
+        imports: [HttpClientTestingModule],
+        providers: [
+          ApiServiceErrorHandler,
+          ApiService,
+          provideMockStore({
+            selectors: [
+              { selector: getRestEndpoint, value: 'http://www.example.org/WFS/site/-' },
+              { selector: getICMServerURL, value: 'http://www.example.org/WFS' },
+            ],
           }),
         ],
-        providers: [ApiServiceErrorHandler, ApiService],
       });
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
@@ -387,7 +380,7 @@ describe('Api Service', () => {
   });
 
   describe('API Service Headers', () => {
-    const REST_URL = 'http://www.example.org/WFS/site/-';
+    const REST_URL = 'http://www.example.org/WFS/site/-;loc=en_US;cur=USD';
     let apiService: ApiService;
     let store$: Store;
     let httpTestingController: HttpTestingController;
@@ -395,23 +388,15 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         // https://angular.io/guide/http#testing-http-requests
-        imports: [
-          HttpClientTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer, user: userReducer },
-            config: {
-              initialState: {
-                configuration: { baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' },
-              },
-            },
-          }),
-        ],
+        imports: [CoreStoreModule.forTesting(['configuration', 'user']), HttpClientTestingModule],
         providers: [ApiServiceErrorHandler, ApiService],
       });
 
       apiService = TestBed.inject(ApiService);
       httpTestingController = TestBed.inject(HttpTestingController);
       store$ = TestBed.inject(Store);
+
+      store$.dispatch(new ApplyConfiguration({ baseURL: 'http://www.example.org', server: 'WFS', channel: 'site' }));
     });
 
     afterEach(() => {

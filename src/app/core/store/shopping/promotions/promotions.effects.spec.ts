@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -11,8 +11,6 @@ import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injectio
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as fromActions from './promotions.actions';
 import { PromotionsEffects } from './promotions.effects';
@@ -37,14 +35,7 @@ describe('Promotions Effects', () => {
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
       providers: [
         PromotionsEffects,
         provideMockActions(() => actions$),

@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 
 import { BasketPromotionCodeComponent } from './basket-promotion-code.component';
 
@@ -17,18 +16,13 @@ describe('Basket Promotion Code Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const checkoutFacade = mock(CheckoutFacade);
+    when(checkoutFacade.basket$).thenReturn(EMPTY);
+
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-            checkout: combineReducers(checkoutReducers),
-          },
-        }),
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [BasketPromotionCodeComponent, MockComponent(NgbCollapse)],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   }));
 

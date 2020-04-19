@@ -13,7 +13,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 
 import {
   ApplyConfiguration,
@@ -22,7 +22,6 @@ import {
   LoadServerConfigFail,
 } from './configuration.actions';
 import { ConfigurationEffects } from './configuration.effects';
-import { configurationReducer } from './configuration.reducer';
 
 describe('Configuration Effects', () => {
   let actions$: Observable<Action>;
@@ -36,12 +35,7 @@ describe('Configuration Effects', () => {
     translateServiceMock = mock(TranslateService);
 
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          effects: [ConfigurationEffects],
-        }),
-      ],
+      imports: [CoreStoreModule.forTesting(['configuration'], [ConfigurationEffects])],
       providers: [
         ConfigurationEffects,
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },

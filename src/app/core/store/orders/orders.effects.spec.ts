@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
@@ -17,11 +17,10 @@ import { Order } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ContinueCheckoutWithIssues, LoadBasket } from 'ish-core/store/checkout/basket';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as orderActions from './orders.actions';
 import { OrdersEffects } from './orders.effects';
@@ -49,6 +48,7 @@ describe('Orders Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router', 'orders', 'user']),
         RouterTestingModule.withRoutes([
           {
             path: 'checkout',
@@ -60,14 +60,8 @@ describe('Orders Effects', () => {
           { path: 'account/orders/:orderId', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
+        ShoppingStoreModule.forTesting('products', 'categories'),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-          },
-          routerStore: true,
-        }),
       ],
       providers: [
         OrdersEffects,

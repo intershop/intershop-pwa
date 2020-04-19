@@ -7,8 +7,6 @@ import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
@@ -61,12 +59,7 @@ describe('Account Order Template List Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockPipe(DatePipe),
       ],
-      imports: [
-        // tslint:disable-next-line: ng-module-sorted-fields
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
-      ],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) }],
     }).compileComponents();
   }));

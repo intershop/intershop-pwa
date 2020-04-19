@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
@@ -35,20 +34,21 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
-import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingEffects, shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoginUser } from 'ish-core/store/user';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { UserEffects } from 'ish-core/store/user/user.effects';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { AddProductToBasket } from './basket';
-import { checkoutEffects, checkoutReducers } from './checkout-store.module';
+import { CheckoutStoreModule } from './checkout-store.module';
 
 let basketId: string;
 
 describe('Checkout Store', () => {
-  let store: TestStore;
+  let store: StoreWithSnapshots;
 
   const lineItem = {
     id: 'test',
@@ -218,24 +218,20 @@ describe('Checkout Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CheckoutStoreModule,
+        CoreStoreModule.forTesting(['user'], [UserEffects]),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
             component: DummyComponent,
           },
         ]),
+        ShoppingStoreModule,
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            checkout: combineReducers(checkoutReducers),
-            shopping: combineReducers(shoppingReducers),
-          },
-          effects: [...coreEffects, ...checkoutEffects, ...shoppingEffects],
-        }),
       ],
       providers: [
+        provideStoreSnapshots(),
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
@@ -257,7 +253,7 @@ describe('Checkout Store', () => {
       ],
     });
 
-    store = TestBed.inject(TestStore);
+    store = TestBed.inject(StoreWithSnapshots);
   });
 
   it('should be created', () => {

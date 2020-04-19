@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 
 import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { getFeatures } from 'ish-core/store/configuration';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 
 describe('Feature Toggle Service', () => {
   describe('without features defined', () => {
@@ -11,7 +12,7 @@ describe('Feature Toggle Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [FeatureToggleModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
+        imports: [CoreStoreModule.forTesting(['configuration']), FeatureToggleModule],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
     });
@@ -26,15 +27,8 @@ describe('Feature Toggle Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          FeatureToggleModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: { configuration: { features: ['feature1'] } },
-            },
-          }),
-        ],
+        imports: [FeatureToggleModule],
+        providers: [provideMockStore({ selectors: [{ selector: getFeatures, value: ['feature1'] }] })],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
     });

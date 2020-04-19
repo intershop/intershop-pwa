@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { AnyProductType } from 'ish-core/models/product/product.model';
 
@@ -17,10 +19,13 @@ describe('Product Price Component', () => {
   let product: AnyProductType;
 
   beforeEach(async(() => {
+    const accountFacade = mock(AccountFacade);
+    when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
+
     TestBed.configureTestingModule({
       imports: [CommonModule, TranslateModule.forRoot()],
       declarations: [PricePipe, ProductPriceComponent],
-      providers: [provideMockStore()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   }));
 

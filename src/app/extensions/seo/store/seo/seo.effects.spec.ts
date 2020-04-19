@@ -1,13 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { MetaService } from '@ngx-meta/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
-
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as seoActions from './seo.actions';
 import { SeoEffects } from './seo.effects';
@@ -22,11 +20,12 @@ describe('Seo Effects', () => {
     when(metaServiceMock.setTitle(anyString())).thenReturn();
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [TranslateModule.forRoot()],
       providers: [
         SeoEffects,
         provideMockActions(() => actions$),
         { provide: MetaService, useFactory: () => instance(metaServiceMock) },
+        provideMockStore(),
       ],
     });
 

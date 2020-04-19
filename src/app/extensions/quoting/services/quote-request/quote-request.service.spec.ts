@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Store, combineReducers } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -8,16 +8,15 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { Link } from 'ish-core/models/link/link.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
-import { quotingReducers } from '../../store/quoting-store.module';
+import { QuotingStoreModule } from '../../store/quoting-store.module';
 
 import { QuoteRequestService } from './quote-request.service';
 
@@ -35,13 +34,9 @@ describe('Quote Request Service', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        ngrxTesting({
-          reducers: {
-            quoting: combineReducers(quotingReducers),
-            shopping: combineReducers(shoppingReducers),
-            user: userReducer,
-          },
-        }),
+        CoreStoreModule.forTesting(['user']),
+        QuotingStoreModule.forTesting('quoteRequest'),
+        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
       providers: [QuoteRequestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });

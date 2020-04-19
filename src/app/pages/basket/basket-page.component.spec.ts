@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { Basket } from 'ish-core/models/basket/basket.model';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { LoadBasket, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { RecentlyViewedComponent } from 'ish-shared/components/recently/recently-viewed/recently-viewed.component';
 
@@ -20,9 +18,10 @@ describe('Basket Page Component', () => {
   let component: BasketPageComponent;
   let fixture: ComponentFixture<BasketPageComponent>;
   let element: HTMLElement;
-  let store$: Store;
+  let checkoutFacade: CheckoutFacade;
 
   beforeEach(async(() => {
+    checkoutFacade = mock(CheckoutFacade);
     TestBed.configureTestingModule({
       declarations: [
         BasketPageComponent,
@@ -31,15 +30,8 @@ describe('Basket Page Component', () => {
         MockComponent(ShoppingBasketComponent),
         MockComponent(ShoppingBasketEmptyComponent),
       ],
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            checkout: combineReducers(checkoutReducers),
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   }));
 
@@ -47,8 +39,6 @@ describe('Basket Page Component', () => {
     fixture = TestBed.createComponent(BasketPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -58,21 +48,24 @@ describe('Basket Page Component', () => {
   });
 
   it('should render loading component if there is no basket', () => {
-    store$.dispatch(new LoadBasket({ id: 'BASKET_ID' }));
+    when(checkoutFacade.basketLoading$).thenReturn(of(true));
+
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
   it('should render empty basket component if the basket has no line items', () => {
-    const basket = { id: 'dummy', lineItems: [] } as Basket;
-    store$.dispatch(new LoadBasketSuccess({ basket }));
+    const basket = { id: 'dummy', lineItems: [] } as BasketView;
+    when(checkoutFacade.basket$).thenReturn(of(basket));
+
     fixture.detectChanges();
     expect(element.querySelector('ish-shopping-basket-empty')).toBeTruthy();
   });
 
   it('should render shopping basket component if there is a basket with line items', () => {
-    const basket = { id: 'dummy', lineItems: [{ id: '123', productSKU: 'SKU_123' }] as LineItem[] } as Basket;
-    store$.dispatch(new LoadBasketSuccess({ basket }));
+    const basket = { id: 'dummy', lineItems: [{ id: '123', productSKU: 'SKU_123' }] as LineItem[] } as BasketView;
+    when(checkoutFacade.basket$).thenReturn(of(basket));
+
     fixture.detectChanges();
     expect(element.querySelector('ish-shopping-basket')).toBeTruthy();
   });

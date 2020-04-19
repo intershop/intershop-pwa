@@ -1,13 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed, async } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import * as using from 'jasmine-data-provider';
 import { cold } from 'jest-marbles';
 import { noop } from 'rxjs';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ErrorActionTypes } from 'ish-core/store/error';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
@@ -18,7 +18,7 @@ describe('Api Service Errorhandler', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ngrxTesting()],
+      providers: [provideMockStore()],
     }).compileComponents();
 
     apiServiceErrorHandler = TestBed.inject(ApiServiceErrorHandler);

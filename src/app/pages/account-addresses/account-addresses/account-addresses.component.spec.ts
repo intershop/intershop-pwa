@@ -4,13 +4,12 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { spy, verify } from 'ts-mockito';
+import { instance, mock, spy, verify } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { CustomerAddressFormComponent } from 'ish-shared/address-forms/components/customer-address-form/customer-address-form.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -36,7 +35,8 @@ describe('Account Addresses Component', () => {
         MockComponent(ModalDialogComponent),
         MockComponent(SelectAddressComponent),
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   }));
 

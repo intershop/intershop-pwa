@@ -2,16 +2,12 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
-import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
-import { userReducer } from 'ish-core/store/user/user.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { Price } from './price.model';
 import { PricePipe } from './price.pipe';
@@ -30,11 +26,8 @@ describe('Price Pipe', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { configuration: configurationReducer, user: userReducer } }),
-      ],
-      providers: [PricePipe],
+      imports: [TranslateModule.forRoot()],
+      providers: [PricePipe, { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     });
   }));
 
@@ -111,7 +104,7 @@ describe('Price Pipe', () => {
   let component: DummyComponent;
   let element: HTMLElement;
   let translateService: TranslateService;
-  let store$: Store;
+  let accountFacade: AccountFacade;
 
   @Component({
     template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
@@ -121,13 +114,13 @@ describe('Price Pipe', () => {
   }
 
   beforeEach(async(() => {
+    accountFacade = mock(AccountFacade);
+    when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
+
     TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { configuration: configurationReducer, user: userReducer } }),
-      ],
-      providers: [PricePipe],
+      imports: [TranslateModule.forRoot()],
+      providers: [PricePipe, { provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     });
   }));
 
@@ -135,7 +128,6 @@ describe('Price Pipe', () => {
     registerLocaleData(localeDe);
     translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    store$ = TestBed.inject(Store);
 
     fixture = TestBed.createComponent(DummyComponent);
     component = fixture.componentInstance;
@@ -167,25 +159,17 @@ describe('Price Pipe', () => {
 
       expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
 
-      store$.dispatch(new LoginUserSuccess({ customer: { isBusinessCustomer: true } as Customer }));
+      when(accountFacade.userPriceDisplayType$).thenReturn(of('net'));
       fixture.detectChanges();
       tick(500);
 
       expect(element).toMatchInlineSnapshot(`flex: $987.60 pinned: $987.60`);
 
-      store$.dispatch(new LogoutUser());
+      when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
       fixture.detectChanges();
       tick(500);
 
       expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
-
-      store$.dispatch(
-        new ApplyConfiguration({ _serverConfig: { pricing: { defaultCustomerTypeForPriceDisplay: 'SMB' } } })
-      );
-      fixture.detectChanges();
-      tick(500);
-
-      expect(element).toMatchInlineSnapshot(`flex: $987.60 pinned: $987.60`);
     }));
 
     it('should display price depending on input', fakeAsync(() => {

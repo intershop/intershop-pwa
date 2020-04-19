@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 
 import * as fromActions from './compare.actions';
 import { CompareEffects } from './compare.effects';
@@ -17,13 +17,7 @@ describe('Compare Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('compare')],
       providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 

@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { OrderView } from 'ish-core/models/order/order.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
   LoadOrder,
@@ -28,7 +27,7 @@ import {
 } from './orders.selectors';
 
 describe('Orders Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   const orders = [
     {
@@ -45,15 +44,11 @@ describe('Orders Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(['orders']), ShoppingStoreModule.forTesting('products', 'categories')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {
