@@ -12,7 +12,7 @@ export interface <%= classify(name) %>State extends EntityState<<%= classify(ent
   error: HttpError;
 }
 
-export const initialState: <%= classify(name) %>State = <%= camelize(name) %>Adapter.getInitialState({
+const initialState: <%= classify(name) %>State = <%= camelize(name) %>Adapter.getInitialState({
   loading: false,
   error: undefined,
 });
@@ -21,7 +21,7 @@ export interface <%= classify(name) %>State {
   loading: boolean;
 }
 
-export const initialState: <%= classify(name) %>State = {
+const initialState: <%= classify(name) %>State = {
   loading: false,
 };
 <% } %>
