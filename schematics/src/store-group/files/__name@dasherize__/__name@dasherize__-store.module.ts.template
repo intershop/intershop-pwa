@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { pick } from 'lodash-es';
 
 import { <%= classify(name) %>State } from './<%= dasherize(name) %>-store';
 
-export const <%= camelize(name) %>Reducers: ActionReducerMap<<%= classify(name) %>State> = {};
+const <%= camelize(name) %>Reducers: ActionReducerMap<<%= classify(name) %>State> = {};
 
-export const <%= camelize(name) %>Effects = [];
+const <%= camelize(name) %>Effects = [];
 
 @NgModule({
   imports: [EffectsModule.forFeature(<%= camelize(name) %>Effects), StoreModule.forFeature('<%= camelize(name) %>', <%= camelize(name) %>Reducers)],
 })
-export class <%= classify(name) %>StoreModule {}
+export class <%= classify(name) %>StoreModule {
+  static forTesting(...reducers: (keyof ActionReducerMap<<%= classify(name) %>State>)[]) {
+    return StoreModule.forFeature('<%= camelize(name) %>', pick(<%= camelize(name) %>Reducers, reducers));
+  }
+}

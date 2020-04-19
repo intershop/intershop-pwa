@@ -408,7 +408,7 @@
           "import": "^(StoreModule|EffectsModule)$",
           "from": "ngrx",
           "filePattern": "^.*\\.spec\\.ts*$",
-          "message": "Use the testing helper 'ngrxTesting' in tests instead."
+          "message": "Use the testing helpers '*StoreModule.forTesting' in tests instead."
         },
         {
           "import": "^IconModule$",
@@ -714,7 +714,7 @@
             "file": ".*/store/([a-z][a-z0-9-]+/|)<kebab>/<kebab>\\.reducer\\.ts$"
           },
           {
-            "name": "^(metaReducers)$",
+            "name": "^(metaReducers|[a-z]+MetaReducers)$",
             "file": ".*\\.module\\.ts$"
           },
           {

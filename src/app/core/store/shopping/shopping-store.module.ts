@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
+import { pick } from 'lodash-es';
 
 import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
@@ -20,6 +21,7 @@ import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping-store';
 
+/** @deprecated will be made private in version 0.23 */
 export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
   products: productsReducer,
@@ -30,6 +32,8 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   promotions: promotionsReducer,
   productListing: productListingReducer,
 };
+
+/** @deprecated will be made private in version 0.23 */
 export const shoppingEffects = [
   CategoriesEffects,
   ProductsEffects,
@@ -40,8 +44,13 @@ export const shoppingEffects = [
   PromotionsEffects,
   ProductListingEffects,
 ];
+// tslint:disable: deprecation
 
 @NgModule({
   imports: [EffectsModule.forFeature(shoppingEffects), StoreModule.forFeature('shopping', shoppingReducers)],
 })
-export class ShoppingStoreModule {}
+export class ShoppingStoreModule {
+  static forTesting(...reducers: (keyof ActionReducerMap<ShoppingState>)[]) {
+    return StoreModule.forFeature('shopping', pick(shoppingReducers, reducers));
+  }
+}

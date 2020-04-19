@@ -116,6 +116,14 @@ function isUnreferenced(node: Node & ReferenceFindableNode) {
 }
 
 function checkNode(node: Node) {
+  if (
+    Node.hasName(node) &&
+    /.*(Reducers|Effects)$/.test(node.getName()) &&
+    node.getSourceFile().getBaseName().endsWith('-store.module.ts')
+  ) {
+    return;
+  }
+
   if (!Node.isReferenceFindableNode(node)) {
     return;
   }
