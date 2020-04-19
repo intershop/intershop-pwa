@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
+import { pick } from 'lodash-es';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { ngrxStateTransferMeta } from 'ish-core/configurations/ngrx-state-transfer';
@@ -36,6 +37,7 @@ import { userReducer } from './user/user.reducer';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
+/** @deprecated will be made private in version 0.23 */
 export const coreReducers: ActionReducerMap<CoreState> = {
   router: routerReducer,
   user: userReducer,
@@ -48,6 +50,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   configuration: configurationReducer,
 };
 
+/** @deprecated will be made private in version 0.23 */
 export const coreEffects = [
   UserEffects,
   AddressesEffects,
@@ -59,15 +62,16 @@ export const coreEffects = [
   ConfigurationEffects,
   MessagesEffects,
 ];
+// tslint:disable: deprecation
 
 // tslint:disable-next-line: no-any
-const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMeta];
+const coreMetaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMeta];
 
 @NgModule({
   imports: [
     // tslint:disable-next-line: ng-module-sorted-fields
     StoreModule.forRoot(coreReducers, {
-      metaReducers,
+      metaReducers: coreMetaReducers,
       runtimeChecks: {
         strictActionImmutability: !environment.production,
         strictActionSerializability: !environment.production,
@@ -87,5 +91,44 @@ const metaReducers: MetaReducer<any>[] = [ngrxStateTransferMeta, configurationMe
 export class CoreStoreModule {
   constructor(router: Router) {
     addGlobalGuard(router, ConfigurationGuard);
+  }
+
+  /**
+   * Instantiate {@link CoreStoreModule} for testing.
+   *
+   * Automatically instantiates router-store if reducer 'router' is requested.
+   *
+   * @param reducers array of reducers
+   * @param effects use 'true' to instantiate EffectsModule or use an array of effects directly
+   * @param metaReducers optional array of meta reducers
+   */
+  // tslint:disable: no-any
+  static forTesting(
+    reducers: (keyof ActionReducerMap<CoreState>)[] = [],
+    effects: Type<any>[] | boolean = false,
+    metaReducers: MetaReducer<any>[] = []
+  ) {
+    const modules = [
+      StoreModule.forRoot(pick(coreReducers, reducers), {
+        metaReducers,
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictActionSerializability: true,
+          strictStateImmutability: true,
+          strictStateSerializability: true,
+        },
+      }),
+    ];
+    if (typeof effects === 'boolean') {
+      if (effects) {
+        modules.push(EffectsModule.forRoot([]));
+      }
+    } else {
+      modules.push(EffectsModule.forRoot(effects));
+    }
+    if (reducers.includes('router')) {
+      modules.push(StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }));
+    }
+    return modules;
   }
 }
