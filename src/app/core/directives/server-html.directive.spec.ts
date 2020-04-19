@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { instance, mock, when } from 'ts-mockito';
 
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { ServerHtmlDirective } from './server-html.directive';
 
@@ -25,7 +25,8 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
+        imports: [RouterTestingModule],
+        providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -56,17 +57,13 @@ describe('Server Html Directive', () => {
         html = `<img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`;
       }
 
+      const appFacade = mock(AppFacade);
+      when(appFacade.icmBaseUrl).thenReturn('http://example.org');
+
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [
-          RouterTestingModule,
-          ngrxTesting({
-            reducers: { configuration: configurationReducer },
-            config: {
-              initialState: { configuration: { baseURL: 'http://example.org' } },
-            },
-          }),
-        ],
+        imports: [RouterTestingModule],
+        providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -103,7 +100,8 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [RouterTestingModule, ngrxTesting({ reducers: { configuration: configurationReducer } })],
+        imports: [RouterTestingModule],
+        providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
       }).compileComponents();
 
       const fixture = TestBed.createComponent(TestComponent);
@@ -128,11 +126,8 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [
-          RouterTestingModule,
-          TranslateModule.forRoot(),
-          ngrxTesting({ reducers: { configuration: configurationReducer } }),
-        ],
+        imports: [RouterTestingModule, TranslateModule.forRoot()],
+        providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
       }).compileComponents();
 
       const translate = TestBed.inject(TranslateService);

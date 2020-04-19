@@ -14,15 +14,15 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { ApplyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/configuration';
 import { ConfigurationEffects } from 'ish-core/store/configuration/configuration.effects';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { getAvailableLocales, getCurrentLocale } from './configuration.selectors';
 
 describe('Configuration Integration', () => {
   let router: Router;
   let location: Location;
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
@@ -34,18 +34,14 @@ describe('Configuration Integration', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router', 'configuration'], [ConfigurationEffects], [configurationMeta]),
         RouterTestingModule.withRoutes([
           { path: 'home', component: DummyComponent, canActivate: [ConfigurationGuard] },
         ]),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          effects: [ConfigurationEffects],
-          config: { metaReducers: [configurationMeta] },
-          routerStore: true,
-        }),
       ],
       providers: [
+        provideStoreSnapshots(),
         { provide: PLATFORM_ID, useValue: 'server' },
         { provide: ConfigurationService, useFactory: () => instance(configurationService) },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
@@ -55,7 +51,7 @@ describe('Configuration Integration', () => {
 
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     store$.dispatch(
       new ApplyConfiguration({
         baseURL: 'http://example.org',

@@ -3,7 +3,7 @@
     <div *ngFor="let group of variationOptions" class="product-variation read-only">
       <span>{{ group.label }}: {{ getActiveOption(group)?.label }}</span>
     </div>
-    <ng-container *ishFeature="'advancedVariationHandling'">
+    <ng-container *ngIf="advancedVariationHandling">
       <a
         *ngIf="productMasterSKU"
         [routerLink]="['/product', productMasterSKU]"

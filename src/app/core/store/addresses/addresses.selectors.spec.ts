@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadAddresses, LoadAddressesFail, LoadAddressesSuccess } from './addresses.actions';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from './addresses.selectors';
 
 describe('Addresses Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   const addresses = [
     { id: '4711', firstname: 'Patricia' },
@@ -18,9 +18,10 @@ describe('Addresses Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ reducers: coreReducers }),
+      imports: [CoreStoreModule.forTesting(['addresses'])],
+      providers: [provideStoreSnapshots()],
     });
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {

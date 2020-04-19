@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { Customer, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
@@ -7,12 +6,10 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { User } from 'ish-core/models/user/user.model';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { ApplyConfiguration } from 'ish-core/store/configuration';
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
   LoadCompanyUserSuccess,
@@ -39,20 +36,15 @@ import {
 } from './user.selectors';
 
 describe('User Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(['user', 'configuration'])],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku' } as Product }));
   });
 

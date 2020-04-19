@@ -7,9 +7,8 @@ import { instance, mock } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { CookiesService } from 'ish-core/services/cookies/cookies.service';
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AuthGuard } from './auth.guard';
 
@@ -24,8 +23,8 @@ describe('Auth Guard', () => {
 
       TestBed.configureTestingModule({
         imports: [
+          CoreStoreModule.forTesting(['user']),
           RouterTestingModule.withRoutes([{ path: 'login', component: DummyComponent }]),
-          ngrxTesting({ reducers: coreReducers }),
         ],
         declarations: [DummyComponent],
         providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],

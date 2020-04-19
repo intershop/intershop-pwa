@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';
@@ -20,7 +20,7 @@ describe('Account Addresses Page Component', () => {
         MockComponent(AccountAddressesComponent),
         MockComponent(LoadingComponent),
       ],
-      imports: [ngrxTesting({ reducers: coreReducers })],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   }));
 

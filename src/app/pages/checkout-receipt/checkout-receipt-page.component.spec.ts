@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { CheckoutReceiptPageComponent } from './checkout-receipt-page.component';
@@ -22,13 +22,10 @@ describe('Checkout Receipt Page Component', () => {
         MockComponent(CheckoutReceiptComponent),
         MockComponent(LoadingComponent),
       ],
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            checkout: combineReducers(checkoutReducers),
-          },
-        }),
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
       ],
     }).compileComponents();
   }));

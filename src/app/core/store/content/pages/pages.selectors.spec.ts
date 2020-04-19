@@ -2,18 +2,17 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
-import { contentReducers } from 'ish-core/store/content/content-store.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as actions from './pages.actions';
 import { getContentPageLoading, getSelectedContentPage } from './pages.selectors';
 
 describe('Pages Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let router: Router;
 
   beforeEach(() => {
@@ -23,18 +22,14 @@ describe('Pages Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        ContentStoreModule.forTesting('pages'),
+        CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            content: combineReducers(contentReducers),
-          },
-          routerStore: true,
-        }),
       ],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     router = TestBed.inject(Router);
   });
 

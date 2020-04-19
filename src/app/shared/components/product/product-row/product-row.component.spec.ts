@@ -2,14 +2,12 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAddToCompareComponent } from 'ish-shared/components/product/product-add-to-compare/product-add-to-compare.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -37,13 +35,7 @@ describe('Product Row Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { configuration: configurationReducer } }),
-      ],
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToQuoteComponent),
@@ -60,6 +52,7 @@ describe('Product Row Component', () => {
         MockComponent(ProductRatingComponent),
         MockComponent(ProductShipmentComponent),
         MockComponent(ProductVariationSelectComponent),
+        MockDirective(FeatureToggleDirective),
         MockPipe(ProductRoutePipe),
         ProductRowComponent,
       ],

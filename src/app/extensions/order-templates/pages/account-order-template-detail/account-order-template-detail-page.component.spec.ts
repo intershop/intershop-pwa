@@ -4,13 +4,15 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { EMPTY } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
+import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-templates/order-template-preferences-dialog/order-template-preferences-dialog.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
@@ -22,13 +24,11 @@ describe('Account Order Template Detail Page Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    const orderTemplatesFacade = mock(OrderTemplatesFacade);
+    when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(EMPTY);
+
     TestBed.configureTestingModule({
-      imports: [
-        NgbPopoverModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
-      ],
+      imports: [NgbPopoverModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
@@ -37,6 +37,10 @@ describe('Account Order Template Detail Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(ProductAddToBasketComponent),
+      ],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        { provide: ShoppingFacade, useFactory: () => instance(mock(ShoppingFacade)) },
       ],
     }).compileComponents();
   }));

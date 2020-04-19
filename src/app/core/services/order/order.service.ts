@@ -1,6 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Params } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -189,7 +188,7 @@ export class OrderService {
      @param queryParams  The payment redirect information (parameters and status).
    * @returns            The orderId
    */
-  updateOrderPayment(orderId: string, queryParams: Params): Observable<string> {
+  updateOrderPayment(orderId: string, queryParams: { [key: string]: string }): Observable<string> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {

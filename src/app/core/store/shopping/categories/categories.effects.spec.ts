@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { Action, Store, combineReducers } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
@@ -15,8 +15,8 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { Category, CategoryCompletenessLevel, CategoryHelper } from 'ish-core/models/category/category.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import * as fromActions from './categories.actions';
@@ -50,17 +50,13 @@ describe('Categories Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([
           { path: 'category/:categoryUniqueId/product/:sku', component: DummyComponent },
           { path: 'category/:categoryUniqueId', component: DummyComponent },
           { path: '**', component: DummyComponent },
         ]),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('categories'),
       ],
       providers: [
         CategoriesEffects,

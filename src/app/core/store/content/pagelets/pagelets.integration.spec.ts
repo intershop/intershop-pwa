@@ -1,27 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
-import { contentReducers } from 'ish-core/store/content/content-store.module';
+import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
 import { LoadContentIncludeSuccess } from 'ish-core/store/content/includes';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { getContentPagelet, getContentPageletEntities } from './pagelets.selectors';
 
 describe('Pagelets Integration', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          content: combineReducers(contentReducers),
-        },
-      }),
+      imports: [ContentStoreModule.forTesting('pagelets'), CoreStoreModule.forTesting()],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   it('should be empty on application start', () => {

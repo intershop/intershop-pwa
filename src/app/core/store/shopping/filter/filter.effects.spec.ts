@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -10,8 +10,6 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as fromActions from './filter.actions';
 import { FilterEffects } from './filter.effects';
@@ -60,13 +58,6 @@ describe('Filter Effects', () => {
       }
     });
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-        }),
-      ],
       providers: [
         FilterEffects,
         provideMockActions(() => actions$),

@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import {
   LoadProduct,
@@ -23,7 +23,7 @@ import {
 import { getProduct, getProductEntities, getProductLinks, getProducts, getSelectedProduct } from './products.selectors';
 
 describe('Products Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
   let router: Router;
 
   let prod: Product;
@@ -37,17 +37,14 @@ describe('Products Selectors', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router']),
         RouterTestingModule.withRoutes([{ path: '**', component: DummyComponent }]),
-        ngrxTesting({
-          reducers: {
-            shopping: combineReducers(shoppingReducers),
-          },
-          routerStore: true,
-        }),
+        ShoppingStoreModule.forTesting('products', 'categories'),
       ],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
     router = TestBed.inject(Router);
   });
 

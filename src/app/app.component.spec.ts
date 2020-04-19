@@ -4,11 +4,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { NgxCookieBannerModule } from 'ngx-cookie-banner';
+import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { coreReducers } from 'ish-core/store/core-store.module';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './shell/footer/footer/footer.component';
@@ -29,15 +29,8 @@ describe('App Component', () => {
         MockComponent(HeaderComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      imports: [
-        NgxCookieBannerModule.forRoot({
-          cookieName: 'cookieLawSeen',
-        }),
-        NoopAnimationsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
-      ],
+      imports: [NgxCookieBannerModule.forRoot(), NoopAnimationsModule, RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   }));
 

@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { CMSTextComponent } from './cms-text.component';
 
@@ -14,8 +15,9 @@ describe('Cms Text Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ngrxTesting()],
+      imports: [RouterTestingModule],
       declarations: [CMSTextComponent, ServerHtmlDirective],
+      providers: [{ provide: AppFacade, useFactory: () => instance(mock(AppFacade)) }],
     }).compileComponents();
   }));
 

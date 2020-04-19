@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
 import { AccountOrderPageComponent } from './account-order-page.component';
 import { AccountOrderComponent } from './account-order/account-order.component';
@@ -16,8 +14,8 @@ describe('Account Order Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ngrxTesting({ reducers: { ...coreReducers, shopping: combineReducers(shoppingReducers) } })],
       declarations: [AccountOrderPageComponent, MockComponent(AccountOrderComponent)],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   }));
 

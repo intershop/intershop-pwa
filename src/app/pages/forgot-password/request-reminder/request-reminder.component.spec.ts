@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
@@ -27,7 +27,8 @@ describe('Request Reminder Component', () => {
         MockDirective(ServerHtmlDirective),
         RequestReminderComponent,
       ],
-      imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   }));
 

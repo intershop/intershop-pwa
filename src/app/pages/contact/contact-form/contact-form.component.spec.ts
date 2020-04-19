@@ -2,9 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, instance, mock, spy, verify } from 'ts-mockito';
+import { anything, spy, verify } from 'ts-mockito';
 
-import { FeatureToggleModule, FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectComponent, SelectOption } from 'ish-shared/forms/components/select/select.component';
 import { TextareaComponent } from 'ish-shared/forms/components/textarea/textarea.component';
@@ -27,8 +26,7 @@ describe('Contact Form Component', () => {
         MockComponent(SelectComponent),
         MockComponent(TextareaComponent),
       ],
-      imports: [FeatureToggleModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [{ provide: FeatureToggleService, useFactory: () => instance(mock(FeatureToggleService)) }],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

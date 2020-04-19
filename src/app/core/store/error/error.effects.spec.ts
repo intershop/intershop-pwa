@@ -6,8 +6,7 @@ import { Store } from '@ngrx/store';
 import { noop } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
 
 import { CommunicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
@@ -24,8 +23,8 @@ describe('Error Effects', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['error']),
         RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }]),
-        ngrxTesting({ reducers: coreReducers }),
       ],
       providers: [ErrorEffects],
     });

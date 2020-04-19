@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { orderTemplatesReducers } from '../order-templates-store.module';
+import { OrderTemplatesStoreModule } from '../order-templates-store.module';
 
 import {
   CreateOrderTemplate,
@@ -32,19 +31,15 @@ import {
 } from './order-template.selectors';
 
 describe('Order Template Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          orderTemplates: combineReducers(orderTemplatesReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(), OrderTemplatesStoreModule.forTesting('orderTemplates')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   const orderTemplates = [
@@ -91,7 +86,6 @@ describe('Order Template Selectors', () => {
       const loadOrderTemplateSuccessAction = new LoadOrderTemplatesSuccess({ orderTemplates });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadOrderTemplateSuccessAction);
       });
 
@@ -108,7 +102,6 @@ describe('Order Template Selectors', () => {
       const loadOrderTemplatesFailAction = new LoadOrderTemplatesFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(loadOrderTemplatesFailAction);
       });
 
@@ -143,7 +136,6 @@ describe('Order Template Selectors', () => {
       const createOrderTemplateSuccessAction = new CreateOrderTemplateSuccess({ orderTemplate: orderTemplates[0] });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(createOrderTemplateSuccessAction);
       });
 
@@ -160,7 +152,6 @@ describe('Order Template Selectors', () => {
       const createOrderTemplateFailAction = new CreateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(createOrderTemplateFailAction);
       });
 
@@ -193,10 +184,6 @@ describe('Order Template Selectors', () => {
         orderTemplateId: orderTemplates[0].id,
       });
 
-      beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-      });
-
       it('should set loading to false', () => {
         store$.dispatch(deleteOrderTemplateSuccessAction);
 
@@ -215,7 +202,6 @@ describe('Order Template Selectors', () => {
       const deleteOrderTemplateFailAction = new DeleteOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(deleteOrderTemplateFailAction);
       });
 
@@ -252,10 +238,6 @@ describe('Order Template Selectors', () => {
       });
       const loadOrderTemplateSuccess = new LoadOrderTemplatesSuccess({ orderTemplates });
 
-      beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
-      });
-
       it('should set loading to false', () => {
         store$.dispatch(updateOrderTemplateSuccessAction);
 
@@ -274,7 +256,6 @@ describe('Order Template Selectors', () => {
       const updateOrderTemplateFailAction = new UpdateOrderTemplateFail({ error: { message: 'invalid' } as HttpError });
 
       beforeEach(() => {
-        store$ = TestBed.inject(TestStore);
         store$.dispatch(updateOrderTemplateFailAction);
       });
 

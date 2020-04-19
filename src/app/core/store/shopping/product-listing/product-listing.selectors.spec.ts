@@ -1,18 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
 import { range } from 'lodash-es';
 
 import { ProductListingView } from 'ish-core/models/product-listing/product-listing.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import * as actions from './product-listing.actions';
 import { getProductListingLoading, getProductListingView } from './product-listing.selectors';
 
 describe('Product Listing Selectors', () => {
   const TEST_ID = { type: 'test', value: 'dummy' };
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     expect.addSnapshotSerializer({
@@ -38,15 +37,11 @@ describe('Product Listing Selectors', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: ngrxTesting({
-        reducers: {
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-        },
-      }),
+      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('productListing')],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('initial state', () => {

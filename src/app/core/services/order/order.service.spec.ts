@@ -122,7 +122,7 @@ describe('Order Service', () => {
       when(apiService.patch(anything(), anything(), anything())).thenReturn(of(undefined));
 
       const orderId = '123454';
-      const params = { redirect: 'success', param1: 123, orderId };
+      const params = { redirect: 'success', param1: '123', orderId };
 
       orderService.updateOrderPayment(orderId, params).subscribe(() => {
         verify(apiService.patch(`orders/${orderId}`, anything(), anything())).once();

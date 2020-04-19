@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoginUserSuccess } from 'ish-core/store/user';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { AccountProfilePageComponent } from './account-profile-page.component';
 import { AccountProfileComponent } from './account-profile/account-profile.component';
@@ -27,14 +26,15 @@ describe('Account Profile Page Component', () => {
   } as User;
 
   beforeEach(async(() => {
+    const accountFacade = mock(AccountFacade);
+    when(accountFacade.user$).thenReturn(of(user));
+    when(accountFacade.customer$).thenReturn(of(customer));
+
     TestBed.configureTestingModule({
       declarations: [AccountProfilePageComponent, MockComponent(AccountProfileComponent)],
-      imports: [TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
-    })
-      .compileComponents()
-      .then(() => {
-        TestBed.inject(Store).dispatch(new LoginUserSuccess({ customer, user }));
-      });
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

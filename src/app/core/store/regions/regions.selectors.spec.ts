@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LoadRegions, LoadRegionsFail, LoadRegionsSuccess } from './regions.actions';
 import { getAllRegions, getRegionsByCountryCode, getRegionsLoading } from './regions.selectors';
 
 describe('Regions Selectors', () => {
-  let store$: TestStore;
+  let store$: StoreWithSnapshots;
 
   const countryCode = 'US';
 
@@ -23,10 +23,11 @@ describe('Regions Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: ngrxTesting({ reducers: coreReducers }),
+      imports: [CoreStoreModule.forTesting(['regions'])],
+      providers: [provideStoreSnapshots()],
     });
 
-    store$ = TestBed.inject(TestStore);
+    store$ = TestBed.inject(StoreWithSnapshots);
   });
 
   describe('with empty state', () => {

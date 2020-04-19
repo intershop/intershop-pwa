@@ -1,15 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { QuoteData } from '../../models/quote/quote.interface';
-import { LoadQuotes, LoadQuotesSuccess } from '../../store/quote';
-import { LoadQuoteRequests } from '../../store/quote-request';
-import { quotingReducers } from '../../store/quoting-store.module';
+import { QuotingFacade } from '../../facades/quoting.facade';
+import { Quote } from '../../models/quote/quote.model';
 
 import { QuoteListPageComponent } from './quote-list-page.component';
 import { QuoteListComponent } from './quote-list/quote-list.component';
@@ -18,19 +16,14 @@ describe('Quote List Page Component', () => {
   let component: QuoteListPageComponent;
   let fixture: ComponentFixture<QuoteListPageComponent>;
   let element: HTMLElement;
-  let store$: Store;
+  let quotingFacade: QuotingFacade;
 
   beforeEach(async(() => {
+    quotingFacade = mock(QuotingFacade);
     TestBed.configureTestingModule({
       declarations: [MockComponent(LoadingComponent), MockComponent(QuoteListComponent), QuoteListPageComponent],
-      imports: [
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            quoting: combineReducers(quotingReducers),
-          },
-        }),
-      ],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
   }));
 
@@ -38,8 +31,6 @@ describe('Quote List Page Component', () => {
     fixture = TestBed.createComponent(QuoteListPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {
@@ -49,27 +40,16 @@ describe('Quote List Page Component', () => {
   });
 
   it('should render loading component if quotes loading', () => {
-    store$.dispatch(new LoadQuotes());
-    fixture.detectChanges();
-    expect(element.querySelector('ish-loading')).toBeTruthy();
-  });
+    when(quotingFacade.quotesOrQuoteRequestsLoading$).thenReturn(of(true));
 
-  it('should render loading component if quote requests loading', () => {
-    store$.dispatch(new LoadQuoteRequests());
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
   it('should render quote list component if quotes present', () => {
-    const quotes = {
-      quotes: [
-        {
-          id: 'test',
-        } as QuoteData,
-      ],
-    };
+    const quotes = [{ id: 'test' }] as Quote[];
+    when(quotingFacade.quotesAndQuoteRequests$()).thenReturn(of(quotes));
 
-    store$.dispatch(new LoadQuotesSuccess(quotes));
     fixture.detectChanges();
     expect(element.querySelector('ish-quote-list')).toBeTruthy();
   });

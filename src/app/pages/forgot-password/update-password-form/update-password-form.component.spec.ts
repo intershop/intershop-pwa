@@ -1,12 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 
 import { UpdatePasswordFormComponent } from './update-password-form.component';
@@ -19,13 +15,7 @@ describe('Update Password Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(InputComponent), UpdatePasswordFormComponent],
-      imports: [
-        FeatureToggleModule,
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

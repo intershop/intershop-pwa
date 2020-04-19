@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AccountFacade } from 'ish-core/facades/account.facade';
 
+import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplatePreferencesDialogComponent } from '../../order-templates/order-template-preferences-dialog/order-template-preferences-dialog.component';
 import { SelectOrderTemplateModalComponent } from '../../order-templates/select-order-template-modal/select-order-template-modal.component';
 
@@ -23,7 +24,11 @@ describe('Basket Create Order Template Component', () => {
         MockComponent(OrderTemplatePreferencesDialogComponent),
         MockComponent(SelectOrderTemplateModalComponent),
       ],
-      imports: [RouterTestingModule, TranslateModule.forRoot(), ngrxTesting({ reducers: coreReducers })],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+      ],
     }).compileComponents();
   }));
 

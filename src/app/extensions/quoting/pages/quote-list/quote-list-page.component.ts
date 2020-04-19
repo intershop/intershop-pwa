@@ -11,16 +11,14 @@ import { Quote } from '../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteListPageComponent implements OnInit {
-  quoteLoading$: Observable<boolean>;
-  quoteRequestLoading$: Observable<boolean>;
+  loading$: Observable<boolean>;
   quotes$: Observable<(Quote | QuoteRequest)[]>;
 
   constructor(private quotingFacade: QuotingFacade) {}
 
   ngOnInit() {
     this.quotes$ = this.quotingFacade.quotesAndQuoteRequests$();
-    this.quoteLoading$ = this.quotingFacade.quoteLoading$;
-    this.quoteRequestLoading$ = this.quotingFacade.quoteRequestLoading$;
+    this.loading$ = this.quotingFacade.quotesOrQuoteRequestsLoading$;
   }
 
   deleteItem(item: Quote | QuoteRequest) {

@@ -1,12 +1,11 @@
 import { HttpParams } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CategoryData } from 'ish-core/models/category/category.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoriesService } from './categories.service';
@@ -25,14 +24,7 @@ describe('Categories Service', () => {
       of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            configuration: configurationReducer,
-          },
-        }),
-      ],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
+      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, provideMockStore()],
     });
     categoriesService = TestBed.inject(CategoriesService);
   });

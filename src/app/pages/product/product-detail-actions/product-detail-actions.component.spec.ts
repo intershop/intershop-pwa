@@ -7,8 +7,6 @@ import { spy, verify } from 'ts-mockito';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { LazyProductAddToWishlistComponent } from '../../../extensions/wishlists/exports/product/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
@@ -23,17 +21,7 @@ describe('Product Detail Actions Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        FeatureToggleModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: { configuration: configurationReducer },
-          config: {
-            initialState: { configuration: { features: ['compare'] } },
-          },
-        }),
-      ],
+      imports: [CommonModule, FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(LazyProductAddToWishlistComponent),

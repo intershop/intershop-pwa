@@ -2,15 +2,13 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductRoutePipe } from 'ish-core/routing/product/product-route.pipe';
-import { configurationReducer } from 'ish-core/store/configuration/configuration.reducer';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
@@ -33,12 +31,7 @@ describe('Product Compare List Component', () => {
   let compareProduct2: ProductView;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FeatureToggleModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: { configuration: configurationReducer } }),
-      ],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(FaIconComponent),
         MockComponent(ProductAddToBasketComponent),
@@ -49,6 +42,7 @@ describe('Product Compare List Component', () => {
         MockComponent(ProductInventoryComponent),
         MockComponent(ProductPriceComponent),
         MockComponent(ProductRatingComponent),
+        MockDirective(FeatureToggleDirective),
         MockPipe(AttributeToStringPipe),
         MockPipe(ProductRoutePipe),
         ProductCompareListComponent,

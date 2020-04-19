@@ -1,18 +1,15 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
 import { MockComponent } from 'ng-mocks';
-import { anything, deepEqual, instance, mock, spy, verify, when } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { Customer } from 'ish-core/models/customer/customer.model';
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Region } from 'ish-core/models/region/region.model';
-import { coreReducers } from 'ish-core/store/core-store.module';
-import { LoadRegions, LoadRegionsSuccess } from 'ish-core/store/regions';
-import { LoginUserSuccess } from 'ish-core/store/user';
 import { AddressMockData } from 'ish-core/utils/dev/address-mock-data';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { AddressFormComponent } from 'ish-shared/address-forms/components/address-form/address-form.component';
 import { AddressFormFactory } from 'ish-shared/address-forms/components/address-form/address-form.factory';
 import {
@@ -26,7 +23,8 @@ describe('Address Form Container Component', () => {
   let component: AddressFormContainerComponent;
   let fixture: ComponentFixture<AddressFormContainerComponent>;
   let element: HTMLElement;
-  let store$: Store;
+  let accountFacade: AccountFacade;
+  let appFacade: AppFacade;
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
@@ -34,12 +32,17 @@ describe('Address Form Container Component', () => {
 
     when(addressFormFactoryMock.countryCode).thenReturn('default');
 
+    accountFacade = mock(AccountFacade);
+    appFacade = mock(AppFacade);
+
     TestBed.configureTestingModule({
+      imports: [FeatureToggleModule.forTesting()],
       declarations: [AddressFormContainerComponent, MockComponent(AddressFormComponent)],
-      imports: [RouterTestingModule, ngrxTesting({ reducers: coreReducers })],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
       ],
     }).compileComponents();
   }));
@@ -48,11 +51,8 @@ describe('Address Form Container Component', () => {
     fixture = TestBed.createComponent(AddressFormContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    store$ = TestBed.inject(Store);
-    const customer: Customer = { customerNo: '1', type: 'SMBCustomer' };
-    const region: Region[] = [{ countryCode: 'BG', id: 'BGS', name: 'Sofia', regionCode: 'S' }];
-    store$.dispatch(new LoginUserSuccess({ customer }));
-    store$.dispatch(new LoadRegionsSuccess({ regions: region }));
+    const regions: Region[] = [{ countryCode: 'BG', id: 'BGS', name: 'Sofia', regionCode: 'S' }];
+    when(appFacade.regions$(anyString())).thenReturn(of(regions));
   });
 
   it('should be created', () => {
@@ -67,7 +67,8 @@ describe('Address Form Container Component', () => {
   });
 
   it('should react on country changes', () => {
-    const storeSpy$ = spy(store$);
+    when(accountFacade.isBusinessCustomer$).thenReturn(of(true));
+
     const newCountry = 'BG';
 
     const parentForm = new FormGroup({
@@ -85,7 +86,7 @@ describe('Address Form Container Component', () => {
     component.parentForm.get('countryCodeSwitch').setValue(newCountry);
 
     expect(component.parentForm.get('address').get('countryCode').value).toEqual(newCountry);
-    verify(storeSpy$.dispatch(deepEqual(new LoadRegions({ countryCode: newCountry })))).once();
+    verify(appFacade.regions$(newCountry)).once();
     expect(parentForm.get('address').get('mainDivisionCode').validator).not.toBeNull();
   });
 });

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { EMPTY, of, throwError } from 'rxjs';
@@ -31,22 +31,22 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
 import { UserService } from 'ish-core/services/user/user.service';
-import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
-import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { CoreStoreModule } from 'ish-core/store/core-store.module';
+import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { getCategoryTree, getSelectedCategory } from './categories';
 import { getProductEntities, getSelectedProduct } from './products';
 import { getRecentlyViewedProducts } from './recently';
 import { SuggestSearch } from './search';
-import { shoppingEffects, shoppingReducers } from './shopping-store.module';
+import { ShoppingStoreModule } from './shopping-store.module';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
 const getProductIds = createSelector(getProductEntities, entities => Object.keys(entities));
 
 describe('Shopping Store', () => {
-  let store: TestStore;
+  let store: StoreWithSnapshots;
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
@@ -148,6 +148,7 @@ describe('Shopping Store', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        CoreStoreModule.forTesting(['router', 'configuration'], true),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
@@ -178,18 +179,12 @@ describe('Shopping Store', () => {
             component: DummyComponent,
           },
         ]),
+        ShoppingStoreModule,
         ToastrModule.forRoot(),
         TranslateModule.forRoot(),
-        ngrxTesting({
-          reducers: {
-            ...coreReducers,
-            shopping: combineReducers(shoppingReducers),
-          },
-          effects: [...coreEffects, ...shoppingEffects],
-          routerStore: true,
-        }),
       ],
       providers: [
+        provideStoreSnapshots(),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
@@ -210,7 +205,7 @@ describe('Shopping Store', () => {
       ],
     });
 
-    store = TestBed.inject(TestStore);
+    store = TestBed.inject(StoreWithSnapshots);
     router = TestBed.inject(Router);
     store.reset();
   });
@@ -233,9 +228,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
-        [Configuration Internal] Get the ICM configuration
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         @ngrx/router-store/navigated:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
@@ -406,11 +398,8 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123"}
         [Shopping] Load Category:
           categoryId: "A.123"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category Success:
@@ -481,11 +470,8 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.456"}
         [Shopping] Load Category:
           categoryId: "A.123.456"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -719,13 +705,10 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Shopping] Load Product:
           sku: "P1"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -869,11 +852,8 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/product/P1"}
         [Shopping] Load Product:
           sku: "P1"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         [Recently Viewed] Add Product to Recently:
           sku: "P1"
           group: undefined
@@ -945,21 +925,18 @@ describe('Shopping Store', () => {
           categoryId: "A.123.456"
         [Shopping] Load Product:
           sku: "P3"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
         [Shopping] Load Product Fail:
           error: {"message":"error loading product P3"}
           sku: "P3"
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
           categoryId: "A.123"
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
+          storeState: {"configuration":{"locales":[3],"_deviceType":"mobile"},"sho...
           event: {"id":1,"url":"/category/A.123.456/product/P3"}
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
@@ -1013,14 +990,11 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/category/A.123.XXX"}
         [Shopping] Load Category:
           categoryId: "A.123.XXX"
-        [Configuration Internal] Get the ICM configuration
         [Shopping] Load Category Fail:
           error: {"message":"error loading category A.123.XXX"}
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
-          storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
+          storeState: {"configuration":{"locales":[3],"_deviceType":"mobile"},"sho...
           event: {"id":1,"url":"/category/A.123.XXX"}
         @ngrx/router-store/request:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
@@ -1062,9 +1036,6 @@ describe('Shopping Store', () => {
         @ngrx/router-store/navigation:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
-        [Configuration Internal] Get the ICM configuration
-        [Configuration] Apply Configuration:
-          _serverConfig: {}
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}
