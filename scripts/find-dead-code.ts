@@ -1,4 +1,4 @@
-import { parse, sep } from 'path';
+import { parse } from 'path';
 import { Node, Project, ReferenceFindableNode, SyntaxKind } from 'ts-morph';
 
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
@@ -39,7 +39,7 @@ function inTest(node: Node) {
 function isDev(node: Node) {
   const filePath = node.getSourceFile().getFilePath();
   const parsed = parse(filePath);
-  return parsed.dir.split(sep).includes('dev');
+  return parsed.dir.split('/').includes('dev');
 }
 
 function isInDecorator(node: Node) {
