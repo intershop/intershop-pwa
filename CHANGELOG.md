@@ -7,6 +7,62 @@ kb_everyone
 
 # Changelog
 
+## [0.19.0](https://github.com/intershop/intershop-pwa/releases/tag/0.19.0) (2020-04-20)
+
+**required Intershop Commerce Management version: 7.10.17.0**
+
+### Features
+
+- wishlist widget on account overview page (#195) ([8ae0b7e](https://github.com/intershop/intershop-pwa/commit/8ae0b7e))
+- detect device type in nginx and cache SSR responses individually (#171, #188) ([00c9640](https://github.com/intershop/intershop-pwa/commit/00c9640))
+- add quickorder functionality as configurable feature (#177) ([97c4cd6](https://github.com/intershop/intershop-pwa/commit/97c4cd6))
+- integrated quote request submittedDate ([86839d7](https://github.com/intershop/intershop-pwa/commit/86839d7))
+- **schematics:** add customization script for enabling and disabling service worker ([30bec4d](https://github.com/intershop/intershop-pwa/commit/30bec4d))
+- calculate payment cost threshold according to ICM pricing settings (#179) ([eb981ec](https://github.com/intershop/intershop-pwa/commit/eb981ec))
+- display checkout and order prices respecting ICM pricing settings (#179) ([44ad2a5](https://github.com/intershop/intershop-pwa/commit/44ad2a5))
+- read ICM server configuration on PWA startup (#179) ([d305c8a](https://github.com/intershop/intershop-pwa/commit/d305c8a))
+- delete payment instrument link on checkout payment page (#182) ([2944589](https://github.com/intershop/intershop-pwa/commit/2944589))
+- add opt-in mocks for browser to fix window, document, HTMLElement and navigator issues on server-side rendering (#180) ([e9d4551](https://github.com/intershop/intershop-pwa/commit/e9d4551))
+- support Concardis Direct Debit payment method (#165) ([567b61e](https://github.com/intershop/intershop-pwa/commit/567b61e))
+- make PWA docker build configuration aware (#143) ([3af4a1d](https://github.com/intershop/intershop-pwa/commit/3af4a1d))
+- nginx can be run with default PWA channel configuration if environment variables are omitted (#143) ([3634d44](https://github.com/intershop/intershop-pwa/commit/3634d44))
+- make complete domain configurable for multi-channel setup (#143) ([c8d6eb5](https://github.com/intershop/intershop-pwa/commit/c8d6eb5))
+
+### Bug Fixes
+
+- prevent an error after login on checkout address page (#194) ([8fbeaf2](https://github.com/intershop/intershop-pwa/commit/8fbeaf2))
+- deactivate service worker index.html fetch ([be4e289](https://github.com/intershop/intershop-pwa/commit/be4e289))
+- if payment has failed after order creation navigate to checkout payment page and display a message (#184) ([1a1bccb](https://github.com/intershop/intershop-pwa/commit/1a1bccb))
+- fix styling for product-row product items in carousels and add tile configuration options to the product link carousel ([e41e2e8](https://github.com/intershop/intershop-pwa/commit/e41e2e8))
+- display swiper navigation buttons (fixed styling issue) ([7f66cc7](https://github.com/intershop/intershop-pwa/commit/7f66cc7))
+- fix styling of user information box for mobile (#90, #168) ([b7843e7](https://github.com/intershop/intershop-pwa/commit/b7843e7))
+- remove personalized content from store ([8da665e](https://github.com/intershop/intershop-pwa/commit/8da665e))
+- prevent changing the basket item quantities if they belong to a quote (#81) ([d74cb3d](https://github.com/intershop/intershop-pwa/commit/d74cb3d))
+- prevent "null" as search term on search box initialization (#159) ([6bacee7](https://github.com/intershop/intershop-pwa/commit/6bacee7))
+- use data.id for ContentPageletEntryPoint id (#151, #152) ([0529af5](https://github.com/intershop/intershop-pwa/commit/0529af5))
+- consistent success messages in My Account area (#147) ([41bb17e](https://github.com/intershop/intershop-pwa/commit/41bb17e))
+
+### Performance Improvements
+
+- deactivate throttle time in products effects on SSR ([274ca49](https://github.com/intershop/intershop-pwa/commit/274ca49))
+- use new parameter omitHasOnlineProducts for more performant categories tree call ([52e3cd0](https://github.com/intershop/intershop-pwa/commit/52e3cd0))
+
+### Documentation
+
+- add note about router-store replacement to migration guide ([632e74f](https://github.com/intershop/intershop-pwa/commit/632e74f))
+- add labels for syncing documents to knowledge base ([b4280a2](https://github.com/intershop/intershop-pwa/commit/b4280a2))
+
+### Code Refactoring
+
+- rename device type 'pc' to 'desktop' ([fa8afc5](https://github.com/intershop/intershop-pwa/commit/fa8afc5))
+- use @ngrx/router-store instead of ngrx-router (#167) ([032b2ae](https://github.com/intershop/intershop-pwa/commit/032b2ae))
+
+### BREAKING CHANGES
+
+- renamed device type 'pc' to 'desktop'
+- Angular CLI environment configurations now need defaultDeviceType property
+- all dependencies of ngrx-router are replaced with @ngrx/router-store
+
 ## [0.18.1](https://github.com/intershop/intershop-pwa/releases/tag/0.18.1) (2020-04-01)
 
 **required Intershop Commerce Management version: 7.10.16.6**
