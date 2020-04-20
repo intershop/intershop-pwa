@@ -133,7 +133,7 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
-            "main": "src/main.server.ts",
+            "main": "server.ts",
             "tsConfig": "tsconfig.server.json"
           },
           "configurations": {
@@ -157,6 +157,32 @@
               "optimization": true,
               "sourceMap": true
             }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "intershop-pwa:build",
+            "serverTarget": "intershop-pwa:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "intershop-pwa:build:production",
+              "serverTarget": "intershop-pwa:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "intershop-pwa:build:production",
+            "serverTarget": "intershop-pwa:server:production",
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {}
           }
         }
       }
