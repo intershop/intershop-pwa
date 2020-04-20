@@ -87,10 +87,10 @@ var writerOpts = {
 };
 
 module.exports = Q.all([
-  readFile(resolve(__dirname, 'node_modules/conventional-changelog-angular/templates/template.hbs'), 'utf-8'),
+  readFile(resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
   readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
   readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'node_modules/conventional-changelog-angular/templates/footer.hbs'), 'utf-8'),
+  readFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8'),
 ]).spread(function(template, header, commit, footer) {
   writerOpts.mainTemplate = template;
   writerOpts.headerPartial = header;

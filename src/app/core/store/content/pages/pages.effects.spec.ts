@@ -1,4 +1,7 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -7,21 +10,29 @@ import { instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { LogoutUser } from 'ish-core/store/user';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
-import { LoadContentPage, LoadContentPageFail } from './pages.actions';
+import { LoadContentPage, LoadContentPageFail, ResetContentPages } from './pages.actions';
 import { PagesEffects } from './pages.effects';
 
 describe('Pages Effects', () => {
   let actions$: Observable<Action>;
   let effects: PagesEffects;
   let cmsServiceMock: CMSService;
+  let router: Router;
 
   beforeEach(() => {
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
     cmsServiceMock = mock(CMSService);
 
     TestBed.configureTestingModule({
-      imports: [ngrxTesting()],
+      declarations: [DummyComponent],
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'page/:contentPageId', component: DummyComponent }]),
+        ngrxTesting({ routerStore: true }),
+      ],
       providers: [
         PagesEffects,
         provideMockActions(() => actions$),
@@ -30,6 +41,7 @@ describe('Pages Effects', () => {
     });
 
     effects = TestBed.get(PagesEffects);
+    router = TestBed.get(Router);
   });
 
   describe('loadPages$', () => {
@@ -56,6 +68,31 @@ describe('Pages Effects', () => {
       expect(effects.loadContentPage$).toBeObservable(
         cold('a-a-a-a', { a: new LoadContentPageFail({ error: { message: 'ERROR' } as HttpError }) })
       );
+    });
+  });
+
+  describe('resetContentPagesAfterLogout$', () => {
+    it('should map to action of type ResetContentPages if LogoutUser action triggered', () => {
+      const action = new LogoutUser();
+      const completion = new ResetContentPages();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.resetContentPagesAfterLogout$).toBeObservable(expected$);
+    });
+  });
+
+  describe('selectedContentPage$', () => {
+    it('should select the route when url parameter is available', done => {
+      effects.selectedContentPage$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Content Page] Load Content Page:
+            contentPageId: "dummy"
+        `);
+        done();
+      });
+
+      router.navigateByUrl('/page/dummy');
     });
   });
 });

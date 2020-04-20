@@ -41,7 +41,7 @@ export class ImageMapper {
    * @param icmBaseURL The prefix URL for building absolute URLs for each relative URL.
    * @returns The image.
    */
-  fromImage(image: Image): Image {
+  private fromImage(image: Image): Image {
     return {
       ...image,
       effectiveUrl: this.fromEffectiveUrl(image.effectiveUrl),

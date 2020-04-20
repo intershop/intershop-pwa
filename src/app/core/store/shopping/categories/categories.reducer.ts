@@ -10,14 +10,12 @@ import {
 export interface CategoriesState {
   categories: CategoryTree;
   loading: boolean;
-  selected: string;
   topLevelLoaded: boolean;
 }
 
 export const initialState: CategoriesState = {
   loading: false,
   categories: CategoryTreeHelper.empty(),
-  selected: undefined,
   topLevelLoaded: false,
 };
 
@@ -33,19 +31,6 @@ function mergeCategories(state: CategoriesState, action: LoadTopLevelCategoriesS
 
 export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
-    case CategoriesActionTypes.DeselectCategory: {
-      return {
-        ...state,
-        selected: undefined,
-      };
-    }
-    case CategoriesActionTypes.SelectCategory: {
-      return {
-        ...state,
-        selected: action.payload.categoryId,
-      };
-    }
-
     case CategoriesActionTypes.LoadCategory: {
       return {
         ...state,

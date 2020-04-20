@@ -23,25 +23,9 @@
 //
 // -- This is will overwrite an existing command --
 Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
-  let newUrl = url;
-
-  if (!Cypress.env('NO_CHANNEL_REDIRECT')) {
-    const split = url.split('?');
-    newUrl = split[0];
-    if (/.*\.b2b\..*/.test(Cypress.spec.name)) {
-      newUrl +=
-        ';channel=inSPIRED-inTRONICS_Business-Site;features=quoting,compare,recently,businessCustomerRegistration,advancedVariationHandling';
-    } else if (/.*\.b2c\..*/.test(Cypress.spec.name)) {
-      newUrl += ';channel=inSPIRED-inTRONICS-Site';
-    }
-    if (split.length > 1) {
-      newUrl += '?' + split[1];
-    }
-  }
-
   cy.window().then(win => (win.angularStable = undefined));
 
-  originalFn(newUrl, { ...options, failOnStatusCode: false });
+  originalFn(url, { ...options, failOnStatusCode: false });
 
   cy.get('ish-root', { timeout: 60000 }).should('be.hidden');
 

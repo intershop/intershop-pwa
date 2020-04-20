@@ -1,33 +1,52 @@
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+
+import { environment } from '../../../../environments/environment';
+
 import { ConfigurationAction, ConfigurationActionTypes } from './configuration.actions';
 
 export interface ConfigurationState {
   baseURL?: string;
   server?: string;
   serverStatic?: string;
+  serverConfig?: ServerConfig;
   channel?: string;
   application?: string;
   features?: string[];
   gtmToken?: string;
   theme?: string;
+  locales?: Locale[];
+  lang?: string;
+  // not synced via state transfer
+  _deviceType?: DeviceType;
 }
 
 const initialState: ConfigurationState = {
   baseURL: undefined,
   server: undefined,
   serverStatic: undefined,
+  serverConfig: undefined,
   channel: undefined,
   application: undefined,
   features: [],
   gtmToken: undefined,
   theme: undefined,
+  locales: environment.locales,
+  lang: undefined,
+  _deviceType: environment.defaultDeviceType,
 };
 
 export function configurationReducer(state = initialState, action: ConfigurationAction): ConfigurationState {
-  if (action.type === ConfigurationActionTypes.ApplyConfiguration) {
-    return { ...state, ...action.payload };
-  } else if (action.type === ConfigurationActionTypes.SetGTMToken) {
-    const { gtmToken } = action.payload;
-    return { ...state, gtmToken };
+  switch (action.type) {
+    case ConfigurationActionTypes.ApplyConfiguration: {
+      return { ...state, ...action.payload };
+    }
+
+    case ConfigurationActionTypes.SetGTMToken: {
+      const { gtmToken } = action.payload;
+      return { ...state, gtmToken };
+    }
   }
 
   return state;

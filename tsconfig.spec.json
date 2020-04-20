@@ -8,5 +8,5 @@
     "allowJs": true,
     "types": ["jest", "jest-extended", "node"]
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.module.ts", "src/**/*.d.ts"]
 }

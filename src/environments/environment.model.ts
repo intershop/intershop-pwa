@@ -1,5 +1,5 @@
 import { Locale } from 'ish-core/models/locale/locale.model';
-import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 export interface Environment {
   production: boolean;
@@ -31,6 +31,7 @@ export interface Environment {
     | 'advancedVariationHandling'
     | 'businessCustomerRegistration'
     | 'quoting'
+    | 'quickorder'
     /* Third-party Integrations */
     | 'sentry'
     | 'tracking'
@@ -71,6 +72,9 @@ export interface Environment {
 
   // default viewType used for product listings
   defaultProductListingViewType: ViewType;
+
+  // default device type used for initial page responses
+  defaultDeviceType: DeviceType;
 
   // enable or disable service worker
   serviceWorker: boolean;

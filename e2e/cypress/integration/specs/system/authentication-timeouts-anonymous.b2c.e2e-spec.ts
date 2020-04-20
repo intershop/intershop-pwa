@@ -30,8 +30,8 @@ describe('Anonymous Sleeping User', () => {
         cy.route({
           method: 'GET',
           url: `**/products/${_.product}*`,
-        }).as('valid');
-        cy.wait('@valid');
+        });
+
         waitLoadingEnd(5000);
         cy.window().screenshot();
       });
@@ -64,8 +64,8 @@ describe('Anonymous Sleeping User', () => {
         cy.route({
           method: 'GET',
           url: `**/cms/**`,
-        }).as('valid');
-        cy.wait('@valid');
+        });
+
         waitLoadingEnd(5000);
         cy.window().screenshot();
       });

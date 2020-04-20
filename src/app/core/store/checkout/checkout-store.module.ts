@@ -10,12 +10,9 @@ import { BasketValidationEffects } from './basket/basket-validation.effects';
 import { BasketEffects } from './basket/basket.effects';
 import { basketReducer } from './basket/basket.reducer';
 import { CheckoutState } from './checkout-store';
-import { ViewconfEffects } from './viewconf/viewconf.effects';
-import { viewconfReducer } from './viewconf/viewconf.reducer';
 
 export const checkoutReducers: ActionReducerMap<CheckoutState> = {
   basket: basketReducer,
-  viewconf: viewconfReducer,
 };
 
 export const checkoutEffects = [
@@ -25,7 +22,6 @@ export const checkoutEffects = [
   BasketValidationEffects,
   BasketPaymentEffects,
   BasketPromotionCodeEffects,
-  ViewconfEffects,
 ];
 
 @NgModule({

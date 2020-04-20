@@ -1,9 +1,13 @@
+import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
+import { MetaDataModule } from './meta-data.module';
 
 export class HomePage {
   readonly tag = 'ish-home-page';
 
   readonly header = new HeaderModule();
+  readonly metaData = new MetaDataModule();
+  readonly footer = new FooterModule();
 
   static navigateTo() {
     cy.visit('/home');

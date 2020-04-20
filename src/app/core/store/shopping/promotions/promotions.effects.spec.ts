@@ -11,7 +11,6 @@ import { PRODUCT_LISTING_ITEMS_PER_PAGE } from 'ish-core/configurations/injectio
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
 import { PromotionsService } from 'ish-core/services/promotions/promotions.service';
-import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -43,7 +42,6 @@ describe('Promotions Effects', () => {
         ngrxTesting({
           reducers: {
             shopping: combineReducers(shoppingReducers),
-            locale: localeReducer,
           },
         }),
       ],

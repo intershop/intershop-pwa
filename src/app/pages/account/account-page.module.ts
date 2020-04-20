@@ -28,16 +28,6 @@ const accountPageRoutes: Routes = [
           ),
       },
       {
-        path: 'orders/:orderId',
-        data: {
-          breadcrumbData: [
-            { key: 'account.order_history.link', link: '/account/orders' },
-            { key: 'account.orderdetails.breadcrumb' },
-          ],
-        },
-        loadChildren: () => import('../account-order/account-order-page.module').then(m => m.AccountOrderPageModule),
-      },
-      {
         path: 'payment',
         data: { breadcrumbData: [{ key: 'account.payment.link' }] },
         loadChildren: () =>

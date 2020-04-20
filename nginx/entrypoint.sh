@@ -28,19 +28,35 @@ i=1
 while true
 do
   eval "export SUBDOMAIN=\$PWA_${i}_SUBDOMAIN"
-  [ -z "$SUBDOMAIN" ] && break
+  eval "export TOPLEVELDOMAIN=\$PWA_${i}_TOPLEVELDOMAIN"
+  eval "export DOMAIN=\$PWA_${i}_DOMAIN"
 
-  eval "export CHANNEL=\$PWA_${i}_CHANNEL"
-  [ -z "$CHANNEL" ] && echo "PWA_${i}_CHANNEL must be set" && exit 1
+  if [ ! -z "$DOMAIN" ]
+  then
+    [ ! -z "$SUBDOMAIN" ] && echo "ignoring PWA_${i}_SUBDOMAIN as PWA_${i}_DOMAIN is set"
+    [ ! -z "$TOPLEVELDOMAIN" ] && echo "ignoring PWA_${i}_TOPLEVELDOMAIN as PWA_${i}_DOMAIN is set"
+  else
+    if [ ! -z "$SUBDOMAIN" ]
+    then
+      [ ! -z "$TOPLEVELDOMAIN" ] && echo "ignoring PWA_${i}_TOPLEVELDOMAIN as PWA_${i}_SUBDOMAIN is set"
+      export DOMAIN="$SUBDOMAIN\..+"
+    else
+      [ ! -z "$TOPLEVELDOMAIN" ] && export DOMAIN=".+\.$TOPLEVELDOMAIN"
+    fi
+  fi
 
-  eval "export APPLICATION=\${PWA_${i}_APPLICATION:-'-'}"
+  [ -z "$DOMAIN" ] && [ "$i" = "1" ] && export DOMAIN=".+"
+  [ -z "$DOMAIN" ] && break
+
+  eval "export CHANNEL=\${PWA_${i}_CHANNEL:-'default'}"
+  eval "export APPLICATION=\${PWA_${i}_APPLICATION:-'default'}"
   eval "export LANG=\${PWA_${i}_LANG:-'default'}"
   eval "export FEATURES=\${PWA_${i}_FEATURES:-'default'}"
-  eval "export THEME=\${PWA_${i}_THEME:-''}"
+  eval "export THEME=\${PWA_${i}_THEME:-'default'}"
 
-  echo "$i SUBDOMAIN=$SUBDOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES"
+  echo "$i DOMAIN=$DOMAIN CHANNEL=$CHANNEL APPLICATION=$APPLICATION LANG=$LANG FEATURES=$FEATURES THEME=$THEME"
 
-  envsubst '$UPSTREAM_PWA,$SUBDOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
+  envsubst '$UPSTREAM_PWA,$DOMAIN,$CHANNEL,$APPLICATION,$LANG,$FEATURES,$THEME' </etc/nginx/conf.d/channel.conf.tmpl >/etc/nginx/conf.d/channel$i.conf
 
   i=$((i+1))
 done
@@ -52,7 +68,7 @@ env | grep NPSC_ | sed -e 's/^[^=]*=//' -e 's/$/;/' > /tmp/pagespeed-suffix.txt
 
 paste -d" " /tmp/pagespeed-prefix.txt /tmp/pagespeed-suffix.txt >> /etc/nginx/pagespeed.conf
 
-find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
+[ ! -z "$DEBUG" ] && find /etc/nginx -name '*.conf' -print -exec cat '{}' \;
 
 if [ -z "$*" ]
 then

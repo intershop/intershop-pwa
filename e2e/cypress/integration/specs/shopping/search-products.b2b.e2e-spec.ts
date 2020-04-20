@@ -14,11 +14,14 @@ describe('Searching B2B User', () => {
   before(() => HomePage.navigateTo());
 
   it('should enter search term and wait for displayed suggestions', () => {
-    at(HomePage, page => page.header.getSearchSuggestions(_.suggestTerm).should('contain', _.suggestItemText));
+    at(HomePage, page => {
+      page.header.searchBox.type(_.suggestTerm);
+      page.header.searchBox.suggestions.should('contain', _.suggestItemText);
+    });
   });
 
   it('should perform search and land on search result page', () => {
-    at(HomePage, page => page.header.doProductSearch(_.searchTerm));
+    at(HomePage, page => page.header.searchBox.search(_.searchTerm));
     at(SearchResultPage);
   });
 

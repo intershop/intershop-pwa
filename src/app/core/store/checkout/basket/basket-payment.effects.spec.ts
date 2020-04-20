@@ -1,8 +1,10 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -28,18 +30,25 @@ describe('Basket Payment Effects', () => {
   let paymentServiceMock: PaymentService;
   let effects: BasketPaymentEffects;
   let store$: Store<{}>;
+  let router: Router;
 
   beforeEach(() => {
     paymentServiceMock = mock(PaymentService);
 
+    @Component({ template: 'dummy' })
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
+      declarations: [DummyComponent],
       imports: [
+        RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
         ngrxTesting({
           reducers: {
             ...coreReducers,
             shopping: combineReducers(shoppingReducers),
             checkout: combineReducers(checkoutReducers),
           },
+          routerStore: true,
         }),
       ],
       providers: [
@@ -51,6 +60,7 @@ describe('Basket Payment Effects', () => {
 
     effects = TestBed.get(BasketPaymentEffects);
     store$ = TestBed.get(Store);
+    router = TestBed.get(Router);
   });
 
   describe('loadBasketEligiblePaymentMethods$', () => {
@@ -297,18 +307,16 @@ describe('Basket Payment Effects', () => {
       );
     });
 
-    it('should trigger updateBasketPayment action if checkout payment/review page is called with query param "redirect"', () => {
-      const params = { redirect: 'success', param1: 123 };
+    it('should trigger updateBasketPayment action if checkout payment/review page is called with query param "redirect"', done => {
+      router.navigate(['checkout', 'review'], { queryParams: { redirect: 'success', param1: 123 } });
 
-      const action = new RouteNavigation({
-        path: 'checkout/review',
-        queryParams: { redirect: 'success', param1: 123 },
+      effects.sendPaymentRedirectData$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Basket] Update a Basket Payment with Redirect Data:
+            params: {"redirect":"success","param1":"123"}
+        `);
+        done();
       });
-      actions$ = hot('-a', { a: action });
-
-      expect(effects.sendPaymentRedirectData$).toBeObservable(
-        cold('-c', { c: new basketActions.UpdateBasketPayment({ params }) })
-      );
     });
   });
 

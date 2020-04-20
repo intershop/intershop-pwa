@@ -8,7 +8,6 @@ import { EMPTY, of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import {
-  AVAILABLE_LOCALES,
   DEFAULT_PRODUCT_LISTING_VIEW_TYPE,
   LARGE_BREAKPOINT_WIDTH,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
@@ -19,7 +18,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
@@ -27,6 +25,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CategoriesService } from 'ish-core/services/categories/categories.service';
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { CountryService } from 'ish-core/services/country/country.service';
 import { FilterService } from 'ish-core/services/filter/filter.service';
 import { OrderService } from 'ish-core/services/order/order.service';
@@ -49,9 +48,7 @@ import { checkoutEffects, checkoutReducers } from './checkout-store.module';
 let basketId: string;
 
 describe('Checkout Store', () => {
-  const DEBUG = false;
   let store: TestStore;
-  let locales: Locale[];
 
   const lineItem = {
     id: 'test',
@@ -125,14 +122,11 @@ describe('Checkout Store', () => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
 
-    locales = [
-      { lang: 'en_US', currency: 'USD', value: 'en' },
-      { lang: 'de_DE', currency: 'EUR', value: 'de' },
-      { lang: 'fr_FR', currency: 'EUR', value: 'fr' },
-    ] as Locale[];
-
     const categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
+
+    const configurationServiceMock = mock(ConfigurationService);
+    when(configurationServiceMock.getServerConfiguration()).thenReturn(EMPTY);
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
@@ -247,6 +241,7 @@ describe('Checkout Store', () => {
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: ConfigurationService, useFactory: () => instance(configurationServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: PromotionsService, useFactory: () => instance(promotionsServiceMock) },
@@ -255,7 +250,6 @@ describe('Checkout Store', () => {
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
-        { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 3 },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
@@ -264,8 +258,6 @@ describe('Checkout Store', () => {
     });
 
     store = TestBed.get(TestStore);
-    store.logActions = DEBUG;
-    store.logState = DEBUG;
   });
 
   it('should be created', () => {

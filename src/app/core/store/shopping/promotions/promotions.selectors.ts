@@ -17,13 +17,11 @@ const getPromotionsState = createSelector(
   (state: ShoppingState) => state.promotions
 );
 
-export const { selectEntities: getPromotionEntities, selectAll: getAllPromotions } = promotionAdapter.getSelectors(
-  getPromotionsState
-);
+const { selectEntities, selectAll } = promotionAdapter.getSelectors(getPromotionsState);
 
 export const getPromotion = () =>
   createSelector(
-    getPromotionEntities,
+    selectEntities,
     (entities, props: { promoId: string }): Promotion => entities[props.promoId]
   );
 
@@ -34,7 +32,7 @@ export const getPromotions = (): MemoizedSelectorWithProps<
   DefaultProjectorFn<Promotion[]>
 > =>
   createSelectorFactory(projector => defaultMemoize(projector, isEqual, isEqual))(
-    getAllPromotions,
+    selectAll,
     (promotions: Promotion[], props: { promotionIds: string[] }): Promotion[] =>
       props.promotionIds.map(id => promotions.find(p => p.id === id)).filter(x => !!x)
   );

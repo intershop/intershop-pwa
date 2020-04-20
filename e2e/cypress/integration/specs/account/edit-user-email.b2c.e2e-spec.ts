@@ -44,7 +44,7 @@ describe('Changing User', () => {
     });
   });
 
-  xit('should be able to use new email for logging in', () => {
+  it('should be able to use new email for logging in', () => {
     at(HomePage, page => page.header.gotoLoginPage());
     at(LoginPage, page =>
       page

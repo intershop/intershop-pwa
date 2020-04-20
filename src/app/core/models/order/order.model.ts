@@ -7,7 +7,7 @@ import { VariationProductMaster } from 'ish-core/models/product/product-variatio
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-export interface AbstractOrder {
+interface AbstractOrder {
   documentNo: string;
   creationDate: number;
   orderCreation: {

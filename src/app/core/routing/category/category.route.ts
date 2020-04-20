@@ -1,9 +1,10 @@
 import { UrlMatchResult, UrlSegment } from '@angular/router';
-import { RouteNavigation, ofRoute } from 'ngrx-router';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { CoreState } from 'ish-core/store/core-store';
+import { selectRouteParam } from 'ish-core/store/router';
 
 export function generateLocalizedCategorySlug(category: CategoryView) {
   if (!category || !category.categoryPath.length) {
@@ -13,7 +14,7 @@ export function generateLocalizedCategorySlug(category: CategoryView) {
   return lastCat ? lastCat.replace(/ /g, '-') : '';
 }
 
-const categoryRouteFormat = new RegExp('^/(?!category/.*$)(.*)cat(.*)$');
+const categoryRouteFormat = /^\/(?!category\/.*$)(.*-)?cat(.*)$/;
 
 export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
@@ -53,10 +54,9 @@ export function generateCategoryUrl(category: CategoryView): string {
   return route;
 }
 
-export function ofCategoryRoute(): MonoTypeOperatorFunction<RouteNavigation> {
+export function ofCategoryUrl(): MonoTypeOperatorFunction<{}> {
   return source$ =>
     source$.pipe(
-      ofRoute(),
-      filter(action => action.payload.params && action.payload.params.categoryUniqueId && !action.payload.params.sku)
+      filter((state: CoreState) => !selectRouteParam('sku')(state) && !!selectRouteParam('categoryUniqueId')(state))
     );
 }

@@ -5,7 +5,6 @@ import { ProductLinks } from 'ish-core/models/product-links/product-links.model'
 import { Product, ProductCompletenessLevel, SkuQuantityType } from 'ish-core/models/product/product.model';
 
 export enum ProductsActionTypes {
-  SelectProduct = '[Shopping] Select Product',
   LoadProduct = '[Shopping] Load Product',
   LoadProductBundlesSuccess = '[Shopping] Load Product Bundles Success',
   LoadProductFail = '[Shopping] Load Product Fail',
@@ -22,10 +21,6 @@ export enum ProductsActionTypes {
   LoadProductLinksSuccess = '[Shopping] Load Product Links Success',
 }
 
-export class SelectProduct implements Action {
-  readonly type = ProductsActionTypes.SelectProduct;
-  constructor(public payload: { sku: string }) {}
-}
 export class LoadProduct implements Action {
   readonly type = ProductsActionTypes.LoadProduct;
   constructor(public payload: { sku: string }) {}
@@ -97,7 +92,6 @@ export class LoadProductLinksSuccess implements Action {
 }
 
 export type ProductsAction =
-  | SelectProduct
   | LoadProduct
   | LoadProductBundlesSuccess
   | LoadProductFail

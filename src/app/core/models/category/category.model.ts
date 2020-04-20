@@ -1,6 +1,6 @@
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
-import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
+import { SeoAttributes } from 'ish-core/models/seo-attributes/seo-attributes.model';
 
 export interface Category {
   uniqueId: string;

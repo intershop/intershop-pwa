@@ -54,7 +54,7 @@ export function ordersReducer(state = initialState, action: OrdersAction): Order
     case OrdersActionTypes.LoadOrdersSuccess: {
       const { orders } = action.payload;
       return {
-        ...orderAdapter.addAll(orders, state),
+        ...orderAdapter.setAll(orders, state),
         loading: false,
         error: undefined,
       };

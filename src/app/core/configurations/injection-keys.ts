@@ -1,6 +1,5 @@
 import { InjectionToken } from '@angular/core';
 
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
@@ -11,10 +10,6 @@ export const MOCK_SERVER_API = new InjectionToken<boolean>('mockServerAPI');
  * Array of paths that always use mocked data
  */
 export const MUST_MOCK_PATHS = new InjectionToken<string[]>('mustMockPaths');
-/**
- * Array of locales that are available in the application
- */
-export const AVAILABLE_LOCALES = new InjectionToken<Locale[]>('availableLocales');
 /**
  * If 'username' login name is used for registration, if 'email' the email is used as login name (default: 'email')
  */

@@ -11,7 +11,6 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -28,7 +27,6 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 export class AccountProfileUserComponent implements OnInit, OnChanges {
   @Input() currentUser: User;
   @Input() titles: string[];
-  @Input() languages: Locale[];
   @Input() countryCode: string;
   @Input() error: HttpError;
 

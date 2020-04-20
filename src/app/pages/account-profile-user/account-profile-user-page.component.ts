@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -28,11 +27,7 @@ export class AccountProfileUserPageComponent implements OnInit {
   titles: string[];
   currentCountryCode = '';
 
-  constructor(
-    private accountFacade: AccountFacade,
-    private appFacade: AppFacade,
-    @Inject(AVAILABLE_LOCALES) public locales: Locale[]
-  ) {}
+  constructor(private accountFacade: AccountFacade, private appFacade: AppFacade) {}
 
   ngOnInit() {
     this.currentUser$ = this.accountFacade.user$;

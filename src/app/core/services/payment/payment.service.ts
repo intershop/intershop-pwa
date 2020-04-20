@@ -18,7 +18,7 @@ import { PaymentMethodMapper } from 'ish-core/models/payment-method/payment-meth
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { getCurrentLocale } from 'ish-core/store/locale';
+import { getCurrentLocale } from 'ish-core/store/configuration';
 
 /**
  * The Payment Service handles the interaction with the 'baskets' and 'users' REST API concerning payment functionality.

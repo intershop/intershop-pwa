@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Dictionary } from '@ngrx/entity';
 import { Store, select } from '@ngrx/store';
-import { mapToParam, ofRoute } from 'ngrx-router';
+import { identity } from 'rxjs';
 import {
   concatMap,
   distinct,
@@ -12,10 +13,6 @@ import {
   groupBy,
   map,
   mergeMap,
-  switchMap,
-  switchMapTo,
-  take,
-  takeUntil,
   tap,
   throttleTime,
   withLatestFrom,
@@ -25,8 +22,9 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
-import { ofProductRoute } from 'ish-core/routing/product/product.route';
+import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
+import { selectRouteParam } from 'ish-core/store/router';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
@@ -35,7 +33,6 @@ import {
   mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
-  whenFalsy,
   whenTruthy,
 } from 'ish-core/utils/operators';
 
@@ -49,7 +46,8 @@ export class ProductsEffects {
     private store: Store<{}>,
     private productsService: ProductsService,
     private httpStatusCodeService: HttpStatusCodeService,
-    private productListingMapper: ProductListingMapper
+    private productListingMapper: ProductListingMapper,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   @Effect()
@@ -73,7 +71,7 @@ export class ProductsEffects {
     groupBy(([{ sku }]) => sku),
     mergeMap(group$ =>
       group$.pipe(
-        throttleTime(3000),
+        this.throttleOnBrowser(),
         map(([{ sku }]) => new productsActions.LoadProduct({ sku }))
       )
     )
@@ -159,7 +157,7 @@ export class ProductsEffects {
     groupBy(([product]) => product.productMasterSKU),
     mergeMap(groups =>
       groups.pipe(
-        throttleTime(3000),
+        this.throttleOnBrowser(),
         map(
           ([product]) =>
             new productsActions.LoadProductIfNotLoaded({
@@ -188,19 +186,10 @@ export class ProductsEffects {
     groupBy(([product]) => product.sku),
     mergeMap(groups =>
       groups.pipe(
-        throttleTime(3000),
+        this.throttleOnBrowser(),
         map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
       )
     )
-  );
-
-  @Effect()
-  routeListenerForSelectingProducts$ = this.actions$.pipe(
-    ofRoute(),
-    mapToParam<string>('sku'),
-    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    filter(([fromAction, fromStore]) => fromAction !== fromStore),
-    map(([sku]) => new productsActions.SelectProduct({ sku }))
   );
 
   /**
@@ -208,31 +197,25 @@ export class ProductsEffects {
    * change to {@link LoadProductIfNotLoaded} if no reload is needed
    */
   @Effect()
-  selectedProduct$ = this.actions$.pipe(
-    ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
-    mapToPayloadProperty('sku'),
+  selectedProduct$ = this.store.pipe(
+    select(selectRouteParam('sku')),
     whenTruthy(),
     map(sku => new productsActions.LoadProduct({ sku }))
   );
 
   @Effect()
-  loadDefaultCategoryContextForProduct$ = this.actions$.pipe(
-    ofProductRoute(),
-    mapToParam('categoryUniqueId'),
-    whenFalsy(),
-    switchMap(() =>
-      this.store.pipe(
-        select(productsSelectors.getSelectedProduct),
-        whenTruthy(),
-        filter(p => !ProductHelper.isFailedLoading(p)),
-        filter(product => !product.defaultCategory()),
-        mapToProperty('defaultCategoryId'),
-        whenTruthy(),
-        distinctUntilChanged(),
-        map(categoryId => new LoadCategory({ categoryId })),
-        takeUntil(this.actions$.pipe(ofRoute()))
-      )
-    )
+  loadDefaultCategoryContextForProduct$ = this.store.pipe(
+    ofProductUrl(),
+    select(productsSelectors.getSelectedProduct),
+    withLatestFrom(this.store.pipe(select(selectRouteParam('categoryUniqueId')))),
+    map(([product, categoryUniqueId]) => !categoryUniqueId && product),
+    whenTruthy(),
+    filter(p => !ProductHelper.isFailedLoading(p)),
+    filter(product => !product.defaultCategory()),
+    mapToProperty('defaultCategoryId'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    map(categoryId => new LoadCategory({ categoryId }))
   );
 
   @Effect()
@@ -269,17 +252,12 @@ export class ProductsEffects {
   );
 
   @Effect({ dispatch: false })
-  redirectIfErrorInProducts$ = this.actions$.pipe(
-    ofProductRoute(),
-    switchMapTo(
-      this.store.pipe(
-        select(productsSelectors.getSelectedProduct),
-        whenTruthy(),
-        distinctUntilKeyChanged('sku'),
-        filter(ProductHelper.isFailedLoading),
-        take(1)
-      )
-    ),
+  redirectIfErrorInProducts$ = this.store.pipe(
+    ofProductUrl(),
+    select(productsSelectors.getSelectedProduct),
+    whenTruthy(),
+    distinctUntilKeyChanged('sku'),
+    filter(ProductHelper.isFailedLoading),
     tap(() => this.httpStatusCodeService.setStatusAndRedirect(404))
   );
 
@@ -313,4 +291,6 @@ export class ProductsEffects {
     ),
     mergeMap(ids => ids.map(categoryId => new LoadCategory({ categoryId })))
   );
+
+  private throttleOnBrowser = () => (isPlatformBrowser(this.platformId) ? throttleTime(3000) : map(identity));
 }

@@ -5,10 +5,6 @@ export class WishlistsOverviewPage {
 
   readonly header = new HeaderModule();
 
-  static navigateTo() {
-    cy.visit('/account/wishlists');
-  }
-
   addWishlist(name: string, preferred: boolean) {
     cy.get('a[data-testing-id="add-wishlist"').click();
     cy.get('[data-testing-id="wishlist-dialog-name"]')

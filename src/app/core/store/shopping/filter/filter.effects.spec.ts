@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -144,7 +143,6 @@ describe('Filter Effects', () => {
 
   describe('loadFilteredProducts$', () => {
     it('should trigger product actions for ApplyFilterSuccess action', () => {
-      const routing = new RouteNavigation({ path: 'search', params: { searchTerm: 'test' } });
       const action = new fromActions.LoadProductsForFilter({
         id: {
           type: 'search',
@@ -163,7 +161,7 @@ describe('Filter Effects', () => {
         itemCount: 2,
         sortKeys: [],
       });
-      actions$ = hot('        -a-b-|', { a: routing, b: action });
+      actions$ = hot('        ---b-|', { b: action });
       const expected$ = cold('---c-|', { c: completion });
       expect(effects.loadFilteredProducts$).toBeObservable(expected$);
     });

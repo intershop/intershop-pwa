@@ -2,7 +2,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
-import { StoreModule } from '@ngrx/store';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { ServerCookiesModule } from '@ngx-utils/cookies/server';
@@ -11,13 +10,13 @@ import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
-import { coreReducers } from 'ish-core/store/core-store.module';
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-export class TranslateUniversalLoader implements TranslateLoader {
+class TranslateUniversalLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<string> {
     return new Observable((observer: Observer<string>) => {
       let rootPath = process.cwd();
@@ -42,6 +41,7 @@ export function translateLoaderFactory() {
   return new TranslateUniversalLoader();
 }
 
+// not-dead-code
 @NgModule({
   imports: [
     AppModule,
@@ -49,7 +49,6 @@ export function translateLoaderFactory() {
     ServerCookiesModule,
     ServerModule,
     ServerTransferStateModule,
-    StoreModule.forRoot(coreReducers, {}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -57,7 +56,10 @@ export function translateLoaderFactory() {
       },
     }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppServerModule {

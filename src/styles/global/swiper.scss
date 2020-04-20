@@ -10,6 +10,7 @@
     display: inline-block;
     width: $carousel-control-icon-width;
     height: $carousel-control-icon-width;
+    background: no-repeat 50% / 100% 100%;
     opacity: 0.5;
 
     &:hover {
@@ -22,11 +23,11 @@
   }
 
   .swiper-button-next {
-    background: $carousel-control-next-icon-bg no-repeat 50% / 100% 100%;
+    background-image: escape-svg($carousel-control-next-icon-bg);
   }
 
   .swiper-button-prev {
-    background: $carousel-control-prev-icon-bg no-repeat 50% / 100% 100%;
+    background-image: escape-svg($carousel-control-prev-icon-bg);
   }
 
   .swiper-pagination {

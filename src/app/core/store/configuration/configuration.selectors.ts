@@ -39,11 +39,6 @@ export const getICMBaseURL = createSelector(
   state => state.baseURL
 );
 
-export const getICMChannel = createSelector(
-  getConfigurationState,
-  state => state.channel
-);
-
 export const getFeatures = createSelector(
   getConfigurationState,
   state => state.features
@@ -57,4 +52,41 @@ export const getGTMToken = createSelector(
 export const getTheme = createSelector(
   getConfigurationState,
   state => state.theme
+);
+
+const getServerConfig = createSelector(
+  getConfigurationState,
+  state => state.serverConfig
+);
+
+export const isServerConfigurationLoaded = createSelector(
+  getServerConfig,
+  serverConfig => !!serverConfig
+);
+
+export const getServerConfigParameter = <T>(path: string) =>
+  createSelector(
+    getServerConfig,
+    (serverConfig): T =>
+      path
+        .split('.')
+        .reduce((obj, key) => (obj && obj[key] !== undefined ? obj[key] : undefined), serverConfig as unknown) as T
+  );
+
+export const getAvailableLocales = createSelector(
+  getConfigurationState,
+  state => state.locales
+);
+
+/**
+ * selects the current locale if set. If not returns the first available locale
+ */
+export const getCurrentLocale = createSelector(
+  getConfigurationState,
+  state => (state.lang ? state.locales.find(l => l.lang === state.lang) : state.locales[0])
+);
+
+export const getDeviceType = createSelector(
+  getConfigurationState,
+  state => state._deviceType
 );

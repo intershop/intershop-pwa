@@ -122,12 +122,6 @@
 }
 
 .header-search-container {
-  @include media-breakpoint-up(sm) {
-    float: right;
-    width: 33%;
-    margin-top: $space-default * 2;
-  }
-
   @include media-breakpoint-only(xs) {
     height: $search-container-height;
   }

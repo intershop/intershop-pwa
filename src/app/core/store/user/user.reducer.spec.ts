@@ -252,9 +252,7 @@ describe('User Reducer', () => {
       expect(state.error).toEqual(error);
     });
   });
-});
 
-describe('User Reducer for loading payment methods', () => {
   describe('LoadUserPaymentMethods action', () => {
     it('should set loading when reduced', () => {
       const action = new LoadUserPaymentMethods();
@@ -284,9 +282,7 @@ describe('User Reducer for loading payment methods', () => {
       expect(response.loading).toBeFalse();
     });
   });
-});
 
-describe('User Reducer for deleting payments', () => {
   describe('DeleteUserPayment action', () => {
     it('should set loading when reduced', () => {
       const action = new DeleteUserPaymentInstrument({ id: 'paymentInstrumentId' });
@@ -315,10 +311,8 @@ describe('User Reducer for deleting payments', () => {
       expect(response.loading).toBeFalse();
     });
   });
-});
 
-describe('User Reducer for Password Reminder', () => {
-  describe('initialState', () => {
+  describe('Password Reminder initialState', () => {
     it('should have nothing in it when unmodified', () => {
       expect(initialState.passwordReminderError).toBeUndefined();
       expect(initialState.passwordReminderSuccess).toBeFalsy();

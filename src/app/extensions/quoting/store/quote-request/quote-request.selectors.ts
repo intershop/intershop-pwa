@@ -34,7 +34,7 @@ export const getCurrentQuoteRequests = createSelector(
   quoteRequests => quoteRequests.map(addStateToQuoteRequest)
 );
 
-export const getQuoteRequestItems = createSelector(
+const getQuoteRequestItems = createSelector(
   getQuoteRequestState,
   state => state.quoteRequestItems
 );

@@ -8,8 +8,8 @@ import {
 } from 'ish-core/models/content-view/content-view.model';
 import { createDocumentFromHTML } from 'ish-core/utils/dev/html-query-utils';
 
+import { domDataProvider, htmlComplex, reducedTreeComplex } from './dev/sfe.mapper.spec.dom-data';
 import { SfeMapper } from './sfe.mapper';
-import { domDataProvider, htmlComplex, reducedTreeComplex } from './sfe.mapper.spec.dom-data';
 
 describe('Sfe Mapper', () => {
   describe('tree mappings with getDomTree and reduceDomTree', () => {

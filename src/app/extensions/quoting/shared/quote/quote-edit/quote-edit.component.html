@@ -28,7 +28,7 @@
   <div *ngIf="quote.state === 'Submitted' && !submitted" data-testing-id="success-message" class="alert alert-info">
     {{
       'quote.edit.submitted.your_quote_request_has_been_submitted.text'
-        | translate: { '0': quote.creationDate | ishDate: 'shortDate' }
+        | translate: { '0': quote.submittedDate || quote.creationDate | ishDate: 'shortDate' }
     }}
   </div>
 
@@ -148,15 +148,6 @@
       </div>
     </div>
   </div>
-
-  <!-- TODO: SubmittedToSeller date is missing in api. Please implement when available.
-  <isif condition="#(Quote:State==3) AND (LinkSource NE "Shopping")#">
-    <div class="alert alert-info"><istext key="quote.edit.submitted.your_quote_has_been_submitted.text" parameter0="#getValue(Quote:ProductListEventByType("SubmittedToSeller"):EventDate, DATE_INPUT)#" /></div>
-    <iselseif condition="#isDefined(ERRORCODE_QUOTEVALIDATION)#">
-    <div class="alert alert-info">
-      <istext key="#ERRORCODE_QUOTEVALIDATION#"/>
-    </div>
-  </isif> -->
 
   <!-- Quote Item List -->
   <div class="section">

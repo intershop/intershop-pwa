@@ -1,24 +1,49 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { ActivatedRouteSnapshot, ActivationStart, NavigationEnd, ParamMap, Router } from '@angular/router';
 import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
-import { filter, map, mergeMap, take, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
+import { routerNavigationAction } from '@ngrx/router-store';
+import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { defer, fromEvent, iif, merge } from 'rxjs';
+import {
+  concatMap,
+  distinctUntilChanged,
+  map,
+  mapTo,
+  switchMapTo,
+  take,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
-import { SelectLocale } from 'ish-core/store/locale';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
+import { distinctCompareWith, mapErrorToAction, mapToProperty, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { ApplyConfiguration, SetGTMToken } from './configuration.actions';
-import { ConfigurationState } from './configuration.reducer';
+import {
+  ApplyConfiguration,
+  ConfigurationActionTypes,
+  LoadServerConfig,
+  LoadServerConfigFail,
+  SetGTMToken,
+} from './configuration.actions';
+import { getCurrentLocale, getDeviceType, isServerConfigurationLoaded } from './configuration.selectors';
 
 @Injectable()
 export class ConfigurationEffects {
   constructor(
     private actions$: Actions,
+    private store: Store<{}>,
+    private configService: ConfigurationService,
+    private translateService: TranslateService,
     private stateProperties: StatePropertiesService,
-    private router: Router,
     @Inject(PLATFORM_ID) private platformId: string,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number
   ) {}
 
   @Effect({ dispatch: false })
@@ -28,13 +53,26 @@ export class ConfigurationEffects {
     tap(stable => ((window as any).angularStable = stable))
   );
 
+  /**
+   * get server configuration on routing event, if it is not already loaded
+   */
   @Effect()
-  routerWatch$ = this.router.events.pipe(
-    takeWhile(event => !(event instanceof NavigationEnd)),
-    filter<ActivationStart>(event => event instanceof ActivationStart),
-    map(event => event.snapshot),
-    tap(snapshot => this.redirectIfNeeded(snapshot)),
-    mergeMap(({ paramMap }) => [...this.extractConfigurationParameters(paramMap), ...this.extractLanguage(paramMap)])
+  loadServerConfigOnInit$ = this.actions$.pipe(
+    ofType(routerNavigationAction),
+    switchMapTo(this.store.pipe(select(isServerConfigurationLoaded))),
+    whenFalsy(),
+    mapTo(new LoadServerConfig())
+  );
+
+  @Effect()
+  loadServerConfig$ = this.actions$.pipe(
+    ofType<LoadServerConfig>(ConfigurationActionTypes.LoadServerConfig),
+    concatMap(() =>
+      this.configService.getServerConfiguration().pipe(
+        map(serverConfig => new ApplyConfiguration({ serverConfig })),
+        mapErrorToAction(LoadServerConfigFail)
+      )
+    )
   );
 
   @Effect()
@@ -58,6 +96,15 @@ export class ConfigurationEffects {
     )
   );
 
+  @Effect({ dispatch: false })
+  setLocale$ = this.store.pipe(
+    select(getCurrentLocale),
+    mapToProperty('lang'),
+    whenTruthy(),
+    distinctUntilChanged(),
+    tap(lang => this.translateService.use(lang))
+  );
+
   @Effect()
   setGTMToken$ = this.actions$.pipe(
     takeWhile(() => isPlatformServer(this.platformId)),
@@ -69,52 +116,23 @@ export class ConfigurationEffects {
     map(gtmToken => new SetGTMToken({ gtmToken }))
   );
 
-  extractConfigurationParameters(paramMap: ParamMap) {
-    const keys: (keyof ConfigurationState)[] = ['channel', 'application'];
-    const properties: Partial<ConfigurationState> = keys
-      .filter(key => paramMap.has(key))
-      .map(key => ({ [key]: paramMap.get(key) }))
-      .reduce((acc, val) => ({ ...acc, ...val }), {});
-
-    if (paramMap.has('icmHost')) {
-      properties.baseURL = `${paramMap.get('icmScheme') || 'https'}://${paramMap.get('icmHost')}`;
-    }
-
-    if (paramMap.has('features') && paramMap.get('features') !== 'default') {
-      if (paramMap.get('features') === 'none') {
-        properties.features = [];
-      } else {
-        properties.features = paramMap.get('features').split(/,/g);
-      }
-    }
-
-    if (paramMap.has('theme')) {
-      properties.theme = paramMap.get('theme');
-    }
-
-    return Object.keys(properties).length ? [new ApplyConfiguration(properties)] : [];
-  }
-
-  extractLanguage(paramMap: ParamMap) {
-    return paramMap.has('lang') && paramMap.get('lang') !== 'default'
-      ? [new SelectLocale({ lang: paramMap.get('lang') })]
-      : [];
-  }
-
-  getResolvedUrl(route: ActivatedRouteSnapshot): string {
-    const url = route.pathFromRoot.map(v => v.url.map(segment => segment.toString()).join('/')).join('/');
-    const params = Object.entries(route.queryParams)
-      .map(kvp => kvp.join('='))
-      .join('&');
-    return url + (params ? '?' + params : '');
-  }
-
-  redirectIfNeeded(snapshot: ActivatedRouteSnapshot) {
-    if (snapshot.paramMap.has('redirect')) {
-      const url = this.getResolvedUrl(snapshot);
-      const params = url.match(/\/.*?(;[^?]*).*?/);
-      const navigateTo = url.replace(params[1], '');
-      return this.router.navigateByUrl(navigateTo);
-    }
-  }
+  @Effect()
+  setDeviceType$ = iif(
+    () => isPlatformBrowser(this.platformId),
+    defer(() =>
+      merge(this.actions$.pipe(ofType(ROOT_EFFECTS_INIT)), fromEvent(window, 'resize')).pipe(
+        map<unknown, DeviceType>(() => {
+          if (window.innerWidth < this.mediumBreakpointWidth) {
+            return 'mobile';
+          } else if (window.innerWidth < this.largeBreakpointWidth) {
+            return 'tablet';
+          } else {
+            return 'desktop';
+          }
+        }),
+        distinctCompareWith(this.store.pipe(select(getDeviceType))),
+        map(deviceType => new ApplyConfiguration({ _deviceType: deviceType }))
+      )
+    )
+  );
 }

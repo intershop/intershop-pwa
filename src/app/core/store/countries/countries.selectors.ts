@@ -9,9 +9,7 @@ const getCountriesState = createSelector(
   state => state.countries
 );
 
-export const { selectEntities: getCountryEntities, selectAll: getAllCountries } = countryAdapter.getSelectors(
-  getCountriesState
-);
+export const { selectAll: getAllCountries } = countryAdapter.getSelectors(getCountriesState);
 
 export const getCountriesLoading = createSelector(
   getCountriesState,

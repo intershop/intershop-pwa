@@ -1,7 +1,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { PaymentInstrumentData } from 'ish-core/models/payment-instrument/payment-instrument.interface';
-import { PriceMapper } from 'ish-core/models/price/price.mapper';
+import { PriceItemMapper } from 'ish-core/models/price-item/price-item.mapper';
 
 import {
   PaymentMethodBaseData,
@@ -33,8 +33,8 @@ export class PaymentMethodMapper {
         isRestricted: data.restricted,
         saveAllowed: data.saveAllowed && !!data.parameterDefinitions && !!data.parameterDefinitions.length,
         restrictionCauses: data.restrictions,
-        paymentCosts: PriceMapper.fromPriceItem(data.paymentCosts, 'net'),
-        paymentCostsThreshold: PriceMapper.fromPriceItem(data.paymentCostsThreshold, 'net'),
+        paymentCosts: PriceItemMapper.fromSpecificPriceItem(data.paymentCosts, 'net'),
+        paymentCostsThreshold: PriceItemMapper.fromSpecificPriceItem(data.paymentCostsThreshold, 'net'),
         paymentInstruments:
           included && included.paymentInstruments && data.paymentInstruments
             ? data.paymentInstruments.map(id => included.paymentInstruments[id])

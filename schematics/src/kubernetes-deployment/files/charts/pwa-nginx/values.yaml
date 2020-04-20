@@ -16,9 +16,9 @@ upstream:
   icm: https://www.example.com
   pwa: https://pwa-main.example.com
 
-channel:
-  domain1: b2c
-  target1: inSPIRED-inTRONICS-Site
+# channel:
+#   domain1: b2c
+#   target1: inSPIRED-inTRONICS-Site
 
 service:
   type: ClusterIP

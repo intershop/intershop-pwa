@@ -17,6 +17,13 @@
       "problemMatcher": ["$tsc-watch"]
     },
     {
+      "label": "run continuous app-compile",
+      "type": "typescript",
+      "tsconfig": "tsconfig.app.json",
+      "option": "watch",
+      "problemMatcher": ["$tsc-watch"]
+    },
+    {
       "label": "run tslint",
       "type": "npm",
       "script": "lint",

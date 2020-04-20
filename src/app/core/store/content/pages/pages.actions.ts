@@ -5,16 +5,12 @@ import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export enum PagesActionTypes {
-  SelectContentPage = '[Content Page] Select Content Page',
   LoadContentPage = '[Content Page] Load Content Page',
   LoadContentPageFail = '[Content Page API] Load Content Page Fail',
   LoadContentPageSuccess = '[Content Page API] Load Content Page Success',
+  ResetContentPages = '[Content Page] Reset Content Pages',
 }
 
-export class SelectContentPage implements Action {
-  readonly type = PagesActionTypes.SelectContentPage;
-  constructor(public payload: { contentPageId: string }) {}
-}
 export class LoadContentPage implements Action {
   readonly type = PagesActionTypes.LoadContentPage;
   constructor(public payload: { contentPageId: string }) {}
@@ -30,4 +26,8 @@ export class LoadContentPageSuccess implements Action {
   constructor(public payload: { page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }) {}
 }
 
-export type PageAction = SelectContentPage | LoadContentPage | LoadContentPageFail | LoadContentPageSuccess;
+export class ResetContentPages implements Action {
+  readonly type = PagesActionTypes.ResetContentPages;
+}
+
+export type PageAction = LoadContentPage | LoadContentPageFail | LoadContentPageSuccess | ResetContentPages;

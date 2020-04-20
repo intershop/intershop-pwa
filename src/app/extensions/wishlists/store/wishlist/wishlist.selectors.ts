@@ -1,4 +1,5 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize } from '@ngrx/store';
+import { flatten, isEqual, uniq } from 'lodash-es';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
 import { getWishlistsState } from '../wishlists-store';
@@ -10,9 +11,8 @@ const getWishlistState = createSelector(
   state => (state ? state.wishlists : initialState)
 );
 
-export const { selectEntities: getWishlistEntities, selectAll: getAllWishlists } = wishlistsAdapter.getSelectors(
-  getWishlistState
-);
+const { selectEntities, selectAll } = wishlistsAdapter.getSelectors(getWishlistState);
+export const getAllWishlists = selectAll;
 
 export const getWishlistsLoading = createSelector(
   getWishlistState,
@@ -29,12 +29,27 @@ export const getSelectedWishlistId = createSelector(
 );
 
 export const getSelectedWishlistDetails = createSelector(
-  getWishlistEntities,
+  selectEntities,
   getSelectedWishlistId,
   (entities, id): Wishlist => id && entities[id]
+);
+
+export const getWishlistDetails = createSelector(
+  selectEntities,
+  (entities, props: { id: string }): Wishlist => props.id && entities[props.id]
 );
 
 export const getPreferredWishlist = createSelector(
   getAllWishlists,
   entities => entities.find(e => e.preferred)
+);
+
+/**
+ * Gets all unique items from all wishlists
+ * Returns an array of the wishlist item product SKUs
+ */
+export const getAllWishlistsItemsSkus = createSelectorFactory(projector =>
+  defaultMemoize(projector, undefined, isEqual)
+)(getAllWishlists, (wishlists): string[] =>
+  uniq(flatten(wishlists.map(wishlist => wishlist.items.map(items => items.sku))))
 );

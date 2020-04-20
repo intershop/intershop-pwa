@@ -8,14 +8,9 @@ import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
-import {
-  AVAILABLE_LOCALES,
-  LARGE_BREAKPOINT_WIDTH,
-  MEDIUM_BREAKPOINT_WIDTH,
-} from 'ish-core/configurations/injection-keys';
+import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { Locale } from 'ish-core/models/locale/locale.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { CountryService } from 'ish-core/services/country/country.service';
@@ -54,7 +49,6 @@ describe('Quoting Store', () => {
   let store$: TestStore;
   let apiServiceMock: ApiService;
   let quoteServiceMock: QuoteService;
-  let locales: Locale[];
   const user = { email: 'UID' } as User;
   const customer = { customerNo: 'CID' } as Customer;
 
@@ -63,12 +57,6 @@ describe('Quoting Store', () => {
 
     @Component({ template: 'dummy' })
     class DummyComponent {}
-
-    locales = [
-      { lang: 'en_US', currency: 'USD', value: 'en' },
-      { lang: 'de_DE', currency: 'EUR', value: 'de' },
-    ] as Locale[];
-
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.icmServerURL).thenReturn('http://example.org');
     when(apiServiceMock.get(anything())).thenReturn(EMPTY);
@@ -104,7 +92,6 @@ describe('Quoting Store', () => {
         { provide: QuoteService, useFactory: () => instance(quoteServiceMock) },
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
-        { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 },
         { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
       ],

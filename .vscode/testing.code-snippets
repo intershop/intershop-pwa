@@ -25,5 +25,11 @@
       "$1"
     ],
     "description": "Insert DummyComponent for Testing"
+  },
+  "ts-mockito Provider with instance & mock": {
+    "scope": "typescript",
+    "prefix": "ish-provider-ts-mockito",
+    "body": ["{ provide: $1, useFactory: () => instance(mock($1)) }"],
+    "description": "Insert ts-mockito provider for Testing"
   }
 }

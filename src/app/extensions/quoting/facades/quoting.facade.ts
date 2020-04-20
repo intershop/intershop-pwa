@@ -54,11 +54,6 @@ export class QuotingFacade {
   quoteLoading$ = this.store.pipe(select(getQuoteLoading));
   quoteError$ = this.store.pipe(select(getQuoteError));
 
-  quotes$() {
-    this.loadQuotes();
-    return this.store.pipe(select(getCurrentQuotes));
-  }
-
   private loadQuotes() {
     this.store.dispatch(new LoadQuotes());
   }
@@ -67,7 +62,7 @@ export class QuotingFacade {
     this.store.dispatch(new RejectQuote());
   }
 
-  deleteQuote(id: string) {
+  private deleteQuote(id: string) {
     this.store.dispatch(new DeleteQuote({ id }));
   }
 
@@ -84,11 +79,6 @@ export class QuotingFacade {
   quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
   quoteRequestError$ = this.store.pipe(select(getQuoteRequestError));
   activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequestWithProducts));
-
-  quoteRequests$() {
-    this.loadQuoteRequests();
-    return this.store.pipe(select(getCurrentQuoteRequests));
-  }
 
   private loadQuoteRequests() {
     this.store.dispatch(new LoadQuoteRequests());

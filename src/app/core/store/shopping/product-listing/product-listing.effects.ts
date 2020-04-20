@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import b64u from 'b64u';
@@ -14,6 +13,7 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductMasterVariationsService } from 'ish-core/services/product-master-variations/product-master-variations.service';
+import { selectQueryParam, selectQueryParams } from 'ish-core/store/router';
 import {
   ApplyFilter,
   LoadFilterForCategory,
@@ -34,7 +34,6 @@ export class ProductListingEffects {
     @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: number,
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE) private defaultViewType: ViewType,
     private actions$: Actions,
-    private activatedRoute: ActivatedRoute,
     private store: Store<{}>,
     private productListingMapper: ProductListingMapper,
     private productMasterVariationsService: ProductMasterVariationsService
@@ -54,8 +53,8 @@ export class ProductListingEffects {
   );
 
   @Effect()
-  setViewTypeFromQueryParam$ = this.activatedRoute.queryParamMap.pipe(
-    map(params => params.get('view')),
+  setViewTypeFromQueryParam$ = this.store.pipe(
+    select(selectQueryParam('view')),
     whenTruthy(),
     distinctUntilChanged(),
     map((viewType: ViewType) => new actions.SetViewType({ viewType }))
@@ -66,12 +65,13 @@ export class ProductListingEffects {
     ofType<actions.LoadMoreProducts>(actions.ProductListingActionTypes.LoadMoreProducts),
     mapToPayload(),
     switchMap(({ id, page }) =>
-      this.activatedRoute.queryParamMap.pipe(
+      this.store.pipe(
+        select(selectQueryParams),
         map(params => ({
           id,
-          sorting: params.get('sorting') || undefined,
-          page: +params.get('page') || page || undefined,
-          filters: params.get('filters') || undefined,
+          sorting: params.sorting || undefined,
+          page: +params.page || page || undefined,
+          filters: params.filters || undefined,
         }))
       )
     ),
@@ -115,7 +115,8 @@ export class ProductListingEffects {
         }
       }
     }),
-    whenTruthy()
+    whenTruthy(),
+    distinctUntilChanged(isEqual)
   );
 
   @Effect()

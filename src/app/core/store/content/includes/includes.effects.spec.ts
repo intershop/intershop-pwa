@@ -8,8 +8,14 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { LogoutUser } from 'ish-core/store/user';
 
-import { LoadContentInclude, LoadContentIncludeFail, LoadContentIncludeSuccess } from './includes.actions';
+import {
+  LoadContentInclude,
+  LoadContentIncludeFail,
+  LoadContentIncludeSuccess,
+  ResetContentIncludes,
+} from './includes.actions';
 import { IncludesEffects } from './includes.effects';
 
 describe('Includes Effects', () => {
@@ -72,6 +78,17 @@ describe('Includes Effects', () => {
       expect(effects.loadContentInclude$).toBeObservable(
         cold('a-a-a-a', { a: new LoadContentIncludeFail({ error: { message: 'ERROR' } as HttpError }) })
       );
+    });
+  });
+
+  describe('resetContentIncludesAfterLogout$', () => {
+    it('should map to action of type ResetAddresses if LogoutUser action triggered', () => {
+      const action = new LogoutUser();
+      const completion = new ResetContentIncludes();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.resetContentIncludesAfterLogout$).toBeObservable(expected$);
     });
   });
 });

@@ -264,11 +264,6 @@
           "message": "Most likely you would've wanted to import the model instead."
         },
         {
-          "import": "ROUTER_NAVIGATION_TYPE",
-          "from": "ngrx-router",
-          "message": "Don't use ROUTER_NAVIGATION_TYPE, try to do it with ofRoute() in effects and new RouteNavigation in specs."
-        },
-        {
           "from": "^[\\./]*/core/(.*)$",
           "message": "Use import alias ish-core",
           "fix": "ish-core/$1"
@@ -336,7 +331,7 @@
           "from": "lodash.*"
         },
         {
-          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection)$).*",
+          "import": "^(?!(range|uniq|memoize|once|groupBy|countBy|flatten|isEqual|intersection|omit)$).*",
           "from": "lodash.*"
         },
         {
@@ -349,6 +344,12 @@
           "from": "@ngx-utils/cookies",
           "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
+        },
+        {
+          "import": "MetaGuard",
+          "from": "@ngx-meta/core",
+          "filePattern": "^.*$",
+          "message": "Use MetaGuard from seo module instead."
         },
         {
           "import": "^FormsModule$",
@@ -384,7 +385,7 @@
         {
           "import": ".*",
           "from": ".*environments/environment.*",
-          "filePattern": "^.*/app/((?!(module|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
+          "filePattern": "^.*/app/((?!(module|core/store/configuration/configuration\\.reducer|core/utils/state-transfer/state-properties\\.service)\\.ts).)*$",
           "message": "Importing environment is not allowed. Inject needed properties instead."
         },
         {
@@ -492,7 +493,6 @@
         "pathPatterns": [
           "^.*/cypress/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
-          "^.*/src/ngrx-router/.*$",
           "^.*/src/hybrid/default-url-mapping-table.ts$",
           // core
           "^.*/src/app/core/[a-z][a-z0-9-]+\\.module\\.ts",
@@ -514,6 +514,8 @@
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+/|)([a-z][a-z0-9-]+)/index\\.ts",
           "^.*/src/app/.*/store/([a-z][a-z0-9-]+)/\\1-store(\\.module|)\\.ts",
           "^.*/([a-z][a-z0-9-]+)/store/\\1-store(\\.module|)\\.ts",
+          // ngrx router-store
+          "^.*/src/app/core/store/router/router\\.(operators|serializer)\\.ts",
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // application shell
@@ -539,11 +541,6 @@
           "^.*/src/app/extensions/([a-z][a-z0-9-]+)/exports/\\1-exports\\.module\\.ts$"
         ],
         "patterns": [
-          // ngrx-router
-          {
-            "name": "RouterEffects",
-            "file": ".*/src/ngrx-router/effects.ts"
-          },
           // root components
           {
             "name": "^(AppComponent)$",
@@ -717,6 +714,7 @@
           "src/[^/]*.ts$",
           ".*.spec.ts$",
           "tslint-rules/",
+          "scripts/",
           "schematics/",
           "utils/dev/",
           "core/utils/",

@@ -73,8 +73,25 @@ export class WishlistsDetailsPage {
       .find('[data-testing-id="quantity"]')
       .clear()
       .type(quantity.toString());
+
+    cy.wait(3000);
+    cy.server()
+      .route('POST', '**/baskets/*/items')
+      .as('basket');
+    cy.server()
+      .route('GET', '**/baskets/current*')
+      .as('basketCurrent');
+    cy.wait(3000);
+
     this.getWishlistItemById(productId)
       .find('[data-testing-id="addToCartButton"]')
       .click();
+
+    return (
+      cy
+        .wait('@basket')
+        // tslint:disable-next-line: no-any
+        .then(result => (result.status >= 400 ? result : cy.wait('@basketCurrent').then(() => result))) as any
+    );
   }
 }

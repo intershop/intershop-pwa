@@ -4,7 +4,12 @@
 version: "3"
 services:
   pwa:
-    build: ..
+    build:
+      context: ..
+      args:
+        # configuration: local
+        configuration: production
+        serviceWorker: "false"
     environment:
       - LOGGING=true
       - ICM_BASE_URL
@@ -14,7 +19,19 @@ services:
       - pwa
     environment:
       UPSTREAM_PWA: "http://pwa:4200"
-      PWA_1_SUBDOMAIN: "b2c"
+      # DEBUG: 1
+      PWA_1_DOMAIN: "example.com"
+      # PWA_1_SUBDOMAIN: "www"
+      # PWA_1_TOPLEVELDOMAIN: "com"
       PWA_1_CHANNEL: "inSPIRED-inTRONICS-Site"
+      PWA_1_LANG: en_US
+      PWA_2_TOPLEVELDOMAIN: "de"
+      PWA_2_CHANNEL: "inSPIRED-inTRONICS_Business-Site"
+      PWA_2_LANG: de_DE
+      PWA_2_THEME: blue
+      PWA_3_TOPLEVELDOMAIN: "net"
+      PWA_3_APPLICATION: "smb-responsive"
+      PWA_3_CHANNEL: "inSPIRED-inTRONICS-Site"
+      PWA_3_LANG: fr_FR
     ports:
       - "4200:80"

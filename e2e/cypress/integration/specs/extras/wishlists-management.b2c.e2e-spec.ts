@@ -28,7 +28,7 @@ describe('Wishlist MyAccount Functionality', () => {
 
   before(() => {
     createUserViaREST(_.user);
-    LoginPage.navigateTo();
+    LoginPage.navigateTo('/account/wishlists');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
       page
@@ -36,7 +36,7 @@ describe('Wishlist MyAccount Functionality', () => {
         .its('status')
         .should('equal', 200);
     });
-    WishlistsOverviewPage.navigateTo();
+    at(WishlistsOverviewPage);
   });
 
   it('user creates an unpreferred wishlist', () => {
@@ -122,8 +122,8 @@ describe('Wishlist MyAccount Functionality', () => {
       cy.wait(500);
       page.wishlistTitle.should('equal', anotherWishlist);
       page.getWishlistItemById(_.product1).should('exist');
+      page.header.gotoWishlists();
     });
-    WishlistsOverviewPage.navigateTo();
     at(WishlistsOverviewPage, page => {
       page.goToWishlistDetailLink(editedWishlist);
     });

@@ -20,6 +20,7 @@ interface AbstractBasket<T> {
   invoiceToAddress?: Address;
   commonShipToAddress?: Address;
   commonShippingMethod?: ShippingMethod;
+  customerNo?: string;
   lineItems?: T[];
   payment?: Payment;
   promotionCodes?: string[];

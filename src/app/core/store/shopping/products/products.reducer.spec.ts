@@ -14,26 +14,7 @@ describe('Products Reducer', () => {
     });
   });
 
-  describe('SelectProduct', () => {
-    it('should select a product when reduced', () => {
-      const action = new fromActions.SelectProduct({ sku: 'dummy' });
-      const state = productsReducer(initialState, action);
-
-      expect(state.selected).toEqual('dummy');
-    });
-  });
-
   describe('LoadProduct actions', () => {
-    describe('LoadProduct action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.LoadProduct({ sku: '123' });
-        const state = productsReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-        expect(state.entities).toBeEmpty();
-      });
-    });
-
     describe('LoadCategoryFail action', () => {
       let state: ProductsState;
 
@@ -42,8 +23,7 @@ describe('Products Reducer', () => {
         state = productsReducer(initialState, action);
       });
 
-      it('should set loading to false and add product to failed list', () => {
-        expect(state.loading).toBeFalse();
+      it('should add product to failed list', () => {
         expect(state.entities).toBeEmpty();
         expect(state.failed).toIncludeAllMembers(['invalid']);
       });
@@ -55,8 +35,7 @@ describe('Products Reducer', () => {
           state = productsReducer(initialState, action);
         });
 
-        it('should set loading to false and remove product from failed list', () => {
-          expect(state.loading).toBeFalse();
+        it('should remove product on failed list', () => {
           expect(state.entities).toHaveProperty('invalid');
           expect(state.failed).toBeEmpty();
         });
@@ -111,28 +90,12 @@ describe('Products Reducer', () => {
           }
         `);
       });
-
-      it('should set loading to false', () => {
-        const action = new fromActions.LoadProductSuccess({ product });
-        const state = productsReducer(initialState, action);
-
-        expect(state.loading).toBeFalse();
-      });
     });
   });
 
   describe('LoadProductVariations actions', () => {
-    describe('LoadProductVariations action', () => {
-      it('should set loading to true', () => {
-        const action = new fromActions.LoadProductVariations({ sku: '123' });
-        const state = productsReducer(initialState, action);
-
-        expect(state.loading).toBeTrue();
-      });
-    });
-
     describe('LoadProductVariationsSuccess action', () => {
-      it('should set product variation data and set loading to false', () => {
+      it('should set product variation data when reducing', () => {
         const product = { sku: 'SKU' } as Product;
         let state = productsReducer(initialState, new fromActions.LoadProductSuccess({ product }));
 
@@ -146,17 +109,16 @@ describe('Products Reducer', () => {
         );
 
         expect(state.entities.SKU).toHaveProperty('variationSKUs', ['VAR']);
-        expect(state.loading).toBeFalse();
       });
     });
 
     describe('LoadProductVariationsFail action', () => {
-      it('should set loading to false', () => {
+      it('should put sku on failed list', () => {
         const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.LoadProductVariationsFail({ error, sku: 'SKU' });
         const state = productsReducer(initialState, action);
 
-        expect(state.loading).toBeFalse();
+        expect(state.failed).toContain('SKU');
       });
     });
   });

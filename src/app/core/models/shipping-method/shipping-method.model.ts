@@ -1,4 +1,4 @@
-import { Price } from 'ish-core/models/price/price.model';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
 export interface ShippingMethod {
   name: string;
@@ -6,5 +6,5 @@ export interface ShippingMethod {
   description: string;
   shippingTimeMin?: number;
   shippingTimeMax?: number;
-  shippingCosts?: Price;
+  shippingCosts?: PriceItem;
 }

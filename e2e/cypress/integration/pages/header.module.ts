@@ -1,7 +1,11 @@
+import { waitLoadingEnd } from '../framework';
+
 import { MiniCartModule } from './checkout/mini-cart.module';
+import { SearchBoxModule } from './shopping/search-box.module';
 
 export class HeaderModule {
   miniCart = new MiniCartModule();
+  searchBox = new SearchBoxModule();
 
   get numberOfCompareItems() {
     cy.get('header').then(header => {
@@ -17,18 +21,34 @@ export class HeaderModule {
 
   gotoHomePage() {
     cy.get('[data-testing-id="header-home-link-desktop"]').click();
+    waitLoadingEnd();
   }
 
   gotoLoginPage() {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-login').click();
+    waitLoadingEnd();
   }
 
   gotoRegistrationPage() {
     cy.get('[data-testing-id="user-status-desktop"] .my-account-register').click();
+    waitLoadingEnd();
   }
 
   gotoCategoryPage(categoryUniqueId: string) {
     cy.get(`[data-testing-id="${categoryUniqueId}-link"]`).click();
+    waitLoadingEnd();
+  }
+
+  gotoWishlists() {
+    cy.get('ish-wishlists-link a')
+      .eq(0)
+      .click({ force: true });
+    waitLoadingEnd();
+  }
+
+  gotoQuickorder() {
+    cy.get('a[rel="quick-order"]').click();
+    waitLoadingEnd();
   }
 
   logout() {
@@ -45,19 +65,6 @@ export class HeaderModule {
 
   get content() {
     return cy.get('ish-header');
-  }
-
-  getSearchSuggestions(searchTerm: string) {
-    cy.get('[data-testing-id="search-box-desktop"] input.searchTerm').type(searchTerm);
-    cy.get('ul.search-suggest-results').should('be.visible');
-    return cy.get('ul.search-suggest-results').get('li button');
-  }
-
-  doProductSearch(searchTerm: string) {
-    cy.get('[data-testing-id="search-box-desktop"] input.searchTerm')
-      .clear()
-      .type(searchTerm)
-      .type('{enter}');
   }
 
   topLevelCategoryLink(id: string) {

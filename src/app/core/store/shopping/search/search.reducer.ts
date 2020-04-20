@@ -4,58 +4,23 @@ import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
 import { SearchAction, SearchActionTypes } from './search.actions';
 
-export interface SuggestSearch {
-  suggestSearchTerm: string;
-  suggestSearchResults: SuggestTerm[];
+interface SuggestSearch {
+  searchTerm: string;
+  suggests: SuggestTerm[];
 }
 
 export const searchAdapter = createEntityAdapter<SuggestSearch>({
-  selectId: search => search.suggestSearchTerm,
+  selectId: search => search.searchTerm,
 });
 
-export interface SearchState extends EntityState<SuggestSearch> {
-  searchTerm: string;
-  suggestSearchTerm: string;
-  suggestSearchResults: SuggestTerm[];
-  currentSearchBoxId: string;
-}
+export interface SearchState extends EntityState<SuggestSearch> {}
 
-export const initialState: SearchState = searchAdapter.getInitialState({
-  searchTerm: undefined,
-  suggestSearchTerm: undefined,
-  currentSearchBoxId: undefined,
-  suggestSearchResults: [],
-});
+const initialState: SearchState = searchAdapter.getInitialState({});
 
 export function searchReducer(state = initialState, action: SearchAction): SearchState {
   switch (action.type) {
-    case SearchActionTypes.SelectSearchTerm: {
-      return {
-        ...state,
-        searchTerm: action.payload.searchTerm,
-        suggestSearchTerm: action.payload.searchTerm,
-      };
-    }
-
-    case SearchActionTypes.SuggestSearch: {
-      return {
-        ...state,
-        suggestSearchTerm: action.payload.searchTerm,
-        currentSearchBoxId: action.payload.id,
-      };
-    }
-
     case SearchActionTypes.SuggestSearchSuccess: {
-      return searchAdapter.upsertOne(
-        {
-          suggestSearchTerm: action.payload.searchTerm,
-          suggestSearchResults: action.payload.suggests,
-        },
-        {
-          ...state,
-          suggestSearchResults: action.payload.suggests,
-        }
-      );
+      return searchAdapter.upsertOne(action.payload, state);
     }
   }
 

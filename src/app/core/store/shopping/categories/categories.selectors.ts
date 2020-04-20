@@ -1,23 +1,12 @@
 import { createSelector } from '@ngrx/store';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { selectRouteParam } from 'ish-core/store/router';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 const getCategoriesState = createSelector(
   getShoppingState,
   (state: ShoppingState) => state.categories
-);
-
-/**
- * Retrieves the currently selected categoryUniqueId.
- * Be aware that it can have invalid values and it can change
- * so the referenced category might not yet be available.
- *
- * When in doubt prefer using getSelectedCategory.
- */
-export const getSelectedCategoryId = createSelector(
-  getCategoriesState,
-  state => state.selected
 );
 
 export const getCategoryTree = createSelector(
@@ -33,17 +22,12 @@ export const getCategoryEntities = createSelector(
   tree => tree.nodes
 );
 
-export const getCategoryIds = createSelector(
-  getCategoryTree,
-  tree => Object.keys(tree.nodes)
-);
-
 /**
  * Retrieves the currently resolved selected category.
  */
 export const getSelectedCategory = createSelector(
   getCategoryTree,
-  getSelectedCategoryId,
+  selectRouteParam('categoryUniqueId'),
   createCategoryView
 );
 

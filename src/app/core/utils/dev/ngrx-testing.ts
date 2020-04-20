@@ -1,7 +1,10 @@
 import { Injectable, Type } from '@angular/core';
 import { Actions, Effect, EffectsModule } from '@ngrx/effects';
-import { Action, ActionReducerMap, RootStoreConfig, Store, StoreModule } from '@ngrx/store';
-import { filter, tap } from 'rxjs/operators';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { Action, ActionReducer, ActionReducerMap, RootStoreConfig, Store, StoreModule } from '@ngrx/store';
+import { tap } from 'rxjs/operators';
+
+import { CustomRouterSerializer } from 'ish-core/store/router/router.serializer';
 
 // tslint:disable:no-any no-console
 
@@ -17,6 +20,23 @@ function includeAction(action: Action, include: string[] | RegExp) {
   return include instanceof Array ? include.some(inc => type.indexOf(inc) >= 0) : type.search(include) >= 0;
 }
 
+export function logActionsMeta(reducer: ActionReducer<any>): ActionReducer<any> {
+  return (state: any, action: any) => {
+    if (action.type !== '@ngrx/store-devtools/recompute') {
+      console.log('action', action);
+    }
+    return reducer(state, action);
+  };
+}
+
+export function logStateMeta(reducer: ActionReducer<any>): ActionReducer<any> {
+  return (state: any, action: any) => {
+    const newState = reducer(state, action);
+    console.log('state', newState);
+    return newState;
+  };
+}
+
 /**
  * Service for monitoring actions and the current state.
  * ! The listening is solved as Effects so it can be managed by the EffectsModule.
@@ -27,24 +47,13 @@ export class TestStore {
   private actions: Action[] = [];
   state: any;
 
-  logActions = false;
-  logState = false;
-
   constructor(private actions$: Actions, private store$: Store<{}>) {}
 
   @Effect({ dispatch: false })
-  logActions$ = this.actions$.pipe(
-    tap(action => this.actions.push(action)),
-    filter(() => this.logActions),
-    tap(action => console.log('action', action))
-  );
+  logActions$ = this.actions$.pipe(tap(action => this.actions.push(action)));
 
   @Effect({ dispatch: false })
-  logState$ = this.store$.pipe(
-    tap(state => (this.state = JSON.parse(JSON.stringify(state)))),
-    filter(() => this.logState),
-    tap(state => console.log('state', state))
-  );
+  logState$ = this.store$.pipe(tap(state => (this.state = JSON.parse(JSON.stringify(state)))));
 
   dispatch(action: Action) {
     this.store$.dispatch(action);
@@ -66,11 +75,29 @@ export function ngrxTesting<T>(
     reducers?: ActionReducerMap<T, Action>;
     effects?: Type<any>[];
     config?: RootStoreConfig<T>;
+    routerStore?: boolean;
+    logActions?: boolean;
+    logState?: boolean;
   } = {}
 ) {
-  return [
-    StoreModule.forRoot(options.reducers || ({} as ActionReducerMap<T, Action>), {
-      ...(options.config || {}),
+  let reducers = options.reducers || ({} as ActionReducerMap<T, Action>);
+
+  if (options.routerStore) {
+    reducers = { ...reducers, router: routerReducer };
+  }
+
+  const config = options.config || {};
+  config.metaReducers = config.metaReducers || [];
+  if (options.logActions) {
+    config.metaReducers = [logActionsMeta, ...config.metaReducers];
+  }
+  if (options.logState) {
+    config.metaReducers = [logStateMeta, ...config.metaReducers];
+  }
+
+  const array = [
+    StoreModule.forRoot(reducers, {
+      ...config,
       runtimeChecks: {
         strictActionImmutability: true,
         strictActionSerializability: true,
@@ -80,4 +107,10 @@ export function ngrxTesting<T>(
     }),
     EffectsModule.forRoot([TestStore, ...(options.effects || [])]),
   ];
+
+  if (options.routerStore) {
+    array.push(StoreRouterConnectingModule.forRoot({ serializer: CustomRouterSerializer }));
+  }
+
+  return array;
 }

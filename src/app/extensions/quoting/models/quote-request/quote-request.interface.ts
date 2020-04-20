@@ -7,6 +7,7 @@ export interface QuoteRequestData {
   id: string;
   number: string;
   creationDate: number;
+  submittedDate?: number;
   total: Price;
   items: Link[];
   modified?: number;

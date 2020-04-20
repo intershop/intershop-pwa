@@ -6,7 +6,7 @@ import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
-import { PriceItem } from 'ish-core/models/price-item/price-item.interface';
+import { PriceItemData } from 'ish-core/models/price-item/price-item.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
 export interface BasketBaseData {
@@ -16,6 +16,7 @@ export interface BasketBaseData {
   invoiceToAddress?: string;
   commonShipToAddress?: string;
   commonShippingMethod?: string;
+  customer?: string;
   discounts?: {
     dynamicMessages?: string[];
     shippingBasedDiscounts?: string[];
@@ -29,12 +30,12 @@ export interface BasketBaseData {
   totalProductQuantity?: number;
   surcharges?: {
     itemSurcharges?: {
-      amount: PriceItem;
+      amount: PriceItemData;
       description: string;
       name: string;
     }[];
     bucketSurcharges?: {
-      amount: PriceItem;
+      amount: PriceItemData;
       description: string;
       name: string;
     }[];

@@ -110,7 +110,7 @@ describe('Basket Handling', () => {
     });
 
     at(CartPage, page => {
-      page.infoMessage.message.should('contain', 'The quantity you entered is invalid');
+      page.lineItemInfoMessage.message.should('contain', 'The quantity you entered is invalid');
     });
   });
 
@@ -124,7 +124,7 @@ describe('Basket Handling', () => {
         .its('status')
         .should('equal', 422);
       cy.wait(1000);
-      page.header.miniCart.error.should('contain', 'The product could not be added to your basket');
+      page.header.miniCart.error.should('contain', 'could not be added');
     });
   });
 

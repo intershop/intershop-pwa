@@ -9,9 +9,7 @@ const getAddressesState = createSelector(
   state => state.addresses
 );
 
-export const { selectEntities: getAddressEntities, selectAll: getAllAddresses } = addressAdapter.getSelectors(
-  getAddressesState
-);
+export const { selectAll: getAllAddresses } = addressAdapter.getSelectors(getAddressesState);
 
 export const getAddressesLoading = createSelector(
   getAddressesState,

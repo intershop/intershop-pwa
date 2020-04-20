@@ -1,9 +1,9 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ApplicationRef, Inject, PLATFORM_ID } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { EMPTY, combineLatest, interval } from 'rxjs';
+import { EMPTY, combineLatest, iif, interval } from 'rxjs';
 import {
   concatMapTo,
   filter,
@@ -35,7 +35,6 @@ export class RestoreEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<{}>,
-    private router: Router,
     private cookieService: CookiesService,
     @Inject(PLATFORM_ID) private platformId: string,
     private appRef: ApplicationRef,
@@ -81,26 +80,28 @@ export class RestoreEffects {
    * Triggers actions to restore a user login, a basket or an order based on previously set cookie (see also effect saveAPITokenToCookie$).
    */
   @Effect()
-  restoreUserOrBasketOrOrderByToken$ = this.router.events.pipe(
-    filter(() => isPlatformBrowser(this.platformId)),
-    filter(event => event instanceof NavigationStart),
-    first(),
-    map(() => this.cookieService.get('apiToken')),
-    whenTruthy(),
-    map(c => this.parseCookie(c)),
-    map(cookie => {
-      switch (cookie.type) {
-        case 'basket': {
-          return new LoadBasketByAPIToken({ apiToken: cookie.apiToken });
+  restoreUserOrBasketOrOrderByToken$ = iif(
+    () => isPlatformBrowser(this.platformId),
+    this.actions$.pipe(
+      ofType(routerNavigationAction),
+      first(),
+      map(() => this.cookieService.get('apiToken')),
+      whenTruthy(),
+      map(c => this.parseCookie(c)),
+      map(cookie => {
+        switch (cookie.type) {
+          case 'basket': {
+            return new LoadBasketByAPIToken({ apiToken: cookie.apiToken });
+          }
+          case 'user': {
+            return new LoadUserByAPIToken({ apiToken: cookie.apiToken });
+          }
+          case 'order': {
+            return new LoadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken });
+          }
         }
-        case 'user': {
-          return new LoadUserByAPIToken({ apiToken: cookie.apiToken });
-        }
-        case 'order': {
-          return new LoadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken });
-        }
-      }
-    })
+      })
+    )
   );
 
   @Effect()

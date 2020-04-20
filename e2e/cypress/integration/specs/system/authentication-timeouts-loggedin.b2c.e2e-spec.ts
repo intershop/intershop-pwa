@@ -45,8 +45,8 @@ describe('Logged in Sleeping User', () => {
         cy.route({
           method: 'GET',
           url: `**/products/${_.product}*`,
-        }).as('valid');
-        cy.wait('@valid');
+        });
+
         cy.wait(5000);
         cy.window().screenshot();
       });

@@ -1,10 +1,9 @@
-import { BasketRebateData } from './basket-rebate.interface';
 import { BasketRebateMapper } from './basket-rebate.mapper';
 
 describe('Basket Rebate Mapper', () => {
   describe('fromData', () => {
     it(`should return BasketRebate when getting BasketRebateData`, () => {
-      const basketRebateData = {
+      const basketRebate = BasketRebateMapper.fromData({
         id: 'basketDiscountId',
         promotionType: 'Discount',
         amount: {
@@ -20,17 +19,23 @@ describe('Basket Rebate Mapper', () => {
         description: 'Dicount description',
         code: 'CODE5433',
         promotion: 'FreeShippingOnLEDTVs',
-      } as BasketRebateData;
+      });
 
-      const basketRebate = BasketRebateMapper.fromData(basketRebateData);
-
-      expect(basketRebate).toBeTruthy();
-      expect(basketRebate.id).toBe(basketRebateData.id);
-      expect(basketRebate.rebateType).toBe(basketRebateData.promotionType);
-      expect(basketRebate.description).toBe(basketRebateData.description);
-      expect(basketRebate.code).toBe(basketRebateData.code);
-      expect(basketRebate.amount.value).toBePositive();
-      expect(basketRebate.promotionId).toBe(basketRebateData.promotion);
+      expect(basketRebate).toMatchInlineSnapshot(`
+        Object {
+          "amount": Object {
+            "currency": "USD",
+            "gross": 43.34,
+            "net": 40.34,
+            "type": "PriceItem",
+          },
+          "code": "CODE5433",
+          "description": "Dicount description",
+          "id": "basketDiscountId",
+          "promotionId": "FreeShippingOnLEDTVs",
+          "rebateType": "Discount",
+        }
+      `);
     });
   });
 });

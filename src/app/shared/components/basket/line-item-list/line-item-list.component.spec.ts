@@ -57,8 +57,8 @@ describe('Line Item List Component', () => {
         quantity: { value: 10 },
         product: { sku: '4713', availability: true, inStock: true },
         productSKU: '4713',
-        singleBasePrice: { value: 3, currency: 'USD' },
-        price: { value: 3, currency: 'USD' },
+        singleBasePrice: { gross: 3, net: 2, currency: 'USD' },
+        price: { gross: 3, net: 2, currency: 'USD' },
         totals: {},
       } as LineItemView,
     ];

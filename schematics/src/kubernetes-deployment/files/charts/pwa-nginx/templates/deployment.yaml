@@ -26,10 +26,10 @@ spec:
           env:
           - name: UPSTREAM_PWA
             value: "{{ .Values.upstream.pwa }}"
-          - name: PWA_1_SUBDOMAIN
-            value: "{{ .Values.channel.domain1 }}"
-          - name: PWA_1_CHANNEL
-            value: "{{ .Values.channel.target1 }}"
+          # - name: PWA_1_SUBDOMAIN
+          #   value: "{{ .Values.channel.domain1 }}"
+          # - name: PWA_1_CHANNEL
+          #   value: "{{ .Values.channel.target1 }}"
           ports:
             - name: http
               containerPort: 80

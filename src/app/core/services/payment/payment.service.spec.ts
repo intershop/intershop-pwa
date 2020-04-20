@@ -1,15 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
-import { localeReducer } from 'ish-core/store/locale/locale.reducer';
+import { getCurrentLocale } from 'ish-core/store/configuration';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
 import { PaymentService } from './payment.service';
 
@@ -69,15 +68,10 @@ describe('Payment Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     TestBed.configureTestingModule({
-      imports: [
-        ngrxTesting({
-          reducers: {
-            checkout: combineReducers(checkoutReducers),
-            locale: localeReducer,
-          },
-        }),
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }] }),
       ],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
     paymentService = TestBed.get(PaymentService);
   });

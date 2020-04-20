@@ -12,6 +12,8 @@ More information on the PWA can be found [here](https://www.intershop.com/en/pro
 
 In order to contribute, please have a look at our [Contribution Guidelines](./CONTRIBUTING.md)
 
+## Getting Started
+
 ---
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager. Currently Node.js 12.x LTS with the corresponding npm is required.
@@ -19,8 +21,6 @@ Before working with this project, download and install [Node.js](https://nodejs.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming coventions.
 
 ---
-
-## Quick Start
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install`.
 

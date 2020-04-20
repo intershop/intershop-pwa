@@ -34,6 +34,7 @@ describe('Product Listing Effects', () => {
             shopping: combineReducers(shoppingReducers),
           },
           effects: [ProductListingEffects],
+          routerStore: true,
         }),
       ],
       providers: [

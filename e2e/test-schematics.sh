@@ -75,7 +75,7 @@ grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
 
 
-node schematics/customization custom
+node schematics/customization/add custom
 npx ng g customized-copy shell/footer/footer
 
 stat src/app/shell/footer/custom-footer/custom-footer.component.ts
@@ -89,6 +89,10 @@ then
 else
   sed -i -e 's/^};$/mockServerAPI: true };/' src/environments/environment.prod.ts
 fi
+
+node schematics/customization/service-worker false
+grep '"serviceWorker": false' angular.json
+grep 'serviceWorker: false' src/environments/environment.prod.ts
 
 git add -A
 npx lint-staged

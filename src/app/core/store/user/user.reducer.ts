@@ -9,28 +9,29 @@ export interface UserState {
   customer: Customer;
   user: User;
   authorized: boolean;
-  _authToken: string;
-  _lastAuthTokenBeforeLogin: string;
   paymentMethods: PaymentMethod[];
   loading: boolean;
   error: HttpError;
   pgid: string;
   passwordReminderSuccess: boolean;
   passwordReminderError: HttpError;
+  // not synced via state transfer
+  _authToken: string;
+  _lastAuthTokenBeforeLogin: string;
 }
 
 export const initialState: UserState = {
   customer: undefined,
   user: undefined,
   authorized: false,
-  _authToken: undefined,
-  _lastAuthTokenBeforeLogin: undefined,
   paymentMethods: undefined,
   loading: false,
   error: undefined,
   pgid: undefined,
   passwordReminderSuccess: undefined,
   passwordReminderError: undefined,
+  _authToken: undefined,
+  _lastAuthTokenBeforeLogin: undefined,
 };
 
 export function userReducer(state = initialState, action: UserAction): UserState {

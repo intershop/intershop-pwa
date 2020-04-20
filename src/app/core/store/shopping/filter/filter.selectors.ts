@@ -11,8 +11,3 @@ export const getAvailableFilter = createSelector(
   getFilterState,
   state => state.availableFilter
 );
-
-export const getFilterLoading = createSelector(
-  getFilterState,
-  state => state.loading
-);

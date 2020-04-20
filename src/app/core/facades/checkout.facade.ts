@@ -36,8 +36,9 @@ import {
   getCurrentBasket,
   isBasketInvoiceAndShippingAddressEqual,
 } from 'ish-core/store/checkout/basket';
-import { getCheckoutStep } from 'ish-core/store/checkout/viewconf';
-import { CreateOrder, getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
+import { getServerConfigParameter } from 'ish-core/store/configuration';
+import { getOrdersError, getSelectedOrder } from 'ish-core/store/orders';
+import { selectRouteData } from 'ish-core/store/router';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -46,7 +47,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export class CheckoutFacade {
   constructor(private store: Store<{}>) {}
 
-  checkoutStep$ = this.store.pipe(select(getCheckoutStep));
+  checkoutStep$ = this.store.pipe(select(selectRouteData<number>('checkoutStep')));
 
   continue(targetStep: number) {
     this.store.dispatch(new ContinueCheckout({ targetStep }));
@@ -78,13 +79,9 @@ export class CheckoutFacade {
   }
 
   // ORDERS
-  ordersError$ = this.store.pipe(select(getOrdersError));
+  private ordersError$ = this.store.pipe(select(getOrdersError));
   basketOrOrdersError$ = merge(this.basketError$, this.ordersError$);
   selectedOrder$ = this.store.pipe(select(getSelectedOrder));
-
-  createOrder(basketId: string) {
-    this.store.dispatch(new CreateOrder({ basketId }));
-  }
 
   // SHIPPING
   eligibleShippingMethods$() {
@@ -105,6 +102,7 @@ export class CheckoutFacade {
       switchMap(() => this.store.pipe(select(getBasketEligiblePaymentMethods)))
     );
   }
+  priceType$ = this.store.pipe(select(getServerConfigParameter<'gross' | 'net'>('pricing.priceType')));
 
   setBasketPayment(paymentName: string) {
     this.store.dispatch(new SetBasketPayment({ id: paymentName }));

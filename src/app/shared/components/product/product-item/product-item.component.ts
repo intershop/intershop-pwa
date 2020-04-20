@@ -22,7 +22,7 @@ import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product
 import { ProductRowComponentConfiguration } from 'ish-shared/components/product/product-row/product-row.component';
 import { ProductTileComponentConfiguration } from 'ish-shared/components/product/product-tile/product-tile.component';
 
-declare type ProductItemContainerConfiguration = ProductTileComponentConfiguration &
+export type ProductItemContainerConfiguration = ProductTileComponentConfiguration &
   ProductRowComponentConfiguration & { displayType: 'tile' | 'row' };
 
 export const DEFAULT_CONFIGURATION: Readonly<ProductItemContainerConfiguration> = {
