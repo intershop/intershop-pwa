@@ -1,9 +1,10 @@
-import { Input } from '@angular/core';
+import { Input, Directive } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
 // tslint:disable-next-line:component-creation-test
+@Directive()
 export class FormElementComponent {
   /**
    * Name of the corresponding form group (required)

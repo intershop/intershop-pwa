@@ -1,4 +1,4 @@
-import { HostBinding } from '@angular/core';
+import { HostBinding, Directive } from '@angular/core';
 
 import { SfeMetadata } from './sfe.types';
 
@@ -13,6 +13,7 @@ import { SfeMetadata } from './sfe.types';
  *              }
  * }
  */
+@Directive()
 export class SfeMetadataWrapper {
   @HostBinding('attr.data-sfe') sfeMetadataAttribute: string;
 

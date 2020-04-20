@@ -29,14 +29,12 @@
             "extractCss": true,
             "assets": ["src/assets"],
             "styles": [
-              {
+              {"inject":false,
                 "input": "src/styles/themes/default/style.scss",
-                "lazy": true,
                 "bundleName": "default"
               },
-              {
+              {"inject":false,
                 "input": "src/styles/themes/blue/style.scss",
-                "lazy": true,
                 "bundleName": "blue"
               }
             ],
@@ -55,7 +53,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -75,6 +72,12 @@
               "ngswConfigPath": "ngsw-config.json"
             },
             "local": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -85,6 +88,12 @@
               "serviceWorker": false
             },
             "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "tsConfig": "./tsconfig-es5.app.json"
             }
           }
@@ -136,10 +145,7 @@
                 }
               ],
               "sourceMap": false,
-              "optimization": {
-                "scripts": false,
-                "styles": true
-              }
+              "optimization": true
             },
             "local": {
               "fileReplacements": [
@@ -148,6 +154,7 @@
                   "with": "src/environments/environment.local.ts"
                 }
               ],
+              "optimization": true,
               "sourceMap": true
             }
           }

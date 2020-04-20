@@ -44,7 +44,7 @@ import {
   exports: [FontAwesomeModule],
 })
 export class IconModule {
-  static init() {
+  static init(): void {
     config.autoAddCss = false;
     library.add(
       faAddressBook,
