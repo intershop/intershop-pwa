@@ -43,7 +43,7 @@ Only empty strings count as inactive.
 
 ## References
 
-[Concept - Configuration](../concepts/configuration.md)
-[Concept - Hybrid Approach](../concepts/hybrid-approach.md)
-[Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
-[Guide - Google Tag Manager](./google-tag-manager.md)
+- [Concept - Configuration](../concepts/configuration.md)
+- [Concept - Hybrid Approach](../concepts/hybrid-approach.md)
+- [Guide - Client-Side Error Monitoring with Sentry](./sentry-error-monitoring.md)
+- [Guide - Google Tag Manager](./google-tag-manager.md)

@@ -8,7 +8,6 @@ if (files.length === 0) {
 }
 
 files.forEach(file => {
-  console.log('at', file);
   const fileContent = fs.readFileSync(file, { encoding: 'utf-8' });
   newContent = fileContent
     .split('\n')

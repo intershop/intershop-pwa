@@ -18,7 +18,7 @@
     "e2e": "cd e2e && npm install && node open-cypress",
     "lint": "ng lint",
     "stylelint": "stylelint \"src/**/*.scss\" --fix",
-    "format": "prettier --loglevel warn --write \"**/*.*\"",
+    "format": "node docs/check-sentence-newline && prettier --loglevel warn --write \"**/*.*\"",
     "dead-code": "npx ts-node scripts/find-dead-code.ts",
     "check": "npm run lint -- --fix --format stylish && npm run format && npm run stylelint && tsc --project tsconfig.spec.json && npm run build && npm run dead-code && npm run test",
     "changelog": "npx -p conventional-changelog-cli conventional-changelog -n intershop-changelog.js -i CHANGELOG.md -s",
