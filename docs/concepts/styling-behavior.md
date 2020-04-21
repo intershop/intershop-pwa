@@ -15,7 +15,7 @@ This also means that the Intershop Progressive Web App styling is now based on [
 
 The styling integration is configured in the _/src/themes/main.scss_ of the project where Bootstrap together with the customizations is configured.
 
-Instead of the Bootstrap 3 Glyphicons the current styling uses free solid icons of [Font Awesome](https://fontawesome.com/).
+Instead of the Bootstrap 3 Glyphicons, the current styling uses free solid icons of [Font Awesome](https://fontawesome.com/).
 
 The styling itself is integrated into the project as global style via a _style.scss_ that is referenced in the _angular.json_ and is compiled automatically (see also [Chapter Multitheming](#multitheming)).
 Throughout the whole Intershop Progressive Web App, there are almost no component specific `styleUrls` or `styles` properties.
@@ -32,7 +32,7 @@ The assets folder is the place for any static resources like images, colors, etc
 
 ## Fonts
 
-Currently the default font families for the Intershop Progressive Web App [Roboto](https://www.google.com/fonts/specimen/Roboto) and [Roboto Condensed](https://www.google.com/fonts/specimen/Roboto+Condensed) defined as npm dependency.
+Currently the default font families for the Intershop Progressive Web App [Roboto](https://www.google.com/fonts/specimen/Roboto) and [Roboto Condensed](https://www.google.com/fonts/specimen/Roboto+Condensed) are defined as npm dependency.
 
 ## References
 

@@ -21,7 +21,7 @@ After having cloned the project from the Git repository, open a command line in 
 The project uses [Angular CLI](https://cli.angular.io) - a command line interface for Angular - that has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
 
-Use `ng serve --open` to start up the development server and open the progressive web app in your browser.
+Use `ng serve --open` to start up the development server and open the Progressive Web app in your browser.
 
 > **Note:** With the default `environment.ts` configuration the application works with mock data and as a result of that with limited functionality. To experience and work with the full feature set of the Intershop PWA access to an Intershop Commerce Management server is required.
 
@@ -34,13 +34,13 @@ Running `ng serve --configuration production` or `ng s -c production` starts a d
 The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to your local development environment needs, e.g. with a different icmBaseURL or different configuration options (see the `environment.model.ts` for the available configuration options).
 This file will be ignored by Git so the developer specific settings will not be commited and accidentally shared.
 
-To create such development specific `environment.local.ts` file just copy one of the two existing environment files and make the necessary configuration adaptions, e.g.
+To create such a development specific `environment.local.ts` file just copy one of the two existing environment files and make the necessary configuration adaptions, e.g.
 
-- set your `icmBaseURL: 'http://<YOUR_ICM_SERVER>',`
-- set `production: false,`
-- remove `mockServerAPI: true,`
-- configure the wanted `features: ['compare', 'recently', ...],`
-- maybe disable the service worker for development `serviceWorker: false,`
+- Set your `icmBaseURL: 'http://<YOUR_ICM_SERVER>',`
+- Set `production: false,`
+- Remove `mockServerAPI: true,`
+- Configure the wanted `features: ['compare', 'recently', ...],`
+- Maybe disable the service worker for development `serviceWorker: false,`
 
 To use this local environment configuration, the server should be started with
 
@@ -91,7 +91,7 @@ It is possible to bypass the verification on commit with the Git option `--no-ve
 ## Debugging
 
 Tips and tools for debugging Angular applications can be found on the Internet.
-As Angular runs in the Browser all the development tool functionality provided there can also be used for Angular (Debugging, Call Stacks, Profiling, Storage, Audits, ...).
+As Angular runs in the browser, all the development tool functionality provided there can also be used for Angular (debugging, call stacks, profiling, storage, audits, ...).
 
 ### Browser Extensions
 

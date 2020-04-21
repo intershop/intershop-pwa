@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # URL Rewriting
 
-With the PWA it is possible to supply localized and SEO optimized URLs for categories and product detail pages.
+The PWA allows to supply localized and SEO optimized URLs for categories and product detail pages.
 
 ## Rewriting Concept
 

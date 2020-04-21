@@ -17,7 +17,7 @@ In addition, the PWA, when run with Angular Universal, consists of a server-side
 
 ### Angular CLI Environments
 
-The standard way of configuring an Angular Application can be done by managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter during building the Angular Application.
+The standard way of configuring an Angular Application can be done by managing multiple environment files that are part of the project's source tree, usually located in _src/environments._ To choose one configuration, you have to supply the parameter when building the Angular Application.
 The file _angular.json_ defines how the correct environment file is swapped in for the corresponding environment.
 See [Angular 2: Application Settings using the CLI Environment Option](http://tattoocoder.com/angular-cli-using-the-environment-option/) for further information.
 
@@ -47,7 +47,7 @@ constructor(@Inject(PROPERTY) private property: string)
 
 It is good practice to never write those properties at runtime.
 
-As can be seen here, only build-time and deploy-time configuration parameters can be supplied this way.
+As can be seen here, only build-time and deploy-time configuration parameter can be supplied this way.
 
 ### Node.js Environment Variables
 
@@ -127,7 +127,7 @@ It shows both the PWA parameters `channel`, `application` and their fixed exampl
 The parameters of each incoming request are then read and transferred to the NgRx store to be used for the composition of the initial HTML response on the server side.
 Afterwards they are propagated to the client side and re-used for subsequent REST requests.
 
-In the source code of the project we supplied an extended [Nginx](https://en.wikipedia.org/wiki/Nginx) docker image for easy configuration of multiple channels via sub-domains.
+In the source code of the project we provide an extended [Nginx](https://en.wikipedia.org/wiki/Nginx) docker image for easy configuration of multiple channels via sub-domains.
 Refer to our Gitlab CI configuration (file _.gitlab-ci.yml)_ for a usage example.
 
 ## Feature Toggles
@@ -205,6 +205,6 @@ export class ConfigurationModule {
 }
 ```
 
-> #### Configuration REST Resource
+> ### Configuration REST Resource
 >
 > We are currently planning to implement a Configuration REST resource in the ICM so that all necessary runtime configuration can be defined in the ICM Backoffice and consumed by each PWA deployment.

@@ -34,13 +34,13 @@ The script also creates an **additional theme**, see [Guide - Multiple Themes](.
 
 ## Import Changes from New Release
 
-> Prior to 0.16.1 the entire git history changed completely. Please see https://github.com/intershop/intershop-pwa/issues/62 for suggestions on importing the new history.
+> Prior to 0.16.1 the entire git history changed completely. Please see [Merging 0.16.1 as 2nd upstream repository: "refusing to merge unrelated histories](https://github.com/intershop/intershop-pwa/issues/62) for suggestions on importing the new history.
 
-Importing changes of new releases is done with `git` tooling.
+Importing changes of new releases is done with Git tooling.
 If you stick to the guidelines in this chapter, the problems arising in the process of updating will not be as impacting as you might fear.
-Also remember to `npm install` after you are importing a change that modified the `package-lock.json` and run tests and linting in the process.
+Also remember to use `npm install` after importing a change that modified the `package-lock.json` and run tests and linting in the process.
 
-For importing changes from the current Release you can use different approaches:
+For importing changes from the current release you can use different approaches:
 
 ### 1. Merge the New Release in Its Entirety
 
@@ -57,13 +57,13 @@ To execute this, add the Intershop PWA GitHub repository as a second remote in y
 
 ### 3. Rebase Your Changes Onto the New Release
 
-This way your project code will always be up-to-date with the current Intershop PWA history, as this history will stay the base of the project over all releases.
+This way your project code will always be up-to-date with the current Intershop PWA history, as this history remains the base of the project over all releases.
 
 To perform this update, use `git rebase --onto <new release tag> <old release hash>` on your project's main branch.
 Your running feature branches must then be rebased the same way onto the new development branch.
 
 As it may be the best way to keep the original history intact, the upgrade process can be quite challenging.
-By rebasing every single one of your customizations commits, every commit is virtually re-applied onto the current PWA history.
+By rebasing every single one of your customization commits, every commit is virtually re-applied onto the current PWA history.
 You can imagine it as pretending to start the custom project anew onto the current version.
 If your project's history is clean and every commit is well-described and concise, this might be a way to go.
 
@@ -79,7 +79,7 @@ If 20 % of the component has to be changed, it is already a good idea to duplica
 That way incoming changes will not affect your customizations.
 Typical hot-spots where copying is a good idea are header-related or product-detail-page related customizations.
 
-We are supplying a schematic `customized-copy` for copying components and replacing all usages.
+We supply a schematic `customized-copy` for copying components and replacing all usages.
 
 ```bash
 $ node schematics/customization/add custom

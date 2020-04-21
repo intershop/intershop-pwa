@@ -81,7 +81,7 @@ export class Component {
 
 For more information refer to:
 
-- [Feature: pluralization](https://github.com/ngx-translate/core/issues/150)
+- [Feature: Pluralization](https://github.com/ngx-translate/core/issues/150)
 - [Angular - I18nPluralPipe](https://angular.io/api/common/I18nPluralPipe)
 
 Localization file:
@@ -205,8 +205,7 @@ export class ProductTileComponent implements OnDestroy {
   }
 }
 ```
-
-See also: https://github.com/ngx-translate/core/issues/835
+See also: [How to translate words in the component(.ts) file?](https://github.com/ngx-translate/core/issues/835)
 
 ### Localization of Text with HTML-Anchors (Links) & OnClickHandlers (Callback-Functions)
 
@@ -267,7 +266,7 @@ showModalDialog(dialog) {
 The idea is to use the existing localization properties files of the current Responsive Starter Store cartridges (or the localization files of a project) and convert them into the proper JSON files that can be used by ngx-translate.
 For this purpose a [Gradle plugin](https://gitlab.intershop.de/ISPWA/ngx-translate-plugin) was implemented that can handle this conversion process.
 
-In the current state of the Intershop Progressive Web App the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
+In the current state of the Intershop Progressive Web App, the converted localization properties from _a_responsive_ (without _app_sf_responsive_b2b_ and _app_sf_responsive_costcenter_) were added and should be used within the HTML templates.
 
 ## Extend Locales
 

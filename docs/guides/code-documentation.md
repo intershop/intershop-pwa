@@ -142,10 +142,10 @@ If you cannot find a pricise name for your variable or method, maybe this is a s
 
 However, there are some cases where documentation is recommended:
 
-- technical background required
+- Technical background required,
 
-- restraints on method arguments, that cannot be inferred by the method signature alone
+- Restraints on method arguments, that cannot be inferred by the method signature alone,
 
-- tricky parts where some degree of magic is happening (especially useful as in-line documentation)
+- Tricky parts where some degree of magic is happening (especially useful as in-line documentation),
 
-- class documentation for exported shared components.
+- Class documentation for exported shared components.

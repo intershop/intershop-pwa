@@ -7,9 +7,9 @@ kb_sync_latest_only
 
 # Handle Rewritten ICM URLs in Hybrid Mode
 
-If the ICM is set up with [URL Rewriting](https://support.intershop.com/kb/index.php/Display/28R955) further modifications are required to run the deployment with the [Hybrid Approach](../concepts/hybrid-approach.md).
+If the ICM is set up with [URL Rewriting](https://support.intershop.com/kb/index.php/Display/28R955), further modifications are required to run the deployment with the [Hybrid Approach](../concepts/hybrid-approach.md).
 
-The examples in this guide follow the default example for ICM URL Rewriting.
+The examples in this guide follow the default example for ICM URL rewriting.
 In particular we want to focus on the following two examples:
 
 - Product Detail Pages of the ICM
@@ -36,7 +36,7 @@ Considering the example, the incoming product detail page URL mapping must be in
 
 ## Mapping PWA URLs to Rewritten ICM URLs
 
-First, the mapping table must be adapted to instruct the PWA to leave the single-page application, when switching to the help desk content page:
+First, the mapping table must be adapted to instruct the PWA to leave the single-page application when switching to the help desk content page:
 
 ```typescript
 export const ICM_WEB_URL = '/';

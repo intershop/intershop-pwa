@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## nginx
 
-The nginx image providing [PageSpeed](https://www.modpagespeed.com/) and Multi-Channel configuration uses the default logging capabilities of [nginx](https://www.nginx.com/).
+The nginx image providing [PageSpeed](https://www.modpagespeed.com/) and multi-channel configuration uses the default logging capabilities of [nginx](https://www.nginx.com/).
 
 - [Configure Logging](https://docs.nginx.com/nginx/admin-guide/monitoring/logging/)
 - [Debugging Nginx Configuration](https://easyengine.io/tutorials/nginx/debugging/)
@@ -24,8 +24,8 @@ Information logged to the console contains the following:
 
   `<method> <url> <status> <bytes> - <duration> ms`
 
-- Requests handled by the SSR process are logged at the beginning with `SSR <url>` and at the end with `RES <status> <url>`
+- Requests handled by the SSR process are logged at the beginning with `SSR <url>` and at the end with `RES <status> <url>`.
 
-- Further the redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED <url>`
+- Further the redirect actions of the [Hybrid Approach](./hybrid-approach.md) are logged with `RED <url>`.
 
-- Also printed are uncaught `Error` objects thrown in the SSR process, including `HttpErrorResponse` and runtime errors.
+- Uncaught `Error` objects thrown in the SSR process, including `HttpErrorResponse` and runtime errors are printed as well.

@@ -35,7 +35,7 @@ The ICM must be run with [Secure URL-only Server Configuration](https://docs.int
 Furthermore the synchronization of the `apiToken` cookie must be switched on, so that users and baskets are synchronized between PWA and ICM.
 See [Concept - Integration of Progressive Web App and inSPIRED Storefront](https://support.intershop.com/kb/index.php/Display/2928F6).
 
-If you also want to support the correct handling for links generated in E-Mails, the property `intershop.WebServerSecureURL` must point to nginx.
+If you also want to support the correct handling for links generated in e-mails, the property `intershop.WebServerSecureURL` must point to nginx.
 
 _\$SERVER/share/system/config/cluster/appserver.properties_:
 

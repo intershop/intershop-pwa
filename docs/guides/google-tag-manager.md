@@ -11,7 +11,7 @@ To enable user tracking and setting it up with [Google Tag Manager](https://gith
 
 To activate GTM tracking, set the Tag Manager Token either in the used Angular CLI environment file with the property `gtmToken` or via the environment variable `GTM_TOKEN`.
 Additionally, the feature toggle `tracking` has to be added to the enabled feature list.
-This feature only works in Universal Rendering Mode.
+This feature only works in Universal Rendering mode.
 Prefer configuration via system environment variables.
 
 Please refer to the [angulartics2 documentation](https://github.com/angulartics/angulartics2#usage) for information on how to enable tracking for additional events.

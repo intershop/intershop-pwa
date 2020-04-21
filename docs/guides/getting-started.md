@@ -20,7 +20,7 @@ After having cloned the project from the Git repository, open a command line in 
 
 The project uses Angular CLI which has to be installed globally.
 Run `npm install -g @angular/cli` once to globally install Angular CLI on your development machine.
-Use `ng serve --open` to start up the development server and open the progressive web app in your browser.
+Use `ng serve --open` to start up the development server and open the Progressive Web App in your browser.
 
 The project can alternatively be run in production mode with `npm start`.
 
@@ -54,7 +54,7 @@ Also have a look at further information in the [Development Guide](./development
 
 Deployments are generated to the _dist_ folder of the project.
 
-Use `npm run build` to generate the preferred angular universal enabled version.
+Use `npm run build` to generate the preferred Angular Universal enabled version.
 On the server the _dist/server.js_ script has to be executed with `node`.
 
 Alternatively, you can use `ng build --prod` to get an application using browser rendering.
@@ -71,7 +71,7 @@ We provide templates for [Kubernetes Deployments](../../schematics/src/kubernete
 ## Progressive Web App (PWA)
 
 To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started), use `npm run start` to build and serve the application.
-After that open _http://localhost:4200_ in your browser and test it or run a PWA Audit.
+After that open _http://localhost:4200_ in your browser and test it or run a PWA audit.
 Currently only _localhost_ or _127.0.0.1_ will work with the service worker since it requires _https_ communication on any other domain.
 
 ## Running Tests

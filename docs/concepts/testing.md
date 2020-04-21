@@ -37,7 +37,7 @@ The tests are written in a Jasmine-like behavior driven style.
 For the ease of readability we implemented them using a _PageObject_ pattern, see [https://martinfowler.com/bliki/PageObject.html](https://martinfowler.com/bliki/PageObject.html).
 Testing in this stage is of course more time-consuming as the application has to be compiled and started up as a whole.
 Mocking server responses also limits the available workflows of the application.
-For example designing Mock-Data for a complete customer journey through the checkout would be too complex and too brittle.
+For example designing mock-data for a complete customer journey through the checkout would be too complex and too brittle.
 Nevertheless, the tests serve well for a basic overview of some functionality.
 
 ### End-to-End
@@ -83,7 +83,7 @@ We use Cypress with a _PageObject_ pattern.
 
 ## PageObject Pattern
 
-As mentioned earlier, we divide end-to-end tests in _PageObjects_ and Specs. _PageObjects_ abstract the HTML of the pages and provide a human-readable way of accessing to implement test-describing business processes.
+As mentioned earlier, we divide end-to-end tests in _PageObjects_ and Specs. _PageObjects_ abstract the HTML of the pages and offer a human-readable access possibility for the implementation of test-describing business processes.
 In that way _PageObjects_ also make certain routines re-usable over all tests.
 Specs use these provided _PageObject_ functions to make assertions and trigger actions. _PageObjects_ themselves should not make assertions.
 All intended assertions should only be made in Specs.

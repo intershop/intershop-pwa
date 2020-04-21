@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # Continuous Integration
 
-This section provides an overview of required Continuous Integration steps to verify the validity of code contributions.
+This section provides an overview of required continuous integration steps to verify the validity of code contributions.
 
 > All mentioned tools provide feedback on success or failure via exit code.
 
@@ -21,21 +21,21 @@ To ensure having a consistent code base, the CI system should always perform at 
 Angular in production mode does AoT and applies some more code optimizations that can sometimes clash with definitions or third-party libraries.
 To catch this, a production build should be performed: `ng build --prod`.
 
-To check the integrity of the unit tests, the TypeScript Compiler can be used: `npx tsc -p src/tsconfig.spec.json`.
+To check the integrity of the unit tests, the TypeScript compiler can be used: `npx tsc -p src/tsconfig.spec.json`.
 
 ## Dependencies
 
 When using `npm` as manager for third-party libraries, all dependencies get pinned down with exact version numbers and archive digests.
 A CI system should check if the current `package.json` corresponds to the checked-in `package-lock.json`.
 
-This can be done with git tooling (check for git changes after `npm install`) or can be done by hashing `package-lock.json` before and after the install step and comparing hash values.
+This can be done with Git tooling (check for Git changes after `npm install`) or can be done by hashing `package-lock.json` before and after the install step and comparing hash values.
 
 ## Code Formatting
 
 In larger projects it is beneficial for all users to contribute code in a consistent style.
 This reduces the number of conflicts when merging code that was developed in parallel.
 
-To ensure that contributed code is properly formatted, run the formatter on the CI server with `npm run format` and check for changes with git tooling or calculate hashes before and after.
+To ensure that contributed code is properly formatted, run the formatter on the CI server with `npm run format` and check for changes with Git tooling or calculate hashes before and after.
 
 ## Unit Testing
 
@@ -61,8 +61,8 @@ This can be done by pointing `curl` to a product detail page and checking if a s
 Have a look into `e2e/test-universal.sh` to see how we are doing that.
 
 ## Static Code Analysis
+SCA tools help to improve code quality, which leads to better maintainability and thus to a reduction of technical debts. 
 
-SCA tools help improve the code quality to improve maintainability and therefore reduce technical debt.
 Intershop uses `tslint` for static code analysis.
 Run the linting process on the CI with `"npm run lint".`
 

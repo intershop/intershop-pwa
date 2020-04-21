@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## Simple Browser-Side Rendering
 
-> :warning: This is suitable for Demo Servers to have a fast build chain. We do not recommend this setup for production use.
+> :warning: This is suitable for demo servers to have a fast build chain. We do not recommend this setup for production use.
 
 The application is built completely with Angular CLI:
 

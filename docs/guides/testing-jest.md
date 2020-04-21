@@ -42,7 +42,7 @@ kb_sync_latest_only
 A test should test only one thing.
 One given behavior is tested in one and _only_ one test.
 
-The tests should be independent from the others, that means no chaining and no run in a specific order is necessary.
+The tests should be independent from others, that means no chaining and no run in a specific order is necessary.
 
 ### Test Functionality - Not Implementation
 

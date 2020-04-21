@@ -63,7 +63,7 @@ The `src/theme` contains styling files.
 
 ## Extension Folder Structure
 
-We decided to group additional features, that are not universally used, into extensions to keep the main sources structured.
+We decided to group additional features that are not universally used into extensions to keep the main sources structured.
 
 Each extension module can have multiple sub folders:
 
@@ -88,7 +88,7 @@ Optionally additional sub folders for module-scoped artifacts are allowed:
 
 As [Angular Modules](https://angular.io/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared.
 The Angular modules are mainly used to feed the Angular dependency injection and with that component factories that populate the templates.
-It has little to do with the bundling of lazy-loaded modules when a production-ready Ahead-of-Time build is executed.
+It has little to do with the bundling of lazy-loaded modules when a production-ready ahead-of-time build is executed.
 
 As a general rule of thumb, modules should mainly aggregate deeper lying artifacts.
 Only some exceptions are allowed.
@@ -106,8 +106,8 @@ As a developer who **extends and customizes** the functionality of the PWA, you 
 As a developer who develops **new functionalities** for the PWA, you also have to deal with the following modules:
 
 - `src/app/core/X.module` - configuration for the main application organized in various modules
-- `src/app/utils/<util>.module` - utility modules like a CMS which supplies shared components and uses shared.module
-- `src/app/shared/<name>/<name>.module` - utility modules which aggregate functionality exported with shared.module
+- `src/app/utils/<util>.module` - utility modules like a CMS which supplies shared components and uses *shared.module*
+- `src/app/shared/<name>/<name>.module` - utility modules which aggregate functionality exported with *shared.module*
 - `src/app/core/store/**/<name>-store.module` - ngrx specific modules which should only be extended when adding B2C functionality. Current stores should not be extended, it is better to add additional store modules for custom functionalities.
 
 As a developer who adds **new stand-alone features**:

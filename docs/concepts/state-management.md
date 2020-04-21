@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # State Management
 
-This section describes how [NgRx](https://ngrx.io/) is integrated into the Intershop Progressive Web App for the application wide state management.
+This concept describes how [NgRx](https://ngrx.io/) is integrated into the Intershop Progressive Web App for the application wide state management.
 
 ## Architecture
 
@@ -48,7 +48,7 @@ Reducers should be simple operations which are easily testable.
 ### Effects
 
 Effects use incoming actions to trigger asynchronous tasks like querying REST resources.
-After successful or erroneous completion an effect might trigger another action as a way to alter the current state of the application.
+After successful or erroneous completion, an effect might trigger another action as a way to alter the current state of the application.
 
 ### Facades
 
@@ -89,7 +89,7 @@ Each substate should aggregate its store components in separate subfolders corre
 
 - _foo.selectors.ts_: This file exports all selectors working on the state of `foo`.
 
-- _index.ts_: This file exports the public API for the state of the `foo` substate. In here all specific selectors and actions are exported.
+- _index.ts_: This file exports the public API for the state of the `foo` substate. This includes all specific selectors and actions.
 
 Furthermore, the state of foobar is aggregated in two files:
 
@@ -101,7 +101,7 @@ Access to the state slice of `foobar` is provided with the `FoobarFacade` locate
 
 ## Naming
 
-Related to the example in the previous paragraph we want to establish a particular naming scheme.
+Related to the example in the previous paragraph, we want to establish a particular naming scheme.
 
 ### Actions - Types
 
@@ -124,7 +124,7 @@ export enum FooActionTypes {
 
 The action creator is a class with an optional payload member.
 Its PascalCase name should correspond to an action type.
-The name should not contain 'Action' as the action is always dispatched via the store and it is therefor implicitly correctly named.
+The name should not contain 'Action' as the action is always dispatched via the store and it is therefore implicitly correctly named.
 
 ```typescript
 export class LoadFoo implements Action {
@@ -189,6 +189,6 @@ Action dispatcher helpers are represented by methods with verbs. i.e. `addFoo(fo
 It is important to have a normalized state when working with NgRx.
 To give an example, only the product's state should save products.
 Every other slice of the state that also uses products must only save identifiers (in this case SKUs) for products.
-In selectors the data can be linked into views to be easily usable by components.
+In selectors, the data can be linked to views to be easily usable by components.
 
 see: [NgRx: Normalizing state](https://medium.com/@timdeschryver/ngrx-normalizing-state-d3960a86a3aa)

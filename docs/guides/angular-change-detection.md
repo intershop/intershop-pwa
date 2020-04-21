@@ -79,11 +79,11 @@ The corresponding code can be found in the `SfeAdapterService` class.
 ### Service Workers and Universal
 
 Both `@angular/service-worker` and `@angular/platform-server` use zone stability information internally.
-The Service Worker won't be attached to the page before the zone has become stable.
-The same applies for Server-Side Rendering: The page will be rendered as soon as the zone is stable.
-This is necessary because data from HTTP requests need to be resolved to render meaningful content.
+The Service Worker will not be attached to the page before the zone has become stable.
+The same applies for server-side rendering: The page will be rendered as soon as the zone is stable.
+This is necessary because data from HTTP requests must be resolved to render meaningful content.
 
-### Pitfall: The zone Needs to Become Stable
+### Pitfall: The Zone Must Become Stable
 
 For all of those aspects – Design View, Service Workers and Universal rendering – it is essential to get a stable zone at some point.
 If not, those aspects will not work properly, e.g.

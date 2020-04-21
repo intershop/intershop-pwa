@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 ## Introduction
 
-Intershops REST API contains resources reflecting the aspects of Intershops integrated Content Management System (CMS), i.e.
+The Intershop REST API contains resources reflecting the aspects of Intershop's integrated Content Management System (CMS), i.e.
 Pagelets, Includes, Pages.
 
 Calling the `/cms` resource will list the available CMS sub resources for the different CMS artifacts.
@@ -47,7 +47,7 @@ Calling the `/cms` resource will list the available CMS sub resources for the di
 }
 ```
 
-With this API a client can retrieve a composition of involved CMS objects (e.g. include, component, slot, component and so on).
+With this API, a client can retrieve a composition of involved CMS objects (e.g. include, component, slot, component and so on).
 It is the client's responsibility to interpret and "render" such a composition tree.
 In the PWA this is done by mapping each element onto an Angular specific render component.
 
@@ -87,13 +87,13 @@ CREATE src/app/cms/components/cms-inventory/cms-inventory.component.spec.ts (795
 UPDATE src/app/cms/cms.module.ts (4956 bytes)
 ```
 
-> **Visual Studio Code integration**  
+> **Visual Studio Code Integration**  
 > For Visual Studio Code there is an extension that offers comfortable usage options for the schematics, see [Angular Schematics](https://marketplace.visualstudio.com/items?itemName=cyrilletuzi.angular-schematics).
 
-## Integration with an external CMS
+## Integration with an External CMS
 
 Since the Intershop PWA can integrate any other REST API in addition to the ICM REST API, it should not be a problem to integrate an external 3rd party CMS that provides an own REST API, instead of using the integrated ICM CMS.
 Even combinations would be possible.
 
-In case an external API has to be integrated the native Angular `httpClient` needs to be used for the REST calls instead of the PWAs `apiService`.
-In addition the mapping of content to the according places in the PWA needs to be handled in a way fitting to the external CMS.
+In case an external API has to be integrated, the native Angular `httpClient` must to be used for the REST calls instead of the PWAs `apiService`.
+In addition, the mapping of content to the according places in the PWA needs to be handled in a way fitting to the external CMS.
