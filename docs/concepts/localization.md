@@ -205,6 +205,7 @@ export class ProductTileComponent implements OnDestroy {
   }
 }
 ```
+
 See also: [How to translate words in the component(.ts) file?](https://github.com/ngx-translate/core/issues/835)
 
 ### Localization of Text with HTML-Anchors (Links) & OnClickHandlers (Callback-Functions)

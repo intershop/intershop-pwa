@@ -17,4 +17,5 @@ Prefer configuration via system environment variables.
 
 For GDPR compliance the tracked IPs have to be anonymized.
 
-Set your _Prevent Storing of IP Addresses_ option in your _General Settings_ of Organisation and/or Project (Sentry Webinterface).   Read more about [Security & Compliance](https://sentry.io/security/) or [Sensitive Data](https://docs.sentry.io/data-management/sensitive-data/) in Sentry-[Docs](https://docs.sentry.io/).
+Set your _Prevent Storing of IP Addresses_ option in your _General Settings_ of Organisation and/or Project (Sentry Webinterface).
+Read more about [Security & Compliance](https://sentry.io/security/) or [Sensitive Data](https://docs.sentry.io/data-management/sensitive-data/) in Sentry-[Docs](https://docs.sentry.io/).

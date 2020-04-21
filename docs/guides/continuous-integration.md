@@ -61,7 +61,8 @@ This can be done by pointing `curl` to a product detail page and checking if a s
 Have a look into `e2e/test-universal.sh` to see how we are doing that.
 
 ## Static Code Analysis
-SCA tools help to improve code quality, which leads to better maintainability and thus to a reduction of technical debts. 
+
+SCA tools help to improve code quality, which leads to better maintainability and thus to a reduction of technical debts.
 
 Intershop uses `tslint` for static code analysis.
 Run the linting process on the CI with `"npm run lint".`

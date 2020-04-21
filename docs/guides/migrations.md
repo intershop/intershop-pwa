@@ -23,4 +23,3 @@ We did this because the previously introduced facades provide a more convenient 
 You can run the migration by executing `node schematics/migration/0.16-to-0.17`.
 
 The script will check if all your components can be moved to the new folder structure and will then perform the migration or notify you of work previously needed.
-
