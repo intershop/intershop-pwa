@@ -86,7 +86,13 @@ export class ProductListingEffects {
     switchMap(({ id, sorting, page, filters }) =>
       this.store.pipe(
         select(getProductListingView, { ...id, sorting, filters }),
-        map(view => ({ id, sorting, page, filters, viewAvailable: !view.empty() && view.productsOfPage(page).length }))
+        map(view => ({
+          id,
+          sorting,
+          page,
+          filters,
+          viewAvailable: !view.empty() && view.productsOfPage(page).length,
+        }))
       )
     ),
     map(({ id, sorting, page, filters, viewAvailable }) => {

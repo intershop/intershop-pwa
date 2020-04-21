@@ -29,11 +29,13 @@
             "extractCss": true,
             "assets": ["src/assets"],
             "styles": [
-              {"inject":false,
+              {
+                "inject": false,
                 "input": "src/styles/themes/default/style.scss",
                 "bundleName": "default"
               },
-              {"inject":false,
+              {
+                "inject": false,
                 "input": "src/styles/themes/blue/style.scss",
                 "bundleName": "blue"
               }
@@ -177,9 +179,7 @@
           "options": {
             "browserTarget": "intershop-pwa:build:production",
             "serverTarget": "intershop-pwa:server:production",
-            "routes": [
-              "/"
-            ]
+            "routes": ["/"]
           },
           "configurations": {
             "production": {}

@@ -31,7 +31,10 @@ describe('Http Status Code Service', () => {
       TestBed.configureTestingModule({
         declarations: [DummyComponent],
         imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
-        providers: [{ provide: RESPONSE, useValue: RES }, { provide: PLATFORM_ID, useValue: 'browser' }],
+        providers: [
+          { provide: RESPONSE, useValue: RES },
+          { provide: PLATFORM_ID, useValue: 'browser' },
+        ],
       });
       httpStatusCodeService = TestBed.get(HttpStatusCodeService);
       location = TestBed.get(Location);
@@ -65,7 +68,10 @@ describe('Http Status Code Service', () => {
       TestBed.configureTestingModule({
         declarations: [DummyComponent],
         imports: [RouterTestingModule.withRoutes([{ path: 'error', component: DummyComponent }])],
-        providers: [{ provide: RESPONSE, useValue: RES }, { provide: PLATFORM_ID, useValue: 'server' }],
+        providers: [
+          { provide: RESPONSE, useValue: RES },
+          { provide: PLATFORM_ID, useValue: 'server' },
+        ],
       });
       httpStatusCodeService = TestBed.get(HttpStatusCodeService);
       location = TestBed.get(Location);

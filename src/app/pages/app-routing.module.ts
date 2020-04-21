@@ -149,11 +149,11 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-    paramsInheritanceStrategy: 'always',
-    scrollPositionRestoration: 'enabled',
-    initialNavigation: 'enabled',
-    anchorScrolling: 'enabled',
-}),
+      paramsInheritanceStrategy: 'always',
+      scrollPositionRestoration: 'enabled',
+      initialNavigation: 'enabled',
+      anchorScrolling: 'enabled',
+    }),
   ],
   exports: [RouterModule],
 })

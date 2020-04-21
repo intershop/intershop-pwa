@@ -11,17 +11,11 @@ import { getQuotingState } from '../quoting-store';
 
 import { initialState, quoteRequestAdapter } from './quote-request.reducer';
 
-const getQuoteRequestState = createSelector(
-  getQuotingState,
-  state => (state ? state.quoteRequest : initialState)
-);
+const getQuoteRequestState = createSelector(getQuotingState, state => (state ? state.quoteRequest : initialState));
 
 const { selectAll, selectEntities } = quoteRequestAdapter.getSelectors(getQuoteRequestState);
 
-export const getSelectedQuoteRequestId = createSelector(
-  getQuoteRequestState,
-  state => state.selected
-);
+export const getSelectedQuoteRequestId = createSelector(getQuoteRequestState, state => state.selected);
 
 export const getSelectedQuoteRequest = createSelector(
   selectEntities,
@@ -29,15 +23,11 @@ export const getSelectedQuoteRequest = createSelector(
   (entities, id) => id && addStateToQuoteRequest(entities[id])
 );
 
-export const getCurrentQuoteRequests = createSelector(
-  selectAll,
-  quoteRequests => quoteRequests.map(addStateToQuoteRequest)
+export const getCurrentQuoteRequests = createSelector(selectAll, quoteRequests =>
+  quoteRequests.map(addStateToQuoteRequest)
 );
 
-const getQuoteRequestItems = createSelector(
-  getQuoteRequestState,
-  state => state.quoteRequestItems
-);
+const getQuoteRequestItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
 
 export const getQuoteRequestItemsWithProducts = createSelector(
   getQuoteRequestItems,
@@ -50,13 +40,10 @@ export const getQuoteRequestItemsWithProducts = createSelector(
     }))
 );
 
-export const getActiveQuoteRequest = createSelector(
-  getCurrentQuoteRequests,
-  quoteRequests => {
-    const quoteRequest = quoteRequests.reverse().find(item => item.editable);
-    return addStateToQuoteRequest(quoteRequest);
-  }
-);
+export const getActiveQuoteRequest = createSelector(getCurrentQuoteRequests, quoteRequests => {
+  const quoteRequest = quoteRequests.reverse().find(item => item.editable);
+  return addStateToQuoteRequest(quoteRequest);
+});
 
 export const getActiveQuoteRequestWithProducts = createSelector(
   getActiveQuoteRequest,
@@ -71,15 +58,9 @@ export const getSelectedQuoteRequestWithProducts = createSelectorFactory(project
   defaultMemoize(projector, undefined, isEqual)
 )(getSelectedQuoteRequest, getQuoteRequestItemsWithProducts, (quote, items) => quote && { ...quote, items });
 
-export const getQuoteRequestLoading = createSelector(
-  getQuoteRequestState,
-  state => state.loading
-);
+export const getQuoteRequestLoading = createSelector(getQuoteRequestState, state => state.loading);
 
-export const getQuoteRequestError = createSelector(
-  getQuoteRequestState,
-  state => state.error
-);
+export const getQuoteRequestError = createSelector(getQuoteRequestState, state => state.error);
 
 function addStateToQuoteRequest(quote: QuoteRequestData) {
   return (

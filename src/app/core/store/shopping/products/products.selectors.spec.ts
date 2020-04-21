@@ -128,7 +128,10 @@ describe('Products Selectors', () => {
       store$.dispatch(
         new LoadProductBundlesSuccess({
           sku: 'ABC',
-          bundledProducts: [{ sku: 'A', quantity: 1 }, { sku: 'B', quantity: 2 }],
+          bundledProducts: [
+            { sku: 'A', quantity: 1 },
+            { sku: 'B', quantity: 2 },
+          ],
         })
       );
 

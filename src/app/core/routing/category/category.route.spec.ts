@@ -171,19 +171,14 @@ describe('Category Route', () => {
     it('should detect category route when categoryUniqueId is a param', done => {
       router.navigateByUrl('/category;categoryUniqueId=ABC');
 
-      store$
-        .pipe(
-          ofCategoryUrl(),
-          select(selectRouter)
-        )
-        .subscribe(data => {
-          expect(data.state.params).toMatchInlineSnapshot(`
+      store$.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
+        expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "categoryUniqueId": "ABC",
             }
           `);
-          done();
-        });
+        done();
+      });
     });
 
     it('should not detect category route when sku and categoryUniqueId are params', done => {

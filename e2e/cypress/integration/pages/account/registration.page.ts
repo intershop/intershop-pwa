@@ -78,16 +78,11 @@ export class RegistrationPage {
   }
 
   submit() {
-    return cy
-      .get(`${this.tag} form`)
-      .first()
-      .submit();
+    return cy.get(`${this.tag} form`).first().submit();
   }
 
   submitAndObserve() {
-    cy.server()
-      .route('POST', '**/customers')
-      .as('customers');
+    cy.server().route('POST', '**/customers').as('customers');
     cy.wait(500);
 
     this.submit();
@@ -95,9 +90,7 @@ export class RegistrationPage {
   }
 
   cancel() {
-    cy.get(this.tag)
-      .find('input[value="Cancel"]')
-      .click();
+    cy.get(this.tag).find('input[value="Cancel"]').click();
   }
 
   get errorText() {

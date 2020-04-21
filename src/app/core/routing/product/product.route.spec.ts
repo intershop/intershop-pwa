@@ -342,38 +342,28 @@ describe('Product Route', () => {
     it('should detect product route when sku is a param', done => {
       router.navigateByUrl('/product;sku=123');
 
-      store$
-        .pipe(
-          ofProductUrl(),
-          select(selectRouter)
-        )
-        .subscribe(data => {
-          expect(data.state.params).toMatchInlineSnapshot(`
+      store$.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
+        expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "sku": "123",
             }
           `);
-          done();
-        });
+        done();
+      });
     });
 
     it('should detect product route when sku and categoryUniqueId are params', done => {
       router.navigateByUrl('/product;sku=123;categoryUniqueId=ABC');
 
-      store$
-        .pipe(
-          ofProductUrl(),
-          select(selectRouter)
-        )
-        .subscribe(data => {
-          expect(data.state.params).toMatchInlineSnapshot(`
+      store$.pipe(ofProductUrl(), select(selectRouter)).subscribe(data => {
+        expect(data.state.params).toMatchInlineSnapshot(`
             Object {
               "categoryUniqueId": "ABC",
               "sku": "123",
             }
           `);
-          done();
-        });
+        done();
+      });
     });
 
     it('should not detect product route when sku is missing', done => {

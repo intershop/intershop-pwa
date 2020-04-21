@@ -15,22 +15,14 @@ class NgModulesSortedFieldsWalker extends NgWalker {
 
   visitCallExpression(node: ts.CallExpression) {
     if (node.getChildAt(0).getText() === 'TestBed.configureTestingModule') {
-      const ngModuleDeclarationList = node
-        .getChildAt(2)
-        .getChildAt(0)
-        .getChildAt(1) as ts.SyntaxList;
+      const ngModuleDeclarationList = node.getChildAt(2).getChildAt(0).getChildAt(1) as ts.SyntaxList;
       this.visitNgModuleDeclarationList(ngModuleDeclarationList);
     }
     super.visitCallExpression(node);
   }
 
   visitClassDecorator(decorator: ts.Decorator) {
-    if (
-      decorator
-        .getChildAt(1)
-        .getChildAt(0)
-        .getText() !== 'NgModule'
-    ) {
+    if (decorator.getChildAt(1).getChildAt(0).getText() !== 'NgModule') {
       return;
     }
 
@@ -45,11 +37,7 @@ class NgModulesSortedFieldsWalker extends NgWalker {
       // .filter(node => this.assertList(node))
       .forEach(node => this.sortList(node.getChildAt(2).getChildAt(1) as ts.SyntaxList));
 
-    const ngModuleDeclarationList = decorator
-      .getChildAt(1)
-      .getChildAt(2)
-      .getChildAt(0)
-      .getChildAt(1) as ts.SyntaxList;
+    const ngModuleDeclarationList = decorator.getChildAt(1).getChildAt(2).getChildAt(0).getChildAt(1) as ts.SyntaxList;
     this.visitNgModuleDeclarationList(ngModuleDeclarationList);
 
     super.visitClassDecorator(decorator);

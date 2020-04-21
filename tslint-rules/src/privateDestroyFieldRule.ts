@@ -6,10 +6,7 @@ class PrivateDestroyFieldWalker extends NgWalker {
   private apply = false;
 
   visitClassDecorator(decorator: ts.Decorator) {
-    const type = decorator
-      .getChildAt(1)
-      .getChildAt(0)
-      .getText();
+    const type = decorator.getChildAt(1).getChildAt(0).getText();
 
     this.apply = type === 'Component' || type === 'Directive' || type === 'Pipe';
   }

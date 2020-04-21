@@ -126,10 +126,7 @@ export class QuoteEffects {
    */
   @Effect()
   loadProductsForSelectedQuote$ = combineLatest([
-    this.actions$.pipe(
-      ofType<actions.SelectQuote>(actions.QuoteActionTypes.SelectQuote),
-      mapToPayloadProperty('id')
-    ),
+    this.actions$.pipe(ofType<actions.SelectQuote>(actions.QuoteActionTypes.SelectQuote), mapToPayloadProperty('id')),
     this.actions$.pipe(
       ofType<actions.LoadQuotesSuccess>(actions.QuoteActionTypes.LoadQuotesSuccess),
       mapToPayloadProperty('quotes')

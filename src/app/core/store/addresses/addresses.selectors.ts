@@ -4,19 +4,10 @@ import { getCoreState } from 'ish-core/store/core-store';
 
 import { addressAdapter } from './addresses.reducer';
 
-const getAddressesState = createSelector(
-  getCoreState,
-  state => state.addresses
-);
+const getAddressesState = createSelector(getCoreState, state => state.addresses);
 
 export const { selectAll: getAllAddresses } = addressAdapter.getSelectors(getAddressesState);
 
-export const getAddressesLoading = createSelector(
-  getAddressesState,
-  addresses => addresses.loading
-);
+export const getAddressesLoading = createSelector(getAddressesState, addresses => addresses.loading);
 
-export const getAddressesError = createSelector(
-  getAddressesState,
-  addresses => addresses.error
-);
+export const getAddressesError = createSelector(getAddressesState, addresses => addresses.error);

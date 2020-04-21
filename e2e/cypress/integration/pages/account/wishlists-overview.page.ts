@@ -7,14 +7,9 @@ export class WishlistsOverviewPage {
 
   addWishlist(name: string, preferred: boolean) {
     cy.get('a[data-testing-id="add-wishlist"').click();
-    cy.get('[data-testing-id="wishlist-dialog-name"]')
-      .find('[data-testing-id="title"]')
-      .clear()
-      .type(name);
+    cy.get('[data-testing-id="wishlist-dialog-name"]').find('[data-testing-id="title"]').clear().type(name);
     if (preferred) {
-      cy.get('[data-testing-id="wishlist-dialog-preferred"]')
-        .find('[data-testing-id="preferred"]')
-        .check();
+      cy.get('[data-testing-id="wishlist-dialog-preferred"]').find('[data-testing-id="preferred"]').check();
     }
     cy.get('[data-testing-id="wishlist-dialog-submit"]').click();
   }
@@ -30,9 +25,7 @@ export class WishlistsOverviewPage {
   }
 
   goToWishlistDetailLink(name: string) {
-    cy.get('a')
-      .contains(name)
-      .click();
+    cy.get('a').contains(name).click();
   }
 
   get wishlistsArray() {

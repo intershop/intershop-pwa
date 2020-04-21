@@ -38,11 +38,10 @@ import {
   getSelectedQuoteRequestWithProducts,
 } from '../store/quote-request';
 
-const getQuotesAndQuoteRequests = createSelector(
-  getCurrentQuotes,
-  getCurrentQuoteRequests,
-  (quotes, quoteRequests): (Quote | QuoteRequest)[] => [...quotes, ...quoteRequests]
-);
+const getQuotesAndQuoteRequests = createSelector(getCurrentQuotes, getCurrentQuoteRequests, (quotes, quoteRequests): (
+  | Quote
+  | QuoteRequest
+)[] => [...quotes, ...quoteRequests]);
 
 // tslint:disable:member-ordering
 @Injectable({ providedIn: 'root' })

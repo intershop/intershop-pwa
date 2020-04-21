@@ -13,7 +13,10 @@ describe('Product Attributes Component', () => {
   let product: Product;
   beforeEach(async(() => {
     product = { sku: 'sku' } as Product;
-    product.attributes = [{ name: 'A', type: 'String', value: 'A' }, { name: 'B', type: 'String', value: 'B' }];
+    product.attributes = [
+      { name: 'A', type: 'String', value: 'A' },
+      { name: 'B', type: 'String', value: 'B' },
+    ];
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [AttributeToStringPipe, ProductAttributesComponent],

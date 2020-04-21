@@ -90,12 +90,17 @@ export class ProductsEffects {
         concatMap(({ total, products, sortKeys }) => [
           ...products.map(product => new productsActions.LoadProductSuccess({ product })),
           new SetProductListingPages(
-            this.productListingMapper.createPages(products.map(p => p.sku), 'category', categoryId, {
-              startPage: page,
-              sortKeys,
-              sorting,
-              itemCount: total,
-            })
+            this.productListingMapper.createPages(
+              products.map(p => p.sku),
+              'category',
+              categoryId,
+              {
+                startPage: page,
+                sortKeys,
+                sorting,
+                itemCount: total,
+              }
+            )
           ),
         ]),
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })

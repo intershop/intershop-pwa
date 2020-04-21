@@ -5,7 +5,11 @@ describe('Functions', () => {
     const arr = [1, 2, 3, 4, 5, 6];
 
     it('should return correctly sliced arrays of length 2', () => {
-      expect(arraySlices(arr, 2)).toEqual([[1, 2], [3, 4], [5, 6]]);
+      expect(arraySlices(arr, 2)).toEqual([
+        [1, 2],
+        [3, 4],
+        [5, 6],
+      ]);
     });
 
     it('should return correctly sliced arrays of length 1', () => {
@@ -13,7 +17,10 @@ describe('Functions', () => {
     });
 
     it('should return correctly sliced arrays of length 3', () => {
-      expect(arraySlices(arr, 3)).toEqual([[1, 2, 3], [4, 5, 6]]);
+      expect(arraySlices(arr, 3)).toEqual([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]);
     });
 
     it('should return correctly sliced arrays of length 6', () => {

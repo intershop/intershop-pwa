@@ -9,7 +9,7 @@
     <label class="col-form-label col-md-4" for="cardpanInput"
       >{{ 'checkout.credit_card.number.label' | translate }}<span class="required">*</span></label
     >
-    <div class=" col-sm-6">
+    <div class="col-sm-6">
       <div id="a_credit_card_number_container" class="iframe-container"></div>
       <small *ngIf="errorMessage.cardNumber?.messageKey" class="form-text">{{
         errorMessage.cardNumber.messageKey | translate
@@ -25,7 +25,7 @@
     inputClass="col-sm-6"
     [ngClass]="{ 'has-error': errorMessage.expiryMonth?.message }"
   >
-    <div class=" col-sm-6 offset-sm-4">
+    <div class="col-sm-6 offset-sm-4">
       <small *ngIf="errorMessage.expiryMonth?.messageKey" class="form-text">{{
         errorMessage.expiryMonth.messageKey | translate
       }}</small>

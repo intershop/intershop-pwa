@@ -15,12 +15,7 @@ export class LoginGuard implements CanActivate {
   private isMobile: boolean;
 
   constructor(private modalService: NgbModal, private router: Router, private store: Store<{}>) {
-    store
-      .pipe(
-        select(getDeviceType),
-        first()
-      )
-      .subscribe(type => (this.isMobile = type === 'mobile'));
+    store.pipe(select(getDeviceType), first()).subscribe(type => (this.isMobile = type === 'mobile'));
   }
 
   canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
@@ -60,16 +55,10 @@ export class LoginGuard implements CanActivate {
       });
 
     // login successful
-    this.store
-      .pipe(
-        select(getUserAuthorized),
-        whenTruthy(),
-        first()
-      )
-      .subscribe(() => {
-        this.currentDialog.dismiss();
-        this.router.navigateByUrl(returnUrl);
-      });
+    this.store.pipe(select(getUserAuthorized), whenTruthy(), first()).subscribe(() => {
+      this.currentDialog.dismiss();
+      this.router.navigateByUrl(returnUrl);
+    });
 
     return false;
   }

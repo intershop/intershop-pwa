@@ -39,10 +39,9 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('id'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([paymentInstrumentId, basketid]) =>
-      this.paymentService.setBasketPayment(basketid, paymentInstrumentId).pipe(
-        mapTo(new basketActions.SetBasketPaymentSuccess()),
-        mapErrorToAction(basketActions.SetBasketPaymentFail)
-      )
+      this.paymentService
+        .setBasketPayment(basketid, paymentInstrumentId)
+        .pipe(mapTo(new basketActions.SetBasketPaymentSuccess()), mapErrorToAction(basketActions.SetBasketPaymentFail))
     )
   );
 
@@ -104,10 +103,12 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('params'),
     withLatestFrom(this.store.pipe(select(getCurrentBasketId))),
     concatMap(([params, basketid]) =>
-      this.paymentService.updateBasketPayment(basketid, params).pipe(
-        mapTo(new basketActions.UpdateBasketPaymentSuccess()),
-        mapErrorToAction(basketActions.UpdateBasketPaymentFail)
-      )
+      this.paymentService
+        .updateBasketPayment(basketid, params)
+        .pipe(
+          mapTo(new basketActions.UpdateBasketPaymentSuccess()),
+          mapErrorToAction(basketActions.UpdateBasketPaymentFail)
+        )
     )
   );
 
@@ -120,10 +121,12 @@ export class BasketPaymentEffects {
     mapToPayloadProperty('paymentInstrument'),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([paymentInstrument, basket]) =>
-      this.paymentService.deleteBasketPaymentInstrument(basket, paymentInstrument).pipe(
-        mapTo(new basketActions.DeleteBasketPaymentSuccess()),
-        mapErrorToAction(basketActions.DeleteBasketPaymentFail)
-      )
+      this.paymentService
+        .deleteBasketPaymentInstrument(basket, paymentInstrument)
+        .pipe(
+          mapTo(new basketActions.DeleteBasketPaymentSuccess()),
+          mapErrorToAction(basketActions.DeleteBasketPaymentFail)
+        )
     )
   );
 

@@ -23,24 +23,12 @@ export class ContactPage {
   }
 
   fillForm(name: string, email: string, phone: string, subject: string, comments: string) {
-    this.nameInput
-      .clear()
-      .type(name)
-      .blur();
-    this.emailInput
-      .clear()
-      .type(email)
-      .blur();
-    this.phoneInput
-      .clear()
-      .type(phone)
-      .blur();
+    this.nameInput.clear().type(name).blur();
+    this.emailInput.clear().type(email).blur();
+    this.phoneInput.clear().type(phone).blur();
     // tslint:disable-next-line:ban
     cy.get('select[data-testing-id="subject"]').select(subject);
-    cy.get('textarea[data-testing-id="comments"]')
-      .clear()
-      .type(comments)
-      .blur();
+    cy.get('textarea[data-testing-id="comments"]').clear().type(comments).blur();
     return this;
   }
 

@@ -70,9 +70,9 @@ describe('Line Item Edit Dialog Component', () => {
       },
     } as unknown) as LineItemView;
 
-    when(shoppingFacade.product$(anything(), anything())).thenReturn(of(component.lineItem.product) as Observable<
-      VariationProductView
-    >);
+    when(shoppingFacade.product$(anything(), anything())).thenReturn(
+      of(component.lineItem.product) as Observable<VariationProductView>
+    );
 
     when(shoppingFacade.productNotReady$(anything(), anything())).thenReturn(of(false));
   });
