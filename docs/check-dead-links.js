@@ -84,6 +84,7 @@ glob('**/*.md')
       .filter((val, idx, arr) => arr.indexOf(val) === idx)
       .filter(
         link =>
+          !link.includes('github.com') &&
           !link.includes('repository.intershop.de') &&
           !link.includes('support.intershop.com') &&
           !link.includes('github.com/intershop/intershop-pwa/commit')
