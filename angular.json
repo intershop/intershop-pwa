@@ -103,7 +103,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "aot": true,
+            "aot": false,
             "browserTarget": "intershop-pwa:build"
           },
           "configurations": {
