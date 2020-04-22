@@ -44,7 +44,6 @@ export function translateLoaderFactory() {
 @NgModule({
   imports: [
     AppModule,
-    ModuleMapLoaderModule,
     ServerCookiesModule,
     ServerModule,
     ServerTransferStateModule,
