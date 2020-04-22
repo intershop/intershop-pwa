@@ -75,7 +75,7 @@ describe('Filter Effects', () => {
       ],
     });
 
-    effects = TestBed.get(FilterEffects);
+    effects = TestBed.inject(FilterEffects);
   });
 
   describe('loadAvailableFilterForCategories$', () => {

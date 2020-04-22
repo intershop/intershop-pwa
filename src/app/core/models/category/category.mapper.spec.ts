@@ -17,8 +17,8 @@ describe('Category Mapper', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({ imports: [ngrxTesting({ reducers: { configuration: configurationReducer } })] });
-    categoryMapper = TestBed.get(CategoryMapper);
-    imageMapper = spy(TestBed.get(ImageMapper));
+    categoryMapper = TestBed.inject(CategoryMapper);
+    imageMapper = spy(TestBed.inject(ImageMapper));
   }));
 
   describe('mapCategoryPath()', () => {

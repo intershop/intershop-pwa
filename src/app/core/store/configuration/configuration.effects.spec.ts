@@ -54,8 +54,8 @@ describe('Configuration Effects', () => {
       ],
     });
 
-    effects = TestBed.get(ConfigurationEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(ConfigurationEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('loadServerConfigOnInit$', () => {

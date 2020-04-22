@@ -14,7 +14,7 @@ describe('Personalization Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    personalizationService = TestBed.get(PersonalizationService);
+    personalizationService = TestBed.inject(PersonalizationService);
   });
 
   it('should be created', () => {

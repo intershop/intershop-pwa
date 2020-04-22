@@ -44,7 +44,7 @@ describe('Category Route', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [RouterTestingModule] });
-    const router: Router = TestBed.get(Router);
+    const router = TestBed.inject(Router);
     wrap = url => {
       const primary = router.parseUrl(url).root.children.primary;
       return primary ? primary.segments : [];
@@ -163,8 +163,8 @@ describe('Category Route', () => {
       ],
     });
 
-    router = TestBed.get(Router);
-    store$ = TestBed.get(Store);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(Store);
   });
 
   describe('ofCategoryRoute', () => {

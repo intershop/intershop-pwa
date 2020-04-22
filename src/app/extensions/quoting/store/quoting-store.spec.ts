@@ -97,7 +97,7 @@ describe('Quoting Store', () => {
       ],
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
     store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
 

@@ -46,7 +46,7 @@ describe('Product Listing Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('initial state', () => {

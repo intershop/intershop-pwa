@@ -61,10 +61,10 @@ describe('Basket Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(BasketEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
   });
 
   describe('loadBasket$', () => {

@@ -11,7 +11,7 @@ describe('Product Listing Mapper', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 2 }],
     });
-    productListingMapper = TestBed.get(ProductListingMapper);
+    productListingMapper = TestBed.inject(ProductListingMapper);
   });
 
   it('should map single page data to one page', () => {

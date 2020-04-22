@@ -28,7 +28,7 @@ describe('Quickorder Page Component', () => {
     fixture = TestBed.createComponent(QuickorderPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
   });
 
   it('should be created', () => {

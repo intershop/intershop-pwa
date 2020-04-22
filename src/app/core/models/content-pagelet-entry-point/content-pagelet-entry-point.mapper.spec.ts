@@ -11,7 +11,7 @@ describe('Content Pagelet Entry Point Mapper', () => {
     TestBed.configureTestingModule({
       imports: [ngrxTesting()],
     });
-    contentPageletEntryPointMapper = TestBed.get(ContentPageletEntryPointMapper);
+    contentPageletEntryPointMapper = TestBed.inject(ContentPageletEntryPointMapper);
   });
 
   it('should throw on falsy input', () => {

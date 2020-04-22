@@ -33,7 +33,7 @@ describe('Account Profile Page Component', () => {
     })
       .compileComponents()
       .then(() => {
-        TestBed.get(Store).dispatch(new LoginUserSuccess({ customer, user }));
+        TestBed.inject(Store).dispatch(new LoginUserSuccess({ customer, user }));
       });
   }));
 

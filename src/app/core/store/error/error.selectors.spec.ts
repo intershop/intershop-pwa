@@ -15,7 +15,7 @@ describe('Error Selectors', () => {
       imports: [ngrxTesting({ reducers: coreReducers })],
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   it('should have nothing when just initialized', () => {

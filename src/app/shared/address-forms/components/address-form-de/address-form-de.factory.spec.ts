@@ -10,7 +10,7 @@ describe('Address Form De Factory', () => {
     TestBed.configureTestingModule({
       providers: [FormBuilder, AddressFormDEFactory],
     });
-    addressFactory = TestBed.get(AddressFormDEFactory);
+    addressFactory = TestBed.inject(AddressFormDEFactory);
   });
 
   it('should be created', () => {

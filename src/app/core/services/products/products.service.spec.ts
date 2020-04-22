@@ -79,7 +79,7 @@ describe('Products Service', () => {
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'grid' },
       ],
     });
-    productsService = TestBed.get(ProductsService);
+    productsService = TestBed.inject(ProductsService);
   }));
 
   it("should get Product data when 'getProduct' is called", done => {

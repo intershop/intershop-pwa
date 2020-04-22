@@ -36,8 +36,8 @@ describe('Http Status Code Service', () => {
           { provide: PLATFORM_ID, useValue: 'browser' },
         ],
       });
-      httpStatusCodeService = TestBed.get(HttpStatusCodeService);
-      location = TestBed.get(Location);
+      httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
+      location = TestBed.inject(Location);
     });
 
     it('should be created', () => {
@@ -73,8 +73,8 @@ describe('Http Status Code Service', () => {
           { provide: PLATFORM_ID, useValue: 'server' },
         ],
       });
-      httpStatusCodeService = TestBed.get(HttpStatusCodeService);
-      location = TestBed.get(Location);
+      httpStatusCodeService = TestBed.inject(HttpStatusCodeService);
+      location = TestBed.inject(Location);
     });
 
     it('should be created', () => {

@@ -9,7 +9,7 @@ describe('<%= classify(name) %> Pipe', () => {
     TestBed.configureTestingModule({
       providers: [<%= classify(name) %>Pipe],
     });
-    <%= camelize(name) %>Pipe = TestBed.get(<%= classify(name) %>Pipe);
+    <%= camelize(name) %>Pipe = TestBed.inject(<%= classify(name) %>Pipe);
   });
 
   it('should be created', () => {

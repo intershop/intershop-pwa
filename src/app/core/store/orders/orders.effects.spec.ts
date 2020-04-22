@@ -76,10 +76,10 @@ describe('Orders Effects', () => {
       ],
     });
 
-    effects = TestBed.get(OrdersEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(OrdersEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
   });
 
   describe('createOrder$', () => {

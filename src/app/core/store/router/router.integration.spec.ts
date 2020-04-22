@@ -56,7 +56,7 @@ describe('Router Integration', () => {
       ],
     });
 
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -66,7 +66,7 @@ describe('Router Integration', () => {
   describe('selectors', () => {
     let store$: TestStore;
     beforeEach(() => {
-      store$ = TestBed.get(TestStore);
+      store$ = TestBed.inject(TestStore);
     });
 
     it('should be undefined on start', () => {
@@ -216,7 +216,7 @@ describe('Router Integration', () => {
     let store$: Store<{}>;
 
     beforeEach(() => {
-      store$ = TestBed.get(Store);
+      store$ = TestBed.inject(Store);
     });
 
     beforeEach(fakeAsync(() => {

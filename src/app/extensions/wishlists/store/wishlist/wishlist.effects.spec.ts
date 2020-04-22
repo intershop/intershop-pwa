@@ -107,9 +107,9 @@ describe('Wishlist Effects', () => {
       ],
     });
 
-    effects = TestBed.get(WishlistEffects);
-    store$ = TestBed.get(TestStore);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(WishlistEffects);
+    store$ = TestBed.inject(TestStore);
+    router = TestBed.inject(Router);
 
     store$.dispatch(new ApplyConfiguration({ features: ['wishlists'] }));
   });

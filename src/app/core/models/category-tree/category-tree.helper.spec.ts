@@ -327,7 +327,7 @@ describe('Category Tree Helper', () => {
 
       beforeEach(() => {
         TestBed.configureTestingModule({ imports: [ngrxTesting()] });
-        categoryMapper = TestBed.get(CategoryMapper);
+        categoryMapper = TestBed.inject(CategoryMapper);
 
         tree = [catARaw, catBRaw].reduce(
           (acc, val) => CategoryTreeHelper.merge(acc, categoryMapper.fromData(val)),

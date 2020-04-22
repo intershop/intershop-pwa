@@ -48,9 +48,9 @@ describe('Restore Effects', () => {
       ],
     });
 
-    restoreEffects = TestBed.get(RestoreEffects);
-    router = TestBed.get(Router);
-    store$ = TestBed.get(TestStore);
+    restoreEffects = TestBed.inject(RestoreEffects);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(TestStore);
   });
 
   it('should be created', () => {

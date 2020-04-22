@@ -17,7 +17,7 @@ describe('Cookies Service', () => {
         { provide: ForeignCookiesService, useFactory: () => instance(foreignCookiesServiceMock) },
       ],
     });
-    cookiesService = TestBed.get(CookiesService);
+    cookiesService = TestBed.inject(CookiesService);
   });
 
   it('should be created', () => {

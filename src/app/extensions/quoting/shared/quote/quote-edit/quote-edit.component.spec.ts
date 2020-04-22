@@ -51,7 +51,7 @@ describe('Quote Edit Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    const translateService = TestBed.get(TranslateService);
+    const translateService = TestBed.inject(TranslateService);
     translateService.use('en');
     translateService.set('quote.edit.unsubmitted.quote_request_details.text', 'Quote Request Details');
 

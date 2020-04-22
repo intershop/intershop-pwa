@@ -20,7 +20,7 @@ describe('Includes Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('getContentInclude', () => {

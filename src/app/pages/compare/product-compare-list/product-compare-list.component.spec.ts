@@ -60,7 +60,7 @@ describe('Product Compare List Component', () => {
     fixture = TestBed.createComponent(ProductCompareListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     element = fixture.nativeElement;
