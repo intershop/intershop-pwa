@@ -11,7 +11,7 @@ import { LazyLoginModalComponent } from 'ish-shell/header/lazy-login-modal/lazy-
 
 @Injectable({ providedIn: 'root' })
 export class LoginGuard implements CanActivate {
-  private currentDialog: NgbModalRef<typeof LazyLoginModalComponent>;
+  private currentDialog: NgbModalRef;
   private isMobile: boolean;
 
   constructor(private modalService: NgbModal, private router: Router, private store: Store<{}>) {

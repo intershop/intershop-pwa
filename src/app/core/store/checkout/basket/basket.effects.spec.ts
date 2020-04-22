@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -63,7 +62,6 @@ describe('Basket Effects', () => {
 
     effects = TestBed.inject(BasketEffects);
     store$ = TestBed.inject(Store);
-    location = TestBed.inject(Location);
     router = TestBed.inject(Router);
   });
 
