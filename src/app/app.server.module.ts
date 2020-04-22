@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { ServerCookiesModule } from '@ngx-utils/cookies/server';
 import { existsSync, readFileSync } from 'fs';
+import { ServerCookiesModule } from 'ngx-utils-cookies-port';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 

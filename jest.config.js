@@ -4,7 +4,7 @@ const esModules = [
   'ngx-bootstrap',
   '@angular/common/locales',
   'lodash-es/.*',
-  '@ngx-utils/cookies',
+  'ngx-utils-cookies-port',
 ];
 
 module.exports = {

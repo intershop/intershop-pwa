@@ -341,7 +341,7 @@
         },
         {
           "import": "CookiesService",
-          "from": "@ngx-utils/cookies",
+          "from": "ngx-utils-cookies-port",
           "filePattern": "^((?!src/app/core/services/cookies/cookies\\.service(\\.spec|)\\.ts).)*$",
           "message": "Use CookiesService from ish-core instead."
         },
