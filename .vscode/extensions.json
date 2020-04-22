@@ -21,7 +21,10 @@
     "hex-ci.stylelint-plus",
     "ms-vscode.vscode-typescript-tslint-plugin",
     // testing
-    "andys8.jest-snippets"
+    "andys8.jest-snippets",
+    // documentation
+    "streetsidesoftware.code-spell-checker",
+    "yzhang.markdown-all-in-one"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": ["eg2.tslint"]
