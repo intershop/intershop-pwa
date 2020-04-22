@@ -3,7 +3,6 @@ import { groupBy } from 'lodash-es';
 import { VariationProductMasterView, VariationProductView } from 'ish-core/models/product-view/product-view.model';
 import { objectToArray } from 'ish-core/utils/functions';
 
-import { VariationAttribute } from './variation-attribute.model';
 import { VariationOptionGroup } from './variation-option-group.model';
 import { VariationSelectOption } from './variation-select-option.model';
 import { VariationSelection } from './variation-selection.model';
@@ -17,18 +16,10 @@ export class ProductVariationHelper {
   // TODO: Refactor this to a more functional style
   private static alternativeCombinationCheck(option: VariationSelectOption, product: VariationProductView): boolean {
     let quality: number;
-    const selectedProductAttributes: VariationAttribute[] = [];
     const perfectMatchQuality = product.variableVariationAttributes.length;
 
-    // remove option related attribute type since it should not be involved in combination check.
-    for (const attribute of product.variableVariationAttributes) {
-      if (attribute.variationAttributeId !== option.type) {
-        selectedProductAttributes.push(attribute);
-      }
-    }
-
     // loop all selected product attributes ignoring the ones related to currently checked option.
-    for (const selectedAttribute of selectedProductAttributes) {
+    for (const selectedAttribute of product.variableVariationAttributes) {
       // loop all possible variations
       for (const variation of product.variations()) {
         quality = 0;
@@ -41,11 +32,13 @@ export class ProductVariationHelper {
             attribute.value === selectedAttribute.value
           ) {
             quality += 1;
+            continue;
           }
 
           // increment quality if variation attribute matches currently checked option.
           if (attribute.variationAttributeId === option.type && attribute.value === option.value) {
             quality += 1;
+            continue;
           }
         }
 
