@@ -63,14 +63,14 @@ export class CartPage {
     };
   }
 
-  get summary() {
-    return {
-      subtotal: cy
-        .get('ish-basket-cost-summary')
-        .find('dd')
-        .first(),
-    };
+  get subtotal() {
+    return cy.get('[data-testing-id="basket-subtotal"]');
   }
+
+  get tax() {
+    return cy.get('[data-testing-id="basket-tax"]');
+  }
+
   get lineItemInfoMessage() {
     return {
       message: cy.get('ish-line-item-list').find('.alert-info'),
