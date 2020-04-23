@@ -25,10 +25,7 @@ var UseComponentChangeDetectionWalker = (function (_super) {
     UseComponentChangeDetectionWalker.prototype.visitClassDecorator = function (decorator) {
         if (decorator.expression.getChildAt(0).getText() === 'Component') {
             var componentProperties = decorator.expression.getChildAt(2);
-            var propertyList = componentProperties
-                .getChildAt(0)
-                .getChildAt(1)
-                .getChildren();
+            var propertyList = componentProperties.getChildAt(0).getChildAt(1).getChildren();
             var containsChangeDetection = propertyList
                 .filter(function (child) { return child.kind === ts.SyntaxKind.PropertyAssignment; })
                 .map(function (assignement) { return assignement.name; })
