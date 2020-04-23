@@ -225,7 +225,7 @@ describe('User Selectors', () => {
       beforeEach(() => {
         store$.dispatch(
           new ApplyConfiguration({
-            serverConfig: {
+            _serverConfig: {
               pricing: {
                 defaultCustomerTypeForPriceDisplay: 'PRIVATE',
                 privateCustomerPriceDisplayType: 'gross',
@@ -252,7 +252,7 @@ describe('User Selectors', () => {
       beforeEach(() => {
         store$.dispatch(
           new ApplyConfiguration({
-            serverConfig: {
+            _serverConfig: {
               pricing: {
                 defaultCustomerTypeForPriceDisplay: 'SMB',
                 privateCustomerPriceDisplayType: 'gross',

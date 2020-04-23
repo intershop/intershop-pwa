@@ -10,7 +10,6 @@ export interface ConfigurationState {
   baseURL?: string;
   server?: string;
   serverStatic?: string;
-  serverConfig?: ServerConfig;
   channel?: string;
   application?: string;
   features?: string[];
@@ -19,6 +18,7 @@ export interface ConfigurationState {
   locales?: Locale[];
   lang?: string;
   // not synced via state transfer
+  _serverConfig?: ServerConfig;
   _deviceType?: DeviceType;
 }
 
@@ -26,7 +26,6 @@ const initialState: ConfigurationState = {
   baseURL: undefined,
   server: undefined,
   serverStatic: undefined,
-  serverConfig: undefined,
   channel: undefined,
   application: undefined,
   features: [],
@@ -34,6 +33,7 @@ const initialState: ConfigurationState = {
   theme: undefined,
   locales: environment.locales,
   lang: undefined,
+  _serverConfig: undefined,
   _deviceType: environment.defaultDeviceType,
 };
 
