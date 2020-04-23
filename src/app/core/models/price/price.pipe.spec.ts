@@ -182,7 +182,7 @@ describe('Price Pipe', () => {
       expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
 
       store$.dispatch(
-        new ApplyConfiguration({ serverConfig: { pricing: { defaultCustomerTypeForPriceDisplay: 'SMB' } } })
+        new ApplyConfiguration({ _serverConfig: { pricing: { defaultCustomerTypeForPriceDisplay: 'SMB' } } })
       );
       fixture.detectChanges();
       tick(500);

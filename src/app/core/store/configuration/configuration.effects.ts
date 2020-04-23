@@ -69,7 +69,7 @@ export class ConfigurationEffects {
     ofType<LoadServerConfig>(ConfigurationActionTypes.LoadServerConfig),
     concatMap(() =>
       this.configService.getServerConfiguration().pipe(
-        map(serverConfig => new ApplyConfiguration({ serverConfig })),
+        map(serverConfig => new ApplyConfiguration({ _serverConfig: serverConfig })),
         mapErrorToAction(LoadServerConfigFail)
       )
     )
