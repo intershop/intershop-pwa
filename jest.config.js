@@ -10,9 +10,9 @@ const esModules = [
 module.exports = {
   globals: {
     'ts-jest': {
-      tsConfigFile: '<rootDir>/tsconfig.spec.json',
+      tsConfig: '<rootDir>/tsconfig.spec.json',
+      stringifyContentPathRegex: '\\.html$',
     },
-    __TRANSFORM_HTML__: true,
   },
   preset: 'jest-preset-angular',
   roots: ['src'],
