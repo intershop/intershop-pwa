@@ -16,7 +16,7 @@ universalTest() {
 
 universalTest 1 "${PWA_BASE_URL}/" "router-outlet><ish-home-page"
 universalTest 2 "${PWA_BASE_URL}/catComputers.1835.151" "router-outlet><ish-category-page"
-universalTest 3 "${PWA_BASE_URL}/login" "Forgot your password?"
+universalTest 3 "${PWA_BASE_URL}/login" "<ish-loading"
 universalTest 4 "${PWA_BASE_URL}/register" "Create Account"
 universalTest 5 "${PWA_BASE_URL}/catComputers.1835" "<h1>Notebooks and PCs</h1>"
 universalTest 6 "${PWA_BASE_URL}/catComputers.1835" "<h3>PCs</h3>"

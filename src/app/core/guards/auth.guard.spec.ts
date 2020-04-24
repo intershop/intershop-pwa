@@ -3,8 +3,10 @@ import { TestBed, async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
+import { instance, mock } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
+import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoginUserSuccess } from 'ish-core/store/user';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
@@ -26,6 +28,7 @@ describe('Auth Guard', () => {
           ngrxTesting({ reducers: coreReducers }),
         ],
         declarations: [DummyComponent],
+        providers: [{ provide: CookiesService, useFactory: () => instance(mock(CookiesService)) }],
       }).compileComponents();
     }));
 

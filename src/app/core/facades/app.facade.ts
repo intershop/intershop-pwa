@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { combineLatest, merge } from 'rxjs';
+import { filter, map, mapTo, shareReplay, startWith } from 'rxjs/operators';
 
 import { getAvailableLocales, getCurrentLocale, getDeviceType } from 'ish-core/store/configuration';
 import { LoadCountries, getAllCountries, getCountriesLoading } from 'ish-core/store/countries';
@@ -11,7 +12,10 @@ import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } fro
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store<{}>) {}
+  constructor(private store: Store<{}>, private router: Router) {
+    // tslint:disable-next-line: rxjs-no-ignored-subscribe
+    this.routingInProgress$.subscribe();
+  }
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));
@@ -38,6 +42,24 @@ export class AppFacade {
 
   // COUNTRIES AND REGIONS
   countriesLoading$ = this.store.pipe(select(getCountriesLoading));
+
+  routingInProgress$ = merge(
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationStart),
+      mapTo(true)
+    ),
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      mapTo(false)
+    ),
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationCancel),
+      mapTo(false)
+    )
+  ).pipe(
+    startWith(true),
+    shareReplay(1)
+  );
 
   countries$() {
     this.store.dispatch(new LoadCountries());
