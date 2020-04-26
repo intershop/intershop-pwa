@@ -56,11 +56,6 @@ jobs:
           (cd schematics && npm run build)
           bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
 
-      - name: Compile TSLint Rules
-        run: |
-          (cd tslint-rules && npm run build)
-          bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
-
       - name: Escalate TSLint Rules
         run: |
           node scripts/tslint-hard
@@ -87,9 +82,11 @@ jobs:
       - name: Install root dependencies
         uses: bahmutov/npm-install@v1
 
-      - name: Test Jest
-        run: |
-          npm test
+      - name: PWA Jest
+        run: npm test
+
+      - name: tslint-rules Jest
+        run: npm --prefix tslint-rules test
 
   Build:
     runs-on: ubuntu-latest

@@ -6,12 +6,12 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "noLib": false,
-    "outDir": "./dist",
+    "outDir": "../node_modules/intershop-tslint-rules/dist",
     "removeComments": true,
     "target": "es5",
     "typeRoots": ["node_modules/@types"],
     "types": ["node", "jest"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["scr/**/*.spec.ts"]
+  "exclude": ["src/**/*.spec.ts"]
 }

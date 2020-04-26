@@ -30,8 +30,9 @@
   },
   "scripts": {
     "prebuild": "npm ci",
-    "build": "npx jest && tsc",
-    "postbuild": "npx rimraf node_modules && npx rimraf dist/*.spec.js"
+    "build": "tsc && npx ncp index.js ../node_modules/intershop-tslint-rules/index.js",
+    "pretest": "npm i",
+    "test": "jest --ci"
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^3.0.0"
