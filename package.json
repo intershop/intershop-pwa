@@ -12,7 +12,9 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "postinstall && npm run synchronize-lazy-components",
+    "postinstall": "postinstall && npm --silent run build:tslint-rules && npm --silent run build:schematics && npm run synchronize-lazy-components",
+    "build:tslint-rules": "cd tslint-rules && npm run build",
+    "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
     "test": "jest --ci",
     "test:watch": "jest --watch",
@@ -107,7 +109,6 @@
     "cz-customizable": "^6.2.0",
     "husky": "^4.2.5",
     "intershop-schematics": "file:schematics/src",
-    "intershop-tslint-rules": "file:tslint-rules",
     "jasmine-data-provider": "^2.2.0",
     "jest": "^25.5.4",
     "jest-extended": "^0.11.5",
