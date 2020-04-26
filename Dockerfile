@@ -1,9 +1,7 @@
 FROM node:12-alpine as buildstep
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
-COPY tslint-rules/package.json /workspace/node_modules/intershop-tslint-rules/package.json
-COPY schematics/package.json /workspace/node_modules/intershop-schematics/package.json
-RUN npm i
+RUN npm install --ignore-scripts
 COPY src /workspace/src/
 COPY tsconfig.app.json tsconfig-es5.app.json tsconfig.json ngsw-config.json browserslist angular.json /workspace/
 ARG serviceWorker

@@ -12,7 +12,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "npm run --prefix tslint-rules build",
+    "postinstall": "npm run --prefix tslint-rules build && npm run --prefix schematics integrate",
     "ng": "ng",
     "test": "jest --ci",
     "test:watch": "jest --watch",
@@ -113,7 +113,6 @@
     "cpy-cli": "^2.0.0",
     "cz-customizable": "^6.2.0",
     "husky": "^1.3.1",
-    "intershop-schematics": "file:schematics/src",
     "istanbul-api": "^2.1.6",
     "istanbul-reports": "^2.2.6",
     "jasmine-data-provider": "^2.2.0",

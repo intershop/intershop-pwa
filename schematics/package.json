@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "Angular CLI schematics for Intershop PWA",
   "scripts": {
-    "prebuild": "npm ci && npm run generate:schemas && npm test",
+    "prebuild": "npm ci && npm run generate:schemas",
     "build": "tsc",
-    "postbuild": "rimraf node_modules",
-    "test": "jest --ci -i",
-    "generate:schemas": "node scripts/generate-schema-defs.js"
+    "test": "npm run prebuild && jest --ci -i",
+    "generate:schemas": "node scripts/generate-schema-defs.js",
+    "integrate": "npm run build && npm run copy-files",
+    "copy-files": "rimraf ../node_modules/intershop-schematics && copyfiles -u 1 src/**/*.{js,d.ts} src/**/schema.json src/**/files/**/* src/**/files/** src/{collection.json,package.json} ../node_modules/intershop-schematics"
   },
   "keywords": [
     "schematics",
@@ -43,6 +44,7 @@
     "@angular-devkit/schematics": "^8.2.0",
     "@types/jest": "^24.0.17",
     "@types/node": "^10.0.0",
+    "copyfiles": "^2.2.0",
     "jest": "^24.9.0",
     "jest-extended": "^0.11.0",
     "json-schema-to-typescript": "^5.4.0",

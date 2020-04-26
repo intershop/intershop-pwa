@@ -51,11 +51,6 @@ jobs:
       - name: Compile Cypress Tests
         run: (cd e2e && npx tsc -p cypress/tsconfig.json)
 
-      - name: Compile Schematics
-        run: |
-          (cd schematics && npm run build)
-          bash ./scripts/ci-test-no-changes.sh 'you probably did not commit compiled binaries in schematics'
-
       - name: Escalate TSLint Rules
         run: |
           node scripts/tslint-hard
@@ -87,6 +82,9 @@ jobs:
 
       - name: tslint-rules Jest
         run: npm --prefix tslint-rules test
+
+      - name: schematics Jest
+        run: npm --prefix schematics test
 
   Build:
     runs-on: ubuntu-latest

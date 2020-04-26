@@ -19,5 +19,5 @@
     // "noUnusedLocals": true,
   },
   "include": ["src/**/*"],
-  "exclude": ["src/*/files/**/*", "src/*/other-files/**/*"]
+  "exclude": ["src/*/files/**/*", "src/*/other-files/**/*", "src/**/*_spec.ts"]
 }
