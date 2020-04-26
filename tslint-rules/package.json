@@ -13,12 +13,6 @@
     "tslint",
     "intershop"
   ],
-  "devDependencies": {
-    "@types/jest": "^25.0.0",
-    "codelyzer": "^5.1.2",
-    "jest": "^25.0.0",
-    "typescript": "~3.8.3"
-  },
   "peerDependencies": {
     "tslint": "^5.0.0 || ^6.0.0",
     "typescript": "^2.3.0 || ^3.0.0",
@@ -26,12 +20,8 @@
     "comment-json": "^3.0.0"
   },
   "scripts": {
-    "prebuild": "npm ci",
-    "build": "npx jest && tsc",
-    "postbuild": "npx rimraf node_modules && npx rimraf dist/*.spec.js"
-  },
-  "dependencies": {
-    "@phenomnomnominal/tsquery": "^4.0.0",
-    "comment-json": "^3.0.2"
+    "prebuild": "npm i --no-save",
+    "build": "tsc",
+    "test": "../node_modules/.bin/jest -i"
   }
 }

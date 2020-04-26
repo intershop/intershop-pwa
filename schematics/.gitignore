@@ -1,10 +1,8 @@
 # Outputs
-src/**/*_spec.js
-!src/**/files/**/*.d.ts
-!src/**/files/**/*.js
-!src/**/other-files/**/*.d.ts
-!src/**/other-files/**/*.js
+src/**/*.js
+src/**/*.d.ts
 out-tsc
+package-lock.json
 
 # IDEs
 .idea/

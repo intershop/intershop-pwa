@@ -28,16 +28,6 @@ jobs:
           working-directory: e2e
           useLockFile: false
 
-      - name: Install schematics dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: schematics
-
-      - name: Install tslint-rules dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: tslint-rules
-
       - name: Possible Angular Updates
         if: always()
         run: npm run ng -- update
@@ -63,15 +53,3 @@ jobs:
         run: |
           npm --prefix e2e outdated --long || true
           npm --prefix e2e audit || true
-
-      - name: npm audit -- schematics
-        if: always()
-        run: |
-          npm --prefix schematics outdated --long
-          npm --prefix schematics audit || true
-
-      - name: npm audit -- tslint-rules
-        if: always()
-        run: |
-          npm --prefix tslint-rules outdated --long
-          npm --prefix tslint-rules audit || true
