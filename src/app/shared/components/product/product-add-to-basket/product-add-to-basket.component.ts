@@ -63,7 +63,12 @@ export class ProductAddToBasketComponent implements OnInit, OnDestroy {
     this.basketLoading$ = this.checkoutFacade.basketLoading$;
 
     // update emitted to display spinning animation
-    this.basketLoading$.pipe(whenFalsy(), takeUntil(this.destroy$)).subscribe(this.displaySpinner$); // false
+    this.basketLoading$
+      .pipe(
+        whenFalsy(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(this.displaySpinner$); // false
   }
 
   addToBasket() {

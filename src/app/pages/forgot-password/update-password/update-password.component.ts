@@ -40,9 +40,14 @@ export class UpdatePasswordComponent implements OnInit, OnDestroy {
       this.secureCode = params.Hash;
     });
 
-    this.accountFacade.passwordReminderSuccess$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(() => {
-      this.router.navigate(['/login'], { queryParams: { forcePageView: true } });
-    });
+    this.accountFacade.passwordReminderSuccess$
+      .pipe(
+        whenTruthy(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.router.navigate(['/login'], { queryParams: { forcePageView: true } });
+      });
   }
 
   ngOnDestroy() {

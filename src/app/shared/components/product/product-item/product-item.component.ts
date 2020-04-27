@@ -95,7 +95,12 @@ export class ProductItemComponent implements OnInit, OnChanges, OnDestroy {
 
   // tslint:disable:initialize-observables-in-declaration
   ngOnInit() {
-    this.productSkuChange.pipe(startWith(this.productSku), takeUntil(this.destroy$)).subscribe(this.sku$);
+    this.productSkuChange
+      .pipe(
+        startWith(this.productSku),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(this.sku$);
 
     this.product$ = this.shoppingFacade.product$(this.sku$, ProductItemComponent.REQUIRED_COMPLETENESS_LEVEL);
 

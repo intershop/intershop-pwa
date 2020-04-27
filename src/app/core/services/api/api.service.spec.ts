@@ -297,7 +297,10 @@ describe('Api Service', () => {
     it('should perform both operations when requested', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(
+          unpackEnvelope(),
+          resolveLinks(apiService)
+        )
         .subscribe(data => {
           expect(data).toEqual([webcamResponse]);
           done();
@@ -343,7 +346,10 @@ describe('Api Service', () => {
     it('should return empty array on element and link translation when source is empty', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(
+          unpackEnvelope(),
+          resolveLinks(apiService)
+        )
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();

@@ -31,8 +31,13 @@ export class ProductAddToQuoteComponent {
     const quantity = this.quantity ? this.quantity : this.product.minOrderQuantity;
     this.quotingFacade.addProductToQuoteRequest(this.product.sku, quantity);
 
-    this.accountFacade.isLoggedIn$.pipe(take(1), whenTruthy()).subscribe(() => {
-      this.ngbModal.open(ProductAddToQuoteDialogComponent, { size: 'lg' });
-    });
+    this.accountFacade.isLoggedIn$
+      .pipe(
+        take(1),
+        whenTruthy()
+      )
+      .subscribe(() => {
+        this.ngbModal.open(ProductAddToQuoteDialogComponent, { size: 'lg' });
+      });
   }
 }

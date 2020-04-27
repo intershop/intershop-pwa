@@ -29,7 +29,10 @@ export class RuleHelpers {
   }
 
   static extractVariableNameInDeclaration(statement: ts.Node): string {
-    return statement.getChildAt(1).getFirstToken().getText();
+    return statement
+      .getChildAt(1)
+      .getFirstToken()
+      .getText();
   }
 
   static getNextChildTokenOfKind(node: ts.Node, kind: ts.SyntaxKind): ts.Node {
@@ -49,7 +52,10 @@ export class RuleHelpers {
     );
     if (statements.length && statements[0].getChildAt(0)) {
       const describeStatement = statements[0].getChildAt(0).getChildAt(2);
-      return describeStatement.getChildAt(2).getChildAt(4).getChildAt(1);
+      return describeStatement
+        .getChildAt(2)
+        .getChildAt(4)
+        .getChildAt(1);
     }
     return;
   }

@@ -16,7 +16,13 @@ describe('Changing User', () => {
     createUserViaREST(_.user);
 
     LoginPage.navigateTo('/account/profile');
-    at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+    at(LoginPage, page =>
+      page
+        .fillForm(_.user.login, _.user.password)
+        .submit()
+        .its('status')
+        .should('equal', 200)
+    );
   });
 
   it('should be able to edit password', () => {
@@ -34,6 +40,12 @@ describe('Changing User', () => {
 
   it('should use new password for logging in', () => {
     at(HomePage, page => page.header.gotoLoginPage());
-    at(LoginPage, page => page.fillForm(_.user.login, _.newPassword).submit().its('status').should('equal', 200));
+    at(LoginPage, page =>
+      page
+        .fillForm(_.user.login, _.newPassword)
+        .submit()
+        .its('status')
+        .should('equal', 200)
+    );
   });
 });

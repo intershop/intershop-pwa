@@ -14,9 +14,8 @@ export class UniversalLogInterceptor implements HttpInterceptor {
         if (res instanceof HttpResponse) {
           // tslint:disable-next-line: no-console
           console.log(
-            `${req.method} ${req.urlWithParams} ${res.status} ${JSON.stringify(res.body).length * 2} - ${
-              new Date().getTime() - start
-            } ms`
+            `${req.method} ${req.urlWithParams} ${res.status} ${JSON.stringify(res.body).length *
+              2} - ${new Date().getTime() - start} ms`
           );
         }
       })

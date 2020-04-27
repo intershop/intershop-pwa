@@ -23,12 +23,10 @@ export class FilterService {
     const params = new HttpParams()
       .set('CategoryDomainName', categoryDomainName)
       .set('CategoryName', idList[idList.length - 1]);
-    return this.apiService
-      .get<FilterNavigationData>('filters', { params, skipApiErrorHandling: true })
-      .pipe(
-        map(filter => this.filterNavigationMapper.fromData(filter)),
-        map(filter => this.filterNavigationMapper.fixSearchParameters(filter))
-      );
+    return this.apiService.get<FilterNavigationData>('filters', { params, skipApiErrorHandling: true }).pipe(
+      map(filter => this.filterNavigationMapper.fromData(filter)),
+      map(filter => this.filterNavigationMapper.fixSearchParameters(filter))
+    );
   }
 
   getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {

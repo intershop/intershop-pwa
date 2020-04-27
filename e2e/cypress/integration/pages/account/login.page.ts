@@ -15,8 +15,14 @@ export class LoginPage {
   }
 
   fillForm(user: string, password: string) {
-    cy.get('input[data-testing-id="login"]').clear().type(user).blur();
-    cy.get('input[data-testing-id="password"]').clear().type(password).blur();
+    cy.get('input[data-testing-id="login"]')
+      .clear()
+      .type(user)
+      .blur();
+    cy.get('input[data-testing-id="password"]')
+      .clear()
+      .type(password)
+      .blur();
     return this;
   }
 

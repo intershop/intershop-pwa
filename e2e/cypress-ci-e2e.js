@@ -73,7 +73,10 @@ const run = (num, spec, retryGroup) => {
         throw new Error(results.message);
       } else if (results.totalFailed) {
         // rerun again with only the failed tests
-        const specs = _(results.runs).filter('stats.failures').map('spec.relative').value();
+        const specs = _(results.runs)
+          .filter('stats.failures')
+          .map('spec.relative')
+          .value();
 
         console.log(`Run #${num} failed.`);
         _(results.runs)

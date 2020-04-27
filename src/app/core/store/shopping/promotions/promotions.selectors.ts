@@ -12,12 +12,18 @@ import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shoppin
 
 import { promotionAdapter } from './promotions.reducer';
 
-const getPromotionsState = createSelector(getShoppingState, (state: ShoppingState) => state.promotions);
+const getPromotionsState = createSelector(
+  getShoppingState,
+  (state: ShoppingState) => state.promotions
+);
 
 const { selectEntities, selectAll } = promotionAdapter.getSelectors(getPromotionsState);
 
 export const getPromotion = () =>
-  createSelector(selectEntities, (entities, props: { promoId: string }): Promotion => entities[props.promoId]);
+  createSelector(
+    selectEntities,
+    (entities, props: { promoId: string }): Promotion => entities[props.promoId]
+  );
 
 export const getPromotions = (): MemoizedSelectorWithProps<
   object,

@@ -14,7 +14,9 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="html"></div> `,
+        template: `
+          <div [ishServerHtml]="html"></div>
+        `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
@@ -49,7 +51,9 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="html"></div> `,
+        template: `
+          <div [ishServerHtml]="html"></div>
+        `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
@@ -94,7 +98,9 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="html"></div> `,
+        template: `
+          <div [ishServerHtml]="html"></div>
+        `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {
@@ -121,7 +127,9 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://systempage.helpdesk' }"></div> `,
+        template: `
+          <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://systempage.helpdesk' }"></div>
+        `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}

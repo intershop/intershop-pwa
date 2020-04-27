@@ -51,7 +51,10 @@ export class ShoppingFacade {
   // CATEGORY
   topLevelCategories$ = this.store.pipe(select(getTopLevelCategories));
   selectedCategory$ = this.store.pipe(select(getSelectedCategory));
-  selectedCategoryLoading$ = this.store.pipe(select(getCategoryLoading), debounceTime(500));
+  selectedCategoryLoading$ = this.store.pipe(
+    select(getCategoryLoading),
+    debounceTime(500)
+  );
 
   // PRODUCT
   selectedProduct$ = this.store.pipe(select(getSelectedProduct));
@@ -131,7 +134,12 @@ export class ShoppingFacade {
   searchLoading$ = this.store.pipe(select(getProductListingLoading));
 
   searchItemsCount$ = this.searchTerm$.pipe(
-    debounce(() => this.store.pipe(select(getProductListingLoading), whenFalsy())),
+    debounce(() =>
+      this.store.pipe(
+        select(getProductListingLoading),
+        whenFalsy()
+      )
+    ),
     switchMap(term =>
       this.store.pipe(
         select(getProductListingView, { type: 'search', value: term }),

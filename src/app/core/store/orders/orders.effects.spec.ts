@@ -52,10 +52,7 @@ describe('Orders Effects', () => {
         RouterTestingModule.withRoutes([
           {
             path: 'checkout',
-            children: [
-              { path: 'receipt', component: DummyComponent },
-              { path: 'payment', component: DummyComponent },
-            ],
+            children: [{ path: 'receipt', component: DummyComponent }, { path: 'payment', component: DummyComponent }],
           },
           { path: 'account/orders/:orderId', component: DummyComponent },
           { path: '**', component: DummyComponent },

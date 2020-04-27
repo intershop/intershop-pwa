@@ -114,7 +114,9 @@ describe('Price Pipe', () => {
   let store$: Store<{}>;
 
   @Component({
-    template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
+    template: `
+      flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }}
+    `,
   })
   class DummyComponent {
     price: Price | PriceItem;

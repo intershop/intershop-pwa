@@ -41,10 +41,15 @@ export class PricePipe implements PipeTransform, OnDestroy {
         if (priceType) {
           return formatPrice(PriceItemHelper.selectType(data, priceType), this.translateService.currentLang);
         }
-        this.store.pipe(select(getPriceDisplayType), takeUntil(this.destroy$)).subscribe(type => {
-          this.displayText = formatPrice(PriceItemHelper.selectType(data, type), this.translateService.currentLang);
-          this.cdRef.markForCheck();
-        });
+        this.store
+          .pipe(
+            select(getPriceDisplayType),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(type => {
+            this.displayText = formatPrice(PriceItemHelper.selectType(data, type), this.translateService.currentLang);
+            this.cdRef.markForCheck();
+          });
         return this.displayText;
       default:
         return formatPrice(data as Price, this.translateService.currentLang);

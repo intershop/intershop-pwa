@@ -36,8 +36,7 @@ export interface Environment {
     | 'sentry'
     | 'tracking'
     /* B2C features */
-    | 'wishlists'
-  )[];
+    | 'wishlists')[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 

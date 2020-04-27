@@ -66,7 +66,13 @@ export class Rule extends Lint.Rules.AbstractRule {
         const testBedStatement = statement.getChildAt(0);
         const possibleThenStatement = testBedStatement.getChildAt(testBedStatement.getChildCount() - 1);
         if (possibleThenStatement && possibleThenStatement.getText() === 'then') {
-          this.checkVariableStatementsInBeforeEach(statement.getChildAt(2).getChildAt(0).getChildAt(4).getChildAt(1));
+          this.checkVariableStatementsInBeforeEach(
+            statement
+              .getChildAt(2)
+              .getChildAt(0)
+              .getChildAt(4)
+              .getChildAt(1)
+          );
         }
       }
     });

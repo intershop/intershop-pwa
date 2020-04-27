@@ -28,7 +28,10 @@ export class CheckoutAddressesPage {
         const option = select.find('option').eq(1);
         const val = option.attr('value');
         // tslint:disable-next-line:ban
-        cy.get(`[data-testing-id="${type}"]`).find('select').first().select(val);
+        cy.get(`[data-testing-id="${type}"]`)
+          .find('select')
+          .first()
+          .select(val);
       });
   }
 
@@ -43,7 +46,9 @@ export class CheckoutAddressesPage {
   }
 
   continueCheckout() {
-    cy.get('button').contains('Continue Checkout').click();
+    cy.get('button')
+      .contains('Continue Checkout')
+      .click();
   }
 
   editInvoiceAddress() {
@@ -57,7 +62,10 @@ export class CheckoutAddressesPage {
       .first()
       // tslint:disable-next-line:ban
       .select(regionCode);
-    cy.get(`[data-testing-id="invoice-address-form"]`).find('button.btn-primary').first().click();
+    cy.get(`[data-testing-id="invoice-address-form"]`)
+      .find('button.btn-primary')
+      .first()
+      .click();
   }
 
   get validationMessage() {

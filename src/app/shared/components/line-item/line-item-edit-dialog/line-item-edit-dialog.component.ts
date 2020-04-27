@@ -122,14 +122,19 @@ export class LineItemEditDialogComponent implements OnInit, OnDestroy, OnChanges
    */
   private initModalDialogConfirmed() {
     if (this.modalDialogRef) {
-      this.modalDialogRef.confirmed.pipe(withLatestFrom(this.sku$), takeUntil(this.destroy$)).subscribe(([, sku]) => {
-        const data: LineItemUpdate = {
-          itemId: this.lineItem.id,
-          quantity: +this.form.get('quantity').value,
-          sku,
-        };
-        this.updateItem.emit(data);
-      });
+      this.modalDialogRef.confirmed
+        .pipe(
+          withLatestFrom(this.sku$),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(([, sku]) => {
+          const data: LineItemUpdate = {
+            itemId: this.lineItem.id,
+            quantity: +this.form.get('quantity').value,
+            sku,
+          };
+          this.updateItem.emit(data);
+        });
     }
   }
 }

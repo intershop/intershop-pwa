@@ -5,11 +5,17 @@ import { getCoreState } from 'ish-core/store/core-store';
 
 import { regionAdapter } from './regions.reducer';
 
-const getRegionsState = createSelector(getCoreState, state => state.regions);
+const getRegionsState = createSelector(
+  getCoreState,
+  state => state.regions
+);
 
 export const { selectAll: getAllRegions } = regionAdapter.getSelectors(getRegionsState);
 
-export const getRegionsLoading = createSelector(getRegionsState, regions => regions.loading);
+export const getRegionsLoading = createSelector(
+  getRegionsState,
+  regions => regions.loading
+);
 
 export const getRegionsByCountryCode = createSelector(
   getAllRegions,

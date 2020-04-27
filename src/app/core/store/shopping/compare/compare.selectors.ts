@@ -5,12 +5,21 @@ import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
-const getCompareState = createSelector(getShoppingState, (state: ShoppingState) => state.compare);
+const getCompareState = createSelector(
+  getShoppingState,
+  (state: ShoppingState) => state.compare
+);
 
-export const getCompareProductsSKUs = createSelector(getCompareState, state => state.products);
+export const getCompareProductsSKUs = createSelector(
+  getCompareState,
+  state => state.products
+);
 
 export const isInCompareProducts = (sku: string) =>
-  createSelector(getCompareProductsSKUs, productSKUs => productSKUs.includes(sku));
+  createSelector(
+    getCompareProductsSKUs,
+    productSKUs => productSKUs.includes(sku)
+  );
 
 export const getCompareProducts = createSelector(
   getCompareProductsSKUs,

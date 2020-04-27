@@ -13,7 +13,10 @@ const getViewconfState = createSelector(
 
 export const getWrapperClass = selectRouteData<string>('wrapperClass');
 export const getHeaderType = selectRouteData<string>('headerType');
-export const getBreadcrumbData = createSelector(getViewconfState, state => state.breadcrumbData);
+export const getBreadcrumbData = createSelector(
+  getViewconfState,
+  state => state.breadcrumbData
+);
 export const isStickyHeader = createSelector(
   getViewconfState,
   getHeaderType,

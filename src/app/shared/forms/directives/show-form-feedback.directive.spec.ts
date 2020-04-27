@@ -6,7 +6,9 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { ShowFormFeedbackDirective } from './show-form-feedback.directive';
 
 @Component({
-  template: ` <div [ishShowFormFeedback]="control"></div> `,
+  template: `
+    <div [ishShowFormFeedback]="control"></div>
+  `,
   changeDetection: ChangeDetectionStrategy.Default,
 })
 class TestComponent {

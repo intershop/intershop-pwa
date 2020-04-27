@@ -20,7 +20,10 @@ describe('CMS Component Schematic', () => {
   let appTree: UnitTestTree;
   beforeEach(async () => {
     appTree = await createApplication(schematicRunner)
-      .pipe(createModule(schematicRunner, { name: 'shared' }), createModule(schematicRunner, { name: 'shared/cms' }))
+      .pipe(
+        createModule(schematicRunner, { name: 'shared' }),
+        createModule(schematicRunner, { name: 'shared/cms' })
+      )
       .toPromise();
   });
 

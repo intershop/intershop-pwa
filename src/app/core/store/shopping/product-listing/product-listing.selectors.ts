@@ -11,15 +11,30 @@ import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { adapter, serializeProductListingID } from './product-listing.reducer';
 
-const getProductListingState = createSelector(getShoppingState, state => state.productListing);
+const getProductListingState = createSelector(
+  getShoppingState,
+  state => state.productListing
+);
 
-export const getProductListingLoading = createSelector(getProductListingState, state => state.loading);
+export const getProductListingLoading = createSelector(
+  getProductListingState,
+  state => state.loading
+);
 
-export const getProductListingItemsPerPage = createSelector(getProductListingState, state => state.itemsPerPage);
+export const getProductListingItemsPerPage = createSelector(
+  getProductListingState,
+  state => state.itemsPerPage
+);
 
-export const getProductListingViewType = createSelector(getProductListingState, state => state.viewType);
+export const getProductListingViewType = createSelector(
+  getProductListingState,
+  state => state.viewType
+);
 
-const getProductListingSettings = createSelector(getProductListingState, state => state.currentSettings);
+const getProductListingSettings = createSelector(
+  getProductListingState,
+  state => state.currentSettings
+);
 
 const { selectEntities: getProductListingEntites } = adapter.getSelectors(getProductListingState);
 

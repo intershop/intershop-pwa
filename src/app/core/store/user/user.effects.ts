@@ -93,7 +93,12 @@ export class UserEffects {
         timer(1000).pipe(switchMapTo(EMPTY))
       )
     ),
-    debounce(() => this.actions$.pipe(debounceTime(2000), first())),
+    debounce(() =>
+      this.actions$.pipe(
+        debounceTime(2000),
+        first()
+      )
+    ),
     tap(() => {
       this.router.navigate(['/login'], {
         queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
@@ -109,14 +114,25 @@ export class UserEffects {
   redirectAfterLogin$ = merge(
     this.actions$.pipe(
       ofType(userActions.UserActionTypes.LoginUserSuccess),
-      switchMapTo(this.store$.pipe(select(selectQueryParam('returnUrl')), first())),
+      switchMapTo(
+        this.store$.pipe(
+          select(selectQueryParam('returnUrl')),
+          first()
+        )
+      ),
       whenTruthy()
     ),
     this.store$.pipe(
       ofUrl(/^\/login.*/),
       select(selectQueryParam('returnUrl')),
       map(returnUrl => returnUrl || '/account'),
-      switchMap(returnUrl => this.store$.pipe(select(getLoggedInUser), whenTruthy(), mapTo(returnUrl)))
+      switchMap(returnUrl =>
+        this.store$.pipe(
+          select(getLoggedInUser),
+          whenTruthy(),
+          mapTo(returnUrl)
+        )
+      )
     )
   ).pipe(
     whenTruthy(),

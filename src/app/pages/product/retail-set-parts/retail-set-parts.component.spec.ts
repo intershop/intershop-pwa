@@ -28,11 +28,7 @@ describe('Retail Set Parts Component', () => {
     fixture = TestBed.createComponent(RetailSetPartsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.parts = [
-      { sku: '1', quantity: 2 },
-      { sku: '2', quantity: 2 },
-      { sku: '3', quantity: 2 },
-    ];
+    component.parts = [{ sku: '1', quantity: 2 }, { sku: '2', quantity: 2 }, { sku: '3', quantity: 2 }];
   });
 
   it('should be created', () => {

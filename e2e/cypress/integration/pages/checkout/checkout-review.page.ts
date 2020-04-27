@@ -6,6 +6,8 @@ export class CheckoutReviewPage {
   }
 
   submitOrder() {
-    cy.get('button').contains('Submit Order').click();
+    cy.get('button')
+      .contains('Submit Order')
+      .click();
   }
 }

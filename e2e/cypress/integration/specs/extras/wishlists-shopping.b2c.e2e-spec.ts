@@ -29,7 +29,10 @@ describe('Wishlist Shopping Experience Functionality', () => {
     LoginPage.navigateTo('/account/wishlists');
     at(LoginPage, page => {
       page.fillForm(_.user.login, _.user.password);
-      page.submit().its('status').should('equal', 200);
+      page
+        .submit()
+        .its('status')
+        .should('equal', 200);
     });
     at(WishlistsOverviewPage, page => {
       page.addWishlist(unpreferredWishlist, false);

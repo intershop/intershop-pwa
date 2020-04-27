@@ -35,12 +35,16 @@ export class ProductListModule {
   }
 
   gotoProductDetailPageBySku(sku: string) {
-    cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"]`).click();
+    cy.get(this.contextSelector)
+      .find(`ish-product-item div[data-testing-sku="${sku}"]`)
+      .click();
     waitLoadingEnd();
   }
 
   addProductToCompareBySku(sku: string) {
-    cy.get(this.contextSelector).find(`ish-product-item div[data-testing-sku="${sku}"] button.add-to-compare`).click();
+    cy.get(this.contextSelector)
+      .find(`ish-product-item div[data-testing-sku="${sku}"] button.add-to-compare`)
+      .click();
   }
 
   addProductToQuoteRequest(sku: string) {

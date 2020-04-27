@@ -12,7 +12,10 @@ class UseComponentChangeDetectionWalker extends NgWalker {
   visitClassDecorator(decorator: ts.Decorator) {
     if (decorator.expression.getChildAt(0).getText() === 'Component') {
       const componentProperties = decorator.expression.getChildAt(2) as ts.SyntaxList;
-      const propertyList = componentProperties.getChildAt(0).getChildAt(1).getChildren();
+      const propertyList = componentProperties
+        .getChildAt(0)
+        .getChildAt(1)
+        .getChildren();
 
       const containsChangeDetection =
         propertyList

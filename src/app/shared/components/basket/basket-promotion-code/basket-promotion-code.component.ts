@@ -43,14 +43,19 @@ export class BasketPromotionCodeComponent implements OnInit, OnDestroy {
     this.codeInput = new FormControl('', [Validators.required, Validators.maxLength(this.codeMaxLength)]);
 
     // update emitted to display spinning animation
-    this.basket$.pipe(whenTruthy(), takeUntil(this.destroy$)).subscribe(basket => {
-      this.basketPromoCodes = basket.promotionCodes;
-      if (this.displaySuccessMessage) {
-        this.codeInput.reset();
-        this.isCollapsed = true;
-      }
-      this.cd.detectChanges();
-    });
+    this.basket$
+      .pipe(
+        whenTruthy(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(basket => {
+        this.basketPromoCodes = basket.promotionCodes;
+        if (this.displaySuccessMessage) {
+          this.codeInput.reset();
+          this.isCollapsed = true;
+        }
+        this.cd.detectChanges();
+      });
   }
 
   /**

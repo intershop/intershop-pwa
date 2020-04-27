@@ -107,7 +107,12 @@ export class BasketEffects {
   @Effect()
   mergeBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
-    mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
+    mergeMapTo(
+      this.store.pipe(
+        select(getCurrentBasket),
+        take(1)
+      )
+    ),
     filter(currentBasket => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
     mapTo(new basketActions.MergeBasket())
   );
@@ -119,7 +124,12 @@ export class BasketEffects {
   @Effect()
   mergeBasket$ = this.actions$.pipe(
     ofType<basketActions.MergeBasket>(basketActions.BasketActionTypes.MergeBasket),
-    mergeMapTo(this.store.pipe(select(getCurrentBasket), take(1))),
+    mergeMapTo(
+      this.store.pipe(
+        select(getCurrentBasket),
+        take(1)
+      )
+    ),
     withLatestFrom(this.store.pipe(select(getLastAPITokenBeforeLogin))),
     concatMap(([sourceBasket, authToken]) =>
       this.basketService.mergeBasket(sourceBasket.id, authToken).pipe(

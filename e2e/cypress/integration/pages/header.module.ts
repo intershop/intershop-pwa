@@ -40,7 +40,9 @@ export class HeaderModule {
   }
 
   gotoWishlists() {
-    cy.get('ish-wishlists-link a').eq(0).click({ force: true });
+    cy.get('ish-wishlists-link a')
+      .eq(0)
+      .click({ force: true });
     waitLoadingEnd();
   }
 

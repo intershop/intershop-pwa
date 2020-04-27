@@ -59,7 +59,9 @@ describe('Server Html', () => {
 
   it('user should be able to follow product link', () => {
     at(HomePage, () => {
-      cy.get('a').contains('product').click();
+      cy.get('a')
+        .contains('product')
+        .click();
 
       waitLoadingEnd();
 
@@ -69,7 +71,9 @@ describe('Server Html', () => {
 
   it('user should be able to follow category link', () => {
     at(HomePage, () => {
-      cy.get('a').contains('category').click();
+      cy.get('a')
+        .contains('category')
+        .click();
 
       waitLoadingEnd();
 
@@ -79,7 +83,9 @@ describe('Server Html', () => {
 
   it('user should be able to follow page link', () => {
     at(HomePage, () => {
-      cy.get('a').contains('page').click();
+      cy.get('a')
+        .contains('page')
+        .click();
 
       waitLoadingEnd();
 
@@ -91,7 +97,9 @@ describe('Server Html', () => {
 
   it('user should be able to follow route link', () => {
     at(HomePage, () => {
-      cy.get('a').contains('route').click();
+      cy.get('a')
+        .contains('route')
+        .click();
 
       waitLoadingEnd();
 

@@ -25,7 +25,10 @@ describe('Returning User', () => {
       at(LoginPage, page => {
         page.errorText.should('not.be.visible');
         page.fillForm(_.email, _.password);
-        page.submit().its('status').should('equal', 200);
+        page
+          .submit()
+          .its('status')
+          .should('equal', 200);
       });
       at(MyAccountPage, page => {
         page.header.myAccountLink.should('have.text', _.name);

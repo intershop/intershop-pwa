@@ -6,7 +6,10 @@ import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { RecentlyState } from './recently.reducer';
 
-const getRecentlyState = createSelector(getShoppingState, state => state.recently);
+const getRecentlyState = createSelector(
+  getShoppingState,
+  state => state.recently
+);
 
 export const getRecentlyViewedProducts = createSelectorFactory(projector =>
   defaultMemoize(projector, undefined, isEqual)

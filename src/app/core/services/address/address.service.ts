@@ -39,9 +39,10 @@ export class AddressService {
       mainDivision: address.mainDivisionCode,
     };
 
-    return this.apiService
-      .post(`customers/${customerId}/addresses`, customerAddress)
-      .pipe(resolveLink<Address>(this.apiService), map(AddressMapper.fromData));
+    return this.apiService.post(`customers/${customerId}/addresses`, customerAddress).pipe(
+      resolveLink<Address>(this.apiService),
+      map(AddressMapper.fromData)
+    );
   }
 
   /**

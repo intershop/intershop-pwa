@@ -10,7 +10,10 @@ import { getCategoryTree } from 'ish-core/store/shopping/categories';
 import { getProductEntities } from 'ish-core/store/shopping/products';
 import { getLoggedInCustomer } from 'ish-core/store/user';
 
-const getBasketState = createSelector(getCheckoutState, state => state.basket);
+const getBasketState = createSelector(
+  getCheckoutState,
+  state => state.basket
+);
 
 export const getBasketValidationResults = createSelector(
   getBasketState,
@@ -51,7 +54,10 @@ export const getBasketValidationResults = createSelector(
   }
 );
 
-export const getBasketInfo = createSelector(getBasketState, basket => basket.info);
+export const getBasketInfo = createSelector(
+  getBasketState,
+  basket => basket.info
+);
 
 /**
  * Select the current basket with the appended product data and validation results for each line item.
@@ -66,17 +72,30 @@ export const getCurrentBasket = createSelector(
     createBasketView(basket.basket, products, validationResults, basketInfo, categoryTree)
 );
 
-export const getCurrentBasketId = createSelector(getBasketState, basket =>
-  basket.basket ? basket.basket.id : undefined
+export const getCurrentBasketId = createSelector(
+  getBasketState,
+  basket => (basket.basket ? basket.basket.id : undefined)
 );
 
-export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);
+export const getBasketLoading = createSelector(
+  getBasketState,
+  basket => basket.loading
+);
 
-export const getBasketError = createSelector(getBasketState, basket => basket.error);
+export const getBasketError = createSelector(
+  getBasketState,
+  basket => basket.error
+);
 
-export const getBasketPromotionError = createSelector(getBasketState, basket => basket.promotionError);
+export const getBasketPromotionError = createSelector(
+  getBasketState,
+  basket => basket.promotionError
+);
 
-export const getBasketLastTimeProductAdded = createSelector(getBasketState, basket => basket.lastTimeProductAdded);
+export const getBasketLastTimeProductAdded = createSelector(
+  getBasketState,
+  basket => basket.lastTimeProductAdded
+);
 
 export const getBasketEligibleShippingMethods = createSelector(
   getBasketState,

@@ -40,10 +40,7 @@ describe('Feature Toggle Service', () => {
     });
 
     using(
-      () => [
-        { feature: 'feature1', expected: true },
-        { feature: 'feature2', expected: false },
-      ],
+      () => [{ feature: 'feature1', expected: true }, { feature: 'feature2', expected: false }],
       slice => {
         it(`should have ${slice.feature} == ${slice.expected} when asked`, () => {
           expect(featureToggle.enabled(slice.feature)).toBe(slice.expected);

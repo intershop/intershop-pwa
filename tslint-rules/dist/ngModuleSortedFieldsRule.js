@@ -28,14 +28,20 @@ var NgModulesSortedFieldsWalker = (function (_super) {
     }
     NgModulesSortedFieldsWalker.prototype.visitCallExpression = function (node) {
         if (node.getChildAt(0).getText() === 'TestBed.configureTestingModule') {
-            var ngModuleDeclarationList = node.getChildAt(2).getChildAt(0).getChildAt(1);
+            var ngModuleDeclarationList = node
+                .getChildAt(2)
+                .getChildAt(0)
+                .getChildAt(1);
             this.visitNgModuleDeclarationList(ngModuleDeclarationList);
         }
         _super.prototype.visitCallExpression.call(this, node);
     };
     NgModulesSortedFieldsWalker.prototype.visitClassDecorator = function (decorator) {
         var _this = this;
-        if (decorator.getChildAt(1).getChildAt(0).getText() !== 'NgModule') {
+        if (decorator
+            .getChildAt(1)
+            .getChildAt(0)
+            .getText() !== 'NgModule') {
             return;
         }
         decorator
@@ -47,7 +53,11 @@ var NgModulesSortedFieldsWalker = (function (_super) {
             .filter(function (node) { return node.kind === ts.SyntaxKind.VariableDeclarationList; })
             .map(function (node) { return node.getChildAt(1).getChildAt(0); })
             .forEach(function (node) { return _this.sortList(node.getChildAt(2).getChildAt(1)); });
-        var ngModuleDeclarationList = decorator.getChildAt(1).getChildAt(2).getChildAt(0).getChildAt(1);
+        var ngModuleDeclarationList = decorator
+            .getChildAt(1)
+            .getChildAt(2)
+            .getChildAt(0)
+            .getChildAt(1);
         this.visitNgModuleDeclarationList(ngModuleDeclarationList);
         _super.prototype.visitClassDecorator.call(this, decorator);
     };

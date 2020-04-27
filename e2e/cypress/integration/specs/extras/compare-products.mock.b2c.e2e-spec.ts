@@ -39,7 +39,10 @@ describe('Comparing User', () => {
 
   it('should now be at the compare page to compare 2 products', () => {
     at(ComparePage, page => {
-      page.visibleCompareItemSKUs.should('have.length', 2).should('contain', _.product1).should('contain', _.product2);
+      page.visibleCompareItemSKUs
+        .should('have.length', 2)
+        .should('contain', _.product1)
+        .should('contain', _.product2);
     });
   });
 });

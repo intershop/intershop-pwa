@@ -7,7 +7,10 @@ import { RouterState } from './router.reducer';
 export const selectRouter: (state: any) => RouterReducerState<RouterState> = state => state.router;
 
 export const selectRouteData = <T>(key: string) =>
-  createSelector(selectRouter, (state): T => state && state.state && state.state.data && state.state.data[key]);
+  createSelector(
+    selectRouter,
+    (state): T => state && state.state && state.state.data && state.state.data[key]
+  );
 
 export const selectQueryParams = createSelector(
   selectRouter,
@@ -15,7 +18,10 @@ export const selectQueryParams = createSelector(
 );
 
 export const selectQueryParam = (key: string) =>
-  createSelector(selectQueryParams, (queryParams): string => queryParams && queryParams[key]);
+  createSelector(
+    selectQueryParams,
+    (queryParams): string => queryParams && queryParams[key]
+  );
 
 export const selectRouteParam = (key: string) =>
   createSelector(
@@ -23,4 +29,7 @@ export const selectRouteParam = (key: string) =>
     (state): string => state && state.state && state.state.params && state.state.params[key]
   );
 
-export const selectUrl = createSelector(selectRouter, state => state && state.state && state.state.url);
+export const selectUrl = createSelector(
+  selectRouter,
+  state => state && state.state && state.state.url
+);

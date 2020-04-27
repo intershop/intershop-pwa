@@ -31,9 +31,7 @@ export class UniversalMockInterceptor implements HttpInterceptor {
           observer.error(errString);
         } else {
           const content = JSON.parse(readFileSync(file, 'utf8'));
-          observer.next(
-            new HttpResponse<unknown>({ body: content })
-          );
+          observer.next(new HttpResponse<unknown>({ body: content }));
           observer.complete();
         }
       });

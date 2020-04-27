@@ -10,11 +10,17 @@ import { getContentState } from 'ish-core/store/content/content-store';
 
 import { includesAdapter } from './includes.reducer';
 
-const getIncludesState = createSelector(getContentState, state => state.includes);
+const getIncludesState = createSelector(
+  getContentState,
+  state => state.includes
+);
 
 const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelectors(getIncludesState);
 
-export const getContentIncludeLoading = createSelector(getIncludesState, includes => includes.loading);
+export const getContentIncludeLoading = createSelector(
+  getIncludesState,
+  includes => includes.loading
+);
 
 export const getContentInclude = createSelector(
   getContentIncludeEntities,

@@ -7,24 +7,26 @@
     <title>PWA Reports</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-      $(document).ready(function () {
-        $.get('junit.xml', function (data, status) {
+      $(document).ready(function() {
+        $.get('junit.xml', function(data, status) {
           $xml = $(data).find('testsuites');
           var tests = $xml.attr('tests');
           var failures = $xml.attr('failures');
           $('#unit-tests').text(`Tests: ${tests}, Failures: ${failures}`);
         });
-        $.get('coverage/index.html', function (data, status) {
+        $.get('coverage/index.html', function(data, status) {
           var html = $.parseHTML(data);
           var summary = $('div.clearfix', html)[0];
           $('#coverage').append(summary);
         });
-        $.get('tslint/index.html', function (data, status) {
+        $.get('tslint/index.html', function(data, status) {
           var html = $.parseHTML(data);
           var summary = $('span.badge', html)[0];
-          $('#tslint').append('TSLint: ').append(summary);
+          $('#tslint')
+            .append('TSLint: ')
+            .append(summary);
         });
-        $.get('jscpd/index.html', function (data, status) {
+        $.get('jscpd/index.html', function(data, status) {
           var html = $.parseHTML(data);
           var summary = $('h3', html)[0].textContent;
           $('#jscpd').append(summary);

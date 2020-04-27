@@ -19,7 +19,10 @@ describe('Shopping User', () => {
 
   it('adding bundle to cart', () => {
     at(ProductDetailPage, page => {
-      page.addProductToCart().its('status').should('equal', 201);
+      page
+        .addProductToCart()
+        .its('status')
+        .should('equal', 201);
       page.header.miniCart.goToCart();
     });
   });

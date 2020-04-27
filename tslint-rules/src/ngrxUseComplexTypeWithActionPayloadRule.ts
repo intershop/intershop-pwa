@@ -18,7 +18,12 @@ export class Rule extends Lint.Rules.AbstractRule {
           if (payload) {
             if (payload.getChildAt(0).getText() !== 'payload') {
               ctx.addFailureAtNode(node, 'Actions should have only one payload parameter.');
-            } else if (!payload.getChildAt(2).getText().startsWith('{')) {
+            } else if (
+              !payload
+                .getChildAt(2)
+                .getText()
+                .startsWith('{')
+            ) {
               ctx.addFailureAtNode(payload, 'The payload of actions should be a complex type with named content.');
             }
           }

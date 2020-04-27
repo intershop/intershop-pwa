@@ -20,7 +20,10 @@ import { getShoppingState } from 'ish-core/store/shopping/shopping-store';
 
 import { productAdapter } from './products.reducer';
 
-const getProductsState = createSelector(getShoppingState, state => state.products);
+const getProductsState = createSelector(
+  getShoppingState,
+  state => state.products
+);
 
 const productToVariationOptions = memoize(
   product => {
@@ -34,7 +37,10 @@ const productToVariationOptions = memoize(
 
 export const { selectEntities: getProductEntities } = productAdapter.getSelectors(getProductsState);
 
-const getFailed = createSelector(getProductsState, state => state.failed);
+const getFailed = createSelector(
+  getProductsState,
+  state => state.failed
+);
 
 const createView = memoize(
   (product, entities, tree) => {
@@ -100,22 +106,33 @@ export const getSelectedProduct = createSelector(
   (state, sku): ProductView | VariationProductView | VariationProductMasterView => getProduct(state, { sku })
 );
 
-export const getProductVariationOptions = createSelector(getProduct, productToVariationOptions);
+export const getProductVariationOptions = createSelector(
+  getProduct,
+  productToVariationOptions
+);
 
-export const getSelectedProductVariationOptions = createSelector(getSelectedProduct, productToVariationOptions);
+export const getSelectedProductVariationOptions = createSelector(
+  getSelectedProduct,
+  productToVariationOptions
+);
 
-export const getProductBundleParts = createSelector(getProductEntities, (entities, props: { sku: string }): {
-  product: Product;
-  quantity: number;
-}[] =>
-  !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
-    ? []
-    : entities[props.sku].bundledProducts
-        .filter(({ sku }) => !!entities[sku])
-        .map(({ sku, quantity }) => ({
-          product: entities[sku],
-          quantity,
-        }))
+export const getProductBundleParts = createSelector(
+  getProductEntities,
+  (
+    entities,
+    props: { sku: string }
+  ): {
+    product: Product;
+    quantity: number;
+  }[] =>
+    !ProductHelper.isProductBundle(entities[props.sku]) || !entities[props.sku].bundledProducts
+      ? []
+      : entities[props.sku].bundledProducts
+          .filter(({ sku }) => !!entities[sku])
+          .map(({ sku, quantity }) => ({
+            product: entities[sku],
+            quantity,
+          }))
 );
 
 export const getProductLinks = createSelector(

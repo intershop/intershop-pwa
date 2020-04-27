@@ -24,7 +24,10 @@ var PrivateDestroyFieldWalker = (function (_super) {
         return _this;
     }
     PrivateDestroyFieldWalker.prototype.visitClassDecorator = function (decorator) {
-        var type = decorator.getChildAt(1).getChildAt(0).getText();
+        var type = decorator
+            .getChildAt(1)
+            .getChildAt(0)
+            .getText();
         this.apply = type === 'Component' || type === 'Directive' || type === 'Pipe';
     };
     PrivateDestroyFieldWalker.prototype.visitPropertyDeclaration = function (prop) {

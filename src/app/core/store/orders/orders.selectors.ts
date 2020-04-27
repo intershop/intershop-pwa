@@ -7,11 +7,17 @@ import { getProductEntities } from 'ish-core/store/shopping/products';
 
 import { orderAdapter } from './orders.reducer';
 
-const getOrdersState = createSelector(getCoreState, state => state.orders);
+const getOrdersState = createSelector(
+  getCoreState,
+  state => state.orders
+);
 
 const { selectEntities: getOrderEntities, selectAll: getOrdersInternal } = orderAdapter.getSelectors(getOrdersState);
 
-export const getSelectedOrderId = createSelector(getOrdersState, state => state.selected);
+export const getSelectedOrderId = createSelector(
+  getOrdersState,
+  state => state.selected
+);
 
 export const getSelectedOrder = createSelector(
   getOrderEntities,
@@ -35,13 +41,15 @@ export const getOrder = createSelector(
   getProductEntities,
   getCategoryTree,
   (entities, products, categoryTree, props: { orderId: string }): OrderView =>
-    createOrderView(
-      entities.find(e => e.id === props.orderId),
-      products,
-      categoryTree
-    )
+    createOrderView(entities.find(e => e.id === props.orderId), products, categoryTree)
 );
 
-export const getOrdersLoading = createSelector(getOrdersState, orders => orders.loading);
+export const getOrdersLoading = createSelector(
+  getOrdersState,
+  orders => orders.loading
+);
 
-export const getOrdersError = createSelector(getOrdersState, orders => orders.error);
+export const getOrdersError = createSelector(
+  getOrdersState,
+  orders => orders.error
+);

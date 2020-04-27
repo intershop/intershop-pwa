@@ -14,7 +14,7 @@ exec('npx ng g decontainerize-0.16-to-0.17', (err, stdout, stderr) => {
     console.log('successfully performed de-containerization');
   }
 
-  glob('src/app/**/*.component.ts', function (er, files) {
+  glob('src/app/**/*.component.ts', function(er, files) {
     let update = false;
     files.forEach(file => {
       if (/^src\/app\/.*\/(containers|components)\/.*\.component\.ts$/.test(file)) {

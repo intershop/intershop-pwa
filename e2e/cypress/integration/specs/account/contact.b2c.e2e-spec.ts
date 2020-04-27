@@ -25,7 +25,10 @@ describe('Contact', () => {
     LoginPage.navigateTo('/contact');
     at(LoginPage, page => {
       page.fillForm(_.email, _.password);
-      page.submit().its('status').should('equal', 200);
+      page
+        .submit()
+        .its('status')
+        .should('equal', 200);
     });
     at(ContactPage, page => {
       page.emailInput.should('have.value', _.email);

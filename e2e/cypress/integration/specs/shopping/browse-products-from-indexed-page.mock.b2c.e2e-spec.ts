@@ -29,7 +29,10 @@ describe('Browsing User', () => {
     it('should navigate to family page to check sibling products', () => {
       at(ProductDetailPage, page => {
         page.breadcrumb.items.should('have.length', 4);
-        page.breadcrumb.items.eq(2).should('have.text', `${_.category.name}/`).click();
+        page.breadcrumb.items
+          .eq(2)
+          .should('have.text', `${_.category.name}/`)
+          .click();
       });
 
       at(FamilyPage, page => {

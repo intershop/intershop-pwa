@@ -6,12 +6,20 @@ import { selectRouteParam } from 'ish-core/store/router';
 
 import { pagesAdapter } from './pages.reducer';
 
-const getPagesState = createSelector(getContentState, state => state.pages);
+const getPagesState = createSelector(
+  getContentState,
+  state => state.pages
+);
 
 const { selectEntities: getPageEntities } = pagesAdapter.getSelectors(getPagesState);
 
-export const getContentPageLoading = createSelector(getPagesState, state => state.loading);
+export const getContentPageLoading = createSelector(
+  getPagesState,
+  state => state.loading
+);
 
-export const getSelectedContentPage = createSelector(getPageEntities, selectRouteParam('contentPageId'), (pages, id) =>
-  createContentPageletEntryPointView(pages[id])
+export const getSelectedContentPage = createSelector(
+  getPageEntities,
+  selectRouteParam('contentPageId'),
+  (pages, id) => createContentPageletEntryPointView(pages[id])
 );

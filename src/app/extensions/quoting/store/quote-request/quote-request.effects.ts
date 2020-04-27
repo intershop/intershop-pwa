@@ -319,7 +319,12 @@ export class QuoteRequestEffects {
       actions.QuoteRequestActionTypes.AddProductToQuoteRequest,
       actions.QuoteRequestActionTypes.AddBasketToQuoteRequest
     ),
-    mergeMap(() => this.store.pipe(select(getUserAuthorized), first())),
+    mergeMap(() =>
+      this.store.pipe(
+        select(getUserAuthorized),
+        first()
+      )
+    ),
     whenFalsy(),
     tap(() => {
       const queryParams = { returnUrl: this.router.routerState.snapshot.url, messageKey: 'quotes' };

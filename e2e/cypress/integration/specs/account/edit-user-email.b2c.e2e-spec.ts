@@ -16,7 +16,13 @@ describe('Changing User', () => {
     createUserViaREST(_.user);
 
     LoginPage.navigateTo('/account/profile');
-    at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+    at(LoginPage, page =>
+      page
+        .fillForm(_.user.login, _.user.password)
+        .submit()
+        .its('status')
+        .should('equal', 200)
+    );
   });
 
   it('should be able to edit email', () => {
@@ -25,7 +31,13 @@ describe('Changing User', () => {
       page.editEmail();
     });
 
-    at(ProfileEditEmailPage, page => page.fillForm({ email: _.newEmail }).submit().its('status').should('equal', 200));
+    at(ProfileEditEmailPage, page =>
+      page
+        .fillForm({ email: _.newEmail })
+        .submit()
+        .its('status')
+        .should('equal', 200)
+    );
     at(ProfilePage, page => {
       page.email.should('have.text', _.newEmail);
       page.header.logout();
@@ -34,6 +46,12 @@ describe('Changing User', () => {
 
   it('should be able to use new email for logging in', () => {
     at(HomePage, page => page.header.gotoLoginPage());
-    at(LoginPage, page => page.fillForm(_.newEmail, _.user.password).submit().its('status').should('equal', 200));
+    at(LoginPage, page =>
+      page
+        .fillForm(_.newEmail, _.user.password)
+        .submit()
+        .its('status')
+        .should('equal', 200)
+    );
   });
 });

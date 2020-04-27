@@ -29,7 +29,12 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnD
   private icmBaseUrl: string;
 
   constructor(private router: Router, private elementRef: ElementRef, store: Store<{}>) {
-    store.pipe(select(getICMBaseURL), takeUntil(this.destroy$)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
+    store
+      .pipe(
+        select(getICMBaseURL),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
 
   ngOnDestroy() {

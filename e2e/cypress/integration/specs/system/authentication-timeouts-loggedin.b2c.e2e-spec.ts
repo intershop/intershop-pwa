@@ -17,7 +17,13 @@ describe('Logged in Sleeping User', () => {
   describe('being a long time on a family page', () => {
     it('should wait a long time on family page after logging in', () => {
       LoginPage.navigateTo('/category/' + _.category);
-      at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+      at(LoginPage, page =>
+        page
+          .fillForm(_.user.login, _.user.password)
+          .submit()
+          .its('status')
+          .should('equal', 200)
+      );
       at(FamilyPage, page => {
         page.productList.productTile(_.product).should('be.visible');
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
@@ -54,7 +60,13 @@ describe('Logged in Sleeping User', () => {
   describe('being a long time on a myaccount page', () => {
     it('should wait a long time on myaccount page after logging in', () => {
       LoginPage.navigateTo();
-      at(LoginPage, page => page.fillForm(_.user.login, _.user.password).submit().its('status').should('equal', 200));
+      at(LoginPage, page =>
+        page
+          .fillForm(_.user.login, _.user.password)
+          .submit()
+          .its('status')
+          .should('equal', 200)
+      );
       at(MyAccountPage, page => {
         page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
       });

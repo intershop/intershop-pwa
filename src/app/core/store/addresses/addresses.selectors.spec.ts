@@ -11,10 +11,7 @@ import { getAddressesError, getAddressesLoading, getAllAddresses } from './addre
 describe('Addresses Selectors', () => {
   let store$: TestStore;
 
-  const addresses = [
-    { id: '4711', firstname: 'Patricia' },
-    { id: '4712', firstName: 'John' },
-  ] as Address[];
+  const addresses = [{ id: '4711', firstname: 'Patricia' }, { id: '4712', firstName: 'John' }] as Address[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({

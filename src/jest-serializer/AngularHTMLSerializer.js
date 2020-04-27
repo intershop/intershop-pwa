@@ -14,7 +14,10 @@ const print = val => {
     .replace(/<!\-\-.*?\-\->/g, '')
     .replace(/ng-reflect-klass="[^"]*"/g, '')
     .replace(/ng-reflect-[a-z-]*="\[object Object]"/g, '');
-  const result = prettier.format(source, { parser: 'html', printWidth: 100 }).replace(/^\s*$/g, '').trim();
+  const result = prettier
+    .format(source, { parser: 'html', printWidth: 100 })
+    .replace(/^\s*$/g, '')
+    .trim();
   return result || 'N/A';
 };
 

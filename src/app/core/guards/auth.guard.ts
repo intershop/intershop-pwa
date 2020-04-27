@@ -40,7 +40,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       of(defaultRedirect),
       race(
         // wait till authorization can be acquired through cookie
-        this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
+        this.store.pipe(
+          select(getUserAuthorized),
+          whenTruthy(),
+          take(1)
+        ),
         // send to login after timeout (on first routing only)
         timer(this.router.navigated ? 0 : 4000).pipe(mapTo(defaultRedirect))
       )

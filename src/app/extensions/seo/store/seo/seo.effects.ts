@@ -50,9 +50,8 @@ export class SeoEffects {
   ) {
     // get baseURL
     if (isPlatformServer(this.platformId)) {
-      this.baseURL = `${this.request.protocol}://${
-        this.request.get('host') + this.doc.querySelector('base').getAttribute('href')
-      }`;
+      this.baseURL = `${this.request.protocol}://${this.request.get('host') +
+        this.doc.querySelector('base').getAttribute('href')}`;
     } else {
       this.baseURL = this.doc.baseURI;
     }
@@ -181,6 +180,10 @@ export class SeoEffects {
   );
 
   private waitAppStable<T>(obs: Observable<T>) {
-    return this.appRef.isStable.pipe(whenTruthy(), first(), switchMapTo(obs));
+    return this.appRef.isStable.pipe(
+      whenTruthy(),
+      first(),
+      switchMapTo(obs)
+    );
   }
 }

@@ -11,7 +11,10 @@ export class CartPage {
 
   beginCheckout() {
     cy.wait(1000);
-    cy.get(this.tag).find('button').contains('Checkout').click();
+    cy.get(this.tag)
+      .find('button')
+      .contains('Checkout')
+      .click();
   }
 
   createQuoteRequest() {
@@ -32,18 +35,40 @@ export class CartPage {
     return {
       quantity: {
         set: (num: number) =>
-          cy.get(this.tag).find('input[data-testing-id="quantity"]').eq(idx).clear().type(num.toString()).blur(),
+          cy
+            .get(this.tag)
+            .find('input[data-testing-id="quantity"]')
+            .eq(idx)
+            .clear()
+            .type(num.toString())
+            .blur(),
       },
-      remove: () => cy.get(this.tag).find('svg[data-icon="trash-alt"]').eq(idx).click(),
-      sku: cy.get(this.tag).find('.product-id').eq(idx),
+      remove: () =>
+        cy
+          .get(this.tag)
+          .find('svg[data-icon="trash-alt"]')
+          .eq(idx)
+          .click(),
+      sku: cy
+        .get(this.tag)
+        .find('.product-id')
+        .eq(idx),
       openVariationEditDialog: () =>
-        cy.get(this.tag).find('ish-line-item-edit').eq(idx).find('a.line-item-edit-link').click(),
+        cy
+          .get(this.tag)
+          .find('ish-line-item-edit')
+          .eq(idx)
+          .find('a.line-item-edit-link')
+          .click(),
     };
   }
 
   get summary() {
     return {
-      subtotal: cy.get('ish-basket-cost-summary').find('dd').first(),
+      subtotal: cy
+        .get('ish-basket-cost-summary')
+        .find('dd')
+        .first(),
     };
   }
   get lineItemInfoMessage() {

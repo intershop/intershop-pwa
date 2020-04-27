@@ -5,11 +5,17 @@ import { ShoppingState, getShoppingState } from 'ish-core/store/shopping/shoppin
 
 import { searchAdapter } from './search.reducer';
 
-const getSearchState = createSelector(getShoppingState, (state: ShoppingState) => state.search);
+const getSearchState = createSelector(
+  getShoppingState,
+  (state: ShoppingState) => state.search
+);
 
 const { selectEntities: getSuggestSearchEntities } = searchAdapter.getSelectors(getSearchState);
 
 export const getSearchTerm = selectRouteParam('searchTerm');
 
 export const getSuggestSearchResults = (searchTerm: string) =>
-  createSelector(getSuggestSearchEntities, entities => (entities[searchTerm] && entities[searchTerm].suggests) || []);
+  createSelector(
+    getSuggestSearchEntities,
+    entities => (entities[searchTerm] && entities[searchTerm].suggests) || []
+  );

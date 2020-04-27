@@ -43,7 +43,12 @@ export class ProductListingComponent implements OnInit, OnChanges, OnDestroy {
         map(params => params.has('view')),
         take(1),
         whenFalsy(),
-        concatMap(() => this.viewType$.pipe(whenTruthy(), take(1)))
+        concatMap(() =>
+          this.viewType$.pipe(
+            whenTruthy(),
+            take(1)
+          )
+        )
       )
       .subscribe(view => this.changeViewType(view));
   }

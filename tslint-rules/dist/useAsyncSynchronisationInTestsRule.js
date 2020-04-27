@@ -26,7 +26,11 @@ var Rule = (function (_super) {
         }
         return this.applyWithFunction(sourceFile, function (ctx) {
             tsquery_1.tsquery(ctx.sourceFile, 'ArrowFunction').forEach(function (block) {
-                if (block.parent.getChildAt(0).getText().endsWith('.subscribe') && block.getText().search(/\sdone\(\)/) < 0) {
+                if (block.parent
+                    .getChildAt(0)
+                    .getText()
+                    .endsWith('.subscribe') &&
+                    block.getText().search(/\sdone\(\)/) < 0) {
                     ctx.addFailureAtNode(block, 'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html');
                 }
             });

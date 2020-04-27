@@ -50,9 +50,14 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store<{}>
       // server
       transferState.onSerialize(NGRX_STATE_SK, () => {
         let state;
-        store.pipe(take(1), map(filterState)).subscribe((saveState: any) => {
-          state = saveState;
-        });
+        store
+          .pipe(
+            take(1),
+            map(filterState)
+          )
+          .subscribe((saveState: any) => {
+            state = saveState;
+          });
 
         return state;
       });

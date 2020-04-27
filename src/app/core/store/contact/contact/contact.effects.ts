@@ -33,9 +33,10 @@ export class ContactEffects {
     ofType(ContactActions.ContactActionTypes.CreateContact),
     mapToPayloadProperty('contact'),
     concatMap(contact =>
-      this.contactService
-        .createContactRequest(contact)
-        .pipe(mapTo(new ContactActions.CreateContactSuccess()), mapErrorToAction(ContactActions.CreateContactFail))
+      this.contactService.createContactRequest(contact).pipe(
+        mapTo(new ContactActions.CreateContactSuccess()),
+        mapErrorToAction(ContactActions.CreateContactFail)
+      )
     )
   );
 }

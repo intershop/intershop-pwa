@@ -6,7 +6,9 @@ export class WishlistsDetailsPage {
   readonly header = new HeaderModule();
 
   static navigateToOverviewPage() {
-    cy.get('[href="/account/wishlists"]').first().click();
+    cy.get('[href="/account/wishlists"]')
+      .first()
+      .click();
   }
 
   get listItem() {
@@ -18,7 +20,10 @@ export class WishlistsDetailsPage {
   }
 
   get wishlistTitle() {
-    return cy.get('ish-account-wishlist-detail-page').find('h1').invoke('text');
+    return cy
+      .get('ish-account-wishlist-detail-page')
+      .find('h1')
+      .invoke('text');
   }
 
   get wishlistPreferredTextElement() {
@@ -26,12 +31,19 @@ export class WishlistsDetailsPage {
   }
 
   getWishlistItemById(id: string) {
-    return cy.get('span').contains(id).closest('ish-account-wishlist-detail-line-item').parent();
+    return cy
+      .get('span')
+      .contains(id)
+      .closest('ish-account-wishlist-detail-line-item')
+      .parent();
   }
 
   editWishlistDetails(name: string, preferred: boolean) {
     cy.get('[data-testing-id="wishlist-details-edit"]').click();
-    cy.get('ngb-modal-window').find('[data-testing-id="title"]').clear().type(name);
+    cy.get('ngb-modal-window')
+      .find('[data-testing-id="title"]')
+      .clear()
+      .type(name);
     cy.get('[data-testing-id="preferred"]').uncheck();
     if (preferred) {
       cy.get('[data-testing-id="preferred"]').check();
@@ -40,25 +52,40 @@ export class WishlistsDetailsPage {
   }
 
   deleteWishlist(id: string) {
-    this.getWishlistItemById(id).find('[data-testing-id="delete-wishlist"]').click();
+    this.getWishlistItemById(id)
+      .find('[data-testing-id="delete-wishlist"]')
+      .click();
   }
 
   moveProductToWishlist(productId: string, listName: string) {
-    this.getWishlistItemById(productId).find('[data-testing-id="move-wishlist"]').click();
+    this.getWishlistItemById(productId)
+      .find('[data-testing-id="move-wishlist"]')
+      .click();
     cy.get(`[data-testing-id="${listName}"]`).check();
-    cy.get('ngb-modal-window').find('button[class="btn btn-primary"]').click();
+    cy.get('ngb-modal-window')
+      .find('button[class="btn btn-primary"]')
+      .click();
     cy.get('[data-testing-id="wishlist-success-link"] a').click();
   }
 
   addProductToBasket(productId: string, quantity: number) {
-    this.getWishlistItemById(productId).find('[data-testing-id="quantity"]').clear().type(quantity.toString());
+    this.getWishlistItemById(productId)
+      .find('[data-testing-id="quantity"]')
+      .clear()
+      .type(quantity.toString());
 
     cy.wait(3000);
-    cy.server().route('POST', '**/baskets/*/items').as('basket');
-    cy.server().route('GET', '**/baskets/current*').as('basketCurrent');
+    cy.server()
+      .route('POST', '**/baskets/*/items')
+      .as('basket');
+    cy.server()
+      .route('GET', '**/baskets/current*')
+      .as('basketCurrent');
     cy.wait(3000);
 
-    this.getWishlistItemById(productId).find('[data-testing-id="addToCartButton"]').click();
+    this.getWishlistItemById(productId)
+      .find('[data-testing-id="addToCartButton"]')
+      .click();
 
     return (
       cy

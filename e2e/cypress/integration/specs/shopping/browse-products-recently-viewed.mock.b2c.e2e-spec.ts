@@ -47,7 +47,10 @@ describe('Browsing User', () => {
     it('should see first product in recent items and follow link to second product', () => {
       at(ProductDetailPage, page => {
         page.recentlyViewedItems.should('have.length', 1);
-        page.recentlyViewedItem(_.product1.sku).should('be.visible').click();
+        page
+          .recentlyViewedItem(_.product1.sku)
+          .should('be.visible')
+          .click();
       });
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.product1.sku);
@@ -57,7 +60,10 @@ describe('Browsing User', () => {
     it('should see second product in recent items and follow link to first product again', () => {
       at(ProductDetailPage, page => {
         page.recentlyViewedItems.should('have.length', 1);
-        page.recentlyViewedItem(_.product2.sku).should('be.visible').click();
+        page
+          .recentlyViewedItem(_.product2.sku)
+          .should('be.visible')
+          .click();
       });
       at(ProductDetailPage, page => {
         page.sku.should('have.text', _.product2.sku);
