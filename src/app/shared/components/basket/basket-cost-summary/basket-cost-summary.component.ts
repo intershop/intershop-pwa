@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PriceHelper } from 'ish-core/models/price/price.model';
 
@@ -16,8 +19,17 @@ import { PriceHelper } from 'ish-core/models/price/price.model';
   templateUrl: './basket-cost-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketCostSummaryComponent {
+export class BasketCostSummaryComponent implements OnInit {
   @Input() totals: BasketTotal;
 
+  taxTranslation$: Observable<string>;
   invert = PriceHelper.invert;
+
+  constructor(private accountFacade: AccountFacade) {}
+
+  ngOnInit() {
+    this.taxTranslation$ = this.accountFacade.userPriceDisplayType$.pipe(
+      map(type => (type === 'net' ? 'checkout.tax.text' : 'checkout.tax.TaxesLabel.TotalOrderVat'))
+    );
+  }
 }

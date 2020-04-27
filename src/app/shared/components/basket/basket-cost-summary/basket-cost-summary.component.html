@@ -52,7 +52,7 @@
     <!-- Tax -->
     <!-- ToDo: display tax in dependence of price calculation preferences -->
     <ng-container *ngIf="totals.taxTotal && totals.taxTotal.value">
-      <dt class="col-6">{{ 'checkout.tax.text' | translate }}</dt>
+      <dt class="col-6">{{ taxTranslation$ | async | translate }}</dt>
       <dd class="col-6" data-testing-id="basket-tax">{{ totals.taxTotal | ishPrice }}</dd>
     </ng-container>
 
