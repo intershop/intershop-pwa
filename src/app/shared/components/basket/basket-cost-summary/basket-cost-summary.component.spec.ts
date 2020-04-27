@@ -67,7 +67,7 @@ describe('Basket Cost Summary Component', () => {
       $595.00
       checkout.cart.payment_cost.label
       $3.57
-      checkout.tax.text
+      checkout.tax.TaxesLabel.TotalOrderVat
       $22,747.55
       checkout.order.total_cost.label
       $142,470.71

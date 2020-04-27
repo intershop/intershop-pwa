@@ -40,6 +40,7 @@ import {
   getLoggedInUser,
   getPasswordReminderError,
   getPasswordReminderSuccess,
+  getPriceDisplayType,
   getUserAuthorized,
   getUserError,
   getUserLoading,
@@ -98,6 +99,7 @@ export class AccountFacade {
   // CUSTOMER
   customer$ = this.store.pipe(select(getLoggedInCustomer));
   isBusinessCustomer$ = this.store.pipe(select(isBusinessCustomer));
+  userPriceDisplayType$ = this.store.pipe(select(getPriceDisplayType));
 
   updateCustomerProfile(customer: Customer, message?: string) {
     this.store.dispatch(
