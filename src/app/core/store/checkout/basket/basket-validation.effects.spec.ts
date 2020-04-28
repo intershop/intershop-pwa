@@ -177,9 +177,10 @@ describe('Basket Validation Effects', () => {
 
     it('should map to action of type CreateOrder if targetStep is 5 (order creation)', () => {
       const action = new basketActions.ContinueCheckout({ targetStep: 5 });
-      const completion = new CreateOrder({ basketId: BasketMockData.getBasket().id });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const completion1 = new CreateOrder({ basketId: BasketMockData.getBasket().id });
+      const completion2 = new basketActions.ContinueCheckoutSuccess({ targetRoute: undefined, basketValidation });
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(cd)-(cd)-(cd)', { c: completion1, d: completion2 });
 
       expect(effects.validateBasketAndContinueCheckout$).toBeObservable(expected$);
     });
