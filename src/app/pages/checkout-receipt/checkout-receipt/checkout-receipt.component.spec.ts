@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
@@ -29,7 +30,7 @@ describe('Checkout Receipt Component', () => {
         MockComponent(LineItemListComponent),
         MockComponent(ModalDialogLinkComponent),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -49,7 +50,7 @@ describe('Checkout Receipt Component', () => {
 
   it('should display the document number after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[data-testing-id="order-document-number"]').innerHTML.trim()).toEqual('12345678');
+    expect(element.querySelector('[data-testing-id="order-document-number"]').innerHTML.trim()).toContain('12345678');
   });
 
   it('should display the home link after creation', () => {
