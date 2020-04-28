@@ -26,7 +26,10 @@
     <div class="section">
       <p>
         <span>{{ 'checkout.order.number.label' | translate }}</span>
-        <strong data-testing-id="order-document-number"> {{ order.documentNo }}</strong>
+        <strong data-testing-id="order-document-number">
+          <a *ngIf="user; else plainOrderNo" [routerLink]="'/account/orders/' + order.id"> {{ order.documentNo }}</a>
+          <ng-template #plainOrderNo> {{ order.documentNo }}</ng-template>
+        </strong>
       </p>
       <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email }"></p>
     </div>
