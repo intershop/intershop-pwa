@@ -54,7 +54,7 @@ const exportedComponents = [
     QuotingExportsModule,
     ReactiveComponentLoaderModule.withModule({
       moduleId: 'ish-shared',
-      loadChildren: '../shared/shared.module#SharedModule',
+      loadChildren: () => import('../shared/shared.module').then(m => m.SharedModule),
     }),
     RouterModule,
     TranslateModule,

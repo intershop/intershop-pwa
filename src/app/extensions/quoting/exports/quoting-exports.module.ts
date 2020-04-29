@@ -12,7 +12,7 @@ import { LazyProductAddToQuoteComponent } from './product/lazy-product-add-to-qu
     FeatureToggleModule,
     ReactiveComponentLoaderModule.withModule({
       moduleId: 'ish-extensions-quoting',
-      loadChildren: '../quoting.module#QuotingModule',
+      loadChildren: () => import('../quoting.module').then(m => m.QuotingModule),
     }),
   ],
   declarations: [LazyBasketAddToQuoteComponent, LazyProductAddToQuoteComponent, LazyQuoteWidgetComponent],
