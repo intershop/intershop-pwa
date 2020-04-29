@@ -16,6 +16,13 @@ var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cook
     if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
     return cooked;
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var tsquery_1 = require("@phenomnomnominal/tsquery");
 var Lint = require("tslint");
@@ -97,7 +104,7 @@ var Rule = (function (_super) {
                 };
                 var groups_1 = importStatements.reduce(function (acc, val) {
                     var num = getOrderNumber(val);
-                    acc[num] = (acc[num] || []).concat([val]);
+                    acc[num] = __spreadArrays((acc[num] || []), [val]);
                     return acc;
                 }, {});
                 var newImports = Object.keys(groups_1)
