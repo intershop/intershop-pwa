@@ -36,7 +36,9 @@
     "class-name": true,
     "comment-format": [true, "check-space"],
     "curly": true,
-    "deprecation": true,
+    "deprecation": {
+      "severity": "warning"
+    },
     "eofline": true,
     "forin": true,
     "import-blacklist": [true, "rxjs/Rx", "lodash", "."],
