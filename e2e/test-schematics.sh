@@ -96,7 +96,7 @@ grep 'serviceWorker: false' src/environments/environment.prod.ts
 
 git add -A
 npx lint-staged
-npx tsc --project tsconfig.spec.json
+npx tsc --project tsconfig.all.json
 
 npm run build
 
