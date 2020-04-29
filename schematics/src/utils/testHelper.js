@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const operators_1 = require("@angular-devkit/core/node_modules/rxjs/operators");
 const testing_1 = require("@angular-devkit/schematics/testing");
-const operators_1 = require("rxjs/operators");
 function createSchematicRunner() {
     return new testing_1.SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));
 }
@@ -26,7 +26,7 @@ function createApplication(schematicRunner) {
 }
 exports.createApplication = createApplication;
 function createModule(schematicRunner, options) {
-    return (source$) => source$.pipe(operators_1.switchMap(tree => schematicRunner.runSchematicAsync('module', Object.assign({}, options, { project: 'bar' }), tree)));
+    return (source$) => source$.pipe(operators_1.switchMap(tree => schematicRunner.runSchematicAsync('module', Object.assign(Object.assign({}, options), { project: 'bar' }), tree)));
 }
 exports.createModule = createModule;
 function createAppLastRoutingModule(schematicRunner) {

@@ -10,7 +10,7 @@ function createAzurePipeline(options) {
         }
         const projectRoot = project_1.getProject(host, options.project).root;
         return schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options)),
+            schematics_1.template(Object.assign(Object.assign({}, core_1.strings), options)),
             schematics_1.move(projectRoot),
         ]));
     };

@@ -2,7 +2,6 @@ import { strings } from '@angular-devkit/core';
 import { Rule, UpdateRecorder } from '@angular-devkit/schematics';
 import {
   addDeclarationToModule,
-  addEntryComponentToModule,
   addExportToModule,
   addImportToModule,
   addProviderToModule,
@@ -63,32 +62,6 @@ export function addImportToNgModule(options: {
       }
     }
     host.commitUpdate(importRecorder);
-  };
-}
-
-export function addEntryComponentToNgModule(options: {
-  module?: string;
-  artifactName?: string;
-  moduleImportPath?: string;
-}): Rule {
-  return host => {
-    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
-    const source = readIntoSourceFile(host, options.module);
-
-    const entryComponentRecorder = host.beginUpdate(options.module);
-    const entryComponentChanges = addEntryComponentToModule(
-      source,
-      options.module,
-      strings.classify(options.artifactName),
-      relativePath
-    );
-
-    for (const change of entryComponentChanges) {
-      if (change instanceof InsertChange) {
-        entryComponentRecorder.insertLeft(change.pos, change.toAdd);
-      }
-    }
-    host.commitUpdate(entryComponentRecorder);
   };
 }
 

@@ -13,7 +13,7 @@ import {
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 
-import { PwaModelOptionsSchema as Options } from './schema';
+import { PWAModelOptionsSchema as Options } from './schema';
 
 export function createModel(options: Options): Rule {
   return host => {
