@@ -5,11 +5,6 @@
     "types": [],
     "module": "ESNext"
   },
-  "exclude": [
-    "src/setupJest.ts",
-    "**/*.spec.ts",
-    "**/dev/**/*.ts",
-    "**/ngrx-router/**/*.ts"
-  ],
-  "include": ["src/**/*.ts", "src/main.ts", "src/polyfills.ts"]
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts"]
 }

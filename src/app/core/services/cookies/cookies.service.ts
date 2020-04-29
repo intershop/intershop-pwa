@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { CookiesOptions, CookiesService as ForeignCookiesService } from '@ngx-utils/cookies';
+import { CookiesOptions, CookiesService as ForeignCookiesService } from 'ngx-utils-cookies-port';
 import { ReplaySubject, timer } from 'rxjs';
 import { distinct, map, switchMap, take } from 'rxjs/operators';
 

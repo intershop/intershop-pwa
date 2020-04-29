@@ -1,11 +1,12 @@
 import { isPlatformServer } from '@angular/common';
-import { Inject, Optional, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { Actions, Effect } from '@ngrx/effects';
 import { filter, take, tap } from 'rxjs/operators';
 
 export const SSR_HYBRID_STATE = makeStateKey<boolean>('ssrHybrid');
 
+@Injectable()
 export class HybridEffects {
   constructor(
     private actions: Actions,

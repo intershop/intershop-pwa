@@ -27,7 +27,7 @@ const pipes = [
   exports: [...pipes],
 })
 export class PipesModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<PipesModule> {
     return {
       ngModule: PipesModule,
       providers: [...pipes],

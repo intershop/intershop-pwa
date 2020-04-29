@@ -4,15 +4,14 @@ const esModules = [
   'ngx-bootstrap',
   '@angular/common/locales',
   'lodash-es/.*',
-  '@ngx-utils/cookies',
+  'ngx-utils-cookies-port',
 ];
 
 module.exports = {
   globals: {
     'ts-jest': {
-      tsConfigFile: '<rootDir>/tsconfig.spec.json',
+      isolatedModules: true,
     },
-    __TRANSFORM_HTML__: true,
   },
   preset: 'jest-preset-angular',
   roots: ['src'],
