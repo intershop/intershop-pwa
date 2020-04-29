@@ -26,7 +26,7 @@ function createApplication(schematicRunner) {
 }
 exports.createApplication = createApplication;
 function createModule(schematicRunner, options) {
-    return (source$) => source$.pipe(operators_1.switchMap(tree => schematicRunner.runSchematicAsync('module', Object.assign({}, options, { project: 'bar' }), tree)));
+    return (source$) => source$.pipe(operators_1.switchMap(tree => schematicRunner.runSchematicAsync('module', Object.assign(Object.assign({}, options), { project: 'bar' }), tree)));
 }
 exports.createModule = createModule;
 function createAppLastRoutingModule(schematicRunner) {

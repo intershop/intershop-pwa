@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaModelOptionsSchema as Options } from './schema';
+import { PWAModelOptionsSchema as Options } from './schema';
 
 // tslint:disable:max-line-length
 describe('Model Schematic', () => {

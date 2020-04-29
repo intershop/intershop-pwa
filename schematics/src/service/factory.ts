@@ -4,7 +4,7 @@ import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 
-import { PwaServiceOptionsSchema as Options } from './schema';
+import { PWAServiceOptionsSchema as Options } from './schema';
 
 export function createService(options: Options): Rule {
   return host => {

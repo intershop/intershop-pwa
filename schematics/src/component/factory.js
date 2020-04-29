@@ -18,16 +18,13 @@ function createComponent(options) {
         const operations = [];
         if (!options.skipImport) {
             operations.push(registration_1.addDeclarationToNgModule(options));
-            if (options.entryComponent) {
-                operations.push(registration_1.addEntryComponentToNgModule(options));
-            }
             if (options.export) {
                 operations.push(registration_1.addExportToNgModule(options));
             }
         }
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
             options.styleFile ? schematics_1.noop() : schematics_1.filter(path => !path.endsWith('.__styleext__')),
-            schematics_1.template(Object.assign({}, core_1.strings, options, { 'if-flat': s => (options.flat ? '' : s) })),
+            schematics_1.template(Object.assign(Object.assign(Object.assign({}, core_1.strings), options), { 'if-flat': s => (options.flat ? '' : s) })),
             schematics_1.move(options.path),
         ])));
         operations.push(lint_fix_1.applyLintFix());

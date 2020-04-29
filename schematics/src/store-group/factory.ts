@@ -16,7 +16,7 @@ import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 import { addImportToNgModule } from '../utils/registration';
 
-import { PwaStoreGroupOptionsSchema as Options } from './schema';
+import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
 export function determineStoreGroupLocation(
   host: Tree,

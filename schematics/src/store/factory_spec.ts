@@ -9,7 +9,7 @@ import {
 } from '../utils/testHelper';
 
 import { determineStoreLocation } from './factory';
-import { PwaStoreOptionsSchema as Options } from './schema';
+import { PWAStoreOptionsSchema as Options } from './schema';
 
 describe('Store Schematic', () => {
   const schematicRunner = createSchematicRunner();

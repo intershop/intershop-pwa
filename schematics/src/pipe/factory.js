@@ -28,7 +28,7 @@ function createPipe(options) {
             operations.push(registration_1.addProviderToNgModule(options));
         }
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options)),
+            schematics_1.template(Object.assign(Object.assign({}, core_1.strings), options)),
             schematics_1.move(options.path),
         ])));
         operations.push(lint_fix_1.applyLintFix());

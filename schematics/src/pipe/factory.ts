@@ -5,7 +5,7 @@ import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaring
 import { applyLintFix } from '../utils/lint-fix';
 import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
 
-import { PwaPipeOptionsSchema as Options } from './schema';
+import { PWAPipeOptionsSchema as Options } from './schema';
 
 export function createPipe(options: Options): Rule {
   return host => {

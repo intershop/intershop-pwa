@@ -14,7 +14,7 @@ describe('<%= classify(name) %> Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }]
     });
-    <%= camelize(name) %>Service = TestBed.get(<%= classify(name) %>Service);
+    <%= camelize(name) %>Service = TestBed.inject(<%= classify(name) %>Service);
   });
 
   it('should be created', () => {
