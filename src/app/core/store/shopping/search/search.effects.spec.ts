@@ -80,12 +80,12 @@ describe('Search Effects', () => {
       ],
     });
 
-    effects = TestBed.get(SearchEffects);
-    store$ = TestBed.get(TestStore);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(SearchEffects);
+    store$ = TestBed.inject(TestStore);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
 
-    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.get(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
+    store$.dispatch(new SetProductListingPageSize({ itemsPerPage: TestBed.inject(PRODUCT_LISTING_ITEMS_PER_PAGE) }));
   });
 
   describe('triggerSearch$', () => {

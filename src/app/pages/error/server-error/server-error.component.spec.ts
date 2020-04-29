@@ -24,7 +24,7 @@ describe('Server Error Component', () => {
     element = fixture.nativeElement;
     component = fixture.componentInstance;
     component.error = { status: 0 } as HttpError;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en_US');
     translate.use('en_US');
     translate.set('servererror.page.text', '<h3>test paragraph title</h3>');

@@ -53,7 +53,7 @@ describe('Promotions Effects', () => {
       ],
     });
 
-    effects = TestBed.get(PromotionsEffects);
+    effects = TestBed.inject(PromotionsEffects);
   });
 
   describe('loadPromotion$', () => {

@@ -9,7 +9,7 @@ describe('Wishlist Mapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    wishlistMapper = TestBed.get(WishlistMapper);
+    wishlistMapper = TestBed.inject(WishlistMapper);
   });
 
   describe('fromData', () => {

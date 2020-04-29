@@ -21,7 +21,7 @@ describe('Pagelets Integration', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   it('should be empty on application start', () => {

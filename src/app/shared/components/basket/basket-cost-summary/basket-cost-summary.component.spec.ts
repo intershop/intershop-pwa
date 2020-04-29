@@ -42,7 +42,7 @@ describe('Basket Cost Summary Component', () => {
     element = fixture.nativeElement;
     component.totals = BasketMockData.getTotals();
 
-    const translate: TranslateService = TestBed.get(TranslateService);
+    const translate = TestBed.inject(TranslateService);
     translate.use('en');
   });
 

@@ -73,7 +73,7 @@ describe('Payment Service', () => {
         provideMockStore({ selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }] }),
       ],
     });
-    paymentService = TestBed.get(PaymentService);
+    paymentService = TestBed.inject(PaymentService);
   });
 
   describe('basket payment service', () => {

@@ -79,9 +79,9 @@ describe('Quote Effects', () => {
       ],
     });
 
-    effects = TestBed.get(QuoteEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
+    effects = TestBed.inject(QuoteEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
 
     store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
     store$.dispatch(new LoginUserSuccess({ customer }));

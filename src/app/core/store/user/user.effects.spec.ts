@@ -86,10 +86,10 @@ describe('User Effects', () => {
       ],
     });
 
-    effects = TestBed.get(UserEffects);
-    store$ = TestBed.get(Store);
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
+    effects = TestBed.inject(UserEffects);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
   });
 
   describe('loginUser$', () => {

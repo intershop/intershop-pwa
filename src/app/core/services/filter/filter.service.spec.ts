@@ -37,7 +37,7 @@ describe('Filter Service', () => {
       imports: [ngrxTesting({})],
       providers: [FilterService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
-    filterService = TestBed.get(FilterService);
+    filterService = TestBed.inject(FilterService);
   });
 
   it('should be created', () => {

@@ -25,7 +25,7 @@ describe('Product Price Component', () => {
   }));
 
   beforeEach(() => {
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     fixture = TestBed.createComponent(ProductPriceComponent);
     component = fixture.componentInstance;
     translate.setDefaultLang('en');
