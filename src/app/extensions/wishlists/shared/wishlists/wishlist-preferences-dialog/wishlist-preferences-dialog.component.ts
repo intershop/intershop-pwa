@@ -54,7 +54,7 @@ export class WishlistPreferencesDialogComponent implements OnChanges {
   modalHeader = 'account.wishlists.new_wishlist_dialog.header';
 
   // tslint:disable-next-line:no-any
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<any>;
+  @ViewChild('modal') modalTemplate: TemplateRef<any>;
 
   constructor(private fb: FormBuilder, private ngbModal: NgbModal) {
     this.initForm();

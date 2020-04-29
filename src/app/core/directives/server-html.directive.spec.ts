@@ -143,7 +143,7 @@ describe('Server Html Directive', () => {
         ],
       }).compileComponents();
 
-      const translate: TranslateService = TestBed.get(TranslateService);
+      const translate = TestBed.inject(TranslateService);
       translate.use('en');
       translate.set('get.help.at', 'Get help at <a href="{{0}}">our HelpDesk</a>. We are there for you!');
 

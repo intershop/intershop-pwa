@@ -31,7 +31,7 @@ describe('Promotions Service', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
     });
-    promotionsService = TestBed.get(PromotionsService);
+    promotionsService = TestBed.inject(PromotionsService);
   }));
 
   it('should be created', () => {

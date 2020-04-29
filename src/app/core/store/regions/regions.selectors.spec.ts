@@ -26,7 +26,7 @@ describe('Regions Selectors', () => {
       imports: ngrxTesting({ reducers: coreReducers }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('with empty state', () => {

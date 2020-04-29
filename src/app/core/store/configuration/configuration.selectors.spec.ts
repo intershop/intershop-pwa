@@ -26,7 +26,7 @@ describe('Configuration Selectors', () => {
       imports: ngrxTesting({ reducers: coreReducers }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   });
 
   describe('initial state', () => {

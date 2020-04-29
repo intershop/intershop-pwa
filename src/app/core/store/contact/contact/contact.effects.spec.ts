@@ -48,7 +48,7 @@ describe('Contact Effects', () => {
       ],
     });
 
-    effects = TestBed.get(ContactEffects);
+    effects = TestBed.inject(ContactEffects);
   });
 
   describe('loadSubjects$', () => {

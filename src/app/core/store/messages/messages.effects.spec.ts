@@ -26,7 +26,7 @@ describe('Messages Effects', () => {
       ],
     });
 
-    effects = TestBed.get(MessagesEffects);
+    effects = TestBed.inject(MessagesEffects);
   });
 
   it('should be created', () => {

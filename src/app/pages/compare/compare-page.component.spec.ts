@@ -32,7 +32,7 @@ describe('Compare Page Component', () => {
         }),
       ],
     }).compileComponents();
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   }));
 
   beforeEach(() => {
@@ -63,8 +63,8 @@ describe('Compare Page Component', () => {
   });
 
   it('should dispatch an action if removeProductCompare is called', () => {
-    const storeSpy = spy(TestBed.get(Store));
+    const storeSpy$ = spy(TestBed.inject(Store));
     component.removeFromCompare('111');
-    verify(storeSpy.dispatch(anything())).called();
+    verify(storeSpy$.dispatch(anything())).called();
   });
 });

@@ -38,7 +38,7 @@ describe('Order Service', () => {
       ],
     });
 
-    orderService = TestBed.get(OrderService);
+    orderService = TestBed.inject(OrderService);
   });
 
   describe('createOrder', () => {

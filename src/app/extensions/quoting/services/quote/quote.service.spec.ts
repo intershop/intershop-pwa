@@ -41,8 +41,8 @@ describe('Quote Service', () => {
       ],
     });
 
-    quoteService = TestBed.get(QuoteService);
-    store$ = TestBed.get(Store);
+    quoteService = TestBed.inject(QuoteService);
+    store$ = TestBed.inject(Store);
   });
 
   describe('when not logged in', () => {

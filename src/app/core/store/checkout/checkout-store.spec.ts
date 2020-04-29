@@ -257,7 +257,7 @@ describe('Checkout Store', () => {
       ],
     });
 
-    store = TestBed.get(TestStore);
+    store = TestBed.inject(TestStore);
   });
 
   it('should be created', () => {

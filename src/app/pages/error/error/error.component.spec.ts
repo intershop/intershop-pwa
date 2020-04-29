@@ -25,7 +25,7 @@ describe('Error Component', () => {
     fixture = TestBed.createComponent(ErrorComponent);
     element = fixture.nativeElement;
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en_US');
     translate.use('en_US');
     translate.set('error.page.text', '<h3>test paragraph title</h3>');
