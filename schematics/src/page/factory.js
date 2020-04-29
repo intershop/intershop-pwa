@@ -35,7 +35,7 @@ function determineRoutingModule(host, options) {
             : 'pages/app-routing.module.ts';
     }
     const routingModule = core_1.normalize(`${project_1.buildDefaultPath(project)}/${routingModuleLocation}`);
-    return Object.assign({}, options, { routingModule,
+    return Object.assign(Object.assign({}, options), { routingModule,
         child });
 }
 function addRouteToRoutingModule(options) {
@@ -75,10 +75,10 @@ function createPage(options) {
         options = common_1.determineArtifactName('page', host, options);
         const operations = [];
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options)),
+            schematics_1.template(Object.assign(Object.assign({}, core_1.strings), options)),
             schematics_1.move(options.path),
         ])));
-        operations.push(schematics_1.schematic('component', Object.assign({}, options, { name: `${options.name}-page`, path: `${options.path}${options.name}`, flat: true })));
+        operations.push(schematics_1.schematic('component', Object.assign(Object.assign({}, options), { name: `${options.name}-page`, path: `${options.path}${options.name}`, flat: true })));
         operations.push(addRouteToRoutingModule(options));
         return schematics_1.chain(operations);
     };

@@ -29,7 +29,7 @@ describe('<%= classify(name) %> Effects', () => {
       ],
     });
 
-    effects = TestBed.get(<%= classify(name) %>Effects);
+    effects = TestBed.inject(<%= classify(name) %>Effects);
   });
 
   describe('load<%= classify(name) %>$', () => {

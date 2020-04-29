@@ -19,14 +19,9 @@ import {
   findDeclaringModule,
   generateSelector,
 } from '../utils/common';
-import {
-  addDeclarationToNgModule,
-  addEntryComponentToNgModule,
-  addImportToFile,
-  addProviderToNgModule,
-} from '../utils/registration';
+import { addDeclarationToNgModule, addImportToFile, addProviderToNgModule } from '../utils/registration';
 
-import { PwaCmsComponentOptionsSchema as Options } from './schema';
+import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 export function createCMSComponent(options: Options): Rule {
   return host => {
@@ -51,7 +46,6 @@ export function createCMSComponent(options: Options): Rule {
 
     const operations = [];
     operations.push(addDeclarationToNgModule(options));
-    operations.push(addEntryComponentToNgModule(options));
 
     let cmModuleOptions = { ...options, module: 'shared/cms/cms.module' };
     cmModuleOptions = findDeclaringModule(host, cmModuleOptions);

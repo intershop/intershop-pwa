@@ -5,7 +5,7 @@ import { buildDefaultPath, getProject } from '@schematics/angular/utility/projec
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } from '../utils/registration';
 
-import { PwaExtensionOptionsSchema as Options } from './schema';
+import { PWAExtensionOptionsSchema as Options } from './schema';
 
 export function createExtension(options: Options): Rule {
   return host => {

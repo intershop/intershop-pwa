@@ -27,8 +27,7 @@ function createCMSComponent(options) {
         options = common_1.findDeclaringModule(host, options);
         const operations = [];
         operations.push(registration_1.addDeclarationToNgModule(options));
-        operations.push(registration_1.addEntryComponentToNgModule(options));
-        let cmModuleOptions = Object.assign({}, options, { module: 'shared/cms/cms.module' });
+        let cmModuleOptions = Object.assign(Object.assign({}, options), { module: 'shared/cms/cms.module' });
         cmModuleOptions = common_1.findDeclaringModule(host, cmModuleOptions);
         operations.push(registration_1.addImportToFile(cmModuleOptions));
         operations.push(registration_1.addProviderToNgModule({
@@ -44,7 +43,7 @@ function createCMSComponent(options) {
         }));
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
             options.styleFile ? schematics_1.noop() : schematics_1.filter(path => !path.endsWith('.__styleext__')),
-            schematics_1.template(Object.assign({}, core_1.strings, options, { 'if-flat': s => (options.flat ? '' : s) })),
+            schematics_1.template(Object.assign(Object.assign(Object.assign({}, core_1.strings), options), { 'if-flat': s => (options.flat ? '' : s) })),
             schematics_1.move(options.path),
         ])));
         return schematics_1.chain(operations);
