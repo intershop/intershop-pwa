@@ -37,6 +37,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ExtrasModule,
     FormlyModule.forRoot(),
     HttpClientModule,
+    IconModule,
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
@@ -76,7 +77,5 @@ export class CoreModule {
     popoverConfig.placement = 'top';
     popoverConfig.triggers = 'hover';
     popoverConfig.container = 'body';
-
-    IconModule.init();
   }
 }
