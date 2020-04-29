@@ -12,7 +12,6 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -71,8 +70,8 @@ describe('Configuration Effects', () => {
     it('should not trigger the loading of config data on the second page', () => {
       store$.dispatch(
         new ApplyConfiguration({
-          serverConfig: { application: 'intershop.B2CResponsive' },
-        } as ServerConfig)
+          _serverConfig: { application: 'intershop.B2CResponsive' },
+        })
       );
 
       // tslint:disable-next-line: no-any
@@ -91,7 +90,7 @@ describe('Configuration Effects', () => {
 
     it('should map to action of type ApplyConfiguration', () => {
       const action = new LoadServerConfig();
-      const completion = new ApplyConfiguration({ serverConfig: {} });
+      const completion = new ApplyConfiguration({ _serverConfig: {} });
 
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

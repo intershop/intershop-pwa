@@ -102,7 +102,7 @@ describe('Configuration Selectors', () => {
     beforeEach(() => {
       store$.dispatch(
         new ApplyConfiguration({
-          serverConfig: {
+          _serverConfig: {
             application: {
               applicationType: 'intershop.B2CResponsive',
               urlIdentifier: '-',
