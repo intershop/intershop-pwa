@@ -22,7 +22,7 @@
 .gitattributes
 .editorconfig
 .createMockdata.table
-package.json
+package*.json
 Dockerfile*
 browserslist
 /node_modules

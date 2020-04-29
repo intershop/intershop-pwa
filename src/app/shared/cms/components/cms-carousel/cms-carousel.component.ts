@@ -15,7 +15,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 export class CMSCarouselComponent implements CMSComponent, OnChanges {
   @Input() pagelet: ContentPageletView;
 
-  @ViewChild('ngbCarousel', { static: false }) carousel: NgbCarousel;
+  @ViewChild('ngbCarousel') carousel: NgbCarousel;
 
   slideItems = 6;
   itemGridSize = 12;
