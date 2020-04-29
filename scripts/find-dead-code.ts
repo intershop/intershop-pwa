@@ -3,7 +3,7 @@ import { Node, Project, ReferenceFindableNode, SyntaxKind } from 'ts-morph';
 
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
-const project = new Project({ tsConfigFilePath: 'tsconfig.spec.json' });
+const project = new Project({ tsConfigFilePath: 'tsconfig.all.json' });
 
 let isError = false;
 
@@ -71,9 +71,10 @@ function isUnreferenced(node: Node & ReferenceFindableNode) {
   const onlyLocal = references.every(n => sameFile(node, n));
 
   if (
-    !onlyLocal && Node.isPropertySignature(node)
+    references.length &&
+    (!onlyLocal && Node.isPropertySignature(node)
       ? references.filter(n => !sameFile(node, n)).every(inTest)
-      : references.every(inTest)
+      : references.every(inTest))
   ) {
     console.warn(
       `ERROR ${node
@@ -89,6 +90,10 @@ function isUnreferenced(node: Node & ReferenceFindableNode) {
 
 function checkNode(node: Node) {
   if (!Node.isReferenceFindableNode(node)) {
+    return;
+  }
+
+  if (/\/src\/environments\//.test(node.getSourceFile().getFilePath())) {
     return;
   }
 

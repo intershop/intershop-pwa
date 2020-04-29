@@ -46,7 +46,7 @@ jobs:
         run: npm run ng -- build --aot
 
       - name: Compile Unit Tests
-        run: npx tsc -p tsconfig.spec.json
+        run: npx tsc -p tsconfig.all.json
 
       - name: Compile Cypress Tests
         run: (cd e2e && npx tsc -p cypress/tsconfig.json)

@@ -139,7 +139,7 @@ compile:
   dependencies: []
   script:
     - npm ci --prefer-offline
-    - npx tsc -p tsconfig.spec.json
+    - npx tsc -p tsconfig.all.json
     - cd e2e
     - npm ci
     - npx tsc -p cypress/tsconfig.json

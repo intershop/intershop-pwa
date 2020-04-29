@@ -12,7 +12,7 @@
     {
       "label": "run continuous test-compile",
       "type": "typescript",
-      "tsconfig": "tsconfig.spec.json",
+      "tsconfig": "tsconfig.all.json",
       "option": "watch",
       "problemMatcher": ["$tsc-watch"]
     },
