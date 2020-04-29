@@ -86,3 +86,33 @@ export interface Environment {
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
   theme?: string;
 }
+
+export const ENVIRONMENT_DEFAULTS: Environment = {
+  /* INTERSHOP COMMERCE MANAGEMENT REST API CONFIGURATION */
+  icmBaseURL: 'NOT SET',
+  icmChannel: 'inSPIRED-inTRONICS-Site',
+  icmServer: 'INTERSHOP/rest/WFS',
+  icmServerStatic: 'INTERSHOP/static/WFS',
+
+  production: false,
+  mockServerAPI: true,
+
+  /* FEATURE TOOGLES */
+  features: ['compare', 'recently', 'rating', 'wishlists'],
+
+  /* PROGRESSIVE WEB APP CONFIGURATIONS */
+  serviceWorker: false,
+  smallBreakpointWidth: 576,
+  mediumBreakpointWidth: 768,
+  largeBreakpointWidth: 992,
+  extralargeBreakpointWidth: 1200,
+  mainNavigationMaxSubCategoriesDepth: 2,
+  productListingItemsPerPage: 9,
+  defaultProductListingViewType: 'grid',
+  defaultDeviceType: 'mobile',
+  locales: [
+    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
+    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
+    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
+  ],
+};
