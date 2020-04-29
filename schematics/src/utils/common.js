@@ -30,7 +30,7 @@ function applyNameAndPath(artifact, host, options) {
         }
     }
     validation_1.validateName(name);
-    return Object.assign({}, options, { name,
+    return Object.assign(Object.assign({}, options), { name,
         path });
 }
 exports.applyNameAndPath = applyNameAndPath;
@@ -38,7 +38,7 @@ function determineArtifactName(artifact, _, options) {
     const kebab = core_1.strings.dasherize(options.name);
     const moduleImportPath = `/${options.path}${options.flat ? '' : `/${kebab}`}/${kebab}.${artifact}`;
     const artifactName = core_1.strings.classify(`${options.name}-${artifact}`);
-    return Object.assign({}, options, { moduleImportPath,
+    return Object.assign(Object.assign({}, options), { moduleImportPath,
         artifactName });
 }
 exports.determineArtifactName = determineArtifactName;
@@ -69,19 +69,19 @@ function detectExtension(artifact, host, options) {
             path = `${project.sourceRoot}/app/extensions/${extension}/${artifact}s/`;
         }
     }
-    return Object.assign({}, options, { extension,
+    return Object.assign(Object.assign({}, options), { extension,
         path });
 }
 exports.detectExtension = detectExtension;
 function findDeclaringModule(host, options) {
-    const module = find_module_1.findModuleFromOptions(host, Object.assign({}, options, { name: options.name }));
-    return Object.assign({}, options, { module });
+    const module = find_module_1.findModuleFromOptions(host, Object.assign(Object.assign({}, options), { name: options.name }));
+    return Object.assign(Object.assign({}, options), { module });
 }
 exports.findDeclaringModule = findDeclaringModule;
 function generateSelector(host, options) {
     const project = project_1.getProject(host, options.project);
     const selector = options.selector || selector_1.buildSelector(options, project.prefix);
     validation_1.validateHtmlSelector(selector);
-    return Object.assign({}, options, { selector });
+    return Object.assign(Object.assign({}, options), { selector });
 }
 exports.generateSelector = generateSelector;

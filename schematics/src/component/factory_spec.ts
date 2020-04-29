@@ -3,7 +3,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaComponentOptionsSchema as Options } from './schema';
+import { PWAComponentOptionsSchema as Options } from './schema';
 
 describe('Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -133,14 +133,6 @@ describe('Component Schematic', () => {
     const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
     const appModuleContent = tree.readContent('/projects/bar/src/app/app.module.ts');
     expect(appModuleContent).toMatch(/exports: \[FooComponent\]/);
-  });
-
-  it('should set the entry component if requested', async () => {
-    const options = { ...defaultOptions, entryComponent: true };
-
-    const tree = await schematicRunner.runSchematicAsync('component', options, appTree).toPromise();
-    const appModuleContent = tree.readContent('/projects/bar/src/app/app.module.ts');
-    expect(appModuleContent).toMatch(/entryComponents: \[FooComponent\]/);
   });
 
   it('should import into a specified module', async () => {

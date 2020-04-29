@@ -19,7 +19,7 @@ import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { insertImport } from '../utils/registration';
 
-import { PwaStoreOptionsSchema as Options } from './schema';
+import { PWAStoreOptionsSchema as Options } from './schema';
 
 export function determineStoreLocation(
   host: Tree,

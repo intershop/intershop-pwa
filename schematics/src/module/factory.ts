@@ -4,7 +4,7 @@ import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { applyLintFix } from '../utils/lint-fix';
 
-import { PwaModuleOptionsSchema as Options } from './schema';
+import { PWAModuleOptionsSchema as Options } from './schema';
 
 export function createModule(options: Options): Rule {
   return host => {

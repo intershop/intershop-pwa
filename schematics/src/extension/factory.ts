@@ -6,7 +6,7 @@ import { applyNameAndPath, detectExtension, determineArtifactName } from '../uti
 import { applyLintFix } from '../utils/lint-fix';
 import { addExportToNgModule, addImportToNgModule, addImportToNgModuleBefore } from '../utils/registration';
 
-import { PwaExtensionOptionsSchema as Options } from './schema';
+import { PWAExtensionOptionsSchema as Options } from './schema';
 
 export function createExtension(options: Options): Rule {
   return host => {

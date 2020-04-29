@@ -2,7 +2,7 @@ import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException, apply, mergeWith, move, template, url } from '@angular-devkit/schematics';
 import { getProject } from '@schematics/angular/utility/project';
 
-import { PwaAzurePipelineOptionsSchema as Options } from './schema';
+import { PWAAzurePipelineOptionsSchema as Options } from './schema';
 
 export function createAzurePipeline(options: Options): Rule {
   return host => {

@@ -17,7 +17,7 @@ function createExtension(options) {
         options = common_1.determineArtifactName('extension', host, options);
         const operations = [];
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options)),
+            schematics_1.template(Object.assign(Object.assign({}, core_1.strings), options)),
             schematics_1.move(options.path),
         ])));
         const projectRoot = project_1.buildDefaultPath(project_1.getProject(host, options.project));

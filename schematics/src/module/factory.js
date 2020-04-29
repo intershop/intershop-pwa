@@ -14,7 +14,7 @@ function createModule(options) {
         options = common_1.determineArtifactName('module', host, options);
         const operations = [];
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options, { 'if-flat': s => (options.flat ? '' : s) })),
+            schematics_1.template(Object.assign(Object.assign(Object.assign({}, core_1.strings), options), { 'if-flat': s => (options.flat ? '' : s) })),
             schematics_1.move(options.path),
         ])));
         operations.push(lint_fix_1.applyLintFix());

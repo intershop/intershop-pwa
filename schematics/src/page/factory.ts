@@ -19,7 +19,7 @@ import { applyNameAndPath, detectExtension, determineArtifactName } from '../uti
 import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 
-import { PwaPageOptionsSchema as Options } from './schema';
+import { PWAPageOptionsSchema as Options } from './schema';
 
 function addRouteToArray(
   options: { name?: string; routingModule?: string; child?: string },

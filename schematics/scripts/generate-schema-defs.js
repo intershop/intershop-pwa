@@ -4,20 +4,13 @@ const { writeFileSync } = require('fs');
 
 const { compileFromFile } = require('json-schema-to-typescript');
 const glob = require('glob');
-const { default: chalk } = require('chalk');
 
 const log = console.log;
 const rootPath = resolve(__dirname, '..');
 const tsDefExtension = '.d.ts';
 
-/**
- *
- * @param {string} filesGlob
- *
- * @returns {Promise<string[]>}
- */
 async function generate(filesGlob) {
-  log(chalk.cyan.bold('creating schemas:\n'));
+  log('creating schemas');
 
   const schemaFiles = glob.sync(filesGlob);
 
@@ -33,7 +26,6 @@ async function generate(filesGlob) {
   );
 }
 
-generate('src/**/schema.json').then(createdFiles => {
-  log(chalk.blue(`${createdFiles.join(' ✅\n')} ✅`));
-  log(chalk.bold.greenBright('\nDone!'));
+generate('src/**/schema.json').then(() => {
+  log('Done!');
 });
