@@ -49,7 +49,7 @@ export class ModalDialogComponent {
 
   @Output() onClosed = new EventEmitter<any>();
 
-  @ViewChild('template', { static: false }) modalDialogTemplate: TemplateRef<any>;
+  @ViewChild('template') modalDialogTemplate: TemplateRef<any>;
 
   ngbModalRef: NgbModalRef;
 

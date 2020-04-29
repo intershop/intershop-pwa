@@ -11,10 +11,8 @@ COPY schematics/customization/service-worker /workspace/schematics/customization
 RUN node schematics/customization/service-worker ${serviceWorker} || true
 ARG configuration=production
 RUN npm run ng -- build -c ${configuration}
-COPY tsconfig.server.json /workspace/
-RUN npm run ng -- run intershop-pwa:server:${configuration} --bundleDependencies all
-COPY webpack.server.config.js server.ts /workspace/
-RUN npm run webpack:server
+COPY tsconfig.server.json server.ts /workspace/
+RUN npm run ng -- run intershop-pwa:server:${configuration} --bundleDependencies
 RUN egrep -o '^\s*(mockServerAPI: true|mustMockPaths)' src/environments/environment.prod.ts || rm -Rf dist/browser/assets/mock*
 COPY dist/entrypoint.sh dist/healthcheck.js dist/server.crt dist/server.key dist/robots.txt* /workspace/dist/
 

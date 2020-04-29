@@ -10,7 +10,7 @@ import { LazyHeaderQuickorderComponent } from './quickorder/lazy-header-quickord
     FeatureToggleModule,
     ReactiveComponentLoaderModule.withModule({
       moduleId: 'ish-extensions-quickorder',
-      loadChildren: '../quickorder.module#QuickorderModule',
+      loadChildren: () => import('../quickorder.module').then(m => m.QuickorderModule),
     }),
   ],
   declarations: [LazyHeaderQuickorderComponent],

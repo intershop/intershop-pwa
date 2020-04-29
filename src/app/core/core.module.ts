@@ -5,11 +5,11 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 import { CookieLawModule } from 'angular2-cookie-law';
 import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ToastrModule } from 'ngx-toastr';
+import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
 import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
@@ -37,6 +37,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ExtrasModule,
     FormlyModule.forRoot(),
     HttpClientModule,
+    IconModule,
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
@@ -76,7 +77,5 @@ export class CoreModule {
     popoverConfig.placement = 'top';
     popoverConfig.triggers = 'hover';
     popoverConfig.container = 'body';
-
-    IconModule.init();
   }
 }

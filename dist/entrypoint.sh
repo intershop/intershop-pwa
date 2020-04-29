@@ -8,7 +8,7 @@ trap 'echo recieved KILL; exit 1' SIGKILL
 
 if [ -z "$*" ]
 then
-  node dist/server &
+  node dist/server/main.js &
   wait
 else
   exec "$@"

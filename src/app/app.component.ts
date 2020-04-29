@@ -18,7 +18,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 })
 // tslint:disable-next-line:ccp-no-intelligence-in-components
 export class AppComponent implements OnInit {
-  @ViewChild('cookieLaw', { static: false }) private cookieLaw: CookieLawContainerComponent;
+  @ViewChild('cookieLaw') private cookieLaw: CookieLawContainerComponent;
 
   isBrowser: boolean;
   wrapperClasses$: Observable<string[]>;

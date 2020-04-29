@@ -95,15 +95,15 @@ describe('Form Control Feedback Component', () => {
     fixture.detectChanges();
     icon = getIcon();
     expect(icon).toBeTruthy();
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).toBe('fas,times');
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).not.toBe('fas,check');
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).toBe('fas,times');
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).not.toBe('fas,check');
 
     // form valid and dirty
     component.control.setValue('abcd');
     fixture.detectChanges();
     icon = getIcon();
     expect(icon).toBeTruthy();
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).not.toBe('fas,times');
-    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).toBe('fas,check');
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).not.toBe('fas,times');
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon').value).toBe('fas,check');
   });
 });

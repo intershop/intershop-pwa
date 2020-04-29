@@ -138,14 +138,14 @@ describe('Line Item List Component', () => {
     it('should render item delete button if editable === true', () => {
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,trash-alt"]')).toBeTruthy();
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeTruthy();
     });
 
     it('should not render item delete button if editable === false', () => {
       component.editable = false;
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,trash-alt"]')).toBeFalsy();
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,trash-alt"]')).toBeFalsy();
     });
   });
 
