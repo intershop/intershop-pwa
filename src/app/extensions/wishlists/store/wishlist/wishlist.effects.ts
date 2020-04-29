@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, mapTo, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { SuccessMessage } from 'ish-core/store/messages';
 import { selectRouteParam } from 'ish-core/store/router';
@@ -188,6 +188,7 @@ export class WishlistEffects {
   loadWishlistsAfterLogin$ = this.store.pipe(
     select(getUserAuthorized),
     whenTruthy(),
+    debounceTime(1000),
     mapTo(new wishlistsActions.LoadWishlists())
   );
 
