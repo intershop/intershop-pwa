@@ -61,11 +61,6 @@
       "default": false,
       "visible": false
     },
-    "entryComponent": {
-      "type": "boolean",
-      "default": true,
-      "visible": false
-    },
     "restricted": {
       "type": "boolean",
       "default": true,

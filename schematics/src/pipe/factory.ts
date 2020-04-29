@@ -4,7 +4,7 @@ import { Rule, SchematicsException, apply, chain, mergeWith, move, template, url
 import { applyNameAndPath, detectExtension, determineArtifactName, findDeclaringModule } from '../utils/common';
 import { addDeclarationToNgModule, addExportToNgModule, addProviderToNgModule } from '../utils/registration';
 
-import { PwaPipeOptionsSchema as Options } from './schema';
+import { PWAPipeOptionsSchema as Options } from './schema';
 
 export function createPipe(options: Options): Rule {
   return host => {

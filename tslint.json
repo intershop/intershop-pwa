@@ -269,7 +269,7 @@
           "fix": "ish-core/$1"
         },
         {
-          "from": ".*node_modules/(.*)",
+          "from": "^(?!@angular-devkit.*$).*node_modules/(.*)",
           "message": "import with 'node_modules' seems to be wrong",
           "fix": "$1"
         },

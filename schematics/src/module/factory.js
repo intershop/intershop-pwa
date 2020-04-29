@@ -12,7 +12,7 @@ function createModule(options) {
         options = common_1.applyNameAndPath('module', host, options);
         options = common_1.determineArtifactName('module', host, options);
         return schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options, { 'if-flat': s => (options.flat ? '' : s) })),
+            schematics_1.template(Object.assign(Object.assign(Object.assign({}, core_1.strings), options), { 'if-flat': s => (options.flat ? '' : s) })),
             schematics_1.move(options.path),
         ]));
     };

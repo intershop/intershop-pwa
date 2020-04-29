@@ -1,7 +1,7 @@
+import { Observable, OperatorFunction } from '@angular-devkit/core/node_modules/rxjs';
+import { switchMap } from '@angular-devkit/core/node_modules/rxjs/operators';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { Schema as ModuleOptions } from '@schematics/angular/module/schema';
-import { Observable, OperatorFunction } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 export function createSchematicRunner() {
   return new SchematicTestRunner('intershop-schematics', require.resolve('../collection.json'));

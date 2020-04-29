@@ -11,7 +11,7 @@ function determineStoreGroupLocation(host, options) {
     const module = core_1.normalize(`${path}/core-store.module.ts`);
     const artifactName = `${core_1.strings.classify(options.name)}StoreModule`;
     const moduleImportPath = core_1.normalize(`${path}/${core_1.strings.dasherize(options.name)}/${core_1.strings.dasherize(options.name)}-store.module`);
-    return Object.assign({}, options, { path,
+    return Object.assign(Object.assign({}, options), { path,
         module,
         artifactName,
         moduleImportPath });
@@ -28,7 +28,7 @@ function createStoreGroup(options) {
         options = determineStoreGroupLocation(host, options);
         const operations = [];
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options)),
+            schematics_1.template(Object.assign(Object.assign({}, core_1.strings), options)),
             schematics_1.move(options.path),
         ])));
         operations.push(registration_1.addImportToNgModule(options));

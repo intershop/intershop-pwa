@@ -5,7 +5,7 @@
   "scripts": {
     "prebuild": "npm ci && npm run generate:schemas && npm test",
     "build": "tsc",
-    "postbuild": "rimraf node_modules",
+    "postbuild": "npx rimraf node_modules",
     "test": "jest --ci -i",
     "generate:schemas": "node scripts/generate-schema-defs.js"
   },
@@ -15,6 +15,11 @@
   ],
   "schematics": "./src/collection.json",
   "jest": {
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    },
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -25,34 +30,25 @@
     ],
     "moduleFileExtensions": [
       "ts",
-      "tsx",
-      "js",
-      "jsx"
+      "js"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/test.js"
     ]
   },
-  "peerDependencies": {
-    "@schematics/angular": ">= 8.2.0",
-    "@angular-devkit/core": ">= 8.2.0",
-    "@angular-devkit/schematics": ">= 8.2.0"
-  },
   "devDependencies": {
-    "@angular-devkit/core": "^8.2.0",
-    "@angular-devkit/schematics": "^8.2.0",
-    "@types/jest": "^24.0.17",
-    "@types/node": "^10.0.0",
-    "jest": "^24.9.0",
-    "jest-extended": "^0.11.0",
-    "json-schema-to-typescript": "^5.4.0",
-    "rimraf": "^2.6.2",
-    "ts-jest": "^24.1.0",
-    "tsutils": "^3.5.2",
-    "typescript": "~3.5.3"
+    "@angular-devkit/core": "^9.0.0",
+    "@angular-devkit/schematics": "^9.0.0",
+    "@types/jest": "^25.0.0",
+    "jest": "^25.0.0",
+    "jest-extended": "^0.11.5",
+    "json-schema-to-typescript": "^8.2.0",
+    "ts-jest": "^25.0.0",
+    "tsutils": "^3.0.0",
+    "typescript": "~3.8.3"
   },
   "dependencies": {
-    "@phenomnomnominal/tsquery": "^3.0.0",
-    "@schematics/angular": "^8.2.0"
+    "@phenomnomnominal/tsquery": "^4.0.0",
+    "@schematics/angular": "^9.0.0"
   }
 }

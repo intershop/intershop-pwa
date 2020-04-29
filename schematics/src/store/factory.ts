@@ -18,7 +18,7 @@ import { applyNameAndPath, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
 import { insertImport } from '../utils/registration';
 
-import { PwaStoreOptionsSchema as Options } from './schema';
+import { PWAStoreOptionsSchema as Options } from './schema';
 
 export function determineStoreLocation(
   host: Tree,

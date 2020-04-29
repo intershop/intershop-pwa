@@ -2,7 +2,7 @@ import { strings } from '@angular-devkit/core';
 import { Rule, SchematicsException, apply, mergeWith, move, template, url } from '@angular-devkit/schematics';
 import { getProject } from '@schematics/angular/utility/project';
 
-import { PwaKubernetesDeploymentOptionsSchema as Options } from './schema';
+import { PWAKubernetesDeploymentOptionsSchema as Options } from './schema';
 
 export function createKubernetesDeployment(options: Options): Rule {
   return host => {

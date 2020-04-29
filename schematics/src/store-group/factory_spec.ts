@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
 import { createApplication, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaStoreGroupOptionsSchema as Options } from './schema';
+import { PWAStoreGroupOptionsSchema as Options } from './schema';
 
 describe('Store Group Schematic', () => {
   const schematicRunner = createSchematicRunner();

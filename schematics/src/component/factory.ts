@@ -13,9 +13,9 @@ import {
 } from '@angular-devkit/schematics';
 
 import { applyNameAndPath, determineArtifactName, findDeclaringModule, generateSelector } from '../utils/common';
-import { addDeclarationToNgModule, addEntryComponentToNgModule, addExportToNgModule } from '../utils/registration';
+import { addDeclarationToNgModule, addExportToNgModule } from '../utils/registration';
 
-import { PwaComponentOptionsSchema as Options } from './schema';
+import { PWAComponentOptionsSchema as Options } from './schema';
 
 export function createComponent(options: Options): Rule {
   return host => {
@@ -31,9 +31,6 @@ export function createComponent(options: Options): Rule {
     const operations = [];
     if (!options.skipImport) {
       operations.push(addDeclarationToNgModule(options));
-      if (options.entryComponent) {
-        operations.push(addEntryComponentToNgModule(options));
-      }
       if (options.export) {
         operations.push(addExportToNgModule(options));
       }

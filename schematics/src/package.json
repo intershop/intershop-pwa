@@ -6,8 +6,10 @@
   "keywords": ["schematics", "intershop"],
   "schematics": "./collection.json",
   "peerDependencies": {
-    "@schematics/angular": "^7.1.0",
-    "@angular-devkit/core": "^7.1.0",
-    "@angular-devkit/schematics": "^7.1.0"
+    "@angular-devkit/core": ">=9.0.0",
+    "@angular-devkit/schematics": ">=9.0.0",
+    "@schematics/angular": ">=9.0.0",
+    "@phenomnomnominal/tsquery": ">=4.0.0",
+    "@angular/cli": ">=9.0.0"
   }
 }

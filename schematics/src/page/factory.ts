@@ -18,7 +18,7 @@ import * as ts from 'typescript';
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
 
-import { PwaPageOptionsSchema as Options } from './schema';
+import { PWAPageOptionsSchema as Options } from './schema';
 
 function addRouteToArray(
   options: { name?: string; routingModule?: string; child?: string },
