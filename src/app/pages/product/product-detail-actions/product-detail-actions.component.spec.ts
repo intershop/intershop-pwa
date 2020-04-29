@@ -65,24 +65,24 @@ describe('Product Detail Actions Component', () => {
       translate.set('product.email_a_friend.link', 'Email a friend');
       fixture.detectChanges();
       expect(
-        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,paper-plane"]').nextElementSibling.textContent
+        element.querySelector('fa-icon[ng-reflect-icon="fas,paper-plane"]').nextElementSibling.textContent
       ).toContain('Email a friend');
     });
 
     it(`should show "print page" link when product inforamtion is available`, () => {
       translate.set('product.print_page.link', 'Print Page');
       fixture.detectChanges();
-      expect(
-        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,print"]').nextElementSibling.textContent
-      ).toContain('Print Page');
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,print"]').nextElementSibling.textContent).toContain(
+        'Print Page'
+      );
     });
 
     it(`should show "compare" link when product inforamtion is available`, () => {
       translate.set('product.compare.link', 'Compare');
       fixture.detectChanges();
-      expect(
-        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,columns"]').nextElementSibling.textContent
-      ).toContain('Compare');
+      expect(element.querySelector('fa-icon[ng-reflect-icon="fas,columns"]').nextElementSibling.textContent).toContain(
+        'Compare'
+      );
     });
 
     it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {

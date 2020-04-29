@@ -5,11 +5,11 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
 import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
-import { CookieLawModule } from 'angular2-cookie-law';
+import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 import { SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ToastrModule } from 'ngx-toastr';
+import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
 import { ConfigurationModule } from './configuration.module';
 import { ExtrasModule } from './extras.module';
@@ -33,10 +33,13 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   imports: [
     BrowserCookiesModule.forRoot(),
     ConfigurationModule,
-    CookieLawModule,
     ExtrasModule,
     FormlyModule.forRoot(),
     HttpClientModule,
+    IconModule,
+    NgxCookieBannerModule.forRoot({
+      cookieName: 'cookieLawSeen',
+    }),
     ReactiveComponentLoaderModule.forRoot(),
     RouterModule,
     StateManagementModule,
@@ -59,8 +62,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG },
   ],
-  // exports needed to use the CookieLaw module in the AppComponent
-  exports: [CookieLawModule, TranslateModule],
+  // exports needed to use the cookie banner in the AppComponent
+  exports: [NgxCookieBannerModule, TranslateModule],
 })
 export class CoreModule {
   constructor(
@@ -76,7 +79,5 @@ export class CoreModule {
     popoverConfig.placement = 'top';
     popoverConfig.triggers = 'hover';
     popoverConfig.container = 'body';
-
-    IconModule.init();
   }
 }

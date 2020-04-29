@@ -3,7 +3,7 @@
 exports[`Filter Collapsable Component should hide content when header is clicked: closed 1`] = `
 <div class="filter-group collapsed">
   <h3 aria-controls="collapseFilter" aria-expanded="false">
-    <fa-icon class="float-right" ng-reflect-icon-prop="fas,angle-right"></fa-icon>
+    <fa-icon class="float-right" ng-reflect-icon="fas,angle-right"></fa-icon>
   </h3>
 </div>
 `;
@@ -11,7 +11,7 @@ exports[`Filter Collapsable Component should hide content when header is clicked
 exports[`Filter Collapsable Component should hide content when header is clicked: open 1`] = `
 <div class="filter-group">
   <h3 aria-controls="collapseFilter" aria-expanded="true">
-    <fa-icon class="float-right" ng-reflect-icon-prop="fas,angle-down"></fa-icon>
+    <fa-icon class="float-right" ng-reflect-icon="fas,angle-down"></fa-icon>
   </h3>
 </div>
 `;
