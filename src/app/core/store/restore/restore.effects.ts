@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ApplicationRef, Inject, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
@@ -30,6 +30,7 @@ interface CookieType {
   orderId?: string;
 }
 
+@Injectable()
 export class RestoreEffects {
   static readonly SESSION_KEEP_ALIVE = 600000;
   constructor(
