@@ -134,7 +134,7 @@ describe('Basket Handling', () => {
       page.lineItems.should('have.length', 1);
       page.lineItem(0).quantity.set(2);
       waitLoadingEnd();
-      page.summary.subtotal.should('contain', _.product.price * 2);
+      page.subtotal.should('contain', _.product.price * 2);
       page.lineItem(0).remove();
       waitLoadingEnd();
       page.header.miniCart.text.should('contain', '0 items');

@@ -241,7 +241,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/home"}
         [Configuration Internal] Get the ICM configuration
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         @ngrx/router-store/navigated:
           routerState: {"url":"/home","params":{},"queryParams":{},"data":{}}
           event: {"id":1,"url":"/home"}
@@ -416,7 +416,7 @@ describe('Shopping Store', () => {
         [Shopping] Load Category Success:
           categories: tree(A.123,A.123.456)
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category Success:
@@ -491,7 +491,7 @@ describe('Shopping Store', () => {
         [Shopping] Load Category Success:
           categories: tree(A.123.456)
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -731,7 +731,7 @@ describe('Shopping Store', () => {
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -879,7 +879,7 @@ describe('Shopping Store', () => {
         [Shopping] Load Product Success:
           product: {"sku":"P1"}
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         [Recently Viewed] Add Product to Recently:
           sku: "P1"
           group: undefined
@@ -958,7 +958,7 @@ describe('Shopping Store', () => {
           error: {"message":"error loading product P3"}
           sku: "P3"
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         [Shopping] Load Category:
           categoryId: "A"
         [Shopping] Load Category:
@@ -1023,7 +1023,7 @@ describe('Shopping Store', () => {
         [Shopping] Load Category Fail:
           error: {"message":"error loading category A.123.XXX"}
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         @ngrx/router-store/cancel:
           routerState: {"url":"","params":{},"queryParams":{},"data":{}}
           storeState: {"user":{"authorized":false,"loading":false},"addresses":{"i...
@@ -1070,7 +1070,7 @@ describe('Shopping Store', () => {
           event: {"id":1,"url":"/search/something"}
         [Configuration Internal] Get the ICM configuration
         [Configuration] Apply Configuration:
-          serverConfig: {}
+          _serverConfig: {}
         @ngrx/router-store/navigated:
           routerState: {"url":"/search/something","params":{"searchTerm":"something...
           event: {"id":1,"url":"/search/something"}

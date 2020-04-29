@@ -67,7 +67,7 @@ describe('Basket Cost Summary Component', () => {
       $595.00
       checkout.cart.payment_cost.label
       $3.57
-      checkout.tax.text
+      checkout.tax.TaxesLabel.TotalOrderVat
       $22,747.55
       checkout.order.total_cost.label
       $142,470.71
@@ -75,13 +75,28 @@ describe('Basket Cost Summary Component', () => {
     `);
   }));
 
-  it('should not display estimated prices if estimated flag is not set', () => {
+  it('should not display estimated prices if estimated flag is not set', fakeAsync(() => {
     fixture.detectChanges();
+    tick(500);
+
     expect(element.querySelector('.total-price').textContent.trim()).toEqual('checkout.order.total_cost.label');
-  });
-  it('should display estimated prices if estimated flag is set', () => {
+  }));
+  it('should display estimated prices if estimated flag is set', fakeAsync(() => {
     component.totals.isEstimated = true;
     fixture.detectChanges();
+    tick(500);
+
     expect(element.querySelector('.total-price').textContent.trim()).toEqual('checkout.cart.estimated_total.label');
-  });
+  }));
+
+  it('should not display paymentCostsTotal when value is zero', fakeAsync(() => {
+    component.totals = {
+      ...BasketMockData.getTotals(),
+      paymentCostsTotal: { type: 'PriceItem', currency: 'USD', gross: 0.0, net: 0.0 },
+    };
+    fixture.detectChanges();
+    tick(500);
+
+    expect(element.textContent).not.toContain('checkout.cart.payment_cost.label');
+  }));
 });

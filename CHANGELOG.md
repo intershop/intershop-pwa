@@ -7,6 +7,20 @@ kb_everyone
 
 # Changelog
 
+## [0.19.1](https://github.com/intershop/intershop-pwa/releases/tag/0.19.1) (2020-04-28)
+
+**required Intershop Commerce Management version: 7.10.17.0**
+
+### Bug Fixes
+
+- suppress display of total payment costs with zero value on cost summary ([67fa061](https://github.com/intershop/intershop-pwa/commit/67fa061))
+- display correct label for VAT inclusion on cost summary ([910e643](https://github.com/intershop/intershop-pwa/commit/910e643))
+- do not synchronize server config via state transfer ([e0ae3f3](https://github.com/intershop/intershop-pwa/commit/e0ae3f3))
+
+### Documentation
+
+- import and update documentation from PWA Guide (#125) ([4934b66](https://github.com/intershop/intershop-pwa/commit/4934b66))
+
 ## [0.19.0](https://github.com/intershop/intershop-pwa/releases/tag/0.19.0) (2020-04-20)
 
 **required Intershop Commerce Management version: 7.10.17.0**

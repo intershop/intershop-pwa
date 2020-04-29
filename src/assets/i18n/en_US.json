@@ -1521,7 +1521,7 @@
   "checkout.tax.TaxesLabel.Estimated_SalesTax": "Estimated Sales Tax",
   "checkout.tax.TaxesLabel.Estimated_TotalOrderVat": "VAT incl. in Order Total",
   "checkout.tax.TaxesLabel.SalesTax": "Sales Tax",
-  "checkout.tax.TaxesLabel.TotalOrderVat": "VAT incl. in Order Total",
+  "checkout.tax.TaxesLabel.TotalOrderVat": "VAT incl. in Total",
   "checkout.tax.TaxesLabel.TotalOrderVat.short": "VAT incl.",
   "checkout.tax.calculated_at_checkout.text": "will be calculated at checkout",
   "checkout.tax.duLabel": "Duties and Fees",

@@ -2,7 +2,7 @@
   <dl class="row dl-horizontal">
     <!-- SubTotal -->
     <dt class="col-6">{{ 'checkout.cart.subtotal.heading' | translate }}</dt>
-    <dd class="col-6">{{ totals.itemTotal | ishPrice }}</dd>
+    <dd class="col-6" data-testing-id="basket-subtotal">{{ totals.itemTotal | ishPrice }}</dd>
 
     <!-- list all applied order level promotions -->
     <ng-container *ngIf="totals.valueRebates && totals.valueRebates.length > 0">
@@ -44,7 +44,7 @@
     </ng-container>
 
     <!-- Payment costs -->
-    <ng-container *ngIf="totals.paymentCostsTotal">
+    <ng-container *ngIf="hasPaymentCostsTotal">
       <dt class="col-6">{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
       <dd class="col-6">{{ totals.paymentCostsTotal | ishPrice }}</dd>
     </ng-container>
@@ -52,8 +52,8 @@
     <!-- Tax -->
     <!-- ToDo: display tax in dependence of price calculation preferences -->
     <ng-container *ngIf="totals.taxTotal && totals.taxTotal.value">
-      <dt class="col-6">{{ 'checkout.tax.text' | translate }}</dt>
-      <dd class="col-6">{{ totals.taxTotal | ishPrice }}</dd>
+      <dt class="col-6">{{ taxTranslation$ | async | translate }}</dt>
+      <dd class="col-6" data-testing-id="basket-tax">{{ totals.taxTotal | ishPrice }}</dd>
     </ng-container>
 
     <!-- Cart total -->
