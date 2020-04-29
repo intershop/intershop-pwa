@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
 
 import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -23,7 +22,6 @@ import { HeaderNavigationComponent } from './header/header-navigation/header-nav
 import { HeaderSimpleComponent } from './header/header-simple/header-simple.component';
 import { HeaderComponent } from './header/header/header.component';
 import { LanguageSwitchComponent } from './header/language-switch/language-switch.component';
-import { LazyLoginModalComponent } from './header/lazy-login-modal/lazy-login-modal.component';
 import { LoginStatusComponent } from './header/login-status/login-status.component';
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
 import { ProductCompareStatusComponent } from './header/product-compare-status/product-compare-status.component';
@@ -52,10 +50,6 @@ const exportedComponents = [
     PipesModule.forRoot(),
     QuickorderExportsModule,
     QuotingExportsModule,
-    ReactiveComponentLoaderModule.withModule({
-      moduleId: 'ish-shared',
-      loadChildren: () => import('../shared/shared.module').then(m => m.SharedModule),
-    }),
     RouterModule,
     TranslateModule,
     WishlistsExportsModule,
@@ -68,7 +62,6 @@ const exportedComponents = [
     HeaderNavigationComponent,
     HeaderSimpleComponent,
     LanguageSwitchComponent,
-    LazyLoginModalComponent,
     LoginStatusComponent,
     MiniBasketComponent,
     ProductCompareStatusComponent,
@@ -76,6 +69,5 @@ const exportedComponents = [
     UserInformationMobileComponent,
   ],
   exports: [...exportedComponents],
-  entryComponents: [LazyLoginModalComponent],
 })
 export class ShellModule {}
