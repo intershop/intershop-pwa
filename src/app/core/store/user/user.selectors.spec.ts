@@ -52,7 +52,7 @@ describe('User Selectors', () => {
       }),
     });
 
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
     store$.dispatch(new LoadProductSuccess({ product: { sku: 'sku' } as Product }));
   });
 

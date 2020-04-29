@@ -13,7 +13,7 @@ describe('Sfe Adapter Service', () => {
       imports: [RouterTestingModule, ngrxTesting()],
     });
 
-    sfeAdapterService = TestBed.get(SfeAdapterService);
+    sfeAdapterService = TestBed.inject(SfeAdapterService);
   });
 
   it('should be created', () => {

@@ -61,9 +61,9 @@ describe('Basket Validation Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketValidationEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
+    effects = TestBed.inject(BasketValidationEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
   });
 
   describe('validateBasket$', () => {

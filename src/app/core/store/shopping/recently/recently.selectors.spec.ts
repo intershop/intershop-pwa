@@ -38,8 +38,8 @@ describe('Recently Selectors', () => {
       ],
     });
 
-    store$ = TestBed.get(TestStore);
-    router = TestBed.get(Router);
+    store$ = TestBed.inject(TestStore);
+    router = TestBed.inject(Router);
   });
 
   it('should select nothing for an empty state', () => {

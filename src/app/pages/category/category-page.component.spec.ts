@@ -50,8 +50,8 @@ describe('Category Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    store$ = TestBed.get(Store);
-    router = TestBed.get(Router);
+    store$ = TestBed.inject(Store);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {

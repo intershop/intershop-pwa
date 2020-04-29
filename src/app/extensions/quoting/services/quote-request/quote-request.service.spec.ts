@@ -46,8 +46,8 @@ describe('Quote Request Service', () => {
       providers: [QuoteRequestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
 
-    quoteRequestService = TestBed.get(QuoteRequestService);
-    store$ = TestBed.get(Store);
+    quoteRequestService = TestBed.inject(QuoteRequestService);
+    store$ = TestBed.inject(Store);
   });
 
   describe('when not logged in', () => {

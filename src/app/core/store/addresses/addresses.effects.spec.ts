@@ -47,8 +47,8 @@ describe('Addresses Effects', () => {
       ],
     });
 
-    effects = TestBed.get(AddressesEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(AddressesEffects);
+    store$ = TestBed.inject(Store);
     const customer = { customerNo: 'patricia' } as Customer;
     store$.dispatch(new LoginUserSuccess({ customer }));
   });

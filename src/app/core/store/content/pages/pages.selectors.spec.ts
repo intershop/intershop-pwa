@@ -34,8 +34,8 @@ describe('Pages Selectors', () => {
       ],
     });
 
-    store$ = TestBed.get(TestStore);
-    router = TestBed.get(Router);
+    store$ = TestBed.inject(TestStore);
+    router = TestBed.inject(Router);
   });
 
   describe('initial state', () => {

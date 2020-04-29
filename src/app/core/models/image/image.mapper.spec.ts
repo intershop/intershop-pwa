@@ -43,7 +43,7 @@ describe('Image Mapper', () => {
         }),
       ],
     });
-    imageMapper = TestBed.get(ImageMapper);
+    imageMapper = TestBed.inject(ImageMapper);
   }));
 
   describe('fromImages', () => {

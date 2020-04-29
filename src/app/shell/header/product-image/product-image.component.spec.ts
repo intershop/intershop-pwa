@@ -53,7 +53,7 @@ describe('Product Image Component', () => {
   }));
 
   beforeEach(() => {
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     translate.set('product.image.text.alttext', 'product photo');

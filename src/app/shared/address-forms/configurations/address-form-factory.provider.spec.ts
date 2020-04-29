@@ -19,7 +19,7 @@ describe('Address Form Factory Provider', () => {
         AddressFormFactoryProvider,
       ],
     });
-    addressFormService = TestBed.get(AddressFormFactoryProvider);
+    addressFormService = TestBed.inject(AddressFormFactoryProvider);
   });
 
   it('should be created', () => {

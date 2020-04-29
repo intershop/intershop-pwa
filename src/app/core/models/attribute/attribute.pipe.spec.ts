@@ -19,8 +19,8 @@ describe('Attribute Pipe', () => {
       imports: [TranslateModule.forRoot()],
       providers: [AttributeToStringPipe],
     });
-    pipe = TestBed.get(AttributeToStringPipe);
-    translateService = TestBed.get(TranslateService);
+    pipe = TestBed.inject(AttributeToStringPipe);
+    translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
   });
 

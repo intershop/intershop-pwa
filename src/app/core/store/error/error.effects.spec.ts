@@ -30,9 +30,9 @@ describe('Error Effects', () => {
       providers: [ErrorEffects],
     });
 
-    store$ = TestBed.get(Store);
-    effects = TestBed.get(ErrorEffects);
-    location = TestBed.get(Location);
+    store$ = TestBed.inject(Store);
+    effects = TestBed.inject(ErrorEffects);
+    location = TestBed.inject(Location);
   });
 
   describe('gotoErrorPageInCaseOfError$', () => {

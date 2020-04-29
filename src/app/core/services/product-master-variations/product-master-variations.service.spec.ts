@@ -25,7 +25,7 @@ describe('Product Master Variations Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    productMasterVariationsService = TestBed.get(ProductMasterVariationsService);
+    productMasterVariationsService = TestBed.inject(ProductMasterVariationsService);
 
     expect.addSnapshotSerializer({
       test: val => val && val.facets && val.facets.length,

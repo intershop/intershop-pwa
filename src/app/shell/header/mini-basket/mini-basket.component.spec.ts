@@ -47,7 +47,7 @@ describe('Mini Basket Component', () => {
     fixture = TestBed.createComponent(MiniBasketComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    const translate = TestBed.get(TranslateService);
+    const translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     translate.setTranslation('en', {

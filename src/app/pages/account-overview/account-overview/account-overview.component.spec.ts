@@ -51,7 +51,7 @@ describe('Account Overview Component', () => {
     fixture = TestBed.createComponent(AccountOverviewComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     translate.set('account.overview.personal_message.text', 'Hi, {{0}}.');

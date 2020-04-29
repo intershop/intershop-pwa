@@ -56,7 +56,7 @@ export class SelectWishlistModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   // tslint:disable-next-line:no-any
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<any>;
+  @ViewChild('modal') modalTemplate: TemplateRef<any>;
 
   constructor(
     private ngbModal: NgbModal,

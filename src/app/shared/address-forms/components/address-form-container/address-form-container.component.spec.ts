@@ -48,7 +48,7 @@ describe('Address Form Container Component', () => {
     fixture = TestBed.createComponent(AddressFormContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
     const customer: Customer = { customerNo: '1', type: 'SMBCustomer' };
     const region: Region[] = [{ countryCode: 'BG', id: 'BGS', name: 'Sofia', regionCode: 'S' }];
     store$.dispatch(new LoginUserSuccess({ customer }));
