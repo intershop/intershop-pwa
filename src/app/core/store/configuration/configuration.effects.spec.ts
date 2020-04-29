@@ -133,10 +133,12 @@ describe('Configuration Effects', () => {
 
   describe('setLocale$', () => {
     it('should call TranslateService when locale was initialized', done => {
-      verify(translateServiceMock.use(anything())).once();
-      const params = capture(translateServiceMock.use).last();
-      expect(params[0]).toEqual('en_US');
-      setTimeout(done, 1000);
+      setTimeout(() => {
+        verify(translateServiceMock.use(anything())).once();
+        const params = capture(translateServiceMock.use).last();
+        expect(params[0]).toEqual('en_US');
+        done();
+      }, 1000);
     });
   });
 

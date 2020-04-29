@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { defer, fromEvent, iif, merge } from 'rxjs';
 import {
   concatMap,
+  debounceTime,
   distinctUntilChanged,
   map,
   mapTo,
@@ -100,8 +101,10 @@ export class ConfigurationEffects {
   setLocale$ = this.store.pipe(
     select(getCurrentLocale),
     mapToProperty('lang'),
-    whenTruthy(),
     distinctUntilChanged(),
+    // https://github.com/ngx-translate/core/issues/1030
+    debounceTime(0),
+    whenTruthy(),
     tap(lang => this.translateService.use(lang))
   );
 
