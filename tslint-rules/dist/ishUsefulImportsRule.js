@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var comment_json_1 = require("comment-json");
 var fs = require("fs");
 var Lint = require("tslint");
 var ts = require("typescript");
@@ -52,8 +53,7 @@ var Rule = (function (_super) {
         var _this = _super.call(this, options) || this;
         _this.shortImports = [];
         try {
-            var data = fs.readFileSync('./tsconfig.json');
-            var config = JSON.parse(data);
+            var config = comment_json_1.parse(fs.readFileSync('./tsconfig.json', { encoding: 'UTF-8' }));
             if (config && config.compilerOptions && config.compilerOptions.paths) {
                 var paths_1 = config.compilerOptions.paths;
                 _this.shortImports = Object.keys(paths_1).map(function (key) { return ({
