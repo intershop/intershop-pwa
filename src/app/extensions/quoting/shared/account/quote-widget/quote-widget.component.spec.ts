@@ -55,7 +55,7 @@ describe('Quote Widget Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    const translate = TestBed.get(TranslateService);
+    const translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     translate.set('account.quotes.widget.new.label', 'N');

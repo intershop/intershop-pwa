@@ -30,8 +30,8 @@ describe('Auth Guard', () => {
     }));
 
     beforeEach(() => {
-      authGuard = TestBed.get(AuthGuard);
-      store$ = TestBed.get(Store);
+      authGuard = TestBed.inject(AuthGuard);
+      store$ = TestBed.inject(Store);
     });
 
     it('should return true when user is authorized', done => {

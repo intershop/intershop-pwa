@@ -30,8 +30,8 @@ describe('Product Mapper', () => {
         }),
       ],
     });
-    productMapper = TestBed.get(ProductMapper);
-    imageMapper = spy(TestBed.get(ImageMapper));
+    productMapper = TestBed.inject(ProductMapper);
+    imageMapper = spy(TestBed.inject(ImageMapper));
   }));
 
   describe('fromData', () => {

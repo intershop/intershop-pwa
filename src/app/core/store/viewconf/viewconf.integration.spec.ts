@@ -40,8 +40,8 @@ describe('Viewconf Integration', () => {
       ],
     });
 
-    store$ = TestBed.get(TestStore);
-    router = TestBed.get(Router);
+    store$ = TestBed.inject(TestStore);
+    router = TestBed.inject(Router);
   });
 
   it('should extract wrapperClass from routing to state', fakeAsync(() => {

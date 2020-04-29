@@ -41,8 +41,8 @@ describe('Basket Promotion Code Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketPromotionCodeEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(BasketPromotionCodeEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('loadBasketAfterAddPromotionCodeToBasket$', () => {

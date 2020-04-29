@@ -30,7 +30,7 @@ describe('Seo Effects', () => {
       ],
     });
 
-    effects = TestBed.get(SeoEffects);
+    effects = TestBed.inject(SeoEffects);
   });
 
   describe('setMetaData$', () => {

@@ -28,7 +28,7 @@ describe('Customer Address Form Component', () => {
     fixture = TestBed.createComponent(CustomerAddressFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fb = TestBed.get(FormBuilder);
+    fb = TestBed.inject(FormBuilder);
   });
 
   it('should be created', () => {

@@ -18,11 +18,11 @@ describe('Logout Guard', () => {
         imports: [RouterTestingModule, ngrxTesting()],
       }).compileComponents();
 
-      store$ = spy(TestBed.get(Store));
+      store$ = spy(TestBed.inject(Store));
     }));
 
     beforeEach(() => {
-      logoutGuard = TestBed.get(LogoutGuard);
+      logoutGuard = TestBed.inject(LogoutGuard);
     });
 
     it('should log out when called', () => {

@@ -53,7 +53,7 @@ describe('Checkout Address Page Component', () => {
         }),
       ],
     }).compileComponents();
-    store$ = TestBed.get(TestStore);
+    store$ = TestBed.inject(TestStore);
   }));
 
   beforeEach(() => {

@@ -67,7 +67,7 @@ describe('Registration Form Component', () => {
     fixture = TestBed.createComponent(RegistrationFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fb = TestBed.get(FormBuilder);
+    fb = TestBed.inject(FormBuilder);
   });
 
   it('should be created', () => {

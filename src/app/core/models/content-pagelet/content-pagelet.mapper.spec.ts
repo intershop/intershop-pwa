@@ -27,7 +27,7 @@ describe('Content Pagelet Mapper', () => {
       ],
     });
 
-    contentPageletMapper = TestBed.get(ContentPageletMapper);
+    contentPageletMapper = TestBed.inject(ContentPageletMapper);
   });
 
   it('should throw on empty input', () => {

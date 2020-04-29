@@ -19,7 +19,7 @@ describe('Form Control Feedback Component', () => {
       declarations: [FormControlFeedbackComponent, MockComponent(FaIconComponent)],
     }).compileComponents();
 
-    translateService = TestBed.get(TranslateService);
+    translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
     translateService.use('en');
     translateService.set('requiredkey', 'requiredmessage');

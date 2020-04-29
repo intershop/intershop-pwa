@@ -43,7 +43,7 @@ describe('Product Listing Component', () => {
       ],
     }).compileComponents();
 
-    store$ = TestBed.get(Store);
+    store$ = TestBed.inject(Store);
   }));
 
   beforeEach(() => {

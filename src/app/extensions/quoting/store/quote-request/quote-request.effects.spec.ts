@@ -83,10 +83,10 @@ describe('Quote Request Effects', () => {
       ],
     });
 
-    effects = TestBed.get(QuoteRequestEffects);
-    store$ = TestBed.get(Store);
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(QuoteRequestEffects);
+    store$ = TestBed.inject(Store);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
 
     store$.dispatch(new ApplyConfiguration({ features: ['quoting'] }));
   });
