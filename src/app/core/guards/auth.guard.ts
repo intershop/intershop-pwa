@@ -13,6 +13,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, iif, of, race, timer } from 'rxjs';
 import { mapTo, take } from 'rxjs/operators';
 
+import { CookiesService } from 'ish-core/services/cookies/cookies.service';
 import { getUserAuthorized } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -21,7 +22,12 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private store: Store<{}>, private router: Router, @Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(
+    private store: Store<{}>,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: string,
+    private cookieService: CookiesService
+  ) {}
 
   canActivate(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.guardAccess({ ...snapshot.queryParams, returnUrl: state.url });
@@ -45,8 +51,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           whenTruthy(),
           take(1)
         ),
-        // send to login after timeout (on first routing only)
-        timer(this.router.navigated ? 0 : 4000).pipe(mapTo(defaultRedirect))
+        // send to login after timeout
+        // send right away if no user can be re-hydrated
+        timer(!this.router.navigated && this.cookieService.get('apiToken') ? 4000 : 0).pipe(mapTo(defaultRedirect))
       )
     );
   }
