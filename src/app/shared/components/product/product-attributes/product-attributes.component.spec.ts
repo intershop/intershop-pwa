@@ -26,7 +26,7 @@ describe('Product Attributes Component', () => {
     element = fixture.nativeElement;
     component.product = product;
 
-    const translate = TestBed.get(TranslateService);
+    const translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
   });

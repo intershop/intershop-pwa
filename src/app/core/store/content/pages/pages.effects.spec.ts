@@ -40,8 +40,8 @@ describe('Pages Effects', () => {
       ],
     });
 
-    effects = TestBed.get(PagesEffects);
-    router = TestBed.get(Router);
+    effects = TestBed.inject(PagesEffects);
+    router = TestBed.inject(Router);
   });
 
   describe('loadPages$', () => {

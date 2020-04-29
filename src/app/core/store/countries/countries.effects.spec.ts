@@ -34,7 +34,7 @@ describe('Countries Effects', () => {
       ],
     });
 
-    effects = TestBed.get(CountriesEffects);
+    effects = TestBed.inject(CountriesEffects);
   });
 
   describe('loadCountries$', () => {

@@ -24,9 +24,9 @@ describe('Auth Interceptor', () => {
       ],
     });
 
-    store$ = spy(TestBed.get(Store));
-    httpTestingController = TestBed.get(HttpTestingController);
-    httpClient = TestBed.get(HttpClient);
+    store$ = spy(TestBed.inject(Store));
+    httpTestingController = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
   });
 
   afterEach(() => {

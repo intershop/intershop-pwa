@@ -68,7 +68,7 @@ describe('Checkout Address Anonymous Component', () => {
     fixture = TestBed.createComponent(CheckoutAddressAnonymousComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fb = TestBed.get(FormBuilder);
+    fb = TestBed.inject(FormBuilder);
   });
 
   it('should be created', () => {

@@ -21,8 +21,8 @@ describe('Api Service Errorhandler', () => {
       imports: [ngrxTesting()],
     }).compileComponents();
 
-    apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
-    store$ = spy(TestBed.get(Store));
+    apiServiceErrorHandler = TestBed.inject(ApiServiceErrorHandler);
+    store$ = spy(TestBed.inject(Store));
   }));
 
   function dataProviderKnown() {

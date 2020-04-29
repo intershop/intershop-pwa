@@ -23,7 +23,7 @@ describe('Filter Navigation Mapper', () => {
         }),
       ],
     });
-    mapper = TestBed.get(FilterNavigationMapper);
+    mapper = TestBed.inject(FilterNavigationMapper);
   }));
 
   describe('fromData', () => {

@@ -31,7 +31,7 @@ describe('Product Shipment Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductShipmentComponent);
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
+    translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     product = { sku: 'sku' } as Product;

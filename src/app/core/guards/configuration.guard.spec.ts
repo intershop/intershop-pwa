@@ -21,8 +21,8 @@ describe('Configuration Guard', () => {
       ],
     });
 
-    router = TestBed.get(Router);
-    location = TestBed.get(Location);
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
   });
 
   it('should pass through normal routes when activated', fakeAsync(() => {

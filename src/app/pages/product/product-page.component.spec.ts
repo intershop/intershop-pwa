@@ -79,9 +79,9 @@ describe('Product Page Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    location = TestBed.get(Location);
-    router = TestBed.get(Router);
-    store$ = TestBed.get(TestStore);
+    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
+    store$ = TestBed.inject(TestStore);
     store$.dispatch(new ApplyConfiguration({ features: ['recently'] }));
 
     store$.dispatch(

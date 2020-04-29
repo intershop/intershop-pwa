@@ -45,7 +45,7 @@ describe('Feature Toggle Guard', () => {
       ],
     });
 
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
   });
 
   it('should navigate to activated features successfully', fakeAsync(() => {

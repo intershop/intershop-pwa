@@ -56,8 +56,8 @@ describe('Basket Items Effects', () => {
       ],
     });
 
-    effects = TestBed.get(BasketItemsEffects);
-    store$ = TestBed.get(Store);
+    effects = TestBed.inject(BasketItemsEffects);
+    store$ = TestBed.inject(Store);
   });
 
   describe('addProductToBasket$', () => {
