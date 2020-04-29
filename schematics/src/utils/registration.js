@@ -37,21 +37,6 @@ function addImportToNgModule(options) {
     };
 }
 exports.addImportToNgModule = addImportToNgModule;
-function addEntryComponentToNgModule(options) {
-    return host => {
-        const relativePath = find_module_1.buildRelativePath(options.module, options.moduleImportPath);
-        const source = filesystem_1.readIntoSourceFile(host, options.module);
-        const entryComponentRecorder = host.beginUpdate(options.module);
-        const entryComponentChanges = ast_utils_1.addEntryComponentToModule(source, options.module, core_1.strings.classify(options.artifactName), relativePath);
-        for (const change of entryComponentChanges) {
-            if (change instanceof change_1.InsertChange) {
-                entryComponentRecorder.insertLeft(change.pos, change.toAdd);
-            }
-        }
-        host.commitUpdate(entryComponentRecorder);
-    };
-}
-exports.addEntryComponentToNgModule = addEntryComponentToNgModule;
 function addDeclarationToNgModule(options) {
     return host => {
         const source = filesystem_1.readIntoSourceFile(host, options.module);

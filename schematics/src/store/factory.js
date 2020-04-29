@@ -48,7 +48,7 @@ function determineStoreLocation(host, options) {
     if (name === extension) {
         throw new Error('name of extension and store cannot be equal');
     }
-    return Object.assign({}, options, { parentStorePath: `${path}${parent}`, name,
+    return Object.assign(Object.assign({}, options), { parentStorePath: `${path}${parent}`, name,
         extension,
         feature,
         path,
@@ -132,7 +132,7 @@ function createStore(options) {
         options = common_1.determineArtifactName('store', host, options);
         const operations = [];
         operations.push(schematics_1.mergeWith(schematics_1.apply(schematics_1.url('./files'), [
-            schematics_1.template(Object.assign({}, core_1.strings, options)),
+            schematics_1.template(Object.assign(Object.assign({}, core_1.strings), options)),
             schematics_1.move(options.path),
         ])));
         operations.push(registerStateInStore(options));

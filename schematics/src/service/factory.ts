@@ -3,7 +3,7 @@ import { Rule, SchematicsException, apply, mergeWith, move, template, url } from
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 
-import { PwaServiceOptionsSchema as Options } from './schema';
+import { PWAServiceOptionsSchema as Options } from './schema';
 
 export function createService(options: Options): Rule {
   return host => {

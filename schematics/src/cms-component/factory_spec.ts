@@ -3,7 +3,7 @@ import { noop } from 'rxjs';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaCmsComponentOptionsSchema as Options } from './schema';
+import { PWACMSComponentOptionsSchema as Options } from './schema';
 
 describe('CMS Component Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -46,7 +46,6 @@ describe('CMS Component Schematic', () => {
         imports: [],
         declarations: [],
         exports: [],
-        entryComponents: [],
         providers: [{
             provide: CMS_COMPONENT,
             useValue: {
@@ -66,8 +65,7 @@ describe('CMS Component Schematic', () => {
       @NgModule({
         imports: [],
         declarations: [CMSFooComponent],
-        exports: [],
-        entryComponents: [CMSFooComponent]
+        exports: []
       })
       export class SharedModule { }
       "
@@ -93,7 +91,6 @@ describe('CMS Component Schematic', () => {
         imports: [],
         declarations: [],
         exports: [],
-        entryComponents: [],
         providers: [{
             provide: CMS_COMPONENT,
             useValue: {
@@ -113,8 +110,7 @@ describe('CMS Component Schematic', () => {
       @NgModule({
         imports: [],
         declarations: [FooComponent],
-        exports: [],
-        entryComponents: [FooComponent]
+        exports: []
       })
       export class SharedModule { }
       "

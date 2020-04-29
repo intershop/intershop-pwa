@@ -3,7 +3,7 @@ import { Rule, SchematicsException, apply, mergeWith, move, template, url } from
 
 import { applyNameAndPath, determineArtifactName } from '../utils/common';
 
-import { PwaModuleOptionsSchema as Options } from './schema';
+import { PWAModuleOptionsSchema as Options } from './schema';
 
 export function createModule(options: Options): Rule {
   return host => {

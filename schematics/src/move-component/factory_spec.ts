@@ -171,8 +171,7 @@ export class DummyTwoComponent {}
       @NgModule({
         imports: [],
         declarations: [FooComponent],
-        exports: [],
-        entryComponents: []
+        exports: []
       })
       export class SharedModule { }
       "

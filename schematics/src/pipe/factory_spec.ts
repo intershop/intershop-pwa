@@ -2,7 +2,7 @@ import { UnitTestTree } from '@angular-devkit/schematics/testing';
 
 import { createApplication, createModule, createSchematicRunner } from '../utils/testHelper';
 
-import { PwaPipeOptionsSchema as Options } from './schema';
+import { PWAPipeOptionsSchema as Options } from './schema';
 
 describe('Pipe Schematic', () => {
   const schematicRunner = createSchematicRunner();

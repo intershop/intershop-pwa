@@ -8,7 +8,7 @@ import {
   createSchematicRunner,
 } from '../utils/testHelper';
 
-import { PwaExtensionOptionsSchema as Options } from './schema';
+import { PWAExtensionOptionsSchema as Options } from './schema';
 
 describe('Extension Schematic', () => {
   const schematicRunner = createSchematicRunner();
@@ -88,8 +88,7 @@ describe('Extension Schematic', () => {
       @NgModule({
         imports: [FooExportsModule],
         declarations: [],
-        exports: [FooExportsModule],
-        entryComponents: []
+        exports: [FooExportsModule]
       })
       export class SharedModule { }
       "
@@ -108,8 +107,7 @@ describe('Extension Schematic', () => {
       @NgModule({
         imports: [FooExportsModule],
         declarations: [],
-        exports: [],
-        entryComponents: []
+        exports: []
       })
       export class ShellModule { }
       "
